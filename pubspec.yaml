@@ -15,6 +15,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   source_gen: ^0.9.4+6
+  clean_mvvm:
+    git:
+      url: "https://github.com/StanevPrime/PrimeHoldingFlutterCleanMVVM"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

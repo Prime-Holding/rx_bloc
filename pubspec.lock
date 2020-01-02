@@ -57,6 +57,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  clean_mvvm:
+    dependency: "direct dev"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "5369c5287c190e22198269f3dae65c4a035c1260"
+      url: "https://github.com/StanevPrime/PrimeHoldingFlutterCleanMVVM"
+    source: git
+    version: "0.0.1"
   collection:
     dependency: transitive
     description:
@@ -207,6 +216,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.23.1"
   sky_engine:
     dependency: transitive
     description: flutter

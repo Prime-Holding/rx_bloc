@@ -1,8 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:clean_mvvm/annotation/view_model_annotations.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'view_model_annotations.dart';
 import 'view_model_generator.dart';
 
 class MVVMGenerator extends GeneratorForAnnotation<ViewModel> {
