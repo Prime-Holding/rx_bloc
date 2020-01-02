@@ -1,6 +1,6 @@
-# rx_bloc_generator
+# example
 
-A generator for rx_bloc
+A new Flutter package.
 
 ## Getting Started
 

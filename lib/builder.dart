@@ -1,8 +1,9 @@
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'mvvm_generator.dart';
+import 'rx_bloc_generator_for_annotation.dart';
 
-Builder mvvmGenerator(BuilderOptions options) {
-  return LibraryBuilder(MVVMGenerator(), generatedExtension: ".g.dart");
+Builder rxBlocGenerator(BuilderOptions options) {
+  return LibraryBuilder(RxBlocGeneratorForAnnotation(),
+      generatedExtension: ".g.dart");
 }

@@ -1,11 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:clean_mvvm/annotation/view_model_annotations.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'view_model_generator.dart';
+import 'rx_bloc_generator.dart';
 
-class MVVMGenerator extends GeneratorForAnnotation<ViewModel> {
+class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   @override
   generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) async {
@@ -16,14 +16,13 @@ class MVVMGenerator extends GeneratorForAnnotation<ViewModel> {
 
     final libraryReader = LibraryReader(classElement.library);
 
-    final inputElement = libraryReader.classes.firstWhere(
-        (classElement) => classElement.displayName.contains('Input'));
+    final eventsClass = libraryReader.classes.firstWhere(
+        (classElement) => classElement.displayName.contains('Events'));
 
-    final outputElement = libraryReader.classes.firstWhere(
-        (classElement) => classElement.displayName.contains('Output'));
+    final statesClass = libraryReader.classes.firstWhere(
+        (classElement) => classElement.displayName.contains('States'));
 
     //TODO: Handle missing input/output classes
-    return ViewModelGenerator(classElement, inputElement, outputElement)
-        .generate();
+    return RxBlocGenerator(classElement, eventsClass, statesClass).generate();
   }
 }

@@ -1,15 +1,15 @@
 import 'package:analyzer/dart/element/element.dart';
 
-class ViewModelGenerator {
+class RxBlocGenerator {
   final StringBuffer _stringBuffer = StringBuffer();
   final ClassElement viewModelElement;
-  final ClassElement inputElement;
-  final ClassElement outputElement;
+  final ClassElement eventsElement;
+  final ClassElement statesElement;
 
-  ViewModelGenerator(
+  RxBlocGenerator(
     this.viewModelElement,
-    this.inputElement,
-    this.outputElement,
+    this.eventsElement,
+    this.statesElement,
   );
 
   // helper functions
@@ -26,64 +26,64 @@ class ViewModelGenerator {
         "'${viewModelElement.location.components.first}'",
         "'package:flutter/cupertino.dart'",
         "'package:rxdart/rxdart.dart'",
-        "'package:clean_mvvm/view_model/base_view_model.dart'"
+        "'package:rx_bloc/bloc/rx_bloc_base.dart'"
       ].forEach((import) => _writeln("import $import;"));
 
   void _generateTypeClass() {
     _writeln("\nabstract class ${viewModelElement.displayName}Type {");
-    _writeln("\n  ${viewModelElement.displayName}Input get input;");
-    _writeln("\n  ${viewModelElement.displayName}Output get output;");
+    _writeln("\n  ${viewModelElement.displayName}Events get events;");
+    _writeln("\n  ${viewModelElement.displayName}States get states;");
     _writeln("\n}");
   }
 
   void _generateViewModelClass() {
     _writeln("\n");
     _writeln(
-        "\nabstract class \$${viewModelElement.displayName} extends BaseViewModel");
+        "\nabstract class \$${viewModelElement.displayName} extends RxBlocBase");
     _writeln("\n    implements");
-    _writeln("\n        ${viewModelElement.displayName}Input,");
-    _writeln("\n        ${viewModelElement.displayName}Output,");
+    _writeln("\n        ${viewModelElement.displayName}Events,");
+    _writeln("\n        ${viewModelElement.displayName}States,");
     _writeln("\n        ${viewModelElement.displayName}Type {");
-    _writeln("\n  ///region Inputs");
+    _writeln("\n  ///region Events");
     _writeln("\n");
-    _writeln(_generateInputs());
-    _writeln("\n  ///endregion Inputs");
-    _writeln("\n  ///region Outputs");
+    _writeln(_generateEvents());
+    _writeln("\n  ///endregion Events");
+    _writeln("\n  ///region States");
     _writeln("\n");
-    _writeln(_generateOutputs());
-    _writeln("\n  ///endregion Outputs");
+    _writeln(_generateStates());
+    _writeln("\n  ///endregion States");
     _writeln("\n  ///region Type");
     _writeln("\n  @override");
-    _writeln("\n  ${viewModelElement.displayName}Input get input => this;");
+    _writeln("\n  ${viewModelElement.displayName}Events get events => this;");
     _writeln("\n");
     _writeln("\n  @override");
-    _writeln("\n  ${viewModelElement.displayName}Output get output => this;");
+    _writeln("\n  ${viewModelElement.displayName}States get states => this;");
     _writeln("\n  ///endregion Type");
     _writeln("\n}");
   }
 
-  String _generateInputs() => inputElement.methods.mapToInputs().join('\n');
+  String _generateEvents() => eventsElement.methods.mapToEvents().join('\n');
 
-  String _generateOutputs() => outputElement.accessors
-      .filterViewModelIgnoreOutput()
+  String _generateStates() => statesElement.accessors
+      .filterRxBlocIgnoreState()
       .map((element) => element.variable)
-      .mapToOutputs()
+      .mapToStates()
       .join('\n');
 }
 
-extension _MapToInputs on Iterable<MethodElement> {
-  List<String> mapToInputs() => map((method) => '''
+extension _MapToEvents on Iterable<MethodElement> {
+  Iterable<String> mapToEvents() => map((method) => '''
   ///region ${method.name}
-  final \$${method.name}Input = PublishSubject<${method.firstParameterType}>();
+  final \$${method.name}Event = PublishSubject<${method.firstParameterType}>();
 
   @override
-  ${method.definition} => \$${method.name}Input.add(${method.firstParameterName});
+  ${method.definition} => \$${method.name}Event.add(${method.firstParameterName});
   ///endregion ${method.name}
   ''');
 }
 
-extension _MapToOutputs on Iterable<PropertyInducingElement> {
-  List<String> mapToOutputs() => map((fieldElement) => '''
+extension _MapToStates on Iterable<PropertyInducingElement> {
+  Iterable<String> mapToStates() => map((fieldElement) => '''
   ///region ${fieldElement.displayName}
   ${fieldElement.type} _${fieldElement.displayName};
 
@@ -96,8 +96,8 @@ extension _MapToOutputs on Iterable<PropertyInducingElement> {
   ''');
 }
 
-extension _FilterViewModelIgnoreOutput on List<PropertyAccessorElement> {
-  List<PropertyAccessorElement> filterViewModelIgnoreOutput() =>
+extension _FilterViewModelIgnoreState on List<PropertyAccessorElement> {
+  Iterable<PropertyAccessorElement> filterRxBlocIgnoreState() =>
       where((fieldElement) {
         if (fieldElement.metadata.isEmpty) {
           return true;
@@ -105,9 +105,7 @@ extension _FilterViewModelIgnoreOutput on List<PropertyAccessorElement> {
 
         return !fieldElement.metadata.any((annotation) {
           //TODO: find a better way
-          return annotation.element
-              .toString()
-              .contains('ViewModelIgnoreOutput');
+          return annotation.element.toString().contains('RxBlocIgnoreState');
         });
       });
 }
