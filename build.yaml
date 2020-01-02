@@ -1,0 +1,7 @@
+builders:
+  mvvmGenerator:
+    import: "package:clean_mvvm_generator/lib/builder.dart"
+    builder_factories: ["mvvmGenerator"]
+    build_extensions: {'.dart': ['.g.dart']}
+    auto_apply: all_packages
+    build_to: source
