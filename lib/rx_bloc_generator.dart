@@ -18,7 +18,7 @@ class RxBlocGenerator {
   String generate() {
     _generateImports();
     _generateTypeClass();
-    _generateViewModelClass();
+    _generateBlocClass();
     return _stringBuffer.toString();
   }
 
@@ -31,18 +31,18 @@ class RxBlocGenerator {
 
   void _generateTypeClass() {
     _writeln("\nabstract class ${viewModelElement.displayName}Type {");
-    _writeln("\n  ${viewModelElement.displayName}Events get events;");
-    _writeln("\n  ${viewModelElement.displayName}States get states;");
+    _writeln("\n  ${eventsElement.displayName} get events;");
+    _writeln("\n  ${statesElement.displayName} get states;");
     _writeln("\n}");
   }
 
-  void _generateViewModelClass() {
+  void _generateBlocClass() {
     _writeln("\n");
     _writeln(
         "\nabstract class \$${viewModelElement.displayName} extends RxBlocBase");
     _writeln("\n    implements");
-    _writeln("\n        ${viewModelElement.displayName}Events,");
-    _writeln("\n        ${viewModelElement.displayName}States,");
+    _writeln("\n        ${eventsElement.displayName},");
+    _writeln("\n        ${statesElement.displayName},");
     _writeln("\n        ${viewModelElement.displayName}Type {");
     _writeln("\n  ///region Events");
     _writeln("\n");
@@ -54,10 +54,10 @@ class RxBlocGenerator {
     _writeln("\n  ///endregion States");
     _writeln("\n  ///region Type");
     _writeln("\n  @override");
-    _writeln("\n  ${viewModelElement.displayName}Events get events => this;");
+    _writeln("\n  ${eventsElement.displayName} get events => this;");
     _writeln("\n");
     _writeln("\n  @override");
-    _writeln("\n  ${viewModelElement.displayName}States get states => this;");
+    _writeln("\n  ${statesElement.displayName} get states => this;");
     _writeln("\n  ///endregion Type");
     _writeln("\n}");
   }
@@ -74,6 +74,7 @@ class RxBlocGenerator {
 extension _MapToEvents on Iterable<MethodElement> {
   Iterable<String> mapToEvents() => map((method) => '''
   ///region ${method.name}
+  @protected
   final \$${method.name}Event = PublishSubject<${method.firstParameterType}>();
 
   @override
@@ -85,13 +86,13 @@ extension _MapToEvents on Iterable<MethodElement> {
 extension _MapToStates on Iterable<PropertyInducingElement> {
   Iterable<String> mapToStates() => map((fieldElement) => '''
   ///region ${fieldElement.displayName}
-  ${fieldElement.type} _${fieldElement.displayName};
+  ${fieldElement.type} _${fieldElement.displayName}State;
 
   @override
-  ${fieldElement.type} get ${fieldElement.displayName} => _${fieldElement.displayName} ??= init${fieldElement.displayName.capitalize()}();
+  ${fieldElement.type} get ${fieldElement.displayName} => _${fieldElement.displayName}State ??= mapTo${fieldElement.displayName.capitalize()}State();
 
   @protected
-  ${fieldElement.type} init${fieldElement.displayName.capitalize()}();
+  ${fieldElement.type} mapTo${fieldElement.displayName.capitalize()}State();
   ///endregion ${fieldElement.displayName}
   ''');
 }
@@ -104,7 +105,7 @@ extension _FilterViewModelIgnoreState on List<PropertyAccessorElement> {
         }
 
         return !fieldElement.metadata.any((annotation) {
-          //TODO: find a better way
+//TODO: find a better way
           return annotation.element.toString().contains('RxBlocIgnoreState');
         });
       });

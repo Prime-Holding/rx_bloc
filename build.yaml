@@ -1,5 +1,5 @@
 builders:
-  rxBlocGenerator:
+  rx_block:
     import: "package:rx_bloc_generator/builder.dart"
     builder_factories: ["rxBlocGenerator"]
     build_extensions: {'.dart': ['.g.dart']}

@@ -352,18 +352,16 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "6c233a1e2141d5899d82d49e91b477d71bc0dfa9"
-      url: "https://github.com/StanevPrime/FlutterRxBloc"
+      resolved-ref: "4234bdcf3c021e798780e1002ba76d0f6880cf27"
+      url: "https://github.com/StanevPrime/RxBloc"
     source: git
     version: "0.0.1"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "0c8be026de202127dd4cdeb36a0c3415bb7b036e"
-      url: "https://github.com/StanevPrime/FlutterRxBlocGenerator"
-    source: git
+      path: ".."
+      relative: true
+    source: path
     version: "0.0.1"
   rxdart:
     dependency: transitive
