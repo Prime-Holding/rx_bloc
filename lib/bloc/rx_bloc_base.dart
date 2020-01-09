@@ -7,6 +7,10 @@ import '../extensions.dart';
 import '../model/result.dart';
 import 'loading_bloc.dart';
 
+abstract class RxBlocTypeBase {
+  void dispose();
+}
+
 abstract class RxBlocBase {
   /// A loading bloc that holds all registered requests.
   ///
