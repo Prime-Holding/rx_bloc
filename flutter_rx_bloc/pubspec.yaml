@@ -13,7 +13,7 @@ dependencies:
   provider: ^4.0.1
   rx_bloc:
     git:
-     url: git://github.com/StanevPrime/RxBloc.git
+      url: "https://github.com/StanevPrime/RxBloc"
 
 dev_dependencies:
   flutter_test:
