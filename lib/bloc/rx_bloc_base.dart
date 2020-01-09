@@ -16,13 +16,13 @@ abstract class RxBlocBase {
   ///
   /// To register a request either call:
   ///
-  /// ```
+  /// ```dart
   /// registerRequestToLoading(request);
   /// ```
   ///
   /// or:
   ///
-  /// ```
+  /// ```dart
   ///  registerRequest(request);
   /// ```
   ///
@@ -68,7 +68,7 @@ abstract class RxBlocBase {
   /// as all [ResultError] and [ResultLoading] states resides in a central place.
   ///
   /// Once a requests is being registered it sinks into those properties:
-  /// ```
+  /// ```dart
   /// [requestsExceptions] and [requestsLoadingState]
   /// ```
   @protected
