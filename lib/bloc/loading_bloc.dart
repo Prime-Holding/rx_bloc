@@ -4,15 +4,13 @@ import '../extensions.dart';
 
 ///
 ///    Merges all isLoadingObservables into one isLoading observable
-
 /// **Example:**
 ///    # Input isLoadingObservables
 ///    - |--true-----false----------->
-///    - |-----------true----------false->
 ///    - |--------true------false->
 ///    - |-----------------------------------true----------false->
 ///    # are merged into one observable *isLoading*
-///    - |--true-------------------false-----true----------false->
+///    - |--true------------false------------true----------false->
 
 /// **Please Note:**
 /// *First three input observables overlap each other therefore they are
@@ -26,13 +24,12 @@ class LoadingBloc {
   Stream<bool> get isLoading =>
       _isLoadingCount.skip(1).map((isLoadingCount) => isLoadingCount > 0);
 
-  /// Is loading event count
   final _isLoadingCount = BehaviorSubject<int>.seeded(0);
 
   final _compositeSubscription = CompositeSubscription();
 
-  /// - Parameter isLoadingObservables: observables that will be used for loading indicator
-  addStream(Stream<bool> isLoadingStream) => isLoadingStream
+  /// Parameter isLoadingObservables: observables that will be used for loading indicator
+  void addStream(Stream<bool> isLoadingStream) => isLoadingStream
       .map((isLoading) => _isLoadingCount.value + (isLoading ? 1 : -1))
       .bind(_isLoadingCount)
       .disposedBy(_compositeSubscription);

@@ -35,19 +35,35 @@ extension AsResultStream<T> on Future<T> {
 }
 
 extension RegisterInRxBlocBase<T> on Stream<Result<T>> {
+  /// Registers [ResultLoading] and [ResultError] to a BloC.
   ///
+  /// Useful when multiple type of requests are executed by a single Bloc,
+  /// as all [ResultError] and [ResultLoading] states resides in a central place.
   ///
-  Stream<Result<T>> registerRequest(RxBlocBase viewModel) =>
+  /// Once a requests is being registered it sinks into those properties:
+  /// [RxBlocBase.requestsExceptions] and [RxBlocBase.requestsLoadingState]
+  Stream<Result<T>> registerRequest(RxBlocBase bloc) =>
       // ignore: invalid_use_of_protected_member
-      viewModel.registerRequest(this);
+      bloc.registerRequest(this);
 }
 
 extension Bind<T> on Stream<T> {
+  /// Bind a stream to the given subject [subject].
+  ///
+  /// Each event from the stream will be added to the subject, meaning that the
+  /// both needs to be of the same type.
+  /// Be aware that the binding is facilitating the subscribing, so the
+  /// unsubscribing needs to be handled accordingly either by
+  /// using [CompositeSubscription] or manually.
   StreamSubscription<T> bind(BehaviorSubject<T> subject) =>
       listen((data) => subject.value = data);
 }
 
 extension Dispose<T> on StreamSubscription<T> {
+  /// Add the stream to [compositeSubscription].
+  ///
+  /// Once [compositeSubscription] is being disposed all added subscriptions
+  /// will be disposed automatically
   StreamSubscription<T> disposedBy(
           CompositeSubscription compositeSubscription) =>
       compositeSubscription.add(this);
