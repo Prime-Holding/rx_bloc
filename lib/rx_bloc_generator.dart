@@ -30,7 +30,7 @@ class RxBlocGenerator {
       ].forEach((import) => _writeln("import $import;"));
 
   void _generateTypeClass() {
-    _writeln("\nabstract class ${viewModelElement.displayName}Type {");
+    _writeln("\nabstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {");
     _writeln("\n  ${eventsElement.displayName} get events;");
     _writeln("\n  ${statesElement.displayName} get states;");
     _writeln("\n}");
