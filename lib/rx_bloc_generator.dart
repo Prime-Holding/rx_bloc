@@ -30,7 +30,8 @@ class RxBlocGenerator {
       ].forEach((import) => _writeln("import $import;"));
 
   void _generateTypeClass() {
-    _writeln("\nabstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {");
+    _writeln(
+        "\nabstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {");
     _writeln("\n  ${eventsElement.displayName} get events;");
     _writeln("\n  ${statesElement.displayName} get states;");
     _writeln("\n}");
@@ -59,7 +60,19 @@ class RxBlocGenerator {
     _writeln("\n  @override");
     _writeln("\n  ${statesElement.displayName} get states => this;");
     _writeln("\n  ///endregion Type");
+    _generateDisposeMethod();
     _writeln("\n}");
+  }
+
+  void _generateDisposeMethod() {
+    _writeln("@override");
+    _writeln("void dispose(){");
+
+    eventsElement.methods.forEach((method) {
+      _writeln("\$${method.name}Event.close();");
+    });
+    _writeln("super.dispose();");
+    _writeln("}");
   }
 
   String _generateEvents() => eventsElement.methods.mapToEvents().join('\n');

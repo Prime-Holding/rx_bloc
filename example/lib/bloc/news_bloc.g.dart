@@ -20,6 +20,7 @@ abstract class $NewsBloc extends RxBlocBase
   ///region Events
 
   ///region fetch
+  @protected
   final $fetchEvent = PublishSubject<void>();
 
   @override
@@ -53,5 +54,9 @@ abstract class $NewsBloc extends RxBlocBase
   NewsBlocStates get states => this;
 
   ///endregion Type
-
+  @override
+  void dispose() {
+    $fetchEvent.close();
+    super.dispose();
+  }
 }
