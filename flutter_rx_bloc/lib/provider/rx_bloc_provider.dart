@@ -17,7 +17,8 @@ import 'package:rx_bloc/bloc/rx_bloc_base.dart';
 ///   child: ChildA(),
 /// );
 /// ```
-class RxBlocProvider<T extends RxBlocBase> extends SingleChildStatelessWidget {
+class RxBlocProvider<T extends RxBlocTypeBase>
+    extends SingleChildStatelessWidget {
   /// [child] and its descendants which will have access to the [bloc].
   final Widget child;
 
@@ -87,7 +88,7 @@ class RxBlocProvider<T extends RxBlocBase> extends SingleChildStatelessWidget {
   /// ```dart
   /// RxBlocProvider.of<BlocA>(context)
   /// ```
-  static T of<T extends RxBlocBase>(BuildContext context) {
+  static T of<T extends RxBlocTypeBase>(BuildContext context) {
     try {
       return Provider.of<T>(context, listen: false);
     } on dynamic catch (_) {

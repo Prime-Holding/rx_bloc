@@ -135,12 +135,12 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "2073aa412b48badc98aba295f32733d5bab314c0"
+      resolved-ref: ce4f19d357e31591a2728110ead5c33519d7ba14
       url: "https://github.com/StanevPrime/RxBloc"
     source: git
     version: "0.0.1"
   rxdart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
