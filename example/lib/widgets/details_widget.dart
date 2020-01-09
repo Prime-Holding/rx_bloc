@@ -1,6 +1,6 @@
 import 'package:example/bloc/details_bloc.g.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rx_bloc/provider/rx_bloc_provider.dart';
+import 'package:flutter_rx_bloc/provider/rx_bloc_builder.dart';
 
 class DetailsWidget extends StatelessWidget {
   @override
@@ -15,11 +15,9 @@ class DetailsWidget extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Center(
-                child: StreamBuilder<String>(
-                  stream: RxBlocProvider.of<DetailsBlocType>(context)
-                      .states
-                      .details,
-                  builder: (context, snapshot) => Text(
+                child: RxBlocBuilder<DetailsBlocType, String>(
+                  state: (bloc) => bloc.states.details,
+                  builder: (context, snapshot, bloc) => Text(
                     snapshot.data ?? '',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 26),
@@ -27,20 +25,13 @@ class DetailsWidget extends StatelessWidget {
                 ),
               ),
             ),
-            StreamBuilder<bool>(
-                stream: RxBlocProvider.of<DetailsBlocType>(context)
-                    .states
-                    .isLoading,
-                builder: (context, snapshot) {
-                  return RaisedButton(
-                    child: Text(snapshot.isLoaded ? 'Reload' : 'Loading...'),
-                    onPressed: snapshot.isLoaded
-                        ? RxBlocProvider.of<DetailsBlocType>(context)
-                            .events
-                            .fetch
-                        : null,
-                  );
-                })
+            RxBlocBuilder<DetailsBlocType, bool>(
+              state: (bloc) => bloc.states.isLoading,
+              builder: (context, snapshot, bloc) => RaisedButton(
+                child: Text(snapshot.isLoaded ? 'Reload' : 'Loading...'),
+                onPressed: snapshot.isLoaded ? bloc.events.fetch : null,
+              ),
+            )
           ],
         ),
       ),
