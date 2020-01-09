@@ -59,8 +59,10 @@ abstract class RxBlocBase {
   ///
   /// In case you need to register exceptions along with the loading state,
   /// use [registerRequest] instead.
-  Stream<Result<T>> registerRequestToLoading<T>(Stream<Result<T>> request) =>
-      _loadingBloc.addStream(request.isLoading());
+  Stream<Result<T>> registerRequestToLoading<T>(Stream<Result<T>> request) {
+    _loadingBloc.addStream(request.isLoading());
+    return request;
+  }
 
   /// Registers [ResultLoading] and [ResultError] to a central container.
   ///

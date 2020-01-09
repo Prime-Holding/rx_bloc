@@ -29,7 +29,7 @@ class LoadingBloc {
   final _compositeSubscription = CompositeSubscription();
 
   /// Parameter isLoadingObservables: observables that will be used for loading indicator
-  addStream(Stream<bool> isLoadingStream) => isLoadingStream
+  void addStream(Stream<bool> isLoadingStream) => isLoadingStream
       .map((isLoading) => _isLoadingCount.value + (isLoading ? 1 : -1))
       .bind(_isLoadingCount)
       .disposedBy(_compositeSubscription);
