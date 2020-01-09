@@ -1,8 +1,13 @@
-# rx_bloc
+# flutter_rx_bloc
 
-An implementation of the BloC pattern with reactive extensions in the context of Flutter
+A new Flutter package.
 
 ## Getting Started
+
+This project is a starting point for a Dart
+[package](https://flutter.dev/developing-packages/),
+a library module containing code that can be shared easily across
+multiple Flutter or Dart projects.
 
 For help getting started with Flutter, view our 
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
