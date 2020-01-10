@@ -1,16 +1,21 @@
-# example
+# Example Usage - RxBlocListener
 
-A sample RX bloc application
+```dart
+RxBlocListener<CounterBlocType, String>( // Specify the type of the bloc and its state
+    state: (bloc) => bloc.states.infoMessage, // pick a specific state you want to listen for
+    listener: (context, state) => 
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text(state))) // Listen for the state you have specified above
+)
+```
 
-## Getting Started
+# Example user - RxBlocBuilder
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```dart
+RxBlocBuilder<CounterBlocType, bool>( // Specify the type of the bloc and its state
+    state: (bloc) => bloc.states.decrementEnabled, // pick a specific state you want to listen
+    builder: (context, snapshot, bloc) => RaisedButton(
+        child: Text('Do some action'),
+        onPressed: (snapshot.data ?? false) ? bloc.events.decrement : null,
+   ),
+)
+```
