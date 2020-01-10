@@ -2,6 +2,7 @@ import 'package:example/bloc/counter_bloc.g.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/provider/rx_bloc_builder.dart';
+import 'package:flutter_rx_bloc/provider/rx_bloc_listener.dart';
 
 class CounterWidget extends StatelessWidget {
   @override
@@ -12,6 +13,11 @@ class CounterWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
+               RxBlocListener<CounterBlocType, String>(
+                 state: (bloc) => bloc.states.infoMessage,
+                 listener: (context, state) =>
+                   Scaffold.of(context).showSnackBar(SnackBar(content: Text(state)))
+               ),
               Expanded(
                 child: Center(
                   child: RxBlocBuilder<CounterBlocType, String>(
@@ -49,7 +55,7 @@ class CounterWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

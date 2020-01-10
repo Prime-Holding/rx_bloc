@@ -45,15 +45,17 @@ class MyApp extends StatelessWidget {
             // the App.build method, and use it to set our appbar title.
             title: Text('FlutterRxBloc Demo'),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(child: CounterWidget()),
-                const SizedBox(height: 8),
-                Expanded(child: DetailsWidget()),
-              ],
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(child: CounterWidget()),
+                  const SizedBox(height: 8),
+                  Expanded(child: DetailsWidget()),
+                ],
+              ),
             ),
           ),
         ),
