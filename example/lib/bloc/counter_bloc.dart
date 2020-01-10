@@ -46,7 +46,7 @@ class CounterBloc extends $CounterBloc {
     ]).bind(_count).disposedBy(_compositeSubscription);
   }
 
-  /// Map the count digit to a presentable data
+  /// Map the count digit to presentable data
   @override
   Stream<String> mapToCountState() => _count.map((count) => count.toString());
 
@@ -63,7 +63,7 @@ class CounterBloc extends $CounterBloc {
   Stream<String> mapToInfoMessageState() => MergeStream([
         incrementEnabled.mapToMaximumMessage(),
         decrementEnabled.mapToMinimumMessage(),
-      ]);
+      ]).skip(1).throttleTime(Duration(seconds: 1));
 
   @override
   void dispose() {
