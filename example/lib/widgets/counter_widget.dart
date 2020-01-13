@@ -47,7 +47,7 @@ class CounterWidget extends StatelessWidget {
                     state: (bloc) => bloc.states.decrementEnabled,
                     builder: (context, snapshot, bloc) => Expanded(
                       child: RaisedButton(
-                        child: Text('Increment'),
+                        child: Text('Decrement'),
                         onPressed: (snapshot.data ?? false)
                             ? bloc.events.decrement
                             : null,
