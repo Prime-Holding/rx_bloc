@@ -352,8 +352,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ce4f19d357e31591a2728110ead5c33519d7ba14
-      url: "https://github.com/StanevPrime/RxBloc"
+      resolved-ref: "07437bdaae55fd4d4fd743b566f3f4cfe6e6cd37"
+      url: "https://github.com/Prime-Holding/RxBloc"
     source: git
     version: "0.0.1"
   rx_bloc_generator:

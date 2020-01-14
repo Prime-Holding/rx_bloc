@@ -1,7 +1,7 @@
 name: rx_bloc_generator
 description: A generator for rx_bloc
 version: 0.0.1
-homepage: https://github.com/StanevPrime/RxBlocGenerator
+homepage: https://github.com/Prime-Holding/RxBlocGenerator
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -13,7 +13,7 @@ dependencies:
   source_gen: ^0.9.4+7
   rx_bloc:
     git:
-      url: "https://github.com/StanevPrime/RxBloc"
+      url: "https://github.com/Prime-Holding/RxBloc"
 dev_dependencies:
   flutter_test:
     sdk: flutter
