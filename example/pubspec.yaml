@@ -21,7 +21,7 @@ dependencies:
     sdk: flutter
   rx_bloc:
     git:
-     url: "https://github.com/StanevPrime/RxBloc"
+     url: "https://github.com/Prime-Holding/RxBloc"
   flutter_rx_bloc:
     path: ../
   # The following adds the Cupertino Icons font to your application.

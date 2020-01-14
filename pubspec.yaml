@@ -2,7 +2,7 @@ name: flutter_rx_bloc
 description: A new Flutter package.
 version: 0.0.1
 author:
-  homepage: https://github.com/StanevPrime/FlutterRxBloc
+  homepage: https://github.com/Prime-Holding/FlutterRxBloc
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -13,7 +13,7 @@ dependencies:
   provider: ^4.0.1
   rx_bloc:
     git:
-      url: "https://github.com/StanevPrime/RxBloc"
+      url: "https://github.com/Prime-Holding/RxBloc"
 
 dev_dependencies:
   flutter_test:
