@@ -381,7 +381,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: "07437bdaae55fd4d4fd743b566f3f4cfe6e6cd37"
-      url: "https://github.com/StanevPrime/RxBloc"
+      url: "https://github.com/Prime-Holding/RxBloc"
     source: git
     version: "0.0.1"
   rx_bloc_generator:
@@ -389,8 +389,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: b71a64d8acce0f68c267dfe6a0215f90512b4dea
-      url: "https://github.com/StanevPrime/RxBlocGenerator"
+      resolved-ref: "65df499630d98df3a47a6bd1ae2a57140f1758ca"
+      url: "https://github.com/Prime-Holding/RxBlocGenerator"
     source: git
     version: "0.0.1"
   rxdart:

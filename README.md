@@ -1,6 +1,6 @@
 A Flutter package that helps implement the BLoC Design Pattern using the power of reactive streams.
 
-This package is built to work with [rx_bloc](https://github.com/StanevPrime/RxBloc).
+This package is built to work with [rx_bloc](https://github.com/Prime-Holding/RxBloc).
 
 ## Bloc Widgets
 

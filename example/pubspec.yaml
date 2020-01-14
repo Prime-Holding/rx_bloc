@@ -34,7 +34,7 @@ dev_dependencies:
   build_runner:
   rx_bloc_generator:
     git:
-      url: "https://github.com/StanevPrime/RxBlocGenerator"
+      url: "https://github.com/Prime-Holding/RxBlocGenerator"
 
 
 # For information on the generic Dart part of this file, see the
