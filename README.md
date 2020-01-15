@@ -14,7 +14,7 @@ See `RxBlocListener` if you want to "do" anything in response to state changes s
 
 
 ```dart
-RxBlocBuilder<NewsBloc, List<News>( // At the first placeholder define what bloc you need, at the second define what type will be the state you want to listen. It needs to match the type of the stream in the state function below.
+RxBlocBuilder<NewsBloc, List<News>>( // At the first placeholder define what bloc you need, at the second define what type will be the state you want to listen. It needs to match the type of the stream in the state function below.
   state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below. 
   builder: (context, state, bloc) {
     // return widget here based on BlocA's state
@@ -25,7 +25,7 @@ RxBlocBuilder<NewsBloc, List<News>( // At the first placeholder define what bloc
 Only specify the bloc if you wish to provide a bloc that will be scoped to a single widget and isn't accessible via a parent `RxBlocProvider` and the current `BuildContext`.
 
 ```dart
-RxBlocBuilder<NewsBloc, List<News>(
+RxBlocBuilder<NewsBloc, List<News>>(
   bloc: blocA, // provide the local bloc instance
   state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below.
   builder: (context, state, bloc) {
