@@ -1,5 +1,5 @@
 name: rx_bloc
-description: An implementation of the BloC pattern with reactive extensions
+description: A Flutter package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of reactive streams.
 version: 0.0.1
 homepage: https://github.com/Prime-Holding/RxBloc
 
