@@ -1,5 +1,8 @@
+#### A Flutter package that makes it easy to implement the BLoC Design Pattern using the power of reactive streams.
+##### Following the best practices for building robust mobile applications the architecture below can be used along with the BloC layer.
+
 # Overview
-![Image of Yaktocat](docs/assets/ArchitecturalDiagram.png)
+![Image of Yaktocat](doc/asset/ArchitecturalDiagram.png)
 
 # View Layer - Widgets
 Flutter widgets are built using a modern framework that takes inspiration from React. The central idea is that you build your UI out of widgets. Widgets describe what their view should look like given their current configuration and state. When the BloC state changes, the widget rebuilds its description, which the framework diffs against the previous description in order to determine the minimal changes needed in the underlying render tree to transition from one state to the next.
