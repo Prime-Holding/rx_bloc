@@ -1,7 +1,7 @@
 name: rx_bloc_generator
-description: A generator for rx_bloc
+description: Code generator for rx_bloc that makes your BloC zero-boilerplate.
 version: 0.0.1
-homepage: https://github.com/Prime-Holding/RxBlocGenerator
+homepage: https://www.primeholding.com/
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
