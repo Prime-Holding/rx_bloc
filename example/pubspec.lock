@@ -378,20 +378,16 @@ packages:
   rx_bloc:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "07437bdaae55fd4d4fd743b566f3f4cfe6e6cd37"
-      url: "https://github.com/Prime-Holding/RxBloc"
-    source: git
+      name: rx_bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "65df499630d98df3a47a6bd1ae2a57140f1758ca"
-      url: "https://github.com/Prime-Holding/RxBlocGenerator"
-    source: git
+      name: rx_bloc_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   rxdart:
     dependency: transitive
