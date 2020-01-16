@@ -19,9 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  rx_bloc:
-    git:
-     url: "https://github.com/Prime-Holding/RxBloc"
+  rx_bloc: ^0.0.1
   flutter_rx_bloc:
     path: ../
   # The following adds the Cupertino Icons font to your application.
@@ -32,9 +30,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner:
-  rx_bloc_generator:
-    git:
-      url: "https://github.com/Prime-Holding/RxBlocGenerator"
+  rx_bloc_generator: ^0.0.1
 
 
 # For information on the generic Dart part of this file, see the
