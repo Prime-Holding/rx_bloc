@@ -1,6 +1,8 @@
 #### A Flutter package that makes it easy to implement the BLoC Design Pattern using the power of reactive streams.
 ##### Following the best practices for building robust mobile applications the architecture below can be used along with the BloC layer.
 
+This package is built to work with [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc) and [rx_bloc_generator](https://github.com/Prime-Holding/RxBlocGenerator)
+
 # Overview
 ![Image of Yaktocat](doc/asset/ArchitecturalDiagram.png)
 
