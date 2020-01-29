@@ -286,3 +286,8 @@ class CounterWidget extends StatelessWidget {
       );
 }
 ```
+
+## FAQ
+### On what package is based [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc)
+* [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc) is based on the well known [flutter_bloc](https://github.com/felangel/bloc) made by [Felix Angelov](https://github.com/felangel)
+
