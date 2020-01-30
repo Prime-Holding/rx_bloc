@@ -292,7 +292,7 @@ Integration tests work as a pair: first, deploy an instrumented application to a
 To create this test pair, use the flutter_driver package. It provides tools to create instrumented apps and drive those apps from a test suite
 
 For more information and how-to check:
-- [UI Integration Tests](ui_integration_tests.md)
+- [UI Integration Tests](./ui_integration_tests.md)
 - [Full tutorial](https://www.youtube.com/playlist?list=PL6tu16kXT9PrzZbUTUscEYOHHTVEKPLha "Full tutorial")
 
 ## FAQ
