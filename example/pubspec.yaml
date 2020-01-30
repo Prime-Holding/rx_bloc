@@ -19,7 +19,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_gherkin: ^1.1.7+3
   rx_bloc: ^0.0.1
   flutter_rx_bloc:
     path: ../
@@ -33,6 +32,7 @@ dev_dependencies:
   test: any
   flutter_driver:
     sdk: flutter
+  flutter_gherkin: ^1.1.7+3
   build_runner:
   rx_bloc_generator: ^0.0.1
 
