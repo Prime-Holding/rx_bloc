@@ -53,7 +53,7 @@ example/
     e2e_test.dart
 ```
 3.Instrument the app
-Add this code inside the test_driver/e2e.dart file:
+Add this code inside the **test_driver/e2e.dart** file:
 
 ```
 import 'package:flutter_driver/driver_extension.dart';
@@ -69,7 +69,7 @@ void main() {
 }
 ```
 4.Write the tests
-In e2e_test.dart you can write the integration tests.
+In **e2e_test.dart** you can write the integration tests.
 
 ```
 import 'package:flutter_driver/flutter_driver.dart';
@@ -197,7 +197,7 @@ class DecrementCounter extends ThenWithWorld<FlutterWorld> {
   RegExp get pattern => RegExp(r"I click the Decrement button");
 }
 ```
-###bdd.dart
+### bdd.dart
 This file executes the application and enables the flutter driver.
 ```
 import 'package:flutter_driver/driver_extension.dart';
