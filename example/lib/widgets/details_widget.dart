@@ -21,6 +21,7 @@ class DetailsWidget extends StatelessWidget {
                     snapshot.data ?? '',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 26),
+                    key: ValueKey('reload_text'),
                   ),
                 ),
               ),
@@ -28,6 +29,9 @@ class DetailsWidget extends StatelessWidget {
             RxBlocBuilder<DetailsBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, snapshot, bloc) => RaisedButton(
+                color: Colors.deepOrange,
+                textColor: Colors.white,
+                key: ValueKey('reload'),
                 child: Text(snapshot.isLoaded ? 'Reload' : 'Loading...'),
                 onPressed: snapshot.isLoaded ? bloc.events.fetch : null,
               ),
