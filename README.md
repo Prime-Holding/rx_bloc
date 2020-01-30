@@ -286,3 +286,26 @@ class CounterWidget extends StatelessWidget {
       );
 }
 ```
+### UI Integration tests using Flutter Driver
+Integration tests work as a pair: first, deploy an instrumented application to a real device or emulator and then “drive” the application from a separate test suite, checking to make sure everything is correct along the way.
+
+To create this test pair, use the flutter_driver package. It provides tools to create instrumented apps and drive those apps from a test suite
+
+For more information and how-to check:
+- [UI Integration Tests](ui_integration_tests.md)
+- [Full tutorial](https://www.youtube.com/playlist?list=PL6tu16kXT9PrzZbUTUscEYOHHTVEKPLha "Full tutorial")
+
+## FAQ
+
+### What is the main advantage of [rx_bloc](https://github.com/Prime-Holding/RxBloc)
+* Comparing with the other libraries faciliating the BloC Pattern, [rx_bloc](https://github.com/Prime-Holding/RxBloc) supports multiple output streams (states) per BloC. As shown in the example above, CounterBlocStates consist of four different states, as each of them do its specific job. 
+ 1. **count** shows the current count
+ 2. **incrementEnabled** manages enable/disable state of the increment button
+ 3. **decrementEnabled** manages enable/disable state of the decrement button
+ 4. **infoMessage** shows info message 
+
+Doing so, the BloC it's not overloaded and follows [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle)
+
+
+### On what package is based [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc)
+* [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc) is based on the well known [flutter_bloc](https://github.com/felangel/bloc/tree/master/packages/flutter_bloc) made by [Felix Angelov](https://github.com/felangel)
