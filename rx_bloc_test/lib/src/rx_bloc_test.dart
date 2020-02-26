@@ -20,17 +20,6 @@ Future<void> rxBlocTest<B extends RxBlocBase, StateOutputType>(
     final subscription = checkingState.skip(skip).listen(states.add);
     await act?.call(bloc);
     if (expect != null) tester.expect(states, expect);
+    subscription.cancel();
   });
 }
-
-/*
-
-blocTest(
-  'emits [StateB] when MyEvent is added',
-  build: () async => MyBloc(),
-  act: (bloc) => bloc.add(MyEvent()),
-  expect: [isA<StateB>()],
-  state: (bloc) -> bloc.states.buttonEnabled
-);
-
-*/

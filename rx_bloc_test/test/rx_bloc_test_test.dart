@@ -11,6 +11,12 @@ void main() {
   );
 
   rxBlocTest<CounterBloc, int>(
+    'Expecting nothing',
+    build: () async => CounterBloc(),
+    state: (bloc) => bloc.count,
+  );
+
+  rxBlocTest<CounterBloc, int>(
     'Executing action',
     build: () async => CounterBloc(),
     state: (bloc) => bloc.count,
@@ -25,12 +31,5 @@ void main() {
     act: (bloc) async => bloc.decrease(),
     skip: 1,
     expect: [-1],
-  );
-
-  rxBlocTest<CounterBloc, int>(
-    'Expecting nothing',
-    build: () async => CounterBloc(),
-    state: (bloc) => bloc.count,
-    skip: 1,
   );
 }
