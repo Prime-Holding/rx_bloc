@@ -11,14 +11,16 @@ Future<void> rxBlocTest<B extends RxBlocBase, StateOutputType>(
   @required Stream<StateOutputType> Function(B) state,
   Future<void> Function(B) act,
   Iterable expect,
-  int skip = 0,
+  int skip = 1,
 }) {
   tester.test(message, () async {
     final bloc = await build();
     final checkingState = state(bloc);
-    final states = <StateOutputType>[];
+    final List<StateOutputType> states = <StateOutputType>[];
     final subscription = checkingState.skip(skip).listen(states.add);
     await act?.call(bloc);
+
+    await Future.delayed(Duration(microseconds: 0));
     if (expect != null) tester.expect(states, expect);
     subscription.cancel();
   });
