@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="06434ec6-f360-40e9-9ecc-2669fd3a377c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.g.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/rx_bloc_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/rx_bloc_test.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Helpers/counter_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/helpers/counter_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/rx_bloc_test_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/rx_bloc_test_test.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -30,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/src/rx_bloc_test.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="7" column="63" selection-start-line="7" selection-start-column="63" selection-end-line="7" selection-end-column="63" />
+            <state relative-caret-position="50">
+              <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -42,12 +40,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/rx_bloc_test_test.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="167">
+              <caret line="38" selection-start-line="38" selection-end-line="38" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
-                <element signature="e#232#885#0" />
-                <element signature="e#912#1349#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+              <folding>
+                <element signature="e#0#61#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -74,14 +82,14 @@
         <option value="$PROJECT_DIR$/lib/Helpers/counter_bloc.g.dart" />
         <option value="$PROJECT_DIR$/pubspec.yaml" />
         <option value="$PROJECT_DIR$/lib/Helpers/counter_bloc.dart" />
-        <option value="$PROJECT_DIR$/lib/rx_bloc_test.dart" />
         <option value="$PROJECT_DIR$/test/helpers/counter_bloc/counter_blc.dart" />
         <option value="$PROJECT_DIR$/test/helpers/counter_bloc/details_bloc.dart" />
         <option value="$PROJECT_DIR$/test/helpers/counter_bloc/details_bloc.g.dart" />
         <option value="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.g.dart" />
-        <option value="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" />
         <option value="$PROJECT_DIR$/test/helpers/counter_bloc.dart" />
+        <option value="$PROJECT_DIR$/lib/rx_bloc_test.dart" />
         <option value="$PROJECT_DIR$/lib/src/rx_bloc_test.dart" />
+        <option value="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" />
         <option value="$PROJECT_DIR$/test/rx_bloc_test_test.dart" />
       </list>
     </option>
@@ -100,7 +108,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -117,6 +124,12 @@
             <path>
               <item name="rx_bloc_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="rx_bloc_test" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rx_bloc_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rx_bloc_test" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -129,14 +142,14 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/bloc-master/bloc-master/packages/flutter_bloc" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -163,18 +176,18 @@
       <option name="testFile" value="$PROJECT_DIR$/test/rx_bloc_test_test.dart" />
       <method v="2" />
     </configuration>
-    <configuration name="Skipping results (skips 0 and 1)" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
-      <option name="testName" value="Skipping results (skips 0 and 1)" />
+    <configuration name="DetailsBloc" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="DetailsBloc" />
       <option name="testFile" value="$PROJECT_DIR$/test/rx_bloc_test_test.dart" />
       <method v="2" />
     </configuration>
-    <configuration name="Skipping results" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
-      <option name="testName" value="Skipping results" />
+    <configuration name="Empty test bloc" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="Empty test bloc" />
       <option name="testFile" value="$PROJECT_DIR$/test/rx_bloc_test_test.dart" />
       <method v="2" />
     </configuration>
-    <configuration name="Waiting for an action" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
-      <option name="testName" value="Waiting for an action" />
+    <configuration name="Fetching details data" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="Fetching details data" />
       <option name="testFile" value="$PROJECT_DIR$/test/rx_bloc_test_test.dart" />
       <method v="2" />
     </configuration>
@@ -185,10 +198,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Flutter Test.tests in rx_bloc_test_test.dart" />
+        <item itemvalue="Flutter Test.DetailsBloc" />
+        <item itemvalue="Flutter Test.Fetching details data" />
+        <item itemvalue="Flutter Test.Empty test bloc" />
         <item itemvalue="Flutter Test.CounterBloc tests" />
-        <item itemvalue="Flutter Test.Waiting for an action" />
-        <item itemvalue="Flutter Test.Skipping results (skips 0 and 1)" />
-        <item itemvalue="Flutter Test.Skipping results" />
       </list>
     </recent_temporary>
   </component>
@@ -206,42 +219,42 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Waiting_for_an_action - 2020.02.27 at 12h 00m 59s.xml">
-      <configuration name="Waiting for an action" configurationId="FlutterTestConfigType" />
+    <history-entry file="Fetching_details_data - 2020.03.02 at 10h 39m 52s.xml">
+      <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
     </history-entry>
-    <history-entry file="Waiting_for_an_action - 2020.02.27 at 12h 01m 18s.xml">
-      <configuration name="Waiting for an action" configurationId="FlutterTestConfigType" />
+    <history-entry file="Fetching_details_data - 2020.03.02 at 10h 57m 52s.xml">
+      <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
     </history-entry>
-    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.02.27 at 12h 01m 57s.xml">
+    <history-entry file="Fetching_details_data - 2020.03.02 at 10h 58m 21s.xml">
+      <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="Fetching_details_data - 2020.03.02 at 10h 58m 39s.xml">
+      <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="Fetching_details_data - 2020.03.02 at 10h 59m 06s.xml">
+      <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="Fetching_details_data - 2020.03.02 at 10h 59m 15s.xml">
+      <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.03.02 at 12h 50m 06s.xml">
       <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
     </history-entry>
-    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.02.27 at 12h 25m 53s.xml">
-      <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
+    <history-entry file="DetailsBloc - 2020.03.02 at 12h 52m 05s.xml">
+      <configuration name="DetailsBloc" configurationId="FlutterTestConfigType" />
     </history-entry>
-    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.02.27 at 12h 26m 19s.xml">
-      <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
+    <history-entry file="DetailsBloc - 2020.03.02 at 12h 52m 30s.xml">
+      <configuration name="DetailsBloc" configurationId="FlutterTestConfigType" />
     </history-entry>
-    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.02.27 at 12h 30m 24s.xml">
-      <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.02.27 at 12h 30m 43s.xml">
-      <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.02.27 at 12h 31m 25s.xml">
-      <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.02.27 at 12h 31m 35s.xml">
-      <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="CounterBloc_tests - 2020.02.27 at 12h 34m 56s.xml">
-      <configuration name="CounterBloc tests" configurationId="FlutterTestConfigType" />
+    <history-entry file="DetailsBloc - 2020.03.02 at 12h 52m 44s.xml">
+      <configuration name="DetailsBloc" configurationId="FlutterTestConfigType" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973147" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25725028" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -320,20 +333,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/Helpers/counter_bloc.g.dart" />
-    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/rx_bloc_test.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.23.1/lib/src/subjects/behavior_subject.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -358,16 +357,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="950">
-          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/helpers/counter_bloc.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -378,24 +367,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/rx_bloc_test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="31" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/src/rx_bloc_test.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="7" column="63" selection-start-line="7" selection-start-column="63" selection-end-line="7" selection-end-column="63" />
+        <state relative-caret-position="50">
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/rx_bloc_test_test.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="167">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
-            <element signature="e#232#885#0" />
-            <element signature="e#912#1349#0" />
           </folding>
         </state>
       </provider>

@@ -6,7 +6,8 @@ import 'details_bloc.g.dart';
 
 class DetailsRepository {
   Future<String> fetch() {
-    return Future.value('Success');
+    return Future.delayed(
+        Duration(milliseconds: 60), () => Future.value('Success'));
   }
 }
 
