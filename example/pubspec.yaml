@@ -35,6 +35,11 @@ dev_dependencies:
   flutter_gherkin: ^1.1.7+3
   build_runner:
   rx_bloc_generator: ^0.0.1
+  mockito: ^4.1.1
+  rx_bloc_test:
+    git:
+      url: "https://github.com/DDavidPrime/RxBlocTest.git"
+      path: "rx_bloc_test"
 
 
 # For information on the generic Dart part of this file, see the
