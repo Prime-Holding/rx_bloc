@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rx_bloc_test/src/rx_bloc_test.dart';
 
+import '../lib/src/rx_bloc_test.dart';
 import 'helpers/counter_bloc.dart';
 import 'helpers/details_bloc/details_bloc.dart';
 
@@ -35,18 +35,25 @@ void main() {
   });
 
   group('DetailsBloc', () {
+    DetailsRepository repo;
+
+    setUp(() {
+      repo = DetailsRepository();
+    });
+
     rxBlocTest<DetailsBloc, String>(
       'Empty test bloc',
-      build: () async => DetailsBloc(DetailsRepository()),
+      build: () async => DetailsBloc(repo),
       state: (bloc) => bloc.states.details,
       expect: [],
     );
 
     rxBlocTest<DetailsBloc, String>(
-      'Fetching details data',
-      build: () async => DetailsBloc(DetailsRepository()),
+      'Waiting for results',
+      build: () async => DetailsBloc(repo),
       state: (bloc) => bloc.states.details,
       act: (bloc) async => bloc.events.fetch(),
+      wait: Duration(milliseconds: 60),
       expect: ['Success'],
     );
   });
