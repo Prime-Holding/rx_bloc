@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rx_bloc_test/rx_bloc_test.dart';
 
-import '../lib/src/rx_bloc_test.dart';
 import 'helpers/counter_bloc.dart';
 import 'helpers/details_bloc/details_bloc.dart';
 
