@@ -140,7 +140,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.7"
+    version: "0.13.8"
   crypto:
     dependency: transitive
     description:
@@ -199,7 +199,7 @@ packages:
       name: flutter_gherkin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.7+5"
+    version: "1.1.7+6"
   flutter_rx_bloc:
     dependency: "direct main"
     description:
@@ -223,7 +223,7 @@ packages:
       name: gherkin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.6+4"
+    version: "1.1.7"
   glob:
     dependency: transitive
     description:
@@ -481,7 +481,7 @@ packages:
     description:
       path: rx_bloc_test
       ref: HEAD
-      resolved-ref: "3961e197b44909f127982f838d8b815c80f94d65"
+      resolved-ref: "46fc501f0eb89af06f584e8354e4b5d58ad54d72"
       url: "https://github.com/DDavidPrime/RxBlocTest.git"
     source: git
     version: "0.0.1"
