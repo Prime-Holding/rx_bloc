@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="06434ec6-f360-40e9-9ecc-2669fd3a377c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/rx_bloc_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/rx_bloc_test.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/rx_bloc_test_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/rx_bloc_test_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -25,23 +23,20 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_29" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/src/rx_bloc_test.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="100">
+              <caret line="4" column="32" lean-forward="true" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/rx_bloc_test_test.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="676">
+              <caret line="57" column="6" lean-forward="true" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
               </folding>
@@ -52,7 +47,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
+            <state relative-caret-position="125">
               <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
               <folding>
                 <element signature="e#0#61#0" expanded="true" />
@@ -91,6 +86,7 @@
         <option value="$PROJECT_DIR$/lib/src/rx_bloc_test.dart" />
         <option value="$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart" />
         <option value="$PROJECT_DIR$/test/rx_bloc_test_test.dart" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -115,28 +111,6 @@
             <path>
               <item name="rx_bloc_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="rx_bloc_test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="rx_bloc_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="rx_bloc_test" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="rx_bloc_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="rx_bloc_test" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="rx_bloc_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="rx_bloc_test" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="rx_bloc_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="rx_bloc_test" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="helpers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -219,9 +193,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Fetching_details_data - 2020.03.02 at 10h 39m 52s.xml">
-      <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
-    </history-entry>
     <history-entry file="Fetching_details_data - 2020.03.02 at 10h 57m 52s.xml">
       <configuration name="Fetching details data" configurationId="FlutterTestConfigType" />
     </history-entry>
@@ -249,12 +220,15 @@
     <history-entry file="DetailsBloc - 2020.03.02 at 12h 52m 44s.xml">
       <configuration name="DetailsBloc" configurationId="FlutterTestConfigType" />
     </history-entry>
+    <history-entry file="tests_in_rx_bloc_test_test_dart - 2020.03.02 at 12h 53m 33s.xml">
+      <configuration name="tests in rx_bloc_test_test.dart" configurationId="FlutterTestConfigType" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25725028" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26852846" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -264,7 +238,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" weight="0.32976446" />
-      <window_info active="true" anchor="bottom" id="Run" order="1" visible="true" weight="0.32976446" />
+      <window_info anchor="bottom" id="Run" order="1" weight="0.32976446" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" />
@@ -381,19 +355,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/src/rx_bloc_test.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/helpers/details_bloc/details_bloc.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
+        <state relative-caret-position="125">
           <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
           <folding>
             <element signature="e#0#61#0" expanded="true" />
@@ -403,11 +367,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/rx_bloc_test_test.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        <state relative-caret-position="676">
+          <caret line="57" column="6" lean-forward="true" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/src/rx_bloc_test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="4" column="32" lean-forward="true" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
         </state>
       </provider>
     </entry>
