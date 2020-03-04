@@ -41,8 +41,8 @@ class CounterBloc extends $CounterBloc {
 
   CounterBloc() {
     MergeStream([
-      $incrementEvent.map((_) => ++_count.value),
-      $decrementEvent.map((_) => --_count.value)
+      $incrementEvent.map((_) => _count.value + 1),
+      $decrementEvent.map((_) => _count.value - 1)
     ]).bind(_count).disposedBy(_compositeSubscription);
   }
 

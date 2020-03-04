@@ -16,8 +16,19 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.states.count,
       act: (bloc) async => bloc.events.increment(),
-      skip: 1,
       expect: ['1'],
+    );
+
+    rxBlocTest<CounterBloc, String>(
+      'Incrementing value twice',
+      build: () async => CounterBloc(),
+      state: (bloc) => bloc.states.count,
+      act: (bloc) async {
+        bloc.events.increment();
+        bloc.events.increment();
+      },
+      skip: 2,
+      expect: ['2'],
     );
 
     rxBlocTest<CounterBloc, String>(
@@ -25,7 +36,6 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.states.count,
       act: (bloc) async => bloc.events.decrement(),
-      skip: 1,
       expect: ['-1'],
     );
 
@@ -42,7 +52,9 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.states.incrementEnabled,
       act: (bloc) async {
-        for (int i = 0; i < 5; i++) bloc.increment();
+        for (int i = 0; i < 5; i++) {
+          bloc.increment();
+        }
       },
       skip: 5,
       expect: [false],
