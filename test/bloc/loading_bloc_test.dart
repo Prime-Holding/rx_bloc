@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../lib/rx_bloc.dart';
 
 void main() {
   group('Loading bloc', () {
