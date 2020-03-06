@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import 'details_bloc.g.dart';
 
 class DetailsRepository {
-  Future<String> fetch() {
+  Future<String> fetch() async {
     return Future.delayed(
         Duration(milliseconds: 60), () => Future.value('Success'));
   }
