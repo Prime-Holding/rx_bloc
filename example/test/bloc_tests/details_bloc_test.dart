@@ -12,8 +12,10 @@ void main() {
 
     setUp(() {
       mockRepo = MockDetailsRepository();
-      when(mockRepo.fetch()).thenAnswer((_) => Future.delayed(
-          Duration(milliseconds: 60), () => Future.value('Success')));
+      when(mockRepo.fetch()).thenAnswer((_) async {
+        await Future.delayed(Duration(milliseconds: 60));
+        return Future.value('Success');
+      });
     });
 
     rxBlocTest<DetailsBloc, String>(
