@@ -16,6 +16,7 @@ dependencies:
   rx_bloc: ^0.0.1
   mockito: ^4.0.0
   rxdart: ^0.23.0
+  quiver: ^2.0.5
 
 dev_dependencies:
   flutter_test:

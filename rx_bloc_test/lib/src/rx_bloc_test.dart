@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
+import 'package:quiver/testing/async.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:test/test.dart' as tester;
 
@@ -14,16 +15,17 @@ Future<void> rxBlocTest<B extends RxBlocBase, StateOutputType>(
   Duration wait,
   int skip = 1,
 }) {
-  tester.test(message, () async {
-    final bloc = await build();
-    final checkingState = state(bloc);
-    final List<StateOutputType> states = <StateOutputType>[];
-    final subscription = checkingState.skip(skip).listen(states.add);
-    await act?.call(bloc);
+  FakeAsync().run((async) {
+    tester.test(message, () async {
+      final bloc = await build();
+      final checkingState = state(bloc);
+      final List<StateOutputType> states = <StateOutputType>[];
+      final subscription = checkingState.skip(skip).listen(states.add);
+      await act?.call(bloc);
 
-    if (wait != null) await Future.delayed(wait);
-    await Future.delayed(Duration(microseconds: 0));
-    subscription.cancel();
-    if (expect != null) tester.expect(states, expect);
+      if (wait != null) async.elapse(wait);
+      subscription.cancel();
+      if (expect != null) tester.expect(states, expect);
+    });
   });
 }
