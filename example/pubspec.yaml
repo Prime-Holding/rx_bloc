@@ -38,7 +38,7 @@ dev_dependencies:
   mockito: ^4.1.1
   rx_bloc_test:
     git:
-      url: "https://github.com/DDavidPrime/RxBlocTest.git"
+      url: "https://github.com/Prime-Holding/RxBlocTest.git"
       path: "rx_bloc_test"
 
 
