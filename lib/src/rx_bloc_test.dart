@@ -24,6 +24,7 @@ Future<void> rxBlocTest<B extends RxBlocBase, StateOutputType>(
       await act?.call(bloc);
 
       if (wait != null) async.elapse(wait);
+      async.elapse(Duration.zero);
       subscription.cancel();
       if (expect != null) tester.expect(states, expect);
     });
