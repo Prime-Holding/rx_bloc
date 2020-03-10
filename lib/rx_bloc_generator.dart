@@ -22,18 +22,14 @@ class RxBlocGenerator {
   void _writeln([Object obj]) => _stringBuffer.writeln(obj);
 
   String generate() {
-    _generateImports();
+    _generatePartOf();
     _generateTypeClass();
     _generateBlocClass();
     return _stringBuffer.toString();
   }
 
-  void _generateImports() => [
-        "'${viewModelElement.location.components.first}'",
-        "'package:flutter/cupertino.dart'",
-        "'package:rxdart/rxdart.dart'",
-        "'package:rx_bloc/bloc/rx_bloc_base.dart'"
-      ].forEach((import) => _writeln("import $import;"));
+  void _generatePartOf() =>
+      _writeln("part of '${viewModelElement.location.components.first}';");
 
   void _generateTypeClass() {
     _writeln(
@@ -71,11 +67,10 @@ class RxBlocGenerator {
   }
 
   void _generateDisposeMethod() {
-    _writeln("@override");
     _writeln("void dispose(){");
 
     eventsElement.methods.forEach((method) {
-      _writeln("\$${method.name}Event.close();");
+      _writeln("_\$${method.name}Event.close();");
     });
     _writeln("super.dispose();");
     _writeln("}");
@@ -93,11 +88,10 @@ class RxBlocGenerator {
 extension _MapToEvents on Iterable<MethodElement> {
   Iterable<String> mapToEvents() => map((method) => '''
   ///region ${method.name}
-  @protected
-  final \$${method.name}Event = ${method.streamType};
 
+  final _\$${method.name}Event = ${method.streamType};
   @override
-  ${method.definition} => \$${method.name}Event.add(${method.firstParameterName});
+  ${method.definition} => _\$${method.name}Event.add(${method.firstParameterName});
   ///endregion ${method.name}
   ''');
 }
@@ -108,10 +102,9 @@ extension _MapToStates on Iterable<PropertyInducingElement> {
   ${fieldElement.type} _${fieldElement.displayName}State;
 
   @override
-  ${fieldElement.type} get ${fieldElement.displayName} => _${fieldElement.displayName}State ??= mapTo${fieldElement.displayName.capitalize()}State();
+  ${fieldElement.type} get ${fieldElement.displayName} => _${fieldElement.displayName}State ??= _mapTo${fieldElement.displayName.capitalize()}State();
 
-  @protected
-  ${fieldElement.type} mapTo${fieldElement.displayName.capitalize()}State();
+  ${fieldElement.type} _mapTo${fieldElement.displayName.capitalize()}State();
   ///endregion ${fieldElement.displayName}
   ''');
 }
