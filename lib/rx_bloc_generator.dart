@@ -88,7 +88,7 @@ extension _MapToEvents on Iterable<MethodElement> {
   Iterable<String> mapToEvents() => map((method) => '''
   ///region ${method.name}
   @protected
-  final \$${method.name}Event = PublishSubject<${method.firstParameterType}>();
+  final \$${method.name}Event = ${method.streamType};
 
   @override
   ${method.definition} => \$${method.name}Event.add(${method.firstParameterName});
@@ -119,6 +119,7 @@ extension _FilterViewModelIgnoreState on List<PropertyAccessorElement> {
 
         return !fieldElement.metadata.any((annotation) {
 //TODO: find a better way
+
           return annotation.element.toString().contains('RxBlocIgnoreState');
         });
       });
@@ -141,5 +142,25 @@ extension _FirstParameter on MethodElement {
     }
 
     return "$returnType $name(${parameters.first.type} ${parameters.first.name})";
+  }
+
+  String get streamType {
+    final stringForm = this.metadata.toString();
+
+    // Check for event annotation first
+    var rxEventStartIndex = stringForm.indexOf('seed');
+    if (rxEventStartIndex != -1 && stringForm.contains('RxBlocEvent')
+        //&& stringForm.contains('RxBlocEventType.behaviour')
+        ) {
+      rxEventStartIndex += 4; // shift start by length of the searched string
+      final seedValue = stringForm.substring(
+        rxEventStartIndex,
+        stringForm.indexOf(')', rxEventStartIndex),
+      );
+      return 'BehaviorSubject.seeded()';
+    }
+
+    // The fallback string is the default type
+    return 'PublishSubject<$firstParameterType>()';
   }
 }
