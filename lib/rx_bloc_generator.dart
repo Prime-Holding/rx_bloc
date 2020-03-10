@@ -1,4 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:rx_bloc/annotation/rx_bloc_annotations.dart';
+import 'package:source_gen/source_gen.dart';
+
+final _eventAnnotationChecker = TypeChecker.fromRuntime(RxBlocEvent);
 
 class RxBlocGenerator {
   final StringBuffer _stringBuffer = StringBuffer();
@@ -145,19 +149,20 @@ extension _FirstParameter on MethodElement {
   }
 
   String get streamType {
-    final stringForm = this.metadata.toString();
+    // Check if it is a behaviour event
+    if (_eventAnnotationChecker.hasAnnotationOfExact(this)) {
+      final annotation = _eventAnnotationChecker.firstAnnotationOfExact(this);
+      final isBehaviorSubject =
+          annotation.getField('type').toString().contains('behaviour');
 
-    // Check for event annotation first
-    var rxEventStartIndex = stringForm.indexOf('seed');
-    if (rxEventStartIndex != -1 && stringForm.contains('RxBlocEvent')
-        //&& stringForm.contains('RxBlocEventType.behaviour')
-        ) {
-      rxEventStartIndex += 4; // shift start by length of the searched string
-      final seedValue = stringForm.substring(
-        rxEventStartIndex,
-        stringForm.indexOf(')', rxEventStartIndex),
-      );
-      return 'BehaviorSubject.seeded()';
+      if (isBehaviorSubject) {
+        var seedValue = annotation.getField('seed').toString();
+
+        /// TODO: Should throw error when no seed value is set
+        /// TODO: Type mismatch between seed type and first parameter type should throw error
+
+        return 'BehaviorSubject.seeded($seedValue)';
+      }
     }
 
     // The fallback string is the default type
