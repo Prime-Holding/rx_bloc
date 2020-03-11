@@ -146,6 +146,11 @@ Lets take a look at how to use `RxBlocBuilder` to hook up a `CounterPage` widget
 
 ### CounterBloc
 ```dart
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/rxdart.dart';
+
+part 'counter_bloc.g.dart'; // Refer to the auto-generated boilerplate code
+
 /// A class containing all incoming events to the BloC
 abstract class CounterBlocEvents {
   /// Increment the count
@@ -184,26 +189,26 @@ class CounterBloc extends $CounterBloc {
 
   CounterBloc() {
     MergeStream([
-      $incrementEvent.map((_) => ++_count.value),
-      $decrementEvent.map((_) => --_count.value)
+      _$incrementEvent.map((_) => ++_count.value),
+      _$decrementEvent.map((_) => --_count.value)
     ]).bind(_count).disposedBy(_compositeSubscription);
   }
 
   /// Map the count digit to presentable data
   @override
-  Stream<String> mapToCountState() => _count.map((count) => count.toString());
+  Stream<String> _mapToCountState() => _count.map((count) => count.toString());
 
   /// Map the count digit to a decrement enabled state.
   @override
-  Stream<bool> mapToDecrementEnabledState() => _count.map((count) => count > 0);
+  Stream<bool> _mapToDecrementEnabledState() => _count.map((count) => count > 0);
 
   /// Map the count digit to a increment enabled state.
   @override
-  Stream<bool> mapToIncrementEnabledState() => _count.map((count) => count < 5);
+  Stream<bool> _mapToIncrementEnabledState() => _count.map((count) => count < 5);
 
   /// Map the increment and decrement enabled state to a informational message.
   @override
-  Stream<String> mapToInfoMessageState() => MergeStream([
+  Stream<String> _mapToInfoMessageState() => MergeStream([
         incrementEnabled.mapToMaximumMessage(),
         decrementEnabled.mapToMinimumMessage(),
       ]).skip(1).throttleTime(Duration(seconds: 1));
@@ -301,7 +306,7 @@ For more information and how-to check:
 
 ### What is the main advantage of [rx_bloc](https://github.com/Prime-Holding/RxBloc)
 
-* Comparing with the other libraries faciliating the BloC Pattern, [rx_bloc](https://github.com/Prime-Holding/RxBloc) supports multiple output streams (states) per BloC. As shown in the example above, CounterBlocStates consist of four different states, as each of them do its specific job. 
+* Comparing with the other libraries facilitating the BloC Pattern, [rx_bloc](https://github.com/Prime-Holding/RxBloc) supports multiple output streams (states) per BloC. As shown in the example above, CounterBlocStates consist of four different states, as each of them do its specific job. 
  1. **count** shows the current count
  2. **incrementEnabled** manages enable/disable state of the increment button
  3. **decrementEnabled** manages enable/disable state of the decrement button
