@@ -1,5 +1,4 @@
 import 'package:example/bloc/details_bloc.dart';
-import 'package:example/bloc/details_bloc.g.dart';
 import 'package:example/repository/details_repository.dart';
 import 'package:example/widgets/counter_widget.dart';
 import 'package:example/widgets/details_widget.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_rx_bloc/provider/rx_bloc_provider.dart';
 import 'package:flutter_rx_bloc/provider/rx_multi_bloc_provider.dart';
 
 import 'bloc/counter_bloc.dart';
-import 'bloc/counter_bloc.g.dart';
 
 void main() => runApp(MyApp());
 

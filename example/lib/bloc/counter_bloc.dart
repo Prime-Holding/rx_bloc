@@ -1,7 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'counter_bloc.g.dart';
+part 'counter_bloc.g.dart';
 
 /// A class containing all incoming events to the BloC
 abstract class CounterBlocEvents {
@@ -41,26 +41,28 @@ class CounterBloc extends $CounterBloc {
 
   CounterBloc() {
     MergeStream([
-      $incrementEvent.map((_) => ++_count.value),
-      $decrementEvent.map((_) => --_count.value)
+      _$incrementEvent.map((_) => _count.value + 1),
+      _$decrementEvent.map((_) => _count.value - 1)
     ]).bind(_count).disposedBy(_compositeSubscription);
   }
 
   /// Map the count digit to presentable data
   @override
-  Stream<String> mapToCountState() => _count.map((count) => count.toString());
+  Stream<String> _mapToCountState() => _count.map((count) => count.toString());
 
   /// Map the count digit to a decrement enabled state.
   @override
-  Stream<bool> mapToDecrementEnabledState() => _count.map((count) => count > 0);
+  Stream<bool> _mapToDecrementEnabledState() =>
+      _count.map((count) => count > 0);
 
   /// Map the count digit to a increment enabled state.
   @override
-  Stream<bool> mapToIncrementEnabledState() => _count.map((count) => count < 5);
+  Stream<bool> _mapToIncrementEnabledState() =>
+      _count.map((count) => count < 5);
 
   /// Map the increment and decrement enabled state to a informational message.
   @override
-  Stream<String> mapToInfoMessageState() => MergeStream([
+  Stream<String> _mapToInfoMessageState() => MergeStream([
         incrementEnabled.mapToMaximumMessage(),
         decrementEnabled.mapToMinimumMessage(),
       ]).skip(1).throttleTime(Duration(seconds: 1));
