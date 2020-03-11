@@ -77,14 +77,14 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.4"
+    version: "1.8.0"
   build_runner_core:
     dependency: transitive
     description:
       name: build_runner_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.4.0"
+    version: "4.5.1"
   built_collection:
     dependency: transitive
     description:
@@ -479,10 +479,10 @@ packages:
   rx_bloc_test:
     dependency: "direct dev"
     description:
-      path: rx_bloc_test
+      path: "."
       ref: HEAD
-      resolved-ref: "46fc501f0eb89af06f584e8354e4b5d58ad54d72"
-      url: "https://github.com/DDavidPrime/RxBlocTest.git"
+      resolved-ref: ad575d676d0c14b5339e5e770d55e0c577c822ce
+      url: "https://github.com/Prime-Holding/RxBlocTest.git"
     source: git
     version: "0.0.1"
   rxdart:

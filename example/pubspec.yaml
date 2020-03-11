@@ -39,8 +39,6 @@ dev_dependencies:
   rx_bloc_test:
     git:
       url: "https://github.com/Prime-Holding/RxBlocTest.git"
-      path: "rx_bloc_test"
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
