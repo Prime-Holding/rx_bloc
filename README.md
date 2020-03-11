@@ -26,6 +26,10 @@ The repository pattern is a design pattern that isolates data access behind inte
 # Usage
 
 ```dart
+import 'package:rx_bloc/rx_bloc.dart'; // All necessary imports can be added first
+
+part 'news_bloc.g.dart'; // Refer to the auto-generated boilerplate code
+
 abstract class NewsBlocEvents {
   /// Fetch news
   void fetch();
@@ -53,7 +57,7 @@ class NewsBloc extends $NewsBloc {
 
   /// Map event/s to the news state
   @override
-  Stream<List<News>> mapToNewsState() => $fetchEvent //auto generated subject
+  Stream<List<News>> _mapToNewsState() => $fetchEvent //auto generated subject
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
       .registerRequest(this) // register the request to loading/exception
       .whereSuccess() // get only success state
