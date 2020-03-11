@@ -4,10 +4,7 @@
 // Generator: RxBlocGeneratorForAnnotation
 // **************************************************************************
 
-import 'package:example/bloc/details_bloc.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:rx_bloc/bloc/rx_bloc_base.dart';
+part of 'package:example/bloc/details_bloc.dart';
 
 abstract class DetailsBlocType extends RxBlocTypeBase {
   DetailsBlocEvents get events;
@@ -20,11 +17,10 @@ abstract class $DetailsBloc extends RxBlocBase
   ///region Events
 
   ///region fetch
-  @protected
-  final $fetchEvent = PublishSubject<void>();
 
+  final _$fetchEvent = PublishSubject<void>();
   @override
-  void fetch() => $fetchEvent.add(null);
+  void fetch() => _$fetchEvent.add(null);
 
   ///endregion fetch
 
@@ -36,10 +32,9 @@ abstract class $DetailsBloc extends RxBlocBase
   Stream<String> _detailsState;
 
   @override
-  Stream<String> get details => _detailsState ??= mapToDetailsState();
+  Stream<String> get details => _detailsState ??= _mapToDetailsState();
 
-  @protected
-  Stream<String> mapToDetailsState();
+  Stream<String> _mapToDetailsState();
 
   ///endregion details
 
@@ -54,9 +49,8 @@ abstract class $DetailsBloc extends RxBlocBase
   DetailsBlocStates get states => this;
 
   ///endregion Type
-  @override
   void dispose() {
-    $fetchEvent.close();
+    _$fetchEvent.close();
     super.dispose();
   }
 }
