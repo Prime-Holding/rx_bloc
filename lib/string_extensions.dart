@@ -53,7 +53,7 @@ extension StringExtensions on String {
 
   /// Searches and removes spacing between primitive type names
   /// and the opening brackets so it can be parsed correctly.
-  String removeSpacingBetweenPrimitiveAndBracket() {
+  String _removeSpacingBetweenPrimitiveAndBracket() {
     var str = this;
     _primitives.forEach((prim) {
       final origPrim = prim;
@@ -73,8 +73,8 @@ extension StringExtensions on String {
 
   /// Searches and removes default constructors of primitive types
   /// returning a string that is correctly cleared
-  String removePrimitiveConstructors() {
-    var str = this.removeSpacingBetweenPrimitiveAndBracket();
+  String _removePrimitiveConstructors() {
+    var str = this._removeSpacingBetweenPrimitiveAndBracket();
     _primitives.forEach((prim) {
       prim += '(';
       if (!str.contains(prim)) return;
@@ -96,11 +96,25 @@ extension StringExtensions on String {
 
   /// Searches and removes unnecessary parts
   /// of a constant expression collection
-  String removeCollectionConstructor() {
+  String _removeCollectionConstructor() {
     var str = this;
 
     _collections.forEach((coll) {
-      /// TODO: Implement collection fixing
+      coll += '<';
+      if (!str.contains(coll)) return;
+
+      int ind = str.indexOf(coll);
+      while (ind != -1) {
+        int entered = str.count('(', 0, ind);
+        int ind2 = str.indexOf('>', ind);
+        // There may be an empty space, so check for it
+        if (str[ind2 + 1] == ' ') ind2++;
+
+        str = str.replaceRange(ind, ind2 + 2, '');
+        str = str.removeCharacterAt(str.nthIndexReverse(')', entered + 1));
+
+        ind = str.indexOf(coll);
+      }
     });
 
     return str;
@@ -108,7 +122,10 @@ extension StringExtensions on String {
 
   /// Converts a string to a valid generated string
   String convertToValidString() {
-    return this.removeCollectionConstructor().removePrimitiveConstructors();
+    return this
+        ._removeCollectionConstructor()
+        ._removePrimitiveConstructors()
+        .replaceAll('=', ':');
   }
 
   ///endregion
