@@ -4,7 +4,7 @@
 // Generator: RxBlocGeneratorForAnnotation
 // **************************************************************************
 
-part of 'package:example/bloc/counter_bloc.dart';
+part of 'counter_bloc.dart';
 
 abstract class CounterBlocType extends RxBlocTypeBase {
   CounterBlocEvents get events;

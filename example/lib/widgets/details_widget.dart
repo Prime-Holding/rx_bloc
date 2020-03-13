@@ -1,6 +1,7 @@
-import 'package:example/bloc/details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/provider/rx_bloc_builder.dart';
+
+import '../bloc/details_bloc.dart';
 
 class DetailsWidget extends StatelessWidget {
   @override

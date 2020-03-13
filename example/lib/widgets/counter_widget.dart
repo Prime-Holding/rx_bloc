@@ -1,8 +1,9 @@
-import 'package:example/bloc/counter_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/provider/rx_bloc_builder.dart';
 import 'package:flutter_rx_bloc/provider/rx_bloc_listener.dart';
+
+import '../bloc/counter_bloc.dart';
 
 class CounterWidget extends StatelessWidget {
   @override

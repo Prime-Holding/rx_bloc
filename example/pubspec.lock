@@ -472,9 +472,9 @@ packages:
   rx_bloc_generator:
     dependency: "direct dev"
     description:
-      path: "D:/repos/RxBlocGenerator"
-      relative: false
-    source: path
+      name: rx_bloc_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   rx_bloc_test:
     dependency: "direct dev"

@@ -4,7 +4,7 @@
 // Generator: RxBlocGeneratorForAnnotation
 // **************************************************************************
 
-part of 'package:example/bloc/details_bloc.dart';
+part of 'details_bloc.dart';
 
 abstract class DetailsBlocType extends RxBlocTypeBase {
   DetailsBlocEvents get events;

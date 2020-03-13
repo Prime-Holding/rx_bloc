@@ -1,8 +1,9 @@
-import 'package:example/bloc/details_bloc.dart';
-import 'package:example/repository/details_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
+
+import '../../lib/bloc/details_bloc.dart';
+import '../../lib/repository/details_repository.dart';
 
 class MockDetailsRepository extends Mock implements DetailsRepository {}
 

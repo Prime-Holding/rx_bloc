@@ -1,12 +1,12 @@
-import 'package:example/bloc/details_bloc.dart';
-import 'package:example/repository/details_repository.dart';
-import 'package:example/widgets/counter_widget.dart';
-import 'package:example/widgets/details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/provider/rx_bloc_provider.dart';
 import 'package:flutter_rx_bloc/provider/rx_multi_bloc_provider.dart';
 
 import 'bloc/counter_bloc.dart';
+import 'bloc/details_bloc.dart';
+import 'repository/details_repository.dart';
+import 'widgets/counter_widget.dart';
+import 'widgets/details_widget.dart';
 
 void main() => runApp(MyApp());
 
