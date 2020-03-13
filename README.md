@@ -12,7 +12,7 @@ Apparently, [rx_bloc](https://github.com/Prime-Holding/RxBloc "rx_bloc") is not 
 
 * @RxBloc()
 * @RxBlocIgnoreState()
-* @RxBlocEvent() TODO
+* @RxBlocEvent()
 
 ## @RxBloc()
 In order to get a clue how actually this annotation would help you let's assume you need to show to the user news feed as have the following BloC:
@@ -35,30 +35,30 @@ class NewsBloc extends RxBlocBase {
   NewsBloc(this._newsRepository);
 
   /// Map event/s to the news state
-  Stream<List<News>> mapToNewsState() => $fetchEvent 
+  Stream<List<News>> mapToNewsState() => _$fetchEvent 
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
       .whereSuccess() // get only success state
       .mapToNews(); // perform some business logic on NewsModel
 
   ///region inputs - fetch (boilerplate)
   @protected
-  final $fetchEvent = PublishSubject<void>();
+  final _$fetchEvent = PublishSubject<void>();
 
   @override
-  void fetch() => $fetchEvent.add(null);
+  void fetch() => _$fetchEvent.add(null);
   ///endregion inputs - fetch (boilerplate)
   
  ///region states - news (boilerplate)
   Stream<List<News>> _newsState;
 
   @override
-  Stream<List<News>> get news => _newsState ??= mapToNewsState();
+  Stream<List<News>> get news => _newsState ??= _mapToNewsState();
   ///endregion states - news (boilerplate)
   
   ///region - dispose boilerplate
   @override
   void dispose() {
-    $fetchEvent.close();
+    _$fetchEvent.close();
     super.dispose();
   }
   ///endregion - dispose boilerplate
@@ -87,7 +87,7 @@ class NewsBloc extends $NewsBloc {
 
   /// Map event/s to the news state
   @override
-  Stream<List<News>> mapToNewsState() => $fetchEvent 
+  Stream<List<News>> _mapToNewsState() => _$fetchEvent 
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
       .whereSuccess() // get only success state
       .mapToNews(); // perform some business logic on NewsModel
@@ -96,10 +96,15 @@ class NewsBloc extends $NewsBloc {
 
 Once you annotate your BloC with @RxBloc() the generator will look for `events` and `states` classes inside the file where the BloC resides. By *convention* they should be named as below but in case you want to name them differently you can specify their names by @RxBloc({this.eventsClassName = "NewsInputs", this.statesClassName = "NewsOutputs"})
  * ${blocName}States
- * ${blocName}NewsEvents
+ * ${blocName}Events
 
 ##  @RxBlocIgnoreState()
 There might be some situations where you would need to define custom state, where all generated boilerplate it would be redundant. For that case just annotate the property of the `states` class with @RxBlocIgnoreState() and the generator won't generate any boilerplate code for it. A good example of this is *errors* or *loading* states as shown [here](https://github.com/Prime-Holding/RxBloc#usage).
+
+##  @RxBlocEvent()
+When working with events, most of the time, they are used to publish changes to the bloc that do not require any initial state. However, there may be some times when you are required to set the state to a custom value or to explicitly annotate the event. All this can be done with the `@RxBlocEvent()` annotation.
+
+@RxBlocEvent annotation has two parameters: the type of the event and the seed value. The type specifies what kind of event will be generated and it can either be a publish event (the default one) or a behaviour event. The seed value, on the other hand, is a value that is valid if used with a behaviour event and represents the initial seed. If the annotation is omitted, the event is treated as a publish event.
 
 ## FAQ
 ### How I can make the generator working for me ?

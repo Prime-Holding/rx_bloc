@@ -1,9 +1,10 @@
-import 'package:example/bloc/news_bloc.g.dart';
 import 'package:example/model/news_model.dart';
 import 'package:example/repository/news_repository.dart';
 import 'package:rx_bloc/annotation/rx_bloc_annotations.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+part 'news_bloc.g.dart';
 
 class News {}
 
@@ -34,7 +35,7 @@ class NewsBloc extends $NewsBloc {
 
   /// Map event/s to the news state
   @override
-  Stream<List<News>> mapToNewsState() => $fetchEvent //auto generated subject
+  Stream<List<News>> _mapToNewsState() => _$fetchEvent //auto generated subject
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
       .registerRequest(this) // register the request to loading/exception
       .whereSuccess() // get only success state
