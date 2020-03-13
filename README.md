@@ -35,30 +35,30 @@ class NewsBloc extends RxBlocBase {
   NewsBloc(this._newsRepository);
 
   /// Map event/s to the news state
-  Stream<List<News>> mapToNewsState() => $fetchEvent 
+  Stream<List<News>> mapToNewsState() => _$fetchEvent 
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
       .whereSuccess() // get only success state
       .mapToNews(); // perform some business logic on NewsModel
 
   ///region inputs - fetch (boilerplate)
   @protected
-  final $fetchEvent = PublishSubject<void>();
+  final _$fetchEvent = PublishSubject<void>();
 
   @override
-  void fetch() => $fetchEvent.add(null);
+  void fetch() => _$fetchEvent.add(null);
   ///endregion inputs - fetch (boilerplate)
   
  ///region states - news (boilerplate)
   Stream<List<News>> _newsState;
 
   @override
-  Stream<List<News>> get news => _newsState ??= mapToNewsState();
+  Stream<List<News>> get news => _newsState ??= _mapToNewsState();
   ///endregion states - news (boilerplate)
   
   ///region - dispose boilerplate
   @override
   void dispose() {
-    $fetchEvent.close();
+    _$fetchEvent.close();
     super.dispose();
   }
   ///endregion - dispose boilerplate
@@ -87,7 +87,7 @@ class NewsBloc extends $NewsBloc {
 
   /// Map event/s to the news state
   @override
-  Stream<List<News>> mapToNewsState() => $fetchEvent 
+  Stream<List<News>> _mapToNewsState() => _$fetchEvent 
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
       .whereSuccess() // get only success state
       .mapToNews(); // perform some business logic on NewsModel
