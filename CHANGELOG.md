@@ -2,7 +2,7 @@
 
 * Initial release
 
-## [0.0.1] - March 14, 2020
+## [0.1.0] - March 14, 2020
 
 * Removed const annotations @rxBloc and @rxBlocIgnoreState
 * Removed flutter as dependency in favour of the meta package
