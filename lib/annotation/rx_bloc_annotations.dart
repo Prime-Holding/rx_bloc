@@ -6,14 +6,9 @@ class RxBloc {
   const RxBloc({this.eventsClassName = "Events", this.statesClassName = "States"});
 }
 
-const rxBloc = RxBloc();
-
-
 class RxBlocIgnoreState {
   const RxBlocIgnoreState();
 }
-
-const rxBlocIgnoreState = RxBlocIgnoreState();
 
 class RxBlocEvent {
 
