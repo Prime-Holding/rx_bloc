@@ -1,3 +1,10 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.1] - Jan 16, 2020
 
-* TODO: Describe initial release.
+* Initial release
+
+## [0.0.1] - March 14, 2020
+
+* Removed const annotations @rxBloc and @rxBlocIgnoreState
+* Removed flutter as dependency in favour of the meta package
+* Added unit tests
+* Updated README file
