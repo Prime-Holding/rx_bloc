@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   source_gen: ^0.9.4+7
-  rx_bloc: ^0.0.1
+  rx_bloc: ^0.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
