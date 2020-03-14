@@ -58,7 +58,7 @@ packages:
     source: hosted
     version: "2.1.3"
   flutter:
-    dependency: "direct main"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -82,7 +82,7 @@ packages:
     source: hosted
     version: "0.12.6"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       url: "https://pub.dartlang.org"

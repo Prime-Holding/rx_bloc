@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:meta/meta.dart';
 
 import '../extensions.dart';
 import '../model/result.dart';
@@ -31,13 +31,14 @@ abstract class RxBlocBase {
   /// loadingBloc.isLoading
   /// ```
   ///
-  @protected
   final LoadingBloc _loadingBloc = LoadingBloc();
 
   /// The loading states of all registered requests.
+  @protected
   Stream<bool> get requestsLoadingState => _loadingBloc.isLoading;
 
   /// The exceptions of all registered requests.
+  @protected
   Stream<Exception> get requestsExceptions => _requestExceptionsSubject;
 
   final _requestExceptionsSubject = BehaviorSubject<Exception>();
@@ -48,6 +49,7 @@ abstract class RxBlocBase {
   ///
   /// In case you need to register loading states along with the exceptions,
   /// use [registerRequest] instead.
+  @protected
   StreamSubscription<Exception> registerRequestToErrors<T>(
           Stream<Result<T>> request) =>
       request
@@ -59,6 +61,7 @@ abstract class RxBlocBase {
   ///
   /// In case you need to register exceptions along with the loading state,
   /// use [registerRequest] instead.
+  @protected
   Stream<Result<T>> registerRequestToLoading<T>(Stream<Result<T>> request) {
     _loadingBloc.addStream(request.isLoading());
     return request;
