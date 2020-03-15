@@ -50,7 +50,7 @@ void rxBlocTest<B extends RxBlocBase, StateOutputType>(
       final subscription = checkingState.skip(skip).listen(states.add);
       await act?.call(bloc);
 
-      if (wait != null) Future.delayed(wait);
+      if (wait != null) await Future.delayed(wait);
       await Future.delayed(Duration.zero);
       subscription.cancel();
       if (expect != null) tester.expect(states, expect);

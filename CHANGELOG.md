@@ -1,3 +1,3 @@
-## 0.0.1
+## 0.0.1 March 14, 2020
 
-* TODO: Describe initial release.
+* Implemented rxBlocTest()
