@@ -1,6 +1,7 @@
-import 'package:example/bloc/details_bloc.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/provider/rx_bloc_builder.dart';
+
+import '../bloc/details_bloc.dart';
 
 class DetailsWidget extends StatelessWidget {
   @override
@@ -21,6 +22,7 @@ class DetailsWidget extends StatelessWidget {
                     snapshot.data ?? '',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 26),
+                    key: ValueKey('reload_text'),
                   ),
                 ),
               ),
@@ -28,6 +30,9 @@ class DetailsWidget extends StatelessWidget {
             RxBlocBuilder<DetailsBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, snapshot, bloc) => RaisedButton(
+                color: Colors.deepOrange,
+                textColor: Colors.white,
+                key: ValueKey('reload'),
                 child: Text(snapshot.isLoaded ? 'Reload' : 'Loading...'),
                 onPressed: snapshot.isLoaded ? bloc.events.fetch : null,
               ),

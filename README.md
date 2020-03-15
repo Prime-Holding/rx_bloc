@@ -1,6 +1,7 @@
 A Flutter package that helps implement the BLoC Design Pattern using the power of reactive streams.
 
-This package is built to work with [rx_bloc](https://github.com/Prime-Holding/RxBloc).
+This package is built to work with [rx_bloc](https://github.com/Prime-Holding/RxBloc) and [rx_bloc_generator](https://github.com/Prime-Holding/RxBlocGenerator)
+
 
 ## Bloc Widgets
 
@@ -145,6 +146,11 @@ Lets take a look at how to use `RxBlocBuilder` to hook up a `CounterPage` widget
 
 ### CounterBloc
 ```dart
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/rxdart.dart';
+
+part 'counter_bloc.g.dart'; // Refer to the auto-generated boilerplate code
+
 /// A class containing all incoming events to the BloC
 abstract class CounterBlocEvents {
   /// Increment the count
@@ -183,26 +189,26 @@ class CounterBloc extends $CounterBloc {
 
   CounterBloc() {
     MergeStream([
-      $incrementEvent.map((_) => ++_count.value),
-      $decrementEvent.map((_) => --_count.value)
+      _$incrementEvent.map((_) => ++_count.value),
+      _$decrementEvent.map((_) => --_count.value)
     ]).bind(_count).disposedBy(_compositeSubscription);
   }
 
   /// Map the count digit to presentable data
   @override
-  Stream<String> mapToCountState() => _count.map((count) => count.toString());
+  Stream<String> _mapToCountState() => _count.map((count) => count.toString());
 
   /// Map the count digit to a decrement enabled state.
   @override
-  Stream<bool> mapToDecrementEnabledState() => _count.map((count) => count > 0);
+  Stream<bool> _mapToDecrementEnabledState() => _count.map((count) => count > 0);
 
   /// Map the count digit to a increment enabled state.
   @override
-  Stream<bool> mapToIncrementEnabledState() => _count.map((count) => count < 5);
+  Stream<bool> _mapToIncrementEnabledState() => _count.map((count) => count < 5);
 
   /// Map the increment and decrement enabled state to a informational message.
   @override
-  Stream<String> mapToInfoMessageState() => MergeStream([
+  Stream<String> _mapToInfoMessageState() => MergeStream([
         incrementEnabled.mapToMaximumMessage(),
         decrementEnabled.mapToMinimumMessage(),
       ]).skip(1).throttleTime(Duration(seconds: 1));
@@ -285,3 +291,31 @@ class CounterWidget extends StatelessWidget {
       );
 }
 ```
+
+## UI Integration tests using Flutter Driver
+
+Integration tests work as a pair: first, deploy an instrumented application to a real device or emulator and then “drive” the application from a separate test suite, checking to make sure everything is correct along the way.
+
+To create this test pair, use the flutter_driver package. It provides tools to create instrumented apps and drive those apps from a test suite
+
+For more information and how-to check:
+- [UI Integration Tests](doc/ui_integration_tests.md)
+- [Full tutorial](https://www.youtube.com/playlist?list=PL6tu16kXT9PrzZbUTUscEYOHHTVEKPLha "Full tutorial")
+
+## FAQ
+
+### What is the main advantage of [rx_bloc](https://github.com/Prime-Holding/RxBloc)
+
+* Comparing with the other libraries facilitating the BloC Pattern, [rx_bloc](https://github.com/Prime-Holding/RxBloc) supports multiple output streams (states) per BloC. As shown in the example above, CounterBlocStates consist of four different states, as each of them do its specific job. 
+ 1. **count** shows the current count
+ 2. **incrementEnabled** manages enable/disable state of the increment button
+ 3. **decrementEnabled** manages enable/disable state of the decrement button
+ 4. **infoMessage** shows info message 
+
+Doing so, the BloC it's not overloaded and follows [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle)
+
+
+### On what package is based [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc)
+
+* [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc) is based on the well known [flutter_bloc](https://github.com/felangel/bloc/tree/master/packages/flutter_bloc) made by [Felix Angelov](https://github.com/felangel)
+

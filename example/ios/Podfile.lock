@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - rx_bloc_test (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - rx_bloc_test (from `.symlinks/plugins/rx_bloc_test/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  rx_bloc_test:
+    :path: ".symlinks/plugins/rx_bloc_test/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  rx_bloc_test: ba0a0ce2a83cf0c61ab8bbc55f76a4148e6802d6
+
+PODFILE CHECKSUM: 083258d7f5e80b42ea9bfee905fe93049bc04c64
+
+COCOAPODS: 1.7.5
