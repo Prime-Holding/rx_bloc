@@ -279,7 +279,7 @@ packages:
       name: intl
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.0"
+    version: "0.16.1"
   io:
     dependency: transitive
     description:
@@ -447,7 +447,7 @@ packages:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.2"
+    version: "1.4.3"
   pubspec_parse:
     dependency: transitive
     description:
@@ -468,22 +468,20 @@ packages:
       name: rx_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "0.1.0"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
       name: rx_bloc_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "0.1.0"
   rx_bloc_test:
     dependency: "direct dev"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: ad575d676d0c14b5339e5e770d55e0c577c822ce
-      url: "https://github.com/Prime-Holding/RxBlocTest.git"
-    source: git
+      name: rx_bloc_test
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   rxdart:
     dependency: transitive
@@ -538,7 +536,7 @@ packages:
       name: source_map_stack_trace
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.5"
+    version: "2.0.0"
   source_maps:
     dependency: transitive
     description:
@@ -581,6 +579,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  sync_http:
+    dependency: transitive
+    description:
+      name: sync_http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   term_glyph:
     dependency: transitive
     description:
@@ -594,21 +599,21 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.4"
+    version: "1.14.2"
   test_api:
     dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.11"
+    version: "0.2.15"
   test_core:
     dependency: transitive
     description:
       name: test_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.15"
+    version: "0.3.3"
   timing:
     dependency: transitive
     description:
@@ -658,6 +663,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  webdriver:
+    dependency: transitive
+    description:
+      name: webdriver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.2"
+  webkit_inspection_protocol:
+    dependency: transitive
+    description:
+      name: webkit_inspection_protocol
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0+1"
   xml:
     dependency: transitive
     description:
@@ -674,4 +693,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.12.1"
+  flutter: ">=1.12.13+hotfix.8 <2.0.0"
