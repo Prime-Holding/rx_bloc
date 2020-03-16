@@ -4,7 +4,7 @@ import 'package:rx_bloc/annotation/rx_bloc_annotations.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'news_bloc.g.dart';
+part 'news_bloc.rxb.g.dart';
 
 class News {}
 
