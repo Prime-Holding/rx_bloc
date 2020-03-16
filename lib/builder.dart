@@ -5,7 +5,10 @@ import 'package:rx_bloc_generator/rx_bloc_generator.dart';
 import 'package:source_gen/source_gen.dart';
 
 Builder rxBlocGenerator(BuilderOptions options) {
-  return LibraryBuilder(RxBlocGeneratorForAnnotation());
+  return LibraryBuilder(
+    RxBlocGeneratorForAnnotation(),
+    generatedExtension: ".rxb.g.dart",
+  );
 }
 
 class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
