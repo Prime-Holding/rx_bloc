@@ -15,9 +15,9 @@ void main() {
       final loadingBloc = LoadingBloc();
       BehaviorSubject<bool> stream;
       loadingBloc.addStream(stream = BehaviorSubject.seeded(true));
-      expectLater(loadingBloc.isLoading, emits(true));
+      expectLater(loadingBloc.isLoading, emitsInOrder([false, true]));
       await Future.delayed(Duration(milliseconds: 20), () => stream.add(false));
-      expectLater(loadingBloc.isLoading, emits(false));
+      expectLater(loadingBloc.isLoading, emitsInOrder([true, false]));
       stream.close();
     });
   });
