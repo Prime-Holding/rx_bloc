@@ -1,4 +1,6 @@
 
+![Dart CI](https://github.com/Prime-Holding/RxBlocGenerator/workflows/Dart%20CI/badge.svg)
+
 Code generator for [rx_bloc](https://github.com/Prime-Holding/RxBloc "rx_bloc") that makes your BloC zero-boilerplate.
 
 #### How this package can help you.
