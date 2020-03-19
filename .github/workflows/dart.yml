@@ -1,6 +1,10 @@
 name: Dart CI
 
-on: [push]
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
 
 jobs:
   build:
@@ -12,6 +16,6 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.13+hotfix.5'
+          flutter-version: '1.12.13+hotfix.8'
       - run: flutter pub get
       - run: flutter test
