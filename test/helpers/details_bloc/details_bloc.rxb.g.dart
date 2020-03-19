@@ -17,8 +17,8 @@ abstract class $DetailsBloc extends RxBlocBase
   ///region Events
 
   ///region fetch
-  final _$fetchEvent = PublishSubject<void>();
 
+  final _$fetchEvent = PublishSubject<void>();
   @override
   void fetch() => _$fetchEvent.add(null);
 
@@ -49,7 +49,6 @@ abstract class $DetailsBloc extends RxBlocBase
   DetailsBlocStates get states => this;
 
   ///endregion Type
-  @override
   void dispose() {
     _$fetchEvent.close();
     super.dispose();

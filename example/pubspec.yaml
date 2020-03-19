@@ -1,5 +1,5 @@
 name: rx_bloc_test_example
-description: Demonstrates how to use the rx_bloc_test plugin.
+description: Demonstrates how to use the rx_bloc_test package.
 publish_to: 'none'
 
 environment:
