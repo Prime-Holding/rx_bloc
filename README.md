@@ -1,3 +1,5 @@
+![Dart CI](https://github.com/Prime-Holding/FlutterRxBloc/workflows/Dart%20CI/badge.svg)
+
 A Flutter package that helps implement the BLoC Design Pattern using the power of reactive streams.
 
 This package is built to work with [rx_bloc](https://github.com/Prime-Holding/RxBloc) and [rx_bloc_generator](https://github.com/Prime-Holding/RxBlocGenerator)
