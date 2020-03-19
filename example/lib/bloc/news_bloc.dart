@@ -37,18 +37,18 @@ class NewsBloc extends $NewsBloc {
   @override
   Stream<List<News>> _mapToNewsState() => _$fetchEvent //auto generated subject
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
-      .registerRequest(this) // register the request to loading/exception
+      .setResultStateHandler(this) // set handlers for loading/error states
       .whereSuccess() // get only success state
       .mapToNews(); // perform some business logic on NewsModel
 
   /// Presentable error messages
   @override
   Stream<String> get errors =>
-      requestsExceptions.map((exception) => exception.message);
+      errorState.map((exception) => exception.message);
 
   /// Loading state caused by any registered request
   @override
-  Stream<bool> get isLoading => requestsLoadingState;
+  Stream<bool> get isLoading => loadingState;
 }
 
 extension _ExceptionMessage on Exception {
