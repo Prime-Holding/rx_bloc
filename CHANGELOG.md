@@ -1,6 +1,11 @@
-## [0.0.1] - Jan 16, 2020
+## [0.1.2] - March 19, 2020
 
-* Initial release
+* Fix generation of `part of` 
+* Upate `rx_bloc` package to `0.2.0`
+
+## [0.1.1] - March 16, 2020
+
+* Fix conflicting outputs with other builders
 
 ## [0.1.0] - March 14, 2020
 
@@ -9,6 +14,6 @@
 * Updated README file
 * Updated rx_bloc dependency
 
-## [0.1.1] - March 16, 2020
+## [0.0.1] - Jan 16, 2020
 
-* Fix conflicting outputs with other builders
+* Initial release

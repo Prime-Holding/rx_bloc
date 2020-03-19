@@ -5,12 +5,12 @@ author:
 homepage:
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  rx_bloc: ^0.1.0
+  rx_bloc: ^0.2.0
 
 dev_dependencies:
   build_runner:

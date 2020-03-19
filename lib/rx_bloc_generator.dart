@@ -28,8 +28,10 @@ class RxBlocGenerator {
     return _stringBuffer.toString();
   }
 
-  void _generatePartOf() =>
-      _writeln("part of '${viewModelElement.location.components.first}';");
+  void _generatePartOf() {
+    final uri = Uri.tryParse(viewModelElement.location.components.first);
+    _writeln("part of '${uri.pathSegments.last}';");
+  }
 
   void _generateTypeClass() {
     _writeln(
