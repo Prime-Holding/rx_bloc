@@ -1,18 +1,18 @@
 name: flutter_rx_bloc
 description: Set of Flutter Widgets that help implementing the BLoC design pattern. Built to be used with the rx_bloc package.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/Prime-Holding/FlutterRxBloc
 issue_tracker: https://github.com/Prime-Holding/FlutterRxBloc/issues
 homepage: https://primeholding.com/
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   provider: ^4.0.1
-  rx_bloc: ^0.1.0
+  rx_bloc: ^0.2.0
 
 dev_dependencies:
   flutter_test:

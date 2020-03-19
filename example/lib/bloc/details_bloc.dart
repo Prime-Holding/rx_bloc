@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../repository/details_repository.dart';
 
-part 'details_bloc.g.dart';
+part 'details_bloc.rxb.g.dart';
 
 abstract class DetailsBlocEvents {
   void fetch();
@@ -30,13 +30,13 @@ class DetailsBloc extends $DetailsBloc {
   Stream<String> _mapToDetailsState() => _$fetchEvent
       .startWith(null)
       .flatMap((_) => _detailsRepository.fetch().asResultStream())
-      .registerRequest(this)
+      .setResultStateHandler(this)
       .whereSuccess();
 
   @override
   Stream<String> get errors =>
-      requestsExceptions.map((exception) => exception.toString());
+      errorState.map((exception) => exception.toString());
 
   @override
-  Stream<bool> get isLoading => requestsLoadingState;
+  Stream<bool> get isLoading => loadingState;
 }
