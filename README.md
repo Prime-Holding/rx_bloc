@@ -1,3 +1,5 @@
+![Dart CI](https://github.com/Prime-Holding/RxBloc/workflows/Dart%20CI/badge.svg)
+
 #### A Flutter package that makes it easy to implement the BLoC Design Pattern using the power of reactive streams.
 ##### Following the best practices for building robust mobile applications the architecture below can be used along with the BloC layer.
 
