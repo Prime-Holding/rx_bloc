@@ -1,6 +1,7 @@
 ## [0.1.2] - March 19, 2020
 
 * Fix generation of `part of` 
+* Upate `rx_bloc` package to `0.2.0`
 
 ## [0.1.1] - March 16, 2020
 
