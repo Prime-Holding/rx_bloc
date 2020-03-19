@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../extensions.dart';
 import '../model/result.dart';
@@ -12,80 +12,90 @@ abstract class RxBlocTypeBase {
 }
 
 abstract class RxBlocBase {
-  /// A loading bloc that holds all registered requests.
+  /// A loading bloc that holds the loading state of all handled result streams.
   ///
-  /// To register a request either call:
+  /// To register a result stream either call:
   ///
   /// ```dart
-  /// registerRequestToLoading(request);
+  /// setLoadingStateHandler(resultStream);
   /// ```
   ///
   /// or:
   ///
   /// ```dart
-  ///  registerRequest(request);
+  ///  setResultStateHandler(resultStream);
   /// ```
   ///
   /// To get the stream of all loading states simply call:
   /// ```
-  /// loadingBloc.isLoading
+  /// _loadingBloc.isLoading
   /// ```
   ///
   final LoadingBloc _loadingBloc = LoadingBloc();
 
-  /// The loading states of all registered requests.
+  /// The loading states of all handled result streams.
   @protected
-  Stream<bool> get requestsLoadingState => _loadingBloc.isLoading;
+  Stream<bool> get loadingState => _loadingBloc.isLoading;
 
-  /// The exceptions of all registered requests.
+  /// The errors of all handled result streams.
   @protected
-  Stream<Exception> get requestsExceptions => _requestExceptionsSubject;
+  Stream<Exception> get errorState =>
+      _resultStreamExceptionsSubject;
 
-  final _requestExceptionsSubject = BehaviorSubject<Exception>();
+  final _resultStreamExceptionsSubject = BehaviorSubject<Exception>();
 
   final _compositeSubscription = CompositeSubscription();
 
-  /// Registers a request to the error container.
+  /// Handle [ResultError] states from the stream.
+  /// 
+  /// Once the states are being hadhled they sink to [errorState].
   ///
   /// In case you need to register loading states along with the exceptions,
-  /// use [registerRequest] instead.
+  /// use [setResultStateHandler] instead.
   @protected
-  StreamSubscription<Exception> registerRequestToErrors<T>(
-          Stream<Result<T>> request) =>
-      request
+  StreamSubscription<Exception> setErrorStateHandler<T>(
+          Stream<Result<T>> resultStream) =>
+      resultStream
           .whereError()
-          .bind(_requestExceptionsSubject)
+          .bind(_resultStreamExceptionsSubject)
           .disposedBy(_compositeSubscription);
 
-  /// Registers a request to the loading container.
+  /// Handle [ResultLoading] states from stream.
   ///
-  /// In case you need to register exceptions along with the loading state,
-  /// use [registerRequest] instead.
+  /// Once the states are being hadhled they sink to [loadingState].
+  ///
+  /// In case you need to handle error states along with the loading state,
+  /// use [setResultStateHandler] instead.
   @protected
-  Stream<Result<T>> registerRequestToLoading<T>(Stream<Result<T>> request) {
-    _loadingBloc.addStream(request.isLoading());
-    return request;
+  Stream<Result<T>> setLoadingStateHandler<T>(
+      Stream<Result<T>> resultStream) {
+    _loadingBloc.addStream(resultStream.isLoading());
+    return resultStream;
   }
 
-  /// Registers [ResultLoading] and [ResultError] to a central container.
+  /// Handle [ResultLoading] and [ResultError] states from the stream.
   ///
-  /// Useful when multiple type of requests are executed by a single Bloc,
+  /// Converts the stream to broadcast one based on [shareStream].
+  ///
+  /// Useful when multiple type of result streams are executed by a single Bloc,
   /// as all [ResultError] and [ResultLoading] states resides in a central place.
   ///
-  /// Once a requests is being registered it sinks into those properties:
-  /// ```dart
-  /// [requestsExceptions] and [requestsLoadingState]
-  /// ```
+  /// Once [ResultLoading] states are being hadhled they sink to [loadingState].
+  /// Once [ResultError] states are being hadhled they sink to [errorState].
   @protected
-  Stream<Result<T>> registerRequest<T>(Stream<Result<T>> request) {
-    registerRequestToErrors(request);
-    registerRequestToLoading(request);
-    return request;
+  Stream<Result<T>> setResultStateHandler<T>(Stream<Result<T>> resultStream,
+      {bool shareStream = true}) {
+    if (shareStream && !resultStream.isBroadcast) {
+      resultStream = resultStream.share();
+    }
+    setErrorStateHandler(resultStream);
+    setLoadingStateHandler(resultStream);
+    return resultStream;
   }
 
   /// Disposes all internally created streams
   dispose() {
-    _requestExceptionsSubject.close();
+    _resultStreamExceptionsSubject.close();
     _compositeSubscription.dispose();
     _loadingBloc.dispose();
   }
