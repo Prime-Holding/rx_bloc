@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import 'bloc/rx_bloc_base.dart';
 import 'model/result.dart';
 
-extension StreamResult<T> on Stream<Result<T>> {
+extension ResultStream<T> on Stream<Result<T>> {
   /// Finds the [ResultSuccess] as unwraps the [ResultSuccess.data] from it.
   ///
   /// It filters the other types of [Result] such as [ResultError] and [ResultLoading].
@@ -34,17 +34,20 @@ extension AsResultStream<T> on Future<T> {
       .startWith(Result.loading());
 }
 
-extension RegisterInRxBlocBase<T> on Stream<Result<T>> {
-  /// Registers [ResultLoading] and [ResultError] to a BloC.
+extension HandleByRxBlocBase<T> on Stream<Result<T>> {
+  /// Handle [ResultLoading] and [ResultError] by a BLoC.
   ///
-  /// Useful when multiple type of requests are executed by a single Bloc,
+  /// Converts the stream to broadcast one based on [shareStream].
+  ///
+  /// Useful when multiple type of result streams are executed by a single Bloc,
   /// as all [ResultError] and [ResultLoading] states resides in a central place.
   ///
-  /// Once a requests is being registered it sinks into those properties:
-  /// [RxBlocBase.requestsExceptions] and [RxBlocBase.requestsLoadingState]
-  Stream<Result<T>> registerRequest(RxBlocBase bloc) =>
+  /// Once [ResultLoading] states are being hadhled they sink to [RxBlocBase.loadingState].
+  /// Once [ResultError] states are being hadhled they sink to [RxBlocBase.errorState].
+  Stream<Result<T>> setResultStateHandler(RxBlocBase bloc,
+          {bool shareStream = true}) =>
       // ignore: invalid_use_of_protected_member
-      bloc.registerRequest(this);
+      bloc.setResultStateHandler(this, shareStream: shareStream);
 }
 
 extension Bind<T> on Stream<T> {

@@ -29,7 +29,7 @@ The repository pattern is a design pattern that isolates data access behind inte
 import 'package:rx_bloc/rx_bloc.dart'; // All necessary imports can be added first
 import 'package:rxdart/rxdart.dart';
 
-part 'news_bloc.g.dart'; // Refer to the auto-generated boilerplate code
+part 'news_bloc.rxb.g.dart'; // Refer to the auto-generated boilerplate code
 
 abstract class NewsBlocEvents {
   /// Fetch news
@@ -40,7 +40,7 @@ abstract class NewsBlocStates {
   /// Presentable news
   Stream<List<News>> get news;
 
-  /// Loading state caused by any registered request
+  /// Loading state caused by any registered result stream
   @RxBlocIgnoreState()
   Stream<bool> get isLoading;
 
@@ -60,18 +60,18 @@ class NewsBloc extends $NewsBloc {
   @override
   Stream<List<News>> _mapToNewsState() => _$fetchEvent //auto generated subject
       .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
-      .registerRequest(this) // register the request to loading/exception
+      .setResultStateHandler(this) // register the result stream to loading/exception
       .whereSuccess() // get only success state
       .mapToNews(); // perform some business logic on NewsModel
 
   /// Presentable error messages
   @override
   Stream<String> get errors =>
-      requestExceptions.map((exception) => exception.message);
+      errorState.map((exception) => exception.message);
 
-  /// Loading state caused by any registered request
+  /// Loading state caused by any registered result stream
   @override
-  Stream<bool> get isLoading => requestLoadingState;
+  Stream<bool> get isLoading => loadingState;
 }
 
 extension _ExceptionMessage on Exception {
@@ -85,5 +85,3 @@ extension _Mapper on Stream<List<NewsModel>> {
       map((newsList) => newsList.map((news) => News()));
 }
 ```
-
-
