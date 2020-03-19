@@ -1,21 +1,21 @@
 name: rx_bloc_test
 description: A Flutter package with the goal to enable testing rxBlocs from the FlutterRxBloc package with ease.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/Prime-Holding/RxBlocTest
 issue_tracker: https://github.com/Prime-Holding/RxBlocTest/issues
 homepage: https://primeholding.com/
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
   flutter: ^1.12.13+hotfix.8
 
 dependencies:
   flutter:
     sdk: flutter
 
-  test: ^1.14.2
+  test: ^1.9.4
   meta: ^1.1.8
-  rx_bloc: ^0.1.0
+  rx_bloc: ^0.2.0
   mockito: ^4.1.1
   rxdart: ^0.23.1
   quiver: ^2.0.5
@@ -25,13 +25,3 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
-  plugin:
-    platforms:
-      android:
-        package: com.primeholding.rx_bloc_test
-        pluginClass: RxBlocTestPlugin
-
-  #assets:
-  # - images/a_dot_burr.jpeg
-
