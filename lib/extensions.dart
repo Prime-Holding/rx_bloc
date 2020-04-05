@@ -23,15 +23,22 @@ extension ResultStream<T> on Stream<Result<T>> {
   Stream<bool> isLoading() => map((data) => data is ResultLoading);
 }
 
-extension AsResultStream<T> on Future<T> {
+extension AsResultStream<T> on Stream<T> {
+  /// Converts the [Stream] to a [Stream] of [Result]
+  ///
+  /// As soon as the [Stream] is being subscribed it emits [ResultLoading] immediately,
+  /// as afterwards emits either [ResultError] or [ResultSuccess]
+  Stream<Result<T>> asResultStream() => map((data) => Result<T>.success(data))
+      .onErrorReturnWith((error) => Result<T>.error(error))
+      .startWith(Result<T>.loading());
+}
+
+extension FutureAsResultStream<T> on Future<T> {
   /// Converts the [Future] to a [Stream] of [Result]
   ///
   /// As soon as the [Stream] is being subscribed it emits [ResultLoading] immediately,
   /// as afterwards emits either [ResultError] or [ResultSuccess]
-  Stream<Result<T>> asResultStream() => asStream()
-      .map((data) => Result.success(data))
-      .onErrorReturnWith((error) => Result.error(error))
-      .startWith(Result.loading());
+  Stream<Result<T>> asResultStream() => asStream().asResultStream();
 }
 
 extension HandleByRxBlocBase<T> on Stream<Result<T>> {
