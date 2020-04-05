@@ -50,5 +50,61 @@ void main() {
               'but rather returns a stream of Exceptions');
       stream.close();
     });
+
+    test('Test setResultStateHandler with shareStream enabled', () async {
+      int listenCount = 0;
+      final bloc = BlocImpl();
+      final stream = Future.value(3.14).asResultStream()
+          .doOnListen(() { listenCount++; });
+      final data = bloc.setResultStateHandler(stream, shareStream: true)
+          .whereSuccess();
+      expect(bloc.loadingState, emitsInOrder([false, true, false]));
+      expect(data, emits(3.14));
+      expect(listenCount, 1);
+    });
+
+    test('Test setResultStateHandler with shareStream enabled on broadcast stream', () async {
+      int listenCount = 0;
+      final bloc = BlocImpl();
+      final stream = Future.value(3.14).asResultStream().asBroadcastStream()
+          .doOnListen(() { listenCount++; });
+      final data = bloc.setResultStateHandler(stream, shareStream: true)
+          .whereSuccess();
+      expect(bloc.loadingState, emitsInOrder([false, true, false]));
+      expect(data, emits(3.14));
+      expect(listenCount, 1);
+    });
+
+    test('Test setResultStateHandler with shareStream disabled', () async {
+      int listenCount = 0;
+      final bloc = BlocImpl();
+      final stream = Future.value(3.14).asResultStream()
+          .doOnListen(() { listenCount++; });
+      final data = bloc.setResultStateHandler(stream, shareStream: false)
+          .whereSuccess();
+      expect(bloc.loadingState, emitsInOrder([]));
+      expect(data, emitsInOrder([]));
+      expect(listenCount, 3);
+    });
+
+    test('Test setResultStateHandler with shareStream disabled on broadcast stream', () async {
+      int listenCount = 0;
+      final bloc = BlocImpl();
+      final stream = Future.value(3.14).asResultStream().asBroadcastStream()
+          .doOnListen(() { listenCount++; });
+      final data = bloc.setResultStateHandler(stream, shareStream: false)
+          .whereSuccess();
+      expect(bloc.loadingState, emitsInOrder([]));
+      expect(data, emitsInOrder([]));
+      expect(listenCount, 3);
+    });
+
+    test('Test setResultStateHandler with shareStream enabled doesn\'t share the stream again', () async {
+      final bloc = BlocImpl();
+      final stream = Future.value(3.14).asResultStream().share();
+      final streamAfterSettingHandlers =
+          bloc.setResultStateHandler(stream, shareStream: true);
+      expect(identical(stream, streamAfterSettingHandlers), isTrue);
+    });
   });
 }

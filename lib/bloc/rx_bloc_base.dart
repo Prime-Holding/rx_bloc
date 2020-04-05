@@ -85,7 +85,7 @@ abstract class RxBlocBase {
   @protected
   Stream<Result<T>> setResultStateHandler<T>(Stream<Result<T>> resultStream,
       {bool shareStream = true}) {
-    if (shareStream && !resultStream.isBroadcast) {
+    if (shareStream && resultStream is! Subject<Result<T>>) {
       resultStream = resultStream.share();
     }
     setErrorStateHandler(resultStream);
