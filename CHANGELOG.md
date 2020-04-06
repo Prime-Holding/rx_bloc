@@ -1,3 +1,8 @@
+## [0.3.0] - April 5, 2020
+
+* Added `asResultStream()` extension method to the Stream
+* Fix the behaviour of `setResultStateHandler` when `shareStream` parameter is `true`.
+
 ## [0.2.0] - March 18, 2020
 
 * **Breaking changes**

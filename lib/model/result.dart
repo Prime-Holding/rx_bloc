@@ -23,6 +23,14 @@ abstract class Result<T> {
 /// Represents the loading state
 class ResultLoading<T> implements Result<T> {
   ResultLoading._();
+
+  @override
+  bool operator ==(dynamic other) {
+    return other is ResultLoading<T>;
+  }
+
+  @override
+  int get hashCode => true.hashCode;
 }
 
 /// A generic Result class used for converting a future to a stream.
@@ -32,6 +40,14 @@ class ResultSuccess<T> implements Result<T> {
   ResultSuccess._(this.data);
 
   final T data;
+
+  @override
+  bool operator ==(dynamic other) {
+    return other is ResultSuccess<T> && other.data == data;
+  }
+
+  @override
+  int get hashCode => T.hashCode;
 }
 
 /// A generic Result class used for converting a future to a stream.
@@ -41,4 +57,13 @@ class ResultError<T> implements Result<T> {
   ResultError._(this.error);
 
   final Exception error;
+
+  @override
+  bool operator ==(dynamic other) {
+    return other is ResultError<T> &&
+        other.error.toString() == error.toString();
+  }
+
+  @override
+  int get hashCode => error.hashCode;
 }
