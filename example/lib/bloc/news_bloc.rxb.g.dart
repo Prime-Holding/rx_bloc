@@ -4,7 +4,7 @@
 // Generator: RxBlocGeneratorForAnnotation
 // **************************************************************************
 
-part of 'package:example/bloc/news_bloc.dart';
+part of 'news_bloc.dart';
 
 abstract class NewsBlocType extends RxBlocTypeBase {
   NewsBlocEvents get events;
