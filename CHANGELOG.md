@@ -1,3 +1,7 @@
+## [0.1.2] - March 19, 2020
+
+* Update package dependencies
+
 ## [0.1.1] - March 19, 2020
 
 * Update package dependencies
@@ -12,4 +16,4 @@
 
 ## [0.0.1] - Jan 16, 2020
 
-* TODO: Initial release.
+* Initial release.
