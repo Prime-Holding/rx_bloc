@@ -1,3 +1,5 @@
+![Dart CI](https://github.com/Prime-Holding/FlutterRxBloc/workflows/Dart%20CI/badge.svg)
+
 A Flutter package that helps implement the BLoC Design Pattern using the power of reactive streams.
 
 This package is built to work with [rx_bloc](https://github.com/Prime-Holding/RxBloc) and [rx_bloc_generator](https://github.com/Prime-Holding/RxBlocGenerator)
@@ -15,7 +17,7 @@ See `RxBlocListener` if you want to "do" anything in response to state changes s
 
 
 ```dart
-RxBlocBuilder<NewsBloc, List<News>>( // At the first placeholder define what bloc you need, at the second define what type will be the state you want to listen. It needs to match the type of the stream in the state function below.
+RxBlocBuilder<NewsBlocType, List<News>>( // At the first placeholder define what bloc you need, at the second define what type will be the state you want to listen. It needs to match the type of the stream in the state function below.
   state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below. 
   builder: (context, state, bloc) {
     // return widget here based on BlocA's state
@@ -26,7 +28,7 @@ RxBlocBuilder<NewsBloc, List<News>>( // At the first placeholder define what blo
 Only specify the bloc if you wish to provide a bloc that will be scoped to a single widget and isn't accessible via a parent `RxBlocProvider` and the current `BuildContext`.
 
 ```dart
-RxBlocBuilder<NewsBloc, List<News>>(
+RxBlocBuilder<NewsBlocType, List<News>>(
   bloc: blocA, // provide the local bloc instance
   state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below.
   builder: (context, state, bloc) {
@@ -40,7 +42,7 @@ RxBlocBuilder<NewsBloc, List<News>>(
 In most cases, `RxBlocProvider` should be used to create new `blocs` which will be made available to the rest of the subtree. In this case, since `RxBlocProvider` is responsible for creating the bloc, it will automatically handle closing the bloc.
 
 ```dart
-RxBlocProvider(
+RxBlocProvider<BlocAType>(
   create: (BuildContext context) => BlocA(),
   child: ChildA(),
 );
@@ -49,8 +51,8 @@ RxBlocProvider(
 In some cases, `RxBlocProvider` can be used to provide an existing bloc to a new portion of the widget tree. This will be most commonly used when an existing `bloc` needs to be made available to a new route. In this case, `RxBlocProvider` will not automatically close the bloc since it did not create it.
 
 ```dart
-RxBlocProvider.value(
-  value: RxBlocProvider.of<BlocA>(context),
+RxBlocProvider<BlocAType>.value(
+  value: RxBlocProvider.of<BlocAType>(context),
   child: ScreenA(),
 );
 ```
@@ -58,7 +60,7 @@ RxBlocProvider.value(
 then from either `ChildA`, or `ScreenA` we can retrieve `BlocA` with:
 
 ```dart
-RxBlocProvider.of<BlocA>(context)
+RxBlocProvider.of<BlocAType>(context)
 ```
 
 **RxMultiBlocProvider** is a Flutter widget that merges multiple `RxBlocProvider` widgets into one.
@@ -66,11 +68,11 @@ RxBlocProvider.of<BlocA>(context)
 By using `RxMultiBlocProvider` we can go from:
 
 ```dart
-RxBlocProvider<BlocA>(
+RxBlocProvider<BlocAType>(
   create: (BuildContext context) => BlocA(),
-  child: RxBlocProvider<BlocB>(
+  child: RxBlocProvider<BlocBType>(
     create: (BuildContext context) => BlocB(),
-    child: RxBlocProvider<BlocC>(
+    child: RxBlocProvider<BlocCType>(
       create: (BuildContext context) => BlocC(),
       child: ChildA(),
     )
@@ -83,13 +85,13 @@ to:
 ```dart
 RxMultiBlocProvider(
   providers: [
-    RxBlocProvider<BlocA>(
+    RxBlocProvider<BlocAType>(
       create: (BuildContext context) => BlocA(),
     ),
-    RxBlocProvider<BlocB>(
+    RxBlocProvider<BlocBType>(
       create: (BuildContext context) => BlocB(),
     ),
-    RxBlocProvider<BlocC>(
+    RxBlocProvider<BlocCType>(
       create: (BuildContext context) => BlocC(),
     ),
   ],
@@ -104,7 +106,7 @@ RxMultiBlocProvider(
 If the bloc parameter is omitted, `RxBlocListener` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
 
 ```dart
-RxBlocListener<NewsBloc, bool>( // Specify the type of the bloc and its state type
+RxBlocListener<NewsBlocType, bool>( // Specify the type of the bloc and its state type
     state: (bloc) => bloc.states.isLoading, // pick a specific state you want to listen for
     listener: (context, state) {
       // do stuff here based on NewsBloc's state
@@ -115,7 +117,7 @@ RxBlocListener<NewsBloc, bool>( // Specify the type of the bloc and its state ty
 Only specify the bloc if you wish to provide a bloc that is otherwise not accessible via `BlocProvider` and the current `BuildContext`.
 
 ```dart
-RxBlocListener<NewsBloc, bool>( // Specify the type of the bloc and its state type
+RxBlocListener<NewsBlocType, bool>( // Specify the type of the bloc and its state type
     bloc: bloc,
     state: (bloc) => bloc.states.isLoading, // pick a specific state you want to listen for
     listener: (context, state) {
@@ -127,7 +129,7 @@ RxBlocListener<NewsBloc, bool>( // Specify the type of the bloc and its state ty
 If you want fine-grained control over when the listener function is called you can provide an optional `condition` to `RxBlocListener`. The `condition` takes the previous bloc state and current bloc state and returns a boolean. If `condition` returns true, `listener` will be called with `state`. If `condition` returns false, `listener` will not be called with `state`.
 
 ```dart
-RxBlocListener<BlocA, BlocAState>(
+RxBlocListener<BlocAType, bool>(
   state: (bloc) => bloc.states.isLoading, // pick a specific state you want to listen for
   condition: (previousState, state) {
     // return true/false to determine whether or not
@@ -149,7 +151,7 @@ Lets take a look at how to use `RxBlocBuilder` to hook up a `CounterPage` widget
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'counter_bloc.g.dart'; // Refer to the auto-generated boilerplate code
+part 'counter_bloc.rxb.g.dart'; // Refer to the auto-generated boilerplate code
 
 /// A class containing all incoming events to the BloC
 abstract class CounterBlocEvents {
@@ -276,7 +278,7 @@ class CounterWidget extends StatelessWidget {
                     state: (bloc) => bloc.states.decrementEnabled,
                     builder: (context, snapshot, bloc) => Expanded(
                       child: RaisedButton(
-                        child: Text('Increment'),
+                        child: Text('Decrement'),
                         onPressed: (snapshot.data ?? false)
                             ? bloc.events.decrement
                             : null,

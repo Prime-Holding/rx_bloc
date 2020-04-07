@@ -1,7 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'counter_bloc.g.dart';
+part 'counter_bloc.rxb.g.dart';
 
 /// A class containing all incoming events to the BloC
 abstract class CounterBlocEvents {

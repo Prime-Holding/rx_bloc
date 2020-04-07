@@ -21,7 +21,8 @@ class RxBlocBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
 
     return StreamBuilder<T>(
       stream: state(block),
-      builder: (buildContext, snapshot) => builder(buildContext, snapshot, block),
+      builder: (buildContext, snapshot) =>
+          builder(buildContext, snapshot, block),
     );
   }
 }
