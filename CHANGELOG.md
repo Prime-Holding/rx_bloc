@@ -1,3 +1,7 @@
+## [0.1.3] - April 7, 2020
+
+Update package dependencies
+
 ## [0.1.2] - March 19, 2020
 
 * Fix generation of `part of` 
