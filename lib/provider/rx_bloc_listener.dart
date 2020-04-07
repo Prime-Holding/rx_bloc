@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-
-import 'package:rx_bloc/rx_bloc.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 
 import 'rx_bloc_provider.dart';
 
@@ -86,13 +85,13 @@ class RxBlocListener<B extends RxBlocTypeBase, S>
     this.child = const SizedBox(),
   })  : assert(listener != null),
         super(
-        key: key,
-        child: child,
-        listener: listener,
-        bloc: bloc,
-        condition: condition,
-        state: state,
-      );
+          key: key,
+          child: child,
+          listener: listener,
+          bloc: bloc,
+          condition: condition,
+          state: state,
+        );
 }
 
 /// {@template RxBlocListenerbase}
