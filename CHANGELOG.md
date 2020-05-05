@@ -1,4 +1,4 @@
-## [0.1.4] - May 5, 2020
+## [0.2.0] - May 5, 2020
 
 * Improved error handling and displaying:
   Error messages are logged in the console with an [ERROR] tag and a red color for easier noticing
