@@ -108,6 +108,14 @@ When working with events, most of the time, they are used to publish changes to 
 
 @RxBlocEvent annotation has two parameters: the type of the event and the seed value. The type specifies what kind of event will be generated and it can either be a publish event (the default one) or a behaviour event. The seed value, on the other hand, is a value that is valid if used with a behaviour event and represents the initial seed. If the annotation is omitted, the event is treated as a publish event.
 
+#### Error detection
+In order to provide a good user experience and easier error detection, this generator handles possible errors that may arise during the development of the bloc. In order to make this possible, there are some rules to which the developer should stick to in order to avoid further errors:
+
+* Events class should define abstract methods only. Any other fields will result in an error.
+* When defining a seed value for an event with one parameter, its type should match the one of its argument. 
+* States class should define its members using the get keyword.
+* States class should not contain body definitions of its members.
+
 ## FAQ
 ### How I can make the generator working for me ?
 * First, add ``rx_bloc_generator`` and ``build_runner`` to the ``dev_dependencies`` in your project.

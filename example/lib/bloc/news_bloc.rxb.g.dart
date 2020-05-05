@@ -49,6 +49,7 @@ abstract class $NewsBloc extends RxBlocBase
   NewsBlocStates get states => this;
 
   ///endregion Type
+
   void dispose() {
     _$fetchEvent.close();
     super.dispose();

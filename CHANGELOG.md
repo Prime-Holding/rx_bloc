@@ -1,6 +1,11 @@
+## [0.1.4] - May 5, 2020
+
+* Improved error handling and displaying:
+  Error messages are logged in the console with an [ERROR] tag and a red color for easier noticing
+
 ## [0.1.3] - April 7, 2020
 
-Update package dependencies
+* Update package dependencies
 
 ## [0.1.2] - March 19, 2020
 
