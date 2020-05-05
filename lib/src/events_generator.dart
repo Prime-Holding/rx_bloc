@@ -14,14 +14,19 @@ final _eventAnnotationChecker = TypeChecker.fromRuntime(RxBlocEvent);
 ///
 /// It takes in a [_eventsClass] ClassElement which represents the event class
 /// from which it creates everything needed for the events to work.
+/// It also takes a [_sourceCode] String containing the source code from the
+/// file in which the [_eventsClass] resides.
 class EventsGenerator {
   /// The output buffer containing generated events code
-  StringBuffer _stringBuffer = StringBuffer();
+  final StringBuffer _stringBuffer = StringBuffer();
 
   /// The class containing all the user-defined events
-  ClassElement _eventsClass;
+  final ClassElement _eventsClass;
 
-  EventsGenerator(this._eventsClass);
+  /// The source code of the file where the events class resides
+  final String _sourceCode;
+
+  EventsGenerator(this._eventsClass, this._sourceCode);
 
   /// Writes to output string buffer
   void _writeln([Object obj]) => _stringBuffer.writeln(obj);
@@ -36,6 +41,40 @@ class EventsGenerator {
     return _stringBuffer.toString();
   }
 
+  /// Generates argument classes for events containing more than one parameter
+  String generateArgumentClasses() {
+    StringBuffer _argClassString = StringBuffer();
+    _argClassString.writeln('/// region Argument classes\n');
+    for (var method in _eventsClass.methods
+        .where((method) => method.parameters.length > 1)) {
+      _argClassString.writeln('/// region ${method.argumentsClassName} class');
+      _argClassString.writeln(_generateArgumentClass(method));
+      _argClassString
+          .writeln('/// endregion ${method.argumentsClassName} class');
+    }
+    _argClassString.writeln('\n/// endregion Argument classes\n');
+    return _argClassString.toString();
+  }
+
+  /// Generates argument class for the [method], which contains more than one parameter
+  String _generateArgumentClass(MethodElement method) {
+    StringBuffer _buffer = StringBuffer();
+    final className = method.argumentsClassName;
+    final paramNames = method.parameterNames;
+    _buffer.writeln('\nclass $className {\n');
+    // Create all the parameters first
+    paramNames.forEach((paramName) {
+      final param = method.getParameter(paramName);
+      _buffer.writeln('final ${param.type.toString()} $paramName;');
+    });
+    // Create the constant constructor
+    _buffer.writeln('\nconst $className({');
+    paramNames.forEach((paramName) => _buffer.writeln('this.$paramName,'));
+    _buffer.writeln('});');
+    _buffer.writeln('\n}');
+    return _buffer.toString();
+  }
+
   /// Generates events string from methods while checking for any errors.
   String _generateEvents() {
     _eventsClass.fields.forEach((field) {
@@ -46,8 +85,111 @@ class EventsGenerator {
 
     return _eventsClass.methods
         .checkForNonAbstractEvents()
-        .mapToEvents()
+        .mapToEvents(_mapMethodToEvent)
         .join('\n');
+  }
+
+  /// Mapper that converts a [method] into a event
+  String _mapMethodToEvent(MethodElement method) {
+    final methodDefinition = method.definition;
+    final streamType = _getStreamType(method);
+
+    return '''
+  ///region ${method.name}
+ 
+  final _\$${method.name}Event = $streamType;
+  @override
+  $methodDefinition => _\$${method.name}Event.add(${method.streamTypeParameters});
+  ///endregion ${method.name}
+  ''';
+  }
+
+  /// Returns the type of stream checking the [method] for
+  /// @RxBlocEvent() annotation and handling errors if any.
+  String _getStreamType(MethodElement method) {
+    final hasRxEventAnnotation =
+        _eventAnnotationChecker.hasAnnotationOfExact(method);
+    final annotation = _eventAnnotationChecker.firstAnnotationOfExact(method);
+    final isBehaviorSubject =
+        annotation?.getField('type').toString().contains('behaviour') ?? false;
+    if (!hasRxEventAnnotation || !isBehaviorSubject)
+      return 'PublishSubject<${method.streamTypeBasedOnParameters}>()';
+
+    // The method has a RxBlocEvent annotation
+
+    String seedValue = '';
+    if (method.parameters.length > 1) {
+      // Seeding with EventArgs class for that specific method
+      final argClassName = method.argumentsClassName;
+      final userParams = _getSeedParametersForMethod(method) ?? '';
+      String params = userParams.addComaAtEndIfNone();
+      // Append missing default and required parameters
+      method.parameterNames.forEach((paramName) {
+        final param = method.getParameter(paramName);
+        if (!params.contains(paramName)) {
+          // Append missing default value
+          final defVal = param.defaultValueCode;
+          if (defVal != null) params += ' $paramName : $defVal,';
+        }
+        // Display error for required parameter
+        if (param.hasRequired && !params.contains(paramName)) {
+          String msg = 'Requred parameter \'$paramName\' from \'$argClassName';
+          msg += '\' needs to be specified in the seed.';
+          logError(msg);
+        }
+      });
+      seedValue = '$argClassName($params)';
+    } else {
+      // Seeding with only one parameter
+      final seedField = annotation.getField('seed');
+
+      // Check for any errors regarding the seed value
+      if (!seedField.isNull) {
+        final firstParam =
+            method.streamTypeBasedOnParameters.replaceAll(' ', '');
+        final typeAsString = seedField.toString().getTypeFromString();
+        // Check for seed value mismatch
+        if (typeAsString != firstParam) {
+          final msg = StringBuffer();
+          msg.write('Type mismatch between seed type and ');
+          msg.write('expected parameter type:\n');
+          msg.write('\tExpected: \'$firstParam\'');
+          msg.write('\tGot: \'$typeAsString\'');
+          logError(msg.toString());
+        }
+      } else
+        logError('Seed value can not be null.');
+
+      seedValue = seedField.toString().convertToValidString();
+    }
+    return 'BehaviorSubject.seeded($seedValue)';
+  }
+
+  /// Gets the seed parameters from source code,
+  /// for the [method] annotated with @RxBlocEvent()
+  String _getSeedParametersForMethod(MethodElement method) {
+    final methodStartIndex =
+        _sourceCode.indexOf('${method.returnType.toString()} ${method.name}(');
+    final annotationStartIndex =
+        _sourceCode.lastIndexOf('@RxBlocEvent', methodStartIndex);
+    final analysisString =
+        _sourceCode.substring(annotationStartIndex, methodStartIndex);
+
+    // Check if there is a seed parameter
+    if (!analysisString.contains('seed:')) {
+      logError('Seed value can not be null.');
+      return null;
+    }
+    if (!analysisString.contains(method.argumentsClassName)) {
+      logError('Invalid seed value for event \'${method.definition}\'.');
+      return null;
+    }
+
+    final bracketIndex =
+        analysisString.indexOf('(', analysisString.indexOf('seed:') + 5) + 1;
+    final bracketIndexEnd =
+        analysisString.getIndexOfClosingBracket(bracketIndex);
+    return analysisString.substring(bracketIndex, bracketIndexEnd);
   }
 }
 
@@ -64,27 +206,35 @@ extension _CheckingEvents on List<MethodElement> {
 }
 
 extension _MapToEvents on Iterable<MethodElement> {
-  /// Maps all of methods to their events counterpart
-  Iterable<String> mapToEvents() => map((method) {
-        return '''
-  ///region ${method.name}
- 
-  final _\$${method.name}Event = ${method.streamType};
-  @override
-  ${method.definition} => _\$${method.name}Event.add(${method.firstParameterName});
-  ///endregion ${method.name}
-  ''';
-      });
+  /// Maps all of methods to their events counterpart using a [mapper] function
+  /// The [mapper] function takes in a [MethodElement] and returns a [String].
+  Iterable<String> mapToEvents(Function(MethodElement) mapper) =>
+      map((method) => mapper(method));
 }
 
 extension _MethodExtensions on MethodElement {
-  /// Returns the type of the first parameter as string
-  String get firstParameterType =>
-      "${parameters.isNotEmpty ? parameters.first.type : 'void'}";
+  /// The name of the arguments class that will be generated if
+  /// the event contains more than one parameter
+  String get argumentsClassName => '_${this.name.capitalize()}EventArgs';
 
-  /// Returns the name of the first parameter as string
-  String get firstParameterName =>
-      "${parameters.isNotEmpty ? parameters.first.name : 'null'}";
+  /// Returns the stream type based on the number of the parameters of the method
+  String get streamTypeBasedOnParameters {
+    if (this.parameters.length > 1) return this.argumentsClassName;
+    return "${parameters.isNotEmpty ? parameters.first.type : 'void'}";
+  }
+
+  /// Returns the method parameters in a format usable for streams
+  String get streamTypeParameters {
+    if (this.parameters.length > 1) {
+      var str = '${this.argumentsClassName}(';
+      this
+          .parameterNames
+          .forEach((paramName) => str += ' $paramName:$paramName,');
+      str += ')';
+      return str;
+    }
+    return "${parameters.isNotEmpty ? parameters.first.name : 'null'}";
+  }
 
   /// Returns the proper method definition (keeping as well
   /// default values and @required annotations)
@@ -121,41 +271,38 @@ extension _MethodExtensions on MethodElement {
   /// Returns the list of all parameter names of a method
   List<String> get parameterNames =>
       this.parameters.map((param) => param.name).toList();
+}
 
-  /// Returns the type of stream checking for @RxBlocEvent() annotation
-  /// and handling errors if any
-  String get streamType {
-    // Check if it is a behaviour event
-    if (_eventAnnotationChecker.hasAnnotationOfExact(this)) {
-      final annotation = _eventAnnotationChecker.firstAnnotationOfExact(this);
-      final isBehaviorSubject =
-          annotation.getField('type').toString().contains('behaviour');
+extension _StringExtensions on String {
+  /// Returns index of closing brackets balancing other brackets along
+  int getIndexOfClosingBracket(int startIndex) {
+    final str = this.substring(startIndex);
+    int normal = 1;
+    int angle = 0;
+    int curly = 0;
 
-      if (isBehaviorSubject) {
-        final seedField = annotation.getField('seed');
-
-        // Check for any errors regarding the seed value
-        if (!seedField.isNull) {
-          final firstParam = firstParameterType.replaceAll(' ', '');
-          final typeAsString = seedField.toString().getTypeFromString();
-          // Check for seed value mismatch
-          if (typeAsString != firstParam) {
-            final msg = StringBuffer();
-            msg.write('Type mismatch between seed type and ');
-            msg.write('expected parameter type:\n');
-            msg.write('\tExpected: \'$firstParam\'');
-            msg.write('\tGot: \'$typeAsString\'');
-            logError(msg.toString());
-          }
-        } else
-          logError('Seed value can not be null.');
-
-        final seedValue = seedField.toString().convertToValidString();
-        return 'BehaviorSubject.seeded($seedValue)';
-      }
+    int i = 0;
+    while ((normal != 0 || angle != 0 || curly != 0) && i < str.length) {
+      var ch = str[i];
+      if (ch == '(') normal++;
+      if (ch == ')') normal--;
+      if (ch == '<') angle++;
+      if (ch == '>') angle--;
+      if (ch == '{') curly++;
+      if (ch == '}') curly--;
+      i++;
     }
+    if (i == str.length) return -1;
+    i--;
+    return i + startIndex;
+  }
 
-    // Fallback case is a publish event
-    return 'PublishSubject<$firstParameterType>()';
+  /// Appends a comma at the end of a string if there's none, if
+  /// the string has a valid length. Else, returns an empty string
+  String addComaAtEndIfNone() {
+    String str = this.trim();
+    if (str.length == 0) return '';
+    str += str[str.length - 1] != ',' ? ',' : '';
+    return str;
   }
 }

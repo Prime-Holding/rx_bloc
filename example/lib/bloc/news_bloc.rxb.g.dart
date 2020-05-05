@@ -6,12 +6,14 @@
 
 part of 'news_bloc.dart';
 
+/// NewsBlocType class used for bloc event and state access from widgets
 abstract class NewsBlocType extends RxBlocTypeBase {
   NewsBlocEvents get events;
 
   NewsBlocStates get states;
 }
 
+/// $NewsBloc class - extended by the NewsBloc bloc
 abstract class $NewsBloc extends RxBlocBase
     implements NewsBlocEvents, NewsBlocStates, NewsBlocType {
   ///region Events
@@ -50,8 +52,13 @@ abstract class $NewsBloc extends RxBlocBase
 
   ///endregion Type
 
+  /// Dispose of all the opened streams
   void dispose() {
     _$fetchEvent.close();
     super.dispose();
   }
 }
+
+/// region Argument classes
+
+/// endregion Argument classes

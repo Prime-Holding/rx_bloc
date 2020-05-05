@@ -37,7 +37,8 @@ class RxBlocGenerator {
     this.viewModelElement,
     this.eventsElement,
     this.statesElement,
-  )   : _eventsGenerator = EventsGenerator(eventsElement),
+  )   : _eventsGenerator = EventsGenerator(
+            eventsElement, viewModelElement.source.contents.data),
         _statesGenerator = StatesGenerator(statesElement);
 
   /// Writes to output string buffer
@@ -59,8 +60,12 @@ class RxBlocGenerator {
 
   /// Generates the type class for the bloc
   void _generateTypeClass() {
+    String comment =
+        "\n/// ${viewModelElement.displayName}Type class used for bloc";
+    comment += " event and state access from widgets";
+    _writeln(comment);
     _writeln(
-        "\nabstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {");
+        "abstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {");
     _writeln("\n  ${eventsElement.displayName} get events;");
     _writeln("\n  ${statesElement.displayName} get states;");
     _writeln("\n}");
@@ -68,9 +73,13 @@ class RxBlocGenerator {
 
   /// Generates the contents of the bloc
   void _generateBlocClass() {
+    String comment =
+        "\n/// \$${viewModelElement.displayName} class - extended by the ";
+    comment += "${viewModelElement.displayName} bloc";
     _writeln("\n");
+    _writeln(comment);
     _writeln(
-        "\nabstract class \$${viewModelElement.displayName} extends RxBlocBase");
+        "abstract class \$${viewModelElement.displayName} extends RxBlocBase");
     _writeln("\n    implements");
     _writeln("\n        ${eventsElement.displayName},");
     _writeln("\n        ${statesElement.displayName},");
@@ -85,12 +94,14 @@ class RxBlocGenerator {
     _writeln("\n  ${statesElement.displayName} get states => this;");
     _writeln("\n  ///endregion Type");
     _generateDisposeMethod();
-    _writeln("\n}");
+    _writeln("\n}\n");
+    _writeln(_eventsGenerator.generateArgumentClasses());
   }
 
   /// Generates the dispose method for the bloc
   void _generateDisposeMethod() {
-    _writeln("\nvoid dispose(){");
+    _writeln("\n/// Dispose of all the opened streams");
+    _writeln("void dispose(){");
 
     eventsElement.methods.forEach((method) {
       _writeln("_\$${method.name}Event.close();");

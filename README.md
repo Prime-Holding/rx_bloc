@@ -108,13 +108,34 @@ When working with events, most of the time, they are used to publish changes to 
 
 @RxBlocEvent annotation has two parameters: the type of the event and the seed value. The type specifies what kind of event will be generated and it can either be a publish event (the default one) or a behaviour event. The seed value, on the other hand, is a value that is valid if used with a behaviour event and represents the initial seed. If the annotation is omitted, the event is treated as a publish event.
 
-#### Error detection
-In order to provide a good user experience and easier error detection, this generator handles possible errors that may arise during the development of the bloc. In order to make this possible, there are some rules to which the developer should stick to in order to avoid further errors:
+Events support multiple parameters and that is no different with the seed value. If the event has one parameter, that value can be seeded as is. But when setting a seed value for an event with more than one parameter, a **private** `event arguments class` which contains all the parameters of that event, is used for that case. The name of the event arguments class is constructed from the event name with the first letter capitalized, by appending `'EventArgs'` at its end.
+
+```dart
+abstract class BlocAEvents {
+  
+  // Event without parameters (no need for setting seed value)
+  void noOperation();
+  
+  // Event with one parameter
+  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: 0)
+  void add(int number);
+  
+  // Event with two (or more) parameters
+  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(a:0, b:0))
+  void subtract(int a,int b);
+  
+}
+```
+
+## Error detection
+In order to provide a good user experience and easier error detection, this generator handles possible errors that may arise during the development of the bloc. In order to make this possible, there are some conventions to which the developer should stick in order to avoid further errors:
 
 * Events class should define abstract methods only. Any other fields will result in an error.
-* When defining a seed value for an event with one parameter, its type should match the one of its argument. 
-* States class should define its members using the get keyword.
-* States class should not contain body definitions of its members.
+* When defining a seed value for an event
+    - with one parameter : its type should match the one of its argument. 
+    - with more than one parameter: the appropriate event arguments class should be used.
+* States class should define its members using the `get` keyword.
+* States class members should **not** have body definitions.
 
 ## FAQ
 ### How I can make the generator working for me ?

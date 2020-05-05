@@ -2,6 +2,7 @@
 
 * Improved error handling and displaying:
   Error messages are logged in the console with an [ERROR] tag and a red color for easier noticing
+* Events (and seeds using the @RxBlocEvent annotation) support multiple parameters
 
 ## [0.1.3] - April 7, 2020
 
