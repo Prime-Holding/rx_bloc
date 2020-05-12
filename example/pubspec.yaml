@@ -1,0 +1,29 @@
+name: example
+description: RxBloc example
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  rxdart: ^0.23.1
+  rx_bloc:
+  flutter_rx_bloc:
+
+dev_dependencies:
+  rx_bloc_generator:
+  build_runner:
+  flutter_test:
+    sdk: flutter
+
+
+
+flutter:
+
+#  assets:
+#    - images/a_dot_burr.jpeg
+
