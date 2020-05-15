@@ -30,7 +30,8 @@ void main() {
   group("Future asResultStream", () {
     test('success case', () {
       expect(
-          Future.value(1).asResultStream(),
+          Future.delayed(Duration(milliseconds: 300), () => Future.value(1))
+              .asResultStream(),
           emitsInOrder(
             [
               Result<int>.loading(),
