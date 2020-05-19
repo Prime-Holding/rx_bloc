@@ -96,7 +96,7 @@ void main() {
           bloc.setResultStateHandler(stream, shareStream: false).whereSuccess();
       expect(bloc.loadingState, emitsInOrder([]));
       expect(data, emitsInOrder([]));
-      expect(listenCount, 3);
+      expect(listenCount, 1);
     });
 
     test(
@@ -114,7 +114,7 @@ void main() {
           bloc.setResultStateHandler(stream, shareStream: false).whereSuccess();
       expect(bloc.loadingState, emitsInOrder([]));
       expect(data, emitsInOrder([]));
-      expect(listenCount, 3);
+      expect(listenCount, 1);
     });
 
     test(
