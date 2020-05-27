@@ -36,13 +36,13 @@ class DivisionBloc extends $DivisionBloc {
   Future<String> _calculateAndFormat(String num1, String num2) async {
     // Any thrown exception will be captured by the errorState
 
-    if (num1.isNullOrEmpty || !num1.hasDigitsOnly)
+    if (num1.isNullOrEmpty || !num1.isNumeric)
       throw Exception('Invalid first number.');
-    if (num2.isNullOrEmpty || !num2.hasDigitsOnly)
+    if (num2.isNullOrEmpty || !num2.isNumeric)
       throw Exception('Invalid second number.');
 
-    final numA = double.tryParse(num1);
-    final numB = double.tryParse(num2);
+    final numA = double.parse(num1);
+    final numB = double.parse(num2);
 
     if (numB == 0) throw Exception('Cannot divide by zero.');
 
@@ -67,13 +67,8 @@ extension _StringExtensions on String {
     return this == null || this.trim().isEmpty;
   }
 
-  bool get hasDigitsOnly {
+  bool get isNumeric {
     final _digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-    for (int i = 0; i < this.length; i++)
-      if (!_digits.contains(this[i])) {
-        return false;
-      }
-    return true;
+    return this.split('').every((char) => _digits.contains(char));
   }
 }
