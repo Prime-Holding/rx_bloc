@@ -43,8 +43,7 @@ class NewsBloc extends $NewsBloc {
 
   /// Presentable error messages
   @override
-  Stream<String> get errors =>
-      errorState.map((exception) => exception.message);
+  Stream<String> get errors => errorState.map((exception) => exception.message);
 
   /// Loading state caused by any registered request
   @override
