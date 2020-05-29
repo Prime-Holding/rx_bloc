@@ -39,16 +39,15 @@ abstract class RxBlocBase {
 
   /// The errors of all handled result streams.
   @protected
-  Stream<Exception> get errorState =>
-      _resultStreamExceptionsSubject;
+  Stream<Exception> get errorState => _resultStreamExceptionsSubject;
 
   final _resultStreamExceptionsSubject = BehaviorSubject<Exception>();
 
   final _compositeSubscription = CompositeSubscription();
 
   /// Handle [ResultError] states from the stream.
-  /// 
-  /// Once the states are being hadhled they sink to [errorState].
+  ///
+  /// Once the states are being handled they sink to [errorState].
   ///
   /// In case you need to register loading states along with the exceptions,
   /// use [setResultStateHandler] instead.
@@ -62,13 +61,12 @@ abstract class RxBlocBase {
 
   /// Handle [ResultLoading] states from stream.
   ///
-  /// Once the states are being hadhled they sink to [loadingState].
+  /// Once the states are being handled they sink to [loadingState].
   ///
   /// In case you need to handle error states along with the loading state,
   /// use [setResultStateHandler] instead.
   @protected
-  Stream<Result<T>> setLoadingStateHandler<T>(
-      Stream<Result<T>> resultStream) {
+  Stream<Result<T>> setLoadingStateHandler<T>(Stream<Result<T>> resultStream) {
     _loadingBloc.addStream(resultStream.isLoading());
     return resultStream;
   }
@@ -80,13 +78,15 @@ abstract class RxBlocBase {
   /// Useful when multiple type of result streams are executed by a single Bloc,
   /// as all [ResultError] and [ResultLoading] states resides in a central place.
   ///
-  /// Once [ResultLoading] states are being hadhled they sink to [loadingState].
-  /// Once [ResultError] states are being hadhled they sink to [errorState].
+  /// Once [ResultLoading] states are being handled they sink to [loadingState].
+  /// Once [ResultError] states are being handled they sink to [errorState].
   @protected
   Stream<Result<T>> setResultStateHandler<T>(Stream<Result<T>> resultStream,
       {bool shareStream = true}) {
     if (shareStream && resultStream is! Subject<Result<T>>) {
       resultStream = resultStream.share();
+    } else if (!shareStream) {
+      resultStream = resultStream.shareReplay(maxSize: 1);
     }
     setErrorStateHandler(resultStream);
     setLoadingStateHandler(resultStream);
