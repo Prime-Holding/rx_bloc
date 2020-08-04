@@ -257,9 +257,10 @@ extension _MethodExtensions on MethodElement {
       // Add default value (if any)
       if (param.defaultValueCode != null) {
         int index = def.indexOf(paramName);
+        final assignChar = param.isPositional ? '=' : ':';
         def = def.substring(0, index) +
             def.substring(index, index + paramName.length) +
-            ': ${param.defaultValueCode}' +
+            '$assignChar ${param.defaultValueCode}' +
             def.substring(index + paramName.length);
       }
     });
