@@ -41,7 +41,7 @@ RxBlocBuilder<NewsBlocType, List<News>>(
 
 * The `buildSuccess`, `buildError` and `buildLoading` functions will potentially be called many times and should be [pure functions](https://en.wikipedia.org/wiki/Pure_function) that return a widget in response to the state.
 * The `state` function determines which exact state of the bloc will be used. 
-* If the `bloc` parameter is omitted, `RxBlocBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`. 
+* If the `bloc` parameter is omitted, `RxResultBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`. 
 
 See `RxBlocListener` if you want to "do" anything in response to state changes such as navigation, showing a dialog, etc...
 
@@ -49,7 +49,7 @@ See `RxBlocListener` if you want to "do" anything in response to state changes s
 ```dart
 /// At the first placeholder define what bloc you need, at the second define the type of the [Result] state you want to listen to.
 /// It needs to match the type of the stream in the state function below.
-RxBlocBuilder<NewsBlocType, List<News>>( 
+RxResultBuilder<NewsBlocType, List<News>>( 
 /// Determine which exact state of the bloc will be used for building the widget below. 
 /// In this case the stream [bloc.states.news] should have a type of [Stream<Result<List<News>>>]
   state: (bloc) => bloc.states.news, 
@@ -68,7 +68,7 @@ RxBlocBuilder<NewsBlocType, List<News>>(
 Only specify the bloc if you wish to provide a bloc that will be scoped to a single widget and isn't accessible via a parent `RxBlocProvider` and the current `BuildContext`.
 
 ```dart
-RxBlocBuilder<NewsBlocType, List<News>>(
+RxResultBuilder<NewsBlocType, List<News>>(
   bloc: blocA, // provide the local bloc instance
   state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below.
   ...
