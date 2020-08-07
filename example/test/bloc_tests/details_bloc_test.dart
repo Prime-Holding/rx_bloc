@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rx_bloc/model/result.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 
 import '../../lib/bloc/details_bloc.dart';
@@ -19,13 +20,17 @@ void main() {
       });
     });
 
-    rxBlocTest<DetailsBloc, String>(
+    rxBlocTest<DetailsBloc, Result<String>>(
       'Fetching details',
       build: () async => DetailsBloc(mockRepo),
       state: (bloc) => bloc.states.details,
       act: (bloc) async => bloc.events.fetch(),
       wait: Duration(milliseconds: 60),
-      expect: ['Success'],
+      expect: [
+        Result<String>.loading(),
+        Result.success('Success'),
+        Result.success('Success'),
+      ],
     );
   });
 }
