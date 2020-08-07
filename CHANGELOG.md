@@ -1,3 +1,10 @@
+## [1.0.0] - August 7, 2020
+
+* Added RxResultBuilder
+* Updated README file
+* Updated example
+* Updated Unit Tests
+
 ## [0.1.2] - March 19, 2020
 
 * Update package dependencies
