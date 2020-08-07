@@ -37,6 +37,44 @@ RxBlocBuilder<NewsBlocType, List<News>>(
 )
 ```
 
+**RxResultBuilder** is a Flutter widget which requires a `state` function, a set of callbacks `buildSuccess`, `buildError` and `buildLoading`, and an optional `RxBloc`. `RxResultBuilder` is similar to `RxBlocBuilder`, however it is meant as an easier way to handle `Result` states.
+
+* The `buildSuccess`, `buildError` and `buildLoading` functions will potentially be called many times and should be [pure functions](https://en.wikipedia.org/wiki/Pure_function) that return a widget in response to the state.
+* The `state` function determines which exact state of the bloc will be used. 
+* If the `bloc` parameter is omitted, `RxBlocBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`. 
+
+See `RxBlocListener` if you want to "do" anything in response to state changes such as navigation, showing a dialog, etc...
+
+
+```dart
+/// At the first placeholder define what bloc you need, at the second define the type of the [Result] state you want to listen to.
+/// It needs to match the type of the stream in the state function below.
+RxBlocBuilder<NewsBlocType, List<News>>( 
+/// Determine which exact state of the bloc will be used for building the widget below. 
+/// In this case the stream [bloc.states.news] should have a type of [Stream<Result<List<News>>>]
+  state: (bloc) => bloc.states.news, 
+  buildSuccess: (context, data, bloc) {
+    ///here return a widget based on the data from the [Result]
+  },
+  buildLoading: (context, bloc) {
+    ///here return a widget showing that we are waiting for the data, e.g. loading indicator
+  },
+  buildError: (context, error, bloc) {
+    ///here return a widget showing what went wrong 
+  },
+)
+```
+
+Only specify the bloc if you wish to provide a bloc that will be scoped to a single widget and isn't accessible via a parent `RxBlocProvider` and the current `BuildContext`.
+
+```dart
+RxBlocBuilder<NewsBlocType, List<News>>(
+  bloc: blocA, // provide the local bloc instance
+  state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below.
+  ...
+)
+```
+
 **RxBlocProvider** is a Flutter widget which provides a bloc to its children via `RxBlocProvider.of<T>(context)`. It is used as a dependency injection (DI) widget so that a single instance of a bloc can be provided to multiple widgets within a subtree.
 
 In most cases, `RxBlocProvider` should be used to create new `blocs` which will be made available to the rest of the subtree. In this case, since `RxBlocProvider` is responsible for creating the bloc, it will automatically handle closing the bloc.
