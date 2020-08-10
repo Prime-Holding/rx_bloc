@@ -11,7 +11,7 @@ This package is built to work with [rx_bloc](https://github.com/Prime-Holding/Rx
 
 * The `builder` function will potentially be called many times and should be a [pure function](https://en.wikipedia.org/wiki/Pure_function) that returns a widget in response to the state.
 * The `state` function determines which exact state of the bloc will be used. 
-* If the `bloc` parameter is omitted, `RxBlocBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`. 
+* If the `bloc` parameter is omitted, `RxBlocBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
 
 See `RxBlocListener` if you want to "do" anything in response to state changes such as navigation, showing a dialog, etc...
 
@@ -34,6 +34,41 @@ RxBlocBuilder<NewsBlocType, List<News>>(
   builder: (context, state, bloc) {
     // return widget here based on BlocA's state
   }
+)
+```
+
+**RxResultBuilder** is a Flutter widget which requires a `state` function, a set of callbacks `buildSuccess`, `buildError` and `buildLoading`, and an optional `RxBloc`. `RxResultBuilder` is similar to `RxBlocBuilder`, however it is meant as an easier way to handle `Result` states.
+
+* The `buildSuccess`, `buildError` and `buildLoading` functions will potentially be called many times and should be [pure functions](https://en.wikipedia.org/wiki/Pure_function) that return a widget in response to the state.
+* The `state` function determines which exact state of the bloc will be used. 
+* If the `bloc` parameter is omitted, `RxResultBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
+
+```dart
+/// At the first placeholder define what bloc you need, at the second define the type of the [Result] state you want to listen to.
+/// It needs to match the type of the stream in the state function below.
+RxResultBuilder<NewsBlocType, List<News>>( 
+/// Determine which exact state of the bloc will be used for building the widget below. 
+/// In this case the stream [bloc.states.news] should have a type of [Stream<Result<List<News>>>]
+  state: (bloc) => bloc.states.news, 
+  buildSuccess: (context, data, bloc) {
+    ///here return a widget based on the data from the [Result]
+  },
+  buildLoading: (context, bloc) {
+    ///here return a widget showing that we are waiting for the data, e.g. loading indicator
+  },
+  buildError: (context, error, bloc) {
+    ///here return a widget showing what went wrong 
+  },
+)
+```
+
+Only specify the bloc if you wish to provide a bloc that will be scoped to a single widget and isn't accessible via a parent `RxBlocProvider` and the current `BuildContext`.
+
+```dart
+RxResultBuilder<NewsBlocType, List<News>>(
+  bloc: blocA, // provide the local bloc instance
+  state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below.
+  ...
 )
 ```
 
