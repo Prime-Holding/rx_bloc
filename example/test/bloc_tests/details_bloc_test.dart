@@ -20,13 +20,18 @@ void main() {
       });
     });
 
+    //The DetailsBloc starts by automatically fetching data from the Repo,
+    //therefore after we make another fetch request we expect to get two loading
+    //states and two success states
     rxBlocTest<DetailsBloc, Result<String>>(
       'Fetching details',
       build: () async => DetailsBloc(mockRepo),
       state: (bloc) => bloc.states.details,
       act: (bloc) async => bloc.events.fetch(),
       wait: Duration(milliseconds: 60),
+      skip: 0,
       expect: [
+        Result<String>.loading(),
         Result<String>.loading(),
         Result.success('Success'),
         Result.success('Success'),

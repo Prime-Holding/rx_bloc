@@ -11,7 +11,7 @@ This package is built to work with [rx_bloc](https://github.com/Prime-Holding/Rx
 
 * The `builder` function will potentially be called many times and should be a [pure function](https://en.wikipedia.org/wiki/Pure_function) that returns a widget in response to the state.
 * The `state` function determines which exact state of the bloc will be used. 
-* If the `bloc` parameter is omitted, `RxBlocBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`. 
+* If the `bloc` parameter is omitted, `RxBlocBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
 
 See `RxBlocListener` if you want to "do" anything in response to state changes such as navigation, showing a dialog, etc...
 
@@ -41,10 +41,7 @@ RxBlocBuilder<NewsBlocType, List<News>>(
 
 * The `buildSuccess`, `buildError` and `buildLoading` functions will potentially be called many times and should be [pure functions](https://en.wikipedia.org/wiki/Pure_function) that return a widget in response to the state.
 * The `state` function determines which exact state of the bloc will be used. 
-* If the `bloc` parameter is omitted, `RxResultBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`. 
-
-See `RxBlocListener` if you want to "do" anything in response to state changes such as navigation, showing a dialog, etc...
-
+* If the `bloc` parameter is omitted, `RxResultBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
 
 ```dart
 /// At the first placeholder define what bloc you need, at the second define the type of the [Result] state you want to listen to.
