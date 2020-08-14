@@ -11,7 +11,7 @@ abstract class DetailsBlocEvents {
 }
 
 abstract class DetailsBlocStates {
-  Stream<String> get details;
+  Stream<Result<String>> get details;
 
   @RxBlocIgnoreState()
   Stream<bool> get isLoading;
@@ -27,11 +27,10 @@ class DetailsBloc extends $DetailsBloc {
   DetailsBloc(this._detailsRepository);
 
   @override
-  Stream<String> _mapToDetailsState() => _$fetchEvent
+  Stream<Result<String>> _mapToDetailsState() => _$fetchEvent
       .startWith(null)
       .flatMap((_) => _detailsRepository.fetch().asResultStream())
-      .setResultStateHandler(this)
-      .whereSuccess();
+      .setResultStateHandler(this);
 
   @override
   Stream<String> get errors =>
