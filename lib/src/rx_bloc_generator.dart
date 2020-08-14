@@ -52,6 +52,10 @@ class RxBlocGenerator {
     return _stringBuffer.toString();
   }
 
+  void _generateNoDocString() {
+    _writeln('/// {@nodoc}');
+  }
+
   /// Generates the 'part of' section for the appropriate file
   void _generatePartOf() {
     final uri = Uri.tryParse(viewModelElement.location.components.first);
@@ -64,6 +68,7 @@ class RxBlocGenerator {
         "\n/// ${viewModelElement.displayName}Type class used for bloc";
     comment += " event and state access from widgets";
     _writeln(comment);
+    _generateNoDocString();
     _writeln(
         "abstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {");
     _writeln("\n  ${eventsElement.displayName} get events;");
@@ -78,6 +83,7 @@ class RxBlocGenerator {
     comment += "${viewModelElement.displayName} bloc";
     _writeln("\n");
     _writeln(comment);
+    _generateNoDocString();
     _writeln(
         "abstract class \$${viewModelElement.displayName} extends RxBlocBase");
     _writeln("\n    implements");
