@@ -45,34 +45,34 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
   /// Handle [ResultLoading] states from stream.
   ///
   /// Once the states are being handled they sink to [loadingState].
-  /// Converts the stream to broadcast one based on [shareStream].
+  /// Converts the stream to broadcast one based on [shareReplay].
   ///
   /// In case you need to handle error states along with the loading state,
   /// use [setResultStateHandler] instead.
   Stream<Result<T>> setLoadingStateHandler(
     RxBlocBase bloc, {
-    bool shareStream = true,
+    bool shareReplay = true,
   }) =>
       // ignore: invalid_use_of_protected_member
-      bloc.setLoadingStateHandler(this, shareStream: shareStream);
+      bloc.setLoadingStateHandler(this, shareReplay: shareReplay);
 
   /// Handle [ResultError] states from the stream.
   ///
   /// Once the states are being handled they sink to [errorState].
-  /// Converts the stream to broadcast one based on [shareStream].
+  /// Converts the stream to broadcast one based on [shareReplay].
   ///
   /// In case you need to register loading states along with the exceptions,
   /// use [setResultStateHandler] instead.
   Stream<Result<T>> setErrorStateHandler(
     RxBlocBase bloc, {
-    bool shareStream = true,
+    bool shareReplay = true,
   }) =>
       // ignore: invalid_use_of_protected_member
-      bloc.setErrorStateHandler(this, shareStream: shareStream);
+      bloc.setErrorStateHandler(this, shareReplay: shareReplay);
 
   /// Handle [ResultLoading] and [ResultError] by a BLoC.
   ///
-  /// Converts the stream to broadcast one based on [shareStream].
+  /// Converts the stream to broadcast one based on [shareReplay].
   ///
   /// Useful when multiple type of result streams are executed by a single Bloc,
   /// as all [ResultError] and [ResultLoading] states resides in a central place.
@@ -80,9 +80,9 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
   /// Once [ResultLoading] states are being handled they sink to [RxBlocBase.loadingState].
   /// Once [ResultError] states are being handled they sink to [RxBlocBase.errorState].
   Stream<Result<T>> setResultStateHandler(RxBlocBase bloc,
-          {bool shareStream = true}) =>
+          {bool shareReplay = true}) =>
       // ignore: invalid_use_of_protected_member
-      bloc.setResultStateHandler(this, shareStream: shareStream);
+      bloc.setResultStateHandler(this, shareReplay: shareReplay);
 }
 
 extension Bind<T> on Stream<T> {

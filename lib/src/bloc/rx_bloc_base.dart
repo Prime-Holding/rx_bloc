@@ -48,17 +48,17 @@ abstract class RxBlocBase {
   /// Handle [ResultError] states from the stream.
   ///
   /// Once the states are being handled they sink to [errorState].
-  /// Converts the stream to broadcast one based on [shareStream].
+  /// Converts the stream to broadcast one based on [shareReplay].
   ///
   /// In case you need to register loading states along with the exceptions,
   /// use [setResultStateHandler] instead.
   @protected
   Stream<Result<T>> setErrorStateHandler<T>(
     Stream<Result<T>> resultStream, {
-    bool shareStream = true,
+    bool shareReplay = true,
   }) {
     resultStream
-        .transformAs(shareStream: shareStream)
+        .asSharedStream(shareReplay: shareReplay)
         .whereError()
         .bind(_resultStreamExceptionsSubject)
         .disposedBy(_compositeSubscription);
@@ -69,16 +69,16 @@ abstract class RxBlocBase {
   /// Handle [ResultLoading] states from stream.
   ///
   /// Once the states are being handled they sink to [loadingState].
-  /// Converts the stream to broadcast one based on [shareStream].
+  /// Converts the stream to broadcast one based on [shareReplay].
   ///
   /// In case you need to handle error states along with the loading state,
   /// use [setResultStateHandler] instead.
   @protected
   Stream<Result<T>> setLoadingStateHandler<T>(
     Stream<Result<T>> resultStream, {
-    bool shareStream = true,
+    bool shareReplay = true,
   }) {
-    resultStream = resultStream.transformAs(shareStream: shareStream);
+    resultStream = resultStream.asSharedStream(shareReplay: shareReplay);
 
     _loadingBloc.addStream(resultStream.isLoading());
     return resultStream;
@@ -86,7 +86,7 @@ abstract class RxBlocBase {
 
   /// Handle [ResultLoading] and [ResultError] states from the stream.
   ///
-  /// Converts the stream to broadcast one based on [shareStream].
+  /// Converts the stream to broadcast one based on [shareReplay].
   ///
   /// Useful when multiple type of result streams are executed by a single Bloc,
   /// as all [ResultError] and [ResultLoading] states resides in a central place.
@@ -96,12 +96,12 @@ abstract class RxBlocBase {
   @protected
   Stream<Result<T>> setResultStateHandler<T>(
     Stream<Result<T>> resultStream, {
-    bool shareStream = true,
+    bool shareReplay = true,
   }) {
-    resultStream = resultStream.transformAs(shareStream: shareStream);
+    resultStream = resultStream.asSharedStream(shareReplay: shareReplay);
 
-    setErrorStateHandler(resultStream, shareStream: false);
-    setLoadingStateHandler(resultStream, shareStream: false);
+    setErrorStateHandler(resultStream, shareReplay: false);
+    setLoadingStateHandler(resultStream, shareReplay: false);
     return resultStream;
   }
 
@@ -113,12 +113,14 @@ abstract class RxBlocBase {
   }
 }
 
-extension _StreamAsShareReplayed<T> on Stream<T> {
-  Stream<T> transformAs({bool shareStream = true}) {
-    if (shareStream && this is! Subject<Result<T>>) {
+extension _StreamAsSharedStream<T> on Stream<T> {
+  Stream<T> asSharedStream({bool shareReplay = true}) {
+    if (shareReplay) {
+      if (this is! ReplayStream<T>) {
+        return this.shareReplay(maxSize: 1);
+      }
+    } else if (this is! PublishSubject<T>) {
       return this.share();
-    } else if (!shareStream) {
-      return this.shareReplay(maxSize: 1);
     }
 
     return this;

@@ -6,13 +6,34 @@ import 'package:rxdart/rxdart.dart';
 class BlocImpl extends RxBlocBase {}
 
 void main() {
-  group('RxBlocBase', () {
-    test('Request is loading', () async {
+  group('RxBlocBase: setLoadingStateHandler', () {
+    test('Request is loading with shared stream', () async {
       final bloc = BlocImpl();
       final stream = BehaviorSubject.seeded(Result.loading());
-      bloc.setLoadingStateHandler(stream);
+      bloc.setLoadingStateHandler(stream, shareReplay: true);
       expect(bloc.loadingState, emitsInOrder([false, true]));
       stream.close();
+    });
+
+    test(
+        'Test setLoadingStateHandler with Publish Stream enabled doesn\'t share the stream again',
+        () async {
+      final bloc = BlocImpl();
+      final stream = Future.value(3.14).asResultStream().share();
+      final streamAfterSettingHandlers =
+          bloc.setLoadingStateHandler(stream, shareReplay: false);
+      expect(identical(stream, streamAfterSettingHandlers), isTrue);
+    });
+
+    test(
+        'Test setLoadingStateHandler with Replay Stream enabled doesn\'t share the stream again',
+        () async {
+      final bloc = BlocImpl();
+      final stream =
+          Future.value(3.14).asResultStream().shareReplay(maxSize: 1);
+      final streamAfterSettingHandlers =
+          bloc.setLoadingStateHandler(stream, shareReplay: true);
+      expect(identical(stream, streamAfterSettingHandlers), isTrue);
     });
 
     test('Request is loading, stop loading', () async {
@@ -39,7 +60,9 @@ void main() {
       expect(
           bloc.loadingState, emitsInOrder([false, true, false, true, false]));
     });
+  });
 
+  group('RxBlocBase: setErrorStateHandler', () {
     test('Exception occured', () async {
       final bloc = BlocImpl();
       final ex = Result.error(Exception('An error occured'));
@@ -51,6 +74,29 @@ void main() {
       stream.close();
     });
 
+    test(
+        'Test setErrorStateHandler with Replay Stream enabled doesn\'t share the stream again',
+        () async {
+      final bloc = BlocImpl();
+      final stream =
+          Future.value(3.14).asResultStream().shareReplay(maxSize: 1);
+      final streamAfterSettingHandlers =
+          bloc.setErrorStateHandler(stream, shareReplay: true);
+      expect(identical(stream, streamAfterSettingHandlers), isTrue);
+    });
+
+    test(
+        'Test setErrorStateHandler with Publish Stream enabled doesn\'t share the stream again',
+        () async {
+      final bloc = BlocImpl();
+      final stream = Future.value(3.14).asResultStream().share();
+      final streamAfterSettingHandlers =
+          bloc.setErrorStateHandler(stream, shareReplay: false);
+      expect(identical(stream, streamAfterSettingHandlers), isTrue);
+    });
+  });
+
+  group('RxBlocBase: setResultStateHandler', () {
     test('Test setResultStateHandler with shareStream enabled', () async {
       int listenCount = 0;
       final bloc = BlocImpl();
@@ -61,7 +107,7 @@ void main() {
         listenCount++;
       });
       final data =
-          bloc.setResultStateHandler(stream, shareStream: true).whereSuccess();
+          bloc.setResultStateHandler(stream, shareReplay: true).whereSuccess();
       expect(bloc.loadingState, emitsInOrder([false, true, false]));
       expect(data, emits(3.14));
       expect(listenCount, 1);
@@ -80,7 +126,7 @@ void main() {
         listenCount++;
       });
       final data =
-          bloc.setResultStateHandler(stream, shareStream: true).whereSuccess();
+          bloc.setResultStateHandler(stream, shareReplay: true).whereSuccess();
       expect(bloc.loadingState, emitsInOrder([false, true, false]));
       expect(data, emits(3.14));
       expect(listenCount, 1);
@@ -93,7 +139,7 @@ void main() {
         listenCount++;
       });
       final data =
-          bloc.setResultStateHandler(stream, shareStream: false).whereSuccess();
+          bloc.setResultStateHandler(stream, shareReplay: false).whereSuccess();
       expect(bloc.loadingState, emitsInOrder([]));
       expect(data, emitsInOrder([]));
       expect(listenCount, 1);
@@ -111,19 +157,30 @@ void main() {
         listenCount++;
       });
       final data =
-          bloc.setResultStateHandler(stream, shareStream: false).whereSuccess();
+          bloc.setResultStateHandler(stream, shareReplay: false).whereSuccess();
       expect(bloc.loadingState, emitsInOrder([]));
       expect(data, emitsInOrder([]));
       expect(listenCount, 1);
     });
 
     test(
-        'Test setResultStateHandler with shareStream enabled doesn\'t share the stream again',
+        'Test setResultStateHandler with Replay Stream enabled doesn\'t share the stream again',
+        () async {
+      final bloc = BlocImpl();
+      final stream =
+          Future.value(3.14).asResultStream().shareReplay(maxSize: 1);
+      final streamAfterSettingHandlers =
+          bloc.setResultStateHandler(stream, shareReplay: true);
+      expect(identical(stream, streamAfterSettingHandlers), isTrue);
+    });
+
+    test(
+        'Test setResultStateHandler with Publish Stream enabled doesn\'t share the stream again',
         () async {
       final bloc = BlocImpl();
       final stream = Future.value(3.14).asResultStream().share();
       final streamAfterSettingHandlers =
-          bloc.setResultStateHandler(stream, shareStream: true);
+          bloc.setResultStateHandler(stream, shareReplay: false);
       expect(identical(stream, streamAfterSettingHandlers), isTrue);
     });
   });
