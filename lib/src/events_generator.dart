@@ -1,8 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:rx_bloc/annotation/rx_bloc_annotations.dart';
-import 'package:rx_bloc_generator/utilities/string_extensions.dart';
-import 'package:rx_bloc_generator/utilities/utilities.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:source_gen/source_gen.dart';
+
+import 'utilities/string_extensions.dart';
+import 'utilities/utilities.dart';
 
 /// Used for @RxBlocEvent() annotation checking
 final _eventAnnotationChecker = TypeChecker.fromRuntime(RxBlocEvent);
