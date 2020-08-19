@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
-import 'bloc/rx_bloc_base.dart';
-import 'model/result.dart';
+import './bloc/rx_bloc_base.dart';
+import './model/result.dart';
 
 extension ResultStream<T> on Stream<Result<T>> {
   /// Finds the [ResultSuccess] as unwraps the [ResultSuccess.data] from it.
@@ -42,6 +42,34 @@ extension FutureAsResultStream<T> on Future<T> {
 }
 
 extension HandleByRxBlocBase<T> on Stream<Result<T>> {
+  /// Handle [ResultLoading] states from stream.
+  ///
+  /// Once the states are being handled they sink to [loadingState].
+  /// Converts the stream to broadcast one based on [shareStream].
+  ///
+  /// In case you need to handle error states along with the loading state,
+  /// use [setResultStateHandler] instead.
+  Stream<Result<T>> setLoadingStateHandler(
+    RxBlocBase bloc, {
+    bool shareStream = true,
+  }) =>
+      // ignore: invalid_use_of_protected_member
+      bloc.setLoadingStateHandler(this, shareStream: shareStream);
+
+  /// Handle [ResultError] states from the stream.
+  ///
+  /// Once the states are being handled they sink to [errorState].
+  /// Converts the stream to broadcast one based on [shareStream].
+  ///
+  /// In case you need to register loading states along with the exceptions,
+  /// use [setResultStateHandler] instead.
+  Stream<Result<T>> setErrorStateHandler(
+    RxBlocBase bloc, {
+    bool shareStream = true,
+  }) =>
+      // ignore: invalid_use_of_protected_member
+      bloc.setErrorStateHandler(this, shareStream: shareStream);
+
   /// Handle [ResultLoading] and [ResultError] by a BLoC.
   ///
   /// Converts the stream to broadcast one based on [shareStream].
@@ -49,8 +77,8 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
   /// Useful when multiple type of result streams are executed by a single Bloc,
   /// as all [ResultError] and [ResultLoading] states resides in a central place.
   ///
-  /// Once [ResultLoading] states are being hadhled they sink to [RxBlocBase.loadingState].
-  /// Once [ResultError] states are being hadhled they sink to [RxBlocBase.errorState].
+  /// Once [ResultLoading] states are being handled they sink to [RxBlocBase.loadingState].
+  /// Once [ResultError] states are being handled they sink to [RxBlocBase.errorState].
   Stream<Result<T>> setResultStateHandler(RxBlocBase bloc,
           {bool shareStream = true}) =>
       // ignore: invalid_use_of_protected_member

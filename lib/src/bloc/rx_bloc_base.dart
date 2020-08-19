@@ -48,25 +48,38 @@ abstract class RxBlocBase {
   /// Handle [ResultError] states from the stream.
   ///
   /// Once the states are being handled they sink to [errorState].
+  /// Converts the stream to broadcast one based on [shareStream].
   ///
   /// In case you need to register loading states along with the exceptions,
   /// use [setResultStateHandler] instead.
   @protected
-  StreamSubscription<Exception> setErrorStateHandler<T>(
-          Stream<Result<T>> resultStream) =>
-      resultStream
-          .whereError()
-          .bind(_resultStreamExceptionsSubject)
-          .disposedBy(_compositeSubscription);
+  Stream<Result<T>> setErrorStateHandler<T>(
+    Stream<Result<T>> resultStream, {
+    bool shareStream = true,
+  }) {
+    resultStream
+        .transformAs(shareStream: shareStream)
+        .whereError()
+        .bind(_resultStreamExceptionsSubject)
+        .disposedBy(_compositeSubscription);
+
+    return resultStream;
+  }
 
   /// Handle [ResultLoading] states from stream.
   ///
   /// Once the states are being handled they sink to [loadingState].
+  /// Converts the stream to broadcast one based on [shareStream].
   ///
   /// In case you need to handle error states along with the loading state,
   /// use [setResultStateHandler] instead.
   @protected
-  Stream<Result<T>> setLoadingStateHandler<T>(Stream<Result<T>> resultStream) {
+  Stream<Result<T>> setLoadingStateHandler<T>(
+    Stream<Result<T>> resultStream, {
+    bool shareStream = true,
+  }) {
+    resultStream = resultStream.transformAs(shareStream: shareStream);
+
     _loadingBloc.addStream(resultStream.isLoading());
     return resultStream;
   }
@@ -81,15 +94,14 @@ abstract class RxBlocBase {
   /// Once [ResultLoading] states are being handled they sink to [loadingState].
   /// Once [ResultError] states are being handled they sink to [errorState].
   @protected
-  Stream<Result<T>> setResultStateHandler<T>(Stream<Result<T>> resultStream,
-      {bool shareStream = true}) {
-    if (shareStream && resultStream is! Subject<Result<T>>) {
-      resultStream = resultStream.share();
-    } else if (!shareStream) {
-      resultStream = resultStream.shareReplay(maxSize: 1);
-    }
-    setErrorStateHandler(resultStream);
-    setLoadingStateHandler(resultStream);
+  Stream<Result<T>> setResultStateHandler<T>(
+    Stream<Result<T>> resultStream, {
+    bool shareStream = true,
+  }) {
+    resultStream = resultStream.transformAs(shareStream: shareStream);
+
+    setErrorStateHandler(resultStream, shareStream: false);
+    setLoadingStateHandler(resultStream, shareStream: false);
     return resultStream;
   }
 
@@ -98,5 +110,17 @@ abstract class RxBlocBase {
     _resultStreamExceptionsSubject.close();
     _compositeSubscription.dispose();
     _loadingBloc.dispose();
+  }
+}
+
+extension _StreamAsShareReplayed<T> on Stream<T> {
+  Stream<T> transformAs({bool shareStream = true}) {
+    if (shareStream && this is! Subject<Result<T>>) {
+      return this.share();
+    } else if (!shareStream) {
+      return this.shareReplay(maxSize: 1);
+    }
+
+    return this;
   }
 }
