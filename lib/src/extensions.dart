@@ -97,7 +97,7 @@ extension Bind<T> on Stream<T> {
       listen((data) => subject.value = data);
 }
 
-extension Dispose<T> on StreamSubscription<T> {
+extension DisposedBy<T> on StreamSubscription<T> {
   /// Add the stream to [compositeSubscription].
   ///
   /// Once [compositeSubscription] is being disposed all added subscriptions
