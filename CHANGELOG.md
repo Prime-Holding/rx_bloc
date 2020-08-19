@@ -1,3 +1,11 @@
+## [1.0.0] - August 20, 2020
+* Upgraded to last stable Flutter/Dart
+* Reorganized as a library package
+* Implemented Stream extensions
+  * setErrorStateHandler()
+  * setLoadingStateHandler()
+* Renamed parameter `shareStream` to `shareReplay` of setResultStateHandler() 
+
 ## [0.3.1] - April 29, 2020
 * Upgraded to last stable Flutter/Dart
 * Upgraded to last stable RxDart
