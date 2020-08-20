@@ -3,9 +3,9 @@ import 'package:rxdart/rxdart.dart';
 import '../extensions.dart';
 
 /// Merges all isLoadingStreams into one isLoading stream
-/// 
+///
 /// The isLoading stream starts with default value false.
-/// 
+///
 /// **Example:**
 ///    # Input isLoadingStreams
 ///    - |-------true-----false----------->

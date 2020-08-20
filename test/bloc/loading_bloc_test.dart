@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc/src/bloc/loading_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
