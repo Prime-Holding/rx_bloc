@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rx_bloc/extensions.dart';
-import 'package:rx_bloc/model/result.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 
 void main() {
   group("Stream asResultStream", () {
