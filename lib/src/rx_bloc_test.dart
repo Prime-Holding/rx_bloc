@@ -40,7 +40,7 @@ void rxBlocTest<B extends RxBlocBase, StateOutputType>(
   Future<void> Function(B) act,
   Iterable expect,
   Duration wait,
-  int skip = 1,
+  int skip = 0,
 }) {
   FakeAsync().run((async) {
     tester.test(message, () async {

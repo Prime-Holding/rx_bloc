@@ -10,7 +10,7 @@ void main() {
       'Basic rxBlocTest',
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
-      expect: [],
+      expect: [0],
     );
 
     rxBlocTest<CounterBloc, int>(
@@ -18,7 +18,7 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
       act: (bloc) async => bloc.increase(),
-      expect: [1],
+      expect: [0, 1],
     );
 
     rxBlocTest<CounterBloc, int>(
@@ -54,7 +54,7 @@ void main() {
       state: (bloc) => bloc.states.details,
       act: (bloc) async => bloc.events.fetch(),
       wait: Duration(milliseconds: 60),
-      expect: ['Success'],
+      expect: ['Success', 'Success'],
     );
   });
 }
