@@ -1,4 +1,4 @@
-import 'package:rx_bloc/bloc/rx_bloc_base.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CounterBloc extends RxBlocBase {

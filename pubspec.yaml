@@ -6,15 +6,15 @@ issue_tracker: https://github.com/Prime-Holding/RxBlocTest/issues
 homepage: https://primeholding.com
 
 environment:
-  sdk: ">=2.9.0 <3.0.0"
+  sdk: ">=2.8.1 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  test: ^1.15.3
-  meta: ^1.2.2
-  rx_bloc: ^1.0.0
+  test: ^1.15.2
+  meta: ^1.1.8
+  rx_bloc: ^1.0.1
   mockito: ^4.1.1
   rxdart: ^0.24.1
   quiver: ^2.1.3
