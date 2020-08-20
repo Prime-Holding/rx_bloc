@@ -6,10 +6,10 @@ import '../../lib/bloc/counter_bloc.dart';
 void main() {
   group('CounterBloc tests', () {
     rxBlocTest<CounterBloc, String>(
-      'Nothing expected',
+      'Initial state',
       build: () async => CounterBloc(),
       state: (bloc) => bloc.states.count,
-      expect: [],
+      expect: ['0'],
     );
 
     rxBlocTest<CounterBloc, String>(
@@ -17,7 +17,7 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.states.count,
       act: (bloc) async => bloc.events.increment(),
-      expect: ['1'],
+      expect: ['0', '1'],
     );
 
     rxBlocTest<CounterBloc, String>(
@@ -37,7 +37,7 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.states.count,
       act: (bloc) async => bloc.events.decrement(),
-      expect: ['-1'],
+      expect: ['0', '-1'],
     );
 
     rxBlocTest<CounterBloc, bool>(

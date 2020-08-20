@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:rx_bloc/bloc/rx_bloc_base.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 
 /// Used as a DI widget where an instance of a [bloc] can be provided
 /// to multiple widgets within a subtree.
