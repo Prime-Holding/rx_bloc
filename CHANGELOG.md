@@ -1,3 +1,7 @@
+## [0.2.1] - May 5, 2020
+* Updated package dependencies
+* Reorganized package
+
 ## [0.2.0] - May 5, 2020
 
 * Improved error handling and displaying:
@@ -6,16 +10,16 @@
 
 ## [0.1.3] - April 7, 2020
 
-* Update package dependencies
+* Updated package dependencies
 
 ## [0.1.2] - March 19, 2020
 
-* Fix generation of `part of` 
-* Update `rx_bloc` package to `0.2.0`
+* Fixed generation of `part of` 
+* Updated `rx_bloc` package to `0.2.0`
 
 ## [0.1.1] - March 16, 2020
 
-* Fix conflicting outputs with other builders
+* Fixed conflicting outputs with other builders
 
 ## [0.1.0] - March 14, 2020
 

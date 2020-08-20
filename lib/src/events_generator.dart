@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:rx_bloc/annotation/rx_bloc_annotations.dart';
-import 'package:rx_bloc_generator/utilities/utilities.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'package:rx_bloc_generator/utilities/string_extensions.dart';
+import 'utilities/string_extensions.dart';
+import 'utilities/utilities.dart';
 
 /// Used for @RxBlocEvent() annotation checking
 final _eventAnnotationChecker = TypeChecker.fromRuntime(RxBlocEvent);
@@ -44,9 +44,13 @@ class EventsGenerator {
   /// Generates argument classes for events containing more than one parameter
   String generateArgumentClasses() {
     StringBuffer _argClassString = StringBuffer();
+    final _multiParameterEvents =
+        _eventsClass.methods.where((method) => method.parameters.length > 1);
+    if (_multiParameterEvents.isEmpty) return '';
+
+    // Generate argument classes section only if there is at least one class
     _argClassString.writeln('/// region Argument classes\n');
-    for (var method in _eventsClass.methods
-        .where((method) => method.parameters.length > 1)) {
+    for (var method in _multiParameterEvents) {
       _argClassString.writeln('/// region ${method.argumentsClassName} class');
       _argClassString.writeln(_generateArgumentClass(method));
       _argClassString
@@ -61,7 +65,8 @@ class EventsGenerator {
     StringBuffer _buffer = StringBuffer();
     final className = method.argumentsClassName;
     final paramNames = method.parameterNames;
-    _buffer.writeln('\nclass $className {\n');
+    _buffer.writeln('\n/// {@nodoc}');
+    _buffer.writeln('class $className {\n');
     // Create all the parameters first
     paramNames.forEach((paramName) {
       final param = method.getParameter(paramName);
@@ -253,9 +258,10 @@ extension _MethodExtensions on MethodElement {
       // Add default value (if any)
       if (param.defaultValueCode != null) {
         int index = def.indexOf(paramName);
+        final assignChar = param.isPositional ? '=' : ':';
         def = def.substring(0, index) +
             def.substring(index, index + paramName.length) +
-            ': ${param.defaultValueCode}' +
+            '$assignChar ${param.defaultValueCode}' +
             def.substring(index + paramName.length);
       }
     });

@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:rx_bloc_generator/utilities/string_extensions.dart';
+
+import 'string_extensions.dart';
 
 const Symbol logKey = #buildLog;
 

@@ -1,9 +1,12 @@
+library rx_bloc_generator;
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:rx_bloc/annotation/rx_bloc_annotations.dart';
-import 'package:rx_bloc_generator/src/rx_bloc_generator.dart';
-import 'package:rx_bloc_generator/utilities/utilities.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:source_gen/source_gen.dart';
+
+import 'src/rx_bloc_generator.dart';
+import 'src/utilities/utilities.dart';
 
 /// The entry point of the RxBloc code generation
 Builder rxBlocGenerator(BuilderOptions options) {
