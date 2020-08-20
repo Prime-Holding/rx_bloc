@@ -1,3 +1,6 @@
+## [1.0.1] - August 21, 2020
+* Upgraded to last stable SDK
+
 ## [1.0.0] - August 20, 2020
 * Upgraded to last stable Flutter/Dart
 * Reorganized as a [library package](https://dart.dev/guides/libraries/create-library-packages#organizing-a-library-package)
