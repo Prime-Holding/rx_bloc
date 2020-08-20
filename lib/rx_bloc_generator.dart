@@ -1,3 +1,5 @@
+library rx_bloc_generator;
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:rx_bloc/rx_bloc.dart';
