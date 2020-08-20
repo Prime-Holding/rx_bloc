@@ -6,12 +6,16 @@
 
 part of 'details_bloc.dart';
 
+/// DetailsBlocType class used for bloc event and state access from widgets
+/// {@nodoc}
 abstract class DetailsBlocType extends RxBlocTypeBase {
   DetailsBlocEvents get events;
 
   DetailsBlocStates get states;
 }
 
+/// $DetailsBloc class - extended by the DetailsBloc bloc
+/// {@nodoc}
 abstract class $DetailsBloc extends RxBlocBase
     implements DetailsBlocEvents, DetailsBlocStates, DetailsBlocType {
   ///region Events
@@ -49,6 +53,8 @@ abstract class $DetailsBloc extends RxBlocBase
   DetailsBlocStates get states => this;
 
   ///endregion Type
+
+  /// Dispose of all the opened streams
   void dispose() {
     _$fetchEvent.close();
     super.dispose();

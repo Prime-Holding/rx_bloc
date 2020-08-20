@@ -6,12 +6,16 @@
 
 part of 'counter_bloc.dart';
 
+/// CounterBlocType class used for bloc event and state access from widgets
+/// {@nodoc}
 abstract class CounterBlocType extends RxBlocTypeBase {
   CounterBlocEvents get events;
 
   CounterBlocStates get states;
 }
 
+/// $CounterBloc class - extended by the CounterBloc bloc
+/// {@nodoc}
 abstract class $CounterBloc extends RxBlocBase
     implements CounterBlocEvents, CounterBlocStates, CounterBlocType {
   ///region Events
@@ -90,6 +94,8 @@ abstract class $CounterBloc extends RxBlocBase
   CounterBlocStates get states => this;
 
   ///endregion Type
+
+  /// Dispose of all the opened streams
   void dispose() {
     _$incrementEvent.close();
     _$decrementEvent.close();

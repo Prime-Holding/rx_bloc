@@ -14,12 +14,12 @@ description: A sample RX bloc application
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.8.1 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  rx_bloc: ^0.3.0
+  rx_bloc: ^1.0.1
   flutter_rx_bloc:
     path: ../
   # The following adds the Cupertino Icons font to your application.
@@ -34,9 +34,9 @@ dev_dependencies:
     sdk: flutter
   flutter_gherkin: ^1.1.7+3
   build_runner:
-  rx_bloc_generator: ^0.1.2
+  rx_bloc_generator: ^0.2.1
   mockito: ^4.1.1
-  rx_bloc_test: ^0.0.2
+  rx_bloc_test: ^0.0.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
