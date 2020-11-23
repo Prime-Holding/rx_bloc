@@ -25,23 +25,27 @@ class SearchPage extends StatelessWidget {
             //TODO: replace this hardcoded duration with actual loaded event
             return Future.delayed(const Duration(seconds: 1));
           },
-          child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              final item = snapshot[index];
+          child: SafeArea(
+            child: ListView.builder(
+              padding: const EdgeInsets.only(bottom: 67),
+              itemCount: snapshot.length,
+              itemBuilder: (ctx, index) {
+                final item = snapshot[index];
 
-              return PuppyCard(
-                key: Key('${key.toString()}${item.id}'),
-                onVisible: (puppy) =>
-                    RxBlocProvider.of<PuppiesExtraDetailsBlocType>(context)
-                        .events
-                        .fetchExtraDetails(puppy),
-                puppy: item,
-                onFavorite: (puppy, isFavorite) =>
-                    RxBlocProvider.of<PuppyManageBlocType>(context)
-                        .events
-                        .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
-              );
-            },
+                return PuppyCard(
+                  key: Key('${key.toString()}${item.id}'),
+                  onVisible: (puppy) =>
+                      RxBlocProvider.of<PuppiesExtraDetailsBlocType>(context)
+                          .events
+                          .fetchExtraDetails(puppy),
+                  puppy: item,
+                  onFavorite: (puppy, isFavorite) =>
+                      RxBlocProvider.of<PuppyManageBlocType>(context)
+                          .events
+                          .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
+                );
+              },
+            ),
           ),
         ),
       );

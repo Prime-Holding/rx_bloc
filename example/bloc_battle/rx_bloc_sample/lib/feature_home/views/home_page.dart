@@ -5,6 +5,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc_sample/base/ui_components/puppies_app_bar.dart';
 import 'package:rx_bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:rx_bloc_sample/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
@@ -28,14 +29,7 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: RxBlocBuilder<NavigationBarBlocType, String>(
-          state: (bloc) => bloc.states.title,
-          builder: (context, snapshot, bloc) => snapshot.build(
-            (title) => Text(title),
-          ),
-        ),
-      ),
+      appBar: PuppiesAppBar(),
       body: RxBlocListener<PuppyManageBlocType, String>(
         state: (bloc) => bloc.states.error,
         listener: (ctx, state) =>

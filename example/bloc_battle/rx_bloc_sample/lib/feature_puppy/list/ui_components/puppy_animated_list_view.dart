@@ -16,32 +16,35 @@ class PuppyAnimatedListView extends StatelessWidget {
   final Stream<List<Puppy>> _puppyList;
 
   @override
-  Widget build(BuildContext context) => AnimatedStreamList<Puppy>(
-        streamList: _puppyList,
-        primary: true,
-        itemBuilder: (item, index, context, animation) => _createTile(
-          PuppyCard(
-            key: Key('${key.toString()}${item.id}'),
-            puppy: item,
-            onFavorite: (puppy, isFavorite) =>
-                RxBlocProvider.of<PuppyManageBlocType>(context)
-                    .events
-                    .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
+  Widget build(BuildContext context) => SafeArea(
+        child: AnimatedStreamList<Puppy>(
+          streamList: _puppyList,
+          primary: true,
+          padding: const EdgeInsets.only(bottom: 67),
+          itemBuilder: (item, index, context, animation) => _createTile(
+            PuppyCard(
+              key: Key('${key.toString()}${item.id}'),
+              puppy: item,
+              onFavorite: (puppy, isFavorite) =>
+                  RxBlocProvider.of<PuppyManageBlocType>(context)
+                      .events
+                      .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
+            ),
+            animation,
           ),
-          animation,
-        ),
-        itemRemovedBuilder: (item, index, context, animation) =>
-            _createRemovedTile(
-          PuppyCard(
-            key: Key('${key.toString()}${item.id}'),
-            puppy: item,
-            onFavorite: null,
-            onVisible: (puppy) =>
-                RxBlocProvider.of<PuppiesExtraDetailsBlocType>(context)
-                    .events
-                    .fetchExtraDetails(puppy),
+          itemRemovedBuilder: (item, index, context, animation) =>
+              _createRemovedTile(
+            PuppyCard(
+              key: Key('${key.toString()}${item.id}'),
+              puppy: item,
+              onFavorite: null,
+              onVisible: (puppy) =>
+                  RxBlocProvider.of<PuppiesExtraDetailsBlocType>(context)
+                      .events
+                      .fetchExtraDetails(puppy),
+            ),
+            animation,
           ),
-          animation,
         ),
       );
 

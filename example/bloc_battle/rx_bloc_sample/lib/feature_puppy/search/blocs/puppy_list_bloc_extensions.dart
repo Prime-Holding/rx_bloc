@@ -6,7 +6,7 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
   ///
   /// In case [_ReloadData.silently] is true, the loading event will be skipped.
   Stream<Result<List<Puppy>>> fetchPuppies(PuppiesRepository repository) =>
-      throttleTime(const Duration(milliseconds: 200)).switchMap(
+      debounceTime(const Duration(milliseconds: 600)).switchMap(
         (reloadData) => repository
             .getPuppies(query: reloadData.query)
             .asResultStream()
@@ -34,11 +34,13 @@ extension StreamBindToPuppies on Stream<List<Puppy>> {
 }
 
 extension _PuppyListBlocReloaders on PuppyListBloc {
-  /// Combine [_$filterPuppiesEvent] and [_$reloadFavoritePuppiesEvent] as
+  /// Use [filterPuppies] and [reloadFavoritePuppies] as
   /// a reload trigger.
-  Stream<_ReloadData> _reloadTrigger() => Rx.combineLatest2(
-        _$filterPuppiesEvent,
-        _$reloadFavoritePuppiesEvent,
-        (query, silently) => _ReloadData(silently, query),
-      );
+  Stream<_ReloadData> _reloadTrigger() => Rx.merge([
+        _$filterPuppiesEvent
+            .distinct()
+            .map((query) => _ReloadData(false, query)),
+        _$reloadFavoritePuppiesEvent.map(
+            (silently) => _ReloadData(silently, _$filterPuppiesEvent.value)),
+      ]);
 }

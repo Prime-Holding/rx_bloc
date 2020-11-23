@@ -33,7 +33,6 @@ class PuppyListBloc extends $PuppyListBloc {
   ) {
     _reloadTrigger()
         .fetchPuppies(repository)
-        .setLoadingStateHandler(this)
         .bind(_puppies)
         .disposedBy(_compositeSubscription);
 

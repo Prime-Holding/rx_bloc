@@ -5,7 +5,7 @@ import '../models/puppy.dart';
 
 class PuppiesRepository {
   /// Simulate delays of the API http requests
-  final artificialDelay = Duration(seconds: 1);
+  final artificialDelay = Duration(milliseconds: 300);
 
   /// Control how many time the 20 below will be multiplied.
   final generatedPuppiesMultiplier = 50;
@@ -15,7 +15,7 @@ class PuppiesRepository {
   }
 
   Future<List<Puppy>> getPuppies({String query = ''}) async {
-    await Future.delayed(artificialDelay);
+    await Future.delayed(artificialDelay + Duration(milliseconds: 100));
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
       throw Exception('No internet connection. Please check your settings.');
@@ -27,7 +27,10 @@ class PuppiesRepository {
 
     final coppiedPuppies = [...puppies];
 
-    return coppiedPuppies.where((puppy) => puppy.name.contains(query)).toList();
+    return coppiedPuppies
+        .where(
+            (puppy) => puppy.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   Future<List<Puppy>> getFavoritePuppies() async {
