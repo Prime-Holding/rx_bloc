@@ -29,19 +29,22 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: PuppiesAppBar(),
-      body: RxBlocListener<PuppyManageBlocType, String>(
-        state: (bloc) => bloc.states.error,
-        listener: (ctx, state) =>
-            Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(state))),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            _buildBody(),
-            _buildNavBar(),
-          ],
+        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomInset: false,
+        appBar: PuppiesAppBar(),
+        body: RxBlocListener<PuppyManageBlocType, String>(
+          state: (bloc) => bloc.states.error,
+          listener: (ctx, state) =>
+              Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(state))),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              _buildBody(),
+              _buildNavBar(),
+            ],
+          ),
         ),
-      ));
+      );
 
   RxBlocBuilder<NavigationBarBlocType, NavigationItem> _buildBody() =>
       RxBlocBuilder<NavigationBarBlocType, NavigationItem>(

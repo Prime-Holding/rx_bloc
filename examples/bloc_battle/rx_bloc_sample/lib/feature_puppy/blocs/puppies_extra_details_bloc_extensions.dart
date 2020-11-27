@@ -15,6 +15,8 @@ extension _StreamFetchExtraDetails on Stream<Puppy> {
           .where((puppies) => puppies.isNotEmpty)
           .flatMap(
               (value) => repository.fetchFullEntities(value.ids).asStream())
-          .doOnData((puppies) =>
-              coordinatorBloc.events.puppiesWithExtraDetailsFetched(puppies));
+          .doOnData(
+            (puppies) =>
+                coordinatorBloc.events.puppiesWithExtraDetailsFetched(puppies),
+          );
 }

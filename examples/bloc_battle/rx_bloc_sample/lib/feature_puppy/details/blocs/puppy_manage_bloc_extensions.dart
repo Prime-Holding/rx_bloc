@@ -17,18 +17,27 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
       throttleTime(const Duration(milliseconds: 200))
           .switchMap<Result<Puppy>>((args) async* {
             yield Result.loading();
+            // emit an event with the copied instance of the entity, so that UI
+            // can update immediately
             yield Result.success(
-                args.puppy.copyWith(isFavorite: args.isFavorite));
+              args.puppy.copyWith(isFavorite: args.isFavorite),
+            );
 
             yield Result.loading();
             try {
-              yield Result.success((await puppiesRepository
-                      .favoritePuppy(args.puppy, isFavorite: args.isFavorite))
-                  .copyWith(
-                      displayBreedCharacteristics:
-                          args.puppy.displayBreedCharacteristics,
-                      displayName: args.puppy.displayName));
+              final updatedPuppy = await puppiesRepository
+                  .favoritePuppy(args.puppy, isFavorite: args.isFavorite);
+
+              yield Result.success(
+                updatedPuppy.copyWith(
+                  displayBreedCharacteristics:
+                      args.puppy.displayBreedCharacteristics,
+                  displayName: args.puppy.displayName,
+                ),
+              );
             } catch (e) {
+              // In case of any error rollback the puppy to the previous state
+              // and notify the UI layer for the error
               bloc._favoritePuppyError.sink.add(e);
               yield Result.success(args.puppy);
             }
