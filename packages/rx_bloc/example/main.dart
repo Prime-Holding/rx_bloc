@@ -7,47 +7,44 @@ void main() async {
   /// Create a `CounterBloc` instance.
   final bloc = CounterBloc(ServerSimulator());
 
-  /// Listen to the state
+  /// Listen to the `count` state.
   bloc.states.count.listen((int number) {
-    print('onChange -- the number is $number');
+    print('onChange -- Count state changed to $number');
   });
 
-  /// Listen to the error state
+  /// Listen to the `error` state.
   bloc.states.errors.listen((String error) {
     print('onError -- $error');
   });
 
-  /// Listen to the loading state
+  /// Listen to the `loading` state.
   bloc.states.isLoading.listen((bool isLoading) {
-    print(isLoading ? 'Loading...' : 'Loaded ☑ \n');
+    print(isLoading ? 'Loading...' : 'Loaded ✔ \n');
   });
 
-  /// Increment once
   await Future.delayed(Duration(milliseconds: 500));
-  bloc.events.increment();
 
-  /// Increment again.
-  await Future.delayed(Duration(milliseconds: 500));
-  bloc.events.increment();
+  /// Fire the increment event.
+  bloc.events.increment(); // 1
 
-  /// Increment again to cause exception
   await Future.delayed(Duration(milliseconds: 500));
-  bloc.events.increment();
 
-  /// Decrement
+  /// Decrementing.
+  bloc.events.decrement(); // 0
+
+  /// Decrementing one more time will cause an error.
   await Future.delayed(Duration(milliseconds: 500));
-  bloc.events.decrement();
+  bloc.events.decrement(); // Exception.
 }
 
 /// This BloC and its event and state contracts usually
-/// resides in counter_bloc.dart
-
+/// resides in `counter_bloc.dart`
 /// A contract class containing all events.
 abstract class CounterBlocEvents {
-  /// Increment the count
+  /// Increment the count event.
   void increment();
 
-  /// Decrement the count
+  /// Decrement the count event.
   void decrement();
 }
 
@@ -65,14 +62,19 @@ abstract class CounterBlocStates {
 
   /// Error messages
   Stream<String> get errors;
+
+  /// ... state n
+  /// You can have as many states as you need.
+  /// You're not limited to 1 state for a bloc class.
 }
 
+/// A RX `CounterBloc` which maps multiple events with multiple states.
 class CounterBloc extends $CounterBloc {
   CounterBloc(this._server);
 
   ServerSimulator _server;
 
-  /// Map increment and decrement events to `count` state
+  /// Map increment and decrement events to `count` state.
   @override
   Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
         // On increment.
@@ -89,33 +91,28 @@ class CounterBloc extends $CounterBloc {
 
   @override
   Stream<String> _mapToErrorsState() =>
+
+      /// Transform any exception into a readable string.
       errorState.map((Exception error) => error.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
 }
 
-/// BLoc class end
-
-/// This will simulate a server with 100 milliseconds response time
+/// This will simulate a server with 100 milliseconds response time.
 class ServerSimulator {
   int _counter = 0;
 
   Future<int> increment() async {
     // Server response time.
     await Future.delayed(Duration(milliseconds: 100));
-    // Simulate an error from the server when the counter reached 2.
-    if (_counter == 2) {
-      throw Exception('Maximum number is reached!');
-    }
-
     return ++_counter;
   }
 
   Future<int> decrement() async {
     // Server response time.
     await Future.delayed(Duration(milliseconds: 100));
-    // Simulate an error from the server when the counter reached 2.
+    // Simulate an error from the server when the counter goes less than 1.
     if (_counter <= 0) {
       throw Exception('Minimum number is reached!');
     }
@@ -131,7 +128,6 @@ class ServerSimulator {
 ///
 /// This generated class usually resides in [file-name].rxb.g.dart.
 /// Find more info at https://pub.dev/packages/rx_bloc_generator.
-
 /// ********************GENERATED CODE**************************************
 /// CounterBlocType class used for bloc event and state access from widgets
 abstract class CounterBlocType extends RxBlocTypeBase {
