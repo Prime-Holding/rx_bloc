@@ -34,11 +34,11 @@ dev_dependencies:
 
 dependency_overrides:
   rx_bloc:
-    path: ../../../rx_bloc
+    path: ../../rx_bloc
   flutter_rx_bloc:
-    path: ../../
+    path: ../
   rx_bloc_generator:
-    path: ../../../rx_bloc_generator
+    path: ../../rx_bloc_generator
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
