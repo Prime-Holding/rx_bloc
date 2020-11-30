@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
+import 'package:test/test.dart';
 
 import 'helpers/counter_bloc.dart';
 import 'helpers/details_bloc/details_bloc.dart';
@@ -10,7 +10,7 @@ void main() {
       'Basic rxBlocTest',
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
-      expect: [0],
+      expect: <int>[0],
     );
 
     rxBlocTest<CounterBloc, int>(
@@ -18,7 +18,7 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
       act: (bloc) async => bloc.increase(),
-      expect: [0, 1],
+      expect: <int>[0, 1],
     );
 
     rxBlocTest<CounterBloc, int>(
@@ -26,11 +26,10 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
       act: (bloc) async {
-        bloc.decrease();
-        bloc.decrease();
+        bloc..decrease()..decrease();
       },
       skip: 2,
-      expect: [-2],
+      expect: <int>[-2],
     );
   });
 
@@ -45,7 +44,7 @@ void main() {
       'Empty test bloc',
       build: () async => DetailsBloc(repo),
       state: (bloc) => bloc.states.details,
-      expect: [],
+      expect: <String>[],
     );
 
     rxBlocTest<DetailsBloc, String>(
@@ -53,8 +52,8 @@ void main() {
       build: () async => DetailsBloc(repo),
       state: (bloc) => bloc.states.details,
       act: (bloc) async => bloc.events.fetch(),
-      wait: Duration(milliseconds: 60),
-      expect: ['Success', 'Success'],
+      wait: const Duration(milliseconds: 60),
+      expect: <String>['Success', 'Success'],
     );
   });
 }

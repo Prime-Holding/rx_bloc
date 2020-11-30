@@ -10,7 +10,7 @@ class CounterBloc extends RxBlocBase {
   void decrease() => --_loadingCount.value;
 
   @override
-  dispose() {
+  void dispose() {
     _loadingCount.close();
     return super.dispose();
   }

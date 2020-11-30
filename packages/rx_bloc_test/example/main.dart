@@ -9,7 +9,7 @@ void main() {
       'Basic rxBlocTest',
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
-      expect: [0],
+      expect: <int>[0],
     );
 
     rxBlocTest<CounterBloc, int>(
@@ -17,7 +17,7 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
       act: (bloc) async => bloc.increase(),
-      expect: [0, 1],
+      expect: <int>[0, 1],
     );
 
     rxBlocTest<CounterBloc, int>(
@@ -25,11 +25,10 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
       act: (bloc) async {
-        bloc.decrease();
-        bloc.decrease();
+        bloc..decrease()..decrease();
       },
       skip: 2,
-      expect: [-2],
+      expect: <int>[-2],
     );
   });
 }
@@ -43,7 +42,7 @@ class CounterBloc extends RxBlocBase {
   void decrease() => --_loadingCount.value;
 
   @override
-  dispose() {
+  void dispose() {
     _loadingCount.close();
     return super.dispose();
   }

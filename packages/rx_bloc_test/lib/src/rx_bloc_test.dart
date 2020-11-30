@@ -10,7 +10,7 @@ import 'package:test/test.dart' as tester;
 /// as well perform all the necessary operations based on provided parameters
 /// before [expect]ing the desired values.
 /// [rxBlocTest] will ensure that no additional states are emitted by closing
-/// the states [stream] just before the evaluation.
+/// the states stream just before the evaluation.
 ///
 /// [build] returns the bloc that will be used for testing as a Future. It
 /// should be used for bloc initialization such as creation and dependency
@@ -26,10 +26,10 @@ import 'package:test/test.dart' as tester;
 /// after the [act] is executed.
 ///
 /// [wait] is an optional `Duration` which is used to wait for async operations
-/// within the [bloc] that take time to complete.
+/// within the `bloc` that take time to complete.
 ///
 /// [skip] is an optional `int` that is used to skip a specific number of values
-/// emitted by the [state]. The default value is 1 which skips the initial value.
+/// emitted by the [state]. The default value is 1 which skips the initial value
 /// If the [skip] value is set to 0, it will include the initial value.
 ///
 @isTest
@@ -46,13 +46,13 @@ void rxBlocTest<B extends RxBlocBase, StateOutputType>(
     tester.test(message, () async {
       final bloc = await build();
       final checkingState = state(bloc);
-      final List<StateOutputType> states = <StateOutputType>[];
+      final states = <StateOutputType>[];
       final subscription = checkingState.skip(skip).listen(states.add);
       await act?.call(bloc);
 
-      if (wait != null) await Future.delayed(wait);
-      await Future.delayed(Duration.zero);
-      subscription.cancel();
+      if (wait != null) await Future<void>.delayed(wait);
+      await Future<void>.delayed(Duration.zero);
+      await subscription.cancel();
       if (expect != null) tester.expect(states, expect);
     });
   });

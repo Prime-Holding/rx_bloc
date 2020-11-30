@@ -10,12 +10,12 @@ environment:
 
 dependencies:
   test: ^1.15.2
-  meta: ^1.1.8
   rx_bloc: ^1.0.1
-  mockito: ^4.1.3
   rxdart: ^0.24.1
+  meta: ^1.1.8
+  mockito: ^4.1.3
   quiver: ^2.1.5
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  coverage: ^0.14.1
+  pedantic: ^1.9.0

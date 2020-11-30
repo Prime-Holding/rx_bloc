@@ -49,6 +49,7 @@ abstract class $DetailsBloc extends RxBlocBase
   DetailsBlocStates get states => this;
 
   ///endregion Type
+  @override
   void dispose() {
     _$fetchEvent.close();
     super.dispose();

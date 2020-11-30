@@ -5,7 +5,7 @@ part 'details_bloc.rxb.g.dart';
 
 class DetailsRepository {
   Future<String> fetch() async {
-    await Future.delayed(Duration(milliseconds: 60));
+    await Future<void>.delayed(const Duration(milliseconds: 60));
     return Future.value('Success');
   }
 }
@@ -26,9 +26,9 @@ abstract class DetailsBlocStates {
 
 @RxBloc()
 class DetailsBloc extends $DetailsBloc {
-  DetailsRepository _detailsRepository;
-
   DetailsBloc(this._detailsRepository);
+
+  final DetailsRepository _detailsRepository;
 
   @override
   Stream<String> _mapToDetailsState() => _$fetchEvent
