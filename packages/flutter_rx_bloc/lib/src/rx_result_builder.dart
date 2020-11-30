@@ -13,6 +13,16 @@ import 'rx_bloc_provider.dart';
 ///   * [StreamBuilder], which delegates to an [AsyncWidgetBuilder] to build
 ///     itself based on a snapshot from interacting with a [Stream].
 class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
+  /// The default constructor.
+  const RxResultBuilder({
+    @required this.state,
+    @required this.buildSuccess,
+    @required this.buildError,
+    @required this.buildLoading,
+    this.bloc,
+    Key key,
+  }) : super(key: key);
+
   /// The BLoC state based on which this widget rebuilds itself
   final Stream<Result<T>> Function(B) state;
 
@@ -37,15 +47,6 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
   /// the first event of the [state] stream
   final Widget Function(BuildContext, B) buildLoading;
 
-  const RxResultBuilder({
-    @required this.state,
-    @required this.buildSuccess,
-    @required this.buildError,
-    @required this.buildLoading,
-    this.bloc,
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final block = this.bloc ?? RxBlocProvider.of<B>(context);
@@ -55,7 +56,9 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
       builder: (buildContext, snapshot) {
         final result = snapshot.connectionState == ConnectionState.active ||
                 snapshot.connectionState == ConnectionState.done
-            ? (snapshot.hasError ? Result.error(snapshot.error) : snapshot.data)
+            ? (snapshot.hasError
+                ? Result.error(snapshot.asException())
+                : snapshot.data)
             : Result.loading();
 
         if (result is ResultSuccess<T>) {
@@ -67,5 +70,17 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+extension _AsyncSnapshotToException<T> on AsyncSnapshot<Result<T>> {
+  Exception asException() {
+    if (!hasError) return null;
+
+    if (error is Exception) {
+      return error as Exception;
+    }
+
+    return Exception(error.toString());
   }
 }
