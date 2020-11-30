@@ -1,6 +1,7 @@
 final _primitives = ['int', 'double', 'Null', 'String', 'bool'];
 final _collections = ['List', 'Map', 'Set'];
 
+/// String utilities
 extension StringExtensions on String {
   /// region Universal String extension
 
@@ -8,11 +9,11 @@ extension StringExtensions on String {
   /// starting from the end of the string.
   /// Returns -1 if the nth occurrence of the string doesn't exist
   int nthIndexReverse(String pattern, int n) {
-    int index = this.length;
+    var index = length;
     try {
-      int i = 0;
+      var i = 0;
       while (i < n) {
-        index = this.lastIndexOf(pattern, index - 1);
+        index = lastIndexOf(pattern, index - 1);
         i++;
       }
     } catch (_) {
@@ -24,18 +25,18 @@ extension StringExtensions on String {
   /// Removes a character with a given index from the string.
   /// If the index is outside the range, nothing is removed.
   String removeCharacterAt(int index) {
-    if (index < 0 || index >= this.length) return this;
-    return '${this.substring(0, index)}${this.substring(index + 1)}';
+    if (index < 0 || index >= length) return this;
+    return '${substring(0, index)}${substring(index + 1)}';
   }
 
   /// Counts the number of appearances of a pattern
   /// within the range of two indices.
   int count(String pattern, [int startIndex = 0, int endIndex]) {
-    if (endIndex == null) endIndex = this.length;
-    final substr = this.substring(startIndex, endIndex);
+    endIndex ??= length;
+    final substr = substring(startIndex, endIndex);
 
-    int index = 0;
-    int count = 0;
+    var index = 0;
+    var count = 0;
     while (index != -1) {
       index = substr.indexOf(pattern, index);
       if (index != -1) {
@@ -47,17 +48,15 @@ extension StringExtensions on String {
   }
 
   /// Converts string to red string when printed in terminal
-  String toRedString() {
-    return '\x1B[31m' + this + '\x1B[0m';
-  }
+  String toRedString() => '\x1B[31m${this}\x1B[0m';
 
   /// Checks whether a string contains all the patterns
   bool containsAll(List<String> patterns) {
-    return patterns.every((pattern) => this.contains(pattern));
+    return patterns.every(contains);
   }
 
   /// Capitalizes the first letter of the word
-  String capitalize() => "${this[0].toUpperCase()}${this.substring(1)}";
+  String capitalize() => '${this[0].toUpperCase()}${substring(1)}';
 
   /// endregion
 
@@ -66,8 +65,7 @@ extension StringExtensions on String {
   /// Transforms the seed value string into a proper string that can be
   /// used as a BehaviourSubject seed argument
   String convertToValidString() {
-    final str = this
-        .trim()
+    final str = trim()
         ._removeTopLayerCollection()
         .replaceAll(' ', '')
         ._removePrimitiveTypes()
@@ -78,7 +76,7 @@ extension StringExtensions on String {
   /// When nested collections, removes first found collection,
   /// starting from top layer. Else, it returns the structure as is.
   String _removeTopLayerCollection() {
-    var str = this.trim();
+    var str = trim();
     if (str.containsAll(['(', ')', '<', '>']))
       str = str.substring(str.indexOf('(') + 1, str.lastIndexOf(')'));
     return str;
@@ -86,9 +84,9 @@ extension StringExtensions on String {
 
   /// Removes all constructors of primitive types
   String _removePrimitiveTypes() {
-    var str = this.trim();
+    var str = trim();
     _primitives.forEach((itm) {
-      final _prim = itm + '(';
+      final _prim = '$itm(';
       var index = str.indexOf(_prim);
       while (index != -1) {
         str = str.replaceFirst(_prim, '', index).replaceFirst(')', '', index);
@@ -100,11 +98,11 @@ extension StringExtensions on String {
 
   /// Removes all collection constructors
   String _removeCollectionTypes() {
-    var str = this.trim();
+    var str = trim();
 
     _collections.forEach((itm) {
       final _coll = itm;
-      int index = str.indexOf(_coll);
+      var index = str.indexOf(_coll);
       while (index != -1) {
         str = str.replaceFirst(
             str.substring(index, str.indexOf('(', index)), '', index);
@@ -121,9 +119,9 @@ extension StringExtensions on String {
   /// be removed, original string is returned
   String _trimBracketPair({int startIndex = 0}) {
     var str = this;
-    int index = str.indexOf('(', startIndex);
+    var index = str.indexOf('(', startIndex);
     if (index == -1) return str;
-    int endIndex = str.indexOf(')', index);
+    var endIndex = str.indexOf(')', index);
     if (endIndex == -1) return str;
     while (index != -1 || endIndex != -1) {
       final substr = str.substring(index + 1, endIndex);
@@ -145,9 +143,7 @@ extension StringExtensions on String {
   }
 
   /// Returns the type of a value presented as a string
-  String getTypeFromString() {
-    return this.substring(0, this.indexOf('(')).replaceAll(' ', '');
-  }
+  String getTypeFromString() => substring(0, indexOf('(')).replaceAll(' ', '');
 
   /// endregion
 

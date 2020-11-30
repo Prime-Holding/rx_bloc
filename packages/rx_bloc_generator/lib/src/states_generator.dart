@@ -7,32 +7,34 @@ import 'utilities/utilities.dart';
 
 /// Used for @RxBlocIgnoreState() annotation checking
 final _ignoreStateAnnotationChecker =
-    TypeChecker.fromRuntime(RxBlocIgnoreState);
+    const TypeChecker.fromRuntime(RxBlocIgnoreState);
 
 /// StatesGenerator is a class responsible for generating all the user-defined
-/// states of a bloc. It generates all the states delegated by the [RxBlocBuilder]
+/// states of a bloc. It generates all the states
+/// delegated by the `RxBlocBuilder`
 /// and handles appropriately errors that arise.
 ///
 /// It takes in a [_statesClass] ClassElement which represents the states class
 /// from which it creates everything needed for the states to work.
 class StatesGenerator {
+  /// The default constructor.
+  StatesGenerator(this._statesClass);
+
   /// The output buffer containing generated states code
-  StringBuffer _stringBuffer = StringBuffer();
+  final StringBuffer _stringBuffer = StringBuffer();
 
   /// The class containing all the user-defined states
-  ClassElement _statesClass;
-
-  StatesGenerator(this._statesClass);
+  final ClassElement _statesClass;
 
   /// Writes to output string buffer
   void _writeln([Object obj]) => _stringBuffer.writeln(obj);
 
   /// Generates all states based on the passed in states class
   String generate() {
-    _writeln("\n  ///region States");
-    _writeln("\n");
+    _writeln('\n  ///region States');
+    _writeln('\n');
     _writeln(_generateStates());
-    _writeln("\n  ///endregion States");
+    _writeln('\n  ///endregion States');
     return _stringBuffer.toString();
   }
 
@@ -56,7 +58,7 @@ class StatesGenerator {
 extension _FilteringAndCheckingStates on List<PropertyAccessorElement> {
   /// Performs a check and logs any non-abstract states
   List<PropertyAccessorElement> checkForErroneousStates() {
-    this.forEach((fieldElement) {
+    forEach((fieldElement) {
       final name = fieldElement.name.replaceAll('=', '');
       if (!fieldElement.isAbstract)
         logError('State \'$name\' should not contain a body definition.');
@@ -64,7 +66,8 @@ extension _FilteringAndCheckingStates on List<PropertyAccessorElement> {
     return this;
   }
 
-  /// Returns all properties that do not contain the @RxBlocIgnoreState() annotation
+  /// Returns all properties that do not contain the
+  /// @RxBlocIgnoreState() annotation
   Iterable<PropertyAccessorElement> filterRxBlocIgnoreState() =>
       where((fieldElement) {
         if (fieldElement.metadata.isEmpty) return true;

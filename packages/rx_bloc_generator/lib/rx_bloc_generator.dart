@@ -12,10 +12,11 @@ import 'src/utilities/utilities.dart';
 Builder rxBlocGenerator(BuilderOptions options) {
   return LibraryBuilder(
     RxBlocGeneratorForAnnotation(),
-    generatedExtension: ".rxb.g.dart",
+    generatedExtension: '.rxb.g.dart',
   );
 }
 
+/// The generator.
 class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Generate string that represents error when a missing class is detected.
   ///
@@ -24,11 +25,12 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// the user-defined or the default value for the events/states class that
   /// is vital for proper bloc generation.
   String _generateMissingClassError(String className, String blocName) {
-    StringBuffer buffer = StringBuffer();
-    buffer.write('\'$blocName$className\' class missing.\n');
-    buffer.write('\n\tPlease make sure you have properly named and specified');
-    buffer
-        .write('\n\tyour class in the same file where the $blocName resides.');
+    final buffer = StringBuffer()
+      ..write('\'$blocName$className\' class missing.\n')
+      ..write('\n\tPlease make sure you have properly named and specified')
+      ..write('\n\tyour class in the same file where the $blocName resides.');
+
+    // ignore: cascade_invocations
     return buffer.toString();
   }
 

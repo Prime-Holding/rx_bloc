@@ -6,10 +6,11 @@ import 'utilities/string_extensions.dart';
 import 'utilities/utilities.dart';
 
 /// Used for @RxBlocEvent() annotation checking
-final _eventAnnotationChecker = TypeChecker.fromRuntime(RxBlocEvent);
+final _eventAnnotationChecker = const TypeChecker.fromRuntime(RxBlocEvent);
 
 /// EventsGenerator is a class responsible for generating all the user-defined
-/// events of a bloc. It generates all the events delegated by the [RxBlocBuilder]
+/// events of a bloc. It generates all the events
+/// delegated by the `RxBlocBuilder`
 /// and handles appropriately errors that arise.
 ///
 /// It takes in a [_eventsClass] ClassElement which represents the event class
@@ -17,6 +18,9 @@ final _eventAnnotationChecker = TypeChecker.fromRuntime(RxBlocEvent);
 /// It also takes a [_sourceCode] String containing the source code from the
 /// file in which the [_eventsClass] resides.
 class EventsGenerator {
+  /// The default constructor.
+  EventsGenerator(this._eventsClass, this._sourceCode);
+
   /// The output buffer containing generated events code
   final StringBuffer _stringBuffer = StringBuffer();
 
@@ -26,24 +30,22 @@ class EventsGenerator {
   /// The source code of the file where the events class resides
   final String _sourceCode;
 
-  EventsGenerator(this._eventsClass, this._sourceCode);
-
   /// Writes to output string buffer
   void _writeln([Object obj]) => _stringBuffer.writeln(obj);
 
   /// Generates all events based on the passed in events class
   String generate() {
-    _writeln("\n\n  ///region Events");
-    _writeln("\n");
+    _writeln('\n\n  ///region Events');
+    _writeln('\n');
     _writeln(_generateEvents());
-    _writeln("\n  ///endregion Events");
+    _writeln('\n  ///endregion Events');
 
     return _stringBuffer.toString();
   }
 
   /// Generates argument classes for events containing more than one parameter
   String generateArgumentClasses() {
-    StringBuffer _argClassString = StringBuffer();
+    var _argClassString = StringBuffer();
     final _multiParameterEvents =
         _eventsClass.methods.where((method) => method.parameters.length > 1);
     if (_multiParameterEvents.isEmpty) return '';
@@ -51,22 +53,22 @@ class EventsGenerator {
     // Generate argument classes section only if there is at least one class
     _argClassString.writeln('/// region Argument classes\n');
     for (var method in _multiParameterEvents) {
-      _argClassString.writeln('/// region ${method.argumentsClassName} class');
-      _argClassString.writeln(_generateArgumentClass(method));
       _argClassString
-          .writeln('/// endregion ${method.argumentsClassName} class');
+        ..writeln('/// region ${method.argumentsClassName} class')
+        ..writeln(_generateArgumentClass(method))
+        ..writeln('/// endregion ${method.argumentsClassName} class');
     }
     _argClassString.writeln('\n/// endregion Argument classes\n');
     return _argClassString.toString();
   }
 
-  /// Generates argument class for the [method], which contains more than one parameter
+  /// Generates argument class for the [method],
+  /// which contains more than one parameter
   String _generateArgumentClass(MethodElement method) {
-    StringBuffer _buffer = StringBuffer();
+    var _buffer = StringBuffer();
     final className = method.argumentsClassName;
     final paramNames = method.parameterNames;
-    _buffer.writeln('\n/// {@nodoc}');
-    _buffer.writeln('class $className {\n');
+    _buffer..writeln('\n/// {@nodoc}')..writeln('class $className {\n');
     // Create all the parameters first
     paramNames.forEach((paramName) {
       final param = method.getParameter(paramName);
@@ -75,8 +77,7 @@ class EventsGenerator {
     // Create the constant constructor
     _buffer.writeln('\nconst $className({');
     paramNames.forEach((paramName) => _buffer.writeln('this.$paramName,'));
-    _buffer.writeln('});');
-    _buffer.writeln('\n}');
+    _buffer..writeln('});')..writeln('\n}');
     return _buffer.toString();
   }
 
@@ -122,12 +123,12 @@ class EventsGenerator {
 
     // The method has a RxBlocEvent annotation
 
-    String seedValue = '';
+    var seedValue = '';
     if (method.parameters.length > 1) {
       // Seeding with EventArgs class for that specific method
       final argClassName = method.argumentsClassName;
       final userParams = _getSeedParametersForMethod(method) ?? '';
-      String params = userParams.addComaAtEndIfNone();
+      var params = userParams.addComaAtEndIfNone();
       // Append missing default and required parameters
       method.parameterNames.forEach((paramName) {
         final param = method.getParameter(paramName);
@@ -138,7 +139,7 @@ class EventsGenerator {
         }
         // Display error for required parameter
         if (param.hasRequired && !params.contains(paramName)) {
-          String msg = 'Requred parameter \'$paramName\' from \'$argClassName';
+          var msg = 'Requred parameter \'$paramName\' from \'$argClassName';
           msg += '\' needs to be specified in the seed.';
           logError(msg);
         }
@@ -155,11 +156,12 @@ class EventsGenerator {
         final typeAsString = seedField.toString().getTypeFromString();
         // Check for seed value mismatch
         if (typeAsString != firstParam) {
-          final msg = StringBuffer();
-          msg.write('Type mismatch between seed type and ');
-          msg.write('expected parameter type:\n');
-          msg.write('\tExpected: \'$firstParam\'');
-          msg.write('\tGot: \'$typeAsString\'');
+          final msg = StringBuffer()
+            ..write('Type mismatch between seed type and ')
+            ..write('expected parameter type:\n')
+            ..write('\tExpected: \'$firstParam\'')
+            ..write('\tGot: \'$typeAsString\'');
+
           logError(msg.toString());
         }
       } else
@@ -201,9 +203,9 @@ class EventsGenerator {
 extension _CheckingEvents on List<MethodElement> {
   /// Performs a check and logs any non-abstract methods
   List<MethodElement> checkForNonAbstractEvents() {
-    this.forEach((method) {
-      if (!method.isAbstract)
-        logError(
+    forEach((method) {
+      if (!method.isAbstract) logError(
+            // ignore: lines_longer_than_80_chars
             'Event \'${method.definition}\' should not contain a body definition.');
     });
     return this;
@@ -213,28 +215,26 @@ extension _CheckingEvents on List<MethodElement> {
 extension _MapToEvents on Iterable<MethodElement> {
   /// Maps all of methods to their events counterpart using a [mapper] function
   /// The [mapper] function takes in a [MethodElement] and returns a [String].
-  Iterable<String> mapToEvents(Function(MethodElement) mapper) =>
+  Iterable<String> mapToEvents(String Function(MethodElement) mapper) =>
       map((method) => mapper(method));
 }
 
 extension _MethodExtensions on MethodElement {
   /// The name of the arguments class that will be generated if
   /// the event contains more than one parameter
-  String get argumentsClassName => '_${this.name.capitalize()}EventArgs';
+  String get argumentsClassName => '_${name.capitalize()}EventArgs';
 
-  /// Returns the stream type based on the number of the parameters of the method
+  ///Returns the stream type based on the number of the parameters of the method
   String get streamTypeBasedOnParameters {
-    if (this.parameters.length > 1) return this.argumentsClassName;
+    if (parameters.length > 1) return argumentsClassName;
     return "${parameters.isNotEmpty ? parameters.first.type : 'void'}";
   }
 
   /// Returns the method parameters in a format usable for streams
   String get streamTypeParameters {
-    if (this.parameters.length > 1) {
-      var str = '${this.argumentsClassName}(';
-      this
-          .parameterNames
-          .forEach((paramName) => str += ' $paramName:$paramName,');
+    if (parameters.length > 1) {
+      var str = '$argumentsClassName(';
+      parameterNames.forEach((paramName) => str += ' $paramName:$paramName,');
       str += ')';
       return str;
     }
@@ -244,25 +244,24 @@ extension _MethodExtensions on MethodElement {
   /// Returns the proper method definition (keeping as well
   /// default values and @required annotations)
   String get definition {
-    var def = this.toString();
-    this.parameterNames.forEach((paramName) {
-      final param = this.getParameter(paramName);
+    var def = toString();
+    parameterNames.forEach((paramName) {
+      final param = getParameter(paramName);
 
       // Add required annotation before type
       if (param.hasRequired) {
-        int index = def.indexOf(paramName);
+        var index = def.indexOf(paramName);
         index = def.lastIndexOf(param.type.toString(), index);
-        def = def.substring(0, index) + ' @required ' + def.substring(index);
+        def = '${def.substring(0, index)} @required ${def.substring(index)}';
       }
 
       // Add default value (if any)
       if (param.defaultValueCode != null) {
-        int index = def.indexOf(paramName);
+        var index = def.indexOf(paramName);
         final assignChar = param.isPositional ? '=' : ':';
-        def = def.substring(0, index) +
-            def.substring(index, index + paramName.length) +
-            '$assignChar ${param.defaultValueCode}' +
-            def.substring(index + paramName.length);
+        def =
+            // ignore: lines_longer_than_80_chars
+            '${def.substring(0, index)}${def.substring(index, index + paramName.length)}${'$assignChar ${param.defaultValueCode}'}${def.substring(index + paramName.length)}';
       }
     });
 
@@ -271,23 +270,23 @@ extension _MethodExtensions on MethodElement {
 
   /// Returns the parameter instance of a method by its [paramName]
   ParameterElement getParameter(String paramName) {
-    return this.parameters.firstWhere((param) => param.name == paramName);
+    return parameters.firstWhere((param) => param.name == paramName);
   }
 
   /// Returns the list of all parameter names of a method
   List<String> get parameterNames =>
-      this.parameters.map((param) => param.name).toList();
+      parameters.map((param) => param.name).toList();
 }
 
 extension _StringExtensions on String {
   /// Returns index of closing brackets balancing other brackets along
   int getIndexOfClosingBracket(int startIndex) {
-    final str = this.substring(startIndex);
-    int normal = 1;
-    int angle = 0;
-    int curly = 0;
+    final str = substring(startIndex);
+    var normal = 1;
+    var angle = 0;
+    var curly = 0;
 
-    int i = 0;
+    var i = 0;
     while ((normal != 0 || angle != 0 || curly != 0) && i < str.length) {
       var ch = str[i];
       if (ch == '(') normal++;
@@ -306,8 +305,8 @@ extension _StringExtensions on String {
   /// Appends a comma at the end of a string if there's none, if
   /// the string has a valid length. Else, returns an empty string
   String addComaAtEndIfNone() {
-    String str = this.trim();
-    if (str.length == 0) return '';
+    var str = trim();
+    if (str.isEmpty) return '';
     str += str[str.length - 1] != ',' ? ',' : '';
     return str;
   }

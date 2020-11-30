@@ -12,9 +12,18 @@ import 'package:rx_bloc_generator/src/states_generator.dart';
 /// ClassElement represents the states class containing all the user-defined
 /// states of the bloc.
 ///
-/// Note: This class generates a [part] file that has to be included
+/// Note: This class generates a `part` file that has to be included
 /// in the file containing the bloc in order to work properly.
 class RxBlocGenerator {
+  /// The default constructor
+  RxBlocGenerator(
+    this.viewModelElement,
+    this.eventsElement,
+    this.statesElement,
+  )   : _eventsGenerator = EventsGenerator(
+            eventsElement, viewModelElement.source.contents.data),
+        _statesGenerator = StatesGenerator(statesElement);
+
   /// The output buffer containing all the generated code
   final StringBuffer _stringBuffer = StringBuffer();
 
@@ -32,14 +41,6 @@ class RxBlocGenerator {
 
   /// Delegate used to generate states based on the states class
   final StatesGenerator _statesGenerator;
-
-  RxBlocGenerator(
-    this.viewModelElement,
-    this.eventsElement,
-    this.statesElement,
-  )   : _eventsGenerator = EventsGenerator(
-            eventsElement, viewModelElement.source.contents.data),
-        _statesGenerator = StatesGenerator(statesElement);
 
   /// Writes to output string buffer
   void _writeln([Object obj]) => _stringBuffer.writeln(obj);
@@ -64,55 +65,56 @@ class RxBlocGenerator {
 
   /// Generates the type class for the bloc
   void _generateTypeClass() {
-    String comment =
-        "\n/// ${viewModelElement.displayName}Type class used for bloc";
-    comment += " event and state access from widgets";
+    var comment =
+        '\n/// ${viewModelElement.displayName}Type class used for bloc';
+    comment += ' event and state access from widgets';
     _writeln(comment);
     _generateNoDocString();
     _writeln(
-        "abstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {");
-    _writeln("\n  ${eventsElement.displayName} get events;");
-    _writeln("\n  ${statesElement.displayName} get states;");
-    _writeln("\n}");
+        // ignore: lines_longer_than_80_chars
+        'abstract class ${viewModelElement.displayName}Type extends RxBlocTypeBase {');
+    _writeln('\n  ${eventsElement.displayName} get events;');
+    _writeln('\n  ${statesElement.displayName} get states;');
+    _writeln('\n}');
   }
 
   /// Generates the contents of the bloc
   void _generateBlocClass() {
-    String comment =
-        "\n/// \$${viewModelElement.displayName} class - extended by the ";
-    comment += "${viewModelElement.displayName} bloc";
-    _writeln("\n");
+    var comment =
+        '\n/// \$${viewModelElement.displayName} class - extended by the ';
+    comment += '${viewModelElement.displayName} bloc';
+    _writeln('\n');
     _writeln(comment);
     _generateNoDocString();
     _writeln(
-        "abstract class \$${viewModelElement.displayName} extends RxBlocBase");
-    _writeln("\n    implements");
-    _writeln("\n        ${eventsElement.displayName},");
-    _writeln("\n        ${statesElement.displayName},");
-    _writeln("\n        ${viewModelElement.displayName}Type {");
+        'abstract class \$${viewModelElement.displayName} extends RxBlocBase');
+    _writeln('\n    implements');
+    _writeln('\n        ${eventsElement.displayName},');
+    _writeln('\n        ${statesElement.displayName},');
+    _writeln('\n        ${viewModelElement.displayName}Type {');
     _writeln(_eventsGenerator.generate());
     _writeln(_statesGenerator.generate());
-    _writeln("\n  ///region Type");
-    _writeln("\n  @override");
-    _writeln("\n  ${eventsElement.displayName} get events => this;");
-    _writeln("\n");
-    _writeln("\n  @override");
-    _writeln("\n  ${statesElement.displayName} get states => this;");
-    _writeln("\n  ///endregion Type");
+    _writeln('\n  ///region Type');
+    _writeln('\n  @override');
+    _writeln('\n  ${eventsElement.displayName} get events => this;');
+    _writeln('\n');
+    _writeln('\n  @override');
+    _writeln('\n  ${statesElement.displayName} get states => this;');
+    _writeln('\n  ///endregion Type');
     _generateDisposeMethod();
-    _writeln("\n}\n");
+    _writeln('\n}\n');
     _writeln(_eventsGenerator.generateArgumentClasses());
   }
 
   /// Generates the dispose method for the bloc
   void _generateDisposeMethod() {
-    _writeln("\n/// Dispose of all the opened streams");
-    _writeln("void dispose(){");
+    _writeln('\n/// Dispose of all the opened streams');
+    _writeln('void dispose(){');
 
-    eventsElement.methods.forEach((method) {
-      _writeln("_\$${method.name}Event.close();");
-    });
-    _writeln("super.dispose();");
-    _writeln("}");
+    eventsElement.methods.forEach(
+      (method) => _writeln('_\$${method.name}Event.close();'),
+    );
+    _writeln('super.dispose();');
+    _writeln('}');
   }
 }
