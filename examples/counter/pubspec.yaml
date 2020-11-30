@@ -19,9 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  rx_bloc: ^1.0.1
+  rx_bloc:
   flutter_rx_bloc:
-    path: ../
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
@@ -34,10 +33,17 @@ dev_dependencies:
     sdk: flutter
   flutter_gherkin: ^1.1.7+3
   build_runner:
-  rx_bloc_generator: ^0.2.1
+  rx_bloc_generator:
   mockito: ^4.1.1
   rx_bloc_test: ^0.0.5
 
+dependency_overrides:
+  rx_bloc:
+    path: ../../packages/rx_bloc
+  flutter_rx_bloc:
+    path: ../../packages/flutter_rx_bloc
+  rx_bloc_generator:
+    path: ../../packages/rx_bloc_generator
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
