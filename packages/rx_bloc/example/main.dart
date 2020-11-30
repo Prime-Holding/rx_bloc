@@ -22,18 +22,18 @@ void main() async {
     print(isLoading ? 'Loading...' : 'Loaded ✔ \n');
   });
 
-  await Future.delayed(Duration(milliseconds: 500));
+  await Future.delayed(const Duration(milliseconds: 500));
 
   /// Fire the increment event.
   bloc.events.increment(); // 1
 
-  await Future.delayed(Duration(milliseconds: 500));
+  await Future.delayed(const Duration(milliseconds: 500));
 
   /// Decrementing.
   bloc.events.decrement(); // 0
 
   /// Decrementing one more time will cause an error.
-  await Future.delayed(Duration(milliseconds: 500));
+  await Future.delayed(const Duration(milliseconds: 500));
   bloc.events.decrement(); // Exception.
 }
 
@@ -72,7 +72,7 @@ abstract class CounterBlocStates {
 class CounterBloc extends $CounterBloc {
   CounterBloc(this._server);
 
-  ServerSimulator _server;
+  final ServerSimulator _server;
 
   /// Map increment and decrement events to `count` state.
   @override
@@ -105,13 +105,13 @@ class ServerSimulator {
 
   Future<int> increment() async {
     // Server response time.
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 100));
     return ++_counter;
   }
 
   Future<int> decrement() async {
     // Server response time.
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 100));
     // Simulate an error from the server when the counter goes less than 1.
     if (_counter <= 0) {
       throw Exception('Minimum number is reached!');
@@ -177,6 +177,7 @@ abstract class $CounterBloc extends RxBlocBase
   CounterBlocStates get states => this;
 
   /// Dispose of all the opened streams when the bloc is closed.
+  @override
   void dispose() {
     _$incrementEvent.close();
     super.dispose();

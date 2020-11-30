@@ -1,8 +1,8 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:test/test.dart';
 
 void main() {
-  group("Stream asResultStream", () {
+  group('Stream asResultStream', () {
     test('success case', () {
       expect(
           Stream.value(1).asResultStream(),
@@ -26,11 +26,13 @@ void main() {
     });
   });
 
-  group("Future asResultStream", () {
+  group('Future asResultStream', () {
     test('success case', () {
       expect(
-          Future.delayed(Duration(milliseconds: 300), () => Future.value(1))
-              .asResultStream(),
+          Future.delayed(
+            const Duration(milliseconds: 300),
+            () => Future.value(1),
+          ).asResultStream(),
           emitsInOrder(
             [
               Result<int>.loading(),

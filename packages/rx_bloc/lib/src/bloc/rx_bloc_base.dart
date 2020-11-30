@@ -7,10 +7,15 @@ import '../extensions.dart';
 import '../model/result.dart';
 import 'loading_bloc.dart';
 
+// ignore: public_member_api_docs
 abstract class RxBlocTypeBase {
+  /// Dispose all StreamControllers and Composite Subscriptions
   void dispose();
 }
 
+/// A base class that handles all common BloC functionality such as
+/// 1. Loading State
+/// 2. Error State
 abstract class RxBlocBase {
   /// A loading bloc that holds the loading state of all handled result streams.
   ///
@@ -89,7 +94,7 @@ abstract class RxBlocBase {
   /// Converts the stream to broadcast one based on [shareReplay].
   ///
   /// Useful when multiple type of result streams are executed by a single Bloc,
-  /// as all [ResultError] and [ResultLoading] states resides in a central place.
+  /// as all [ResultError] and [ResultLoading] states resides in a central place
   ///
   /// Once [ResultLoading] states are being handled they sink to [loadingState].
   /// Once [ResultError] states are being handled they sink to [errorState].
@@ -106,7 +111,7 @@ abstract class RxBlocBase {
   }
 
   /// Disposes all internally created streams
-  dispose() {
+  void dispose() {
     _resultStreamExceptionsSubject.close();
     _compositeSubscription.dispose();
     _loadingBloc.dispose();
@@ -120,7 +125,7 @@ extension _StreamAsSharedStream<T> on Stream<T> {
         return this.shareReplay(maxSize: 1);
       }
     } else if (this is! PublishSubject<T>) {
-      return this.share();
+      return share();
     }
 
     return this;

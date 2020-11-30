@@ -17,12 +17,14 @@ import '../extensions.dart';
 /// **Please Note:**
 /// *First three input observables overlap each other therefore they are
 ///    represented with first couple true/false events in isLoading observable,
-///    the last input observable does not overlaps with no one therefore is representer as second couple true/false events in isLoading observable*
+///    the last input observable does not overlaps with no one therefore is
+///    represented as second couple true/false events in isLoading observable*
 ///
 /// *Fore more cases look at* **LoadingViewModelTests**
 ///
 class LoadingBloc {
-  /// Loading stream that has only two "next" events. true for show indicator and false to hide indicator.
+  /// Loading stream that has only two "next" events. true for show indicator
+  /// and false to hide indicator.
   Stream<bool> get isLoading =>
       _isLoadingCount.map((isLoadingCount) => isLoadingCount > 0);
 
@@ -37,5 +39,6 @@ class LoadingBloc {
       .bind(_isLoadingCount)
       .disposedBy(_compositeSubscription);
 
-  dispose() => _compositeSubscription.dispose();
+  /// Dispose all subscriptions
+  void dispose() => _compositeSubscription.dispose();
 }

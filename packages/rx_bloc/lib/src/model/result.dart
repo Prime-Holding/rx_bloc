@@ -1,18 +1,24 @@
-/// A generic Result class used for converting a future to a stream by [Stream.asResultStream()].
+/// A generic Result class used for converting a future to a stream by
+/// `AsResultStream.asResultStream`.
 ///
 /// Represents the following states
 /// 1. Loading
 /// 2. Success
 /// 3. Error
 abstract class Result<T> {
+  /// The success event of a stream.
   factory Result.success(T data) {
     return ResultSuccess._(data);
   }
 
+  /// The loading state of the stream.
+  ///
+  /// Usually emitted before starting an async task such as API Request.
   factory Result.loading() {
     return ResultLoading._();
   }
 
+  /// Error event of a stream.
   factory Result.error(Exception error) {
     return ResultError._(error);
   }
@@ -39,6 +45,7 @@ class ResultLoading<T> implements Result<T> {
 class ResultSuccess<T> implements Result<T> {
   ResultSuccess._(this.data);
 
+  /// The data of the event
   final T data;
 
   @override
@@ -56,6 +63,7 @@ class ResultSuccess<T> implements Result<T> {
 class ResultError<T> implements Result<T> {
   ResultError._(this.error);
 
+  /// The stream error
   final Exception error;
 
   @override
