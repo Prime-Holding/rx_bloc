@@ -11,11 +11,11 @@ import '../../../mocks.dart';
 import '../../../stubs.dart';
 
 void main() {
-  CoordinatorBlocType mockCoordinator;
+  CoordinatorBlocType coordinatorMock;
   PuppiesRepository repositoryMock;
 
   setUp(() {
-    mockCoordinator = CoordinatorBlocMock();
+    coordinatorMock = CoordinatorBlocMock();
     repositoryMock = PuppiesRepositoryMock();
   });
 
@@ -25,15 +25,15 @@ void main() {
       'PuppyListBloc.title searchedPuppies:success triggered by reloadFavoritePuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
-        when(mockCoordinator.states.onPuppiesUpdated)
+        when(coordinatorMock.states.onPuppiesUpdated)
             .thenAnswer((_) => const Stream.empty());
 
         when(repositoryMock.getPuppies())
             .thenAnswer((_) async => Stub.puppies12);
 
-        return PuppyListBloc(repositoryMock, mockCoordinator);
+        return PuppyListBloc(repositoryMock, coordinatorMock);
       },
-      // Call reloadFavoritePuppies and filterPuppies multiple times
+      // Call reloadFavoritePuppies multiple times
       act: (bloc) async {
         bloc.events.reloadFavoritePuppies(silently: false);
         await Future.delayed(const Duration(milliseconds: 10));
@@ -50,10 +50,10 @@ void main() {
 
     rxBlocTest<PuppyListBloc, Result<List<Puppy>>>(
       // ignore: lines_longer_than_80_chars
-      'PuppyListBloc.title searchedPuppies:success triggered by reloadFavoritePuppies',
+      'PuppyListBloc.title searchedPuppies:success triggered by filterPuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
-        when(mockCoordinator.states.onPuppiesUpdated)
+        when(coordinatorMock.states.onPuppiesUpdated)
             .thenAnswer((_) => const Stream.empty());
 
         when(repositoryMock.getPuppies(query: ''))
@@ -62,7 +62,7 @@ void main() {
         when(repositoryMock.getPuppies(query: 'test'))
             .thenAnswer((_) async => Stub.puppies12);
 
-        return PuppyListBloc(repositoryMock, mockCoordinator);
+        return PuppyListBloc(repositoryMock, coordinatorMock);
       },
       // Call reloadFavoritePuppies and filterPuppies multiple times
       act: (bloc) async {
@@ -89,10 +89,10 @@ void main() {
         when(repositoryMock.getPuppies())
             .thenAnswer((_) async => Stub.puppies123Test);
 
-        when(mockCoordinator.states.onPuppiesUpdated)
+        when(coordinatorMock.states.onPuppiesUpdated)
             .thenAnswer((_) => Stub.delayed(Stub.puppiesTestUpdated, 800));
 
-        return PuppyListBloc(repositoryMock, mockCoordinator);
+        return PuppyListBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async {
         bloc.events.reloadFavoritePuppies(silently: false);

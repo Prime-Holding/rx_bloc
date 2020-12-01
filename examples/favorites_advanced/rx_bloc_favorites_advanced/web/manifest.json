@@ -1,6 +1,6 @@
 {
-    "name": "rx_bloc_sample",
-    "short_name": "rx_bloc_sample",
+    "name": "favorites_advanced",
+    "short_name": "favorites_advanced",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
