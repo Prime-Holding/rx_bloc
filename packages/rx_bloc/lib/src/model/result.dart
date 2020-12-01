@@ -50,8 +50,27 @@ class ResultSuccess<T> implements Result<T> {
 
   @override
   bool operator ==(dynamic other) {
-    return other is ResultSuccess<T> && other.data == data;
+    if (other is! ResultSuccess<T>) {
+      return false;
+    }
+
+    // Compare list
+    if (other.data is List && data is List) {
+      final data = this.data as List;
+      final otherData = other.data as List;
+
+      if (data.isEmpty && otherData.isEmpty) {
+        return true;
+      }
+
+      return otherData.any(data.contains);
+    }
+
+    return other.data == data;
   }
+
+  @override
+  String toString() => '$data';
 
   @override
   int get hashCode => T.hashCode;
@@ -71,6 +90,9 @@ class ResultError<T> implements Result<T> {
     return other is ResultError<T> &&
         other.error.toString() == error.toString();
   }
+
+  @override
+  String toString() => error.toString();
 
   @override
   int get hashCode => error.hashCode;
