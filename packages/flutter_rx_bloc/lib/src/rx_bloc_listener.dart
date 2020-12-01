@@ -94,7 +94,7 @@ class RxBlocListener<B extends RxBlocTypeBase, S>
         );
 }
 
-/// {@template RxBlocListenerbase}
+/// {@template RxBlocListenerBase}
 /// Base class for widgets that listen to state changes in a specified [bloc].
 ///
 /// A [RxBlocListenerBase] is stateful and maintains the state subscription.
@@ -103,7 +103,18 @@ class RxBlocListener<B extends RxBlocTypeBase, S>
 /// {@endtemplate}
 abstract class RxBlocListenerBase<B extends RxBlocTypeBase, S>
     extends SingleChildStatefulWidget {
-  /// The widget which will be rendered as a descendant of the [RxBlocListenerBase].
+  /// {@macro RxBlocListenerBase}
+  const RxBlocListenerBase({
+    Key key,
+    this.listener,
+    this.bloc,
+    this.child,
+    this.condition,
+    this.state,
+  }) : super(key: key, child: child);
+
+  /// The widget which will be rendered as a descendant
+  /// of the [RxBlocListenerBase].
   final Widget child;
 
   /// The [bloc] whose [state] will be listened to.
@@ -125,16 +136,6 @@ abstract class RxBlocListenerBase<B extends RxBlocTypeBase, S>
   final RxBlocListenerCondition<S> condition;
 
   final Stream<S> Function(B) state;
-
-  /// {@macro RxBlocListenerbase}
-  const RxBlocListenerBase({
-    Key key,
-    this.listener,
-    this.bloc,
-    this.child,
-    this.condition,
-    this.state,
-  }) : super(key: key, child: child);
 
   @override
   SingleChildState<RxBlocListenerBase<B, S>> createState() =>

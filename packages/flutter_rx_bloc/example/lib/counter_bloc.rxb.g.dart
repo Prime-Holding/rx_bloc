@@ -9,8 +9,10 @@ part of 'main.dart';
 /// ********************GENERATED CODE**************************************
 /// CounterBlocType class used for bloc event and state access from widgets
 abstract class CounterBlocType extends RxBlocTypeBase {
+  // ignore: public_member_api_docs
   CounterBlocEvents get events;
 
+  // ignore: public_member_api_docs
   CounterBlocStates get states;
 }
 

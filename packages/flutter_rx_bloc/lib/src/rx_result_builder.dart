@@ -49,7 +49,7 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final block = this.bloc ?? RxBlocProvider.of<B>(context);
+    final block = bloc ?? RxBlocProvider.of<B>(context);
 
     return StreamBuilder<Result<T>>(
       stream: state(block),
