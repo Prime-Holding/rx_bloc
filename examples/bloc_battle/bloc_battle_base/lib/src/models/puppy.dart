@@ -21,4 +21,19 @@ class Puppy {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     this.displayBreedCharacteristics,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (other is Puppy) {
+      return id == other.id &&
+          name == other.name &&
+          breedCharacteristics == other.breedCharacteristics &&
+          displayBreedCharacteristics == other.displayBreedCharacteristics &&
+          asset == other.asset &&
+          displayName == other.displayName &&
+          isFavorite == other.isFavorite;
+    }
+
+    return false;
+  }
 }

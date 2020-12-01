@@ -48,6 +48,7 @@ dev_dependencies:
   auto_route_generator: ^0.6.7
   rx_bloc_test: ^0.0.5
   mockito: ^4.1.1
+  quiver: ^2.1.5
 
 dependency_overrides:
   rx_bloc:
@@ -56,9 +57,9 @@ dependency_overrides:
     path: ../../../packages/flutter_rx_bloc
   rx_bloc_generator:
     path: ../../../packages/rx_bloc_generator
-
   rx_bloc_test:
     path: ../../../packages/rx_bloc_test
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
