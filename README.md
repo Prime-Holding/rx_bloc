@@ -34,7 +34,7 @@ Following the best practices for building robust mobile applications the archite
 
 ### Samples
 
-- [Advanced Sample](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/bloc_battle/rx_bloc_sample) - an advanced sample that showcase multiple software development challenges.
+- [Favorites Advanced](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/favorites_advanced) - an advanced favorites app that showcase multiple software development challenges.
 - [Counter](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/counter) - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
 - [Division](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/division) - Division sample
 
