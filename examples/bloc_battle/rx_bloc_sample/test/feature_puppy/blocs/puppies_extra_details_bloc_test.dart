@@ -26,11 +26,11 @@ void main() {
         () async {
       // Arrange: Setup mocks
       when(repositoryMock.fetchFullEntities(['1', '2']))
-          .thenAnswer((_) async => puppies1And2WithExtraDetails);
+          .thenAnswer((_) async => Stub.puppies1And2WithExtraDetails);
 
       // Fetch puppies 1 and 2
-      bloc.events.fetchExtraDetails(puppy1);
-      bloc.events.fetchExtraDetails(puppy2);
+      bloc.events.fetchExtraDetails(Stub.puppy1);
+      bloc.events.fetchExtraDetails(Stub.puppy2);
       // Pre-verify: Wait longer than the buffer time
       await Future.delayed(const Duration(milliseconds: 110));
 
@@ -38,7 +38,7 @@ void main() {
       /// puppies one and two with their extra details
       verify(
         mockCoordinator.events
-            .puppiesWithExtraDetailsFetched(puppies1And2WithExtraDetails),
+            .puppiesWithExtraDetailsFetched(Stub.puppies1And2WithExtraDetails),
       ).called(1);
     });
   });

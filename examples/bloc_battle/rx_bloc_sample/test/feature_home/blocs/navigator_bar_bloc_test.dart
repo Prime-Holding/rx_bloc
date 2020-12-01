@@ -3,13 +3,17 @@ import 'package:rx_bloc_sample/feature_home/blocs/navigation_bar_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
+import '../../stubs.dart';
+
 void main() {
   group('NavigationBarBloc title', () {
     rxBlocTest<NavigationBarBloc, String>(
       'NavigationBarBloc.title initial state',
       build: () async => NavigationBarBloc(),
       state: (bloc) => bloc.states.title,
-      expect: <String>['Search for Puppies'],
+      expect: [
+        Stub.navigation.searchTitle,
+      ],
     );
 
     rxBlocTest<NavigationBarBloc, String>(
@@ -17,7 +21,10 @@ void main() {
       build: () async => NavigationBarBloc(),
       act: (bloc) async => bloc.events.selectPage(NavigationItemType.favorites),
       state: (bloc) => bloc.states.title,
-      expect: <String>['Search for Puppies', 'Favorites Puppies'],
+      expect: [
+        Stub.navigation.searchTitle,
+        Stub.navigation.favoritesTitle,
+      ],
     );
   });
 
@@ -26,8 +33,8 @@ void main() {
       'NavigationBarBloc.title initial state',
       build: () async => NavigationBarBloc(),
       state: (bloc) => bloc.states.selectedItem,
-      expect: <NavigationItem>[
-        const NavigationItem(isSelected: true, type: NavigationItemType.search)
+      expect: [
+        Stub.navigation.searchSelected,
       ],
     );
 
@@ -37,14 +44,8 @@ void main() {
       state: (bloc) => bloc.states.selectedItem,
       act: (bloc) async => bloc.events.selectPage(NavigationItemType.favorites),
       expect: <NavigationItem>[
-        const NavigationItem(
-          isSelected: true,
-          type: NavigationItemType.search,
-        ),
-        const NavigationItem(
-          isSelected: true,
-          type: NavigationItemType.favorites,
-        )
+        Stub.navigation.searchSelected,
+        Stub.navigation.favoritesSelected,
       ],
     );
 
@@ -55,14 +56,8 @@ void main() {
         state: (bloc) => bloc.states.items,
         expect: [
           [
-            const NavigationItem(
-              isSelected: true,
-              type: NavigationItemType.search,
-            ),
-            const NavigationItem(
-              isSelected: false,
-              type: NavigationItemType.favorites,
-            ),
+            Stub.navigation.searchSelected,
+            Stub.navigation.favoritesNotSelected,
           ]
         ],
       );
@@ -76,24 +71,12 @@ void main() {
         ),
         expect: [
           [
-            const NavigationItem(
-              isSelected: true,
-              type: NavigationItemType.search,
-            ),
-            const NavigationItem(
-              isSelected: false,
-              type: NavigationItemType.favorites,
-            ),
+            Stub.navigation.searchSelected,
+            Stub.navigation.favoritesNotSelected,
           ],
           [
-            const NavigationItem(
-              isSelected: false,
-              type: NavigationItemType.search,
-            ),
-            const NavigationItem(
-              isSelected: true,
-              type: NavigationItemType.favorites,
-            ),
+            Stub.navigation.searchNotSelected,
+            Stub.navigation.favoritesSelected,
           ]
         ],
       );

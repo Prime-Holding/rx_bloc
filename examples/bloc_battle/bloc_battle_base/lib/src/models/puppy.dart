@@ -36,4 +36,11 @@ class Puppy {
 
     return false;
   }
+
+  @override
+  int get hashCode => super.hashCode;
+
+  @override
+  String toString() =>
+      "{$id, $name, $displayName, $breedCharacteristics, $displayBreedCharacteristics, $asset, $displayName, $isFavorite}";
 }
