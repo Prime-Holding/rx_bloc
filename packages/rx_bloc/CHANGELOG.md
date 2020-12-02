@@ -1,3 +1,10 @@
+## [1.0.4] - December 02, 2020
+* Consolidated rx_bloc ecosystem [in one repository](https://github.com/Prime-Holding/rx_bloc)
+* Applied strict static code analysis
+* Improved equability of the `ResultSuccess` class
+* Improved example
+* Documentation improvements
+
 ## [1.0.1] - August 21, 2020
 * Upgraded to last stable SDK
 
