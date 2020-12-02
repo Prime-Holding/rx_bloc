@@ -1,3 +1,9 @@
+## [1.0.0] - December 02, 2020
+* Consolidated rx_bloc ecosystem [in one repository](https://github.com/Prime-Holding/rx_bloc)
+* Removed flutter dependency
+* Applied strict static code analysis
+* Fixes and improvements
+
 ## [0.2.1] - May 5, 2020
 * Updated package dependencies
 * Reorganized package

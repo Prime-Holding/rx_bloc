@@ -1,14 +1,14 @@
 
 ![Dart CI](https://github.com/Prime-Holding/RxBlocGenerator/workflows/Dart%20CI/badge.svg)
 
-Code generator for [rx_bloc](https://github.com/Prime-Holding/RxBloc "rx_bloc") that makes your BloC zero-boilerplate.
+Code generator for [rx_bloc](https://pub.dev/packages/rx_bloc "rx_bloc") that makes your BloC zero-boilerplate.
 
 #### How this package can help you.
 Often to make your code-base consistent you need to stick to some conventions, which sometimes leads to boilerplate.
 
 > In computer programming, boilerplate is the term used to describe sections of code that have to be included in many places with little or no alteration. It is more often used when referring to languages that are considered verbose, i.e. the programmer must write a lot of code to do minimal jobs.
 
-Apparently, [rx_bloc](https://github.com/Prime-Holding/RxBloc "rx_bloc") is not an exception. As creating new BloC you might need to write some repetitive code to keep BloC's API consistent. This package benefits of possibility to create custom annotations as generates all needed boilerplate code instead of you. Doing so the BloC itself becomes zero-boilerplate as the rest is handled by the generator.
+Apparently, [rx_bloc](https://pub.dev/packages/rx_bloc "rx_bloc") is not an exception. As creating new BloC you might need to write some repetitive code to keep BloC's API consistent. This package benefits of possibility to create custom annotations as generates all needed boilerplate code instead of you. Doing so the BloC itself becomes zero-boilerplate as the rest is handled by the generator.
 
 #### Available annotations
 
@@ -101,7 +101,7 @@ Once you annotate your BloC with @RxBloc() the generator will look for `events` 
  * ${blocName}Events
 
 ##  @RxBlocIgnoreState()
-There might be some situations where you would need to define custom state, where all generated boilerplate it would be redundant. For that case just annotate the property of the `states` class with @RxBlocIgnoreState() and the generator won't generate any boilerplate code for it. A good example of this is *errors* or *loading* states as shown [here](https://github.com/Prime-Holding/RxBloc#usage).
+There might be some situations where you would need to define custom state, where all generated boilerplate it would be redundant. For that case just annotate the property of the `states` class with @RxBlocIgnoreState() and the generator won't generate any boilerplate code for it. A good example of this is *errors* or *loading* states as shown [here](https://pub.dev/packages/rx_bloc#usage).
 
 ##  @RxBlocEvent()
 When working with events, most of the time, they are used to publish changes to the bloc that do not require any initial state. However, there may be some times when you are required to set the state to a custom value or to explicitly annotate the event. All this can be done with the `@RxBlocEvent()` annotation.
@@ -146,7 +146,7 @@ In order to provide a good user experience and easier error detection, this gene
   * ``flutter packages pub run build_runner watch`` if want to the generator to listen for your changes and to generate boilerplate code on the fly.
 
 ### Where I can see more comprehensive examples?
-Just open the [example](/example "example") directory of the package or look at the example directory of [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc "flutter_rx_bloc").
+Just open the [example](/example "example") directory of the package or look at the example directory of [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc "flutter_rx_bloc").
 
 ### Problems with the generation? 
 Make sure you always save your files before running the generator, if that doesn't work you can always try to clean and rebuild.
