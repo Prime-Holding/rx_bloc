@@ -1,3 +1,8 @@
+## [1.1.1] - December 02, 2020
+* Consolidated rx_bloc ecosystem [in one repository](https://github.com/Prime-Holding/rx_bloc)
+* Applied strict static code analysis
+* Updated example
+
 ## [1.1.0] - August 20, 2020
 * Reorganized as a [library package](https://dart.dev/guides/libraries/create-library-packages#organizing-a-library-package)
 * Update package dependencies

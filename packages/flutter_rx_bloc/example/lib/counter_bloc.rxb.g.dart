@@ -57,6 +57,7 @@ abstract class $CounterBloc extends RxBlocBase
   CounterBlocStates get states => this;
 
   /// Dispose of all the opened streams when the bloc is closed.
+  @override
   void dispose() {
     _$incrementEvent.close();
     super.dispose();

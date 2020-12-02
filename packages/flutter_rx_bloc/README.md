@@ -1,8 +1,6 @@
-![Dart CI](https://github.com/Prime-Holding/FlutterRxBloc/workflows/Dart%20CI/badge.svg)
-
 A Flutter package that helps implement the BLoC Design Pattern using the power of reactive streams.
 
-This package is built to work with [rx_bloc](https://github.com/Prime-Holding/RxBloc) and [rx_bloc_generator](https://github.com/Prime-Holding/RxBlocGenerator)
+This package is built to work with [rx_bloc](https://pub.dev/packages/rx_bloc) and [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator)
 
 
 ## Bloc Widgets
@@ -341,9 +339,9 @@ For more information and how-to check:
 
 ## FAQ
 
-### What is the main advantage of [rx_bloc](https://github.com/Prime-Holding/RxBloc)
+### What is the main advantage of [rx_bloc](https://pub.dev/packages/rx_bloc)
 
-* Comparing with the other libraries facilitating the BloC Pattern, [rx_bloc](https://github.com/Prime-Holding/RxBloc) supports multiple output streams (states) per BloC. As shown in the example above, CounterBlocStates consist of four different states, as each of them do its specific job. 
+* Comparing with the other libraries facilitating the BloC Pattern, [rx_bloc](https://pub.dev/packages/rx_bloc) supports multiple output streams (states) per BloC. As shown in the example above, CounterBlocStates consist of four different states, as each of them do its specific job. 
  1. **count** shows the current count
  2. **incrementEnabled** manages enable/disable state of the increment button
  3. **decrementEnabled** manages enable/disable state of the decrement button
@@ -352,7 +350,7 @@ For more information and how-to check:
 Doing so, the BloC it's not overloaded and follows [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle)
 
 
-### On what package is based [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc)
+### On what package is based [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc)
 
-* [flutter_rx_bloc](https://github.com/Prime-Holding/FlutterRxBloc) is based on the well known [flutter_bloc](https://github.com/felangel/bloc/tree/master/packages/flutter_bloc) made by [Felix Angelov](https://github.com/felangel)
+* [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) is based on the well known [flutter_bloc](https://github.com/felangel/bloc/tree/master/packages/flutter_bloc) made by [Felix Angelov](https://github.com/felangel)
 

@@ -2,9 +2,10 @@
 class CounterRepository {
   int _counter = 0;
 
+  /// Increment the stored counter by one
   Future<int> increment() async {
     // Server response time.
-    await Future.delayed(Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 800));
     // Simulate an error from the server when the counter reached 2.
     if (_counter == 2) {
       throw Exception('Maximum number is reached!');
@@ -13,9 +14,10 @@ class CounterRepository {
     return ++_counter;
   }
 
+  /// Decrement the stored counter by one
   Future<int> decrement() async {
     // Server response time.
-    await Future.delayed(Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 800));
     // Simulate an error from the server when the counter reached 2.
     if (_counter <= 0) {
       throw Exception('Minimum number is reached!');

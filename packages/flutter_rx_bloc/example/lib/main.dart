@@ -10,6 +10,7 @@ void main() {
   runApp(MyApp());
 }
 
+// ignore: public_member_api_docs
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -21,13 +22,15 @@ class MyApp extends StatelessWidget {
       ),
       home: RxBlocProvider<CounterBlocType>(
         create: (ctx) => CounterBloc(CounterRepository()),
-        child: HomePage(),
+        child: const HomePage(),
       ),
     );
   }
 }
 
+// ignore: public_member_api_docs
 class HomePage extends StatelessWidget {
+  // ignore: public_member_api_docs
   const HomePage({
     Key key,
   }) : super(key: key);
@@ -43,7 +46,7 @@ class HomePage extends StatelessWidget {
             RxBlocListener<CounterBlocType, String>(
               state: (bloc) => bloc.states.errors,
               listener: (context, errorMessage) =>
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  Scaffold.of(context).showSnackBar(
                 SnackBar(
                   content: Text(errorMessage),
                   behavior: SnackBarBehavior.floating,
