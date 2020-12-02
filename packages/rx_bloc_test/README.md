@@ -1,8 +1,6 @@
-![Dart CI](https://github.com/Prime-Holding/RxBlocTest/workflows/Dart%20CI/badge.svg)
-
 # rx_bloc_test
 
-A Flutter package with the goal to enable testing [RxBlocs](https://github.com/Prime-Holding/RxBloc) from the [FlutterRxBloc package](https://github.com/Prime-Holding/FlutterRxBloc) with ease.
+A Flutter package with the goal to enable testing [RxBlocs](https://pub.dev/packages/rx_bloc) from the [FlutterRxBloc package](https://pub.dev/packages/flutter_rx_bloc) with ease.
 
 ## rxBlocTest
 

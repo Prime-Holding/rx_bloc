@@ -1,7 +1,7 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('CounterBloc tests', () {
