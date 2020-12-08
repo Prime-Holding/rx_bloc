@@ -109,7 +109,8 @@ class RxBlocGenerator {
   /// Generates the dispose method for the bloc
   void _generateDisposeMethod() {
     _writeln('\n/// Dispose of all the opened streams');
-    _writeln('void dispose(){');
+    _writeln('\n@override');
+    _writeln('\nvoid dispose(){');
 
     eventsElement.methods.forEach(
       (method) => _writeln('_\$${method.name}Event.close();'),
