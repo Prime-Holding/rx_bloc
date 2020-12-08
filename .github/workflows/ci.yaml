@@ -1,15 +1,15 @@
-name: main
+name: CI
 
 on:
   push:
     paths:
-      - ".github/workflows/examples.yaml"
+      - ".github/workflows/ci.yaml"
       - "packages/**"
       - "examples/**"
 
   pull_request:
     paths:
-      - ".github/workflows/flutter_examples.yaml"
+      - ".github/workflows/ci.yaml"
       - "packages/**"
       - "examples/**"
 

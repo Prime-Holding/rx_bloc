@@ -1,3 +1,5 @@
+![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
+
 # rx_bloc_test
 
 A Flutter package with the goal to enable testing [RxBlocs](https://pub.dev/packages/rx_bloc) from the [FlutterRxBloc package](https://pub.dev/packages/flutter_rx_bloc) with ease.

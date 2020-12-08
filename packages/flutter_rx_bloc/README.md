@@ -1,3 +1,5 @@
+![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
+
 A Flutter package that helps implement the BLoC Design Pattern using the power of reactive streams.
 
 This package is built to work with [rx_bloc](https://pub.dev/packages/rx_bloc) and [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator)
