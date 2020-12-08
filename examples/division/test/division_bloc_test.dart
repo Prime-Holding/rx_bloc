@@ -14,7 +14,7 @@ void main() {
       state: (bloc) => bloc.states.divisionResult,
       act: (bloc) async {
         bloc.events.divideNumbers(num1, num2);
-        await Future.delayed(Duration(milliseconds: 1002));
+        await Future.delayed(Duration(milliseconds: 1010));
       },
       expect: [expectedSolution],
     );

@@ -59,6 +59,8 @@ abstract class $FavoritePuppiesBloc extends RxBlocBase
   ///endregion Type
 
   /// Dispose of all the opened streams
+
+  @override
   void dispose() {
     _$reloadFavoritePuppiesEvent.close();
     super.dispose();

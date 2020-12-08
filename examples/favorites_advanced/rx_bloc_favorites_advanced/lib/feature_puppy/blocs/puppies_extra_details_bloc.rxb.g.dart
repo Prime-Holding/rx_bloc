@@ -48,6 +48,8 @@ abstract class $PuppiesExtraDetailsBloc extends RxBlocBase
   ///endregion Type
 
   /// Dispose of all the opened streams
+
+  @override
   void dispose() {
     _$fetchExtraDetailsEvent.close();
     super.dispose();

@@ -65,6 +65,8 @@ abstract class $CoordinatorBloc extends RxBlocBase
   ///endregion Type
 
   /// Dispose of all the opened streams
+
+  @override
   void dispose() {
     _$puppyUpdatedEvent.close();
     _$puppiesWithExtraDetailsFetchedEvent.close();

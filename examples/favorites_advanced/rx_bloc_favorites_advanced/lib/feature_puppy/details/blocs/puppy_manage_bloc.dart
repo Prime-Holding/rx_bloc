@@ -45,6 +45,7 @@ class PuppyManageBloc extends $PuppyManageBloc {
 
   @override
   void dispose() {
+    _favoritePuppyError.close();
     _lastUpdatedPuppy.close();
     _compositeSubscription.dispose();
     super.dispose();
