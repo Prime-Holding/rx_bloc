@@ -1,3 +1,6 @@
+## [1.1.0] - December 08, 2020
+* Upgraded to rx_dart ^0.25.0
+
 ## [1.0.4] - December 02, 2020
 * Consolidated rx_bloc ecosystem [in one repository](https://github.com/Prime-Holding/rx_bloc)
 * Applied strict static code analysis
