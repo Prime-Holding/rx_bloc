@@ -41,4 +41,4 @@ Following the best practices for building robust mobile applications the archite
 
 ## Articles
 
-- [rx_bloc package](https://medium.com/@georgi.stanev/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde) - Building complex apps in Flutter with the power of reactive programming
+- [rx_bloc package](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde) - Building complex apps in Flutter with the power of reactive programming
