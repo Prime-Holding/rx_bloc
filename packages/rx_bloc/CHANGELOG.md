@@ -1,5 +1,6 @@
-## [1.1.0] - December 08, 2020
+## [1.1.1] - December 08, 2020
 * Upgraded to rx_dart ^0.25.0
+* Upgraded to meta: ^1.2.4
 
 ## [1.0.4] - December 02, 2020
 * Consolidated rx_bloc ecosystem [in one repository](https://github.com/Prime-Holding/rx_bloc)
