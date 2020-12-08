@@ -8,7 +8,7 @@ class PuppiesRepository {
   final artificialDelay = Duration(milliseconds: 300);
 
   /// Control how many time the 20 below will be multiplied.
-  final generatedPuppiesMultiplier = 50;
+  final generatedPuppiesMultiplier = 5000;
 
   PuppiesRepository() {
     puppies = _generateListOfPuppies();

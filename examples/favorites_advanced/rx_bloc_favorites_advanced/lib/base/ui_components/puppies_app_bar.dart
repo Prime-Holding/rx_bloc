@@ -32,6 +32,7 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
         searchContainerColor: Colors.blue,
         title: Text(item.type.asTitle()),
         style: const TextStyle(color: Colors.white),
+        autofocus: false,
         decoration: const InputDecoration(
           hintText: 'Search ...',
           hintStyle: TextStyle(color: Colors.white),

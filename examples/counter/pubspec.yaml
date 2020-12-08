@@ -21,9 +21,6 @@ dependencies:
     sdk: flutter
   rx_bloc:
   flutter_rx_bloc:
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -34,10 +31,13 @@ dev_dependencies:
   flutter_gherkin: ^1.1.7+3
   build_runner:
   rx_bloc_generator:
+  rx_bloc_test:
   mockito: ^4.1.1
-  rx_bloc_test: ^0.0.5
+
 
 dependency_overrides:
+  rx_bloc_test:
+    path: ../../packages/rx_bloc_test
   rx_bloc:
     path: ../../packages/rx_bloc
   flutter_rx_bloc:
