@@ -55,6 +55,8 @@ abstract class $NavigationBarBloc extends RxBlocBase
   ///endregion Type
 
   /// Dispose of all the opened streams
+
+  @override
   void dispose() {
     _$selectPageEvent.close();
     super.dispose();

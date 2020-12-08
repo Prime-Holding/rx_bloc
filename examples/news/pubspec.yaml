@@ -10,15 +10,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  rx_bloc: ^1.0.1
+  rx_bloc:
 
 dev_dependencies:
   build_runner:
   rx_bloc_generator:
-    path: ../
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  rx_bloc_test:
+    path: ../../packages/rx_bloc_test
+  rx_bloc:
+    path: ../../packages/rx_bloc
+  rx_bloc_generator:
+    path: ../../packages/rx_bloc_generator
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

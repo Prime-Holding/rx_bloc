@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Counter sample")),
+      appBar: AppBar(title: const Text('Counter sample')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -65,8 +65,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:
-          _buildActionButtons(), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: _buildActionButtons(),
     );
   }
 
@@ -76,7 +75,7 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (loadingState.isLoading)
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 16),
                 child: CircularProgressIndicator(),
               ),
@@ -84,14 +83,14 @@ class HomePage extends StatelessWidget {
               backgroundColor: loadingState.buttonColor,
               onPressed: loadingState.isLoading ? null : bloc.events.increment,
               tooltip: 'Increment',
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
             const SizedBox(width: 16),
             FloatingActionButton(
               backgroundColor: loadingState.buttonColor,
               onPressed: loadingState.isLoading ? null : bloc.events.decrement,
               tooltip: 'Decrement',
-              child: Icon(Icons.remove),
+              child: const Icon(Icons.remove),
             ),
           ],
         ),
@@ -126,11 +125,13 @@ abstract class CounterBlocStates {
   Stream<String> get errors;
 }
 
+/// A BloC responsible for count calculations
 @RxBloc()
 class CounterBloc extends $CounterBloc {
+  /// Default constructor
   CounterBloc(this._repository);
 
-  CounterRepository _repository;
+  final CounterRepository _repository;
 
   /// Map increment and decrement events to `count` state
   @override
@@ -160,6 +161,9 @@ class CounterBloc extends $CounterBloc {
 /// BLoc class end
 
 extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {
+  /// The loading state extracted from the snapshot
   bool get isLoading => hasData && data;
+
+  /// The color based on the isLoading state
   Color get buttonColor => isLoading ? Colors.blueGrey : Colors.blue;
 }
