@@ -4,12 +4,14 @@ import 'package:rxdart/rxdart.dart';
 
 part 'loading_bloc.rxb.g.dart';
 
+/// The states of LoadingBloc
 abstract class LoadingBlocStates {
   ///
-  /// The isLoading stream starts with default value false.
+  /// The isLoading stream starts with initial value false.
+  /// It can be triggered by invoking [LoadingBlocEvents.setLoading]
   ///
   /// **Example:**
-  ///    # Input isLoadingStreams
+  ///    # Input [LoadingBlocEvents.setLoading]
   ///    - |-------true-----false----------->
   ///    - |-------------true------false->
   ///    - |----------------------------------------true----------false->
@@ -18,10 +20,20 @@ abstract class LoadingBlocStates {
   Stream<bool> get isLoading;
 }
 
+/// The events of LoadingBloc
 abstract class LoadingBlocEvents {
+  /// Set [isLoading] to BloC
+  ///
+  /// To observe the current loading state subscribe for
+  /// [LoadingBlocStates.isLoading]
   void setLoading({@required bool isLoading});
 }
 
+/// The BloC that handles is loading state.
+///
+/// Each bloc has a internal property of [LoadingBloc], which allows to be used:
+/// 1. setStateHandler(...)
+/// 2. setLoadingStateHandler(...)
 @RxBloc()
 class LoadingBloc extends $LoadingBloc {
   /// Default constructor

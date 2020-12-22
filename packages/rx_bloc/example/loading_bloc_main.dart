@@ -1,3 +1,4 @@
+// ignore: avoid_relative_lib_imports
 import '../lib/src/bloc/loading_bloc.dart';
 
 void main() async {

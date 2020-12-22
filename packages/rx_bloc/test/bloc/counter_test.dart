@@ -2,8 +2,8 @@ import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
 import '../../example/main.dart';
+// ignore: avoid_relative_lib_imports
 import '../../lib/rx_bloc.dart';
-// RxBlocBase is abstract. To test it we need its implementation.
 
 class BlocImpl extends RxBlocBase implements RxBlocTypeBase {}
 
@@ -111,7 +111,7 @@ void main() {
         bloc.events.decrement();
       },
       wait: ServerSimulator.delay,
-      expect: <String>["Exception: Minimum number is reached!"],
+      expect: <String>['Exception: Minimum number is reached!'],
     );
 
     rxBlocTest<CounterBlocType, String>(
@@ -126,7 +126,7 @@ void main() {
         bloc.events.increment();
       },
       wait: ServerSimulator.delay,
-      expect: <String>["Exception: Maximum number is reached!"],
+      expect: <String>['Exception: Maximum number is reached!'],
     );
   });
 }
