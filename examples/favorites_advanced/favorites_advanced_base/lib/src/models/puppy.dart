@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 part '../extensions/puppy_extensions.dart';
 
@@ -42,5 +43,5 @@ class Puppy {
 
   @override
   String toString() =>
-      "{$id, $name, $displayName, $breedCharacteristics, $displayBreedCharacteristics, $asset, $displayName, $isFavorite}";
+      "{$id, $name, $displayName, ${breedCharacteristics == null ? "no breedCharacteristics" : ""}, ${displayBreedCharacteristics == null ? "no displayBreedCharacteristics" : ""}, $asset, $displayName, $isFavorite}";
 }

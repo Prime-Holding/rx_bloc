@@ -1,7 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CounterBloc extends RxBlocBase {
+class CounterBloc extends RxBlocBase implements RxBlocTypeBase {
   final _loadingCount = BehaviorSubject<int>.seeded(0);
 
   Stream<int> get count => _loadingCount.stream;

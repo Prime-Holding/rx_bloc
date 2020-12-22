@@ -33,7 +33,7 @@ import 'package:test/test.dart' as tester;
 /// If the [skip] value is set to 0, it will include the initial value.
 ///
 @isTest
-void rxBlocTest<B extends RxBlocBase, StateOutputType>(
+void rxBlocTest<B extends RxBlocTypeBase, StateOutputType>(
   String message, {
   @required Future<B> Function() build,
   @required Stream<StateOutputType> Function(B) state,

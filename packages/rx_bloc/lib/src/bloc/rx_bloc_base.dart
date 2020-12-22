@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../extensions.dart';
 import '../model/result.dart';
 import 'loading_bloc.dart';
+
+part '../extensions.dart';
 
 // ignore: public_member_api_docs
 abstract class RxBlocTypeBase {
@@ -40,7 +41,7 @@ abstract class RxBlocBase {
 
   /// The loading states of all handled result streams.
   @protected
-  Stream<bool> get loadingState => _loadingBloc.isLoading;
+  Stream<bool> get loadingState => _loadingBloc.states.isLoading;
 
   /// The errors of all handled result streams.
   @protected
@@ -49,66 +50,6 @@ abstract class RxBlocBase {
   final _resultStreamExceptionsSubject = BehaviorSubject<Exception>();
 
   final _compositeSubscription = CompositeSubscription();
-
-  /// Handle [ResultError] states from the stream.
-  ///
-  /// Once the states are being handled they sink to [errorState].
-  /// Converts the stream to broadcast one based on [shareReplay].
-  ///
-  /// In case you need to register loading states along with the exceptions,
-  /// use [setResultStateHandler] instead.
-  @protected
-  Stream<Result<T>> setErrorStateHandler<T>(
-    Stream<Result<T>> resultStream, {
-    bool shareReplay = true,
-  }) {
-    resultStream
-        .asSharedStream(shareReplay: shareReplay)
-        .whereError()
-        .bind(_resultStreamExceptionsSubject)
-        .disposedBy(_compositeSubscription);
-
-    return resultStream;
-  }
-
-  /// Handle [ResultLoading] states from stream.
-  ///
-  /// Once the states are being handled they sink to [loadingState].
-  /// Converts the stream to broadcast one based on [shareReplay].
-  ///
-  /// In case you need to handle error states along with the loading state,
-  /// use [setResultStateHandler] instead.
-  @protected
-  Stream<Result<T>> setLoadingStateHandler<T>(
-    Stream<Result<T>> resultStream, {
-    bool shareReplay = true,
-  }) {
-    resultStream = resultStream.asSharedStream(shareReplay: shareReplay);
-
-    _loadingBloc.addStream(resultStream.isLoading());
-    return resultStream;
-  }
-
-  /// Handle [ResultLoading] and [ResultError] states from the stream.
-  ///
-  /// Converts the stream to broadcast one based on [shareReplay].
-  ///
-  /// Useful when multiple type of result streams are executed by a single Bloc,
-  /// as all [ResultError] and [ResultLoading] states resides in a central place
-  ///
-  /// Once [ResultLoading] states are being handled they sink to [loadingState].
-  /// Once [ResultError] states are being handled they sink to [errorState].
-  @protected
-  Stream<Result<T>> setResultStateHandler<T>(
-    Stream<Result<T>> resultStream, {
-    bool shareReplay = true,
-  }) {
-    resultStream = resultStream.asSharedStream(shareReplay: shareReplay);
-
-    setErrorStateHandler(resultStream, shareReplay: false);
-    setLoadingStateHandler(resultStream, shareReplay: false);
-    return resultStream;
-  }
 
   /// Disposes all internally created streams
   void dispose() {
