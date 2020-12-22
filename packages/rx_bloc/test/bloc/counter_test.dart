@@ -1,6 +1,7 @@
-import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
+// ignore: avoid_relative_lib_imports
+import '../../../rx_bloc_test/lib/rx_bloc_test.dart';
 import '../../example/main.dart';
 // ignore: avoid_relative_lib_imports
 import '../../lib/rx_bloc.dart';
