@@ -1,27 +1,46 @@
-import 'package:rx_bloc/src/bloc/loading_bloc.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
-void main() {
-  group('Loading bloc', () {
-    test('Expecting value from stream', () async {
-      final loadingBloc = LoadingBloc();
-      final value = false;
-      loadingBloc.addStream(BehaviorSubject.seeded(value));
-      await expectLater(loadingBloc.isLoading, emits(value));
-    });
+import '../../lib/src/bloc/loading_bloc.dart';
 
-    test('isLoading value changes after delay', () async {
-      final loadingBloc = LoadingBloc();
-      BehaviorSubject<bool> stream;
-      loadingBloc.addStream(stream = BehaviorSubject.seeded(true));
-      await expectLater(loadingBloc.isLoading, emitsInOrder([false, true]));
-      await Future.delayed(
-        const Duration(milliseconds: 20),
-        () => stream.add(false),
-      );
-      await expectLater(loadingBloc.isLoading, emitsInOrder([true, false]));
-      await stream.close();
-    });
+void main() {
+  group('LoadingBLoc tests', () {
+    rxBlocTest<LoadingBlocType, bool>(
+      'LoadingBLoc test isLoading state',
+      build: () async => LoadingBloc(),
+      state: (bloc) => bloc.states.isLoading,
+      act: (bloc) async {
+        await Future.delayed(
+          const Duration(milliseconds: 10),
+          () => bloc.events.setLoading(isLoading: true),
+        );
+
+        await Future.delayed(
+          const Duration(milliseconds: 10),
+          () => bloc.events.setLoading(isLoading: true),
+        );
+
+        await Future.delayed(
+          const Duration(milliseconds: 10),
+          () => bloc.events.setLoading(isLoading: false),
+        );
+
+        await Future.delayed(
+          const Duration(milliseconds: 10),
+          () => bloc.events.setLoading(isLoading: false),
+        );
+
+        await Future.delayed(
+          const Duration(milliseconds: 10),
+          () => bloc.events.setLoading(isLoading: true),
+        );
+
+        await Future.delayed(
+          const Duration(milliseconds: 10),
+          () => bloc.events.setLoading(isLoading: false),
+        );
+      },
+      expect: [false, true, false, true, false],
+    );
   });
 }

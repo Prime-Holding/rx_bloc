@@ -27,10 +27,12 @@ class PuppyManageBloc extends $PuppyManageBloc {
     CoordinatorBlocType coordinatorBloc,
   ) {
     _$markAsFavoriteEvent
-        .markPuppyAsFavorite(puppiesRepository, this, coordinatorBloc)
+        .markPuppyAsFavorite(puppiesRepository, this)
+        .doOnData((puppy) => coordinatorBloc.events.puppyUpdated(puppy))
         .bind(_lastUpdatedPuppy)
         .disposedBy(_compositeSubscription);
   }
+
   final _lastUpdatedPuppy = BehaviorSubject<Puppy>();
   final _compositeSubscription = CompositeSubscription();
   final _favoritePuppyError = PublishSubject<Exception>();
