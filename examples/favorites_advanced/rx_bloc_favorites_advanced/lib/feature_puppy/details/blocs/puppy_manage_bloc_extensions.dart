@@ -10,10 +10,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
   /// `Side effect`: once the puppy gets updated emmit an event to
   /// [CoordinatorBloc]
   Stream<Puppy> markPuppyAsFavorite(
-    PuppiesRepository puppiesRepository,
-    PuppyManageBloc bloc,
-    CoordinatorBlocType coordinatorBloc,
-  ) =>
+          PuppiesRepository puppiesRepository, PuppyManageBloc bloc) =>
       throttleTime(const Duration(milliseconds: 200))
           .switchMap<Result<Puppy>>((args) async* {
             yield Result.loading();
@@ -43,6 +40,5 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
             }
           })
           .setResultStateHandler(bloc)
-          .whereSuccess()
-          .doOnData((puppy) => coordinatorBloc.events.puppyUpdated(puppy));
+          .whereSuccess();
 }

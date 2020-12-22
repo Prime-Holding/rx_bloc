@@ -1,9 +1,4 @@
-import 'dart:async';
-
-import 'package:rxdart/rxdart.dart';
-
-import './bloc/rx_bloc_base.dart';
-import './model/result.dart';
+part of 'bloc/rx_bloc_base.dart';
 
 /// ResultStream utility extension methods.
 extension ResultStream<T> on Stream<Result<T>> {
@@ -64,8 +59,10 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
     RxBlocBase bloc, {
     bool shareReplay = true,
   }) =>
-      // ignore: invalid_use_of_protected_member
-      bloc.setLoadingStateHandler(this, shareReplay: shareReplay);
+      doOnData(
+        (event) =>
+            bloc._loadingBloc.setLoading(isLoading: event is ResultLoading<T>),
+      ).asSharedStream(shareReplay: shareReplay);
 
   /// Handle [ResultError] states from the stream.
   ///
@@ -78,8 +75,11 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
     RxBlocBase bloc, {
     bool shareReplay = true,
   }) =>
-      // ignore: invalid_use_of_protected_member
-      bloc.setErrorStateHandler(this, shareReplay: shareReplay);
+      doOnData((event) {
+        if (event is ResultError<T>) {
+          bloc._resultStreamExceptionsSubject.value = event.error;
+        }
+      }).asSharedStream(shareReplay: shareReplay);
 
   /// Handle [ResultLoading] and [ResultError] by a BLoC.
   ///
@@ -94,8 +94,9 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
   /// they sink to [RxBlocBase.errorState].
   Stream<Result<T>> setResultStateHandler(RxBlocBase bloc,
           {bool shareReplay = true}) =>
-      // ignore: invalid_use_of_protected_member
-      bloc.setResultStateHandler(this, shareReplay: shareReplay);
+      setErrorStateHandler(bloc)
+          .setLoadingStateHandler(bloc)
+          .asSharedStream(shareReplay: shareReplay);
 }
 
 /// Stream binder utilities

@@ -96,7 +96,7 @@ void main() {
       },
       act: (bloc) async {
         bloc.events.reloadFavoritePuppies(silently: false);
-        await Future.delayed(const Duration(milliseconds: 900));
+        await Future.delayed(const Duration(milliseconds: 1200));
       },
       // Make sure the api it's called just once
       expect: <Result<List<Puppy>>>[

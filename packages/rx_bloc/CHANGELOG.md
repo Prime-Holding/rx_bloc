@@ -1,3 +1,8 @@
+## [1.2.0] - December 24, 2020
+* Fixed side effects in setStateHandler/setErrorStateHandler/setLoadingHandler
+* Removed rx_bloc/extensions library as this is now part of rx_bloc/rx_bloc
+* Increased code covarage
+
 ## [1.1.1] - December 08, 2020
 * Upgraded to rx_dart ^0.25.0
 * Upgraded to meta: ^1.2.4

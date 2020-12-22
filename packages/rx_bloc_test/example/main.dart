@@ -33,7 +33,7 @@ void main() {
   });
 }
 
-class CounterBloc extends RxBlocBase {
+class CounterBloc extends RxBlocBase implements RxBlocTypeBase {
   final _loadingCount = BehaviorSubject<int>.seeded(0);
 
   Stream<int> get count => _loadingCount.stream;
