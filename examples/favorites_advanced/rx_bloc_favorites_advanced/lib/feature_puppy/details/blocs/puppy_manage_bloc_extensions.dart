@@ -27,8 +27,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
 
               yield Result.success(
                 updatedPuppy.copyWith(
-                  displayBreedCharacteristics:
-                      args.puppy.displayBreedCharacteristics,
+                  breedCharacteristics: args.puppy.breedCharacteristics,
                   displayName: args.puppy.displayName,
                 ),
               );

@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
   HomePage({Key key}) : super(key: key);
 
   @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
+  Widget wrappedRoute(BuildContext context) => RxMultiBlocProvider(
         providers: _getProviders(),
         child: this,
       );

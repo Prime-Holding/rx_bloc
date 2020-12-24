@@ -59,8 +59,8 @@ class Stub {
           .asStream();
 
   static final puppies1And2WithExtraDetails = [
-    puppy1.copyWith(displayBreedCharacteristics: '1', displayName: '1'),
-    puppy2.copyWith(displayBreedCharacteristics: '2', displayName: '2')
+    puppy1.copyWith(breedCharacteristics: '1', displayName: '1'),
+    puppy2.copyWith(breedCharacteristics: '2', displayName: '2')
   ];
 }
 

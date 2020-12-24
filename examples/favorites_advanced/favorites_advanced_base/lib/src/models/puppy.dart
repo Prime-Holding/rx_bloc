@@ -1,3 +1,5 @@
+import 'package:favorites_advanced_base/src/utils/enums.dart';
+import 'package:favorites_advanced_base/src/utils/puppy_data_conversion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
@@ -7,9 +9,11 @@ class Puppy {
   final String id;
   final String name;
   final String breedCharacteristics;
-  final String displayBreedCharacteristics;
   final String asset;
   final String displayName;
+  final BreedTypes breedType;
+  final Gender gender;
+
   bool isFavorite;
 
   Puppy({
@@ -20,7 +24,8 @@ class Puppy {
     this.isFavorite = false,
     this.breedCharacteristics =
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    this.displayBreedCharacteristics,
+    this.breedType = BreedTypes.Mixed,
+    this.gender = Gender.Male,
   });
 
   @override
@@ -29,10 +34,10 @@ class Puppy {
       return id == other.id &&
           name == other.name &&
           breedCharacteristics == other.breedCharacteristics &&
-          displayBreedCharacteristics == other.displayBreedCharacteristics &&
           asset == other.asset &&
           displayName == other.displayName &&
-          isFavorite == other.isFavorite;
+          isFavorite == other.isFavorite &&
+          breedType == other.breedType;
     }
 
     return false;
@@ -43,5 +48,5 @@ class Puppy {
 
   @override
   String toString() =>
-      "{$id, $name, $displayName, ${breedCharacteristics == null ? "no breedCharacteristics" : ""}, ${displayBreedCharacteristics == null ? "no displayBreedCharacteristics" : ""}, $asset, $displayName, $isFavorite}";
+      "{$id, $name, $displayName, ${breedCharacteristics == null ? "no displayBreedCharacteristics" : ""}, $asset, $displayName, $breedType, $isFavorite}";
 }

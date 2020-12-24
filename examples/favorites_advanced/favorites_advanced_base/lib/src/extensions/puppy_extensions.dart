@@ -5,23 +5,29 @@ extension PuppUtils on Puppy {
     String id,
     String name,
     String displayName,
-    String displayBreedCharacteristics,
+    String breedCharacteristics,
+    Gender gender,
+    BreedTypes breedType,
     bool isFavorite,
   }) =>
       Puppy(
         id: id ?? this.id,
         name: name ?? this.name,
         displayName: displayName ?? this.displayName,
-        breedCharacteristics: breedCharacteristics,
-        displayBreedCharacteristics:
-            displayBreedCharacteristics ?? this.displayBreedCharacteristics,
+        breedCharacteristics: breedCharacteristics ?? this.breedCharacteristics,
         asset: asset,
         isFavorite: isFavorite ?? this.isFavorite,
+        gender: gender ?? this.gender,
+        breedType: breedType ?? this.breedType,
       );
 
   /// Check whether the current entity has all needed extra details.
-  bool hasExtraDetails() =>
-      displayBreedCharacteristics != null && displayName != null;
+  bool hasExtraDetails() => breedCharacteristics != null && displayName != null;
+
+  String get genderAsString => PuppyDataConversion.getGenderString(gender);
+
+  String get breedTypeAsString =>
+      PuppyDataConversion.getBreedTypeString(breedType);
 }
 
 extension ListPuppyUtils on List<Puppy> {
