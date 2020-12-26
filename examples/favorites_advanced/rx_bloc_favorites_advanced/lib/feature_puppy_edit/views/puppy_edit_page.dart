@@ -3,14 +3,13 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy_edit/ui_components/puppy_edit_app_bar.dart';
 
 part 'puppy_edit_providers.dart';
 
-class PuppyEditPage extends StatelessWidget with AutoRouteWrapper {
+class PuppyEditPage extends StatefulWidget with AutoRouteWrapper {
   const PuppyEditPage({
     @required Puppy puppy,
     Key key,
@@ -26,35 +25,78 @@ class PuppyEditPage extends StatelessWidget with AutoRouteWrapper {
       );
 
   @override
+  _PuppyEditPageState createState() => _PuppyEditPageState();
+}
+
+class _PuppyEditPageState extends State<PuppyEditPage> {
+  final _characteristicsMaxLength = 250;
+
+  Puppy _editedPuppy;
+  TextEditingController _nameTextFieldController;
+  TextEditingController _characteristicsTextFieldController;
+
+  InputBorder get _defaultInputFieldBorder => const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.blue,
+        ),
+      );
+
+  /// region Lifecycle events
+
+  @override
+  void initState() {
+    super.initState();
+    _editedPuppy = widget._puppy;
+    _nameTextFieldController = TextEditingController(text: _editedPuppy.name);
+    _characteristicsTextFieldController =
+        TextEditingController(text: _editedPuppy.breedCharacteristics);
+  }
+
+  @override
   Widget build(BuildContext context) =>
       RxResultBuilder<PuppyListBlocType, List<Puppy>>(
         state: (bloc) => bloc.states.searchedPuppies,
-        buildLoading: (ctx, bloc) => _buildScaffoldBody(ctx, _puppy),
+        buildLoading: (ctx, bloc) => _buildScaffoldBody(ctx, widget._puppy),
         buildError: (ctx, error, bloc) {
           Future.delayed(
               const Duration(microseconds: 10),
               () => RxBlocProvider.of<PuppyListBlocType>(ctx)
                   .events
                   .reloadFavoritePuppies(silently: false));
-          return _buildScaffoldBody(context, _puppy);
+          return _buildScaffoldBody(context, widget._puppy);
         },
         buildSuccess: (ctx, puppyList, _) {
           final foundPuppy = ((puppyList?.isNotEmpty ?? false)
-                  ? puppyList?.firstWhere((element) => element.id == _puppy.id)
+                  ? puppyList
+                      ?.firstWhere((element) => element.id == widget._puppy.id)
                   : null) ??
-              _puppy;
+              widget._puppy;
           return _buildScaffoldBody(context, foundPuppy);
         },
       );
 
-  Widget _buildScaffoldBody(BuildContext context, Puppy puppy) => Scaffold(
-        appBar: PuppyEditAppBar(
-          puppyManageBloc: RxBlocProvider.of<PuppyManageBlocType>(context),
-          puppy: puppy,
-        ),
-        body: SafeArea(
-          key: const ValueKey('PuppyDetailsPage'),
-          child: _buildBody(puppy),
+  /// endregion
+
+  /// region Builders
+
+  Widget _buildScaffoldBody(BuildContext context, Puppy puppy) =>
+      GestureDetector(
+        onTap: () {
+          // Defocus when user taps outside any component
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Scaffold(
+          appBar: PuppyEditAppBar(
+            enabled: widget._puppy != _editedPuppy,
+            onSavePressed: () {
+              // TODO: Implement puppy saving
+              debugPrint('Save button pressed!');
+            },
+          ),
+          body: SafeArea(
+            key: const ValueKey('PuppyEditPage'),
+            child: SingleChildScrollView(child: _buildBody(puppy)),
+          ),
         ),
       );
 
@@ -62,64 +104,152 @@ class PuppyEditPage extends StatelessWidget with AutoRouteWrapper {
         padding: const EdgeInsets.only(top: 10, left: 27, right: 27),
         child: Column(
           children: [
-            Hero(
-              tag: '$PuppyCardAnimationTag ${puppy.id}',
-              child: CircleAvatar(
-                backgroundImage: AssetImage(puppy.asset),
-                radius: 48,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Hero(
+                  tag: '$PuppyCardAnimationTag ${puppy.id}',
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(puppy.asset),
+                    radius: 48,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                OutlineButton(
+                  onPressed: () {
+                    /// TODO: Change picture of puppy
+                    debugPrint('"Change puppy picture" button pressed');
+                  },
+                  child: const Text('Change picture'),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              puppy.name,
-              style: TextStyles.titleTextStyle,
-            ),
-            _buildCategory('Breed', puppy.breedTypeAsString),
-            _buildCategory('Gender', puppy.genderAsString),
-            _buildCategory(
-                'Characteristics', puppy.breedCharacteristics, false),
+            const SizedBox(height: 20),
+            _buildRow('Name', _buildNameInputField()),
+            _buildRow('Breed', _buildBreedSelection()),
+            _buildRow('Gender', _buildGenderSelection()),
+            _buildRow(
+                'Characteristics', _buildCharacteristicsInputField(), false),
           ],
         ),
       );
 
-  Widget _buildCategory(String categoryName, String categoryDescription,
-          [bool inline = true]) =>
-      inline
-          ? Column(
+  Widget _buildRow(String rowName, Widget content, [bool inline = true]) =>
+      Column(
+        children: [
+          if (inline)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: '$categoryName : ',
-                        style: TextStyles.title2TextStyle,
-                        children: [
-                          TextSpan(
-                            text: categoryDescription,
-                            style: TextStyles.subtitleTextStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                Text(rowName),
+                if (content != null) content,
               ],
-            )
-          : Column(
-              children: [
-                const SizedBox(height: 15),
-                Text(
-                  '$categoryName :',
-                  style: TextStyles.title2TextStyle,
-                ),
-                const SizedBox(height: 7),
-                Text(
-                  categoryDescription,
-                  style: TextStyles.subtitleTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            );
+            ),
+          if (!inline) ...[
+            Text(rowName),
+            if (content != null) content,
+          ],
+          const SizedBox(height: 15),
+        ],
+      );
+
+  Widget _buildNameInputField() => Flexible(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: TextField(
+            key: const ValueKey('PuppyNameInputField'),
+            maxLines: 1,
+            maxLength: 50,
+            maxLengthEnforced: true,
+            controller: _nameTextFieldController,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+              enabledBorder: _defaultInputFieldBorder,
+              border: _defaultInputFieldBorder,
+            ),
+            onChanged: _onNameChanged,
+          ),
+        ),
+      );
+
+  Widget _buildBreedSelection() => DropdownButton<BreedTypes>(
+        value: _editedPuppy.breedType,
+        onChanged: _onBreedChanged,
+        items: BreedTypes.values
+            .map((breedType) => DropdownMenuItem<BreedTypes>(
+                  value: breedType,
+                  child:
+                      Text(PuppyDataConversion.getBreedTypeString(breedType)),
+                ))
+            .toList(),
+      );
+
+  Widget _buildGenderSelection() => Row(
+        children: [
+          const Text('Male'),
+          Radio<Gender>(
+            key: const ValueKey('PuppyGenderMaleRadio'),
+            value: Gender.Male,
+            groupValue: _editedPuppy.gender,
+            onChanged: _onGenderChanged,
+          ),
+          const Text('Female'),
+          Radio<Gender>(
+            key: const ValueKey('PuppyGenderFemaleRadio'),
+            value: Gender.Female,
+            groupValue: _editedPuppy.gender,
+            onChanged: _onGenderChanged,
+          ),
+        ],
+      );
+
+  Widget _buildCharacteristicsInputField() => Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: Container(
+          height: 220,
+          child: TextField(
+            key: const ValueKey('PuppyCharacteristicsInputField'),
+            textInputAction: TextInputAction.done,
+            maxLines: 8,
+            maxLength: _characteristicsMaxLength,
+            controller: _characteristicsTextFieldController,
+            decoration: InputDecoration(
+              enabledBorder: _defaultInputFieldBorder,
+              border: _defaultInputFieldBorder,
+            ),
+            onChanged: _onCharacteristicsChanged,
+          ),
+        ),
+      );
+
+  /// endregion
+
+  /// region Methods
+
+  void _onNameChanged(String newName) {
+    setState(() {
+      _editedPuppy = _editedPuppy.copyWith(name: newName);
+    });
+  }
+
+  void _onBreedChanged(BreedTypes newBreedType) {
+    setState(() {
+      _editedPuppy = _editedPuppy.copyWith(breedType: newBreedType);
+    });
+  }
+
+  void _onGenderChanged(Gender newGender) {
+    setState(() {
+      _editedPuppy = _editedPuppy.copyWith(gender: newGender);
+    });
+  }
+
+  void _onCharacteristicsChanged(String newCharacteristics) {
+    setState(() {
+      _editedPuppy =
+          _editedPuppy.copyWith(breedCharacteristics: newCharacteristics);
+    });
+  }
+
+  /// endregion
 }

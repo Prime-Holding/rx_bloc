@@ -1,36 +1,32 @@
-import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
-    PuppyManageBlocType puppyManageBloc,
-    Puppy puppy,
+    @required bool enabled,
+    Function() onSavePressed,
     Key key,
-  })  : _puppy = puppy,
-        _puppyManageBloc = puppyManageBloc,
+  })  : _enabled = enabled,
+        _onSavePressed = onSavePressed,
         super(key: key);
 
-  final PuppyManageBlocType _puppyManageBloc;
-  final Puppy _puppy;
+  final bool _enabled;
+  final Function() _onSavePressed;
 
   @override
   Widget build(BuildContext context) => AppBar(
         title: const Text('Edit Puppy'),
         centerTitle: true,
-        actions: _buildTrailingItems(),
+        actions: [
+          _buildSaveButton(),
+        ],
       );
 
-  List<Widget> _buildTrailingItems() => [
-        _buildSaveButton(),
-      ];
-
   Widget _buildSaveButton() => IconButton(
-        icon: const Icon(Icons.save),
-        onPressed: () {
-          // TODO: Save the changes made to the puppy
-          debugPrint('Pressed "Save Puppy Changes" button');
-        },
+        icon: Icon(
+          Icons.save,
+          color: _enabled ? Colors.white : Colors.black38,
+        ),
+        onPressed: () => _enabled ? _onSavePressed?.call() : null,
       );
 
   @override
