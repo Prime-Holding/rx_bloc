@@ -1,20 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 
 class PuppyDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const PuppyDetailsAppBar({
-    PuppyManageBlocType puppyManageBloc,
     Puppy puppy,
     Key key,
   })  : _puppy = puppy,
-        _puppyManageBloc = puppyManageBloc,
         super(key: key);
 
-  final PuppyManageBlocType _puppyManageBloc;
   final Puppy _puppy;
 
   @override
@@ -48,7 +46,8 @@ class PuppyDetailsAppBar extends StatelessWidget
       );
 
   void _markAsFavorite(BuildContext context, bool isFavorite) =>
-      _puppyManageBloc.events
+      RxBlocProvider.of<PuppyManageBlocType>(context)
+          .events
           .markAsFavorite(puppy: _puppy, isFavorite: isFavorite);
 
   @override

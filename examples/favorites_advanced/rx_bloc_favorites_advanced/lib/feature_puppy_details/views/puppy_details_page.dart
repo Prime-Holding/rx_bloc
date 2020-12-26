@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
+import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy_details/ui_components/puppy_details_app_bar.dart';
@@ -49,7 +50,6 @@ class PuppyDetailsPage extends StatelessWidget with AutoRouteWrapper {
 
   Widget _buildScaffoldBody(BuildContext context, Puppy puppy) => Scaffold(
         appBar: PuppyDetailsAppBar(
-          puppyManageBloc: RxBlocProvider.of<PuppyManageBlocType>(context),
           puppy: puppy,
         ),
         body: SafeArea(
