@@ -2,8 +2,8 @@ part of 'puppy_edit_page.dart';
 
 extension _PuppyEditProviders on PuppyEditPage {
   List<RxBlocProvider> _getProviders() => [
-        RxBlocProvider<PuppyListBlocType>(
-          create: (context) => PuppyListBloc(
+        RxBlocProvider<PuppyEditBlocType>(
+          create: (context) => PuppyEditBloc(
             Provider.of(context, listen: false),
             Provider.of(context, listen: false),
           ),

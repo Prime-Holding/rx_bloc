@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import '../models/puppy.dart';
 
 class PuppiesRepository {
+  final _NoInternetConnectionErrorString =
+      'No internet connection. Please check your settings.';
+
   /// Simulate delays of the API http requests
   final artificialDelay = Duration(milliseconds: 300);
 
@@ -19,7 +22,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay + Duration(milliseconds: 100));
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception('No internet connection. Please check your settings.');
+      throw Exception(_NoInternetConnectionErrorString);
     }
 
     if (query == '') {
@@ -38,7 +41,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay);
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception('No internet connection. Please check your settings.');
+      throw Exception(_NoInternetConnectionErrorString);
     }
 
     return puppies.where((puppy) => puppy.isFavorite).toList();
@@ -51,7 +54,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay);
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception('No internet connection. Please check your settings.');
+      throw Exception(_NoInternetConnectionErrorString);
     }
 
     final foundPuppy = puppies.firstWhere(
@@ -68,7 +71,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay);
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception('No internet connection. Please check your settings.');
+      throw Exception(_NoInternetConnectionErrorString);
     }
 
     final puppiesWithExtraData = puppies
@@ -80,6 +83,28 @@ class PuppiesRepository {
         .toList();
 
     return puppiesWithExtraData;
+  }
+
+  Future<Puppy> updatePuppy(String puppyId, Puppy newValue) async {
+    await Future.delayed(artificialDelay + Duration(seconds: 1));
+
+    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
+      throw Exception(_NoInternetConnectionErrorString);
+    }
+
+    var foundPuppy = puppies.firstWhere(
+      (item) => item.id == puppyId,
+      orElse: () => null,
+    );
+
+    // If the puppy exists, update it
+    if (foundPuppy != null) {
+      final foundPuppyIndex = puppies.indexOf(foundPuppy);
+      puppies[foundPuppyIndex] = newValue.copyWith(id: puppyId);
+      foundPuppy = puppies[foundPuppyIndex];
+    }
+
+    return foundPuppy;
   }
 
   List<Puppy> puppies;

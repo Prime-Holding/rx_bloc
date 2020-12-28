@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/feature_puppy_edit/blocs/puppy_edit_bloc.dart';
 
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
@@ -12,21 +14,33 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool _enabled;
   final Function() _onSavePressed;
 
-  @override
-  Widget build(BuildContext context) => AppBar(
-        title: const Text('Edit Puppy'),
-        centerTitle: true,
-        actions: [
-          _buildSaveButton(),
-        ],
-      );
+  double get loadingIndicatorSize => 24;
 
-  Widget _buildSaveButton() => IconButton(
-        icon: Icon(
-          Icons.save,
-          color: _enabled ? Colors.white : Colors.black38,
-        ),
-        onPressed: () => _enabled ? _onSavePressed?.call() : null,
+  @override
+  Widget build(BuildContext context) => RxBlocBuilder<PuppyEditBlocType, bool>(
+      state: (bloc) => bloc.states.processingUpdate,
+      builder: (context, loadingState, _) => AppBar(
+            title: const Text('Edit Puppy'),
+            centerTitle: true,
+            actions: [
+              _buildSaveButton(loadingState?.data ?? false),
+            ],
+          ));
+
+  Widget _buildSaveButton(bool isLoading) => IconButton(
+        icon: !isLoading
+            ? Icon(
+                Icons.save,
+                color: _enabled ? Colors.white : Colors.black38,
+              )
+            : Container(
+                width: loadingIndicatorSize,
+                height: loadingIndicatorSize,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ),
+        onPressed: () => _enabled && !isLoading ? _onSavePressed?.call() : null,
       );
 
   @override

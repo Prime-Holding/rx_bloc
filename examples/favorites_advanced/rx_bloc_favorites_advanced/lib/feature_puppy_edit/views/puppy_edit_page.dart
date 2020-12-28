@@ -5,6 +5,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/feature_puppy_edit/blocs/puppy_edit_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy_edit/ui_components/puppy_edit_app_bar.dart';
 
 part 'puppy_edit_providers.dart';
@@ -53,26 +54,31 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      RxResultBuilder<PuppyListBlocType, List<Puppy>>(
-        state: (bloc) => bloc.states.searchedPuppies,
-        buildLoading: (ctx, bloc) => _buildScaffoldBody(ctx, widget._puppy),
-        buildError: (ctx, error, bloc) {
-          Future.delayed(
-              const Duration(microseconds: 10),
-              () => RxBlocProvider.of<PuppyListBlocType>(ctx)
-                  .events
-                  .reloadFavoritePuppies(silently: false));
-          return _buildScaffoldBody(context, widget._puppy);
-        },
-        buildSuccess: (ctx, puppyList, _) {
-          final foundPuppy = ((puppyList?.isNotEmpty ?? false)
-                  ? puppyList
-                      ?.firstWhere((element) => element.id == widget._puppy.id)
-                  : null) ??
-              widget._puppy;
-          return _buildScaffoldBody(context, foundPuppy);
-        },
+  Widget build(BuildContext context) => RxBlocBuilder<PuppyEditBlocType, bool>(
+        state: (bloc) => bloc.states.processingUpdate,
+        builder: (context, isProcessingUpdate, _) => WillPopScope(
+          onWillPop: () => Future.value(!(isProcessingUpdate?.data ?? false)),
+          child: RxResultBuilder<PuppyListBlocType, List<Puppy>>(
+            state: (bloc) => bloc.states.searchedPuppies,
+            buildLoading: (ctx, bloc) => _buildScaffoldBody(ctx, widget._puppy),
+            buildError: (ctx, error, bloc) {
+              Future.delayed(
+                  const Duration(microseconds: 10),
+                  () => RxBlocProvider.of<PuppyListBlocType>(ctx)
+                      .events
+                      .reloadFavoritePuppies(silently: false));
+              return _buildScaffoldBody(context, widget._puppy);
+            },
+            buildSuccess: (ctx, puppyList, _) {
+              final foundPuppy = ((puppyList?.isNotEmpty ?? false)
+                      ? puppyList?.firstWhere(
+                          (element) => element.id == widget._puppy.id)
+                      : null) ??
+                  widget._puppy;
+              return _buildScaffoldBody(context, foundPuppy);
+            },
+          ),
+        ),
       );
 
   /// endregion
@@ -81,17 +87,13 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
 
   Widget _buildScaffoldBody(BuildContext context, Puppy puppy) =>
       GestureDetector(
-        onTap: () {
-          // Defocus when user taps outside any component
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: Scaffold(
           appBar: PuppyEditAppBar(
             enabled: widget._puppy != _editedPuppy,
-            onSavePressed: () {
-              // TODO: Implement puppy saving
-              debugPrint('Save button pressed!');
-            },
+            onSavePressed: () => RxBlocProvider.of<PuppyEditBlocType>(context)
+                .events
+                .updatePuppy(_editedPuppy, widget._puppy),
           ),
           body: SafeArea(
             key: const ValueKey('PuppyEditPage'),
@@ -100,37 +102,51 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
         ),
       );
 
-  Widget _buildBody(Puppy puppy) => Container(
-        padding: const EdgeInsets.only(top: 10, left: 27, right: 27),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildBody(Puppy puppy) => RxBlocListener<PuppyEditBlocType, String>(
+        state: (bloc) => bloc.states.updateError,
+        listener: (context, errorMessage) {
+          if (errorMessage == null) return;
+          Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text(errorMessage)));
+        },
+        child: RxBlocListener<PuppyEditBlocType, bool>(
+          state: (bloc) => bloc.states.successfulUpdate,
+          listener: (context, successfulUpdate) {
+            if (successfulUpdate) ExtendedNavigator.root.pop(true);
+          },
+          child: Container(
+            padding: const EdgeInsets.only(top: 10, left: 27, right: 27),
+            child: Column(
               children: [
-                Hero(
-                  tag: '$PuppyCardAnimationTag ${puppy.id}',
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(puppy.asset),
-                    radius: 48,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: '$PuppyCardAnimationTag ${puppy.id}',
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage(puppy.asset),
+                        radius: 48,
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    OutlineButton(
+                      onPressed: () {
+                        /// TODO: Change picture of puppy
+                        debugPrint('"Change puppy picture" button pressed');
+                      },
+                      child: const Text('Change picture'),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 20),
-                OutlineButton(
-                  onPressed: () {
-                    /// TODO: Change picture of puppy
-                    debugPrint('"Change puppy picture" button pressed');
-                  },
-                  child: const Text('Change picture'),
-                ),
+                const SizedBox(height: 20),
+                _buildRow('Name', _buildNameInputField()),
+                _buildRow('Breed', _buildBreedSelection()),
+                _buildRow('Gender', _buildGenderSelection()),
+                _buildRow('Characteristics', _buildCharacteristicsInputField(),
+                    false),
               ],
             ),
-            const SizedBox(height: 20),
-            _buildRow('Name', _buildNameInputField()),
-            _buildRow('Breed', _buildBreedSelection()),
-            _buildRow('Gender', _buildGenderSelection()),
-            _buildRow(
-                'Characteristics', _buildCharacteristicsInputField(), false),
-          ],
+          ),
         ),
       );
 
@@ -173,6 +189,7 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
       );
 
   Widget _buildBreedSelection() => DropdownButton<BreedTypes>(
+        key: const ValueKey('PuppyBreedTypeDropDown'),
         value: _editedPuppy.breedType,
         onChanged: _onBreedChanged,
         items: BreedTypes.values
