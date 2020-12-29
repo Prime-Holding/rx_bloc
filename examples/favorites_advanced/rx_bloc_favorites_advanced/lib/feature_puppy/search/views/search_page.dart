@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 
-import '../../../base/ui_components/error_widget.dart';
-import '../../../base/ui_components/loading_widget.dart';
 import '../../blocs/puppies_extra_details_bloc.dart';
 import '../../details/blocs/puppy_manage_bloc.dart';
 import '../blocs/puppy_list_bloc.dart';

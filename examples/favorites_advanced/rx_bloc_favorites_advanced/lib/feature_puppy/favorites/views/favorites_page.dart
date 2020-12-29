@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 
-import '../../../base/ui_components/error_widget.dart';
-import '../../../base/ui_components/loading_widget.dart';
 import '../../list/ui_components/puppy_animated_list_view.dart';
 import '../blocs/favorite_puppies_bloc.dart';
 

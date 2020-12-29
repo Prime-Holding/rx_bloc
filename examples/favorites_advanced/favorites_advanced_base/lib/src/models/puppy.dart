@@ -10,17 +10,21 @@ class Puppy {
   final String name;
   final String breedCharacteristics;
   final String asset;
-  final String displayName;
   final BreedTypes breedType;
   final Gender gender;
 
   bool isFavorite;
+
+  // Properties that should simulate remote fetching of entity data
+  final String displayName;
+  final String displayCharacteristics;
 
   Puppy({
     @required this.id,
     @required this.name,
     @required this.asset,
     this.displayName,
+    this.displayCharacteristics,
     this.isFavorite = false,
     this.breedCharacteristics =
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -35,9 +39,10 @@ class Puppy {
           name == other.name &&
           breedCharacteristics == other.breedCharacteristics &&
           asset == other.asset &&
-          displayName == other.displayName &&
           isFavorite == other.isFavorite &&
-          breedType == other.breedType;
+          breedType == other.breedType &&
+          displayName == other.displayName &&
+          displayCharacteristics == other.displayCharacteristics;
     }
 
     return false;
@@ -47,6 +52,8 @@ class Puppy {
   int get hashCode => super.hashCode;
 
   @override
-  String toString() =>
-      "{$id, $name, $displayName, ${breedCharacteristics == null ? "no displayBreedCharacteristics" : ""}, $asset, $displayName, $breedType, $isFavorite}";
+  String toString() => '{$id, $name, $asset, $breedType, $isFavorite,'
+      '${breedCharacteristics == null ? "no breedCharacteristics" : ""}'
+      '${displayName == null ? "no displayName" : displayName}'
+      '${displayCharacteristics == null ? "no displayBreedCharacteristics" : ""} }';
 }

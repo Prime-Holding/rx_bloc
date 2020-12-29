@@ -67,7 +67,7 @@ class PuppyCard extends StatelessWidget {
               subtitle: Padding(
                 padding: EdgeInsets.only(top: 12),
                 child: SkeletonText(
-                  text: _puppy.breedCharacteristics,
+                  text: _puppy.displayCharacteristics,
                   height: 67,
                 ),
               ),

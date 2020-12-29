@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import '../models/puppy.dart';
 
 class PuppiesRepository {
-  final _NoInternetConnectionErrorString =
+  final _noInternetConnectionErrorString =
       'No internet connection. Please check your settings.';
 
   /// Simulate delays of the API http requests
@@ -22,7 +22,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay + Duration(milliseconds: 100));
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception(_NoInternetConnectionErrorString);
+      throw Exception(_noInternetConnectionErrorString);
     }
 
     if (query == '') {
@@ -41,7 +41,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay);
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception(_NoInternetConnectionErrorString);
+      throw Exception(_noInternetConnectionErrorString);
     }
 
     return puppies.where((puppy) => puppy.isFavorite).toList();
@@ -54,7 +54,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay);
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception(_NoInternetConnectionErrorString);
+      throw Exception(_noInternetConnectionErrorString);
     }
 
     final foundPuppy = puppies.firstWhere(
@@ -71,14 +71,14 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay);
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception(_NoInternetConnectionErrorString);
+      throw Exception(_noInternetConnectionErrorString);
     }
 
     final puppiesWithExtraData = puppies
         .where((element) => ids.contains(element.id))
         .map((puppy) => puppy.copyWith(
               displayName: puppy.name,
-              breedCharacteristics: puppy.breedCharacteristics,
+              displayCharacteristics: puppy.breedCharacteristics,
             ))
         .toList();
 
@@ -89,7 +89,7 @@ class PuppiesRepository {
     await Future.delayed(artificialDelay + Duration(seconds: 1));
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-      throw Exception(_NoInternetConnectionErrorString);
+      throw Exception(_noInternetConnectionErrorString);
     }
 
     var foundPuppy = puppies.firstWhere(
@@ -100,8 +100,15 @@ class PuppiesRepository {
     // If the puppy exists, update it
     if (foundPuppy != null) {
       final foundPuppyIndex = puppies.indexOf(foundPuppy);
-      puppies[foundPuppyIndex] = newValue.copyWith(id: puppyId);
-      foundPuppy = puppies[foundPuppyIndex];
+      foundPuppy = newValue.copyWith(
+        id: puppyId,
+        displayName: newValue.displayName != null ? newValue.name : null,
+        displayCharacteristics: newValue.displayCharacteristics != null
+            ? newValue.breedCharacteristics
+            : null,
+      );
+
+      puppies[foundPuppyIndex] = foundPuppy;
     }
 
     return foundPuppy;

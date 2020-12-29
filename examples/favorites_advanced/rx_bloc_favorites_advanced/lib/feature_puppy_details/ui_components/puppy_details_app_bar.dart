@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
 
 class PuppyDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -48,9 +47,6 @@ class PuppyDetailsAppBar extends StatelessWidget
           if (result != null && result) {
             Scaffold.of(context).showSnackBar(
                 const SnackBar(content: Text('Puppy updated successfully.')));
-            RxBlocProvider.of<PuppyListBlocType>(context)
-                .events
-                .reloadFavoritePuppies(silently: false);
           }
         },
       );

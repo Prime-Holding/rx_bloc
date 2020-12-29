@@ -4,21 +4,24 @@ extension PuppUtils on Puppy {
   Puppy copyWith({
     String id,
     String name,
-    String displayName,
     String breedCharacteristics,
     Gender gender,
     BreedTypes breedType,
     bool isFavorite,
+    String displayName,
+    String displayCharacteristics,
   }) =>
       Puppy(
         id: id ?? this.id,
         name: name ?? this.name,
-        displayName: displayName ?? this.displayName,
         breedCharacteristics: breedCharacteristics ?? this.breedCharacteristics,
         asset: asset,
         isFavorite: isFavorite ?? this.isFavorite,
         gender: gender ?? this.gender,
         breedType: breedType ?? this.breedType,
+        displayName: displayName ?? this.displayName,
+        displayCharacteristics:
+            displayCharacteristics ?? this.displayCharacteristics,
       );
 
   /// Check whether the current entity has all needed extra details.
