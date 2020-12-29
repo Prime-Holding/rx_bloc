@@ -32,7 +32,6 @@ class PuppyEditPage extends StatefulWidget with AutoRouteWrapper {
 class _PuppyEditPageState extends State<PuppyEditPage> {
   final _characteristicsMaxLength = 250;
 
-  Puppy _editedPuppy;
   TextEditingController _nameTextFieldController;
   TextEditingController _characteristicsTextFieldController;
 
@@ -47,10 +46,10 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   @override
   void initState() {
     super.initState();
-    _editedPuppy = widget._puppy;
-    _nameTextFieldController = TextEditingController(text: _editedPuppy.name);
+    final pup = widget._puppy;
+    _nameTextFieldController = TextEditingController(text: pup.name);
     _characteristicsTextFieldController =
-        TextEditingController(text: _editedPuppy.breedCharacteristics);
+        TextEditingController(text: pup.breedCharacteristics);
   }
 
   @override
@@ -75,6 +74,9 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
                           (element) => element.id == widget._puppy.id)
                       : null) ??
                   widget._puppy;
+              RxBlocProvider.of<PuppyEditBlocType>(ctx)
+                  .events
+                  .setEditingPuppy(foundPuppy);
               return _buildScaffoldBody(context, foundPuppy);
             },
           ),
@@ -88,16 +90,17 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   Widget _buildScaffoldBody(BuildContext context, Puppy puppy) =>
       GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        child: Scaffold(
-          appBar: PuppyEditAppBar(
-            enabled: widget._puppy != _editedPuppy,
-            onSavePressed: () => RxBlocProvider.of<PuppyEditBlocType>(context)
-                .events
-                .updatePuppy(_editedPuppy, widget._puppy),
-          ),
-          body: SafeArea(
-            key: const ValueKey('PuppyEditPage'),
-            child: SingleChildScrollView(child: _buildBody(puppy)),
+        child: RxBlocBuilder<PuppyEditBlocType, bool>(
+          state: (bloc) => bloc.states.isSaveEnabled,
+          builder: (context, saveEnabled, editBloc) => Scaffold(
+            appBar: PuppyEditAppBar(
+              enabled: saveEnabled?.data ?? false,
+              onSavePressed: () => editBloc.events.updatePuppy(),
+            ),
+            body: SafeArea(
+              key: const ValueKey('PuppyEditPage'),
+              child: SingleChildScrollView(child: _buildBody(puppy)),
+            ),
           ),
         ),
       );
@@ -123,16 +126,24 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
                   children: [
                     Hero(
                       tag: '$PuppyCardAnimationTag ${puppy.id}',
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage(puppy.asset),
-                        radius: 48,
+                      child: RxBlocBuilder<PuppyEditBlocType, String>(
+                        bloc: RxBlocProvider.of(context),
+                        state: (bloc) => bloc.states.pickedImagePath,
+                        builder: (_, imagePath, __) => PuppyAvatar(
+                            asset: imagePath?.data ?? widget._puppy.asset),
                       ),
                     ),
                     const SizedBox(width: 20),
                     OutlineButton(
                       onPressed: () {
-                        /// TODO: Change picture of puppy
-                        debugPrint('"Change puppy picture" button pressed');
+                        PhotoPickerActionSelectionBottomSheet
+                            .presentPhotosBottomSheet(
+                          context,
+                          (source) =>
+                              RxBlocProvider.of<PuppyEditBlocType>(context)
+                                  .events
+                                  .pickImage(source),
+                        );
                       },
                       child: const Text('Change picture'),
                     ),
@@ -183,41 +194,51 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
               enabledBorder: _defaultInputFieldBorder,
               border: _defaultInputFieldBorder,
             ),
-            onChanged: _onNameChanged,
+            onChanged:
+                RxBlocProvider.of<PuppyEditBlocType>(context).events.updateName,
           ),
         ),
       );
 
-  Widget _buildBreedSelection() => DropdownButton<BreedTypes>(
-        key: const ValueKey('PuppyBreedTypeDropDown'),
-        value: _editedPuppy.breedType,
-        onChanged: _onBreedChanged,
-        items: BreedTypes.values
-            .map((breedType) => DropdownMenuItem<BreedTypes>(
-                  value: breedType,
-                  child:
-                      Text(PuppyDataConversion.getBreedTypeString(breedType)),
-                ))
-            .toList(),
+  Widget _buildBreedSelection() => RxBlocBuilder<PuppyEditBlocType, BreedTypes>(
+        state: (bloc) => bloc.states.selectedBreed,
+        builder: (context, breedState, editBloc) => DropdownButton<BreedTypes>(
+          key: const ValueKey('PuppyBreedTypeDropDown'),
+          value: breedState?.data ?? widget._puppy.breedType,
+          onChanged: editBloc.events.updateBreed,
+          items: BreedTypes.values
+              .map((breedType) => DropdownMenuItem<BreedTypes>(
+                    value: breedType,
+                    child:
+                        Text(PuppyDataConversion.getBreedTypeString(breedType)),
+                  ))
+              .toList(),
+        ),
       );
 
-  Widget _buildGenderSelection() => Row(
-        children: [
-          const Text('Male'),
-          Radio<Gender>(
-            key: const ValueKey('PuppyGenderMaleRadio'),
-            value: Gender.Male,
-            groupValue: _editedPuppy.gender,
-            onChanged: _onGenderChanged,
-          ),
-          const Text('Female'),
-          Radio<Gender>(
-            key: const ValueKey('PuppyGenderFemaleRadio'),
-            value: Gender.Female,
-            groupValue: _editedPuppy.gender,
-            onChanged: _onGenderChanged,
-          ),
-        ],
+  Widget _buildGenderSelection() => RxBlocBuilder<PuppyEditBlocType, Gender>(
+        state: (bloc) => bloc.states.selectedGender,
+        builder: (_, genderState, editBloc) {
+          final selectedGender = genderState?.data ?? widget._puppy.gender;
+          return Row(
+            children: [
+              const Text('Male'),
+              Radio<Gender>(
+                key: const ValueKey('PuppyGenderMaleRadio'),
+                value: Gender.Male,
+                groupValue: selectedGender,
+                onChanged: editBloc.events.updateGender,
+              ),
+              const Text('Female'),
+              Radio<Gender>(
+                key: const ValueKey('PuppyGenderFemaleRadio'),
+                value: Gender.Female,
+                groupValue: selectedGender,
+                onChanged: editBloc.events.updateGender,
+              ),
+            ],
+          );
+        },
       );
 
   Widget _buildCharacteristicsInputField() => Padding(
@@ -234,39 +255,12 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
               enabledBorder: _defaultInputFieldBorder,
               border: _defaultInputFieldBorder,
             ),
-            onChanged: _onCharacteristicsChanged,
+            onChanged: RxBlocProvider.of<PuppyEditBlocType>(context)
+                .events
+                .updateCharacteristics,
           ),
         ),
       );
-
-  /// endregion
-
-  /// region Methods
-
-  void _onNameChanged(String newName) {
-    setState(() {
-      _editedPuppy = _editedPuppy.copyWith(name: newName);
-    });
-  }
-
-  void _onBreedChanged(BreedTypes newBreedType) {
-    setState(() {
-      _editedPuppy = _editedPuppy.copyWith(breedType: newBreedType);
-    });
-  }
-
-  void _onGenderChanged(Gender newGender) {
-    setState(() {
-      _editedPuppy = _editedPuppy.copyWith(gender: newGender);
-    });
-  }
-
-  void _onCharacteristicsChanged(String newCharacteristics) {
-    setState(() {
-      _editedPuppy =
-          _editedPuppy.copyWith(breedCharacteristics: newCharacteristics);
-    });
-  }
 
   /// endregion
 }

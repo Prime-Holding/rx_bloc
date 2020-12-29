@@ -10,12 +10,13 @@ extension PuppUtils on Puppy {
     bool isFavorite,
     String displayName,
     String displayCharacteristics,
+    String asset,
   }) =>
       Puppy(
         id: id ?? this.id,
         name: name ?? this.name,
         breedCharacteristics: breedCharacteristics ?? this.breedCharacteristics,
-        asset: asset,
+        asset: asset ?? this.asset,
         isFavorite: isFavorite ?? this.isFavorite,
         gender: gender ?? this.gender,
         breedType: breedType ?? this.breedType,

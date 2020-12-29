@@ -64,10 +64,7 @@ class PuppyDetailsPage extends StatelessWidget with AutoRouteWrapper {
           children: [
             Hero(
               tag: '$PuppyCardAnimationTag ${puppy.id}',
-              child: CircleAvatar(
-                backgroundImage: AssetImage(puppy.asset),
-                radius: 48,
-              ),
+              child: PuppyAvatar(asset: puppy.asset),
             ),
             const SizedBox(height: 10),
             Text(

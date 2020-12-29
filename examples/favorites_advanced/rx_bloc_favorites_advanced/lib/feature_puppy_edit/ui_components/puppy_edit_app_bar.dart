@@ -36,7 +36,7 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
             : Container(
                 width: loadingIndicatorSize,
                 height: loadingIndicatorSize,
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),

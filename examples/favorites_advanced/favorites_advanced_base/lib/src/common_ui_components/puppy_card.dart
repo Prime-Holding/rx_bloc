@@ -1,3 +1,4 @@
+import 'package:favorites_advanced_base/src/common_ui_components/puppy_photo_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -55,9 +56,9 @@ class PuppyCard extends StatelessWidget {
               ),
               leading: Hero(
                 tag: '$PuppyCardAnimationTag ${_puppy.id}',
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(_puppy.asset),
-                  radius: 26,
+                child: PuppyAvatar(
+                  asset: _puppy.asset,
+                  radius: 56,
                 ),
               ),
               title: SkeletonText(

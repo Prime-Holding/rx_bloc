@@ -1,3 +1,5 @@
+enum ImagePickerActions { camera, gallery }
+
 enum Gender { Male, Female }
 
 enum BreedTypes {
