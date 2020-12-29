@@ -36,13 +36,14 @@ abstract class $PuppyEditBloc extends RxBlocBase
 
   ///endregion updateName
 
-  ///region updateBreed
+  ///region updateCharacteristics
 
-  final _$updateBreedEvent = PublishSubject<BreedTypes>();
+  final _$updateCharacteristicsEvent = PublishSubject<String>();
   @override
-  void updateBreed(BreedTypes breedType) => _$updateBreedEvent.add(breedType);
+  void updateCharacteristics(String newCharacteristics) =>
+      _$updateCharacteristicsEvent.add(newCharacteristics);
 
-  ///endregion updateBreed
+  ///endregion updateCharacteristics
 
   ///region updateGender
 
@@ -52,14 +53,13 @@ abstract class $PuppyEditBloc extends RxBlocBase
 
   ///endregion updateGender
 
-  ///region updateCharacteristics
+  ///region updateBreed
 
-  final _$updateCharacteristicsEvent = PublishSubject<String>();
+  final _$updateBreedEvent = PublishSubject<BreedTypes>();
   @override
-  void updateCharacteristics(String newCharacteristics) =>
-      _$updateCharacteristicsEvent.add(newCharacteristics);
+  void updateBreed(BreedTypes breedType) => _$updateBreedEvent.add(breedType);
 
-  ///endregion updateCharacteristics
+  ///endregion updateBreed
 
   ///region pickImage
 
@@ -76,18 +76,6 @@ abstract class $PuppyEditBloc extends RxBlocBase
   void updatePuppy() => _$updatePuppyEvent.add(null);
 
   ///endregion updatePuppy
-
-  ///region updatePuppyOld
-
-  final _$updatePuppyOldEvent = PublishSubject<_UpdatePuppyOldEventArgs>();
-  @override
-  void updatePuppyOld(Puppy newPuppy, Puppy oldPuppy) =>
-      _$updatePuppyOldEvent.add(_UpdatePuppyOldEventArgs(
-        newPuppy: newPuppy,
-        oldPuppy: oldPuppy,
-      ));
-
-  ///endregion updatePuppyOld
 
   ///endregion Events
 
@@ -111,31 +99,11 @@ abstract class $PuppyEditBloc extends RxBlocBase
   void dispose() {
     _$setEditingPuppyEvent.close();
     _$updateNameEvent.close();
-    _$updateBreedEvent.close();
-    _$updateGenderEvent.close();
     _$updateCharacteristicsEvent.close();
+    _$updateGenderEvent.close();
+    _$updateBreedEvent.close();
     _$pickImageEvent.close();
     _$updatePuppyEvent.close();
-    _$updatePuppyOldEvent.close();
     super.dispose();
   }
 }
-
-/// region Argument classes
-
-/// region _UpdatePuppyOldEventArgs class
-
-/// {@nodoc}
-class _UpdatePuppyOldEventArgs {
-  final Puppy newPuppy;
-  final Puppy oldPuppy;
-
-  const _UpdatePuppyOldEventArgs({
-    this.newPuppy,
-    this.oldPuppy,
-  });
-}
-
-/// endregion _UpdatePuppyOldEventArgs class
-
-/// endregion Argument classes

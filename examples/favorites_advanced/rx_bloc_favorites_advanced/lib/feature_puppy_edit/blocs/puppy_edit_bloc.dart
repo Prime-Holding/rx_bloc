@@ -15,42 +15,35 @@ abstract class PuppyEditBlocEvents {
   void setEditingPuppy(Puppy puppy);
 
   void updateName(String newName);
-
-  void updateBreed(BreedTypes breedType);
-
-  void updateGender(Gender gender);
-
   void updateCharacteristics(String newCharacteristics);
-
+  void updateGender(Gender gender);
+  void updateBreed(BreedTypes breedType);
   void pickImage(ImagePickerActions source);
 
   void updatePuppy();
-
-  // Remove this
-  void updatePuppyOld(Puppy newPuppy, Puppy oldPuppy);
 }
 
 abstract class PuppyEditBlocStates {
   @RxBlocIgnoreState()
+  Stream<bool> get isSaveEnabled;
+  @RxBlocIgnoreState()
+  Stream<bool> get processingUpdate;
+  @RxBlocIgnoreState()
   Stream<bool> get successfulUpdate;
 
   @RxBlocIgnoreState()
-  Stream<bool> get processingUpdate;
+  Stream<String> get pickedImagePath;
+  @RxBlocIgnoreState()
+  Stream<Gender> get selectedGender;
+  @RxBlocIgnoreState()
+  Stream<BreedTypes> get selectedBreed;
 
   @RxBlocIgnoreState()
   Stream<String> get updateError;
-
   @RxBlocIgnoreState()
-  Stream<String> get pickedImagePath;
-
+  Stream<String> get nameError;
   @RxBlocIgnoreState()
-  Stream<bool> get isSaveEnabled;
-
-  @RxBlocIgnoreState()
-  Stream<Gender> get selectedGender;
-
-  @RxBlocIgnoreState()
-  Stream<BreedTypes> get selectedBreed;
+  Stream<String> get characteristicsError;
 }
 
 @RxBloc()
@@ -61,24 +54,19 @@ class PuppyEditBloc extends $PuppyEditBloc {
   )   : _puppiesRepository = repository,
         _coordinatorBlocType = coordinatorBloc,
         _imagePicker = ImagePicker() {
-    _$updateGenderEvent.bind(_genderSubject).disposedBy(_subscriptions);
-    _$setEditingPuppyEvent.bind(_puppySubject).disposedBy(_subscriptions);
-    _$updateBreedEvent.bind(_breedSubject).disposedBy(_subscriptions);
-    _$updateNameEvent.bind(_nameSubject).disposedBy(_subscriptions);
-    _$updateCharacteristicsEvent
-        .bind(_characteristicsSubject)
-        .disposedBy(_subscriptions);
-
+    _bindEventsToStates();
     _$pickImageEvent
         .throttleTime(const Duration(seconds: 2))
         .where((event) => event != null)
-        .switchMap((source) => _imagePicker
-            .pickPicture(source: source, isProfile: true)
-            .asStream())
-        .map((pickedImage) => pickedImage?.path ?? '')
+        .switchMap(
+            (source) => _imagePicker.pickPicture(source: source).asStream())
+        .map((pickedImage) => pickedImage?.path)
         .bind(_imagePath)
         .disposedBy(_subscriptions);
   }
+
+  final _maxNameLength = 30;
+  final _maxCharacteristicsLength = 250;
 
   final ImagePicker _imagePicker;
 
@@ -93,6 +81,9 @@ class PuppyEditBloc extends $PuppyEditBloc {
   final _nameSubject = BehaviorSubject<String>.seeded(null);
   final _characteristicsSubject = BehaviorSubject<String>.seeded(null);
 
+  final _nameErrorSubject = BehaviorSubject<String>.seeded(null);
+  final _characteristicsErrorSubject = BehaviorSubject<String>.seeded(null);
+
   @override
   void dispose() {
     _subscriptions.dispose();
@@ -103,13 +94,15 @@ class PuppyEditBloc extends $PuppyEditBloc {
     _breedSubject.close();
     _nameSubject.close();
     _characteristicsSubject.close();
+    _nameErrorSubject.close();
+    _characteristicsErrorSubject.close();
 
     super.dispose();
   }
 
   @override
   Stream<bool> get successfulUpdate => editPuppy().doOnData((data) {
-        _coordinatorBlocType.events.puppyUpdated(data);
+        if (data != null) _coordinatorBlocType.events.puppyUpdated(data);
       }).map((value) => value != null);
 
   @override
@@ -119,7 +112,7 @@ class PuppyEditBloc extends $PuppyEditBloc {
   Stream<String> get updateError => errorState.mapToString();
 
   @override
-  Stream<bool> get isSaveEnabled => isSavingAvailable();
+  Stream<bool> get isSaveEnabled => _isSavingAvailable();
 
   @override
   Stream<String> get pickedImagePath => _imagePath;
@@ -129,4 +122,10 @@ class PuppyEditBloc extends $PuppyEditBloc {
 
   @override
   Stream<BreedTypes> get selectedBreed => _breedSubject;
+
+  @override
+  Stream<String> get nameError => _nameErrorSubject;
+
+  @override
+  Stream<String> get characteristicsError => _characteristicsErrorSubject;
 }

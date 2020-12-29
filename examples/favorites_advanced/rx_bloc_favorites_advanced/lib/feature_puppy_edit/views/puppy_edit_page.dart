@@ -30,8 +30,6 @@ class PuppyEditPage extends StatefulWidget with AutoRouteWrapper {
 }
 
 class _PuppyEditPageState extends State<PuppyEditPage> {
-  final _characteristicsMaxLength = 250;
-
   TextEditingController _nameTextFieldController;
   TextEditingController _characteristicsTextFieldController;
 
@@ -183,19 +181,23 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   Widget _buildNameInputField() => Flexible(
         child: Padding(
           padding: const EdgeInsets.only(left: 10),
-          child: TextField(
-            key: const ValueKey('PuppyNameInputField'),
-            maxLines: 1,
-            maxLength: 50,
-            maxLengthEnforced: true,
-            controller: _nameTextFieldController,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-              enabledBorder: _defaultInputFieldBorder,
-              border: _defaultInputFieldBorder,
+          child: RxBlocBuilder<PuppyEditBlocType, String>(
+            state: (bloc) => bloc.states.nameError,
+            builder: (_, nameErrorState, __) => TextField(
+              key: const ValueKey('PuppyNameInputField'),
+              maxLines: 1,
+              maxLengthEnforced: true,
+              controller: _nameTextFieldController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                enabledBorder: _defaultInputFieldBorder,
+                border: _defaultInputFieldBorder,
+                errorText: nameErrorState?.data,
+              ),
+              onChanged: RxBlocProvider.of<PuppyEditBlocType>(context)
+                  .events
+                  .updateName,
             ),
-            onChanged:
-                RxBlocProvider.of<PuppyEditBlocType>(context).events.updateName,
           ),
         ),
       );
@@ -245,19 +247,22 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
         padding: const EdgeInsets.only(top: 15),
         child: Container(
           height: 220,
-          child: TextField(
-            key: const ValueKey('PuppyCharacteristicsInputField'),
-            textInputAction: TextInputAction.done,
-            maxLines: 8,
-            maxLength: _characteristicsMaxLength,
-            controller: _characteristicsTextFieldController,
-            decoration: InputDecoration(
-              enabledBorder: _defaultInputFieldBorder,
-              border: _defaultInputFieldBorder,
+          child: RxBlocBuilder<PuppyEditBlocType, String>(
+            state: (bloc) => bloc.states.characteristicsError,
+            builder: (_, detailsErrorState, __) => TextField(
+              key: const ValueKey('PuppyCharacteristicsInputField'),
+              textInputAction: TextInputAction.done,
+              maxLines: 8,
+              controller: _characteristicsTextFieldController,
+              decoration: InputDecoration(
+                enabledBorder: _defaultInputFieldBorder,
+                border: _defaultInputFieldBorder,
+                errorText: detailsErrorState?.data,
+              ),
+              onChanged: RxBlocProvider.of<PuppyEditBlocType>(context)
+                  .events
+                  .updateCharacteristics,
             ),
-            onChanged: RxBlocProvider.of<PuppyEditBlocType>(context)
-                .events
-                .updateCharacteristics,
           ),
         ),
       );
