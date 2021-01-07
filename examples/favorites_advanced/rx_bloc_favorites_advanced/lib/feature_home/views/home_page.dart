@@ -13,7 +13,6 @@ import '../../feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import '../../feature_puppy/details/blocs/puppy_manage_bloc.dart';
 import '../../feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import '../../feature_puppy/favorites/views/favorites_page.dart';
-import '../../feature_puppy/search/blocs/puppy_list_bloc.dart';
 import '../../feature_puppy/search/views/search_page.dart';
 import '../blocs/navigation_bar_bloc.dart';
 

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
 
 import 'base/common_blocs/coordinator_bloc.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           title: 'Puppies app',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
           ),
           builder: ExtendedNavigator<MyRouter>(
             router: MyRouter(),

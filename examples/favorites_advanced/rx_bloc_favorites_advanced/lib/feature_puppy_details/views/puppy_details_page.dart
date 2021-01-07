@@ -33,10 +33,9 @@ class PuppyDetailsPage extends StatelessWidget with AutoRouteWrapper {
         buildLoading: (ctx, bloc) => _buildScaffoldBody(ctx, _puppy),
         buildError: (ctx, error, bloc) {
           Future.delayed(
-              const Duration(microseconds: 10),
-              () => RxBlocProvider.of<PuppyListBlocType>(ctx)
-                  .events
-                  .reloadFavoritePuppies(silently: false));
+            const Duration(microseconds: 10),
+            () => bloc.events.reloadFavoritePuppies(silently: false),
+          );
           return _buildScaffoldBody(context, _puppy);
         },
         buildSuccess: (ctx, puppyList, _) {
@@ -49,74 +48,58 @@ class PuppyDetailsPage extends StatelessWidget with AutoRouteWrapper {
       );
 
   Widget _buildScaffoldBody(BuildContext context, Puppy puppy) => Scaffold(
-        appBar: PuppyDetailsAppBar(
-          puppy: puppy,
-        ),
         body: SafeArea(
+          top: false,
+          bottom: false,
           key: const ValueKey('PuppyDetailsPage'),
           child: _buildBody(puppy),
         ),
       );
 
-  Widget _buildBody(Puppy puppy) => Container(
-        padding: const EdgeInsets.only(top: 10, left: 27, right: 27),
-        child: Column(
-          children: [
-            Hero(
-              tag: '$PuppyCardAnimationTag ${puppy.id}',
-              child: PuppyAvatar(asset: puppy.asset),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              puppy.name,
-              style: TextStyles.titleTextStyle,
-            ),
-            _buildCategory('Breed', puppy.breedTypeAsString),
-            _buildCategory('Gender', puppy.genderAsString),
-            _buildCategory(
-                'Characteristics', puppy.breedCharacteristics, false),
-          ],
-        ),
-      );
-
-  Widget _buildCategory(String categoryName, String categoryDescription,
-          [bool inline = true]) =>
-      inline
-          ? Column(
-              children: [
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: '$categoryName : ',
-                        style: TextStyles.title2TextStyle,
-                        children: [
-                          TextSpan(
-                            text: categoryDescription,
-                            style: TextStyles.subtitleTextStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+  Widget _buildBody(Puppy puppy) => Stack(
+        children: [
+          Hero(
+            tag: '$PuppyCardAnimationTag ${puppy.id}',
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(puppy.asset),
+                  fit: BoxFit.cover,
                 ),
-              ],
-            )
-          : Column(
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
                 Text(
-                  '$categoryName :',
-                  style: TextStyles.title2TextStyle,
+                  puppy.name,
+                  style: TextStyles.titleTextStyle,
                 ),
-                const SizedBox(height: 7),
+                const SizedBox(height: 5),
                 Text(
-                  categoryDescription,
+                  '${puppy.genderAsString}, ${puppy.breedTypeAsString}',
                   style: TextStyles.subtitleTextStyle,
-                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Text(
+                  puppy.breedCharacteristics,
+                  style: TextStyles.subtitleTextStyle,
                 ),
               ],
-            );
+            ),
+          ),
+          Positioned(
+            child: PuppyDetailsAppBar(
+              puppy: puppy,
+            ),
+          ),
+        ],
+      );
 }
