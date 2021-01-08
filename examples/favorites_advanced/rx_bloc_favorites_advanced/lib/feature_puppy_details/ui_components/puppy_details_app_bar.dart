@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
 import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
+import 'package:rx_bloc_favorites_advanced/base/ui_components/icon_with_shadow.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 
 class PuppyDetailsAppBar extends StatelessWidget
@@ -19,7 +19,7 @@ class PuppyDetailsAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) => AppBar(
         leading: IconButton(
-          icon: _iconWithShadow(Icons.arrow_back),
+          icon: const IconWithShadow(icon: Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -37,16 +37,16 @@ class PuppyDetailsAppBar extends StatelessWidget
 
   Widget _buildFavouriteButton(BuildContext context) => _puppy.isFavorite
       ? IconButton(
-          icon: _iconWithShadow(Icons.favorite),
+          icon: const IconWithShadow(icon: Icons.favorite),
           onPressed: () => _markAsFavorite(context, false),
         )
       : IconButton(
-          icon: _iconWithShadow(Icons.favorite_border),
+          icon: const IconWithShadow(icon: Icons.favorite_border),
           onPressed: () => _markAsFavorite(context, true),
         );
 
   Widget _buildEditButton(BuildContext context) => IconButton(
-        icon: _iconWithShadow(Icons.edit),
+        icon: const IconWithShadow(icon: Icons.edit),
         onPressed: () async {
           final result = await ExtendedNavigator.root.push(
             Routes.puppyEditPage,
@@ -66,17 +66,6 @@ class PuppyDetailsAppBar extends StatelessWidget
       RxBlocProvider.of<PuppyManageBlocType>(context)
           .events
           .markAsFavorite(puppy: _puppy, isFavorite: isFavorite);
-
-  Widget _iconWithShadow(IconData icon) => Stack(
-        children: <Widget>[
-          Positioned(
-            left: 1,
-            top: 2,
-            child: Icon(icon, color: ColorStyles.shadow),
-          ),
-          Icon(icon, color: ColorStyles.white),
-        ],
-      );
 
   @override
   Size get preferredSize => const Size.fromHeight(56);

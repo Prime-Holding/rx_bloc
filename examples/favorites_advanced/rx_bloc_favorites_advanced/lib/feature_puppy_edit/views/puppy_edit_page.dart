@@ -3,6 +3,8 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy_edit/blocs/puppy_edit_bloc.dart';
@@ -116,105 +118,199 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
             if (successfulUpdate) ExtendedNavigator.root.pop(true);
           },
           child: Container(
-            padding: const EdgeInsets.only(top: 10, left: 27, right: 27),
+            padding: const EdgeInsets.all(8),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Hero(
-                      tag: '$PuppyCardAnimationTag ${puppy.id}',
-                      child: RxBlocBuilder<PuppyEditBlocType, String>(
-                        bloc: RxBlocProvider.of(context),
-                        state: (bloc) => bloc.states.pickedImagePath,
-                        builder: (_, imagePath, __) => PuppyAvatar(
-                            asset: imagePath?.data ?? widget._puppy.asset),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    OutlineButton(
-                      onPressed: () {
-                        PhotoPickerActionSelectionBottomSheet
-                            .presentPhotosBottomSheet(
-                          context,
-                          (source) =>
-                              RxBlocProvider.of<PuppyEditBlocType>(context)
-                                  .events
-                                  .pickImage(source),
-                        );
-                      },
-                      child: const Text('Change picture'),
-                    ),
-                  ],
-                ),
+                _buildAvatar(puppy),
                 const SizedBox(height: 20),
-                _buildRow('Name', _buildNameInputField()),
-                _buildRow('Breed', _buildBreedSelection()),
-                _buildRow('Gender', _buildGenderSelection()),
-                _buildRow('Characteristics', _buildCharacteristicsInputField(),
-                    false),
+                _buildRow(
+                  'Name',
+                  _buildNameInputField(),
+                  icon: Icons.account_box,
+                ),
+                _buildRow(
+                  'Breed',
+                  _buildBreedSelection(),
+                  icon: Icons.pets,
+                ),
+                _buildRow(
+                  'Gender',
+                  _buildGenderSelection(),
+                  icon: Icons.wc,
+                ),
+                _buildRow(
+                  'Characteristics',
+                  _buildCharacteristicsInputField(),
+                  icon: Icons.article,
+                ),
               ],
             ),
           ),
         ),
       );
 
-  Widget _buildRow(String rowName, Widget content, [bool inline = true]) =>
-      Column(
+  Widget _buildAvatar(Puppy puppy) => Stack(
+        alignment: AlignmentDirectional.center,
         children: [
-          if (inline)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(rowName),
-                if (content != null) content,
-              ],
+          Hero(
+            tag: '$PuppyCardAnimationTag ${puppy.id}',
+            child: RxBlocBuilder<PuppyEditBlocType, String>(
+              bloc: RxBlocProvider.of(context),
+              state: (bloc) => bloc.states.pickedImagePath,
+              builder: (_, imagePath, __) => Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(90),
+                ),
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: PuppyAvatar(
+                        asset: imagePath?.data ?? widget._puppy.asset,
+                        radius: 128,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-          if (!inline) ...[
-            Text(rowName),
-            if (content != null) content,
-          ],
-          const SizedBox(height: 15),
+          ),
+          Positioned(
+            right: 1,
+            bottom: 1,
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(35),
+              ),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.transparent, // button color
+                  child: InkWell(
+                    child: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.edit,
+                        size: 24,
+                      ),
+                    ),
+                    onTap: () {
+                      PhotoPickerActionSelectionBottomSheet
+                          .presentPhotosBottomSheet(
+                        context,
+                        (source) =>
+                            RxBlocProvider.of<PuppyEditBlocType>(context)
+                                .events
+                                .pickImage(source),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       );
 
-  Widget _buildNameInputField() => Flexible(
+  Widget _buildRow(String rowName, Widget content, {IconData icon}) => Card(
+        elevation: 5,
         child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: RxBlocBuilder<PuppyEditBlocType, String>(
-            state: (bloc) => bloc.states.nameError,
-            builder: (_, nameErrorState, __) => TextField(
-              key: const ValueKey('PuppyNameInputField'),
-              maxLines: 1,
-              maxLengthEnforced: true,
-              controller: _nameTextFieldController,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                enabledBorder: _defaultInputFieldBorder,
-                border: _defaultInputFieldBorder,
-                errorText: nameErrorState?.data,
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  if (icon != null)
+                    Icon(
+                      icon,
+                      size: 18,
+                      color: ColorStyles.textColor,
+                    ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    rowName,
+                    style: TextStyles.title2TextStyleBlack,
+                  ),
+                ],
               ),
-              onChanged: RxBlocProvider.of<PuppyEditBlocType>(context)
-                  .events
-                  .updateName,
-            ),
+              const SizedBox(
+                height: 4,
+              ),
+              const Divider(
+                thickness: 1,
+                height: 1,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              if (content != null) content,
+            ],
           ),
         ),
       );
 
-  Widget _buildBreedSelection() => RxBlocBuilder<PuppyEditBlocType, BreedTypes>(
-        state: (bloc) => bloc.states.selectedBreed,
-        builder: (context, breedState, editBloc) => DropdownButton<BreedTypes>(
-          key: const ValueKey('PuppyBreedTypeDropDown'),
-          value: breedState?.data ?? widget._puppy.breedType,
-          onChanged: editBloc.events.updateBreed,
-          items: BreedTypes.values
-              .map((breedType) => DropdownMenuItem<BreedTypes>(
+  // Column(
+  //   children: [
+  //     if (inline)
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Text(rowName),
+  //           if (content != null) content,
+  //         ],
+  //       ),
+  //     if (!inline) ...[
+  //       Text(rowName),
+  //       if (content != null) content,
+  //     ],
+  //     const SizedBox(height: 15),
+  //   ],
+  // );
+
+  Widget _buildNameInputField() => RxBlocBuilder<PuppyEditBlocType, String>(
+        state: (bloc) => bloc.states.nameError,
+        builder: (_, nameErrorState, __) => TextField(
+          key: const ValueKey('PuppyNameInputField'),
+          style: TextStyles.editableTextStyle,
+          maxLines: 1,
+          maxLengthEnforced: true,
+          controller: _nameTextFieldController,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+            enabledBorder: _defaultInputFieldBorder,
+            border: _defaultInputFieldBorder,
+            errorText: nameErrorState?.data,
+          ),
+          onChanged:
+              RxBlocProvider.of<PuppyEditBlocType>(context).events.updateName,
+        ),
+      );
+
+  Widget _buildBreedSelection() => Center(
+        child: RxBlocBuilder<PuppyEditBlocType, BreedTypes>(
+          state: (bloc) => bloc.states.selectedBreed,
+          builder: (context, breedState, editBloc) =>
+              DropdownButton<BreedTypes>(
+            key: const ValueKey('PuppyBreedTypeDropDown'),
+            value: breedState?.data ?? widget._puppy.breedType,
+            onChanged: editBloc.events.updateBreed,
+            items: BreedTypes.values
+                .map(
+                  (breedType) => DropdownMenuItem<BreedTypes>(
                     value: breedType,
-                    child:
-                        Text(PuppyDataConversion.getBreedTypeString(breedType)),
-                  ))
-              .toList(),
+                    child: Text(
+                      PuppyDataConversion.getBreedTypeString(breedType),
+                      style: TextStyles.editableTextStyle,
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
         ),
       );
 
@@ -223,46 +319,59 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
         builder: (_, genderState, editBloc) {
           final selectedGender = genderState?.data ?? widget._puppy.gender;
           return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Text('Male'),
-              Radio<Gender>(
-                key: const ValueKey('PuppyGenderMaleRadio'),
-                value: Gender.Male,
-                groupValue: selectedGender,
-                onChanged: editBloc.events.updateGender,
+              Row(
+                children: [
+                  const Text(
+                    'Male',
+                    style: TextStyles.editableTextStyle,
+                  ),
+                  Radio<Gender>(
+                    key: const ValueKey('PuppyGenderMaleRadio'),
+                    value: Gender.Male,
+                    groupValue: selectedGender,
+                    onChanged: editBloc.events.updateGender,
+                  ),
+                ],
               ),
-              const Text('Female'),
-              Radio<Gender>(
-                key: const ValueKey('PuppyGenderFemaleRadio'),
-                value: Gender.Female,
-                groupValue: selectedGender,
-                onChanged: editBloc.events.updateGender,
+              Row(
+                children: [
+                  const Text(
+                    'Female',
+                    style: TextStyles.editableTextStyle,
+                  ),
+                  Radio<Gender>(
+                    key: const ValueKey('PuppyGenderFemaleRadio'),
+                    value: Gender.Female,
+                    groupValue: selectedGender,
+                    onChanged: editBloc.events.updateGender,
+                  ),
+                ],
               ),
             ],
           );
         },
       );
 
-  Widget _buildCharacteristicsInputField() => Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Container(
-          height: 220,
-          child: RxBlocBuilder<PuppyEditBlocType, String>(
-            state: (bloc) => bloc.states.characteristicsError,
-            builder: (_, detailsErrorState, __) => TextField(
-              key: const ValueKey('PuppyCharacteristicsInputField'),
-              textInputAction: TextInputAction.done,
-              maxLines: 8,
-              controller: _characteristicsTextFieldController,
-              decoration: InputDecoration(
-                enabledBorder: _defaultInputFieldBorder,
-                border: _defaultInputFieldBorder,
-                errorText: detailsErrorState?.data,
-              ),
-              onChanged: RxBlocProvider.of<PuppyEditBlocType>(context)
-                  .events
-                  .updateCharacteristics,
+  Widget _buildCharacteristicsInputField() => Container(
+        height: 220,
+        child: RxBlocBuilder<PuppyEditBlocType, String>(
+          state: (bloc) => bloc.states.characteristicsError,
+          builder: (_, detailsErrorState, __) => TextField(
+            key: const ValueKey('PuppyCharacteristicsInputField'),
+            style: TextStyles.editableTextStyle,
+            textInputAction: TextInputAction.done,
+            maxLines: 8,
+            controller: _characteristicsTextFieldController,
+            decoration: InputDecoration(
+              enabledBorder: _defaultInputFieldBorder,
+              border: _defaultInputFieldBorder,
+              errorText: detailsErrorState?.data,
             ),
+            onChanged: RxBlocProvider.of<PuppyEditBlocType>(context)
+                .events
+                .updateCharacteristics,
           ),
         ),
       );

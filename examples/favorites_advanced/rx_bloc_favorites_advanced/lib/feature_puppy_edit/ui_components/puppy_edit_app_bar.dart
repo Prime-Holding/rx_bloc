@@ -18,14 +18,14 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => RxBlocBuilder<PuppyEditBlocType, bool>(
-      state: (bloc) => bloc.states.processingUpdate,
-      builder: (context, loadingState, _) => AppBar(
-            title: const Text('Edit Puppy'),
-            centerTitle: true,
-            actions: [
-              _buildSaveButton(loadingState?.data ?? false),
-            ],
-          ));
+        state: (bloc) => bloc.states.processingUpdate,
+        builder: (context, loadingState, _) => AppBar(
+          title: const Text('Edit Puppy'),
+          actions: [
+            _buildSaveButton(loadingState?.data ?? false),
+          ],
+        ),
+      );
 
   Widget _buildSaveButton(bool isLoading) => IconButton(
         icon: !isLoading

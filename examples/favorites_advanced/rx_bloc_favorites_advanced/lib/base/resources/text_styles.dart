@@ -25,9 +25,21 @@ class TextStyles {
     shadows: _defaultShadow,
   );
 
-  static const TextStyle title2TextStyle = TextStyle(
+  static const TextStyle title2TextStyleWhite = TextStyle(
     color: ColorStyles.white,
     fontSize: 18,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle title2TextStyleBlack = TextStyle(
+    color: ColorStyles.textColor,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle editableTextStyle = TextStyle(
+    color: ColorStyles.editableTextColor,
+    fontSize: 20,
     fontWeight: FontWeight.w500,
   );
 
