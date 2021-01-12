@@ -49,6 +49,7 @@ dev_dependencies:
   rx_bloc_test: ^0.0.5
   mockito: ^4.1.1
   quiver: ^2.1.5
+  flutter_gherkin: ^1.1.9
 
 dependency_overrides:
   rx_bloc:

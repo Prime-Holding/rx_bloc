@@ -6,6 +6,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
 
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/puppies_app_bar.dart';
@@ -48,6 +49,7 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
 
   RxBlocBuilder<NavigationBarBlocType, NavigationItem> _buildBody() =>
       RxBlocBuilder<NavigationBarBlocType, NavigationItem>(
+        key: const ValueKey(Keys.puppyHomePage),
         state: (bloc) => bloc.states.selectedItem,
         builder: (ctx, snapshot, bloc) => AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),

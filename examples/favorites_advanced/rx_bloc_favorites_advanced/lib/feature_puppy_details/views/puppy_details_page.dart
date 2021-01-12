@@ -3,6 +3,7 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
@@ -51,7 +52,7 @@ class PuppyDetailsPage extends StatelessWidget with AutoRouteWrapper {
         body: SafeArea(
           top: false,
           bottom: false,
-          key: const ValueKey('PuppyDetailsPage'),
+          key: const ValueKey(Keys.puppyDetailsPage),
           child: _buildBody(puppy),
         ),
       );
