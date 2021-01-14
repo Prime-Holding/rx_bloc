@@ -9,9 +9,6 @@ import 'base/common_blocs/coordinator_bloc.dart';
 import 'base/routers/router.gr.dart';
 
 void main() {
-  // Enable integration testing with the Flutter Driver extension.
-  // See https://flutter.dev/testing/ for more info.
-  // enableFlutterDriverExtension();
   runApp(MyApp());
 }
 

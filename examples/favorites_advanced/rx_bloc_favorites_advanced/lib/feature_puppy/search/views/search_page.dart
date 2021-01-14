@@ -11,12 +11,16 @@ import '../../details/blocs/puppy_manage_bloc.dart';
 import '../blocs/puppy_list_bloc.dart';
 
 class SearchPage extends StatelessWidget {
+  const SearchPage({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       RxResultBuilder<PuppyListBlocType, List<Puppy>>(
-        key: const ValueKey(Keys.puppySearchPage),
+        key: const Key(Keys.puppySearchPage),
         state: (bloc) => bloc.states.searchedPuppies,
-        buildLoading: (ctx, bloc) => LoadingWidget(),
+        buildLoading: (ctx, bloc) => LoadingWidget(
+          key: Key('LoadingWidget'),
+        ),
         buildError: (ctx, error, bloc) => ErrorRetryWidget(
           onReloadTap: () => RxBlocProvider.of<PuppyListBlocType>(ctx)
               .events
@@ -36,7 +40,7 @@ class SearchPage extends StatelessWidget {
                 final item = snapshot[index];
 
                 return PuppyCard(
-                  key: Key('PuppyCardItem${item.id}'),
+                  key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                   onVisible: (puppy) =>
                       RxBlocProvider.of<PuppiesExtraDetailsBlocType>(ctx)
                           .events
