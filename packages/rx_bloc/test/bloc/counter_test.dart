@@ -15,7 +15,7 @@ void main() {
       build: () async => CounterBloc(ServerSimulator()),
       state: (bloc) => bloc.states.isLoading,
       act: (bloc) async => bloc.events.increment(),
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false],
     );
 
@@ -27,7 +27,7 @@ void main() {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false, true, false],
     );
 
@@ -39,7 +39,7 @@ void main() {
         bloc.states.count.listen((event) {});
         bloc.events.decrement();
       },
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false, true, false],
     );
 
@@ -52,7 +52,7 @@ void main() {
         bloc.events.increment();
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false, true, false],
     );
   });
@@ -63,7 +63,7 @@ void main() {
       build: () async => CounterBloc(ServerSimulator()),
       state: (bloc) => bloc.states.count,
       act: (bloc) async => bloc.events.increment(),
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1],
     );
 
@@ -75,7 +75,7 @@ void main() {
         bloc.events.increment();
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1, 2],
     );
 
@@ -88,7 +88,7 @@ void main() {
         bloc.events.decrement();
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1, 0, 1],
     );
   });
@@ -99,7 +99,7 @@ void main() {
       build: () async => CounterBloc(ServerSimulator()),
       state: (bloc) => bloc.states.errors,
       act: (bloc) async => bloc.events.decrement(),
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <String>[],
     );
 
@@ -111,7 +111,7 @@ void main() {
         bloc.states.count.listen((event) {});
         bloc.events.decrement();
       },
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <String>['Exception: Minimum number is reached!'],
     );
 
@@ -126,7 +126,7 @@ void main() {
         bloc.events.increment();
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay,
+      wait: ServerSimulator.delayTest,
       expect: <String>['Exception: Maximum number is reached!'],
     );
   });
