@@ -6,11 +6,11 @@ The very known Flutter **'Counter'** example but this time using the power of re
 
 ## Handled states
 
- * **Handling error state** 
+ * **Error state** 
     - As soon as users reach the min/max possible count they will be presented with an informative snack bar.
- * **Handling loading state**
+ * **Loading state**
     - While the API request is executing the action buttons will be disabled and a loading indicator will appear so that the user will know that something is happening
- * **Handling success state**
+ * **Success state**
     - The count will be updated only if the API returns a success response as the widget responsible for showing the counter will not be rebuilt in case of loading or error, but just the success state.
 
 ## Articles
