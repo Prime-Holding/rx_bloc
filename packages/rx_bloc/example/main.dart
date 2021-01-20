@@ -104,6 +104,7 @@ class ServerSimulator {
   int _counter = 0;
 
   static const delay = Duration(milliseconds: 100);
+  static const delayTest = Duration(milliseconds: 110);
 
   Future<int> increment() async {
     // Server response time.

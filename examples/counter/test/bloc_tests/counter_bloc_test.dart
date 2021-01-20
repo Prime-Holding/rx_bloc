@@ -1,81 +1,88 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 
 import '../../lib/bloc/counter_bloc.dart';
+import '../mock.dart';
 
 void main() {
   group('CounterBloc tests', () {
-    rxBlocTest<CounterBloc, String>(
+    rxBlocTest<CounterBlocType, int>(
       'Initial state',
-      build: () async => CounterBloc(),
+      build: () async => CounterBloc(MockCounterRepository()),
       state: (bloc) => bloc.states.count,
-      expect: ['0'],
+      expect: [0],
     );
 
-    rxBlocTest<CounterBloc, String>(
+    rxBlocTest<CounterBlocType, int>(
       'Incrementing value',
-      build: () async => CounterBloc(),
-      state: (bloc) => bloc.states.count,
-      act: (bloc) async => bloc.events.increment(),
-      expect: ['0', '1'],
-    );
-
-    rxBlocTest<CounterBloc, String>(
-      'Incrementing value twice',
-      build: () async => CounterBloc(),
-      state: (bloc) => bloc.states.count,
-      act: (bloc) async {
-        bloc.events.increment();
-        bloc.events.increment();
+      build: () async {
+        final mockRepo = MockCounterRepository();
+        when(mockRepo.increment()).thenAnswer((_) async => 1);
+        return CounterBloc(mockRepo);
       },
-      skip: 2,
-      expect: ['2'],
+      act: (bloc) async => bloc.events.increment(),
+      state: (bloc) => bloc.states.count,
+      expect: [0, 1],
     );
 
-    rxBlocTest<CounterBloc, String>(
+    rxBlocTest<CounterBlocType, int>(
       'Decrementing value',
-      build: () async => CounterBloc(),
-      state: (bloc) => bloc.states.count,
-      act: (bloc) async => bloc.events.decrement(),
-      expect: ['0', '-1'],
-    );
-
-    rxBlocTest<CounterBloc, bool>(
-      'Incrementing enabled (on zero value)',
-      build: () async => CounterBloc(),
-      state: (bloc) => bloc.states.incrementEnabled,
-      skip: 0,
-      expect: [true],
-    );
-
-    rxBlocTest<CounterBloc, bool>(
-      'Incrementing disabled (after 5 increments)',
-      build: () async => CounterBloc(),
-      state: (bloc) => bloc.states.incrementEnabled,
-      act: (bloc) async {
-        for (int i = 0; i < 5; i++) {
-          bloc.increment();
-        }
+      build: () async {
+        final mockRepo = MockCounterRepository();
+        when(mockRepo.decrement()).thenAnswer((_) async => -1);
+        return CounterBloc(mockRepo);
       },
-      skip: 5,
-      expect: [false],
+      act: (bloc) async => bloc.events.decrement(),
+      state: (bloc) => bloc.states.count,
+      expect: [0, -1],
     );
 
-    rxBlocTest<CounterBloc, bool>(
-      'Decrementing enabled (after at least one increment)',
-      build: () async => CounterBloc(),
-      state: (bloc) => bloc.states.decrementEnabled,
-      act: (bloc) async => bloc.events.increment(),
-      skip: 1,
-      expect: [true],
+    rxBlocTest<CounterBlocType, int>(
+      'Increment and decrement value',
+      build: () async {
+        final mockRepo = MockCounterRepository();
+        when(mockRepo.increment()).thenAnswer((_) async => 1);
+        when(mockRepo.decrement()).thenAnswer((_) async => 0);
+        return CounterBloc(mockRepo);
+      },
+      act: (bloc) async {
+        bloc.events.increment();
+        bloc.events.decrement();
+      },
+      state: (bloc) => bloc.states.count,
+      expect: [0, 1, 0],
     );
 
-    rxBlocTest<CounterBloc, bool>(
-      'Decrementing disabled (on zero value)',
-      build: () async => CounterBloc(),
-      state: (bloc) => bloc.states.decrementEnabled,
-      skip: 0,
-      expect: [false],
+    rxBlocTest<CounterBlocType, String>(
+      'Error handling',
+      build: () async {
+        final mockRepo = MockCounterRepository();
+        when(mockRepo.increment())
+            .thenAnswer((_) => Future.error('test error msg'));
+        return CounterBloc(mockRepo);
+      },
+      act: (bloc) async {
+        bloc.states.count.listen((event) {});
+        bloc.events.increment();
+      },
+      state: (bloc) => bloc.states.errors,
+      expect: ['Exception: test error msg'],
+    );
+
+    rxBlocTest<CounterBlocType, bool>(
+      'Loading state',
+      build: () async {
+        final mockRepo = MockCounterRepository();
+        when(mockRepo.increment()).thenAnswer((_) async => 1);
+        return CounterBloc(mockRepo);
+      },
+      act: (bloc) async {
+        bloc.states.count.listen((event) {});
+        bloc.events.increment();
+      },
+      state: (bloc) => bloc.states.isLoading,
+      expect: [false, true, false],
     );
   });
 }
