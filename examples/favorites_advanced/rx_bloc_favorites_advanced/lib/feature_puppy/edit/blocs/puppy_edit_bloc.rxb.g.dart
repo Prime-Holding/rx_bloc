@@ -55,9 +55,9 @@ abstract class $PuppyEditBloc extends RxBlocBase
 
   ///region updateBreed
 
-  final _$updateBreedEvent = PublishSubject<BreedTypes>();
+  final _$updateBreedEvent = PublishSubject<BreedType>();
   @override
-  void updateBreed(BreedTypes breedType) => _$updateBreedEvent.add(breedType);
+  void updateBreed(BreedType breedType) => _$updateBreedEvent.add(breedType);
 
   ///endregion updateBreed
 

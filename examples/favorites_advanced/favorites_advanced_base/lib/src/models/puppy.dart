@@ -10,7 +10,7 @@ class Puppy {
   final String name;
   final String breedCharacteristics;
   final String asset;
-  final BreedTypes breedType;
+  final BreedType breedType;
   final Gender gender;
 
   bool isFavorite;
@@ -28,7 +28,7 @@ class Puppy {
     this.isFavorite = false,
     this.breedCharacteristics =
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    this.breedType = BreedTypes.Mixed,
+    this.breedType = BreedType.Mixed,
     this.gender = Gender.Male,
   });
 

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
 import '../../blocs/puppies_extra_details_bloc.dart';
-import '../../details/blocs/puppy_manage_bloc.dart';
+import '../../blocs/puppy_manage_bloc.dart';
 
 class PuppyAnimatedListView extends StatelessWidget {
   const PuppyAnimatedListView({

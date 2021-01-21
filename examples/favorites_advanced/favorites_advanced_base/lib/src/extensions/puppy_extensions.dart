@@ -6,7 +6,7 @@ extension PuppUtils on Puppy {
     String name,
     String breedCharacteristics,
     Gender gender,
-    BreedTypes breedType,
+    BreedType breedType,
     bool isFavorite,
     String displayName,
     String displayCharacteristics,

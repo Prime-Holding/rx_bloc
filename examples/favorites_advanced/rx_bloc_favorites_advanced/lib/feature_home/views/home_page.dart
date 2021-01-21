@@ -11,7 +11,7 @@ import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/puppies_app_bar.dart';
 import '../../feature_puppy/blocs/puppies_extra_details_bloc.dart';
-import '../../feature_puppy/details/blocs/puppy_manage_bloc.dart';
+import '../../feature_puppy/blocs/puppy_manage_bloc.dart';
 import '../../feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import '../../feature_puppy/favorites/views/favorites_page.dart';
 import '../../feature_puppy/search/views/search_page.dart';

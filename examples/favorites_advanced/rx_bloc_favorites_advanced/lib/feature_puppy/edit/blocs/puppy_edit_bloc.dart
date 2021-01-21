@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/core.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,7 +13,7 @@ abstract class PuppyEditBlocEvents {
   void updateName(String newName);
   void updateCharacteristics(String newCharacteristics);
   void updateGender(Gender gender);
-  void updateBreed(BreedTypes breedType);
+  void updateBreed(BreedType breedType);
   void pickImage(ImagePickerActions source);
 
   void updatePuppy();
@@ -36,7 +32,7 @@ abstract class PuppyEditBlocStates {
   @RxBlocIgnoreState()
   Stream<Gender> get selectedGender;
   @RxBlocIgnoreState()
-  Stream<BreedTypes> get selectedBreed;
+  Stream<BreedType> get selectedBreed;
 
   @RxBlocIgnoreState()
   Stream<String> get updateError;
@@ -52,23 +48,12 @@ class PuppyEditBloc extends $PuppyEditBloc {
     PuppiesRepository repository,
     CoordinatorBlocType coordinatorBloc,
   )   : _puppiesRepository = repository,
-        _coordinatorBlocType = coordinatorBloc,
-        _imagePicker = ImagePicker() {
+        _coordinatorBlocType = coordinatorBloc {
     _bindEventsToStates();
-    _$pickImageEvent
-        .throttleTime(const Duration(seconds: 2))
-        .where((event) => event != null)
-        .switchMap(
-            (source) => _imagePicker.pickPicture(source: source).asStream())
-        .map((pickedImage) => pickedImage?.path)
-        .bind(_imagePath)
-        .disposedBy(_subscriptions);
   }
 
   final _maxNameLength = 30;
   final _maxCharacteristicsLength = 250;
-
-  final ImagePicker _imagePicker;
 
   final PuppiesRepository _puppiesRepository;
   final CoordinatorBlocType _coordinatorBlocType;
@@ -77,7 +62,7 @@ class PuppyEditBloc extends $PuppyEditBloc {
   final _imagePath = BehaviorSubject<String>.seeded(null);
   final _puppySubject = BehaviorSubject<Puppy>.seeded(null);
   final _genderSubject = BehaviorSubject<Gender>.seeded(null);
-  final _breedSubject = BehaviorSubject<BreedTypes>.seeded(null);
+  final _breedSubject = BehaviorSubject<BreedType>.seeded(null);
   final _nameSubject = BehaviorSubject<String>.seeded(null);
   final _characteristicsSubject = BehaviorSubject<String>.seeded(null);
 
@@ -121,7 +106,7 @@ class PuppyEditBloc extends $PuppyEditBloc {
   Stream<Gender> get selectedGender => _genderSubject;
 
   @override
-  Stream<BreedTypes> get selectedBreed => _breedSubject;
+  Stream<BreedType> get selectedBreed => _breedSubject;
 
   @override
   Stream<String> get nameError => _nameErrorSubject;

@@ -11,8 +11,8 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 
 import '../../feature_home/views/home_page.dart';
-import '../../feature_puppy_details/views/puppy_details_page.dart';
-import '../../feature_puppy_edit/views/puppy_edit_page.dart';
+import '../../feature_puppy/details/views/puppy_details_page.dart';
+import '../../feature_puppy/edit/views/puppy_edit_page.dart';
 
 class Routes {
   static const String homePage = '/';

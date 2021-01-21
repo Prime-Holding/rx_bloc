@@ -43,6 +43,12 @@ class TextStyles {
     fontWeight: FontWeight.w500,
   );
 
+  static const TextStyle errorTextStyle = TextStyle(
+    color: ColorStyles.errorTextColor,
+    fontSize: 10,
+    fontWeight: FontWeight.w300,
+  );
+
   static const TextStyle subtitleTextStyle = TextStyle(
     color: ColorStyles.white,
     fontSize: 24,

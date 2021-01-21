@@ -1,10 +1,19 @@
+import 'dart:io';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:favorites_advanced_base/src/utils/enums.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../models/puppy.dart';
 
+part 'puppies_repository_extensions.dart';
+
 class PuppiesRepository {
+  PuppiesRepository(ImagePicker picker) : _picker = picker {
+    puppies = _generateListOfPuppies();
+  }
+
   final _noInternetConnectionErrorString =
       'No internet connection. Please check your settings.';
 
@@ -14,9 +23,7 @@ class PuppiesRepository {
   /// Control how many time the 20 below will be multiplied.
   final generatedPuppiesMultiplier = 50000;
 
-  PuppiesRepository() {
-    puppies = _generateListOfPuppies();
-  }
+  final ImagePicker _picker;
 
   Future<List<Puppy>> getPuppies({String query = ''}) async {
     await Future.delayed(artificialDelay + Duration(milliseconds: 100));
@@ -114,6 +121,10 @@ class PuppiesRepository {
     return foundPuppy;
   }
 
+  Future<PickedFile> pickPuppyImage(ImagePickerActions source) {
+    return _picker.pickPicture(source: source);
+  }
+
   List<Puppy> puppies;
 
   List<Puppy> _generateListOfPuppies() => List.generate(
@@ -137,140 +148,140 @@ class PuppiesRepository {
       asset: 'assets/puppie_1.jpeg',
       isFavorite: true,
       gender: Gender.Male,
-      breedType: BreedTypes.GoldenRetriever,
+      breedType: BreedType.GoldenRetriever,
     ),
     Puppy(
       id: '1',
       name: 'Max',
       asset: 'assets/puppie_2.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.Cavachon,
+      breedType: BreedType.Cavachon,
     ),
     Puppy(
       id: '2',
       name: 'Buddy',
       asset: 'assets/puppie_3.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.GermanShepherd,
+      breedType: BreedType.GermanShepherd,
     ),
     Puppy(
       id: '3',
       name: 'Jerry',
       asset: 'assets/puppie_4.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.BerneseMountainDog,
+      breedType: BreedType.BerneseMountainDog,
     ),
     Puppy(
       id: '4',
       name: 'Oscar',
       asset: 'assets/puppie_5.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.AustralianShepherd,
+      breedType: BreedType.AustralianShepherd,
     ),
     Puppy(
       id: '5',
       name: 'Milo',
       asset: 'assets/puppie_6.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.Labradoodle,
+      breedType: BreedType.Labradoodle,
     ),
     Puppy(
       id: '6',
       name: 'Archie',
       asset: 'assets/puppie_7.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.Beagle,
+      breedType: BreedType.Beagle,
     ),
     Puppy(
       id: '7',
       name: 'Ollie',
       asset: 'assets/puppie_8.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.CaneCorso,
+      breedType: BreedType.CaneCorso,
     ),
     Puppy(
       id: '8',
       name: 'Toby',
       asset: 'assets/puppie_9.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.LabradorRetriever,
+      breedType: BreedType.LabradorRetriever,
     ),
     Puppy(
       id: '9',
       name: 'Jack',
       asset: 'assets/puppie_10.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.Mixed,
+      breedType: BreedType.Mixed,
     ),
     Puppy(
       id: '10',
       name: 'Teddy',
       asset: 'assets/puppie_11.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.Rottweiler,
+      breedType: BreedType.Rottweiler,
     ),
     Puppy(
       id: '11',
       name: 'Bella',
       asset: 'assets/puppie_12.jpeg',
       gender: Gender.Female,
-      breedType: BreedTypes.Beagle,
+      breedType: BreedType.Beagle,
     ),
     Puppy(
       id: '12',
       name: 'Molly',
       asset: 'assets/puppie_13.jpeg',
       gender: Gender.Female,
-      breedType: BreedTypes.LabradorRetriever,
+      breedType: BreedType.LabradorRetriever,
     ),
     Puppy(
       id: '13',
       name: 'Coco',
       asset: 'assets/puppie_14.jpeg',
       gender: Gender.Female,
-      breedType: BreedTypes.GoldenRetriever,
+      breedType: BreedType.GoldenRetriever,
     ),
     Puppy(
       id: '14',
       name: 'Ruby',
       asset: 'assets/puppie_15.jpeg',
       gender: Gender.Female,
-      breedType: BreedTypes.Labradoodle,
+      breedType: BreedType.Labradoodle,
     ),
     Puppy(
       id: '15',
       name: 'Lucy',
       asset: 'assets/puppie_16.jpeg',
       gender: Gender.Female,
-      breedType: BreedTypes.Havanese,
+      breedType: BreedType.Havanese,
     ),
     Puppy(
       id: '16',
       name: 'Bailey',
       asset: 'assets/puppie_17.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.GermanShepherd,
+      breedType: BreedType.GermanShepherd,
     ),
     Puppy(
       id: '17',
       name: 'Daisy',
       asset: 'assets/puppie_18.jpeg',
       gender: Gender.Female,
-      breedType: BreedTypes.Samoyed,
+      breedType: BreedType.Samoyed,
     ),
     Puppy(
       id: '18',
       name: 'Gosho',
       asset: 'assets/puppie_19.jpeg',
       gender: Gender.Male,
-      breedType: BreedTypes.CarolinaDog,
+      breedType: BreedType.CarolinaDog,
     ),
     Puppy(
       id: '19',
       name: 'Rosie',
       asset: 'assets/puppie_20.jpeg',
       gender: Gender.Female,
-      breedType: BreedTypes.Dachshund,
+      breedType: BreedType.Dachshund,
     )
   ];
 }

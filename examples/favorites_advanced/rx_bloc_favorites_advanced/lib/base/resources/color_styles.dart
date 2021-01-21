@@ -11,4 +11,5 @@ class ColorStyles {
   static const shadow = Color(0x88000000);
   static const black = Color(0xff000000);
   static const editableTextColor = Color(0xff3f3f3f);
+  static const errorTextColor = Color(0xffff0000);
 }

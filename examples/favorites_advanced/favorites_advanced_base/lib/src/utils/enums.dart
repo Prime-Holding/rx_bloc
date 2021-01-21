@@ -1,8 +1,9 @@
 enum ImagePickerActions { camera, gallery }
 
-enum Gender { Male, Female }
+enum Gender { None, Male, Female }
 
-enum BreedTypes {
+enum BreedType {
+  None,
   Mixed,
   GoldenRetriever,
   LabradorRetriever,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 import 'package:rx_bloc_favorites_advanced/base/ui_components/icon_with_shadow.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_manage_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 
 class PuppyDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -20,9 +20,7 @@ class PuppyDetailsAppBar extends StatelessWidget
   Widget build(BuildContext context) => AppBar(
         leading: IconButton(
           icon: const IconWithShadow(icon: Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Colors.transparent,
         // title: const Text('Puppy Details'),

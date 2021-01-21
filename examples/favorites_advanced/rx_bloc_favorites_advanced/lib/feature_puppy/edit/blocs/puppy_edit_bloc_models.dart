@@ -14,6 +14,6 @@ class _UpdatePuppyData {
   final String characteristics;
   final String imagePath;
   final Gender gender;
-  final BreedTypes breed;
+  final BreedType breed;
   final Puppy puppy;
 }

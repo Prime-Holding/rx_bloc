@@ -1,47 +1,48 @@
 import 'package:favorites_advanced_base/src/utils/enums.dart';
 
 class PuppyDataConversion {
-  static Map<BreedTypes, String> _dogBreeds = {
-    BreedTypes.Mixed: 'Mixed',
-    BreedTypes.GoldenRetriever: 'Golden Retriever',
-    BreedTypes.LabradorRetriever: 'Labrador Retriever',
-    BreedTypes.Labradoodle: 'Labradoodle',
-    BreedTypes.Dachshund: 'Dachshund',
-    BreedTypes.CarolinaDog: 'Carolina Dog',
-    BreedTypes.Samoyed: 'Samoyed',
-    BreedTypes.GermanShepherd: 'German Shepherd',
-    BreedTypes.Havanese: 'Havanese',
-    BreedTypes.Beagle: 'Beagle',
-    BreedTypes.Rottweiler: 'Rottweiler',
-    BreedTypes.CaneCorso: 'Cane Corso',
-    BreedTypes.AustralianShepherd: 'Australian Shepherd',
-    BreedTypes.BerneseMountainDog: 'Bernese Mountain Dog',
-    BreedTypes.Cavachon: 'Cavachon',
-    BreedTypes.Akita: 'Akita',
-    BreedTypes.Husky: 'Husky',
-    BreedTypes.StaffordshireTerrier: 'Staffordshire Terrier',
-    BreedTypes.BichonFrise: 'Bichon Frise',
-    BreedTypes.Bloodhound: 'Bloodhound',
-    BreedTypes.BorderCollie: 'Border Collie',
-    BreedTypes.Pug: 'Pug',
-    BreedTypes.Chihuahua: 'Chihuahua',
-    BreedTypes.DobermanPinscher: 'Doberman Pinscher',
+  static Map<BreedType, String> _dogBreeds = {
+    BreedType.None: 'None',
+    BreedType.Mixed: 'Mixed',
+    BreedType.GoldenRetriever: 'Golden Retriever',
+    BreedType.LabradorRetriever: 'Labrador Retriever',
+    BreedType.Labradoodle: 'Labradoodle',
+    BreedType.Dachshund: 'Dachshund',
+    BreedType.CarolinaDog: 'Carolina Dog',
+    BreedType.Samoyed: 'Samoyed',
+    BreedType.GermanShepherd: 'German Shepherd',
+    BreedType.Havanese: 'Havanese',
+    BreedType.Beagle: 'Beagle',
+    BreedType.Rottweiler: 'Rottweiler',
+    BreedType.CaneCorso: 'Cane Corso',
+    BreedType.AustralianShepherd: 'Australian Shepherd',
+    BreedType.BerneseMountainDog: 'Bernese Mountain Dog',
+    BreedType.Cavachon: 'Cavachon',
+    BreedType.Akita: 'Akita',
+    BreedType.Husky: 'Husky',
+    BreedType.StaffordshireTerrier: 'Staffordshire Terrier',
+    BreedType.BichonFrise: 'Bichon Frise',
+    BreedType.Bloodhound: 'Bloodhound',
+    BreedType.BorderCollie: 'Border Collie',
+    BreedType.Pug: 'Pug',
+    BreedType.Chihuahua: 'Chihuahua',
+    BreedType.DobermanPinscher: 'Doberman Pinscher',
   };
 
   /// region Breed Type conversions
-  static String getBreedTypeString(BreedTypes breedType) =>
+  static String getBreedTypeString(BreedType breedType) =>
       _dogBreeds.entries
           .toList()
-          .firstWhere((pair) => pair.key == breedType)
+          .firstWhere((pair) => pair.key == breedType, orElse: () => null)
           ?.value ??
-      _dogBreeds[BreedTypes.Mixed];
+      _dogBreeds[BreedType.None];
 
-  static BreedTypes getBreedTypeFromString(String breedTypeString) =>
+  static BreedType getBreedTypeFromString(String BreedTypeString) =>
       _dogBreeds.entries
           .toList()
-          .firstWhere((pair) => pair.value == breedTypeString)
+          .firstWhere((pair) => pair.value == BreedTypeString)
           ?.key ??
-      BreedTypes.Mixed;
+      BreedType.None;
 
   ///endregion
 

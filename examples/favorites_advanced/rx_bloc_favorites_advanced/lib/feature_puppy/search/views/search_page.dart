@@ -7,7 +7,7 @@ import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
 import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 
 import '../../blocs/puppies_extra_details_bloc.dart';
-import '../../details/blocs/puppy_manage_bloc.dart';
+import '../../blocs/puppy_manage_bloc.dart';
 import '../blocs/puppy_list_bloc.dart';
 
 class SearchPage extends StatelessWidget {
@@ -19,7 +19,7 @@ class SearchPage extends StatelessWidget {
         key: const Key(Keys.puppySearchPage),
         state: (bloc) => bloc.states.searchedPuppies,
         buildLoading: (ctx, bloc) => LoadingWidget(
-          key: Key('LoadingWidget'),
+          key: const Key('LoadingWidget'),
         ),
         buildError: (ctx, error, bloc) => ErrorRetryWidget(
           onReloadTap: () => RxBlocProvider.of<PuppyListBlocType>(ctx)
