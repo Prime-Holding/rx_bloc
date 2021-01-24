@@ -1,12 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_rx_bloc/src/rx_form_field_builder.dart';
-import 'package:flutter_rx_bloc/src/rx_input_decoration_data.dart';
-import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rxdart/rxdart.dart';
+part of 'rx_form_field_builder.dart';
 
-typedef RxTextFormFieldBuilderFunction = Widget Function(
-    InputDecoration, TextEditingController);
+typedef RxTextFormFieldBuilderFunction<B extends RxBlocTypeBase> = Widget
+    Function(RxTextFormFieldBuilderState<B> fieldState);
 
 class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
     extends RxFormFieldBuilder<B, String> {
@@ -14,7 +9,7 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
     @required RxFormFieldState<B, String> state,
     @required RxFormFieldShowError<B> showError,
     @required RxFormFieldOnChanged<B, String> onChanged,
-    @required RxTextFormFieldBuilderFunction builder,
+    @required RxTextFormFieldBuilderFunction<B> builder,
     this.decorationData = const RxInputDecorationData(),
     this.controller,
     this.obscureText = false,
@@ -36,7 +31,7 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
         );
 
   final RxFormFieldOnChanged<B, String> onChanged;
-  final RxTextFormFieldBuilderFunction textFormBuilder;
+  final RxTextFormFieldBuilderFunction<B> textFormBuilder;
 
   ///if one is not provided, an internal one is created
   final TextEditingController controller;
@@ -48,21 +43,19 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
   final B bloc;
 
   @override
-  _RxFormBuilderState createState() => _RxFormBuilderState<B>();
+  RxTextFormFieldBuilderState createState() => RxTextFormFieldBuilderState<B>();
 }
 
-class _RxFormBuilderState<B extends RxBlocTypeBase>
+class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     extends RxFormFieldBuilderState<B, String, RxTextFormFieldBuilder<B>> {
-  // @override
-  // RxTextFormFieldBuilder<B> get widget =>
-  //     super.widget as RxTextFormFieldBuilder<B>;
-
-  RxTextFormFieldBuilderFunction get _builder => widget.textFormBuilder;
-
   bool _shouldDisposeController;
   TextEditingController _controller;
-
+  InputDecoration _decoration;
   bool _isTextObscured;
+
+  bool get isTextObscured => _isTextObscured;
+  TextEditingController get controller => _controller;
+  InputDecoration get decoration => _decoration;
 
   @override
   void initState() {
@@ -78,16 +71,19 @@ class _RxFormBuilderState<B extends RxBlocTypeBase>
     });
 
     assert(
-      blocState.isBroadcast,
+      _blocState.isBroadcast,
       'valueState passed to [RXTextFormFieldBuilder], '
       'should be a broadcast stream',
     );
 
-    blocState.listen((value) {
-      if (_controller.text != value) {
-        _controller.text = value;
-      }
-    }).addTo(compositeSubscription);
+    _blocState.listen(
+      (value) {
+        if (_controller.text != value) {
+          _controller.text = value;
+        }
+      },
+      onError: (error) {},
+    ).addTo(_compositeSubscription);
   }
 
   @override
@@ -98,15 +94,14 @@ class _RxFormBuilderState<B extends RxBlocTypeBase>
 
   @override
   Widget build(BuildContext context) {
-    //TODO generate decoration only when neccessary
-    final decoration = _decoration(showError, error);
-
-    return _builder(decoration, _controller);
+    //TODO think about generating decoration only when necessary
+    _decoration = _makeDecoration(showError, error);
+    return widget.textFormBuilder(this);
   }
 
-  InputDecoration _decoration(bool showError, String error) => InputDecoration(
-        // labelText: widget.decorationData?.label,
-        labelStyle: !showError
+  InputDecoration _makeDecoration(bool showError, String error) =>
+      InputDecoration(
+        labelStyle: !showError && error != null
             ? widget.decorationData?.labelStyle
             : widget.decorationData?.labelStyleError,
         suffixIcon: widget.obscureText
@@ -124,31 +119,6 @@ class _RxFormBuilderState<B extends RxBlocTypeBase>
                 ),
               )
             : null,
-        // prefixIcon: widget.decorationData?.prefixIcon != null
-        //     ? Padding(
-        //         child: widget.decorationData?.prefixIcon,
-        //         padding: const EdgeInsets.all(16),
-        //       )
-        //     : null,
-        // filled: true,
-        // fillColor: widget.decorationData?.fillColor,
         errorText: showError ? error : null,
-        // errorStyle: widget.decorationData?.errorStyle,
-        // enabledBorder: UnderlineInputBorder(
-        //   borderSide:
-        //       BorderSide(color: widget.decorationData?.enabledBorderColor),
-        // ),
-        // focusedBorder: UnderlineInputBorder(
-        //   borderSide:
-        //       BorderSide(color: widget.decorationData?.focusedBorderColor),
-        // ),
-        // errorBorder: UnderlineInputBorder(
-        //   borderSide:
-        //       BorderSide(color: widget.decorationData?.errorBorderColor),
-        // ),
-        // focusedErrorBorder: UnderlineInputBorder(
-        //   borderSide:
-        //       BorderSide(color: widget.decorationData?.focusedErrorBorderColor),
-        // ),
       );
 }

@@ -6,13 +6,18 @@ extension _PuppyDetailsProviders on PuppyDetailsPage {
           create: (context) => PuppyManageBloc(
             Provider.of(context, listen: false),
             Provider.of(context, listen: false),
-            puppy: puppy,
           ),
         ),
         RxBlocProvider<PuppiesExtraDetailsBlocType>(
           create: (context) => PuppiesExtraDetailsBloc(
             Provider.of(context, listen: false),
             Provider.of(context, listen: false),
+          ),
+        ),
+        RxBlocProvider<PuppyDetailsBlocType>(
+          create: (context) => PuppyDetailsBloc(
+            Provider.of(context, listen: false),
+            puppy: puppy,
           ),
         ),
       ];

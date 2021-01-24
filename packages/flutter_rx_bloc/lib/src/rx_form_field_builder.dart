@@ -6,6 +6,8 @@ import 'package:flutter_rx_bloc/src/rx_field_exception.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+part 'rx_text_form_field_builder.dart';
+
 typedef RxFormFieldState<B extends RxBlocTypeBase, T> = Stream<T> Function(B);
 
 typedef RxFormFieldShowError<B extends RxBlocTypeBase> = Stream<bool> Function(
@@ -52,6 +54,8 @@ class RxFormFieldBuilderState<B extends RxBlocTypeBase, T,
 
   RxFormFieldBuilderFunction<B, T> get _builder => widget.builder;
 
+  final _compositeSubscription = CompositeSubscription();
+
   B get bloc => _bloc;
 
   T get value => _value;
@@ -59,15 +63,6 @@ class RxFormFieldBuilderState<B extends RxBlocTypeBase, T,
   String get error => _error;
 
   bool get showError => _showError;
-
-  @protected
-  final compositeSubscription = CompositeSubscription();
-
-  @protected
-  Stream<T> get blocState => _blocState;
-
-  @protected
-  Stream<bool> get showErrorState => _showErrorState;
 
   @override
   void initState() {
@@ -96,18 +91,18 @@ class RxFormFieldBuilderState<B extends RxBlocTypeBase, T,
           _error = exception.error;
         });
       }
-    }).addTo(compositeSubscription);
+    }).addTo(_compositeSubscription);
 
     _showErrorState.listen((event) {
       setState(() {
         _showError = event ?? false;
       });
-    }).addTo(compositeSubscription);
+    }).addTo(_compositeSubscription);
   }
 
   @override
   void dispose() {
-    compositeSubscription.dispose();
+    _compositeSubscription.dispose();
     super.dispose();
   }
 

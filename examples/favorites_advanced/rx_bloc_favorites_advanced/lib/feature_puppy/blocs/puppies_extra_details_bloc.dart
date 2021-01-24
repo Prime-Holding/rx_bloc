@@ -17,7 +17,9 @@ abstract class PuppiesExtraDetailsStates {}
 @RxBloc()
 class PuppiesExtraDetailsBloc extends $PuppiesExtraDetailsBloc {
   PuppiesExtraDetailsBloc(
-      CoordinatorBlocType coordinatorBloc, PuppiesRepository repository) {
+    CoordinatorBlocType coordinatorBloc,
+    PuppiesRepository repository,
+  ) {
     // This event is emitted when a puppy entity becomes visible on the screen.
     _$fetchExtraDetailsEvent
         // Fetch extra details collected in 100 millisecond buckets.
