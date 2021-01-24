@@ -12,48 +12,39 @@ abstract class PuppyManageEvents {
   void markAsFavorite({Puppy puppy, bool isFavorite});
 
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
-  void updateName(String newName);
+  void setName(String newName);
 
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
-  void updateCharacteristics(String newCharacteristics);
+  void setCharacteristics(String newCharacteristics);
 
-  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: Gender.None)
-  void updateGender(Gender gender);
+  void setGender(Gender gender);
 
-  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: BreedType.None)
-  void updateBreed(BreedType breedType);
+  void setBreed(BreedType breedType);
 
-  void pickImage(ImagePickerActions source);
+  void setImage(ImagePickerActions source);
 
-  void updatePuppy();
+  void savePuppy();
 }
 
 abstract class PuppyManageStates {
-  Stream<bool> get isSaveEnabled;
-
   Stream<String> get imagePath;
-
-  Stream<Gender> get gender;
-
-  Stream<BreedType> get breed;
 
   Stream<String> get name;
 
+  Stream<BreedType> get breed;
+
+  Stream<Gender> get gender;
+
   Stream<String> get characteristics;
-
-  Stream<Result<void>> get updateStatus;
-
-  Stream<bool> get processingUpdate;
-
-  //used to be used for popping the edit page, figure out a new solution
-  Stream<bool> get successfulUpdate;
-
-  Stream<String> get updateError;
 
   Stream<bool> get showErrors;
 
+  Stream<bool> get isSaveEnabled;
+
+  Stream<bool> get updateComplete;
+
   @RxBlocIgnoreState()
-  Stream<Puppy> get puppy;
+  Stream<bool> get isLoading;
 
   @RxBlocIgnoreState()
   Stream<String> get error;
@@ -66,23 +57,18 @@ class PuppyManageBloc extends $PuppyManageBloc {
     CoordinatorBlocType coordinatorBloc, {
     PuppyValidator validator,
     Puppy puppy,
-  })  : _puppyValidator = validator,
+  })  : _puppy = puppy,
+        _puppyValidator = validator,
         _puppiesRepository = puppiesRepository,
         _coordinatorBlocType = coordinatorBloc {
-    if (puppy != null) {
-      _editingPuppy.add(puppy);
-      updateName(puppy.name);
-      updateCharacteristics(puppy.breedCharacteristics);
-      // updateGender(puppy.gender);
-      // updateBreed(puppy.breedType);
-    }
-
     _$markAsFavoriteEvent
         .markPuppyAsFavorite(puppiesRepository, this)
         .doOnData((puppy) => coordinatorBloc.events.puppyUpdated(puppy))
         .bind(_lastUpdatedPuppy)
         .disposedBy(_compositeSubscription);
   }
+
+  final Puppy _puppy;
 
   final PuppyValidator _puppyValidator;
   final PuppiesRepository _puppiesRepository;
@@ -92,86 +78,70 @@ class PuppyManageBloc extends $PuppyManageBloc {
   final _compositeSubscription = CompositeSubscription();
   final _favoritePuppyError = PublishSubject<Exception>();
 
-  final _editingPuppy = BehaviorSubject<Puppy>();
+  @override
+  Stream<String> get error =>
+      Rx.merge([errorState, _favoritePuppyError]).mapToString().share();
 
   @override
-  Stream<Puppy> get puppy => _editingPuppy;
+  Stream<bool> get isLoading =>
+      loadingState.startWith(false).shareReplay(maxSize: 1);
 
   @override
-  Stream<String> get error => Rx.merge([errorState, _favoritePuppyError])
-      .map((exc) => exc.toString())
-      .share();
+  Stream<String> _mapToImagePathState() => _$setImageEvent
+      .throttleTime(const Duration(seconds: 2))
+      .pickImagePath(_puppiesRepository)
+      .startWith(_puppy.asset)
+      .shareReplay(maxSize: 1);
 
   @override
-  Stream<String> _mapToNameState() => _$updateNameEvent
+  Stream<String> _mapToNameState() => _$setNameEvent
+      .startWith(_puppy?.name ?? '')
       .validateField(_puppyValidator.validatePuppyName)
       .shareReplay(maxSize: 1);
 
   @override
-  Stream<String> _mapToCharacteristicsState() => _$updateCharacteristicsEvent
-      .validateField(_puppyValidator.validatePuppyCharacteristics)
-      .shareReplay(maxSize: 1);
-
-  @override
-  Stream<String> _mapToImagePathState() => _$pickImageEvent
-      .throttleTime(const Duration(seconds: 2))
-      .pickImagePath(_puppiesRepository)
-      .startWith(_editingPuppy.value.asset);
-
-  @override
-  Stream<bool> _mapToProcessingUpdateState() => BehaviorSubject.seeded(false);
-
-  @override
-  Stream<bool> _mapToShowErrorsState() => _$updatePuppyEvent
-      .switchMap((_) => _validateAllFields())
-      .startWith(false)
-      .shareReplay(maxSize: 1);
-
-  Stream<bool> _validateAllFields() =>
-      Rx.combineLatest3<String, String, Gender, bool>(
-        name,
-        characteristics,
-        gender,
-        (name, characteristics, gender) => false,
-      ).onErrorReturn(true);
-
-  @override
-  Stream<BreedType> _mapToBreedState() => _$updateBreedEvent
+  Stream<BreedType> _mapToBreedState() => _$setBreedEvent
+      .startWith(_puppy?.breedType ?? BreedType.None)
       .validateField(_puppyValidator.validatePuppyBreed)
       .shareReplay(maxSize: 1);
 
   @override
-  Stream<Gender> _mapToGenderState() => _$updateGenderEvent
+  Stream<Gender> _mapToGenderState() => _$setGenderEvent
+      .startWith(_puppy?.gender ?? Gender.None)
       .validateField(_puppyValidator.validatePuppyGender)
       .shareReplay(maxSize: 1);
 
   @override
-  Stream<bool> _mapToIsSaveEnabledState() => BehaviorSubject.seeded(true);
+  Stream<String> _mapToCharacteristicsState() => _$setCharacteristicsEvent
+      .startWith(_puppy?.displayCharacteristics ?? '')
+      .validateField(_puppyValidator.validatePuppyCharacteristics)
+      .shareReplay(maxSize: 1);
 
   @override
-  Stream<bool> _mapToSuccessfulUpdateState() {
-    // TODO: implement _mapToSuccessfulUpdateState
-    throw UnimplementedError();
-  }
+  Stream<bool> _mapToShowErrorsState() => _$savePuppyEvent
+      .switchMap((_) => _validateAllFields().map((event) => !event))
+      .startWith(false)
+      .shareReplay(maxSize: 1);
 
   @override
-  Stream<String> _mapToUpdateErrorState() {
-    // TODO: implement _mapToUpdateErrorState
-    throw UnimplementedError();
-  }
+  Stream<bool> _mapToIsSaveEnabledState() =>
+      _hasChanges().startWith(false).shareReplay(maxSize: 1);
 
   @override
-  Stream<Result<void>> _mapToUpdateStatusState() {
-    // TODO: implement _mapToUpdateStatusState
-    throw UnimplementedError();
-  }
+  Stream<bool> _mapToUpdateCompleteState() => _$savePuppyEvent
+      .switchMap((_) => _validateAllFields())
+      .where((allFieldsAreValid) => allFieldsAreValid)
+      .switchMap((_) => _savePuppy())
+      .setResultStateHandler(this)
+      .whereSuccess()
+      .mapTo(true)
+      .shareReplay(maxSize: 1);
 
   @override
   void dispose() {
     _favoritePuppyError.close();
     _lastUpdatedPuppy.close();
     _compositeSubscription.dispose();
-    _editingPuppy.close();
     super.dispose();
   }
 }

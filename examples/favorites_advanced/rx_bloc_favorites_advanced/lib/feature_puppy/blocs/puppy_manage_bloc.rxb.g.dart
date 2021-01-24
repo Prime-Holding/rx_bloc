@@ -32,69 +32,58 @@ abstract class $PuppyManageBloc extends RxBlocBase
 
   ///endregion markAsFavorite
 
-  ///region updateName
+  ///region setName
 
-  final _$updateNameEvent = BehaviorSubject.seeded('');
+  final _$setNameEvent = BehaviorSubject.seeded('');
   @override
-  void updateName(String newName) => _$updateNameEvent.add(newName);
+  void setName(String newName) => _$setNameEvent.add(newName);
 
-  ///endregion updateName
+  ///endregion setName
 
-  ///region updateCharacteristics
+  ///region setCharacteristics
 
-  final _$updateCharacteristicsEvent = BehaviorSubject.seeded('');
+  final _$setCharacteristicsEvent = BehaviorSubject.seeded('');
   @override
-  void updateCharacteristics(String newCharacteristics) =>
-      _$updateCharacteristicsEvent.add(newCharacteristics);
+  void setCharacteristics(String newCharacteristics) =>
+      _$setCharacteristicsEvent.add(newCharacteristics);
 
-  ///endregion updateCharacteristics
+  ///endregion setCharacteristics
 
-  ///region updateGender
+  ///region setGender
 
-  final _$updateGenderEvent = BehaviorSubject.seeded(Gender.None);
+  final _$setGenderEvent = PublishSubject<Gender>();
   @override
-  void updateGender(Gender gender) => _$updateGenderEvent.add(gender);
+  void setGender(Gender gender) => _$setGenderEvent.add(gender);
 
-  ///endregion updateGender
+  ///endregion setGender
 
-  ///region updateBreed
+  ///region setBreed
 
-  final _$updateBreedEvent = BehaviorSubject.seeded(BreedType.None);
+  final _$setBreedEvent = PublishSubject<BreedType>();
   @override
-  void updateBreed(BreedType breedType) => _$updateBreedEvent.add(breedType);
+  void setBreed(BreedType breedType) => _$setBreedEvent.add(breedType);
 
-  ///endregion updateBreed
+  ///endregion setBreed
 
-  ///region pickImage
+  ///region setImage
 
-  final _$pickImageEvent = PublishSubject<ImagePickerActions>();
+  final _$setImageEvent = PublishSubject<ImagePickerActions>();
   @override
-  void pickImage(ImagePickerActions source) => _$pickImageEvent.add(source);
+  void setImage(ImagePickerActions source) => _$setImageEvent.add(source);
 
-  ///endregion pickImage
+  ///endregion setImage
 
-  ///region updatePuppy
+  ///region savePuppy
 
-  final _$updatePuppyEvent = PublishSubject<void>();
+  final _$savePuppyEvent = PublishSubject<void>();
   @override
-  void updatePuppy() => _$updatePuppyEvent.add(null);
+  void savePuppy() => _$savePuppyEvent.add(null);
 
-  ///endregion updatePuppy
+  ///endregion savePuppy
 
   ///endregion Events
 
   ///region States
-
-  ///region isSaveEnabled
-  Stream<bool> _isSaveEnabledState;
-
-  @override
-  Stream<bool> get isSaveEnabled =>
-      _isSaveEnabledState ??= _mapToIsSaveEnabledState();
-
-  Stream<bool> _mapToIsSaveEnabledState();
-
-  ///endregion isSaveEnabled
 
   ///region imagePath
   Stream<String> _imagePathState;
@@ -106,15 +95,15 @@ abstract class $PuppyManageBloc extends RxBlocBase
 
   ///endregion imagePath
 
-  ///region gender
-  Stream<Gender> _genderState;
+  ///region name
+  Stream<String> _nameState;
 
   @override
-  Stream<Gender> get gender => _genderState ??= _mapToGenderState();
+  Stream<String> get name => _nameState ??= _mapToNameState();
 
-  Stream<Gender> _mapToGenderState();
+  Stream<String> _mapToNameState();
 
-  ///endregion gender
+  ///endregion name
 
   ///region breed
   Stream<BreedType> _breedState;
@@ -126,15 +115,15 @@ abstract class $PuppyManageBloc extends RxBlocBase
 
   ///endregion breed
 
-  ///region name
-  Stream<String> _nameState;
+  ///region gender
+  Stream<Gender> _genderState;
 
   @override
-  Stream<String> get name => _nameState ??= _mapToNameState();
+  Stream<Gender> get gender => _genderState ??= _mapToGenderState();
 
-  Stream<String> _mapToNameState();
+  Stream<Gender> _mapToGenderState();
 
-  ///endregion name
+  ///endregion gender
 
   ///region characteristics
   Stream<String> _characteristicsState;
@@ -147,50 +136,6 @@ abstract class $PuppyManageBloc extends RxBlocBase
 
   ///endregion characteristics
 
-  ///region updateStatus
-  Stream<Result<void>> _updateStatusState;
-
-  @override
-  Stream<Result<void>> get updateStatus =>
-      _updateStatusState ??= _mapToUpdateStatusState();
-
-  Stream<Result<void>> _mapToUpdateStatusState();
-
-  ///endregion updateStatus
-
-  ///region processingUpdate
-  Stream<bool> _processingUpdateState;
-
-  @override
-  Stream<bool> get processingUpdate =>
-      _processingUpdateState ??= _mapToProcessingUpdateState();
-
-  Stream<bool> _mapToProcessingUpdateState();
-
-  ///endregion processingUpdate
-
-  ///region successfulUpdate
-  Stream<bool> _successfulUpdateState;
-
-  @override
-  Stream<bool> get successfulUpdate =>
-      _successfulUpdateState ??= _mapToSuccessfulUpdateState();
-
-  Stream<bool> _mapToSuccessfulUpdateState();
-
-  ///endregion successfulUpdate
-
-  ///region updateError
-  Stream<String> _updateErrorState;
-
-  @override
-  Stream<String> get updateError =>
-      _updateErrorState ??= _mapToUpdateErrorState();
-
-  Stream<String> _mapToUpdateErrorState();
-
-  ///endregion updateError
-
   ///region showErrors
   Stream<bool> _showErrorsState;
 
@@ -200,6 +145,28 @@ abstract class $PuppyManageBloc extends RxBlocBase
   Stream<bool> _mapToShowErrorsState();
 
   ///endregion showErrors
+
+  ///region isSaveEnabled
+  Stream<bool> _isSaveEnabledState;
+
+  @override
+  Stream<bool> get isSaveEnabled =>
+      _isSaveEnabledState ??= _mapToIsSaveEnabledState();
+
+  Stream<bool> _mapToIsSaveEnabledState();
+
+  ///endregion isSaveEnabled
+
+  ///region updateComplete
+  Stream<bool> _updateCompleteState;
+
+  @override
+  Stream<bool> get updateComplete =>
+      _updateCompleteState ??= _mapToUpdateCompleteState();
+
+  Stream<bool> _mapToUpdateCompleteState();
+
+  ///endregion updateComplete
 
   ///endregion States
 
@@ -218,12 +185,12 @@ abstract class $PuppyManageBloc extends RxBlocBase
   @override
   void dispose() {
     _$markAsFavoriteEvent.close();
-    _$updateNameEvent.close();
-    _$updateCharacteristicsEvent.close();
-    _$updateGenderEvent.close();
-    _$updateBreedEvent.close();
-    _$pickImageEvent.close();
-    _$updatePuppyEvent.close();
+    _$setNameEvent.close();
+    _$setCharacteristicsEvent.close();
+    _$setGenderEvent.close();
+    _$setBreedEvent.close();
+    _$setImageEvent.close();
+    _$savePuppyEvent.close();
     super.dispose();
   }
 }

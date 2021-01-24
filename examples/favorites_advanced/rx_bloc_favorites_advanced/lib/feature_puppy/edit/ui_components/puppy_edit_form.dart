@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/input_styles.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
@@ -23,13 +24,30 @@ class PuppyEditForm extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Column(
               children: [
+                RxBlocListener<PuppyManageBlocType, bool>(
+                  state: (bloc) => bloc.states.updateComplete,
+                  listener: (context, result) {
+                    if (result) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+                RxBlocListener<PuppyManageBlocType, String>(
+                  state: (bloc) => bloc.states.error,
+                  listener: (context, error) {
+                    if (error != null) {
+                      Scaffold.of(context)
+                          .showSnackBar(SnackBar(content: Text(error)));
+                    }
+                  },
+                ),
                 RxBlocBuilder<PuppyManageBlocType, String>(
                   state: (bloc) => bloc.states.imagePath,
                   builder: (context, snapshot, bloc) => snapshot.hasData
                       ? PuppyEditAvatar(
                           heroTag: tag,
                           imgPath: snapshot.data,
-                          pickImage: (source) => bloc.events.pickImage(source),
+                          pickImage: (source) => bloc.events.setImage(source),
                         )
                       : LoadingWidget(),
                 ),
@@ -103,15 +121,21 @@ class PuppyEditForm extends StatelessWidget {
   Widget _buildNameField() => RxTextFormFieldBuilder<PuppyManageBlocType>(
         state: (bloc) => bloc.states.name,
         showError: (bloc) => bloc.states.showErrors,
-        onChanged: (bloc, value) => bloc.events.updateName(value),
-        builder: (decoration, controller) => TextFormField(
+        onChanged: (bloc, value) => bloc.events.setName(value),
+        decorationData: InputStyles.textFieldDecorationData,
+        //optional
+        obscureText: false,
+        //optional
+        builder: (fieldState) => TextFormField(
           key: const ValueKey('PuppyNameInputField'),
+          cursorColor: const Color(0xff333333),
           style: TextStyles.editableTextStyle,
           maxLines: 1,
           textInputAction: TextInputAction.next,
           maxLengthEnforced: true,
-          controller: controller,
-          decoration: decoration,
+          controller: fieldState.controller,
+          decoration: fieldState.decoration
+              .copyWithDecoration(InputStyles.textFieldDecoration),
         ),
       );
 
@@ -119,15 +143,18 @@ class PuppyEditForm extends StatelessWidget {
       RxTextFormFieldBuilder<PuppyManageBlocType>(
         state: (bloc) => bloc.states.characteristics,
         showError: (bloc) => bloc.states.showErrors,
-        onChanged: (bloc, value) => bloc.events.updateCharacteristics(value),
-        builder: (decoration, controller) => TextFormField(
+        onChanged: (bloc, value) => bloc.events.setCharacteristics(value),
+        decorationData: InputStyles.textFieldDecorationData,
+        builder: (fieldState) => TextFormField(
+          cursorColor: const Color(0xff333333),
           key: const ValueKey('PuppyCharacteristicsInputField'),
           style: TextStyles.editableTextStyle,
           textInputAction: TextInputAction.done,
           maxLines: 8,
           maxLengthEnforced: true,
-          controller: controller,
-          decoration: decoration,
+          controller: fieldState.controller,
+          decoration: fieldState.decoration
+              .copyWithDecoration(InputStyles.textFieldDecoration),
         ),
       );
 
@@ -141,7 +168,7 @@ class PuppyEditForm extends StatelessWidget {
               child: DropdownButton<BreedType>(
                 key: const ValueKey('PuppyBreedTypeDropDown'),
                 value: fieldState.value,
-                onChanged: fieldState.bloc.events.updateBreed,
+                onChanged: fieldState.bloc.events.setBreed,
                 items: BreedType.values
                     .map(
                       (breedType) => DropdownMenuItem<BreedType>(
@@ -187,7 +214,7 @@ class PuppyEditForm extends StatelessWidget {
                       key: const ValueKey('PuppyGenderMaleRadio'),
                       value: Gender.Male,
                       groupValue: state.value,
-                      onChanged: state.bloc.events.updateGender,
+                      onChanged: state.bloc.events.setGender,
                     ),
                   ],
                 ),
@@ -201,7 +228,7 @@ class PuppyEditForm extends StatelessWidget {
                       key: const ValueKey('PuppyGenderFemaleRadio'),
                       value: Gender.Female,
                       groupValue: state.value,
-                      onChanged: state.bloc.events.updateGender,
+                      onChanged: state.bloc.events.setGender,
                     ),
                   ],
                 ),

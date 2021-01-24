@@ -60,7 +60,7 @@ class PuppyDetails extends StatelessWidget {
                   RxBlocBuilder<PuppyDetailsBlocType, String>(
                     state: (bloc) => bloc.states.characteristics,
                     builder: (context, snapshot, bloc) => Text(
-                      snapshot.data ?? puppy.breedCharacteristics,
+                      snapshot.data ?? puppy.displayCharacteristics,
                       style: TextStyles.subtitleTextStyle,
                     ),
                   ),
