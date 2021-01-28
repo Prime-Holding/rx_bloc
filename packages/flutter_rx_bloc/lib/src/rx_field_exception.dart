@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 ///   * [Exception], which handles general Exceptions
 class RxFieldException<T> implements Exception {
   ///the default constructor, all members are required
-  RxFieldException({
+  const RxFieldException({
     @required this.error,
     @required this.fieldValue,
   });
@@ -18,4 +18,16 @@ class RxFieldException<T> implements Exception {
 
   ///The error string which the form should show
   final String error;
+
+  @override
+  bool operator ==(Object other) {
+    if (other is RxFieldException<T>) {
+      return fieldValue == other.fieldValue && error == other.error;
+    }
+
+    return false;
+  }
+
+  @override
+  int get hashCode => super.hashCode;
 }

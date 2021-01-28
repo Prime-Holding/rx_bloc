@@ -25,7 +25,8 @@ extension _StreamBindToPuppies on Stream<List<Puppy>> {
   /// If the [Puppy.isFavorite] of the puppies is [true] the entity will be
   /// removed from [puppiesToUpdate], otherwise will be added.
   StreamSubscription<Result<List<Puppy>>> updateFavoritePuppies(
-          BehaviorSubject<Result<List<Puppy>>> puppiesToUpdate) =>
+    BehaviorSubject<Result<List<Puppy>>> puppiesToUpdate,
+  ) =>
       map((puppies) {
         final puppiesResult = puppiesToUpdate.value;
 

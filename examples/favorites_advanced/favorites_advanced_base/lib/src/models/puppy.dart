@@ -37,11 +37,11 @@ class Puppy {
     if (other is Puppy) {
       return id == other.id &&
           name == other.name &&
-          breedCharacteristics == other.breedCharacteristics &&
+          displayName == other.displayName &&
           asset == other.asset &&
           isFavorite == other.isFavorite &&
           breedType == other.breedType &&
-          displayName == other.displayName &&
+          breedCharacteristics == other.breedCharacteristics &&
           displayCharacteristics == other.displayCharacteristics;
     }
 

@@ -25,7 +25,6 @@ class PuppyDetailsPage extends StatelessWidget with AutoRouteWrapper {
         child: this,
       );
 
-  //TODO finish and Add PuppyDetailsBloc
   @override
   Widget build(BuildContext context) => Scaffold(
         body: PuppyDetails(

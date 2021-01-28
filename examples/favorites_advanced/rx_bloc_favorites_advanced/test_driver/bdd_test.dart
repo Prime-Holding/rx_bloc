@@ -21,7 +21,7 @@ Future<void> main() {
     ..hooks = [AttachScreenshotOnFailedStepHook()]
     ..stepDefinitions = [
       // Custom step definitions go here
-      TapOnPuppyCard(),
+      tapOnPuppyCard(),
     ]
     ..restartAppBetweenScenarios = true
     ..targetAppPath = 'test_driver/bdd.dart'

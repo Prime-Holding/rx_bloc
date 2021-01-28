@@ -34,7 +34,7 @@ abstract class $PuppyManageBloc extends RxBlocBase
 
   ///region setName
 
-  final _$setNameEvent = BehaviorSubject.seeded('');
+  final _$setNameEvent = PublishSubject<String>();
   @override
   void setName(String newName) => _$setNameEvent.add(newName);
 
@@ -42,7 +42,7 @@ abstract class $PuppyManageBloc extends RxBlocBase
 
   ///region setCharacteristics
 
-  final _$setCharacteristicsEvent = BehaviorSubject.seeded('');
+  final _$setCharacteristicsEvent = PublishSubject<String>();
   @override
   void setCharacteristics(String newCharacteristics) =>
       _$setCharacteristicsEvent.add(newCharacteristics);

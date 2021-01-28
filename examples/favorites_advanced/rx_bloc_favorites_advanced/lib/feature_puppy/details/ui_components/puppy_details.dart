@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
@@ -20,18 +22,12 @@ class PuppyDetails extends StatelessWidget {
         child: Stack(
           children: [
             RxBlocBuilder<PuppyDetailsBlocType, String>(
-                state: (bloc) => bloc.states.imagePath,
-                builder: (context, snapshot, bloc) => Hero(
-                      tag: '$PuppyCardAnimationTag ${puppy.id}',
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(snapshot.data ?? puppy.asset),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    )),
+              state: (bloc) => bloc.states.imagePath,
+              builder: (context, snapshot, bloc) => Hero(
+                tag: '$PuppyCardAnimationTag ${puppy.id}',
+                child: _buildPuppyBackgroundImage(snapshot.data ?? puppy.asset),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -47,7 +43,7 @@ class PuppyDetails extends StatelessWidget {
                           )),
                   const SizedBox(height: 5),
                   RxBlocBuilder<PuppyDetailsBlocType, String>(
-                      state: (bloc) => bloc.states.genderAndCharacteristics,
+                      state: (bloc) => bloc.states.genderAndBreed,
                       builder: (context, snapshot, bloc) => Text(
                             snapshot.data ??
                                 '${puppy.genderAsString}, '
@@ -76,6 +72,17 @@ class PuppyDetails extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      );
+
+  Widget _buildPuppyBackgroundImage(String path) => Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: path.contains('assets/puppie_')
+                ? AssetImage(path)
+                : FileImage(File(path)),
+            fit: BoxFit.cover,
+          ),
         ),
       );
 }

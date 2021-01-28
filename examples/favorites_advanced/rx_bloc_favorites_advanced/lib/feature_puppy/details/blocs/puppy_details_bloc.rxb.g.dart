@@ -86,16 +86,16 @@ abstract class $PuppyDetailsBloc extends RxBlocBase
 
   ///endregion isFavourite
 
-  ///region genderAndCharacteristics
-  Stream<String> _genderAndCharacteristicsState;
+  ///region genderAndBreed
+  Stream<String> _genderAndBreedState;
 
   @override
-  Stream<String> get genderAndCharacteristics =>
-      _genderAndCharacteristicsState ??= _mapToGenderAndCharacteristicsState();
+  Stream<String> get genderAndBreed =>
+      _genderAndBreedState ??= _mapToGenderAndBreedState();
 
-  Stream<String> _mapToGenderAndCharacteristicsState();
+  Stream<String> _mapToGenderAndBreedState();
 
-  ///endregion genderAndCharacteristics
+  ///endregion genderAndBreed
 
   ///region puppy
   Stream<Puppy> _puppyState;

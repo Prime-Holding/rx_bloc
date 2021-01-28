@@ -11,8 +11,6 @@ import '../../blocs/puppy_manage_bloc.dart';
 import '../blocs/puppy_list_bloc.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) =>
       RxResultBuilder<PuppyListBlocType, List<Puppy>>(
@@ -29,7 +27,6 @@ class SearchPage extends StatelessWidget {
         buildSuccess: (ctx, snapshot, bloc) => RefreshIndicator(
           onRefresh: () {
             bloc.events.reloadFavoritePuppies(silently: true);
-            //TODO: replace this hardcoded duration with actual loaded event
             return Future.delayed(const Duration(seconds: 1));
           },
           child: SafeArea(

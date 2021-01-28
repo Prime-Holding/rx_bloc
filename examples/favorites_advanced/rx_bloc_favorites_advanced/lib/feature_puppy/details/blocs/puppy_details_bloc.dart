@@ -5,6 +5,7 @@ import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.da
 import 'package:rxdart/rxdart.dart';
 
 part 'puppy_details_bloc.rxb.g.dart';
+part 'puppy_details_bloc_extensions.dart';
 
 abstract class PuppyDetailsEvents {}
 
@@ -21,7 +22,7 @@ abstract class PuppyDetailsStates {
 
   Stream<bool> get isFavourite;
 
-  Stream<String> get genderAndCharacteristics;
+  Stream<String> get genderAndBreed;
 
   Stream<Puppy> get puppy;
 }
@@ -38,42 +39,31 @@ class PuppyDetailsBloc extends $PuppyDetailsBloc {
 
   final CoordinatorBlocType _coordinatorBlocType;
 
+  //get the latest updated version of the puppy
   @override
-  Stream<Puppy> _mapToPuppyState() =>
-      _coordinatorBlocType.states.onPuppiesUpdated
-          .map<Puppy>(
-            (puppies) => puppies.firstWhere(
-              (puppy) => puppy.id == _puppy.id,
-              orElse: () => null,
-            ),
-          )
-          .where((puppy) => puppy != null)
-          .startWith(_puppy)
-          .shareReplay(maxSize: 1);
+  Stream<Puppy> _mapToPuppyState() => _coordinatorBlocType
+      .onPuppyUpdated(_puppy)
+      .startWith(_puppy)
+      .shareReplay(maxSize: 1);
 
   @override
-  Stream<String> _mapToBreedState() =>
-      puppy.map((puppy) => puppy.breedTypeAsString);
+  Stream<String> _mapToBreedState() => puppy.mapToBreed();
 
   @override
-  Stream<String> _mapToCharacteristicsState() =>
-      puppy.map((puppy) => puppy.displayCharacteristics);
+  Stream<String> _mapToCharacteristicsState() => puppy.mapToCharacteristics();
 
   @override
-  Stream<String> _mapToGenderState() =>
-      puppy.map((puppy) => puppy.genderAsString);
+  Stream<String> _mapToGenderState() => puppy.mapToGender();
 
   @override
-  Stream<String> _mapToImagePathState() => puppy.map((puppy) => puppy.asset);
+  Stream<String> _mapToImagePathState() => puppy.mapToImagePath();
 
   @override
-  Stream<String> _mapToNameState() => puppy.map((puppy) => puppy.name);
+  Stream<String> _mapToNameState() => puppy.name();
 
   @override
-  Stream<bool> _mapToIsFavouriteState() =>
-      puppy.map((puppy) => puppy.isFavorite);
+  Stream<bool> _mapToIsFavouriteState() => puppy.mapToIsFavourite();
 
   @override
-  Stream<String> _mapToGenderAndCharacteristicsState() => puppy
-      .map((puppy) => '${puppy.genderAsString}, ${puppy.breedTypeAsString}');
+  Stream<String> _mapToGenderAndBreedState() => puppy.mapToGenderAndBreed();
 }

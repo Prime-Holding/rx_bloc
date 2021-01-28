@@ -26,7 +26,9 @@ abstract class FavoritePuppiesStates {
 @RxBloc()
 class FavoritePuppiesBloc extends $FavoritePuppiesBloc {
   FavoritePuppiesBloc(
-      PuppiesRepository repository, CoordinatorBlocType coordinatorBloc) {
+    PuppiesRepository repository,
+    CoordinatorBlocType coordinatorBloc,
+  ) {
     _$reloadFavoritePuppiesEvent
         .fetchPuppies(repository)
         .bind(_favoritePuppies)

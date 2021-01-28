@@ -23,7 +23,6 @@ class PuppyDetailsAppBar extends StatelessWidget
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Colors.transparent,
-        // title: const Text('Puppy Details'),
         actions: _buildTrailingItems(context),
         elevation: 0,
       );

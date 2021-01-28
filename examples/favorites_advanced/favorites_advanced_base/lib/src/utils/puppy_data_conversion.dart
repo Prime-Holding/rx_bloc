@@ -37,10 +37,10 @@ class PuppyDataConversion {
           ?.value ??
       _dogBreeds[BreedType.None];
 
-  static BreedType getBreedTypeFromString(String BreedTypeString) =>
+  static BreedType getBreedTypeFromString(String breedTypeString) =>
       _dogBreeds.entries
           .toList()
-          .firstWhere((pair) => pair.value == BreedTypeString)
+          .firstWhere((pair) => pair.value == breedTypeString)
           ?.key ??
       BreedType.None;
 

@@ -22,8 +22,9 @@ class FavoritesPage extends StatelessWidget {
                   .favoritePuppies
                   .whereSuccess(),
               onPuppyPressed: (puppy) => ExtendedNavigator.root.push(
-                  Routes.puppyDetailsPage,
-                  arguments: PuppyDetailsPageArguments(puppy: puppy)),
+                Routes.puppyDetailsPage,
+                arguments: PuppyDetailsPageArguments(puppy: puppy),
+              ),
             ),
           ),
           RxResultBuilder<FavoritePuppiesBlocType, List<Puppy>>(

@@ -3,7 +3,7 @@ import 'package:flutter_driver/driver_extension.dart';
 import 'package:rx_bloc_favorites_advanced/main.dart' as app;
 
 // This is the main entry point of the integration testing
-void main() async {
+Future<void> main() async {
   // This line enables the extension.
   enableFlutterDriverExtension();
 
@@ -12,7 +12,7 @@ void main() async {
   // Call the `main()` function of the app, or call `runApp` with
   // any widget you are interested in testing.
   // See https://flutter.dev/testing/ for more info.
-  await app.main();
+  app.main();
 }
 
 // To run the integration tests execute the following command from the terminal:

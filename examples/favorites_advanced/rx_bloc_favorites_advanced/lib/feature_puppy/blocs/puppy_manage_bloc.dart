@@ -11,10 +11,8 @@ part 'puppy_manage_bloc_extensions.dart';
 abstract class PuppyManageEvents {
   void markAsFavorite({Puppy puppy, bool isFavorite});
 
-  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setName(String newName);
 
-  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setCharacteristics(String newCharacteristics);
 
   void setGender(Gender gender);
@@ -60,9 +58,14 @@ class PuppyManageBloc extends $PuppyManageBloc {
   })  : _puppy = puppy,
         _puppyValidator = validator,
         _puppiesRepository = puppiesRepository,
-        _coordinatorBlocType = coordinatorBloc {
+        _coordinatorBloc = coordinatorBloc {
+    //For a more detailed explanation reference this article:
+    //https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde
     _$markAsFavoriteEvent
+        //use an extension which handles marking the puppy as favourite
+        //without delay between the event and the response
         .markPuppyAsFavorite(puppiesRepository, this)
+        //notify the coordinator bloc that the puppy has been changed
         .doOnData((puppy) => coordinatorBloc.events.puppyUpdated(puppy))
         .bind(_lastUpdatedPuppy)
         .disposedBy(_compositeSubscription);
@@ -72,7 +75,7 @@ class PuppyManageBloc extends $PuppyManageBloc {
 
   final PuppyValidator _puppyValidator;
   final PuppiesRepository _puppiesRepository;
-  final CoordinatorBlocType _coordinatorBlocType;
+  final CoordinatorBlocType _coordinatorBloc;
 
   final _lastUpdatedPuppy = BehaviorSubject<Puppy>();
   final _compositeSubscription = CompositeSubscription();
@@ -83,14 +86,13 @@ class PuppyManageBloc extends $PuppyManageBloc {
       Rx.merge([errorState, _favoritePuppyError]).mapToString().share();
 
   @override
-  Stream<bool> get isLoading =>
-      loadingState.startWith(false).shareReplay(maxSize: 1);
+  Stream<bool> get isLoading => loadingState.shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToImagePathState() => _$setImageEvent
       .throttleTime(const Duration(seconds: 2))
       .pickImagePath(_puppiesRepository)
-      .startWith(_puppy.asset)
+      .startWith(_puppy?.asset ?? '')
       .shareReplay(maxSize: 1);
 
   @override
@@ -119,7 +121,8 @@ class PuppyManageBloc extends $PuppyManageBloc {
 
   @override
   Stream<bool> _mapToShowErrorsState() => _$savePuppyEvent
-      .switchMap((_) => _validateAllFields().map((event) => !event))
+      .validateAllFields(this)
+      .map((valid) => !valid)
       .startWith(false)
       .shareReplay(maxSize: 1);
 
@@ -129,11 +132,17 @@ class PuppyManageBloc extends $PuppyManageBloc {
 
   @override
   Stream<bool> _mapToUpdateCompleteState() => _$savePuppyEvent
-      .switchMap((_) => _validateAllFields())
+      //if all fields are valid
+      .validateAllFields(this)
       .where((allFieldsAreValid) => allFieldsAreValid)
-      .switchMap((_) => _savePuppy())
+      //try to save the puppy
+      .savePuppy(this)
+      //make this bloc handle all loading or error events from savePuppy
       .setResultStateHandler(this)
+      //if saving the puppy was successful
       .whereSuccess()
+      //notify the coordinator bloc that the puppy has been changed
+      .doOnData(_coordinatorBloc.events.puppyUpdated)
       .mapTo(true)
       .shareReplay(maxSize: 1);
 

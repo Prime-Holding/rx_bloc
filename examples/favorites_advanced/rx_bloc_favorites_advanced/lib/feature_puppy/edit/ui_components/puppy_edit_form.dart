@@ -2,19 +2,20 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/input_styles.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
+import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_card.dart';
 
 class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({
-    this.tag,
+    Puppy puppy,
     Key key,
-  }) : super(key: key);
+  })  : _puppy = puppy,
+        super(key: key);
 
-  final dynamic tag;
+  final Puppy _puppy;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -43,33 +44,31 @@ class PuppyEditForm extends StatelessWidget {
                 ),
                 RxBlocBuilder<PuppyManageBlocType, String>(
                   state: (bloc) => bloc.states.imagePath,
-                  builder: (context, snapshot, bloc) => snapshot.hasData
-                      ? PuppyEditAvatar(
-                          heroTag: tag,
-                          imgPath: snapshot.data,
-                          pickImage: (source) => bloc.events.setImage(source),
-                        )
-                      : LoadingWidget(),
+                  builder: (context, snapshot, bloc) => PuppyEditAvatar(
+                    heroTag: '$PuppyCardAnimationTag ${_puppy.id}',
+                    imgPath: snapshot.data ?? _puppy.asset,
+                    pickImage: (source) => bloc.events.setImage(source),
+                  ),
                 ),
                 const SizedBox(height: 20),
-                _buildRow(
-                  'Name',
-                  _buildNameField(),
+                PuppyEditCard(
+                  label: 'Name',
+                  content: _buildNameField(),
                   icon: Icons.account_box,
                 ),
-                _buildRow(
-                  'Breed',
-                  _buildBreedSelection(),
+                PuppyEditCard(
+                  label: 'Breed',
+                  content: _buildBreedSelection(),
                   icon: Icons.pets,
                 ),
-                _buildRow(
-                  'Gender',
-                  _buildGenderSelection(),
+                PuppyEditCard(
+                  label: 'Gender',
+                  content: _buildGenderSelection(),
                   icon: Icons.wc,
                 ),
-                _buildRow(
-                  'Characteristics',
-                  _buildCharacteristicsField(),
+                PuppyEditCard(
+                  label: 'Characteristics',
+                  content: _buildCharacteristicsField(),
                   icon: Icons.article,
                 ),
               ],
@@ -78,54 +77,12 @@ class PuppyEditForm extends StatelessWidget {
         ),
       );
 
-  Widget _buildRow(String rowName, Widget content, {IconData icon}) => Card(
-        elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  if (icon != null)
-                    Icon(
-                      icon,
-                      size: 18,
-                      color: ColorStyles.textColor,
-                    ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    rowName,
-                    style: TextStyles.title2TextStyleBlack,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              const Divider(
-                thickness: 1,
-                height: 1,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              if (content != null) content,
-            ],
-          ),
-        ),
-      );
-
   Widget _buildNameField() => RxTextFormFieldBuilder<PuppyManageBlocType>(
         state: (bloc) => bloc.states.name,
-        showError: (bloc) => bloc.states.showErrors,
+        showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setName(value),
+        //optional
         decorationData: InputStyles.textFieldDecorationData,
-        //optional
-        obscureText: false,
-        //optional
         builder: (fieldState) => TextFormField(
           key: const ValueKey('PuppyNameInputField'),
           cursorColor: const Color(0xff333333),
@@ -142,7 +99,7 @@ class PuppyEditForm extends StatelessWidget {
   Widget _buildCharacteristicsField() =>
       RxTextFormFieldBuilder<PuppyManageBlocType>(
         state: (bloc) => bloc.states.characteristics,
-        showError: (bloc) => bloc.states.showErrors,
+        showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setCharacteristics(value),
         decorationData: InputStyles.textFieldDecorationData,
         builder: (fieldState) => TextFormField(
@@ -182,7 +139,7 @@ class PuppyEditForm extends StatelessWidget {
                     .toList(),
               ),
             ),
-            if (fieldState.showError && fieldState.error != null)
+            if (fieldState.showError)
               Row(
                 children: [
                   Text(
@@ -199,7 +156,7 @@ class PuppyEditForm extends StatelessWidget {
       RxFormFieldBuilder<PuppyManageBlocType, Gender>(
         state: (bloc) => bloc.states.gender,
         showErrorState: (bloc) => bloc.states.showErrors,
-        builder: (state) => Column(
+        builder: (fieldState) => Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -213,8 +170,8 @@ class PuppyEditForm extends StatelessWidget {
                     Radio<Gender>(
                       key: const ValueKey('PuppyGenderMaleRadio'),
                       value: Gender.Male,
-                      groupValue: state.value,
-                      onChanged: state.bloc.events.setGender,
+                      groupValue: fieldState.value,
+                      onChanged: fieldState.bloc.events.setGender,
                     ),
                   ],
                 ),
@@ -227,18 +184,18 @@ class PuppyEditForm extends StatelessWidget {
                     Radio<Gender>(
                       key: const ValueKey('PuppyGenderFemaleRadio'),
                       value: Gender.Female,
-                      groupValue: state.value,
-                      onChanged: state.bloc.events.setGender,
+                      groupValue: fieldState.value,
+                      onChanged: fieldState.bloc.events.setGender,
                     ),
                   ],
                 ),
               ],
             ),
-            if (state.showError && state.error != null)
+            if (fieldState.showError)
               Row(
                 children: [
                   Text(
-                    state.error,
+                    fieldState.error,
                     style: TextStyles.errorTextStyle,
                   ),
                 ],

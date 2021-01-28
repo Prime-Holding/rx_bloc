@@ -43,6 +43,11 @@ class Stub {
     puppy2,
   ];
 
+  static final puppies23 = [
+    puppy2,
+    puppy3,
+  ];
+
   static final puppies123 = [puppy1, puppy2, puppy3];
   static final puppies123Test = [puppy1, puppy2, puppy3, puppyTest];
   static final puppies123TestUpdated = [
@@ -54,6 +59,36 @@ class Stub {
   static final puppiesTest = [puppyTest];
   static final puppiesTestUpdated = [puppyTestUpdated];
 
+  static final puppiesWithDetails = [
+    Puppy(
+      id: '0',
+      name: 'Charlie',
+      asset: 'puppie_1.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GoldenRetriever,
+    ),
+    Puppy(
+      id: '1',
+      name: 'Max',
+      asset: 'puppie_2.jpeg',
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+    ),
+    Puppy(
+      id: '2',
+      name: 'Buddy',
+      asset: 'puppie_3.jpeg',
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+    ),
+  ]
+      .map((p) => p.copyWith(
+          displayName: p.name,
+          displayCharacteristics: 'chars ${p.id}',
+          breedCharacteristics: 'chars ${p.id}'))
+      .toList();
+
   static Stream<T> delayed<T>(T value, [int milliseconds = 100]) =>
       Future.delayed(Duration(milliseconds: milliseconds), () async => value)
           .asStream();
@@ -62,6 +97,14 @@ class Stub {
     puppy1.copyWith(breedCharacteristics: '1', displayName: '1'),
     puppy2.copyWith(breedCharacteristics: '2', displayName: '2')
   ];
+
+  static final expectedGenderAndBreed0 =
+      '${Stub.puppiesWithDetails[2].genderAsString}, '
+      '${Stub.puppiesWithDetails[2].breedTypeAsString}';
+
+  static final expectedGenderAndBreed1 =
+      '${PuppyDataConversion.getGenderString(Gender.Female)}, '
+      '${PuppyDataConversion.getBreedTypeString(BreedType.Akita)}';
 }
 
 class NavigationStub {

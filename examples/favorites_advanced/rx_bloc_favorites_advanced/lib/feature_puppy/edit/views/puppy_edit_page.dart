@@ -52,7 +52,7 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
                   onSavePressed: () => editBloc.events.savePuppy(),
                 ),
                 body: PuppyEditForm(
-                  tag: '$PuppyCardAnimationTag ${widget._puppy.id}',
+                  puppy: widget._puppy,
                 ),
               ),
             ),

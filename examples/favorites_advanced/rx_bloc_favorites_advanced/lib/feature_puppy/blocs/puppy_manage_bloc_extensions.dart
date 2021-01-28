@@ -53,13 +53,16 @@ extension _PickImage on Stream<ImagePickerActions> {
           .map((event) => event.path);
 }
 
-extension _ValidateAllFields on PuppyManageBloc {
-  Stream<bool> _validateAllFields() =>
+extension _ValidateAllFields<T> on Stream<T> {
+  Stream<bool> validateAllFields(PuppyManageBloc bloc) =>
+      switchMap((_) => _validateAllFields(bloc));
+
+  Stream<bool> _validateAllFields(PuppyManageBloc bloc) =>
       Rx.combineLatest4<String, String, Gender, BreedType, bool>(
-        name,
-        characteristics,
-        gender,
-        breed,
+        bloc.states.name,
+        bloc.states.characteristics,
+        bloc.states.gender,
+        bloc.states.breed,
         (name, characteristics, gender, breed) => true,
       ).onErrorReturn(false);
 }
@@ -81,37 +84,33 @@ extension _IsSavingAvailable on PuppyManageBloc {
       );
 }
 
-extension _SavePuppy on PuppyManageBloc {
-  Stream<Result<void>> _savePuppy() =>
+extension _SavePuppy<T> on Stream<T> {
+  Stream<Result<Puppy>> savePuppy(PuppyManageBloc bloc) =>
+      switchMap((_) => _savePuppy(bloc));
+
+  Stream<Result<Puppy>> _savePuppy(PuppyManageBloc bloc) =>
       Rx.combineLatest5<String, String, String, Gender, BreedType, Puppy>(
-        imagePath,
-        name,
-        characteristics,
-        gender,
-        breed,
-        (imagePath, name, characteristics, gender, breed) => _puppy.copyWith(
+        bloc.imagePath,
+        bloc.name,
+        bloc.characteristics,
+        bloc.gender,
+        bloc.breed,
+        (imagePath, name, characteristics, gender, breed) =>
+            bloc._puppy.copyWith(
           asset: imagePath,
           name: name,
           breedCharacteristics: characteristics,
           gender: gender,
           breedType: breed,
         ),
-      ).switchMap<Result<Puppy>>((puppyWithChanges) async* {
-        yield Result.loading();
-
-        try {
-          final updatedPuppy = await _puppiesRepository.updatePuppy(
-            puppyWithChanges.id,
-            puppyWithChanges,
-          );
-
-          _coordinatorBlocType.events.puppyUpdated(updatedPuppy);
-
-          yield Result.success(updatedPuppy);
-        } catch (e) {
-          yield Result.error(e);
-        }
-      });
+      ).switchMap<Result<Puppy>>(
+        (puppyWithChanges) => bloc._puppiesRepository
+            .updatePuppy(
+              puppyWithChanges.id,
+              puppyWithChanges,
+            )
+            .asResultStream(),
+      );
 }
 
 extension _ExceptionExtensions on Stream<Exception> {
