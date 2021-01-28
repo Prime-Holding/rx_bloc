@@ -67,9 +67,9 @@ abstract class $PuppyManageBloc extends RxBlocBase
 
   ///region setImage
 
-  final _$setImageEvent = PublishSubject<ImagePickerActions>();
+  final _$setImageEvent = PublishSubject<ImagePickerAction>();
   @override
-  void setImage(ImagePickerActions source) => _$setImageEvent.add(source);
+  void setImage(ImagePickerAction source) => _$setImageEvent.add(source);
 
   ///endregion setImage
 

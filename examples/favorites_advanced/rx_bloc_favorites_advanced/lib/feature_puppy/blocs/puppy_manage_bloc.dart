@@ -19,7 +19,7 @@ abstract class PuppyManageEvents {
 
   void setBreed(BreedType breedType);
 
-  void setImage(ImagePickerActions source);
+  void setImage(ImagePickerAction source);
 
   void savePuppy();
 }

@@ -2,19 +2,19 @@ part of 'puppies_repository.dart';
 
 extension ExtendImagePicker on ImagePicker {
   Future<PickedFile> pickPicture({
-    @required ImagePickerActions source,
+    @required ImagePickerAction source,
     CameraDevice preferredCamera = CameraDevice.rear,
   }) async {
     PickedFile pickedFile;
 
     switch (source) {
-      case ImagePickerActions.camera:
+      case ImagePickerAction.camera:
         pickedFile = await getImage(
           source: ImageSource.camera,
           preferredCameraDevice: preferredCamera,
         );
         break;
-      case ImagePickerActions.gallery:
+      case ImagePickerAction.gallery:
         pickedFile = await getImage(
           source: ImageSource.gallery,
         );

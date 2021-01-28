@@ -11,7 +11,7 @@ class PuppyEditAvatar extends StatelessWidget {
 
   final String heroTag;
   final String imgPath;
-  final void Function(ImagePickerActions source) pickImage;
+  final void Function(ImagePickerAction source) pickImage;
 
   @override
   Widget build(BuildContext context) => Stack(

@@ -12,7 +12,7 @@ class PhotoPickerActionSelectionBottomSheet {
 
   static presentPhotosBottomSheet(
     BuildContext context,
-    Function(ImagePickerActions source) onChooseAction,
+    Function(ImagePickerAction source) onChooseAction,
   ) {
     if (Platform.isAndroid) {
       _presentMaterialBottomSheet(context, onChooseAction);
@@ -23,7 +23,7 @@ class PhotoPickerActionSelectionBottomSheet {
 
   static void _presentCupertinoBottomSheet(
     BuildContext context,
-    Function(ImagePickerActions source) onChooseAction,
+    Function(ImagePickerAction source) onChooseAction,
   ) async {
     var result = await showCupertinoModalPopup(
       context: context,
@@ -34,13 +34,13 @@ class PhotoPickerActionSelectionBottomSheet {
             isDefaultAction: true,
             child: Text(_imagePickerCamera),
             onPressed: () =>
-                Navigator.of(context).pop(ImagePickerActions.camera),
+                Navigator.of(context).pop(ImagePickerAction.camera),
           ),
           CupertinoActionSheetAction(
             isDefaultAction: true,
             child: Text(_imagePickerGallery),
             onPressed: () =>
-                Navigator.of(context).pop(ImagePickerActions.gallery),
+                Navigator.of(context).pop(ImagePickerAction.gallery),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
@@ -55,9 +55,9 @@ class PhotoPickerActionSelectionBottomSheet {
 
   static void _presentMaterialBottomSheet(
     BuildContext context,
-    Function(ImagePickerActions source) onChooseAction,
+    Function(ImagePickerAction source) onChooseAction,
   ) async {
-    var result = await showModalBottomSheet<ImagePickerActions>(
+    var result = await showModalBottomSheet<ImagePickerAction>(
       context: context,
       builder: (BuildContext context) {
         return Container(
@@ -72,13 +72,13 @@ class PhotoPickerActionSelectionBottomSheet {
                   leading: const Icon(Icons.camera_enhance),
                   title: Text(_imagePickerCamera),
                   onTap: () =>
-                      Navigator.of(context).pop(ImagePickerActions.camera),
+                      Navigator.of(context).pop(ImagePickerAction.camera),
                 ),
                 ListTile(
                   leading: const Icon(Icons.image),
                   title: Text(_imagePickerGallery),
                   onTap: () =>
-                      Navigator.of(context).pop(ImagePickerActions.gallery),
+                      Navigator.of(context).pop(ImagePickerAction.gallery),
                 ),
               ],
             ),

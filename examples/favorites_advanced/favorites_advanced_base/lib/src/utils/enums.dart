@@ -1,4 +1,4 @@
-enum ImagePickerActions { camera, gallery }
+enum ImagePickerAction { camera, gallery }
 
 enum Gender { None, Male, Female }
 

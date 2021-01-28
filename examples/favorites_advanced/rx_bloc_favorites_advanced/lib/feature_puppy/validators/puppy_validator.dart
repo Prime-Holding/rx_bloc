@@ -69,7 +69,7 @@ class PuppyValidator {
     if (breed == null || breed == BreedType.None) {
       throw RxFieldException(
         fieldValue: breed,
-        error: 'You have to select a gender.',
+        error: 'You have to select a breed.',
       );
     }
 

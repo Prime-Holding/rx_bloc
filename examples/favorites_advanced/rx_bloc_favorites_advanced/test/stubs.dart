@@ -1,4 +1,5 @@
 import 'package:favorites_advanced_base/models.dart';
+import 'package:flutter_rx_bloc/rx_form.dart';
 
 class Stub {
   static final navigation = NavigationStub();
@@ -59,6 +60,8 @@ class Stub {
   static final puppiesTest = [puppyTest];
   static final puppiesTestUpdated = [puppyTestUpdated];
 
+  static const pickImageDelay = Duration(seconds: 2, milliseconds: 10);
+
   static final puppiesWithDetails = [
     Puppy(
       id: '0',
@@ -67,6 +70,7 @@ class Stub {
       isFavorite: true,
       gender: Gender.Male,
       breedType: BreedType.GoldenRetriever,
+      displayCharacteristics: 'start characteristics',
     ),
     Puppy(
       id: '1',
@@ -88,6 +92,41 @@ class Stub {
           displayCharacteristics: 'chars ${p.id}',
           breedCharacteristics: 'chars ${p.id}'))
       .toList();
+
+  static final string31 = ''.padRight(31, 'a');
+  static final string251 = ''.padRight(251, 'a');
+
+  static const nameEmptyErr = RxFieldException<String>(
+    fieldValue: '',
+    error: 'Name must not be empty.',
+  );
+
+  static const nameNullErr = RxFieldException<String>(
+    fieldValue: null,
+    error: 'Name must not be empty.',
+  );
+
+  static final nameTooLongErr = RxFieldException<String>(
+    fieldValue: Stub.string31,
+    error: 'Name too long.',
+  );
+
+  static const characteristicsEmptyErr = RxFieldException<String>(
+    fieldValue: '',
+    error: 'Characteristics must not be empty.',
+  );
+
+  static const characteristicsNullErr = RxFieldException<String>(
+    fieldValue: null,
+    error: 'Characteristics must not be empty.',
+  );
+
+  static final characteristicsTooLongErr = RxFieldException<String>(
+    fieldValue: Stub.string251,
+    error: 'Characteristics must not exceed 250 characters.',
+  );
+
+  static final testErr = Exception('test error');
 
   static Stream<T> delayed<T>(T value, [int milliseconds = 100]) =>
       Future.delayed(Duration(milliseconds: milliseconds), () async => value)

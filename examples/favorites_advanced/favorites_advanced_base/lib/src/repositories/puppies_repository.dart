@@ -121,7 +121,7 @@ class PuppiesRepository {
     return foundPuppy;
   }
 
-  Future<PickedFile> pickPuppyImage(ImagePickerActions source) =>
+  Future<PickedFile> pickPuppyImage(ImagePickerAction source) =>
       _picker.pickPicture(source: source);
 
   List<Puppy> puppies;

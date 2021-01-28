@@ -45,7 +45,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
           .whereSuccess();
 }
 
-extension _PickImage on Stream<ImagePickerActions> {
+extension _PickImage on Stream<ImagePickerAction> {
   Stream<String> pickImagePath(PuppiesRepository repository) =>
       where((event) => event != null)
           .switchMap((source) => repository.pickPuppyImage(source).asStream())
@@ -115,5 +115,5 @@ extension _SavePuppy<T> on Stream<T> {
 
 extension _ExceptionExtensions on Stream<Exception> {
   Stream<String> mapToString() =>
-      map((e) => e.toString().replaceAll('Exception:', ''));
+      map((e) => e.toString().replaceAll('Exception: ', ''));
 }
