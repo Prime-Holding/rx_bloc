@@ -15,6 +15,7 @@ If you are working on a complex project you might be challenged to build a highl
 By definition, the BloC layer should contain only the business logic of your app. This means that it should be fully decoupled from the UI layer and should be loosely coupled with the data layer through Dependency Injection. The **UI** layer can send **events** to the BloC layer and can listen for **state** changes.
 
 ## Events
+As you can see below, all events are just pure methods declared in one abstract class (CounterBlocEvents).
 ```dart
 /// A contract, containing all Counter BloC events
 abstract class CounterBlocEvents {
@@ -25,8 +26,7 @@ abstract class CounterBlocEvents {
   void decrement();
 }
 ```
-
-As you can see, all events are just pure methods declared in one abstract class (CounterBlocEvents). This way, we can push events to the BloC by simply invoking those methods from the UI layer as follows:
+This way, we can push events to the BloC by simply invoking those methods from the UI layer as follows:
 ```dart
 RaisedButton(
     onPressed: () => bloc.events.increment(),
