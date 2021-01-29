@@ -85,6 +85,7 @@ After the generator completes the execution, make sure your IDE is in sync with 
 class CounterBloc extends $CounterBloc {
   /// The default constructor injecting a repository through DI
   CounterBloc(this._repository);
+  
   /// The repository used for data source communication
   final CounterRepository _repository;
 
