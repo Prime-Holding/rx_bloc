@@ -1,20 +1,24 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
+import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 
-import '../../../base/ui_components/error_widget.dart';
-import '../../../base/ui_components/loading_widget.dart';
 import '../../blocs/puppies_extra_details_bloc.dart';
-import '../../details/blocs/puppy_manage_bloc.dart';
+import '../../blocs/puppy_manage_bloc.dart';
 import '../blocs/puppy_list_bloc.dart';
 
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       RxResultBuilder<PuppyListBlocType, List<Puppy>>(
+        key: const Key(Keys.puppySearchPage),
         state: (bloc) => bloc.states.searchedPuppies,
-        buildLoading: (ctx, bloc) => LoadingWidget(),
+        buildLoading: (ctx, bloc) => LoadingWidget(
+          key: const Key('LoadingWidget'),
+        ),
         buildError: (ctx, error, bloc) => ErrorRetryWidget(
           onReloadTap: () => RxBlocProvider.of<PuppyListBlocType>(ctx)
               .events
@@ -23,7 +27,6 @@ class SearchPage extends StatelessWidget {
         buildSuccess: (ctx, snapshot, bloc) => RefreshIndicator(
           onRefresh: () {
             bloc.events.reloadFavoritePuppies(silently: true);
-            //TODO: replace this hardcoded duration with actual loaded event
             return Future.delayed(const Duration(seconds: 1));
           },
           child: SafeArea(
@@ -34,14 +37,17 @@ class SearchPage extends StatelessWidget {
                 final item = snapshot[index];
 
                 return PuppyCard(
-                  key: Key('${key.toString()}${item.id}'),
+                  key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                   onVisible: (puppy) =>
-                      RxBlocProvider.of<PuppiesExtraDetailsBlocType>(context)
+                      RxBlocProvider.of<PuppiesExtraDetailsBlocType>(ctx)
                           .events
                           .fetchExtraDetails(puppy),
                   puppy: item,
+                  onCardPressed: (puppy) => ExtendedNavigator.root.push(
+                      Routes.puppyDetailsPage,
+                      arguments: PuppyDetailsPageArguments(puppy: puppy)),
                   onFavorite: (puppy, isFavorite) =>
-                      RxBlocProvider.of<PuppyManageBlocType>(context)
+                      RxBlocProvider.of<PuppyManageBlocType>(ctx)
                           .events
                           .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
                 );

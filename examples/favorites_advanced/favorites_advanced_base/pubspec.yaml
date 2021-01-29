@@ -14,6 +14,7 @@ dependencies:
   skeleton_text: ^1.0.0
   visibility_detector: ^0.1.5
   connectivity: ^2.0.2
+  image_picker: ^0.6.7+17
 
 dev_dependencies:
   flutter_test:

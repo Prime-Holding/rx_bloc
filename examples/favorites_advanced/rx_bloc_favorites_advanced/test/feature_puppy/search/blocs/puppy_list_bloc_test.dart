@@ -21,8 +21,8 @@ void main() {
 
   group('PuppyListBloc searchedPuppies', () {
     rxBlocTest<PuppyListBloc, Result<List<Puppy>>>(
-      // ignore: lines_longer_than_80_chars
-      'PuppyListBloc.title searchedPuppies:success triggered by reloadFavoritePuppies',
+      'PuppyListBloc.title searchedPuppies: '
+      'success triggered by reloadFavoritePuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
         when(coordinatorMock.states.onPuppiesUpdated)
@@ -49,8 +49,8 @@ void main() {
     );
 
     rxBlocTest<PuppyListBloc, Result<List<Puppy>>>(
-      // ignore: lines_longer_than_80_chars
-      'PuppyListBloc.title searchedPuppies:success triggered by filterPuppies',
+      'PuppyListBloc.title searchedPuppies: '
+      'success triggered by filterPuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
         when(coordinatorMock.states.onPuppiesUpdated)
@@ -82,8 +82,8 @@ void main() {
 
   group('PuppyListBloc searchedPuppies', () {
     rxBlocTest<PuppyListBloc, Result<List<Puppy>>>(
-      // ignore: lines_longer_than_80_chars
-      'PuppyListBloc.title searchedPuppies:success triggered by reloadFavoritePuppies',
+      'PuppyListBloc.title searchedPuppies:'
+      'success triggered by reloadFavoritePuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
         when(repositoryMock.getPuppies())

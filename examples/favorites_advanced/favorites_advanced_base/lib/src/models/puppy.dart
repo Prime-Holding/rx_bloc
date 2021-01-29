@@ -1,3 +1,5 @@
+import 'package:favorites_advanced_base/src/utils/enums.dart';
+import 'package:favorites_advanced_base/src/utils/puppy_data_conversion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
@@ -7,20 +9,27 @@ class Puppy {
   final String id;
   final String name;
   final String breedCharacteristics;
-  final String displayBreedCharacteristics;
   final String asset;
-  final String displayName;
+  final BreedType breedType;
+  final Gender gender;
+
   bool isFavorite;
+
+  // Properties that should simulate remote fetching of entity data
+  final String displayName;
+  final String displayCharacteristics;
 
   Puppy({
     @required this.id,
     @required this.name,
     @required this.asset,
     this.displayName,
+    this.displayCharacteristics,
     this.isFavorite = false,
     this.breedCharacteristics =
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    this.displayBreedCharacteristics,
+    this.breedType = BreedType.Mixed,
+    this.gender = Gender.Male,
   });
 
   @override
@@ -28,11 +37,12 @@ class Puppy {
     if (other is Puppy) {
       return id == other.id &&
           name == other.name &&
-          breedCharacteristics == other.breedCharacteristics &&
-          displayBreedCharacteristics == other.displayBreedCharacteristics &&
-          asset == other.asset &&
           displayName == other.displayName &&
-          isFavorite == other.isFavorite;
+          asset == other.asset &&
+          isFavorite == other.isFavorite &&
+          breedType == other.breedType &&
+          breedCharacteristics == other.breedCharacteristics &&
+          displayCharacteristics == other.displayCharacteristics;
     }
 
     return false;
@@ -42,6 +52,8 @@ class Puppy {
   int get hashCode => super.hashCode;
 
   @override
-  String toString() =>
-      "{$id, $name, $displayName, ${breedCharacteristics == null ? "no breedCharacteristics" : ""}, ${displayBreedCharacteristics == null ? "no displayBreedCharacteristics" : ""}, $asset, $displayName, $isFavorite}";
+  String toString() => '{$id, $name, $asset, $breedType, $isFavorite,'
+      '${breedCharacteristics == null ? "no breedCharacteristics" : ""}'
+      '${displayName == null ? "no displayName" : displayName}'
+      '${displayCharacteristics == null ? "no displayBreedCharacteristics" : ""} }';
 }

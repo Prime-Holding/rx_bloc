@@ -2,12 +2,6 @@ part of 'home_page.dart';
 
 extension _HomeProviders on HomePage {
   List<RxBlocProvider> _getProviders() => [
-        RxBlocProvider<PuppyListBlocType>(
-          create: (context) => PuppyListBloc(
-            Provider.of(context, listen: false),
-            Provider.of(context, listen: false),
-          ),
-        ),
         RxBlocProvider<FavoritePuppiesBlocType>(
           create: (context) => FavoritePuppiesBloc(
             Provider.of(context, listen: false),

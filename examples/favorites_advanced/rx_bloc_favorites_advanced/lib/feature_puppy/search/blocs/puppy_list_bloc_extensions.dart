@@ -37,13 +37,17 @@ extension _PuppyListBlocReloaders on PuppyListBloc {
   /// Use [filterPuppies] and [reloadFavoritePuppies] as
   /// a reload trigger.
   Stream<_ReloadData> _reloadTrigger() => Rx.merge([
-        _$filterPuppiesEvent.distinct().map((query) => _ReloadData(
-              silently: false,
-              query: query,
-            )),
-        _$reloadFavoritePuppiesEvent.map((silently) => _ReloadData(
-              silently: silently,
-              query: _$filterPuppiesEvent.value,
-            )),
+        _$filterPuppiesEvent.distinct().map(
+              (query) => _ReloadData(
+                silently: false,
+                query: query,
+              ),
+            ),
+        _$reloadFavoritePuppiesEvent.map(
+          (silently) => _ReloadData(
+            silently: silently,
+            query: _$filterPuppiesEvent.value,
+          ),
+        ),
       ]);
 }

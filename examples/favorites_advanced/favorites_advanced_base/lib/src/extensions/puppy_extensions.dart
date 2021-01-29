@@ -4,24 +4,48 @@ extension PuppUtils on Puppy {
   Puppy copyWith({
     String id,
     String name,
-    String displayName,
-    String displayBreedCharacteristics,
+    String breedCharacteristics,
+    Gender gender,
+    BreedType breedType,
     bool isFavorite,
+    String displayName,
+    String displayCharacteristics,
+    String asset,
   }) =>
       Puppy(
         id: id ?? this.id,
         name: name ?? this.name,
-        displayName: displayName ?? this.displayName,
-        breedCharacteristics: breedCharacteristics,
-        displayBreedCharacteristics:
-            displayBreedCharacteristics ?? this.displayBreedCharacteristics,
-        asset: asset,
+        breedCharacteristics: breedCharacteristics ?? this.breedCharacteristics,
+        asset: asset ?? this.asset,
         isFavorite: isFavorite ?? this.isFavorite,
+        gender: gender ?? this.gender,
+        breedType: breedType ?? this.breedType,
+        displayName: displayName ?? this.displayName,
+        displayCharacteristics:
+            displayCharacteristics ?? this.displayCharacteristics,
+      );
+
+  Puppy copyWithPuppy(Puppy puppy) => Puppy(
+        id: puppy.id ?? id,
+        name: puppy.name ?? name,
+        breedCharacteristics:
+            puppy.breedCharacteristics ?? breedCharacteristics,
+        asset: puppy.asset ?? asset,
+        isFavorite: puppy.isFavorite ?? isFavorite,
+        gender: puppy.gender ?? gender,
+        breedType: puppy.breedType ?? breedType,
+        displayName: puppy.displayName ?? displayName,
+        displayCharacteristics:
+            puppy.displayCharacteristics ?? displayCharacteristics,
       );
 
   /// Check whether the current entity has all needed extra details.
-  bool hasExtraDetails() =>
-      displayBreedCharacteristics != null && displayName != null;
+  bool hasExtraDetails() => breedCharacteristics != null && displayName != null;
+
+  String get genderAsString => PuppyDataConversion.getGenderString(gender);
+
+  String get breedTypeAsString =>
+      PuppyDataConversion.getBreedTypeString(breedType);
 }
 
 extension ListPuppyUtils on List<Puppy> {
@@ -72,15 +96,24 @@ extension ListPuppyUtils on List<Puppy> {
     return this;
   }
 
+  //TODO cover the updating of the puppy with a unit test
   List<Puppy> _manageFavoritePuppy(Puppy puppy) {
-    if (puppy.isFavorite) {
-      if (firstWhere((element) => element.id == puppy.id, orElse: () => null) ==
-          null) {
-        add(puppy);
-      }
-    } else if (!puppy.isFavorite) {
+    //handle removing puppies which aren't favourite
+    if (!puppy.isFavorite) {
       removeWhere((element) => element.id == puppy.id);
+      return this;
     }
+
+    final index = indexWhere((element) => element.id == puppy.id);
+
+    //handle adding new favourite puppy
+    if (index == -1) {
+      add(puppy);
+      return this;
+    }
+
+    //handle updating already existing favourite puppy
+    this[index] = this[index].copyWithPuppy(puppy);
 
     return this;
   }

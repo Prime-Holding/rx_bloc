@@ -46,8 +46,13 @@ void rxBlocTest<B extends RxBlocTypeBase, StateOutputType>(
     tester.test(message, () async {
       final bloc = await build();
       final checkingState = state(bloc);
-      final states = <StateOutputType>[];
-      final subscription = checkingState.skip(skip).listen(states.add);
+      final states = <dynamic>[];
+      final subscription = checkingState.skip(skip).listen(
+        states.add,
+        onError: (Object exception) {
+          states.add(exception);
+        },
+      );
       await act?.call(bloc);
 
       if (wait != null) await Future<void>.delayed(wait);
