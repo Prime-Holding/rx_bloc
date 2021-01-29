@@ -1,7 +1,7 @@
 ![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
 
 # What is rx_bloc
-![Slogan](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/documentation/rx_bloc_readme_updates/packages/rx_bloc/doc/asset/slogan.png)
+![Slogan](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/slogan.png)
 
 Along with the [rx_bloc](https://pub.dev/packages/rx_bloc) the following set of packages will help you during the product development.
 1. [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) that exposes your reactive BloCs to the UI Layer.
