@@ -145,3 +145,17 @@ class HomePage extends StatelessWidget {
   )
 }
 ```
+
+
+### Samples
+
+- [Favorites Advanced](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/favorites_advanced) - an advanced favorites app that showcase multiple software development challenges.
+- [Counter](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/counter) - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
+- [Division](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/division) - Division sample
+
+## Articles
+
+- [Introducing rx_bloc ecosystem - Part 1](https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e) A set of Flutter packages that help implement the BloC (Business Logic Component) design pattern using the power of reactive streams.
+- [Introducing rx_bloc ecosystem - Part 2](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99) Dart package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of the reactive streams.
+- [Introducing rx_bloc ecosystem - Part 3](https://medium.com/prime-holding-jsc/introducing-flutter-rx-bloc-part-3-69d9114da473) Set of Flutter Widgets that expose your reactive BloCs to the UI Layer.
+- [rx_bloc package](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde) - Building complex apps in Flutter with the power of reactive programming
