@@ -1,91 +1,54 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// Generator: RxBlocGeneratorForAnnotation
-// **************************************************************************
-
 part of 'counter_bloc.dart';
 
+/// The code below will be automatically generated
+/// for you by `rx_bloc_generator`.
+///
+/// This generated class usually resides in [file-name].rxb.g.dart.
+/// Find more info at https://pub.dev/packages/rx_bloc_generator.
+
+/// ********************GENERATED CODE**************************************
 /// CounterBlocType class used for bloc event and state access from widgets
-/// {@nodoc}
 abstract class CounterBlocType extends RxBlocTypeBase {
+  // ignore: public_member_api_docs
   CounterBlocEvents get events;
 
+  // ignore: public_member_api_docs
   CounterBlocStates get states;
 }
 
 /// $CounterBloc class - extended by the CounterBloc bloc
-/// {@nodoc}
 abstract class $CounterBloc extends RxBlocBase
     implements CounterBlocEvents, CounterBlocStates, CounterBlocType {
-  ///region Events
-
-  ///region increment
-
-  final _$incrementEvent = PublishSubject<void>();
-  @override
-  void increment() => _$incrementEvent.add(null);
-
-  ///endregion increment
-
-  ///region decrement
-
   final _$decrementEvent = PublishSubject<void>();
+
   @override
   void decrement() => _$decrementEvent.add(null);
 
-  ///endregion decrement
-
-  ///endregion Events
-
-  ///region States
-
-  ///region count
-  Stream<String> _countState;
+  final _$incrementEvent = PublishSubject<void>();
 
   @override
-  Stream<String> get count => _countState ??= _mapToCountState();
+  void increment() => _$incrementEvent.add(null);
 
-  Stream<String> _mapToCountState();
-
-  ///endregion count
-
-  ///region incrementEnabled
-  Stream<bool> _incrementEnabledState;
+  Stream<int> _countState;
 
   @override
-  Stream<bool> get incrementEnabled =>
-      _incrementEnabledState ??= _mapToIncrementEnabledState();
+  Stream<int> get count => _countState ??= _mapToCountState();
 
-  Stream<bool> _mapToIncrementEnabledState();
+  Stream<int> _mapToCountState();
 
-  ///endregion incrementEnabled
-
-  ///region decrementEnabled
-  Stream<bool> _decrementEnabledState;
+  Stream<bool> _isLoadingState;
 
   @override
-  Stream<bool> get decrementEnabled =>
-      _decrementEnabledState ??= _mapToDecrementEnabledState();
+  Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
 
-  Stream<bool> _mapToDecrementEnabledState();
+  Stream<bool> _mapToIsLoadingState();
 
-  ///endregion decrementEnabled
-
-  ///region infoMessage
-  Stream<String> _infoMessageState;
+  Stream<String> _errorsState;
 
   @override
-  Stream<String> get infoMessage =>
-      _infoMessageState ??= _mapToInfoMessageState();
+  Stream<String> get errors => _errorsState ??= _mapToErrorsState();
 
-  Stream<String> _mapToInfoMessageState();
-
-  ///endregion infoMessage
-
-  ///endregion States
-
-  ///region Type
+  Stream<String> _mapToErrorsState();
 
   @override
   CounterBlocEvents get events => this;
@@ -93,12 +56,12 @@ abstract class $CounterBloc extends RxBlocBase
   @override
   CounterBlocStates get states => this;
 
-  ///endregion Type
-
-  /// Dispose of all the opened streams
+  /// Dispose of all the opened streams when the bloc is closed.
+  @override
   void dispose() {
     _$incrementEvent.close();
-    _$decrementEvent.close();
     super.dispose();
   }
 }
+
+/// ********************GENERATED CODE END**************************************

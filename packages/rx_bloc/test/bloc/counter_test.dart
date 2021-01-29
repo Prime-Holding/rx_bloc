@@ -1,8 +1,10 @@
 import 'package:test/test.dart';
 
-import 'package:rx_bloc_test/rx_bloc_test.dart';
-import 'package:rx_bloc/rx_bloc.dart';
+// ignore: avoid_relative_lib_imports
+import '../../../rx_bloc_test/lib/rx_bloc_test.dart';
 import '../../example/main.dart';
+// ignore: avoid_relative_lib_imports
+import '../../lib/rx_bloc.dart';
 
 class BlocImpl extends RxBlocBase implements RxBlocTypeBase {}
 
@@ -13,7 +15,7 @@ void main() {
       build: () async => CounterBloc(ServerSimulator()),
       state: (bloc) => bloc.states.isLoading,
       act: (bloc) async => bloc.events.increment(),
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false],
     );
 
@@ -25,7 +27,7 @@ void main() {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false, true, false],
     );
 
@@ -37,7 +39,7 @@ void main() {
         bloc.states.count.listen((event) {});
         bloc.events.decrement();
       },
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false, true, false],
     );
 
@@ -48,10 +50,9 @@ void main() {
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <bool>[false, true, false],
     );
   });
@@ -62,7 +63,7 @@ void main() {
       build: () async => CounterBloc(ServerSimulator()),
       state: (bloc) => bloc.states.count,
       act: (bloc) async => bloc.events.increment(),
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1],
     );
 
@@ -72,10 +73,9 @@ void main() {
       state: (bloc) => bloc.states.count,
       act: (bloc) async {
         bloc.events.increment();
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1, 2],
     );
 
@@ -85,12 +85,10 @@ void main() {
       state: (bloc) => bloc.states.count,
       act: (bloc) async {
         bloc.events.increment();
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.decrement();
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1, 0, 1],
     );
   });
@@ -101,7 +99,7 @@ void main() {
       build: () async => CounterBloc(ServerSimulator()),
       state: (bloc) => bloc.states.errors,
       act: (bloc) async => bloc.events.decrement(),
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <String>[],
     );
 
@@ -113,7 +111,7 @@ void main() {
         bloc.states.count.listen((event) {});
         bloc.events.decrement();
       },
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <String>['Exception: Minimum number is reached!'],
     );
 
@@ -124,14 +122,11 @@ void main() {
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.increment();
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.increment();
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.increment();
       },
-      wait: ServerSimulator.delay + const Duration(milliseconds: 10),
+      wait: ServerSimulator.delayTest,
       expect: <String>['Exception: Maximum number is reached!'],
     );
   });
