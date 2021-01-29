@@ -1,89 +1,67 @@
 ![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
 
-#### A Flutter package that makes it easy to implement the BLoC Design Pattern using the power of reactive streams.
-##### Following the best practices for building robust mobile applications the architecture below can be used along with the BloC layer.
+# What is rx_bloc
+**rx_bloc** is a state management solution that helps you building robust, scalable, and maintainable Flutter apps.
 
-This package is built to work with [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc), [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) and [rx_bloc_test](https://pub.dev/packages/rx_bloc_test)
+Along with the [rx_bloc](https://pub.dev/packages/rx_bloc) the following set of packages will help you during the product development.
+1. [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) that exposes your reactive BloCs to the UI Layer.
+2. [rx_bloc_test](https://pub.dev/packages/rx_bloc_test) that facilitates implementing the unit tests for your BloCs
+3. [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) that boosts development efficiency by making your BloCs zero-boilerplate.
 
-# Overview
-![Image of Yaktocat](doc/asset/ArchitecturalDiagram.png)
-
-# View Layer - Widgets
-Flutter widgets are built using a modern framework that takes inspiration from React. The central idea is that you build your UI out of widgets. Widgets describe what their view should look like given their current configuration and state. When the BloC state changes, the widget rebuilds its description, which the framework diffs against the previous description in order to determine the minimal changes needed in the underlying render tree to transition from one state to the next.
-
-# Business Logic Layer - BloC
-The BloC is an abstraction of the view exposing a state (observables) and inputs (events). Each BloC should encapsulate the business logic in a way that makes it easy to be reused across the entire app. The following rules have to be considered when a BloC is being implemented:
-1. It should never reference a view.
-2. It should encapsulate specific business logic of the screen.
-3. The BloC should generally not contain state, even though Stateful BloCs are acceptable in case the models/collection should be locally manipulated Example: sorting/filtering/adding/removing items from a collection etc.
-4. It should be unit testable.
-For better readability, custom transformers have to be implemented to serve specific Observable needs.
-
-# Shared Business Logic Layer - Service
-The service layer is responsible for handling domain specific business logic as it's shared within multiple screens or even for the entire application.The goal is to offload the BloC of a shared business logic so that we keep BloC light and at the same time we maintain good separation of concerns.
-
-# Data Layer - Repository
-The repository pattern is a design pattern that isolates data access behind interface abstractions. Connecting to the database, Cache or Web Service and manipulating data storage objects is performed through methods provided by the interface’s implementation. Each Repository contains methods that return Observables. The idea behind is that when the BloC requests data, the Repository will retrieve it from any data source and will provide it via Observables since the data is expected to be fetched asynchronously and the response will not be delivered immediately.
+# Why rx_bloc ?
+If you are working on a complex project you might be challenged to build a highly interactive UI or a heavy business logic in a combination with the consumption of various data sources such as REST APIs, Web Socket, Secured Storage, Shared Preferences, etc. To achieve this, you might need a neet architecture that facilitates your work during product development.
 
 # Usage
+By definition, the BloC layer should contain only the business logic of your app. This means that it should be fully decoupled from the UI layer and should be loosely coupled with the data layer through Dependency Injection. The **UI** layer can send **events** to the BloC layer and can listen for **state** changes.
+
+## Events
+```dart
+/// A contract, containing all Counter BloC events
+abstract class CounterBlocEvents {
+  /// Increment the count
+  void increment();
+
+  /// Decrement the count
+  void decrement();
+}
+```
+
+As you can see, all events are just pure methods declared in one abstract class (CounterBlocEvents). This way, we can push events to the BloC by simply invoking those methods from the UI layer as follows:
+```dart
+RaisedButton(
+    onPressed: () => bloc.events.increment(),
+    ...
+) 
+```
+
+## States
+The same way as with the events, now you can see that we have declarations for multiple states grouped in one abstract class (CounterBlocStates). Depending on your goals, you can either have just one stream with all needed data or you can split it into individual streams. In the latter case, you can apply the [Single-responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle) or any performance optimizations.
 
 ```dart
-import 'package:rx_bloc/rx_bloc.dart'; // All necessary imports can be added first
-import 'package:rxdart/rxdart.dart';
+/// A contract, containing all Counter BloC states
+abstract class CounterBlocStates {
+  /// The count of the Counter
+  ///
+  /// It can be controlled by executing
+  /// [CounterBlocEvents.increment] and
+  /// [CounterBlocEvents.decrement]
+  ///
+  Stream<int> get count;
 
-part 'news_bloc.rxb.g.dart'; // Refer to the auto-generated boilerplate code
-
-abstract class NewsBlocEvents {
-  /// Fetch news
-  void fetch();
-}
-
-abstract class NewsBlocStates {
-  /// Presentable news
-  Stream<List<News>> get news;
-
-  /// Loading state caused by any registered result stream
-  @RxBlocIgnoreState()
+  /// Loading state
   Stream<bool> get isLoading;
 
-  /// Presentable error messages
-  @RxBlocIgnoreState()
+  /// User friendly error messages
   Stream<String> get errors;
 }
+```
 
-@RxBloc()
-class NewsBloc extends $NewsBloc {
-  NewsRepository _newsRepository;
+## Zero-boilerplate BloC
 
-  /// Inject all necessary repositories, which the the block depends on.
-  NewsBloc(this._newsRepository);
+Once we have defined the states and events contracts, it’s time to implement the actual Counter BloC, where the business logic of the main feature of the app will reside. As mentioned previously, we are armed with rx_bloc_generator, which should be added to your pubspec.yaml file as follows:
 
-  /// Map event/s to the news state
-  @override
-  Stream<List<News>> _mapToNewsState() => _$fetchEvent //auto generated subject
-      .switchMap((_) => _newsRepository.fetch().asResultStream()) // fetch news
-      .setResultStateHandler(this) // register the result stream to loading/exception
-      .whereSuccess() // get only success state
-      .mapToNews(); // perform some business logic on NewsModel
-
-  /// Presentable error messages
-  @override
-  Stream<String> get errors =>
-      errorState.map((exception) => exception.message);
-
-  /// Loading state caused by any registered result stream
-  @override
-  Stream<bool> get isLoading => loadingState;
-}
-
-extension _ExceptionMessage on Exception {
-  /// Extracted message from the exception
-  String get message => this.toString();
-}
-
-extension _Mapper on Stream<List<NewsModel>> {
-  /// Apply some business logic on NewsModel and convert it to News.
-  Stream<List<News>> mapToNews() =>
-      map((newsList) => newsList.map((news) => News()));
-}
+```dart
+dev_dependencies:
+  build_runner:
+  rx_bloc_generator:^1.0.1
 ```
