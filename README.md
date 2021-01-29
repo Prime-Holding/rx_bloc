@@ -41,4 +41,7 @@ Following the best practices for building robust mobile applications the archite
 
 ## Articles
 
+- [Introducing rx_bloc ecosystem - Part 1](https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e) A set of Flutter packages that help implement the BloC (Business Logic Component) design pattern using the power of reactive streams.
+- [Introducing rx_bloc ecosystem - Part 2](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99) Dart package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of the reactive streams.
+- [Introducing rx_bloc ecosystem - Part 3](https://medium.com/prime-holding-jsc/introducing-flutter-rx-bloc-part-3-69d9114da473) Set of Flutter Widgets that expose your reactive BloCs to the UI Layer.
 - [rx_bloc package](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde) - Building complex apps in Flutter with the power of reactive programming
