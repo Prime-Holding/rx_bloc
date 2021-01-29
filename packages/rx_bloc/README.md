@@ -58,10 +58,54 @@ abstract class CounterBlocStates {
 
 ## Zero-boilerplate BloC
 
-Once we have defined the states and events contracts, it’s time to implement the actual Counter BloC, where the business logic of the main feature of the app will reside. As mentioned previously, we are armed with rx_bloc_generator, which should be added to your pubspec.yaml file as follows:
+Once we have defined the states and events contracts, it’s time to implement the actual Counter BloC. As mentioned previously, we are armed with [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator), which should be added to your pubspec.yaml file as follows:
 
 ```dart
 dev_dependencies:
   build_runner:
   rx_bloc_generator:^1.0.1
 ```
+
+Then we need to create an empty CounterBloc class in **counter_bloc.dart** (below the contracts) and just execute `flutter packages pub run build_runner build` from the root of your project.
+
+[counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
+```dart
+...
+@RxBloc()
+class CounterBloc {}
+```
+
+After the generator completes the execution, make sure your IDE is in sync with the local files and you should see that a new file (**counter_bloc.rxb.g.dart**) has been created, which contains the parent class of our CounterBloc. In short, the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) package makes your BloC zero-boilerplate, as the generator automatically writes all the boring boilerplate code so you can focus on your business logic instead.
+
+[counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
+```dart
+...
+/// A BloC responsible for count calculations
+@RxBloc()
+class CounterBloc extends $CounterBloc {
+  /// The default constructor injecting a repository through DI
+  CounterBloc(this._repository);
+  /// The repository used for data source communication
+  final CounterRepository _repository;
+
+  /// Map increment and decrement events to the `count` state
+  @override
+  Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
+            // On increment
+            _$incrementEvent.flatMap((_) =>
+                _repository.increment().asResultStream()),
+            // On decrement
+            _$decrementEvent.flatMap((_) => 
+                _repository.decrement().asResultStream()),
+        ])
+        // This automatically handles the error and loading state.
+        .setResultStateHandler(this)
+        // Provide "success" response only.
+        .whereSuccess()
+        //emit 0 as an initial value
+        .startWith(0);
+    ...
+}
+```
+As you can see, by extending [$CounterBloc](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.rxb.g.dart#L20), we must implement `Stream<int>` `_mapToCountState()` , which is the method responsible for the events-to-state business logic. Furthermore, we have [_$incrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L44) and [_$decrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L47), which are the [subjects](https://pub.dev/documentation/rxdart/latest/rx_subjects/rx_subjects-library.html) where the events will flow when [increment()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L10) and [decrement()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L13) methods are invoked from the UI Layer.
+In the code above we declare that as soon as the user taps on the increment or decrement button, an API call will be executed. Since both _$incrementEvent and _$decrementEvent are grouped in one stream by the merge operator, the result of their API calls allows us to register our BloC as a state handler. We then extract only the “success” result and finally put an initial value of 0.
