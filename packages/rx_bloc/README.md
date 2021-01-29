@@ -9,7 +9,7 @@ Along with the [rx_bloc](https://pub.dev/packages/rx_bloc) the following set of 
 3. [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) that boosts development efficiency by making your BloCs zero-boilerplate.
 
 # Why rx_bloc ?
-If you are working on a complex project you might be challenged to build a highly interactive UI or a heavy business logic in a combination with the consumption of various data sources such as REST APIs, Web Socket, Secured Storage, Shared Preferences, etc. To achieve this, you might need a neet architecture that facilitates your work during product development.
+If you are working on a complex project you might be challenged to build a highly interactive UI or a heavy business logic in a combination with the consumption of various data sources such as REST APIs, Web Socket, Secured Storage, Shared Preferences, etc. To achieve this, you might need a sophisticated architecture that facilitates your work during product development.
 
 # Usage
 By definition, the BloC layer should contain only the business logic of your app. This means that it should be fully decoupled from the UI layer and should be loosely coupled with the data layer through Dependency Injection. The **UI** layer can send **events** to the BloC layer and can listen for **state** changes.
