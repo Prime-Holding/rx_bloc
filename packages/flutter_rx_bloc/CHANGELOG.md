@@ -1,6 +1,6 @@
 ## [1.2.0] - January 29, 2021
 * Updated Unit Tests
-* Added puppy example, for [article](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde)
+* Added a [puppy example project](https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/favorites_advanced/rx_bloc_favorites_advanced) for the [medium article](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde)
 * Added new widgets: RxUnfocuser, RxFormFieldBuiler, RxTextFormFieldBuilder
 * Added RxInputDecorationData
 * Added RxFieldException
