@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   rxdart: ^0.25.0
-  meta: ^1.2.4
+  meta: ^1.2.0
 
 dev_dependencies:
   rx_bloc_test:
