@@ -69,8 +69,6 @@ extension CopyWithDecoration on InputDecoration {
         errorText: decoration.errorText ?? errorText,
         errorStyle: decoration.errorStyle ?? errorStyle,
         errorMaxLines: decoration.errorMaxLines ?? errorMaxLines,
-        hasFloatingPlaceholder:
-            decoration.hasFloatingPlaceholder ?? hasFloatingPlaceholder,
         floatingLabelBehavior:
             decoration.floatingLabelBehavior ?? floatingLabelBehavior,
         isCollapsed: decoration.isCollapsed ?? isCollapsed,

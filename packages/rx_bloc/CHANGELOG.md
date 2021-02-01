@@ -1,7 +1,10 @@
-## [1.2.1] - December 24, 2020
+## [1.2.2] - January 29, 2020
 * Stability improvements
 
-## [1.2.0] - December 24, 2020
+## [1.2.1] - January 29, 2020
+* Stability improvements
+
+## [1.2.0] - January 29, 2020
 * Fixed side effects in setStateHandler/setErrorStateHandler/setLoadingHandler
 * Removed rx_bloc/extensions library as this is now part of rx_bloc/rx_bloc
 * Increased code coverage
