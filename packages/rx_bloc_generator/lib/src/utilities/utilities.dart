@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:logging/logging.dart';
-
-import 'string_extensions.dart';
+part of rx_bloc_generator;
 
 /// The global logJet symbol.
 const Symbol logKey = #buildLog;

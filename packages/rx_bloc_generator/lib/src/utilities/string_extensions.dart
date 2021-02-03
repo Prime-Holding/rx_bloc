@@ -1,3 +1,5 @@
+part of rx_bloc_generator;
+
 final _primitives = ['int', 'double', 'Null', 'String', 'bool'];
 final _collections = ['List', 'Map', 'Set'];
 

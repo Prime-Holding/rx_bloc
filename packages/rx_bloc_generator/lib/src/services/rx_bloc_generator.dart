@@ -1,6 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
-import 'package:rx_bloc_generator/src/events_generator.dart';
-import 'package:rx_bloc_generator/src/states_generator.dart';
+part of rx_bloc_generator;
 
 /// Class responsible for generating the end result file
 /// containing the bloc boilerplate code.
