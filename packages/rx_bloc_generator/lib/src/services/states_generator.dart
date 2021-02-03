@@ -11,7 +11,7 @@ final _ignoreStateAnnotationChecker =
 ///
 /// It takes in a [_statesClass] ClassElement which represents the states class
 /// from which it creates everything needed for the states to work.
-class StatesGenerator {
+class StatesGenerator implements GeneratorContract {
   /// The default constructor.
   StatesGenerator(this._statesClass);
 
@@ -25,6 +25,7 @@ class StatesGenerator {
   void _writeln([Object obj]) => _stringBuffer.writeln(obj);
 
   /// Generates all states based on the passed in states class
+  @override
   String generate() {
     _writeln('\n  ///region States');
     _writeln('\n');

@@ -24,35 +24,52 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Generates the bloc based on the class with the @RxBloc() annotation.
   /// If either the states or events class is missing the file is not generated.
   @override
-  generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) async {
+  Future<String> generateForAnnotatedElement(
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) async {
     // return early if annotation is used for a none class element
     if (element is! ClassElement) return null;
 
-    final classElement = element as ClassElement;
+    final ClassElement classElement = element as ClassElement;
 
-    final libraryReader = LibraryReader(classElement.library);
+    final LibraryReader libraryReader = LibraryReader(classElement.library);
 
-    final eventsClassName = annotation.read('eventsClassName')?.stringValue;
-    final statesClassName = annotation.read('statesClassName')?.stringValue;
+    final String eventsClassName = // eventsClassName: "Events"
+        annotation.read('eventsClassName')?.stringValue;
 
-    final eventsClass = libraryReader.classes.firstWhere(
+    final String statesClassName = // statesClassName: "States"
+        annotation.read('statesClassName')?.stringValue;
+
+    /// abstract class NewsBlocEvents {
+    //   void fetch();
+    // }
+    final ClassElement eventsClass = libraryReader.classes.firstWhere(
         (classElement) => classElement.displayName.contains(eventsClassName),
         orElse: () => null);
 
-    final statesClass = libraryReader.classes.firstWhere(
+    /// abstract class NewsBlocStates {
+    //   Stream<List<News>> get news;
+    // }
+    final ClassElement statesClass = libraryReader.classes.firstWhere(
         (classElement) => classElement.displayName.contains(statesClassName),
         orElse: () => null);
 
     // Use the events/states class name in combination with the bloc name to
     // display appropriate error message when class is missing
-    if (eventsClass == null)
+    if (eventsClass == null) {
       logError(_generateMissingClassError(eventsClassName, classElement.name));
-    if (statesClass == null)
+    }
+    if (statesClass == null) {
       logError(_generateMissingClassError(statesClassName, classElement.name));
+    }
 
     // if either one of the classes are missing, don't generate the bloc
-    if (statesClass != null && eventsClass != null)
+    if (statesClass != null && eventsClass != null) {
       return RxBlocGenerator(classElement, eventsClass, statesClass).generate();
+    }
+
+    return null;
   }
 }

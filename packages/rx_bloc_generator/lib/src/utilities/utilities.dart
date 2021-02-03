@@ -12,11 +12,12 @@ final _default = Logger('build.fallback');
 Logger get log => Zone.current[logKey] as Logger ?? _default;
 
 /// Logs message as a `severe` error displayed in red color for easier noticing.
-logError(String str) {
+void logError(String str) {
   final exceptionStr = 'Exception: ';
   var msg = str;
-  if (msg.contains(exceptionStr))
+  if (msg.contains(exceptionStr)) {
     msg = msg.substring(msg.indexOf(exceptionStr) + exceptionStr.length);
+  }
   msg = '[ERROR] $msg';
   log.severe('\n${msg.toRedString()}\n');
 }

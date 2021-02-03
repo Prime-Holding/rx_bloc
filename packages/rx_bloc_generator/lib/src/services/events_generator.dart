@@ -12,9 +12,11 @@ final _eventAnnotationChecker = const TypeChecker.fromRuntime(RxBlocEvent);
 /// from which it creates everything needed for the events to work.
 /// It also takes a [_sourceCode] String containing the source code from the
 /// file in which the [_eventsClass] resides.
-class EventsGenerator {
+class EventsGenerator implements GeneratorContract {
   /// The default constructor.
   EventsGenerator(this._eventsClass, this._sourceCode);
+
+  final DartFormatter _dartFormatter = DartFormatter();
 
   /// The output buffer containing generated events code
   final StringBuffer _stringBuffer = StringBuffer();
@@ -29,6 +31,7 @@ class EventsGenerator {
   void _writeln([Object obj]) => _stringBuffer.writeln(obj);
 
   /// Generates all events based on the passed in events class
+  @override
   String generate() {
     _writeln('\n\n  ///region Events');
     _writeln('\n');
@@ -271,38 +274,4 @@ extension _MethodExtensions on MethodElement {
   /// Returns the list of all parameter names of a method
   List<String> get parameterNames =>
       parameters.map((param) => param.name).toList();
-}
-
-extension _StringExtensions on String {
-  /// Returns index of closing brackets balancing other brackets along
-  int getIndexOfClosingBracket(int startIndex) {
-    final str = substring(startIndex);
-    var normal = 1;
-    var angle = 0;
-    var curly = 0;
-
-    var i = 0;
-    while ((normal != 0 || angle != 0 || curly != 0) && i < str.length) {
-      var ch = str[i];
-      if (ch == '(') normal++;
-      if (ch == ')') normal--;
-      if (ch == '<') angle++;
-      if (ch == '>') angle--;
-      if (ch == '{') curly++;
-      if (ch == '}') curly--;
-      i++;
-    }
-    if (i == str.length) return -1;
-    i--;
-    return i + startIndex;
-  }
-
-  /// Appends a comma at the end of a string if there's none, if
-  /// the string has a valid length. Else, returns an empty string
-  String addComaAtEndIfNone() {
-    var str = trim();
-    if (str.isEmpty) return '';
-    str += str[str.length - 1] != ',' ? ',' : '';
-    return str;
-  }
 }

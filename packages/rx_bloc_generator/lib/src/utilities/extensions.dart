@@ -79,8 +79,9 @@ extension StringExtensions on String {
   /// starting from top layer. Else, it returns the structure as is.
   String _removeTopLayerCollection() {
     var str = trim();
-    if (str.containsAll(['(', ')', '<', '>']))
+    if (str.containsAll(['(', ')', '<', '>'])) {
       str = str.substring(str.indexOf('(') + 1, str.lastIndexOf(')'));
+    }
     return str;
   }
 
@@ -129,10 +130,11 @@ extension StringExtensions on String {
       final substr = str.substring(index + 1, endIndex);
       final startBr = substr.count('(');
       final endBr = substr.count(')');
-      if (startBr == endBr)
+      if (startBr == endBr) {
         return str
             .replaceFirst('(', '', index)
             .replaceFirst(')', '', endIndex - 1);
+      }
 
       // Reset the end index and move the start index
       endIndex = str.indexOf(')', endIndex + 1);
@@ -149,4 +151,45 @@ extension StringExtensions on String {
 
   /// endregion
 
+  /// Returns index of closing brackets balancing other brackets along
+  int getIndexOfClosingBracket(int startIndex) {
+    final str = substring(startIndex);
+    var normal = 1;
+    var angle = 0;
+    var curly = 0;
+
+    var i = 0;
+    while ((normal != 0 || angle != 0 || curly != 0) && i < str.length) {
+      var ch = str[i];
+      if (ch == '(') normal++;
+      if (ch == ')') normal--;
+      if (ch == '<') angle++;
+      if (ch == '>') angle--;
+      if (ch == '{') curly++;
+      if (ch == '}') curly--;
+      i++;
+    }
+    if (i == str.length) return -1;
+    i--;
+    return i + startIndex;
+  }
+
+  /// Appends a comma at the end of a string if there's none, if
+  /// the string has a valid length. Else, returns an empty string
+  String addComaAtEndIfNone() {
+    var str = trim();
+    if (str.isEmpty) return '';
+    str += str[str.length - 1] != ',' ? ',' : '';
+    return str;
+  }
+}
+
+final DartFormatter _dartFormatter = DartFormatter();
+
+extension SpecExtensions on Spec {
+  String toDartCodeString() => _dartFormatter.format(
+    '${accept(
+      DartEmitter(),
+    )}',
+  );
 }
