@@ -12,7 +12,7 @@ final _eventAnnotationChecker = const TypeChecker.fromRuntime(RxBlocEvent);
 /// from which it creates everything needed for the events to work.
 /// It also takes a [_sourceCode] String containing the source code from the
 /// file in which the [_eventsClass] resides.
-class EventsGenerator implements GeneratorContract {
+class EventsGenerator implements RxGeneratorContract {
   /// The default constructor.
   EventsGenerator(this._eventsClass, this._sourceCode);
 
@@ -117,7 +117,7 @@ class EventsGenerator implements GeneratorContract {
     final isBehaviorSubject =
         annotation?.getField('type').toString().contains('behaviour') ?? false;
     if (!hasRxEventAnnotation || !isBehaviorSubject)
-      return 'PublishSubject<${method.streamTypeBasedOnParameters}>()';
+      return 'PublishSubject<${method.argumentsType}>()';
 
     // The method has a RxBlocEvent annotation
 
@@ -150,7 +150,7 @@ class EventsGenerator implements GeneratorContract {
       // Check for any errors regarding the seed value
       if (!seedField.isNull) {
         final firstParam =
-            method.streamTypeBasedOnParameters.replaceAll(' ', '');
+            method.argumentsType.replaceAll(' ', '');
         final typeAsString = seedField.toString().getTypeFromString();
         // Check for seed value mismatch
         if (typeAsString != firstParam) {
@@ -217,61 +217,61 @@ extension _MapToEvents on Iterable<MethodElement> {
       map((method) => mapper(method));
 }
 
-extension _MethodExtensions on MethodElement {
-  /// The name of the arguments class that will be generated if
-  /// the event contains more than one parameter
-  String get argumentsClassName => '_${name.capitalize()}EventArgs';
-
-  ///Returns the stream type based on the number of the parameters of the method
-  String get streamTypeBasedOnParameters {
-    if (parameters.length > 1) return argumentsClassName;
-    return "${parameters.isNotEmpty ? parameters.first.type : 'void'}";
-  }
-
-  /// Returns the method parameters in a format usable for streams
-  String get streamTypeParameters {
-    if (parameters.length > 1) {
-      var str = '$argumentsClassName(';
-      parameterNames.forEach((paramName) => str += ' $paramName:$paramName,');
-      str += ')';
-      return str;
-    }
-    return "${parameters.isNotEmpty ? parameters.first.name : 'null'}";
-  }
-
-  /// Returns the proper method definition (keeping as well
-  /// default values and @required annotations)
-  String get definition {
-    var def = toString();
-    parameterNames.forEach((paramName) {
-      final param = getParameter(paramName);
-
-      // Add required annotation before type
-      if (param.hasRequired) {
-        var index = def.indexOf(paramName);
-        index = def.lastIndexOf(param.type.toString(), index);
-        def = '${def.substring(0, index)} @required ${def.substring(index)}';
-      }
-
-      // Add default value (if any)
-      if (param.defaultValueCode != null) {
-        var index = def.indexOf(paramName);
-        final assignChar = param.isPositional ? '=' : ':';
-        def =
-            // ignore: lines_longer_than_80_chars
-            '${def.substring(0, index)}${def.substring(index, index + paramName.length)}${'$assignChar ${param.defaultValueCode}'}${def.substring(index + paramName.length)}';
-      }
-    });
-
-    return def;
-  }
-
-  /// Returns the parameter instance of a method by its [paramName]
-  ParameterElement getParameter(String paramName) {
-    return parameters.firstWhere((param) => param.name == paramName);
-  }
-
-  /// Returns the list of all parameter names of a method
-  List<String> get parameterNames =>
-      parameters.map((param) => param.name).toList();
-}
+// extension _MethodExtensions on MethodElement {
+//   /// The name of the arguments class that will be generated if
+//   /// the event contains more than one parameter
+//   String get argumentsClassName => '_${name.capitalize()}EventArgs';
+//
+//   ///Returns the stream type based on the number of the parameters of the method
+//   String get argumentsType {
+//     if (parameters.length > 1) return argumentsClassName;
+//     return "${parameters.isNotEmpty ? parameters.first.type : 'void'}";
+//   }
+//
+//   /// Returns the method parameters in a format usable for streams
+//   String get streamTypeParameters {
+//     if (parameters.length > 1) {
+//       var str = '$argumentsClassName(';
+//       parameterNames.forEach((paramName) => str += ' $paramName:$paramName,');
+//       str += ')';
+//       return str;
+//     }
+//     return "${parameters.isNotEmpty ? parameters.first.name : 'null'}";
+//   }
+//
+//   /// Returns the proper method definition (keeping as well
+//   /// default values and @required annotations)
+//   String get definition {
+//     var def = toString();
+//     parameterNames.forEach((paramName) {
+//       final param = getParameter(paramName);
+//
+//       // Add required annotation before type
+//       if (param.hasRequired) {
+//         var index = def.indexOf(paramName);
+//         index = def.lastIndexOf(param.type.toString(), index);
+//         def = '${def.substring(0, index)} @required ${def.substring(index)}';
+//       }
+//
+//       // Add default value (if any)
+//       if (param.defaultValueCode != null) {
+//         var index = def.indexOf(paramName);
+//         final assignChar = param.isPositional ? '=' : ':';
+//         def =
+//             // ignore: lines_longer_than_80_chars
+//             '${def.substring(0, index)}${def.substring(index, index + paramName.length)}${'$assignChar ${param.defaultValueCode}'}${def.substring(index + paramName.length)}';
+//       }
+//     });
+//
+//     return def;
+//   }
+//
+//   /// Returns the parameter instance of a method by its [paramName]
+//   ParameterElement getParameter(String paramName) {
+//     return parameters.firstWhere((param) => param.name == paramName);
+//   }
+//
+//   /// Returns the list of all parameter names of a method
+//   List<String> get parameterNames =>
+//       parameters.map((param) => param.name).toList();
+// }

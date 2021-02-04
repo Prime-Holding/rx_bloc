@@ -41,17 +41,23 @@ class _FileController {
           (classElement) => classElement.displayName.contains(_statesClassName),
           orElse: () => null);
 
+  String get _blocFilePath => mainBloc.location.components.first;
+
+  String get _mainBlocFileName =>
+      Uri.tryParse(_blocFilePath, (_blocFilePath.lastIndexOf('/') + 1))
+          ?.toString() ??
+      '';
+
   void generate() {
     // Check for any broken rules
     _validate();
 
-    _fileContent = RxBlocGenerator(
+    _fileContent = _RxBlocGenerator(
       mainBloc,
       _eventsClass,
       _statesClass,
       contractClassName: mainBloc.displayName + 'Type',
-      mainBlocFileName:
-          Uri.tryParse(mainBloc.location.components.first).toString(),
+      partOfUrl: _mainBlocFileName,
     ).generate();
   }
 

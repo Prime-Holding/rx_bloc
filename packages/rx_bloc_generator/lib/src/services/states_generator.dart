@@ -11,7 +11,7 @@ final _ignoreStateAnnotationChecker =
 ///
 /// It takes in a [_statesClass] ClassElement which represents the states class
 /// from which it creates everything needed for the states to work.
-class StatesGenerator implements GeneratorContract {
+class StatesGenerator implements RxGeneratorContract {
   /// The default constructor.
   StatesGenerator(this._statesClass);
 

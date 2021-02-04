@@ -193,3 +193,64 @@ extension SpecExtensions on Spec {
     )}',
   );
 }
+
+extension _MethodElementExtensions on MethodElement {
+  /// The name of the arguments class that will be generated if
+  /// the event contains more than one parameter
+  String get argumentsClassName => '_${name.capitalize()}EventArgs';
+
+  ///Returns the stream type based on the number of the parameters of the method
+  String get argumentsType {
+    if (parameters.length > 1) {
+      return argumentsClassName;
+    }
+    return parameters.isNotEmpty ? parameters.first.type.toString() : 'void';
+  }
+
+  /// Returns the method parameters in a format usable for streams
+  String get streamTypeParameters {
+    if (parameters.length > 1) {
+      var str = '$argumentsClassName(';
+      parameterNames.forEach((paramName) => str += ' $paramName:$paramName,');
+      str += ')';
+      return str;
+    }
+    return "${parameters.isNotEmpty ? parameters.first.name : 'null'}";
+  }
+
+  /// Returns the proper method definition (keeping as well
+  /// default values and @required annotations)
+  String get definition {
+    var def = toString();
+    parameterNames.forEach((paramName) {
+      final param = getParameter(paramName);
+
+      // Add required annotation before type
+      if (param.hasRequired) {
+        var index = def.indexOf(paramName);
+        index = def.lastIndexOf(param.type.toString(), index);
+        def = '${def.substring(0, index)} @required ${def.substring(index)}';
+      }
+
+      // Add default value (if any)
+      if (param.defaultValueCode != null) {
+        var index = def.indexOf(paramName);
+        final assignChar = param.isPositional ? '=' : ':';
+        def =
+        // ignore: lines_longer_than_80_chars
+        '${def.substring(0, index)}${def.substring(index, index + paramName.length)}${'$assignChar ${param.defaultValueCode}'}${def.substring(index + paramName.length)}';
+      }
+    });
+
+    return def;
+  }
+
+  /// Returns the parameter instance of a method by its [paramName]
+  ParameterElement getParameter(String paramName) {
+    return parameters.firstWhere((param) => param.name == paramName);
+  }
+
+  /// Returns the list of all parameter names of a method
+  List<String> get parameterNames =>
+      parameters.map((param) => param.name).toList();
+}

@@ -12,14 +12,14 @@ part of rx_bloc_generator;
 ///
 /// Note: This class generates a `part` file that has to be included
 /// in the file containing the bloc in order to work properly.
-class RxBlocGenerator implements GeneratorContract {
+class _RxBlocGenerator implements RxGeneratorContract {
   /// The default constructor
-  RxBlocGenerator(
+  _RxBlocGenerator(
     this.blocClass,
     this.eventsClass,
     this.statesClass, {
     this.contractClassName,
-    this.mainBlocFileName,
+    this.partOfUrl,
   })  : _eventsClassGenerator =
             EventsGenerator(eventsClass, blocClass.source.contents.data),
         _statesClassGenerator = StatesGenerator(statesClass);
@@ -46,23 +46,17 @@ class RxBlocGenerator implements GeneratorContract {
   final String contractClassName;
 
   /// The path that will be used for the part of statement
-  final String mainBlocFileName;
+  final String partOfUrl;
 
   /// Generates the contents of the blocClass file
   @override
   String generate() {
     <String>[
       // part of [bloc_name]_bloc.dart
-      _partOf(
-        partOfFileName: mainBlocFileName,
-      ),
+      _partOf(),
 
       // abstract class [RxBlocName]BlocType
-      _blocContract(
-        contractClassName: contractClassName,
-        eventsClassName: eventsClass.displayName,
-        statesClassName: statesClass.displayName,
-      ),
+      _blocContract(),
 
       // abstract class $[RxBlocName]Bloc
       _blocClass(),
@@ -79,7 +73,8 @@ class RxBlocGenerator implements GeneratorContract {
   /// Example:
   /// .. part of '[rx_bloc_name]_bloc.dart'
   ///
-  String _partOf({String partOfFileName}) => "part of '${partOfFileName}';";
+  // TODO(Diev): Use [Directive] once `part of` is supported https://github.com/dart-lang/code_builder/pull/308
+  String _partOf() => "part of '${partOfUrl}';";
 
   /// Generates the type class for the blocClass
   ///
@@ -89,12 +84,7 @@ class RxBlocGenerator implements GeneratorContract {
   ///    [RxBlocName]BlocStates get states;
   ///  }
   ///
-  String _blocContract({
-    String contractClassName,
-    String eventsClassName,
-    String statesClassName,
-  }) =>
-      Class(
+  String _blocContract() => Class(
         (b) => b
           ..docs.addAll(<String>[
             '/// ${contractClassName} class used for blocClass event and '
@@ -108,12 +98,12 @@ class RxBlocGenerator implements GeneratorContract {
             Field(
               (b) => b
                 ..name = 'eventsClass'
-                ..type = refer(eventsClassName + ' get '),
+                ..type = refer(eventsClass.displayName + ' get '),
             ),
             Field(
               (b) => b
                 ..name = 'statesClass'
-                ..type = refer(statesClassName + ' get '),
+                ..type = refer(statesClass.displayName + ' get '),
             ),
           ]),
       ).toDartCodeString();
@@ -148,13 +138,9 @@ class RxBlocGenerator implements GeneratorContract {
         refer(statesClass.displayName),
         refer(contractClassName),
       ])
-      ..fields.addAll(<Field>[
-
-      ])
+      ..fields.addAll(<Field>[..._eventFields()])
       ..methods.addAll(
-        <Method>[
-
-        ],
+        <Method>[],
       )).toDartCodeString();
     // var comment = '\n/// \$${blocClass.displayName} class - extended by the ';
     // comment += '${blocClass.displayName} blocClass';
@@ -200,4 +186,18 @@ class RxBlocGenerator implements GeneratorContract {
   /// .. }
   // TODO(Diev): To be implemented
   String _eventMethodsArgsClasses() => '';
+
+  /// Mapper that converts a [MethodElement] into an event [Field]
+  List<Field> _eventFields() => eventsClass.methods.map((MethodElement eventMethod) {
+        return Field(
+          (b) => b
+            // ..docs.add(
+            //   '/// region ${eventMethod.name}Method',
+            // )
+            ..modifier = FieldModifier.final$
+            // TODO(Diev): Add the stream type check - Subject or Behavior
+            ..assignment = Code('PublishSubject<${eventMethod.argumentsType}>()')
+            ..name = '_\$${eventMethod.name}Event',
+        );
+      }).toList();
 }
