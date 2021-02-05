@@ -1,5 +1,6 @@
 part of rx_bloc_generator;
 
+/// Validates the main bloc file and provides the generator the needed data
 class _FileController {
   _FileController({this.mainBloc, this.annotation, this.libraryReader})
       : _eventsClassName = annotation.read('eventsClassName')?.stringValue,

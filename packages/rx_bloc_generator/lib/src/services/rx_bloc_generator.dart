@@ -20,9 +20,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
     this.statesClass, {
     this.contractClassName,
     this.partOfUrl,
-  })  : _eventsClassGenerator =
-            EventsGenerator(eventsClass, blocClass.source.contents.data),
-        _statesClassGenerator = StatesGenerator(statesClass);
+  })  : _statesClassGenerator = StatesGenerator(statesClass);
 
   /// The output buffer containing all the generated code
   final StringBuffer _output = StringBuffer();
@@ -35,9 +33,6 @@ class _RxBlocGenerator implements RxGeneratorContract {
 
   /// The class containing all the user-defined statesClass
   final ClassElement statesClass;
-
-  /// Delegate used to generate eventsClass based on the eventsClass class
-  final EventsGenerator _eventsClassGenerator;
 
   /// Delegate used to generate statesClass based on the statesClass class
   final StatesGenerator _statesClassGenerator;
@@ -94,16 +89,18 @@ class _RxBlocGenerator implements RxGeneratorContract {
           ..abstract = true
           ..name = contractClassName
           ..extend = refer((RxBlocTypeBase).toString())
-          ..fields.addAll(<Field>[
-            Field(
+          ..methods.addAll(<Method>[
+            Method(
               (b) => b
-                ..name = 'eventsClass'
-                ..type = refer(eventsClass.displayName + ' get '),
+                ..name = 'events'
+                ..returns = refer(eventsClass.displayName)
+                ..type = MethodType.getter,
             ),
-            Field(
+            Method(
               (b) => b
-                ..name = 'statesClass'
-                ..type = refer(statesClass.displayName + ' get '),
+                ..name = 'states'
+                ..returns = refer(statesClass.displayName)
+                ..type = MethodType.getter,
             ),
           ]),
       ).toDartCodeString();
@@ -138,9 +135,13 @@ class _RxBlocGenerator implements RxGeneratorContract {
         refer(statesClass.displayName),
         refer(contractClassName),
       ])
-      ..fields.addAll(<Field>[..._eventFields()])
+      ..fields.addAll(<Field>[
+        ..._eventFields(),
+      ])
       ..methods.addAll(
-        <Method>[],
+        <Method>[
+          ..._eventMethods(),
+        ],
       )).toDartCodeString();
     // var comment = '\n/// \$${blocClass.displayName} class - extended by the ';
     // comment += '${blocClass.displayName} blocClass';
@@ -188,16 +189,41 @@ class _RxBlocGenerator implements RxGeneratorContract {
   String _eventMethodsArgsClasses() => '';
 
   /// Mapper that converts a [MethodElement] into an event [Field]
-  List<Field> _eventFields() => eventsClass.methods.map((MethodElement eventMethod) {
+  List<Field> _eventFields() => eventsClass.methods.map((MethodElement method) {
         return Field(
           (b) => b
             // ..docs.add(
-            //   '/// region ${eventMethod.name}Method',
+            //   '/// region ${method.name}Method',
             // )
             ..modifier = FieldModifier.final$
             // TODO(Diev): Add the stream type check - Subject or Behavior
-            ..assignment = Code('PublishSubject<${eventMethod.argumentsType}>()')
-            ..name = '_\$${eventMethod.name}Event',
+            ..assignment = Code('PublishSubject<${method.argumentsType}>()')
+            ..name = '_\$${method.name}Event',
+        );
+      }).toList();
+
+  /// Mapper that converts a [MethodElement] into an event [Method]
+  List<Method> _eventMethods() =>
+      eventsClass.methods.map((MethodElement method) {
+        return Method(
+          (b) => b
+            // ..docs.add(
+            //   '/// region ${method.name}Method',
+            // )
+            //     ..type = MethodType.v
+            ..annotations.add(
+              CodeExpression(
+                Code('override'),
+              ),
+            )
+            ..returns = refer('void')
+            ..name = method.name
+            ..requiredParameters.addAll(method.requiredParameters())
+            ..optionalParameters.addAll(method.optionalParameters())
+            ..lambda = true
+            ..body = Code(
+              '_\$${method.name}Event.add(${method.streamTypeParameters})',
+            ),
         );
       }).toList();
 }
