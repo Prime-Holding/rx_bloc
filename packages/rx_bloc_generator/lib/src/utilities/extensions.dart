@@ -224,11 +224,12 @@ extension _MethodElementExtensions on MethodElement {
   List<String> get parameterNames =>
       parameters.map((param) => param.name).toList();
 
-  List<Parameter> optionalParameters() => parameters
+  List<Parameter> optionalParameters({bool toThis = false}) => parameters
       .where((ParameterElement parameter) => !parameter.isNotOptional)
       .map(
         (ParameterElement parameter) => Parameter(
           (b) => b
+            ..toThis = toThis
             ..required = parameter.isRequiredNamed
             ..defaultTo = parameter?.defaultValueCode != null
                 ? Code(parameter.defaultValueCode)
@@ -242,11 +243,12 @@ extension _MethodElementExtensions on MethodElement {
       )
       .toList();
 
-  List<Parameter> requiredParameters() => parameters
+  List<Parameter> requiredParameters({bool toThis = false}) => parameters
       .where((ParameterElement parameter) => parameter.isNotOptional)
       .map(
         (ParameterElement parameter) => Parameter(
           (b) => b
+            ..toThis = toThis
             ..name = parameter.name
             ..type = refer(
               parameter.type.toString(),

@@ -20,7 +20,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
     this.statesClass, {
     this.contractClassName,
     this.partOfUrl,
-  })  : _statesClassGenerator = StatesGenerator(statesClass);
+  }) : _statesClassGenerator = StatesGenerator(statesClass);
 
   /// The output buffer containing all the generated code
   final StringBuffer _output = StringBuffer();
@@ -57,7 +57,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
       _blocClass(),
 
       // class _[EventMethodName]EventArgs
-      _eventMethodsArgsClasses(),
+      ..._eventMethodsArgsClasses(),
     ].forEach(_output.writeln);
 
     return _output.toString();
@@ -141,52 +141,45 @@ class _RxBlocGenerator implements RxGeneratorContract {
       ..methods.addAll(
         <Method>[
           ..._eventMethods(),
+          // TODO(Diev): Implement the dispose method
         ],
       )).toDartCodeString();
-    // var comment = '\n/// \$${blocClass.displayName} class - extended by the ';
-    // comment += '${blocClass.displayName} blocClass';
-    // _writeln('\n');
-    // _writeln(comment);
-    // _noDocAnnotation();
-    // _writeln('abstract class \$${blocClass.displayName} extends RxBlocBase');
-    // _writeln('\n    implements');
-    // _writeln('\n        ${eventsClass.displayName},');
-    // _writeln('\n        ${statesClass.displayName},');
-    // _writeln('\n        ${blocClass.displayName}Type {');
-    // _writeln(_eventsClassGenerator.generate());
-    // _writeln(_statesClassGenerator.generate());
-    // _writeln('\n  ///region Type');
-    // _writeln('\n  @override');
-    // _writeln('\n  ${eventsClass.displayName} get eventsClass => this;');
-    // _writeln('\n');
-    // _writeln('\n  @override');
-    // _writeln('\n  ${statesClass.displayName} get statesClass => this;');
-    // _writeln('\n  ///endregion Type');
-    // _generateDisposeMethod();
-    // _writeln('\n}\n');
-    // _writeln(_eventsClassGenerator.generateArgumentClasses());
   }
-
-  /// Generates the dispose method for the blocClass
-  // void _generateDisposeMethod() {
-  //   _writeln('\n/// Dispose of all the opened streams');
-  //   _writeln('\n@override');
-  //   _writeln('\nvoid dispose(){');
-  //
-  //   eventsClass.methods.forEach(
-  //     (method) => _writeln('_\$${method.name}Event.close();'),
-  //   );
-  //   _writeln('super.dispose();');
-  //   _writeln('}');
-  // }
 
   /// Generates class like..
   /// .. class _EventMethodArgs {
   /// ..    _EventMethodArgs({this.argExample});
   /// ..    final int argExample;
   /// .. }
-  // TODO(Diev): To be implemented
-  String _eventMethodsArgsClasses() => '';
+  List<String> _eventMethodsArgsClasses() => eventsClass.methods
+      .map((MethodElement method) => Class(
+            (b) => b
+              ..name = '_${method.name.capitalize()}EventArgs'
+              ..constructors.add(
+                Constructor(
+                  (b) => b
+                    ..optionalParameters.addAll(
+                      method.optionalParameters(toThis: true),
+                    )
+                    ..requiredParameters.addAll(
+                      method.requiredParameters(toThis: true),
+                    ),
+                ),
+              )
+              ..fields.addAll(
+                method.parameters.map(
+                  (ParameterElement parameter) => Field(
+                    (b) => b
+                      ..modifier = FieldModifier.final$
+                      ..type = refer(
+                        parameter.type.toString(),
+                      )
+                      ..name = parameter.name,
+                  ),
+                ),
+              ),
+          ).toDartCodeString())
+      .toList();
 
   /// Mapper that converts a [MethodElement] into an event [Field]
   List<Field> _eventFields() => eventsClass.methods.map((MethodElement method) {
@@ -203,27 +196,26 @@ class _RxBlocGenerator implements RxGeneratorContract {
       }).toList();
 
   /// Mapper that converts a [MethodElement] into an event [Method]
-  List<Method> _eventMethods() =>
-      eventsClass.methods.map((MethodElement method) {
-        return Method(
-          (b) => b
-            // ..docs.add(
-            //   '/// region ${method.name}Method',
-            // )
-            //     ..type = MethodType.v
-            ..annotations.add(
-              CodeExpression(
-                Code('override'),
+  List<Method> _eventMethods() => eventsClass.methods
+      .map((MethodElement method) => Method(
+            (b) => b
+              // ..docs.add(
+              //   '/// region ${method.name}Method',
+              // )
+              //     ..type = MethodType.v
+              ..annotations.add(
+                CodeExpression(
+                  Code('override'),
+                ),
+              )
+              ..returns = refer('void')
+              ..name = method.name
+              ..requiredParameters.addAll(method.requiredParameters())
+              ..optionalParameters.addAll(method.optionalParameters())
+              ..lambda = true
+              ..body = Code(
+                '_\$${method.name}Event.add(${method.streamTypeParameters})',
               ),
-            )
-            ..returns = refer('void')
-            ..name = method.name
-            ..requiredParameters.addAll(method.requiredParameters())
-            ..optionalParameters.addAll(method.optionalParameters())
-            ..lambda = true
-            ..body = Code(
-              '_\$${method.name}Event.add(${method.streamTypeParameters})',
-            ),
-        );
-      }).toList();
+          ))
+      .toList();
 }
