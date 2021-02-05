@@ -197,6 +197,8 @@ extension SpecExtensions on Spec {
 }
 
 extension _MethodElementExtensions on MethodElement {
+  String get streamPropertyName => '_\$${name}Event';
+
   /// The name of the arguments class that will be generated if
   /// the event contains more than one parameter
   String get argumentsClassName => '_${name.capitalize()}EventArgs';
@@ -236,9 +238,11 @@ extension _MethodElementExtensions on MethodElement {
                 : null
             ..named = parameter.isNamed
             ..name = parameter.name
-            ..type = refer(
-              parameter.type.toString(),
-            ),
+            ..type = toThis
+                ? null // We don't need the type in the constructor
+                : refer(
+                    parameter.type.toString(),
+                  ),
         ),
       )
       .toList();
@@ -250,10 +254,59 @@ extension _MethodElementExtensions on MethodElement {
           (b) => b
             ..toThis = toThis
             ..name = parameter.name
-            ..type = refer(
-              parameter.type.toString(),
-            ),
+            ..type = toThis
+                ? null // We don't need the type in the constructor
+                : refer(
+                    parameter.type.toString(),
+                  ),
         ),
       )
       .toList();
+
+  /// Example:
+  /// _$[methodName]Event.add()
+  Code streamAddMethodInvoker(Expression argument) =>
+      refer(streamPropertyName + '.add').call([argument]).code;
+
+  Code bodyCode() {
+    List<Parameter> requiredParams = requiredParameters();
+    List<Parameter> optionalParams = optionalParameters();
+    if (requiredParams.isEmpty && optionalParams.isEmpty) {
+      // Provide null if we don't have any arguments
+      return streamAddMethodInvoker(literalNull);
+    }
+
+    // Provide first if it's just one required param
+    if (optionalParams.isEmpty && requiredParams.length == 1) {
+      return streamAddMethodInvoker(refer(requiredParams.first.name));
+    }
+
+    // Provide first if it's just one optional param
+    if (requiredParams.isEmpty && optionalParams.length == 1) {
+      return streamAddMethodInvoker(refer(optionalParams.first.name));
+    }
+
+    List<Expression> positionalArguments = requiredParams
+        .map((Parameter parameter) => refer(parameter.name))
+        .toList();
+
+    // Optional and not named are also positional
+    for (Parameter param
+        in optionalParams.where((Parameter param) => !param.named)) {
+      positionalArguments.add(refer(param.name));
+    }
+
+    Map<String, Expression> namedArguments = {};
+    for (Parameter param
+        in optionalParams.where((Parameter param) => param.named)) {
+      namedArguments[param.name] = refer(param.name);
+    }
+
+    return streamAddMethodInvoker(
+      refer('_${name.capitalize()}EventArgs').newInstance(
+        positionalArguments,
+        namedArguments,
+      ),
+    );
+  }
 }

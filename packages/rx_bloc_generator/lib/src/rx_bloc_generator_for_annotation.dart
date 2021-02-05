@@ -16,7 +16,6 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
     // TODO(Diev): This way it will log the errors one by one. Is it OK?
     try {
       // return early if annotation is used for a none class element
-      // TODO(Diev): This doesn't seem good
       if (element is! ClassElement) return null;
 
       final ClassElement classElement = element as ClassElement;
@@ -34,7 +33,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       logError(e.message);
       return null;
     } catch (e) {
-      // TODO(Diev): Log it here too
+      // Internal package error
       return null;
     }
   }

@@ -152,12 +152,14 @@ class _RxBlocGenerator implements RxGeneratorContract {
   /// ..    final int argExample;
   /// .. }
   List<String> _eventMethodsArgsClasses() => eventsClass.methods
+      .where((MethodElement method) => method.parameters.length > 1)
       .map((MethodElement method) => Class(
             (b) => b
               ..name = '_${method.name.capitalize()}EventArgs'
               ..constructors.add(
                 Constructor(
                   (b) => b
+                    ..constant = true
                     ..optionalParameters.addAll(
                       method.optionalParameters(toThis: true),
                     )
@@ -185,6 +187,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
   List<Field> _eventFields() => eventsClass.methods.map((MethodElement method) {
         return Field(
           (b) => b
+            // TODO(Diev): Add region comments
             // ..docs.add(
             //   '/// region ${method.name}Method',
             // )
@@ -197,25 +200,22 @@ class _RxBlocGenerator implements RxGeneratorContract {
 
   /// Mapper that converts a [MethodElement] into an event [Method]
   List<Method> _eventMethods() => eventsClass.methods
-      .map((MethodElement method) => Method(
-            (b) => b
-              // ..docs.add(
-              //   '/// region ${method.name}Method',
-              // )
-              //     ..type = MethodType.v
-              ..annotations.add(
-                CodeExpression(
-                  Code('override'),
-                ),
-              )
-              ..returns = refer('void')
-              ..name = method.name
-              ..requiredParameters.addAll(method.requiredParameters())
-              ..optionalParameters.addAll(method.optionalParameters())
-              ..lambda = true
-              ..body = Code(
-                '_\$${method.name}Event.add(${method.streamTypeParameters})',
-              ),
-          ))
+      .map(
+        (MethodElement method) => Method(
+          (b) => b
+            // TODO(Diev): Add region comments
+            // ..docs.add(
+            //   '/// region ${method.name}Method',
+            // )
+            //     ..type = MethodType.v
+            ..annotations.add(refer('override'))
+            ..returns = refer('void')
+            ..name = method.name
+            ..requiredParameters.addAll(method.requiredParameters())
+            ..optionalParameters.addAll(method.optionalParameters())
+            ..lambda = true
+            ..body = method.bodyCode(),
+        ),
+      )
       .toList();
 }
