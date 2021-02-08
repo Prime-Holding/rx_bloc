@@ -197,7 +197,7 @@ extension SpecExtensions on Spec {
 }
 
 extension _MethodElementExtensions on MethodElement {
-  String get streamPropertyName => '_\$${name}Event';
+  String get generatedFieldName => '_\$${name}Event';
 
   /// The name of the arguments class that will be generated if
   /// the event contains more than one parameter
@@ -211,22 +211,7 @@ extension _MethodElementExtensions on MethodElement {
     return parameters.isNotEmpty ? parameters.first.type.toString() : 'void';
   }
 
-  /// Returns the method parameters in a format usable for streams
-  String get streamTypeParameters {
-    if (parameters.length > 1) {
-      var str = '$argumentsClassName(';
-      parameterNames.forEach((paramName) => str += ' $paramName:$paramName,');
-      str += ')';
-      return str;
-    }
-    return "${parameters.isNotEmpty ? parameters.first.name : 'null'}";
-  }
-
-  /// Returns the list of all parameter names of a method
-  List<String> get parameterNames =>
-      parameters.map((param) => param.name).toList();
-
-  List<Parameter> optionalParameters({bool toThis = false}) => parameters
+  List<Parameter> buildOptionalParameters({bool toThis = false}) => parameters
       .where((ParameterElement parameter) => !parameter.isNotOptional)
       .map(
         (ParameterElement parameter) => Parameter(
@@ -247,7 +232,7 @@ extension _MethodElementExtensions on MethodElement {
       )
       .toList();
 
-  List<Parameter> requiredParameters({bool toThis = false}) => parameters
+  List<Parameter> buildRequiredParameters({bool toThis = false}) => parameters
       .where((ParameterElement parameter) => parameter.isNotOptional)
       .map(
         (ParameterElement parameter) => Parameter(
@@ -265,25 +250,25 @@ extension _MethodElementExtensions on MethodElement {
 
   /// Example:
   /// _$[methodName]Event.add()
-  Code streamAddMethodInvoker(Expression argument) =>
-      refer(streamPropertyName + '.add').call([argument]).code;
+  Code _streamAddMethodInvoker(Expression argument) =>
+      refer(generatedFieldName + '.add').call([argument]).code;
 
-  Code bodyCode() {
-    List<Parameter> requiredParams = requiredParameters();
-    List<Parameter> optionalParams = optionalParameters();
+  Code buildBody() {
+    List<Parameter> requiredParams = buildRequiredParameters();
+    List<Parameter> optionalParams = buildOptionalParameters();
     if (requiredParams.isEmpty && optionalParams.isEmpty) {
       // Provide null if we don't have any arguments
-      return streamAddMethodInvoker(literalNull);
+      return _streamAddMethodInvoker(literalNull);
     }
 
     // Provide first if it's just one required param
     if (optionalParams.isEmpty && requiredParams.length == 1) {
-      return streamAddMethodInvoker(refer(requiredParams.first.name));
+      return _streamAddMethodInvoker(refer(requiredParams.first.name));
     }
 
     // Provide first if it's just one optional param
     if (requiredParams.isEmpty && optionalParams.length == 1) {
-      return streamAddMethodInvoker(refer(optionalParams.first.name));
+      return _streamAddMethodInvoker(refer(optionalParams.first.name));
     }
 
     List<Expression> positionalArguments = requiredParams
@@ -302,11 +287,17 @@ extension _MethodElementExtensions on MethodElement {
       namedArguments[param.name] = refer(param.name);
     }
 
-    return streamAddMethodInvoker(
+    return _streamAddMethodInvoker(
       refer('_${name.capitalize()}EventArgs').newInstance(
         positionalArguments,
         namedArguments,
       ),
     );
   }
+}
+
+extension _FieldElementExtensions on FieldElement {
+  String get generatedFieldName => '_${name}State';
+
+  String get generatedMethodName => '_mapTo${name.capitalize()}State';
 }

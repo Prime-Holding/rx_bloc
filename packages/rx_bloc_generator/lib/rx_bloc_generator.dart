@@ -13,7 +13,6 @@ import 'package:logging/logging.dart';
 part 'src/rx_bloc_generator_for_annotation.dart';
 part 'src/file_controller.dart';
 part 'src/services/rx_bloc_generator.dart';
-part 'src/services/states_generator.dart';
 part 'src/utilities/extensions.dart';
 part 'src/utilities/utilities.dart';
 part 'src/utilities/rx_bloc_generator_exception.dart';

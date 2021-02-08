@@ -15,12 +15,13 @@ part of rx_bloc_generator;
 class _RxBlocGenerator implements RxGeneratorContract {
   /// The default constructor
   _RxBlocGenerator(
+    // TODO(Diev): Don't need it. We just need the name
     this.blocClass,
     this.eventsClass,
     this.statesClass, {
     this.contractClassName,
     this.partOfUrl,
-  }) : _statesClassGenerator = StatesGenerator(statesClass);
+  });
 
   /// The output buffer containing all the generated code
   final StringBuffer _output = StringBuffer();
@@ -33,9 +34,6 @@ class _RxBlocGenerator implements RxGeneratorContract {
 
   /// The class containing all the user-defined statesClass
   final ClassElement statesClass;
-
-  /// Delegate used to generate statesClass based on the statesClass class
-  final StatesGenerator _statesClassGenerator;
 
   /// The [RxBlocName]BlocType class name
   final String contractClassName;
@@ -68,7 +66,8 @@ class _RxBlocGenerator implements RxGeneratorContract {
   /// Example:
   /// .. part of '[rx_bloc_name]_bloc.dart'
   ///
-  // TODO(Diev): Use [Directive] once `part of` is supported https://github.com/dart-lang/code_builder/pull/308
+  // TODO(Diev): Use [Directive] instead once `part of` is supported
+  // String _partOf() => Directive.partOf(partOfUrl);
   String _partOf() => "part of '${partOfUrl}';";
 
   /// Generates the type class for the blocClass
@@ -121,30 +120,32 @@ class _RxBlocGenerator implements RxGeneratorContract {
   ///    ...
   /// }
   ///
-  String _blocClass() {
-    return Class((b) => b
-      ..docs.addAll(<String>[
-        '/// \$${blocClass.displayName} class - extended by the CounterBloc bloc',
-        '/// {@nodoc}',
-      ])
-      ..abstract = true
-      ..name = '\$' + blocClass.displayName
-      ..extend = refer((RxBlocBase).toString())
-      ..implements.addAll(<Reference>[
-        refer(eventsClass.displayName),
-        refer(statesClass.displayName),
-        refer(contractClassName),
-      ])
-      ..fields.addAll(<Field>[
-        ..._eventFields(),
-      ])
-      ..methods.addAll(
-        <Method>[
-          ..._eventMethods(),
-          // TODO(Diev): Implement the dispose method
-        ],
-      )).toDartCodeString();
-  }
+  String _blocClass() => Class((b) => b
+    ..docs.addAll(<String>[
+      '/// \$${blocClass.displayName} class - extended by the CounterBloc bloc',
+      '/// {@nodoc}',
+    ])
+    ..abstract = true
+    ..name = '\$' + blocClass.displayName
+    ..extend = refer((RxBlocBase).toString())
+    ..implements.addAll(<Reference>[
+      refer(eventsClass.displayName),
+      refer(statesClass.displayName),
+      refer(contractClassName),
+    ])
+    ..fields.addAll(<Field>[
+      ..._eventFields(),
+      ..._stateFields(),
+    ])
+    ..methods.addAll(
+      <Method>[
+        ..._eventMethods(),
+        ..._stateGetMethods(),
+        ..._stateMethods(),
+        ..._eventsAndStatesGetters(),
+        _disposeMethod(),
+      ],
+    )).toDartCodeString();
 
   /// Generates class like..
   /// .. class _EventMethodArgs {
@@ -161,10 +162,10 @@ class _RxBlocGenerator implements RxGeneratorContract {
                   (b) => b
                     ..constant = true
                     ..optionalParameters.addAll(
-                      method.optionalParameters(toThis: true),
+                      method.buildOptionalParameters(toThis: true),
                     )
                     ..requiredParameters.addAll(
-                      method.requiredParameters(toThis: true),
+                      method.buildRequiredParameters(toThis: true),
                     ),
                 ),
               )
@@ -184,38 +185,106 @@ class _RxBlocGenerator implements RxGeneratorContract {
       .toList();
 
   /// Mapper that converts a [MethodElement] into an event [Field]
-  List<Field> _eventFields() => eventsClass.methods.map((MethodElement method) {
-        return Field(
-          (b) => b
-            // TODO(Diev): Add region comments
-            // ..docs.add(
-            //   '/// region ${method.name}Method',
-            // )
-            ..modifier = FieldModifier.final$
-            // TODO(Diev): Add the stream type check - Subject or Behavior
-            ..assignment = Code('PublishSubject<${method.argumentsType}>()')
-            ..name = '_\$${method.name}Event',
-        );
-      }).toList();
+  List<Field> _eventFields() => eventsClass.methods
+      .map((MethodElement method) => Field(
+            (b) => b
+              // TODO(Diev): Add region comments
+              ..modifier = FieldModifier.final$
+              // TODO(Diev): Add the stream type check - Subject or Behavior
+              ..assignment = Code('PublishSubject<${method.argumentsType}>()')
+              ..name = method.generatedFieldName,
+          ))
+      .toList();
 
   /// Mapper that converts a [MethodElement] into an event [Method]
   List<Method> _eventMethods() => eventsClass.methods
       .map(
-        (MethodElement method) => Method(
+        (MethodElement method) => Method.returnsVoid(
           (b) => b
             // TODO(Diev): Add region comments
-            // ..docs.add(
-            //   '/// region ${method.name}Method',
-            // )
-            //     ..type = MethodType.v
             ..annotations.add(refer('override'))
-            ..returns = refer('void')
             ..name = method.name
-            ..requiredParameters.addAll(method.requiredParameters())
-            ..optionalParameters.addAll(method.optionalParameters())
+            ..requiredParameters.addAll(method.buildRequiredParameters())
+            ..optionalParameters.addAll(method.buildOptionalParameters())
             ..lambda = true
-            ..body = method.bodyCode(),
+            ..body = method.buildBody(),
         ),
       )
       .toList();
+
+  /// Mapper that converts a [FieldElement] into an event [Field]
+  List<Field> _stateFields() => statesClass.fields
+      .map((FieldElement field) => Field(
+            (b) => b
+              // TODO(Diev): Add region comments
+              ..type = refer(field.type.toString())
+              ..name = field.generatedFieldName,
+          ))
+      .toList();
+
+  /// Mapper that converts a [MethodElement] into an event [Method]
+  List<Method> _stateGetMethods() => statesClass.fields
+      .map(
+        (FieldElement field) => Method(
+          (b) => b
+            // TODO(Diev): Add region comments
+            ..type = MethodType.getter
+            ..annotations.add(refer('override'))
+            ..returns = refer(field.type.toString())
+            ..name = field.name
+            ..lambda = true
+            ..body = refer(field.generatedFieldName)
+                .assignNullAware(
+                  refer(field.generatedMethodName).newInstance([]),
+                )
+                .code,
+        ),
+      )
+      .toList();
+
+  /// Mapper that converts a [MethodElement] into an event [Method]
+  List<Method> _stateMethods() => statesClass.fields
+      .map(
+        (FieldElement field) => Method(
+          (b) => b
+            // TODO(Diev): Add region comments
+            ..returns = refer(field.type.toString())
+            ..name = field.generatedMethodName,
+        ),
+      )
+      .toList();
+
+  // Generates the 'events' and 'states' getter methods
+  List<Method> _eventsAndStatesGetters() => [
+        Method(
+          (b) => b
+            ..annotations.add(refer('override'))
+            ..returns = refer(eventsClass.displayName)
+            ..type = MethodType.getter
+            ..name = 'events'
+            ..lambda = true
+            ..body = Code('this'),
+        ),
+        Method(
+          (b) => b
+            ..annotations.add(refer('override'))
+            ..returns = refer(statesClass.displayName)
+            ..type = MethodType.getter
+            ..name = 'states'
+            ..lambda = true
+            ..body = Code('this'),
+        ),
+      ];
+
+  // Builds the dispose method
+  Method _disposeMethod() => Method.returnsVoid((b) => b
+    ..annotations.add(refer('override'))
+    ..name = 'dispose'
+    ..body = CodeExpression(Block.of([
+      ...eventsClass.methods.map(
+        (MethodElement method) =>
+            refer(method.generatedFieldName + '.close').call([]).statement,
+      ),
+      refer('super.dispose').call([]).statement,
+    ])).code);
 }
