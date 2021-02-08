@@ -22,7 +22,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
 
       final LibraryReader libraryReader = LibraryReader(classElement.library);
 
-      return (_FileController(
+      return (_BuildController(
         mainBloc: classElement,
         annotation: annotation,
         libraryReader: libraryReader,
@@ -30,7 +30,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
           .getFileContent();
     } on _RxBlocGeneratorException catch (e) {
       // Log any exception and don't proceed
-      logError(e.message);
+      _logError(e.message);
       return null;
     } catch (e) {
       // Internal package error

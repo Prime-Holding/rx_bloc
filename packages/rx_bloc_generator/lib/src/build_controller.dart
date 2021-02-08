@@ -1,8 +1,8 @@
 part of rx_bloc_generator;
 
 /// Validates the main bloc file and provides the generator the needed data
-class _FileController {
-  _FileController({this.mainBloc, this.annotation, this.libraryReader})
+class _BuildController {
+  _BuildController({this.mainBloc, this.annotation, this.libraryReader})
       : _eventsClassName = annotation.read('eventsClassName')?.stringValue,
         _statesClassName = annotation.read('statesClassName')?.stringValue;
 
@@ -53,13 +53,14 @@ class _FileController {
     // Check for any broken rules
     _validate();
 
-    _fileContent = _RxBlocGenerator(
-      mainBloc,
-      _eventsClass,
-      _statesClass,
-      contractClassName: mainBloc.displayName + 'Type',
-      partOfUrl: _mainBlocFileName,
-    ).generate();
+    _fileContent = _RxBlocCodeBuilder(
+      mainBloc.displayName,
+      _eventsClass.displayName,
+      _eventsClass.methods,
+      _statesClass.displayName,
+      _statesClass.fields,
+      _mainBlocFileName,
+    ).build();
   }
 
   /// Checks and logs if there is anything missed

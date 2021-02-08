@@ -1,39 +1,29 @@
 part of rx_bloc_generator;
 
-/// Class responsible for generating the end result file
-/// containing the bloc boilerplate code.
-///
-/// Takes in a [viewModelElement] ClassElement that represents the class which
-/// is annotated with the @RxBloc() annotation. Additionally, the class also
-/// requires a [eventsElement] ClassElement which represents the events class
-/// containing all the user-defined events of the bloc. The [statesElement]
-/// ClassElement represents the states class containing all the user-defined
-/// states of the bloc.
-///
-/// Note: This class generates a `part` file that has to be included
-/// in the file containing the bloc in order to work properly.
-class _RxBlocGenerator implements RxGeneratorContract {
-  /// The default constructor
-  _RxBlocGenerator(
-    // TODO(Diev): Don't need it. We just need the name
-    this.blocClass,
-    this.eventsClass,
-    this.statesClass, {
-    this.contractClassName,
+/// Using the `code_builder` this class provides the generated file as string
+class _RxBlocCodeBuilder {
+  _RxBlocCodeBuilder(
+    String blocClassName,
+    this.eventsClassName,
+    this.eventsMethods,
+    this.statesClassName,
+    this.statesFields,
     this.partOfUrl,
-  });
+  )   : blocClassName = '\$${blocClassName}',
+        contractClassName = '${blocClassName}Type';
 
-  /// The output buffer containing all the generated code
-  final StringBuffer _output = StringBuffer();
+  /// The $[RxBlocName] class name
+  final String blocClassName;
 
-  /// The class annotated with the @RxBloc() annotation
-  final ClassElement blocClass;
+  /// The [RxBlocName]Events class name
+  final String eventsClassName;
 
-  /// The class containing all the user-defined eventsClass
-  final ClassElement eventsClass;
+  final List<MethodElement> eventsMethods;
 
-  /// The class containing all the user-defined statesClass
-  final ClassElement statesClass;
+  /// The [RxBlocName]States class name
+  final String statesClassName;
+
+  final List<FieldElement> statesFields;
 
   /// The [RxBlocName]BlocType class name
   final String contractClassName;
@@ -42,8 +32,10 @@ class _RxBlocGenerator implements RxGeneratorContract {
   final String partOfUrl;
 
   /// Generates the contents of the blocClass file
-  @override
-  String generate() {
+  String build() {
+    /// The output buffer containing all the generated code
+    final StringBuffer _output = StringBuffer();
+
     <String>[
       // part of [bloc_name]_bloc.dart
       _partOf(),
@@ -92,13 +84,13 @@ class _RxBlocGenerator implements RxGeneratorContract {
             Method(
               (b) => b
                 ..name = 'events'
-                ..returns = refer(eventsClass.displayName)
+                ..returns = refer(eventsClassName)
                 ..type = MethodType.getter,
             ),
             Method(
               (b) => b
                 ..name = 'states'
-                ..returns = refer(statesClass.displayName)
+                ..returns = refer(statesClassName)
                 ..type = MethodType.getter,
             ),
           ]),
@@ -122,15 +114,15 @@ class _RxBlocGenerator implements RxGeneratorContract {
   ///
   String _blocClass() => Class((b) => b
     ..docs.addAll(<String>[
-      '/// \$${blocClass.displayName} class - extended by the CounterBloc bloc',
+      '/// ${blocClassName} class - extended by the CounterBloc bloc',
       '/// {@nodoc}',
     ])
     ..abstract = true
-    ..name = '\$' + blocClass.displayName
+    ..name = blocClassName
     ..extend = refer((RxBlocBase).toString())
     ..implements.addAll(<Reference>[
-      refer(eventsClass.displayName),
-      refer(statesClass.displayName),
+      refer(eventsClassName),
+      refer(statesClassName),
       refer(contractClassName),
     ])
     ..fields.addAll(<Field>[
@@ -152,7 +144,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
   /// ..    _EventMethodArgs({this.argExample});
   /// ..    final int argExample;
   /// .. }
-  List<String> _eventMethodsArgsClasses() => eventsClass.methods
+  List<String> _eventMethodsArgsClasses() => eventsMethods
       .where((MethodElement method) => method.parameters.length > 1)
       .map((MethodElement method) => Class(
             (b) => b
@@ -185,7 +177,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
       .toList();
 
   /// Mapper that converts a [MethodElement] into an event [Field]
-  List<Field> _eventFields() => eventsClass.methods
+  List<Field> _eventFields() => eventsMethods
       .map((MethodElement method) => Field(
             (b) => b
               // TODO(Diev): Add region comments
@@ -197,7 +189,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
       .toList();
 
   /// Mapper that converts a [MethodElement] into an event [Method]
-  List<Method> _eventMethods() => eventsClass.methods
+  List<Method> _eventMethods() => eventsMethods
       .map(
         (MethodElement method) => Method.returnsVoid(
           (b) => b
@@ -213,7 +205,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
       .toList();
 
   /// Mapper that converts a [FieldElement] into an event [Field]
-  List<Field> _stateFields() => statesClass.fields
+  List<Field> _stateFields() => statesFields
       .map((FieldElement field) => Field(
             (b) => b
               // TODO(Diev): Add region comments
@@ -223,7 +215,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
       .toList();
 
   /// Mapper that converts a [MethodElement] into an event [Method]
-  List<Method> _stateGetMethods() => statesClass.fields
+  List<Method> _stateGetMethods() => statesFields
       .map(
         (FieldElement field) => Method(
           (b) => b
@@ -243,7 +235,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
       .toList();
 
   /// Mapper that converts a [MethodElement] into an event [Method]
-  List<Method> _stateMethods() => statesClass.fields
+  List<Method> _stateMethods() => statesFields
       .map(
         (FieldElement field) => Method(
           (b) => b
@@ -259,7 +251,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
         Method(
           (b) => b
             ..annotations.add(refer('override'))
-            ..returns = refer(eventsClass.displayName)
+            ..returns = refer(eventsClassName)
             ..type = MethodType.getter
             ..name = 'events'
             ..lambda = true
@@ -268,7 +260,7 @@ class _RxBlocGenerator implements RxGeneratorContract {
         Method(
           (b) => b
             ..annotations.add(refer('override'))
-            ..returns = refer(statesClass.displayName)
+            ..returns = refer(statesClassName)
             ..type = MethodType.getter
             ..name = 'states'
             ..lambda = true
@@ -277,14 +269,17 @@ class _RxBlocGenerator implements RxGeneratorContract {
       ];
 
   // Builds the dispose method
-  Method _disposeMethod() => Method.returnsVoid((b) => b
-    ..annotations.add(refer('override'))
-    ..name = 'dispose'
-    ..body = CodeExpression(Block.of([
-      ...eventsClass.methods.map(
-        (MethodElement method) =>
-            refer(method.generatedFieldName + '.close').call([]).statement,
-      ),
-      refer('super.dispose').call([]).statement,
-    ])).code);
+  Method _disposeMethod() => Method.returnsVoid(
+        (b) => b
+          ..annotations.add(refer('override'))
+          ..name = 'dispose'
+          ..body = CodeExpression(Block.of([
+            ...eventsMethods.map(
+              (MethodElement method) =>
+                  refer(method.generatedFieldName + '.close')
+                      .call([]).statement,
+            ),
+            refer('super.dispose').call([]).statement,
+          ])).code,
+      );
 }
