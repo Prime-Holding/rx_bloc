@@ -58,7 +58,14 @@ class _BuildController {
       _eventsClass.displayName,
       _eventsClass.methods,
       _statesClass.displayName,
-      _statesClass.fields,
+      _statesClass.fields
+          // Skip @RxBlocIgnoreState() ignored states
+          .where((FieldElement field) =>
+              field.getter is PropertyAccessorElement &&
+              (field.getter.metadata.isEmpty ||
+                  !TypeChecker.fromRuntime(RxBlocIgnoreState)
+                      .hasAnnotationOf(field.getter)))
+          .toList(),
       _mainBlocFileName,
     ).build();
   }

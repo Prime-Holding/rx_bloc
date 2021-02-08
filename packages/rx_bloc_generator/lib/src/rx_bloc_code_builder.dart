@@ -53,13 +53,13 @@ class _RxBlocCodeBuilder {
     return _output.toString();
   }
 
-  /// Generates the 'part of' section for the appropriate file
+  /// Generates the 'part of' directive
   ///
   /// Example:
   /// .. part of '[rx_bloc_name]_bloc.dart'
   ///
   // TODO(Diev): Use [Directive] instead once `part of` is supported
-  // String _partOf() => Directive.partOf(partOfUrl);
+  // Example: String _partOf() => Directive.partOf(partOfUrl);
   String _partOf() => "part of '${partOfUrl}';";
 
   /// Generates the type class for the blocClass
@@ -102,13 +102,13 @@ class _RxBlocCodeBuilder {
   /// abstract class $[RxBlocName]Bloc extends RxBlocBase
   ///    implements [RxBlocName]BlocEvents, [RxBlocName]BlocStates, [RxBlocName]BlocType {
   ///
-  ///    /// region Events
+  ///    /// Events
   ///    ...
-  ///    /// region States
+  ///    /// States
   ///    ...
-  ///    /// region Type
+  ///    /// Type - events, states getters
   ///    ...
-  ///    /// region Dispose of all the opened streams
+  ///    /// Dispose of all the opened streams
   ///    ...
   /// }
   ///
@@ -167,7 +167,7 @@ class _RxBlocCodeBuilder {
                     (b) => b
                       ..modifier = FieldModifier.final$
                       ..type = refer(
-                        parameter.type.toString(),
+                        parameter.type.getDisplayString(withNullability: false),
                       )
                       ..name = parameter.name,
                   ),
@@ -209,7 +209,8 @@ class _RxBlocCodeBuilder {
       .map((FieldElement field) => Field(
             (b) => b
               // TODO(Diev): Add region comments
-              ..type = refer(field.type.toString())
+              ..type =
+                  refer(field.type.getDisplayString(withNullability: false))
               ..name = field.generatedFieldName,
           ))
       .toList();
@@ -222,7 +223,8 @@ class _RxBlocCodeBuilder {
             // TODO(Diev): Add region comments
             ..type = MethodType.getter
             ..annotations.add(refer('override'))
-            ..returns = refer(field.type.toString())
+            ..returns =
+                refer(field.type.getDisplayString(withNullability: false))
             ..name = field.name
             ..lambda = true
             ..body = refer(field.generatedFieldName)
@@ -240,7 +242,9 @@ class _RxBlocCodeBuilder {
         (FieldElement field) => Method(
           (b) => b
             // TODO(Diev): Add region comments
-            ..returns = refer(field.type.toString())
+            ..returns = refer(
+              field.type.getDisplayString(withNullability: false),
+            )
             ..name = field.generatedMethodName,
         ),
       )

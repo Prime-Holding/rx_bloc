@@ -9,16 +9,23 @@ extension _StringExtensions on String {
   String toRedString() => '\x1B[31m${this}\x1B[0m';
 }
 
-final DartFormatter _dartFormatter = DartFormatter();
-
 extension _SpecExtensions on Spec {
-  String toDartCodeString() {
-    return _dartFormatter.format(
-      '${accept(
-        DartEmitter(),
-      )}',
-    );
-  }
+  String toDartCodeString() => DartFormatter().format(
+        accept(
+          DartEmitter(),
+        ).toString(),
+      );
+}
+
+extension _FilteringAndCheckingStates on List<PropertyAccessorElement> {
+  /// Returns all properties that do not contain the
+  /// @RxBlocIgnoreState() annotation
+  Iterable<PropertyAccessorElement> filterRxBlocIgnoreState() =>
+      where((PropertyAccessorElement field) {
+        if (field.metadata.isEmpty) return true;
+        return !TypeChecker.fromRuntime(RxBlocIgnoreState)
+            .hasAnnotationOf(field);
+      });
 }
 
 extension _FieldElementExtensions on FieldElement {
@@ -39,7 +46,9 @@ extension _MethodElementExtensions on MethodElement {
     if (parameters.length > 1) {
       return argumentsClassName;
     }
-    return parameters.isNotEmpty ? parameters.first.type.toString() : 'void';
+    return parameters.isNotEmpty
+        ? parameters.first.type.getDisplayString(withNullability: false)
+        : 'void';
   }
 
   List<Parameter> buildOptionalParameters({bool toThis = false}) => parameters
@@ -57,7 +66,7 @@ extension _MethodElementExtensions on MethodElement {
             ..type = toThis
                 ? null // We don't need the type in the constructor
                 : refer(
-                    parameter.type.toString(),
+                    parameter.type.getDisplayString(withNullability: false),
                   ),
         ),
       )
@@ -73,7 +82,7 @@ extension _MethodElementExtensions on MethodElement {
             ..type = toThis
                 ? null // We don't need the type in the constructor
                 : refer(
-                    parameter.type.toString(),
+                    parameter.type.getDisplayString(withNullability: false),
                   ),
         ),
       )
@@ -88,16 +97,16 @@ extension _MethodElementExtensions on MethodElement {
     List<Parameter> requiredParams = buildRequiredParameters();
     List<Parameter> optionalParams = buildOptionalParameters();
     if (requiredParams.isEmpty && optionalParams.isEmpty) {
-      // Provide null if we don't have any arguments
+      // Provide null if we don't have any parameters
       return _streamAddMethodInvoker(literalNull);
     }
 
-    // Provide first if it's just one required param
+    // Provide first if it's just one required parameter
     if (optionalParams.isEmpty && requiredParams.length == 1) {
       return _streamAddMethodInvoker(refer(requiredParams.first.name));
     }
 
-    // Provide first if it's just one optional param
+    // Provide first if it's just one optional parameter
     if (requiredParams.isEmpty && optionalParams.length == 1) {
       return _streamAddMethodInvoker(refer(optionalParams.first.name));
     }
