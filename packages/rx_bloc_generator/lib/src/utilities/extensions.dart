@@ -101,26 +101,28 @@ extension _MethodElementExtensions on MethodElement {
       return _streamAddMethodInvoker(literalNull);
     }
 
-    // Provide first if it's just one required parameter
+    // Provide the first if it's just one required parameter
     if (optionalParams.isEmpty && requiredParams.length == 1) {
       return _streamAddMethodInvoker(refer(requiredParams.first.name));
     }
 
-    // Provide first if it's just one optional parameter
+    // Provide the first if it's just one optional parameter
     if (requiredParams.isEmpty && optionalParams.length == 1) {
       return _streamAddMethodInvoker(refer(optionalParams.first.name));
     }
 
+    // Required are positional parameters
     List<Expression> positionalArguments = requiredParams
         .map((Parameter parameter) => refer(parameter.name))
         .toList();
 
-    // Optional and not named are also positional
+    // Optional squared are also positional parameters
     for (Parameter param
         in optionalParams.where((Parameter param) => !param.named)) {
       positionalArguments.add(refer(param.name));
     }
 
+    // Only named are not positional parameters
     Map<String, Expression> namedArguments = {};
     for (Parameter param
         in optionalParams.where((Parameter param) => param.named)) {
