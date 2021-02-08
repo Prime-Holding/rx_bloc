@@ -17,17 +17,6 @@ extension _SpecExtensions on Spec {
       );
 }
 
-extension _FilteringAndCheckingStates on List<PropertyAccessorElement> {
-  /// Returns all properties that do not contain the
-  /// @RxBlocIgnoreState() annotation
-  Iterable<PropertyAccessorElement> filterRxBlocIgnoreState() =>
-      where((PropertyAccessorElement field) {
-        if (field.metadata.isEmpty) return true;
-        return !TypeChecker.fromRuntime(RxBlocIgnoreState)
-            .hasAnnotationOf(field);
-      });
-}
-
 extension _FieldElementExtensions on FieldElement {
   String get generatedFieldName => '_${name}State';
 
