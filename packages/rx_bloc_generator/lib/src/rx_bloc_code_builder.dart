@@ -176,19 +176,24 @@ class _RxBlocCodeBuilder {
           ).toDartCodeString())
       .toList();
 
-  /// Mapper that converts a [MethodElement] into an event [Field]
-  List<Field> _eventFields() => eventsMethods
-      .map((MethodElement method) => Field(
-            (b) => b
-              // TODO(Diev): Add region comments
-              ..modifier = FieldModifier.final$
-              // TODO(Diev): Add the stream type check - Subject or Behavior
-              ..assignment = Code('PublishSubject<${method.argumentsType}>()')
-              ..name = method.generatedFieldName,
-          ))
-      .toList();
+  /// A mapper that converts a [MethodElement] into an event [Field]
+  List<Field> _eventFields() => eventsMethods.map((MethodElement method) {
+        return Field(
+          (b) => b
+            // TODO(Diev): Add region comments
+            ..modifier = FieldModifier.final$
+            ..assignment = refer(method.eventStreamType)
+                .newInstance(
+                  method.streamPositionalArguments,
+                  {},
+                  method.streamNamedArguments,
+                )
+                .code
+            ..name = method.eventFieldName,
+        );
+      }).toList();
 
-  /// Mapper that converts a [MethodElement] into an event [Method]
+  /// A mapper that converts a [MethodElement] into an event [Method]
   List<Method> _eventMethods() => eventsMethods
       .map(
         (MethodElement method) => Method.returnsVoid(
@@ -204,18 +209,18 @@ class _RxBlocCodeBuilder {
       )
       .toList();
 
-  /// Mapper that converts a [FieldElement] into an event [Field]
+  /// A mapper that converts a [FieldElement] into an event [Field]
   List<Field> _stateFields() => statesFields
       .map((FieldElement field) => Field(
             (b) => b
               // TODO(Diev): Add region comments
               ..type =
                   refer(field.type.getDisplayString(withNullability: false))
-              ..name = field.generatedFieldName,
+              ..name = field.stateFieldName,
           ))
       .toList();
 
-  /// Mapper that converts a [MethodElement] into an event [Method]
+  /// A mapper that converts a [MethodElement] into an event [Method]
   List<Method> _stateGetMethods() => statesFields
       .map(
         (FieldElement field) => Method(
@@ -227,16 +232,16 @@ class _RxBlocCodeBuilder {
                 refer(field.type.getDisplayString(withNullability: false))
             ..name = field.name
             ..lambda = true
-            ..body = refer(field.generatedFieldName)
+            ..body = refer(field.stateFieldName)
                 .assignNullAware(
-                  refer(field.generatedMethodName).newInstance([]),
+                  refer(field.stateMethodName).newInstance([]),
                 )
                 .code,
         ),
       )
       .toList();
 
-  /// Mapper that converts a [MethodElement] into an event [Method]
+  /// A mapper that converts a [MethodElement] into an event [Method]
   List<Method> _stateMethods() => statesFields
       .map(
         (FieldElement field) => Method(
@@ -245,7 +250,7 @@ class _RxBlocCodeBuilder {
             ..returns = refer(
               field.type.getDisplayString(withNullability: false),
             )
-            ..name = field.generatedMethodName,
+            ..name = field.stateMethodName,
         ),
       )
       .toList();
@@ -280,8 +285,7 @@ class _RxBlocCodeBuilder {
           ..body = CodeExpression(Block.of([
             ...eventsMethods.map(
               (MethodElement method) =>
-                  refer(method.generatedFieldName + '.close')
-                      .call([]).statement,
+                  refer(method.eventFieldName + '.close').call([]).statement,
             ),
             refer('super.dispose').call([]).statement,
           ])).code,

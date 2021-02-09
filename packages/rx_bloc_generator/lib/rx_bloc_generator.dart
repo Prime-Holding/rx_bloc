@@ -1,8 +1,9 @@
 library rx_bloc_generator;
 
 import 'dart:async';
+import 'package:analyzer/dart/constant/value.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:rx_bloc/rx_bloc.dart';
