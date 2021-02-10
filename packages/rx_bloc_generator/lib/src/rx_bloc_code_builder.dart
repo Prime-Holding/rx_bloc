@@ -184,9 +184,9 @@ class _RxBlocCodeBuilder {
             ..modifier = FieldModifier.final$
             ..assignment = refer(method.eventStreamType)
                 .newInstance(
-                  method.streamPositionalArguments,
+                  method.seedPositionalArguments,
                   {},
-                  method.streamNamedArguments,
+                  method.streamTypeArguments,
                 )
                 .code
             ..name = method.eventFieldName,

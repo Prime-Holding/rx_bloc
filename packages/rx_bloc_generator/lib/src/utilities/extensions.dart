@@ -1,6 +1,8 @@
 part of rx_bloc_generator;
 
+/// Supported types of streams
 class _BlocEventStreamTypes {
+  /// Constants feel more comfortable than strings
   static const String publish = 'PublishSubject';
   static const String behavior = 'BehaviorSubject';
 }
@@ -14,22 +16,13 @@ extension _StringExtensions on String {
   String toRedString() => '\x1B[31m${this}\x1B[0m';
 }
 
+/// It is the main [DartFormatter]
 extension _SpecExtensions on Spec {
   String toDartCodeString() => DartFormatter().format(
         accept(
           DartEmitter(),
         ).toString(),
       );
-}
-
-extension _SeedValue on DartObject {
-  dynamic get value =>
-      toBoolValue() ??
-      toIntValue() ??
-      toDoubleValue() ??
-      toStringValue() ??
-      toListValue() ??
-      toMapValue();
 }
 
 extension _StateFieldElement on FieldElement {
@@ -39,89 +32,89 @@ extension _StateFieldElement on FieldElement {
 }
 
 extension _EventMethodElement on MethodElement {
+  /// The event field name in the generated file
   String get eventFieldName => '_\$${name}Event';
 
   /// The name of the arguments class that will be generated if
   /// the event contains more than one parameter
   String get eventArgumentsClassName => '_${name.capitalize()}EventArgs';
 
+  /// Is the the [RxBlocEvent.seed] annotation is provided
   bool get hasSeedAnnotation =>
-      _rxBlocEventAnnotation != null &&
-      _rxBlocEventAnnotation.getField('seed') is DartObject;
+      _computedRxBlocEventAnnotation != null &&
+      _computedRxBlocEventAnnotation?.getField('seed') is DartObject;
 
-  List<Expression> get streamPositionalArguments {
+  /// Provides the stream generic type
+  ///
+  /// Example:
+  /// if `fetchNews(int param)` then -> PublishSubject<int>
+  /// if `fetchNews(String param)` then -> PublishSubject<String>
+  /// if `fetchNews(int param1, int param2)` then -> PublishSubject<_FetchNewsEventArgs>
+  List<Reference> get streamTypeArguments =>
+      !isBehavior ? [refer(publishSubjectGenericType)] : [];
+
+  /// Provides the [BehaviorSubject.seeded] arguments as [List] of [Expression]
+  /// Throws an error if a seed is provided but the stream is not  [RxBlocEventType.behaviour]
+  List<Expression> get seedPositionalArguments {
     if (hasSeedAnnotation && !isBehavior) {
       throw _RxBlocGeneratorException('Event `$name` with type `PublishSubject`'
           ' can not have a `seed` parameter.');
     }
 
-    return isBehavior ? [_seededValue] : [];
+    return isBehavior ? [_seededArgument] : [];
   }
 
-  List<Reference> get streamNamedArguments =>
-      !isBehavior ? [refer(argumentsType)] : [];
+  /// Provides the [BehaviorSubject.seeded] arguments as an [Expression]
+  Expression get _seededArgument {
+    Iterable<String> seedArgumentsMatch = RegExp(r'(?<=seed: ).*(?=\)|,)')
+        .allMatches(_rxBlocEventAnnotation.toSource())
+        .map<String>((m) => m.group(0));
 
-  List<Expression> _positionalArguments([bool withValues = false]) => parameters
-          .where((ParameterElement parameter) =>
-              parameter.isNotOptional || parameter.isOptionalPositional)
-          .map(
-        (ParameterElement parameter) {
-          return refer(
-              withValues ? parameter.defaultValueCode : parameter.name);
-        },
-      ).toList();
-
-  Map<String, Expression> get _namedArguments {
-    List<Parameter> optionalParams = buildOptionalParameters();
-    // Only named are not positional parameters
-    Map<String, Expression> namedArguments = {};
-    for (Parameter param
-        in optionalParams.where((Parameter param) => param.named)) {
-      namedArguments[param.name] = refer(param.name);
-    }
-    // For methods with more than 1 parameters provide the new param class
-    return namedArguments;
-  }
-
-  Expression get _seededValue {
-    if (parameters.length > 1) {
-      // For methods with more than 1 parameters provide the new param class
-      return refer(eventArgumentsClassName).newInstance(
-        _positionalArguments(),
-        _namedArguments,
-      );
-    }
-
-    if (_rxBlocEventAnnotation.getField('seed').isNull) {
+    if (seedArgumentsMatch.isEmpty) {
       throw _RxBlocGeneratorException(
-          'Event `$name` seed value is missing or can not be null.');
+          'Event `$name` seed value is missing or it is null.');
     }
 
-    return refer(_rxBlocEventAnnotation.getField('seed')?.value.toString());
+    String seedArguments = seedArgumentsMatch.toString();
+    return refer(seedArguments.substring(1, seedArguments.length - 1));
   }
 
-  /// Returns the stream type based on the [RxBlocEvent] annotation
+  /// Provides the stream type based on the [RxBlocEventType] annotation
   String get eventStreamType => isBehavior
       ? _BlocEventStreamTypes.behavior + (hasSeedAnnotation ? '.seeded' : '')
       : _BlocEventStreamTypes.publish;
 
-  DartObject get _eventAnnotation =>
+  /// Provides the first annotation as [ElementAnnotation] if exists
+  ElementAnnotation get _eventAnnotation =>
+      // TODO(Diev): Check if
       metadata.isNotEmpty && metadata.first is ElementAnnotation
-          ? metadata.first.computeConstantValue()
+          ? metadata.first
           : null;
 
-  DartObject get _rxBlocEventAnnotation =>
-      _eventAnnotation?.type?.getDisplayString(withNullability: false) ==
-              (RxBlocEvent).toString()
-          ? _eventAnnotation
-          : null;
+  /// Provides the [RxBlocEvent] annotation as [DartObject] if exists
+  DartObject get _computedRxBlocEventAnnotation =>
+      _rxBlocEventAnnotation?.computeConstantValue();
 
-  /// Is it the event a [BehaviorSubject] stream
+  /// Provides the [RxBlocEvent] annotation as [ElementAnnotation] if exists
+  ElementAnnotation get _rxBlocEventAnnotation => _eventAnnotation
+              ?.computeConstantValue()
+              ?.type
+              ?.getDisplayString(withNullability: false) ==
+          (RxBlocEvent).toString()
+      ? _eventAnnotation
+      : null;
+
+  /// Is the event stream type a [BehaviorSubject]
   bool get isBehavior =>
-      _rxBlocEventAnnotation?.toString()?.contains('behaviour') ?? false;
+      _computedRxBlocEventAnnotation?.toString()?.contains('behaviour') ??
+      false;
 
-  /// Returns the event type based on the number of the parameters of the method
-  String get argumentsType {
+  /// Provides the stream type based on the number of the parameters
+  /// Example:
+  /// if `fetchNews(int param)` then -> int
+  /// if `fetchNews(String param)` then -> String
+  /// if `fetchNews(int param1, int param2)` -> _FetchNewsEventArgs
+  String get publishSubjectGenericType {
     if (parameters.length > 1) {
       // For methods with more than 1 parameters provide the new param class
       return eventArgumentsClassName;
@@ -133,6 +126,7 @@ extension _EventMethodElement on MethodElement {
         : 'void';
   }
 
+  /// Provides a [List] of optional [Parameter] of an event method
   List<Parameter> buildOptionalParameters({bool toThis = false}) => parameters
       .where((ParameterElement parameter) => !parameter.isNotOptional)
       .map(
@@ -154,6 +148,7 @@ extension _EventMethodElement on MethodElement {
       )
       .toList();
 
+  /// Provides a [List] of required [Parameter] of an event method
   List<Parameter> buildRequiredParameters({bool toThis = false}) => parameters
       .where((ParameterElement parameter) => parameter.isNotOptional)
       .map(
@@ -170,34 +165,63 @@ extension _EventMethodElement on MethodElement {
       )
       .toList();
 
-  /// Example:
-  /// _$[methodName]Event.add()
-  Code _streamAddMethodInvoker(Expression argument) =>
-      refer(eventFieldName + '.add').call([argument]).code;
-
+  /// Builds the stream body
+  /// Example 1:
+  /// _$[EventMethodName]EventName.add(param)
+  ///
+  /// Example 2:
+  /// _$[EventMethodName]EventName.add(_MethodEventArgs(param1, param2))
+  ///
   Code buildBody() {
     List<Parameter> requiredParams = buildRequiredParameters();
     List<Parameter> optionalParams = buildOptionalParameters();
     if (requiredParams.isEmpty && optionalParams.isEmpty) {
       // Provide null if we don't have any parameters
-      return _streamAddMethodInvoker(literalNull);
+      return _callStreamAddMethod(literalNull);
     }
 
     // Provide the first if it's just one required parameter
     if (optionalParams.isEmpty && requiredParams.length == 1) {
-      return _streamAddMethodInvoker(refer(requiredParams.first.name));
+      return _callStreamAddMethod(refer(requiredParams.first.name));
     }
 
     // Provide the first if it's just one optional parameter
     if (requiredParams.isEmpty && optionalParams.length == 1) {
-      return _streamAddMethodInvoker(refer(optionalParams.first.name));
+      return _callStreamAddMethod(refer(optionalParams.first.name));
     }
 
-    return _streamAddMethodInvoker(
+    return _callStreamAddMethod(
       refer('_${name.capitalize()}EventArgs').newInstance(
-        _positionalArguments(),
+        _positionalArguments,
         _namedArguments,
       ),
     );
+  }
+
+  /// Example:
+  /// _$[methodName]Event.add()
+  Code _callStreamAddMethod(Expression argument) =>
+      refer(eventFieldName + '.add').call([argument]).code;
+
+  /// Provides the event's positional arguments as a [Map] of [Expression]
+  List<Expression> get _positionalArguments => parameters
+      .where((ParameterElement parameter) =>
+          parameter.isNotOptional || parameter.isOptionalPositional)
+      .map(
+        (ParameterElement parameter) => refer(parameter.name),
+      )
+      .toList();
+
+  /// Provides the event's name arguments as a [Map] of [Expression]
+  Map<String, Expression> get _namedArguments {
+    List<Parameter> optionalParams = buildOptionalParameters();
+    // Only named are not positional parameters
+    Map<String, Expression> namedArguments = {};
+    for (Parameter param
+        in optionalParams.where((Parameter param) => param.named)) {
+      namedArguments[param.name] = refer(param.name);
+    }
+    // For methods with more than 1 parameters provide the new param class
+    return namedArguments;
   }
 }
