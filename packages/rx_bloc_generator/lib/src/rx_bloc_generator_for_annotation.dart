@@ -25,12 +25,11 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
     final LibraryReader libraryReader = LibraryReader(classElement.library);
 
     try {
-      return (_BuildController(
-        mainBloc: classElement,
+      return _BuildController(
+        rxBlocClass: classElement,
         annotation: annotation,
         libraryReader: libraryReader,
-      )..generate())
-          .getFileContent();
+      ).generate();
     } on _RxBlocGeneratorException catch (e) {
       // User error
       _logError(e.message);
