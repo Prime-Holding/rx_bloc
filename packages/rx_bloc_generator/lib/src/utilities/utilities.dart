@@ -21,3 +21,14 @@ void _logError(String str) {
   msg = '[ERROR] $msg';
   log.severe('\n${msg.toRedString()}\n');
 }
+
+/// Logs a package error with the suggestion to report it
+void _reportIssue(String msg, String copyBlock) {
+  _logError(msg +
+      '\n\nPlease, report the problem at https://github.com/Prime-Holding/rx_bloc/issues '
+          'providing the information form the `COPY BLOCK` below.'
+          '\n\n'
+          '----------START COPY BLOCK----------\n\n' +
+      copyBlock +
+      '\n\n----------END COPY BLOCK----------\n');
+}

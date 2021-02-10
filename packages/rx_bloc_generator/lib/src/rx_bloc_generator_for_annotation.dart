@@ -13,15 +13,18 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    // TODO(Diev): This way it will log the errors one by one. Is it OK?
+    // return early if annotation is used for a none class element
+    if (element is! ClassElement) {
+      // Internal package error
+      _logError('The @RxBloc must be used for class only.');
+      return null;
+    }
+
+    final ClassElement classElement = element as ClassElement;
+
+    final LibraryReader libraryReader = LibraryReader(classElement.library);
+
     try {
-      // return early if annotation is used for a none class element
-      if (element is! ClassElement) return null;
-
-      final ClassElement classElement = element as ClassElement;
-
-      final LibraryReader libraryReader = LibraryReader(classElement.library);
-
       return (_BuildController(
         mainBloc: classElement,
         annotation: annotation,
@@ -29,11 +32,23 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       )..generate())
           .getFileContent();
     } on _RxBlocGeneratorException catch (e) {
-      // Log any exception and don't proceed
+      // User error
       _logError(e.message);
       return null;
-    } catch (e) {
-      // Internal package error
+    } on FormatterException catch (e) {
+      // Format error
+      _reportIssue(
+        'FormatterException \n' +
+            e.errors.map((AnalysisError e) => e.message).join('\n'),
+        libraryReader.allElements.first.source.contents.data.toString(),
+      );
+      return null;
+    } on Exception catch (e) {
+      // System error
+      _reportIssue(
+        e.toString(),
+        libraryReader.allElements.first.source.contents.data.toString(),
+      );
       return null;
     }
   }
