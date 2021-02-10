@@ -1,26 +1,26 @@
 part of rx_bloc_generator;
 
-class _BlocTypeClass implements _RxBlocBuilder {
-  _BlocTypeClass(
+/// Generates the type class for the blocClass
+///
+///  Example:
+///  abstract class [RxBlocName]BlocType extends RxBlocTypeBase {
+///    [RxBlocName]BlocEvents get events;
+///    [RxBlocName]BlocStates get states;
+///  }
+///
+class _BlocTypeClass implements _BuilderContract<String> {
+  const _BlocTypeClass(
     this.className,
     this.eventClassName,
     this.stateClassName,
   );
 
-  String className;
+  final String className;
 
-  String eventClassName;
+  final String eventClassName;
 
-  String stateClassName;
+  final String stateClassName;
 
-  /// Generates the type class for the blocClass
-  ///
-  ///  Example:
-  ///  abstract class [RxBlocName]BlocType extends RxBlocTypeBase {
-  ///    [RxBlocName]BlocEvents get events;
-  ///    [RxBlocName]BlocStates get states;
-  ///  }
-  ///
   @override
   String build() => Class(
         (b) => b

@@ -1,7 +1,23 @@
 part of rx_bloc_generator;
 
-class _BlocClass implements _RxBlocBuilder {
-  _BlocClass(
+/// Generates the contents of the blocClass
+///
+/// Example:
+/// abstract class $[RxBlocName]Bloc extends RxBlocBase
+///    implements [RxBlocName]BlocEvents, [RxBlocName]BlocStates, [RxBlocName]BlocType {
+///
+///    /// Events
+///    ...
+///    /// States
+///    ...
+///    /// Type - events, states getters
+///    ...
+///    /// Dispose of all the opened streams
+///    ...
+/// }
+///
+class _BlocClass implements _BuilderContract<String> {
+  const _BlocClass(
     this.className,
     this.blocTypeClassName,
     this.eventClassName,
@@ -10,34 +26,18 @@ class _BlocClass implements _RxBlocBuilder {
     this.statesFields,
   );
 
-  String className;
+  final String className;
 
-  String blocTypeClassName;
+  final String blocTypeClassName;
 
-  String eventClassName;
+  final String eventClassName;
 
-  String stateClassName;
+  final String stateClassName;
 
   final List<MethodElement> eventsMethods;
 
   final List<FieldElement> statesFields;
 
-  /// Generates the contents of the blocClass
-  ///
-  /// Example:
-  /// abstract class $[RxBlocName]Bloc extends RxBlocBase
-  ///    implements [RxBlocName]BlocEvents, [RxBlocName]BlocStates, [RxBlocName]BlocType {
-  ///
-  ///    /// Events
-  ///    ...
-  ///    /// States
-  ///    ...
-  ///    /// Type - events, states getters
-  ///    ...
-  ///    /// Dispose of all the opened streams
-  ///    ...
-  /// }
-  ///
   @override
   String build() => Class((b) => b
     ..docs.addAll(<String>[
@@ -53,131 +53,40 @@ class _BlocClass implements _RxBlocBuilder {
       refer(blocTypeClassName),
     ])
     ..fields.addAll(<Field>[
-      ..._eventFields(),
-      ..._stateFields(),
+      // final _$[eventName]Event = PublishSubject<void>();
+      ...eventsMethods
+          .map((MethodElement method) => _EventField(method).build())
+          .toList(),
+      // Stream<int> _[stateName]State;
+      ...statesFields
+          .map((FieldElement field) => _StateField(field).build())
+          .toList(),
     ])
     ..methods.addAll(
       <Method>[
-        ..._eventMethods(),
-        ..._stateGetMethods(),
-        ..._stateMethods(),
-        ..._eventsAndStatesGetters(),
-        _disposeMethod(),
+        // void [eventName]() => _$[eventName]Event.add(null);
+        ...eventsMethods
+            .map((MethodElement method) => _EventMethod(method).build())
+            .toList(),
+        // Stream<int> get [stateName] => _[stateName]State ??= _mapTo[StateName]State();
+        ...statesFields
+            .map((FieldElement field) => _StateGetterMethod(field).build())
+            .toList(),
+        // Stream<int> _mapTo[StateName]State();
+        ...statesFields
+            .map((FieldElement field) => _StateMethod(field).build())
+            .toList(),
+        // [BlocName]BlocEvents get events => this;
+        _StaticStateGetterMethod(eventClassName, true).build(),
+        // [BlocName]BlocStates get states => this;
+        _StaticStateGetterMethod(stateClassName, false).build(),
+        // void dispose() {
+        //   .._$[eventMethod1]Event.close();
+        //   .._$[eventMethod2]Event.close();
+        //   ...
+        //   ..super.dispose();
+        // }
+        _DisposeMethod(eventsMethods).build(),
       ],
     )).toDartCodeString();
-
-  /// A mapper that converts a [MethodElement] into an event [Method]
-  List<Method> _eventMethods() => eventsMethods
-      .map(
-        (MethodElement method) => Method.returnsVoid(
-          (b) => b
-            // TODO(Diev): Add region comments
-            ..annotations.add(refer('override'))
-            ..name = method.name
-            ..requiredParameters.addAll(method.buildRequiredParameters())
-            ..optionalParameters.addAll(method.buildOptionalParameters())
-            ..lambda = true
-            ..body = method.buildBody(),
-        ),
-      )
-      .toList();
-
-  /// A mapper that converts a [MethodElement] into an event [Field]
-  List<Field> _eventFields() => eventsMethods.map((MethodElement method) {
-        return Field(
-          (b) => b
-            // TODO(Diev): Add region comments
-            ..modifier = FieldModifier.final$
-            ..assignment = refer(method.eventStreamType)
-                .newInstance(
-                  method.seedPositionalArguments,
-                  {},
-                  method.streamTypeArguments,
-                )
-                .code
-            ..name = method.eventFieldName,
-        );
-      }).toList();
-
-  /// A mapper that converts a [FieldElement] into an event [Field]
-  List<Field> _stateFields() => statesFields
-      .map((FieldElement field) => Field(
-            (b) => b
-              // TODO(Diev): Add region comments
-              ..type =
-                  refer(field.type.getDisplayString(withNullability: false))
-              ..name = field.stateFieldName,
-          ))
-      .toList();
-
-  /// A mapper that converts a [MethodElement] into an event [Method]
-  List<Method> _stateGetMethods() => statesFields
-      .map(
-        (FieldElement field) => Method(
-          (b) => b
-            // TODO(Diev): Add region comments
-            ..type = MethodType.getter
-            ..annotations.add(refer('override'))
-            ..returns =
-                refer(field.type.getDisplayString(withNullability: false))
-            ..name = field.name
-            ..lambda = true
-            ..body = refer(field.stateFieldName)
-                .assignNullAware(
-                  refer(field.stateMethodName).newInstance([]),
-                )
-                .code,
-        ),
-      )
-      .toList();
-
-  /// A mapper that converts a [MethodElement] into an event [Method]
-  List<Method> _stateMethods() => statesFields
-      .map(
-        (FieldElement field) => Method(
-          (b) => b
-            // TODO(Diev): Add region comments
-            ..returns = refer(
-              field.type.getDisplayString(withNullability: false),
-            )
-            ..name = field.stateMethodName,
-        ),
-      )
-      .toList();
-
-  // Generates the 'events' and 'states' getter methods
-  List<Method> _eventsAndStatesGetters() => [
-        Method(
-          (b) => b
-            ..annotations.add(refer('override'))
-            ..returns = refer(eventClassName)
-            ..type = MethodType.getter
-            ..name = 'events'
-            ..lambda = true
-            ..body = Code('this'),
-        ),
-        Method(
-          (b) => b
-            ..annotations.add(refer('override'))
-            ..returns = refer(stateClassName)
-            ..type = MethodType.getter
-            ..name = 'states'
-            ..lambda = true
-            ..body = Code('this'),
-        ),
-      ];
-
-  // Builds the dispose method
-  Method _disposeMethod() => Method.returnsVoid(
-        (b) => b
-          ..annotations.add(refer('override'))
-          ..name = 'dispose'
-          ..body = CodeExpression(Block.of([
-            ...eventsMethods.map(
-              (MethodElement method) =>
-                  refer(method.eventFieldName + '.close').call([]).statement,
-            ),
-            refer('super.dispose').call([]).statement,
-          ])).code,
-      );
 }

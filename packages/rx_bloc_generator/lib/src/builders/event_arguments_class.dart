@@ -1,15 +1,17 @@
 part of rx_bloc_generator;
 
-class _EventArgumentsClass implements _RxBlocBuilder {
-  _EventArgumentsClass(this.method);
+/// Generates class like..
+///
+/// Example:
+/// .. class _EventMethodArgs {
+/// ..    _EventMethodArgs({this.argExample});
+/// ..    final int argExample;
+/// .. }
+class _EventArgumentsClass implements _BuilderContract<String> {
+  const _EventArgumentsClass(this.method);
 
-  MethodElement method;
+  final MethodElement method;
 
-  /// Generates class like..
-  /// .. class _EventMethodArgs {
-  /// ..    _EventMethodArgs({this.argExample});
-  /// ..    final int argExample;
-  /// .. }
   @override
   String build() => Class(
         (b) => b
