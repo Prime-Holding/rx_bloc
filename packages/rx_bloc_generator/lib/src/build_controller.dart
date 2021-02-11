@@ -55,10 +55,10 @@ class _BuildController {
     // Check for any broken rules
     _validate();
 
-    String blocTypeClassName = '$rxBlocClass.displayNameType';
-    String blocClassName = '\$$rxBlocClass.displayName';
-    String eventClassName = _eventClass.displayName;
-    String stateClassName = _stateClass.displayName;
+    final String blocTypeClassName = '${rxBlocClass.displayName}Type';
+    final String blocClassName = '\$${rxBlocClass.displayName}';
+    final String eventClassName = _eventClass.displayName;
+    final String stateClassName = _stateClass.displayName;
 
     /// The output buffer containing all the generated code
     final StringBuffer _output = StringBuffer();

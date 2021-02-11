@@ -77,7 +77,10 @@ extension _EventMethodElement on MethodElement {
     }
 
     String seedArguments = seedArgumentsMatch.toString();
-    return refer(seedArguments.substring(1, seedArguments.length - 1));
+    return refer(
+      '${isUsingArgumentClass ? 'const ' : ''}'
+      '${seedArguments.substring(1, seedArguments.length - 1)}',
+    );
   }
 
   /// Provides the stream type based on the [RxBlocEventType] annotation
@@ -110,14 +113,16 @@ extension _EventMethodElement on MethodElement {
       _computedRxBlocEventAnnotation?.toString()?.contains('behaviour') ??
       false;
 
+  /// Use argument class when the event's parameters are more than 1
+  bool get isUsingArgumentClass => parameters.length > 1;
+
   /// Provides the stream type based on the number of the parameters
   /// Example:
   /// if `fetchNews(int param)` then -> int
   /// if `fetchNews(String param)` then -> String
   /// if `fetchNews(int param1, int param2)` -> _FetchNewsEventArgs
   String get publishSubjectGenericType {
-    if (parameters.length > 1) {
-      // For methods with more than 1 parameters provide the new param class
+    if (isUsingArgumentClass) {
       return eventArgumentsClassName;
     }
     return parameters.isNotEmpty

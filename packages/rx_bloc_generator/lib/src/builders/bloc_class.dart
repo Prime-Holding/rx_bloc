@@ -1,6 +1,6 @@
 part of rx_bloc_generator;
 
-/// Generates the contents of the blocClass
+/// Generates the content of the blocClass
 ///
 /// Example:
 /// abstract class ${RxBlocName}Bloc extends RxBlocBase
