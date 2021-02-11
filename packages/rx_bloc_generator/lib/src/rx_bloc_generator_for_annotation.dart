@@ -35,10 +35,10 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       _logError(e.message);
       return null;
     } on FormatterException catch (e) {
+      String message = e.errors.map((AnalysisError e) => e.message).join('\n');
       // Format error
       _reportIssue(
-        'FormatterException \n' +
-            e.errors.map((AnalysisError e) => e.message).join('\n'),
+        'FormatterException \n $message',
         libraryReader.allElements.first.source.contents.data.toString(),
       );
       return null;

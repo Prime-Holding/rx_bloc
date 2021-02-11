@@ -23,19 +23,20 @@ class _BuildController {
 
   /// Provides the events class as [ClassElement]
   ///
-  /// abstract class [RxBlocName]BlocEvents {
+  /// abstract class {RxBlocName}BlocEvents {
   //   void fetch();
   // }
   ClassElement get _eventClass =>
       _eventsElementSingleton ??= libraryReader.classes.firstWhere(
-          (classElement) => classElement.displayName.contains(_eventsClassKey),
+          (ClassElement classElement) =>
+              classElement.displayName.contains(_eventsClassKey),
           orElse: () => null);
 
   ClassElement _statesElementSingleton;
 
   /// Provides the states class as [ClassElement]
   ///
-  /// abstract class [RxBlocName]BlocEvents {
+  /// abstract class {RxBlocName}BlocEvents {
   //   void fetch();
   // }
   ClassElement get _stateClass =>
@@ -54,8 +55,8 @@ class _BuildController {
     // Check for any broken rules
     _validate();
 
-    String blocTypeClassName = '${rxBlocClass.displayName}Type';
-    String blocClassName = '\$${rxBlocClass.displayName}';
+    String blocTypeClassName = '$rxBlocClass.displayNameType';
+    String blocClassName = '\$$rxBlocClass.displayName';
     String eventClassName = _eventClass.displayName;
     String stateClassName = _stateClass.displayName;
 
@@ -65,7 +66,7 @@ class _BuildController {
     <String>[
       /// .. part of '[rx_bloc_name]_bloc.dart'
       // TODO(Diev): Use [Directive.partOf] instead once `part of` is supported
-      "part of '${_mainBlocFileName}';",
+      "part of '$_mainBlocFileName';",
 
       // abstract class [RxBlocName]BlocType
       _BlocTypeClass(
@@ -86,7 +87,7 @@ class _BuildController {
             .where((FieldElement field) =>
                 field.getter is PropertyAccessorElement &&
                 (field.getter.metadata.isEmpty ||
-                    !TypeChecker.fromRuntime(RxBlocIgnoreState)
+                    !const TypeChecker.fromRuntime(RxBlocIgnoreState)
                         .hasAnnotationOf(field.getter)))
             .toList(),
       ).build(),
@@ -140,7 +141,7 @@ class _BuildController {
       if (!fieldElement.isAbstract) {
         final name = fieldElement.name.replaceAll('=', '');
         throw _RxBlocGeneratorException(
-            'State ${name} should not contain a body definition.');
+            'State $name should not contain a body definition.');
       }
     });
   }
@@ -154,9 +155,9 @@ class _BuildController {
   String _generateMissingClassError(String className, String blocName) =>
       (StringBuffer()
             ..writeAll(<String>[
-              '${blocName}${className} class missing.',
+              '$blocName$className class missing.',
               'Please make sure you have properly named and specified',
-              'your class in the same file where the ${blocName} resides.'
+              'your class in the same file where the $blocName resides.'
             ], '\n\t'))
           .toString();
 }

@@ -16,6 +16,6 @@ class _StaticStateGetterMethod implements _BuilderContract<Method> {
           ..returns = refer(returnClassName)
           ..name = isEvent ? 'events' : 'states'
           ..lambda = true
-          ..body = Code('this'),
+          ..body = const Code('this'),
       );
 }

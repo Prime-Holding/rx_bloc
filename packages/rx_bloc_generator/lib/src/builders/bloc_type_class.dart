@@ -3,9 +3,9 @@ part of rx_bloc_generator;
 /// Generates the type class for the blocClass
 ///
 ///  Example:
-///  abstract class [RxBlocName]BlocType extends RxBlocTypeBase {
-///    [RxBlocName]BlocEvents get events;
-///    [RxBlocName]BlocStates get states;
+///  abstract class {RxBlocName}BlocType extends RxBlocTypeBase {
+///    {RxBlocName}BlocEvents get events;
+///    {RxBlocName}BlocStates get states;
 ///  }
 ///
 class _BlocTypeClass implements _BuilderContract<String> {
@@ -25,7 +25,7 @@ class _BlocTypeClass implements _BuilderContract<String> {
   String build() => Class(
         (b) => b
           ..docs.addAll(<String>[
-            '/// ${className} class used for blocClass event and '
+            '/// $className class used for blocClass event and ' +
                 'state access from widgets',
             '/// {@nodoc}',
           ])

@@ -49,12 +49,13 @@ extension _EventMethodElement on MethodElement {
   /// Example:
   /// if `fetchNews(int param)` then -> PublishSubject<int>
   /// if `fetchNews(String param)` then -> PublishSubject<String>
-  /// if `fetchNews(int param1, int param2)` then -> PublishSubject<_FetchNewsEventArgs>
+  /// if `fetchNews(int p1, int p2)` then -> PublishSubject<_FetchNewsEventArgs>
   List<Reference> get streamTypeArguments =>
       !isBehavior ? [refer(publishSubjectGenericType)] : [];
 
   /// Provides the [BehaviorSubject.seeded] arguments as [List] of [Expression]
-  /// Throws an error if a seed is provided but the stream is not  [RxBlocEventType.behaviour]
+  /// Throws an [_RxBlocGeneratorException] if a seed is provided but
+  /// the stream is not  [RxBlocEventType.behaviour]
   List<Expression> get seedPositionalArguments {
     if (hasSeedAnnotation && !isBehavior) {
       throw _RxBlocGeneratorException('Event `$name` with type `PublishSubject`'
@@ -167,10 +168,10 @@ extension _EventMethodElement on MethodElement {
 
   /// Builds the stream body
   /// Example 1:
-  /// _$[EventMethodName]EventName.add(param)
+  /// _${EventMethodName}EventName.add(param)
   ///
   /// Example 2:
-  /// _$[EventMethodName]EventName.add(_MethodEventArgs(param1, param2))
+  /// _${EventMethodName}EventName.add(_MethodEventArgs(param1, param2))
   ///
   Code buildBody() {
     List<Parameter> requiredParams = buildRequiredParameters();
@@ -199,9 +200,9 @@ extension _EventMethodElement on MethodElement {
   }
 
   /// Example:
-  /// _$[methodName]Event.add()
+  /// _${methodName}Event.add()
   Code _callStreamAddMethod(Expression argument) =>
-      refer(eventFieldName + '.add').call([argument]).code;
+      refer('$eventFieldName.add').call([argument]).code;
 
   /// Provides the event's positional arguments as a [Map] of [Expression]
   List<Expression> get _positionalArguments => parameters

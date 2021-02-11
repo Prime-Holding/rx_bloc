@@ -1,8 +1,8 @@
 part of rx_bloc_generator;
 
 /// A mapper that converts a [FieldElement] into an event [Field]
-class _StateField implements _BuilderContract<Field> {
-  const _StateField(this.field);
+class StateField implements _BuilderContract<Field> {
+  const StateField(this.field);
 
   final FieldElement field;
 

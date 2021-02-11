@@ -3,12 +3,12 @@ part of rx_bloc_generator;
 /// Builds the dispose method
 /// Example:
 ///
-// void dispose() {
-//   .._$[eventMethod1]Event.close();
-//   .._$[eventMethod2]Event.close();
-//   ...
-//   ..super.dispose();
-// }
+/// void dispose() {
+///   .._${eventMethod1}Event.close();
+///   .._${eventMethod2}Event.close();
+///   ...
+///   ..super.dispose();
+/// }
 class _DisposeMethod implements _BuilderContract<Method> {
   const _DisposeMethod(this.eventMethods);
 
@@ -23,7 +23,7 @@ class _DisposeMethod implements _BuilderContract<Method> {
             Block.of([
               ...eventMethods.map(
                 (MethodElement method) =>
-                    refer(method.eventFieldName + '.close').call([]).statement,
+                    refer('${method.eventFieldName}.close').call([]).statement,
               ),
               refer('super.dispose').call([]).statement,
             ]),

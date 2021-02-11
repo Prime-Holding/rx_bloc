@@ -3,8 +3,9 @@ part of rx_bloc_generator;
 /// Generates the contents of the blocClass
 ///
 /// Example:
-/// abstract class $[RxBlocName]Bloc extends RxBlocBase
-///    implements [RxBlocName]BlocEvents, [RxBlocName]BlocStates, [RxBlocName]BlocType {
+/// abstract class ${RxBlocName}Bloc extends RxBlocBase
+///    implements {RxBlocName}BlocEvents, {RxBlocName}BlocStates,
+///           {RxBlocName}BlocType {
 ///
 ///    /// Events
 ///    ...
@@ -41,7 +42,7 @@ class _BlocClass implements _BuilderContract<String> {
   @override
   String build() => Class((b) => b
     ..docs.addAll(<String>[
-      '/// ${className} class - extended by the CounterBloc bloc',
+      '/// $className class - extended by the CounterBloc bloc',
       '/// {@nodoc}',
     ])
     ..abstract = true
@@ -53,36 +54,37 @@ class _BlocClass implements _BuilderContract<String> {
       refer(blocTypeClassName),
     ])
     ..fields.addAll(<Field>[
-      // final _$[eventName]Event = PublishSubject<void>();
+      // final _${eventName}Event = PublishSubject<void>();
       ...eventsMethods
           .map((MethodElement method) => _EventField(method).build())
           .toList(),
-      // Stream<int> _[stateName]State;
+      // Stream<int> _{stateName}State;
       ...statesFields
-          .map((FieldElement field) => _StateField(field).build())
+          .map((FieldElement field) => StateField(field).build())
           .toList(),
     ])
     ..methods.addAll(
       <Method>[
-        // void [eventName]() => _$[eventName]Event.add(null);
+        // void {eventName}() => _${eventName}Event.add(null);
         ...eventsMethods
             .map((MethodElement method) => _EventMethod(method).build())
             .toList(),
-        // Stream<int> get [stateName] => _[stateName]State ??= _mapTo[StateName]State();
+        // Stream<int> get {stateName} =>
+        //      _{stateName}State ??= _mapTo{StateName}State();
         ...statesFields
             .map((FieldElement field) => _StateGetterMethod(field).build())
             .toList(),
-        // Stream<int> _mapTo[StateName]State();
+        // Stream<int> _mapTo{StateName}State();
         ...statesFields
             .map((FieldElement field) => _StateMethod(field).build())
             .toList(),
-        // [BlocName]BlocEvents get events => this;
+        // {BlocName}BlocEvents get events => this;
         _StaticStateGetterMethod(eventClassName, true).build(),
-        // [BlocName]BlocStates get states => this;
+        // {BlocName}BlocStates get states => this;
         _StaticStateGetterMethod(stateClassName, false).build(),
         // void dispose() {
-        //   .._$[eventMethod1]Event.close();
-        //   .._$[eventMethod2]Event.close();
+        //   .._${eventMethod1}Event.close();
+        //   .._${eventMethod2}Event.close();
         //   ...
         //   ..super.dispose();
         // }
