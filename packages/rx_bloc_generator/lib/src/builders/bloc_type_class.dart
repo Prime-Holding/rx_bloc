@@ -8,7 +8,7 @@ part of rx_bloc_generator;
 ///    {RxBlocName}BlocStates get states;
 ///  }
 ///
-class _BlocTypeClass implements _BuilderContract<String> {
+class _BlocTypeClass implements _BuilderContract {
   const _BlocTypeClass(
     this.className,
     this.eventClassName,
@@ -22,7 +22,7 @@ class _BlocTypeClass implements _BuilderContract<String> {
   final String stateClassName;
 
   @override
-  String build() => Class(
+  Class build() => Class(
         (b) => b
           ..docs.addAll(<String>[
             '/// $className class used for blocClass event and ' +
@@ -46,5 +46,5 @@ class _BlocTypeClass implements _BuilderContract<String> {
                 ..type = MethodType.getter,
             ),
           ]),
-      ).toDartCodeString();
+      );
 }

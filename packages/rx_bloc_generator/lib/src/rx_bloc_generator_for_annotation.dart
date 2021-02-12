@@ -27,8 +27,26 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
     try {
       return _BuildController(
         rxBlocClass: classElement,
-        annotation: annotation,
-        libraryReader: libraryReader,
+
+        /// Provides the events class as [ClassElement]
+        ///
+        /// abstract class {RxBlocName}BlocEvents {
+        //   void fetch();
+        // }
+        eventClass: libraryReader.classes.firstWhere(
+            (ClassElement classElement) => classElement.displayName
+                .contains(annotation.read('eventsClassName')?.stringValue),
+            orElse: () => null),
+
+        /// Provides the states class as [ClassElement]
+        ///
+        /// abstract class {RxBlocName}BlocEvents {
+        //   void fetch();
+        // }
+        stateClass: libraryReader.classes.firstWhere(
+            (classElement) => classElement.displayName
+                .contains(annotation.read('statesClassName')?.stringValue),
+            orElse: () => null),
       ).generate();
     } on _RxBlocGeneratorException catch (e) {
       // User error

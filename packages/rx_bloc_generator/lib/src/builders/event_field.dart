@@ -1,7 +1,7 @@
 part of rx_bloc_generator;
 
 /// A mapper that converts a [MethodElement] into an event [Field]
-class _EventField implements _BuilderContract<Field> {
+class _EventField implements _BuilderContract {
   const _EventField(this.method);
 
   final MethodElement method;

@@ -7,13 +7,13 @@ part of rx_bloc_generator;
 /// ..    _EventMethodArgs({this.argExample});
 /// ..    final int argExample;
 /// .. }
-class _EventArgumentsClass implements _BuilderContract<String> {
+class _EventArgumentsClass implements _BuilderContract {
   const _EventArgumentsClass(this.method);
 
   final MethodElement method;
 
   @override
-  String build() => Class(
+  Class build() => Class(
         (b) => b
           ..name = '_${method.name.capitalize()}EventArgs'
           ..constructors.add(
@@ -40,5 +40,5 @@ class _EventArgumentsClass implements _BuilderContract<String> {
               ),
             ),
           ),
-      ).toDartCodeString();
+      );
 }

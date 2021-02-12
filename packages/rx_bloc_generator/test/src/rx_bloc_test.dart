@@ -1,6 +1,8 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:source_gen_test/annotations.dart';
 
+part 'test_utilities.dart';
+
 @ShouldGenerate(r'''
 part of 'rx_bloc_test.dart';
 
@@ -343,6 +345,7 @@ class _WithSeeded2PositionalEnumEventArgs {
   final TestEnumParam pp2;
 }
 ''')
+
 @RxBloc()
 class CounterBloc {}
 
@@ -424,10 +427,4 @@ abstract class CounterBlocStates {
   Stream<bool> get isIgnored;
 
   Stream<bool> get isNotIgnored;
-}
-
-enum TestEnumParam {
-  optional,
-  named,
-  seed,
 }

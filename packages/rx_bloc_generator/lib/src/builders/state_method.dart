@@ -1,7 +1,7 @@
 part of rx_bloc_generator;
 
 /// A mapper that converts a [MethodElement] into an event [Method]
-class _StateMethod implements _BuilderContract<Method> {
+class _StateMethod implements _BuilderContract {
   const _StateMethod(this.field);
 
   final FieldElement field;

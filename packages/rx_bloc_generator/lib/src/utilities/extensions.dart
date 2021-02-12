@@ -78,7 +78,8 @@ extension _EventMethodElement on MethodElement {
 
     String seedArguments = seedArgumentsMatch.toString();
     return refer(
-      '${isUsingArgumentClass ? 'const ' : ''}'
+      '${isUsingArgumentClass &&
+          !seedArguments.contains('(const') ? 'const ' : ''}'
       '${seedArguments.substring(1, seedArguments.length - 1)}',
     );
   }

@@ -1,7 +1,7 @@
 part of rx_bloc_generator;
 
 // Generates the 'events' and 'states' getter methods
-class _StaticStateGetterMethod implements _BuilderContract<Method> {
+class _StaticStateGetterMethod implements _BuilderContract {
   const _StaticStateGetterMethod(this.returnClassName, this.isEvent);
 
   final String returnClassName;
