@@ -136,6 +136,17 @@ In order to provide a good user experience and easier error detection, this gene
 * States class should define its members using the `get` keyword.
 * States class members should **not** have body definitions.
 
+## Migration notes
+* Version >=2.0.0 introduces a change into generating the constructor parameters of the event arguments class.
+```dart
+ // <2.0.0 the event argument class constructor parameters are always named.
+  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(a:0, b:0))
+  void subtract(int a, int b);
+ // =>2.0.0 the event argument class constructor parameters are the same how they are defined for the event method.
+   @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(0, 0))
+  void subtract(int a, int b);
+  ```
+
 ## FAQ
 ### How I can make the generator working for me ?
 * First, add ``rx_bloc_generator`` and ``build_runner`` to the ``dev_dependencies`` in your project.
