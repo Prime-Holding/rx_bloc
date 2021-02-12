@@ -95,8 +95,10 @@ class _BuildController {
       // class _[EventMethodName]EventArgs
       // ..._eventMethodsArgsClasses(),
       ..._eventClass.methods
-          .where((MethodElement method) => method.parameters.length > 1)
-          .map((MethodElement method) => _EventArgumentsClass(method).build())
+          .where((MethodElement method) => method.isUsingArgumentClass)
+          .map((MethodElement method) {
+            return _EventArgumentsClass(method).build();
+          })
           .toList(),
     ].forEach(_output.writeln);
 

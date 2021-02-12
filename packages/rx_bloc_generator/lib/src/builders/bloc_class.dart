@@ -60,7 +60,7 @@ class _BlocClass implements _BuilderContract<String> {
           .toList(),
       // Stream<int> _{stateName}State;
       ...statesFields
-          .map((FieldElement field) => StateField(field).build())
+          .map((FieldElement field) => _StateField(field).build())
           .toList(),
     ])
     ..methods.addAll(
