@@ -120,7 +120,7 @@ abstract class BlocAEvents {
   void add(int number);
   
   // Event with two (or more) parameters
-  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(a:0, b:0))
+  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(0, 0))
   void subtract(int a,int b);
   
 }
