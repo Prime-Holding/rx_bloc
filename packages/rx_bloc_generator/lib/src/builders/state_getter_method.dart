@@ -9,7 +9,7 @@ class _StateGetterMethod implements _BuilderContract {
   @override
   Method build() => Method(
         (b) => b
-          // TODO(Diev): Add region comments
+          ..docs.addAll(['']) // A new line
           ..type = MethodType.getter
           ..annotations.add(refer('override'))
           ..returns = refer(field.type.getDisplayString(withNullability: false))

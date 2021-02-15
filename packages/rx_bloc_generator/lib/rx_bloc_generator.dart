@@ -28,3 +28,4 @@ part 'src/builders/event_method.dart';
 part 'src/builders/state_getter_method.dart';
 part 'src/builders/state_method.dart';
 part 'src/builders/dispose_method.dart';
+part 'src/builders/composition_field.dart';

@@ -9,7 +9,7 @@ class _StateMethod implements _BuilderContract {
   @override
   Method build() => Method(
         (b) => b
-          // TODO(Diev): Add region comments
+          ..docs.addAll(['']) // A new line
           ..returns = refer(
             field.type.getDisplayString(withNullability: false),
           )

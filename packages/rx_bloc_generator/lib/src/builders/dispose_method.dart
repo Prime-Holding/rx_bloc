@@ -17,6 +17,7 @@ class _DisposeMethod implements _BuilderContract {
   @override
   Method build() => Method.returnsVoid(
         (b) => b
+          ..docs.addAll(['']) // A new line
           ..annotations.add(refer('override'))
           ..name = 'dispose'
           ..body = CodeExpression(

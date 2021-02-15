@@ -9,7 +9,7 @@ class _StateField implements _BuilderContract {
   @override
   Field build() => Field(
         (b) => b
-          // TODO(Diev): Add region comments
+          ..docs.add('/// The state of [${field.name}] implemented in [${field.stateMethodName}]')
           ..type = refer(
             field.type.getDisplayString(withNullability: false),
           )

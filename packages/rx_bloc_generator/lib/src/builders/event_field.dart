@@ -9,7 +9,14 @@ class _EventField implements _BuilderContract {
   @override
   Field build() => Field(
         (b) => b
-          // TODO(Diev): Add region comments
+          ..docs.addAll(<String>[
+            if (method.name.length <= 19)
+              '/// Тhe [PublishSubject] where events sink to by calling [${method.name}]',
+            if (method.name.length > 19) ...<String>[
+              '/// Тhe [PublishSubject] where events sink to by calling ',
+              '/// [${method.name}]'
+            ],
+          ])
           ..modifier = FieldModifier.final$
           ..assignment = refer(method.eventStreamType)
               .newInstance(

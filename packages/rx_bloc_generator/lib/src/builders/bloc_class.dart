@@ -55,10 +55,17 @@ class _BlocClass implements _BuilderContract {
             refer(blocTypeClassName),
           ])
           ..fields.addAll(<Field>[
+            // Example:
+            // final _compositeSubscription = CompositeSubscription();
+            // _CompositionField().build(),
+
+            // Example:
             // final _${eventName}Event = PublishSubject<void>();
             ...eventsMethods
                 .map((MethodElement method) => _EventField(method).build())
                 .toList(),
+
+            // Example:
             // Stream<int> _{stateName}State;
             ...statesFields
                 .map((FieldElement field) => _StateField(field).build())
@@ -66,24 +73,35 @@ class _BlocClass implements _BuilderContract {
           ])
           ..methods.addAll(
             <Method>[
+              // Example:
               // void {eventName}() => _${eventName}Event.add(null);
               ...eventsMethods
                   .map((MethodElement method) => _EventMethod(method).build())
                   .toList(),
+
+              // Example:
               // Stream<int> get {stateName} =>
               //      _{stateName}State ??= _mapTo{StateName}State();
               ...statesFields
                   .map(
                       (FieldElement field) => _StateGetterMethod(field).build())
                   .toList(),
+
+              // Example:
               // Stream<int> _mapTo{StateName}State();
               ...statesFields
                   .map((FieldElement field) => _StateMethod(field).build())
                   .toList(),
+
+              // Example:
               // {BlocName}BlocEvents get events => this;
               _StaticStateGetterMethod(eventClassName, true).build(),
+
+              // Example:
               // {BlocName}BlocStates get states => this;
               _StaticStateGetterMethod(stateClassName, false).build(),
+
+              // Example:
               // void dispose() {
               //   .._${eventMethod1}Event.close();
               //   .._${eventMethod2}Event.close();

@@ -9,7 +9,7 @@ class _EventMethod implements _BuilderContract {
   @override
   Method build() => Method.returnsVoid(
         (b) => b
-          // TODO(Diev): Add region comments
+          ..docs.addAll(['']) // A new line
           ..annotations.add(
             refer('override'),
           )

@@ -11,6 +11,7 @@ class _StaticStateGetterMethod implements _BuilderContract {
   @override
   Method build() => Method(
         (b) => b
+          ..docs.addAll(['']) // A new line
           ..type = MethodType.getter
           ..annotations.add(refer('override'))
           ..returns = refer(returnClassName)
