@@ -2,7 +2,7 @@ part of rx_bloc_generator;
 
 /// A mapper that converts a [MethodElement] into an event [Method]
 class _StateGetterMethod implements _BuilderContract {
-  const _StateGetterMethod(this.field);
+  const _StateGetterMethod(this.field) : assert(field != null);
 
   final FieldElement field;
 

@@ -57,7 +57,7 @@ class _BlocClass implements _BuilderContract {
           ..fields.addAll(<Field>[
             // Example:
             // final _compositeSubscription = CompositeSubscription();
-            // _CompositionField().build(),
+            _CompositionField().build(),
 
             // Example:
             // final _${eventName}Event = PublishSubject<void>();

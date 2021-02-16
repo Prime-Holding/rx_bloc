@@ -8,13 +8,17 @@ part of rx_bloc_generator;
 /// ..    final int argExample;
 /// .. }
 class _EventArgumentsClass implements _BuilderContract {
-  const _EventArgumentsClass(this.method);
+  const _EventArgumentsClass(this.method) : assert(method != null);
 
   final MethodElement method;
 
   @override
   Class build() => Class(
         (b) => b
+          ..docs.addAll([
+            '/// Helps providing the arguments in the [Subject.add] for',
+            '/// [${method.enclosingElement?.name ?? ''}.${method.name}] event'
+          ])
           ..name = '_${method.name.capitalize()}EventArgs'
           ..constructors.add(
             Constructor(

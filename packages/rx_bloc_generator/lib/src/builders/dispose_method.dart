@@ -10,7 +10,7 @@ part of rx_bloc_generator;
 ///   ..super.dispose();
 /// }
 class _DisposeMethod implements _BuilderContract {
-  const _DisposeMethod(this.eventMethods);
+  const _DisposeMethod(this.eventMethods) : assert(eventMethods != null);
 
   final List<MethodElement> eventMethods;
 
@@ -26,6 +26,7 @@ class _DisposeMethod implements _BuilderContract {
                 (MethodElement method) =>
                     refer('${method.eventFieldName}.close').call([]).statement,
               ),
+              refer('_compositeSubscription.dispose').call([]).statement,
               refer('super.dispose').call([]).statement,
             ]),
           ).code,
