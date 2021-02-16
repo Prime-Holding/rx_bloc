@@ -6,14 +6,14 @@
 
 part of 'puppy_list_bloc.dart';
 
-/// PuppyListBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class PuppyListBlocType extends RxBlocTypeBase {
   PuppyListEvents get events;
   PuppyListStates get states;
 }
 
-/// $PuppyListBloc class - extended by the CounterBloc bloc
+/// [$PuppyListBloc] extended by the [PuppyListBloc]
 /// {@nodoc}
 abstract class $PuppyListBloc extends RxBlocBase
     implements PuppyListEvents, PuppyListStates, PuppyListBlocType {

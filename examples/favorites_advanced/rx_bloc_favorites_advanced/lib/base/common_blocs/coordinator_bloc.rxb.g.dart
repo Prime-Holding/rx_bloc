@@ -6,14 +6,14 @@
 
 part of 'coordinator_bloc.dart';
 
-/// CoordinatorBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class CoordinatorBlocType extends RxBlocTypeBase {
   CoordinatorEvents get events;
   CoordinatorStates get states;
 }
 
-/// $CoordinatorBloc class - extended by the CounterBloc bloc
+/// [$CoordinatorBloc] extended by the [CoordinatorBloc]
 /// {@nodoc}
 abstract class $CoordinatorBloc extends RxBlocBase
     implements CoordinatorEvents, CoordinatorStates, CoordinatorBlocType {

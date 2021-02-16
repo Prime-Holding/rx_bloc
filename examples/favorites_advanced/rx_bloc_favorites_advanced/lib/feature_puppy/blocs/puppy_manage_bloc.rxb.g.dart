@@ -6,14 +6,14 @@
 
 part of 'puppy_manage_bloc.dart';
 
-/// PuppyManageBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class PuppyManageBlocType extends RxBlocTypeBase {
   PuppyManageEvents get events;
   PuppyManageStates get states;
 }
 
-/// $PuppyManageBloc class - extended by the CounterBloc bloc
+/// [$PuppyManageBloc] extended by the [PuppyManageBloc]
 /// {@nodoc}
 abstract class $PuppyManageBloc extends RxBlocBase
     implements PuppyManageEvents, PuppyManageStates, PuppyManageBlocType {

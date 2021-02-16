@@ -6,14 +6,14 @@
 
 part of 'puppy_details_bloc.dart';
 
-/// PuppyDetailsBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class PuppyDetailsBlocType extends RxBlocTypeBase {
   PuppyDetailsEvents get events;
   PuppyDetailsStates get states;
 }
 
-/// $PuppyDetailsBloc class - extended by the CounterBloc bloc
+/// [$PuppyDetailsBloc] extended by the [PuppyDetailsBloc]
 /// {@nodoc}
 abstract class $PuppyDetailsBloc extends RxBlocBase
     implements PuppyDetailsEvents, PuppyDetailsStates, PuppyDetailsBlocType {

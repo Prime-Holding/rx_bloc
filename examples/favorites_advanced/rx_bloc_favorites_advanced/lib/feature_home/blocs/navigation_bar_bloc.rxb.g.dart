@@ -6,14 +6,14 @@
 
 part of 'navigation_bar_bloc.dart';
 
-/// NavigationBarBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class NavigationBarBlocType extends RxBlocTypeBase {
   NavigationBarEvents get events;
   NavigationBarStates get states;
 }
 
-/// $NavigationBarBloc class - extended by the CounterBloc bloc
+/// [$NavigationBarBloc] extended by the [NavigationBarBloc]
 /// {@nodoc}
 abstract class $NavigationBarBloc extends RxBlocBase
     implements NavigationBarEvents, NavigationBarStates, NavigationBarBlocType {

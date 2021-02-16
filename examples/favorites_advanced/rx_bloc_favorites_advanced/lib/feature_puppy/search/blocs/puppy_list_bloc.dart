@@ -43,9 +43,6 @@ class PuppyListBloc extends $PuppyListBloc {
         .disposedBy(_compositeSubscription);
   }
 
-  //MARK: - Memory Management
-  final _compositeSubscription = CompositeSubscription();
-
   // MARK: - Subjects
   final _puppies = BehaviorSubject.seeded(Result<List<Puppy>>.success([]));
 
@@ -55,7 +52,6 @@ class PuppyListBloc extends $PuppyListBloc {
   @override
   void dispose() {
     _puppies.close();
-    _compositeSubscription.dispose();
     super.dispose();
   }
 }

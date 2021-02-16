@@ -6,14 +6,14 @@
 
 part of 'news_bloc.dart';
 
-/// NewsBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class NewsBlocType extends RxBlocTypeBase {
   NewsBlocEvents get events;
   NewsBlocStates get states;
 }
 
-/// $NewsBloc class - extended by the CounterBloc bloc
+/// [$NewsBloc] extended by the [NewsBloc]
 /// {@nodoc}
 abstract class $NewsBloc extends RxBlocBase
     implements NewsBlocEvents, NewsBlocStates, NewsBlocType {

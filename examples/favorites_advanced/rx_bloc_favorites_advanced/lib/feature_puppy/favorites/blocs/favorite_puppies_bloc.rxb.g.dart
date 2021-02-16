@@ -6,14 +6,14 @@
 
 part of 'favorite_puppies_bloc.dart';
 
-/// FavoritePuppiesBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class FavoritePuppiesBlocType extends RxBlocTypeBase {
   FavoritePuppiesEvents get events;
   FavoritePuppiesStates get states;
 }
 
-/// $FavoritePuppiesBloc class - extended by the CounterBloc bloc
+/// [$FavoritePuppiesBloc] extended by the [FavoritePuppiesBloc]
 /// {@nodoc}
 abstract class $FavoritePuppiesBloc extends RxBlocBase
     implements

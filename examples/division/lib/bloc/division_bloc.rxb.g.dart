@@ -6,14 +6,14 @@
 
 part of 'division_bloc.dart';
 
-/// DivisionBlocType class used for blocClass event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class DivisionBlocType extends RxBlocTypeBase {
   DivisionBlocEvents get events;
   DivisionBlocStates get states;
 }
 
-/// $DivisionBloc class - extended by the CounterBloc bloc
+/// [$DivisionBloc] extended by the [DivisionBloc]
 /// {@nodoc}
 abstract class $DivisionBloc extends RxBlocBase
     implements DivisionBlocEvents, DivisionBlocStates, DivisionBlocType {

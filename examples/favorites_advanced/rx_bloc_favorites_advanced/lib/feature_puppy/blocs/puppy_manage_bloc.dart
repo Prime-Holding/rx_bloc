@@ -78,7 +78,6 @@ class PuppyManageBloc extends $PuppyManageBloc {
   final CoordinatorBlocType _coordinatorBloc;
 
   final _lastUpdatedPuppy = BehaviorSubject<Puppy>();
-  final _compositeSubscription = CompositeSubscription();
   final _favoritePuppyError = PublishSubject<Exception>();
 
   @override
@@ -150,7 +149,6 @@ class PuppyManageBloc extends $PuppyManageBloc {
   void dispose() {
     _favoritePuppyError.close();
     _lastUpdatedPuppy.close();
-    _compositeSubscription.dispose();
     super.dispose();
   }
 }
