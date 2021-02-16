@@ -6,45 +6,31 @@
 
 part of 'puppy_list_bloc.dart';
 
-/// PuppyListBlocType class used for bloc event and state access from widgets
+/// PuppyListBlocType class used for blocClass event and state access from widgets
 /// {@nodoc}
 abstract class PuppyListBlocType extends RxBlocTypeBase {
   PuppyListEvents get events;
-
   PuppyListStates get states;
 }
 
-/// $PuppyListBloc class - extended by the PuppyListBloc bloc
+/// $PuppyListBloc class - extended by the CounterBloc bloc
 /// {@nodoc}
 abstract class $PuppyListBloc extends RxBlocBase
     implements PuppyListEvents, PuppyListStates, PuppyListBlocType {
-  ///region Events
+  final _compositeSubscription = CompositeSubscription();
 
-  ///region filterPuppies
-
+  /// Тhe [Subject] where events sink to by calling [filterPuppies]
   final _$filterPuppiesEvent = BehaviorSubject.seeded('');
-  @override
-  void filterPuppies({@required String query}) =>
-      _$filterPuppiesEvent.add(query);
 
-  ///endregion filterPuppies
-
-  ///region reloadFavoritePuppies
-
+  /// Тhe [Subject] where events sink to by calling [reloadFavoritePuppies]
   final _$reloadFavoritePuppiesEvent = BehaviorSubject.seeded(false);
+
   @override
-  void reloadFavoritePuppies({@required bool silently}) =>
+  void filterPuppies({String query}) => _$filterPuppiesEvent.add(query);
+
+  @override
+  void reloadFavoritePuppies({bool silently}) =>
       _$reloadFavoritePuppiesEvent.add(silently);
-
-  ///endregion reloadFavoritePuppies
-
-  ///endregion Events
-
-  ///region States
-
-  ///endregion States
-
-  ///region Type
 
   @override
   PuppyListEvents get events => this;
@@ -52,14 +38,11 @@ abstract class $PuppyListBloc extends RxBlocBase
   @override
   PuppyListStates get states => this;
 
-  ///endregion Type
-
-  /// Dispose of all the opened streams
-
   @override
   void dispose() {
     _$filterPuppiesEvent.close();
     _$reloadFavoritePuppiesEvent.close();
+    _compositeSubscription.dispose();
     super.dispose();
   }
 }
