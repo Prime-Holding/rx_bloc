@@ -7,7 +7,7 @@ class _CompositionField implements _BuilderContract {
         (b) => b
           ..modifier = FieldModifier.final$
           ..name = '_compositeSubscription'
-          ..assignment = refer((CompositeSubscription).toString()).newInstance(
+          ..assignment = refer('CompositeSubscription').newInstance(
             [],
           ).code,
       );

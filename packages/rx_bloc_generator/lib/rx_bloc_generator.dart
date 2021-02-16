@@ -3,7 +3,6 @@ library rx_bloc_generator;
 import 'dart:async';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/error/error.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
