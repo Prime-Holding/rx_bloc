@@ -7,7 +7,7 @@ abstract class DivisionBlocEvents {
   // Event that we use for number division
   @RxBlocEvent(
       type: RxBlocEventType.behaviour,
-      seed: _DivideNumbersEventArgs(a: '1.0', b: '1.0'))
+      seed: _DivideNumbersEventArgs('1.0', '1.0'))
   void divideNumbers(String a, String b);
 }
 

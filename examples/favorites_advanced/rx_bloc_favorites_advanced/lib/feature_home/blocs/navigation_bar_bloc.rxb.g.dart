@@ -6,45 +6,32 @@
 
 part of 'navigation_bar_bloc.dart';
 
-/// NavigationBarBlocType class used for bloc event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class NavigationBarBlocType extends RxBlocTypeBase {
   NavigationBarEvents get events;
-
   NavigationBarStates get states;
 }
 
-/// $NavigationBarBloc class - extended by the NavigationBarBloc bloc
+/// [$NavigationBarBloc] extended by the [NavigationBarBloc]
 /// {@nodoc}
 abstract class $NavigationBarBloc extends RxBlocBase
     implements NavigationBarEvents, NavigationBarStates, NavigationBarBlocType {
-  ///region Events
+  final _compositeSubscription = CompositeSubscription();
 
-  ///region selectPage
-
+  /// Тhe [Subject] where events sink to by calling [selectPage]
   final _$selectPageEvent = PublishSubject<NavigationItemType>();
+
+  /// The state of [title] implemented in [_mapToTitleState]
+  Stream<String> _titleState;
+
   @override
   void selectPage(NavigationItemType item) => _$selectPageEvent.add(item);
-
-  ///endregion selectPage
-
-  ///endregion Events
-
-  ///region States
-
-  ///region title
-  Stream<String> _titleState;
 
   @override
   Stream<String> get title => _titleState ??= _mapToTitleState();
 
   Stream<String> _mapToTitleState();
-
-  ///endregion title
-
-  ///endregion States
-
-  ///region Type
 
   @override
   NavigationBarEvents get events => this;
@@ -52,13 +39,10 @@ abstract class $NavigationBarBloc extends RxBlocBase
   @override
   NavigationBarStates get states => this;
 
-  ///endregion Type
-
-  /// Dispose of all the opened streams
-
   @override
   void dispose() {
     _$selectPageEvent.close();
+    _compositeSubscription.dispose();
     super.dispose();
   }
 }
