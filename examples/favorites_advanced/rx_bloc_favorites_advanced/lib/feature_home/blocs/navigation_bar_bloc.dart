@@ -34,8 +34,6 @@ class NavigationBarBloc extends $NavigationBarBloc {
     const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
   ]);
 
-  final _compositeSubscription = CompositeSubscription();
-
   @override
   Stream<List<NavigationItem>> get items => _items;
 
@@ -48,7 +46,6 @@ class NavigationBarBloc extends $NavigationBarBloc {
   @override
   void dispose() {
     _items.close();
-    _compositeSubscription.dispose();
     super.dispose();
   }
 }

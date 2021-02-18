@@ -6,110 +6,85 @@
 
 part of 'puppy_details_bloc.dart';
 
-/// PuppyDetailsBlocType class used for bloc event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class PuppyDetailsBlocType extends RxBlocTypeBase {
   PuppyDetailsEvents get events;
-
   PuppyDetailsStates get states;
 }
 
-/// $PuppyDetailsBloc class - extended by the PuppyDetailsBloc bloc
+/// [$PuppyDetailsBloc] extended by the [PuppyDetailsBloc]
 /// {@nodoc}
 abstract class $PuppyDetailsBloc extends RxBlocBase
     implements PuppyDetailsEvents, PuppyDetailsStates, PuppyDetailsBlocType {
-  ///region Events
+  final _compositeSubscription = CompositeSubscription();
 
-  ///endregion Events
-
-  ///region States
-
-  ///region imagePath
+  /// The state of [imagePath] implemented in [_mapToImagePathState]
   Stream<String> _imagePathState;
+
+  /// The state of [name] implemented in [_mapToNameState]
+  Stream<String> _nameState;
+
+  /// The state of [breed] implemented in [_mapToBreedState]
+  Stream<String> _breedState;
+
+  /// The state of [gender] implemented in [_mapToGenderState]
+  Stream<String> _genderState;
+
+  /// The state of [characteristics] implemented in [_mapToCharacteristicsState]
+  Stream<String> _characteristicsState;
+
+  /// The state of [isFavourite] implemented in [_mapToIsFavouriteState]
+  Stream<bool> _isFavouriteState;
+
+  /// The state of [genderAndBreed] implemented in [_mapToGenderAndBreedState]
+  Stream<String> _genderAndBreedState;
+
+  /// The state of [puppy] implemented in [_mapToPuppyState]
+  Stream<Puppy> _puppyState;
 
   @override
   Stream<String> get imagePath => _imagePathState ??= _mapToImagePathState();
 
-  Stream<String> _mapToImagePathState();
-
-  ///endregion imagePath
-
-  ///region name
-  Stream<String> _nameState;
-
   @override
   Stream<String> get name => _nameState ??= _mapToNameState();
-
-  Stream<String> _mapToNameState();
-
-  ///endregion name
-
-  ///region breed
-  Stream<String> _breedState;
 
   @override
   Stream<String> get breed => _breedState ??= _mapToBreedState();
 
-  Stream<String> _mapToBreedState();
-
-  ///endregion breed
-
-  ///region gender
-  Stream<String> _genderState;
-
   @override
   Stream<String> get gender => _genderState ??= _mapToGenderState();
-
-  Stream<String> _mapToGenderState();
-
-  ///endregion gender
-
-  ///region characteristics
-  Stream<String> _characteristicsState;
 
   @override
   Stream<String> get characteristics =>
       _characteristicsState ??= _mapToCharacteristicsState();
 
-  Stream<String> _mapToCharacteristicsState();
-
-  ///endregion characteristics
-
-  ///region isFavourite
-  Stream<bool> _isFavouriteState;
-
   @override
   Stream<bool> get isFavourite =>
       _isFavouriteState ??= _mapToIsFavouriteState();
-
-  Stream<bool> _mapToIsFavouriteState();
-
-  ///endregion isFavourite
-
-  ///region genderAndBreed
-  Stream<String> _genderAndBreedState;
 
   @override
   Stream<String> get genderAndBreed =>
       _genderAndBreedState ??= _mapToGenderAndBreedState();
 
-  Stream<String> _mapToGenderAndBreedState();
-
-  ///endregion genderAndBreed
-
-  ///region puppy
-  Stream<Puppy> _puppyState;
-
   @override
   Stream<Puppy> get puppy => _puppyState ??= _mapToPuppyState();
 
+  Stream<String> _mapToImagePathState();
+
+  Stream<String> _mapToNameState();
+
+  Stream<String> _mapToBreedState();
+
+  Stream<String> _mapToGenderState();
+
+  Stream<String> _mapToCharacteristicsState();
+
+  Stream<bool> _mapToIsFavouriteState();
+
+  Stream<String> _mapToGenderAndBreedState();
+
   Stream<Puppy> _mapToPuppyState();
-
-  ///endregion puppy
-
-  ///endregion States
-
-  ///region Type
 
   @override
   PuppyDetailsEvents get events => this;
@@ -117,12 +92,9 @@ abstract class $PuppyDetailsBloc extends RxBlocBase
   @override
   PuppyDetailsStates get states => this;
 
-  ///endregion Type
-
-  /// Dispose of all the opened streams
-
   @override
   void dispose() {
+    _compositeSubscription.dispose();
     super.dispose();
   }
 }

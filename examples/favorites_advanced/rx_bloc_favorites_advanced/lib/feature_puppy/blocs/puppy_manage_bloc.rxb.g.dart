@@ -6,181 +6,135 @@
 
 part of 'puppy_manage_bloc.dart';
 
-/// PuppyManageBlocType class used for bloc event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class PuppyManageBlocType extends RxBlocTypeBase {
   PuppyManageEvents get events;
-
   PuppyManageStates get states;
 }
 
-/// $PuppyManageBloc class - extended by the PuppyManageBloc bloc
+/// [$PuppyManageBloc] extended by the [PuppyManageBloc]
 /// {@nodoc}
 abstract class $PuppyManageBloc extends RxBlocBase
     implements PuppyManageEvents, PuppyManageStates, PuppyManageBlocType {
-  ///region Events
+  final _compositeSubscription = CompositeSubscription();
 
-  ///region markAsFavorite
-
+  /// Тhe [Subject] where events sink to by calling [markAsFavorite]
   final _$markAsFavoriteEvent = PublishSubject<_MarkAsFavoriteEventArgs>();
-  @override
-  void markAsFavorite({Puppy puppy, bool isFavorite}) =>
-      _$markAsFavoriteEvent.add(_MarkAsFavoriteEventArgs(
-        puppy: puppy,
-        isFavorite: isFavorite,
-      ));
 
-  ///endregion markAsFavorite
-
-  ///region setName
-
+  /// Тhe [Subject] where events sink to by calling [setName]
   final _$setNameEvent = PublishSubject<String>();
+
+  /// Тhe [Subject] where events sink to by calling [setCharacteristics]
+  final _$setCharacteristicsEvent = PublishSubject<String>();
+
+  /// Тhe [Subject] where events sink to by calling [setGender]
+  final _$setGenderEvent = PublishSubject<Gender>();
+
+  /// Тhe [Subject] where events sink to by calling [setBreed]
+  final _$setBreedEvent = PublishSubject<BreedType>();
+
+  /// Тhe [Subject] where events sink to by calling [setImage]
+  final _$setImageEvent = PublishSubject<ImagePickerAction>();
+
+  /// Тhe [Subject] where events sink to by calling [savePuppy]
+  final _$savePuppyEvent = PublishSubject<void>();
+
+  /// The state of [imagePath] implemented in [_mapToImagePathState]
+  Stream<String> _imagePathState;
+
+  /// The state of [name] implemented in [_mapToNameState]
+  Stream<String> _nameState;
+
+  /// The state of [breed] implemented in [_mapToBreedState]
+  Stream<BreedType> _breedState;
+
+  /// The state of [gender] implemented in [_mapToGenderState]
+  Stream<Gender> _genderState;
+
+  /// The state of [characteristics] implemented in [_mapToCharacteristicsState]
+  Stream<String> _characteristicsState;
+
+  /// The state of [showErrors] implemented in [_mapToShowErrorsState]
+  Stream<bool> _showErrorsState;
+
+  /// The state of [isSaveEnabled] implemented in [_mapToIsSaveEnabledState]
+  Stream<bool> _isSaveEnabledState;
+
+  /// The state of [updateComplete] implemented in [_mapToUpdateCompleteState]
+  Stream<bool> _updateCompleteState;
+
+  @override
+  void markAsFavorite({Puppy puppy, bool isFavorite}) => _$markAsFavoriteEvent
+      .add(_MarkAsFavoriteEventArgs(puppy: puppy, isFavorite: isFavorite));
+
   @override
   void setName(String newName) => _$setNameEvent.add(newName);
 
-  ///endregion setName
-
-  ///region setCharacteristics
-
-  final _$setCharacteristicsEvent = PublishSubject<String>();
   @override
   void setCharacteristics(String newCharacteristics) =>
       _$setCharacteristicsEvent.add(newCharacteristics);
 
-  ///endregion setCharacteristics
-
-  ///region setGender
-
-  final _$setGenderEvent = PublishSubject<Gender>();
   @override
   void setGender(Gender gender) => _$setGenderEvent.add(gender);
 
-  ///endregion setGender
-
-  ///region setBreed
-
-  final _$setBreedEvent = PublishSubject<BreedType>();
   @override
   void setBreed(BreedType breedType) => _$setBreedEvent.add(breedType);
 
-  ///endregion setBreed
-
-  ///region setImage
-
-  final _$setImageEvent = PublishSubject<ImagePickerAction>();
   @override
   void setImage(ImagePickerAction source) => _$setImageEvent.add(source);
 
-  ///endregion setImage
-
-  ///region savePuppy
-
-  final _$savePuppyEvent = PublishSubject<void>();
   @override
   void savePuppy() => _$savePuppyEvent.add(null);
-
-  ///endregion savePuppy
-
-  ///endregion Events
-
-  ///region States
-
-  ///region imagePath
-  Stream<String> _imagePathState;
 
   @override
   Stream<String> get imagePath => _imagePathState ??= _mapToImagePathState();
 
-  Stream<String> _mapToImagePathState();
-
-  ///endregion imagePath
-
-  ///region name
-  Stream<String> _nameState;
-
   @override
   Stream<String> get name => _nameState ??= _mapToNameState();
-
-  Stream<String> _mapToNameState();
-
-  ///endregion name
-
-  ///region breed
-  Stream<BreedType> _breedState;
 
   @override
   Stream<BreedType> get breed => _breedState ??= _mapToBreedState();
 
-  Stream<BreedType> _mapToBreedState();
-
-  ///endregion breed
-
-  ///region gender
-  Stream<Gender> _genderState;
-
   @override
   Stream<Gender> get gender => _genderState ??= _mapToGenderState();
-
-  Stream<Gender> _mapToGenderState();
-
-  ///endregion gender
-
-  ///region characteristics
-  Stream<String> _characteristicsState;
 
   @override
   Stream<String> get characteristics =>
       _characteristicsState ??= _mapToCharacteristicsState();
 
-  Stream<String> _mapToCharacteristicsState();
-
-  ///endregion characteristics
-
-  ///region showErrors
-  Stream<bool> _showErrorsState;
-
   @override
   Stream<bool> get showErrors => _showErrorsState ??= _mapToShowErrorsState();
-
-  Stream<bool> _mapToShowErrorsState();
-
-  ///endregion showErrors
-
-  ///region isSaveEnabled
-  Stream<bool> _isSaveEnabledState;
 
   @override
   Stream<bool> get isSaveEnabled =>
       _isSaveEnabledState ??= _mapToIsSaveEnabledState();
 
-  Stream<bool> _mapToIsSaveEnabledState();
-
-  ///endregion isSaveEnabled
-
-  ///region updateComplete
-  Stream<bool> _updateCompleteState;
-
   @override
   Stream<bool> get updateComplete =>
       _updateCompleteState ??= _mapToUpdateCompleteState();
 
+  Stream<String> _mapToImagePathState();
+
+  Stream<String> _mapToNameState();
+
+  Stream<BreedType> _mapToBreedState();
+
+  Stream<Gender> _mapToGenderState();
+
+  Stream<String> _mapToCharacteristicsState();
+
+  Stream<bool> _mapToShowErrorsState();
+
+  Stream<bool> _mapToIsSaveEnabledState();
+
   Stream<bool> _mapToUpdateCompleteState();
-
-  ///endregion updateComplete
-
-  ///endregion States
-
-  ///region Type
 
   @override
   PuppyManageEvents get events => this;
 
   @override
   PuppyManageStates get states => this;
-
-  ///endregion Type
-
-  /// Dispose of all the opened streams
 
   @override
   void dispose() {
@@ -191,25 +145,17 @@ abstract class $PuppyManageBloc extends RxBlocBase
     _$setBreedEvent.close();
     _$setImageEvent.close();
     _$savePuppyEvent.close();
+    _compositeSubscription.dispose();
     super.dispose();
   }
 }
 
-/// region Argument classes
-
-/// region _MarkAsFavoriteEventArgs class
-
-/// {@nodoc}
+/// Helps providing the arguments in the [Subject.add] for
+/// [PuppyManageEvents.markAsFavorite] event
 class _MarkAsFavoriteEventArgs {
+  const _MarkAsFavoriteEventArgs({this.puppy, this.isFavorite});
+
   final Puppy puppy;
+
   final bool isFavorite;
-
-  const _MarkAsFavoriteEventArgs({
-    this.puppy,
-    this.isFavorite,
-  });
 }
-
-/// endregion _MarkAsFavoriteEventArgs class
-
-/// endregion Argument classes

@@ -120,7 +120,7 @@ abstract class BlocAEvents {
   void add(int number);
   
   // Event with two (or more) parameters
-  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(a:0, b:0))
+  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(0, 0))
   void subtract(int a,int b);
   
 }
@@ -135,6 +135,17 @@ In order to provide a good user experience and easier error detection, this gene
     - with more than one parameter: the appropriate event arguments class should be used.
 * States class should define its members using the `get` keyword.
 * States class members should **not** have body definitions.
+
+## Migration notes
+* Version >=2.0.0 introduces a change into generating the constructor parameters of the event arguments class.
+```dart
+ // <2.0.0 the event argument class constructor parameters are always named.
+  @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(a:0, b:0))
+  void subtract(int a, int b);
+ // =>2.0.0 the event argument class constructor parameters are the same how they are defined for the event method.
+   @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(0, 0))
+  void subtract(int a, int b);
+  ```
 
 ## FAQ
 ### How I can make the generator working for me ?

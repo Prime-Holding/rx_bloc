@@ -31,12 +31,10 @@ class PuppiesExtraDetailsBloc extends $PuppiesExtraDetailsBloc {
   }
 
   final _lastFetchedPuppies = BehaviorSubject<List<Puppy>>.seeded([]);
-  final _compositeSubscription = CompositeSubscription();
 
   @override
   void dispose() {
     _lastFetchedPuppies.close();
-    _compositeSubscription.dispose();
     super.dispose();
   }
 }
