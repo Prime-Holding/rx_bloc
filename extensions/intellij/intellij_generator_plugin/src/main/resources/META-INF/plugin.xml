@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>com.primeholding.rxbloc_generator_plugin</id>
     <name>RxBloc</name>
-    <vendor>Prime Holding</vendor>
+    <vendor>Prime Holding JSC</vendor>
 
     <description>
         <![CDATA[
-            RxBloc Library Tools for effectively creating blocs.
+            RxBloc Library Tools for effectively creating reactive blocs.
         ]]>
     </description>
 
