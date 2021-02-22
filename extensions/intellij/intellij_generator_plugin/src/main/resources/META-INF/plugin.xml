@@ -21,7 +21,7 @@
         <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocAction"
                 description="Generate a new RxBloc"
                 id="GenerateRxBlocId"
-                icon="/icons/bloc.png"
+                icon="/icons/rx_bloc.png"
                 text="RxBloc Class">
             <add-to-group
                     group-id="NewGroup"
