@@ -18,9 +18,9 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
         dialog.show()
     }
 
-    override fun onGenerateBlocClicked(blocName: String?, shouldUseEquatable: Boolean) {
+    override fun onGenerateBlocClicked(blocName: String?, shouldUseEquatable: Boolean, includeExtensions: Boolean) {
         blocName?.let { name ->
-            val generators = RxBlocGeneratorFactory.getBlocGenerators(name, shouldUseEquatable)
+            val generators = RxBlocGeneratorFactory.getBlocGenerators(name, shouldUseEquatable, includeExtensions)
             generate(generators)
         }
     }
@@ -43,7 +43,7 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
                 {
                     mainSourceGenerators.forEach { createSourceFile(project!!, it, directory!!) }
                 },
-                "Generate a new Bloc",
+                "Generate a new RxBloc",
                 null
             )
         }

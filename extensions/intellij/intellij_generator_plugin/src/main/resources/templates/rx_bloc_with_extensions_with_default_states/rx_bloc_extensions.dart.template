@@ -1,0 +1,6 @@
+part of '${bloc_snake_case}_bloc.dart';
+
+extension ToError on Stream<Exception> {
+  /// TODO: Implement error event-to-state logic
+  Stream<String> toMessage() => map((errorState) => errorState.toString());
+}
