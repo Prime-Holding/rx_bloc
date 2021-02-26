@@ -80,12 +80,12 @@ You can create the contracts along with the BloC itself by yourself, but this se
 
 
 By selecting `New` -> `RxBloc Class` the plugin will create the following files
-* `${name}_bloc.dart` The file where the business logic resides (the contracts (events and states) along with the BloC itself).
-* `${name}_bloc.rxb.g.dart` The file where all boring bolerplate code resides.
+* `${name}_bloc.dart` The file, where the business logic resides (the contracts (events and states) along with the BloC itself).
+* `${name}_bloc.rxb.g.dart` The file, where all boring bolerplate code resides.
 
 ### Generator
 
-The plugin creates the initial state of the BloC, but you will need a tool, which will be updating the generated file based on the new events/states you decalre in the `states` and `events` contracts.
+The plugin creates just the initial state of the BloC. For all further updates, you will need a tool, which will be updating the generated file (`${name}_bloc.rxb.g.dart`) based on your needs.
 Here is where the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) package helps, as automatically writes all the boring boilerplate code so you can focus on your business logic instead. You just need to add it to your pubspec.yaml file as follows:
 
 
