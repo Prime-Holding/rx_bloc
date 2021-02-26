@@ -74,7 +74,8 @@ class CounterBloc {
 
 ### Android Plugin
 You can create the contracts along with the BloC itself by yourself, but this seems to be a tedious task, isn't it? To become more productive you can use the [RxBloC Android Plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true) that helps effectively creating reactive blocs.
-[![Android Plugin](https://plugins.jetbrains.com/files/16165/screenshot_a2c14ef0-9805-4fec-a306-e10ccb97c07a)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true). 
+[![Android Plugin](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/36-readme-updates/packages/rx_bloc/doc/asset/android_plugin.png)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true). 
+
 
 By selecting New -> RxBloc class the plugin will create the the following files
 * `${name}_bloc.dart` Here is where the business logic resides. The contracts (events and states) along with the the BloC itself.
