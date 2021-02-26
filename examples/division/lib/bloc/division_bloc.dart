@@ -2,6 +2,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'division_bloc.rxb.g.dart';
+part 'division_bloc_extensions.dart';
 
 abstract class DivisionBlocEvents {
   // Event that we use for number division
@@ -28,47 +29,19 @@ abstract class DivisionBlocStates {
 class DivisionBloc extends $DivisionBloc {
   @override
   Stream<String> _mapToDivisionResultState() => _$divideNumbersEvent
-      .switchMap((inputArgs) =>
-          _calculateAndFormat(inputArgs.a, inputArgs.b).asResultStream())
+      .doOnEach((event) {
+        print('das');
+      })
+      .calculateAndFormat()
+      .doOnEach((event) {
+        print('das');
+      })
       .setResultStateHandler(this)
       .whereSuccess();
-
-  Future<String> _calculateAndFormat(String num1, String num2) async {
-    // Any thrown exception will be captured by the errorState
-
-    if (num1.isNullOrEmpty || !num1.isNumeric)
-      throw Exception('Invalid first number.');
-    if (num2.isNullOrEmpty || !num2.isNumeric)
-      throw Exception('Invalid second number.');
-
-    final numA = double.parse(num1);
-    final numB = double.parse(num2);
-
-    if (numB == 0) throw Exception('Cannot divide by zero.');
-
-    // Simulate a small calculation delay (so the loading progress is visible)
-    await Future.delayed(Duration(seconds: 1));
-    return '$numA / $numB = ${numA / numB}';
-  }
 
   @override
   Stream<bool> get isLoading => loadingState;
 
   @override
-  Stream<String> get errors => errorState.skip(1).map((exception) {
-        String msg = exception.toString();
-        if (msg.contains('Exception:')) msg = msg.replaceAll('Exception:', '');
-        return msg;
-      });
-}
-
-extension _StringExtensions on String {
-  bool get isNullOrEmpty {
-    return this == null || this.trim().isEmpty;
-  }
-
-  bool get isNumeric {
-    final _digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    return this.split('').every((char) => _digits.contains(char));
-  }
+  Stream<String> get errors => errorState.skip(1).toMessage();
 }
