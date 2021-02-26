@@ -62,7 +62,14 @@ Then we need to create an empty CounterBloc class in **counter_bloc.dart** (belo
 ```dart
 ...
 @RxBloc()
-class CounterBloc {}
+class CounterBloc {
+    @override
+    Stream<String> _mapToErrorState() =>
+        errorState.map((error) => error.toString));
+        
+    @override
+    Stream<bool> _mapToIsLoadingState() => loadingState;
+}
 ```
 
 ### Android Plugin
