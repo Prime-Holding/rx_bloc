@@ -68,7 +68,7 @@ class CounterBloc extends $CounterBloc {}
 
 ### Android Plugin
 
-You can create the contracts along with the BloC class by yourself, but this seems to be a tedious task, isn't it? To become more productive you can use the [RxBloC Android Plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true) that helps effectively creating reactive BloCs.
+You can create the contracts along with the BloC class by yourself, but this seems to be a tedious task, isn't it? It's recommended using the [RxBloC Android Plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true) that helps effectively creating reactive BloCs.
 [![Android Plugin](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/36-readme-updates/packages/rx_bloc/doc/asset/android_plugin.png)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true)
 
 
