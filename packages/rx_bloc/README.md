@@ -133,6 +133,12 @@ As you can see, by extending [$CounterBloc](https://github.com/Prime-Holding/rx_
 In the code above we declare that as soon as the user taps on the increment or decrement button, an API call will be executed. Since both _$incrementEvent and _$decrementEvent are grouped in one stream by the merge operator, the result of their API calls allows us to register our BloC as a state handler. For more information what is State Handler and how it works, look at [this article](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99#c627). We then extract only the “success” result and finally put an initial value of 0.
 
 ## Accessing the BloC from the widget treee
+First, make sure you have added [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) to your pubspec.yaml file and after exexuting `flutter pub get` you will have access to the following `widget` binders.
+
+```dart
+dependencies:
+  flutter_rx_bloc: ^1.2.1
+```
 
 [RxBlocProvider](https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html) is a Flutter widget that provides a BloC to its children via RxBlocProvider.of<T>(context). It is used as a dependency injection (DI) widget so that a single instance of a BloC can be provided to multiple widgets within a subtree.
   
