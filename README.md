@@ -19,12 +19,12 @@ Following the best practices for building robust mobile applications the archite
 ## Packages
 
 | Package                                                                              | Pub                                                                                                      |
-| --------------------------------
----------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
 | [rx_bloc](https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc)                   | [![pub package](https://img.shields.io/pub/v/rx_bloc.svg)](https://pub.dev/packages/rx_bloc)                   |
 | [flutter_rx_bloc](https://github.com/Prime-Holding/rx_bloc/tree/master/packages/flutter_rx_bloc)   | [![pub package](https://img.shields.io/pub/v/flutter_rx_bloc.svg)](https://pub.dev/packages/flutter_rx_bloc)   |
 | [rx_bloc_test](https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_test)         | [![pub package](https://img.shields.io/pub/v/rx_bloc_test.svg)](https://pub.dev/packages/rx_bloc_test)         |
 | [rx_bloc_generator](https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_generator)   | [![pub package](https://img.shields.io/pub/v/rx_bloc_generator.svg)](https://pub.dev/packages/rx_bloc_generator)   |
+
 
 ## Plugins
 - [Android Studio](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true)
@@ -35,7 +35,6 @@ Following the best practices for building robust mobile applications the archite
 - [flutter_rx_bloc](https://github.com/Prime-Holding/rx_bloc/tree/master/packages/flutter_rx_bloc/README.md)
 - [rx_bloc_test](https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_test/README.md)
 - [rx_bloc_generator](https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_generator/README.md)
-
 
 ## Samples
 
