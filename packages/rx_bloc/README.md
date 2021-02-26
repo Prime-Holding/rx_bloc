@@ -79,8 +79,8 @@ You can create the contracts along with the BloC itself by yourself, but this se
 [![Android Plugin](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/36-readme-updates/packages/rx_bloc/doc/asset/android_plugin.png)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true)
 
 
-By selecting `New` -> `RxBloc Class` the plugin will create the the following files
-* `${name}_bloc.dart` The file where the business logic resides (the contracts (events and states) along with the the BloC itself).
+By selecting `New` -> `RxBloc Class` the plugin will create the following files
+* `${name}_bloc.dart` The file where the business logic resides (the contracts (events and states) along with the BloC itself).
 * `${name}_bloc.rxb.g.dart` The file where all boring bolerplate code resides.
 
 ### Generator
