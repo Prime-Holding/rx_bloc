@@ -98,7 +98,7 @@ dev_dependencies:
 Once added to the `pubspec.yaml`, run the flutter command for getting the newly added dependencies `flutter pub get`, and then just start the generator by execuing this command `flutter packages pub run build_runner watch --delete-conflicting-outputs`.
 
 
-### Implementing business logic
+### Implementing the business logic
 [counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
 ```dart
 ...
