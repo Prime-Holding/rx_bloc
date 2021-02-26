@@ -65,12 +65,13 @@ Then we need to create an empty CounterBloc class in **counter_bloc.dart** (belo
 class CounterBloc {}
 ```
 
+## Android Plugin
 You can create the contracts along with the BloC itself by yourself, but this seems to be a tedious task, isn't it? To become more productive you can use the [RxBlox Android Plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true) that helps effectively creating reactive blocs.
 [![Android Plugin](https://plugins.jetbrains.com/files/16165/screenshot_a2c14ef0-9805-4fec-a306-e10ccb97c07a)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true). 
 
-The plugin will create the the following files
-* `counter.dart` Here is where you implement the business logic 
-* `counter.rxb.g.dart` Here is where all boring bolerplate resides.
+By selecting New -> RxBloc class the plugin will create the the following files
+* `${name}_bloc.dart` Here is where you implement the business logic 
+* `${name}_bloc.rxb.g.dart` Here is where all boring bolerplate resides.
 
 In order to reduce the development time you will need a tool that takes care of the generated file, as while you are declaring events and states 
 
