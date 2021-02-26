@@ -57,7 +57,8 @@ abstract class CounterBlocStates {
 ```
 
 ## Zero-boilerplate BloC
-Then we need to create an empty CounterBloc class in **counter_bloc.dart** (below the contracts) as shown below
+
+Then you need to create an empty CounterBloc class in **counter_bloc.dart** (just after the contracts) as shown below
 [counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
 ```dart
 ...
@@ -73,28 +74,28 @@ class CounterBloc {
 ```
 
 ### Android Plugin
+
 You can create the contracts along with the BloC itself by yourself, but this seems to be a tedious task, isn't it? To become more productive you can use the [RxBloC Android Plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true) that helps effectively creating reactive blocs.
 [![Android Plugin](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/36-readme-updates/packages/rx_bloc/doc/asset/android_plugin.png)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true). 
 
 
-By selecting New -> RxBloc class the plugin will create the the following files
-* `${name}_bloc.dart` Here is where the business logic resides. The contracts (events and states) along with the the BloC itself.
-* `${name}_bloc.rxb.g.dart` Here is where all boring bolerplate code resides.
+By selecting `New` -> `RxBloc Class` the plugin will create the the following files
+* `${name}_bloc.dart` The file where the business logic resides (the contracts (events and states) along with the the BloC itself).
+* `${name}_bloc.rxb.g.dart` The file where all boring bolerplate code resides.
 
 ### Generator
-In order to reduce the development time you will need a tool that takes care of the generated file, as while you are declaring events and states 
 
-the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) package makes your BloC zero-boilerplate, as the generator automatically writes all the boring boilerplate code so you can focus on your business logic instead.
-Once we have defined the states and events contracts, it’s time to implement the actual Counter BloC. As mentioned previously, we are armed with [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator), which should be added to your pubspec.yaml file as follows:
+The plugin creates the initial state of the BloC, but you will need a tool, which will be updating the generated file based on the new events/states you decalre in the `states` and `events` contracts.
+Here is where the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) package helps, as automatically writes all the boring boilerplate code so you can focus on your business logic instead. You just need to add it to your pubspec.yaml file as follows:
 
 
 ```dart
 dev_dependencies:
   build_runner:
-  rx_bloc_generator:^1.0.1
+  rx_bloc_generator:^2.0.0
 ```
 
-Then we need to create an empty CounterBloc class in **counter_bloc.dart** (below the contracts) and just execute `flutter packages pub run build_runner build` from the root of your project.
+Once added to the `pubspec.yaml`, run the flutter command for getting the newly added dependencies `flutter pub get`, and then just start the generator by execuing this command `flutter packages pub run build_runner watch --delete-conflicting-outputs`.
 
 
 
