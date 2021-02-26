@@ -58,12 +58,12 @@ abstract class CounterBlocStates {
 
 ## Zero-boilerplate BloC
 
-Then you need to create an empty CounterBloc class in **counter_bloc.dart** (just after the contracts) as shown below
+Then you need to create a CounterBloc class in **counter_bloc.dart** (just after the contracts) as shown below
 [counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
 ```dart
 ...
 @RxBloc()
-class CounterBloc {
+class CounterBloc extends $CounterBloc {
     @override
     Stream<String> _mapToErrorState() =>
         errorState.map((error) => error.toString));
