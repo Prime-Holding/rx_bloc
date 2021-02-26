@@ -29,13 +29,7 @@ abstract class DivisionBlocStates {
 class DivisionBloc extends $DivisionBloc {
   @override
   Stream<String> _mapToDivisionResultState() => _$divideNumbersEvent
-      .doOnEach((event) {
-        print('das');
-      })
       .calculateAndFormat()
-      .doOnEach((event) {
-        print('das');
-      })
       .setResultStateHandler(this)
       .whereSuccess();
 
