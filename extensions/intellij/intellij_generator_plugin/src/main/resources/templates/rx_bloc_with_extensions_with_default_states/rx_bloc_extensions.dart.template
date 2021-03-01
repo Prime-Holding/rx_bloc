@@ -1,6 +1,10 @@
 part of '${bloc_snake_case}_bloc.dart';
 
-extension ToError on Stream<Exception> {
+/// TODO: Here you can add the implementation details of your BloC or any stream extensions you might need.
+/// Thus, the BloC will contain only declarations, which improves the readability and the maintainability.
+extension _${bloc_pascal_case}Extension on ${bloc_pascal_case}Bloc {}
+
+extension _ToError on Stream<Exception> {
   /// TODO: Implement error event-to-state logic
   Stream<String> toMessage() => map((errorState) => errorState.toString());
 }

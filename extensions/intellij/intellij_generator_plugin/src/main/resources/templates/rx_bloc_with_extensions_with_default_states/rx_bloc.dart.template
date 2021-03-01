@@ -2,7 +2,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 part '${bloc_snake_case}_bloc.rxb.g.dart';
-part '${bloc_snake_case}_extensions.dart';
+part '${bloc_snake_case}_bloc_extensions.dart';
 
 /// A contract class containing all events of the ${bloc_pascal_case}BloC.
 abstract class ${bloc_pascal_case}BlocEvents {
