@@ -6,39 +6,29 @@
 
 part of 'division_bloc.dart';
 
-/// DivisionBlocType class used for bloc event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
+/// {@nodoc}
 abstract class DivisionBlocType extends RxBlocTypeBase {
   DivisionBlocEvents get events;
-
   DivisionBlocStates get states;
 }
 
-/// $DivisionBloc class - extended by the DivisionBloc bloc
+/// [$DivisionBloc] extended by the [DivisionBloc]
+/// {@nodoc}
 abstract class $DivisionBloc extends RxBlocBase
     implements DivisionBlocEvents, DivisionBlocStates, DivisionBlocType {
-  ///region Events
+  final _compositeSubscription = CompositeSubscription();
 
-  ///region divideNumbers
+  /// Тhe [Subject] where events sink to by calling [divideNumbers]
+  final _$divideNumbersEvent =
+      BehaviorSubject.seeded(const _DivideNumbersEventArgs('1.0', '1.0'));
 
-  final _$divideNumbersEvent = BehaviorSubject.seeded(_DivideNumbersEventArgs(
-    a: '1.0',
-    b: '1.0',
-  ));
+  /// The state of [divisionResult] implemented in [_mapToDivisionResultState]
+  Stream<String> _divisionResultState;
+
   @override
   void divideNumbers(String a, String b) =>
-      _$divideNumbersEvent.add(_DivideNumbersEventArgs(
-        a: a,
-        b: b,
-      ));
-
-  ///endregion divideNumbers
-
-  ///endregion Events
-
-  ///region States
-
-  ///region divisionResult
-  Stream<String> _divisionResultState;
+      _$divideNumbersEvent.add(_DivideNumbersEventArgs(a, b));
 
   @override
   Stream<String> get divisionResult =>
@@ -46,41 +36,26 @@ abstract class $DivisionBloc extends RxBlocBase
 
   Stream<String> _mapToDivisionResultState();
 
-  ///endregion divisionResult
-
-  ///endregion States
-
-  ///region Type
-
   @override
   DivisionBlocEvents get events => this;
 
   @override
   DivisionBlocStates get states => this;
 
-  ///endregion Type
-
-  /// Dispose of all the opened streams
+  @override
   void dispose() {
     _$divideNumbersEvent.close();
+    _compositeSubscription.dispose();
     super.dispose();
   }
 }
 
-/// region Argument classes
-
-/// region _DivideNumbersEventArgs class
-
+/// Helps providing the arguments in the [Subject.add] for
+/// [DivisionBlocEvents.divideNumbers] event
 class _DivideNumbersEventArgs {
+  const _DivideNumbersEventArgs(this.a, this.b);
+
   final String a;
+
   final String b;
-
-  const _DivideNumbersEventArgs({
-    this.a,
-    this.b,
-  });
 }
-
-/// endregion _DivideNumbersEventArgs class
-
-/// endregion Argument classes

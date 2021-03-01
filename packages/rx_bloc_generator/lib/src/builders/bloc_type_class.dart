@@ -25,8 +25,7 @@ class _BlocTypeClass implements _BuilderContract {
   Class build() => Class(
         (b) => b
           ..docs.addAll(<String>[
-            '/// $className class used for blocClass event and ' +
-                'state access from widgets',
+            '/// Used as a contractor for the bloc, events and states classes',
             '/// {@nodoc}',
           ])
           ..abstract = true

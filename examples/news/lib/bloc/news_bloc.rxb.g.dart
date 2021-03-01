@@ -6,45 +6,32 @@
 
 part of 'news_bloc.dart';
 
-/// NewsBlocType class used for bloc event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class NewsBlocType extends RxBlocTypeBase {
   NewsBlocEvents get events;
-
   NewsBlocStates get states;
 }
 
-/// $NewsBloc class - extended by the NewsBloc bloc
+/// [$NewsBloc] extended by the [NewsBloc]
 /// {@nodoc}
 abstract class $NewsBloc extends RxBlocBase
     implements NewsBlocEvents, NewsBlocStates, NewsBlocType {
-  ///region Events
+  final _compositeSubscription = CompositeSubscription();
 
-  ///region fetch
-
+  /// Тhe [Subject] where events sink to by calling [fetch]
   final _$fetchEvent = PublishSubject<void>();
+
+  /// The state of [news] implemented in [_mapToNewsState]
+  Stream<List<News>> _newsState;
+
   @override
   void fetch() => _$fetchEvent.add(null);
-
-  ///endregion fetch
-
-  ///endregion Events
-
-  ///region States
-
-  ///region news
-  Stream<List<News>> _newsState;
 
   @override
   Stream<List<News>> get news => _newsState ??= _mapToNewsState();
 
   Stream<List<News>> _mapToNewsState();
-
-  ///endregion news
-
-  ///endregion States
-
-  ///region Type
 
   @override
   NewsBlocEvents get events => this;
@@ -52,11 +39,10 @@ abstract class $NewsBloc extends RxBlocBase
   @override
   NewsBlocStates get states => this;
 
-  ///endregion Type
-
-  /// Dispose of all the opened streams
+  @override
   void dispose() {
     _$fetchEvent.close();
+    _compositeSubscription.dispose();
     super.dispose();
   }
 }

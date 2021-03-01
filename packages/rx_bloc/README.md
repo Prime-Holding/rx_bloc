@@ -58,25 +58,40 @@ abstract class CounterBlocStates {
 
 ## Zero-boilerplate BloC
 
-Once we have defined the states and events contracts, it’s time to implement the actual Counter BloC. As mentioned previously, we are armed with [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator), which should be added to your pubspec.yaml file as follows:
-
-```dart
-dev_dependencies:
-  build_runner:
-  rx_bloc_generator:^1.0.1
-```
-
-Then we need to create an empty CounterBloc class in **counter_bloc.dart** (below the contracts) and just execute `flutter packages pub run build_runner build` from the root of your project.
-
+Then you need to create a CounterBloc class in **counter_bloc.dart** (just after the contracts) as shown below
 [counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
 ```dart
 ...
 @RxBloc()
-class CounterBloc {}
+class CounterBloc extends $CounterBloc {}
 ```
 
-After the generator completes the execution, make sure your IDE is in sync with the local files and you should see that a new file (**counter_bloc.rxb.g.dart**) has been created, which contains the parent class of our CounterBloc. In short, the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) package makes your BloC zero-boilerplate, as the generator automatically writes all the boring boilerplate code so you can focus on your business logic instead.
+### Android Studio Plugin
 
+You can create the contracts along with the BloC class by yourself, but this seems to be a tedious task, isn't it? It's recommended using the [RxBloC Plugin for Android Studio](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true) that helps effectively creating reactive BloCs.
+[![Android Plugin](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/android_plugin.png)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true)
+
+
+By selecting `New` -> `RxBloc Class` the plugin will create the following files
+* `${name}_bloc.dart` The file, where the business logic resides (the contracts (events and states) along with the BloC itself).
+* `${name}_bloc.rxb.g.dart` The file, where all boring bolerplate code (`$CounterBloc` and `CounterBlocType`) resides.
+
+### Generator
+
+The plugin creates just the initial state of the BloC. For all further updates, you will need a tool, which will be updating the generated file (`${name}_bloc.rxb.g.dart`) based on your needs.
+Here is where the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) package helps, as automatically writes all the boring boilerplate code so you can focus on your business logic instead. You just need to add it to your pubspec.yaml file as follows:
+
+
+```dart
+dev_dependencies:
+  build_runner:
+  rx_bloc_generator:^2.0.0
+```
+
+Once added to the `pubspec.yaml`, run the flutter command for getting the newly added dependencies `flutter pub get`, and then just start the generator by execuing this command `flutter packages pub run build_runner watch --delete-conflicting-outputs`.
+
+
+### Implementing the business logic
 [counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
 ```dart
 ...
@@ -118,6 +133,12 @@ As you can see, by extending [$CounterBloc](https://github.com/Prime-Holding/rx_
 In the code above we declare that as soon as the user taps on the increment or decrement button, an API call will be executed. Since both _$incrementEvent and _$decrementEvent are grouped in one stream by the merge operator, the result of their API calls allows us to register our BloC as a state handler. For more information what is State Handler and how it works, look at [this article](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99#c627). We then extract only the “success” result and finally put an initial value of 0.
 
 ## Accessing the BloC from the widget treee
+First, make sure you have added [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) to your pubspec.yaml file and after exexuting `flutter pub get` you will have access to the following `widget` binders.
+
+```dart
+dependencies:
+  flutter_rx_bloc: ^1.2.1
+```
 
 [RxBlocProvider](https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html) is a Flutter widget that provides a BloC to its children via RxBlocProvider.of<T>(context). It is used as a dependency injection (DI) widget so that a single instance of a BloC can be provided to multiple widgets within a subtree.
   
@@ -160,3 +181,4 @@ class HomePage extends StatelessWidget {
 - [Introducing rx_bloc ecosystem - Part 2](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99) Dart package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of the reactive streams.
 - [Introducing rx_bloc ecosystem - Part 3](https://medium.com/prime-holding-jsc/introducing-flutter-rx-bloc-part-3-69d9114da473) Set of Flutter Widgets that expose your reactive BloCs to the UI Layer.
 - [Building complex apps in Flutter through the power of reactive programming](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde) - Implementing complex apps as satisfying the user expectations along with consuming a fragmented API could be challenging nowadays. Learn how you can overcome some of the most common challenges you might face.
+- [Building Forms in Flutter](https://medium.com/prime-holding-jsc/building-forms-in-flutter-454b8d65f48) - Although building forms in Flutter may seem like an easy task, separating the business logic from the UI layer can be a challenge. The separation of concerns makes your app more scalable and maintainable and most importantly the business (validation) logic becomes unit-testable, so let’s see how we can achieve this by using rx_bloc and flutter_rx_bloc.
