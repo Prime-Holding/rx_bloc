@@ -1,0 +1,30 @@
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/rxdart.dart';
+
+part '${bloc_snake_case}_bloc.rxb.g.dart';
+part '${bloc_snake_case}_bloc_extensions.dart';
+
+/// A contract class containing all events of the ${bloc_pascal_case}BloC.
+abstract class ${bloc_pascal_case}BlocEvents {
+  /// TODO: Declare your first event
+  // void fetchData();
+}
+
+/// A contract class containing all states of the ${bloc_pascal_case}BloC.
+abstract class ${bloc_pascal_case}BlocStates {
+  /// The loading state
+  Stream<bool> get isLoading;
+
+  /// The error state
+  Stream<String> get errors;
+}
+
+@RxBloc()
+class ${bloc_pascal_case}Bloc extends ${bloc_dollar_pascal_case}Bloc {
+ @override
+     Stream<String> _mapToErrorsState() =>
+         errorState.toMessage();
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
+}
