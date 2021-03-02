@@ -43,7 +43,7 @@ class _BlocClass implements _BuilderContract {
   Class build() => Class(
         (b) => b
           ..docs.addAll(<String>[
-            '/// $className class - extended by the CounterBloc bloc',
+            '/// [$className] extended by the [${className.substring(1)}]',
             '/// {@nodoc}',
           ])
           ..abstract = true

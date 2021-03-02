@@ -2,9 +2,8 @@
 * Support events with optional parameter and enum default value
 * Support events with named parameter and a default value
 * Support events with positional and optional parameters at the same time
-* Support events with positional and optional parameters at the same time
-* Support events with 2 optional parameters with default values
-* Support events with 2 named parameters with default values
+* Support events with multiple optional parameters with default values
+* Support events with multiple named parameters with default values
 * Support any seed params
 * Version >=2.0.0 introduces a change into generating the constructor parameters of the event arguments class.
 ```dart
@@ -15,10 +14,9 @@
    @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(0, 0))
   void subtract(int a, int b);
   ```
- * Stability and code readability improvements
- * Added generator tests
  * Upgraded the dependencies to the latest versions fo `analyzer`, `build`, `rx_bloc`, and `dart_style`
- * Improved error handling and text messages readability
+ * Stability improvements
+ * Improved error handling
 
 ## [1.0.1] - December 08, 2020
 * Stability improvements

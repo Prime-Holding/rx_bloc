@@ -1,3 +1,6 @@
+## [1.2.3] - February 26, 2020
+* Documentation improvements
+ 
 ## [1.2.2] - January 29, 2020
 * Stability improvements
 

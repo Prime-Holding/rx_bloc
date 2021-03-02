@@ -13,11 +13,27 @@ abstract class ${bloc_pascal_case}BlocType extends RxBlocTypeBase {
   ${bloc_pascal_case}BlocStates get states;
 }
 
-/// [${bloc_dollar_pascal_case}] extended by the [${bloc_pascal_case}]
+/// [${bloc_dollar_pascal_case}] extended by the [${bloc_pascal_case}Bloc]
 /// {@nodoc}
 abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
     implements ${bloc_pascal_case}BlocEvents, ${bloc_pascal_case}BlocStates, ${bloc_pascal_case}BlocType {
   final _compositeSubscription = CompositeSubscription();
+
+  /// The state of [isLoading] implemented in [_mapToIsLoadingState]
+  Stream<bool> _isLoadingState;
+
+  /// The state of [errors] implemented in [_mapToErrorsState]
+  Stream<String> _errorsState;
+
+  @override
+  Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
+
+  @override
+  Stream<String> get errors => _errorsState ??= _mapToErrorsState();
+
+  Stream<bool> _mapToIsLoadingState();
+
+  Stream<String> _mapToErrorsState();
 
   @override
   ${bloc_pascal_case}BlocEvents get events => this;

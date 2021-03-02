@@ -43,9 +43,6 @@ class FavoritePuppiesBloc extends $FavoritePuppiesBloc {
   final _favoritePuppies =
       BehaviorSubject.seeded(Result<List<Puppy>>.success([]));
 
-  // MARK: - Memory management
-  final _compositeSubscription = CompositeSubscription();
-
   @override
   Stream<Result<List<Puppy>>> get favoritePuppies => _favoritePuppies;
 
@@ -55,7 +52,6 @@ class FavoritePuppiesBloc extends $FavoritePuppiesBloc {
   @override
   void dispose() {
     _favoritePuppies.close();
-    _compositeSubscription.dispose();
     super.dispose();
   }
 }

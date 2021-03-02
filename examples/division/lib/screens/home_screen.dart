@@ -55,9 +55,8 @@ class HomeScreen extends StatelessWidget {
                       child: Text((state?.data ?? false)
                           ? 'Calculating...'
                           : 'Divide A by B'),
-                      onPressed: () {
-                        bloc.events.divideNumbers(_numberA, _numberB);
-                      },
+                      onPressed: () =>
+                          bloc.events.divideNumbers(_numberA, _numberB),
                     ),
                   ),
                   Padding(

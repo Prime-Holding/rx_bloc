@@ -6,43 +6,36 @@
 
 part of 'coordinator_bloc.dart';
 
-/// CoordinatorBlocType class used for bloc event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class CoordinatorBlocType extends RxBlocTypeBase {
   CoordinatorEvents get events;
-
   CoordinatorStates get states;
 }
 
-/// $CoordinatorBloc class - extended by the CoordinatorBloc bloc
+/// [$CoordinatorBloc] extended by the [CoordinatorBloc]
 /// {@nodoc}
 abstract class $CoordinatorBloc extends RxBlocBase
     implements CoordinatorEvents, CoordinatorStates, CoordinatorBlocType {
-  ///region Events
+  final _compositeSubscription = CompositeSubscription();
 
-  ///region puppyUpdated
-
+  /// Тhe [Subject] where events sink to by calling [puppyUpdated]
   final _$puppyUpdatedEvent = PublishSubject<Puppy>();
+
+  /// Тhe [Subject] where events sink to by calling
+  /// [puppiesWithExtraDetailsFetched]
+  final _$puppiesWithExtraDetailsFetchedEvent = PublishSubject<List<Puppy>>();
+
+  /// The state of [onPuppiesUpdated] implemented in
+  /// [_mapToOnPuppiesUpdatedState]
+  Stream<List<Puppy>> _onPuppiesUpdatedState;
+
   @override
   void puppyUpdated(Puppy puppy) => _$puppyUpdatedEvent.add(puppy);
 
-  ///endregion puppyUpdated
-
-  ///region puppiesWithExtraDetailsFetched
-
-  final _$puppiesWithExtraDetailsFetchedEvent = PublishSubject<List<Puppy>>();
   @override
   void puppiesWithExtraDetailsFetched(List<Puppy> puppies) =>
       _$puppiesWithExtraDetailsFetchedEvent.add(puppies);
-
-  ///endregion puppiesWithExtraDetailsFetched
-
-  ///endregion Events
-
-  ///region States
-
-  ///region onPuppiesUpdated
-  Stream<List<Puppy>> _onPuppiesUpdatedState;
 
   @override
   Stream<List<Puppy>> get onPuppiesUpdated =>
@@ -50,26 +43,17 @@ abstract class $CoordinatorBloc extends RxBlocBase
 
   Stream<List<Puppy>> _mapToOnPuppiesUpdatedState();
 
-  ///endregion onPuppiesUpdated
-
-  ///endregion States
-
-  ///region Type
-
   @override
   CoordinatorEvents get events => this;
 
   @override
   CoordinatorStates get states => this;
 
-  ///endregion Type
-
-  /// Dispose of all the opened streams
-
   @override
   void dispose() {
     _$puppyUpdatedEvent.close();
     _$puppiesWithExtraDetailsFetchedEvent.close();
+    _compositeSubscription.dispose();
     super.dispose();
   }
 }
