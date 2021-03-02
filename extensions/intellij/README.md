@@ -1,4 +1,4 @@
-# Bloc Plugin for IntelliJ and Android Studio
+# RxBloc Plugin for IntelliJ and Android Studio
 
 ![dialog](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/android_plugin.png)
 
