@@ -26,7 +26,7 @@ abstract class LoadingBlocEvents {
   ///
   /// To observe the current loading state subscribe for
   /// [LoadingBlocStates.isLoading]
-  void setLoading({@required bool isLoading});
+  void setLoading({required bool isLoading});
 }
 
 /// The BloC that handles is loading state.
@@ -39,8 +39,9 @@ class LoadingBloc extends $LoadingBloc {
   /// Default constructor
   LoadingBloc() {
     _$setLoadingEvent
-        .map((isLoading) =>
-            isLoading ? _loadingCount.value + 1 : _loadingCount.value - 1)
+        .map((isLoading) => isLoading
+            ? (_loadingCount.value ?? 0) + 1
+            : (_loadingCount.value ?? 0) - 1)
         .bind(_loadingCount)
         .disposedBy(_compositeSubscription);
   }

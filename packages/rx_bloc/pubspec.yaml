@@ -6,17 +6,21 @@ issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com
 
 environment:
-  sdk: ">=2.8.1 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  rxdart: ^0.25.0
-  meta: ^1.2.0
+  rxdart: ^0.26.0
+  meta: ^1.3.0
 
 dev_dependencies:
   rx_bloc_test:
-  coverage: ^0.14.1
+  coverage: ^1.0.1
   pedantic: ^1.9.0
   test: ^1.15.2
-  mockito: ^4.1.3
-  quiver: ^2.1.5
-  test_coverage: ^0.5.0
+  mockito: ^5.0.0
+  quiver: ^3.0.0
+
+
+dependency_overrides:
+  rx_bloc_test:
+    path: ../rx_bloc_test
