@@ -5,14 +5,14 @@ import 'rx_bloc_provider.dart';
 
 class RxBlocBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
   const RxBlocBuilder({
-    @required this.state,
-    @required this.builder,
+    required this.state,
+    required this.builder,
     this.bloc,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final Stream<T> Function(B) state;
-  final B bloc;
+  final B? bloc;
   final Widget Function(BuildContext, AsyncSnapshot<T>, B) builder;
 
   @override

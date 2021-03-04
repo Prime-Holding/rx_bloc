@@ -6,9 +6,7 @@ class _BuildController {
     this.rxBlocClass,
     this.eventClass,
     this.stateClass,
-  })  : assert(rxBlocClass != null),
-        assert(eventClass != null),
-        assert(stateClass != null);
+  });
 
   final ClassElement rxBlocClass;
   final ClassElement eventClass;
@@ -22,10 +20,11 @@ class _BuildController {
     final String blocClassName = '\$${rxBlocClass.displayName}';
     final String eventClassName = eventClass.displayName;
     final String stateClassName = stateClass.displayName;
-    final String blocFilePath = rxBlocClass.location.components.first;
+    final String blocFilePath = rxBlocClass.location?.components?.first ?? '';
     final String mainBlocFileName =
         Uri.tryParse(blocFilePath, (blocFilePath.lastIndexOf('/') + 1))
-            ?.toString();
+                ?.toString() ??
+            '';
 
     /// The output buffer containing all the generated code
     final StringBuffer _output = StringBuffer();
@@ -53,6 +52,7 @@ class _BuildController {
             // Skip @RxBlocIgnoreState() ignored states
             .where((FieldElement field) =>
                 field.getter is PropertyAccessorElement &&
+                field.getter != null &&
                 (field.getter.metadata.isEmpty ||
                     !const TypeChecker.fromRuntime(RxBlocIgnoreState)
                         .hasAnnotationOf(field.getter)))

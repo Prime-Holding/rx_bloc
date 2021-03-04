@@ -6,19 +6,22 @@ issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://primeholding.com
 
 environment:
-  sdk: ">=2.8.1 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.0.1
+  provider: ^5.0.0
   rx_bloc: ^1.2.0
-  rxdart: ^0.25.0
+  rxdart: ^0.26.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  rx_bloc:
+    path: ../rx_bloc
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -68,8 +68,8 @@ extension _EventMethodElement on MethodElement {
   /// Provides the [BehaviorSubject.seeded] arguments as an [Expression]
   Expression get _seededArgument {
     Iterable<String> seedArgumentsMatch = RegExp(r'(?<=seed: ).*(?=\)|,)')
-        .allMatches(_rxBlocEventAnnotation.toSource())
-        .map<String>((m) => m.group(0));
+        .allMatches(_rxBlocEventAnnotation?.toSource() ?? '')
+        .map<String>((m) => m.group(0) ?? '');
 
     if (seedArgumentsMatch.isEmpty) {
       throw _RxBlocGeneratorException(
@@ -78,8 +78,7 @@ extension _EventMethodElement on MethodElement {
 
     String seedArguments = seedArgumentsMatch.toString();
     return refer(
-      '${isUsingArgumentClass &&
-          !seedArguments.contains('(const') ? 'const ' : ''}'
+      '${isUsingArgumentClass && !seedArguments.contains('(const') ? 'const ' : ''}'
       '${seedArguments.substring(1, seedArguments.length - 1)}',
     );
   }
@@ -111,8 +110,7 @@ extension _EventMethodElement on MethodElement {
 
   /// Is the event stream type a [BehaviorSubject]
   bool get isBehavior =>
-      _computedRxBlocEventAnnotation?.toString()?.contains('behaviour') ??
-      false;
+      _computedRxBlocEventAnnotation.toString().contains('behaviour') ?? false;
 
   /// Use argument class when the event's parameters are more than 1
   bool get isUsingArgumentClass => parameters.length > 1;
@@ -141,7 +139,7 @@ extension _EventMethodElement on MethodElement {
           (b) => b
             ..toThis = toThis
             ..required = parameter.isRequiredNamed
-            ..defaultTo = parameter?.defaultValueCode != null
+            ..defaultTo = parameter.defaultValueCode != null
                 ? Code(parameter.defaultValueCode)
                 : null
             ..named = parameter.isNamed

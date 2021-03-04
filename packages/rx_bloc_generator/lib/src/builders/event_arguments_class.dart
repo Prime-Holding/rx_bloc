@@ -17,7 +17,7 @@ class _EventArgumentsClass implements _BuilderContract {
         (b) => b
           ..docs.addAll([
             '/// Helps providing the arguments in the [Subject.add] for',
-            '/// [${method.enclosingElement?.name ?? ''}.${method.name}] event'
+            '/// [${method.enclosingElement.name ?? ''}.${method.name}] event'
           ])
           ..name = '_${method.name.capitalize()}EventArgs'
           ..constructors.add(
@@ -38,7 +38,10 @@ class _EventArgumentsClass implements _BuilderContract {
                 (b) => b
                   ..modifier = FieldModifier.final$
                   ..type = refer(
-                    parameter.type.getDisplayString(withNullability: false),
+                    parameter.type.getDisplayString(
+                        withNullability: (parameter.isOptional ||
+                            parameter.isOptionalNamed ||
+                            parameter.isOptionalPositional)),
                   )
                   ..name = parameter.name,
               ),

@@ -29,9 +29,9 @@ abstract class CounterBlocStates {
   /// Error messages
   Stream<String> get errors;
 
-/// ... state n
-/// You can have as many states as you need.
-/// You're not limited to 1 state for a bloc class.
+  /// ... state n
+  /// You can have as many states as you need.
+  /// You're not limited to 1 state for a bloc class.
 }
 
 /// A RX `CounterBloc` which maps multiple events with multiple states.
@@ -43,23 +43,23 @@ class CounterBloc extends $CounterBloc {
   /// Map increment and decrement events to `count` state.
   @override
   Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
-    // On increment.
-    _$incrementEvent.flatMap((_) => _server.increment().asResultStream()),
-    // On decrement.
-    _$decrementEvent.flatMap((_) => _server.decrement().asResultStream()),
-  ])
-  // This automatically handles the error and loading state.
-      .setResultStateHandler(this)
-  // Provide success response only.
-      .whereSuccess()
-  //emit 0 as initial value
-      .startWith(0);
+        // On increment.
+        _$incrementEvent.flatMap((_) => _server.increment().asResultStream()),
+        // On decrement.
+        _$decrementEvent.flatMap((_) => _server.decrement().asResultStream()),
+      ])
+          // This automatically handles the error and loading state.
+          .setResultStateHandler(this)
+          // Provide success response only.
+          .whereSuccess()
+          //emit 0 as initial value
+          .startWith(0);
 
   @override
   Stream<String> _mapToErrorsState() =>
 
       /// Transform any exception into a readable string.
-  errorState.map((Exception error) => error.toString());
+      errorState.map((Exception error) => error.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

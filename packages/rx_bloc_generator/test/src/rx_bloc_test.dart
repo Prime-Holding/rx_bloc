@@ -117,7 +117,7 @@ abstract class $CounterBloc extends RxBlocBase
       const _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed));
 
   /// The state of [isNotIgnored] implemented in [_mapToIsNotIgnoredState]
-  Stream<bool> _isNotIgnoredState;
+  Stream<bool>? _isNotIgnoredState;
 
   @override
   void withoutAny() => _$withoutAnyEvent.add(null);
@@ -281,7 +281,7 @@ class _WithPositionalAndOptionalEventArgs {
 
   final int pp;
 
-  final int op;
+  final int? op;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -291,7 +291,7 @@ class _WithPositionalAndNamedEventArgs {
 
   final int pp;
 
-  final int np;
+  final int? np;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -301,7 +301,7 @@ class _WithPositionalAndOptionalDefaultParamEventArgs {
 
   final int pp;
 
-  final int op;
+  final int? op;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -311,7 +311,7 @@ class _WithPositionalAndNamedDefaultParamEventArgs {
 
   final int pp;
 
-  final int np;
+  final int? np;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -329,9 +329,9 @@ class _With2PositionalEventArgs {
 class _With2OptionalEventArgs {
   const _With2OptionalEventArgs([this.op1, this.op2]);
 
-  final int op1;
+  final int? op1;
 
-  final int op2;
+  final int? op2;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -339,9 +339,9 @@ class _With2OptionalEventArgs {
 class _With2NamedEventArgs {
   const _With2NamedEventArgs({this.np1, this.np2});
 
-  final int np1;
+  final int? np1;
 
-  final int np2;
+  final int? np2;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -349,9 +349,9 @@ class _With2NamedEventArgs {
 class _With2OptionalDefaultEventArgs {
   const _With2OptionalDefaultEventArgs([this.op1 = 0, this.op2 = 0]);
 
-  final int op1;
+  final int? op1;
 
-  final int op2;
+  final int? op2;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -361,7 +361,7 @@ class _With2NamedDefaultEventArgs {
 
   final int np1;
 
-  final int np2;
+  final int? np2;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -373,7 +373,7 @@ class _With2PositionalAndOptionalEventArgs {
 
   final int pp2;
 
-  final int op1;
+  final int? op1;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -385,7 +385,7 @@ class _With2PositionalAndNamedEventArgs {
 
   final int pp2;
 
-  final int np1;
+  final int? np1;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -395,9 +395,9 @@ class _WithPositionalAnd2OptionalEventArgs {
 
   final int pp;
 
-  final int op1;
+  final int? op1;
 
-  final int op2;
+  final int? op2;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -407,9 +407,9 @@ class _WithPositionalAnd2NamedEventArgs {
 
   final int pp;
 
-  final int np1;
+  final int? np1;
 
-  final int np2;
+  final int? np2;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -429,7 +429,7 @@ class _WithSeededPositionalAndOptionalEventArgs {
 
   final int pp;
 
-  final int op;
+  final int? op;
 }
 
 /// Helps providing the arguments in the [Subject.add] for
@@ -442,7 +442,6 @@ class _WithSeeded2PositionalEnumEventArgs {
   final TestEnumParam pp2;
 }
 ''')
-
 @RxBloc()
 class CounterBloc {}
 
