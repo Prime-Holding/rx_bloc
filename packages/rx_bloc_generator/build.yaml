@@ -1,3 +1,13 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        enabled: true
+        generate_for:
+          exclude:
+            - test
+            - example
+
 builders:
   rx_block:
     import: "package:rx_bloc_generator/builder.dart"

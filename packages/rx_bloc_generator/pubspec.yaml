@@ -1,18 +1,18 @@
 name: rx_bloc_generator
 description: Code generator for rx_bloc that makes your BloC zero-boilerplate.
-version: 2.0.0
+version: 3.0.0
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_generator
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com/
 
 environment:
-  sdk: ">=2.8.1 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   logging: ^1.0.0
-  source_gen: ^0.9.10+1
-  analyzer: ^1.1.0
-  build: ^1.6.2
+  source_gen: ^0.9.0
+  analyzer: ">=0.41.0 <2.0.0"
+  build: ^1.6.0
   rx_bloc: ^1.2.2
   code_builder: ^3.6.0
   dart_style: ^1.3.10

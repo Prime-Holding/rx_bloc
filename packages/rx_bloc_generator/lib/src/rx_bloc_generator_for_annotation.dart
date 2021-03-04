@@ -8,7 +8,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Generates the bloc based on the class with the @RxBloc() annotation.
   /// If either the states or events class is missing the file is not generated.
   @override
-  Future<String> generateForAnnotatedElement(
+  Future<String?> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
@@ -57,16 +57,14 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       // Format error
       _reportIssue(
         'FormatterException \n $message',
-        libraryReader.allElements.first.source?.contents?.data?.toString() ??
-            '',
+        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
       return null;
     } on Exception catch (e) {
       // System error
       _reportIssue(
         e.toString(),
-        libraryReader.allElements.first.source?.contents?.data?.toString() ??
-            '',
+        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
       return null;
     }

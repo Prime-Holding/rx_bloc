@@ -25,7 +25,7 @@ class PuppiesRepository {
 
   final ImagePicker _picker;
 
-  Future<List<Puppy>> getPuppies({String query = ''}) async {
+  Future<List<Puppy?>?> getPuppies({String query = ''}) async {
     await Future.delayed(artificialDelay + Duration(milliseconds: 100));
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
@@ -36,27 +36,27 @@ class PuppiesRepository {
       return puppies;
     }
 
-    final copiedPuppies = [...puppies];
+    final copiedPuppies = [...puppies!];
 
     return copiedPuppies
         .where(
-            (puppy) => puppy.name.toLowerCase().contains(query.toLowerCase()))
+            (puppy) => puppy!.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
 
-  Future<List<Puppy>> getFavoritePuppies() async {
+  Future<List<Puppy?>> getFavoritePuppies() async {
     await Future.delayed(artificialDelay);
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
-    return puppies.where((puppy) => puppy.isFavorite).toList();
+    return puppies!.where((puppy) => puppy!.isFavorite).toList();
   }
 
-  Future<Puppy> favoritePuppy(
+  Future<Puppy?> favoritePuppy(
     Puppy puppy, {
-    @required bool isFavorite,
+    required bool isFavorite,
   }) async {
     await Future.delayed(artificialDelay);
 
@@ -64,8 +64,8 @@ class PuppiesRepository {
       throw Exception(_noInternetConnectionErrorString);
     }
 
-    final foundPuppy = puppies.firstWhere(
-      (item) => item.id == puppy.id,
+    final foundPuppy = puppies!.firstWhere(
+      (item) => item!.id == puppy.id,
       orElse: () => null,
     );
 
@@ -81,9 +81,9 @@ class PuppiesRepository {
       throw Exception(_noInternetConnectionErrorString);
     }
 
-    final puppiesWithExtraData = puppies
-        .where((element) => ids.contains(element.id))
-        .map((puppy) => puppy.copyWith(
+    final puppiesWithExtraData = puppies!
+        .where((element) => ids.contains(element!.id))
+        .map((puppy) => puppy!.copyWith(
               displayName: puppy.name,
               displayCharacteristics: puppy.breedCharacteristics,
             ))
@@ -92,21 +92,21 @@ class PuppiesRepository {
     return puppiesWithExtraData;
   }
 
-  Future<Puppy> updatePuppy(String puppyId, Puppy newValue) async {
+  Future<Puppy?> updatePuppy(String puppyId, Puppy newValue) async {
     await Future.delayed(artificialDelay + Duration(seconds: 1));
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
-    var foundPuppy = puppies.firstWhere(
-      (item) => item.id == puppyId,
+    var foundPuppy = puppies!.firstWhere(
+      (item) => item!.id == puppyId,
       orElse: () => null,
     );
 
     // If the puppy exists, update it
     if (foundPuppy != null) {
-      final foundPuppyIndex = puppies.indexOf(foundPuppy);
+      final foundPuppyIndex = puppies!.indexOf(foundPuppy);
       foundPuppy = newValue.copyWith(
         id: puppyId,
         displayName: newValue.displayName != null ? newValue.name : null,
@@ -115,18 +115,18 @@ class PuppiesRepository {
             : null,
       );
 
-      puppies[foundPuppyIndex] = foundPuppy;
+      puppies![foundPuppyIndex] = foundPuppy;
     }
 
     return foundPuppy;
   }
 
-  Future<PickedFile> pickPuppyImage(ImagePickerAction source) =>
+  Future<PickedFile?> pickPuppyImage(ImagePickerAction source) =>
       _picker.pickPicture(source: source);
 
-  List<Puppy> puppies;
+  List<Puppy?>? puppies;
 
-  List<Puppy> _generateListOfPuppies() => List.generate(
+  List<Puppy?> _generateListOfPuppies() => List.generate(
           generatedPuppiesMultiplier,
           (index) => [..._puppies]
               .map((puppy) =>

@@ -3,6 +3,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../blocs/puppies_extra_details_bloc.dart';
 import '../../blocs/puppy_manage_bloc.dart';
@@ -43,10 +44,11 @@ class PuppyAnimatedListView extends StatelessWidget {
               key: Key('${key.toString()}${item.id}'),
               puppy: item,
               onFavorite: null,
-              onVisible: (puppy) =>
-                  RxBlocProvider.of<PuppiesExtraDetailsBlocType>(context)
-                      .events
-                      .fetchExtraDetails(puppy),
+              onCardPressed: (puppy) {},
+              onVisible: (puppy) => context
+                  .read<PuppiesExtraDetailsBlocType>()
+                  .events
+                  .fetchExtraDetails(puppy),
             ),
             animation,
           ),

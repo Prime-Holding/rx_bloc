@@ -2,15 +2,15 @@ part of '../models/puppy.dart';
 
 extension PuppUtils on Puppy {
   Puppy copyWith({
-    String id,
-    String name,
-    String breedCharacteristics,
-    Gender gender,
-    BreedType breedType,
-    bool isFavorite,
-    String displayName,
-    String displayCharacteristics,
-    String asset,
+    String? id,
+    String? name,
+    String? breedCharacteristics,
+    Gender? gender,
+    BreedType? breedType,
+    bool? isFavorite,
+    String? displayName,
+    String? displayCharacteristics,
+    String? asset,
   }) =>
       Puppy(
         id: id ?? this.id,
@@ -44,7 +44,7 @@ extension PuppUtils on Puppy {
 
   String get genderAsString => PuppyDataConversion.getGenderString(gender);
 
-  String get breedTypeAsString =>
+  String? get breedTypeAsString =>
       PuppyDataConversion.getBreedTypeString(breedType);
 }
 

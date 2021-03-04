@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import '../../models.dart';
 
 extension NavigationItemUtils on NavigationItem {
-  NavigationItem copyWith({bool isSelected, int count}) => NavigationItem(
+  NavigationItem copyWith({bool? isSelected, int? count}) => NavigationItem(
         type: type,
         isSelected: isSelected ?? this.isSelected,
       );
@@ -56,7 +56,7 @@ extension NavigationItemTypeTitle on NavigationItemType {
   }
 
   /// Convert [NavigationItemType] to an icon based on its type.
-  Icon asIcon() {
+  Icon? asIcon() {
     switch (this) {
       case NavigationItemType.search:
         return const Icon(

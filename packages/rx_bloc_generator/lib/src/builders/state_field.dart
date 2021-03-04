@@ -18,7 +18,7 @@ class _StateField implements _BuilderContract {
             ]
           ])
           ..type = refer(
-            field.type.getDisplayString(withNullability: true),
+            '${field.type.getDisplayString(withNullability: false)}?',
           )
           ..name = field.stateFieldName,
       );

@@ -3,9 +3,9 @@ part of rx_bloc_generator;
 /// Validates the main bloc file and provides the generator the needed data
 class _BuildController {
   _BuildController({
-    this.rxBlocClass,
-    this.eventClass,
-    this.stateClass,
+    required this.rxBlocClass,
+    required this.eventClass,
+    required this.stateClass,
   });
 
   final ClassElement rxBlocClass;
@@ -20,7 +20,7 @@ class _BuildController {
     final String blocClassName = '\$${rxBlocClass.displayName}';
     final String eventClassName = eventClass.displayName;
     final String stateClassName = stateClass.displayName;
-    final String blocFilePath = rxBlocClass.location?.components?.first ?? '';
+    final String blocFilePath = rxBlocClass.location?.components.first ?? '';
     final String mainBlocFileName =
         Uri.tryParse(blocFilePath, (blocFilePath.lastIndexOf('/') + 1))
                 ?.toString() ??
@@ -53,7 +53,7 @@ class _BuildController {
             .where((FieldElement field) =>
                 field.getter is PropertyAccessorElement &&
                 field.getter != null &&
-                (field.getter.metadata.isEmpty ||
+                (field.getter!.metadata.isEmpty ||
                     !const TypeChecker.fromRuntime(RxBlocIgnoreState)
                         .hasAnnotationOf(field.getter)))
             .toList(),

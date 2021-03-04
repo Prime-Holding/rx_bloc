@@ -38,10 +38,13 @@ class _EventArgumentsClass implements _BuilderContract {
                 (b) => b
                   ..modifier = FieldModifier.final$
                   ..type = refer(
-                    parameter.type.getDisplayString(
-                        withNullability: (parameter.isOptional ||
-                            parameter.isOptionalNamed ||
-                            parameter.isOptionalPositional)),
+                    parameter.isOptional
+                        ? '${parameter.type.getDisplayString(
+                            withNullability: false,
+                          )}?'
+                        : '${parameter.type.getDisplayString(
+                            withNullability: false,
+                          )}',
                   )
                   ..name = parameter.name,
               ),

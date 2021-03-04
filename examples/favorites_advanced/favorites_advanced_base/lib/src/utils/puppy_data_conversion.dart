@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:favorites_advanced_base/src/utils/enums.dart';
 
 class PuppyDataConversion {
@@ -30,10 +31,10 @@ class PuppyDataConversion {
   };
 
   /// region Breed Type conversions
-  static String getBreedTypeString(BreedType breedType) =>
+  static String? getBreedTypeString(BreedType breedType) =>
       _dogBreeds.entries
           .toList()
-          .firstWhere((pair) => pair.key == breedType, orElse: () => null)
+          .firstWhereOrNull((pair) => pair.key == breedType)
           ?.value ??
       _dogBreeds[BreedType.None];
 

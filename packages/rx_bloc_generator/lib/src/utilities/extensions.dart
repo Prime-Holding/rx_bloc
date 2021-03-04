@@ -89,18 +89,18 @@ extension _EventMethodElement on MethodElement {
       : _BlocEventStreamTypes.publish;
 
   /// Provides the first annotation as [ElementAnnotation] if exists
-  ElementAnnotation get _eventAnnotation =>
+  ElementAnnotation? get _eventAnnotation =>
       // TODO(Diev): Check if
       metadata.isNotEmpty && metadata.first is ElementAnnotation
           ? metadata.first
           : null;
 
   /// Provides the [RxBlocEvent] annotation as [DartObject] if exists
-  DartObject get _computedRxBlocEventAnnotation =>
+  DartObject? get _computedRxBlocEventAnnotation =>
       _rxBlocEventAnnotation?.computeConstantValue();
 
   /// Provides the [RxBlocEvent] annotation as [ElementAnnotation] if exists
-  ElementAnnotation get _rxBlocEventAnnotation => _eventAnnotation
+  ElementAnnotation? get _rxBlocEventAnnotation => _eventAnnotation
               ?.computeConstantValue()
               ?.type
               ?.getDisplayString(withNullability: false) ==
@@ -110,7 +110,7 @@ extension _EventMethodElement on MethodElement {
 
   /// Is the event stream type a [BehaviorSubject]
   bool get isBehavior =>
-      _computedRxBlocEventAnnotation.toString().contains('behaviour') ?? false;
+      _computedRxBlocEventAnnotation.toString().contains('behaviour');
 
   /// Use argument class when the event's parameters are more than 1
   bool get isUsingArgumentClass => parameters.length > 1;

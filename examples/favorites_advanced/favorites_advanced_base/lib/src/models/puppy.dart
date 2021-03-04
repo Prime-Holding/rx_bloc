@@ -16,13 +16,13 @@ class Puppy {
   bool isFavorite;
 
   // Properties that should simulate remote fetching of entity data
-  final String displayName;
-  final String displayCharacteristics;
+  final String? displayName;
+  final String? displayCharacteristics;
 
   Puppy({
-    @required this.id,
-    @required this.name,
-    @required this.asset,
+    required this.id,
+    required this.name,
+    required this.asset,
     this.displayName,
     this.displayCharacteristics,
     this.isFavorite = false,
