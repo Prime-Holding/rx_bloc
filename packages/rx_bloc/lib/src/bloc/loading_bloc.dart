@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
