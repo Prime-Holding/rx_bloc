@@ -20,7 +20,7 @@ extension _StringExtensions on String {
 extension _SpecExtensions on Spec {
   String toDartCodeString() => DartFormatter().format(
         accept(
-          DartEmitter(),
+          DartEmitter(Allocator.none, false, true),
         ).toString(),
       );
 }

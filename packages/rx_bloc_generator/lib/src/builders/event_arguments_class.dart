@@ -8,7 +8,7 @@ part of rx_bloc_generator;
 /// ..    final int argExample;
 /// .. }
 class _EventArgumentsClass implements _BuilderContract {
-  const _EventArgumentsClass(this.method) : assert(method != null);
+  const _EventArgumentsClass(this.method);
 
   final MethodElement method;
 

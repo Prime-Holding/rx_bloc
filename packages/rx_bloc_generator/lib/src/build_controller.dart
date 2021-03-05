@@ -39,7 +39,7 @@ class _BuildController {
         blocTypeClassName,
         eventClassName,
         stateClassName,
-      ).build().toNullSafeDartCodeString(),
+      ).build().toDartCodeString(),
 
       // abstract class $[RxBlocName]Bloc
       _BlocClass(
@@ -57,14 +57,14 @@ class _BuildController {
                     !const TypeChecker.fromRuntime(RxBlocIgnoreState)
                         .hasAnnotationOf(field.getter)))
             .toList(),
-      ).build().toNullSafeDartCodeString(),
+      ).build().toDartCodeString(),
 
       // class _[EventMethodName]EventArgs
       // ..._eventMethodsArgsClasses(),
       ...eventClass!.methods
           .where((MethodElement method) => method.isUsingArgumentClass)
           .map((MethodElement method) {
-        return _EventArgumentsClass(method).build().toNullSafeDartCodeString();
+        return _EventArgumentsClass(method).build().toDartCodeString();
       }).toList()
     ].forEach(_output.writeln);
 
@@ -136,13 +136,4 @@ class _BuildController {
               'your class in the same file where the $blocName resides.'
             ], '\n\t'))
           .toString();
-}
-
-/// It is the main [DartFormatter]
-extension _SpecNullSaferyExtensions on Spec {
-  String toNullSafeDartCodeString() => DartFormatter().format(
-        accept(
-          DartEmitter(Allocator.none, false, true),
-        ).toString(),
-      );
 }

@@ -20,7 +20,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       return null;
     }
 
-    final ClassElement classElement = element as ClassElement;
+    final ClassElement classElement = element;
 
     final LibraryReader libraryReader = LibraryReader(classElement.library);
 
