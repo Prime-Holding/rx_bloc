@@ -20,7 +20,7 @@ abstract class $CounterBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [increment]
-  final _$incrementEvent = PublishSubject<String>();
+  final _$incrementEvent = PublishSubject<void>();
 
   /// Тhe [Subject] where events sink to by calling [decrement]
   final _$decrementEvent = PublishSubject<void>();
@@ -35,7 +35,7 @@ abstract class $CounterBloc extends RxBlocBase
   Stream<String>? _errorsState;
 
   @override
-  void increment(String a) => _$incrementEvent.add(a);
+  void increment() => _$incrementEvent.add(null);
 
   @override
   void decrement() => _$decrementEvent.add(null);

@@ -290,7 +290,7 @@ abstract class $CounterBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withPositionalAndOptional] event
 class _WithPositionalAndOptionalEventArgs {
-  _WithPositionalAndOptionalEventArgs(int pp, [this.op]);
+  _WithPositionalAndOptionalEventArgs(this.pp, [this.op]);
 
   final int pp;
 
@@ -300,7 +300,7 @@ class _WithPositionalAndOptionalEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withPositionalAndNamed] event
 class _WithPositionalAndNamedEventArgs {
-  _WithPositionalAndNamedEventArgs(int pp, {required this.np});
+  _WithPositionalAndNamedEventArgs(this.pp, {required this.np});
 
   final int pp;
 
@@ -310,7 +310,7 @@ class _WithPositionalAndNamedEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withPositionalAndOptionalDefaultParam] event
 class _WithPositionalAndOptionalDefaultParamEventArgs {
-  _WithPositionalAndOptionalDefaultParamEventArgs(int pp, [this.op = 0]);
+  _WithPositionalAndOptionalDefaultParamEventArgs(this.pp, [this.op = 0]);
 
   final int pp;
 
@@ -320,7 +320,7 @@ class _WithPositionalAndOptionalDefaultParamEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withPositionalAndNamedDefaultParam] event
 class _WithPositionalAndNamedDefaultParamEventArgs {
-  _WithPositionalAndNamedDefaultParamEventArgs(int pp, {this.np = 0});
+  _WithPositionalAndNamedDefaultParamEventArgs(this.pp, {this.np = 0});
 
   final int pp;
 
@@ -330,7 +330,7 @@ class _WithPositionalAndNamedDefaultParamEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.with2Positional] event
 class _With2PositionalEventArgs {
-  _With2PositionalEventArgs(int pp1, int pp2);
+  _With2PositionalEventArgs(this.pp1, this.pp2);
 
   final int pp1;
 
@@ -380,7 +380,7 @@ class _With2NamedDefaultEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.with2PositionalAndOptional] event
 class _With2PositionalAndOptionalEventArgs {
-  _With2PositionalAndOptionalEventArgs(int pp1, int pp2, [this.op1]);
+  _With2PositionalAndOptionalEventArgs(this.pp1, this.pp2, [this.op1]);
 
   final int pp1;
 
@@ -392,7 +392,7 @@ class _With2PositionalAndOptionalEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.with2PositionalAndNamed] event
 class _With2PositionalAndNamedEventArgs {
-  _With2PositionalAndNamedEventArgs(int pp1, int pp2, {required this.np1});
+  _With2PositionalAndNamedEventArgs(this.pp1, this.pp2, {required this.np1});
 
   final int pp1;
 
@@ -404,7 +404,7 @@ class _With2PositionalAndNamedEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withPositionalAnd2Optional] event
 class _WithPositionalAnd2OptionalEventArgs {
-  _WithPositionalAnd2OptionalEventArgs(int pp, [this.op1, this.op2]);
+  _WithPositionalAnd2OptionalEventArgs(this.pp, [this.op1, this.op2]);
 
   final int pp;
 
@@ -416,7 +416,7 @@ class _WithPositionalAnd2OptionalEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withPositionalAnd2Named] event
 class _WithPositionalAnd2NamedEventArgs {
-  _WithPositionalAnd2NamedEventArgs(int pp, {this.np1, this.np2});
+  _WithPositionalAnd2NamedEventArgs(this.pp, {this.np1, this.np2});
 
   final int pp;
 
@@ -428,7 +428,7 @@ class _WithPositionalAnd2NamedEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withPositionalAnd1Named1Required] event
 class _WithPositionalAnd1Named1RequiredEventArgs {
-  _WithPositionalAnd1Named1RequiredEventArgs(int pp,
+  _WithPositionalAnd1Named1RequiredEventArgs(this.pp,
       {this.np1, required this.np2});
 
   final int pp;
@@ -441,7 +441,7 @@ class _WithPositionalAnd1Named1RequiredEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withAnnotationAnd2Positional] event
 class _WithAnnotationAnd2PositionalEventArgs {
-  _WithAnnotationAnd2PositionalEventArgs(int pp1, int pp2);
+  _WithAnnotationAnd2PositionalEventArgs(this.pp1, this.pp2);
 
   final int pp1;
 
@@ -451,7 +451,7 @@ class _WithAnnotationAnd2PositionalEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withSeededPositionalAndOptional] event
 class _WithSeededPositionalAndOptionalEventArgs {
-  _WithSeededPositionalAndOptionalEventArgs(int pp, [this.op]);
+  _WithSeededPositionalAndOptionalEventArgs(this.pp, [this.op]);
 
   final int pp;
 
@@ -461,7 +461,7 @@ class _WithSeededPositionalAndOptionalEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [CounterBlocEvents.withSeeded2PositionalEnum] event
 class _WithSeeded2PositionalEnumEventArgs {
-  _WithSeeded2PositionalEnumEventArgs(int pp1, TestEnumParam pp2);
+  _WithSeeded2PositionalEnumEventArgs(this.pp1, this.pp2);
 
   final int pp1;
 

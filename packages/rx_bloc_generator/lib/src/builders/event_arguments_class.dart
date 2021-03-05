@@ -24,7 +24,7 @@ class _EventArgumentsClass implements _BuilderContract {
             Constructor(
               (builder) => builder
                 ..requiredParameters.addAll(
-                    method.parameters.whereRequired().clone(toThis: false))
+                    method.parameters.whereRequired().clone(toThis: true))
                 ..optionalParameters.addAll(
                     method.parameters.whereOptional().clone(toThis: true)),
             ),
