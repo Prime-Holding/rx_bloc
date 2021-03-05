@@ -23,6 +23,7 @@ class _EventArgumentsClass implements _BuilderContract {
           ..constructors.add(
             Constructor(
               (builder) => builder
+                ..constant = true
                 ..requiredParameters.addAll(
                     method.parameters.whereRequired().clone(toThis: true))
                 ..optionalParameters.addAll(
