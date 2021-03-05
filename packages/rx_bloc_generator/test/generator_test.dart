@@ -11,7 +11,7 @@ import 'package:source_gen_test/src/test_annotated_classes.dart';
 Future<void> main() async {
   final reader = await initializeLibraryReaderForDirectory(
     'test/src',
-    'simple_test.dart',
+    'rx_bloc_test.dart',
   );
   initializeBuildLogTracking();
   testAnnotatedElements<RxBloc>(
