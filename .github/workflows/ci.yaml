@@ -51,6 +51,7 @@ jobs:
           [
             "packages/rx_bloc",
             "packages/rx_bloc_test",
+            "packages/rx_bloc_generator",
           ]
       fail-fast: false
     runs-on: ubuntu-latest
