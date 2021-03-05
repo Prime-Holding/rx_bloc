@@ -1,7 +1,7 @@
 targets:
   $default:
     builders:
-      freezed:
+      rx_block:
         enabled: true
         generate_for:
           exclude:

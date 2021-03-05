@@ -9,8 +9,8 @@ class _BuildController {
   });
 
   final ClassElement rxBlocClass;
-  final ClassElement eventClass;
-  final ClassElement stateClass;
+  final ClassElement? eventClass;
+  final ClassElement? stateClass;
 
   String generate() {
     // Check for any broken rules
@@ -18,8 +18,8 @@ class _BuildController {
 
     final String blocTypeClassName = '${rxBlocClass.displayName}Type';
     final String blocClassName = '\$${rxBlocClass.displayName}';
-    final String eventClassName = eventClass.displayName;
-    final String stateClassName = stateClass.displayName;
+    final String eventClassName = eventClass!.displayName;
+    final String stateClassName = stateClass!.displayName;
     final String blocFilePath = rxBlocClass.location?.components.first ?? '';
     final String mainBlocFileName =
         Uri.tryParse(blocFilePath, (blocFilePath.lastIndexOf('/') + 1))
@@ -39,7 +39,7 @@ class _BuildController {
         blocTypeClassName,
         eventClassName,
         stateClassName,
-      ).build().toDartCodeString(),
+      ).build().toNullSafeDartCodeString(),
 
       // abstract class $[RxBlocName]Bloc
       _BlocClass(
@@ -47,8 +47,8 @@ class _BuildController {
         blocTypeClassName,
         eventClassName,
         stateClassName,
-        eventClass.methods,
-        stateClass.fields
+        eventClass!.methods,
+        stateClass!.fields
             // Skip @RxBlocIgnoreState() ignored states
             .where((FieldElement field) =>
                 field.getter is PropertyAccessorElement &&
@@ -57,14 +57,14 @@ class _BuildController {
                     !const TypeChecker.fromRuntime(RxBlocIgnoreState)
                         .hasAnnotationOf(field.getter)))
             .toList(),
-      ).build().toDartCodeString(),
+      ).build().toNullSafeDartCodeString(),
 
       // class _[EventMethodName]EventArgs
       // ..._eventMethodsArgsClasses(),
-      ...eventClass.methods
+      ...eventClass!.methods
           .where((MethodElement method) => method.isUsingArgumentClass)
           .map((MethodElement method) {
-        return _EventArgumentsClass(method).build().toDartCodeString();
+        return _EventArgumentsClass(method).build().toNullSafeDartCodeString();
       }).toList()
     ].forEach(_output.writeln);
 
@@ -81,14 +81,17 @@ class _BuildController {
     // Events class required
     if (eventClass == null) {
       throw _RxBlocGeneratorException(
-        _generateMissingClassError(eventClass.displayName, rxBlocClass.name),
+        _generateMissingClassError(
+          eventClass?.displayName ?? '',
+          rxBlocClass.name,
+        ),
       );
     }
 
     // Methods only - No fields should exist
-    eventClass.fields.forEach((field) {
+    eventClass!.fields.forEach((field) {
       throw _RxBlocGeneratorException(
-          '${eventClass.name} should contain methods only,'
+          '${eventClass!.name} should contain methods only,'
           ' while ${field.name} seems to be a field.');
     });
   }
@@ -97,17 +100,20 @@ class _BuildController {
     // States class required
     if (stateClass == null) {
       throw _RxBlocGeneratorException(
-        _generateMissingClassError(eventClass.displayName, rxBlocClass.name),
+        _generateMissingClassError(
+          eventClass?.displayName ?? '',
+          rxBlocClass.name,
+        ),
       );
     }
 
     // Fields only - No methods should exist
-    stateClass.methods.forEach((method) {
+    stateClass!.methods.forEach((method) {
       throw _RxBlocGeneratorException(
           'State ${method.name}should be defined using the get keyword.');
     });
 
-    stateClass.accessors.forEach((fieldElement) {
+    stateClass!.accessors.forEach((fieldElement) {
       if (!fieldElement.isAbstract) {
         final name = fieldElement.name.replaceAll('=', '');
         throw _RxBlocGeneratorException(
@@ -130,4 +136,13 @@ class _BuildController {
               'your class in the same file where the $blocName resides.'
             ], '\n\t'))
           .toString();
+}
+
+/// It is the main [DartFormatter]
+extension _SpecNullSaferyExtensions on Spec {
+  String toNullSafeDartCodeString() => DartFormatter().format(
+        accept(
+          DartEmitter(Allocator.none, false, true),
+        ).toString(),
+      );
 }

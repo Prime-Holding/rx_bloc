@@ -22,14 +22,11 @@ class _EventArgumentsClass implements _BuilderContract {
           ..name = '_${method.name.capitalize()}EventArgs'
           ..constructors.add(
             Constructor(
-              (b) => b
-                ..constant = true
-                ..optionalParameters.addAll(
-                  method.buildOptionalParameters(toThis: true),
-                )
+              (builder) => builder
                 ..requiredParameters.addAll(
-                  method.buildRequiredParameters(toThis: true),
-                ),
+                    method.parameters.whereRequired().clone(toThis: false))
+                ..optionalParameters.addAll(
+                    method.parameters.whereOptional().clone(toThis: true)),
             ),
           )
           ..fields.addAll(
@@ -37,15 +34,7 @@ class _EventArgumentsClass implements _BuilderContract {
               (ParameterElement parameter) => Field(
                 (b) => b
                   ..modifier = FieldModifier.final$
-                  ..type = refer(
-                    parameter.isOptional
-                        ? '${parameter.type.getDisplayString(
-                            withNullability: false,
-                          )}?'
-                        : '${parameter.type.getDisplayString(
-                            withNullability: false,
-                          )}',
-                  )
+                  ..type = refer(parameter.getTypeDisplayName())
                   ..name = parameter.name,
               ),
             ),

@@ -103,7 +103,7 @@ extension _EventMethodElement on MethodElement {
   ElementAnnotation? get _rxBlocEventAnnotation => _eventAnnotation
               ?.computeConstantValue()
               ?.type
-              ?.getDisplayString(withNullability: false) ==
+              ?.getDisplayString(withNullability: true) ==
           (RxBlocEvent).toString()
       ? _eventAnnotation
       : null;
@@ -126,49 +126,10 @@ extension _EventMethodElement on MethodElement {
     }
     return parameters.isNotEmpty
         // The only parameter's type
-        ? parameters.first.type.getDisplayString(withNullability: false)
+        ? parameters.first.type.getDisplayString(withNullability: true)
         // Default type
         : 'void';
   }
-
-  /// Provides a [List] of optional [Parameter] of an event method
-  List<Parameter> buildOptionalParameters({bool toThis = false}) => parameters
-      .where((ParameterElement parameter) => !parameter.isNotOptional)
-      .map(
-        (ParameterElement parameter) => Parameter(
-          (b) => b
-            ..toThis = toThis
-            ..required = parameter.isRequiredNamed
-            ..defaultTo = parameter.defaultValueCode != null
-                ? Code(parameter.defaultValueCode)
-                : null
-            ..named = parameter.isNamed
-            ..name = parameter.name
-            ..type = toThis
-                ? null // We don't need the type in the constructor
-                : refer(
-                    parameter.type.getDisplayString(withNullability: false),
-                  ),
-        ),
-      )
-      .toList();
-
-  /// Provides a [List] of required [Parameter] of an event method
-  List<Parameter> buildRequiredParameters({bool toThis = false}) => parameters
-      .where((ParameterElement parameter) => parameter.isNotOptional)
-      .map(
-        (ParameterElement parameter) => Parameter(
-          (b) => b
-            ..toThis = toThis
-            ..name = parameter.name
-            ..type = toThis
-                ? null // We don't need the type in the constructor
-                : refer(
-                    parameter.type.getDisplayString(withNullability: false),
-                  ),
-        ),
-      )
-      .toList();
 
   /// Builds the stream body
   /// Example 1:
@@ -178,8 +139,9 @@ extension _EventMethodElement on MethodElement {
   /// _${EventMethodName}EventName.add(_MethodEventArgs(param1, param2))
   ///
   Code buildBody() {
-    List<Parameter> requiredParams = buildRequiredParameters();
-    List<Parameter> optionalParams = buildOptionalParameters();
+    List<Parameter> requiredParams = parameters.whereRequired().clone();
+    List<Parameter> optionalParams = parameters.whereOptional().clone();
+
     if (requiredParams.isEmpty && optionalParams.isEmpty) {
       // Provide null if we don't have any parameters
       return _callStreamAddMethod(literalNull);
@@ -219,14 +181,44 @@ extension _EventMethodElement on MethodElement {
 
   /// Provides the event's name arguments as a [Map] of [Expression]
   Map<String, Expression> get _namedArguments {
-    List<Parameter> optionalParams = buildOptionalParameters();
+    List<Parameter> params = parameters.clone();
+
     // Only named are not positional parameters
     Map<String, Expression> namedArguments = {};
-    for (Parameter param
-        in optionalParams.where((Parameter param) => param.named)) {
+    for (Parameter param in params.where((Parameter param) => param.named)) {
       namedArguments[param.name] = refer(param.name);
     }
     // For methods with more than 1 parameters provide the new param class
     return namedArguments;
   }
+}
+
+extension _ListParameterElementWhere on List<ParameterElement> {
+  Iterable<ParameterElement> whereRequired() => where(
+      (parameter) => !parameter.isNamed && !parameter.isOptionalPositional);
+
+  Iterable<ParameterElement> whereOptional() =>
+      where((parameter) => parameter.isOptionalPositional || parameter.isNamed);
+}
+
+extension _ListParameterElementClone on Iterable<ParameterElement> {
+  List<Parameter> clone({bool toThis = false}) => map(
+        (ParameterElement parameter) => Parameter(
+          (b) => b
+            ..toThis = toThis
+            ..required = parameter.isRequiredNamed
+            ..defaultTo = parameter.defaultValueCode != null
+                ? Code(parameter.defaultValueCode)
+                : null
+            ..named = parameter.isNamed
+            ..name = parameter.name
+            ..type = toThis
+                ? null // We don't need the type in the constructor
+                : refer(parameter.getTypeDisplayName()),
+        ),
+      ).toList();
+}
+
+extension _ParameterElementToString on ParameterElement {
+  String getTypeDisplayName() => type.getDisplayString(withNullability: true);
 }

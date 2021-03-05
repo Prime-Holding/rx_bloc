@@ -11,7 +11,7 @@ class _StateMethod implements _BuilderContract {
         (b) => b
           ..docs.addAll(['']) // A new line
           ..returns = refer(
-            field.type.getDisplayString(withNullability: false),
+            field.type.getDisplayString(withNullability: true),
           )
           ..name = field.stateMethodName,
       );

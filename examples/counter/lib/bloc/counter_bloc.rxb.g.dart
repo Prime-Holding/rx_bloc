@@ -20,22 +20,22 @@ abstract class $CounterBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [increment]
-  final _$incrementEvent = PublishSubject<void>();
+  final _$incrementEvent = PublishSubject<String>();
 
   /// Тhe [Subject] where events sink to by calling [decrement]
   final _$decrementEvent = PublishSubject<void>();
 
   /// The state of [count] implemented in [_mapToCountState]
-  Stream<int> _countState;
+  Stream<int>? _countState;
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  Stream<bool> _isLoadingState;
+  Stream<bool>? _isLoadingState;
 
   /// The state of [errors] implemented in [_mapToErrorsState]
-  Stream<String> _errorsState;
+  Stream<String>? _errorsState;
 
   @override
-  void increment() => _$incrementEvent.add(null);
+  void increment(String a) => _$incrementEvent.add(a);
 
   @override
   void decrement() => _$decrementEvent.add(null);

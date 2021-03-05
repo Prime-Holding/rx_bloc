@@ -7,7 +7,7 @@ part 'counter_bloc.rxb.g.dart';
 /// A contract class containing all events.
 abstract class CounterBlocEvents {
   /// Increment the count
-  void increment();
+  void increment(String? a);
 
   /// Decrement the count
   void decrement();
