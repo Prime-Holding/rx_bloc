@@ -12,19 +12,20 @@ dependencies:
   flutter:
     sdk: flutter
   skeleton_text:
-    git:
-      url: https://github.com/StanevPrime/Skeleton-Text.git
-      ref: feature/null-safety
   visibility_detector: ^0.2.0-nullsafety.1
   connectivity: ^3.0.2
-  image_picker: ^0.7.2
+  image_picker: ^0.7.0
   collection: ^1.15.0-nullsafety.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
+override_dependencies:
+  skeleton_text:
+    git:
+      url: https://github.com/StanevPrime/Skeleton-Text.git
+      ref: feature/null-safety
 
 
 # For information on the generic Dart part of this file, see the

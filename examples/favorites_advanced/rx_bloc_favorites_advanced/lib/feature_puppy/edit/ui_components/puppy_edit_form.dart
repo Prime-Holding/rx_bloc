@@ -2,11 +2,13 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/input_styles.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_card.dart';
+import 'package:flow_builder/flow_builder.dart';
 
 class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({
@@ -29,7 +31,7 @@ class PuppyEditForm extends StatelessWidget {
                   state: (bloc) => bloc.states.updateComplete,
                   listener: (context, result) {
                     if (result) {
-                      Navigator.of(context).pop();
+                      context.flow<PuppyFlowState>().complete();
                     }
                   },
                 ),
@@ -37,7 +39,7 @@ class PuppyEditForm extends StatelessWidget {
                   state: (bloc) => bloc.states.error,
                   listener: (context, error) {
                     if (error != null) {
-                      Scaffold.of(context)
+                      ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text(error)));
                     }
                   },

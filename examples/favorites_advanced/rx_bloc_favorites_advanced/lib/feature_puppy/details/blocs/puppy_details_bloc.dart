@@ -1,5 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rxdart/rxdart.dart';

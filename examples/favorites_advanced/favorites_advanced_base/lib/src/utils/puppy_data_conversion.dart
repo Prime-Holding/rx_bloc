@@ -41,9 +41,11 @@ class PuppyDataConversion {
   static BreedType getBreedTypeFromString(String breedTypeString) =>
       _dogBreeds.entries
           .toList()
-          .firstWhere((pair) => pair.value == breedTypeString)
-          ?.key ??
-      BreedType.None;
+          .firstWhere(
+            (pair) => pair.value == breedTypeString,
+            orElse: () => MapEntry(BreedType.None, 'None'),
+          )
+          .key;
 
   ///endregion
 

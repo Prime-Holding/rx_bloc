@@ -36,7 +36,7 @@ class PuppyCard extends StatelessWidget {
               _onVisible!(_puppy);
             }
           },
-          key: Key("VisiblePuppyCard${_puppy!.id}"),
+          key: Key("VisiblePuppyCard${_puppy.id}"),
           child: _buildCard(),
         );
 
@@ -72,7 +72,7 @@ class PuppyCard extends StatelessWidget {
                   height: 67,
                 ),
               ),
-              trailing: _puppy!.asFavIcon(
+              trailing: _puppy.asFavIcon(
                 favorite: () => _onFavorite(_puppy, true),
                 unfavorite: () => _onFavorite(_puppy, false),
               ),

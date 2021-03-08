@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
@@ -19,13 +18,12 @@ import '../blocs/navigation_bar_bloc.dart';
 
 part 'home_providers.dart';
 
-class HomePage extends StatelessWidget with AutoRouteWrapper {
-  HomePage({Key key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({Key key}) : super(key: key);
 
-  @override
-  Widget wrappedRoute(BuildContext context) => RxMultiBlocProvider(
+  static Widget page() => RxMultiBlocProvider(
         providers: _getProviders(),
-        child: this,
+        child: const HomePage(),
       );
 
   @override

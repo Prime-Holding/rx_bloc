@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
@@ -10,20 +9,21 @@ import 'package:rx_bloc_favorites_advanced/feature_puppy/details/ui_components/p
 
 part 'puppy_details_providers.dart';
 
-class PuppyDetailsPage extends StatelessWidget with AutoRouteWrapper {
+class PuppyDetailsPage extends StatelessWidget {
   const PuppyDetailsPage({
     @required Puppy puppy,
     Key key,
   })  : _puppy = puppy,
         super(key: key);
 
-  final Puppy _puppy;
-
-  @override
-  Widget wrappedRoute(BuildContext context) => RxMultiBlocProvider(
-        providers: _getProviders(_puppy),
-        child: this,
+  static Page page({@required Puppy puppy}) => MaterialPage(
+        child: RxMultiBlocProvider(
+          providers: _getProviders(puppy),
+          child: PuppyDetailsPage(puppy: puppy),
+        ),
       );
+
+  final Puppy _puppy;
 
   @override
   Widget build(BuildContext context) => Scaffold(

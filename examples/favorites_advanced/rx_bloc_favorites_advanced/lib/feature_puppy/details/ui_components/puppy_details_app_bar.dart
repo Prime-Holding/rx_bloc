@@ -1,8 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
+import 'package:flow_builder/flow_builder.dart';
+import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
 import 'package:rx_bloc_favorites_advanced/base/ui_components/icon_with_shadow.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 
@@ -45,17 +45,17 @@ class PuppyDetailsAppBar extends StatelessWidget
   Widget _buildEditButton(BuildContext context) => IconButton(
         icon: const IconWithShadow(icon: Icons.edit),
         onPressed: () async {
-          final result = await ExtendedNavigator.root.push(
-            Routes.puppyEditPage,
-            arguments: PuppyEditPageArguments(puppy: _puppy),
-          );
-          if (result != null && result) {
-            Scaffold.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Puppy updated successfully.'),
-              ),
-            );
-          }
+          context
+              .flow<PuppyFlowState>()
+              .update((state) => state.copyWith(manage: true));
+
+          // if (result != null && result) {
+          //   Scaffold.of(context).showSnackBar(
+          //     const SnackBar(
+          //       content: Text('Puppy updated successfully.'),
+          //     ),
+          //   );
+          // }
         },
       );
 
