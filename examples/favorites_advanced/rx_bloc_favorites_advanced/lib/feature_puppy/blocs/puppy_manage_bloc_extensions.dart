@@ -34,7 +34,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
                   displayName: args.puppy.displayName,
                 ),
               );
-            } catch (e) {
+            } on Exception catch (e) {
               // In case of any error rollback the puppy to the previous state
               // and notify the UI layer for the error
               bloc._favoritePuppyError.sink.add(e);
@@ -47,10 +47,9 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
 
 extension _PickImage on Stream<ImagePickerAction> {
   Stream<String> pickImagePath(PuppiesRepository repository) =>
-      where((event) => event != null)
-          .switchMap((source) => repository.pickPuppyImage(source).asStream())
+      switchMap((source) => repository.pickPuppyImage(source).asStream())
           .where((event) => event != null)
-          .map((event) => event.path);
+          .map((event) => event!.path);
 }
 
 extension _ValidateAllFields<T> on Stream<T> {
@@ -76,11 +75,11 @@ extension _IsSavingAvailable on PuppyManageBloc {
         gender,
         breed,
         (imagePath, name, characteristics, gender, breed) =>
-            imagePath != _puppy.asset ||
-            name != _puppy.name ||
-            characteristics != _puppy.displayCharacteristics ||
-            gender != _puppy.gender ||
-            breed != _puppy.breedType,
+            imagePath != _puppy!.asset ||
+            name != _puppy!.name ||
+            characteristics != _puppy!.displayCharacteristics ||
+            gender != _puppy!.gender ||
+            breed != _puppy!.breedType,
       );
 }
 
@@ -96,7 +95,7 @@ extension _SavePuppy<T> on Stream<T> {
         bloc.gender,
         bloc.breed,
         (imagePath, name, characteristics, gender, breed) =>
-            bloc._puppy.copyWith(
+            bloc._puppy!.copyWith(
           asset: imagePath,
           name: name,
           breedCharacteristics: characteristics,
@@ -109,7 +108,7 @@ extension _SavePuppy<T> on Stream<T> {
               puppyWithChanges.id,
               puppyWithChanges,
             )
-            .asResultStream(),
+            .asResultStream() as Stream<Result<Puppy>>,
       );
 }
 

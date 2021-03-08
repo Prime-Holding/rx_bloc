@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 class PuppyEditAvatar extends StatelessWidget {
   const PuppyEditAvatar({
-    @required this.heroTag,
-    @required this.imgPath,
-    @required this.pickImage,
-    Key key,
+    required this.heroTag,
+    required this.imgPath,
+    required this.pickImage,
+    Key? key,
   }) : super(key: key);
 
   final String heroTag;
   final String imgPath;
-  final void Function(ImagePickerAction source) pickImage;
+  final void Function(ImagePickerAction? source) pickImage;
 
   @override
   Widget build(BuildContext context) => Stack(

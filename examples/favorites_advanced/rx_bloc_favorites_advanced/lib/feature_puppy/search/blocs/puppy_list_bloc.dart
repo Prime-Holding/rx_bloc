@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -15,10 +13,10 @@ part 'puppy_list_bloc_models.dart';
 
 abstract class PuppyListEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
-  void filterPuppies({@required String query});
+  void filterPuppies({required String query});
 
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: false)
-  void reloadFavoritePuppies({@required bool silently});
+  void reloadFavoritePuppies({required bool silently});
 }
 
 abstract class PuppyListStates {

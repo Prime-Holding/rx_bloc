@@ -6,16 +6,16 @@ import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/views/puppy_edit_p
 
 class PuppyFlowState {
   PuppyFlowState({
-    @required this.puppy,
-    @required this.manage,
+    required this.puppy,
+    required this.manage,
   });
 
   final Puppy puppy;
   final bool manage;
 
   PuppyFlowState copyWith({
-    Puppy puppy,
-    bool manage,
+    Puppy? puppy,
+    bool? manage,
   }) =>
       PuppyFlowState(
         manage: manage ?? this.manage,
@@ -24,13 +24,13 @@ class PuppyFlowState {
 }
 
 List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages) {
-  if (state.puppy != null && state.manage == false) {
+  if (state.manage == false) {
     return [
       PuppyDetailsPage.page(puppy: state.puppy),
     ];
   }
 
-  if (state.puppy != null && state.manage == true) {
+  if (state.manage == true) {
     return [
       PuppyDetailsPage.page(puppy: state.puppy),
       PuppyEditPage.page(puppy: state.puppy),
@@ -42,11 +42,11 @@ List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages) {
 
 class PuppyFlow extends StatelessWidget {
   const PuppyFlow({
-    Key key,
-    this.puppy,
+    required this.puppy,
+    Key? key,
   }) : super(key: key);
 
-  static Route<PuppyFlowState> route({@required Puppy puppy}) =>
+  static Route<PuppyFlowState> route({required Puppy puppy}) =>
       MaterialPageRoute(builder: (_) => PuppyFlow(puppy: puppy));
 
   final Puppy puppy;

@@ -12,12 +12,12 @@ import 'package:flow_builder/flow_builder.dart';
 
 class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({
-    Puppy puppy,
-    Key key,
+    Puppy? puppy,
+    Key? key,
   })  : _puppy = puppy,
         super(key: key);
 
-  final Puppy _puppy;
+  final Puppy? _puppy;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -30,7 +30,7 @@ class PuppyEditForm extends StatelessWidget {
                 RxBlocListener<PuppyManageBlocType, bool>(
                   state: (bloc) => bloc.states.updateComplete,
                   listener: (context, result) {
-                    if (result) {
+                    if (result!) {
                       context.flow<PuppyFlowState>().complete();
                     }
                   },
@@ -47,9 +47,14 @@ class PuppyEditForm extends StatelessWidget {
                 RxBlocBuilder<PuppyManageBlocType, String>(
                   state: (bloc) => bloc.states.imagePath,
                   builder: (context, snapshot, bloc) => PuppyEditAvatar(
-                    heroTag: '$PuppyCardAnimationTag ${_puppy.id}',
-                    imgPath: snapshot.data ?? _puppy.asset,
-                    pickImage: (source) => bloc.events.setImage(source),
+                    heroTag:
+                        '$PuppyCardAnimationTag ${_puppy?.id ?? 'newpuppy'}',
+                    imgPath: snapshot.data ?? _puppy!.asset,
+                    pickImage: (source) {
+                      if (source != null) {
+                        bloc.events.setImage(source);
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -93,7 +98,7 @@ class PuppyEditForm extends StatelessWidget {
           textInputAction: TextInputAction.next,
           maxLengthEnforced: true,
           controller: fieldState.controller,
-          decoration: fieldState.decoration
+          decoration: fieldState.decoration!
               .copyWithDecoration(InputStyles.textFieldDecoration),
         ),
       );
@@ -112,7 +117,7 @@ class PuppyEditForm extends StatelessWidget {
           maxLines: 8,
           maxLengthEnforced: true,
           controller: fieldState.controller,
-          decoration: fieldState.decoration
+          decoration: fieldState.decoration!
               .copyWithDecoration(InputStyles.textFieldDecoration),
         ),
       );
@@ -127,13 +132,14 @@ class PuppyEditForm extends StatelessWidget {
               child: DropdownButton<BreedType>(
                 key: const ValueKey('PuppyBreedTypeDropDown'),
                 value: fieldState.value,
-                onChanged: fieldState.bloc.events.setBreed,
+                onChanged: (breed) =>
+                    fieldState.bloc.events.setBreed(breed ?? BreedType.None),
                 items: BreedType.values
                     .map(
                       (breedType) => DropdownMenuItem<BreedType>(
                         value: breedType,
                         child: Text(
-                          PuppyDataConversion.getBreedTypeString(breedType),
+                          PuppyDataConversion.getBreedTypeString(breedType)!,
                           style: TextStyles.editableTextStyle,
                         ),
                       ),
@@ -145,7 +151,7 @@ class PuppyEditForm extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    fieldState.error,
+                    fieldState.error!,
                     style: TextStyles.errorTextStyle,
                   ),
                 ],
@@ -173,7 +179,8 @@ class PuppyEditForm extends StatelessWidget {
                       key: const ValueKey('PuppyGenderMaleRadio'),
                       value: Gender.Male,
                       groupValue: fieldState.value,
-                      onChanged: fieldState.bloc.events.setGender,
+                      onChanged: (gender) => fieldState.bloc.events
+                          .setGender(gender ?? Gender.None),
                     ),
                   ],
                 ),
@@ -187,7 +194,8 @@ class PuppyEditForm extends StatelessWidget {
                       key: const ValueKey('PuppyGenderFemaleRadio'),
                       value: Gender.Female,
                       groupValue: fieldState.value,
-                      onChanged: fieldState.bloc.events.setGender,
+                      onChanged: (gender) => fieldState.bloc.events
+                          .setGender(gender ?? Gender.None),
                     ),
                   ],
                 ),
@@ -197,7 +205,7 @@ class PuppyEditForm extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    fieldState.error,
+                    fieldState.error!,
                     style: TextStyles.errorTextStyle,
                   ),
                 ],

@@ -53,8 +53,8 @@ class PuppyManageBloc extends $PuppyManageBloc {
   PuppyManageBloc(
     PuppiesRepository puppiesRepository,
     CoordinatorBlocType coordinatorBloc, {
-    PuppyValidator validator,
-    Puppy puppy,
+    PuppyValidator validator = const PuppyValidator(),
+    Puppy? puppy,
   })  : _puppy = puppy,
         _puppyValidator = validator,
         _puppiesRepository = puppiesRepository,
@@ -71,7 +71,7 @@ class PuppyManageBloc extends $PuppyManageBloc {
         .disposedBy(_compositeSubscription);
   }
 
-  final Puppy _puppy;
+  final Puppy? _puppy;
 
   final PuppyValidator _puppyValidator;
   final PuppiesRepository _puppiesRepository;

@@ -10,14 +10,14 @@ import '../../blocs/puppy_manage_bloc.dart';
 
 class PuppyAnimatedListView extends StatelessWidget {
   const PuppyAnimatedListView({
-    @required Stream<List<Puppy>> puppyList,
-    Function(Puppy) onPuppyPressed,
-    Key key,
+    required Stream<List<Puppy>> puppyList,
+    Function(Puppy)? onPuppyPressed,
+    Key? key,
   })  : _puppyList = puppyList,
         _onPuppyPressed = onPuppyPressed,
         super(key: key);
 
-  final Function(Puppy) _onPuppyPressed;
+  final Function(Puppy)? _onPuppyPressed;
   final Stream<List<Puppy>> _puppyList;
 
   @override
@@ -43,7 +43,7 @@ class PuppyAnimatedListView extends StatelessWidget {
             PuppyCard(
               key: Key('${key.toString()}${item.id}'),
               puppy: item,
-              onFavorite: null,
+              onFavorite: (_, isFavorite) {},
               onCardPressed: (puppy) {},
               onVisible: (puppy) => context
                   .read<PuppiesExtraDetailsBlocType>()

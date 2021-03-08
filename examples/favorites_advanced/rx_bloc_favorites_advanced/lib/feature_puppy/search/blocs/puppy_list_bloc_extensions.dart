@@ -8,10 +8,10 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
   Stream<Result<List<Puppy>>> fetchPuppies(PuppiesRepository repository) =>
       debounceTime(const Duration(milliseconds: 600)).switchMap(
         (reloadData) => repository
-            .getPuppies(query: reloadData.query)
+            .getPuppies(query: reloadData.query!)
             .asResultStream()
             // skip the loading event if silently is true
-            .skip(reloadData.silently ? 1 : 0),
+            .skip(reloadData.silently! ? 1 : 0) as Stream<Result<List<Puppy>>>,
       );
 }
 
@@ -30,7 +30,7 @@ extension StreamBindToPuppies on Stream<List<Puppy>> {
         }
 
         return puppiesResult;
-      }).bind(puppiesToUpdate);
+      }).bind(puppiesToUpdate) as StreamSubscription<Result<List<Puppy>>>;
 }
 
 extension _PuppyListBlocReloaders on PuppyListBloc {

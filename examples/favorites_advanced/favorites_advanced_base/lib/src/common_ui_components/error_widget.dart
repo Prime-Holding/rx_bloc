@@ -7,7 +7,7 @@ class ErrorRetryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-        child: RaisedButton(
+        child: ElevatedButton(
           child: const Text('Try again'),
           onPressed: onReloadTap,
         ),

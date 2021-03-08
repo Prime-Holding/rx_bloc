@@ -101,7 +101,7 @@ class Stub {
     error: 'Name must not be empty.',
   );
 
-  static const nameNullErr = RxFieldException<String>(
+  static const nameNullErr = RxFieldException<String?>(
     fieldValue: null,
     error: 'Name must not be empty.',
   );
@@ -116,7 +116,7 @@ class Stub {
     error: 'Characteristics must not be empty.',
   );
 
-  static const characteristicsNullErr = RxFieldException<String>(
+  static const characteristicsNullErr = RxFieldException<String?>(
     fieldValue: null,
     error: 'Characteristics must not be empty.',
   );

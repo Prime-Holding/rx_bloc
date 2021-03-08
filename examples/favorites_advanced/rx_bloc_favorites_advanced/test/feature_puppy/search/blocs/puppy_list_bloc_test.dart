@@ -11,8 +11,8 @@ import '../../../mocks.dart';
 import '../../../stubs.dart';
 
 void main() {
-  CoordinatorBlocType coordinatorMock;
-  PuppiesRepository repositoryMock;
+  late CoordinatorBlocType coordinatorMock;
+  late PuppiesRepository repositoryMock;
 
   setUp(() {
     coordinatorMock = CoordinatorBlocMock();

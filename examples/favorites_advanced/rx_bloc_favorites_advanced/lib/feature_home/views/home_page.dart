@@ -19,7 +19,7 @@ import '../blocs/navigation_bar_bloc.dart';
 part 'home_providers.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   static Widget page() => RxMultiBlocProvider(
         providers: _getProviders(),
@@ -33,8 +33,8 @@ class HomePage extends StatelessWidget {
         appBar: PuppiesAppBar(),
         body: RxBlocListener<PuppyManageBlocType, String>(
           state: (bloc) => bloc.states.error,
-          listener: (ctx, state) =>
-              Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(state))),
+          listener: (ctx, state) => ScaffoldMessenger.of(ctx)
+              .showSnackBar(SnackBar(content: Text(state!))),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -45,8 +45,8 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  RxBlocBuilder<NavigationBarBlocType, NavigationItem> _buildBody() =>
-      RxBlocBuilder<NavigationBarBlocType, NavigationItem>(
+  RxBlocBuilder<NavigationBarBlocType, NavigationItem?> _buildBody() =>
+      RxBlocBuilder<NavigationBarBlocType, NavigationItem?>(
         key: const ValueKey(Keys.puppyHomePage),
         state: (bloc) => bloc.states.selectedItem,
         builder: (ctx, snapshot, bloc) => AnimatedSwitcher(
@@ -76,12 +76,12 @@ class HomePage extends StatelessWidget {
                     ),
                   )));
 
-  Widget asPage(AsyncSnapshot<NavigationItem> type) {
+  Widget asPage(AsyncSnapshot<NavigationItem?> type) {
     if (!type.hasData) {
       return Container();
     }
 
-    switch (type.data.type) {
+    switch (type.data!.type) {
       case NavigationItemType.search:
         return SearchPage();
       case NavigationItemType.favorites:
@@ -93,12 +93,12 @@ class HomePage extends StatelessWidget {
 }
 
 extension NavigationItemToWitget on NavigationItem {
-  Widget asWidget() => type == NavigationItemType.favorites
+  Widget? asWidget() => type == NavigationItemType.favorites
       ? RxBlocBuilder<FavoritePuppiesBlocType, int>(
           state: (bloc) => bloc.states.count,
           builder: (ctx, snapshot, bloc) =>
-              snapshot.hasData && snapshot.data <= 0
-                  ? type.asIcon()
+              snapshot.hasData && snapshot.data! <= 0
+                  ? type.asIcon()!
                   : Badge(
                       padding: const EdgeInsets.all(3),
                       badgeContent: snapshot.build((count) => Text(

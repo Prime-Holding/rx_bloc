@@ -13,8 +13,8 @@ import '../../mocks.dart';
 import '../../stubs.dart';
 
 void main() {
-  CoordinatorBlocType coordinatorMock;
-  PuppiesRepositoryMock repositoryMock;
+  late CoordinatorBlocType coordinatorMock;
+  late PuppiesRepositoryMock repositoryMock;
 
   setUp(() {
     coordinatorMock = CoordinatorBlocMock();
@@ -29,13 +29,13 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppy1,
-        validator: PuppyValidator(),
+        validator: const PuppyValidator(),
       ),
       state: (bloc) => bloc.states.imagePath,
       act: (bloc) async {
         //  Nothing should be emitted when you pick null
         //as the source for the image.
-        bloc.events.setImage(null);
+        // bloc.events.setImage(null);
 
         //when you pick the camera as image source
         await Future.delayed(Stub.pickImageDelay);
@@ -47,7 +47,7 @@ void main() {
         //as the picked image, which could happen if the user cancels
         //picking the image.
         await Future.delayed(Stub.pickImageDelay);
-        when(repositoryMock.pickPuppyImage(any)).thenAnswer((_) async => null);
+        when(repositoryMock.pickPuppyImage(any!)).thenAnswer((_) async => null);
         bloc.events.setImage(ImagePickerAction.gallery);
 
         //when you pick the gallery as image source
@@ -73,7 +73,6 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppy1,
-        validator: PuppyValidator(),
       ),
       state: (bloc) => bloc.states.name,
       act: (bloc) async {
@@ -83,7 +82,7 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.setName('test');
         await Future.delayed(const Duration(milliseconds: 10));
-        bloc.events.setName(null);
+        bloc.events.setName('');
       },
       expect: [
         //starts with the name of the puppy passed to the bloc
@@ -108,13 +107,10 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppy1,
-        validator: PuppyValidator(),
       ),
       state: (bloc) => bloc.states.breed,
       act: (bloc) async {
         bloc.events.setBreed(BreedType.None);
-        await Future.delayed(const Duration(milliseconds: 10));
-        bloc.events.setBreed(null);
         await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.setBreed(BreedType.Akita);
       },
@@ -122,8 +118,6 @@ void main() {
         //starts with the breed of the puppy passed to the bloc
         Stub.puppy1.breedType,
         //throws exception if breed is set to none
-        isA<RxFieldException<BreedType>>(),
-        //throws exception if breed is set to null
         isA<RxFieldException<BreedType>>(),
         //if breed is valid, return it
         BreedType.Akita,
@@ -137,13 +131,10 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppy1,
-        validator: PuppyValidator(),
       ),
       state: (bloc) => bloc.states.gender,
       act: (bloc) async {
         bloc.events.setGender(Gender.None);
-        await Future.delayed(const Duration(milliseconds: 10));
-        bloc.events.setGender(null);
         await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.setGender(Gender.Female);
       },
@@ -152,9 +143,6 @@ void main() {
         Stub.puppy1.gender,
         //throws exception if gender is set to none
         isA<RxFieldException<Gender>>(),
-        //throws exception if gender is set to null
-        isA<RxFieldException<Gender>>(),
-        //if gender is valid, return it
         Gender.Female,
       ],
     );
@@ -172,8 +160,6 @@ void main() {
       act: (bloc) async {
         bloc.events.setCharacteristics('');
         await Future.delayed(const Duration(milliseconds: 10));
-        bloc.events.setCharacteristics(null);
-        await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.setCharacteristics(Stub.string251);
         await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.setCharacteristics('test');
@@ -182,7 +168,6 @@ void main() {
         //starts with the gender of the puppy passed to the bloc
         Stub.puppiesWithDetails[0].displayCharacteristics,
         Stub.characteristicsEmptyErr,
-        Stub.characteristicsNullErr,
         Stub.characteristicsTooLongErr,
         'test',
       ],
@@ -195,7 +180,6 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppiesWithDetails[0],
-        validator: PuppyValidator(),
       ),
       state: (bloc) => bloc.states.showErrors,
       act: (bloc) async {
@@ -231,7 +215,6 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppiesWithDetails[0],
-        validator: PuppyValidator(),
       ),
       state: (bloc) => bloc.states.isSaveEnabled,
       act: (bloc) async {
@@ -260,7 +243,7 @@ void main() {
         bloc.events.setCharacteristics('aaa');
         await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.setCharacteristics(
-            Stub.puppiesWithDetails[0].displayCharacteristics);
+            Stub.puppiesWithDetails[0].displayCharacteristics!);
       },
       expect: [
         false,
@@ -297,12 +280,12 @@ void main() {
         bloc.states.characteristics.listen((event) {}, onError: (error) {});
 
         await Future.delayed(const Duration(milliseconds: 10));
-        when(repositoryMock.updatePuppy(any, any))
+        when(repositoryMock.updatePuppy(any!, any!))
             .thenAnswer((_) async => throw Stub.testErr);
         bloc.events.savePuppy();
 
         await Future.delayed(const Duration(milliseconds: 10));
-        when(repositoryMock.updatePuppy(any, any))
+        when(repositoryMock.updatePuppy(any!, any!))
             .thenAnswer((_) async => Stub.puppiesWithDetails[0]);
         bloc.events.savePuppy();
       },

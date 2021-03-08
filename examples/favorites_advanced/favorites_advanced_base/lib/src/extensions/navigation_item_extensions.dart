@@ -27,8 +27,6 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.favorites:
         return 'Favorites Puppies';
     }
-
-    return '';
   }
 
   /// Get the index based on [NavigationItemType]

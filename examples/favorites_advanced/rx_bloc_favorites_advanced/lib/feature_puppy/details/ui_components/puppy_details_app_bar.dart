@@ -9,8 +9,8 @@ import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc
 class PuppyDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const PuppyDetailsAppBar({
-    Puppy puppy,
-    Key key,
+    required Puppy puppy,
+    Key? key,
   })  : _puppy = puppy,
         super(key: key);
 

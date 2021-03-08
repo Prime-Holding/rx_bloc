@@ -12,19 +12,19 @@ part 'puppy_edit_providers.dart';
 
 class PuppyEditPage extends StatefulWidget {
   const PuppyEditPage({
-    @required Puppy puppy,
-    Key key,
+    required Puppy? puppy,
+    Key? key,
   })  : _puppy = puppy,
         super(key: key);
 
-  static Page page({@required Puppy puppy}) => MaterialPage(
+  static Page page({required Puppy? puppy}) => MaterialPage(
         child: RxMultiBlocProvider(
           providers: _getProviders(puppy),
           child: PuppyEditPage(puppy: puppy),
         ),
       );
 
-  final Puppy _puppy;
+  final Puppy? _puppy;
 
   @override
   _PuppyEditPageState createState() => _PuppyEditPageState();
@@ -42,7 +42,7 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
         state: (bloc) => bloc.states.isLoading,
         builder: (context, isLoading, _) => WillPopScope(
           onWillPop: () =>
-              isLoading.data ? Future.value(false) : Future.value(true),
+              isLoading.data! ? Future.value(false) : Future.value(true),
           child: RxUnfocuser(
             child: RxBlocBuilder<PuppyManageBlocType, bool>(
               state: (bloc) => bloc.states.isSaveEnabled,

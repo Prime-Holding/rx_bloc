@@ -10,9 +10,9 @@ import '../../mocks.dart';
 import '../../stubs.dart';
 
 void main() {
-  CoordinatorBlocType mockCoordinator;
-  PuppiesRepository repositoryMock;
-  PuppiesExtraDetailsBloc bloc;
+  late CoordinatorBlocType mockCoordinator;
+  late PuppiesRepository repositoryMock;
+  late PuppiesExtraDetailsBloc bloc;
 
   setUp(() {
     mockCoordinator = CoordinatorBlocMock();

@@ -11,12 +11,12 @@ part 'puppy_details_providers.dart';
 
 class PuppyDetailsPage extends StatelessWidget {
   const PuppyDetailsPage({
-    @required Puppy puppy,
-    Key key,
+    required Puppy puppy,
+    Key? key,
   })  : _puppy = puppy,
         super(key: key);
 
-  static Page page({@required Puppy puppy}) => MaterialPage(
+  static Page page({required Puppy puppy}) => MaterialPage(
         child: RxMultiBlocProvider(
           providers: _getProviders(puppy),
           child: PuppyDetailsPage(puppy: puppy),

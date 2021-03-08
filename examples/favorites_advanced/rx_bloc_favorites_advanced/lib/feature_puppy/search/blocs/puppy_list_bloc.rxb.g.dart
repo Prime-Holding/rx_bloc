@@ -26,10 +26,11 @@ abstract class $PuppyListBloc extends RxBlocBase
   final _$reloadFavoritePuppiesEvent = BehaviorSubject.seeded(false);
 
   @override
-  void filterPuppies({String query}) => _$filterPuppiesEvent.add(query);
+  void filterPuppies({required String query}) =>
+      _$filterPuppiesEvent.add(query);
 
   @override
-  void reloadFavoritePuppies({bool silently}) =>
+  void reloadFavoritePuppies({required bool silently}) =>
       _$reloadFavoritePuppiesEvent.add(silently);
 
   @override

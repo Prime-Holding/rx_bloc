@@ -9,7 +9,7 @@ import '../../../mocks.dart';
 import '../../../stubs.dart';
 
 void main() {
-  CoordinatorBlocType coordinatorMock;
+  late CoordinatorBlocType coordinatorMock;
 
   setUp(() {
     coordinatorMock = CoordinatorBlocMock();
@@ -56,7 +56,7 @@ void main() {
       ],
     );
 
-    rxBlocTest<PuppyDetailsBloc, String>(
+    rxBlocTest<PuppyDetailsBloc, String?>(
       'PuppyDetailsBloc.breed update puppy.breed: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
@@ -74,13 +74,13 @@ void main() {
         );
       },
       state: (bloc) => bloc.states.breed,
-      expect: <String>[
+      expect: <String?>[
         Stub.puppiesWithDetails[2].breedTypeAsString,
         PuppyDataConversion.getBreedTypeString(BreedType.Akita),
       ],
     );
 
-    rxBlocTest<PuppyDetailsBloc, String>(
+    rxBlocTest<PuppyDetailsBloc, String?>(
       'PuppyDetailsBloc.characteristics update puppy.characteristics: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
@@ -98,7 +98,7 @@ void main() {
         );
       },
       state: (bloc) => bloc.states.characteristics,
-      expect: <String>[
+      expect: <String?>[
         Stub.puppiesWithDetails[2].displayCharacteristics,
         'test',
       ],

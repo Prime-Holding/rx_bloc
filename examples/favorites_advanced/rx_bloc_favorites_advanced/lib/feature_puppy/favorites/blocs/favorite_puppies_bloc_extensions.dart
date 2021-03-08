@@ -6,15 +6,15 @@ extension _ResultPuppies on Stream<Result<List<Puppy>>> {
       whereSuccess().map((puppies) => puppies.length).shareReplay(maxSize: 1);
 }
 
-extension _PuppiesFecher on Stream<bool> {
+extension _PuppiesFecher on Stream<bool?> {
   /// Fetch puppies as applying a back pressure of 200 milliseconds.
   Stream<Result<List<Puppy>>> fetchPuppies(PuppiesRepository repository) =>
       throttleTime(const Duration(milliseconds: 200)).switchMap(
-        (silently) => repository
+        ((silently) => repository
             .getFavoritePuppies()
             .asResultStream()
             // just skip the loading event
-            .skip(silently ? 1 : 0),
+            .skip(silently ? 1 : 0) as Stream<Result<List<Puppy>>>) as Stream<Result<List<Puppy>>> Function(bool?),
       );
 }
 
@@ -35,5 +35,5 @@ extension _StreamBindToPuppies on Stream<List<Puppy>> {
         }
 
         return puppiesResult;
-      }).bind(puppiesToUpdate);
+      }).bind(puppiesToUpdate) as StreamSubscription<Result<List<Puppy>>>;
 }

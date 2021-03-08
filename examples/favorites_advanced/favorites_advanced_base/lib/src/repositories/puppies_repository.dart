@@ -54,7 +54,7 @@ class PuppiesRepository {
     return puppies!.where((puppy) => puppy!.isFavorite).toList();
   }
 
-  Future<Puppy?> favoritePuppy(
+  Future<Puppy> favoritePuppy(
     Puppy puppy, {
     required bool isFavorite,
   }) async {
@@ -66,10 +66,9 @@ class PuppiesRepository {
 
     final foundPuppy = puppies!.firstWhere(
       (item) => item!.id == puppy.id,
-      orElse: () => null,
     );
 
-    foundPuppy?.isFavorite = isFavorite;
+    foundPuppy!.isFavorite = isFavorite;
 
     return foundPuppy;
   }
