@@ -11,7 +11,7 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
             .getPuppies(query: reloadData.query!)
             .asResultStream()
             // skip the loading event if silently is true
-            .skip(reloadData.silently! ? 1 : 0) as Stream<Result<List<Puppy>>>,
+            .skip(reloadData.silently! ? 1 : 0),
       );
 }
 
@@ -23,14 +23,14 @@ extension StreamBindToPuppies on Stream<List<Puppy>> {
   StreamSubscription<Result<List<Puppy>>> updatePuppies(
           BehaviorSubject<Result<List<Puppy>>> puppiesToUpdate) =>
       map((puppies) {
-        final puppiesResult = puppiesToUpdate.value;
+        final puppiesResult = puppiesToUpdate.value ?? Result.success([]);
 
         if (puppiesResult is ResultSuccess<List<Puppy>>) {
           return Result.success(puppiesResult.data.mergeWith(puppies));
         }
 
         return puppiesResult;
-      }).bind(puppiesToUpdate) as StreamSubscription<Result<List<Puppy>>>;
+      }).bind(puppiesToUpdate);
 }
 
 extension _PuppyListBlocReloaders on PuppyListBloc {

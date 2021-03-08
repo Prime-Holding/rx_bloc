@@ -24,9 +24,7 @@ extension ExtendImagePicker on ImagePicker {
     if (Platform.isAndroid) {
       final lostData = await _retrieveLostData();
 
-      if (lostData != null &&
-          lostData.path != null &&
-          lostData.path.isNotEmpty) {
+      if (lostData != null && lostData.path.isNotEmpty) {
         pickedFile = PickedFile(lostData.path);
       }
     }

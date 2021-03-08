@@ -101,11 +101,6 @@ class Stub {
     error: 'Name must not be empty.',
   );
 
-  static const nameNullErr = RxFieldException<String?>(
-    fieldValue: null,
-    error: 'Name must not be empty.',
-  );
-
   static final nameTooLongErr = RxFieldException<String>(
     fieldValue: Stub.string31,
     error: 'Name too long.',

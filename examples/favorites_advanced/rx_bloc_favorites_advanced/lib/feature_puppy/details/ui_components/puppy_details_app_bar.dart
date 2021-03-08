@@ -20,7 +20,7 @@ class PuppyDetailsAppBar extends StatelessWidget
   Widget build(BuildContext context) => AppBar(
         leading: IconButton(
           icon: const IconWithShadow(icon: Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.flow<PuppyFlowState>().complete(),
         ),
         backgroundColor: Colors.transparent,
         actions: _buildTrailingItems(context),

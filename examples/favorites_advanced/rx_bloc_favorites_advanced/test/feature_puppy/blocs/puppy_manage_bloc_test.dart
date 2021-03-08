@@ -1,6 +1,7 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
@@ -9,16 +10,23 @@ import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
-import '../../mocks.dart';
 import '../../stubs.dart';
+import 'puppy_manage_bloc_test.mocks.dart';
 
+@GenerateMocks([
+  CoordinatorStates,
+  CoordinatorEvents,
+  CoordinatorBlocType,
+  PuppiesRepository,
+])
 void main() {
-  late CoordinatorBlocType coordinatorMock;
-  late PuppiesRepositoryMock repositoryMock;
+  late MockCoordinatorBlocType coordinatorMock;
+  late MockPuppiesRepository repositoryMock;
 
   setUp(() {
-    coordinatorMock = CoordinatorBlocMock();
-    repositoryMock = PuppiesRepositoryMock();
+    coordinatorMock = MockCoordinatorBlocType();
+    when(coordinatorMock.events).thenReturn(MockCoordinatorEvents());
+    repositoryMock = MockPuppiesRepository();
   });
 
   group('PuppyManageBloc edit puppy', () {
@@ -29,31 +37,23 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppy1,
-        validator: const PuppyValidator(),
       ),
       state: (bloc) => bloc.states.imagePath,
       act: (bloc) async {
-        //  Nothing should be emitted when you pick null
-        //as the source for the image.
-        // bloc.events.setImage(null);
-
         //when you pick the camera as image source
         await Future.delayed(Stub.pickImageDelay);
+
         when(repositoryMock.pickPuppyImage(ImagePickerAction.camera))
             .thenAnswer((_) async => PickedFile('camera image'));
-        bloc.events.setImage(ImagePickerAction.camera);
 
-        //  Nothing should be emitted when the gallery returns null
-        //as the picked image, which could happen if the user cancels
-        //picking the image.
-        await Future.delayed(Stub.pickImageDelay);
-        when(repositoryMock.pickPuppyImage(any!)).thenAnswer((_) async => null);
-        bloc.events.setImage(ImagePickerAction.gallery);
+        bloc.events.setImage(ImagePickerAction.camera);
 
         //when you pick the gallery as image source
         await Future.delayed(Stub.pickImageDelay);
+
         when(repositoryMock.pickPuppyImage(ImagePickerAction.gallery))
             .thenAnswer((_) async => PickedFile('gallery image'));
+
         bloc.events.setImage(ImagePickerAction.gallery);
       },
       expect: [
@@ -81,8 +81,6 @@ void main() {
         bloc.events.setName(Stub.string31);
         await Future.delayed(const Duration(milliseconds: 10));
         bloc.events.setName('test');
-        await Future.delayed(const Duration(milliseconds: 10));
-        bloc.events.setName('');
       },
       expect: [
         //starts with the name of the puppy passed to the bloc
@@ -94,9 +92,6 @@ void main() {
         Stub.nameTooLongErr,
         //when name is set to a valid string, it immediately returns said string
         'test',
-        //when name is set to null, returns same error as 'name empty error'
-        //but with a value of null
-        Stub.nameNullErr,
       ],
     );
 
@@ -265,8 +260,7 @@ void main() {
       build: () async => PuppyManageBloc(
         repositoryMock,
         coordinatorMock,
-        puppy: Stub.puppiesWithDetails[0],
-        validator: PuppyValidator(),
+        puppy: Stub.puppiesWithDetails.first,
       ),
       state: (bloc) => MergeStream([
         bloc.states.error,
@@ -280,13 +274,20 @@ void main() {
         bloc.states.characteristics.listen((event) {}, onError: (error) {});
 
         await Future.delayed(const Duration(milliseconds: 10));
-        when(repositoryMock.updatePuppy(any!, any!))
-            .thenAnswer((_) async => throw Stub.testErr);
+
+        when(repositoryMock.updatePuppy(
+          Stub.puppiesWithDetails.first.id,
+          Stub.puppiesWithDetails.first,
+        )).thenAnswer((_) async => throw Stub.testErr);
+
         bloc.events.savePuppy();
 
         await Future.delayed(const Duration(milliseconds: 10));
-        when(repositoryMock.updatePuppy(any!, any!))
-            .thenAnswer((_) async => Stub.puppiesWithDetails[0]);
+        when(repositoryMock.updatePuppy(
+          Stub.puppiesWithDetails.first.id,
+          Stub.puppiesWithDetails.first,
+        )).thenAnswer((_) async => Stub.puppiesWithDetails[0]);
+
         bloc.events.savePuppy();
       },
       expect: [

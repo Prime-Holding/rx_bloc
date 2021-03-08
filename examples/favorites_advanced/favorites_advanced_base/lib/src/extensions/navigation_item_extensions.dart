@@ -37,8 +37,6 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.favorites:
         return 1;
     }
-
-    return 0;
   }
 
   /// Get a subtitle based on [NavigationItemType]
@@ -49,8 +47,6 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.favorites:
         return 'Favorites';
     }
-
-    return '';
   }
 
   /// Convert [NavigationItemType] to an icon based on its type.
@@ -69,7 +65,5 @@ extension NavigationItemTypeTitle on NavigationItemType {
           color: Colors.white,
         );
     }
-
-    return null;
   }
 }

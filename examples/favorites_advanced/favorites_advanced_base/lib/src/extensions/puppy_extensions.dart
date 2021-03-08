@@ -39,7 +39,8 @@ extension PuppUtils on Puppy {
       );
 
   /// Check whether the current entity has all needed extra details.
-  bool hasExtraDetails() => breedCharacteristics != null && displayName != null;
+  bool hasExtraDetails() =>
+      displayCharacteristics != null && displayName != null;
 
   String get genderAsString => PuppyDataConversion.getGenderString(gender);
 

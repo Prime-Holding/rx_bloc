@@ -15,3 +15,5 @@ builders:
     build_extensions: {'.dart': ['rxb.g.dart']}
     auto_apply: root_package
     build_to: source
+    runs_before: ["mockito|mockBuilder"]
+    applies_builders: ["mockito|mockBuilder"]

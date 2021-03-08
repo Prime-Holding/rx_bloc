@@ -50,13 +50,6 @@ class PuppyEditAvatar extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent, // button color
                   child: InkWell(
-                    child: const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.edit,
-                        size: 24,
-                      ),
-                    ),
                     onTap: () {
                       PhotoPickerActionSelectionBottomSheet
                           .presentPhotosBottomSheet(
@@ -64,6 +57,13 @@ class PuppyEditAvatar extends StatelessWidget {
                         (source) => pickImage(source),
                       );
                     },
+                    child: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.edit,
+                        size: 24,
+                      ),
+                    ),
                   ),
                 ),
               ),

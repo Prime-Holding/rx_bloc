@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 enum NavigationItemType { search, favorites }
 
 class NavigationItem {

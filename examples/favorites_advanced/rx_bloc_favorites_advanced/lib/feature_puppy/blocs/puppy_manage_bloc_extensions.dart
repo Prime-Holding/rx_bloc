@@ -108,7 +108,7 @@ extension _SavePuppy<T> on Stream<T> {
               puppyWithChanges.id,
               puppyWithChanges,
             )
-            .asResultStream() as Stream<Result<Puppy>>,
+            .asResultStream(),
       );
 }
 

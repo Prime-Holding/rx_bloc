@@ -1,23 +1,39 @@
 import 'dart:async';
 
 import 'package:favorites_advanced_base/repositories.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:test/test.dart';
 
-import '../../mocks.dart';
 import '../../stubs.dart';
+import 'puppies_extra_details_bloc_test.mocks.dart';
 
+@GenerateMocks([
+  CoordinatorEvents,
+  CoordinatorStates,
+  CoordinatorBlocType,
+  PuppiesRepository,
+])
 void main() {
-  late CoordinatorBlocType mockCoordinator;
-  late PuppiesRepository repositoryMock;
+  late MockCoordinatorBlocType coordinatorMock;
+  late MockCoordinatorStates mockCoordinatorStates;
+  late MockCoordinatorEvents mockCoordinatorEvents;
+
+  late MockPuppiesRepository repositoryMock;
   late PuppiesExtraDetailsBloc bloc;
 
   setUp(() {
-    mockCoordinator = CoordinatorBlocMock();
-    repositoryMock = PuppiesRepositoryMock();
-    bloc = PuppiesExtraDetailsBloc(mockCoordinator, repositoryMock);
+    coordinatorMock = MockCoordinatorBlocType();
+    mockCoordinatorStates = MockCoordinatorStates();
+    mockCoordinatorEvents = MockCoordinatorEvents();
+
+    when(coordinatorMock.states).thenReturn(mockCoordinatorStates);
+    when(coordinatorMock.events).thenReturn(mockCoordinatorEvents);
+
+    repositoryMock = MockPuppiesRepository();
+    bloc = PuppiesExtraDetailsBloc(coordinatorMock, repositoryMock);
   });
 
   group('PuppiesExtraDetailsBloc', () {
@@ -36,7 +52,7 @@ void main() {
       /// Verify: Make sure `puppiesWithExtraDetailsFetched` have collected
       /// puppies one and two with their extra details
       verify(
-        mockCoordinator.events
+        mockCoordinatorEvents
             .puppiesWithExtraDetailsFetched(Stub.puppies1And2WithExtraDetails),
       ).called(1);
     });

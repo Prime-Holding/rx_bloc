@@ -6,7 +6,7 @@ List<RxBlocProvider> _getProviders(Puppy? puppy) => [
           Provider.of(context, listen: false),
           Provider.of(context, listen: false),
           puppy: puppy,
-          validator: PuppyValidator(),
+          validator: const PuppyValidator(),
         ),
       ),
     ];

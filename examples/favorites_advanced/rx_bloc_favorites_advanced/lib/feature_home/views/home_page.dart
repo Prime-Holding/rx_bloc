@@ -65,8 +65,8 @@ class HomePage extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     items: navItems
                         .map((item) => Padding(
-                              child: item.asWidget(),
                               padding: const EdgeInsets.all(8),
+                              child: item.asWidget(),
                             ))
                         .toList(),
                     onTap: (index) => bloc.events.selectPage(
@@ -87,8 +87,6 @@ class HomePage extends StatelessWidget {
       case NavigationItemType.favorites:
         return FavoritesPage();
     }
-
-    return Container();
   }
 }
 

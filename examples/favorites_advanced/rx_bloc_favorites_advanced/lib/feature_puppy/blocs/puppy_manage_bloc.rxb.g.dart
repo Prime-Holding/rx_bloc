@@ -65,8 +65,9 @@ abstract class $PuppyManageBloc extends RxBlocBase
   Stream<bool>? _updateCompleteState;
 
   @override
-  void markAsFavorite({Puppy puppy, bool isFavorite}) => _$markAsFavoriteEvent
-      .add(_MarkAsFavoriteEventArgs(puppy: puppy, isFavorite: isFavorite));
+  void markAsFavorite({required Puppy puppy, required bool isFavorite}) =>
+      _$markAsFavoriteEvent
+          .add(_MarkAsFavoriteEventArgs(puppy: puppy, isFavorite: isFavorite));
 
   @override
   void setName(String newName) => _$setNameEvent.add(newName);
@@ -153,7 +154,8 @@ abstract class $PuppyManageBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [PuppyManageEvents.markAsFavorite] event
 class _MarkAsFavoriteEventArgs {
-  const _MarkAsFavoriteEventArgs({this.puppy, this.isFavorite});
+  const _MarkAsFavoriteEventArgs(
+      {required this.puppy, required this.isFavorite});
 
   final Puppy puppy;
 

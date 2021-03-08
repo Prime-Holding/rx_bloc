@@ -1,18 +1,31 @@
 import 'package:favorites_advanced_base/models.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_details_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
-import '../../../mocks.dart';
 import '../../../stubs.dart';
+import 'puppy_details_bloc_test.mocks.dart';
 
+@GenerateMocks([
+  CoordinatorStates,
+  CoordinatorEvents,
+  CoordinatorBlocType,
+])
 void main() {
-  late CoordinatorBlocType coordinatorMock;
+  late MockCoordinatorBlocType coordinatorMock;
+  late MockCoordinatorStates mockCoordinatorStates;
+  late MockCoordinatorEvents mockCoordinatorEvents;
 
   setUp(() {
-    coordinatorMock = CoordinatorBlocMock();
+    coordinatorMock = MockCoordinatorBlocType();
+    mockCoordinatorStates = MockCoordinatorStates();
+    mockCoordinatorEvents = MockCoordinatorEvents();
+
+    when(coordinatorMock.states).thenReturn(mockCoordinatorStates);
+    when(coordinatorMock.events).thenReturn(mockCoordinatorEvents);
   });
 
   group('PuppyDetailsBloc update puppy', () {
@@ -20,7 +33,7 @@ void main() {
       'PuppyDetailsBloc.puppy update puppy: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield [Stub.puppy2];
           yield [Stub.puppy1.copyWith(name: 'test')];
           yield [...Stub.puppies23, Stub.puppy1.copyWith(name: 'name')];
@@ -40,7 +53,7 @@ void main() {
       'PuppyDetailsBloc.puppy update puppy.name: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield [Stub.puppy2];
           yield [Stub.puppy1.copyWith(name: 'test')];
           yield [...Stub.puppies23, Stub.puppy1.copyWith(name: 'name')];
@@ -60,7 +73,7 @@ void main() {
       'PuppyDetailsBloc.breed update puppy.breed: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield Stub.puppiesWithDetails.sublist(0, 2);
           yield [
             ...Stub.puppiesWithDetails.sublist(0, 2),
@@ -84,7 +97,7 @@ void main() {
       'PuppyDetailsBloc.characteristics update puppy.characteristics: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield Stub.puppiesWithDetails.sublist(0, 2);
           yield [
             ...Stub.puppiesWithDetails.sublist(0, 2),
@@ -108,7 +121,7 @@ void main() {
       'PuppyDetailsBloc.gender update puppy.gender: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield Stub.puppiesWithDetails.sublist(0, 2);
           yield [
             ...Stub.puppiesWithDetails.sublist(0, 2),
@@ -132,7 +145,7 @@ void main() {
       'PuppyDetailsBloc.imagePath update puppy.asset: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield Stub.puppiesWithDetails.sublist(0, 2);
           yield [
             ...Stub.puppiesWithDetails.sublist(0, 2),
@@ -156,7 +169,7 @@ void main() {
       'PuppyDetailsBloc.isFavourite update puppy.isFavourite: '
       'success triggered by CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield Stub.puppiesWithDetails.sublist(0, 2);
           yield [
             ...Stub.puppiesWithDetails.sublist(0, 2),
@@ -181,7 +194,7 @@ void main() {
       'and puppy.characteristics: success triggered by '
       'CoordinatorBloc.onPuppiesUpdated',
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated).thenAnswer((_) async* {
+        when(mockCoordinatorStates.onPuppiesUpdated).thenAnswer((_) async* {
           yield Stub.puppiesWithDetails.sublist(0, 2);
           yield [
             ...Stub.puppiesWithDetails.sublist(0, 2),

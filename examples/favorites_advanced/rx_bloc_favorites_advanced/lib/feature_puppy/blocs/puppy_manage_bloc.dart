@@ -9,7 +9,7 @@ part 'puppy_manage_bloc.rxb.g.dart';
 part 'puppy_manage_bloc_extensions.dart';
 
 abstract class PuppyManageEvents {
-  void markAsFavorite({Puppy puppy, bool isFavorite});
+  void markAsFavorite({required Puppy puppy, required bool isFavorite});
 
   void setName(String newName);
 
