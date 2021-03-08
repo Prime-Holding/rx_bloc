@@ -172,8 +172,7 @@ extension _EventMethodElement on MethodElement {
 
   /// Provides the event's positional arguments as a [Map] of [Expression]
   List<Expression> get _positionalArguments => parameters
-      .where((ParameterElement parameter) =>
-          parameter.isNotOptional || parameter.isOptionalPositional)
+      .where((ParameterElement parameter) => parameter.isPositional)
       .map(
         (ParameterElement parameter) => refer(parameter.name),
       )

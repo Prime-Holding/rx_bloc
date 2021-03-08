@@ -12,6 +12,7 @@ Future<void> main() async {
   final reader = await initializeLibraryReaderForDirectory(
     'test/src',
     'rx_bloc_test.dart',
+    // 'simple_test.dart',
   );
   initializeBuildLogTracking();
   testAnnotatedElements<RxBloc>(
