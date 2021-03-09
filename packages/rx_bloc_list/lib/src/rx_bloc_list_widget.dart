@@ -53,15 +53,15 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
       child: RefreshIndicator(
         onRefresh: () async {
           _paginationBloc.events.refreshData();
-          final success =
-              await _paginationBloc.states.refreshDone.firstWhere((e) => e);
+
+          await _paginationBloc.states.refreshDone.waitToLoad();
 
           /// TODO: Consider the case where this above fails.
           /// The refresh indicator is stuck forever, in that case.
 
           // Execute the onRefresh callback (if any) after the refreshing is done
-          if (success) widget.onRefresh?.call();
-          return Future.value(success);
+          widget.onRefresh?.call();
+          return Future.value(null);
         },
         child: CustomScrollView(
           slivers: <Widget>[
@@ -78,4 +78,11 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
   }
 
   /// endregion
+}
+
+extension _StreamBoolExtensions on Stream<bool> {
+  Future<void> waitToLoad() async {
+    await this.firstWhere((e) => !e);
+    await this.firstWhere((e) => e);
+  }
 }
