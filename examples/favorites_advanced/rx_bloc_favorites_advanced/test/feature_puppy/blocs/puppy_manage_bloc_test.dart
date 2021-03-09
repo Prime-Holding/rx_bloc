@@ -5,7 +5,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/validators/puppy_validator.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
@@ -149,7 +148,6 @@ void main() {
         repositoryMock,
         coordinatorMock,
         puppy: Stub.puppiesWithDetails[0],
-        validator: PuppyValidator(),
       ),
       state: (bloc) => bloc.states.characteristics,
       act: (bloc) async {

@@ -1,5 +1,6 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
@@ -96,7 +97,7 @@ class PuppyEditForm extends StatelessWidget {
           style: TextStyles.editableTextStyle,
           maxLines: 1,
           textInputAction: TextInputAction.next,
-          maxLengthEnforced: true,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
           controller: fieldState.controller,
           decoration: fieldState.decoration!
               .copyWithDecoration(InputStyles.textFieldDecoration),
@@ -115,7 +116,7 @@ class PuppyEditForm extends StatelessWidget {
           style: TextStyles.editableTextStyle,
           textInputAction: TextInputAction.done,
           maxLines: 8,
-          maxLengthEnforced: true,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
           controller: fieldState.controller,
           decoration: fieldState.decoration!
               .copyWithDecoration(InputStyles.textFieldDecoration),

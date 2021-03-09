@@ -24,7 +24,6 @@ dependencies:
   flutter_rx_bloc:
   provider: ^5.0.0
   favorites_advanced_base:
-    path: ../favorites_advanced_base
   curved_navigation_bar: ^0.4.0-nullsafety.0
   badges: ^1.1.4
   animated_stream_list:
