@@ -1,6 +1,9 @@
+@Tags(['not-tests'])
+
 import 'package:rx_bloc/rx_bloc.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
+import 'package:test/test.dart';
 
 part 'test_utilities.dart';
 

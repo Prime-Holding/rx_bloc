@@ -42,7 +42,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
-            flutter test
+            flutter test --exclude-tags not-tests 
           fi
   packages:
     strategy:
