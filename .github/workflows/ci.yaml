@@ -72,7 +72,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
-            dart test
+            dart test --exclude-tags not-tests
           fi
 
   build:
