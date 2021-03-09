@@ -3,12 +3,7 @@ part of rx_bloc_generator;
 /// The global logJet symbol.
 const Symbol _logKey = #buildLog;
 
-/// Fallback logger used in case there isn't any in the current zone
-final _default = Logger('build.fallback');
-
 /// The log instance for the currently running BuildStep.
-///
-/// Will be `null` when not running within a build.
 Logger get log => Zone.current[_logKey] as Logger;
 
 /// Logs message as a `severe` error displayed in red color for easier noticing.

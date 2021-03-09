@@ -53,7 +53,7 @@ extension _EventMethodElement on MethodElement {
   List<Reference> get streamTypeArguments =>
       !isBehavior ? [refer(publishSubjectGenericType)] : [];
 
-  /// Provides the [BehaviorSubject.seeded] arguments as [List] of [Expression]
+  /// Provides the BehaviorSubject.seeded arguments as [List] of [Expression]
   /// Throws an [_RxBlocGeneratorException] if a seed is provided but
   /// the stream is not  [RxBlocEventType.behaviour]
   List<Expression> get seedPositionalArguments {
@@ -65,7 +65,7 @@ extension _EventMethodElement on MethodElement {
     return isBehavior ? [_seededArgument] : [];
   }
 
-  /// Provides the [BehaviorSubject.seeded] arguments as an [Expression]
+  /// Provides the BehaviorSubject.seeded arguments as an [Expression]
   Expression get _seededArgument {
     Iterable<String> seedArgumentsMatch = RegExp(r'(?<=seed: ).*(?=\)|,)')
         .allMatches(_rxBlocEventAnnotation?.toSource() ?? '')
@@ -78,6 +78,7 @@ extension _EventMethodElement on MethodElement {
 
     String seedArguments = seedArgumentsMatch.toString();
     return refer(
+      // ignore: lines_longer_than_80_chars
       '${isUsingArgumentClass && !seedArguments.contains('(const') ? 'const ' : ''}'
       '${seedArguments.substring(1, seedArguments.length - 1)}',
     );
@@ -108,7 +109,7 @@ extension _EventMethodElement on MethodElement {
       ? _eventAnnotation
       : null;
 
-  /// Is the event stream type a [BehaviorSubject]
+  /// Is the event stream type a BehaviorSubject
   bool get isBehavior =>
       _computedRxBlocEventAnnotation.toString().contains('behaviour');
 
