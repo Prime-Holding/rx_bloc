@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
         providers: [
           Provider<PuppiesRepository>(
-              create: (context) => PuppiesRepository(ImagePicker())),
+              create: (context) => PuppiesRepository(
+                    ImagePicker(),
+                    ConnectivityRepository(),
+                  )),
           Provider<CoordinatorBlocType>(create: (context) => CoordinatorBloc()),
           Provider<PuppyListBlocType>(
             create: (context) => PuppyListBloc(

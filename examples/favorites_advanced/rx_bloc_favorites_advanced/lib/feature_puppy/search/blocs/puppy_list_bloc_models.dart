@@ -6,6 +6,6 @@ class _ReloadData {
     required this.query,
   });
 
-  final bool? silently;
-  final String? query;
+  final bool silently;
+  final String query;
 }

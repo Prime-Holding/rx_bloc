@@ -8,10 +8,10 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
   Stream<Result<List<Puppy>>> fetchPuppies(PuppiesRepository repository) =>
       debounceTime(const Duration(milliseconds: 600)).switchMap(
         (reloadData) => repository
-            .getPuppies(query: reloadData.query!)
+            .getPuppies(query: reloadData.query)
             .asResultStream()
             // skip the loading event if silently is true
-            .skip(reloadData.silently! ? 1 : 0),
+            .skip(reloadData.silently ? 1 : 0),
       );
 }
 
@@ -46,7 +46,7 @@ extension _PuppyListBlocReloaders on PuppyListBloc {
         _$reloadFavoritePuppiesEvent.map(
           (silently) => _ReloadData(
             silently: silently,
-            query: _$filterPuppiesEvent.value,
+            query: _$filterPuppiesEvent.value ?? '',
           ),
         ),
       ]);

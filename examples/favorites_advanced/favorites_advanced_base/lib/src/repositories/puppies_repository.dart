@@ -1,17 +1,19 @@
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
 import 'package:favorites_advanced_base/src/utils/enums.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:image_picker/image_picker.dart';
+import 'connectivity_repository.dart';
 
 import '../models/puppy.dart';
 
 part 'puppies_repository_extensions.dart';
 
 class PuppiesRepository {
-  PuppiesRepository(ImagePicker picker)
-      : _picker = picker,
+  PuppiesRepository(
+    ImagePicker picker,
+    ConnectivityRepository connectivityRepository,
+  )   : _picker = picker,
+        _connectivityRepository = connectivityRepository,
         puppies = _generateListOfPuppies();
 
   final _noInternetConnectionErrorString =
@@ -24,11 +26,12 @@ class PuppiesRepository {
   static final generatedPuppiesMultiplier = 50000;
 
   final ImagePicker _picker;
+  final ConnectivityRepository _connectivityRepository;
 
   Future<List<Puppy>> getPuppies({String query = ''}) async {
     await Future.delayed(artificialDelay + Duration(milliseconds: 100));
 
-    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
+    if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
@@ -47,7 +50,7 @@ class PuppiesRepository {
   Future<List<Puppy>> getFavoritePuppies() async {
     await Future.delayed(artificialDelay);
 
-    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
+    if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
@@ -60,7 +63,7 @@ class PuppiesRepository {
   }) async {
     await Future.delayed(artificialDelay);
 
-    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
+    if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
@@ -76,7 +79,7 @@ class PuppiesRepository {
   Future<List<Puppy>> fetchFullEntities(List<String> ids) async {
     await Future.delayed(artificialDelay);
 
-    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
+    if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
@@ -94,7 +97,7 @@ class PuppiesRepository {
   Future<Puppy> updatePuppy(String puppyId, Puppy newValue) async {
     await Future.delayed(artificialDelay + Duration(seconds: 1));
 
-    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
+    if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
