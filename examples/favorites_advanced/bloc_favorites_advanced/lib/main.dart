@@ -4,6 +4,7 @@ void main() {
   runApp(MyApp());
 }
 
+// bloc_favorites_advanced/navigation first commit
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
