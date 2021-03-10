@@ -25,6 +25,7 @@ abstract class PaginationBlocStates<T> {
 class PaginationBloc<T> extends $PaginationBloc {
   PaginationBloc(
     this._dataRepo, {
+    this.dataFilter,
     List<T> initialData = const [],
   })  : _localData = initialData,
         _dataSubject = BehaviorSubject<List<T>>.seeded(initialData) {
@@ -42,6 +43,8 @@ class PaginationBloc<T> extends $PaginationBloc {
 
   List<T> _localData;
   int _loadedPages = 0;
+
+  final List<T> Function(List<T>)? dataFilter;
   final DataRepositoryInterface<T> _dataRepo;
   final BehaviorSubject<List<T>> _dataSubject;
   final _refreshSubject = BehaviorSubject<bool>.seeded(false);

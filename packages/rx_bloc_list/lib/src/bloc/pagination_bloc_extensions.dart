@@ -34,7 +34,7 @@ extension _PaginationBlocExtensions<T> on PaginationBloc<T> {
     else
       _localData.addAll(newData);
 
-    // TODO: Update entries based on their indexes
+    if (dataFilter != null) _localData = dataFilter!.call(_localData);
 
     _dataSubject.add(_localData);
     return true;

@@ -8,6 +8,7 @@ class RxBlocList<T> extends StatefulWidget {
     required this.dataRepository,
     required this.builder,
     this.onRefresh,
+    this.dataFilter,
     this.count = 10,
     Key? key,
   }) : super(key: key);
@@ -25,6 +26,10 @@ class RxBlocList<T> extends StatefulWidget {
   /// Callback triggered once the data was successfully refreshed.
   final Function()? onRefresh;
 
+  /// Callback triggered before the data is forwarded to the RxBlocList.
+  /// User can define it's custom data filtering, before it is propagated elsewhere.
+  final List<T> Function(List<T>)? dataFilter;
+
   @override
   _RxBlocListState<T> createState() => _RxBlocListState<T>();
 }
@@ -36,7 +41,10 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
 
   @override
   void initState() {
-    _paginationBloc = PaginationBloc<T>(widget.dataRepository);
+    _paginationBloc = PaginationBloc<T>(
+      widget.dataRepository,
+      dataFilter: widget.dataFilter,
+    );
     super.initState();
   }
 
@@ -51,18 +59,7 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
     return RxBlocProvider<PaginationBloc<T>>.value(
       value: _paginationBloc,
       child: RefreshIndicator(
-        onRefresh: () async {
-          _paginationBloc.events.refreshData();
-
-          await _paginationBloc.states.refreshDone.waitToLoad();
-
-          /// TODO: Consider the case where this above fails.
-          /// The refresh indicator is stuck forever, in that case.
-
-          // Execute the onRefresh callback (if any) after the refreshing is done
-          widget.onRefresh?.call();
-          return Future.value(null);
-        },
+        onRefresh: _onRefresh,
         child: CustomScrollView(
           slivers: <Widget>[
             SliverList(
@@ -75,6 +72,27 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
         ),
       ),
     );
+  }
+
+  /// endregion
+
+  /// region Methods
+
+  Future _onRefresh() async {
+    // onRefresh is called once the RefreshIndicator's animation reaches
+    // its main spinning part. In order to stop that animation, we need to
+    // return a future, after we're done with refreshing the data
+
+    _paginationBloc.events.refreshData();
+    await _paginationBloc.states.refreshDone.waitToLoad();
+
+    /// TODO: Consider the case where this above fails.
+    /// The refresh indicator is stuck forever, in that case.
+
+    // Execute the onRefresh callback (if any) after the refreshing is done
+    widget.onRefresh?.call();
+
+    return Future.value(null);
   }
 
   /// endregion
