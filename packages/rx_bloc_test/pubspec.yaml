@@ -11,7 +11,7 @@ environment:
 dependencies:
   test: ^1.15.0
   rxdart: ^0.26.0
-  rx_bloc: ^1.2.0
+  rx_bloc: ^2.0.0
   meta: ^1.2.0
   quiver: ^3.0.0
 
