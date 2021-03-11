@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         // resizeToAvoidBottomInset: false,
         appBar: PuppiesAppBar(),
         body: RxBlocListener<PuppyManageBlocType, String>(

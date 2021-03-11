@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
+import 'package:favorites_advanced_base/resources.dart';
 
 class PuppyEditCard extends StatelessWidget {
   const PuppyEditCard({
