@@ -21,7 +21,7 @@ class _WithSeededPositionalAndOptionalEventArgs {
 
   final int pp;
 
-  final int op;
+  final int? op;
 }
 
 class _WithSeeded2PositionalEnumEventArgs {

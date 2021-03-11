@@ -29,7 +29,7 @@ abstract class $DetailsBloc extends RxBlocBase
   ///region States
 
   ///region details
-  Stream<String> _detailsState;
+  Stream<String>? _detailsState;
 
   @override
   Stream<String> get details => _detailsState ??= _mapToDetailsState();

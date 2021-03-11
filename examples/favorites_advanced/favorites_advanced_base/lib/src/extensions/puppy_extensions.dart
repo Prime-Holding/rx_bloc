@@ -2,15 +2,15 @@ part of '../models/puppy.dart';
 
 extension PuppUtils on Puppy {
   Puppy copyWith({
-    String id,
-    String name,
-    String breedCharacteristics,
-    Gender gender,
-    BreedType breedType,
-    bool isFavorite,
-    String displayName,
-    String displayCharacteristics,
-    String asset,
+    String? id,
+    String? name,
+    String? breedCharacteristics,
+    Gender? gender,
+    BreedType? breedType,
+    bool? isFavorite,
+    String? displayName,
+    String? displayCharacteristics,
+    String? asset,
   }) =>
       Puppy(
         id: id ?? this.id,
@@ -26,25 +26,25 @@ extension PuppUtils on Puppy {
       );
 
   Puppy copyWithPuppy(Puppy puppy) => Puppy(
-        id: puppy.id ?? id,
-        name: puppy.name ?? name,
-        breedCharacteristics:
-            puppy.breedCharacteristics ?? breedCharacteristics,
-        asset: puppy.asset ?? asset,
-        isFavorite: puppy.isFavorite ?? isFavorite,
-        gender: puppy.gender ?? gender,
-        breedType: puppy.breedType ?? breedType,
+        id: puppy.id,
+        name: puppy.name,
+        breedCharacteristics: puppy.breedCharacteristics,
+        asset: puppy.asset,
+        isFavorite: puppy.isFavorite,
+        gender: puppy.gender,
+        breedType: puppy.breedType,
         displayName: puppy.displayName ?? displayName,
         displayCharacteristics:
             puppy.displayCharacteristics ?? displayCharacteristics,
       );
 
   /// Check whether the current entity has all needed extra details.
-  bool hasExtraDetails() => breedCharacteristics != null && displayName != null;
+  bool hasExtraDetails() =>
+      displayCharacteristics != null && displayName != null;
 
   String get genderAsString => PuppyDataConversion.getGenderString(gender);
 
-  String get breedTypeAsString =>
+  String? get breedTypeAsString =>
       PuppyDataConversion.getBreedTypeString(breedType);
 }
 

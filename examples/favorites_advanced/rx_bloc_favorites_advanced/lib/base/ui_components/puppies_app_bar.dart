@@ -10,17 +10,19 @@ import '../../feature_puppy/search/blocs/puppy_list_bloc.dart';
 class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) =>
-      RxBlocBuilder<NavigationBarBlocType, NavigationItem>(
+      RxBlocBuilder<NavigationBarBlocType, NavigationItem?>(
         state: (bloc) => bloc.states.selectedItem,
         builder: (ctx, snapshot, bloc) => _buildAppBar(snapshot, ctx),
       );
 
   Widget _buildAppBar(
-          AsyncSnapshot<NavigationItem> snapshot, BuildContext ctx) =>
-      snapshot.hasData && snapshot.data.type == NavigationItemType.search
-          ? _searchAppBar(ctx, snapshot.data)
+          AsyncSnapshot<NavigationItem?> snapshot, BuildContext ctx) =>
+      snapshot.hasData && snapshot.data!.type == NavigationItemType.search
+          ? _searchAppBar(ctx, snapshot.data!)
           : AppBar(
-              title: Text(snapshot.hasData ? snapshot.data.type.asTitle() : ''),
+              title: Text(
+                snapshot.hasData ? snapshot.data!.type.asTitle() : '',
+              ),
               centerTitle: false,
             );
 

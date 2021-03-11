@@ -28,7 +28,7 @@ abstract class $CoordinatorBloc extends RxBlocBase
 
   /// The state of [onPuppiesUpdated] implemented in
   /// [_mapToOnPuppiesUpdatedState]
-  Stream<List<Puppy>> _onPuppiesUpdatedState;
+  Stream<List<Puppy>>? _onPuppiesUpdatedState;
 
   @override
   void puppyUpdated(Puppy puppy) => _$puppyUpdatedEvent.add(puppy);

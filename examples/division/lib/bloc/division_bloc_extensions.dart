@@ -2,7 +2,7 @@ part of 'division_bloc.dart';
 
 extension _DivideNumbersEventArgsMappers on Stream<_DivideNumbersEventArgs> {
   Stream<Result<String>> calculateAndFormat() => switchMap(
-        (args) => _Calculator._calculate(args.a, args.b).asResultStream(),
+        (args) => _Calculator._calculate(args.a!, args.b!).asResultStream(),
       );
 }
 
@@ -16,7 +16,7 @@ extension _ExceptionMappers on Stream<Exception> {
 
 extension _StringExtensions on String {
   bool get isNullOrEmpty {
-    return this == null || this.trim().isEmpty;
+    return this.trim().isEmpty;
   }
 
   bool get isNumeric {

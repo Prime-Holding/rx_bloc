@@ -23,7 +23,7 @@ abstract class $NavigationBarBloc extends RxBlocBase
   final _$selectPageEvent = PublishSubject<NavigationItemType>();
 
   /// The state of [title] implemented in [_mapToTitleState]
-  Stream<String> _titleState;
+  Stream<String>? _titleState;
 
   @override
   void selectPage(NavigationItemType item) => _$selectPageEvent.add(item);

@@ -1,11 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
 import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
-import 'package:rx_bloc_favorites_advanced/base/routers/router.gr.dart';
 
 import '../../list/ui_components/puppy_animated_list_view.dart';
 import '../blocs/favorite_puppies_bloc.dart';
@@ -21,10 +20,8 @@ class FavoritesPage extends StatelessWidget {
                   .states
                   .favoritePuppies
                   .whereSuccess(),
-              onPuppyPressed: (puppy) => ExtendedNavigator.root.push(
-                Routes.puppyDetailsPage,
-                arguments: PuppyDetailsPageArguments(puppy: puppy),
-              ),
+              onPuppyPressed: (puppy) =>
+                  Navigator.of(context).push(PuppyFlow.route(puppy: puppy)),
             ),
           ),
           RxResultBuilder<FavoritePuppiesBlocType, List<Puppy>>(

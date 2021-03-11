@@ -41,32 +41,33 @@ abstract class $PuppyManageBloc extends RxBlocBase
   final _$savePuppyEvent = PublishSubject<void>();
 
   /// The state of [imagePath] implemented in [_mapToImagePathState]
-  Stream<String> _imagePathState;
+  Stream<String>? _imagePathState;
 
   /// The state of [name] implemented in [_mapToNameState]
-  Stream<String> _nameState;
+  Stream<String>? _nameState;
 
   /// The state of [breed] implemented in [_mapToBreedState]
-  Stream<BreedType> _breedState;
+  Stream<BreedType>? _breedState;
 
   /// The state of [gender] implemented in [_mapToGenderState]
-  Stream<Gender> _genderState;
+  Stream<Gender>? _genderState;
 
   /// The state of [characteristics] implemented in [_mapToCharacteristicsState]
-  Stream<String> _characteristicsState;
+  Stream<String>? _characteristicsState;
 
   /// The state of [showErrors] implemented in [_mapToShowErrorsState]
-  Stream<bool> _showErrorsState;
+  Stream<bool>? _showErrorsState;
 
   /// The state of [isSaveEnabled] implemented in [_mapToIsSaveEnabledState]
-  Stream<bool> _isSaveEnabledState;
+  Stream<bool>? _isSaveEnabledState;
 
   /// The state of [updateComplete] implemented in [_mapToUpdateCompleteState]
-  Stream<bool> _updateCompleteState;
+  Stream<bool>? _updateCompleteState;
 
   @override
-  void markAsFavorite({Puppy puppy, bool isFavorite}) => _$markAsFavoriteEvent
-      .add(_MarkAsFavoriteEventArgs(puppy: puppy, isFavorite: isFavorite));
+  void markAsFavorite({required Puppy puppy, required bool isFavorite}) =>
+      _$markAsFavoriteEvent
+          .add(_MarkAsFavoriteEventArgs(puppy: puppy, isFavorite: isFavorite));
 
   @override
   void setName(String newName) => _$setNameEvent.add(newName);
@@ -153,7 +154,8 @@ abstract class $PuppyManageBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [PuppyManageEvents.markAsFavorite] event
 class _MarkAsFavoriteEventArgs {
-  const _MarkAsFavoriteEventArgs({this.puppy, this.isFavorite});
+  const _MarkAsFavoriteEventArgs(
+      {required this.puppy, required this.isFavorite});
 
   final Puppy puppy;
 

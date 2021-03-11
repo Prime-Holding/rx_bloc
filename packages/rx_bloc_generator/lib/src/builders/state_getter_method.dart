@@ -2,7 +2,7 @@ part of rx_bloc_generator;
 
 /// A mapper that converts a [MethodElement] into an event [Method]
 class _StateGetterMethod implements _BuilderContract {
-  const _StateGetterMethod(this.field) : assert(field != null);
+  const _StateGetterMethod(this.field);
 
   final FieldElement field;
 
@@ -12,7 +12,7 @@ class _StateGetterMethod implements _BuilderContract {
           ..docs.addAll(['']) // A new line
           ..type = MethodType.getter
           ..annotations.add(refer('override'))
-          ..returns = refer(field.type.getDisplayString(withNullability: false))
+          ..returns = refer(field.type.getDisplayString(withNullability: true))
           ..name = field.name
           ..lambda = true
           ..body = refer(field.stateFieldName)

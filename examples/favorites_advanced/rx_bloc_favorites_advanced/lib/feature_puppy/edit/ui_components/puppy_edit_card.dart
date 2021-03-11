@@ -4,15 +4,15 @@ import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
 
 class PuppyEditCard extends StatelessWidget {
   const PuppyEditCard({
-    @required this.label,
-    @required this.content,
+    required this.label,
+    this.content,
     this.icon,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final String label;
-  final Widget content;
-  final IconData icon;
+  final Widget? content;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) => Card(
@@ -49,7 +49,7 @@ class PuppyEditCard extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              if (content != null) content,
+              if (content != null) content!,
             ],
           ),
         ),

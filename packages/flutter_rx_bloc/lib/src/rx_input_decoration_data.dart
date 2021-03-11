@@ -71,7 +71,7 @@ extension CopyWithDecoration on InputDecoration {
         errorMaxLines: decoration.errorMaxLines ?? errorMaxLines,
         floatingLabelBehavior:
             decoration.floatingLabelBehavior ?? floatingLabelBehavior,
-        isCollapsed: decoration.isCollapsed ?? isCollapsed,
+        isCollapsed: decoration.isCollapsed,
         isDense: decoration.isDense ?? isDense,
         contentPadding: decoration.contentPadding ?? contentPadding,
         prefixIcon: decoration.prefixIcon ?? prefixIcon,
@@ -99,7 +99,7 @@ extension CopyWithDecoration on InputDecoration {
         disabledBorder: decoration.disabledBorder ?? disabledBorder,
         enabledBorder: decoration.enabledBorder ?? enabledBorder,
         border: decoration.border ?? border,
-        enabled: decoration.enabled ?? enabled,
+        enabled: decoration.enabled,
         semanticCounterText:
             decoration.semanticCounterText ?? semanticCounterText,
         alignLabelWithHint: decoration.alignLabelWithHint ?? alignLabelWithHint,

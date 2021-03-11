@@ -24,10 +24,10 @@ abstract class $DivisionBloc extends RxBlocBase
       BehaviorSubject.seeded(const _DivideNumbersEventArgs('1.0', '1.0'));
 
   /// The state of [divisionResult] implemented in [_mapToDivisionResultState]
-  Stream<String> _divisionResultState;
+  Stream<String>? _divisionResultState;
 
   @override
-  void divideNumbers(String a, String b) =>
+  void divideNumbers(String? a, String? b) =>
       _$divideNumbersEvent.add(_DivideNumbersEventArgs(a, b));
 
   @override
@@ -55,7 +55,7 @@ abstract class $DivisionBloc extends RxBlocBase
 class _DivideNumbersEventArgs {
   const _DivideNumbersEventArgs(this.a, this.b);
 
-  final String a;
+  final String? a;
 
-  final String b;
+  final String? b;
 }
