@@ -15,14 +15,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final NavbarController navController = Get.put(NavbarController());
-    final FavoritePuppiesController favController =
-        Get.put(FavoritePuppiesController());
+    Get.put(FavoritePuppiesController());
+    // TODO Where to register my controller
     return Scaffold(
       appBar: PuppiesAppBar(),
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
-        child: GetBuilder<NavbarController>(
-          builder: (_) => _.selectedPage.type == NavigationItemType.search
+        child: Obx(
+          () => Get.find<NavbarController>().selectedPage.type == NavigationItemType.search
               ? SearchPage()
               : FavoritesPage(),
         ),
