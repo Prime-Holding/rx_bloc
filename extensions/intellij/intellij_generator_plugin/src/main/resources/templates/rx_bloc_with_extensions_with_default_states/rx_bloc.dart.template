@@ -13,18 +13,17 @@ abstract class ${bloc_pascal_case}BlocEvents {
 /// A contract class containing all states of the ${bloc_pascal_case}BloC.
 abstract class ${bloc_pascal_case}BlocStates {
   /// The loading state
-  Stream<bool> get isLoading;
+  Stream<bool>${bloc_use_null_safety} get isLoading;
 
   /// The error state
-  Stream<String> get errors;
+  Stream<String>${bloc_use_null_safety} get errors;
 }
 
 @RxBloc()
 class ${bloc_pascal_case}Bloc extends ${bloc_dollar_pascal_case}Bloc {
- @override
-     Stream<String> _mapToErrorsState() =>
+ @override Stream<String>${bloc_use_null_safety} _mapToErrorsState() =>
          errorState.toMessage();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool>${bloc_use_null_safety} _mapToIsLoadingState() => loadingState;
 }

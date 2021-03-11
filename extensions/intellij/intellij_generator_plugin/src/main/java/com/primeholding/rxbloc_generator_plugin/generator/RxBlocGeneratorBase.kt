@@ -9,11 +9,13 @@ import java.lang.RuntimeException
 abstract class RxBlocGeneratorBase(private val name: String,
                                    withDefaultStates: Boolean,
                                    includeExtensions: Boolean,
+                                   private val includeNullSafety: Boolean,
                                    templateName: String) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
     private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"
     private val TEMPLATE_BLOC_SNAKE_CASE = "bloc_snake_case"
+    private val TEMPLATE_BLOC_USE_NULL_SAFETY = "bloc_use_null_safety"
 
     private val templateString: String
     private val templateValues: MutableMap<String, String>
@@ -21,11 +23,12 @@ abstract class RxBlocGeneratorBase(private val name: String,
     init {
         templateValues = mutableMapOf(
             TEMPLATE_BLOC_PASCAL_CASE to pascalCase(),
-            TEMPLATE_BLOC_DOLLAR_PASCAL_CASE to dolarPascalCase(),
-            TEMPLATE_BLOC_SNAKE_CASE to snakeCase()
+            TEMPLATE_BLOC_DOLLAR_PASCAL_CASE to dollarPascalCase(),
+            TEMPLATE_BLOC_SNAKE_CASE to snakeCase(),
+            TEMPLATE_BLOC_USE_NULL_SAFETY to useNullSafety()
         )
         try {
-            val templateFolder = StringBuilder();
+            val templateFolder = StringBuilder()
             if(withDefaultStates && !includeExtensions) {
                 templateFolder.append("rx_bloc_with_default_states")
             } else if(withDefaultStates && includeExtensions) {
@@ -51,10 +54,13 @@ abstract class RxBlocGeneratorBase(private val name: String,
         return substitutor.replace(templateString)
     }
 
-    fun dolarPascalCase(): String = "$" + pascalCase()
-    fun pascalCase(): String = name.toUpperCamelCase().replace("Bloc", "")
+    private fun dollarPascalCase(): String = "$" + pascalCase()
+    private fun pascalCase(): String = name.toUpperCamelCase().replace("Bloc", "")
 
     fun snakeCase() = name.toLowerSnakeCase().replace("_bloc", "")
-
+    private fun useNullSafety(): String {
+        if(includeNullSafety) return "?"
+        return ""
+    }
     fun fileExtension() = "dart"
 }

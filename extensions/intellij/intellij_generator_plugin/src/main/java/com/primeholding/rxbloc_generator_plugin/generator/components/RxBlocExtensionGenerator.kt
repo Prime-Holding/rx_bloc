@@ -5,8 +5,15 @@ import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
 class RxBlocExtensionGenerator(
     blocName: String,
     blocShouldUseEquatable: Boolean,
-    includeExtensions: Boolean
-) : RxBlocGeneratorBase(blocName, blocShouldUseEquatable, includeExtensions, templateName = "rx_bloc_extensions") {
+    includeExtensions: Boolean,
+    includeNullSafety: Boolean
+) : RxBlocGeneratorBase(
+    blocName,
+    blocShouldUseEquatable,
+    includeExtensions,
+    includeNullSafety,
+    templateName = "rx_bloc_extensions"
+) {
 
     override fun fileName() = "${snakeCase()}_bloc_extensions.${fileExtension()}"
 }
