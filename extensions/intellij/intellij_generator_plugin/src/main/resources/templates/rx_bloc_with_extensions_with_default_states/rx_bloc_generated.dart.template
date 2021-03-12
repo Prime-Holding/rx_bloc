@@ -26,14 +26,14 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
   Stream<String>${bloc_use_null_safety} _errorsState;
 
   @override
-  Stream<bool>${bloc_use_null_safety} get isLoading => _isLoadingState ??= _mapToIsLoadingState();
+  Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
 
   @override
-  Stream<String>${bloc_use_null_safety} get errors => _errorsState ??= _mapToErrorsState();
+  Stream<String> get errors => _errorsState ??= _mapToErrorsState();
 
-  Stream<bool>${bloc_use_null_safety} _mapToIsLoadingState();
+  Stream<bool> _mapToIsLoadingState();
 
-  Stream<String>${bloc_use_null_safety} _mapToErrorsState();
+  Stream<String> _mapToErrorsState();
 
   @override
   ${bloc_pascal_case}BlocEvents get events => this;
