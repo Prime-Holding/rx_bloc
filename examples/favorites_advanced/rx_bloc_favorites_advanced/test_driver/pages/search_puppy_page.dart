@@ -1,5 +1,5 @@
 import 'package:flutter_driver/flutter_driver.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
+import 'package:favorites_advanced_base/resources.dart';
 
 class SearchPuppyPage {
   SearchPuppyPage(FlutterDriver driver) : _driver = driver;
