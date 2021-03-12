@@ -7,8 +7,8 @@ typedef PaginationBuilder = Widget Function<T>(
   T item,
 );
 
-class RxBlocList<B extends RxBlocListInterface, T> extends StatelessWidget {
-  RxBlocList({
+class RxBlocListView<B extends RxBlocListInterface, T> extends StatelessWidget {
+  RxBlocListView({
     required this.bloc,
     required this.builder,
     required this.paginatedData,

@@ -8,9 +8,6 @@ part 'user_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the UserBloC.
 abstract class UserBlocEvents {
-  /// TODO: Declare your first event
-  void fetchData();
-
   void loadPage({bool reset = false});
 }
 
@@ -27,11 +24,15 @@ abstract class UserBlocStates {
   Stream<bool> get refreshDone;
 }
 
-@RxBloc()
-class UserBloc extends $UserBloc with RxBlocListMixin<Dummy> {
-  UserBloc(this.repository);
+@RxBlocList()
+class UserBloc extends $UserBlocList {
+  UserBloc(this.repository) : super();
 
   final DummyRepository repository;
+
+  @override
+  Future<List<Dummy>> fetchPaginatedList({required int page}) =>
+      repository.fetchPage(page);
 
   @override
   Stream<String> _mapToErrorsState() =>
@@ -39,17 +40,4 @@ class UserBloc extends $UserBloc with RxBlocListMixin<Dummy> {
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
-
-  @override
-  Future<List<Dummy>> fetchPaginatedList({required int page}) =>
-      repository.fetchPage(page);
-
-  @override
-  Stream<bool> get loadPageEvent => _$loadPageEvent;
-
-  @override
-  Stream<List<Dummy>> _mapToPaginatedListState() => paginatedSubject;
-
-  @override
-  Stream<bool> _mapToRefreshDoneState() => refreshDoneSubject;
 }

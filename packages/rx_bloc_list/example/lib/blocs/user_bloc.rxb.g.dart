@@ -8,8 +8,7 @@ part of 'user_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
-abstract class UserBlocType extends RxBlocTypeBase
-    implements RxBlocListInterface<Dummy> {
+abstract class UserBlocType extends RxBlocTypeBase {
   UserBlocEvents get events;
   UserBlocStates get states;
 }
@@ -78,5 +77,28 @@ abstract class $UserBloc extends RxBlocBase
     _$loadPageEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
+  }
+}
+
+abstract class $UserBlocList extends $UserBloc
+    with RxBlocListMixin<Dummy>
+    implements RxBlocListInterface<Dummy> {
+  $UserBlocList() {
+    bindPagination().disposedBy(_compositeSubscription);
+  }
+
+  @override
+  Stream<bool> get loadPageEvent => _$loadPageEvent;
+
+  @override
+  Stream<List<Dummy>> _mapToPaginatedListState() => paginatedSubject;
+
+  @override
+  Stream<bool> _mapToRefreshDoneState() => refreshDoneSubject;
+
+  @override
+  void dispose() {
+    super.dispose();
+    disposeRxBlocListMixin();
   }
 }
