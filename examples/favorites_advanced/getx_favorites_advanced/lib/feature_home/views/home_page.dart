@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
+import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/extensions.dart';
+
 import 'package:getx_favorites_advanced/base/ui_components/puppies_app_bar.dart';
 import 'package:getx_favorites_advanced/feature_home/controllers/navbar_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/favorite_puppies_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/favorites/views/favorites_page.dart';
-import 'package:getx_favorites_advanced/feature_puppy/search/search_page.dart';
-import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/extensions.dart';
+import 'package:getx_favorites_advanced/feature_puppy/search/views/search_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final NavbarController navController = Get.put(NavbarController());
-    Get.put(FavoritePuppiesController());
-    // TODO Where to register my controller
+    final navController = Get.find<NavbarController>();
     return Scaffold(
       appBar: PuppiesAppBar(),
       body: AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
-        child: Obx(
-          () => Get.find<NavbarController>().selectedPage.type == NavigationItemType.search
-              ? SearchPage()
-              : FavoritesPage(),
+        child: Obx(() =>
+        navController.selectedPage.type == NavigationItemType.search
+                  ? SearchPage()
+                  : FavoritesPage(),
         ),
       ),
       bottomNavigationBar: CurvedNavigationBar(

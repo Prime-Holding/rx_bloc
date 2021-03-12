@@ -8,13 +8,17 @@ class NavbarController extends GetxController {
     const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
   ].obs;
 
+  void selectPage(NavigationItemType selectedItem) => _items.setAll(0, _items
+        .map((item) => item.copyWith(isSelected: selectedItem == item.type)));
+
   NavigationItem get selectedPage =>
       _items.firstWhere((element) => element.isSelected);
-
-  void selectPage(NavigationItemType selectedItem) => _items.assignAll(_items
-      .map((item) => item.copyWith(isSelected: selectedItem == item.type)));
 
   List<NavigationItem> get items => List.from(_items);
 
   String get title => selectedPage.type.asTitle();
+
+  void selectPage1(NavigationItemType selectedItem) {
+
+  }
 }
