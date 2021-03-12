@@ -36,5 +36,15 @@ dev_dependencies:
     path: ../rx_bloc_generator
   build_runner:
 
+dependency_overrides:
+  rx_bloc:
+    path: ../rx_bloc
+  flutter_rx_bloc:
+    path: ../flutter_rx_bloc
+  rx_bloc_generator:
+    path: ../rx_bloc_generator
+  rx_bloc_test:
+    path: ../rx_bloc_test
+
 flutter:
   uses-material-design: true

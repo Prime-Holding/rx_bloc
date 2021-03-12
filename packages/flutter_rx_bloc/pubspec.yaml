@@ -12,7 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^5.0.0
-  rx_bloc: ^2.0.0
+  rx_bloc:
+    path: ../rx_bloc
   rxdart: ^0.26.0
 
 dev_dependencies:

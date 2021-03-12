@@ -6,12 +6,14 @@ import 'package:rxdart/rxdart.dart';
 mixin RxBlocListMixin<T> {
   /// region Methods
 
+  void loadPage({bool reset = false});
+
   Stream<bool> get loadPageEvent;
 
   StreamSubscription<bool> bindPagination() => loadPageEvent
       .startWith(true)
       .switchMap((reset) => loadPaginatedList(reset: reset).asStream())
-      .bind(_refreshSubject);
+      .bind(refreshDoneSubject);
 
   /// Method for fetching data from repository
   Future<List<T>> fetchPaginatedList({required int page});
@@ -19,14 +21,14 @@ mixin RxBlocListMixin<T> {
   Future<bool> loadPaginatedList({bool reset = false}) => _loadListData(reset);
 
   /// Streams changes in data
-  Stream<List<T>> get paginatedList => _paginatedDataSubject;
+  Stream<List<T>> get paginatedList;
 
-  Stream<bool> get refreshDone => _refreshSubject;
+  Stream<bool> get refreshDone;
 
   /// Disposes of internal streams
   void disposeRxBlocListMixin() {
-    _paginatedDataSubject.close();
-    _refreshSubject.close();
+    paginatedSubject.close();
+    refreshDoneSubject.close();
   }
 
   /// endregion
@@ -35,8 +37,8 @@ mixin RxBlocListMixin<T> {
 
   int _loadedPages = 0;
   List<T> _localData = [];
-  final _paginatedDataSubject = BehaviorSubject<List<T>>.seeded([]);
-  final _refreshSubject = BehaviorSubject<bool>.seeded(false);
+  final paginatedSubject = BehaviorSubject<List<T>>.seeded([]);
+  final refreshDoneSubject = BehaviorSubject<bool>.seeded(false);
 
   /// endregion
 
@@ -80,7 +82,7 @@ mixin RxBlocListMixin<T> {
     else
       _localData.addAll(newData);
 
-    _paginatedDataSubject.add(_localData);
+    paginatedSubject.add(_localData);
     return true;
   }
 
