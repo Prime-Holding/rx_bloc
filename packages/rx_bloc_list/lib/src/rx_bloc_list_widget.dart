@@ -9,19 +9,14 @@ class RxBlocList<T> extends StatefulWidget {
     required this.builder,
     this.onRefresh,
     this.dataFilter,
-    this.count = 10,
     Key? key,
   }) : super(key: key);
-
-  // TODO: Item count should be automatically calculated. Remove it from parameter list
-  final int count;
 
   /// The repository from which the data should be pulled
   final DataRepositoryInterface<T> dataRepository;
 
-  /// TODO: Provide the item alongside with its index and buildContext
   /// The builder method for constructing items inside the list
-  final Widget Function(BuildContext, int) builder;
+  final Widget Function(BuildContext, int, T) builder;
 
   /// Callback triggered once the data was successfully refreshed.
   final Function()? onRefresh;
@@ -43,7 +38,6 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
   void initState() {
     _paginationBloc = PaginationBloc<T>(
       widget.dataRepository,
-      dataFilter: widget.dataFilter,
     );
     super.initState();
   }
@@ -60,15 +54,22 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
       value: _paginationBloc,
       child: RefreshIndicator(
         onRefresh: _onRefresh,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                widget.builder,
-                childCount: widget.count,
-              ),
-            ),
-          ],
+        child: RxBlocBuilder<PaginationBloc<T>, List<dynamic>>(
+          state: (bloc) => bloc.states.paginatedList,
+          builder: (context, listState, _) {
+            final items = listState.data ?? [];
+            return CustomScrollView(
+              slivers: <Widget>[
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) =>
+                        _itemBuilder(context, index, items as List<T>),
+                    childCount: items.length,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -83,7 +84,7 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
     // its main spinning part. In order to stop that animation, we need to
     // return a future, after we're done with refreshing the data
 
-    _paginationBloc.events.refreshData();
+    _paginationBloc.events.loadPage(reset: true);
     await _paginationBloc.states.refreshDone.waitToLoad();
 
     /// TODO: Consider the case where this above fails.
@@ -93,6 +94,11 @@ class _RxBlocListState<T> extends State<RxBlocList<T>> {
     widget.onRefresh?.call();
 
     return Future.value(null);
+  }
+
+  Widget _itemBuilder(BuildContext context, int index, List<T> data) {
+    final item = data[index];
+    return widget.builder(context, index, item);
   }
 
   /// endregion

@@ -19,17 +19,11 @@ abstract class $PaginationBloc extends RxBlocBase
     implements PaginationBlocEvents, PaginationBlocStates, PaginationBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [refreshData]
-  final _$refreshDataEvent = PublishSubject<void>();
-
-  /// Тhe [Subject] where events sink to by calling [load]
-  final _$loadEvent = PublishSubject<int>();
+  /// Тhe [Subject] where events sink to by calling [loadPage]
+  final _$loadPageEvent = PublishSubject<bool>();
 
   @override
-  void refreshData() => _$refreshDataEvent.add(null);
-
-  @override
-  void load([int page = -1]) => _$loadEvent.add(page);
+  void loadPage({bool reset = false}) => _$loadPageEvent.add(reset);
 
   @override
   PaginationBlocEvents get events => this;
@@ -39,8 +33,7 @@ abstract class $PaginationBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$refreshDataEvent.close();
-    _$loadEvent.close();
+    _$loadPageEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

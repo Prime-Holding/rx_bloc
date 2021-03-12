@@ -36,13 +36,13 @@ class MyHomePage extends StatelessWidget {
             child: Container(
               width: 220,
               height: 220,
+              color: Colors.grey,
               child: RxBlocList(
                 dataRepository: DummyRepository(),
-                builder: (context, index) => Container(
+                builder: (context, index, item) => Container(
                   child: _customChild,
                   color: index % 2 == 0 ? Colors.white30 : Colors.yellow,
                 ),
-                count: 100,
                 onRefresh: () {
                   debugPrint("Refreshed!");
                 },
