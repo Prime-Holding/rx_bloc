@@ -1,51 +1,48 @@
-// import 'dart:async';
-//
-// import 'package:favorites_advanced_base/extensions.dart';
-// import 'package:favorites_advanced_base/models.dart';
-// import 'package:rx_bloc/rx_bloc.dart';
-// import 'package:rxdart/rxdart.dart';
-//
-// part 'navigation_bar_bloc.rxb.g.dart';
-// part 'navigation_bar_bloc_extensions.dart';
-//
-// // ignore: one_member_abstracts
-// abstract class NavigationBarEvents {
-//   void selectPage(NavigationItemType item);
-// }
-//
-// abstract class NavigationBarStates {
-//   @RxBlocIgnoreState()
-//   Stream<List<NavigationItem>> get items;
-//
-//   @RxBlocIgnoreState()
-//   Stream<NavigationItem> get selectedItem;
-//
-//   Stream<String> get title;
-// }
-//
-// @RxBloc()
-// class NavigationBarBloc extends $NavigationBarBloc {
-//   NavigationBarBloc() {
-//     _$selectPageEvent.updateItems(_items).disposedBy(_compositeSubscription);
-//   }
-//
-//   final _items = BehaviorSubject<List<NavigationItem>>.seeded([
-//     const NavigationItem(type: NavigationItemType.search, isSelected: true),
-//     const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
-//   ]);
-//
-//   @override
-//   Stream<List<NavigationItem>> get items => _items;
-//
-//   @override
-//   Stream<String> _mapToTitleState() => _items.mapToSelectedTitle();
-//
-//   @override
-//   Stream<NavigationItem> get selectedItem => _items.selected;
-//
-//   @override
-//   void dispose() {
-//     _items.close();
-//     super.dispose();
-//   }
-// }
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
+import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/extensions.dart';
+import 'package:meta/meta.dart';
+
+part 'navigation_bar_event.dart';
+
+part 'navigation_bar_state.dart';
+
+class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
+  static final _initialItems = [
+    NavigationItem(type: NavigationItemType.search, isSelected: true),
+    NavigationItem(type: NavigationItemType.favorites, isSelected: false),
+  ];
+
+  List<NavigationItem> navItems = _initialItems;
+
+  NavigationBarBloc()
+      : super(NavigationBarState(
+          title: _initialItems.selected.type.asTitle(),
+          selectedItem: _initialItems.selected,
+          items: _initialItems,
+        ));
+
+  @override
+  Stream<NavigationBarState> mapEventToState(
+    NavigationBarEvent event,
+  ) async* {
+    navItems = navItems.copyWithSelected(event.itemType);
+    yield NavigationBarState(
+      title: navItems.selected.type.asTitle(),
+      items: navItems,
+      selectedItem: navItems.selected,
+    );
+  }
+}
+
+extension _NavigationItemList on List<NavigationItem> {
+  List<NavigationItem> copyWithSelected(
+          NavigationItemType navigationItemType) =>
+      map((item) => item.copyWith(isSelected: item.type == navigationItemType))
+          .toList();
+
+  NavigationItem get selected => firstWhere((element) => element.isSelected);
+}
