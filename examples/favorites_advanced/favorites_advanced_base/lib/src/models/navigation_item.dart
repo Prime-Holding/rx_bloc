@@ -22,4 +22,13 @@ class NavigationItem {
 
   @override
   int get hashCode => super.hashCode;
+
+  NavigationItem copyWith({
+    NavigationItemType type,
+    bool isSelected,
+  }) =>
+      NavigationItem(
+        type: type ?? this.type,
+        isSelected: isSelected ?? this.isSelected,
+      );
 }
