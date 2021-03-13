@@ -1,3 +1,4 @@
+import 'package:favorites_advanced_base/extensions.dart';
 
 import 'package:bloc_sample/base/ui_components/puppies_app_bar.dart';
 import 'package:bloc_sample/feature_home/blocs/navigation_bar_bloc.dart';
@@ -48,7 +49,7 @@ class HomePage extends StatelessWidget {
       );
 }
 
-extension NavigationItemToWitget on NavigationItem {
-  Widget asWidget() =>
-      type == NavigationItemType.favorites ? type.asIcon() : type.asIcon();
+extension NavigationItemToWidget on NavigationItem {
+  Widget asWidget() => type.asIcon();
+      // type == NavigationItemType.favorites ? type.asIcon() : type.asIcon();
 }
