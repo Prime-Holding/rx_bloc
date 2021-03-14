@@ -1,3 +1,6 @@
+import 'package:bloc_sample/feature_puppy/favorites/favorites_page.dart';
+import 'package:bloc_sample/feature_puppy/search/search_page.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 
 import 'package:bloc_sample/base/ui_components/puppies_app_bar.dart';
@@ -7,7 +10,6 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class HomePage extends StatelessWidget {
   @override
@@ -23,10 +25,23 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  Widget _buildBody() => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 200),
+  BlocBuilder<NavigationBarBloc, NavigationBarState> _buildBody() =>
+      BlocBuilder<NavigationBarBloc, NavigationBarState>(
+        builder: (context, state) => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: asPage(state),
+        ),
       );
 
+  Widget asPage(NavigationBarState state){
+    switch(state.selectedItem.type){
+      case NavigationItemType.search:
+        return SearchPage();
+      case NavigationItemType.favorites:
+        return FavoritesPage();
+    }
+    return Container();
+  }
   BlocBuilder<NavigationBarBloc, NavigationBarState> _buildNavBar() =>
       BlocBuilder<NavigationBarBloc, NavigationBarState>(
         builder: (context, state) => CurvedNavigationBar(
@@ -51,5 +66,5 @@ class HomePage extends StatelessWidget {
 
 extension NavigationItemToWidget on NavigationItem {
   Widget asWidget() => type.asIcon();
-      // type == NavigationItemType.favorites ? type.asIcon() : type.asIcon();
+// type == NavigationItemType.favorites ? type.asIcon() : type.asIcon();
 }
