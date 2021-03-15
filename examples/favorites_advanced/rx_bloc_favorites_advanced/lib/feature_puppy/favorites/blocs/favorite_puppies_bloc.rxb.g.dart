@@ -26,14 +26,14 @@ abstract class $FavoritePuppiesBloc extends RxBlocBase
   final _$reloadFavoritePuppiesEvent = BehaviorSubject.seeded(false);
 
   /// The state of [count] implemented in [_mapToCountState]
-  Stream<int>? _countState;
+  late final Stream<int> _countState = _mapToCountState();
 
   @override
   void reloadFavoritePuppies({required bool silently}) =>
       _$reloadFavoritePuppiesEvent.add(silently);
 
   @override
-  Stream<int> get count => _countState ??= _mapToCountState();
+  Stream<int> get count => _countState;
 
   Stream<int> _mapToCountState();
 

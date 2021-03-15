@@ -34,10 +34,10 @@ abstract class $LoadingBloc
   ///region States
 
   ///region isLoading
-  Stream<bool>? _isLoadingState;
+  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   @override
-  Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
+  Stream<bool> get isLoading => _isLoadingState;
 
   Stream<bool> _mapToIsLoadingState();
 
