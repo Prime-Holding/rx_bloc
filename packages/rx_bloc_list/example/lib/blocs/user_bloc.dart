@@ -55,6 +55,7 @@ class UserBloc extends $UserBloc {
   @override
   Stream<PaginatedList<Dummy>> _mapToPaginatedListState() => _paginatedList;
 
+  //TODO: Make sure this is working
   @override
   Future<bool> get refreshDone async {
     await loadingState.lastWhere((loading) => loading == true);

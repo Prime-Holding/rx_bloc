@@ -4,6 +4,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../models.dart';
 
+/// TODO: Update the documentation
+///
 /// Use PaginatedContainer to gain scroll notifications functionality
 ///
 /// The parameter [scrollThreshold] is the distance from the end of the scroll when [onBottomScrolled] will be called.
@@ -82,6 +84,8 @@ import '../../models.dart';
 ///         );
 ///         .......
 
+/// TODO: Add scrollable behaviour on RxPaginatedBuilder.
+/// For more information check [RefreshIndicator.child]
 class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   RxPaginatedBuilder({
     required this.state,
