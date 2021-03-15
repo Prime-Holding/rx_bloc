@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'color_styles.dart';
-// import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
 
 class TextStyles {
   TextStyles._();
