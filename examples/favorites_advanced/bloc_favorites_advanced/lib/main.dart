@@ -1,25 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:bloc_sample/feature_home/blocs/navigation_bar_bloc.dart';
-import 'package:favorites_advanced_base/repositories.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'base/resources/color_styles.dart';
 import 'base/routers/router.gr.dart';
 
 void main() {
-  Provider.debugCheckInvalidValueType = null;
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => MultiProvider(
+  Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
-          Provider<PuppiesRepository>(
-              create: (context) => PuppiesRepository(ImagePicker())),
-          Provider<NavigationBarBloc>(
+          BlocProvider<NavigationBarBloc>(
             create: (context) => NavigationBarBloc(),
           ),
         ],
