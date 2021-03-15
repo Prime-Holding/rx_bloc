@@ -1,10 +1,10 @@
+import 'package:example/bloc/counter_bloc.dart';
 import 'package:example/repository/counter_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 
-import '../../lib/bloc/counter_bloc.dart';
 import 'counter_bloc_test.mocks.dart';
 
 @GenerateMocks([CounterRepository])
