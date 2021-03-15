@@ -1,6 +1,7 @@
 import 'package:example/models/dummy.dart';
 import 'package:example/repositories/dummy_repository.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_list/models.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -19,25 +20,59 @@ abstract class UserBlocStates {
   /// The error state
   Stream<String> get errors;
 
-  Stream<List<Dummy>> get paginatedList;
+  Stream<PaginatedList<Dummy>> get paginatedList;
 
-  Stream<bool> get refreshDone;
+  @RxBlocIgnoreState()
+  Future<bool> get refreshDone;
 }
 
-@RxBlocList()
-class UserBloc extends $UserBlocList {
-  UserBloc(this.repository) : super();
+@RxBloc()
+class UserBloc extends $UserBloc {
+  final _paginatedList = BehaviorSubject<PaginatedList<Dummy>>.seeded(
+    PaginatedList<Dummy>(
+      list: [],
+      pageSize: 50,
+    ),
+  );
 
-  final DummyRepository repository;
+  UserBloc({required DummyRepository repository}) {
+    _$loadPageEvent
+        .startWith(true)
+        .switchMap(
+          (value) => repository
+              .fetchPage(
+                _paginatedList.value!.pageNumber + 1,
+                _paginatedList.value!.pageSize,
+              )
+              .asResultStream(),
+        )
+        .setResultStateHandler(this)
+        .mergeWithPaginatedList(_paginatedList)
+        .bind(_paginatedList)
+        .disposedBy(_compositeSubscription);
+  }
 
   @override
-  Future<List<Dummy>> fetchPaginatedList({required int page}) =>
-      repository.fetchPage(page);
+  Stream<PaginatedList<Dummy>> _mapToPaginatedListState() => _paginatedList;
+
+  @override
+  Future<bool> get refreshDone async {
+    await loadingState.lastWhere((loading) => loading == true);
+    await loadingState.lastWhere((loading) => loading == false);
+
+    return true;
+  }
 
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((error) => error.toString());
+      errorState.map((event) => event.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  @override
+  void dispose() {
+    _paginatedList.close();
+    super.dispose();
+  }
 }

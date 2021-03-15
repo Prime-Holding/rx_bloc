@@ -19,9 +19,6 @@ abstract class $UserBloc extends RxBlocBase
     implements UserBlocEvents, UserBlocStates, UserBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [fetchData]
-  final _$fetchDataEvent = PublishSubject<void>();
-
   /// Тhe [Subject] where events sink to by calling [loadPage]
   final _$loadPageEvent = PublishSubject<bool>();
 
@@ -32,13 +29,7 @@ abstract class $UserBloc extends RxBlocBase
   Stream<String>? _errorsState;
 
   /// The state of [paginatedList] implemented in [_mapToPaginatedListState]
-  Stream<List<Dummy>>? _paginatedListState;
-
-  /// The state of [refreshDone] implemented in [_mapToRefreshDoneState]
-  Stream<bool>? _refreshDoneState;
-
-  @override
-  void fetchData() => _$fetchDataEvent.add(null);
+  Stream<PaginatedList<Dummy>>? _paginatedListState;
 
   @override
   void loadPage({bool reset = false}) => _$loadPageEvent.add(reset);
@@ -50,20 +41,14 @@ abstract class $UserBloc extends RxBlocBase
   Stream<String> get errors => _errorsState ??= _mapToErrorsState();
 
   @override
-  Stream<List<Dummy>> get paginatedList =>
+  Stream<PaginatedList<Dummy>> get paginatedList =>
       _paginatedListState ??= _mapToPaginatedListState();
-
-  @override
-  Stream<bool> get refreshDone =>
-      _refreshDoneState ??= _mapToRefreshDoneState();
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<List<Dummy>> _mapToPaginatedListState();
-
-  Stream<bool> _mapToRefreshDoneState();
+  Stream<PaginatedList<Dummy>> _mapToPaginatedListState();
 
   @override
   UserBlocEvents get events => this;
@@ -73,32 +58,8 @@ abstract class $UserBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$fetchDataEvent.close();
     _$loadPageEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
-  }
-}
-
-abstract class $UserBlocList extends $UserBloc
-    with RxBlocListMixin<Dummy>
-    implements RxBlocListInterface<Dummy> {
-  $UserBlocList() {
-    bindPagination().disposedBy(_compositeSubscription);
-  }
-
-  @override
-  Stream<bool> get loadPageEvent => _$loadPageEvent;
-
-  @override
-  Stream<List<Dummy>> _mapToPaginatedListState() => paginatedSubject;
-
-  @override
-  Stream<bool> _mapToRefreshDoneState() => refreshDoneSubject;
-
-  @override
-  void dispose() {
-    super.dispose();
-    disposeRxBlocListMixin();
   }
 }

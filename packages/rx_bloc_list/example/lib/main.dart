@@ -1,11 +1,10 @@
-import 'dart:html';
-
 import 'package:example/blocs/user_bloc.dart';
 import 'package:example/models/dummy.dart';
 import 'package:example/repositories/dummy_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,45 +19,69 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: RxBlocProvider<UserBlocType>(
-        create: (context) => UserBloc(DummyRepository()),
+        create: (context) => UserBloc(repository: DummyRepository()),
         child: MyHomePage(),
       ),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   MyHomePage();
 
-  Widget get _customChild => Text(
-        'Placeholder text',
-        textAlign: TextAlign.center,
-      );
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          child: Center(
-            child: Container(
-              width: 220,
-              height: 220,
-              color: Colors.grey,
-              child: RxBlocBuilder<UserBlocType, List<Dummy>>(
-                state: (bloc) => bloc.states.paginatedList,
-                builder: (context, snapshot, bloc) =>
-                    RxBlocList<UserBlocType, Dummy>(
-                  bloc: bloc,
-                  paginatedData: snapshot.hasData ? snapshot.data! : [],
-                  builder:
-                      <Dummy>(BuildContext context, int index, Dummy item) =>
-                          Text('data'),
-                ),
-              ),
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () {
+              context.read<UserBlocType>().events.loadPage(reset: true);
+              return Future.delayed(Duration(seconds: 3));
+              // return context.read<UserBlocType>().states.refreshDone;
+            },
+            child: RxPaginatedBuilder<UserBlocType, Dummy>(
+              builder: (context, snapshot, bloc) =>
+                  _buildPaginatedList(snapshot),
+              state: (bloc) => bloc.states.paginatedList,
+              onBottomScrolled: (bloc) => bloc.events.loadPage(),
             ),
           ),
         ),
+      );
+
+  Widget _buildPaginatedList(AsyncSnapshot<PaginatedList<Dummy>> snapshot) {
+    if (!snapshot.hasData ||
+        (snapshot.hasData && snapshot.data!.isInitialLoading)) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    final list = snapshot.data!;
+
+    return ListView.builder(
+      itemBuilder: (context, index) => itemBuilder(list, index),
+      itemCount: list.itemCount,
+    );
+  }
+
+  Widget itemBuilder(PaginatedList<Dummy> list, int index) {
+    if (list.length == index) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: 12),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    return Card(
+      child: ListTile(
+        title: Text(list[index].name),
       ),
     );
   }
