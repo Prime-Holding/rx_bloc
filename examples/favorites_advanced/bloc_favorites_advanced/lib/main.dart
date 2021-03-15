@@ -3,7 +3,7 @@ import 'package:bloc_sample/feature_home/blocs/navigation_bar_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'base/resources/color_styles.dart';
+import 'package:favorites_advanced_base/resources.dart';
 import 'base/routers/router.gr.dart';
 
 void main() {
