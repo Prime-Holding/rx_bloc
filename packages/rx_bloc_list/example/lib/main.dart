@@ -41,12 +41,14 @@ class _MyHomePageState extends State<MyHomePage> {
             builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
             state: (bloc) => bloc.states.paginatedList,
             onBottomScrolled: (bloc) => bloc.events.loadPage(),
-            onRefresh: (bloc) async {
-              context.read<UserBlocType>().events.loadPage(reset: true);
-              //return Future.delayed(Duration(seconds: 1));
-              await context.read<UserBlocType>().states.refreshDone;
-              return Future.value();
-            },
+            wrapperBuilder: (context, bloc, childWidget) => RefreshIndicator(
+                child: childWidget,
+                onRefresh: () async {
+                  context.read<UserBlocType>().events.loadPage(reset: true);
+                  return Future.delayed(Duration(seconds: 1));
+                  //await context.read<UserBlocType>().states.refreshDone;
+                  //return Future.value();
+                }),
           ),
         ),
       );

@@ -58,12 +58,8 @@ class UserBloc extends $UserBloc {
   //TODO: Make sure this is working
   @override
   Future<bool> get refreshDone async {
-    // This will crash the second time we try refreshing the data.
-    await loadingState.firstWhere((loading) => loading);
-    await loadingState.firstWhere((loading) => !loading);
-
-    //await loadingState.lastWhere((loading) => loading == true);
-    //await loadingState.lastWhere((loading) => loading == false);
+    await loadingState.lastWhere((loading) => loading == true);
+    await loadingState.lastWhere((loading) => loading == false);
 
     return true;
   }
@@ -81,3 +77,16 @@ class UserBloc extends $UserBloc {
     super.dispose();
   }
 }
+
+//
+// extension LoadingStreamExtension on Stream<bool> {
+//   Future waitToLoad() async {
+//     await firstWhere((element) => element);
+//     await firstWhere((element) => !element);
+//   }
+// }
+//
+// extension StreamExtensions<T> on Stream<T> {
+//   Future<T> firstOrNullWithTimeout(Duration timeLimit) =>
+//       timeout(timeLimit, onTimeout: (sink) => sink.add(null)).first;
+// }
