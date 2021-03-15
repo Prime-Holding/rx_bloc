@@ -18,7 +18,4 @@ class NavbarController extends GetxController {
 
   String get title => selectedPage.type.asTitle();
 
-  void selectPage1(NavigationItemType selectedItem) {
-
-  }
 }
