@@ -1,15 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:get_test/get_test.dart';
 import 'package:getx_favorites_advanced/feature_home/controllers/navbar_controller.dart';
 import 'package:favorites_advanced_base/models.dart';
 
 
 main() {
-  // testController<NavbarController>("navbarContrller", (controller) {},
-  //     controller: NavbarController(), onReady: (c) {
-  //   c.items;
-  // });
   group("NavigationBarController", () {
     test("return correct number of navbar items", () {
       final controller = Get.put(NavbarController());
