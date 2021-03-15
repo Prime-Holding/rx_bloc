@@ -37,18 +37,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: () {
+          child: RxPaginatedBuilder<UserBlocType, Dummy>(
+            builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
+            state: (bloc) => bloc.states.paginatedList,
+            onBottomScrolled: (bloc) => bloc.events.loadPage(),
+            onRefresh: (bloc) async {
               context.read<UserBlocType>().events.loadPage(reset: true);
-              return Future.delayed(Duration(seconds: 3));
-              // return context.read<UserBlocType>().states.refreshDone;
+              //return Future.delayed(Duration(seconds: 1));
+              await context.read<UserBlocType>().states.refreshDone;
+              return Future.value();
             },
-            child: RxPaginatedBuilder<UserBlocType, Dummy>(
-              builder: (context, snapshot, bloc) =>
-                  _buildPaginatedList(snapshot),
-              state: (bloc) => bloc.states.paginatedList,
-              onBottomScrolled: (bloc) => bloc.events.loadPage(),
-            ),
           ),
         ),
       );

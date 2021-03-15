@@ -84,14 +84,16 @@ import '../../models.dart';
 ///         );
 ///         .......
 
-/// TODO: Add scrollable behaviour on RxPaginatedBuilder.
-/// For more information check [RefreshIndicator.child]
+typedef BuilderMethod<B, T> = Widget Function(
+    BuildContext, AsyncSnapshot<PaginatedList<T>>, B);
+
 class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   RxPaginatedBuilder({
     required this.state,
     required this.builder,
     required this.onBottomScrolled,
     this.onScrolled,
+    this.onRefresh,
     this.scrollThreshold = 100.0,
     this.enableOnBottomScrolledCallback = true,
     this.bloc,
@@ -99,11 +101,11 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
 
   final Stream<PaginatedList<T>> Function(B) state;
   final B? bloc;
-  final Widget Function(BuildContext, AsyncSnapshot<PaginatedList<T>>, B)
-      builder;
+  final BuilderMethod<B, T> builder;
 
   final void Function(B) onBottomScrolled;
   final Function(bool)? onScrolled;
+  final Future<void> Function(B)? onRefresh;
   final double scrollThreshold;
   final bool enableOnBottomScrolledCallback;
 
@@ -116,39 +118,51 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
     extends State<RxPaginatedBuilder<B, T>> {
   bool _isScrolled = false;
 
+  /// Returns the appropriate builder depending on whether we have specified
+  /// the onRefresh callback or not, resulting in the onRefresh feature being
+  /// absent if there is no callback set.
+  BuilderMethod<B, T> get _childBuilder => widget.onRefresh != null
+      ? (c, s, b) => RefreshIndicator(
+            child: widget.builder(c, s, b),
+            onRefresh: () => widget.onRefresh!.call(b),
+          )
+      : widget.builder;
+
   @override
   Widget build(BuildContext context) {
     final bloc = RxBlocProvider.of<B>(context);
 
     return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollInfo) {
-        //handle onScrolled event
-        if (widget.onScrolled != null) {
-          if (scrollInfo.metrics.axis == Axis.vertical &&
-              scrollInfo.depth == 0) {
-            final bool isScrolled = scrollInfo.metrics.pixels > 0;
-            if (isScrolled != _isScrolled && widget.onScrolled != null) {
-              _isScrolled = isScrolled;
-              widget.onScrolled!(isScrolled);
-            }
-          }
-        }
-
-        //handle bottomScrolled event
-        if (widget.enableOnBottomScrolledCallback &&
-            scrollInfo.metrics.axis == Axis.vertical &&
-            scrollInfo.metrics.maxScrollExtent - scrollInfo.metrics.pixels <=
-                widget.scrollThreshold) {
-          widget.onBottomScrolled(bloc);
-        }
-
-        return true;
-      },
+      onNotification: (ScrollNotification scrollInfo) =>
+          _onScrollNotification(scrollInfo, bloc),
       child: RxBlocBuilder<B, PaginatedList<T>>(
         bloc: bloc,
         state: widget.state,
-        builder: widget.builder,
+        builder: _childBuilder,
       ),
     );
+  }
+
+  bool _onScrollNotification(ScrollNotification scrollInfo, B bloc) {
+    //handle onScrolled event
+    if (widget.onScrolled != null) {
+      if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == 0) {
+        final bool isScrolled = scrollInfo.metrics.pixels > 0;
+        if (isScrolled != _isScrolled && widget.onScrolled != null) {
+          _isScrolled = isScrolled;
+          widget.onScrolled!(isScrolled);
+        }
+      }
+    }
+
+    //handle bottomScrolled event
+    if (widget.enableOnBottomScrolledCallback &&
+        scrollInfo.metrics.axis == Axis.vertical &&
+        scrollInfo.metrics.maxScrollExtent - scrollInfo.metrics.pixels <=
+            widget.scrollThreshold) {
+      widget.onBottomScrolled(bloc);
+    }
+
+    return true;
   }
 }

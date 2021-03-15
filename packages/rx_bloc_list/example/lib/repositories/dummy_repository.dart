@@ -4,7 +4,7 @@ import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 class DummyRepository {
   Future<PaginatedList<Dummy>> fetchPage(int page, int pageSize) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     if (page > 10)
       return PaginatedList(

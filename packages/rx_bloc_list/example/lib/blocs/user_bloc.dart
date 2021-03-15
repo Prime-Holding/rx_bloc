@@ -58,8 +58,12 @@ class UserBloc extends $UserBloc {
   //TODO: Make sure this is working
   @override
   Future<bool> get refreshDone async {
-    await loadingState.lastWhere((loading) => loading == true);
-    await loadingState.lastWhere((loading) => loading == false);
+    // This will crash the second time we try refreshing the data.
+    await loadingState.firstWhere((loading) => loading);
+    await loadingState.firstWhere((loading) => !loading);
+
+    //await loadingState.lastWhere((loading) => loading == true);
+    //await loadingState.lastWhere((loading) => loading == false);
 
     return true;
   }
