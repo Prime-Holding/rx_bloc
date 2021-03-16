@@ -1,4 +1,4 @@
-# redux_favorite_advanced_sample
+# redux_favorites_advanced
 
 Puppy example built with flutter_redux.
 

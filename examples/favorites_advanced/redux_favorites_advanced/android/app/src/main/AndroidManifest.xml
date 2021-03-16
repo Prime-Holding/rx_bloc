@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.primeholding.redux_favorite_advanced_sample">
+    package="com.primeholding.redux_favorites_advanced">
    <application
-        android:label="redux_favorite_advanced_sample"
+        android:label="redux_favorites_advanced"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,4 +1,4 @@
-package com.primeholding.redux_favorite_advanced_sample
+package com.primeholding.redux_favorites_advanced
 
 import io.flutter.embedding.android.FlutterActivity
 
