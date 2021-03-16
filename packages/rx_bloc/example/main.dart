@@ -157,24 +157,24 @@ abstract class $CounterBloc extends RxBlocBase
   @override
   void increment() => _$incrementEvent.add(null);
 
-  Stream<int>? _countState;
+  late final Stream<int> _countState = _mapToCountState();
 
   @override
-  Stream<int> get count => _countState ??= _mapToCountState();
+  Stream<int> get count => _countState;
 
   Stream<int> _mapToCountState();
 
-  Stream<bool>? _isLoadingState;
+  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   @override
-  Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
+  Stream<bool> get isLoading => _isLoadingState;
 
   Stream<bool> _mapToIsLoadingState();
 
-  Stream<String>? _errorsState;
+  late final Stream<String> _errorsState = _mapToErrorsState();
 
   @override
-  Stream<String> get errors => _errorsState ??= _mapToErrorsState();
+  Stream<String> get errors => _errorsState;
 
   Stream<String> _mapToErrorsState();
 

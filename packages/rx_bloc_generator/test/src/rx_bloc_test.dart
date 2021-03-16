@@ -130,7 +130,7 @@ abstract class $CounterBloc extends RxBlocBase
       const _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed));
 
   /// The state of [isNotIgnored] implemented in [_mapToIsNotIgnoredState]
-  Stream<bool>? _isNotIgnoredState;
+  late final Stream<bool> _isNotIgnoredState = _mapToIsNotIgnoredState();
 
   @override
   void withoutAny() => _$withoutAnyEvent.add(null);
@@ -254,8 +254,7 @@ abstract class $CounterBloc extends RxBlocBase
           .add(_WithSeeded2PositionalEnumEventArgs(pp1, pp2));
 
   @override
-  Stream<bool> get isNotIgnored =>
-      _isNotIgnoredState ??= _mapToIsNotIgnoredState();
+  Stream<bool> get isNotIgnored => _isNotIgnoredState;
 
   Stream<bool> _mapToIsNotIgnoredState();
 
