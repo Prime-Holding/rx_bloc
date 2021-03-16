@@ -39,12 +39,16 @@ class UserBloc extends $UserBloc {
     _$loadPageEvent
         .startWith(true)
         .switchMap(
-          (value) => repository
-              .fetchPage(
-                _paginatedList.value!.pageNumber + 1,
-                _paginatedList.value!.pageSize,
-              )
-              .asResultStream(),
+          (reset) {
+            if (reset) _paginatedList.value!.length = 0;
+
+            return repository
+                .fetchPage(
+                  _paginatedList.value!.pageNumber + 1,
+                  _paginatedList.value!.pageSize,
+                )
+                .asResultStream();
+          },
         )
         .setResultStateHandler(this)
         .mergeWithPaginatedList(_paginatedList)
@@ -57,6 +61,8 @@ class UserBloc extends $UserBloc {
 
   @override
   Future<void> get refreshDone async {
+    if (_paginatedList.value!.length == 0) return Future.value();
+
     await loadingState
         .asBroadcastStream()
         .firstWhere((loading) => loading == true);
@@ -78,16 +84,3 @@ class UserBloc extends $UserBloc {
     super.dispose();
   }
 }
-
-//
-// extension LoadingStreamExtension on Stream<bool> {
-//   Future waitToLoad() async {
-//     await firstWhere((element) => element);
-//     await firstWhere((element) => !element);
-//   }
-// }
-//
-// extension StreamExtensions<T> on Stream<T> {
-//   Future<T> firstOrNullWithTimeout(Duration timeLimit) =>
-//       timeout(timeLimit, onTimeout: (sink) => sink.add(null)).first;
-// }

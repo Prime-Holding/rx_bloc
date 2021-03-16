@@ -3,7 +3,6 @@ import 'package:example/models/dummy.dart';
 import 'package:example/repositories/dummy_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 void main() {
@@ -37,16 +36,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
-          child: RxPaginatedBuilder<UserBlocType, Dummy>(
+          child: RxPaginatedBuilder<UserBlocType, Dummy>.withRefreshIndicator(
             builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
             state: (bloc) => bloc.states.paginatedList,
             onBottomScrolled: (bloc) => bloc.events.loadPage(),
-            wrapperBuilder: (context, bloc, childWidget) => RefreshIndicator(
-                child: childWidget,
-                onRefresh: () async {
-                  context.read<UserBlocType>().events.loadPage(reset: true);
-                  return context.read<UserBlocType>().states.refreshDone;
-                }),
+            onRefresh: (bloc) async {
+              bloc.events.loadPage(reset: true);
+              //return bloc.states.refreshDone;
+            },
           ),
         ),
       );

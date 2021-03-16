@@ -5,9 +5,11 @@ import 'package:rx_bloc/rx_bloc.dart';
 import '../../models.dart';
 
 /// TODO: Update the documentation
+/// TODO: Update ReadMe document
 
 /// RxPaginatedBuilder documentation - To Be Added
 class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
+  /// RxPaginatedBuilder default constructor
   RxPaginatedBuilder({
     required this.state,
     required this.builder,
@@ -18,6 +20,34 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
     this.enableOnBottomScrolledCallback = true,
     this.bloc,
   });
+
+  /// RxPaginatedBuilder constructor with refresh indicator. An addition to the
+  /// default constructor is the requirement for the [onRefresh] callback which
+  /// will be executed once the refreshed using the pull-down feature.
+  factory RxPaginatedBuilder.withRefreshIndicator({
+    required Stream<PaginatedList<T>> Function(B) state,
+    required Widget Function(BuildContext, AsyncSnapshot<PaginatedList<T>>, B)
+        builder,
+    required void Function(B) onBottomScrolled,
+    required Future<void> Function(B) onRefresh,
+    Function(bool)? onScrolled,
+    B? bloc,
+    double scrollThreshold = 100,
+    bool enableOnBottomScrolledCallback = true,
+  }) =>
+      RxPaginatedBuilder(
+        bloc: bloc,
+        state: state,
+        builder: builder,
+        onBottomScrolled: onBottomScrolled,
+        onScrolled: onScrolled,
+        scrollThreshold: scrollThreshold,
+        enableOnBottomScrolledCallback: enableOnBottomScrolledCallback,
+        wrapperBuilder: (_, b, c) => RefreshIndicator(
+          child: c,
+          onRefresh: () async => await onRefresh(b),
+        ),
+      );
 
   /// Builder method which is triggered each time when new data has been fetched,
   /// and should return a widget as result.
@@ -88,6 +118,8 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
     );
   }
 
+  /// Callback executed once the user starts scrolling the portion of the screen
+  /// encapsulated with the widget built using the [builder] method.
   bool _onScrollNotification(ScrollNotification scrollInfo, B bloc) {
     //handle onScrolled event
     if (widget.onScrolled != null) {
