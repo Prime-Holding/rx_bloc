@@ -19,23 +19,20 @@ class HomePage extends StatelessWidget {
   final Store<NavigationState> store;
 
   @override
-  Widget build(BuildContext context) => StoreProvider<NavigationState>(
-        store: store,
-        child: Scaffold(
-          appBar: PuppiesAppBar(),
-          bottomNavigationBar: CurvedNavigationBar(
-            color: Colors.blueAccent,
-            backgroundColor: Colors.white,
-            items: store.state.items.map((item) => item.type.asIcon()).toList(),
-            onTap: (index) => store.dispatch(
-              index == 0 ? SearchViewAction() : FavoritesViewAction(),
-            ),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: PuppiesAppBar(),
+        bottomNavigationBar: CurvedNavigationBar(
+          color: Colors.blueAccent,
+          backgroundColor: Colors.white,
+          items: store.state.items.map((item) => item.type.asIcon()).toList(),
+          onTap: (index) => store.dispatch(
+            index == 0 ? SearchViewAction() : FavoritesViewAction(),
           ),
-          body: StoreBuilder<NavigationState>(
-            builder: (_, store) => store.state.items.toCurrentIndex() == 0
-                ? SearchView()
-                : FavoritesView(),
-          ),
+        ),
+        body: StoreBuilder<NavigationState>(
+          builder: (_, store) => store.state.items.toCurrentIndex() == 0
+              ? SearchView()
+              : FavoritesView(),
         ),
       );
 }
