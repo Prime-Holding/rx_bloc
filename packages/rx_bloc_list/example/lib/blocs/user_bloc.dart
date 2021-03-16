@@ -1,5 +1,5 @@
-import 'package:example/models/dummy.dart';
-import 'package:example/repositories/dummy_repository.dart';
+import 'package:example/models/user_model.dart';
+import 'package:example/repositories/user_repository.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
@@ -20,7 +20,7 @@ abstract class UserBlocStates {
   /// The error state
   Stream<String> get errors;
 
-  Stream<PaginatedList<Dummy>> get paginatedList;
+  Stream<PaginatedList<User>> get paginatedList;
 
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
@@ -28,14 +28,14 @@ abstract class UserBlocStates {
 
 @RxBloc()
 class UserBloc extends $UserBloc {
-  final _paginatedList = BehaviorSubject<PaginatedList<Dummy>>.seeded(
-    PaginatedList<Dummy>(
+  final _paginatedList = BehaviorSubject<PaginatedList<User>>.seeded(
+    PaginatedList<User>(
       list: [],
       pageSize: 50,
     ),
   );
 
-  UserBloc({required DummyRepository repository}) {
+  UserBloc({required UserRepository repository}) {
     _$loadPageEvent
         .startWith(true)
         .switchMap(
@@ -57,7 +57,7 @@ class UserBloc extends $UserBloc {
   }
 
   @override
-  Stream<PaginatedList<Dummy>> _mapToPaginatedListState() => _paginatedList;
+  Stream<PaginatedList<User>> _mapToPaginatedListState() => _paginatedList;
 
   @override
   Future<void> get refreshDone async {

@@ -29,7 +29,7 @@ abstract class $UserBloc extends RxBlocBase
   Stream<String>? _errorsState;
 
   /// The state of [paginatedList] implemented in [_mapToPaginatedListState]
-  Stream<PaginatedList<Dummy>>? _paginatedListState;
+  Stream<PaginatedList<User>>? _paginatedListState;
 
   @override
   void loadPage({bool reset = false}) => _$loadPageEvent.add(reset);
@@ -41,14 +41,14 @@ abstract class $UserBloc extends RxBlocBase
   Stream<String> get errors => _errorsState ??= _mapToErrorsState();
 
   @override
-  Stream<PaginatedList<Dummy>> get paginatedList =>
+  Stream<PaginatedList<User>> get paginatedList =>
       _paginatedListState ??= _mapToPaginatedListState();
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<PaginatedList<Dummy>> _mapToPaginatedListState();
+  Stream<PaginatedList<User>> _mapToPaginatedListState();
 
   @override
   UserBlocEvents get events => this;

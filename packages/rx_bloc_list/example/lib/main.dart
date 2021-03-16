@@ -1,6 +1,6 @@
 import 'package:example/blocs/user_bloc.dart';
-import 'package:example/models/dummy.dart';
-import 'package:example/repositories/dummy_repository.dart';
+import 'package:example/models/user_model.dart';
+import 'package:example/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: RxBlocProvider<UserBlocType>(
-        create: (context) => UserBloc(repository: DummyRepository()),
+        create: (context) => UserBloc(repository: UserRepository()),
         child: MyHomePage(),
       ),
     );
@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
-          child: RxPaginatedBuilder<UserBlocType, Dummy>.withRefreshIndicator(
+          child: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
             builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
             state: (bloc) => bloc.states.paginatedList,
             onBottomScrolled: (bloc) => bloc.events.loadPage(),
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
 
-  Widget _buildPaginatedList(AsyncSnapshot<PaginatedList<Dummy>> snapshot) {
+  Widget _buildPaginatedList(AsyncSnapshot<PaginatedList<User>> snapshot) {
     if (!snapshot.hasData ||
         (snapshot.hasData && snapshot.data!.isInitialLoading)) {
       return Center(
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget itemBuilder(PaginatedList<Dummy> list, int index) {
+  Widget itemBuilder(PaginatedList<User> list, int index) {
     if (list.length == index) {
       return Center(
         child: Padding(
