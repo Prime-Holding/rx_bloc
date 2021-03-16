@@ -41,28 +41,29 @@ abstract class $PuppyManageBloc extends RxBlocBase
   final _$savePuppyEvent = PublishSubject<void>();
 
   /// The state of [imagePath] implemented in [_mapToImagePathState]
-  Stream<String>? _imagePathState;
+  late final Stream<String> _imagePathState = _mapToImagePathState();
 
   /// The state of [name] implemented in [_mapToNameState]
-  Stream<String>? _nameState;
+  late final Stream<String> _nameState = _mapToNameState();
 
   /// The state of [breed] implemented in [_mapToBreedState]
-  Stream<BreedType>? _breedState;
+  late final Stream<BreedType> _breedState = _mapToBreedState();
 
   /// The state of [gender] implemented in [_mapToGenderState]
-  Stream<Gender>? _genderState;
+  late final Stream<Gender> _genderState = _mapToGenderState();
 
   /// The state of [characteristics] implemented in [_mapToCharacteristicsState]
-  Stream<String>? _characteristicsState;
+  late final Stream<String> _characteristicsState =
+      _mapToCharacteristicsState();
 
   /// The state of [showErrors] implemented in [_mapToShowErrorsState]
-  Stream<bool>? _showErrorsState;
+  late final Stream<bool> _showErrorsState = _mapToShowErrorsState();
 
   /// The state of [isSaveEnabled] implemented in [_mapToIsSaveEnabledState]
-  Stream<bool>? _isSaveEnabledState;
+  late final Stream<bool> _isSaveEnabledState = _mapToIsSaveEnabledState();
 
   /// The state of [updateComplete] implemented in [_mapToUpdateCompleteState]
-  Stream<bool>? _updateCompleteState;
+  late final Stream<bool> _updateCompleteState = _mapToUpdateCompleteState();
 
   @override
   void markAsFavorite({required Puppy puppy, required bool isFavorite}) =>
@@ -89,31 +90,28 @@ abstract class $PuppyManageBloc extends RxBlocBase
   void savePuppy() => _$savePuppyEvent.add(null);
 
   @override
-  Stream<String> get imagePath => _imagePathState ??= _mapToImagePathState();
+  Stream<String> get imagePath => _imagePathState;
 
   @override
-  Stream<String> get name => _nameState ??= _mapToNameState();
+  Stream<String> get name => _nameState;
 
   @override
-  Stream<BreedType> get breed => _breedState ??= _mapToBreedState();
+  Stream<BreedType> get breed => _breedState;
 
   @override
-  Stream<Gender> get gender => _genderState ??= _mapToGenderState();
+  Stream<Gender> get gender => _genderState;
 
   @override
-  Stream<String> get characteristics =>
-      _characteristicsState ??= _mapToCharacteristicsState();
+  Stream<String> get characteristics => _characteristicsState;
 
   @override
-  Stream<bool> get showErrors => _showErrorsState ??= _mapToShowErrorsState();
+  Stream<bool> get showErrors => _showErrorsState;
 
   @override
-  Stream<bool> get isSaveEnabled =>
-      _isSaveEnabledState ??= _mapToIsSaveEnabledState();
+  Stream<bool> get isSaveEnabled => _isSaveEnabledState;
 
   @override
-  Stream<bool> get updateComplete =>
-      _updateCompleteState ??= _mapToUpdateCompleteState();
+  Stream<bool> get updateComplete => _updateCompleteState;
 
   Stream<String> _mapToImagePathState();
 

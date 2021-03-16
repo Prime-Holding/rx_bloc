@@ -15,10 +15,6 @@ class _StateGetterMethod implements _BuilderContract {
           ..returns = refer(field.type.getDisplayString(withNullability: true))
           ..name = field.name
           ..lambda = true
-          ..body = refer(field.stateFieldName)
-              .assignNullAware(
-                refer(field.stateMethodName).newInstance([]),
-              )
-              .code,
+          ..body = refer(field.stateFieldName).code,
       );
 }
