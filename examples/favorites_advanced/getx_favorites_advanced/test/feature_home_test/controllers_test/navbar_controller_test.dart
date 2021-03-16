@@ -21,6 +21,7 @@ main() {
     });
     test("return correct navbar item search as title", () {
       final controller = Get.put(NavbarController());
+      controller.selectPage(NavigationItemType.search);
       expect(controller.title, 'Search for Puppies');
     });
     test("return correct navbar item favorite as title", () {
