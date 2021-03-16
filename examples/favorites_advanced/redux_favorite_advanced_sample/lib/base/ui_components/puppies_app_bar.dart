@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:appbar_textfield/appbar_textfield.dart';
 
@@ -14,7 +13,7 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => StoreBuilder<NavigationState>(
-        builder: (BuildContext context, Store<NavigationState> store) =>
+        builder: (_, store) =>
             store.state.selectedPage == NavigationItemType.search
                 ? AppBarTextField(
                     title: Text(store.state.selectedPage.asTitle()),

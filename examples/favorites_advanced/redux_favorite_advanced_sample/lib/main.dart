@@ -13,7 +13,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Store<NavigationState> store = Store<NavigationState>(
+    final store = Store<NavigationState>(
       navStateReducer,
       initialState: NavigationState.initialState(),
     );

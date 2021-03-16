@@ -6,9 +6,8 @@ import 'package:favorites_advanced_base/extensions.dart';
 import '../models/navigation_state.dart';
 import 'actions.dart';
 
-NavigationState navStateReducer(NavigationState state, action) {
-  return NavigationState(items: viewReducer(state.items, action));
-}
+NavigationState navStateReducer(NavigationState state, action) =>
+    NavigationState(items: viewReducer(state.items, action));
 
 Reducer<List<NavigationItem>> viewReducer =
     combineReducers<List<NavigationItem>>([

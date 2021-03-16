@@ -4,14 +4,9 @@ import 'package:favorites_advanced_base/models.dart';
 
 @immutable
 class NavigationState {
-  final List<NavigationItem> items;
-
   const NavigationState({
     @required this.items,
   });
-
-  NavigationItemType get selectedPage =>
-      items.firstWhere((item) => item.isSelected).type;
 
   NavigationState.initialState()
       : items = [
@@ -20,4 +15,9 @@ class NavigationState {
           const NavigationItem(
               type: NavigationItemType.favorites, isSelected: false),
         ];
+
+  final List<NavigationItem> items;
+
+  NavigationItemType get selectedPage =>
+      items.firstWhere((item) => item.isSelected).type;
 }
