@@ -4,36 +4,37 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:favorites_advanced_base/extensions.dart';
-import 'package:favorites_advanced_base/models.dart';
+
+import '../../base/ui_components/puppies_app_bar.dart';
 
 import '../../feature_puppy/favorites/views/favorites_view.dart';
 import '../../feature_puppy/search/views/search_view.dart';
 
 import '../models/navigation_state.dart';
-import '../redux/reducers.dart';
+import '../redux/actions.dart';
 
 class HomePage extends StatelessWidget {
+  final Store<NavigationState> store;
+
+  HomePage(this.store);
+
   @override
   Widget build(BuildContext context) {
-    final Store<NavigationState> store = Store<NavigationState>(
-      navStateReducer,
-      initialState: NavigationState.initialState(),
-    );
-    return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.blueAccent,
-        backgroundColor: Colors.white,
-        items: [
-          NavigationItemType.search.asIcon(),
-          NavigationItemType.favorites.asIcon(),
-        ],
-        onTap: (index) {},
-      ),
-      body: StoreProvider<NavigationState>(
-        store: store,
-        child: StoreBuilder<NavigationState>(
-          builder: (BuildContext context, Store<NavigationState> store) =>
-              store.state.item == NavigationItemType.search
+    return StoreProvider<NavigationState>(
+      store: store,
+      child: Scaffold(
+        appBar: PuppiesAppBar(),
+        bottomNavigationBar: CurvedNavigationBar(
+          color: Colors.blueAccent,
+          backgroundColor: Colors.white,
+          items: store.state.items.map((item) => item.type.asIcon()).toList(),
+          onTap: (index) => store.dispatch(
+            index == 0 ? SearchViewAction() : FavoritesViewAction(),
+          ),
+        ),
+        body: StoreBuilder<NavigationState>(
+          builder: (_, Store<NavigationState> store) =>
+              store.state.items.toCurrentIndex() == 0
                   ? SearchView()
                   : FavoritesView(),
         ),

@@ -2,17 +2,22 @@ import 'package:flutter/foundation.dart';
 
 import 'package:favorites_advanced_base/models.dart';
 
+@immutable
 class NavigationState {
-  final NavigationItemType item;
-
-  // final _items = [
-  //   const NavigationItem(type: NavigationItemType.search, isSelected: true),
-  //   const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
-  // ];
+  final List<NavigationItem> items;
 
   const NavigationState({
-    @required this.item,
+    @required this.items,
   });
 
-  NavigationState.initialState() : item = NavigationItemType.search;
+  NavigationItemType get selectedPage =>
+      items.firstWhere((item) => item.isSelected).type;
+
+  NavigationState.initialState()
+      : items = [
+          const NavigationItem(
+              type: NavigationItemType.search, isSelected: true),
+          const NavigationItem(
+              type: NavigationItemType.favorites, isSelected: false),
+        ];
 }

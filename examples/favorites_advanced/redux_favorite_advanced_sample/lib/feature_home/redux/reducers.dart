@@ -1,25 +1,31 @@
 import 'package:redux/redux.dart';
 
 import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/extensions.dart';
 
 import '../models/navigation_state.dart';
 import 'actions.dart';
 
 NavigationState navStateReducer(NavigationState state, action) {
-  return NavigationState(item: viewReducer(state.item, action));
+  return NavigationState(items: viewReducer(state.items, action));
 }
 
-Reducer<NavigationItemType> viewReducer = combineReducers<NavigationItemType>([
-  TypedReducer<NavigationItemType, SearchViewAction>(searchViewReducer),
-  TypedReducer<NavigationItemType, FavoritesViewAction>(favoritesViewReducer),
+Reducer<List<NavigationItem>> viewReducer =
+    combineReducers<List<NavigationItem>>([
+  TypedReducer<List<NavigationItem>, SearchViewAction>(searchViewReducer),
+  TypedReducer<List<NavigationItem>, FavoritesViewAction>(favoritesViewReducer),
 ]);
 
-NavigationItemType searchViewReducer(
-    NavigationItemType item, SearchViewAction action) {
-  return NavigationItemType.search;
-}
+List<NavigationItem> searchViewReducer(
+        List<NavigationItem> items, SearchViewAction action) =>
+    changeIsSelected(items, NavigationItemType.search);
 
-NavigationItemType favoritesViewReducer(
-    NavigationItemType item, FavoritesViewAction action) {
-  return NavigationItemType.favorites;
-}
+List<NavigationItem> favoritesViewReducer(
+        List<NavigationItem> items, FavoritesViewAction action) =>
+    changeIsSelected(items, NavigationItemType.favorites);
+
+List<NavigationItem> changeIsSelected(
+        List<NavigationItem> items, NavigationItemType selected) =>
+    items
+        .map((item) => item.copyWith(isSelected: item.type == selected))
+        .toList();
