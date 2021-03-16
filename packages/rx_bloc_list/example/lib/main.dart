@@ -45,9 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: childWidget,
                 onRefresh: () async {
                   context.read<UserBlocType>().events.loadPage(reset: true);
-                  return Future.delayed(Duration(seconds: 1));
-                  //await context.read<UserBlocType>().states.refreshDone;
-                  //return Future.value();
+                  return context.read<UserBlocType>().states.refreshDone;
                 }),
           ),
         ),

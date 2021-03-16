@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 part 'paginated_list_extensions.dart';
 
+/// PaginatedList documentation - To Be Added
 class PaginatedList<E> extends ListBase<E> {
   PaginatedList({
     required this.list,

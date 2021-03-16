@@ -23,7 +23,7 @@ abstract class UserBlocStates {
   Stream<PaginatedList<Dummy>> get paginatedList;
 
   @RxBlocIgnoreState()
-  Future<bool> get refreshDone;
+  Future<void> get refreshDone;
 }
 
 @RxBloc()
@@ -55,13 +55,14 @@ class UserBloc extends $UserBloc {
   @override
   Stream<PaginatedList<Dummy>> _mapToPaginatedListState() => _paginatedList;
 
-  //TODO: Make sure this is working
   @override
-  Future<bool> get refreshDone async {
-    await loadingState.lastWhere((loading) => loading == true);
-    await loadingState.lastWhere((loading) => loading == false);
-
-    return true;
+  Future<void> get refreshDone async {
+    await loadingState
+        .asBroadcastStream()
+        .firstWhere((loading) => loading == true);
+    await loadingState
+        .asBroadcastStream()
+        .firstWhere((loading) => loading == false);
   }
 
   @override
