@@ -22,6 +22,7 @@ jobs:
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
+            "examples/favorites_advanced/bloc_favorites_advanced",
           ]
       fail-fast: false
     runs-on: ubuntu-latest
