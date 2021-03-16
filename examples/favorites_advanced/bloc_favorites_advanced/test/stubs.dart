@@ -9,23 +9,29 @@ class Stub {
 
 class NavigationStub {
   static final _initialItems = [
-    NavigationItem(type: NavigationItemType.search, isSelected: true),
-    NavigationItem(type: NavigationItemType.favorites, isSelected: false),
+    const NavigationItem(type: NavigationItemType.search, isSelected: true),
+    const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
   ];
 
   static final _favoritesItems = [
-    NavigationItem(type: NavigationItemType.search, isSelected: false),
-    NavigationItem(type: NavigationItemType.favorites, isSelected: true),
+    const NavigationItem(type: NavigationItemType.search, isSelected: false),
+    const NavigationItem(type: NavigationItemType.favorites, isSelected: true),
   ];
 
   final initialSearchState = NavigationBarState(
-    title: _initialItems.firstWhere((element) => element.isSelected).type.asTitle(),
+    title: _initialItems
+        .firstWhere((element) => element.isSelected)
+        .type
+        .asTitle(),
     items: _initialItems,
     selectedItem: _initialItems.firstWhere((element) => element.isSelected),
   );
 
   final favoritesState = NavigationBarState(
-    title: _favoritesItems.firstWhere((element) => element.isSelected).type.asTitle(),
+    title: _favoritesItems
+        .firstWhere((element) => element.isSelected)
+        .type
+        .asTitle(),
     items: _favoritesItems,
     selectedItem: _favoritesItems.firstWhere((element) => element.isSelected),
   );

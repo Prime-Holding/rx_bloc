@@ -50,8 +50,8 @@ class HomePage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             items: state.items
                 .map((item) => Padding(
-                      child: item.asWidget(),
                       padding: const EdgeInsets.all(8),
+                      child: item.asWidget(),
                     ))
                 .toList(),
             onTap: (index) => context.read<NavigationBarBloc>().add(

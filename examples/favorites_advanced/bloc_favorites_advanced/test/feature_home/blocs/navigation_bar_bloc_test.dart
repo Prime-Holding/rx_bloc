@@ -16,7 +16,8 @@ void main() {
     blocTest<NavigationBarBloc, NavigationBarState>(
       'NavigationBarBloc.NavigationBarState favorites',
       build: () => NavigationBarBloc(),
-      act: (bloc) => bloc.add(NavigationBarEvent(NavigationItemType.favorites)),
+      act: (bloc) =>
+          bloc.add(const NavigationBarEvent(NavigationItemType.favorites)),
       expect: <NavigationBarState>[
         Stub.navigation.favoritesState,
       ],
@@ -25,7 +26,8 @@ void main() {
     blocTest<NavigationBarBloc, NavigationBarState>(
       'NavigationBarBloc.NavigationBarState search',
       build: () => NavigationBarBloc(),
-      act: (bloc) => bloc.add(NavigationBarEvent(NavigationItemType.search)),
+      act: (bloc) =>
+          bloc.add(const NavigationBarEvent(NavigationItemType.search)),
       expect: <NavigationBarState>[
         Stub.navigation.initialSearchState,
       ],
@@ -35,8 +37,8 @@ void main() {
       'NavigationBarBloc.NavigationBarState search favorites',
       build: () => NavigationBarBloc(),
       act: (bloc) => bloc
-        ..add(NavigationBarEvent(NavigationItemType.search))
-        ..add(NavigationBarEvent(NavigationItemType.favorites)),
+        ..add(const NavigationBarEvent(NavigationItemType.search))
+        ..add(const NavigationBarEvent(NavigationItemType.favorites)),
       expect: <NavigationBarState>[
         Stub.navigation.initialSearchState,
         Stub.navigation.favoritesState,
@@ -47,8 +49,8 @@ void main() {
       'NavigationBarBloc.NavigationBarState search search',
       build: () => NavigationBarBloc(),
       act: (bloc) => bloc
-        ..add(NavigationBarEvent(NavigationItemType.search))
-        ..add(NavigationBarEvent(NavigationItemType.search)),
+        ..add(const NavigationBarEvent(NavigationItemType.search))
+        ..add(const NavigationBarEvent(NavigationItemType.search)),
       expect: <NavigationBarState>[
         Stub.navigation.initialSearchState,
       ],
