@@ -6,6 +6,7 @@ class HomeBinding implements Bindings {
   @override
   void dependencies() {
     Get.put(NavbarController());
+    // ignore: cascade_invocations
     Get.put(FavoritePuppiesController());
   }
 }

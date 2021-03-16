@@ -10,23 +10,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      initialRoute: '/',
-      title: 'Puppies App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      getPages: [
-        GetPage(name: '/',
-        page: () =>  HomePage(),
-        binding: HomeBinding()),
-        // GetPage(name:'/puppyDetails',
-        // page: () =>  PuppyDetailsPage()),
-        // GetPage(name: '/puppyEdit',
-        //   page: () =>  PuppyEditPage(),)
-      ],
-    );
-  }
+  Widget build(BuildContext context) => GetMaterialApp(
+        initialRoute: '/',
+        title: 'Puppies App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        getPages: [
+          GetPage(name: '/', page: () => HomePage(), binding: HomeBinding()),
+        ],
+      );
 }
-

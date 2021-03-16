@@ -23,11 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get:
-  get_instance:
-  curved_navigation_bar:
-  appbar_textfield:
-  badges:
+
+  appbar_textfield: ^1.0.1+1
+  badges: ^1.2.0
+  curved_navigation_bar: ^0.3.7
+  get: ^3.26.0
+  get_instance: ^3.13.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -37,7 +38,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  get_test:
 
 
 

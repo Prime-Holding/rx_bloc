@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 

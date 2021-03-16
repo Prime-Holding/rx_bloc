@@ -6,6 +6,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/extensions.dart';
+import 'package:favorites_advanced_base/resources.dart';
 
 import 'package:getx_favorites_advanced/base/ui_components/puppies_app_bar.dart';
 import 'package:getx_favorites_advanced/feature_home/controllers/navbar_controller.dart';
@@ -20,11 +21,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: PuppiesAppBar(),
       body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
-        child: Obx(() =>
-        navController.selectedPage.type == NavigationItemType.search
-                  ? SearchPage()
-                  : FavoritesPage(),
+        duration: const Duration(milliseconds: 300),
+        child: Obx(
+          () => navController.selectedPage.type == NavigationItemType.search
+              ? SearchPage()
+              : FavoritesPage(),
         ),
       ),
       bottomNavigationBar: CurvedNavigationBar(
@@ -38,7 +39,7 @@ class HomePage extends StatelessWidget {
                   ))
               .toList()
         ],
-        animationDuration: Duration(milliseconds: 300),
+        animationDuration: const Duration(milliseconds: 300),
         onTap: (index) => navController.selectPage(
           index == 0 ? NavigationItemType.search : NavigationItemType.favorites,
         ),
@@ -56,10 +57,7 @@ extension NavigationItemToWitget on NavigationItem {
                   padding: const EdgeInsets.all(3),
                   badgeContent: Text(
                     Get.find<FavoritePuppiesController>().count.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
+                    style: TextStyles.badgeTextStyle,
                   ),
                   badgeColor: Colors.transparent,
                   elevation: 0,
