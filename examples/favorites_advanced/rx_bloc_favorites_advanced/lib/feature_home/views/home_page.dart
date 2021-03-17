@@ -3,10 +3,10 @@ import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
 
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/puppies_app_bar.dart';
@@ -30,8 +30,7 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        resizeToAvoidBottomPadding: false,
-        // resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: PuppiesAppBar(),
         body: RxBlocListener<PuppyManageBlocType, String>(
           state: (bloc) => bloc.states.error,

@@ -2,8 +2,8 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/input_styles.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/text_styles.dart';
+import 'package:favorites_advanced_base/resources.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/rx_input_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_card.dart';
@@ -82,7 +82,7 @@ class PuppyEditForm extends StatelessWidget {
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setName(value),
         //optional
-        decorationData: InputStyles.textFieldDecorationData,
+        decorationData: RxInputStyles.textFieldDecorationData,
         builder: (fieldState) => TextFormField(
           key: const ValueKey('PuppyNameInputField'),
           cursorColor: const Color(0xff333333),
@@ -101,7 +101,7 @@ class PuppyEditForm extends StatelessWidget {
         state: (bloc) => bloc.states.characteristics,
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setCharacteristics(value),
-        decorationData: InputStyles.textFieldDecorationData,
+        decorationData: RxInputStyles.textFieldDecorationData,
         builder: (fieldState) => TextFormField(
           cursorColor: const Color(0xff333333),
           key: const ValueKey('PuppyCharacteristicsInputField'),
