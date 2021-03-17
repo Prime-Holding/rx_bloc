@@ -56,4 +56,10 @@ class TextStyles {
     fontWeight: FontWeight.w500,
     shadows: _defaultShadow,
   );
+
+  static const TextStyle badgeTextStyle = TextStyle(
+    color: ColorStyles.white,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+  );
 }
