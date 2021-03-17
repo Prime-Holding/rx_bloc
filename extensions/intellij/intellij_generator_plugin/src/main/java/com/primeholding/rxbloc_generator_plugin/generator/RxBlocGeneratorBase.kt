@@ -9,13 +9,12 @@ import java.lang.RuntimeException
 abstract class RxBlocGeneratorBase(private val name: String,
                                    withDefaultStates: Boolean,
                                    includeExtensions: Boolean,
-                                   private val includeNullSafety: Boolean,
+                                   includeNullSafety: Boolean,
                                    templateName: String) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
     private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"
     private val TEMPLATE_BLOC_SNAKE_CASE = "bloc_snake_case"
-    private val TEMPLATE_BLOC_USE_NULL_SAFETY = "bloc_use_null_safety"
 
     private val templateString: String
     private val templateValues: MutableMap<String, String>
@@ -24,8 +23,7 @@ abstract class RxBlocGeneratorBase(private val name: String,
         templateValues = mutableMapOf(
             TEMPLATE_BLOC_PASCAL_CASE to pascalCase(),
             TEMPLATE_BLOC_DOLLAR_PASCAL_CASE to dollarPascalCase(),
-            TEMPLATE_BLOC_SNAKE_CASE to snakeCase(),
-            TEMPLATE_BLOC_USE_NULL_SAFETY to useNullSafety()
+            TEMPLATE_BLOC_SNAKE_CASE to snakeCase()
         )
         try {
             val templateFolder = StringBuilder()
@@ -58,9 +56,5 @@ abstract class RxBlocGeneratorBase(private val name: String,
     private fun pascalCase(): String = name.toUpperCamelCase().replace("Bloc", "")
 
     fun snakeCase() = name.toLowerSnakeCase().replace("_bloc", "")
-    private fun useNullSafety(): String {
-        if(includeNullSafety) return "?"
-        return ""
-    }
     fun fileExtension() = "dart"
 }

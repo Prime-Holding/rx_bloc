@@ -20,10 +20,10 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  Stream<bool>${bloc_use_null_safety} _isLoadingState;
+  Stream<bool> _isLoadingState;
 
   /// The state of [errors] implemented in [_mapToErrorsState]
-  Stream<String>${bloc_use_null_safety} _errorsState;
+  Stream<String> _errorsState;
 
   @override
   Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
