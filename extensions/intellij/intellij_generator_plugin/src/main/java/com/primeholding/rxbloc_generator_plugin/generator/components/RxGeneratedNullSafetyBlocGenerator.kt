@@ -2,17 +2,18 @@ package com.primeholding.rxbloc_generator_plugin.generator.components
 
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
 
-class RxBlocGenerator(
-    name: String,
-    useEquatable: Boolean,
+class RxGeneratedNullSafetyBlocGenerator(
+    blocName: String,
+    blocShouldUseEquatable: Boolean,
     includeExtensions: Boolean,
     includeNullSafety: Boolean
 ) : RxBlocGeneratorBase(
-    name,
-    useEquatable,
+    blocName,
+    blocShouldUseEquatable,
     includeExtensions,
     includeNullSafety,
-    templateName = "rx_bloc"
+    templateName = "rx_bloc_generated_null_safety"
 ) {
-    override fun fileName() = "${snakeCase()}_bloc.${fileExtension()}"
+
+    override fun fileName() = "${snakeCase()}_bloc.rxb.g.${fileExtension()}"
 }
