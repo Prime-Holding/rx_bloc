@@ -16,7 +16,7 @@ class PuppiesExtraDetailsBloc
   PuppiesExtraDetailsBloc(this.repository)
       : super(PuppiesExtraDetailsState());
 
-  static final List<Puppy> _initialPuppiesWithDetails = [];
+  // static final List<Puppy> _initialPuppiesWithDetails = [];
   List<Puppy> puppiesWithDetails = [];
   PuppiesRepository repository;
 

@@ -7,7 +7,7 @@ import 'package:bloc_sample/feature_home/views/home_page.dart';
   ],
 )
 class $MyRouter {}
-
+//flutter packages pub run build_runner build --delete-conflicting-outputs
 
 // import 'package:auto_route/auto_route_annotations.dart';
 // // import 'package:rx_bloc_favorites_advanced/feature_puppy/details/views/puppy_details_page.dart';

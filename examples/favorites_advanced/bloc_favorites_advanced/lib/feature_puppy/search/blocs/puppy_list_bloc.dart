@@ -15,25 +15,52 @@ part 'puppy_list_state.dart';
 part 'puppy_list_bloc_models.dart';
 
 class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
-  PuppyListBloc(PuppiesRepository repository)
-      : super(PuppyListState(
-          searchedPuppies: _initialPuppies,
-        )) {
-    _fetchPuppies(repository);
-  }
+  PuppyListBloc(this.repository)
+      : super(const PuppyListState(status: PuppyListStatus.loading));
 
-  void _fetchPuppies(PuppiesRepository repository) async {
-    puppyItems = await repository.getPuppies(query: '');
-    _initialPuppies = puppyItems;
-  }
-
-  static List<Puppy> _initialPuppies = [];
+  PuppiesRepository repository;
   List<Puppy> puppyItems = [];
+
+  Future<List<Puppy>> _fetchPuppies(PuppiesRepository repository) async {
+    final puppies = await repository.getPuppies(query: '');
+    if (puppies.isEmpty) {
+      throw Exception('error fetching puppies');
+    }
+    return puppies;
+  }
 
   @override
   Stream<PuppyListState> mapEventToState(
     PuppyListEvent event,
   ) async* {
-    yield PuppyListState(searchedPuppies: puppyItems);
+    if (event is LoadPuppyListEvent) {
+      yield await _mapPuppiesFetchedToState(state);
+    } else if(event is ReloadFavoritePuppies){
+      // if Reload
+      yield await _mapPuppiesFetchedToState(state);
+    }
+  }
+
+  Future<PuppyListState> _mapPuppiesFetchedToState(PuppyListState state) async {
+    try {
+      await Future.delayed( const Duration(seconds: 2));
+      if (state.status == PuppyListStatus.loading) {
+        // When puppies are loaded for the first time
+        puppyItems = await _fetchPuppies(repository);
+        return state.copyWith(
+          searchedPuppies: puppyItems,
+          status: PuppyListStatus.success,
+        );
+      }else if(state.status == PuppyListStatus.success){
+        // When the puppies were loaded and then reloaded
+        puppyItems = await _fetchPuppies(repository);
+        return state.copyWith(
+          searchedPuppies: puppyItems,
+          status: PuppyListStatus.loading,
+        );
+      }
+    } on Exception {
+      return state.copyWith(status: PuppyListStatus.failure);
+    }
   }
 }

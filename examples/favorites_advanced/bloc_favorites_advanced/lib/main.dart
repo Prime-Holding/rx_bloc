@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
-          BlocProvider<NavigationBarBloc>(
-            create: (context) => NavigationBarBloc(),
-          ),
+          // BlocProvider<NavigationBarBloc>(
+          //   create: (context) => NavigationBarBloc(),
+          // ),
           BlocProvider<PuppyListBloc>(
             create: (context) => PuppyListBloc(
                 PuppiesRepository(ImagePicker())),

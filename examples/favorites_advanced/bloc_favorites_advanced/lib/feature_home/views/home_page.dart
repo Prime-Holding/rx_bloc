@@ -17,7 +17,7 @@ import 'package:image_picker/image_picker.dart';
 part 'home_providers.dart';
 
 class HomePage extends StatelessWidget implements AutoRouteWrapper {
-  HomePage({Key key}) : super(key: key);
+  const HomePage({Key key}) : super(key: key);
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiBlocProvider(

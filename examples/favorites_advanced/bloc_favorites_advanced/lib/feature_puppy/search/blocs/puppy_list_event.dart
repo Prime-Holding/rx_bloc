@@ -8,3 +8,7 @@ class ReloadFavoritePuppies extends PuppyListEvent{
 
   final bool silently;
 }
+
+class LoadPuppyListEvent extends PuppyListEvent{
+  LoadPuppyListEvent();
+}

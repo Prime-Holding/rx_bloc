@@ -5,6 +5,9 @@ extension _HomeProviders on HomePage {
         BlocProvider<PuppiesExtraDetailsBloc>(
           create: (context) =>
               PuppiesExtraDetailsBloc(PuppiesRepository(ImagePicker())),
-        )
+        ),
+    BlocProvider<NavigationBarBloc>(
+      create: (context) => NavigationBarBloc(),
+    ),
       ];
 }
