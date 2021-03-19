@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../feature_home/views/home_page.dart';
@@ -28,10 +29,23 @@ class MyRouter extends RouterBase {
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
     HomePage: (data) {
+      final args = data.getArgs<HomePageArguments>(
+        orElse: () => HomePageArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => HomePage(),
+        builder: (context) => HomePage(key: args.key).wrappedRoute(context),
         settings: data,
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// HomePage arguments holder class
+class HomePageArguments {
+  final Key key;
+  HomePageArguments({this.key});
 }

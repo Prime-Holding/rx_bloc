@@ -3,10 +3,10 @@ import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
 
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/puppies_app_bar.dart';
@@ -24,28 +24,27 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => RxMultiBlocProvider(
-        providers: _getProviders(),
-        child: this,
-      );
+    providers: _getProviders(),
+    child: this,
+  );
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        resizeToAvoidBottomInset: false,
-        // resizeToAvoidBottomInset: false,
-        appBar: PuppiesAppBar(),
-        body: RxBlocListener<PuppyManageBlocType, String>(
-          state: (bloc) => bloc.states.error,
-          listener: (ctx, state) =>
-              Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(state))),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              _buildBody(),
-              _buildNavBar(),
-            ],
-          ),
-        ),
-      );
+    resizeToAvoidBottomInset: false,
+    appBar: PuppiesAppBar(),
+    body: RxBlocListener<PuppyManageBlocType, String>(
+      state: (bloc) => bloc.states.error,
+      listener: (ctx, state) =>
+          Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(state))),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          _buildBody(),
+          _buildNavBar(),
+        ],
+      ),
+    ),
+  );
 
   RxBlocBuilder<NavigationBarBlocType, NavigationItem> _buildBody() =>
       RxBlocBuilder<NavigationBarBlocType, NavigationItem>(
@@ -62,21 +61,21 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
           state: (bloc) => bloc.states.items,
           builder: (context, snapshot, bloc) =>
               snapshot.build((navItems) => CurvedNavigationBar(
-                    index: navItems.toCurrentIndex(),
-                    color: Colors.blueAccent,
-                    backgroundColor: Colors.transparent,
-                    items: navItems
-                        .map((item) => Padding(
-                              child: item.asWidget(),
-                              padding: const EdgeInsets.all(8),
-                            ))
-                        .toList(),
-                    onTap: (index) => bloc.events.selectPage(
-                      index == 0
-                          ? NavigationItemType.search
-                          : NavigationItemType.favorites,
-                    ),
-                  )));
+                index: navItems.toCurrentIndex(),
+                color: Colors.blueAccent,
+                backgroundColor: Colors.transparent,
+                items: navItems
+                    .map((item) => Padding(
+                  child: item.asWidget(),
+                  padding: const EdgeInsets.all(8),
+                ))
+                    .toList(),
+                onTap: (index) => bloc.events.selectPage(
+                  index == 0
+                      ? NavigationItemType.search
+                      : NavigationItemType.favorites,
+                ),
+              )));
 
   Widget asPage(AsyncSnapshot<NavigationItem> type) {
     if (!type.hasData) {
@@ -97,23 +96,23 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
 extension NavigationItemToWitget on NavigationItem {
   Widget asWidget() => type == NavigationItemType.favorites
       ? RxBlocBuilder<FavoritePuppiesBlocType, int>(
-          state: (bloc) => bloc.states.count,
-          builder: (ctx, snapshot, bloc) =>
-              snapshot.hasData && snapshot.data <= 0
-                  ? type.asIcon()
-                  : Badge(
-                      padding: const EdgeInsets.all(3),
-                      badgeContent: snapshot.build((count) => Text(
-                            count.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          )),
-                      badgeColor: Colors.transparent,
-                      elevation: 0,
-                      child: type.asIcon(),
-                    ),
-        )
+    state: (bloc) => bloc.states.count,
+    builder: (ctx, snapshot, bloc) =>
+    snapshot.hasData && snapshot.data <= 0
+        ? type.asIcon()
+        : Badge(
+      padding: const EdgeInsets.all(3),
+      badgeContent: snapshot.build((count) => Text(
+        count.toString(),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+        ),
+      )),
+      badgeColor: Colors.transparent,
+      elevation: 0,
+      child: type.asIcon(),
+    ),
+  )
       : type.asIcon();
 }

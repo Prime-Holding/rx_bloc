@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/favorites_page.dart';
-import 'package:bloc_sample/feature_puppy/search/search_page.dart';
+import 'package:bloc_sample/feature_puppy/search/views/search_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 
@@ -10,8 +12,19 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
-class HomePage extends StatelessWidget {
+part 'home_providers.dart';
+
+class HomePage extends StatelessWidget implements AutoRouteWrapper {
+  HomePage({Key key}) : super(key: key);
+
+  @override
+  Widget wrappedRoute(BuildContext context) => MultiBlocProvider(
+      providers: _getProviders(),
+      child: this,
+    );
+
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
@@ -33,8 +46,8 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  Widget asPage(NavigationBarState state){
-    switch(state.selectedItem.type){
+  Widget asPage(NavigationBarState state) {
+    switch (state.selectedItem.type) {
       case NavigationItemType.search:
         return SearchPage();
       case NavigationItemType.favorites:
@@ -42,6 +55,7 @@ class HomePage extends StatelessWidget {
     }
     return Container();
   }
+
   BlocBuilder<NavigationBarBloc, NavigationBarState> _buildNavBar() =>
       BlocBuilder<NavigationBarBloc, NavigationBarState>(
         builder: (context, state) => CurvedNavigationBar(

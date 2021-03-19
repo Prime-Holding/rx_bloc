@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:favorites_advanced_base/resources.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/input_styles.dart';
+import 'package:rx_bloc_favorites_advanced/base/resources/rx_input_styles.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_card.dart';
@@ -19,89 +19,89 @@ class PuppyEditForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SafeArea(
-        key: const ValueKey('PuppyEditPage'),
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                RxBlocListener<PuppyManageBlocType, bool>(
-                  state: (bloc) => bloc.states.updateComplete,
-                  listener: (context, result) {
-                    if (result) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-                RxBlocListener<PuppyManageBlocType, String>(
-                  state: (bloc) => bloc.states.error,
-                  listener: (context, error) {
-                    if (error != null) {
-                      Scaffold.of(context)
-                          .showSnackBar(SnackBar(content: Text(error)));
-                    }
-                  },
-                ),
-                RxBlocBuilder<PuppyManageBlocType, String>(
-                  state: (bloc) => bloc.states.imagePath,
-                  builder: (context, snapshot, bloc) => PuppyEditAvatar(
-                    heroTag: '$PuppyCardAnimationTag ${_puppy.id}',
-                    imgPath: snapshot.data ?? _puppy.asset,
-                    pickImage: (source) => bloc.events.setImage(source),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                PuppyEditCard(
-                  label: 'Name',
-                  content: _buildNameField(),
-                  icon: Icons.account_box,
-                ),
-                PuppyEditCard(
-                  label: 'Breed',
-                  content: _buildBreedSelection(),
-                  icon: Icons.pets,
-                ),
-                PuppyEditCard(
-                  label: 'Gender',
-                  content: _buildGenderSelection(),
-                  icon: Icons.wc,
-                ),
-                PuppyEditCard(
-                  label: 'Characteristics',
-                  content: _buildCharacteristicsField(),
-                  icon: Icons.article,
-                ),
-              ],
+    key: const ValueKey('PuppyEditPage'),
+    child: SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            RxBlocListener<PuppyManageBlocType, bool>(
+              state: (bloc) => bloc.states.updateComplete,
+              listener: (context, result) {
+                if (result) {
+                  Navigator.of(context).pop();
+                }
+              },
             ),
-          ),
+            RxBlocListener<PuppyManageBlocType, String>(
+              state: (bloc) => bloc.states.error,
+              listener: (context, error) {
+                if (error != null) {
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text(error)));
+                }
+              },
+            ),
+            RxBlocBuilder<PuppyManageBlocType, String>(
+              state: (bloc) => bloc.states.imagePath,
+              builder: (context, snapshot, bloc) => PuppyEditAvatar(
+                heroTag: '$PuppyCardAnimationTag ${_puppy.id}',
+                imgPath: snapshot.data ?? _puppy.asset,
+                pickImage: (source) => bloc.events.setImage(source),
+              ),
+            ),
+            const SizedBox(height: 20),
+            PuppyEditCard(
+              label: 'Name',
+              content: _buildNameField(),
+              icon: Icons.account_box,
+            ),
+            PuppyEditCard(
+              label: 'Breed',
+              content: _buildBreedSelection(),
+              icon: Icons.pets,
+            ),
+            PuppyEditCard(
+              label: 'Gender',
+              content: _buildGenderSelection(),
+              icon: Icons.wc,
+            ),
+            PuppyEditCard(
+              label: 'Characteristics',
+              content: _buildCharacteristicsField(),
+              icon: Icons.article,
+            ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 
   Widget _buildNameField() => RxTextFormFieldBuilder<PuppyManageBlocType>(
-        state: (bloc) => bloc.states.name,
-        showErrorState: (bloc) => bloc.states.showErrors,
-        onChanged: (bloc, value) => bloc.events.setName(value),
-        //optional
-        decorationData: InputStyles.textFieldDecorationData,
-        builder: (fieldState) => TextFormField(
-          key: const ValueKey('PuppyNameInputField'),
-          cursorColor: const Color(0xff333333),
-          style: TextStyles.editableTextStyle,
-          maxLines: 1,
-          textInputAction: TextInputAction.next,
-          maxLengthEnforced: true,
-          controller: fieldState.controller,
-          decoration: fieldState.decoration
-              .copyWithDecoration(InputStyles.textFieldDecoration),
-        ),
-      );
+    state: (bloc) => bloc.states.name,
+    showErrorState: (bloc) => bloc.states.showErrors,
+    onChanged: (bloc, value) => bloc.events.setName(value),
+    //optional
+    decorationData: RxInputStyles.textFieldDecorationData,
+    builder: (fieldState) => TextFormField(
+      key: const ValueKey('PuppyNameInputField'),
+      cursorColor: const Color(0xff333333),
+      style: TextStyles.editableTextStyle,
+      maxLines: 1,
+      textInputAction: TextInputAction.next,
+      maxLengthEnforced: true,
+      controller: fieldState.controller,
+      decoration: fieldState.decoration
+          .copyWithDecoration(InputStyles.textFieldDecoration),
+    ),
+  );
 
   Widget _buildCharacteristicsField() =>
       RxTextFormFieldBuilder<PuppyManageBlocType>(
         state: (bloc) => bloc.states.characteristics,
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setCharacteristics(value),
-        decorationData: InputStyles.textFieldDecorationData,
+        decorationData: RxInputStyles.textFieldDecorationData,
         builder: (fieldState) => TextFormField(
           cursorColor: const Color(0xff333333),
           key: const ValueKey('PuppyCharacteristicsInputField'),
@@ -129,13 +129,13 @@ class PuppyEditForm extends StatelessWidget {
                 items: BreedType.values
                     .map(
                       (breedType) => DropdownMenuItem<BreedType>(
-                        value: breedType,
-                        child: Text(
-                          PuppyDataConversion.getBreedTypeString(breedType),
-                          style: TextStyles.editableTextStyle,
-                        ),
-                      ),
-                    )
+                    value: breedType,
+                    child: Text(
+                      PuppyDataConversion.getBreedTypeString(breedType),
+                      style: TextStyles.editableTextStyle,
+                    ),
+                  ),
+                )
                     .toList(),
               ),
             ),
