@@ -9,6 +9,7 @@
 
 <br/>
 <div id="setup"/>
+
 ### Setup
 
 In order to make use of the RxPaginatedBuilder, you first need to specify the following required parameters:
@@ -17,6 +18,7 @@ In order to make use of the RxPaginatedBuilder, you first need to specify the fo
 - `onBottomScrolled` is a callback that is executed once the end of the list is reached. This can be, for instance, used for fetching the next page of data.
 
 <div id="additional-params" />
+
 ### Additional parameters
 
 *RxPaginatedBuilder* also comes with additional optional parameters that can be adjusted to you needs.
@@ -41,6 +43,7 @@ RxPaginatedBuilder<UserBlocType, User>(
 ```
 
 <div id="withRefreshIndicator" />
+
 ### RxPaginatedBuilder.withRefreshIndicator
 
 Sometimes, you may want to have a working pagination and pull-to-refresh without spending too much time on it. Using the *RxPaginatedBuilder.withRefreshIndicator* gives you access to a [Refresh Indicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html "Refresh Indicator") straight out of the box.
