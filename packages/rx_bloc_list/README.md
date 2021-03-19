@@ -1,14 +1,23 @@
-### RxPaginatedBuilder
+## RxPaginatedBuilder
 
-*RxPaginatedBuilder* provides the flexibility and simplicity of presentation
-of paginated data with the use of [RxBloc](https://github.com/Prime-Holding/rx_bloc "RxBloc")s inside the *RxBloc ecosystem*. It was created with the intention of presenting a list of data that can be loaded once that list has reached its end, or can be refreshed using a pull-to-refresh feature (see *RxPaginatedBuilder.withRefreshIndicator*).
+*RxPaginatedBuilder* package giving the user the possibility to quickly add infinity scroll and pull-to-refresh features to their project with minimal setup. It provides the flexibility and simplicity of presentation of paginated data with the use of [RxBloc](https://github.com/Prime-Holding/rx_bloc "RxBloc")s inside the *RxBloc ecosystem*.
+
+## Table of contents
+- [Setup](#setup)
+- [Additional parameters](#additional-params)
+- [RxPaginatedBuilder.withRefreshIndicator](#withRefreshIndicator)
+
+<br/>
+<div id="setup"/>
+### Setup
 
 In order to make use of the RxPaginatedBuilder, you first need to specify the following required parameters:
 - `state` is the state of the BLoC that will be listened for changes. The state is a `Stream<PaginatedList<T>>` where T is the type of the data that is being paginated.
 - `builder` is the method which creates the child widget. Every time the state updates, this method is executed and the widget is rebuild. Inside the builder method you have access to the `BuildContext`, `AsyncSnapshot<PaginatedList<T>>` of the data that is being paginated and the `BLoC` that contains the listened state.
 - `onBottomScrolled` is a callback that is executed once the end of the list is reached. This can be, for instance, used for fetching the next page of data.
 
-#### Additional parameters
+<div id="additional-params" />
+### Additional parameters
 
 *RxPaginatedBuilder* also comes with additional optional parameters that can be adjusted to you needs.
 
@@ -24,14 +33,15 @@ There may be cases where you have a reference to the BLoC that is used by the Rx
 
 Here is an example of what a RxPaginatedBloc using a UserBloc looks like:
 ```dart
-RxPaginatedBuilder<UserBloc,User>(
+RxPaginatedBuilder<UserBlocType, User>(
 	state: (bloc) => bloc.states.paginatedUsers,
 	onBottomScrolled: (bloc) => bloc.events.loadNextPage(),
 	builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
 );
 ```
 
-#### RxPaginatedBuilder.withRefreshIndicator
+<div id="withRefreshIndicator" />
+### RxPaginatedBuilder.withRefreshIndicator
 
 Sometimes, you may want to have a working pagination and pull-to-refresh without spending too much time on it. Using the *RxPaginatedBuilder.withRefreshIndicator* gives you access to a [Refresh Indicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html "Refresh Indicator") straight out of the box.
 
@@ -39,7 +49,7 @@ Along with the required parameters of the default implementation, *RxPaginatedBu
 
 Here is an example of what a RxPaginatedBloc using a UserBloc looks like using the *withRefreshIndicator* constructor :
 ```dart
-RxPaginatedBuilder<UserBloc,User>.withRefreshIndicator(
+RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
 	state: (bloc) => bloc.states.paginatedUsers,
 	onBottomScrolled: (bloc) => bloc.events.loadNextPage(),
 	builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),

@@ -2,7 +2,8 @@ part of 'paginated_list.dart';
 
 /// PaginatedList extensions
 extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
-  /// Convenience method that maps the data from the paginated list to a stream
+  /// Convenience method that maps the data from the paginated list to a stream,
+  /// handling error, loading and success states
   Stream<PaginatedList<T>> mergeWithPaginatedList(
     BehaviorSubject<PaginatedList<T>> paginatedList,
   ) =>

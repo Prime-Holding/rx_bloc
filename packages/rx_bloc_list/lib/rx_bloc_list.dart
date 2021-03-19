@@ -1,4 +1,4 @@
 library rx_bloc_list;
 
-export 'widgets.dart';
 export 'models.dart';
+export 'widgets.dart';

@@ -15,8 +15,8 @@ part 'paginated_list_extensions.dart';
 /// If the number of total items is known in advance, it can be specified as the
 /// [totalCount] parameter.
 ///
-/// The [isLoading] parameter represents whether the data is loading or has loaded.
-/// This can be useful when building ui-related refresh states.
+/// The [isLoading] parameter represents whether the data is loading or has
+/// loaded. This can be useful when building ui-related refresh states.
 ///
 /// If an error occurs while using the paginated list, it can be stored inside
 /// the [error] parameter. Usually you would store any data fetching or related
@@ -26,21 +26,23 @@ part 'paginated_list_extensions.dart';
 /// [pageNumber] value. Please note, that the number of pages is affected by the
 /// actual [length] of the list and the [pageSize].
 ///
-/// Unlike the [length] of the list which is the actual number of items in the list,
-/// the [itemCount] represents the number of items that should be rendered on screen.
-/// The [itemCount] is equal to [length], unless the next page is loading. Then,
-/// the [itemCount] also accounts for the loading widget at the bottom of the list
-/// in case there are more items to be loaded.
+/// Unlike the [length] of the list which is the actual number of items in the
+/// list, the [itemCount] represents the number of items that should be rendered
+/// on screen. The [itemCount] is equal to [length], unless the next page is
+/// loading. Then, the [itemCount] also accounts for the loading widget at the
+/// bottom of the list in case there are more items to be loaded.
 ///
-/// In order to tell whether there is a next page to be loaded, [hasNextPage] can
-/// be used for that case.
+/// In order to tell whether there is a next page to be loaded, [hasNextPage]
+/// can be used for that case.
 ///
-/// Getters [isInitialLoading] and [isNextPageLoading] reflect the current loading
-/// state of the list. If there is no data and [isLoading] is true, the getter
-/// [isInitialLoading] will return true. Similarly, if [isLoading] is true and we
-/// can load a new page, the getter [isNextPageLoading] will return true.
+/// Getters [isInitialLoading] and [isNextPageLoading] reflect the current
+/// loading state of the list. If there is no data and [isLoading] is true, the
+/// getter [isInitialLoading] will return true. Similarly, if [isLoading] is
+/// true and we can load a new page, the getter [isNextPageLoading] will return
+/// true.
 ///
 class PaginatedList<E> extends ListBase<E> {
+  /// PaginatedList constructor
   PaginatedList({
     required this.list,
     required this.pageSize,
@@ -97,6 +99,7 @@ class PaginatedList<E> extends ListBase<E> {
     list[index] = value;
   }
 
+  /// Returns a modified version of the current PaginatedList
   PaginatedList<E> copyWith({
     List<E>? list,
     bool? isLoading,
@@ -111,4 +114,8 @@ class PaginatedList<E> extends ListBase<E> {
         error: error ?? this.error,
         pageSize: pageSize ?? this.pageSize,
       );
+
+  /// Returns element at given index. If element outside bound, null is returned
+  E? getElement(int index) =>
+      (index >= length || index < 0) ? null : list[index];
 }

@@ -9,32 +9,23 @@ void main() {
   runApp(MyApp());
 }
 
+/// App entry
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RxBlocList Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: RxBlocProvider<UserBlocType>(
         create: (context) => UserBloc(repository: UserRepository()),
-        child: MyHomePage(),
+        child: PaginatedListPage(),
       ),
     );
   }
 }
 
-/// region Home page
+/// region Paginated List page
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage();
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class PaginatedListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
@@ -52,22 +43,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildPaginatedList(AsyncSnapshot<PaginatedList<User>> snapshot) {
     if (!snapshot.hasData ||
         (snapshot.hasData && snapshot.data!.isInitialLoading)) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     final list = snapshot.data!;
 
     return ListView.builder(
-      itemBuilder: (context, index) => itemBuilder(list, index),
+      itemBuilder: (context, index) => _itemBuilder(list.getElement(index)),
       itemCount: list.itemCount,
     );
   }
 
-  Widget itemBuilder(PaginatedList<User> list, int index) {
-    if (list.length == index) {
-      return Center(
+  Widget _itemBuilder(User? user) {
+    if (user == null) {
+      return const Center(
         child: Padding(
           padding: EdgeInsets.only(top: 12),
           child: CircularProgressIndicator(),
@@ -77,7 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Card(
       child: ListTile(
-        title: Text(list[index].name),
+        leading: CircleAvatar(
+          child: Text(user.id.toString()),
+        ),
+        title: Text(user.name),
       ),
     );
   }
@@ -85,11 +77,116 @@ class _MyHomePageState extends State<MyHomePage> {
 
 /// endregion
 
+/// region User Bloc
+
+/// A contract class containing all events of the UserBloC.
+abstract class UserBlocEvents {
+  /// Load the next page of data. If reset is true, refresh the data and load
+  /// the very first page
+  void loadPage({bool reset = false});
+}
+
+/// A contract class containing all states of the UserBloC.
+abstract class UserBlocStates {
+  /// The loading state
+  Stream<bool> get isLoading;
+
+  /// The error state
+  Stream<String> get errors;
+
+  /// The paginated list data
+  Stream<PaginatedList<User>> get paginatedList;
+}
+
+/// User Bloc
+@RxBloc()
+class UserBloc extends $UserBloc {
+  /// UserBloc default constructor
+  UserBloc({required UserRepository repository}) {
+    _$loadPageEvent
+        // Start the data fetching immediately when the page loads
+        .startWith(true)
+        .fetchData(repository, _paginatedList)
+        // Enable state handling by the current bloc
+        .setResultStateHandler(this)
+        // Merge the data in the _paginatedList
+        .mergeWithPaginatedList(_paginatedList)
+        .bind(_paginatedList)
+        // Make sure we dispose the subscription
+        .disposedBy(_compositeSubscription);
+  }
+
+  /// Internal paginated list stream
+  final _paginatedList = BehaviorSubject<PaginatedList<User>>.seeded(
+    PaginatedList<User>(
+      list: [],
+      pageSize: 50,
+    ),
+  );
+
+  @override
+  Stream<PaginatedList<User>> _mapToPaginatedListState() => _paginatedList;
+
+  @override
+  Stream<String> _mapToErrorsState() =>
+      errorState.map((event) => event.toString());
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  /// Disposes of all streams to prevent memory leaks
+  @override
+  void dispose() {
+    _paginatedList.close();
+    super.dispose();
+  }
+}
+
+/// Utility extensions for the User Bloc
+extension UserBlocStreamExtensions on Stream<bool> {
+  /// Fetches appropriate data from the repository
+  Stream<Result<PaginatedList<User>>> fetchData(
+    UserRepository _repository,
+    BehaviorSubject<PaginatedList<User>> _paginatedList,
+  ) =>
+      switchMap(
+        (reset) {
+          if (reset) _paginatedList.value!.length = 0;
+
+          return _repository
+              .fetchPage(
+                _paginatedList.value!.pageNumber + 1,
+                _paginatedList.value!.pageSize,
+              )
+              .asResultStream();
+        },
+      );
+}
+
+/// endregion
+
 /// region Models and repositories
 
+class User {
+  /// User constructor
+  User({
+    required this.id,
+    this.name = '',
+  });
+
+  /// The id of the user
+  final int id;
+
+  /// The name of the user
+  final String name;
+}
+
+/// User repository which represents a mock repository which simulates retrieval
+/// of mock data, adding a custom delay.
 class UserRepository {
+  /// Fetches a specific page from the repository with the given size
   Future<PaginatedList<User>> fetchPage(int page, int pageSize) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     if (page > 10)
       return PaginatedList(
@@ -113,83 +210,6 @@ class UserRepository {
   }
 }
 
-class User {
-  User({
-    required this.id,
-    this.name = '',
-  });
-
-  final int id;
-  final String name;
-}
-
-/// endregion
-
-/// region User Bloc
-
-/// A contract class containing all events of the UserBloC.
-abstract class UserBlocEvents {
-  void loadPage({bool reset = false});
-}
-
-/// A contract class containing all states of the UserBloC.
-abstract class UserBlocStates {
-  /// The loading state
-  Stream<bool> get isLoading;
-
-  /// The error state
-  Stream<String> get errors;
-
-  Stream<PaginatedList<User>> get paginatedList;
-}
-
-@RxBloc()
-class UserBloc extends $UserBloc {
-  final _paginatedList = BehaviorSubject<PaginatedList<User>>.seeded(
-    PaginatedList<User>(
-      list: [],
-      pageSize: 50,
-    ),
-  );
-
-  UserBloc({required UserRepository repository}) {
-    _$loadPageEvent
-        .startWith(true)
-        .switchMap(
-          (reset) {
-            if (reset) _paginatedList.value!.length = 0;
-
-            return repository
-                .fetchPage(
-                  _paginatedList.value!.pageNumber + 1,
-                  _paginatedList.value!.pageSize,
-                )
-                .asResultStream();
-          },
-        )
-        .setResultStateHandler(this)
-        .mergeWithPaginatedList(_paginatedList)
-        .bind(_paginatedList)
-        .disposedBy(_compositeSubscription);
-  }
-
-  @override
-  Stream<PaginatedList<User>> _mapToPaginatedListState() => _paginatedList;
-
-  @override
-  Stream<String> _mapToErrorsState() =>
-      errorState.map((event) => event.toString());
-
-  @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
-
-  @override
-  void dispose() {
-    _paginatedList.close();
-    super.dispose();
-  }
-}
-
 /// endregion
 
 /// region Generated code
@@ -203,7 +223,10 @@ class UserBloc extends $UserBloc {
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class UserBlocType extends RxBlocTypeBase {
+  /// Events of the bloc
   UserBlocEvents get events;
+
+  /// States of the bloc
   UserBlocStates get states;
 }
 
