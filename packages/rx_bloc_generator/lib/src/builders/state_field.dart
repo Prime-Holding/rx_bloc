@@ -2,7 +2,7 @@ part of rx_bloc_generator;
 
 /// A mapper that converts a [FieldElement] into an event [Field]
 class _StateField implements _BuilderContract {
-  const _StateField(this.field) : assert(field != null);
+  const _StateField(this.field);
 
   final FieldElement field;
 
@@ -18,8 +18,9 @@ class _StateField implements _BuilderContract {
             ]
           ])
           ..type = refer(
-            field.type.getDisplayString(withNullability: false),
+            'late final ${field.type.getDisplayString(withNullability: true)}',
           )
+          ..assignment = refer(field.stateMethodName).newInstance([]).code
           ..name = field.stateFieldName,
       );
 }

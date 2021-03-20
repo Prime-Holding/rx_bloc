@@ -1,3 +1,6 @@
+## [3.0.0] - March 10, 2021
+* Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
+
 ## [2.0.0] - February 12, 2021
 * Support events with optional parameter and enum default value
 * Support events with named parameter and a default value

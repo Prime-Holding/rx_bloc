@@ -8,7 +8,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Generates the bloc based on the class with the @RxBloc() annotation.
   /// If either the states or events class is missing the file is not generated.
   @override
-  Future<String> generateForAnnotatedElement(
+  Future<String?> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
@@ -20,7 +20,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       return null;
     }
 
-    final ClassElement classElement = element as ClassElement;
+    final ClassElement classElement = element;
 
     final LibraryReader libraryReader = LibraryReader(classElement.library);
 
@@ -34,8 +34,8 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         //   void fetch();
         // }
         eventClass: libraryReader.classes.firstWhere(
-            (ClassElement classElement) => classElement.displayName
-                .contains(annotation.read('eventsClassName')?.stringValue),
+            (ClassElement classElement) => classElement.displayName.contains(
+                annotation.read('eventsClassName')?.stringValue ?? ''),
             orElse: () => null),
 
         /// Provides the states class as [ClassElement]
@@ -44,8 +44,8 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         //   void fetch();
         // }
         stateClass: libraryReader.classes.firstWhere(
-            (classElement) => classElement.displayName
-                .contains(annotation.read('statesClassName')?.stringValue),
+            (classElement) => classElement.displayName.contains(
+                annotation.read('statesClassName')?.stringValue ?? ''),
             orElse: () => null),
       ).generate();
     } on _RxBlocGeneratorException catch (e) {
@@ -57,14 +57,14 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       // Format error
       _reportIssue(
         'FormatterException \n $message',
-        libraryReader.allElements.first.source.contents.data.toString(),
+        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
       return null;
     } on Exception catch (e) {
       // System error
       _reportIssue(
         e.toString(),
-        libraryReader.allElements.first.source.contents.data.toString(),
+        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
       return null;
     }

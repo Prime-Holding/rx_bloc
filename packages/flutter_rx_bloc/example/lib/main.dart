@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   // ignore: public_member_api_docs
   const HomePage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -46,9 +46,9 @@ class HomePage extends StatelessWidget {
             RxBlocListener<CounterBlocType, String>(
               state: (bloc) => bloc.states.errors,
               listener: (context, errorMessage) =>
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(errorMessage),
+                  content: Text(errorMessage ?? 'Unknown error'),
                   behavior: SnackBarBehavior.floating,
                 ),
               ),
@@ -162,7 +162,7 @@ class CounterBloc extends $CounterBloc {
 
 extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {
   /// The loading state extracted from the snapshot
-  bool get isLoading => hasData && data;
+  bool get isLoading => hasData && data!;
 
   /// The color based on the isLoading state
   Color get buttonColor => isLoading ? Colors.blueGrey : Colors.blue;

@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
@@ -11,20 +10,21 @@ import 'package:rx_bloc_favorites_advanced/feature_puppy/validators/puppy_valida
 
 part 'puppy_edit_providers.dart';
 
-class PuppyEditPage extends StatefulWidget with AutoRouteWrapper {
+class PuppyEditPage extends StatefulWidget {
   const PuppyEditPage({
-    @required Puppy puppy,
-    Key key,
+    required Puppy? puppy,
+    Key? key,
   })  : _puppy = puppy,
         super(key: key);
 
-  final Puppy _puppy;
-
-  @override
-  Widget wrappedRoute(BuildContext context) => RxMultiBlocProvider(
-        providers: _getProviders(_puppy),
-        child: this,
+  static Page page({required Puppy? puppy}) => MaterialPage(
+        child: RxMultiBlocProvider(
+          providers: _getProviders(puppy),
+          child: PuppyEditPage(puppy: puppy),
+        ),
       );
+
+  final Puppy? _puppy;
 
   @override
   _PuppyEditPageState createState() => _PuppyEditPageState();
@@ -42,7 +42,7 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
         state: (bloc) => bloc.states.isLoading,
         builder: (context, isLoading, _) => WillPopScope(
           onWillPop: () =>
-              isLoading.data ? Future.value(false) : Future.value(true),
+              isLoading.data! ? Future.value(false) : Future.value(true),
           child: RxUnfocuser(
             child: RxBlocBuilder<PuppyManageBlocType, bool>(
               state: (bloc) => bloc.states.isSaveEnabled,

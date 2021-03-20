@@ -1,5 +1,6 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
@@ -7,16 +8,30 @@ import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
-import '../../../mocks.dart';
 import '../../../stubs.dart';
+import 'puppy_list_bloc_test.mocks.dart';
 
+@GenerateMocks([
+  CoordinatorEvents,
+  CoordinatorStates,
+  CoordinatorBlocType,
+  PuppiesRepository,
+])
 void main() {
-  CoordinatorBlocType coordinatorMock;
-  PuppiesRepository repositoryMock;
+  late MockCoordinatorBlocType coordinatorMock;
+  late MockCoordinatorStates mockCoordinatorStates;
+  late MockCoordinatorEvents mockCoordinatorEvents;
+  late MockPuppiesRepository repositoryMock;
 
   setUp(() {
-    coordinatorMock = CoordinatorBlocMock();
-    repositoryMock = PuppiesRepositoryMock();
+    coordinatorMock = MockCoordinatorBlocType();
+    mockCoordinatorStates = MockCoordinatorStates();
+    mockCoordinatorEvents = MockCoordinatorEvents();
+
+    when(coordinatorMock.states).thenReturn(mockCoordinatorStates);
+    when(coordinatorMock.events).thenReturn(mockCoordinatorEvents);
+
+    repositoryMock = MockPuppiesRepository();
   });
 
   group('PuppyListBloc searchedPuppies', () {
@@ -25,7 +40,7 @@ void main() {
       'success triggered by reloadFavoritePuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated)
+        when(mockCoordinatorStates.onPuppiesUpdated)
             .thenAnswer((_) => const Stream.empty());
 
         when(repositoryMock.getPuppies())
@@ -53,7 +68,7 @@ void main() {
       'success triggered by filterPuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
-        when(coordinatorMock.states.onPuppiesUpdated)
+        when(mockCoordinatorStates.onPuppiesUpdated)
             .thenAnswer((_) => const Stream.empty());
 
         when(repositoryMock.getPuppies(query: ''))
@@ -89,7 +104,7 @@ void main() {
         when(repositoryMock.getPuppies())
             .thenAnswer((_) async => Stub.puppies123Test);
 
-        when(coordinatorMock.states.onPuppiesUpdated)
+        when(mockCoordinatorStates.onPuppiesUpdated)
             .thenAnswer((_) => Stub.delayed(Stub.puppiesTestUpdated, 800));
 
         return PuppyListBloc(repositoryMock, coordinatorMock);

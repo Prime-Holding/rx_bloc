@@ -12,7 +12,7 @@ class PhotoPickerActionSelectionBottomSheet {
 
   static presentPhotosBottomSheet(
     BuildContext context,
-    Function(ImagePickerAction source) onChooseAction,
+    Function(ImagePickerAction? source) onChooseAction,
   ) {
     if (Platform.isAndroid) {
       _presentMaterialBottomSheet(context, onChooseAction);
@@ -23,7 +23,7 @@ class PhotoPickerActionSelectionBottomSheet {
 
   static void _presentCupertinoBottomSheet(
     BuildContext context,
-    Function(ImagePickerAction source) onChooseAction,
+    Function(ImagePickerAction? source) onChooseAction,
   ) async {
     var result = await showCupertinoModalPopup(
       context: context,
@@ -55,7 +55,7 @@ class PhotoPickerActionSelectionBottomSheet {
 
   static void _presentMaterialBottomSheet(
     BuildContext context,
-    Function(ImagePickerAction source) onChooseAction,
+    Function(ImagePickerAction? source) onChooseAction,
   ) async {
     var result = await showModalBottomSheet<ImagePickerAction>(
       context: context,
