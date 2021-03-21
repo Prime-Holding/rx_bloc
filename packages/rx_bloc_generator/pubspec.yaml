@@ -17,6 +17,7 @@ dependencies:
   rx_bloc: ^2.0.0
   code_builder: ^3.7.0
   mockito: ^5.0.0
+  collection: ^1.15.0
 
 dev_dependencies:
   pedantic: ^1.9.2
