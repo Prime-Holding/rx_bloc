@@ -2,7 +2,7 @@ part of rx_bloc_generator;
 
 /// A mapper that converts a [MethodElement] into an event [Method]
 class _StateMethod implements _BuilderContract {
-  const _StateMethod(this.field) : assert(field != null);
+  const _StateMethod(this.field);
 
   final FieldElement field;
 
@@ -11,7 +11,7 @@ class _StateMethod implements _BuilderContract {
         (b) => b
           ..docs.addAll(['']) // A new line
           ..returns = refer(
-            field.type.getDisplayString(withNullability: false),
+            field.type.getDisplayString(withNullability: true),
           )
           ..name = field.stateMethodName,
       );

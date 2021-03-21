@@ -8,7 +8,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Generates the bloc based on the class with the @RxBloc() annotation.
   /// If either the states or events class is missing the file is not generated.
   @override
-  Future<String> generateForAnnotatedElement(
+  Future<String?> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
@@ -20,9 +20,9 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       return null;
     }
 
-    final ClassElement classElement = element as ClassElement;
+    final classElement = element;
 
-    final LibraryReader libraryReader = LibraryReader(classElement.library);
+    final libraryReader = LibraryReader(classElement.library);
 
     try {
       return _BuildController(
@@ -33,38 +33,38 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         /// abstract class {RxBlocName}BlocEvents {
         //   void fetch();
         // }
-        eventClass: libraryReader.classes.firstWhere(
-            (ClassElement classElement) => classElement.displayName
-                .contains(annotation.read('eventsClassName')?.stringValue),
-            orElse: () => null),
+        eventClass: libraryReader.classes.firstWhereOrNull(
+          (ClassElement classElement) => classElement.displayName
+              .contains(annotation.read('eventsClassName')?.stringValue ?? ''),
+        ),
 
         /// Provides the states class as [ClassElement]
         ///
         /// abstract class {RxBlocName}BlocEvents {
         //   void fetch();
         // }
-        stateClass: libraryReader.classes.firstWhere(
-            (classElement) => classElement.displayName
-                .contains(annotation.read('statesClassName')?.stringValue),
-            orElse: () => null),
+        stateClass: libraryReader.classes.firstWhereOrNull(
+          (classElement) => classElement.displayName
+              .contains(annotation.read('statesClassName')?.stringValue ?? ''),
+        ),
       ).generate();
     } on _RxBlocGeneratorException catch (e) {
       // User error
       _logError(e.message);
       return null;
     } on FormatterException catch (e) {
-      String message = e.errors.map((AnalysisError e) => e.message).join('\n');
+      var message = e.errors.map((AnalysisError e) => e.message).join('\n');
       // Format error
       _reportIssue(
         'FormatterException \n $message',
-        libraryReader.allElements.first.source.contents.data.toString(),
+        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
       return null;
     } on Exception catch (e) {
       // System error
       _reportIssue(
         e.toString(),
-        libraryReader.allElements.first.source.contents.data.toString(),
+        libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
       return null;
     }

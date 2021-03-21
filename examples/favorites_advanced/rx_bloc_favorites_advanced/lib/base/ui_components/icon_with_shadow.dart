@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/color_styles.dart';
+import 'package:favorites_advanced_base/resources.dart';
 
 class IconWithShadow extends StatelessWidget {
   const IconWithShadow({
     this.icon,
     this.iconColor = ColorStyles.white,
     this.shadowColor = ColorStyles.shadow,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
-  final IconData icon;
+  final IconData? icon;
   final Color iconColor;
   final Color shadowColor;
 

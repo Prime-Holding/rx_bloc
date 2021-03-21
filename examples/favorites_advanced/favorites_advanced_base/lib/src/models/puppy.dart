@@ -1,7 +1,5 @@
 import 'package:favorites_advanced_base/src/utils/enums.dart';
 import 'package:favorites_advanced_base/src/utils/puppy_data_conversion.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 
 part '../extensions/puppy_extensions.dart';
 
@@ -16,13 +14,13 @@ class Puppy {
   bool isFavorite;
 
   // Properties that should simulate remote fetching of entity data
-  final String displayName;
-  final String displayCharacteristics;
+  final String? displayName;
+  final String? displayCharacteristics;
 
   Puppy({
-    @required this.id,
-    @required this.name,
-    @required this.asset,
+    required this.id,
+    required this.name,
+    required this.asset,
     this.displayName,
     this.displayCharacteristics,
     this.isFavorite = false,
@@ -53,7 +51,6 @@ class Puppy {
 
   @override
   String toString() => '{$id, $name, $asset, $breedType, $isFavorite,'
-      '${breedCharacteristics == null ? "no breedCharacteristics" : ""}'
       '${displayName == null ? "no displayName" : displayName}'
       '${displayCharacteristics == null ? "no displayBreedCharacteristics" : ""} }';
 }

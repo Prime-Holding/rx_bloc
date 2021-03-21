@@ -10,7 +10,7 @@ part of rx_bloc_generator;
 ///   ..super.dispose();
 /// }
 class _DisposeMethod implements _BuilderContract {
-  const _DisposeMethod(this.eventMethods) : assert(eventMethods != null);
+  const _DisposeMethod(this.eventMethods);
 
   final List<MethodElement> eventMethods;
 
