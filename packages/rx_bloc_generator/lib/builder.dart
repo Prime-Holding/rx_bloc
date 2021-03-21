@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'package:build/build.dart';
 import 'package:rx_bloc_generator/rx_bloc_generator.dart';
 import 'package:source_gen/source_gen.dart';

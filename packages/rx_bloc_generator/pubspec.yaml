@@ -10,12 +10,13 @@ environment:
 
 dependencies:
   logging: ^1.0.0
-  source_gen: ^0.9.0
+  source_gen: ">=0.9.10 <2.0.0"
+  dart_style: ">=1.3.0 <3.0.0"
   analyzer: ">=0.41.0 <2.0.0"
-  build: ^1.6.0
+  build: ^2.0.0
   rx_bloc: ^2.0.0
-  code_builder: ^3.6.0
-  dart_style: ^1.3.10
+  code_builder: ^3.7.0
+  mockito: ^5.0.0
 
 dev_dependencies:
   pedantic: ^1.9.2
@@ -23,14 +24,14 @@ dev_dependencies:
   test: ^1.16.0
   source_gen_test: any
 
-dependency_overrides:
-  rx_bloc:
-    path: ../rx_bloc
+#dependency_overrides:
+#  rx_bloc:
+#    path: ../rx_bloc
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
+#flutter:
 
 # To add assets to your package, add an assets section, like this:
 # assets:
