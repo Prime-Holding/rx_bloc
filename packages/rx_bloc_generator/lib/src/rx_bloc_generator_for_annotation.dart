@@ -20,9 +20,9 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       return null;
     }
 
-    final ClassElement classElement = element;
+    final classElement = element;
 
-    final LibraryReader libraryReader = LibraryReader(classElement.library);
+    final libraryReader = LibraryReader(classElement.library);
 
     try {
       return _BuildController(
@@ -53,7 +53,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       _logError(e.message);
       return null;
     } on FormatterException catch (e) {
-      String message = e.errors.map((AnalysisError e) => e.message).join('\n');
+      var message = e.errors.map((AnalysisError e) => e.message).join('\n');
       // Format error
       _reportIssue(
         'FormatterException \n $message',
