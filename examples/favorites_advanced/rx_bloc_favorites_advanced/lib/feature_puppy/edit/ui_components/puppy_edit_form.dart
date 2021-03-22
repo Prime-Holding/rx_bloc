@@ -83,9 +83,7 @@ class PuppyEditForm extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget _buildNameField() => RxTextFormFieldBuilder<PuppyManageBlocType>(
         state: (bloc) => bloc.states.name,
