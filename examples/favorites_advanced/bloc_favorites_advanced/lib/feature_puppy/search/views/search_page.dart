@@ -1,4 +1,3 @@
-import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,11 @@ class SearchPage extends StatelessWidget {
           key: const Key(Keys.puppySearchPage),
           builder: (context, state) {
             switch (state.status) {
+              case PuppyListStatus.loading:
+                context.read<PuppyListBloc>().add(LoadPuppyListEvent());
+                return LoadingWidget(
+                  key: const Key('LoadingWidget'),
+                );
               case PuppyListStatus.failure:
                 return const Center(child: Text('failed to fetch puppies'));
               case PuppyListStatus.success:
@@ -21,8 +25,8 @@ class SearchPage extends StatelessWidget {
                   onRefresh: () {
                     context
                         .read<PuppyListBloc>()
-                        .add(ReloadFavoritePuppies(silently: true));
-                    return Future.delayed(const Duration(seconds: 1));
+                        .add(ReloadPuppiesEvent(silently: true));
+                    return Future.delayed(const Duration(milliseconds: 1000));
                   },
                   child: SafeArea(
                     child: ListView.builder(
@@ -30,29 +34,19 @@ class SearchPage extends StatelessWidget {
                       itemCount: state.searchedPuppies.length,
                       itemBuilder: (context, index) {
                         final item = state.searchedPuppies[index];
-                        // context.read<PuppyListBloc>().add(LoadPuppyListEvent());
-
                         return PuppyCard(
                           key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
-                          // onVisible: (puppy) => context
-                          //       .read<PuppiesExtraDetailsBloc>()
-                          //       .add(FetchPuppiesExtraDetailsEvent(puppy)),
+                          onVisible: (puppy) => context
+                              .read<PuppyListBloc>()
+                              .add(PuppyFetchDetailsEvent(puppy: puppy)),
                           puppy: item,
                         );
                       },
                     ),
                   ),
                 );
-              // default:
-              case PuppyListStatus.loading:
-                context.read<PuppyListBloc>().add(LoadPuppyListEvent());
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
               default:
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: Text('failed to fetch puppies'));
             }
           });
 }

@@ -20,9 +20,9 @@ extension PuppUtils on Puppy {
         isFavorite: isFavorite ?? this.isFavorite,
         gender: gender ?? this.gender,
         breedType: breedType ?? this.breedType,
-        displayName: displayName ?? this.displayName,
+        displayName: displayName ?? this.displayName ,
         displayCharacteristics:
-            displayCharacteristics ?? this.displayCharacteristics,
+        displayCharacteristics ?? this.displayCharacteristics,
       );
 
   Puppy copyWithPuppy(Puppy puppy) => Puppy(
