@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
           distinct: true,
           builder: (_, viewModel) => CurvedNavigationBar(
             color: Colors.blueAccent,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             items: viewModel.items.map((item) => item.type.asIcon()).toList(),
             onTap: (index) => viewModel.onTapNavBar(index),
           ),
