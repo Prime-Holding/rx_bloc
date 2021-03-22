@@ -98,9 +98,6 @@ class PuppiesRepository {
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
       throw Exception(_noInternetConnectionErrorString);
     }
-
-    // Puppy puppyWithExtraDetails =
-    //     puppies.firstWhere((item) => item.id == puppy.id);
     Puppy puppyWithExtraDetails = puppy.copyWith(
         displayName: puppy.name,
         displayCharacteristics: puppy.breedCharacteristics);
@@ -131,7 +128,8 @@ class PuppiesRepository {
   // }
 
   Future<Puppy> updatePuppy(String puppyId, Puppy newValue) async {
-    await Future.delayed(artificialDelay + Duration(seconds: 1));
+    // await Future.delayed(artificialDelay + Duration(seconds: 1));
+    await Future.delayed(artificialDelay + Duration(milliseconds: 100));
 
     if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
       throw Exception(_noInternetConnectionErrorString);

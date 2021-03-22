@@ -26,7 +26,7 @@ class SearchPage extends StatelessWidget {
                     context
                         .read<PuppyListBloc>()
                         .add(ReloadPuppiesEvent(silently: true));
-                    return Future.delayed(const Duration(milliseconds: 1000));
+                    return Future.delayed(const Duration(seconds: 1));
                   },
                   child: SafeArea(
                     child: ListView.builder(
