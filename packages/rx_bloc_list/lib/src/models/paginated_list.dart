@@ -46,9 +46,9 @@ class PaginatedList<E> extends ListBase<E> {
   PaginatedList({
     required this.list,
     required this.pageSize,
-    this.isLoading = false,
     this.error,
     this.totalCount,
+    this.isLoading = false,
   });
 
   /// The list containing the actual data.
@@ -60,11 +60,17 @@ class PaginatedList<E> extends ListBase<E> {
   /// If an exception is thrown, the [error] field will capture it.
   final Exception? error;
 
+  /// Optional field containing total number of elements (if known).
+  final int? totalCount;
+
   /// Indicates whether the paginated list is loading or not.
   final bool isLoading;
 
-  /// Optional field containing total number of elements (if known).
-  final int? totalCount;
+  /// Indicates whether the paginated list has been populated with data
+  bool _isInitialized = false;
+
+  /// Temporary list which stores data in between refreshes
+  List<E> _backupList = [];
 
   /// Setter for the length of the list.
   @override
@@ -82,11 +88,14 @@ class PaginatedList<E> extends ListBase<E> {
   /// The number of loaded pages.
   int get pageNumber => list.isNotEmpty ? (length / pageSize).ceil() : 0;
 
+  /// The next page to load
+  int get pageToLoad => pageNumber;
+
   /// Getter used for telling us whether there is a new page to load.
   bool get hasNextPage => totalCount == null || list.length < totalCount!;
 
   /// Getter used for telling us whether this the initial data being loaded.
-  bool get isInitialLoading => isLoading && list.isEmpty;
+  bool get isInitialLoading => isLoading && list.isEmpty && !_isInitialized;
 
   /// Getter for telling us whether we are loading a new page.
   bool get isNextPageLoading => isLoading && list.isNotEmpty;
@@ -113,9 +122,17 @@ class PaginatedList<E> extends ListBase<E> {
         totalCount: totalCount ?? this.totalCount,
         error: error ?? this.error,
         pageSize: pageSize ?? this.pageSize,
-      );
+      )
+        .._backupList = _backupList
+        .._isInitialized = _isInitialized || (list ?? this.list).isNotEmpty;
 
   /// Returns element at given index. If element outside bound, null is returned
   E? getElement(int index) =>
       (index >= length || index < 0) ? null : list[index];
+
+  /// Resets the list data
+  void reset() {
+    _backupList.addAll(list);
+    length = 0;
+  }
 }

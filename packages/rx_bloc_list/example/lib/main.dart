@@ -35,6 +35,10 @@ class PaginatedListPage extends StatelessWidget {
             onBottomScrolled: (bloc) => bloc.events.loadPage(),
             onRefresh: (bloc) async {
               bloc.events.loadPage(reset: true);
+
+              /// TODO: Fix refresh indicator not disappearing
+              //return Future.delayed(const Duration(seconds: 3));
+              return bloc.states.refreshDone;
             },
           ),
         ),
@@ -96,6 +100,10 @@ abstract class UserBlocStates {
 
   /// The paginated list data
   Stream<PaginatedList<User>> get paginatedList;
+
+  /// Refreshing the data has completed
+  @RxBlocIgnoreState()
+  Future<void> get refreshDone;
 }
 
 /// User Bloc
@@ -125,6 +133,12 @@ class UserBloc extends $UserBloc {
   );
 
   @override
+  Future<void> get refreshDone async {
+    await loadingState.firstWhere((loading) => loading == true);
+    await loadingState.firstWhere((loading) => loading == false);
+  }
+
+  @override
   Stream<PaginatedList<User>> _mapToPaginatedListState() => _paginatedList;
 
   @override
@@ -151,7 +165,9 @@ extension UserBlocStreamExtensions on Stream<bool> {
   ) =>
       switchMap(
         (reset) {
-          if (reset) _paginatedList.value!.length = 0;
+          if (reset) {
+            _paginatedList.value!.reset();
+          }
 
           return _repository
               .fetchPage(
