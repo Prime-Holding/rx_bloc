@@ -127,8 +127,7 @@ class PaginatedList<E> extends ListBase<E> {
         .._isInitialized = _isInitialized || (list ?? this.list).isNotEmpty;
 
   /// Returns element at given index. If element outside bound, null is returned
-  E? getElement(int index) =>
-      (index >= length || index < 0) ? null : list[index];
+  E? getItem(int index) => (index >= length || index < 0) ? null : list[index];
 
   /// Resets the list data
   void reset() {

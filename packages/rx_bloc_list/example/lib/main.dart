@@ -36,8 +36,6 @@ class PaginatedListPage extends StatelessWidget {
             onRefresh: (bloc) async {
               bloc.events.loadPage(reset: true);
 
-              /// TODO: Fix refresh indicator not disappearing
-              //return Future.delayed(const Duration(seconds: 3));
               return bloc.states.refreshDone;
             },
           ),
@@ -53,7 +51,7 @@ class PaginatedListPage extends StatelessWidget {
     final list = snapshot.data!;
 
     return ListView.builder(
-      itemBuilder: (context, index) => _itemBuilder(list.getElement(index)),
+      itemBuilder: (context, index) => _itemBuilder(list.getItem(index)),
       itemCount: list.itemCount,
     );
   }
@@ -62,7 +60,7 @@ class PaginatedListPage extends StatelessWidget {
     if (user == null) {
       return const Center(
         child: Padding(
-          padding: EdgeInsets.only(top: 12),
+          padding: EdgeInsets.symmetric(vertical: 12),
           child: CircularProgressIndicator(),
         ),
       );
@@ -114,7 +112,7 @@ class UserBloc extends $UserBloc {
     _$loadPageEvent
         // Start the data fetching immediately when the page loads
         .startWith(true)
-        .fetchData(repository, _paginatedList)
+        .fetchData(this, repository, _paginatedList)
         // Enable state handling by the current bloc
         .setResultStateHandler(this)
         // Merge the data in the _paginatedList
@@ -132,10 +130,13 @@ class UserBloc extends $UserBloc {
     ),
   );
 
+  /// Internal BehaviorSubject for maintaining the refresh state
+  final _refreshSubject = BehaviorSubject<bool>.seeded(false);
+
   @override
   Future<void> get refreshDone async {
-    await loadingState.firstWhere((loading) => loading == true);
-    await loadingState.firstWhere((loading) => loading == false);
+    await _refreshSubject.firstWhere((loading) => loading == true);
+    await _refreshSubject.firstWhere((loading) => loading == false);
   }
 
   @override
@@ -151,32 +152,43 @@ class UserBloc extends $UserBloc {
   /// Disposes of all streams to prevent memory leaks
   @override
   void dispose() {
+    _refreshSubject.close();
     _paginatedList.close();
     super.dispose();
   }
 }
 
-/// Utility extensions for the User Bloc
+/// Utility extensions for the Stream<bool> stream within User Bloc
 extension UserBlocStreamExtensions on Stream<bool> {
   /// Fetches appropriate data from the repository
   Stream<Result<PaginatedList<User>>> fetchData(
+    UserBloc bloc,
     UserRepository _repository,
     BehaviorSubject<PaginatedList<User>> _paginatedList,
   ) =>
       switchMap(
-        (reset) {
-          if (reset) {
-            _paginatedList.value!.reset();
-          }
-
-          return _repository
-              .fetchPage(
-                _paginatedList.value!.pageNumber + 1,
-                _paginatedList.value!.pageSize,
-              )
-              .asResultStream();
-        },
+        (reset) =>
+            bloc._fetchDataFromRepository(reset, _repository).asResultStream(),
       );
+}
+
+/// Utility extensions for the User Bloc
+extension UserBlocExtensions on UserBloc {
+  Future<PaginatedList<User>> _fetchDataFromRepository(
+    bool reset,
+    UserRepository repository,
+  ) async {
+    if (reset) _paginatedList.value!.reset();
+
+    /// TODO: Remove the refreshSubject with a better solution
+    _refreshSubject.add(true);
+    final response = await repository.fetchPage(
+      _paginatedList.value!.pageNumber + 1,
+      _paginatedList.value!.pageSize,
+    );
+    _refreshSubject.add(false);
+    return response;
+  }
 }
 
 /// endregion
