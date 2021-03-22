@@ -18,37 +18,47 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  rxdart: ^0.25.0
+  rxdart: ^0.26.0
 #  json_annotation: ^3.0.1
-  auto_route: ^0.6.9
-  provider: ^4.0.4
+#  auto_route: ^0.6.9
+  provider: ^5.0.0
   favorites_advanced_base:
-  curved_navigation_bar: ^0.3.4
-  badges: ^1.1.4
+    path: ../favorites_advanced_base
+  curved_navigation_bar: ^0.4.0-nullsafety.0
+  badges: ^2.0.0-nullsafety.1
   animated_stream_list: ^1.1.0
   appbar_textfield: ^1.0.1+1
-  image_picker: ^0.6.7+17
-  bloc: ^6.1.3
-  flutter_bloc: ^6.1.3
-  bloc_test: ^7.1.0
-  equatable: ^1.2.5
+  image_picker: ^0.7.3
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
+  bloc_test: ^8.0.0
+  equatable: ^2.0.0
 
 #  widget_library:
 #    path: ../widget_library
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  appbar_textfield:
+    git:
+      url: https://github.com/StanevPrime/appbar_textfield.git
+      ref: null-safety
+  animated_stream_list:
+    git:
+      url: https://github.com/nilsreichardt/animated-stream-list.git
+      ref: migrate-null-safety
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:bloc/bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
@@ -44,7 +43,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   Stream<PuppyListState> _mapPuppyDetailFetchedToState(
       PuppyFetchDetailsEvent event, PuppyListState state) async* {
     final puppyWithDetails =
-        await repository.fetchPuppyExtraDetails(puppy: event.puppy);
+        await repository.fetchPuppyExtraDetails(puppy: event.puppy!);
     // print('puppy id: ${puppyWithDetails.id}');
     // print('puppy displayName: ${puppyWithDetails.displayName}');
     // print(

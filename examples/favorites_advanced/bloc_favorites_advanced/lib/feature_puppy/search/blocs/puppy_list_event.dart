@@ -6,7 +6,7 @@ abstract class PuppyListEvent {}
 class ReloadPuppiesEvent extends PuppyListEvent {
   ReloadPuppiesEvent({this.silently});
 
-  final bool silently;
+  final bool? silently;
 }
 
 class LoadPuppyListEvent extends PuppyListEvent {
@@ -16,5 +16,5 @@ class LoadPuppyListEvent extends PuppyListEvent {
 class PuppyFetchDetailsEvent extends PuppyListEvent {
   PuppyFetchDetailsEvent({this.puppy});
 
-  final Puppy puppy;
+  final Puppy? puppy;
 }

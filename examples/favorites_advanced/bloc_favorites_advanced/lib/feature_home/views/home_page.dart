@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/favorites_page.dart';
 import 'package:bloc_sample/feature_puppy/search/views/search_page.dart';
@@ -16,14 +15,14 @@ import 'package:image_picker/image_picker.dart';
 
 part 'home_providers.dart';
 
-class HomePage extends StatelessWidget implements AutoRouteWrapper {
-  const HomePage({Key key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
-  @override
+  ///TODO: refactor the wrappedRoute
   Widget wrappedRoute(BuildContext context) => MultiBlocProvider(
-      providers: _getProviders(),
-      child: this,
-    );
+        providers: _getProviders(),
+        child: this,
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -79,6 +78,6 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
 }
 
 extension NavigationItemToWidget on NavigationItem {
-  Widget asWidget() => type.asIcon();
+  Widget? asWidget() => type.asIcon();
 // type == NavigationItemType.favorites ? type.asIcon() : type.asIcon();
 }

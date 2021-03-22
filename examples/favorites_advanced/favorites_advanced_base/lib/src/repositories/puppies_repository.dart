@@ -94,10 +94,10 @@ class PuppiesRepository {
     return puppiesWithExtraData;
   }
 
-  Future<Puppy> fetchPuppyExtraDetails({Puppy puppy}) async {
+  Future<Puppy> fetchPuppyExtraDetails({required Puppy puppy}) async {
     // await Future.delayed(artificialDelay + Duration(milliseconds: 300));
 
-    if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
+    if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
     Puppy puppyWithExtraDetails = puppy.copyWith(

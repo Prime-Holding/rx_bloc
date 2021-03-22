@@ -3,9 +3,9 @@ part of 'navigation_bar_bloc.dart';
 @immutable
 class NavigationBarState extends Equatable {
   const NavigationBarState({
-    @required this.title,
-    @required this.items,
-    @required this.selectedItem,
+    required this.title,
+    required this.items,
+    required this.selectedItem,
   });
 
   final String title;

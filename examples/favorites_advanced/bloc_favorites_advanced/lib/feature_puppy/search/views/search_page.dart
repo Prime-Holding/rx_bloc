@@ -31,15 +31,17 @@ class SearchPage extends StatelessWidget {
                   child: SafeArea(
                     child: ListView.builder(
                       padding: const EdgeInsets.only(bottom: 67),
-                      itemCount: state.searchedPuppies.length,
+                      itemCount: state.searchedPuppies!.length,
                       itemBuilder: (context, index) {
-                        final item = state.searchedPuppies[index];
+                        final item = state.searchedPuppies![index];
                         return PuppyCard(
                           key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                           onVisible: (puppy) => context
                               .read<PuppyListBloc>()
                               .add(PuppyFetchDetailsEvent(puppy: puppy)),
                           puppy: item,
+                          onCardPressed: (Puppy) {},
+                          onFavorite: (Puppy puppy, bool isFavorite) {},
                         );
                       },
                     ),

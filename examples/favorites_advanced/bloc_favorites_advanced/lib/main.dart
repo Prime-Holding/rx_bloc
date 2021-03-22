@@ -1,4 +1,4 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:bloc_sample/feature_home/views/home_page.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:image_picker/image_picker.dart';
-import 'base/routers/router.gr.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,8 +19,10 @@ class MyApp extends StatelessWidget {
           //   create: (context) => NavigationBarBloc(),
           // ),
           BlocProvider<PuppyListBloc>(
-            create: (context) => PuppyListBloc(
-                PuppiesRepository(ImagePicker())),
+            create: (context) => PuppyListBloc(PuppiesRepository(
+              ImagePicker(),
+              ConnectivityRepository(),
+            )),
           ),
         ],
         child: MaterialApp(
@@ -30,9 +31,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
           ),
-          builder: ExtendedNavigator<MyRouter>(
-            router: MyRouter(),
-          ),
+          home: const HomePage().wrappedRoute(context),
         ),
       );
 }
