@@ -6,16 +6,16 @@ void main(){
   group('FavoritePuppiesController', (){
     final controller = Get.put(FavoritePuppiesController());
     test('return zero if no favorite puppies', (){
-    expect(controller.count.value, 0);
+    expect(controller!.count.value, 0);
   });
   test('increment and decrement favorite puppies correctly', (){
-    controller.incrementCount();
+    controller!.incrementCount();
     expect(controller.count.value, 1);
     controller.decrementCount();
     expect(controller.count.value, 0);
   });
   test('don\'t decrement if favorite puppies count is zero', (){
-    controller.decrementCount();
+    controller!.decrementCount();
     expect(controller.count.value, 0);
   });
   });

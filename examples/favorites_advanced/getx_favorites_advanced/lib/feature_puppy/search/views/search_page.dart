@@ -9,9 +9,9 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<PuppyListController>();
-    return Obx(() => controller.isLoading.value
+    return Obx(() => controller.isLoading.value!
         ? LoadingWidget()
-        : controller.hasError.value
+        : controller.hasError.value!
             ? const ErrorRetryWidget(
                 onReloadTap: _onReload,
               )

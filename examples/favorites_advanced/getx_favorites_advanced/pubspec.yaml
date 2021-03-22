@@ -18,19 +18,18 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.9.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
-  appbar_textfield: ^1.0.1+1
-  badges: ^1.2.0
-  curved_navigation_bar: ^0.3.7
-  get: ^3.26.0
-  get_instance: ^3.13.0
-  rxdart: ^0.25.0
-
+  appbar_textfield: ^2.0.0
+  badges: ^2.0.0-nullsafety.1
+  curved_navigation_bar: ^0.4.0-nullsafety.0
+  get: ^4.0.0-nullsafety.2
+  rxdart: ^0.26.0
+  favorites_advanced_base:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -41,11 +40,13 @@ dev_dependencies:
     sdk: flutter
 
 
-
 dependency_overrides:
   favorites_advanced_base:
     path: ../favorites_advanced_base
-
+  appbar_textfield:
+    git:
+      url: https://github.com/StanevPrime/appbar_textfield.git
+      ref: null-safety
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

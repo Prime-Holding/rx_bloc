@@ -10,14 +10,18 @@ import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/favo
 class HomeBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put(NavbarController());
-    // ignore: cascade_invocations
-    Get.put(FavoritePuppiesController());
-    // ignore: cascade_invocations
-    Get.put(PuppiesRepository(ImagePicker()));
-    // ignore: cascade_invocations
-    Get.put(PuppyListController());
-    // ignore: cascade_invocations
-    Get.put(PuppyExtraDetailsController());
+    Get
+      ..put(ImagePicker())
+      ..put(ConnectivityRepository())
+      ..put(NavbarController())
+      ..put(FavoritePuppiesController())
+      ..put(
+        PuppiesRepository(
+          Get.find<ImagePicker>(),
+          Get.find<ConnectivityRepository>(),
+        ),
+      )
+      ..put(PuppyListController())
+      ..put(PuppyExtraDetailsController());
   }
 }

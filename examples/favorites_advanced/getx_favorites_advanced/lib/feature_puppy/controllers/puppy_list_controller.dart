@@ -5,50 +5,50 @@ import 'package:favorites_advanced_base/repositories.dart';
 import 'package:favorites_advanced_base/models.dart';
 
 class PuppyListController extends GetxController {
-  PuppyListController(){
+  PuppyListController() {
     _repository = Get.find<PuppiesRepository>();
     _initPuppies();
   }
 
-  PuppiesRepository _repository;
+  late PuppiesRepository _repository;
   final _puppies = [].obs;
   final isLoading = false.obs;
   final hasError = false.obs;
 
   List<Puppy> get searchedPuppies => [..._puppies];
 
-  Future<List<Puppy>> filterPuppies({String query}) async {
+  Future<List<Puppy>> filterPuppies({required String query}) async {
     final puppies = await _repository.getPuppies(query: query);
     return puppies;
   }
 
   Future<void> _initPuppies() async {
     _showLoading();
-    try{
+    try {
       // await Future.delayed(const Duration(seconds: 1));
-    final puppies = await _repository.getPuppies();
-    _puppies.assignAll(puppies);
-    // throw Exception('Error');
-    }catch(e){
+      final puppies = await _repository.getPuppies();
+      _puppies.assignAll(puppies);
+      // throw Exception('Error');
+    } catch (e) {
       _setError();
       print(e.toString());
     }
     _hideLoading();
   }
 
-  void _showLoading(){
+  void _showLoading() {
     isLoading(true);
   }
 
-  void _hideLoading(){
+  void _hideLoading() {
     isLoading(false);
   }
 
-  void _setError(){
+  void _setError() {
     hasError.toggle();
   }
 
-  void clearError(){
+  void clearError() {
     hasError.toggle();
   }
 
@@ -62,5 +62,4 @@ class PuppyListController extends GetxController {
       _puppies.replaceRange(index, index + 1, [newPuppyData]);
     });
   }
-
 }

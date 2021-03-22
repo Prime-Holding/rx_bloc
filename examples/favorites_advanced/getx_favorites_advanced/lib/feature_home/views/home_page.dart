@@ -53,10 +53,10 @@ Widget _buildNavigationBar(){
 }
 
 extension NavigationItemToWitget on NavigationItem {
-  Widget asWidget() => type == NavigationItemType.favorites
+  Widget? asWidget() => type == NavigationItemType.favorites
       ? Obx(
           () => Get.find<FavoritePuppiesController>().count <= 0
-              ? type.asIcon()
+              ? type.asIcon()!
               : Badge(
                   padding: const EdgeInsets.all(3),
                   badgeContent: Text(
