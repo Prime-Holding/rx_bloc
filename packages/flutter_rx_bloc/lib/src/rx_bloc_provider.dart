@@ -6,7 +6,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 /// Used as a DI widget where an instance of a [bloc] can be provided
 /// to multiple widgets within a subtree.
 /// Takes a [ValueBuilder] that is responsible for creating the [bloc]
-/// and a [child] which will have access to the [bloc] via `RxBlocProvider.of(context)`.
+/// and a [child] which will have access to the [bloc]
+/// via `RxBlocProvider.of(context)`.
 ///
 /// Automatically handles disposing of the [bloc] when used with [create]
 /// and lazily creates the [bloc] if [lazy] is not explicitly set to `false`.
@@ -19,38 +20,17 @@ import 'package:rx_bloc/rx_bloc.dart';
 /// ```
 class RxBlocProvider<T extends RxBlocTypeBase>
     extends SingleChildStatelessWidget {
-  /// [child] and its descendants which will have access to the [bloc].
-  final Widget child;
-
-  /// Whether or not the [bloc] being provided should be lazily created.
-  /// Defaults to `true`.
-  final bool lazy;
-
-  final Dispose<T> _dispose;
-
-  final Create<T> _create;
-
-  /// {@macro blocprovider}
-  RxBlocProvider({
-    @required Create<T> create,
-    Key key,
-    Widget child,
-    bool lazy,
-  }) : this._(
-          key: key,
-          create: create,
-          dispose: (_, bloc) => bloc?.dispose(),
-          child: child,
-          lazy: lazy,
-        );
-
-  /// Takes a [bloc] and a [child] which will have access to the [bloc] via `RxBlocProvider.of(context)`.
-  /// When `RxBlocProvider.value` is used, the [bloc] will not be automatically disposed.
-  /// As a result, `RxBlocProvider.value` should mainly be used for providing existing [bloc]s
+  /// Takes a [bloc] and a [child] which will have access to the [bloc]
+  /// via `RxBlocProvider.of(context)`.
+  /// When `RxBlocProvider.value` is used, the [bloc] will not be
+  /// automatically disposed.
+  /// As a result, `RxBlocProvider.value` should mainly be used for
+  /// providing existing [bloc]s
   /// to new routes.
   ///
   /// A new [bloc] should not be created in `RxBlocProvider.value`.
-  /// [bloc]s should always be created using the default constructor within [create].
+  /// [bloc]s should always be created using the default constructor
+  /// within [create].
   ///
   /// ```dart
   /// RxBlocProvider.value(
@@ -58,9 +38,9 @@ class RxBlocProvider<T extends RxBlocTypeBase>
   ///   child: ScreenA(),
   /// );
   RxBlocProvider.value({
-    @required T value,
-    Key key,
-    Widget child,
+    required T value,
+    Key? key,
+    Widget? child,
   }) : this._(
           key: key,
           create: (_) => value,
@@ -70,28 +50,55 @@ class RxBlocProvider<T extends RxBlocTypeBase>
   /// Internal constructor responsible for creating the [RxBlocProvider].
   /// Used by the [RxBlocProvider] default and value constructors.
   RxBlocProvider._({
-    @required Create<T> create,
-    Key key,
-    Dispose<T> dispose,
+    required Create<T> create,
+    Key? key,
+    Dispose<T>? dispose,
     this.child,
     this.lazy,
   })  : _create = create,
         _dispose = dispose,
         super(key: key, child: child);
 
-  /// Method that allows widgets to access a [bloc] instance as long as their `BuildContext`
+  /// {@macro blocprovider}
+  RxBlocProvider({
+    required Create<T> create,
+    Key? key,
+    Widget? child,
+    bool? lazy,
+  }) : this._(
+          key: key,
+          create: create,
+          dispose: (_, bloc) => bloc.dispose(),
+          child: child,
+          lazy: lazy,
+        );
+
+  /// [child] and its descendants which will have access to the [bloc].
+  final Widget? child;
+
+  /// Whether or not the [bloc] being provided should be lazily created.
+  /// Defaults to `true`.
+  final bool? lazy;
+
+  final Dispose<T>? _dispose;
+
+  final Create<T> _create;
+
+  /// Method that allows widgets to access a [bloc] instance as
+  /// long as their `BuildContext`
   /// contains a [RxBlocProvider] instance.
   ///
-  /// If we want to access an instance of `BlocA` which was provided higher up in the widget tree
+  /// If we want to access an instance of `BlocA` which was
+  /// provided higher up in the widget tree
   /// we can do so via:
   ///
   /// ```dart
   /// RxBlocProvider.of<BlocA>(context)
   /// ```
-  static T of<T extends RxBlocTypeBase>(BuildContext context) {
+  static T of<T extends RxBlocTypeBase?>(BuildContext context) {
     try {
       return Provider.of<T>(context, listen: false);
-    } on dynamic catch (_) {
+    } on ProviderNotFoundException catch (_) {
       throw FlutterError(
         """
         RxBlocProvider.of() called with a context that does not contain a Bloc of type $T.
@@ -111,7 +118,7 @@ class RxBlocProvider<T extends RxBlocTypeBase>
   }
 
   @override
-  Widget buildWithChild(BuildContext context, Widget child) {
+  Widget buildWithChild(BuildContext context, Widget? child) {
     return InheritedProvider<T>(
       create: _create,
       dispose: _dispose,

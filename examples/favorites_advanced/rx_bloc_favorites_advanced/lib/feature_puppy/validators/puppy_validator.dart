@@ -6,7 +6,7 @@ part 'puppy_validator_extensions.dart';
 typedef FieldValidator<T> = T Function(T);
 
 class PuppyValidator {
-  PuppyValidator({maxNameLength = 30, maxCharacteristicsLength = 250})
+  const PuppyValidator({maxNameLength = 30, maxCharacteristicsLength = 250})
       : _maxNameLength = maxNameLength,
         _maxCharacteristicsLength = maxCharacteristicsLength;
 
@@ -14,7 +14,7 @@ class PuppyValidator {
   final int _maxCharacteristicsLength;
 
   String validatePuppyName(String name) {
-    if (name == null || name.isEmpty) {
+    if (name.isEmpty) {
       throw RxFieldException(
         fieldValue: name,
         error: 'Name must not be empty.',
@@ -34,7 +34,7 @@ class PuppyValidator {
   }
 
   String validatePuppyCharacteristics(String characteristics) {
-    if (characteristics == null || characteristics.isEmpty) {
+    if (characteristics.isEmpty) {
       throw RxFieldException(
         fieldValue: characteristics,
         error: 'Characteristics must not be empty.',
@@ -55,7 +55,7 @@ class PuppyValidator {
   }
 
   Gender validatePuppyGender(Gender gender) {
-    if (gender == null || gender == Gender.None) {
+    if (gender == Gender.None) {
       throw RxFieldException(
         fieldValue: gender,
         error: 'You have to select a gender.',
@@ -66,7 +66,7 @@ class PuppyValidator {
   }
 
   BreedType validatePuppyBreed(BreedType breed) {
-    if (breed == null || breed == BreedType.None) {
+    if (breed == BreedType.None) {
       throw RxFieldException(
         fieldValue: breed,
         error: 'You have to select a breed.',

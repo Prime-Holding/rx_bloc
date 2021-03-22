@@ -29,7 +29,7 @@ void main() {
   });
 
   group('NavigationBarBloc title', () {
-    rxBlocTest<NavigationBarBloc, NavigationItem>(
+    rxBlocTest<NavigationBarBloc, NavigationItem?>(
       'NavigationBarBloc.title initial state',
       build: () async => NavigationBarBloc(),
       state: (bloc) => bloc.states.selectedItem,
@@ -38,7 +38,7 @@ void main() {
       ],
     );
 
-    rxBlocTest<NavigationBarBloc, NavigationItem>(
+    rxBlocTest<NavigationBarBloc, NavigationItem?>(
       'NavigationBarBloc.title favorites',
       build: () async => NavigationBarBloc(),
       state: (bloc) => bloc.states.selectedItem,

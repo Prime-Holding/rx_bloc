@@ -4,15 +4,15 @@ import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc
 
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
-    @required bool enabled,
-    void Function() onSavePressed,
-    Key key,
+    required bool enabled,
+    void Function()? onSavePressed,
+    Key? key,
   })  : _enabled = enabled,
         _onSavePressed = onSavePressed,
         super(key: key);
 
   final bool _enabled;
-  final void Function() _onSavePressed;
+  final void Function()? _onSavePressed;
 
   double get loadingIndicatorSize => 24;
 

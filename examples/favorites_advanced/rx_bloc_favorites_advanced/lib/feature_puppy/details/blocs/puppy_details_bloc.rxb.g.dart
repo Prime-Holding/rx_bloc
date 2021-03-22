@@ -20,65 +20,63 @@ abstract class $PuppyDetailsBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// The state of [imagePath] implemented in [_mapToImagePathState]
-  Stream<String> _imagePathState;
+  late final Stream<String> _imagePathState = _mapToImagePathState();
 
   /// The state of [name] implemented in [_mapToNameState]
-  Stream<String> _nameState;
+  late final Stream<String> _nameState = _mapToNameState();
 
   /// The state of [breed] implemented in [_mapToBreedState]
-  Stream<String> _breedState;
+  late final Stream<String?> _breedState = _mapToBreedState();
 
   /// The state of [gender] implemented in [_mapToGenderState]
-  Stream<String> _genderState;
+  late final Stream<String> _genderState = _mapToGenderState();
 
   /// The state of [characteristics] implemented in [_mapToCharacteristicsState]
-  Stream<String> _characteristicsState;
+  late final Stream<String?> _characteristicsState =
+      _mapToCharacteristicsState();
 
   /// The state of [isFavourite] implemented in [_mapToIsFavouriteState]
-  Stream<bool> _isFavouriteState;
+  late final Stream<bool> _isFavouriteState = _mapToIsFavouriteState();
 
   /// The state of [genderAndBreed] implemented in [_mapToGenderAndBreedState]
-  Stream<String> _genderAndBreedState;
+  late final Stream<String> _genderAndBreedState = _mapToGenderAndBreedState();
 
   /// The state of [puppy] implemented in [_mapToPuppyState]
-  Stream<Puppy> _puppyState;
+  late final Stream<Puppy> _puppyState = _mapToPuppyState();
 
   @override
-  Stream<String> get imagePath => _imagePathState ??= _mapToImagePathState();
+  Stream<String> get imagePath => _imagePathState;
 
   @override
-  Stream<String> get name => _nameState ??= _mapToNameState();
+  Stream<String> get name => _nameState;
 
   @override
-  Stream<String> get breed => _breedState ??= _mapToBreedState();
+  Stream<String?> get breed => _breedState;
 
   @override
-  Stream<String> get gender => _genderState ??= _mapToGenderState();
+  Stream<String> get gender => _genderState;
 
   @override
-  Stream<String> get characteristics =>
-      _characteristicsState ??= _mapToCharacteristicsState();
+  Stream<String?> get characteristics => _characteristicsState;
 
   @override
-  Stream<bool> get isFavourite =>
-      _isFavouriteState ??= _mapToIsFavouriteState();
+  Stream<bool> get isFavourite => _isFavouriteState;
 
   @override
-  Stream<String> get genderAndBreed =>
-      _genderAndBreedState ??= _mapToGenderAndBreedState();
+  Stream<String> get genderAndBreed => _genderAndBreedState;
 
   @override
-  Stream<Puppy> get puppy => _puppyState ??= _mapToPuppyState();
+  Stream<Puppy> get puppy => _puppyState;
 
   Stream<String> _mapToImagePathState();
 
   Stream<String> _mapToNameState();
 
-  Stream<String> _mapToBreedState();
+  Stream<String?> _mapToBreedState();
 
   Stream<String> _mapToGenderState();
 
-  Stream<String> _mapToCharacteristicsState();
+  Stream<String?> _mapToCharacteristicsState();
 
   Stream<bool> _mapToIsFavouriteState();
 
