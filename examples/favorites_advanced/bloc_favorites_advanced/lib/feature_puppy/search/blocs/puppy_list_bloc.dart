@@ -61,7 +61,6 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   Stream<PuppyListState> _mapPuppiesReloadFetchToState(
       PuppyListState state) async* {
-    // final puppyItemsNew = ;
     puppyItems = <Puppy>[];
 
     yield PuppyListState.reloadInProgress(
@@ -88,5 +87,6 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     } on Exception {
       return state.copyWith(status: PuppyListStatus.failure);
     }
+    return state.copyWith(status: PuppyListStatus.failure);
   }
 }
