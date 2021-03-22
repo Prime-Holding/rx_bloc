@@ -35,7 +35,6 @@ class PaginatedListPage extends StatelessWidget {
             onBottomScrolled: (bloc) => bloc.events.loadPage(),
             onRefresh: (bloc) async {
               bloc.events.loadPage(reset: true);
-
               return bloc.states.refreshDone;
             },
           ),
@@ -99,7 +98,7 @@ abstract class UserBlocStates {
   /// The paginated list data
   Stream<PaginatedList<User>> get paginatedList;
 
-  /// Refreshing the data has completed
+  /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
 }
@@ -112,7 +111,7 @@ class UserBloc extends $UserBloc {
     _$loadPageEvent
         // Start the data fetching immediately when the page loads
         .startWith(true)
-        .fetchData(this, repository, _paginatedList)
+        .fetchData(repository, _paginatedList)
         // Enable state handling by the current bloc
         .setResultStateHandler(this)
         // Merge the data in the _paginatedList
@@ -130,14 +129,8 @@ class UserBloc extends $UserBloc {
     ),
   );
 
-  /// Internal BehaviorSubject for maintaining the refresh state
-  final _refreshSubject = BehaviorSubject<bool>.seeded(false);
-
   @override
-  Future<void> get refreshDone async {
-    await _refreshSubject.firstWhere((loading) => loading == true);
-    await _refreshSubject.firstWhere((loading) => loading == false);
-  }
+  Future<void> get refreshDone async => _paginatedList.waitToLoad();
 
   @override
   Stream<PaginatedList<User>> _mapToPaginatedListState() => _paginatedList;
@@ -152,43 +145,29 @@ class UserBloc extends $UserBloc {
   /// Disposes of all streams to prevent memory leaks
   @override
   void dispose() {
-    _refreshSubject.close();
     _paginatedList.close();
     super.dispose();
   }
 }
 
-/// Utility extensions for the Stream<bool> stream within User Bloc
+/// Utility extensions for the Stream<bool> streams used within User Bloc
 extension UserBlocStreamExtensions on Stream<bool> {
   /// Fetches appropriate data from the repository
   Stream<Result<PaginatedList<User>>> fetchData(
-    UserBloc bloc,
     UserRepository _repository,
     BehaviorSubject<PaginatedList<User>> _paginatedList,
   ) =>
       switchMap(
-        (reset) =>
-            bloc._fetchDataFromRepository(reset, _repository).asResultStream(),
+        (reset) {
+          if (reset) _paginatedList.value!.reset();
+          return _repository
+              .fetchPage(
+                _paginatedList.value!.pageNumber + 1,
+                _paginatedList.value!.pageSize,
+              )
+              .asResultStream();
+        },
       );
-}
-
-/// Utility extensions for the User Bloc
-extension UserBlocExtensions on UserBloc {
-  Future<PaginatedList<User>> _fetchDataFromRepository(
-    bool reset,
-    UserRepository repository,
-  ) async {
-    if (reset) _paginatedList.value!.reset();
-
-    /// TODO: Remove the refreshSubject with a better solution
-    _refreshSubject.add(true);
-    final response = await repository.fetchPage(
-      _paginatedList.value!.pageNumber + 1,
-      _paginatedList.value!.pageSize,
-    );
-    _refreshSubject.add(false);
-    return response;
-  }
 }
 
 /// endregion

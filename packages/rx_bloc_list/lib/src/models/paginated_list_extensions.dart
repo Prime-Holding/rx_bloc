@@ -1,6 +1,6 @@
 part of 'paginated_list.dart';
 
-/// PaginatedList extensions
+/// PaginatedList binder extensions
 extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
   /// Convenience method that maps the data from the paginated list to a stream,
   /// handling error, loading and success states
@@ -59,4 +59,14 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
 
         return subjectValue;
       });
+}
+
+/// PaginatedList stream extensions
+extension PaginatedListExt<T> on Stream<PaginatedList<T>> {
+  /// Awaited value of this method will return once the data has been loaded or
+  /// refreshed.
+  Future<void> waitToLoad() async {
+    await firstWhere((list) => list.isLoading);
+    await firstWhere((list) => !list.isLoading);
+  }
 }
