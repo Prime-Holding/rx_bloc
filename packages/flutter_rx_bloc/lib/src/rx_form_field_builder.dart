@@ -148,15 +148,12 @@ typedef RxFormFieldBuilderFunction<B extends RxBlocTypeBase, T>
 class RxFormFieldBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   ///The default constructor
   const RxFormFieldBuilder({
-    @required this.state,
-    @required this.showErrorState,
-    @required this.builder,
+    required this.state,
+    required this.showErrorState,
+    required this.builder,
     this.bloc,
-    Key key,
-  })  : assert(state != null),
-        assert(showErrorState != null),
-        assert(builder != null),
-        super(key: key);
+    Key? key,
+  }) : super(key: key);
 
   /// A [state] callback, which returns a [Stream] of values
   /// which are provided to the [builder] function in order to be
@@ -176,7 +173,7 @@ class RxFormFieldBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   ///the provided bloc would be used, otherwise [RxFormFieldBuilder]
   ///automatically searches for and uses the closest instance up the widget tree
   ///of [RxBloc] of type [B].
-  final B bloc;
+  final B? bloc;
 
   @override
   RxFormFieldBuilderState createState() =>
@@ -205,12 +202,12 @@ class RxFormFieldBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
 ///   !The showErrorState stream must never emmit an error
 class RxFormFieldBuilderState<B extends RxBlocTypeBase, T,
     R extends RxFormFieldBuilder<B, T>> extends State<R> {
-  B _bloc;
-  Stream<T> _blocState;
-  Stream<bool> _showErrorState;
+  late B _bloc;
+  late Stream<T?> _blocState;
+  late Stream<bool> _showErrorState;
 
-  T _value;
-  String _error = '';
+  T? _value;
+  String? _error = '';
   bool _showError = false;
 
   RxFormFieldBuilderFunction<B, T> get _builder => widget.builder;
@@ -232,11 +229,11 @@ class RxFormFieldBuilderState<B extends RxBlocTypeBase, T,
   /// If everything is done right, this should basically never be null,
   /// you should provide initial value to the state stream
   /// from the implementation of the bloc.
-  T get value => _value;
+  T? get value => _value;
 
   /// The [error] field holds the most recent error from the state stream,
   /// !it gets assigned null if a value gets emitted by the state stream.
-  String get error => _error;
+  String? get error => _error;
 
   /// The [showError] field provides the latest boolean value
   /// from the showErrorState stream, use it to determine when you should
@@ -275,7 +272,7 @@ class RxFormFieldBuilderState<B extends RxBlocTypeBase, T,
 
     _showErrorState.listen((event) {
       setState(() {
-        _showError = event ?? false;
+        _showError = event;
       });
     }).addTo(_compositeSubscription);
   }

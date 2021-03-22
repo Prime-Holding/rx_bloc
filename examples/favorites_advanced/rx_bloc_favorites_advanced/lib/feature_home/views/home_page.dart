@@ -1,12 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/keys.dart';
 
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/puppies_app_bar.dart';
@@ -19,24 +18,22 @@ import '../blocs/navigation_bar_bloc.dart';
 
 part 'home_providers.dart';
 
-class HomePage extends StatelessWidget with AutoRouteWrapper {
-  HomePage({Key key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
-  @override
-  Widget wrappedRoute(BuildContext context) => RxMultiBlocProvider(
+  static Widget page() => RxMultiBlocProvider(
         providers: _getProviders(),
-        child: this,
+        child: const HomePage(),
       );
 
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        // resizeToAvoidBottomInset: false,
         appBar: PuppiesAppBar(),
         body: RxBlocListener<PuppyManageBlocType, String>(
           state: (bloc) => bloc.states.error,
-          listener: (ctx, state) =>
-              Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(state))),
+          listener: (ctx, state) => ScaffoldMessenger.of(ctx)
+              .showSnackBar(SnackBar(content: Text(state!))),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -47,8 +44,8 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
         ),
       );
 
-  RxBlocBuilder<NavigationBarBlocType, NavigationItem> _buildBody() =>
-      RxBlocBuilder<NavigationBarBlocType, NavigationItem>(
+  RxBlocBuilder<NavigationBarBlocType, NavigationItem?> _buildBody() =>
+      RxBlocBuilder<NavigationBarBlocType, NavigationItem?>(
         key: const ValueKey(Keys.puppyHomePage),
         state: (bloc) => bloc.states.selectedItem,
         builder: (ctx, snapshot, bloc) => AnimatedSwitcher(
@@ -67,8 +64,8 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                     backgroundColor: Colors.transparent,
                     items: navItems
                         .map((item) => Padding(
-                              child: item.asWidget(),
                               padding: const EdgeInsets.all(8),
+                              child: item.asWidget(),
                             ))
                         .toList(),
                     onTap: (index) => bloc.events.selectPage(
@@ -78,29 +75,27 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                     ),
                   )));
 
-  Widget asPage(AsyncSnapshot<NavigationItem> type) {
+  Widget asPage(AsyncSnapshot<NavigationItem?> type) {
     if (!type.hasData) {
       return Container();
     }
 
-    switch (type.data.type) {
+    switch (type.data!.type) {
       case NavigationItemType.search:
         return SearchPage();
       case NavigationItemType.favorites:
         return FavoritesPage();
     }
-
-    return Container();
   }
 }
 
 extension NavigationItemToWitget on NavigationItem {
-  Widget asWidget() => type == NavigationItemType.favorites
+  Widget? asWidget() => type == NavigationItemType.favorites
       ? RxBlocBuilder<FavoritePuppiesBlocType, int>(
           state: (bloc) => bloc.states.count,
           builder: (ctx, snapshot, bloc) =>
-              snapshot.hasData && snapshot.data <= 0
-                  ? type.asIcon()
+              snapshot.hasData && snapshot.data! <= 0
+                  ? type.asIcon()!
                   : Badge(
                       padding: const EdgeInsets.all(3),
                       badgeContent: snapshot.build((count) => Text(

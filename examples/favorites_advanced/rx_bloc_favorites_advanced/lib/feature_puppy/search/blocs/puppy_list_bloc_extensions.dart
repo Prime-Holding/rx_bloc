@@ -23,7 +23,7 @@ extension StreamBindToPuppies on Stream<List<Puppy>> {
   StreamSubscription<Result<List<Puppy>>> updatePuppies(
           BehaviorSubject<Result<List<Puppy>>> puppiesToUpdate) =>
       map((puppies) {
-        final puppiesResult = puppiesToUpdate.value;
+        final puppiesResult = puppiesToUpdate.value ?? Result.success([]);
 
         if (puppiesResult is ResultSuccess<List<Puppy>>) {
           return Result.success(puppiesResult.data.mergeWith(puppies));
@@ -46,7 +46,7 @@ extension _PuppyListBlocReloaders on PuppyListBloc {
         _$reloadFavoritePuppiesEvent.map(
           (silently) => _ReloadData(
             silently: silently,
-            query: _$filterPuppiesEvent.value,
+            query: _$filterPuppiesEvent.value ?? '',
           ),
         ),
       ]);

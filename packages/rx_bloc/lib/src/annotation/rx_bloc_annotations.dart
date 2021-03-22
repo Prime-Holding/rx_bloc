@@ -66,7 +66,7 @@ class RxBlocEvent {
   final RxBlocEventType type;
 
   /// The initial value of the event
-  final dynamic seed;
+  final dynamic? seed;
 }
 
 /// Subject type of the event. It could be either [RxBlocEventType.behaviour]

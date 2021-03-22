@@ -13,7 +13,7 @@ part 'favorite_puppies_bloc_extensions.dart';
 // ignore: one_member_abstracts
 abstract class FavoritePuppiesEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: false)
-  void reloadFavoritePuppies({bool silently});
+  void reloadFavoritePuppies({required bool silently});
 }
 
 abstract class FavoritePuppiesStates {

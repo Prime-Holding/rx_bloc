@@ -1,3 +1,13 @@
+targets:
+  $default:
+    builders:
+      rx_block:
+        enabled: true
+        generate_for:
+          exclude:
+            - test
+            - example
+
 builders:
   rx_block:
     import: "package:rx_bloc_generator/builder.dart"
@@ -5,3 +15,5 @@ builders:
     build_extensions: {'.dart': ['rxb.g.dart']}
     auto_apply: root_package
     build_to: source
+    runs_before: ["mockito|mockBuilder"]
+    applies_builders: ["mockito|mockBuilder"]

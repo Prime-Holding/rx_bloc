@@ -34,7 +34,7 @@ void main() {
   });
 
   group('DetailsBloc', () {
-    DetailsRepository repo;
+    late DetailsRepository repo;
 
     setUp(() {
       repo = DetailsRepository();
