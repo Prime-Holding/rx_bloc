@@ -1,6 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-// import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
-import 'package:bloc_sample/feature_home/blocs/navigation_bar_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:provider/provider.dart';
 import 'base/routers/router.gr.dart';
 
 void main() {

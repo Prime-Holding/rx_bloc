@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:favorites_advanced_base/models.dart';
 part 'puppies_extra_details_event.dart';
 
@@ -26,14 +25,15 @@ class PuppiesExtraDetailsBloc
   Stream<PuppiesExtraDetailsState> mapEventToState(
     PuppiesExtraDetailsEvent event,
   ) async* {
-    if (event is FetchPuppiesExtraDetailsEvent) {
+    // if (event is FetchPuppiesExtraDetailsEvent) {
+    //     var puppy = event.puppy;
       // puppiesWithDetails = puppiesWithDetails //.fetchExtraDetails(repository);
       // .whereNoExtraDetails()
       //     .mergeWith(repository.fetchFullEntities(ids))
       // This event is emitted when a puppy entity becomes
       // visible on the screen.
-      yield PuppiesExtraDetailsState();
-    }
+      // yield PuppiesExtraDetailsState();
+    // }
   }
 
 // @override

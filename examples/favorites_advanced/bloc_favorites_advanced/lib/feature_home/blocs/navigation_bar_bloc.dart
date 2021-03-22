@@ -30,6 +30,7 @@ class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
   Stream<NavigationBarState> mapEventToState(
     NavigationBarEvent event,
   ) async* {
+
     navItems = navItems.copyWithSelected(event.itemType);
     yield NavigationBarState(
       title: navItems.selected.type.asTitle(),
