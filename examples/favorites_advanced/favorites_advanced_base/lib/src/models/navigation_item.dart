@@ -22,8 +22,8 @@ class NavigationItem {
   int get hashCode => super.hashCode;
 
   NavigationItem copyWith({
-    NavigationItemType type,
-    bool isSelected,
+    NavigationItemType? type,
+    bool? isSelected,
   }) =>
       NavigationItem(
         type: type ?? this.type,
