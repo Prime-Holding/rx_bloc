@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_list_controller.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +26,8 @@ class PuppyExtraDetailsController extends GetxController {
     }
     await Future.delayed(const Duration(milliseconds: 100));
     // debugPrint(
-    //     'first print *** lastFetchedPuppies count = ${lastFetchedPuppies.length}');
+    //     'first print *** lastFetchedPuppies
+    //     count = ${lastFetchedPuppies.length}');
     // lastFetchedPuppies.forEach((element) {
     //   debugPrint('after first print ${element.name}');});
     final filterPuppies =
@@ -40,7 +41,8 @@ class PuppyExtraDetailsController extends GetxController {
     // lastFetchedPuppies.forEach((element) {
     //   debugPrint(element.name);});
     // debugPrint(
-    //     'second print *** lastFetchedPuppies count = ${lastFetchedPuppies.length}');
+    //     'second print *** lastFetchedPuppies
+    //     count = ${lastFetchedPuppies.length}');
     Get.find<PuppyListController>()
         .updatePuppiesWithExtraDetails(lastFetchedPuppies);
   }
