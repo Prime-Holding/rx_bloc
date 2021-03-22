@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/repositories.dart';
@@ -26,7 +27,6 @@ class PuppyListController extends GetxController {
     try{
       // await Future.delayed(const Duration(seconds: 1));
     final puppies = await _repository.getPuppies();
-    print(puppies.length);
     _puppies.assignAll(puppies);
     // throw Exception('Error');
     }catch(e){
@@ -37,11 +37,11 @@ class PuppyListController extends GetxController {
   }
 
   void _showLoading(){
-    isLoading.toggle();
+    isLoading(true);
   }
 
   void _hideLoading(){
-    isLoading.toggle();
+    isLoading(false);
   }
 
   void _setError(){
@@ -52,10 +52,14 @@ class PuppyListController extends GetxController {
     hasError.toggle();
   }
 
-  void updatePuppiesWithExtraDetails(List<Puppy> puppiesToUpdate){
+  void updatePuppiesWithExtraDetails(List<Puppy> puppiesToUpdate) {
     puppiesToUpdate.toList().forEach((newPuppyData) {
-      final index = _puppies.indexWhere((puppy) => puppy.id == newPuppyData.id);
-      _puppies.replaceRange(index, index+1, [newPuppyData]);
+      debugPrint('in UpdatePuppies');
+      final index = _puppies.indexWhere((puppy) {
+        debugPrint('puppyId = ${puppy.id} newPuppyDataId = ${newPuppyData.id}');
+        return puppy.id == newPuppyData.id;
+      });
+      _puppies.replaceRange(index, index + 1, [newPuppyData]);
     });
   }
 

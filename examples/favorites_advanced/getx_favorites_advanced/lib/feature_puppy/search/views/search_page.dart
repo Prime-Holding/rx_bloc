@@ -9,7 +9,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<PuppyListController>();
-    return controller.isLoading.value
+    return Obx(() => controller.isLoading.value
         ? LoadingWidget()
         : controller.hasError.value
             ? const ErrorRetryWidget(
@@ -19,24 +19,24 @@ class SearchPage extends StatelessWidget {
                 () => ListView.builder(
                   key: const Key('LoadingWidget'),
                   itemCount:
-                      Get.find<PuppyListController>().searchedPuppies.length ??
-                          0,
+                      controller.searchedPuppies.length,
                   itemBuilder: (context, index) => Obx(
                     () {
-                      final item = Get.find<PuppyListController>()
+                      final item = controller
                           .searchedPuppies[index];
                       return PuppyCard(
                         puppy: item,
                         onVisible: (item) =>
                             Get.find<PuppyExtraDetailsController>()
-                                .fetchExtraDetails,
+                                .fetchExtraDetails(item),
                         onCardPressed: (item) {},
                         onFavorite: (item, isFavorite) {},
                       );
                     },
                   ),
                 ),
-              );
+              ),
+    );
   }
 }
 
