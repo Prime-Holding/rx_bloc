@@ -72,20 +72,10 @@ class PuppyDetails extends StatelessWidget {
                   puppy: snapshot.data ?? puppy,
                 ),
               ),
-            ],
-          ),
-        ),
-        Positioned(
-          child: RxBlocBuilder<PuppyDetailsBlocType, Puppy>(
-            state: (bloc) => bloc.states.puppy,
-            builder: (context, snapshot, bloc) => PuppyDetailsAppBar(
-              puppy: snapshot.data ?? puppy,
             ),
-          ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   Widget _buildPuppyBackgroundImage(String path) => Container(
         decoration: BoxDecoration(
