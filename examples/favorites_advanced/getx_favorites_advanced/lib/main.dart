@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:favorites_advanced_base/resources.dart';
+
 import 'base/common_bindings/home_binding.dart';
 import 'feature_home/views/home_page.dart';
 
@@ -15,6 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Puppies App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          scaffoldBackgroundColor:ColorStyles.scaffoldBackgroundColor,
         ),
         getPages: [
           GetPage(name: '/', page: () => HomePage(), binding: HomeBinding()),
