@@ -55,7 +55,7 @@ class _BuildController {
                 field.getter != null &&
                 (field.getter!.metadata.isEmpty ||
                     !const TypeChecker.fromRuntime(RxBlocIgnoreState)
-                        .hasAnnotationOf(field.getter)))
+                        .hasAnnotationOf(field.getter!)))
             .toList(),
       ).build().toDartCodeString(),
 

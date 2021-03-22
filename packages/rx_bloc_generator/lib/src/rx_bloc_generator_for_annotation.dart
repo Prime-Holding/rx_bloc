@@ -35,7 +35,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         // }
         eventClass: libraryReader.classes.firstWhereOrNull(
           (ClassElement classElement) => classElement.displayName
-              .contains(annotation.read('eventsClassName')?.stringValue ?? ''),
+              .contains(annotation.read('eventsClassName').stringValue),
         ),
 
         /// Provides the states class as [ClassElement]
@@ -45,7 +45,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         // }
         stateClass: libraryReader.classes.firstWhereOrNull(
           (classElement) => classElement.displayName
-              .contains(annotation.read('statesClassName')?.stringValue ?? ''),
+              .contains(annotation.read('statesClassName').stringValue),
         ),
       ).generate();
     } on _RxBlocGeneratorException catch (e) {
