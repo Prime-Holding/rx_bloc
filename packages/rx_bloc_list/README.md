@@ -1,6 +1,6 @@
-## RxPaginatedBuilder
+## rx_bloc_list
 
-*RxPaginatedBuilder* package giving the user the possibility to quickly add infinity scroll and pull-to-refresh features to their project with minimal setup. It provides the flexibility and simplicity of presentation of paginated data with the use of [RxBloc](https://pub.dev/packages/rx_bloc "RxBloc")s inside the *RxBloc ecosystem*.
+The *[rx_bloc_list](https://pub.dev/packages/rx_bloc_list)* package facilitates implementing `infinity scroll` and `pull-to-refresh` features with minimal setup. This package is meant to be used along with *[RxBloc ecosystem](https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e)*.
 
 ## Table of contents
 - [Usage](#usage)
@@ -64,7 +64,7 @@ class PaginatedListPage extends StatelessWidget {
 |---------------------------------------|-----------------------------|
 | <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_list/doc/assets/initial_load.png" alt="Initial loading"> | <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_list/doc/assets/normal.png" alt="Default state"></img> |
 
-| Loading of the next page (infinity loading)           | Data refreshing (pull to refresh)          |
+| Loading of the next page (infinity scroll)           | Data refreshing (pull to refresh)          |
 |---------------------------------------|-----------------------------|
 | <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_list/doc/assets/infinity_load.png" alt="Infinity loading"> | <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_list/doc/assets/refresh.png" alt="Refreshing"> |
 
