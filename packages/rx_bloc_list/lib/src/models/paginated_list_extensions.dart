@@ -62,11 +62,34 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
 }
 
 /// PaginatedList stream extensions
-extension PaginatedListExt<T> on Stream<PaginatedList<T>> {
+extension PaginatedListStreamExtensions<T> on Stream<PaginatedList<T>> {
   /// Awaited value of this method will return once the data has been loaded or
   /// refreshed.
   Future<void> waitToLoad() async {
     await firstWhere((list) => list.isLoading);
     await firstWhere((list) => !list.isLoading);
   }
+}
+
+/// PaginatedList snapshot extensions
+extension PaginatedListSnapshotExt<T> on AsyncSnapshot<PaginatedList<T>> {
+  /// Is this the initial loading of the snapshot data
+  bool get isInitialLoading => !hasData || (hasData && data!.isInitialLoading);
+
+  /// Is the next page loading
+  bool get isNextPageLoading =>
+      !hasData || (hasData && data!.isNextPageLoading);
+
+  /// Is the data loading
+  bool get isLoading => !hasData || (hasData && data!.isLoading);
+
+  /// Returns the element of the snapshot or null (if element outside range),
+  /// assuming the snapshot data exists.
+  T? getItem(int index) => data!.getItem(index);
+
+  /// Returns the number of items from the snapshot, assuming the data exists.
+  int get itemCount => data!.itemCount;
+
+  /// Returns the current page number, assuming the data exists.
+  int get pageNumber => data!.pageNumber;
 }

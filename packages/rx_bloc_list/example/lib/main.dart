@@ -41,39 +41,30 @@ class PaginatedListPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildPaginatedList(AsyncSnapshot<PaginatedList<User>> snapshot) {
-    if (!snapshot.hasData ||
-        (snapshot.hasData && snapshot.data!.isInitialLoading)) {
-      return const Center(child: CircularProgressIndicator());
-    }
+  Widget _buildPaginatedList(AsyncSnapshot<PaginatedList<User>> snapshot) =>
+      !snapshot.isInitialLoading
+          ? ListView.builder(
+              itemBuilder: (context, index) =>
+                  _itemBuilder(snapshot.getItem(index)),
+              itemCount: snapshot.itemCount,
+            )
+          : const Center(child: CircularProgressIndicator());
 
-    final list = snapshot.data!;
-
-    return ListView.builder(
-      itemBuilder: (context, index) => _itemBuilder(list.getItem(index)),
-      itemCount: list.itemCount,
-    );
-  }
-
-  Widget _itemBuilder(User? user) {
-    if (user == null) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
-    return Card(
-      child: ListTile(
-        leading: CircleAvatar(
-          child: Text(user.id.toString()),
-        ),
-        title: Text(user.name),
-      ),
-    );
-  }
+  Widget _itemBuilder(User? user) => (user != null)
+      ? Card(
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Text(user.id.toString()),
+            ),
+            title: Text(user.name),
+          ),
+        )
+      : const Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: CircularProgressIndicator(),
+          ),
+        );
 }
 
 /// endregion

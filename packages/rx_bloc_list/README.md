@@ -3,12 +3,76 @@
 *RxPaginatedBuilder* package giving the user the possibility to quickly add infinity scroll and pull-to-refresh features to their project with minimal setup. It provides the flexibility and simplicity of presentation of paginated data with the use of [RxBloc](https://github.com/Prime-Holding/rx_bloc "RxBloc")s inside the *RxBloc ecosystem*.
 
 ## Table of contents
+- [Usage](#usage)
 - [Setup](#setup)
 - [Additional parameters](#additional-params)
 - [RxPaginatedBuilder.withRefreshIndicator](#withRefreshIndicator)
-- [Previews](#previews)
 
 <br/>
+<div id="usage"/>
+
+### Usage
+
+Before using the actual package add it to the `pubspec.yaml` dependencies:
+```yaml
+dependencies:
+  rx_bloc_list: latest_version
+```
+Also be sure to import the package:
+```dart
+import 'package:rx_bloc_list/rx_bloc_list.dart';
+```
+Now you can include the ***RxPaginatedList*** in your project like this:
+
+
+```dart
+Widget build(BuildContext context) => Scaffold(
+    body: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
+      state: (bloc) => bloc.states.paginatedList,
+      onBottomScrolled: (bloc) => bloc.events.loadPage(),
+      onRefresh: (bloc) async {
+        bloc.events.loadPage(reset: true);
+        return bloc.states.refreshDone;
+      },
+      builder: (context, snapshot, bloc) => !snapshot.isInitialLoading
+          ? ListView.builder(
+        itemCount: snapshot.itemCount,
+        itemBuilder: (context, index) {
+          final user = snapshot.getItem(index);
+          if (user == null) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          return Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                child: Text(user.id.toString()),
+              ),
+              title: Text(user.name),
+            ),
+          );
+        },
+      )
+          : const Center(child: CircularProgressIndicator());,
+    ),
+  );
+```
+
+<br/>
+
+| Initial loading of the data           | Default app state           |
+|---------------------------------------|-----------------------------|
+| <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/initial_load.png" alt="Initial loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/normal.png" alt="Initial loading"></img> |
+
+| Loading of the next page (infinity loading)           | Data refreshing (pull to refresh)          |
+|---------------------------------------|-----------------------------|
+| <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/infinity_load.png" alt="Infinity loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/refresh.png" alt="Refreshing"> |
+
+
 <div id="setup"/>
 
 ### Setup
@@ -34,15 +98,6 @@ The RxPaginatedBuilder also provides the ability to react to scrolling via the `
 
 There may be cases where you have a reference to the BLoC that is used by the RxPaginatedBuilder. By specifying the `bloc` parameter you remove the need to perform a lookup for that BLoC in the widget tree, improving the performance by a small bit.
 
-Here is an example of what a RxPaginatedBloc using a UserBloc looks like:
-```dart
-RxPaginatedBuilder<UserBlocType, User>(
-	state: (bloc) => bloc.states.paginatedUsers,
-	onBottomScrolled: (bloc) => bloc.events.loadNextPage(),
-	builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
-);
-```
-
 <div id="withRefreshIndicator" />
 
 ### RxPaginatedBuilder.withRefreshIndicator
@@ -50,24 +105,3 @@ RxPaginatedBuilder<UserBlocType, User>(
 Sometimes, you may want to have a working pagination and pull-to-refresh without spending too much time on it. Using the *RxPaginatedBuilder.withRefreshIndicator* gives you access to a [Refresh Indicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html "Refresh Indicator") straight out of the box.
 
 Along with the required parameters of the default implementation, *RxPaginatedBuilder.withRefreshIndicator* gets rid of the `wrapperBuilder` but introduces a new required parameter `onRefresh`. The `onRefresh` callback is triggered once a pull-to-refresh has been performed. The callback, containing the BLoC as a parameter, should return a future, which once complete will make the refresh indicator disappear.
-
-Here is an example of what a RxPaginatedBloc using a UserBloc looks like using the *withRefreshIndicator* constructor :
-```dart
-RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
-	state: (bloc) => bloc.states.paginatedUsers,
-	onBottomScrolled: (bloc) => bloc.events.loadNextPage(),
-	builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
-	onRefresh: (bloc) async => bloc.events.refreshData();
-);
-```
-<div id="previews" />
-
-### Previews
-
-| Initial loading of the data           | Default app state           |
-|---------------------------------------|-----------------------------|
-| <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/initial_load.png" alt="Initial loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/normal.png" alt="Initial loading"></img> |
-
-| Loading of the next page (infinity loading)           | Data refreshing (pull to refresh)          |
-|---------------------------------------|-----------------------------|
-| <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/infinity_load.png" alt="Infinity loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/refresh.png" alt="Refreshing"> |
