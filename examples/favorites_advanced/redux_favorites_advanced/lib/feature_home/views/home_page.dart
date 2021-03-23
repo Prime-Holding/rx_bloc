@@ -24,8 +24,10 @@ class HomePage extends StatelessWidget {
           builder: (_, viewModel) => CurvedNavigationBar(
             color: Colors.blueAccent,
             backgroundColor: Colors.transparent,
-            items: viewModel.items.map((item) => item.type.asIcon()).toList(),
-            onTap: (index) => viewModel.onTapNavBar(index),
+            items: viewModel.items
+                .map((item) => item.type.asIcon() ?? Container())
+                .toList(),
+            onTap: (index) => viewModel.onTapNavBar!(index),
           ),
         ),
         body: StoreConnector<AppState, _ViewModel>(
@@ -39,7 +41,7 @@ class HomePage extends StatelessWidget {
 }
 
 class _ViewModel {
-  _ViewModel({@required this.items, this.onTapNavBar});
+  _ViewModel({required this.items, this.onTapNavBar});
 
   factory _ViewModel.from(Store<AppState> store) {
     void _onTapNavBar(int index) {
@@ -55,7 +57,7 @@ class _ViewModel {
   }
 
   final List<NavigationItem> items;
-  final Function(int) onTapNavBar;
+  final Function(int)? onTapNavBar;
 
   @override
   bool operator ==(Object other) =>

@@ -12,10 +12,10 @@ PuppyListState puppyListStateReducer(PuppyListState state, action) =>
       isLoading: false,
     );
 
-Reducer<List<Puppy>> puppyReducer = combineReducers<List<Puppy>>([
-  TypedReducer<List<Puppy>, PuppiesFetchSucceededAction>(
+Reducer<List<Puppy>?> puppyReducer = combineReducers<List<Puppy>?>([
+  TypedReducer<List<Puppy>?, PuppiesFetchSucceededAction>(
       puppiesFetchSucceededReducer),
-  TypedReducer<List<Puppy>, ExtraDetailsFetchSucceededAction>(
+  TypedReducer<List<Puppy>?, ExtraDetailsFetchSucceededAction>(
       extraDetailsFetchSucceededReducer),
 ]);
 //TypedReducer<List<Puppy>, PuppiesFetchRequestedAction>(fetchPuppiesReducer);
@@ -24,15 +24,15 @@ Reducer<List<Puppy>> puppyReducer = combineReducers<List<Puppy>>([
 //         List<Puppy> puppies, PuppiesFetchRequestedAction action) =>
 //     puppies;
 
-List<Puppy> puppiesFetchSucceededReducer(
-    List<Puppy> puppies, PuppiesFetchSucceededAction action) {
-  print(action.puppies[20]);
+List<Puppy>? puppiesFetchSucceededReducer(
+    List<Puppy>? puppies, PuppiesFetchSucceededAction action) {
+  print(action.puppies![20]);
   //print(action.puppies);
   return action.puppies;
 }
 
-List<Puppy> extraDetailsFetchSucceededReducer(
-    List<Puppy> puppies, ExtraDetailsFetchSucceededAction action) {
+List<Puppy>? extraDetailsFetchSucceededReducer(
+    List<Puppy>? puppies, ExtraDetailsFetchSucceededAction action) {
   print(action.puppy);
   return puppies;
 }

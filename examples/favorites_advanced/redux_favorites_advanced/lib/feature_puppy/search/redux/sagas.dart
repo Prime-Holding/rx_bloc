@@ -4,7 +4,7 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'actions.dart';
 
-final repository = PuppiesRepository(ImagePicker());
+final repository = PuppiesRepository(ImagePicker(), ConnectivityRepository());
 
 fetchPuppies({dynamic action}) sync* {
   yield Try(() sync* {

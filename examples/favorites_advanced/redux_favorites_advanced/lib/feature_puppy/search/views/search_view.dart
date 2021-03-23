@@ -18,21 +18,23 @@ class SearchView extends StatelessWidget {
           converter: (store) => _ViewModel.from(store),
           builder: (_, viewModel) {
             //print(viewModel.puppies);
-            print(viewModel.puppies.length);
-            if (viewModel.puppies.isEmpty) {
+            print(viewModel.puppies!.length);
+            if (viewModel.puppies!.isEmpty) {
               return LoadingWidget();
             } else {
               return SafeArea(
                 child: ListView.builder(
                   padding: const EdgeInsets.only(bottom: 67),
-                  itemCount: viewModel.puppies.length,
+                  itemCount: viewModel.puppies!.length,
                   itemBuilder: (ctx, index) {
-                    final item = viewModel.puppies[index];
+                    final item = viewModel.puppies![index];
                     return PuppyCard(
                       key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                       onVisible: (puppy) =>
                           viewModel.onExtraDetailsFetch(puppy),
                       puppy: item,
+                      onCardPressed: (puppy) {},
+                      onFavorite: (puppy, isFavorite) {},
                     );
                   },
                 ),
@@ -44,7 +46,7 @@ class SearchView extends StatelessWidget {
 }
 
 class _ViewModel {
-  _ViewModel({@required this.puppies, @required this.onExtraDetailsFetch});
+  _ViewModel({required this.puppies, required this.onExtraDetailsFetch});
 
   factory _ViewModel.from(Store<AppState> store) {
     void _onExtraDetailsFetch(Puppy puppy) {
@@ -57,7 +59,7 @@ class _ViewModel {
     );
   }
 
-  final List<Puppy> puppies;
+  final List<Puppy>? puppies;
   final Function onExtraDetailsFetch;
 
   @override

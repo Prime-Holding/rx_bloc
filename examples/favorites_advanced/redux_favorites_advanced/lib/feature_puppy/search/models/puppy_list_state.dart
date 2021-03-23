@@ -19,13 +19,13 @@ class PuppyListState {
         puppies = [];
 
   //final bool isError;
-  final bool isLoading;
-  final List<Puppy> puppies;
+  final bool? isLoading;
+  final List<Puppy>? puppies;
 
   PuppyListState copyWith({
     //@required bool isError,
-    @required bool isLoading,
-    @required List<Puppy> puppies,
+    required bool? isLoading,
+    required List<Puppy>? puppies,
   }) =>
       PuppyListState(
         //isError: isError ?? this.isError,

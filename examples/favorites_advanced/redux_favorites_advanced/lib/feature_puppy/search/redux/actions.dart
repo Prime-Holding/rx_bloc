@@ -4,31 +4,31 @@ import 'package:favorites_advanced_base/models.dart';
 class PuppiesFetchRequestedAction {}
 
 class PuppiesFetchSucceededAction {
-  PuppiesFetchSucceededAction({@required this.puppies});
+  PuppiesFetchSucceededAction({required this.puppies});
 
-  final List<Puppy> puppies;
+  final List<Puppy>? puppies;
 }
 
 class PuppiesFetchFailedAction {
-  PuppiesFetchFailedAction({@required this.message});
+  PuppiesFetchFailedAction({required this.message});
 
-  final String message;
+  final String? message;
 }
 
 class ExtraDetailsFetchRequestedAction {
-  ExtraDetailsFetchRequestedAction({@required this.puppy});
+  ExtraDetailsFetchRequestedAction({required this.puppy});
 
   final Puppy puppy;
 }
 
 class ExtraDetailsFetchSucceededAction {
-  ExtraDetailsFetchSucceededAction({@required this.puppy});
+  ExtraDetailsFetchSucceededAction({required this.puppy});
 
-  final Puppy puppy;
+  final Puppy? puppy;
 }
 
 class ExtraDetailsFetchFailedAction {
-  ExtraDetailsFetchFailedAction({@required this.message});
+  ExtraDetailsFetchFailedAction({required this.message});
 
   final String message;
 }

@@ -5,7 +5,7 @@ import 'package:favorites_advanced_base/models.dart';
 @immutable
 class NavigationState {
   const NavigationState({
-    @required this.items,
+    required this.items,
   });
 
   NavigationState.initialState()

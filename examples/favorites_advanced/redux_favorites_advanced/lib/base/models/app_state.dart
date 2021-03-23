@@ -6,8 +6,8 @@ import '../../feature_puppy/search/models/puppy_list_state.dart';
 @immutable
 class AppState {
   const AppState({
-    @required this.navigationState,
-    @required this.puppyListState,
+    required this.navigationState,
+    required this.puppyListState,
   });
 
   factory AppState.initialState() => AppState(
@@ -19,7 +19,7 @@ class AppState {
   final PuppyListState puppyListState;
 
   AppState copyWith(
-          {NavigationState navigationState, PuppyListState puppyListState}) =>
+          {NavigationState? navigationState, PuppyListState? puppyListState}) =>
       AppState(
         navigationState: navigationState ?? this.navigationState,
         puppyListState: puppyListState ?? this.puppyListState,
