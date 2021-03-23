@@ -40,8 +40,8 @@ class SearchPage extends StatelessWidget {
                               .read<PuppyListBloc>()
                               .add(PuppyFetchDetailsEvent(puppy: puppy)),
                           puppy: item,
-                          onCardPressed: (Puppy) {},
-                          onFavorite: (Puppy puppy, bool isFavorite) {},
+                          onCardPressed: (puppy) {},
+                          onFavorite: (puppy, isFavorite) {},
                         );
                       },
                     ),

@@ -52,7 +52,6 @@ class HomePage extends StatelessWidget {
       case NavigationItemType.favorites:
         return FavoritesPage();
     }
-    return Container();
   }
 
   BlocBuilder<NavigationBarBloc, NavigationBarState> _buildNavBar() =>
