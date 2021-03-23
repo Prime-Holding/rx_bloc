@@ -1,6 +1,6 @@
 ## RxPaginatedBuilder
 
-*RxPaginatedBuilder* package giving the user the possibility to quickly add infinity scroll and pull-to-refresh features to their project with minimal setup. It provides the flexibility and simplicity of presentation of paginated data with the use of [RxBloc](https://github.com/Prime-Holding/rx_bloc "RxBloc")s inside the *RxBloc ecosystem*.
+*RxPaginatedBuilder* package giving the user the possibility to quickly add infinity scroll and pull-to-refresh features to their project with minimal setup. It provides the flexibility and simplicity of presentation of paginated data with the use of [RxBloc](https://pub.dev/packages/rx_bloc "RxBloc")s inside the *RxBloc ecosystem*.
 
 ## Table of contents
 - [Usage](#usage)

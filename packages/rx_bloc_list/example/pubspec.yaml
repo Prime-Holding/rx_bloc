@@ -1,5 +1,5 @@
 name: example
-description: A new Flutter application.
+description: A flutter example showcasing the use of rx_bloc_list plugin
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
