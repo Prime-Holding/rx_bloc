@@ -20,6 +20,8 @@ class PuppyListState {
   final List<Puppy>? searchedPuppies;
   final PuppyListStatus? status;
 
+  List<Puppy>? get searchedPuppiesList => searchedPuppies;
+
   PuppyListState copyWith({
     List<Puppy>? searchedPuppies,
     PuppyListStatus? status,

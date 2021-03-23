@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:favorites_advanced_base/core.dart';
+import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/repositories.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'puppy_list_event.dart';
 
@@ -42,6 +44,19 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   Stream<PuppyListState> _mapPuppyDetailFetchedToState(
       PuppyFetchDetailsEvent event, PuppyListState state) async* {
+    stream
+        // .bufferTime(const Duration(milliseconds: 100))
+        .map((puppyItems) =>
+            puppyItems.searchedPuppiesList!.whereNoExtraDetails())
+        .where((puppies) => puppies.isNotEmpty)
+        .flatMap((value) => repository.fetchFullEntities(value.ids).asStream());
+
+    // .flatMap((value) => repository.fetchFullEntities(value))
+
+    // onTransition(transition);
+    // transformEvents(events, () => null);
+    // transformTransitions(transitions);
+
     final puppyWithDetails =
         await repository.fetchPuppyExtraDetails(puppy: event.puppy!);
     // print('puppy id: ${puppyWithDetails.id}');
@@ -67,6 +82,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     // await Future.delayed(const Duration(milliseconds: 3000));
     // await repository.setDisplayNameAndDisplayCharacteristicsToNull();
 
+    /// TODO change this
     puppyItems = await _fetchPuppies(repository);
     yield PuppyListState.reloadInProgress(
         searchedPuppies: puppyItems, status: PuppyListStatus.success);

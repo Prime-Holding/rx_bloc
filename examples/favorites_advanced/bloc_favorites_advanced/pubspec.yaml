@@ -24,11 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   rxdart: ^0.26.0
-#  json_annotation: ^3.0.1
-#  auto_route: ^0.6.9
   provider: ^5.0.0
-  favorites_advanced_base:
-    path: ../favorites_advanced_base
   curved_navigation_bar: ^0.4.0-nullsafety.0
   badges: ^2.0.0-nullsafety.1
   animated_stream_list: ^1.1.0
@@ -51,14 +47,16 @@ dev_dependencies:
     sdk: flutter
 
 dependency_overrides:
-  appbar_textfield:
-    git:
-      url: https://github.com/StanevPrime/appbar_textfield.git
-      ref: null-safety
+  favorites_advanced_base:
+    path: ../favorites_advanced_base
   animated_stream_list:
     git:
       url: https://github.com/nilsreichardt/animated-stream-list.git
       ref: migrate-null-safety
+  appbar_textfield:
+    git:
+      url: https://github.com/StanevPrime/appbar_textfield.git
+      ref: null-safety
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
