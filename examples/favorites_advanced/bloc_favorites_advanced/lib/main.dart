@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
           ),
-          home: const HomePage().wrappedRoute(context),
+          home: HomePage.page(),
         ),
       );
 }

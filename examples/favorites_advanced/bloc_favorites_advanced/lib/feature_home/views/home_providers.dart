@@ -1,17 +1,15 @@
 part of 'home_page.dart';
 
-extension _HomeProviders on HomePage {
-  List<BlocProvider> _getProviders() => [
-        BlocProvider<PuppiesExtraDetailsBloc>(
-          create: (context) => PuppiesExtraDetailsBloc(
-            PuppiesRepository(
-              ImagePicker(),
-              ConnectivityRepository(),
-            ),
-          ),
-        ),
-        BlocProvider<NavigationBarBloc>(
-          create: (context) => NavigationBarBloc(),
-        ),
-      ];
-}
+List<BlocProvider> _getProviders() => [
+      // BlocProvider<PuppiesExtraDetailsBloc>(
+      //   create: (context) => PuppiesExtraDetailsBloc(
+      //     PuppiesRepository(
+      //       ImagePicker(),
+      //       ConnectivityRepository(),
+      //     ),
+      //   ),
+      // ),
+      BlocProvider<NavigationBarBloc>(
+        create: (context) => NavigationBarBloc(),
+      ),
+    ];
