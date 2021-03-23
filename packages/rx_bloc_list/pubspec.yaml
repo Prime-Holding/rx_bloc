@@ -1,0 +1,25 @@
+name: rx_bloc_list
+description: The rx_bloc_list package facilitates implementing infinity scroll and pull-to-refresh features with minimal setup. This package is meant to be used along with RxBloc ecosystem.
+version: 1.0.1
+homepage: https://www.primeholding.com
+repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_list
+issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  rxdart: ^0.26.0
+  rx_bloc: ^2.0.0
+  flutter_rx_bloc: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  rx_bloc_generator: ^3.0.1
+  build_runner:
+
+flutter:
+  uses-material-design: true

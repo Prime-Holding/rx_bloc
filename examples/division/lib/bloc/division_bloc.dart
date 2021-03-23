@@ -9,7 +9,7 @@ abstract class DivisionBlocEvents {
   @RxBlocEvent(
       type: RxBlocEventType.behaviour,
       seed: _DivideNumbersEventArgs('1.0', '1.0'))
-  void divideNumbers(String a, String b);
+  void divideNumbers(String? a, String? b);
 }
 
 abstract class DivisionBlocStates {

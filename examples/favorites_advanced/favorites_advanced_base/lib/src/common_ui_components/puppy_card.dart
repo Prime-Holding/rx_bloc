@@ -11,11 +11,11 @@ const String PuppyCardAnimationTag = 'PuppyCardImageAnimationTag';
 
 class PuppyCard extends StatelessWidget {
   PuppyCard({
-    Puppy puppy,
-    OnPuppyFavorite onFavorite,
-    Function(Puppy) onVisible,
-    Function(Puppy) onCardPressed,
-    Key key,
+    required Puppy puppy,
+    required OnPuppyFavorite onFavorite,
+    required Function(Puppy) onCardPressed,
+    Function(Puppy)? onVisible,
+    Key? key,
   })  : _puppy = puppy,
         _onFavorite = onFavorite,
         _onVisible = onVisible,
@@ -24,7 +24,7 @@ class PuppyCard extends StatelessWidget {
 
   final Puppy _puppy;
   final OnPuppyFavorite _onFavorite;
-  final Function(Puppy) _onVisible;
+  final Function(Puppy)? _onVisible;
   final Function(Puppy) _onCardPressed;
 
   @override
@@ -33,7 +33,7 @@ class PuppyCard extends StatelessWidget {
       : VisibilityDetector(
           onVisibilityChanged: (info) {
             if (info.visibleFraction > 0.7) {
-              _onVisible(_puppy);
+              _onVisible!(_puppy);
             }
           },
           key: Key("VisiblePuppyCard${_puppy.id}"),
@@ -41,7 +41,7 @@ class PuppyCard extends StatelessWidget {
         );
 
   Widget _buildCard() => GestureDetector(
-        onTap: () => _onCardPressed?.call(_puppy),
+        onTap: () => _onCardPressed(_puppy),
         child: Padding(
           key: Key("PuppyCard${_puppy.id}"),
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
@@ -83,7 +83,7 @@ class PuppyCard extends StatelessWidget {
 }
 
 extension _PuppyAsFavIcon on Puppy {
-  Widget asFavIcon({VoidCallback favorite, VoidCallback unfavorite}) =>
+  Widget asFavIcon({VoidCallback? favorite, VoidCallback? unfavorite}) =>
       isFavorite
           ? IconButton(
               icon: const Icon(Icons.favorite),

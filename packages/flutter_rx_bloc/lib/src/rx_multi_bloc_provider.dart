@@ -49,24 +49,27 @@ import 'rx_bloc_provider.dart';
 /// readability due to the reduction in nesting and boilerplate.
 /// {@endtemplate}
 class RxMultiBlocProvider extends StatelessWidget {
-  /// The [RxBlocProvider] list which is converted into a tree of [RxBlocProvider] widgets.
-  /// The tree of [RxBlocProvider] widgets is created in order meaning the first [RxBlocProvider]
-  /// will be the top-most [RxBlocProvider] and the last [RxBlocProvider] will be a direct ancestor
+  /// {@macro rxmultiblocprovider}
+  const RxMultiBlocProvider({
+    Key? key,
+    required this.providers,
+    required this.child,
+  }) : super(key: key);
+
+  /// The [RxBlocProvider] list which is converted into a tree
+  /// of [RxBlocProvider] widgets.
+  /// The tree of [RxBlocProvider] widgets is created in order meaning
+  /// the first [RxBlocProvider]
+  /// will be the top-most [RxBlocProvider] and the last [RxBlocProvider]
+  /// will be a direct ancestor
   /// of [child].
   final List<RxBlocProvider> providers;
 
-  /// The widget and its descendants which will have access to every [bloc] provided by [providers].
-  /// [child] will be a direct descendent of the last [RxBlocProvider] in [providers].
+  /// The widget and its descendants which will have access to every [bloc]
+  /// provided by [providers].
+  /// [child] will be a direct descendent of
+  /// the last [RxBlocProvider] in [providers].
   final Widget child;
-
-  /// {@macro rxmultiblocprovider}
-  const RxMultiBlocProvider({
-    Key key,
-    @required this.providers,
-    @required this.child,
-  })  : assert(providers != null),
-        assert(child != null),
-        super(key: key);
 
   @override
   Widget build(BuildContext context) {

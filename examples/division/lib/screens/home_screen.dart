@@ -2,7 +2,7 @@ import 'package:example/bloc/division_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
-String _numberA, _numberB;
+String? _numberA, _numberB;
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -51,8 +51,8 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(height: 15),
                   RxBlocBuilder<DivisionBlocType, bool>(
                     state: (bloc) => bloc.states.isLoading,
-                    builder: (ctx, state, bloc) => OutlineButton(
-                      child: Text((state?.data ?? false)
+                    builder: (ctx, state, bloc) => OutlinedButton(
+                      child: Text((state.data ?? false)
                           ? 'Calculating...'
                           : 'Divide A by B'),
                       onPressed: () =>
@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                     child: RxBlocBuilder<DivisionBlocType, String>(
                       state: (bloc) => bloc.states.divisionResult,
                       builder: (ctx, state, bloc) =>
-                          Text(state?.data ?? 'Enter numbers to divide.'),
+                          Text(state.data ?? 'Enter numbers to divide.'),
                     ),
                   ),
                   RxBlocListener<DivisionBlocType, String>(
@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                     listener: (ctx, state) {
                       final error = state ?? '';
                       if (error.isNotEmpty)
-                        Scaffold.of(ctx).showSnackBar(
+                        ScaffoldMessenger.of(ctx).showSnackBar(
                             SnackBar(content: Text("Error: $error")));
                     },
                   ),

@@ -77,7 +77,7 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
   }) =>
       doOnData((event) {
         if (event is ResultError<T>) {
-          bloc._resultStreamExceptionsSubject.value = event.error;
+          bloc._resultStreamExceptionsSubject.sink.add(event.error);
         }
       }).asSharedStream(shareReplay: shareReplay);
 
@@ -109,7 +109,7 @@ extension Bind<T> on Stream<T> {
   /// unsubscribing needs to be handled accordingly either by
   /// using [CompositeSubscription] or manually.
   StreamSubscription<T> bind(BehaviorSubject<T> subject) =>
-      listen((data) => subject.value = data);
+      listen(subject.sink.add);
 }
 
 /// Stream subscription disposer

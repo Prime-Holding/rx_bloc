@@ -6,18 +6,17 @@ extension _OnPuppyUpdated on CoordinatorBlocType {
 }
 
 extension _WherePuppyUpdated on Stream<List<Puppy>> {
-  Stream<Puppy> wherePuppy(Puppy puppy) => map<Puppy>(
-        (puppies) => puppies.firstWhere(
+  Stream<Puppy> wherePuppy(Puppy puppy) => map<Puppy?>(
+        (puppies) => puppies.firstWhereOrNull(
           (item) => item.id == puppy.id,
-          orElse: () => null,
         ),
-      ).where((puppy) => puppy != null);
+      ).whereType<Puppy>();
 }
 
 extension _ExtractPuppyProperties on Stream<Puppy> {
-  Stream<String> mapToBreed() => map((puppy) => puppy.breedTypeAsString);
+  Stream<String?> mapToBreed() => map((puppy) => puppy.breedTypeAsString);
 
-  Stream<String> mapToCharacteristics() =>
+  Stream<String?> mapToCharacteristics() =>
       map((puppy) => puppy.displayCharacteristics);
 
   Stream<String> mapToGender() => map((puppy) => puppy.genderAsString);

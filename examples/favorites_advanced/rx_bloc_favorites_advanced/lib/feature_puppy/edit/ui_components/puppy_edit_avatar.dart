@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 class PuppyEditAvatar extends StatelessWidget {
   const PuppyEditAvatar({
-    @required this.heroTag,
-    @required this.imgPath,
-    @required this.pickImage,
-    Key key,
+    required this.heroTag,
+    required this.imgPath,
+    required this.pickImage,
+    Key? key,
   }) : super(key: key);
 
   final String heroTag;
   final String imgPath;
-  final void Function(ImagePickerAction source) pickImage;
+  final void Function(ImagePickerAction? source) pickImage;
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -50,13 +50,6 @@ class PuppyEditAvatar extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent, // button color
                   child: InkWell(
-                    child: const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.edit,
-                        size: 24,
-                      ),
-                    ),
                     onTap: () {
                       PhotoPickerActionSelectionBottomSheet
                           .presentPhotosBottomSheet(
@@ -64,6 +57,13 @@ class PuppyEditAvatar extends StatelessWidget {
                         (source) => pickImage(source),
                       );
                     },
+                    child: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.edit,
+                        size: 24,
+                      ),
+                    ),
                   ),
                 ),
               ),

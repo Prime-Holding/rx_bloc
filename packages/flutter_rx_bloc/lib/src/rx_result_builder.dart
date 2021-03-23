@@ -15,19 +15,19 @@ import 'rx_bloc_provider.dart';
 class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
   /// The default constructor.
   const RxResultBuilder({
-    @required this.state,
-    @required this.buildSuccess,
-    @required this.buildError,
-    @required this.buildLoading,
+    required this.state,
+    required this.buildSuccess,
+    required this.buildError,
+    required this.buildLoading,
     this.bloc,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   /// The BLoC state based on which this widget rebuilds itself
   final Stream<Result<T>> Function(B) state;
 
   ///The [RxBloc] which provides the state for this widget
-  final B bloc;
+  final B? bloc;
 
   /// Callback which is invoked when the [state] stream produces an event
   /// which is [ResultSuccess]
@@ -57,7 +57,7 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
         final result = snapshot.connectionState == ConnectionState.active ||
                 snapshot.connectionState == ConnectionState.done
             ? (snapshot.hasError
-                ? Result.error(snapshot.asException())
+                ? Result.error(snapshot.asException()!)
                 : snapshot.data)
             : Result.loading();
 
@@ -74,11 +74,11 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
 }
 
 extension _AsyncSnapshotToException<T> on AsyncSnapshot<Result<T>> {
-  Exception asException() {
+  Exception? asException() {
     if (!hasError) return null;
 
     if (error is Exception) {
-      return error as Exception;
+      return error as Exception?;
     }
 
     return Exception(error.toString());
