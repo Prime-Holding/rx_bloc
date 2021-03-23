@@ -1,4 +1,5 @@
 import 'package:bloc_sample/feature_puppy/favorites/favorites_page.dart';
+import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/views/search_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/extensions.dart';
@@ -10,6 +11,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'home_providers.dart';
 

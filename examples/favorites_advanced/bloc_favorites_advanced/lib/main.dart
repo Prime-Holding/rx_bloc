@@ -1,11 +1,7 @@
 import 'package:bloc_sample/feature_home/views/home_page.dart';
-import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
-import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:favorites_advanced_base/resources.dart';
-import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,25 +9,12 @@ void main() {
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-        providers: [
-          // BlocProvider<NavigationBarBloc>(
-          //   create: (context) => NavigationBarBloc(),
-          // ),
-          BlocProvider<PuppyListBloc>(
-            create: (context) => PuppyListBloc(PuppiesRepository(
-              ImagePicker(),
-              ConnectivityRepository(),
-            )),
-          ),
-        ],
-        child: MaterialApp(
+  Widget build(BuildContext context) =>  MaterialApp(
           title: 'Puppies app',
           theme: ThemeData(
             primarySwatch: Colors.blue,
             scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
           ),
           home: HomePage.page(),
-        ),
-      );
+        );
 }
