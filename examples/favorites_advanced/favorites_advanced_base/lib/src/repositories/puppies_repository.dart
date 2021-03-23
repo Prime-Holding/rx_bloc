@@ -19,7 +19,7 @@ class PuppiesRepository {
   final _noInternetConnectionErrorString =
       'No internet connection. Please check your settings.';
 
-  /// Simuof the API http requests
+  /// Simulate delays of the API http requests
   final artificialDelay = Duration(milliseconds: 300);
 
   /// Control how many time the 20 below will be multiplied.
