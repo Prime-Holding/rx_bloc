@@ -98,22 +98,16 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
     extends RxFormFieldBuilder<B, String> {
   ///The default constructor
   RxTextFormFieldBuilder({
-    @required RxFormFieldState<B, String> state,
-    @required RxFormFieldShowError<B> showErrorState,
-    @required RxTextFormFieldBuilderFunction<B> builder,
-    @required this.onChanged,
+    required RxFormFieldState<B, String> state,
+    required RxFormFieldShowError<B> showErrorState,
+    required RxTextFormFieldBuilderFunction<B> builder,
+    required this.onChanged,
     this.decorationData = const RxInputDecorationData(),
     this.controller,
     this.obscureText = false,
-    B bloc,
-    Key key,
-  })  : assert(state != null),
-        assert(showErrorState != null),
-        assert(onChanged != null),
-        assert(builder != null),
-        assert(obscureText != null),
-        assert(decorationData != null),
-        textFormBuilder = builder,
+    B? bloc,
+    Key? key,
+  })  : textFormBuilder = builder,
         super(
           key: key,
           state: state,
@@ -134,7 +128,7 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
 
   ///   An optional [controller] can be provided, if it isn't
   /// an internal one is created and managed.
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   ///   The optional [obscureText] field is a boolean value which determines
   /// whether or not the text field should be obscured. If it is set
@@ -157,17 +151,17 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
 /// as well as some additional ones for managing text field states.
 class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     extends RxFormFieldBuilderState<B, String, RxTextFormFieldBuilder<B>> {
-  bool _shouldDisposeController;
-  TextEditingController _controller;
-  InputDecoration _decoration;
-  bool _isTextObscured;
+  late bool _shouldDisposeController;
+  late TextEditingController _controller;
+  InputDecoration? _decoration;
+  bool? _isTextObscured;
 
   ///   [isTextObscured] determines weather or not the text in the text field
   /// should be obscured at any given moment, if obscureText is set in the
   /// widget constructor, this value changes depending on user interaction
   /// with the trailing icon of the generated [decoration] which is provided
   /// to the builder.
-  bool get isTextObscured => _isTextObscured;
+  bool? get isTextObscured => _isTextObscured;
 
   ///   [controller] is the [TextEditingController] which should be used by the
   /// text field created in the builder function.
@@ -186,7 +180,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
   ///   [RxInputDecorationData.iconVisibility] or
   ///   [RxInputDecorationData.iconVisibilityOff] depending on the state of
   ///   [isTextObscured]
-  InputDecoration get decoration => _decoration;
+  InputDecoration? get decoration => _decoration;
 
   @override
   void initState() {
@@ -210,7 +204,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     _blocState.listen(
       (value) {
         if (_controller.text != value) {
-          _controller.text = value;
+          _controller.text = value!;
         }
       },
       onError: (exception) {},
@@ -229,7 +223,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     return widget.textFormBuilder(this);
   }
 
-  InputDecoration _makeDecoration(bool showError, String error) =>
+  InputDecoration _makeDecoration(bool showError, String? error) =>
       InputDecoration(
         labelStyle: !showError
             ? widget.decorationData.labelStyle
@@ -238,11 +232,11 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
             ? GestureDetector(
                 onTap: () {
                   setState(() {
-                    _isTextObscured = !_isTextObscured;
+                    _isTextObscured = !_isTextObscured!;
                   });
                 },
                 child: Padding(
-                  child: _isTextObscured
+                  child: _isTextObscured!
                       ? widget.decorationData.iconVisibility
                       : widget.decorationData.iconVisibilityOff,
                   padding: const EdgeInsets.all(16),

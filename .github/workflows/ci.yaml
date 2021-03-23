@@ -19,6 +19,7 @@ jobs:
       matrix:
         folder:
           [
+            "packages/rx_bloc_list",
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
@@ -30,7 +31,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
         with:
-          flutter-version: '1.22.4'
+          channel: "stable"
       - run: dart --version
       - run: flutter --version 
       - name: Install Dependencies
@@ -43,7 +44,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
-            flutter test
+            flutter test --exclude-tags not-tests 
           fi
   packages:
     strategy:
@@ -52,6 +53,7 @@ jobs:
           [
             "packages/rx_bloc",
             "packages/rx_bloc_test",
+            "packages/rx_bloc_generator",
           ]
       fail-fast: false
     runs-on: ubuntu-latest
@@ -59,7 +61,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.4.0
         with:
-          flutter-version: '1.22.4'
+          channel: "stable"
       - run: dart --version
       - run: flutter --version 
       - name: Install Dependencies
@@ -72,7 +74,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
-            dart test
+            dart test --exclude-tags not-tests
           fi
 
   build:

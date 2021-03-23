@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import '../../models.dart';
 
 extension NavigationItemUtils on NavigationItem {
-  NavigationItem copyWith({bool isSelected, int count}) => NavigationItem(
+  NavigationItem copyWith({bool? isSelected, int? count}) => NavigationItem(
         type: type,
         isSelected: isSelected ?? this.isSelected,
       );
@@ -27,8 +27,6 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.favorites:
         return 'Favorites Puppies';
     }
-
-    return '';
   }
 
   /// Get the index based on [NavigationItemType]
@@ -39,8 +37,6 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.favorites:
         return 1;
     }
-
-    return 0;
   }
 
   /// Get a subtitle based on [NavigationItemType]
@@ -51,12 +47,10 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.favorites:
         return 'Favorites';
     }
-
-    return '';
   }
 
   /// Convert [NavigationItemType] to an icon based on its type.
-  Icon asIcon() {
+  Icon? asIcon() {
     switch (this) {
       case NavigationItemType.search:
         return const Icon(
@@ -71,7 +65,5 @@ extension NavigationItemTypeTitle on NavigationItemType {
           color: Colors.white,
         );
     }
-
-    return null;
   }
 }

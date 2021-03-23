@@ -9,7 +9,10 @@ import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_det
 import 'package:rx_bloc_favorites_advanced/feature_puppy/details/ui_components/puppy_details_app_bar.dart';
 
 class PuppyDetails extends StatelessWidget {
-  const PuppyDetails({@required this.puppy, Key key}) : super(key: key);
+  const PuppyDetails({
+    required this.puppy,
+    Key? key,
+  }) : super(key: key);
 
   final Puppy puppy;
 
@@ -52,10 +55,10 @@ class PuppyDetails extends StatelessWidget {
                   const SizedBox(
                     height: 24,
                   ),
-                  RxBlocBuilder<PuppyDetailsBlocType, String>(
+                  RxBlocBuilder<PuppyDetailsBlocType, String?>(
                     state: (bloc) => bloc.states.characteristics,
                     builder: (context, snapshot, bloc) => Text(
-                      snapshot.data ?? puppy.displayCharacteristics,
+                      snapshot.data ?? puppy.displayCharacteristics!,
                       style: TextStyles.subtitleTextStyle,
                     ),
                   ),
@@ -77,9 +80,9 @@ class PuppyDetails extends StatelessWidget {
   Widget _buildPuppyBackgroundImage(String path) => Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: path.contains('assets/puppie_')
+            image: (path.contains('assets/puppie_')
                 ? AssetImage(path)
-                : FileImage(File(path)),
+                : FileImage(File(path))) as ImageProvider<Object>,
             fit: BoxFit.cover,
           ),
         ),

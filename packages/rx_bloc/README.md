@@ -85,7 +85,7 @@ Here is where the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator
 ```dart
 dev_dependencies:
   build_runner:
-  rx_bloc_generator:^2.0.0
+  rx_bloc_generator:^3.0.0
 ```
 
 Once added to the `pubspec.yaml`, run the flutter command for getting the newly added dependencies `flutter pub get`, and then just start the generator by execuing this command `flutter packages pub run build_runner watch --delete-conflicting-outputs`.
@@ -132,12 +132,12 @@ class CounterBloc extends $CounterBloc {
 As you can see, by extending [$CounterBloc](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.rxb.g.dart#L20), we must implement `Stream<int>` `_mapToCountState()` , which is the method responsible for the events-to-state business logic. Furthermore, we have [_$incrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L44) and [_$decrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L47), which are the [subjects](https://pub.dev/documentation/rxdart/latest/rx_subjects/rx_subjects-library.html) where the events will flow when [increment()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L10) and [decrement()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L13) methods are invoked from the UI Layer.
 In the code above we declare that as soon as the user taps on the increment or decrement button, an API call will be executed. Since both _$incrementEvent and _$decrementEvent are grouped in one stream by the merge operator, the result of their API calls allows us to register our BloC as a state handler. For more information what is State Handler and how it works, look at [this article](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99#c627). We then extract only the “success” result and finally put an initial value of 0.
 
-## Accessing the BloC from the widget treee
+## Accessing the BloC from the widget tree
 First, make sure you have added [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) to your pubspec.yaml file and after exexuting `flutter pub get` you will have access to the following `widget` binders.
 
 ```dart
 dependencies:
-  flutter_rx_bloc: ^1.2.1
+  flutter_rx_bloc: ^2.0.0
 ```
 
 [RxBlocProvider](https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html) is a Flutter widget that provides a BloC to its children via RxBlocProvider.of<T>(context). It is used as a dependency injection (DI) widget so that a single instance of a BloC can be provided to multiple widgets within a subtree.

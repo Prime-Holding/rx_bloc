@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class PuppyAvatar extends StatelessWidget {
   PuppyAvatar({
-    @required this.asset,
+    required this.asset,
     this.radius,
   });
 
   final String asset;
-  final double radius;
+  final double? radius;
 
   double get _imageRadius => radius ?? 108;
 

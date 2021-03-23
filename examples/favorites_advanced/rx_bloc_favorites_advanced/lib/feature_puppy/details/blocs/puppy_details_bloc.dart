@@ -1,5 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:favorites_advanced_base/core.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -14,11 +14,11 @@ abstract class PuppyDetailsStates {
 
   Stream<String> get name;
 
-  Stream<String> get breed;
+  Stream<String?> get breed;
 
   Stream<String> get gender;
 
-  Stream<String> get characteristics;
+  Stream<String?> get characteristics;
 
   Stream<bool> get isFavourite;
 
@@ -31,8 +31,8 @@ abstract class PuppyDetailsStates {
 class PuppyDetailsBloc extends $PuppyDetailsBloc {
   PuppyDetailsBloc(
     CoordinatorBlocType coordinatorBloc, {
-    @required Puppy puppy,
-  })  : _puppy = puppy,
+    required Puppy puppy,
+  })   : _puppy = puppy,
         _coordinatorBlocType = coordinatorBloc;
 
   final Puppy _puppy;
@@ -47,10 +47,10 @@ class PuppyDetailsBloc extends $PuppyDetailsBloc {
       .shareReplay(maxSize: 1);
 
   @override
-  Stream<String> _mapToBreedState() => puppy.mapToBreed();
+  Stream<String?> _mapToBreedState() => puppy.mapToBreed();
 
   @override
-  Stream<String> _mapToCharacteristicsState() => puppy.mapToCharacteristics();
+  Stream<String?> _mapToCharacteristicsState() => puppy.mapToCharacteristics();
 
   @override
   Stream<String> _mapToGenderState() => puppy.mapToGender();
