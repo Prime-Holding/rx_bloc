@@ -63,11 +63,11 @@ class PaginatedListPage extends StatelessWidget {
 
 | Initial loading of the data           | Default app state           |
 |---------------------------------------|-----------------------------|
-| <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/initial_load.png" alt="Initial loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/normal.png" alt="Initial loading"></img> |
+| <img src="https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/doc/assets/initial_load.png" alt="Initial loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/doc/assets/normal.png" alt="Initial loading"></img> |
 
 | Loading of the next page (infinity loading)           | Data refreshing (pull to refresh)          |
 |---------------------------------------|-----------------------------|
-| <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/infinity_load.png" alt="Infinity loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/feature/rx_bloc_list/packages/rx_bloc_list/doc/assets/refresh.png" alt="Refreshing"> |
+| <img src="https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/doc/assets/infinity_load.png" alt="Infinity loading"> | <img src="https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/doc/assets/refresh.png" alt="Refreshing"> |
 
 
 <div id="setup"/>
