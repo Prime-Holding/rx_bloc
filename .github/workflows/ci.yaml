@@ -22,6 +22,7 @@ jobs:
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
+            "packages/rx_bloc_list",
           ]
       fail-fast: false
     runs-on: ubuntu-latest
@@ -50,7 +51,6 @@ jobs:
         folder:
           [
             "packages/rx_bloc",
-            "packages/rx_bloc_list",
             "packages/rx_bloc_test",
             "packages/rx_bloc_generator",
           ]
