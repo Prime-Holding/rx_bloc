@@ -67,7 +67,7 @@ extension _EventMethodElement on MethodElement {
 
   /// Provides the BehaviorSubject.seeded arguments as an [Expression]
   Expression get _seededArgument {
-    Iterable<String> seedArgumentsMatch = RegExp(r'(?<=seed: ).*(?=\)|,)')
+    var seedArgumentsMatch = RegExp(r'(?<=seed: ).*(?=\)|,)')
         .allMatches(_rxBlocEventAnnotation?.toSource() ?? '')
         .map<String>((m) => m.group(0) ?? '');
 
@@ -76,7 +76,7 @@ extension _EventMethodElement on MethodElement {
           'Event `$name` seed value is missing or it is null.');
     }
 
-    String seedArguments = seedArgumentsMatch.toString();
+    var seedArguments = seedArgumentsMatch.toString();
     return refer(
       // ignore: lines_longer_than_80_chars
       '${isUsingArgumentClass && !seedArguments.contains('(const') ? 'const ' : ''}'
@@ -140,8 +140,8 @@ extension _EventMethodElement on MethodElement {
   /// _${EventMethodName}EventName.add(_MethodEventArgs(param1, param2))
   ///
   Code buildBody() {
-    List<Parameter> requiredParams = parameters.whereRequired().clone();
-    List<Parameter> optionalParams = parameters.whereOptional().clone();
+    var requiredParams = parameters.whereRequired().clone();
+    var optionalParams = parameters.whereOptional().clone();
 
     if (requiredParams.isEmpty && optionalParams.isEmpty) {
       // Provide null if we don't have any parameters
@@ -181,11 +181,11 @@ extension _EventMethodElement on MethodElement {
 
   /// Provides the event's name arguments as a [Map] of [Expression]
   Map<String, Expression> get _namedArguments {
-    List<Parameter> params = parameters.clone();
+    var params = parameters.clone();
 
     // Only named are not positional parameters
-    Map<String, Expression> namedArguments = {};
-    for (Parameter param in params.where((Parameter param) => param.named)) {
+    var namedArguments = <String, Expression>{};
+    for (var param in params.where((Parameter param) => param.named)) {
       namedArguments[param.name] = refer(param.name);
     }
     // For methods with more than 1 parameters provide the new param class

@@ -20,9 +20,9 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
       return null;
     }
 
-    final ClassElement classElement = element;
+    final classElement = element;
 
-    final LibraryReader libraryReader = LibraryReader(classElement.library);
+    final libraryReader = LibraryReader(classElement.library);
 
     try {
       return _BuildController(
@@ -33,27 +33,27 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         /// abstract class {RxBlocName}BlocEvents {
         //   void fetch();
         // }
-        eventClass: libraryReader.classes.firstWhere(
-            (ClassElement classElement) => classElement.displayName.contains(
-                annotation.read('eventsClassName')?.stringValue ?? ''),
-            orElse: () => null),
+        eventClass: libraryReader.classes.firstWhereOrNull(
+          (ClassElement classElement) => classElement.displayName
+              .contains(annotation.read('eventsClassName').stringValue),
+        ),
 
         /// Provides the states class as [ClassElement]
         ///
         /// abstract class {RxBlocName}BlocEvents {
         //   void fetch();
         // }
-        stateClass: libraryReader.classes.firstWhere(
-            (classElement) => classElement.displayName.contains(
-                annotation.read('statesClassName')?.stringValue ?? ''),
-            orElse: () => null),
+        stateClass: libraryReader.classes.firstWhereOrNull(
+          (classElement) => classElement.displayName
+              .contains(annotation.read('statesClassName').stringValue),
+        ),
       ).generate();
     } on _RxBlocGeneratorException catch (e) {
       // User error
       _logError(e.message);
       return null;
     } on FormatterException catch (e) {
-      String message = e.errors.map((AnalysisError e) => e.message).join('\n');
+      var message = e.errors.map((AnalysisError e) => e.message).join('\n');
       // Format error
       _reportIssue(
         'FormatterException \n $message',

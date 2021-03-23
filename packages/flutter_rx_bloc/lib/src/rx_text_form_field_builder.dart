@@ -152,7 +152,7 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
 class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     extends RxFormFieldBuilderState<B, String, RxTextFormFieldBuilder<B>> {
   late bool _shouldDisposeController;
-  TextEditingController? _controller;
+  late TextEditingController _controller;
   InputDecoration? _decoration;
   bool? _isTextObscured;
 
@@ -165,7 +165,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
 
   ///   [controller] is the [TextEditingController] which should be used by the
   /// text field created in the builder function.
-  TextEditingController? get controller => _controller;
+  TextEditingController get controller => _controller;
 
   ///   [decoration] is a decoration which gets generated based on the state of
   /// this widget. It should be used to decorate the generated text field,
@@ -191,8 +191,8 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
 
     _isTextObscured = widget.obscureText;
 
-    _controller!.addListener(() {
-      widget.onChanged(bloc, _controller!.text);
+    _controller.addListener(() {
+      widget.onChanged(bloc, _controller.text);
     });
 
     assert(
@@ -203,8 +203,8 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
 
     _blocState.listen(
       (value) {
-        if (_controller!.text != value) {
-          _controller!.text = value!;
+        if (_controller.text != value) {
+          _controller.text = value!;
         }
       },
       onError: (exception) {},
@@ -213,7 +213,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
 
   @override
   void dispose() {
-    if (_shouldDisposeController) _controller!.dispose();
+    if (_shouldDisposeController) _controller.dispose();
     super.dispose();
   }
 

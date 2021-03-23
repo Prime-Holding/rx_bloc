@@ -16,18 +16,18 @@ class _BuildController {
     // Check for any broken rules
     _validate();
 
-    final String blocTypeClassName = '${rxBlocClass.displayName}Type';
-    final String blocClassName = '\$${rxBlocClass.displayName}';
-    final String eventClassName = eventClass!.displayName;
-    final String stateClassName = stateClass!.displayName;
-    final String blocFilePath = rxBlocClass.location?.components.first ?? '';
-    final String mainBlocFileName =
+    final blocTypeClassName = '${rxBlocClass.displayName}Type';
+    final blocClassName = '\$${rxBlocClass.displayName}';
+    final eventClassName = eventClass!.displayName;
+    final stateClassName = stateClass!.displayName;
+    final blocFilePath = rxBlocClass.location?.components.first ?? '';
+    final mainBlocFileName =
         Uri.tryParse(blocFilePath, (blocFilePath.lastIndexOf('/') + 1))
                 ?.toString() ??
             '';
 
     /// The output buffer containing all the generated code
-    final StringBuffer _output = StringBuffer();
+    final _output = StringBuffer();
 
     <String>[
       /// .. part of '[rx_bloc_name]_bloc.dart'
@@ -55,7 +55,7 @@ class _BuildController {
                 field.getter != null &&
                 (field.getter!.metadata.isEmpty ||
                     !const TypeChecker.fromRuntime(RxBlocIgnoreState)
-                        .hasAnnotationOf(field.getter)))
+                        .hasAnnotationOf(field.getter!)))
             .toList(),
       ).build().toDartCodeString(),
 

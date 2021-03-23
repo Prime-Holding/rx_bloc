@@ -1,3 +1,6 @@
+## [3.0.1] - March 22, 2021
+* Dependencies clean-up
+
 ## [3.0.0] - March 10, 2021
 * Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
 
