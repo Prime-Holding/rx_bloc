@@ -26,40 +26,37 @@ Now you can include the ***RxPaginatedList*** in your project like this:
 
 
 ```dart
-Widget build(BuildContext context) => Scaffold(
-    body: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
-      state: (bloc) => bloc.states.paginatedList,
-      onBottomScrolled: (bloc) => bloc.events.loadPage(),
-      onRefresh: (bloc) async {
-        bloc.events.loadPage(reset: true);
-        return bloc.states.refreshDone;
-      },
-      builder: (context, snapshot, bloc) => !snapshot.isInitialLoading
-          ? ListView.builder(
-        itemCount: snapshot.itemCount,
-        itemBuilder: (context, index) {
-          final user = snapshot.getItem(index);
-          if (user == null) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 12),
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-          return Card(
-            child: ListTile(
-              leading: CircleAvatar(
-                child: Text(user.id.toString()),
-              ),
-              title: Text(user.name),
-            ),
-          );
-        },
-      )
-          : const Center(child: CircularProgressIndicator());,
-    ),
-  );
+class PaginatedListPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
+          state: (bloc) => bloc.states.paginatedList,
+          onBottomScrolled: (bloc) => bloc.events.loadPage(),
+          onRefresh: (bloc) async {
+            bloc.events.loadPage(reset: true);
+            return bloc.states.refreshDone;
+          },
+          builder: (context, snapshot, bloc) => Column(
+            children: [
+              if (snapshot.isInitialLoading) const YourProgressIndicator(),
+              if (!snapshot.isInitialLoading)
+                ListView.builder(
+                  itemCount: snapshot.itemCount,
+                  itemBuilder: (context, index) {
+                    final user = snapshot.getItem(index);
+
+                    if (user == null) {
+                      return const YourProgressIndicator();
+                    }
+
+                    return YourListTile(user: user);
+                  },
+                )
+            ],
+          ),
+        ),
+      );
+});
 ```
 
 <br/>
