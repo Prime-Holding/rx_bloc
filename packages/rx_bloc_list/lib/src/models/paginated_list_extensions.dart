@@ -30,7 +30,12 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
         // If an error occurred, pass this error down and mark loading as false
         if (result is ResultError<PaginatedList<T>>) {
           subjectValue._backupList.clear();
-          return subjectValue.copyWith(isLoading: false, error: result.error);
+          return subjectValue.copyWith(
+            isLoading: false,
+            isInitialized: false,
+            error: result.error,
+            list: [],
+          );
         }
 
         // If we got the resulting data successfully, merge and return it
@@ -53,7 +58,7 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
             pageSize: result.data.pageSize,
             list: listData,
             isLoading: false,
-            error: result.data.error,
+            isInitialized: true,
           );
         }
 
@@ -82,6 +87,8 @@ extension PaginatedListSnapshotExt<T> on AsyncSnapshot<PaginatedList<T>> {
 
   /// Is the data loading
   bool get isLoading => !hasData || (hasData && data!.isLoading);
+
+  bool get hasPageError => hasData && data!.error != null;
 
   /// Returns the element of the snapshot or null (if element outside range),
   /// assuming the snapshot data exists.
