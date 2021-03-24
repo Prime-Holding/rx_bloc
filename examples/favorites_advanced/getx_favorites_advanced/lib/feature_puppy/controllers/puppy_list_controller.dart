@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:favorites_advanced_base/models.dart';
 
 class PuppyListController extends GetxController {
-  PuppyListController() {
-    _repository = Get.find<PuppiesRepository>();
+  PuppyListController(PuppiesRepository repository) {
+    _repository = repository;
     _initPuppies();
   }
 
@@ -36,30 +35,28 @@ class PuppyListController extends GetxController {
     _hideLoading();
   }
 
-  void _showLoading() {
-    isLoading(true);
-  }
+  void _showLoading() => isLoading(true);
 
-  void _hideLoading() {
-    isLoading(false);
-  }
+  void _hideLoading() => isLoading(false);
 
-  void _setError() {
-    hasError.toggle();
-  }
+  void _setError() => hasError(true);
 
-  void clearError() {
-    hasError.toggle();
-  }
+  void clearError() => hasError(false);
 
   void updatePuppiesWithExtraDetails(List<Puppy> puppiesToUpdate) {
     puppiesToUpdate.toList().forEach((newPuppyData) {
-      debugPrint('in UpdatePuppies');
-      final index = _puppies.indexWhere((puppy) {
-        debugPrint('puppyId = ${puppy.id} newPuppyDataId = ${newPuppyData.id}');
-        return puppy.id == newPuppyData.id;
-      });
+      final index = _puppies.indexWhere((puppy) => puppy.id == newPuppyData.id);
       _puppies.replaceRange(index, index + 1, [newPuppyData]);
     });
+  }
+
+  void puppyUpdated(List<Puppy> puppiesToUpdate) {
+    final copiedPuppies = <Puppy> [..._puppies];
+    puppiesToUpdate.forEach((puppy) {
+      final currentIndex = copiedPuppies
+          .indexWhere((element) => element.id == puppy.id);
+      copiedPuppies.replaceRange(currentIndex, currentIndex+1, [puppy]);
+    });
+    _puppies.assignAll(copiedPuppies);
   }
 }
