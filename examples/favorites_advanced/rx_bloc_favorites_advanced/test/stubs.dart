@@ -1,5 +1,6 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:rx_bloc_list/models.dart';
 
 class Stub {
   static final navigation = NavigationStub();
@@ -39,18 +40,14 @@ class Stub {
     isFavorite: true,
   );
 
-  static final puppies12 = [
-    puppy1,
-    puppy2,
-  ];
+  static final puppies12 = [puppy1, puppy2];
 
-  static final puppies23 = [
-    puppy2,
-    puppy3,
-  ];
+  static final puppies23 = [puppy2, puppy3];
 
   static final puppies123 = [puppy1, puppy2, puppy3];
+
   static final puppies123Test = [puppy1, puppy2, puppy3, puppyTest];
+
   static final puppies123TestUpdated = [
     puppy1,
     puppy2,

@@ -1,17 +1,27 @@
 part of 'puppy_list_bloc.dart';
 
 extension _ReloadDataFetcher on Stream<_ReloadData> {
-  /// Fetch the puppies based on the [_ReloadData.query] as applying
-  /// a back pressure of 200 milliseconds.
+  /// Fetch the puppies based on the [_ReloadData.query]
   ///
-  /// In case [_ReloadData.silently] is true, the loading event will be skipped.
-  Stream<Result<List<Puppy>>> fetchPuppies(PuppiesRepository repository) =>
-      debounceTime(const Duration(milliseconds: 600)).switchMap(
-        (reloadData) => repository
-            .getPuppies(query: reloadData.query)
-            .asResultStream()
-            // skip the loading event if silently is true
-            .skip(reloadData.silently ? 1 : 0),
+  /// In case [_ReloadData.reset] is true, the loading event will be skipped.
+  Stream<Result<PaginatedList<Puppy>>> fetchPuppies(
+    PaginatedPuppiesRepository repository,
+    BehaviorSubject<PaginatedList<Puppy>> _paginatedList,
+  ) =>
+      switchMap(
+        (reloadData) {
+          if (reloadData.reset) {
+            _paginatedList.value!.reset(hard: reloadData.fullReset);
+          }
+
+          return repository
+              .getPuppiesPaginated(
+                query: reloadData.query,
+                pageSize: _paginatedList.value!.pageSize,
+                page: _paginatedList.value!.pageNumber + 1,
+              )
+              .asResultStream();
+        },
       );
 }
 
@@ -20,34 +30,42 @@ extension StreamBindToPuppies on Stream<List<Puppy>> {
   /// in the current stream.
   ///
   /// For more information check [ListPuppyUtils.mergeWith].
-  StreamSubscription<Result<List<Puppy>>> updatePuppies(
-          BehaviorSubject<Result<List<Puppy>>> puppiesToUpdate) =>
-      map((puppies) {
-        final puppiesResult = puppiesToUpdate.value ?? Result.success([]);
-
-        if (puppiesResult is ResultSuccess<List<Puppy>>) {
-          return Result.success(puppiesResult.data.mergeWith(puppies));
-        }
-
-        return puppiesResult;
-      }).bind(puppiesToUpdate);
+  StreamSubscription<PaginatedList<Puppy>> updatePuppies(
+    BehaviorSubject<PaginatedList<Puppy>> puppiesToUpdate,
+  ) =>
+      map(
+        (puppies) => PaginatedList(
+          list: puppiesToUpdate.value!.mergeWith(puppies),
+          pageSize: puppiesToUpdate.value!.pageSize,
+        ),
+      ).bind(puppiesToUpdate);
 }
 
-extension _PuppyListBlocReloaders on PuppyListBloc {
-  /// Use [filterPuppies] and [reloadFavoritePuppies] as
-  /// a reload trigger.
-  Stream<_ReloadData> _reloadTrigger() => Rx.merge([
-        _$filterPuppiesEvent.distinct().map(
-              (query) => _ReloadData(
-                silently: false,
-                query: query,
-              ),
-            ),
-        _$reloadFavoritePuppiesEvent.map(
-          (silently) => _ReloadData(
-            silently: silently,
-            query: _$filterPuppiesEvent.value ?? '',
-          ),
+extension _FilterPuppiesEventExtensions on Stream<String> {
+  /// Map a string to a [_ReloadData]
+  Stream<_ReloadData> mapToPayload() => distinct()
+      .debounceTime(
+        const Duration(milliseconds: 600),
+      )
+      .map(
+        (query) => _ReloadData(
+          reset: true,
+          fullReset: true,
+          query: query,
         ),
-      ]);
+      );
+}
+
+extension _ReloadFavoritePuppiesEventExtensions on Stream<_ReloadEventArgs> {
+  /// Map a string to a [_ReloadData]
+  Stream<_ReloadData> mapToPayload(
+    BehaviorSubject<String> filterPuppiesEvent,
+  ) =>
+      map(
+        (reloadData) => _ReloadData(
+          reset: reloadData.reset,
+          fullReset: reloadData.fullReset,
+          query: filterPuppiesEvent.value ?? '',
+        ),
+      );
 }

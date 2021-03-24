@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
@@ -26,7 +27,7 @@ abstract class FavoritePuppiesStates {
 @RxBloc()
 class FavoritePuppiesBloc extends $FavoritePuppiesBloc {
   FavoritePuppiesBloc(
-    PuppiesRepository repository,
+    PaginatedPuppiesRepository repository,
     CoordinatorBlocType coordinatorBloc,
   ) {
     _$reloadFavoritePuppiesEvent

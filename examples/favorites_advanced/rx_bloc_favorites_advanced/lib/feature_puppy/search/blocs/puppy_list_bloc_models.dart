@@ -2,10 +2,12 @@ part of 'puppy_list_bloc.dart';
 
 class _ReloadData {
   _ReloadData({
-    required this.silently,
+    required this.reset,
     required this.query,
+    this.fullReset = false,
   });
 
-  final bool silently;
+  final bool reset;
+  final bool fullReset;
   final String query;
 }
