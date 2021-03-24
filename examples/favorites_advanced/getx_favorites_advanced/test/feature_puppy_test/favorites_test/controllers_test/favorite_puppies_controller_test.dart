@@ -9,17 +9,8 @@ void main(){
     final controller = Get.put(
         FavoritePuppiesController(Get.find<PuppiesRepository>()));
     test('return zero if no favorite puppies', (){
-    expect(controller!.count.value, 0);
+    expect(controller!.count, 0);
   });
-  test('increment and decrement favorite puppies correctly', (){
-    controller!.incrementCount();
-    expect(controller.count.value, 1);
-    controller.decrementCount();
-    expect(controller.count.value, 0);
-  });
-  test('don\'t decrement if favorite puppies count is zero', (){
-    controller!.decrementCount();
-    expect(controller.count.value, 0);
-  });
+
   });
 }

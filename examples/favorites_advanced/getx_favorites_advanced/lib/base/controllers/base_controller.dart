@@ -19,7 +19,10 @@ class BaseController extends GetxController{
     _listController.updatePuppiesWithExtraDetails(lastFetchedPuppies);
   }
 
-  void puppiesUpdated(List<Puppy> puppy)=> _listController.puppyUpdated(puppy);
+  void puppiesUpdated(List<Puppy> puppiesToUpdate){
+    _listController.puppyUpdated(puppiesToUpdate);
+    _favoritePuppiesController.updateFavoritePuppies(puppiesToUpdate);
+  }
 
   void puppyUpdated(Puppy puppy)=> puppiesUpdated([puppy]);
 
