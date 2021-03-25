@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:favorites_advanced_base/models.dart';
 
 class PuppiesFetchRequestedAction {}
@@ -22,9 +21,9 @@ class ExtraDetailsFetchRequestedAction {
 }
 
 class ExtraDetailsFetchSucceededAction {
-  ExtraDetailsFetchSucceededAction({required this.puppy});
+  ExtraDetailsFetchSucceededAction({required this.puppies});
 
-  final Puppy? puppy;
+  final List<Puppy>? puppies;
 }
 
 class ExtraDetailsFetchFailedAction {

@@ -1,13 +1,13 @@
-import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/resources.dart';
-import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/actions.dart';
+
+import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/resources.dart';
+import 'package:favorites_advanced_base/ui_components.dart';
+
 import '../../../base/models/app_state.dart';
-import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
-import 'package:redux_saga/redux_saga.dart';
+import '../../../feature_puppy/search/redux/actions.dart';
 
 class SearchView extends StatelessWidget {
   @override
@@ -17,8 +17,6 @@ class SearchView extends StatelessWidget {
           onInit: (store) => store.dispatch(PuppiesFetchRequestedAction()),
           converter: (store) => _ViewModel.from(store),
           builder: (_, viewModel) {
-            //print(viewModel.puppies);
-            print(viewModel.puppies!.length);
             if (viewModel.puppies!.isEmpty) {
               return LoadingWidget();
             } else {
@@ -50,6 +48,7 @@ class _ViewModel {
 
   factory _ViewModel.from(Store<AppState> store) {
     void _onExtraDetailsFetch(Puppy puppy) {
+      //print(puppy);
       store.dispatch(ExtraDetailsFetchRequestedAction(puppy: puppy));
     }
 

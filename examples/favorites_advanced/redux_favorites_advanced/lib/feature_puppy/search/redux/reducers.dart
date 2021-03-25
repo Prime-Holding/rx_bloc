@@ -18,21 +18,13 @@ Reducer<List<Puppy>?> puppyReducer = combineReducers<List<Puppy>?>([
   TypedReducer<List<Puppy>?, ExtraDetailsFetchSucceededAction>(
       extraDetailsFetchSucceededReducer),
 ]);
-//TypedReducer<List<Puppy>, PuppiesFetchRequestedAction>(fetchPuppiesReducer);
-
-// List<Puppy> fetchPuppiesReducer(
-//         List<Puppy> puppies, PuppiesFetchRequestedAction action) =>
-//     puppies;
 
 List<Puppy>? puppiesFetchSucceededReducer(
-    List<Puppy>? puppies, PuppiesFetchSucceededAction action) {
-  print(action.puppies![20]);
-  //print(action.puppies);
-  return action.puppies;
-}
+        List<Puppy>? puppies, PuppiesFetchSucceededAction action) =>
+    action.puppies;
 
 List<Puppy>? extraDetailsFetchSucceededReducer(
     List<Puppy>? puppies, ExtraDetailsFetchSucceededAction action) {
-  print(action.puppy);
-  return puppies;
+  print(action.puppies);
+  return puppies!.mergeWith(action.puppies!);
 }

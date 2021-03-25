@@ -6,7 +6,7 @@ import 'actions.dart';
 
 final repository = PuppiesRepository(ImagePicker(), ConnectivityRepository());
 
-fetchPuppies({dynamic action}) sync* {
+Iterable<Try> fetchPuppies({dynamic action}) sync* {
   yield Try(() sync* {
     //final puppies = PuppiesRepository(ImagePicker()).getPuppies();
     final puppies = Result();
@@ -19,23 +19,23 @@ fetchPuppies({dynamic action}) sync* {
   });
 }
 
-puppiesSaga() sync* {
+Iterable<Fork> puppiesSaga() sync* {
   yield TakeLatest(fetchPuppies, pattern: PuppiesFetchRequestedAction);
 }
 
-fetchExtraDetails({dynamic action}) sync* {
+Iterable<Try> fetchExtraDetails({dynamic action}) sync* {
   yield Try(() sync* {
     final puppy = Result();
     yield Call(() => repository.fetchFullEntities([action.puppy.id]),
         result: puppy);
     print(puppy);
-    yield Put(ExtraDetailsFetchSucceededAction(puppy: puppy.value));
+    //yield Put(ExtraDetailsFetchSucceededAction(puppy: puppy.value));
   }, Catch: (e, s) sync* {
     // print(e.message);
     // yield Put(ExtraDetailsFetchFailedAction(message: e.message));
   });
 }
 
-extraDetailsSaga() sync* {
+Iterable<Fork> extraDetailsSaga() sync* {
   yield TakeEvery(fetchExtraDetails, pattern: ExtraDetailsFetchRequestedAction);
 }
