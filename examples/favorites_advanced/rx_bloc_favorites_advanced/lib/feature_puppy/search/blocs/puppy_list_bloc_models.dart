@@ -10,4 +10,7 @@ class _ReloadData {
   final bool reset;
   final bool fullReset;
   final String query;
+
+  @override
+  String toString() => '{reset: $reset, fullReset: $fullReset, query: $query}';
 }

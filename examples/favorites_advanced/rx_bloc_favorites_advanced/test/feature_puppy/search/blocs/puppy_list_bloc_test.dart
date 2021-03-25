@@ -1,7 +1,6 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
@@ -37,15 +36,27 @@ void main() {
 
   group('PuppyListBloc searchedPuppies', () {
     rxBlocTest<PuppyListBloc, PaginatedList<Puppy>>(
-      'PuppyListBloc.title searchedPuppies: '
-      'success triggered by reloadFavoritePuppies',
+      // ignore: lines_longer_than_80_chars
+      'PuppyListBloc.title searchedPuppies: success triggered by reloadFavoritePuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
         when(mockCoordinatorStates.onPuppiesUpdated)
             .thenAnswer((_) => const Stream.empty());
 
-        when(repositoryMock.getPuppiesPaginated()).thenAnswer(
+        when(repositoryMock.getPuppiesPaginated(
+          pageSize: 10,
+          page: 1,
+          query: '',
+        )).thenAnswer(
           (_) async => PaginatedList(list: Stub.puppies12, pageSize: 10),
+        );
+
+        when(repositoryMock.getPuppiesPaginated(
+          pageSize: 10,
+          page: 2,
+          query: '',
+        )).thenAnswer(
+          (_) async => PaginatedList(list: Stub.puppies23, pageSize: 10),
         );
 
         return PuppyListBloc(repositoryMock, coordinatorMock);
@@ -59,25 +70,47 @@ void main() {
       },
       // Make sure the api it's called just once
       expect: <PaginatedList<Puppy>>[
-        // Result.success([]),
-        // Result.loading(),
-        // Result.success(Stub.puppies12),
+        PaginatedList(list: [], pageSize: 10),
+        PaginatedList(list: [], pageSize: 10),
+        PaginatedList(list: Stub.puppies12, pageSize: 1),
+        PaginatedList(list: Stub.puppies12, pageSize: 1),
+        PaginatedList(
+          list: [...Stub.puppies12, ...Stub.puppies23],
+          pageSize: 1,
+        ),
+        PaginatedList(
+          list: [...Stub.puppies12, ...Stub.puppies23],
+          pageSize: 1,
+        ),
+        PaginatedList(
+          list: [...Stub.puppies12, ...Stub.puppies23, ...Stub.puppies23],
+          pageSize: 1,
+        ),
       ],
     );
 
     rxBlocTest<PuppyListBloc, PaginatedList<Puppy>>(
-      'PuppyListBloc.title searchedPuppies: '
-      'success triggered by filterPuppies',
+      'PuppyListBloc.title searchedPuppies: success triggered by filterPuppies',
       state: (bloc) => bloc.states.searchedPuppies,
       build: () async {
         when(mockCoordinatorStates.onPuppiesUpdated)
             .thenAnswer((_) => const Stream.empty());
 
-        when(repositoryMock.getPuppies(query: ''))
-            .thenAnswer((_) async => Stub.puppies123);
+        when(repositoryMock.getPuppiesPaginated(
+          pageSize: 10,
+          page: 1,
+          query: '',
+        )).thenAnswer(
+          (_) async => PaginatedList(list: Stub.puppies12, pageSize: 10),
+        );
 
-        when(repositoryMock.getPuppies(query: 'test'))
-            .thenAnswer((_) async => Stub.puppies12);
+        when(repositoryMock.getPuppiesPaginated(
+          pageSize: 10,
+          page: 1,
+          query: 'test',
+        )).thenAnswer(
+          (_) async => PaginatedList(list: Stub.puppies123, pageSize: 10),
+        );
 
         return PuppyListBloc(repositoryMock, coordinatorMock);
       },
@@ -89,38 +122,12 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 700));
       },
       // Make sure the api it's called just once
-      expect: <Result<List<Puppy>>>[
-        Result.success([]),
-        Result.loading(),
-        Result.success(Stub.puppies12),
-      ],
-    );
-  });
-
-  group('PuppyListBloc searchedPuppies', () {
-    rxBlocTest<PuppyListBloc, PaginatedList<Puppy>>(
-      'PuppyListBloc.title searchedPuppies:'
-      'success triggered by reloadFavoritePuppies',
-      state: (bloc) => bloc.states.searchedPuppies,
-      build: () async {
-        when(repositoryMock.getPuppies())
-            .thenAnswer((_) async => Stub.puppies123Test);
-
-        when(mockCoordinatorStates.onPuppiesUpdated)
-            .thenAnswer((_) => Stub.delayed(Stub.puppiesTestUpdated, 800));
-
-        return PuppyListBloc(repositoryMock, coordinatorMock);
-      },
-      act: (bloc) async {
-        bloc.events.reload(reset: false);
-        await Future.delayed(const Duration(milliseconds: 1200));
-      },
-      // Make sure the api it's called just once
-      expect: <Result<List<Puppy>>>[
-        Result.success([]),
-        Result.loading(),
-        Result.success(Stub.puppies123Test),
-        Result.success(Stub.puppies123TestUpdated),
+      expect: <PaginatedList<Puppy>>[
+        PaginatedList(list: [], pageSize: 10),
+        PaginatedList(list: [], pageSize: 10),
+        PaginatedList(list: [], pageSize: 10),
+        PaginatedList(list: [], pageSize: 10),
+        PaginatedList(list: Stub.puppies123, pageSize: 1),
       ],
     );
   });

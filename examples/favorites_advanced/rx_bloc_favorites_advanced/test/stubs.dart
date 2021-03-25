@@ -1,6 +1,5 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:rx_bloc_list/models.dart';
 
 class Stub {
   static final navigation = NavigationStub();

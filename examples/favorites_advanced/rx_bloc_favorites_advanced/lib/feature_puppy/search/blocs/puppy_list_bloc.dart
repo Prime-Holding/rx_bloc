@@ -41,9 +41,10 @@ class PuppyListBloc extends $PuppyListBloc {
     CoordinatorBlocType coordinatorBloc,
   ) {
     Rx.merge([
-      _$filterEvent.mapToPayload().skip(1),
+      _$filterEvent.mapToPayload(),
       _$reloadEvent.mapToPayload(_$filterEvent),
     ])
+        .startWith(_ReloadData(reset: true, query: ''))
         .fetchPuppies(repository, _puppies)
         .setResultStateHandler(this)
         .mergeWithPaginatedList(_puppies)

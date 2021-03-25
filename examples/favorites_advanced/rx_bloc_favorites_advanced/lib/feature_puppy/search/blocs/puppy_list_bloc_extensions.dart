@@ -43,7 +43,8 @@ extension StreamBindToPuppies on Stream<List<Puppy>> {
 
 extension _FilterPuppiesEventExtensions on Stream<String> {
   /// Map a string to a [_ReloadData]
-  Stream<_ReloadData> mapToPayload() => distinct()
+  Stream<_ReloadData> mapToPayload() => skip(1)
+      .distinct()
       .debounceTime(
         const Duration(milliseconds: 600),
       )
@@ -61,7 +62,7 @@ extension _ReloadFavoritePuppiesEventExtensions on Stream<_ReloadEventArgs> {
   Stream<_ReloadData> mapToPayload(
     BehaviorSubject<String> filterPuppiesEvent,
   ) =>
-      map(
+      skip(1).map(
         (reloadData) => _ReloadData(
           reset: reloadData.reset,
           fullReset: reloadData.fullReset,

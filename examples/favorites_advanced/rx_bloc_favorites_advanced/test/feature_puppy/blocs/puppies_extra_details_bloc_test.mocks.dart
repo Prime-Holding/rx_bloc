@@ -6,7 +6,7 @@ import 'dart:async' as _i6;
 
 import 'package:favorites_advanced_base/src/models/puppy.dart' as _i4;
 import 'package:favorites_advanced_base/src/utils/enums.dart' as _i8;
-import 'package:image_picker_platform_interface/src/types/picked_file/unsupported.dart'
+import 'package:image_picker_platform_interface/src/types/picked_file/picked_file.dart'
     as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart'
