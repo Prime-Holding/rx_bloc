@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Puppies App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor:ColorStyles.scaffoldBackgroundColor,
+          scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
         ),
         getPages: [
           GetPage(name: '/', page: () => HomePage(), binding: HomeBinding()),
