@@ -18,7 +18,7 @@ Stream<dynamic> fetchPuppiesEpic(
             .getPuppies()
             .then<dynamic>(
                 (results) => PuppiesFetchSucceededAction(puppies: results))
-            .catchError((error) => PuppiesFetchFailedAction(message: error)));
+            .catchError((error) => PuppiesFetchFailedAction()));
 
 Stream<dynamic> fetchExtraDetailsEpic(
         Stream<dynamic> actions, EpicStore<AppState> store) =>
@@ -28,5 +28,8 @@ Stream<dynamic> fetchExtraDetailsEpic(
         .bufferTime(const Duration(milliseconds: 100))
         .map((puppies) => puppies.whereNoExtraDetails())
         .where((puppies) => puppies.isNotEmpty)
-        .asyncMap((puppies) => repository.fetchFullEntities(puppies.ids).then(
-            (puppies) => ExtraDetailsFetchSucceededAction(puppies: puppies)));
+        .asyncMap((puppies) => repository
+            .fetchFullEntities(puppies.ids)
+            .then<dynamic>(
+                (puppies) => ExtraDetailsFetchSucceededAction(puppies: puppies))
+            .catchError((error) => PuppiesFetchFailedAction()));

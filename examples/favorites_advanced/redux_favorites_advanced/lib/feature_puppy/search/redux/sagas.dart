@@ -15,7 +15,7 @@ Iterable<Try> fetchPuppies({dynamic action}) sync* {
     //print(puppies.value);
   }, Catch: (e, s) sync* {
     print(e.message);
-    yield Put(PuppiesFetchFailedAction(message: e.message));
+    //yield Put(PuppiesFetchFailedAction(message: e.message));
   });
 }
 

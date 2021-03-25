@@ -8,11 +8,7 @@ class PuppiesFetchSucceededAction {
   final List<Puppy>? puppies;
 }
 
-class PuppiesFetchFailedAction {
-  PuppiesFetchFailedAction({required this.message});
-
-  final String? message;
-}
+class PuppiesFetchFailedAction {}
 
 class ExtraDetailsFetchRequestedAction {
   ExtraDetailsFetchRequestedAction({required this.puppy});
@@ -26,8 +22,8 @@ class ExtraDetailsFetchSucceededAction {
   final List<Puppy>? puppies;
 }
 
-class ExtraDetailsFetchFailedAction {
-  ExtraDetailsFetchFailedAction({required this.message});
-
-  final String message;
-}
+// class ExtraDetailsFetchFailedAction {
+//   ExtraDetailsFetchFailedAction({required this.message});
+//
+//   final String message;
+// }
