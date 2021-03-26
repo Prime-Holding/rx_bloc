@@ -3,25 +3,21 @@ import 'package:get/get.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:favorites_advanced_base/models.dart';
 
-class PuppyListController extends GetxController {
-  PuppyListController(PuppiesRepository repository) {
-    _repository = repository;
-    _initPuppies();
+class PuppyListController extends GetxController with StateMixin {
+  PuppyListController(this._repository);
+
+  final PuppiesRepository _repository;
+  final _puppies = <Puppy>[].obs;
+
+  @override
+  Future<void> onInit() async {
+    await _initPuppies();
+    super.onInit();
   }
 
-  late PuppiesRepository _repository;
-  final _puppies = <Puppy>[].obs;
-  final isLoading = false.obs;
-  final hasError = false.obs;
-
-  List<Puppy> get searchedPuppies => [..._puppies];
-
   Future<void> onReload() async {
-    _clearError();
-    _showLoading();
-    await Future.delayed(const Duration(seconds: 1));
+    change(_puppies, status: RxStatus.loading());
     await updatePuppies();
-    _hideLoading();
   }
 
   Future<void> updatePuppies() async {
@@ -36,8 +32,9 @@ class PuppyListController extends GetxController {
       });
       await Future.delayed(const Duration(seconds: 1));
       _puppies.assignAll(allPuppies);
+      change(_puppies, status: RxStatus.success());
     } catch (e) {
-      _setError();
+      change(_puppies, status: RxStatus.empty());
     }
   }
 
@@ -49,32 +46,22 @@ class PuppyListController extends GetxController {
   }
 
   void onPuppyUpdated(List<Puppy> puppiesToUpdate) {
-    final copiedPuppies = <Puppy>[..._puppies];
     puppiesToUpdate.forEach((puppy) {
       final currentIndex =
-          copiedPuppies.indexWhere((element) => element.id == puppy.id);
-      copiedPuppies.replaceRange(currentIndex, currentIndex + 1, [puppy]);
+          _puppies.indexWhere((element) => element.id == puppy.id);
+      _puppies.replaceRange(currentIndex, currentIndex + 1, [puppy]);
     });
-    _puppies.assignAll(copiedPuppies);
   }
 
   Future<void> _initPuppies() async {
-    _showLoading();
+    change(_puppies, status: RxStatus.loading());
     try {
       final puppies = await _repository.getPuppies();
       _puppies.assignAll(puppies);
+      change(_puppies, status: RxStatus.success());
     } catch (e) {
-      _setError();
+      change(_puppies, status: RxStatus.empty());
       print(e.toString());
     }
-    _hideLoading();
   }
-
-  void _showLoading() => isLoading(true);
-
-  void _hideLoading() => isLoading(false);
-
-  void _setError() => hasError(true);
-
-  void _clearError() => hasError(false);
 }
