@@ -15,7 +15,7 @@ class PuppiesRepository {
     int multiplier = 500,
   })  : _picker = picker,
         _connectivityRepository = connectivityRepository,
-        _puppies = _generateListOfPuppies(
+        _puppies = _generateEntities(
           multiplier: multiplier,
         );
 
@@ -122,20 +122,25 @@ class PuppiesRepository {
 
   List<Puppy> _puppies;
 
-  static List<Puppy> _generateListOfPuppies(
-          {required int multiplier}) =>
+  static List<Puppy> _generateEntities({required int multiplier}) =>
       List.generate(
               multiplier,
               (index) => [..._puppiesDB]
-                  .map((puppy) => puppy.copyWith(
-                      id: "$index-${puppy.id}", isFavorite: false))
+                  .map(
+                    (puppy) => puppy.copyWith(
+                      id: "$index-${puppy.id}",
+                      isFavorite: false,
+                    ),
+                  )
                   .toList())
           .expand((element) => element)
           .toList()
           .asMap()
           .entries
-          .map((entry) =>
-              entry.value.copyWith(name: "${entry.value.name} ${entry.key}"))
+          .map(
+            (entry) =>
+                entry.value.copyWith(name: "${entry.value.name} ${entry.key}"),
+          )
           .toList();
 
   static final _puppiesDB = [

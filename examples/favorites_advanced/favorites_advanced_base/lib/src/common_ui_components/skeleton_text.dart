@@ -5,11 +5,13 @@ class SkeletonText extends StatelessWidget {
   const SkeletonText({
     required this.text,
     required this.height,
+    this.style,
     Key? key,
   }) : super(key: key);
 
   final String? text;
   final double height;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) => AnimatedSwitcher(
@@ -30,7 +32,11 @@ class SkeletonText extends StatelessWidget {
             ),
           )
         : Align(
-            child: Text(text ?? "", textAlign: TextAlign.left),
+            child: Text(
+              text ?? "",
+              textAlign: TextAlign.left,
+              style: style,
+            ),
             alignment: Alignment.centerLeft,
           );
   }
