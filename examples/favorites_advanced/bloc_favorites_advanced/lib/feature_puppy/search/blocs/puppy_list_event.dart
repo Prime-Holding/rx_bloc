@@ -4,17 +4,15 @@ part of 'puppy_list_bloc.dart';
 abstract class PuppyListEvent {}
 
 class ReloadPuppiesEvent extends PuppyListEvent {
-  ReloadPuppiesEvent({this.silently});
-
-  final bool? silently;
+  ReloadPuppiesEvent();
 }
 
 class LoadPuppyListEvent extends PuppyListEvent {
   LoadPuppyListEvent();
 }
 
-class PuppyFetchDetailsEvent extends PuppyListEvent {
-  PuppyFetchDetailsEvent({this.puppy});
+class PuppyFetchExtraDetailsEvent extends PuppyListEvent {
+  PuppyFetchExtraDetailsEvent({this.puppy});
 
   final Puppy? puppy;
 }

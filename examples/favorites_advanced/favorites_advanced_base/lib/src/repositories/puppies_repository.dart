@@ -94,17 +94,17 @@ class PuppiesRepository {
     return puppiesWithExtraData;
   }
 
-  Future<Puppy> fetchPuppyExtraDetails({required Puppy puppy}) async {
-    // await Future.delayed(artificialDelay + Duration(milliseconds: 300));
-
-    if (!(await _connectivityRepository.isConnected())) {
-      throw Exception(_noInternetConnectionErrorString);
-    }
-    Puppy puppyWithExtraDetails = puppy.copyWith(
-        displayName: puppy.name,
-        displayCharacteristics: puppy.breedCharacteristics);
-    return puppyWithExtraDetails;
-  }
+  // Future<Puppy> fetchPuppyExtraDetails({required Puppy puppy}) async {
+  //   // await Future.delayed(artificialDelay + Duration(milliseconds: 300));
+  //
+  //   if (!(await _connectivityRepository.isConnected())) {
+  //     throw Exception(_noInternetConnectionErrorString);
+  //   }
+  //   Puppy puppyWithExtraDetails = puppy.copyWith(
+  //       displayName: puppy.name,
+  //       displayCharacteristics: puppy.breedCharacteristics);
+  //   return puppyWithExtraDetails;
+  // }
 
   // Future<void> setDisplayNameAndDisplayCharacteristicsToNull() async {
   //   await Future.delayed(artificialDelay + Duration(seconds: 1));

@@ -1,21 +1,13 @@
 part of 'puppy_list_bloc.dart';
 
-enum PuppyListStatus { loading, reloading, success, failure }
+enum PuppyListStatus { initial, reloading, success, failure }
 
 @immutable
 class PuppyListState {
   const PuppyListState({
-    required this.status,
-    this.searchedPuppies,
+    required this.searchedPuppies,
+    this.status = PuppyListStatus.initial,
   });
-
-  const PuppyListState.reloadInProgress(
-      {required List<Puppy> searchedPuppies, PuppyListStatus? status})
-      : this(searchedPuppies: searchedPuppies, status: status);
-
-  const PuppyListState.extraDetailsLoadSuccess(
-      {required List<Puppy> searchedPuppies, PuppyListStatus? status})
-      : this(searchedPuppies: searchedPuppies, status: status);
 
   final List<Puppy>? searchedPuppies;
   final PuppyListStatus? status;

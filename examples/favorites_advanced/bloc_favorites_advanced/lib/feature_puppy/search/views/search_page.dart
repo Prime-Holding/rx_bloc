@@ -13,8 +13,8 @@ class SearchPage extends StatelessWidget {
           key: const Key(Keys.puppySearchPage),
           builder: (context, state) {
             switch (state.status) {
-              case PuppyListStatus.loading:
-                return puppyListStatusLoading(context);
+              case PuppyListStatus.initial:
+                return puppyListStatusInitial(context);
               case PuppyListStatus.failure:
                 return puppyListStatusFailure();
               case PuppyListStatus.success:
@@ -28,7 +28,7 @@ class SearchPage extends StatelessWidget {
           BuildContext context, PuppyListState state) =>
       RefreshIndicator(
         onRefresh: () {
-          context.read<PuppyListBloc>().add(ReloadPuppiesEvent(silently: true));
+          context.read<PuppyListBloc>().add(ReloadPuppiesEvent());
           return Future.delayed(const Duration(seconds: 1));
         },
         child: SafeArea(
@@ -42,7 +42,7 @@ class SearchPage extends StatelessWidget {
                 key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                 onVisible: (puppy) => context
                     .read<PuppyListBloc>()
-                    .add(PuppyFetchDetailsEvent(puppy: puppy)),
+                    .add(PuppyFetchExtraDetailsEvent(puppy: puppy)),
                 puppy: item,
                 onCardPressed: (puppy) {},
                 onFavorite: (puppy, isFavorite) {},
@@ -55,7 +55,7 @@ class SearchPage extends StatelessWidget {
   Center puppyListStatusFailure() =>
       const Center(child: Text('failed to fetch puppies'));
 
-  LoadingWidget puppyListStatusLoading(BuildContext context) {
+  LoadingWidget puppyListStatusInitial(BuildContext context) {
     context.read<PuppyListBloc>().add(LoadPuppyListEvent());
     return LoadingWidget(
       key: const Key('LoadingWidget'),
