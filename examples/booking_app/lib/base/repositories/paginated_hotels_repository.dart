@@ -10,27 +10,35 @@ class PaginatedHotelsRepository implements HotelsRepository {
   Future<PaginatedList<Hotel>> getFavoriteHotelsPaginated({
     required int pageSize,
     required int page,
-  }) async =>
-      PaginatedList(
-        list: (await getFavoriteHotels()).getPage(
-          pageSize: pageSize,
-          page: page,
-        ),
+  }) async {
+    final hotels = await getFavoriteHotels();
+
+    return PaginatedList(
+      list: hotels.getPage(
         pageSize: pageSize,
-      );
+        page: page,
+      ),
+      pageSize: pageSize,
+      totalCount: hotels.length,
+    );
+  }
 
   Future<PaginatedList<Hotel>> getHotelsPaginated({
     required String query,
     required int pageSize,
     required int page,
-  }) async =>
-      PaginatedList(
-        list: (await getHotels(query: query)).getPage(
-          pageSize: pageSize,
-          page: page,
-        ),
+  }) async {
+    final hotels = await getHotels(query: query);
+
+    return PaginatedList(
+      list: hotels.getPage(
         pageSize: pageSize,
-      );
+        page: page,
+      ),
+      pageSize: pageSize,
+      totalCount: hotels.length,
+    );
+  }
 
   @override
   Future<List<Hotel>> getFavoriteHotels() => _repository.getFavoriteHotels();

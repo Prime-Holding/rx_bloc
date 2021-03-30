@@ -32,6 +32,12 @@ abstract class HotelListStates {
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
+
+  @RxBlocIgnoreState()
+  Stream<String> get query;
+
+  @RxBlocIgnoreState()
+  Stream<String> get hotelsFound;
 }
 
 @RxBloc()
@@ -75,4 +81,14 @@ class HotelListBloc extends $HotelListBloc {
     _hotels.close();
     super.dispose();
   }
+
+  @override
+  Stream<String> get query => _$filterEvent.shareReplay(maxSize: 1);
+
+  @override
+  Stream<String> get hotelsFound => _hotels.map(
+        (list) => (list.totalCount ?? 0) > 0
+            ? '${list.totalCount} hotels found'
+            : 'No hotels found',
+      );
 }

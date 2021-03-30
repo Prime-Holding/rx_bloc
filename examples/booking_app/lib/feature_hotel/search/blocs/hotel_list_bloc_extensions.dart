@@ -37,6 +37,7 @@ extension StreamBindToHotels on Stream<List<Hotel>> {
         (hotels) => PaginatedList(
           list: hotelsToUpdate.value!.mergeWith(hotels),
           pageSize: hotelsToUpdate.value!.pageSize,
+          totalCount: hotelsToUpdate.value!.totalCount,
         ),
       ).bind(hotelsToUpdate);
 }

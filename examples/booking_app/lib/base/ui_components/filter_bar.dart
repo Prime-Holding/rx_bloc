@@ -1,5 +1,8 @@
+import 'package:booking_app/feature_hotel/search/blocs/hotel_list_bloc.dart';
 import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 class FilterBar extends SliverPersistentHeaderDelegate {
   @override
@@ -45,11 +48,14 @@ class FilterBar extends SliverPersistentHeaderDelegate {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '530 hotels found',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 16,
+                      child: RxBlocBuilder<HotelListBlocType, String>(
+                        state: (bloc) => bloc.states.hotelsFound,
+                        builder: (context, snapshot, bloc) => Text(
+                          snapshot.data ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             create: (context) => PaginatedHotelsRepository(
               HotelsRepository(
                 ConnectivityRepository(),
-                multiplier: 10,
+                multiplier: 100,
               ),
             ),
           ),
