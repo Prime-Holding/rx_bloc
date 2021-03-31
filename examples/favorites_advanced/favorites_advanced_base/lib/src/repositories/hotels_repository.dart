@@ -1,8 +1,5 @@
-import 'dart:io';
-
-import 'connectivity_repository.dart';
-
 import '../models/hotel.dart';
+import 'connectivity_repository.dart';
 
 class HotelsRepository {
   HotelsRepository(
@@ -91,10 +88,12 @@ class HotelsRepository {
 
   List<Hotel> _hotels;
 
+  static DateTime _getDateForMonthAndDay(month, day) => DateTime(0, month, day);
+
   static List<Hotel> _generateEntities({required int multiplier}) =>
       List.generate(
               multiplier,
-              (index) => [..._puppiesDB]
+              (index) => [..._hotelsDB]
                   .map(
                     (puppy) => puppy.copyWith(
                       id: "$index-${puppy.id}",
@@ -126,7 +125,7 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
     'Family rooms',
     'Bar'
   ];
-  static final _puppiesDB = [
+  static final _hotelsDB = [
     Hotel(
       id: '1',
       title: 'Premier Inn Dubai International Airport',
@@ -139,6 +138,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 2,
+      personCapacity: 4,
+      startWorkDate: _getDateForMonthAndDay(1, 1),
+      endWorkDate: _getDateForMonthAndDay(2, 1),
     ),
     Hotel(
       id: '2',
@@ -152,6 +155,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 1,
+      personCapacity: 2,
+      startWorkDate: _getDateForMonthAndDay(2, 1),
+      endWorkDate: _getDateForMonthAndDay(3, 1),
     ),
     Hotel(
       id: '3',
@@ -165,6 +172,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 1,
+      personCapacity: 1,
+      startWorkDate: _getDateForMonthAndDay(3, 1),
+      endWorkDate: _getDateForMonthAndDay(4, 1),
     ),
     Hotel(
       id: '4',
@@ -178,6 +189,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 2,
+      personCapacity: 4,
+      startWorkDate: _getDateForMonthAndDay(4, 1),
+      endWorkDate: _getDateForMonthAndDay(6, 1),
     ),
     Hotel(
       id: '5',
@@ -191,6 +206,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 3,
+      personCapacity: 5,
+      startWorkDate: _getDateForMonthAndDay(5, 1),
+      endWorkDate: _getDateForMonthAndDay(6, 1),
     ),
     Hotel(
       id: '6',
@@ -204,6 +223,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 3,
+      personCapacity: 6,
+      startWorkDate: _getDateForMonthAndDay(6, 1),
+      endWorkDate: _getDateForMonthAndDay(7, 1),
     ),
     Hotel(
       id: '7',
@@ -217,6 +240,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 1,
+      personCapacity: 1,
+      startWorkDate: _getDateForMonthAndDay(7, 1),
+      endWorkDate: _getDateForMonthAndDay(8, 1),
     ),
     Hotel(
       id: '8',
@@ -230,6 +257,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 3,
+      personCapacity: 3,
+      startWorkDate: _getDateForMonthAndDay(8, 1),
+      endWorkDate: _getDateForMonthAndDay(9, 1),
     ),
     Hotel(
       id: '9',
@@ -243,6 +274,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 2,
+      personCapacity: 3,
+      startWorkDate: _getDateForMonthAndDay(9, 1),
+      endWorkDate: _getDateForMonthAndDay(10, 1),
     ),
     Hotel(
       id: '10',
@@ -256,6 +291,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 4,
+      personCapacity: 4,
+      startWorkDate: _getDateForMonthAndDay(10, 1),
+      endWorkDate: _getDateForMonthAndDay(11, 1),
     ),
     Hotel(
       id: '11',
@@ -269,6 +308,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 4,
+      personCapacity: 8,
+      startWorkDate: _getDateForMonthAndDay(11, 1),
+      endWorkDate: _getDateForMonthAndDay(12, 1),
     ),
     Hotel(
       id: '12',
@@ -282,6 +325,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 4,
+      personCapacity: 6,
+      startWorkDate: _getDateForMonthAndDay(12, 1),
+      endWorkDate: _getDateForMonthAndDay(1, 1),
     ),
     Hotel(
       id: '13',
@@ -295,6 +342,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 4,
+      personCapacity: 7,
+      startWorkDate: _getDateForMonthAndDay(1, 10),
+      endWorkDate: _getDateForMonthAndDay(3, 25),
     ),
     Hotel(
       id: '14',
@@ -308,6 +359,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 2,
+      personCapacity: 4,
+      startWorkDate: _getDateForMonthAndDay(3, 26),
+      endWorkDate: _getDateForMonthAndDay(5, 30),
     ),
     Hotel(
       id: '15',
@@ -321,6 +376,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 1,
+      personCapacity: 2,
+      startWorkDate: _getDateForMonthAndDay(5, 31),
+      endWorkDate: _getDateForMonthAndDay(7, 10),
     ),
     Hotel(
       id: '16',
@@ -334,6 +393,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 2,
+      personCapacity: 3,
+      startWorkDate: _getDateForMonthAndDay(7, 11),
+      endWorkDate: _getDateForMonthAndDay(9, 6),
     ),
     Hotel(
       id: '17',
@@ -347,6 +410,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 3,
+      personCapacity: 5,
+      startWorkDate: _getDateForMonthAndDay(9, 7),
+      endWorkDate: _getDateForMonthAndDay(11, 15),
     ),
     Hotel(
       id: 'Hyatt Place Dubai Al Rigga Residences',
@@ -360,6 +427,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 3,
+      personCapacity: 3,
+      startWorkDate: _getDateForMonthAndDay(11, 16),
+      endWorkDate: _getDateForMonthAndDay(1, 9),
     ),
     Hotel(
       id: '19',
@@ -373,6 +444,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 4,
+      personCapacity: 4,
+      startWorkDate: _getDateForMonthAndDay(1, 1),
+      endWorkDate: _getDateForMonthAndDay(6, 30),
     ),
     Hotel(
       id: '20',
@@ -386,6 +461,10 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       isFavorite: false,
       description: _description,
       features: _features,
+      roomCapacity: 1,
+      personCapacity: 1,
+      startWorkDate: _getDateForMonthAndDay(7, 1),
+      endWorkDate: _getDateForMonthAndDay(12, 31),
     ),
   ];
 }
