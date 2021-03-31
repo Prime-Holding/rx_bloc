@@ -112,6 +112,20 @@ class HotelsRepository {
           )
           .toList();
 
+  static final _description = '''
+  is on a 9.7 km stretch of private beach on Saadiyat Island. This 5-star hotel offers air-conditioned rooms with a balcony. It has a health club with an outdoor pool.
+
+A spacious sitting area with a 42-inch flat-screen TV and an iPod docking station are in Hyatt Abu Dhabi’s modern rooms. Each has floor-to-ceiling windows and is decorated in soft colors. An open-plan bathroom with an oversize bathtub and a separate rain-shower is included.
+''';
+
+  static final _features = [
+    ' 2 swimming pools',
+    'Free WiFi',
+    'Beachfront',
+    'Free parking',
+    'Family rooms',
+    'Bar'
+  ];
   static final _puppiesDB = [
     Hotel(
       id: '1',
@@ -123,6 +137,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '2',
@@ -134,6 +150,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '3',
@@ -145,6 +163,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '4',
@@ -156,6 +176,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '5',
@@ -167,6 +189,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '6',
@@ -178,6 +202,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '7',
@@ -189,6 +215,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '8',
@@ -200,6 +228,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '9',
@@ -211,6 +241,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '10',
@@ -222,6 +254,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '11',
@@ -233,6 +267,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '12',
@@ -244,6 +280,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '13',
@@ -255,6 +293,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '14',
@@ -266,6 +306,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '15',
@@ -277,6 +319,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '16',
@@ -288,6 +332,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '17',
@@ -299,6 +345,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: 'Hyatt Place Dubai Al Rigga Residences',
@@ -310,6 +358,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '19',
@@ -321,6 +371,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
     Hotel(
       id: '20',
@@ -332,6 +384,8 @@ class HotelsRepository {
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
+      description: _description,
+      features: _features,
     ),
   ];
 }

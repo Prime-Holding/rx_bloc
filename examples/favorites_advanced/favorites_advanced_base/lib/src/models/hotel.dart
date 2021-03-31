@@ -9,9 +9,13 @@ class Hotel implements Entity {
   final double dist;
   final double rating;
   final int reviews;
+  final String description;
+  final List<String> features;
   bool isFavorite;
 
   // Properties that should simulate remote fetching of entity data
+  final String? displayFeatures;
+  final String? displayDescription;
   final String? displaySubtitle;
   final int? displayReviews;
   final double? displayRating;
@@ -27,11 +31,15 @@ class Hotel implements Entity {
     required this.rating,
     required this.reviews,
     required this.isFavorite,
+    required this.features,
+    required String description,
     this.displaySubtitle,
     this.displayReviews,
     this.displayRating,
     this.displayDist,
-  });
+    this.displayDescription,
+    this.displayFeatures,
+  }) : this.description = '$title $description';
 
   Hotel copyWith({
     String? id,
@@ -42,11 +50,15 @@ class Hotel implements Entity {
     double? dist,
     double? rating,
     int? reviews,
+    String? description,
+    List<String>? features,
     bool? isFavorite,
     String? displaySubtitle,
     int? displayReviews,
     double? displayRating,
     double? displayDist,
+    String? displayDescription,
+    String? displayFeatures,
   }) =>
       Hotel(
         id: id ?? this.id,
@@ -58,10 +70,14 @@ class Hotel implements Entity {
         rating: rating ?? this.rating,
         reviews: reviews ?? this.reviews,
         isFavorite: isFavorite ?? this.isFavorite,
+        description: description ?? this.description,
+        features: features ?? this.features,
         displaySubtitle: displaySubtitle ?? this.displaySubtitle,
         displayReviews: displayReviews ?? this.displayReviews,
         displayRating: displayRating ?? this.displayRating,
         displayDist: displayDist ?? this.displayDist,
+        displayDescription: displayDescription ?? this.displayDescription,
+        displayFeatures: displayFeatures ?? this.displayFeatures,
       );
 
   Hotel copyWithHotel(Hotel hotel) => Hotel(
@@ -74,10 +90,14 @@ class Hotel implements Entity {
         rating: hotel.rating,
         reviews: hotel.reviews,
         isFavorite: hotel.isFavorite,
+        features: hotel.features,
+        description: hotel.description,
         displaySubtitle: hotel.displaySubtitle ?? displaySubtitle,
         displayReviews: hotel.displayReviews ?? displayReviews,
         displayRating: hotel.displayRating ?? displayRating,
         displayDist: hotel.displayDist ?? displayDist,
+        displayFeatures: hotel.displayFeatures ?? displayFeatures,
+        displayDescription: hotel.displayDescription ?? displayDescription,
       );
 
   @override
@@ -91,10 +111,15 @@ class Hotel implements Entity {
       displaySubtitle != null &&
       displayDist != null;
 
+  bool hasDetailsExtraDetails() =>
+      displayDescription != null && displayFeatures != null;
+
   @override
   bool operator ==(Object other) {
     if (other is Hotel) {
       return id == other.id &&
+          description == other.description &&
+          features == other.features &&
           imagePath == other.imagePath &&
           title == other.title &&
           subTitle == other.subTitle &&
@@ -102,7 +127,9 @@ class Hotel implements Entity {
           dist == other.dist &&
           rating == other.rating &&
           reviews == other.reviews &&
-          displayDist == other.displayDist;
+          displayDist == other.displayDist &&
+          displayFeatures == other.displayFeatures &&
+          displayDescription == other.displayDescription;
     }
 
     return false;
@@ -118,6 +145,8 @@ class Hotel implements Entity {
       dist.hashCode ^
       rating.hashCode ^
       reviews.hashCode ^
+      description.hashCode ^
+      features.hashCode ^
       displayDist.hashCode;
 
   @override
