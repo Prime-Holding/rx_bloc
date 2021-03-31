@@ -88,6 +88,7 @@ extension PaginatedListSnapshotExt<T> on AsyncSnapshot<PaginatedList<T>> {
   /// Is the data loading
   bool get isLoading => !hasData || (hasData && data!.isLoading);
 
+  /// Is the [data] an [error]
   bool get hasPageError => hasData && data!.error != null;
 
   /// Returns the element of the snapshot or null (if element outside range),
