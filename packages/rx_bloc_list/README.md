@@ -7,8 +7,8 @@ The *[rx_bloc_list](https://pub.dev/packages/rx_bloc_list)* package facilitates 
 - [Setup](#setup)
 - [Additional parameters](#additional-params)
 - [RxPaginatedBuilder.withRefreshIndicator](#withRefreshIndicator)
+- [Articles](#articles)
 
-<br/>
 <div id="usage"/>
 
 ### Usage
