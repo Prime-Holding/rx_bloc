@@ -17,7 +17,7 @@ class PuppyListController extends GetxController with StateMixin {
 
   Future<void> onReload() async {
     change(_puppies, status: RxStatus.loading());
-    await updatePuppies();
+    await _initPuppies();
   }
 
   Future<void> updatePuppies() async {
@@ -56,7 +56,7 @@ class PuppyListController extends GetxController with StateMixin {
   Future<void> _initPuppies() async {
     change(_puppies, status: RxStatus.loading());
     try {
-      final puppies = await _repository.getPuppies();
+      final puppies = await _repository.getPuppies(query: '');
       _puppies.assignAll(puppies);
       change(_puppies, status: RxStatus.success());
     } catch (e) {

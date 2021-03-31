@@ -16,8 +16,7 @@ class HomeBinding implements Bindings {
     Get
       ..put(ImagePicker())
       ..put(ConnectivityRepository())
-      ..put(
-        PuppiesRepository(
+      ..put(PuppiesRepository(
           Get.find<ImagePicker>(),
           Get.find<ConnectivityRepository>(),
         ),

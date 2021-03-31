@@ -3,15 +3,14 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import 'package:getx_favorites_advanced/base/controllers/base_controller.dart';
 
 class PuppyExtraDetailsController extends GetxController {
   PuppyExtraDetailsController(this._repository, this._baseController);
 
-  late final PuppiesRepository _repository;
-  late final BaseController _baseController;
+  final PuppiesRepository _repository;
+  final BaseController _baseController;
   final lastFetchedPuppies = <Puppy>[].obs;
   late Worker debounceWorker;
 
@@ -23,9 +22,15 @@ class PuppyExtraDetailsController extends GetxController {
       if (filterPuppies.isEmpty) {
         return;
       }
-      data.assignAll(await _repository.fetchFullEntities(
-          filterPuppies.map((element) => element.id).toList()));
-      _baseController.updatePuppiesWithExtraDetails(data.obs);
+      try{
+        final fetchedPuppies = await _repository.fetchFullEntities(
+            filterPuppies.map((element) => element.id).toList());
+        data.assignAll(fetchedPuppies);
+        _baseController.updatePuppiesWithExtraDetails(data.obs);
+      }catch (error){
+        print(error.toString());
+      }
+
     }, time: const Duration(milliseconds: 100));
     super.onInit();
   }
@@ -34,6 +39,10 @@ class PuppyExtraDetailsController extends GetxController {
     if (!lastFetchedPuppies.any((element) => element.id == puppy.id)) {
       lastFetchedPuppies.add(puppy);
     }
+  }
+
+  void onReload(){
+    lastFetchedPuppies.clear();
   }
 
   @override
