@@ -22,41 +22,41 @@ Also be sure to import the package:
 ```dart
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 ```
-Now you can include the ***RxPaginatedList*** in your project like this:
+Now you can include the ***RxPaginatedBuilder*** in your project like this:
 
 
 ```dart
 class PaginatedListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
-          state: (bloc) => bloc.states.paginatedList,
-          onBottomScrolled: (bloc) => bloc.events.loadPage(),
-          onRefresh: (bloc) async {
-            bloc.events.loadPage(reset: true);
-            return bloc.states.refreshDone;
-          },
-          builder: (context, snapshot, bloc) => Column(
-            children: [
-              if (snapshot.isInitialLoading) const YourProgressIndicator(),
-              if (!snapshot.isInitialLoading)
-                ListView.builder(
-                  itemCount: snapshot.itemCount,
-                  itemBuilder: (context, index) {
-                    final user = snapshot.getItem(index);
+        body: SafeArea(
+          child: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
+            state: (bloc) => bloc.states.paginatedList,
+            onBottomScrolled: (bloc) => bloc.events.loadPage(),
+            onRefresh: (bloc) async {
+              bloc.events.loadPage(reset: true);
+              return bloc.states.refreshDone;
+            },
+            buildSuccess: (context, list, bloc) => ListView.builder(
+              itemBuilder: (context, index) {
+                final user = list.getItem(index);
 
-                    if (user == null) {
-                      return const YourProgressIndicator();
-                    }
+                if (user == null) {
+                  return const YourProgressIndicator();
+                }
 
-                    return YourListTile(user: user);
-                  },
-                )
-            ],
+                return YourListTile(user: user);
+              },
+              itemCount: list.itemCount,
+            ),
+            buildLoading: (context, list, bloc) =>
+                const YourProgressIndicator(),
+            buildError: (context, list, bloc) =>
+                YourErrorWidget(error: list.error!),
           ),
         ),
       );
-});
+}
 ```
 
 
@@ -75,7 +75,9 @@ class PaginatedListPage extends StatelessWidget {
 
 In order to make use of the RxPaginatedBuilder, you first need to specify the following required parameters:
 - `state` is the state of the BLoC that will be listened for changes. The state is a `Stream<PaginatedList<T>>` where T is the type of the data that is being paginated.
-- `builder` is the method which creates the child widget. Every time the state updates, this method is executed and the widget is rebuild. Inside the builder method you have access to the `BuildContext`, `AsyncSnapshot<PaginatedList<T>>` of the data that is being paginated and the `BLoC` that contains the listened state.
+- `buildSuccess` is a callback which is invoked when the list is not empty or when the next page is being loaded.
+- `buildError` is a callback which is invoked when the `state` is of type `Result.error`
+- `buildLoading` is a callback which is invoked only on the initial loading.
 - `onBottomScrolled` is a callback that is executed once the end of the list is reached. This can be, for instance, used for fetching the next page of data.
 
 <div id="additional-params" />
@@ -84,7 +86,7 @@ In order to make use of the RxPaginatedBuilder, you first need to specify the fo
 
 *RxPaginatedBuilder* also comes with additional optional parameters that can be adjusted to you needs.
 
-The `wrapperBuilder` method is a builder method with the intention of creating a wrapper widget around the child widget built using the main `builder` method. The wrapperBuilder method gives you access to the `BuildContext`, `BLoC` containing the state that is listened and the `Widget` that is build with the `builder` method. This method can be used for adding additional functionality or help in cases when the built child widget is needed beforehand.
+The `wrapperBuilder` method is a builder method with the intention of creating a wrapper widget around the child widget built using the `buildSuccess`, `buildError` and `buildLoading` methods. The wrapperBuilder method gives you access to the `BuildContext`, `BLoC` containing the state that is listened and the `Widget` that is build with the `builders` method. This method can be used for adding additional functionality or help in cases when the built child widget is needed beforehand.
 
 You can manage the execution of the `onBottomScrolled` parameter by enabling or disabling it via the `enableOnBottomScrolledCallback`.
 

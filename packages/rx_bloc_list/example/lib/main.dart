@@ -30,41 +30,88 @@ class PaginatedListPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
           child: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
-            builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
             state: (bloc) => bloc.states.paginatedList,
             onBottomScrolled: (bloc) => bloc.events.loadPage(),
             onRefresh: (bloc) async {
               bloc.events.loadPage(reset: true);
               return bloc.states.refreshDone;
             },
+            buildSuccess: (context, list, bloc) => ListView.builder(
+              itemBuilder: (context, index) {
+                final user = list.getItem(index);
+
+                if (user == null) {
+                  return const YourProgressIndicator();
+                }
+
+                return YourListTile(user: user);
+              },
+              itemCount: list.itemCount,
+            ),
+            buildLoading: (context, list, bloc) =>
+                const YourProgressIndicator(),
+            buildError: (context, list, bloc) =>
+                YourErrorWidget(error: list.error!),
           ),
         ),
       );
+}
 
-  Widget _buildPaginatedList(AsyncSnapshot<PaginatedList<User>> snapshot) =>
-      !snapshot.isInitialLoading
-          ? ListView.builder(
-              itemBuilder: (context, index) =>
-                  _itemBuilder(snapshot.getItem(index)),
-              itemCount: snapshot.itemCount,
-            )
-          : const Center(child: CircularProgressIndicator());
+/// App specific list tile
+class YourListTile extends StatelessWidget {
+  /// Default constructor
+  const YourListTile({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
-  Widget _itemBuilder(User? user) => (user != null)
-      ? Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              child: Text(user.id.toString()),
-            ),
-            title: Text(user.name),
-          ),
-        )
-      : const Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: CircularProgressIndicator(),
-          ),
-        );
+  /// The model
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: CircleAvatar(
+          child: Text(user.id.toString()),
+        ),
+        title: Text(user.name),
+      ),
+    );
+  }
+}
+
+/// App specific error widget
+class YourErrorWidget extends StatelessWidget {
+  /// Default constructor
+  const YourErrorWidget({
+    required this.error,
+    Key? key,
+  }) : super(key: key);
+
+  /// The error presented in the widget
+  final Exception error;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        child: Text(error.toString()),
+      );
+}
+
+/// App specific progress indicator
+class YourProgressIndicator extends StatelessWidget {
+  /// Default constructor
+  const YourProgressIndicator({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: CircularProgressIndicator(),
+        ),
+      );
 }
 
 /// endregion

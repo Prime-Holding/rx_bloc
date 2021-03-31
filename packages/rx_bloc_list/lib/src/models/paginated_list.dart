@@ -50,7 +50,8 @@ class PaginatedList<E> extends ListBase<E> {
     this.error,
     this.totalCount,
     this.isLoading = false,
-  });
+    bool isInitialized = false,
+  }) : _isInitialized = isInitialized;
 
   /// The list containing the actual data.
   final List<E> list;
@@ -68,7 +69,7 @@ class PaginatedList<E> extends ListBase<E> {
   final bool isLoading;
 
   /// Indicates whether the paginated list has been populated with data
-  bool _isInitialized = false;
+  final bool _isInitialized;
 
   /// Temporary list which stores data in between refreshes
   List<E> _backupList = [];
@@ -116,23 +117,28 @@ class PaginatedList<E> extends ListBase<E> {
     int? totalCount,
     Exception? error,
     int? pageSize,
+    bool? isInitialized,
   }) =>
       PaginatedList(
         list: list ?? this.list,
         isLoading: isLoading ?? this.isLoading,
         totalCount: totalCount ?? this.totalCount,
-        error: error ?? this.error,
         pageSize: pageSize ?? this.pageSize,
-      )
-        .._backupList = _backupList
-        .._isInitialized = _isInitialized || (list ?? this.list).isNotEmpty;
+        isInitialized: isInitialized ?? _isInitialized,
+        error: error,
+      ).._backupList = _backupList;
 
   /// Returns element at given index. If element outside bound, null is returned
   E? getItem(int index) => (index >= length || index < 0) ? null : list[index];
 
   /// Resets the list data
-  void reset() {
-    _backupList.addAll(list);
+  void reset({bool hard = false}) {
+    _backupList.clear();
+
+    if (hard == false) {
+      _backupList.addAll(list);
+    }
+
     length = 0;
   }
 }
