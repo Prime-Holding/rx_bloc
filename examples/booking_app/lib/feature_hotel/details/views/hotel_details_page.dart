@@ -1,3 +1,4 @@
+import 'package:booking_app/feature_hotel/details/ui_components/hotel_details_app_bar.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
@@ -16,19 +17,19 @@ class HotelDetailsPage extends StatelessWidget {
   })  : _hotel = hotel,
         super(key: key);
 
-  static Page page({required Hotel hotel}) => MaterialPage(
-        child: RxMultiBlocProvider(
+  static PageRoute route({required Hotel hotel}) => MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => RxMultiBlocProvider(
           providers: _getProviders(hotel),
           child: HotelDetailsPage(hotel: hotel),
         ),
+        // fullscreenDialog: true,
       );
 
   final Hotel _hotel;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: HotelDetails(
-          hotel: _hotel,
-        ),
+        body: HotelDetails(hotel: _hotel),
       );
 }

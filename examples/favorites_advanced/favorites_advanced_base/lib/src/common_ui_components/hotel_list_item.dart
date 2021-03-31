@@ -15,16 +15,19 @@ class HotelListItem extends StatelessWidget {
   final OnFavorite _onFavorite;
   final Function(Hotel hotel)? _onVisible;
   final Function(Hotel hotel) _onCardPressed;
+  final double _aspectRatio;
 
   const HotelListItem({
     required this.hotel,
     required OnFavorite onFavorite,
     required OnCardPressed onCardPressed,
+    double aspectRatio = 2,
     OnVisible? onVisible,
     Key? key,
   })  : _onFavorite = onFavorite,
         _onVisible = onVisible,
         _onCardPressed = onCardPressed,
+        _aspectRatio = aspectRatio,
         super(key: key);
 
   @override
@@ -41,14 +44,38 @@ class HotelListItem extends StatelessWidget {
         );
 
   Widget _buildCard() {
-    return InkWell(
-      onTap: () => _onCardPressed(hotel),
+    return Material(
+      child: InkWell(
+        onTap: () => _onCardPressed(hotel),
+        child: HotelCard(hotel: hotel, onFavorite: _onFavorite),
+      ),
+    );
+  }
+}
+
+class HotelCard extends StatelessWidget {
+  const HotelCard({
+    Key? key,
+    required this.hotel,
+    double aspectRatio = 2,
+    OnFavorite? onFavorite,
+  })  : _onFavorite = onFavorite,
+        _aspectRatio = aspectRatio,
+        super(key: key);
+
+  final Hotel hotel;
+  final OnFavorite? _onFavorite;
+  final double _aspectRatio;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
       child: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
               AspectRatio(
-                aspectRatio: 2,
+                aspectRatio: _aspectRatio,
                 child: Image.asset(
                   hotel.imagePath,
                   fit: BoxFit.cover,
@@ -178,26 +205,27 @@ class HotelListItem extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
-            top: 8,
-            right: 8,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(32.0),
-                ),
-                onTap: () => _onFavorite(hotel, !hotel.isFavorite),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: HotelAppTheme.buildLightTheme().primaryColor,
+          if (_onFavorite != null)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(32.0),
+                  ),
+                  onTap: () => _onFavorite!.call(hotel, !hotel.isFavorite),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: HotelAppTheme.buildLightTheme().primaryColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
+            )
         ],
       ),
     );

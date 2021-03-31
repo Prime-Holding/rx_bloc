@@ -21,9 +21,7 @@ class FavoritesPage extends StatelessWidget {
                   .favoriteHotels
                   .whereSuccess(),
               onHotelPressed: (hotel) => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => HotelDetailsPage(hotel: hotel),
-                ),
+                HotelDetailsPage.route(hotel: hotel),
               ),
             ),
           ),
