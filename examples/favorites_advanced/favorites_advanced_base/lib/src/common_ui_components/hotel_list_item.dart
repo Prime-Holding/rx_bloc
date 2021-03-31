@@ -21,6 +21,7 @@ class HotelListItem extends StatelessWidget {
     required this.hotel,
     required OnFavorite onFavorite,
     required OnCardPressed onCardPressed,
+    EdgeInsets? padding,
     double aspectRatio = 2,
     OnVisible? onVisible,
     Key? key,
@@ -58,14 +59,17 @@ class HotelCard extends StatelessWidget {
     Key? key,
     required this.hotel,
     double aspectRatio = 2,
+    EdgeInsets? padding,
     OnFavorite? onFavorite,
   })  : _onFavorite = onFavorite,
         _aspectRatio = aspectRatio,
+        _padding = padding,
         super(key: key);
 
   final Hotel hotel;
   final OnFavorite? _onFavorite;
   final double _aspectRatio;
+  final EdgeInsets? _padding;
 
   @override
   Widget build(BuildContext context) {
@@ -104,42 +108,46 @@ class HotelCard extends StatelessWidget {
                                   fontSize: 22,
                                 ),
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: SkeletonText(
-                                      text: hotel.displaySubtitle,
-                                      height: 17,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey.withOpacity(0.8),
+                              Container(
+                                padding: _padding,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: SkeletonText(
+                                        text: hotel.displaySubtitle,
+                                        height: 17,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey.withOpacity(0.8),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  if (hotel.displayDist != null)
-                                    Icon(
-                                      FontAwesomeIcons.mapMarkerAlt,
-                                      size: 12,
-                                      color: HotelAppTheme.buildLightTheme()
-                                          .primaryColor,
+                                    const SizedBox(
+                                      width: 4,
                                     ),
-                                  Expanded(
-                                    child: SkeletonText(
-                                      text: hotel.displayDist == null
-                                          ? null
-                                          : '${hotel.displayDist!.toStringAsFixed(1)} km to city',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey.withOpacity(0.8)),
-                                      height: 18,
+                                    if (hotel.displayDist != null)
+                                      Icon(
+                                        FontAwesomeIcons.mapMarkerAlt,
+                                        size: 12,
+                                        color: HotelAppTheme.buildLightTheme()
+                                            .primaryColor,
+                                      ),
+                                    Expanded(
+                                      child: SkeletonText(
+                                        text: hotel.displayDist == null
+                                            ? null
+                                            : '${hotel.displayDist!.toStringAsFixed(1)} km to city',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color:
+                                                Colors.grey.withOpacity(0.8)),
+                                        height: 18,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 4),

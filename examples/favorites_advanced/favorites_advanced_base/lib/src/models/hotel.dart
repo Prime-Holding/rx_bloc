@@ -14,7 +14,7 @@ class Hotel implements Entity {
   bool isFavorite;
 
   // Properties that should simulate remote fetching of entity data
-  final String? displayFeatures;
+  final List<String>? displayFeatures;
   final String? displayDescription;
   final String? displaySubtitle;
   final int? displayReviews;
@@ -58,7 +58,7 @@ class Hotel implements Entity {
     double? displayRating,
     double? displayDist,
     String? displayDescription,
-    String? displayFeatures,
+    List<String>? displayFeatures,
   }) =>
       Hotel(
         id: id ?? this.id,
@@ -111,7 +111,7 @@ class Hotel implements Entity {
       displaySubtitle != null &&
       displayDist != null;
 
-  bool hasDetailsExtraDetails() =>
+  bool hasFullExtraDetails() =>
       displayDescription != null && displayFeatures != null;
 
   @override

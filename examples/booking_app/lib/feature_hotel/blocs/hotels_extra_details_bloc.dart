@@ -10,7 +10,7 @@ part 'hotels_extra_details_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
 abstract class HotelsExtraDetailsEvents {
-  void fetchExtraDetails(Hotel hotel);
+  void fetchExtraDetails(Hotel hotel, {bool allProps = false});
 }
 
 abstract class HotelsExtraDetailsStates {}

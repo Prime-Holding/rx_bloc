@@ -9,3 +9,4 @@ export 'src/common_ui_components/search_bar.dart';
 export 'src/common_ui_components/rx_animated_list.dart';
 export 'src/common_ui_components/time_date_bar.dart';
 export 'src/common_ui_components/hotel_list_item.dart';
+export 'src/common_ui_components/skeleton_text.dart';

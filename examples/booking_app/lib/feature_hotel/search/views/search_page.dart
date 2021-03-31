@@ -1,5 +1,4 @@
 import 'package:booking_app/base/ui_components/filter_bar.dart';
-import 'package:booking_app/feature_hotel/details/ui_components/hotel_details.dart';
 import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';

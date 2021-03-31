@@ -69,7 +69,10 @@ class HotelsRepository {
     return foundHotel;
   }
 
-  Future<List<Hotel>> fetchFullEntities(List<String> ids) async {
+  Future<List<Hotel>> fetchFullEntities(
+    List<String> ids, {
+    bool allProps = false,
+  }) async {
     await Future.delayed(_artificialDelay);
 
     if (!(await _connectivityRepository.isConnected())) {
@@ -84,6 +87,12 @@ class HotelsRepository {
               displayReviews: hotel.reviews,
               displayDist: hotel.dist,
             ))
+        .map((hotel) => allProps
+            ? hotel.copyWith(
+                displayDescription: hotel.description,
+                displayFeatures: hotel.features,
+              )
+            : hotel)
         .toList();
 
     return hotelsWithExtraData;
@@ -119,7 +128,6 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
 ''';
 
   static final _features = [
-    ' 2 swimming pools',
     'Free WiFi',
     'Beachfront',
     'Free parking',
