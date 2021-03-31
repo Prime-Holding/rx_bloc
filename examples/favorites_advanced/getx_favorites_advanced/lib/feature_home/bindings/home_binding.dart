@@ -23,7 +23,7 @@ class HomeBinding implements Bindings {
         ),
       )
       ..put(NavbarController())
-      ..put(FavoritePuppiesController(
+      ..lazyPut(() => FavoritePuppiesController(
           Get.find<PuppiesRepository>()
       ))
       ..put(PuppyListController(
@@ -33,11 +33,11 @@ class HomeBinding implements Bindings {
           Get.find<PuppyListController>(),
           Get.find<FavoritePuppiesController>()
       ))
-      ..put(PuppyManageController(
+      ..lazyPut(() => PuppyManageController(
           Get.find<PuppiesRepository>(),
           Get.find<BaseController>()
       ))
-      ..put(PuppyExtraDetailsController(
+      ..lazyPut(() => PuppyExtraDetailsController(
           Get.find<PuppiesRepository>(),
           Get.find<BaseController>()
       ))

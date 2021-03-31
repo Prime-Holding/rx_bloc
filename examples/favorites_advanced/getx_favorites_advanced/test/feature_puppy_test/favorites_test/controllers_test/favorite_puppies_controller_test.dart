@@ -9,7 +9,7 @@ void main(){
     final controller = Get.put(
         FavoritePuppiesController(Get.find<PuppiesRepository>()));
     test('return zero if no favorite puppies', (){
-    expect(controller!.count, 0);
+    expect(controller.count, 0);
   });
 
   });

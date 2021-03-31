@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/resources.dart';
 
-import 'base/common_bindings/home_binding.dart';
-import 'feature_home/views/home_page.dart';
+import 'base/routes/app_pages.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,8 +18,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
         ),
-        getPages: [
-          GetPage(name: '/', page: () => HomePage(), binding: HomeBinding()),
-        ],
+        getPages: AppPages.routes,
       );
 }

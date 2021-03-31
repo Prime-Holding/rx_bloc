@@ -34,7 +34,7 @@ class PuppyListController extends GetxController with StateMixin {
       _puppies.assignAll(allPuppies);
       change(_puppies, status: RxStatus.success());
     } catch (e) {
-      change(_puppies, status: RxStatus.empty());
+      change(_puppies, status: RxStatus.error(e.toString().substring(10)));
     }
   }
 
@@ -60,7 +60,7 @@ class PuppyListController extends GetxController with StateMixin {
       _puppies.assignAll(puppies);
       change(_puppies, status: RxStatus.success());
     } catch (e) {
-      change(_puppies, status: RxStatus.empty());
+      change(_puppies, status: RxStatus.error(e.toString().substring(10)));
       print(e.toString());
     }
   }

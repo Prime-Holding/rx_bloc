@@ -49,8 +49,8 @@ class SearchPage extends GetView<PuppyListController> {
               ),
             );
           },
-          onLoading: LoadingWidget(),
-          onEmpty: ErrorRetryWidget(
+          // onLoading: LoadingWidget(),
+          onError: (_) => ErrorRetryWidget(
             onReloadTap: () => controller.onReload(),
           ),
         ),
