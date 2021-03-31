@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   rxdart: ^0.26.0
   rx_bloc:
+  rx_bloc_list:
   flutter_rx_bloc:
   provider: ^5.0.0
   favorites_advanced_base:
@@ -47,6 +48,8 @@ dev_dependencies:
 #  flutter_gherkin: ^1.1.9
 
 dependency_overrides:
+  rx_bloc_list:
+    path: ../../../packages/rx_bloc_list
   rx_bloc:
     path: ../../../packages/rx_bloc
   flutter_rx_bloc:

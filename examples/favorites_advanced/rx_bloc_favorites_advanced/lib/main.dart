@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
 
 import 'base/common_blocs/coordinator_bloc.dart';
+import 'base/repositories/paginated_puppies_repository.dart';
 import 'feature_home/views/home_page.dart';
 
 void main() {
@@ -17,11 +18,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
-          Provider<PuppiesRepository>(
-              create: (context) => PuppiesRepository(
-                    ImagePicker(),
-                    ConnectivityRepository(),
-                  )),
+          Provider<PaginatedPuppiesRepository>(
+            create: (context) => PaginatedPuppiesRepository(
+              PuppiesRepository(
+                ImagePicker(),
+                ConnectivityRepository(),
+                multiplier: 10,
+              ),
+            ),
+          ),
           Provider<CoordinatorBlocType>(create: (context) => CoordinatorBloc()),
           Provider<PuppyListBlocType>(
             create: (context) => PuppyListBloc(
