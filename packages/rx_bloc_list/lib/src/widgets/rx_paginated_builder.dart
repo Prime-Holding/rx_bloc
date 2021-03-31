@@ -147,7 +147,7 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
     required Stream<PaginatedList<T>> Function(B) state,
     required Widget Function(BuildContext, PaginatedList<T>, B) buildSuccess,
     required Widget Function(BuildContext, PaginatedList<T>, B) buildError,
-    required Widget Function(BuildContext, PaginatedList<T>, B) buildLoading,
+    required Widget Function(BuildContext, PaginatedList<T>?, B) buildLoading,
     required void Function(B) onBottomScrolled,
     required Future<void> Function(B) onRefresh,
     Function(bool)? onScrolled,
@@ -182,7 +182,7 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
 
   /// Callback which is invoked when the [state] stream produces [PaginatedList]
   /// where [PaginatedList.isInitialLoading] is true.
-  final Widget Function(BuildContext, PaginatedList<T>, B) buildLoading;
+  final Widget Function(BuildContext, PaginatedList<T>?, B) buildLoading;
 
   /// The state of the BLoC to listen to for changes in data. The state is
   /// represented as a [Stream] of [PaginatedList], which contains individual
@@ -253,12 +253,8 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
     AsyncSnapshot<PaginatedList<T>> snapshot,
     B bloc,
   ) {
-    if (!snapshot.hasData) {
-      return Container();
-    }
-
-    if (snapshot.isInitialLoading) {
-      return widget.buildLoading(context, snapshot.data!, bloc);
+    if (!snapshot.hasData || snapshot.isInitialLoading) {
+      return widget.buildLoading(context, snapshot.data, bloc);
     }
 
     if (snapshot.hasPageError) {

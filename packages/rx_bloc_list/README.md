@@ -7,8 +7,8 @@ The *[rx_bloc_list](https://pub.dev/packages/rx_bloc_list)* package facilitates 
 - [Setup](#setup)
 - [Additional parameters](#additional-params)
 - [RxPaginatedBuilder.withRefreshIndicator](#withRefreshIndicator)
+- [Articles](#articles)
 
-<br/>
 <div id="usage"/>
 
 ### Usage
@@ -103,3 +103,8 @@ There may be cases where you have a reference to the BLoC that is used by the Rx
 Sometimes, you may want to have a working pagination and pull-to-refresh without spending too much time on it. Using the *RxPaginatedBuilder.withRefreshIndicator* gives you access to a [Refresh Indicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html "Refresh Indicator") straight out of the box.
 
 Along with the required parameters of the default implementation, *RxPaginatedBuilder.withRefreshIndicator* gets rid of the `wrapperBuilder` but introduces a new required parameter `onRefresh`. The `onRefresh` callback is triggered once a pull-to-refresh has been performed. The callback, containing the BLoC as a parameter, should return a future, which once complete will make the refresh indicator disappear.
+
+
+## Articles
+- [Easy paginated lists in Flutter](https://medium.com/prime-holding-jsc/easy-paginated-lists-in-flutter-b1cfb82188d8) Implementing `infinity scroll` and `pull-to-refresh` in your app was never so easy.
+- [Introducing rx_bloc ecosystem](https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e) A set of Flutter packages that help implement the BloC (Business Logic Component) design pattern using the power of reactive streams.
