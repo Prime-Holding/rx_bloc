@@ -1,8 +1,6 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:flow_builder/flow_builder.dart';
-import 'package:booking_app/base/flow_builders/hotel_flow.dart';
 import 'package:booking_app/base/ui_components/icon_with_shadow.dart';
 import 'package:booking_app/feature_hotel/blocs/hotel_manage_bloc.dart';
 
@@ -20,7 +18,7 @@ class HotelDetailsAppBar extends StatelessWidget
   Widget build(BuildContext context) => AppBar(
         leading: IconButton(
           icon: const IconWithShadow(icon: Icons.arrow_back),
-          onPressed: () => context.flow<HotelFlowState>().complete(),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Colors.transparent,
         actions: _buildTrailingItems(context),
@@ -29,7 +27,6 @@ class HotelDetailsAppBar extends StatelessWidget
 
   List<Widget> _buildTrailingItems(BuildContext context) => [
         _buildFavouriteButton(context),
-        _buildEditButton(context),
       ];
 
   Widget _buildFavouriteButton(BuildContext context) => _hotel.isFavorite
@@ -41,23 +38,6 @@ class HotelDetailsAppBar extends StatelessWidget
           icon: const IconWithShadow(icon: Icons.favorite_border),
           onPressed: () => _markAsFavorite(context, true),
         );
-
-  Widget _buildEditButton(BuildContext context) => IconButton(
-        icon: const IconWithShadow(icon: Icons.edit),
-        onPressed: () async {
-          context
-              .flow<HotelFlowState>()
-              .update((state) => state.copyWith(manage: true));
-
-          // if (result != null && result) {
-          //   Scaffold.of(context).showSnackBar(
-          //     const SnackBar(
-          //       content: Text('Hotel updated successfully.'),
-          //     ),
-          //   );
-          // }
-        },
-      );
 
   void _markAsFavorite(BuildContext context, bool isFavorite) =>
       RxBlocProvider.of<HotelManageBlocType>(context)
