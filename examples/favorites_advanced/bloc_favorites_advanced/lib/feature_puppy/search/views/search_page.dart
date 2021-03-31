@@ -19,10 +19,37 @@ class SearchPage extends StatelessWidget {
                 return puppyListStatusFailure();
               case PuppyListStatus.success:
                 return puppyListStatusSuccess(context, state);
+              case PuppyListStatus.allFetched:
+                return puppyListAllFetched(context, state);
               default:
                 return puppyListStatusFailure();
             }
           });
+
+  RefreshIndicator puppyListAllFetched(
+      BuildContext context, PuppyListState state) => RefreshIndicator(
+      onRefresh: () {
+        context.read<PuppyListBloc>().add(ReloadPuppiesEvent());
+        return Future.delayed(const Duration(seconds: 1));
+      },
+      child: SafeArea(
+        child: ListView.builder(
+          padding: const EdgeInsets.only(bottom: 67),
+          itemCount: state.searchedPuppies!.length,
+          itemBuilder: (context, index) {
+            final item = state.searchedPuppies![index];
+
+            return PuppyCard(
+              key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
+              onVisible: null,
+              puppy: item,
+              onCardPressed: (puppy) {},
+              onFavorite: (puppy, isFavorite) {},
+            );
+          },
+        ),
+      ),
+    );
 
   RefreshIndicator puppyListStatusSuccess(
           BuildContext context, PuppyListState state) =>
