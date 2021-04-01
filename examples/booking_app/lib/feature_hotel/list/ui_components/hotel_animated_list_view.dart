@@ -57,19 +57,13 @@ class HotelAnimatedListView extends StatelessWidget {
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
-        child: Hero(
-          tag: 'HotelListItem${item.hotel.id}',
-          child: item,
-        ),
+        child: item,
       );
 
   Widget _createRemovedTile(HotelListItem item, Animation<double> animation) =>
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
-        child: Hero(
-          tag: 'HotelListItem${item.hotel.id}',
-          child: item,
-        ),
+        child: item,
       );
 }

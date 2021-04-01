@@ -15,11 +15,14 @@ class HotelImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _aspectRatio,
-      child: Image.asset(
-        hotel.imagePath,
-        fit: BoxFit.cover,
+    return Hero(
+      tag: 'HotelImage${hotel.id}',
+      child: AspectRatio(
+        aspectRatio: _aspectRatio,
+        child: Image.asset(
+          hotel.imagePath,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

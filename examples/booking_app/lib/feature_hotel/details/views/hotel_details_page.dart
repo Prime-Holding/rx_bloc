@@ -68,10 +68,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
             actions: _buildTrailingItems(context, hotel),
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
-              background: Hero(
-                tag: 'HotelImage${hotel.id}',
-                child: HotelImage(aspectRatio: 2, hotel: hotel),
-              ),
+              background: HotelImage(aspectRatio: 2, hotel: hotel),
             ),
             expandedHeight: 300,
           ),

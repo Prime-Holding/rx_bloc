@@ -81,10 +81,7 @@ class HotelCard extends StatelessWidget {
         children: <Widget>[
           Column(
             children: <Widget>[
-              Hero(
-                tag: 'HotelImage${hotel.id}',
-                child: HotelImage(aspectRatio: _aspectRatio, hotel: hotel),
-              ),
+              HotelImage(aspectRatio: _aspectRatio, hotel: hotel),
               HotelHeader(hotel: hotel, padding: _padding),
             ],
           ),
