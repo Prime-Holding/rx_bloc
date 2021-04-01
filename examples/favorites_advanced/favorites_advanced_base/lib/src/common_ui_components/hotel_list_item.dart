@@ -6,6 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import 'hotel_header.dart';
+import 'hotel_image.dart';
+
 typedef OnFavorite = Function(Hotel hotel, bool isFavorite);
 typedef OnVisible = Function(Hotel hotel);
 typedef OnCardPressed = Function(Hotel hotel);
@@ -78,139 +81,11 @@ class HotelCard extends StatelessWidget {
         children: <Widget>[
           Column(
             children: <Widget>[
-              AspectRatio(
-                aspectRatio: _aspectRatio,
-                child: Image.asset(
-                  hotel.imagePath,
-                  fit: BoxFit.cover,
-                ),
+              Hero(
+                tag: 'HotelImage${hotel.id}',
+                child: HotelImage(aspectRatio: _aspectRatio, hotel: hotel),
               ),
-              Container(
-                color: HotelAppTheme.buildLightTheme().backgroundColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16, top: 8, bottom: 8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                hotel.title,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22,
-                                ),
-                              ),
-                              Container(
-                                padding: _padding,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: SkeletonText(
-                                        text: hotel.displaySubtitle,
-                                        height: 17,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey.withOpacity(0.8),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    if (hotel.displayDist != null)
-                                      Icon(
-                                        FontAwesomeIcons.mapMarkerAlt,
-                                        size: 12,
-                                        color: HotelAppTheme.buildLightTheme()
-                                            .primaryColor,
-                                      ),
-                                    Expanded(
-                                      child: SkeletonText(
-                                        text: hotel.displayDist == null
-                                            ? null
-                                            : '${hotel.displayDist!.toStringAsFixed(1)} km to city',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                Colors.grey.withOpacity(0.8)),
-                                        height: 18,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Row(
-                                  children: <Widget>[
-                                    if (hotel.displayRating != null)
-                                      SmoothStarRating(
-                                        allowHalfRating: true,
-                                        starCount: 5,
-                                        rating: hotel.rating,
-                                        size: 20,
-                                        color: HotelAppTheme.buildLightTheme()
-                                            .primaryColor,
-                                        borderColor:
-                                            HotelAppTheme.buildLightTheme()
-                                                .primaryColor,
-                                      ),
-                                    Expanded(
-                                      child: SkeletonText(
-                                        text: hotel.displayReviews == null
-                                            ? null
-                                            : ' ${hotel.displayReviews!} Reviews',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey.withOpacity(0.8),
-                                        ),
-                                        height: 19,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16, top: 8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            '\$${hotel.perNight}',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22,
-                            ),
-                          ),
-                          Text(
-                            '/per night',
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey.withOpacity(0.8)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              HotelHeader(hotel: hotel, padding: _padding),
             ],
           ),
           if (_onFavorite != null)

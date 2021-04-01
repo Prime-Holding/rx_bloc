@@ -125,22 +125,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     return RxAnimatedListItem(
       animationController: animationController,
       animation: animation,
-      child: Hero(
-        tag: 'HotelListItem${item.id}',
-        child: HotelListItem(
-          hotel: item,
-          onCardPressed: (index) => Navigator.of(context).push(
-            HotelDetailsPage.route(hotel: item),
-          ),
-          onFavorite: (index, isFavorite) =>
-              RxBlocProvider.of<HotelManageBlocType>(context)
-                  .events
-                  .markAsFavorite(hotel: item, isFavorite: isFavorite),
-          onVisible: (index) =>
-              RxBlocProvider.of<HotelsExtraDetailsBlocType>(context)
-                  .events
-                  .fetchExtraDetails(item),
+      child: HotelListItem(
+        hotel: item,
+        onCardPressed: (index) => Navigator.of(context).push(
+          HotelDetailsPage.route(hotel: item),
         ),
+        onFavorite: (index, isFavorite) =>
+            RxBlocProvider.of<HotelManageBlocType>(context)
+                .events
+                .markAsFavorite(hotel: item, isFavorite: isFavorite),
+        onVisible: (index) =>
+            RxBlocProvider.of<HotelsExtraDetailsBlocType>(context)
+                .events
+                .fetchExtraDetails(item),
       ),
     );
   }

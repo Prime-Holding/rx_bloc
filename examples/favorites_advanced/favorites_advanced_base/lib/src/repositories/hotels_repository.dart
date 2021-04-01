@@ -122,9 +122,20 @@ class HotelsRepository {
           .toList();
 
   static final _description = '''
-  is on a 9.7 km stretch of private beach on Saadiyat Island. This 5-star hotel offers air-conditioned rooms with a balcony. It has a health club with an outdoor pool.
+  is situated on a 9 km stretch of private beach on Saadiyat Island. This 5-star hotel offers air-conditioned rooms with a balcony. It has a health club with an outdoor pool.
 
-A spacious sitting area with a 42-inch flat-screen TV and an iPod docking station are in Hyatt Abu Dhabi’s modern rooms. Each has floor-to-ceiling windows and is decorated in soft colors. An open-plan bathroom with an oversize bathtub and a separate rain-shower is included.
+A spacious seating area with a 42-inch flat-screen TV and an iPod docking station are in Hyatt Abu Dhabi’s modern rooms. Each has floor-to-ceiling windows and is decorated in soft colours. An open-plan bathroom with an oversized bathtub and a separate rain-shower is included.
+
+Relaxing massages and various beauty treatments are available at Atarmia Spa. It includes a gym and private treatment rooms for men and women.
+
+Park Hyatt Abu Dhabi Hotel and Villas has 3 in-house restaurants.
+Each offers a wide selection of international cuisine. The Beach House Restaurant features panoramic views of Saadiyat Beach and the landscaped hotel gardens.
+
+Abu Dhabi International Airport is 35 minutes’ drive away. Park Hyatt Abu Dhabi provides free parking on site.
+
+Couples particularly like the location — they rated it 9.3 for a two-person trip.
+
+We speak your language!
 ''';
 
   static final _features = [
@@ -132,7 +143,7 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
     'Beachfront',
     'Free parking',
     'Family rooms',
-    'Bar'
+    'Bar',
   ];
   static final _puppiesDB = [
     Hotel(

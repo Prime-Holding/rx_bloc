@@ -1,4 +1,3 @@
-import 'package:booking_app/feature_hotel/details/ui_components/hotel_details_app_bar.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:booking_app/feature_hotel/blocs/hotels_extra_details_bloc.dart';
 import 'package:booking_app/feature_hotel/blocs/hotel_manage_bloc.dart';
 import 'package:booking_app/feature_hotel/details/blocs/hotel_details_bloc.dart';
-import 'package:skeleton_text/skeleton_text.dart';
+import 'package:favorites_advanced_base/ui_components.dart';
 
 part 'hotel_details_providers.dart';
+part '../ui_components/hotel_details_app_bar.dart';
 
 class HotelDetailsPage extends StatefulWidget {
   const HotelDetailsPage({
@@ -36,11 +36,6 @@ class HotelDetailsPage extends StatefulWidget {
 class _HotelDetailsPageState extends State<HotelDetailsPage> {
   @override
   void initState() {
-    // context.read<HotelsExtraDetailsBlocType>().events.fetchExtraDetails(
-    //       widget._hotel,
-    //       allProps: true,
-    //     );
-
     context
         .read<HotelsExtraDetailsBlocType>()
         .events
@@ -57,50 +52,67 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           key: const ValueKey(Keys.hotelDetailsPage),
           child: RxBlocBuilder<HotelDetailsBlocType, Hotel>(
             state: (bloc) => bloc.states.hotel,
-            builder: (context, snapshot, bloc) =>
-                snapshot.hasData ? _build(bloc, snapshot.data!) : Container(),
+            builder: (context, snapshot, bloc) => snapshot.hasData
+                ? _buildPage(bloc, snapshot.data!)
+                : Container(),
           ),
         ),
       );
 
-  Widget _build(HotelDetailsBlocType bloc, Hotel hotel) => Column(
-        children: [
-          Stack(
-            children: [
-              Hero(
-                tag: 'HotelListItem${hotel.id}',
-                child: HotelCard(
+  Widget _buildPage(HotelDetailsBlocType bloc, Hotel hotel) => CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            leading: const BackButton(),
+            backgroundColor: Colors.transparent,
+            actions: _buildTrailingItems(context, hotel),
+            elevation: 0,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Hero(
+                tag: 'HotelImage${hotel.id}',
+                child: HotelImage(aspectRatio: 2, hotel: hotel),
+              ),
+            ),
+            expandedHeight: 300,
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                HotelHeader(
                   hotel: hotel,
-                  aspectRatio: 1.2,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                 ),
-              ),
-              Positioned(child: HotelDetailsAppBar(hotel: hotel)),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            color: Colors.white,
-            child: Column(
-              children: [
-                SkeletonText(
-                  text: hotel.displayDescription,
-                  // text: null,
-                  skeletons: 10,
-                  height: 17,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.withOpacity(0.8),
-                  ),
-                ),
-                _buildHotelFeatures(hotel)
+                _buildFooter(hotel),
               ],
             ),
           )
+          // _buildFeatures(hotel),
         ],
       );
 
-  Widget _buildHotelFeatures(Hotel hotel) => AnimatedSwitcher(
+  Widget _buildFooter(Hotel hotel) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        color: Colors.white,
+        child: Column(
+          children: [
+            _buildDescription(hotel),
+            _buildFeatures(hotel),
+            const SizedBox(height: 16),
+          ],
+        ),
+      );
+
+  Widget _buildDescription(Hotel hotel) => SkeletonText(
+        text: hotel.displayDescription,
+        skeletons: 10,
+        height: 17,
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.grey.withOpacity(0.8),
+        ),
+      );
+
+  Widget _buildFeatures(Hotel hotel) => AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         child: hotel.displayFeatures == null
             ? Container()
