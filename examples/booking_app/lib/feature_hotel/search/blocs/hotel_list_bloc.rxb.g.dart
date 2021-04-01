@@ -20,14 +20,16 @@ abstract class $HotelListBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [filter]
-  final _$filterEvent = BehaviorSubject.seeded('');
+  final _$filterEvent =
+      BehaviorSubject.seeded(const _FilterEventArgs(query: ''));
 
   /// Тhe [Subject] where events sink to by calling [reload]
   final _$reloadEvent = BehaviorSubject.seeded(
       const _ReloadEventArgs(reset: true, fullReset: false));
 
   @override
-  void filter({required String query}) => _$filterEvent.add(query);
+  void filter({required String query, DateTimeRange? dateRange}) =>
+      _$filterEvent.add(_FilterEventArgs(query: query, dateRange: dateRange));
 
   @override
   void reload({required bool reset, bool fullReset = false}) =>
@@ -46,6 +48,16 @@ abstract class $HotelListBloc extends RxBlocBase
     _compositeSubscription.dispose();
     super.dispose();
   }
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [HotelListEvents.filter] event
+class _FilterEventArgs {
+  const _FilterEventArgs({required this.query, this.dateRange});
+
+  final String query;
+
+  final DateTimeRange? dateRange;
 }
 
 /// Helps providing the arguments in the [Subject.add] for

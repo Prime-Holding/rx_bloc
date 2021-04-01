@@ -6,7 +6,6 @@ import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:provider/provider.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 import '../../blocs/hotel_manage_bloc.dart';
@@ -20,10 +19,13 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   late AnimationController animationController;
+  late DateTimeRange dateRange;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    dateRange = DateTimeRange(start: DateTime.now(), end: DateTime.now());
+
     animationController = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
@@ -50,7 +52,24 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       onChanged: (bloc, text) =>
                           bloc.events.filter(query: text),
                     ),
-                    TimeDateBar(),
+                    TimeDateBar(
+                      startDate: dateRange.start,
+                      endDate: dateRange.end,
+                      onDatePressed: () async {
+                        final pickedRange = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(DateTime.now().year, 12, 31),
+                        );
+                        if (pickedRange == null) return;
+                        setState(() {
+                          dateRange = pickedRange;
+                        });
+                      },
+                      onHotelDetailsPressed: () {
+                        debugPrint('Hotel details pressed!');
+                      },
+                    ),
                   ],
                 ),
                 childCount: 1,

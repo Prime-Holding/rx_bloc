@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:flutter/material.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
-
 import 'package:rxdart/rxdart.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
@@ -15,8 +15,11 @@ part 'hotel_list_bloc_extensions.dart';
 part 'hotel_list_bloc_models.dart';
 
 abstract class HotelListEvents {
-  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
-  void filter({required String query});
+  @RxBlocEvent(
+    type: RxBlocEventType.behaviour,
+    seed: _FilterEventArgs(query: ''),
+  )
+  void filter({required String query, DateTimeRange? dateRange});
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
@@ -52,6 +55,7 @@ class HotelListBloc extends $HotelListBloc {
     ])
         .startWith(_ReloadData(reset: true, query: ''))
         .fetchHotels(repository, _hotels)
+        .filterHotels(_$filterEvent.value)
         .setResultStateHandler(this)
         .mergeWithPaginatedList(_hotels)
         .bind(_hotels)
@@ -83,7 +87,8 @@ class HotelListBloc extends $HotelListBloc {
   }
 
   @override
-  Stream<String> get query => _$filterEvent.shareReplay(maxSize: 1);
+  Stream<String> get query =>
+      _$filterEvent.map((filter) => filter.query).shareReplay(maxSize: 1);
 
   @override
   Stream<String> get hotelsFound => _hotels.map(

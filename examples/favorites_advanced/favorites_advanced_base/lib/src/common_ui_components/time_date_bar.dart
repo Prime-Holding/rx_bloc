@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TimeDateBar extends StatelessWidget {
-  final DateTime startDate = DateTime.now();
-  final DateTime endDate = DateTime.now().add(const Duration(days: 5));
+
+  TimeDateBar({
+    required this.startDate,
+    required this.endDate,
+    this.onDatePressed,
+    this.onHotelDetailsPressed,
+});
+
+  final void Function()? onDatePressed;
+  final void Function()? onHotelDetailsPressed;
+
+  final DateTime startDate;
+  final DateTime endDate;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -25,10 +36,7 @@ class TimeDateBar extends StatelessWidget {
                       ),
                       onTap: () {
                         FocusScope.of(context).requestFocus(FocusNode());
-                        // setState(() {
-                        //   isDatePopupOpen = true;
-                        // });
-                        // showDemoDialog(context: context);
+                        onDatePressed?.call();
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -85,6 +93,7 @@ class TimeDateBar extends StatelessWidget {
                       ),
                       onTap: () {
                         FocusScope.of(context).requestFocus(FocusNode());
+                        onHotelDetailsPressed?.call();
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(
