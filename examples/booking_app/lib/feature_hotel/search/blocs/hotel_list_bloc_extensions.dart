@@ -25,9 +25,26 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
       );
 }
 
-extension _FilterHotelDataExtensions on Stream<Result<PaginatedList<Hotel>>> {
-  Stream<Result<PaginatedList<Hotel>>> filterHotels(_FilterEventArgs? filter) =>
-      this;
+extension _HotelListExtensions on Stream<PaginatedList<Hotel>> {
+  Stream<PaginatedList<Hotel>> filterHotels(
+          BehaviorSubject<_FilterEventArgs> filterSubject) =>
+      map((paginatedList) {
+        final filter = filterSubject.value;
+        if (filter == null) return paginatedList;
+        var listData = paginatedList.list;
+
+        // Filter by date
+        if (filter.dateRange != null) {
+          listData = listData
+              .where((hotel) =>
+                  hotel.startWorkDate.isBefore(filter.dateRange!.start) &&
+                  hotel.endWorkDate.isAfter(filter.dateRange!.end))
+              .toList();
+          debugPrint('LSz: ${listData.length}');
+        }
+
+        return paginatedList.copyWith(list: listData);
+      });
 }
 
 extension StreamBindToHotels on Stream<List<Hotel>> {
@@ -74,6 +91,7 @@ extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
           reset: reloadData.reset,
           fullReset: reloadData.fullReset,
           query: filterHotelsEvent.value?.query ?? '',
+          dateRange: filterHotelsEvent.value?.dateRange,
         ),
       );
 }

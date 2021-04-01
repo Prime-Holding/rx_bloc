@@ -88,7 +88,9 @@ class HotelsRepository {
 
   List<Hotel> _hotels;
 
-  static DateTime _getDateForMonthAndDay(month, day) => DateTime(0, month, day);
+  static DateTime _getDateForMonthAndDay(int month, int day,
+      [bool isNextYear = false]) =>
+      DateTime(DateTime.now().year + (isNextYear ? 1 : 0), month, day);
 
   static List<Hotel> _generateEntities({required int multiplier}) =>
       List.generate(
@@ -328,7 +330,7 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       roomCapacity: 4,
       personCapacity: 6,
       startWorkDate: _getDateForMonthAndDay(12, 1),
-      endWorkDate: _getDateForMonthAndDay(1, 1),
+      endWorkDate: _getDateForMonthAndDay(1, 1, true),
     ),
     Hotel(
       id: '13',
@@ -430,7 +432,7 @@ A spacious sitting area with a 42-inch flat-screen TV and an iPod docking statio
       roomCapacity: 3,
       personCapacity: 3,
       startWorkDate: _getDateForMonthAndDay(11, 16),
-      endWorkDate: _getDateForMonthAndDay(1, 9),
+      endWorkDate: _getDateForMonthAndDay(1, 9, true),
     ),
     Hotel(
       id: '19',

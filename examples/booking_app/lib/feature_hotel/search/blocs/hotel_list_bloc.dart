@@ -55,9 +55,9 @@ class HotelListBloc extends $HotelListBloc {
     ])
         .startWith(_ReloadData(reset: true, query: ''))
         .fetchHotels(repository, _hotels)
-        .filterHotels(_$filterEvent.value)
         .setResultStateHandler(this)
         .mergeWithPaginatedList(_hotels)
+        .filterHotels(_$filterEvent)
         .bind(_hotels)
         .disposedBy(_compositeSubscription);
 
