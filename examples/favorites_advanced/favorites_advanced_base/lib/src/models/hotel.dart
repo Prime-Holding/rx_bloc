@@ -11,6 +11,10 @@ class Hotel implements Entity {
   final int reviews;
   final String description;
   final List<String> features;
+  final int roomCapacity;
+  final int personCapacity;
+  final DateTime startWorkDate;
+  final DateTime endWorkDate;
   bool isFavorite;
 
   // Properties that should simulate remote fetching of entity data
@@ -20,6 +24,10 @@ class Hotel implements Entity {
   final int? displayReviews;
   final double? displayRating;
   final double? displayDist;
+  final int? displayRoomCapacity;
+  final int? displayPersonCapacity;
+  final DateTime? displayStartWorkDate;
+  final DateTime? displayEndWorkDate;
 
   Hotel({
     required this.id,
@@ -32,6 +40,10 @@ class Hotel implements Entity {
     required this.reviews,
     required this.isFavorite,
     required this.features,
+    required this.roomCapacity,
+    required this.personCapacity,
+    required this.startWorkDate,
+    required this.endWorkDate,
     required String description,
     this.displaySubtitle,
     this.displayReviews,
@@ -39,6 +51,10 @@ class Hotel implements Entity {
     this.displayDist,
     this.displayDescription,
     this.displayFeatures,
+    this.displayRoomCapacity,
+    this.displayPersonCapacity,
+    this.displayStartWorkDate,
+    this.displayEndWorkDate,
   }) : this.description = '$title $description';
 
   Hotel copyWith({
@@ -52,6 +68,10 @@ class Hotel implements Entity {
     int? reviews,
     String? description,
     List<String>? features,
+    int? roomCapacity,
+    int? personCapacity,
+    DateTime? startWorkDate,
+    DateTime? endWorkDate,
     bool? isFavorite,
     String? displaySubtitle,
     int? displayReviews,
@@ -59,6 +79,10 @@ class Hotel implements Entity {
     double? displayDist,
     String? displayDescription,
     List<String>? displayFeatures,
+    int? displayRoomCapacity,
+    int? displayPersonCapacity,
+    DateTime? displayStartWorkDate,
+    DateTime? displayEndWorkDate,
   }) =>
       Hotel(
         id: id ?? this.id,
@@ -72,12 +96,21 @@ class Hotel implements Entity {
         isFavorite: isFavorite ?? this.isFavorite,
         description: description ?? this.description,
         features: features ?? this.features,
+        roomCapacity: roomCapacity ?? this.roomCapacity,
+        personCapacity: personCapacity ?? this.personCapacity,
+        startWorkDate: startWorkDate ?? this.startWorkDate,
+        endWorkDate: endWorkDate ?? this.endWorkDate,
         displaySubtitle: displaySubtitle ?? this.displaySubtitle,
         displayReviews: displayReviews ?? this.displayReviews,
         displayRating: displayRating ?? this.displayRating,
         displayDist: displayDist ?? this.displayDist,
         displayDescription: displayDescription ?? this.displayDescription,
         displayFeatures: displayFeatures ?? this.displayFeatures,
+        displayRoomCapacity: displayRoomCapacity ?? this.displayRoomCapacity,
+        displayPersonCapacity:
+            displayPersonCapacity ?? this.displayPersonCapacity,
+        displayStartWorkDate: displayStartWorkDate ?? this.displayStartWorkDate,
+        displayEndWorkDate: displayEndWorkDate ?? this.displayEndWorkDate,
       );
 
   Hotel copyWithHotel(Hotel hotel) => Hotel(
@@ -92,12 +125,22 @@ class Hotel implements Entity {
         isFavorite: hotel.isFavorite,
         features: hotel.features,
         description: hotel.description,
+        roomCapacity: hotel.roomCapacity,
+        personCapacity: hotel.personCapacity,
+        startWorkDate: hotel.startWorkDate,
+        endWorkDate: hotel.endWorkDate,
         displaySubtitle: hotel.displaySubtitle ?? displaySubtitle,
         displayReviews: hotel.displayReviews ?? displayReviews,
         displayRating: hotel.displayRating ?? displayRating,
         displayDist: hotel.displayDist ?? displayDist,
         displayFeatures: hotel.displayFeatures ?? displayFeatures,
         displayDescription: hotel.displayDescription ?? displayDescription,
+        displayRoomCapacity: hotel.displayRoomCapacity ?? displayRoomCapacity,
+        displayPersonCapacity:
+            hotel.displayPersonCapacity ?? displayPersonCapacity,
+        displayStartWorkDate:
+            hotel.displayStartWorkDate ?? displayStartWorkDate,
+        displayEndWorkDate: hotel.displayEndWorkDate ?? displayEndWorkDate,
       );
 
   @override
@@ -127,9 +170,17 @@ class Hotel implements Entity {
           dist == other.dist &&
           rating == other.rating &&
           reviews == other.reviews &&
+          roomCapacity == other.roomCapacity &&
+          personCapacity == other.personCapacity &&
+          startWorkDate == other.startWorkDate &&
+          endWorkDate == other.endWorkDate &&
           displayDist == other.displayDist &&
           displayFeatures == other.displayFeatures &&
-          displayDescription == other.displayDescription;
+          displayDescription == other.displayDescription &&
+          displayRoomCapacity == other.displayRoomCapacity &&
+          displayPersonCapacity == other.displayPersonCapacity &&
+          displayStartWorkDate == other.displayStartWorkDate &&
+          displayEndWorkDate == other.displayEndWorkDate;
     }
 
     return false;
@@ -147,6 +198,10 @@ class Hotel implements Entity {
       reviews.hashCode ^
       description.hashCode ^
       features.hashCode ^
+      roomCapacity.hashCode ^
+      personCapacity.hashCode ^
+      startWorkDate.hashCode ^
+      endWorkDate.hashCode ^
       displayDist.hashCode;
 
   @override
