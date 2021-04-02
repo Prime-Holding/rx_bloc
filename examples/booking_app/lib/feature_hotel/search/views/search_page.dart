@@ -41,7 +41,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 (context, index) => Column(
                   children: <Widget>[
                     RxTextFormFieldBuilder<HotelListBlocType>(
-                      state: (bloc) => bloc.states.query,
+                      state: (bloc) => bloc.states.queryFilter,
                       showErrorState: (_) => const Stream.empty(),
                       builder: (fieldState) => SearchBar(
                         controller: fieldState.controller,
@@ -50,14 +50,17 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         bloc.events.filterByQuery(text);
                       },
                     ),
-                    RxBlocBuilder<HotelListBlocType, HotelSearchFilters>(
-                      state: (bloc) => bloc.states.filters,
+                    RxBlocBuilder<HotelListBlocType, DateTimeRange?>(
+                      state: (bloc) => bloc.states.dateRangeFilter,
                       builder: (context, filterState, bloc) {
                         final filter = filterState.data;
                         final nowTime = DateTime.now();
+                        // TODO: make the start and end date nullable,
+                        //  which will be the default state when the
+                        //  user open the page
                         return TimeDateBar(
-                          startDate: filter?.dateRange?.start ?? nowTime,
-                          endDate: filter?.dateRange?.end ??
+                          startDate: filter?.start ?? nowTime,
+                          endDate: filter?.end ??
                               nowTime.add(const Duration(days: 5)),
                           onDatePressed: () async {
                             final pickedRange = await showDateRangePicker(
@@ -66,7 +69,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               lastDate: DateTime(nowTime.year + 1, 12, 31),
                             );
                             if (pickedRange == null) return;
-                            bloc.events.filterByDateRange(pickedRange);
+
+                            bloc.events.filterByDateRange(
+                              dateRange: pickedRange,
+                            );
                           },
                           onHotelDetailsPressed: () {
                             debugPrint('Hotel details pressed!');
@@ -91,7 +97,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 Hotel>.withRefreshIndicator(
               onBottomScrolled: (bloc) => bloc.events.reload(reset: false),
               onRefresh: (bloc) {
-                bloc.events.filterByDateRange(null);
                 bloc.events.reload(reset: true);
                 return bloc.states.refreshDone;
               },

@@ -23,7 +23,7 @@ abstract class $HotelListBloc extends RxBlocBase
   final _$filterByQueryEvent = BehaviorSubject.seeded('');
 
   /// Тhe [Subject] where events sink to by calling [filterByDateRange]
-  final _$filterByDateRangeEvent = PublishSubject<DateTimeRange?>();
+  final _$filterByDateRangeEvent = BehaviorSubject<DateTimeRange?>.seeded(null);
 
   /// Тhe [Subject] where events sink to by calling [reload]
   final _$reloadEvent = BehaviorSubject.seeded(
@@ -33,7 +33,7 @@ abstract class $HotelListBloc extends RxBlocBase
   void filterByQuery(String query) => _$filterByQueryEvent.add(query);
 
   @override
-  void filterByDateRange(DateTimeRange? dateRange) =>
+  void filterByDateRange({DateTimeRange? dateRange}) =>
       _$filterByDateRangeEvent.add(dateRange);
 
   @override

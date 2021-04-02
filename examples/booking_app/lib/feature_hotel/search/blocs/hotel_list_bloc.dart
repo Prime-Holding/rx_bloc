@@ -14,13 +14,12 @@ part 'hotel_list_bloc.rxb.g.dart';
 part 'hotel_list_bloc_extensions.dart';
 part 'hotel_list_bloc_models.dart';
 
-// ignore_for_file: avoid_types_on_closure_parameters
-
 abstract class HotelListEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void filterByQuery(String query);
 
-  void filterByDateRange(DateTimeRange? dateRange);
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: null)
+  void filterByDateRange({DateTimeRange? dateRange});
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
@@ -33,15 +32,15 @@ abstract class HotelListStates {
   @RxBlocIgnoreState()
   Stream<PaginatedList<Hotel>> get searchedHotels;
 
+  @RxBlocIgnoreState()
+  Stream<DateTimeRange?> get dateRangeFilter;
+
+  @RxBlocIgnoreState()
+  Stream<String> get queryFilter;
+
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
-
-  @RxBlocIgnoreState()
-  Stream<String> get query;
-
-  @RxBlocIgnoreState()
-  Stream<HotelSearchFilters> get filters;
 
   @RxBlocIgnoreState()
   Stream<String> get hotelsFound;
@@ -54,16 +53,14 @@ class HotelListBloc extends $HotelListBloc {
     CoordinatorBlocType coordinatorBloc,
   ) {
     Rx.merge([
-      filters.mapToPayload(),
-      _$reloadEvent.mapToPayload(filters),
+      _filters.mapToPayload(),
+      _$reloadEvent.mapToPayload(
+        query: _$filterByQueryEvent,
+        dateRange: _$filterByDateRangeEvent,
+      )
     ])
-        .startWith(_ReloadData(
-          reset: true,
-          filters: HotelSearchFilters(),
-          fullReset: true,
-        ))
+        .startWith(_ReloadData.withInitial())
         .fetchHotels(repository, _hotels)
-        .setResultStateHandler(this)
         .mergeWithPaginatedList(_hotels)
         .bind(_hotels)
         .disposedBy(_compositeSubscription);
@@ -72,9 +69,6 @@ class HotelListBloc extends $HotelListBloc {
         .updateHotels(_hotels)
         .disposedBy(_compositeSubscription);
   }
-
-  @override
-  Future<void> get refreshDone async => _hotels.waitToLoad();
 
   // MARK: - Subjects
   final _hotels = BehaviorSubject<PaginatedList<Hotel>>.seeded(
@@ -85,26 +79,16 @@ class HotelListBloc extends $HotelListBloc {
   );
 
   @override
+  Future<void> get refreshDone async => _hotels.waitToLoad();
+
+  @override
   Stream<PaginatedList<Hotel>> get searchedHotels => _hotels;
 
   @override
-  void dispose() {
-    _hotels.close();
-    super.dispose();
-  }
+  Stream<DateTimeRange?> get dateRangeFilter => _$filterByDateRangeEvent;
 
   @override
-  Stream<String> get query =>
-      filters.map((filters) => filters.query).shareReplay(maxSize: 1);
-
-  @override
-  Stream<HotelSearchFilters> get filters => Rx.combineLatest2(
-      _$filterByQueryEvent.delayInput(),
-      _$filterByDateRangeEvent.startWith(null).distinct(),
-      (String query, DateTimeRange? dateRange) => HotelSearchFilters(
-            query: query,
-            dateRange: dateRange,
-          ));
+  Stream<String> get queryFilter => _$filterByQueryEvent;
 
   @override
   Stream<String> get hotelsFound => _hotels.map(
@@ -112,4 +96,10 @@ class HotelListBloc extends $HotelListBloc {
             ? '${list.totalCount} hotels found'
             : 'No hotels found',
       );
+
+  @override
+  void dispose() {
+    _hotels.close();
+    super.dispose();
+  }
 }

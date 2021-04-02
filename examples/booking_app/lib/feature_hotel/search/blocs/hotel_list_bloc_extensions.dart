@@ -49,7 +49,10 @@ extension StreamBindToHotels on Stream<List<Hotel>> {
 
 extension _HotelSearchFilterStreamExtensions on Stream<HotelSearchFilters> {
   /// Map search filters to a [_ReloadData]
-  Stream<_ReloadData> mapToPayload() => skip(1).map(
+  Stream<_ReloadData> mapToPayload({
+    int skipCount = 1,
+  }) =>
+      skip(skipCount).map(
         (filters) => _ReloadData(
           reset: true,
           fullReset: true,
@@ -60,26 +63,35 @@ extension _HotelSearchFilterStreamExtensions on Stream<HotelSearchFilters> {
 
 extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
   /// Map search filters to a [_ReloadData]
-  Stream<_ReloadData> mapToPayload(
-    Stream<HotelSearchFilters> filtersStream,
-  ) =>
-      withLatestFrom(
-              filtersStream,
-              (_ReloadEventArgs reloadData, HotelSearchFilters searchFilters) =>
-                  _ReloadData(
-                    reset: reloadData.reset,
-                    filters: searchFilters,
-                  )).skip(1).map(
-            (reloadData) => _ReloadData(
-              reset: reloadData.reset,
-              fullReset: reloadData.fullReset,
-              filters: reloadData.filters,
-            ),
-          );
+  Stream<_ReloadData> mapToPayload({
+    required BehaviorSubject<String> query,
+    required BehaviorSubject<DateTimeRange?> dateRange,
+    int skipCount = 1,
+  }) =>
+      skip(skipCount).map(
+        (reloadData) => _ReloadData(
+          reset: reloadData.reset,
+          fullReset: reloadData.fullReset,
+          filters: HotelSearchFilters(
+            dateRange: dateRange.value,
+            query: query.value ?? '',
+          ),
+        ),
+      );
 }
 
 extension _StringBehaviourSubjectExtensions on BehaviorSubject<String> {
   Stream<String> delayInput() => distinct().debounceTime(
         const Duration(milliseconds: 600),
       );
+}
+
+extension _HotelListEventsUtils on HotelListBloc {
+  Stream<HotelSearchFilters> get _filters => Rx.combineLatest2(
+      _$filterByQueryEvent.delayInput(),
+      _$filterByDateRangeEvent.distinct(),
+      (String query, DateTimeRange? dateRange) => HotelSearchFilters(
+            query: query,
+            dateRange: dateRange,
+          ));
 }

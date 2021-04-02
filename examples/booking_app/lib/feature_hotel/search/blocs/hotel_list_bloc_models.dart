@@ -7,6 +7,12 @@ class _ReloadData {
     this.fullReset = false,
   });
 
+  factory _ReloadData.withInitial() => _ReloadData(
+        reset: true,
+        filters: HotelSearchFilters(),
+        fullReset: true,
+      );
+
   final bool reset;
   final bool fullReset;
   final HotelSearchFilters filters;
@@ -16,6 +22,7 @@ class _ReloadData {
     if (other is _ReloadData) {
       return reset == other.reset &&
           filters.query == other.filters.query &&
+          filters.dateRange == other.filters.dateRange &&
           fullReset == other.fullReset;
     }
 
@@ -24,7 +31,8 @@ class _ReloadData {
 
   @override
   String toString() =>
-      '{reset: $reset, fullReset: $fullReset, query: ${filters.query}}';
+      '{reset: $reset, fullReset: $fullReset, query: ${filters.query}, '
+      'dateRange: ${filters.dateRange}';
 
   @override
   int get hashCode =>
