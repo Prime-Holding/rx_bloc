@@ -44,8 +44,9 @@ extension StreamBindToHotels on Stream<List<Hotel>> {
 
 extension _FilterHotelsEventExtensions on Stream<String> {
   /// Map a string to a [_ReloadData]
-  Stream<_ReloadData> mapToPayload() => skip(1)
-      .throttleTime(
+  Stream<_ReloadData> mapToPayload() => distinct()
+      .skip(1)
+      .debounceTime(
         const Duration(milliseconds: 600),
       )
       .map(
@@ -54,8 +55,7 @@ extension _FilterHotelsEventExtensions on Stream<String> {
           fullReset: true,
           query: query,
         ),
-      )
-      .distinct();
+      );
 }
 
 extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
