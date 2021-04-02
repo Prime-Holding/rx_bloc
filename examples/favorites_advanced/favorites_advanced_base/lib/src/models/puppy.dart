@@ -34,6 +34,8 @@ class Puppy implements Entity {
   bool hasExtraDetails() =>
       displayCharacteristics != null && displayName != null;
 
+  bool hasFullExtraDetails() => false;
+
   @override
   bool operator ==(Object other) {
     if (other is Puppy) {

@@ -8,6 +8,10 @@ extension ListPuppyUtils<T extends Entity> on List<T> {
   List<T> whereNoExtraDetails() =>
       where((entity) => !entity.hasExtraDetails()).toList();
 
+  /// Get list of entities, which have no full extra details
+  List<T> whereNoFullExtraDetails() =>
+      where((entity) => !entity.hasFullExtraDetails()).toList();
+
   /// Merge the current list with the given list of [T].
   ///
   /// 1. In case that any of the provided [T] it not part of the current

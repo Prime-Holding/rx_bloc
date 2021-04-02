@@ -1,5 +1,5 @@
-import 'package:booking_app/base/flow_builders/hotel_flow.dart';
 import 'package:booking_app/base/ui_components/filter_bar.dart';
+import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
@@ -127,8 +127,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       animation: animation,
       child: HotelListItem(
         hotel: item,
-        onCardPressed: (index) =>
-            Navigator.of(context).push(HotelFlow.route(hotel: item)),
+        onCardPressed: (index) => Navigator.of(context).push(
+          HotelDetailsPage.route(hotel: item),
+        ),
         onFavorite: (index, isFavorite) =>
             RxBlocProvider.of<HotelManageBlocType>(context)
                 .events

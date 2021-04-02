@@ -1,10 +1,10 @@
+import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:booking_app/base/flow_builders/hotel_flow.dart';
 
 import '../../list/ui_components/hotel_animated_list_view.dart';
 import '../blocs/favorite_hotels_bloc.dart';
@@ -20,8 +20,9 @@ class FavoritesPage extends StatelessWidget {
                   .states
                   .favoriteHotels
                   .whereSuccess(),
-              onHotelPressed: (hotel) =>
-                  Navigator.of(context).push(HotelFlow.route(hotel: hotel)),
+              onHotelPressed: (hotel) => Navigator.of(context).push(
+                HotelDetailsPage.route(hotel: hotel),
+              ),
             ),
           ),
           RxResultBuilder<FavoriteHotelsBlocType, List<Hotel>>(

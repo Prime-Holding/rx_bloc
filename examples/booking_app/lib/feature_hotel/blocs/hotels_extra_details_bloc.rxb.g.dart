@@ -23,10 +23,13 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [fetchExtraDetails]
-  final _$fetchExtraDetailsEvent = PublishSubject<Hotel>();
+  final _$fetchExtraDetailsEvent =
+      PublishSubject<_FetchExtraDetailsEventArgs>();
 
   @override
-  void fetchExtraDetails(Hotel hotel) => _$fetchExtraDetailsEvent.add(hotel);
+  void fetchExtraDetails(Hotel hotel, {bool allProps = false}) =>
+      _$fetchExtraDetailsEvent
+          .add(_FetchExtraDetailsEventArgs(hotel, allProps: allProps));
 
   @override
   HotelsExtraDetailsEvents get events => this;
@@ -40,4 +43,14 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
     _compositeSubscription.dispose();
     super.dispose();
   }
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [HotelsExtraDetailsEvents.fetchExtraDetails] event
+class _FetchExtraDetailsEventArgs {
+  const _FetchExtraDetailsEventArgs(this.hotel, {this.allProps = false});
+
+  final Hotel hotel;
+
+  final bool allProps;
 }

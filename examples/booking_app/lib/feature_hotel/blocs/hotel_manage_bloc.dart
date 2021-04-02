@@ -19,6 +19,9 @@ abstract class HotelManageStates {
 
   @RxBlocIgnoreState()
   Stream<String> get error;
+
+  @RxBlocIgnoreState()
+  Stream<String> get favoriteMessage;
 }
 
 @RxBloc()
@@ -51,6 +54,17 @@ class HotelManageBloc extends $HotelManageBloc {
 
   @override
   Stream<bool> get isLoading => loadingState.shareReplay(maxSize: 1);
+
+  @override
+  Stream<String> get favoriteMessage => _lastUpdatedHotel
+      .map(
+        (hotel) => hotel.isFavorite
+            ? '${hotel.title} was added to your favorites'
+            : '${hotel.title} was removed from your favorites',
+      )
+      .distinct()
+      .debounceTime(const Duration(milliseconds: 400))
+      .share();
 
   @override
   void dispose() {

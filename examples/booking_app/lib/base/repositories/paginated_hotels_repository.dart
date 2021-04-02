@@ -52,8 +52,14 @@ class PaginatedHotelsRepository implements HotelsRepository {
       _repository.favoriteHotel(hotel, isFavorite: isFavorite);
 
   @override
-  Future<List<Hotel>> fetchFullEntities(List<String> ids) =>
-      _repository.fetchFullEntities(ids);
+  Future<List<Hotel>> fetchFullEntities(
+    List<String> ids, {
+    bool allProps = false,
+  }) =>
+      _repository.fetchFullEntities(
+        ids,
+        allProps: allProps,
+      );
 }
 
 extension _HotelList on List<Hotel> {

@@ -32,6 +32,8 @@ extension _HotelUpdate on Stream<_MarkAsFavoriteEventArgs> {
                 displaySubtitle: args.hotel.displaySubtitle,
                 displayRating: args.hotel.displayRating,
                 displayReviews: args.hotel.displayReviews,
+                displayFeatures: args.hotel.displayFeatures,
+                displayDescription: args.hotel.displayDescription,
               ));
             } on Exception catch (e) {
               // In case of any error rollback the hotel to the previous state
