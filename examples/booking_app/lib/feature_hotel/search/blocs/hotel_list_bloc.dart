@@ -50,7 +50,7 @@ class HotelListBloc extends $HotelListBloc {
       _$filterEvent.mapToPayload(),
       _$reloadEvent.mapToPayload(_$filterEvent),
     ])
-        .startWith(_ReloadData(reset: true, query: ''))
+        .startWith(_ReloadData(reset: true, query: '', fullReset: true))
         .fetchHotels(repository, _hotels)
         .setResultStateHandler(this)
         .mergeWithPaginatedList(_hotels)

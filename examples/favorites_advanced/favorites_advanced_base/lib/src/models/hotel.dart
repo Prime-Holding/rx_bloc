@@ -40,14 +40,14 @@ class Hotel implements Entity {
     required this.personCapacity,
     required this.startWorkDate,
     required this.endWorkDate,
-    required String description,
+    required this.description,
     this.displaySubtitle,
     this.displayReviews,
     this.displayRating,
     this.displayDist,
     this.displayDescription,
     this.displayFeatures,
-  }) : this.description = '$title $description';
+  });
 
   Hotel copyWith({
     String? id,
