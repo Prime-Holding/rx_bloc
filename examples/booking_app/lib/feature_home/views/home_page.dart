@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:booking_app/base/ui_components/favorite_message_listener.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
@@ -30,17 +31,24 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: HotelsAppBar(),
-        body: RxBlocListener<HotelManageBlocType, String>(
-          state: (bloc) => bloc.states.error,
-          listener: (ctx, state) => ScaffoldMessenger.of(ctx)
-              .showSnackBar(SnackBar(content: Text(state!))),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              _buildBody(),
-              _buildNavBar(),
-            ],
-          ),
+        body: Column(
+          children: [
+            const FavoriteMessageListener(overrideMargins: true),
+            Expanded(
+              child: RxBlocListener<HotelManageBlocType, String>(
+                state: (bloc) => bloc.states.error,
+                listener: (ctx, state) => ScaffoldMessenger.of(ctx)
+                    .showSnackBar(SnackBar(content: Text(state!))),
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    _buildBody(),
+                    _buildNavBar(),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       );
 

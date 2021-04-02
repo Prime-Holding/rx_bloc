@@ -9,3 +9,8 @@ export 'src/common_ui_components/search_bar.dart';
 export 'src/common_ui_components/rx_animated_list.dart';
 export 'src/common_ui_components/time_date_bar.dart';
 export 'src/common_ui_components/hotel_list_item.dart';
+export 'src/common_ui_components/skeleton_text.dart';
+export 'src/common_ui_components/hotel_header.dart';
+export 'src/common_ui_components/hotel_image.dart';
+export 'src/common_ui_components/icon_with_shadow.dart';
+export 'src/common_ui_components/app_bar_back_button.dart';
