@@ -19,17 +19,22 @@ abstract class $HotelListBloc extends RxBlocBase
     implements HotelListEvents, HotelListStates, HotelListBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [filter]
-  final _$filterEvent =
-      BehaviorSubject.seeded(const _FilterEventArgs(query: ''));
+  /// Тhe [Subject] where events sink to by calling [filterByQuery]
+  final _$filterByQueryEvent = BehaviorSubject.seeded('');
+
+  /// Тhe [Subject] where events sink to by calling [filterByDateRange]
+  final _$filterByDateRangeEvent = PublishSubject<DateTimeRange?>();
 
   /// Тhe [Subject] where events sink to by calling [reload]
   final _$reloadEvent = BehaviorSubject.seeded(
       const _ReloadEventArgs(reset: true, fullReset: false));
 
   @override
-  void filter({required String query, DateTimeRange? dateRange}) =>
-      _$filterEvent.add(_FilterEventArgs(query: query, dateRange: dateRange));
+  void filterByQuery(String query) => _$filterByQueryEvent.add(query);
+
+  @override
+  void filterByDateRange(DateTimeRange? dateRange) =>
+      _$filterByDateRangeEvent.add(dateRange);
 
   @override
   void reload({required bool reset, bool fullReset = false}) =>
@@ -43,21 +48,12 @@ abstract class $HotelListBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$filterEvent.close();
+    _$filterByQueryEvent.close();
+    _$filterByDateRangeEvent.close();
     _$reloadEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [HotelListEvents.filter] event
-class _FilterEventArgs {
-  const _FilterEventArgs({required this.query, this.dateRange});
-
-  final String query;
-
-  final DateTimeRange? dateRange;
 }
 
 /// Helps providing the arguments in the [Subject.add] for

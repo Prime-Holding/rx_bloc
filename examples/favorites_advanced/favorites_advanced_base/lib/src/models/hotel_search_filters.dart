@@ -9,5 +9,5 @@ class HotelSearchFilters {
   final String query;
   final DateTimeRange? dateRange;
 
-  bool get hasAdditionalFilters => dateRange != null;
+  bool get advancedFiltersOn => dateRange != null;
 }

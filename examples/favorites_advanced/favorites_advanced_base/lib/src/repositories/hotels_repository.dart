@@ -32,7 +32,7 @@ class HotelsRepository {
     var copiedHotels = [..._hotels];
 
     // If there are any other filters, apply them
-    if (filters?.hasAdditionalFilters ?? false) {
+    if (filters?.advancedFiltersOn ?? false) {
       copiedHotels = copiedHotels
           .where((hotel) => hotel.withinWorkRange(filters!.dateRange!))
           .toList();

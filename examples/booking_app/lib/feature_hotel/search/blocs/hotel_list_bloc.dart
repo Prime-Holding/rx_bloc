@@ -14,12 +14,13 @@ part 'hotel_list_bloc.rxb.g.dart';
 part 'hotel_list_bloc_extensions.dart';
 part 'hotel_list_bloc_models.dart';
 
+// ignore_for_file: avoid_types_on_closure_parameters
+
 abstract class HotelListEvents {
-  @RxBlocEvent(
-    type: RxBlocEventType.behaviour,
-    seed: _FilterEventArgs(query: ''),
-  )
-  void filter({required String query, DateTimeRange? dateRange});
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
+  void filterByQuery(String query);
+
+  void filterByDateRange(DateTimeRange? dateRange);
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
@@ -40,6 +41,9 @@ abstract class HotelListStates {
   Stream<String> get query;
 
   @RxBlocIgnoreState()
+  Stream<HotelSearchFilters> get filters;
+
+  @RxBlocIgnoreState()
   Stream<String> get hotelsFound;
 }
 
@@ -49,11 +53,33 @@ class HotelListBloc extends $HotelListBloc {
     PaginatedHotelsRepository repository,
     CoordinatorBlocType coordinatorBloc,
   ) {
+    _$filterByQueryEvent
+        .distinct()
+        .debounceTime(
+          const Duration(milliseconds: 600),
+        )
+        .bind(_querySubject)
+        .disposedBy(_compositeSubscription);
+
+    _$filterByDateRangeEvent
+        .distinct()
+        .bind(_dateRangeSubject)
+        .disposedBy(_compositeSubscription);
+
+    Rx.combineLatest2(
+        _querySubject,
+        _dateRangeSubject,
+        (String query, DateTimeRange? dateRange) => HotelSearchFilters(
+              query: query,
+              dateRange: dateRange,
+            )).bind(_searchFilterSubject).disposedBy(_compositeSubscription);
+
     Rx.merge([
-      _$filterEvent.mapToPayload(),
-      _$reloadEvent.mapToPayload(_$filterEvent),
+      _searchFilters.mapToPayload(),
+      _$reloadEvent.mapToPayload(_searchFilters),
     ])
-        .startWith(_ReloadData(reset: true, query: '', fullReset: true))
+        .startWith(_ReloadData(
+            reset: true, filters: HotelSearchFilters(), fullReset: true))
         .fetchHotels(repository, _hotels)
         .setResultStateHandler(this)
         .mergeWithPaginatedList(_hotels)
@@ -68,6 +94,9 @@ class HotelListBloc extends $HotelListBloc {
   @override
   Future<void> get refreshDone async => _hotels.waitToLoad();
 
+  BehaviorSubject<HotelSearchFilters> get _searchFilters =>
+      _searchFilterSubject;
+
   // MARK: - Subjects
   final _hotels = BehaviorSubject<PaginatedList<Hotel>>.seeded(
     PaginatedList(
@@ -76,18 +105,29 @@ class HotelListBloc extends $HotelListBloc {
     ),
   );
 
+  final _searchFilterSubject =
+      BehaviorSubject<HotelSearchFilters>.seeded(HotelSearchFilters());
+  final _querySubject = BehaviorSubject<String>.seeded('');
+  final _dateRangeSubject = BehaviorSubject<DateTimeRange?>.seeded(null);
+
   @override
   Stream<PaginatedList<Hotel>> get searchedHotels => _hotels;
 
   @override
   void dispose() {
+    _searchFilterSubject.close();
+    _querySubject.close();
+    _dateRangeSubject.close();
     _hotels.close();
     super.dispose();
   }
 
   @override
   Stream<String> get query =>
-      _$filterEvent.map((filter) => filter.query).shareReplay(maxSize: 1);
+      _searchFilters.map((filters) => filters.query).shareReplay(maxSize: 1);
+
+  @override
+  Stream<HotelSearchFilters> get filters => _searchFilters;
 
   @override
   Stream<String> get hotelsFound => _hotels.map(

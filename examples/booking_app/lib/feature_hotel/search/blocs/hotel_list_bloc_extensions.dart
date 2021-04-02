@@ -17,8 +17,8 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
           return repository
               .getHotelsPaginated(
                 filters: HotelSearchFilters(
-                  query: reloadData.query,
-                  dateRange: reloadData.dateRange,
+                  query: reloadData.filters.query,
+                  dateRange: reloadData.filters.dateRange,
                 ),
                 pageSize: _paginatedList.value!.pageSize,
                 page: _paginatedList.value!.pageNumber + 1,
@@ -45,34 +45,24 @@ extension StreamBindToHotels on Stream<List<Hotel>> {
       ).bind(hotelsToUpdate);
 }
 
-extension _FilterHotelsEventExtensions on Stream<_FilterEventArgs> {
-  /// Map a string to a [_ReloadData]
-  Stream<_ReloadData> mapToPayload() => distinct()
-      .skip(1)
-      .debounceTime(
-        const Duration(milliseconds: 600),
-      )
-      .map(
-        (filters) => _ReloadData(
-          reset: true,
-          fullReset: true,
-          query: filters.query,
-          dateRange: filters.dateRange,
-        ),
+extension _HotelSearchFilterStreamExtensions on Stream<HotelSearchFilters> {
+  /// Map search filters to a [_ReloadData]
+  Stream<_ReloadData> mapToPayload() => skip(1).map(
+        (filters) =>
+            _ReloadData(reset: true, fullReset: true, filters: filters),
       );
 }
 
 extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
-  /// Map a string to a [_ReloadData]
+  /// Map search filters to a [_ReloadData]
   Stream<_ReloadData> mapToPayload(
-    BehaviorSubject<_FilterEventArgs> filterHotelsEvent,
+    BehaviorSubject<HotelSearchFilters> hotelFilters,
   ) =>
       skip(1).map(
         (reloadData) => _ReloadData(
           reset: reloadData.reset,
           fullReset: reloadData.fullReset,
-          query: filterHotelsEvent.value?.query ?? '',
-          dateRange: filterHotelsEvent.value?.dateRange,
+          filters: hotelFilters.value!,
         ),
       );
 }

@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TimeDateBar extends StatelessWidget {
-
   TimeDateBar({
     required this.startDate,
     required this.endDate,
     this.onDatePressed,
     this.onHotelDetailsPressed,
-});
+  });
 
-  final void Function()? onDatePressed;
-  final void Function()? onHotelDetailsPressed;
+  final VoidCallback? onDatePressed;
+  final VoidCallback? onHotelDetailsPressed;
 
   final DateTime startDate;
   final DateTime endDate;
