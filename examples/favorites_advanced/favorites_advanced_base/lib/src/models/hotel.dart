@@ -24,10 +24,6 @@ class Hotel implements Entity {
   final int? displayReviews;
   final double? displayRating;
   final double? displayDist;
-  final int? displayRoomCapacity;
-  final int? displayPersonCapacity;
-  final DateTime? displayStartWorkDate;
-  final DateTime? displayEndWorkDate;
 
   Hotel({
     required this.id,
@@ -51,10 +47,6 @@ class Hotel implements Entity {
     this.displayDist,
     this.displayDescription,
     this.displayFeatures,
-    this.displayRoomCapacity,
-    this.displayPersonCapacity,
-    this.displayStartWorkDate,
-    this.displayEndWorkDate,
   }) : this.description = '$title $description';
 
   Hotel copyWith({
@@ -78,11 +70,7 @@ class Hotel implements Entity {
     double? displayRating,
     double? displayDist,
     String? displayDescription,
-    List<String>? displayFeatures,
-    int? displayRoomCapacity,
-    int? displayPersonCapacity,
-    DateTime? displayStartWorkDate,
-    DateTime? displayEndWorkDate,
+    String? displayFeatures,
   }) =>
       Hotel(
         id: id ?? this.id,
@@ -106,11 +94,6 @@ class Hotel implements Entity {
         displayDist: displayDist ?? this.displayDist,
         displayDescription: displayDescription ?? this.displayDescription,
         displayFeatures: displayFeatures ?? this.displayFeatures,
-        displayRoomCapacity: displayRoomCapacity ?? this.displayRoomCapacity,
-        displayPersonCapacity:
-            displayPersonCapacity ?? this.displayPersonCapacity,
-        displayStartWorkDate: displayStartWorkDate ?? this.displayStartWorkDate,
-        displayEndWorkDate: displayEndWorkDate ?? this.displayEndWorkDate,
       );
 
   Hotel copyWithHotel(Hotel hotel) => Hotel(
@@ -135,12 +118,6 @@ class Hotel implements Entity {
         displayDist: hotel.displayDist ?? displayDist,
         displayFeatures: hotel.displayFeatures ?? displayFeatures,
         displayDescription: hotel.displayDescription ?? displayDescription,
-        displayRoomCapacity: hotel.displayRoomCapacity ?? displayRoomCapacity,
-        displayPersonCapacity:
-            hotel.displayPersonCapacity ?? displayPersonCapacity,
-        displayStartWorkDate:
-            hotel.displayStartWorkDate ?? displayStartWorkDate,
-        displayEndWorkDate: hotel.displayEndWorkDate ?? displayEndWorkDate,
       );
 
   @override
@@ -176,11 +153,7 @@ class Hotel implements Entity {
           endWorkDate == other.endWorkDate &&
           displayDist == other.displayDist &&
           displayFeatures == other.displayFeatures &&
-          displayDescription == other.displayDescription &&
-          displayRoomCapacity == other.displayRoomCapacity &&
-          displayPersonCapacity == other.displayPersonCapacity &&
-          displayStartWorkDate == other.displayStartWorkDate &&
-          displayEndWorkDate == other.displayEndWorkDate;
+          displayDescription == other.displayDescription;
     }
 
     return false;

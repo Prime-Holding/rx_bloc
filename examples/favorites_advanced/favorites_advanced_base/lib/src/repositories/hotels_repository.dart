@@ -44,7 +44,7 @@ class HotelsRepository {
       throw Exception(_noInternetConnectionErrorString);
     }
 
-    return _hotels.where((puppy) => puppy.isFavorite).toList();
+    return _hotels.where((hotel) => hotel.isFavorite).toList();
   }
 
   Future<Hotel> favoriteHotel(
@@ -104,8 +104,8 @@ class HotelsRepository {
               multiplier,
               (index) => [..._hotelsDB]
                   .map(
-                    (puppy) => puppy.copyWith(
-                      id: "$index-${puppy.id}",
+                    (hotel) => hotel.copyWith(
+                      id: "$index-${hotel.id}",
                       isFavorite: false,
                     ),
                   )
