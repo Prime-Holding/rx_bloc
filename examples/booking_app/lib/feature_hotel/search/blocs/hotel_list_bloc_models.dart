@@ -14,5 +14,19 @@ class _ReloadData {
   final DateTimeRange? dateRange;
 
   @override
+  bool operator ==(Object other) {
+    if (other is _ReloadData) {
+      return reset == other.reset &&
+          query == other.query &&
+          fullReset == other.fullReset;
+    }
+
+    return false;
+  }
+
+  @override
   String toString() => '{reset: $reset, fullReset: $fullReset, query: $query}';
+
+  @override
+  int get hashCode => reset.hashCode ^ fullReset.hashCode ^ query.hashCode;
 }
