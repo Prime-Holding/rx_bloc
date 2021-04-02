@@ -70,7 +70,7 @@ class Hotel implements Entity {
     double? displayRating,
     double? displayDist,
     String? displayDescription,
-    String? displayFeatures,
+    List<String>? displayFeatures,
   }) =>
       Hotel(
         id: id ?? this.id,

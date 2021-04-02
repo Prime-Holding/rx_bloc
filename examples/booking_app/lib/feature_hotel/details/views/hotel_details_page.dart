@@ -1,3 +1,4 @@
+import 'package:booking_app/base/ui_components/favorite_message_listener.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
@@ -50,11 +51,18 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           top: false,
           bottom: false,
           key: const ValueKey(Keys.hotelDetailsPage),
-          child: RxBlocBuilder<HotelDetailsBlocType, Hotel>(
-            state: (bloc) => bloc.states.hotel,
-            builder: (context, snapshot, bloc) => snapshot.hasData
-                ? _buildPage(bloc, snapshot.data!)
-                : Container(),
+          child: Column(
+            children: [
+              const FavoriteMessageListener(),
+              Expanded(
+                child: RxBlocBuilder<HotelDetailsBlocType, Hotel>(
+                  state: (bloc) => bloc.states.hotel,
+                  builder: (context, snapshot, bloc) => snapshot.hasData
+                      ? _buildPage(bloc, snapshot.data!)
+                      : Container(),
+                ),
+              ),
+            ],
           ),
         ),
       );
