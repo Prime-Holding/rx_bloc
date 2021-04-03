@@ -6,7 +6,6 @@ import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:provider/provider.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 import '../../blocs/hotel_manage_bloc.dart';
@@ -42,15 +41,45 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 (context, index) => Column(
                   children: <Widget>[
                     RxTextFormFieldBuilder<HotelListBlocType>(
-                      state: (bloc) => bloc.states.query,
+                      state: (bloc) => bloc.states.queryFilter,
                       showErrorState: (_) => const Stream.empty(),
                       builder: (fieldState) => SearchBar(
                         controller: fieldState.controller,
                       ),
-                      onChanged: (bloc, text) =>
-                          bloc.events.filter(query: text),
+                      onChanged: (bloc, text) {
+                        bloc.events.filterByQuery(text);
+                      },
                     ),
-                    TimeDateBar(),
+                    RxBlocBuilder<HotelListBlocType, DateTimeRange?>(
+                      state: (bloc) => bloc.states.dateRangeFilter,
+                      builder: (context, filterState, bloc) {
+                        final filter = filterState.data;
+                        final nowTime = DateTime.now();
+                        // TODO: make the start and end date nullable,
+                        //  which will be the default state when the
+                        //  user open the page
+                        return TimeDateBar(
+                          startDate: filter?.start ?? nowTime,
+                          endDate: filter?.end ??
+                              nowTime.add(const Duration(days: 5)),
+                          onDatePressed: () async {
+                            final pickedRange = await showDateRangePicker(
+                              context: context,
+                              firstDate: nowTime,
+                              lastDate: DateTime(nowTime.year + 1, 12, 31),
+                            );
+                            if (pickedRange == null) return;
+
+                            bloc.events.filterByDateRange(
+                              dateRange: pickedRange,
+                            );
+                          },
+                          onHotelDetailsPressed: () {
+                            debugPrint('Hotel details pressed!');
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
                 childCount: 1,

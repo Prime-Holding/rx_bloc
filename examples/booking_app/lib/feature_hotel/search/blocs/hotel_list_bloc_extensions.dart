@@ -1,5 +1,7 @@
 part of 'hotel_list_bloc.dart';
 
+// ignore_for_file: avoid_types_on_closure_parameters
+
 extension _ReloadDataFetcher on Stream<_ReloadData> {
   /// Fetch the hotels based on the [_ReloadData.query]
   ///
@@ -16,7 +18,10 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
 
           return repository
               .getHotelsPaginated(
-                query: reloadData.query,
+                filters: HotelSearchFilters(
+                  query: reloadData.filters.query,
+                  dateRange: reloadData.filters.dateRange,
+                ),
                 pageSize: _paginatedList.value!.pageSize,
                 page: _paginatedList.value!.pageNumber + 1,
               )
@@ -42,32 +47,51 @@ extension StreamBindToHotels on Stream<List<Hotel>> {
       ).bind(hotelsToUpdate);
 }
 
-extension _FilterHotelsEventExtensions on Stream<String> {
-  /// Map a string to a [_ReloadData]
-  Stream<_ReloadData> mapToPayload() => distinct()
-      .skip(1)
-      .debounceTime(
-        const Duration(milliseconds: 600),
-      )
-      .map(
-        (query) => _ReloadData(
+extension _HotelSearchFilterStreamExtensions on Stream<HotelSearchFilters> {
+  /// Map search filters to a [_ReloadData]
+  Stream<_ReloadData> mapToPayload({
+    int skipCount = 1,
+  }) =>
+      skip(skipCount).map(
+        (filters) => _ReloadData(
           reset: true,
           fullReset: true,
-          query: query,
+          filters: filters,
         ),
       );
 }
 
 extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
-  /// Map a string to a [_ReloadData]
-  Stream<_ReloadData> mapToPayload(
-    BehaviorSubject<String> filterHotelsEvent,
-  ) =>
-      skip(1).map(
+  /// Map search filters to a [_ReloadData]
+  Stream<_ReloadData> mapToPayload({
+    required BehaviorSubject<String> query,
+    required BehaviorSubject<DateTimeRange?> dateRange,
+    int skipCount = 1,
+  }) =>
+      skip(skipCount).map(
         (reloadData) => _ReloadData(
           reset: reloadData.reset,
           fullReset: reloadData.fullReset,
-          query: filterHotelsEvent.value ?? '',
+          filters: HotelSearchFilters(
+            dateRange: dateRange.value,
+            query: query.value ?? '',
+          ),
         ),
       );
+}
+
+extension _StringBehaviourSubjectExtensions on BehaviorSubject<String> {
+  Stream<String> delayInput() => distinct().debounceTime(
+        const Duration(milliseconds: 600),
+      );
+}
+
+extension _HotelListEventsUtils on HotelListBloc {
+  Stream<HotelSearchFilters> get _filters => Rx.combineLatest2(
+      _$filterByQueryEvent.delayInput(),
+      _$filterByDateRangeEvent.distinct(),
+      (String query, DateTimeRange? dateRange) => HotelSearchFilters(
+            query: query,
+            dateRange: dateRange,
+          ));
 }

@@ -1,3 +1,6 @@
+import 'package:favorites_advanced_base/src/models/hotel_search_filters.dart';
+import 'package:flutter/material.dart';
+
 import '../models/hotel.dart';
 import 'connectivity_repository.dart';
 
@@ -18,18 +21,26 @@ class HotelsRepository {
 
   final ConnectivityRepository _connectivityRepository;
 
-  Future<List<Hotel>> getHotels({String query = ''}) async {
+  Future<List<Hotel>> getHotels({HotelSearchFilters? filters}) async {
     await Future.delayed(_artificialDelay + Duration(milliseconds: 100));
 
     if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
 
-    if (query == '') {
-      return _hotels;
+    final query = filters?.query ?? '';
+    var copiedHotels = [..._hotels];
+
+    // If there are any other filters, apply them
+    if (filters?.advancedFiltersOn ?? false) {
+      copiedHotels = copiedHotels
+          .where((hotel) => hotel.withinWorkRange(filters!.dateRange!))
+          .toList();
     }
 
-    final copiedHotels = [..._hotels];
+    if (query == '') {
+      return copiedHotels;
+    }
 
     return copiedHotels
         .where(
@@ -97,7 +108,9 @@ class HotelsRepository {
 
   List<Hotel> _hotels;
 
-  static DateTime _getDateForMonthAndDay(month, day) => DateTime(0, month, day);
+  static DateTime _getDateForMonthAndDay(int month, int day,
+          [bool isNextYear = false]) =>
+      DateTime(DateTime.now().year + (isNextYear ? 1 : 0), month, day);
 
   static List<Hotel> _generateEntities({required int multiplier}) =>
       List.generate(
@@ -347,7 +360,7 @@ We speak your language!
       roomCapacity: 4,
       personCapacity: 6,
       startWorkDate: _getDateForMonthAndDay(12, 1),
-      endWorkDate: _getDateForMonthAndDay(1, 1),
+      endWorkDate: _getDateForMonthAndDay(1, 1, true),
     ),
     Hotel(
       id: '13',
@@ -449,7 +462,7 @@ We speak your language!
       roomCapacity: 3,
       personCapacity: 3,
       startWorkDate: _getDateForMonthAndDay(11, 16),
-      endWorkDate: _getDateForMonthAndDay(1, 9),
+      endWorkDate: _getDateForMonthAndDay(1, 9, true),
     ),
     Hotel(
       id: '19',
@@ -486,4 +499,9 @@ We speak your language!
       endWorkDate: _getDateForMonthAndDay(12, 31),
     ),
   ];
+}
+
+extension _HotelExtensions on Hotel {
+  bool withinWorkRange(DateTimeRange range) =>
+      startWorkDate.isBefore(range.start) && endWorkDate.isAfter(range.end);
 }

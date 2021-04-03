@@ -24,11 +24,11 @@ class PaginatedHotelsRepository implements HotelsRepository {
   }
 
   Future<PaginatedList<Hotel>> getHotelsPaginated({
-    required String query,
+    required HotelSearchFilters filters,
     required int pageSize,
     required int page,
   }) async {
-    final hotels = await getHotels(query: query);
+    final hotels = await getHotels(filters: filters);
 
     return PaginatedList(
       list: hotels.getPage(
@@ -44,8 +44,8 @@ class PaginatedHotelsRepository implements HotelsRepository {
   Future<List<Hotel>> getFavoriteHotels() => _repository.getFavoriteHotels();
 
   @override
-  Future<List<Hotel>> getHotels({String query = ''}) =>
-      _repository.getHotels(query: query);
+  Future<List<Hotel>> getHotels({HotelSearchFilters? filters}) =>
+      _repository.getHotels(filters: filters);
 
   @override
   Future<Hotel> favoriteHotel(Hotel hotel, {required bool isFavorite}) =>
@@ -69,6 +69,7 @@ extension _HotelList on List<Hotel> {
   }) {
     final startRange = (page - 1) * pageSize;
     final endRange = startRange + pageSize;
+    if (startRange > length) return [];
     return getRange(startRange, endRange > length ? length : endRange).toList();
   }
 }
