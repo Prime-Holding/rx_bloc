@@ -23,7 +23,7 @@ abstract class $FavoritePuppiesBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [reloadFavoritePuppies]
-  final _$reloadFavoritePuppiesEvent = BehaviorSubject.seeded(false);
+  final _$reloadFavoritePuppiesEvent = BehaviorSubject<bool>.seeded(false);
 
   /// The state of [count] implemented in [_mapToCountState]
   late final Stream<int> _countState = _mapToCountState();
