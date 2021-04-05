@@ -55,7 +55,29 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     _buildFilterBuilders(
                       builder: (context, bloc, filterData) => FiltersBar(
                         dateRangeText: filterData.dateRangeText,
+                        dateRangeFilterClearEnabled:
+                            filterData.dateRangeText != 'None',
+                        onDateRangeFilterClearPressed: () =>
+                            _presentYesNoDialog(
+                          context: context,
+                          title: 'Clear date range?',
+                          onYesPressed: () {
+                            bloc.events.filterByDateRange(dateRange: null);
+                          },
+                        ),
                         advancedFiltersText: filterData.advancedFiltersText,
+                        advancedFilerClearEnabled:
+                            filterData.advancedFiltersText != 'None',
+                        onAdvancedFilterClearPressed: () => _presentYesNoDialog(
+                          context: context,
+                          title: 'Clear advanced filters?',
+                          onYesPressed: () {
+                            bloc.events.filterByAdvanced(
+                              roomCapacity: 0,
+                              personCapacity: 0,
+                            );
+                          },
+                        ),
                         onDatePressed: () async {
                           final pickedRange = await showDateRangePicker(
                             context: context,
@@ -214,6 +236,46 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           ),
         ),
       );
+
+  Future<void> _presentYesNoDialog({
+    required BuildContext context,
+    required String title,
+    VoidCallback? onYesPressed,
+  }) async {
+    await Alert(
+      context: context,
+      onWillPopActive: true,
+      title: title,
+      buttons: [
+        DialogButton(
+          onPressed: () {
+            onYesPressed?.call();
+            Navigator.of(context).pop();
+          },
+          color: Colors.red,
+          child: const Text(
+            'Yes',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        DialogButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            'No',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    ).show();
+  }
 }
 
 class _FilterBuilderArgs {

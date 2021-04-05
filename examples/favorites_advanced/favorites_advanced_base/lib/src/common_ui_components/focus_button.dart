@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class FocusButton extends StatelessWidget {
   FocusButton({
-    required this.child,
     required this.onPressed,
+    required this.child,
   });
 
   final Widget child;

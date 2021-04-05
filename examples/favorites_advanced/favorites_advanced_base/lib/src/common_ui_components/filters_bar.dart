@@ -1,39 +1,42 @@
+import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 
 class FiltersBar extends StatelessWidget {
   FiltersBar({
     this.onDatePressed,
     this.onHotelDetailsPressed,
+    this.onDateRangeFilterClearPressed,
+    this.onAdvancedFilterClearPressed,
+    this.dateRangeFilterClearEnabled = false,
+    this.advancedFilerClearEnabled = false,
     this.dateRangeText = '',
     this.advancedFiltersText = '',
   });
 
   final VoidCallback? onDatePressed;
   final VoidCallback? onHotelDetailsPressed;
+  final VoidCallback? onDateRangeFilterClearPressed;
+  final VoidCallback? onAdvancedFilterClearPressed;
+
+  final bool dateRangeFilterClearEnabled;
+  final bool advancedFilerClearEnabled;
 
   final String dateRangeText;
   final String advancedFiltersText;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(left: 18, bottom: 16),
+        padding: const EdgeInsets.only(left: 18, right: 18, bottom: 16),
         child: Row(
           children: <Widget>[
             Expanded(
-              child: Row(
-                children: <Widget>[
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      focusColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      splashColor: Colors.grey.withOpacity(0.2),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(4.0),
-                      ),
-                      onTap: () {
-                        FocusScope.of(context).requestFocus(FocusNode());
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FocusButton(
+                      onPressed: () {
                         onDatePressed?.call();
                       },
                       child: Padding(
@@ -64,8 +67,10 @@ class FiltersBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    if (dateRangeFilterClearEnabled)
+                      _buildClearButton(onDateRangeFilterClearPressed),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -77,20 +82,13 @@ class FiltersBar extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Row(
-                children: <Widget>[
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      focusColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      splashColor: Colors.grey.withOpacity(0.2),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(4.0),
-                      ),
-                      onTap: () {
-                        FocusScope.of(context).requestFocus(FocusNode());
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FocusButton(
+                      onPressed: () {
                         onHotelDetailsPressed?.call();
                       },
                       child: Padding(
@@ -121,11 +119,18 @@ class FiltersBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    if (advancedFilerClearEnabled)
+                      _buildClearButton(onAdvancedFilterClearPressed),
+                  ],
+                ),
               ),
             ),
           ],
         ),
+      );
+
+  Widget _buildClearButton(VoidCallback? onPressed) => FocusButton(
+        onPressed: onPressed ?? () {},
+        child: const Icon(Icons.cancel, color: Colors.blue),
       );
 }
