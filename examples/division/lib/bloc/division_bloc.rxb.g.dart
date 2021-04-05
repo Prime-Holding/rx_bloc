@@ -20,11 +20,11 @@ abstract class $DivisionBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [divideNumbers]
-  final _$divideNumbersEvent =
-      BehaviorSubject.seeded(const _DivideNumbersEventArgs('1.0', '1.0'));
+  final _$divideNumbersEvent = BehaviorSubject<_DivideNumbersEventArgs>.seeded(
+      const _DivideNumbersEventArgs('1.0', '1.0'));
 
   /// The state of [divisionResult] implemented in [_mapToDivisionResultState]
-  late Stream<String> _divisionResultState = _mapToDivisionResultState();
+  late final Stream<String> _divisionResultState = _mapToDivisionResultState();
 
   @override
   void divideNumbers(String? a, String? b) =>
