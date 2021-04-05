@@ -20,10 +20,10 @@ abstract class $PuppyListBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [filter]
-  final _$filterEvent = BehaviorSubject.seeded('');
+  final _$filterEvent = BehaviorSubject<String>.seeded('');
 
   /// Тhe [Subject] where events sink to by calling [reload]
-  final _$reloadEvent = BehaviorSubject.seeded(
+  final _$reloadEvent = BehaviorSubject<_ReloadEventArgs>.seeded(
       const _ReloadEventArgs(reset: true, fullReset: false));
 
   @override
