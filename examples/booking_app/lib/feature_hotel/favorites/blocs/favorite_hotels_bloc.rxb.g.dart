@@ -23,7 +23,7 @@ abstract class $FavoriteHotelsBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [reloadFavoriteHotels]
-  final _$reloadFavoriteHotelsEvent = BehaviorSubject.seeded(false);
+  final _$reloadFavoriteHotelsEvent = BehaviorSubject<bool>.seeded(false);
 
   /// The state of [count] implemented in [_mapToCountState]
   late final Stream<int> _countState = _mapToCountState();

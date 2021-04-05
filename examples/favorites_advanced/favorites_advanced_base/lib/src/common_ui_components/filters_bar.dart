@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-class TimeDateBar extends StatelessWidget {
-  TimeDateBar({
-    required this.startDate,
-    required this.endDate,
+class FiltersBar extends StatelessWidget {
+  FiltersBar({
     this.onDatePressed,
     this.onHotelDetailsPressed,
+    this.dateRangeText = '',
+    this.advancedFiltersText = '',
   });
 
   final VoidCallback? onDatePressed;
   final VoidCallback? onHotelDetailsPressed;
 
-  final DateTime startDate;
-  final DateTime endDate;
+  final String dateRangeText;
+  final String advancedFiltersText;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -55,7 +54,7 @@ class TimeDateBar extends StatelessWidget {
                               height: 8,
                             ),
                             Text(
-                              '${DateFormat("dd, MMM").format(startDate)} - ${DateFormat("dd, MMM").format(endDate)}',
+                              dateRangeText,
                               style: TextStyle(
                                 fontWeight: FontWeight.w100,
                                 fontSize: 16,
@@ -112,7 +111,7 @@ class TimeDateBar extends StatelessWidget {
                               height: 8,
                             ),
                             Text(
-                              '1 Room - 2 Adults',
+                              advancedFiltersText,
                               style: TextStyle(
                                 fontWeight: FontWeight.w100,
                                 fontSize: 16,

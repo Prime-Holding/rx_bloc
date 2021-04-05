@@ -7,6 +7,7 @@ import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
@@ -52,48 +53,58 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         bloc.events.filterByQuery(text);
                       },
                     ),
-                    RxBlocBuilder<HotelListBlocType, DateTimeRange?>(
-                      state: (bloc) => bloc.states.dateRangeFilter,
-                      builder: (context, filterState, bloc) {
-                        final filter = filterState.data;
-                        final nowTime = DateTime.now();
-                        // TODO: make the start and end date nullable,
-                        //  which will be the default state when the
-                        //  user open the page
-                        return TimeDateBar(
-                          startDate: filter?.start ?? nowTime,
-                          endDate: filter?.end ??
-                              nowTime.add(const Duration(days: 5)),
-                          onDatePressed: () async {
-                            final pickedRange = await showDateRangePicker(
-                              context: context,
-                              firstDate: nowTime,
-                              lastDate: DateTime(nowTime.year + 1, 12, 31),
-                            );
-                            if (pickedRange == null) return;
+                    _buildFilterBuilders(builder: (
+                      context,
+                      bloc,
+                      filterData,
+                    ) {
+                      final nowTime = DateTime.now();
+                      final startDate = filterData.dateRange?.start ?? nowTime;
+                      final endDate = filterData.dateRange?.end ??
+                          nowTime.add(const Duration(days: 5));
 
-                            bloc.events.filterByDateRange(
-                              dateRange: pickedRange,
-                            );
-                          },
-                          onHotelDetailsPressed: () {
-                            Alert(
-                              context: context,
-                              title: '',
-                              buttons: [],
-                              onWillPopActive: true,
-                              content: AdvancedFilterPage(
-                                onApplyPressed: (rooms, persons) {
-                                  //bloc.events.filterByRooms(roomCount,personsCount)
-                                  debugPrint('Pressed');
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ).show();
-                          },
-                        );
-                      },
-                    ),
+                      /// TODO: Get texts from bloc
+                      /// TODO: Remove unnecessary stuff
+                      final dateRangeText =
+                          '${DateFormat("dd, MMM").format(startDate)} - ${DateFormat("dd, MMM").format(endDate)}';
+                      final advancedFiltersText =
+                          '${filterData.rooms} Room - ${filterData.persons} Adults';
+                      return FiltersBar(
+                        dateRangeText: dateRangeText,
+                        advancedFiltersText: advancedFiltersText,
+                        onDatePressed: () async {
+                          final pickedRange = await showDateRangePicker(
+                            context: context,
+                            firstDate: nowTime,
+                            lastDate: DateTime(nowTime.year + 1, 12, 31),
+                            saveText: 'Apply',
+                          );
+                          if (pickedRange == null) return;
+                          bloc.events.filterByDateRange(
+                            dateRange: pickedRange,
+                          );
+                        },
+                        onHotelDetailsPressed: () {
+                          Alert(
+                            context: context,
+                            title: '',
+                            buttons: [],
+                            onWillPopActive: true,
+                            content: AdvancedFilterPage(
+                              roomCapacity: filterData.rooms,
+                              personCapacity: filterData.persons,
+                              onApplyPressed: (rooms, persons) {
+                                bloc.events.filterByAdvanced(
+                                  roomCapacity: rooms,
+                                  personCapacity: persons,
+                                );
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ).show();
+                        },
+                      );
+                    }),
                   ],
                 ),
                 childCount: 1,
@@ -184,4 +195,41 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       ),
     );
   }
+
+  Widget _buildFilterBuilders({
+    required Widget Function(
+            BuildContext, HotelListBlocType, _FilterBuilderArgs)
+        builder,
+  }) =>
+      RxBlocBuilder<HotelListBlocType, int>(
+        state: (bloc) => bloc.states.roomCapacityFilter,
+        builder: (context, roomCapacityFilterState, _) =>
+            RxBlocBuilder<HotelListBlocType, int>(
+          state: (bloc) => bloc.states.personCapacityFilter,
+          builder: (context, personCapacityFilterState, _) =>
+              RxBlocBuilder<HotelListBlocType, DateTimeRange?>(
+                  state: (bloc) => bloc.states.dateRangeFilter,
+                  builder: (context, dateRangeFilterState, bloc) => builder(
+                        context,
+                        bloc,
+                        _FilterBuilderArgs(
+                          dateRange: dateRangeFilterState.data,
+                          rooms: roomCapacityFilterState.data ?? 0,
+                          persons: personCapacityFilterState.data ?? 0,
+                        ),
+                      )),
+        ),
+      );
+}
+
+class _FilterBuilderArgs {
+  _FilterBuilderArgs({
+    required this.dateRange,
+    required this.rooms,
+    required this.persons,
+  });
+
+  final DateTimeRange? dateRange;
+  final int rooms;
+  final int persons;
 }

@@ -23,6 +23,12 @@ abstract class HotelListEvents {
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
+    seed: _FilterByAdvancedEventArgs(roomCapacity: 0, personCapacity: 0),
+  )
+  void filterByAdvanced({int roomCapacity = 0, int personCapacity = 0});
+
+  @RxBlocEvent(
+    type: RxBlocEventType.behaviour,
     seed: _ReloadEventArgs(reset: true, fullReset: false),
   )
   void reload({required bool reset, bool fullReset = false});
@@ -37,6 +43,12 @@ abstract class HotelListStates {
 
   @RxBlocIgnoreState()
   Stream<String> get queryFilter;
+
+  @RxBlocIgnoreState()
+  Stream<int> get roomCapacityFilter;
+
+  @RxBlocIgnoreState()
+  Stream<int> get personCapacityFilter;
 
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
@@ -57,6 +69,7 @@ class HotelListBloc extends $HotelListBloc {
       _$reloadEvent.mapToPayload(
         query: _$filterByQueryEvent,
         dateRange: _$filterByDateRangeEvent,
+        advancedFilters: _$filterByAdvancedEvent,
       )
     ])
         .startWith(_ReloadData.withInitial())
@@ -89,6 +102,14 @@ class HotelListBloc extends $HotelListBloc {
 
   @override
   Stream<String> get queryFilter => _$filterByQueryEvent;
+
+  @override
+  Stream<int> get roomCapacityFilter =>
+      _$filterByAdvancedEvent.map((args) => args.roomCapacity);
+
+  @override
+  Stream<int> get personCapacityFilter =>
+      _$filterByAdvancedEvent.map((args) => args.personCapacity);
 
   @override
   Stream<String> get hotelsFound => _hotels.map(
