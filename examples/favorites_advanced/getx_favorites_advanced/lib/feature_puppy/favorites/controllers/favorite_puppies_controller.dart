@@ -3,10 +3,10 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
 class FavoritePuppiesController extends GetxController with StateMixin {
-  FavoritePuppiesController(this._repository, this._baseController);
+  FavoritePuppiesController(this._repository, this._mediatorController);
 
   final PuppiesRepository _repository;
-  final MediatorController _baseController;
+  final MediatorController _mediatorController;
 
   final _favoritePuppies = <Puppy>[].obs;
 
@@ -15,10 +15,6 @@ class FavoritePuppiesController extends GetxController with StateMixin {
   @override
   void onInit() {
     _initFavoritePuppies();
-    ever(
-        _baseController.puppiesToChangeFavoriteStatus,
-        (_) => updateFavoritePuppies(
-            _baseController.puppiesToChangeFavoriteStatus));
     super.onInit();
   }
 
@@ -46,5 +42,14 @@ class FavoritePuppiesController extends GetxController with StateMixin {
         }
       },
     );
+  }
+
+  @override
+  void onReady() {
+    ever(
+        _mediatorController.puppiesToChangeFavoriteStatus,
+            (_) => updateFavoritePuppies(
+            _mediatorController.puppiesToChangeFavoriteStatus));
+    super.onReady();
   }
 }

@@ -7,22 +7,16 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
 class PuppyListController extends GetxController with StateMixin {
-  PuppyListController(this._repository, this._baseController);
+  PuppyListController(this._repository, this._mediatorController);
 
   final PuppiesRepository _repository;
-  final MediatorController _baseController;
+  final MediatorController _mediatorController;
 
   final _puppies = <Puppy>[].obs;
 
   @override
   Future<void> onInit() async {
     await _initPuppies();
-    ever(_baseController.lastFetchedPuppiesLocal, (_) {
-      updatePuppiesWithExtraDetails(_baseController.lastFetchedPuppiesLocal);
-    });
-    ever(_baseController.puppiesToChangeFavoriteStatus, (_) {
-      onPuppyUpdated(_baseController.puppiesToChangeFavoriteStatus);
-    });
     super.onInit();
   }
 
@@ -30,7 +24,7 @@ class PuppyListController extends GetxController with StateMixin {
 
   Future<void> onReload() async {
     await _initPuppies();
-    _baseController.clearFetchedExtraDetails();
+    _mediatorController.clearFetchedExtraDetails();
   }
 
   void updatePuppiesWithExtraDetails(List<Puppy> puppiesToUpdate) {
@@ -58,5 +52,17 @@ class PuppyListController extends GetxController with StateMixin {
       change(_puppies, status: RxStatus.error(e.toString().substring(10)));
       print(e.toString());
     }
+  }
+
+  @override
+  void onReady() {
+    ever(_mediatorController.lastFetchedPuppiesLocal, (_) {
+      updatePuppiesWithExtraDetails(
+          _mediatorController.lastFetchedPuppiesLocal);
+    });
+    ever(_mediatorController.puppiesToChangeFavoriteStatus, (_) {
+      onPuppyUpdated(_mediatorController.puppiesToChangeFavoriteStatus);
+    });
+    super.onReady();
   }
 }
