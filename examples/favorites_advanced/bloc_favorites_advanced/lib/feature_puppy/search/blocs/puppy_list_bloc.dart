@@ -18,132 +18,95 @@ part 'puppy_list_state.dart';
 
 class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   PuppyListBloc(this.repository)
-      : super( PuppyListState(
-            searchedPuppies: [], status: PuppyListStatus.initial));
+      : super(const PuppyListState(
+          searchedPuppies: [],
+          status: PuppyListStatus.initial,
+        ));
 
   PuppiesRepository repository;
-  late var allPuppies = <Puppy>[];
-  var lastFetched = <Puppy>[];
+  var allPuppies = <Puppy>[];
+  late var emptyPuppies = <Puppy>[];
+
+  // var lastFetched = <Puppy>[];
 
   @override
   Stream<Transition<PuppyListEvent, PuppyListState>> transformEvents(
     Stream<PuppyListEvent> events,
     TransitionFunction<PuppyListEvent, PuppyListState> transitionFn,
-  ) => super.transformEvents(
+  ) {
+    print('TRANSFORMEVENTS');
+
+    return super.transformEvents(
         Rx.merge([
           events.doOnData((event) {
-            print('-- Events: $event');
+            print('-- Events: ${event.props}');
           }),
-          events.whereType<PuppyFetchExtraDetailsEvent>().mapEventToList()
-          .doOnData((event) {
-            // use breakpoints
-            print('-- PuppyListFetchExtraDetailsEvent: $event');
+          events
+              .whereType<PuppyFetchExtraDetailsEvent>()
+              .mapEventToList()
+              .distinct()
+              .doOnData((event) {
+            print(
+                '-- PuppyListFetchExtraDetailsEvent: ${event.filteredPuppies}');
           }),
-        ]).doOnData((event) {
-          print('-- Merged Stream: $event');
+        ]).distinct().doOnData((event) {
+          print('-- MERGED stream : ${event.props}');
         }),
         transitionFn);
-
-
+  }
 
   @override
   Stream<PuppyListState> mapEventToState(
     PuppyListEvent event,
   ) async* {
+    print('mapEventToState : ${event.toString()}');
     if (event is LoadPuppyListEvent) {
       yield await _mapPuppiesFetchedToState(state);
     } else if (event is ReloadPuppiesEvent) {
-      yield await _mapPuppiesReloadFetchToState();
+      yield await _mapPuppiesReloadFetchToState(state);
       await Future.delayed(const Duration(milliseconds: 2000));
     } else if (event is PuppyListFetchExtraDetailsEvent) {
-      // await fetchExtraDetails(event.puppy!);
-      // await Future.delayed(const Duration(milliseconds: 100));
-
-      yield await _mapPuppyListFetchExtraDetailsEventToState(event.puppyList);
+      if (event.filteredPuppies.isEmpty) {
+        return;
+      }
+      yield await _mapPuppyListFetchExtraDetailsEventToState(
+          event.filteredPuppies, state);
     }
   }
-
-  /// TODO reload
-  Future<PuppyListState> _mapPuppiesReloadFetchToState() async {
-    // allPuppies = <Puppy>[];
-    // lastFetched = <Puppy>[];
-
-    final repository1 =
-        PuppiesRepository(ImagePicker(), ConnectivityRepository());
-    // testPuppies = await repository1.getPuppies();
-    lastFetched = <Puppy>[];
-    // allPuppies = testPuppies;
-    // print('DISPLAY : ${state.searchedPuppies![0].displayCharacteristics}');
-    return state.copyWith(
-      searchedPuppies: await repository.getPuppies(),
-      status: PuppyListStatus.success,
-    );
-  }
-
-  var testPuppies = <Puppy>[];
 
   Future<PuppyListState> _mapPuppyListFetchExtraDetailsEventToState(
-      List<Puppy> puppyList) async {
-    //puppyList contains the visible puppies on the screen
-    // we should fetch the details for them now
+      List<Puppy> filteredPuppies, PuppyListState state) async {
+    final puppiesWithDetails = await repository.fetchFullEntities(
+        filteredPuppies.map((element) => element.id).toList());
 
-    // allPuppies = await repository.getPuppies();
-    // allPuppiesTTTEST = await repository.getPuppies();
-    for (var i = 0; i < puppyList.length; i++){
-      final currentPuppy = puppyList[i];
-      if(!lastFetched.any((element) => element.id == currentPuppy.id)){
-        lastFetched.add(puppyList[i]);
-      }
-    }
-    // if (!lastFetched.any((element) => element.id == puppy.id)) {
-    //   lastFetched.add(puppy);
-    // }
+    allPuppies = allPuppies.mergeWith(puppiesWithDetails);
 
-    final filterPuppies =
-        lastFetched.where((puppy) => !puppy.hasExtraDetails()).toList();
-
-    if (filterPuppies.isEmpty) {
-      // if lastFetched contains only puppies with fetched extra details
-      return state.copyWith(
-        searchedPuppies: allPuppies,
-        status: PuppyListStatus.success,
-      );
-    }
-    final puppiesWithDetails = await repository
-        .fetchFullEntities(filterPuppies.map((element) => element.id).toList());
-
-    puppiesWithDetails.forEach((puppyWithDetails) {
-      final index =
-          allPuppies.indexWhere((puppy) => puppy.id == puppyWithDetails.id);
-      allPuppies.replaceRange(index, index + 1, [puppyWithDetails]);
-      final indexInLastFetched =
-          lastFetched.indexWhere((puppy) => puppy.id == puppyWithDetails.id);
-      lastFetched.replaceRange(
-          indexInLastFetched, indexInLastFetched + 1, [puppyWithDetails]);
-    });
-
-    return state.copyWith(
-      searchedPuppies: allPuppies,
-      status: PuppyListStatus.success,
-    );
+    return PuppyListState(
+        searchedPuppies: allPuppies, status: PuppyListStatus.success);
   }
 
   Future<PuppyListState> _mapPuppiesFetchedToState(PuppyListState state) async {
     try {
-      if (state.status == PuppyListStatus.initial) {
-        // When puppies are loaded for the first time
-        // await Future.delayed(const Duration(milliseconds: 2000));
-        // final puppiesList = await repository.getPuppies();
-        allPuppies = await repository.getPuppies();
-        return state.copyWith(
-          searchedPuppies: allPuppies,
-          status: PuppyListStatus.success,
-        );
-      }
+      final puppies = await repository.getPuppies(query: '');
+      allPuppies = puppies;
+      return PuppyListState(
+        searchedPuppies: allPuppies,
+        status: PuppyListStatus.reloading,
+      );
     } on Exception {
       return state.copyWith(status: PuppyListStatus.failure);
     }
-    return state.copyWith(status: PuppyListStatus.failure);
+    // return state.copyWith(status: PuppyListStatus.failure);
+  }
+
+  Future<PuppyListState> _mapPuppiesReloadFetchToState(
+      PuppyListState state) async {
+    allPuppies = await repository.getPuppies(query: '');
+
+    return PuppyListState(
+      searchedPuppies: allPuppies,
+      status: PuppyListStatus.reloading,
+    );
   }
 }
 
@@ -169,21 +132,16 @@ List<Puppy> puppiesTEST = [
   ),
 ];
 
-//Convert the incoming stream of PuppyListEvent only when the event is
-//PuppyFetchExtraDetailsEvent , this event contains a list of puppies
-// We get the puppy from each PuppyFetchExtraDetailsEvent and call toList
-// on them to return them in the PuppyListFetchExtraDetailsEvent's
-// puppyList
 extension _PuppyEventToList on Stream<PuppyFetchExtraDetailsEvent> {
   Stream<PuppyListFetchExtraDetailsEvent> mapEventToList() =>
+//Get puppies only without extra details
       bufferTime(const Duration(microseconds: 100)).map(
         (puppyFetchList) => PuppyListFetchExtraDetailsEvent(
-          // save the list of puppies to the new event and return the event
-          puppyList: puppyFetchList
-              .cast<PuppyFetchExtraDetailsEvent>()
-          //get the puppy from the event
+          // Save the list of puppies to the new event and return the event
+          filteredPuppies: puppyFetchList
               .map((puppyFetchEvent) => puppyFetchEvent.puppy)
               .whereType<Puppy>()
+              .where((puppy) => !puppy.hasExtraDetails())
               .toList(),
         ),
       );
