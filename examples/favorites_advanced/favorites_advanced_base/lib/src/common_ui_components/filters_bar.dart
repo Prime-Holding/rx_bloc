@@ -101,7 +101,7 @@ class FiltersBar extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Number of Rooms',
+                              'Advanced filters',
                               style: TextStyle(
                                   fontWeight: FontWeight.w100,
                                   fontSize: 16,

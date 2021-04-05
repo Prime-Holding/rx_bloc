@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
@@ -49,6 +50,12 @@ abstract class HotelListStates {
 
   @RxBlocIgnoreState()
   Stream<int> get personCapacityFilter;
+
+  @RxBlocIgnoreState()
+  Stream<String> get dateRangeFilterText;
+
+  @RxBlocIgnoreState()
+  Stream<String> get advancedFilterText;
 
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
@@ -110,6 +117,16 @@ class HotelListBloc extends $HotelListBloc {
   @override
   Stream<int> get personCapacityFilter =>
       _$filterByAdvancedEvent.map((args) => args.personCapacity);
+
+  @override
+  Stream<String> get dateRangeFilterText =>
+      _$filterByDateRangeEvent.map((range) => range != null
+          ? '${range.start._format} - ${range.end._format}'
+          : 'None');
+
+  @override
+  Stream<String> get advancedFilterText =>
+      _$filterByAdvancedEvent.map((args) => args.asPresentableText);
 
   @override
   Stream<String> get hotelsFound => _hotels.map(

@@ -103,3 +103,28 @@ extension _HotelListEventsUtils on HotelListBloc {
             personCapacity: advancedFilters.personCapacity,
           ));
 }
+
+extension _DateTimeFormatExtensions on DateTime {
+  String get _format => DateFormat('dd, MMM').format(this);
+}
+
+extension _FilterByAdvancedEventArgsExtensions on _FilterByAdvancedEventArgs {
+  String get asPresentableText {
+    final roomsSelected = roomCapacity > 0;
+    final personSelected = personCapacity > 0;
+
+    // If nothing is selected return prematurely
+    if (!roomsSelected && !personSelected) return 'None';
+
+    var outputString = roomsSelected
+        ? '$roomCapacity Room${roomCapacity > 1 ? 's' : ''}'
+        : 'None';
+
+    if (personSelected) {
+      final separator = roomsSelected ? ' - ' : '';
+      final pluralForm = personCapacity > 1 ? 'People' : 'Person';
+      outputString += '$separator$personCapacity $pluralForm';
+    }
+    return outputString;
+  }
+}
