@@ -22,6 +22,19 @@ class ExtraDetailsFetchSucceededAction {
   final List<Puppy>? puppies;
 }
 
+class PuppyToggleFavoriteAction {
+  PuppyToggleFavoriteAction({required this.puppy, required this.isFavorite});
+
+  final Puppy puppy;
+  final bool isFavorite;
+}
+
+class PuppyFavoriteSucceededAction {
+  PuppyFavoriteSucceededAction({required this.puppy});
+
+  final Puppy puppy;
+}
+
 // class ExtraDetailsFetchFailedAction {
 //   ExtraDetailsFetchFailedAction({required this.message});
 //

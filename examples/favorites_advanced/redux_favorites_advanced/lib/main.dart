@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
-//import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/sagas.dart';
-//import 'package:redux_saga/redux_saga.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:favorites_advanced_base/repositories.dart';
 
 import 'base/models/app_state.dart';
 import 'base/redux/app_reducer.dart';
@@ -12,25 +13,21 @@ import 'feature_home/views/home_page.dart';
 import 'feature_puppy/search/redux/epics.dart';
 
 void main() {
-  //final sagaMiddleware = createSagaMiddleware();
+  final repository = PuppiesRepository(ImagePicker(), ConnectivityRepository());
+
   final epicMiddleware = EpicMiddleware(
     combineEpics<AppState>([
-      fetchPuppiesEpic,
-      fetchExtraDetailsEpic,
+      fetchPuppiesEpic(repository),
+      fetchExtraDetailsEpic(repository),
+      puppyFavoriteEpic(repository),
     ]),
   );
 
   final store = Store<AppState>(
     appReducer,
     initialState: AppState.initialState(),
-    //middleware: [applyMiddleware(sagaMiddleware)],
     middleware: [epicMiddleware],
   );
-
-  // sagaMiddleware
-  //   ..setStore(store)
-  //   ..run(puppiesSaga)
-  //   ..run(extraDetailsSaga);
 
   runApp(MyApp(store));
 }
