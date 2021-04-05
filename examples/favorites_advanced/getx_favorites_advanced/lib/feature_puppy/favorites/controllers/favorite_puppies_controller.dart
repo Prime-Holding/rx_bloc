@@ -1,17 +1,24 @@
 import 'package:get/get.dart';
 import 'package:favorites_advanced_base/core.dart';
+import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
 class FavoritePuppiesController extends GetxController with StateMixin {
-  FavoritePuppiesController(this._repository);
+  FavoritePuppiesController(this._repository, this._baseController);
+
+  final PuppiesRepository _repository;
+  final MediatorController _baseController;
 
   final _favoritePuppies = <Puppy>[].obs;
-  final PuppiesRepository _repository;
 
   int get count => _favoritePuppies.length;
 
   @override
   void onInit() {
     _initFavoritePuppies();
+    ever(
+        _baseController.puppiesToChangeFavoriteStatus,
+        (_) => updateFavoritePuppies(
+            _baseController.puppiesToChangeFavoriteStatus));
     super.onInit();
   }
 

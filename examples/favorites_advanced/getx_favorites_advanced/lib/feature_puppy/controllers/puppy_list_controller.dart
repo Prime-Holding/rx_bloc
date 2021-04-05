@@ -1,41 +1,36 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
 class PuppyListController extends GetxController with StateMixin {
-  PuppyListController(this._repository);
+  PuppyListController(this._repository, this._baseController);
 
   final PuppiesRepository _repository;
+  final MediatorController _baseController;
+
   final _puppies = <Puppy>[].obs;
 
   @override
   Future<void> onInit() async {
     await _initPuppies();
+    ever(_baseController.lastFetchedPuppiesLocal, (_) {
+      updatePuppiesWithExtraDetails(_baseController.lastFetchedPuppiesLocal);
+    });
+    ever(_baseController.puppiesToChangeFavoriteStatus, (_) {
+      onPuppyUpdated(_baseController.puppiesToChangeFavoriteStatus);
+    });
     super.onInit();
   }
 
-  Future<void> onReload() async {
-    change(_puppies, status: RxStatus.loading());
-    await _initPuppies();
-  }
+  List<Puppy> searchedPuppies() => [..._puppies];
 
-  Future<void> updatePuppies() async {
-    try {
-      final allPuppies = await _repository.getPuppies(query: '');
-      _puppies
-          .where((puppy) => puppy.hasExtraDetails())
-          .forEach((oldListPuppy) {
-        final index = allPuppies.indexWhere(
-            (newFetchedPuppy) => newFetchedPuppy.id == oldListPuppy.id);
-        allPuppies.replaceRange(index, index + 1, [oldListPuppy]);
-      });
-      await Future.delayed(const Duration(seconds: 1));
-      _puppies.assignAll(allPuppies);
-      change(_puppies, status: RxStatus.success());
-    } catch (e) {
-      change(_puppies, status: RxStatus.error(e.toString().substring(10)));
-    }
+  Future<void> onReload() async {
+    await _initPuppies();
+    _baseController.clearFetchedExtraDetails();
   }
 
   void updatePuppiesWithExtraDetails(List<Puppy> puppiesToUpdate) {

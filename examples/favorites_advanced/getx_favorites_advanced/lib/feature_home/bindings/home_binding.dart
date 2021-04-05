@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:favorites_advanced_base/repositories.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/base_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 import 'package:getx_favorites_advanced/feature_home/controllers/navbar_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_extra_details_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_list_controller.dart';
@@ -22,23 +22,22 @@ class HomeBinding implements Bindings {
         ),
       )
       ..put(NavbarController())
+      ..lazyPut(() => MediatorController())
       ..lazyPut(() => FavoritePuppiesController(
-          Get.find<PuppiesRepository>()
+          Get.find<PuppiesRepository>(),
+          Get.find<MediatorController>()
       ))
-      ..put(PuppyListController(
-          Get.find<PuppiesRepository>()
-      ))
-      ..lazyPut(() => BaseController(
-          Get.find<PuppyListController>(),
-          Get.find<FavoritePuppiesController>()
-      ))
+      ..lazyPut(() => PuppyListController(
+        Get.find<PuppiesRepository>(),
+          Get.find<MediatorController>()
+    ))
       ..lazyPut(() => PuppyManageController(
           Get.find<PuppiesRepository>(),
-          Get.find<BaseController>()
+          Get.find<MediatorController>()
       ))
       ..lazyPut(() => PuppyExtraDetailsController(
           Get.find<PuppiesRepository>(),
-          Get.find<BaseController>()
+          Get.find<MediatorController>()
       ))
      ;
   }

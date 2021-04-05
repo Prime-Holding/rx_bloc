@@ -4,15 +4,17 @@ import 'package:get/get.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/base_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
 class PuppyExtraDetailsController extends GetxController {
   PuppyExtraDetailsController(this._repository, this._baseController);
 
   final PuppiesRepository _repository;
-  final BaseController _baseController;
+  final MediatorController _baseController;
+
   final lastFetchedPuppies = <Puppy>[].obs;
   late Worker debounceWorker;
+  late Worker clearWorker;
 
   @override
   Future<void> onInit() async {
@@ -22,16 +24,17 @@ class PuppyExtraDetailsController extends GetxController {
       if (filterPuppies.isEmpty) {
         return;
       }
-      try{
+      try {
         final fetchedPuppies = await _repository.fetchFullEntities(
             filterPuppies.map((element) => element.id).toList());
         data.assignAll(fetchedPuppies);
         _baseController.updatePuppiesWithExtraDetails(data.obs);
-      }catch (error){
+      } catch (error) {
         print(error.toString());
       }
-
     }, time: const Duration(milliseconds: 100));
+    ever(_baseController.toClearFetchedExtraDetails,
+        (_) => lastFetchedPuppies.clear());
     super.onInit();
   }
 
@@ -41,13 +44,10 @@ class PuppyExtraDetailsController extends GetxController {
     }
   }
 
-  void onReload(){
-    lastFetchedPuppies.clear();
-  }
-
   @override
   void onClose() {
     debounceWorker.dispose();
+    clearWorker.dispose();
     super.onClose();
   }
 }
