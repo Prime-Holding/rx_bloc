@@ -1,11 +1,13 @@
 import 'package:booking_app/base/ui_components/filter_bar.dart';
 import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
+import 'package:booking_app/feature_hotel/search/ui_components/advanced_filter_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 import '../../blocs/hotel_manage_bloc.dart';
@@ -75,7 +77,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             );
                           },
                           onHotelDetailsPressed: () {
-                            debugPrint('Hotel details pressed!');
+                            Alert(
+                              context: context,
+                              title: '',
+                              buttons: [],
+                              onWillPopActive: true,
+                              content: AdvancedFilterPage(
+                                onApplyPressed: (rooms, persons) {
+                                  //bloc.events.filterByRooms(roomCount,personsCount)
+                                  debugPrint('Pressed');
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ).show();
                           },
                         );
                       },
