@@ -6,15 +6,12 @@ import 'package:favorites_advanced_base/repositories.dart';
 import 'package:bloc/bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'puppy_list_event.dart';
 
 part 'puppy_list_state.dart';
-
-// part 'puppy_list_bloc_models.dart';
 
 class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   PuppyListBloc(this.repository)
@@ -27,39 +24,34 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   var allPuppies = <Puppy>[];
   late var emptyPuppies = <Puppy>[];
 
-  // var lastFetched = <Puppy>[];
-
   @override
   Stream<Transition<PuppyListEvent, PuppyListState>> transformEvents(
     Stream<PuppyListEvent> events,
     TransitionFunction<PuppyListEvent, PuppyListState> transitionFn,
-  ) {
-    print('TRANSFORMEVENTS');
-
-    return super.transformEvents(
+  ) => super.transformEvents(
         Rx.merge([
           events.doOnData((event) {
-            print('-- Events: ${event.props}');
+            // print('-- Events: ${event.props}');
           }),
           events
               .whereType<PuppyFetchExtraDetailsEvent>()
               .mapEventToList()
               .distinct()
               .doOnData((event) {
-            print(
-                '-- PuppyListFetchExtraDetailsEvent: ${event.filteredPuppies}');
+             // print(
+             //     '-- PuppyListFetchExtraDetailsEvent: ${event
+             //         .filteredPuppies}');
           }),
         ]).distinct().doOnData((event) {
-          print('-- MERGED stream : ${event.props}');
+          // print('-- MERGED stream : ${event.props}');
         }),
         transitionFn);
-  }
 
   @override
   Stream<PuppyListState> mapEventToState(
     PuppyListEvent event,
   ) async* {
-    print('mapEventToState : ${event.toString()}');
+    // print('mapEventToState : ${event.toString()}');
     if (event is LoadPuppyListEvent) {
       yield await _mapPuppiesFetchedToState(state);
     } else if (event is ReloadPuppiesEvent) {
@@ -134,7 +126,7 @@ List<Puppy> puppiesTEST = [
 
 extension _PuppyEventToList on Stream<PuppyFetchExtraDetailsEvent> {
   Stream<PuppyListFetchExtraDetailsEvent> mapEventToList() =>
-//Get puppies only without extra details
+// Get puppies only without extra details
       bufferTime(const Duration(microseconds: 100)).map(
         (puppyFetchList) => PuppyListFetchExtraDetailsEvent(
           // Save the list of puppies to the new event and return the event

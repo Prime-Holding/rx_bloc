@@ -33,7 +33,7 @@ class PuppyCard extends StatelessWidget {
       : VisibilityDetector(
           onVisibilityChanged: (info) {
             if (info.visibleFraction > 0.7) {
-              print('info.visibleFraction > 0.7');
+              // print('info.visibleFraction > 0.7');
               _onVisible!(_puppy);
             }
           },
@@ -42,7 +42,7 @@ class PuppyCard extends StatelessWidget {
         );
 
   Widget _buildCard() {
-    print('_buildCard');
+    // print('_buildCard');
     return GestureDetector(
       onTap: () => _onCardPressed(_puppy),
       child: Padding(
