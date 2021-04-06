@@ -7,7 +7,7 @@ class MediatorController extends GetxController {
 
   final lastFetchedPuppiesLocal = <Puppy>[].obs;
   final puppiesToChangeFavoriteStatus = <Puppy>[].obs;
-  final toClearFetchedExtraDetails = false.obs;
+  final toClearFetchedExtraDetails = 0.obs;
 
   void updatePuppiesWithExtraDetails(RxList<Puppy> lastFetchedPuppies) =>
       lastFetchedPuppiesLocal.assignAll(lastFetchedPuppies);
@@ -17,5 +17,5 @@ class MediatorController extends GetxController {
 
   void puppyUpdated(Puppy puppy) => puppiesUpdated([puppy]);
 
-  void clearFetchedExtraDetails() => toClearFetchedExtraDetails(true);
+  void clearFetchedExtraDetails() => toClearFetchedExtraDetails.value +=1;
 }

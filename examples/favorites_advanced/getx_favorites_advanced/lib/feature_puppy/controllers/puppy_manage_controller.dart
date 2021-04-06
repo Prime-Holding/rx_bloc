@@ -11,7 +11,6 @@ class PuppyManageController extends GetxController with StateMixin {
   final MediatorController _mediatorController;
 
   final puppyToUpdate = <Puppy>[].obs;
-  final errorMessages = <String>[];
 
   Future<void> markAsFavorite(
       {required Puppy puppy, required bool isFavorite}) async {
@@ -19,31 +18,13 @@ class PuppyManageController extends GetxController with StateMixin {
     try {
       await _repository.favoritePuppy(puppy, isFavorite: isFavorite);
     } catch (e) {
-      print('Exception in ManageController');
-      change(puppyToUpdate, status: RxStatus.error(e.toString()));
-      // errorMessages.add(e.toString());
-      addInErrorList(e.toString());
-      // await Get.showSnackbar(GetBar(
-      //   message: e.toString(),
-      //   snackStyle: SnackStyle.FLOATING,
-      //   isDismissible: true,
-      //   duration: const Duration(seconds: 2),
-      // ));
+      await Get.showSnackbar(GetBar(
+        message: e.toString().substring(10),
+        snackStyle: SnackStyle.FLOATING,
+        isDismissible: true,
+        duration: const Duration(seconds: 2),
+      ));
       _mediatorController.puppyUpdated(puppy);
     }
   }
-
-  void addInErrorList(String errorMessage){
-    errorMessages.add(errorMessage);
-    print('add errorMessage and list has ${errorMessages.length} members');
-    update();
-  }
-
-  void clearError() {
-    change(puppyToUpdate, status: RxStatus.success());
-    errorMessages.clear();
-    print('clearErrorMessage');
-    update();
-  }
-
 }
