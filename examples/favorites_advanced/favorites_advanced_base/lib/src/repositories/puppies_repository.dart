@@ -94,41 +94,6 @@ class PuppiesRepository {
     return puppiesWithExtraData;
   }
 
-  // Future<Puppy> fetchPuppyExtraDetails({required Puppy puppy}) async {
-  //   // await Future.delayed(artificialDelay + Duration(milliseconds: 300));
-  //
-  //   if (!(await _connectivityRepository.isConnected())) {
-  //     throw Exception(_noInternetConnectionErrorString);
-  //   }
-  //   Puppy puppyWithExtraDetails = puppy.copyWith(
-  //       displayName: puppy.name,
-  //       displayCharacteristics: puppy.breedCharacteristics);
-  //   return puppyWithExtraDetails;
-  // }
-
-  // Future<void> setDisplayNameAndDisplayCharacteristicsToNull() async {
-  //   await Future.delayed(artificialDelay + Duration(seconds: 1));
-  //
-  //   if ((await Connectivity().checkConnectivity()) == ConnectivityResult.none) {
-  //     throw Exception(_noInternetConnectionErrorString);
-  //   }
-  //
-  //   puppies.forEach((item) {
-  //     item = item.copyWith(
-  //       id: item.id,
-  //       name: item.name,
-  //       breedCharacteristics: item.breedCharacteristics,
-  //       breedType: item.breedType,
-  //       isFavorite: item.isFavorite,
-  //       gender: item.gender,
-  //       displayName: null,
-  //       displayCharacteristics: null,
-  //       asset: item.asset,
-  //     );
-  //   });
-  //   print('');
-  // }
-
   Future<Puppy> updatePuppy(String puppyId, Puppy newValue) async {
     // await Future.delayed(artificialDelay + Duration(seconds: 1));
     await Future.delayed(artificialDelay + Duration(milliseconds: 100));
