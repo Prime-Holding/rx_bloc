@@ -34,7 +34,11 @@ class HotelsRepository {
     // If there are any other filters, apply them
     if (filters?.advancedFiltersOn ?? false) {
       copiedHotels = copiedHotels
-          .where((hotel) => hotel.withinWorkRange(filters!.dateRange!))
+          .where((hotel) => hotel.filtersApply(
+                range: filters!.dateRange,
+                rooms: filters.roomCapacity,
+                persons: filters.personCapacity,
+              ))
           .toList();
     }
 
@@ -502,6 +506,24 @@ We speak your language!
 }
 
 extension _HotelExtensions on Hotel {
-  bool withinWorkRange(DateTimeRange range) =>
-      startWorkDate.isBefore(range.start) && endWorkDate.isAfter(range.end);
+  /// Performs a check whether the provided filters apply for the current hotel.
+  bool filtersApply(
+          {required DateTimeRange? range,
+          required int rooms,
+          required int persons}) =>
+      _withinWorkRange(range) &&
+      _hasEnoughRooms(rooms) &&
+      _hasPlaceForPeople(persons);
+
+  /// Does the current hotel work within the current date range?
+  bool _withinWorkRange(DateTimeRange? range) => range != null
+      ? (startWorkDate.isBefore(range.start) && endWorkDate.isAfter(range.end))
+      : true;
+
+  /// Has the current hotel enough rooms?
+  bool _hasEnoughRooms(int rooms) => rooms > 0 ? roomCapacity > rooms : true;
+
+  /// Can the hotel accommodate a select number of persons?
+  bool _hasPlaceForPeople(int persons) =>
+      persons > 0 ? personCapacity > persons : true;
 }

@@ -1,11 +1,15 @@
 import 'package:booking_app/base/ui_components/filter_bar.dart';
 import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
+import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
+import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
+import 'package:booking_app/feature_hotel/search/ui_components/hotel_capacity_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 import '../../blocs/hotel_manage_bloc.dart';
@@ -50,36 +54,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         bloc.events.filterByQuery(text);
                       },
                     ),
-                    RxBlocBuilder<HotelListBlocType, DateTimeRange?>(
-                      state: (bloc) => bloc.states.dateRangeFilter,
-                      builder: (context, filterState, bloc) {
-                        final filter = filterState.data;
-                        final nowTime = DateTime.now();
-                        // TODO: make the start and end date nullable,
-                        //  which will be the default state when the
-                        //  user open the page
-                        return TimeDateBar(
-                          startDate: filter?.start ?? nowTime,
-                          endDate: filter?.end ??
-                              nowTime.add(const Duration(days: 5)),
-                          onDatePressed: () async {
-                            final pickedRange = await showDateRangePicker(
-                              context: context,
-                              firstDate: nowTime,
-                              lastDate: DateTime(nowTime.year + 1, 12, 31),
-                            );
-                            if (pickedRange == null) return;
-
-                            bloc.events.filterByDateRange(
-                              dateRange: pickedRange,
-                            );
-                          },
-                          onHotelDetailsPressed: () {
-                            debugPrint('Hotel details pressed!');
-                          },
-                        );
-                      },
-                    ),
+                    _buildFilters(context),
                   ],
                 ),
                 childCount: 1,
@@ -100,7 +75,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 bloc.events.reload(reset: true);
                 return bloc.states.refreshDone;
               },
-              state: (bloc) => bloc.states.searchedHotels,
+              state: (bloc) => bloc.states.hotels,
               buildSuccess: (context, list, bloc) => ListView.builder(
                 itemCount: list.itemCount,
                 padding: const EdgeInsets.only(bottom: 100, top: 10),
@@ -125,6 +100,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           ),
         ),
       );
+
+  /// region Builders
 
   Widget _buildSuccess(
     BuildContext context,
@@ -170,4 +147,163 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       ),
     );
   }
+
+  Widget _buildFilters(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(left: 18, right: 18, bottom: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildDateRangeFilter(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Container(
+                width: 1,
+                height: 42,
+                color: Colors.grey.withOpacity(0.8),
+              ),
+            ),
+            _buildCapacityFilter(),
+          ],
+        ),
+      );
+
+  Widget _buildDateRangeFilter() => Expanded(
+        child: RxBlocBuilder<HotelListBlocType, DateRangeFilterData>(
+          state: (bloc) => bloc.states.dateRangeFilterData,
+          builder: (context, dateRangeFilterDataState, bloc) {
+            final dateRangeText = dateRangeFilterDataState.data?.text ?? 'None';
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FocusButton(
+                  onPressed: () async {
+                    final pickedRange = await showDateRangePicker(
+                      context: context,
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(DateTime.now().year + 1, 12, 31),
+                      saveText: 'Apply',
+                    );
+                    if (pickedRange == null) return;
+                    bloc.events.filterByDateRange(
+                      dateRange: pickedRange,
+                    );
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Choose date',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 16,
+                            color: Colors.grey.withOpacity(0.8)),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        dateRangeText,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (dateRangeText != 'None')
+                  _buildClearButton(() {
+                    showYesNoMessage(
+                      context: context,
+                      title: 'Clear date range?',
+                      onYesPressed: () {
+                        bloc.events.filterByDateRange(dateRange: null);
+                      },
+                    );
+                  }),
+              ],
+            );
+          },
+        ),
+      );
+
+  Widget _buildCapacityFilter() => Expanded(
+        child: RxBlocBuilder<HotelListBlocType, CapacityFilterData>(
+          state: (bloc) => bloc.states.capacityFilterData,
+          builder: (context, capacityFilterDataState, bloc) {
+            final capacityData = capacityFilterDataState.data;
+            final capacityFilterText = capacityData?.text ?? 'None';
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FocusButton(
+                  onPressed: () {
+                    Alert(
+                      context: context,
+                      title: '',
+                      buttons: [],
+                      onWillPopActive: true,
+                      content: HotelCapacityPage(
+                        roomCapacity: capacityData?.rooms ?? 0,
+                        personCapacity: capacityData?.persons ?? 0,
+                        onApplyPressed: (rooms, persons) {
+                          bloc.events.filterByCapacity(
+                            roomCapacity: rooms,
+                            personCapacity: persons,
+                          );
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ).show();
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Capacity filters',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 16,
+                            color: Colors.grey.withOpacity(0.8)),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        capacityFilterText,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (capacityFilterText != 'None')
+                  _buildClearButton(() {
+                    showYesNoMessage(
+                      context: context,
+                      title: 'Clear advanced filters?',
+                      onYesPressed: () {
+                        bloc.events.filterByCapacity(
+                          roomCapacity: 0,
+                          personCapacity: 0,
+                        );
+                      },
+                    );
+                  }),
+              ],
+            );
+          },
+        ),
+      );
+
+  Widget _buildClearButton(VoidCallback? onPressed) => FocusButton(
+        onPressed: onPressed ?? () {},
+        child: const Icon(Icons.cancel, color: Colors.blue),
+      );
+
+  ///endregion
 }

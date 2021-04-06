@@ -18,10 +18,7 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
 
           return repository
               .getHotelsPaginated(
-                filters: HotelSearchFilters(
-                  query: reloadData.filters.query,
-                  dateRange: reloadData.filters.dateRange,
-                ),
+                filters: reloadData.filters,
                 pageSize: _paginatedList.value!.pageSize,
                 page: _paginatedList.value!.pageNumber + 1,
               )
@@ -66,6 +63,7 @@ extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
   Stream<_ReloadData> mapToPayload({
     required BehaviorSubject<String> query,
     required BehaviorSubject<DateTimeRange?> dateRange,
+    required BehaviorSubject<_FilterByCapacityEventArgs> advancedFilters,
     int skipCount = 1,
   }) =>
       skip(skipCount).map(
@@ -75,6 +73,8 @@ extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
           filters: HotelSearchFilters(
             dateRange: dateRange.value,
             query: query.value ?? '',
+            roomCapacity: advancedFilters.value!.roomCapacity,
+            personCapacity: advancedFilters.value!.personCapacity,
           ),
         ),
       );
@@ -87,11 +87,66 @@ extension _StringBehaviourSubjectExtensions on BehaviorSubject<String> {
 }
 
 extension _HotelListEventsUtils on HotelListBloc {
-  Stream<HotelSearchFilters> get _filters => Rx.combineLatest2(
+  Stream<HotelSearchFilters> get _filters => Rx.combineLatest3(
       _$filterByQueryEvent.delayInput(),
       _$filterByDateRangeEvent.distinct(),
-      (String query, DateTimeRange? dateRange) => HotelSearchFilters(
+      _$filterByCapacityEvent.distinct(),
+      (
+        String query,
+        DateTimeRange? dateRange,
+        _FilterByCapacityEventArgs advancedFilters,
+      ) =>
+          HotelSearchFilters(
             query: query,
             dateRange: dateRange,
+            roomCapacity: advancedFilters.roomCapacity,
+            personCapacity: advancedFilters.personCapacity,
           ));
+}
+
+extension _DateTimeFormatExtensions on DateTime {
+  String get _format => DateFormat('dd, MMM').format(this);
+}
+
+extension _FilterByAdvancedEventArgsExtensions on _FilterByCapacityEventArgs {
+  String get asPresentableText {
+    final roomsSelected = roomCapacity > 0;
+    final personSelected = personCapacity > 0;
+
+    // If nothing is selected return prematurely
+    if (!roomsSelected && !personSelected) return 'None';
+
+    var outputString =
+        roomsSelected ? '$roomCapacity Room${roomCapacity > 1 ? 's' : ''}' : '';
+
+    if (personSelected) {
+      final separator = roomsSelected ? ' - ' : '';
+      final pluralForm = personCapacity > 1 ? 'People' : 'Person';
+      outputString += '$separator$personCapacity $pluralForm';
+    }
+
+    return outputString;
+  }
+}
+
+extension _DateRangeEventExtensions on BehaviorSubject<DateTimeRange?> {
+  Stream<DateRangeFilterData> getData() => map(
+        (range) => DateRangeFilterData(
+          dateRange: range,
+          text: range != null
+              ? '${range.start._format} - ${range.end._format}'
+              : 'None',
+        ),
+      );
+}
+
+extension _HotelCapacityEventExtensions
+    on BehaviorSubject<_FilterByCapacityEventArgs> {
+  Stream<CapacityFilterData> getData() => map(
+        (args) => CapacityFilterData(
+          rooms: args.roomCapacity,
+          persons: args.personCapacity,
+          text: args.asPresentableText,
+        ),
+      );
 }
