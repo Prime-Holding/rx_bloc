@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
+import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +26,9 @@ abstract class HotelListEvents {
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: _FilterByAdvancedEventArgs(roomCapacity: 0, personCapacity: 0),
+    seed: _FilterByCapacityEventArgs(roomCapacity: 0, personCapacity: 0),
   )
-  void filterByAdvanced({int roomCapacity = 0, int personCapacity = 0});
+  void filterByCapacity({int roomCapacity = 0, int personCapacity = 0});
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
@@ -37,32 +39,23 @@ abstract class HotelListEvents {
 
 abstract class HotelListStates {
   @RxBlocIgnoreState()
-  Stream<PaginatedList<Hotel>> get searchedHotels;
+  Stream<PaginatedList<Hotel>> get hotels;
 
   @RxBlocIgnoreState()
-  Stream<DateTimeRange?> get dateRangeFilter;
+  Stream<String> get hotelsFound;
 
   @RxBlocIgnoreState()
   Stream<String> get queryFilter;
 
   @RxBlocIgnoreState()
-  Stream<int> get roomCapacityFilter;
+  Stream<DateRangeFilterData> get dateRangeFilterData;
 
   @RxBlocIgnoreState()
-  Stream<int> get personCapacityFilter;
-
-  @RxBlocIgnoreState()
-  Stream<String> get dateRangeFilterText;
-
-  @RxBlocIgnoreState()
-  Stream<String> get advancedFilterText;
+  Stream<CapacityFilterData> get capacityFilterData;
 
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
-
-  @RxBlocIgnoreState()
-  Stream<String> get hotelsFound;
 }
 
 @RxBloc()
@@ -76,7 +69,7 @@ class HotelListBloc extends $HotelListBloc {
       _$reloadEvent.mapToPayload(
         query: _$filterByQueryEvent,
         dateRange: _$filterByDateRangeEvent,
-        advancedFilters: _$filterByAdvancedEvent,
+        advancedFilters: _$filterByCapacityEvent,
       )
     ])
         .startWith(_ReloadData.withInitial())
@@ -102,31 +95,31 @@ class HotelListBloc extends $HotelListBloc {
   Future<void> get refreshDone async => _hotels.waitToLoad();
 
   @override
-  Stream<PaginatedList<Hotel>> get searchedHotels => _hotels;
-
-  @override
-  Stream<DateTimeRange?> get dateRangeFilter => _$filterByDateRangeEvent;
+  Stream<PaginatedList<Hotel>> get hotels => _hotels;
 
   @override
   Stream<String> get queryFilter => _$filterByQueryEvent;
 
   @override
-  Stream<int> get roomCapacityFilter =>
-      _$filterByAdvancedEvent.map((args) => args.roomCapacity);
+  Stream<DateRangeFilterData> get dateRangeFilterData =>
+      _$filterByDateRangeEvent.map(
+        (range) => DateRangeFilterData(
+          dateRange: range,
+          text: range != null
+              ? '${range.start._format} - ${range.end._format}'
+              : 'None',
+        ),
+      );
 
   @override
-  Stream<int> get personCapacityFilter =>
-      _$filterByAdvancedEvent.map((args) => args.personCapacity);
-
-  @override
-  Stream<String> get dateRangeFilterText =>
-      _$filterByDateRangeEvent.map((range) => range != null
-          ? '${range.start._format} - ${range.end._format}'
-          : 'None');
-
-  @override
-  Stream<String> get advancedFilterText =>
-      _$filterByAdvancedEvent.map((args) => args.asPresentableText);
+  Stream<CapacityFilterData> get capacityFilterData =>
+      _$filterByCapacityEvent.map(
+        (args) => CapacityFilterData(
+          rooms: args.roomCapacity,
+          persons: args.personCapacity,
+          text: args.asPresentableText,
+        ),
+      );
 
   @override
   Stream<String> get hotelsFound => _hotels.map(

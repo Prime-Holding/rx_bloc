@@ -63,7 +63,7 @@ extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
   Stream<_ReloadData> mapToPayload({
     required BehaviorSubject<String> query,
     required BehaviorSubject<DateTimeRange?> dateRange,
-    required BehaviorSubject<_FilterByAdvancedEventArgs> advancedFilters,
+    required BehaviorSubject<_FilterByCapacityEventArgs> advancedFilters,
     int skipCount = 1,
   }) =>
       skip(skipCount).map(
@@ -90,11 +90,11 @@ extension _HotelListEventsUtils on HotelListBloc {
   Stream<HotelSearchFilters> get _filters => Rx.combineLatest3(
       _$filterByQueryEvent.delayInput(),
       _$filterByDateRangeEvent.distinct(),
-      _$filterByAdvancedEvent.distinct(),
+      _$filterByCapacityEvent.distinct(),
       (
         String query,
         DateTimeRange? dateRange,
-        _FilterByAdvancedEventArgs advancedFilters,
+        _FilterByCapacityEventArgs advancedFilters,
       ) =>
           HotelSearchFilters(
             query: query,
@@ -108,7 +108,7 @@ extension _DateTimeFormatExtensions on DateTime {
   String get _format => DateFormat('dd, MMM').format(this);
 }
 
-extension _FilterByAdvancedEventArgsExtensions on _FilterByAdvancedEventArgs {
+extension _FilterByAdvancedEventArgsExtensions on _FilterByCapacityEventArgs {
   String get asPresentableText {
     final roomsSelected = roomCapacity > 0;
     final personSelected = personCapacity > 0;

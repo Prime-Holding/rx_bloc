@@ -2,7 +2,6 @@ library ui_components;
 
 export 'src/common_ui_components/app_bar_back_button.dart';
 export 'src/common_ui_components/error_widget.dart';
-export 'src/common_ui_components/filters_bar.dart';
 export 'src/common_ui_components/focus_button.dart';
 export 'src/common_ui_components/hotel_header.dart';
 export 'src/common_ui_components/hotel_image.dart';

@@ -25,10 +25,10 @@ abstract class $HotelListBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [filterByDateRange]
   final _$filterByDateRangeEvent = BehaviorSubject<DateTimeRange?>.seeded(null);
 
-  /// Тhe [Subject] where events sink to by calling [filterByAdvanced]
-  final _$filterByAdvancedEvent =
-      BehaviorSubject<_FilterByAdvancedEventArgs>.seeded(
-          const _FilterByAdvancedEventArgs(roomCapacity: 0, personCapacity: 0));
+  /// Тhe [Subject] where events sink to by calling [filterByCapacity]
+  final _$filterByCapacityEvent =
+      BehaviorSubject<_FilterByCapacityEventArgs>.seeded(
+          const _FilterByCapacityEventArgs(roomCapacity: 0, personCapacity: 0));
 
   /// Тhe [Subject] where events sink to by calling [reload]
   final _$reloadEvent = BehaviorSubject<_ReloadEventArgs>.seeded(
@@ -42,8 +42,8 @@ abstract class $HotelListBloc extends RxBlocBase
       _$filterByDateRangeEvent.add(dateRange);
 
   @override
-  void filterByAdvanced({int roomCapacity = 0, int personCapacity = 0}) =>
-      _$filterByAdvancedEvent.add(_FilterByAdvancedEventArgs(
+  void filterByCapacity({int roomCapacity = 0, int personCapacity = 0}) =>
+      _$filterByCapacityEvent.add(_FilterByCapacityEventArgs(
           roomCapacity: roomCapacity, personCapacity: personCapacity));
 
   @override
@@ -60,7 +60,7 @@ abstract class $HotelListBloc extends RxBlocBase
   void dispose() {
     _$filterByQueryEvent.close();
     _$filterByDateRangeEvent.close();
-    _$filterByAdvancedEvent.close();
+    _$filterByCapacityEvent.close();
     _$reloadEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
@@ -68,9 +68,9 @@ abstract class $HotelListBloc extends RxBlocBase
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [HotelListEvents.filterByAdvanced] event
-class _FilterByAdvancedEventArgs {
-  const _FilterByAdvancedEventArgs(
+/// [HotelListEvents.filterByCapacity] event
+class _FilterByCapacityEventArgs {
+  const _FilterByCapacityEventArgs(
       {this.roomCapacity = 0, this.personCapacity = 0});
 
   final int roomCapacity;
