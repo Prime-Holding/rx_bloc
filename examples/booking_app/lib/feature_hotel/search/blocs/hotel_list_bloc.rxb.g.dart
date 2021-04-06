@@ -34,6 +34,16 @@ abstract class $HotelListBloc extends RxBlocBase
   final _$reloadEvent = BehaviorSubject<_ReloadEventArgs>.seeded(
       const _ReloadEventArgs(reset: true, fullReset: false));
 
+  /// The state of [dateRangeFilterData] implemented in
+  /// [_mapToDateRangeFilterDataState]
+  late final Stream<DateRangeFilterData> _dateRangeFilterDataState =
+      _mapToDateRangeFilterDataState();
+
+  /// The state of [capacityFilterData] implemented in
+  /// [_mapToCapacityFilterDataState]
+  late final Stream<CapacityFilterData> _capacityFilterDataState =
+      _mapToCapacityFilterDataState();
+
   @override
   void filterByQuery(String query) => _$filterByQueryEvent.add(query);
 
@@ -49,6 +59,17 @@ abstract class $HotelListBloc extends RxBlocBase
   @override
   void reload({required bool reset, bool fullReset = false}) =>
       _$reloadEvent.add(_ReloadEventArgs(reset: reset, fullReset: fullReset));
+
+  @override
+  Stream<DateRangeFilterData> get dateRangeFilterData =>
+      _dateRangeFilterDataState;
+
+  @override
+  Stream<CapacityFilterData> get capacityFilterData => _capacityFilterDataState;
+
+  Stream<DateRangeFilterData> _mapToDateRangeFilterDataState();
+
+  Stream<CapacityFilterData> _mapToCapacityFilterDataState();
 
   @override
   HotelListEvents get events => this;

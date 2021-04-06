@@ -116,15 +116,37 @@ extension _FilterByAdvancedEventArgsExtensions on _FilterByCapacityEventArgs {
     // If nothing is selected return prematurely
     if (!roomsSelected && !personSelected) return 'None';
 
-    var outputString = roomsSelected
-        ? '$roomCapacity Room${roomCapacity > 1 ? 's' : ''}'
-        : 'None';
+    var outputString =
+        roomsSelected ? '$roomCapacity Room${roomCapacity > 1 ? 's' : ''}' : '';
 
     if (personSelected) {
       final separator = roomsSelected ? ' - ' : '';
       final pluralForm = personCapacity > 1 ? 'People' : 'Person';
       outputString += '$separator$personCapacity $pluralForm';
     }
+
     return outputString;
   }
+}
+
+extension _DateRangeEventExtensions on BehaviorSubject<DateTimeRange?> {
+  Stream<DateRangeFilterData> getData() => map(
+        (range) => DateRangeFilterData(
+          dateRange: range,
+          text: range != null
+              ? '${range.start._format} - ${range.end._format}'
+              : 'None',
+        ),
+      );
+}
+
+extension _HotelCapacityEventExtensions
+    on BehaviorSubject<_FilterByCapacityEventArgs> {
+  Stream<CapacityFilterData> getData() => map(
+        (args) => CapacityFilterData(
+          rooms: args.roomCapacity,
+          persons: args.personCapacity,
+          text: args.asPresentableText,
+        ),
+      );
 }

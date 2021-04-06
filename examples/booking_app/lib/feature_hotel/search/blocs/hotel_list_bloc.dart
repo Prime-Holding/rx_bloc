@@ -47,10 +47,8 @@ abstract class HotelListStates {
   @RxBlocIgnoreState()
   Stream<String> get queryFilter;
 
-  @RxBlocIgnoreState()
   Stream<DateRangeFilterData> get dateRangeFilterData;
 
-  @RxBlocIgnoreState()
   Stream<CapacityFilterData> get capacityFilterData;
 
   /// Returns when the data refreshing has completed
@@ -92,6 +90,14 @@ class HotelListBloc extends $HotelListBloc {
   );
 
   @override
+  Stream<DateRangeFilterData> _mapToDateRangeFilterDataState() =>
+      _$filterByDateRangeEvent.getData();
+
+  @override
+  Stream<CapacityFilterData> _mapToCapacityFilterDataState() =>
+      _$filterByCapacityEvent.getData();
+
+  @override
   Future<void> get refreshDone async => _hotels.waitToLoad();
 
   @override
@@ -99,27 +105,6 @@ class HotelListBloc extends $HotelListBloc {
 
   @override
   Stream<String> get queryFilter => _$filterByQueryEvent;
-
-  @override
-  Stream<DateRangeFilterData> get dateRangeFilterData =>
-      _$filterByDateRangeEvent.map(
-        (range) => DateRangeFilterData(
-          dateRange: range,
-          text: range != null
-              ? '${range.start._format} - ${range.end._format}'
-              : 'None',
-        ),
-      );
-
-  @override
-  Stream<CapacityFilterData> get capacityFilterData =>
-      _$filterByCapacityEvent.map(
-        (args) => CapacityFilterData(
-          rooms: args.roomCapacity,
-          persons: args.personCapacity,
-          text: args.asPresentableText,
-        ),
-      );
 
   @override
   Stream<String> get hotelsFound => _hotels.map(

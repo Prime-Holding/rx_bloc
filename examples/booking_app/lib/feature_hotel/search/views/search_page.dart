@@ -2,7 +2,7 @@ import 'package:booking_app/base/ui_components/filter_bar.dart';
 import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
-import 'package:booking_app/feature_hotel/search/ui_components/advanced_filter_page.dart';
+import 'package:booking_app/feature_hotel/search/ui_components/hotel_capacity_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
@@ -101,6 +101,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
       );
 
+  /// region Builders
+
   Widget _buildSuccess(
     BuildContext context,
     PaginatedList<Hotel> list,
@@ -151,67 +153,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Expanded(
-              child: RxBlocBuilder<HotelListBlocType, DateRangeFilterData>(
-                state: (bloc) => bloc.states.dateRangeFilterData,
-                builder: (context, dateRangeFilterDataState, bloc) {
-                  final dateRangeText =
-                      dateRangeFilterDataState.data?.text ?? 'None';
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FocusButton(
-                        onPressed: () async {
-                          final pickedRange = await showDateRangePicker(
-                            context: context,
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(DateTime.now().year + 1, 12, 31),
-                            saveText: 'Apply',
-                          );
-                          if (pickedRange == null) return;
-                          bloc.events.filterByDateRange(
-                            dateRange: pickedRange,
-                          );
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Choose date',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w100,
-                                  fontSize: 16,
-                                  color: Colors.grey.withOpacity(0.8)),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              dateRangeText,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (dateRangeText != 'None')
-                        _buildClearButton(() {
-                          _presentYesNoDialog(
-                            context: context,
-                            title: 'Clear date range?',
-                            onYesPressed: () {
-                              bloc.events.filterByDateRange(dateRange: null);
-                            },
-                          );
-                        }),
-                    ],
-                  );
-                },
-              ),
-            ),
+            _buildDateRangeFilter(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Container(
@@ -220,123 +162,148 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 color: Colors.grey.withOpacity(0.8),
               ),
             ),
-            Expanded(
-              child: RxBlocBuilder<HotelListBlocType, CapacityFilterData>(
-                state: (bloc) => bloc.states.capacityFilterData,
-                builder: (context, capacityFilterDataState, bloc) {
-                  final capacityData = capacityFilterDataState.data;
-                  final capacityFilterText = capacityData?.text ?? 'None';
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FocusButton(
-                        onPressed: () {
-                          Alert(
-                            context: context,
-                            title: '',
-                            buttons: [],
-                            onWillPopActive: true,
-                            content: AdvancedFilterPage(
-                              roomCapacity: capacityData?.rooms ?? 0,
-                              personCapacity: capacityData?.persons ?? 0,
-                              onApplyPressed: (rooms, persons) {
-                                bloc.events.filterByCapacity(
-                                  roomCapacity: rooms,
-                                  personCapacity: persons,
-                                );
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ).show();
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Capacity filters',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w100,
-                                  fontSize: 16,
-                                  color: Colors.grey.withOpacity(0.8)),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              capacityFilterText,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (capacityFilterText != 'None')
-                        _buildClearButton(() {
-                          _presentYesNoDialog(
-                            context: context,
-                            title: 'Clear advanced filters?',
-                            onYesPressed: () {
-                              bloc.events.filterByCapacity(
-                                roomCapacity: 0,
-                                personCapacity: 0,
-                              );
-                            },
-                          );
-                        }),
-                    ],
-                  );
-                },
-              ),
-            ),
+            _buildCapacityFilter(),
           ],
         ),
       );
 
-  Future<void> _presentYesNoDialog({
-    required BuildContext context,
-    required String title,
-    VoidCallback? onYesPressed,
-  }) async {
-    await Alert(
-      context: context,
-      onWillPopActive: true,
-      title: title,
-      buttons: [
-        DialogButton(
-          onPressed: () {
-            onYesPressed?.call();
-            Navigator.of(context).pop();
+  Widget _buildDateRangeFilter() => Expanded(
+        child: RxBlocBuilder<HotelListBlocType, DateRangeFilterData>(
+          state: (bloc) => bloc.states.dateRangeFilterData,
+          builder: (context, dateRangeFilterDataState, bloc) {
+            final dateRangeText = dateRangeFilterDataState.data?.text ?? 'None';
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FocusButton(
+                  onPressed: () async {
+                    final pickedRange = await showDateRangePicker(
+                      context: context,
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(DateTime.now().year + 1, 12, 31),
+                      saveText: 'Apply',
+                    );
+                    if (pickedRange == null) return;
+                    bloc.events.filterByDateRange(
+                      dateRange: pickedRange,
+                    );
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Choose date',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 16,
+                            color: Colors.grey.withOpacity(0.8)),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        dateRangeText,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (dateRangeText != 'None')
+                  _buildClearButton(() {
+                    showYesNoMessage(
+                      context: context,
+                      title: 'Clear date range?',
+                      onYesPressed: () {
+                        bloc.events.filterByDateRange(dateRange: null);
+                      },
+                    );
+                  }),
+              ],
+            );
           },
-          color: Colors.red,
-          child: const Text(
-            'Yes',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
         ),
-        DialogButton(
-          onPressed: () {
-            Navigator.of(context).pop();
+      );
+
+  Widget _buildCapacityFilter() => Expanded(
+        child: RxBlocBuilder<HotelListBlocType, CapacityFilterData>(
+          state: (bloc) => bloc.states.capacityFilterData,
+          builder: (context, capacityFilterDataState, bloc) {
+            final capacityData = capacityFilterDataState.data;
+            final capacityFilterText = capacityData?.text ?? 'None';
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FocusButton(
+                  onPressed: () {
+                    Alert(
+                      context: context,
+                      title: '',
+                      buttons: [],
+                      onWillPopActive: true,
+                      content: HotelCapacityPage(
+                        roomCapacity: capacityData?.rooms ?? 0,
+                        personCapacity: capacityData?.persons ?? 0,
+                        onApplyPressed: (rooms, persons) {
+                          bloc.events.filterByCapacity(
+                            roomCapacity: rooms,
+                            personCapacity: persons,
+                          );
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ).show();
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Capacity filters',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 16,
+                            color: Colors.grey.withOpacity(0.8)),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        capacityFilterText,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (capacityFilterText != 'None')
+                  _buildClearButton(() {
+                    showYesNoMessage(
+                      context: context,
+                      title: 'Clear advanced filters?',
+                      onYesPressed: () {
+                        bloc.events.filterByCapacity(
+                          roomCapacity: 0,
+                          personCapacity: 0,
+                        );
+                      },
+                    );
+                  }),
+              ],
+            );
           },
-          child: const Text(
-            'No',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
         ),
-      ],
-    ).show();
-  }
+      );
 
   Widget _buildClearButton(VoidCallback? onPressed) => FocusButton(
         onPressed: onPressed ?? () {},
         child: const Icon(Icons.cancel, color: Colors.blue),
       );
+
+  ///endregion
 }

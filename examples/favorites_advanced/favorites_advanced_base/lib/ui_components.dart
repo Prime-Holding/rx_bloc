@@ -14,3 +14,4 @@ export 'src/common_ui_components/puppy_photo_avatar.dart';
 export 'src/common_ui_components/rx_animated_list.dart';
 export 'src/common_ui_components/search_bar.dart';
 export 'src/common_ui_components/skeleton_text.dart';
+export 'src/utils/dialog_messages.dart';

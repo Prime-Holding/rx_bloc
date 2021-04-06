@@ -2,8 +2,8 @@ import 'package:booking_app/feature_hotel/search/ui_components/filter_value_choo
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class AdvancedFilterPage extends StatefulWidget {
-  AdvancedFilterPage({
+class HotelCapacityPage extends StatefulWidget {
+  HotelCapacityPage({
     required this.onApplyPressed,
     this.roomCapacity,
     this.personCapacity,
@@ -14,10 +14,10 @@ class AdvancedFilterPage extends StatefulWidget {
   final int? personCapacity;
 
   @override
-  _AdvancedFilterPageState createState() => _AdvancedFilterPageState();
+  _HotelCapacityPageState createState() => _HotelCapacityPageState();
 }
 
-class _AdvancedFilterPageState extends State<AdvancedFilterPage> {
+class _HotelCapacityPageState extends State<HotelCapacityPage> {
   late int roomCapacity;
   late int personCapacity;
 

@@ -19,6 +19,7 @@ dependencies:
   font_awesome_flutter: ^9.0.0
   intl: ^0.17.0
   smooth_star_rating: ^1.1.1
+  rflutter_alert: ^2.0.2
 
 dev_dependencies:
   flutter_test:
