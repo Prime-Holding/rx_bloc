@@ -73,7 +73,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
     allPuppies = allPuppies.mergeWith(puppiesWithDetails);
 
-    return PuppyListState(
+    return state.copyWith(
         searchedPuppies: allPuppies, status: PuppyListStatus.success);
   }
 
@@ -81,21 +81,20 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     try {
       final puppies = await repository.getPuppies(query: '');
       allPuppies = puppies;
-      return PuppyListState(
+      return state.copyWith(
         searchedPuppies: allPuppies,
         status: PuppyListStatus.reloading,
       );
     } on Exception {
       return state.copyWith(status: PuppyListStatus.failure);
     }
-    // return state.copyWith(status: PuppyListStatus.failure);
   }
 
   Future<PuppyListState> _mapPuppiesReloadFetchToState(
       PuppyListState state) async {
     allPuppies = await repository.getPuppies(query: '');
 
-    return PuppyListState(
+    return state.copyWith(
       searchedPuppies: allPuppies,
       status: PuppyListStatus.reloading,
     );
