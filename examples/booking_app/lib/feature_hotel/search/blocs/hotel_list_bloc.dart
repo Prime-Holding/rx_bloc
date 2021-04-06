@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:booking_app/base/utils/enums.dart';
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
 import 'package:favorites_advanced_base/core.dart';
@@ -30,6 +31,9 @@ abstract class HotelListEvents {
   )
   void filterByCapacity({int roomCapacity = 0, int personCapacity = 0});
 
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: SortBy.none)
+  void sortBy({SortBy sort = SortBy.none});
+
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
     seed: _ReloadEventArgs(reset: true, fullReset: false),
@@ -50,6 +54,9 @@ abstract class HotelListStates {
   Stream<DateRangeFilterData> get dateRangeFilterData;
 
   Stream<CapacityFilterData> get capacityFilterData;
+
+  @RxBlocIgnoreState()
+  Stream<SortBy> get sortedBy;
 
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
@@ -73,6 +80,7 @@ class HotelListBloc extends $HotelListBloc {
         .startWith(_ReloadData.withInitial())
         .fetchHotels(repository, _hotels)
         .mergeWithPaginatedList(_hotels)
+        .sortBy(_$sortByEvent)
         .bind(_hotels)
         .disposedBy(_compositeSubscription);
 
@@ -96,6 +104,9 @@ class HotelListBloc extends $HotelListBloc {
   @override
   Stream<CapacityFilterData> _mapToCapacityFilterDataState() =>
       _$filterByCapacityEvent.getData();
+
+  @override
+  Stream<SortBy> get sortedBy => _$sortByEvent;
 
   @override
   Future<void> get refreshDone async => _hotels.waitToLoad();

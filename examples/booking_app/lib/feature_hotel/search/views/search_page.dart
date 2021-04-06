@@ -1,8 +1,10 @@
-import 'package:booking_app/base/ui_components/filter_bar.dart';
+import 'package:booking_app/base/ui_components/sorting_bar.dart';
+import 'package:booking_app/base/utils/enums.dart';
 import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/ui_components/hotel_capacity_page.dart';
+import 'package:booking_app/feature_hotel/search/ui_components/hotel_sort_page.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
@@ -60,10 +62,27 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 childCount: 1,
               ),
             ),
-            SliverPersistentHeader(
-              pinned: true,
-              floating: true,
-              delegate: FilterBar(),
+            RxBlocBuilder<HotelListBlocType, SortBy>(
+              state: (bloc) => bloc.states.sortedBy,
+              builder: (context, sortByState, bloc) => SliverPersistentHeader(
+                pinned: true,
+                floating: true,
+                delegate: SortingBar(
+                  onPressed: () async {
+                    await Alert(
+                      context: context,
+                      title: 'Sort by',
+                      buttons: [],
+                      onWillPopActive: true,
+                      content: HotelSortPage(
+                        initialSelection: sortByState.data ?? SortBy.none,
+                        onApplyPressed: (sortBy) =>
+                            bloc.events.sortBy(sort: sortBy),
+                      ),
+                    ).show();
+                  },
+                ),
+              ),
             ),
           ],
           body: Container(

@@ -150,3 +150,36 @@ extension _HotelCapacityEventExtensions
         ),
       );
 }
+
+extension _StreamHotelPaginatedList on Stream<PaginatedList<Hotel>> {
+  Stream<PaginatedList<Hotel>> sortBy(BehaviorSubject<SortBy> sortEvent) =>
+      withLatestFrom(
+          sortEvent,
+          (PaginatedList<Hotel> data, SortBy sortingType) =>
+              data.copyWith(list: data.list.sortBy(sortingType)));
+}
+
+extension _PaginatedListOfHotelsExtensions on List<Hotel> {
+  List<Hotel> sortBy(SortBy sortType) {
+    // Sort by price
+    if (sortType == SortBy.priceAsc || sortType == SortBy.priceDesc) {
+      final desc = sortType == SortBy.priceDesc;
+      sort(
+        (h1, h2) => desc
+            ? h1.perNight.compareTo(h2.perNight)
+            : h2.perNight.compareTo(h1.perNight),
+      );
+    }
+
+    // Sort by distance
+    if (sortType == SortBy.distanceAsc || sortType == SortBy.distanceDesc) {
+      final desc = sortType == SortBy.distanceDesc;
+      sort(
+        (h1, h2) =>
+            desc ? h1.dist.compareTo(h2.dist) : h2.dist.compareTo(h1.dist),
+      );
+    }
+
+    return this;
+  }
+}

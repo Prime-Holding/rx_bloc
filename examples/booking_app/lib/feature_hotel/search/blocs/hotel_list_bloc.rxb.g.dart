@@ -30,6 +30,9 @@ abstract class $HotelListBloc extends RxBlocBase
       BehaviorSubject<_FilterByCapacityEventArgs>.seeded(
           const _FilterByCapacityEventArgs(roomCapacity: 0, personCapacity: 0));
 
+  /// Тhe [Subject] where events sink to by calling [sortBy]
+  final _$sortByEvent = BehaviorSubject<SortBy>.seeded(SortBy.none);
+
   /// Тhe [Subject] where events sink to by calling [reload]
   final _$reloadEvent = BehaviorSubject<_ReloadEventArgs>.seeded(
       const _ReloadEventArgs(reset: true, fullReset: false));
@@ -57,6 +60,9 @@ abstract class $HotelListBloc extends RxBlocBase
           roomCapacity: roomCapacity, personCapacity: personCapacity));
 
   @override
+  void sortBy({SortBy sort = SortBy.none}) => _$sortByEvent.add(sort);
+
+  @override
   void reload({required bool reset, bool fullReset = false}) =>
       _$reloadEvent.add(_ReloadEventArgs(reset: reset, fullReset: fullReset));
 
@@ -82,6 +88,7 @@ abstract class $HotelListBloc extends RxBlocBase
     _$filterByQueryEvent.close();
     _$filterByDateRangeEvent.close();
     _$filterByCapacityEvent.close();
+    _$sortByEvent.close();
     _$reloadEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
