@@ -21,7 +21,6 @@ class SearchViewModel extends Equatable {
     }
 
     void _onExtraDetailsFetch(Puppy puppy) {
-      print(puppy);
       store.dispatch(ExtraDetailsFetchRequestedAction(puppy: puppy));
     }
 

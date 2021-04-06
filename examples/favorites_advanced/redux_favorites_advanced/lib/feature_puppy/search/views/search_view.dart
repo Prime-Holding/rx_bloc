@@ -23,7 +23,6 @@ class SearchView extends StatelessWidget {
                   ? LoadingWidget()
                   : RefreshIndicator(
                       onRefresh: () {
-                        debugPrint(viewModel.puppies.length.toString());
                         viewModel.onRefreshFetch();
                         return Future.delayed(const Duration(seconds: 1));
                       },

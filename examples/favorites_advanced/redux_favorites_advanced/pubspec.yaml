@@ -22,15 +22,15 @@ environment:
 
 dependencies:
   appbar_textfield: ^1.0.1+1
+  badges: ^2.0.0-nullsafety.1
   curved_navigation_bar: ^0.4.0-nullsafety.0
+  equatable: ^2.0.0
   favorites_advanced_base:
   flutter:
     sdk: flutter
   flutter_redux: ^0.8.2
-  redux_saga: ^3.0.3
   redux_epics: ^0.15.0
   rxdart: ^0.26.0
-  equatable: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -8,10 +8,6 @@ import '../../../base/models/app_state.dart';
 import '../../../base/redux/actions.dart';
 import 'actions.dart';
 
-//final repository = PuppiesRepository(ImagePicker(), ConnectivityRepository());
-//research dependency injection - get_it
-//which layer is middleware
-
 Epic<AppState> fetchPuppiesEpic(PuppiesRepository repository) =>
     (actions, store) => actions
             .where((action) => action is PuppiesFetchRequestedAction)
@@ -19,9 +15,9 @@ Epic<AppState> fetchPuppiesEpic(PuppiesRepository repository) =>
           try {
             final puppies = await repository.getPuppies();
             yield PuppiesFetchSucceededAction(puppies: puppies);
-          } catch (error) {
-            print(error);
+          } catch (_) {
             yield PuppiesFetchFailedAction();
+            //yield ErrorAction(error: error.toString());
           }
         });
 
@@ -42,7 +38,6 @@ Epic<AppState> puppyFavoriteEpic(PuppiesRepository repository) => (actions,
       try {
         yield PuppyFavoriteSucceededAction(
           puppy: action.puppy.copyWith(isFavorite: action.isFavorite),
-          //isFavorite: action.isFavorite,
         );
         final puppy = await repository.favoritePuppy(action.puppy,
             isFavorite: action.isFavorite);
@@ -53,8 +48,10 @@ Epic<AppState> puppyFavoriteEpic(PuppiesRepository repository) => (actions,
             displayName: action.puppy.displayName,
           ),
         );
+        yield action.isFavorite
+            ? FavoriteCountIncrementAction()
+            : FavoriteCountDecrementAction();
       } catch (error) {
-        print(error);
         yield PuppyFavoriteSucceededAction(puppy: action.puppy);
         yield ErrorAction(error: error.toString());
       }

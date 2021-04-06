@@ -9,8 +9,9 @@ import '../redux/actions.dart';
 class HomeViewModel extends Equatable {
   const HomeViewModel({
     required this.items,
-    required this.onTapNavBar,
+    required this.favCount,
     required this.error,
+    required this.onTapNavBar,
   });
 
   factory HomeViewModel.from(Store<AppState> store) {
@@ -22,15 +23,17 @@ class HomeViewModel extends Equatable {
 
     return HomeViewModel(
       items: store.state.navigationState.items,
-      onTapNavBar: _onTapNavBar,
+      favCount: store.state.favoriteCount,
       error: store.state.error,
+      onTapNavBar: _onTapNavBar,
     );
   }
 
   final List<NavigationItem> items;
-  final Function(int) onTapNavBar;
+  final int favCount;
   final String error;
+  final Function(int) onTapNavBar;
 
   @override
-  List<Object> get props => [items, onTapNavBar, error];
+  List<Object> get props => [items, favCount, error, onTapNavBar];
 }

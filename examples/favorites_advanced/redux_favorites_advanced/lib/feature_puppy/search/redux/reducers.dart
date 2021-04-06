@@ -25,10 +25,8 @@ List<Puppy>? puppiesFetchSucceededReducer(
     action.puppies;
 
 List<Puppy>? extraDetailsFetchSucceededReducer(
-    List<Puppy>? puppies, ExtraDetailsFetchSucceededAction action) {
-  print(action.puppies);
-  return puppies!.mergeWith(action.puppies!);
-}
+        List<Puppy>? puppies, ExtraDetailsFetchSucceededAction action) =>
+    puppies!.mergeWith(action.puppies!);
 
 List<Puppy>? puppyFavoriteSucceededReducer(
         List<Puppy>? puppies, PuppyFavoriteSucceededAction action) =>
