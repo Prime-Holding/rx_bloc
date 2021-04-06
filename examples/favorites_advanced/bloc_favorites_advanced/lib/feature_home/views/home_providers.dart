@@ -6,6 +6,11 @@ List<BlocProvider> _getProviders() => [
           Provider.of(context, listen: false),
         ),
       ),
+      BlocProvider<FavoritePuppiesBloc>(
+        create: (context) => FavoritePuppiesBloc(
+          Provider.of(context, listen: false),
+        ),
+      ),
       // BlocProvider<PuppyListBloc>(
       //   create: (context) => PuppyListBloc(PuppiesRepository(
       //     ImagePicker(),

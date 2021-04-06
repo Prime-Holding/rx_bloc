@@ -1,4 +1,6 @@
-import 'file:///C:/Users/admin-pc/Desktop/Android_programming/rx_bloc_repo/rx_bloc/examples/favorites_advanced/bloc_favorites_advanced/lib/feature_puppy/favorites/views/favorites_page.dart';
+import 'package:badges/badges.dart';
+import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
+import 'package:bloc_sample/feature_puppy/favorites/views/favorites_page.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/views/search_page.dart';
 import 'package:favorites_advanced_base/core.dart';
@@ -11,7 +13,6 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 part 'home_providers.dart';
@@ -20,9 +21,9 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static Widget page() => MultiBlocProvider(
-    providers: _getProviders(),
-    child: const HomePage(),
-  );
+        providers: _getProviders(),
+        child: const HomePage(),
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -77,6 +78,24 @@ class HomePage extends StatelessWidget {
 }
 
 extension NavigationItemToWidget on NavigationItem {
-  Widget? asWidget() => type.asIcon();
-// type == NavigationItemType.favorites ? type.asIcon() : type.asIcon();
+  Widget? asWidget() => type == NavigationItemType.favorites
+      ? BlocBuilder<FavoritePuppiesBloc, FavoritePuppiesState>(
+          builder: (context, state) =>
+              state.favoritePuppies!.isEmpty
+                  ? type.asIcon()!
+                  : Badge(
+                      padding: const EdgeInsets.all(3),
+                      badgeContent: Text(
+                        state.favoritePuppies!.length.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                      badgeColor: Colors.transparent,
+                      elevation: 0,
+                      child: type.asIcon(),
+                    ),
+        )
+      : type.asIcon();
 }

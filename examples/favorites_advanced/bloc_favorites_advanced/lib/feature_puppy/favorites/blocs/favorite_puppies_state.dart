@@ -1,6 +1,13 @@
 part of 'favorite_puppies_bloc.dart';
 
 @immutable
-abstract class FavoritePuppiesState {}
+class FavoritePuppiesState {
+  const FavoritePuppiesState({
+    required this.favoritePuppies,
+  });
 
-class FavoritePuppiesInitial extends FavoritePuppiesState {}
+  final List<Puppy>? favoritePuppies;
+
+  // @override
+  // List<Object?> get props => [favoritePuppies];
+}

@@ -1,3 +1,4 @@
+import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
@@ -19,21 +20,21 @@ class SearchPage extends StatelessWidget {
           // },
           key: const Key(Keys.puppySearchPage),
           builder: (context, state) {
-            print('BlocBuilder builder: ${state.status}');
+            // print('BlocBuilder builder: ${state.status}');
             switch (state.status) {
               case PuppyListStatus.initial:
-                return puppyListStatusInitial(context);
+                return _buildPuppyListStatusInitial(context);
               case PuppyListStatus.failure:
-                return puppyListStatusFailure();
+                return _buildPuppyListStatusFailure();
               case PuppyListStatus.success:
               case PuppyListStatus.reloading:
-                return puppyListStatusReloading(context, state);
+                return _buildPuppyListStatusReloading(context, state);
               default:
-                return puppyListStatusFailure();
+                return _buildPuppyListStatusFailure();
             }
           });
 
-  RefreshIndicator puppyListStatusReloading(
+  RefreshIndicator _buildPuppyListStatusReloading(
           BuildContext context, PuppyListState state) =>
       RefreshIndicator(
         onRefresh: () {
@@ -46,7 +47,7 @@ class SearchPage extends StatelessWidget {
               itemCount: state.searchedPuppies!.length,
               itemBuilder: (context, index) {
                 final item = state.searchedPuppies![index];
-                print('PuppyListStatus  : ${state.status}');
+                // print('PuppyListStatus  : ${state.status}');
                 return PuppyCard(
                   key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                   onVisible: (puppy) => context
@@ -54,69 +55,23 @@ class SearchPage extends StatelessWidget {
                       .add(PuppyFetchExtraDetailsEvent(puppy: puppy)),
                   puppy: item,
                   onCardPressed: (puppy) {},
-                  onFavorite: (puppy, isFavorite) {},
+                  // When we click the favorite_border icon we receive
+                  // isFavorite true
+                  onFavorite: (puppy, isFavorite) => context
+                      .read<FavoritePuppiesBloc>()
+                      .add(MarkAsFavoriteEvent(
+                          puppy: puppy, isFavorite: isFavorite)),
                 );
               }),
         ),
       );
 
-  // RefreshIndicator puppyListStatusSuccess(
-  //         BuildContext context, PuppyListState state) =>
-  //     RefreshIndicator(
-  //       onRefresh: () {
-  //         context.read<PuppyListBloc>().add(ReloadPuppiesEvent());
-  //         return Future.delayed(const Duration(seconds: 1));
-  //       },
-  //       child: SafeArea(
-  //         child: ListView.builder(
-  //           padding: const EdgeInsets.only(bottom: 67),
-  //           itemCount: state.searchedPuppies!.length,
-  //           itemBuilder: (context, index) {
-  //             final item = state.searchedPuppies![index];
-  //             print('PuppyListStatus.success');
-  //
-  //             return PuppyCard(
-  //               key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
-  //               puppy: item,
-  //               onCardPressed: (puppy) {},
-  //               onFavorite: (puppy, isFavorite) {},
-  //             );
-  //           },
-  //         ),
-  //       ),
-  //     );
-
-  // RefreshIndicator puppyListAllFetched(
-  //     BuildContext context, PuppyListState state) => RefreshIndicator(
-  //     onRefresh: () {
-  //       context.read<PuppyListBloc>().add(ReloadPuppiesEvent());
-  //       return Future.delayed(const Duration(seconds: 1));
-  //     },
-  //     child: SafeArea(
-  //       child: ListView.builder(
-  //         padding: const EdgeInsets.only(bottom: 67),
-  //         itemCount: state.searchedPuppies!.length,
-  //         itemBuilder: (context, index) {
-  //           final item = state.searchedPuppies![index];
-  //
-  //           return PuppyCard(
-  //             key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
-  //             // onVisible: null,
-  //             puppy: item,
-  //             onCardPressed: (puppy) {},
-  //             onFavorite: (puppy, isFavorite) {},
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-
-  Center puppyListStatusFailure() =>
+  Center _buildPuppyListStatusFailure() =>
       const Center(child: Text('failed to fetch puppies'));
 
 // create error retry widget
 
-  LoadingWidget puppyListStatusInitial(BuildContext context) {
+  LoadingWidget _buildPuppyListStatusInitial(BuildContext context) {
     context.read<PuppyListBloc>().add(LoadPuppyListEvent());
     return LoadingWidget(
       key: const Key('LoadingWidget'),
