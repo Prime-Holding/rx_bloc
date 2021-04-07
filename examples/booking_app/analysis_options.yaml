@@ -147,14 +147,4 @@ linter:
 analyzer:
   exclude:
     - lib/base/routers/router.gr.dart
-    - lib/feature_home/blocs/navigation_bar_bloc.rxb.g.dart
-    - lib/feature_puppy/blocs/puppies_extra_details_bloc.rxb.g.dart
-    - lib/feature_puppy/blocs/puppies_extra_details_bloc.rxb.g.dart
-    - lib/feature_puppy/details/blocs/puppy_manage_bloc.rxb.g.dart
-    - lib/feature_puppy/favorites/blocs/favorite_puppies_bloc.rxb.g.dart
-    - lib/feature_puppy/blocs/puppy_manage_bloc.rxb.g.dart
-    - test/feature_puppy/blocs/puppy_manage_bloc_test.mocks.dart
-    - test/feature_puppy/details/blocs/puppy_details_bloc_test.mocks.dart
-    - test/feature_puppy/search/blocs/puppy_list_bloc_test.mocks.dart
-    - test/feature_puppy/blocs/puppies_extra_details_bloc_test.mocks.dart
-
+    - test/feature_hotel/search/blocs/hotel_list_bloc_test.mocks.dart

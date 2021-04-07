@@ -1,9 +1,6 @@
 import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/src/common_ui_components/skeleton_text.dart';
 import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import 'hotel_header.dart';
@@ -18,7 +15,6 @@ class HotelListItem extends StatelessWidget {
   final OnFavorite _onFavorite;
   final Function(Hotel hotel)? _onVisible;
   final Function(Hotel hotel) _onCardPressed;
-  final double _aspectRatio;
 
   const HotelListItem({
     required this.hotel,
@@ -31,7 +27,6 @@ class HotelListItem extends StatelessWidget {
   })  : _onFavorite = onFavorite,
         _onVisible = onVisible,
         _onCardPressed = onCardPressed,
-        _aspectRatio = aspectRatio,
         super(key: key);
 
   @override

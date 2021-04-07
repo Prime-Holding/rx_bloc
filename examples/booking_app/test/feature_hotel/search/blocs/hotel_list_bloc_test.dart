@@ -6,7 +6,6 @@ import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.d
 import 'package:favorites_advanced_base/models.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:quiver/collection.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';

@@ -1,11 +1,7 @@
-import 'package:appbar_textfield/appbar_textfield.dart';
-import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-
 import '../../feature_home/blocs/navigation_bar_bloc.dart';
-import '../../feature_hotel/search/blocs/hotel_list_bloc.dart';
 
 class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override

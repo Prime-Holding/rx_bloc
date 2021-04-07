@@ -27,9 +27,7 @@ abstract class HotelManageStates {
 @RxBloc()
 class HotelManageBloc extends $HotelManageBloc {
   HotelManageBloc(PaginatedHotelsRepository hotelsRepository,
-      CoordinatorBlocType coordinatorBloc)
-      : _hotelsRepository = hotelsRepository,
-        _coordinatorBloc = coordinatorBloc {
+      CoordinatorBlocType coordinatorBloc) {
     //For a more detailed explanation reference this article:
     //https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde
     _$markAsFavoriteEvent
@@ -41,9 +39,6 @@ class HotelManageBloc extends $HotelManageBloc {
         .bind(_lastUpdatedHotel)
         .disposedBy(_compositeSubscription);
   }
-
-  final PaginatedHotelsRepository _hotelsRepository;
-  final CoordinatorBlocType _coordinatorBloc;
 
   final _lastUpdatedHotel = BehaviorSubject<Hotel>();
   final _favoriteHotelError = PublishSubject<Exception>();

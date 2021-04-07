@@ -1,6 +1,5 @@
 import 'package:booking_app/feature_hotel/search/blocs/hotel_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
-import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 

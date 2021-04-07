@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HotelCapacityPage extends StatefulWidget {
-  HotelCapacityPage({
+  const HotelCapacityPage({
     required this.onApplyPressed,
     this.roomCapacity,
     this.personCapacity,

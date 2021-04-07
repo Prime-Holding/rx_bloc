@@ -10,8 +10,8 @@ import 'package:provider/provider.dart';
 
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/hotels_app_bar.dart';
-import '../../feature_hotel/blocs/hotels_extra_details_bloc.dart';
 import '../../feature_hotel/blocs/hotel_manage_bloc.dart';
+import '../../feature_hotel/blocs/hotels_extra_details_bloc.dart';
 import '../../feature_hotel/favorites/blocs/favorite_hotels_bloc.dart';
 import '../../feature_hotel/favorites/views/favorites_page.dart';
 import '../../feature_hotel/search/views/search_page.dart';
