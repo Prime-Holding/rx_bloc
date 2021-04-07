@@ -1,9 +1,9 @@
 import 'package:favorites_advanced_base/src/utils/enums.dart';
 import 'package:favorites_advanced_base/src/utils/puppy_data_conversion.dart';
 
-part '../extensions/puppy_extensions.dart';
+import 'entity.dart';
 
-class Puppy {
+class Puppy implements Entity {
   final String id;
   final String name;
   final String breedCharacteristics;
@@ -30,6 +30,12 @@ class Puppy {
     this.gender = Gender.Male,
   });
 
+  /// Check whether the current entity has all needed extra details.
+  bool hasExtraDetails() =>
+      displayCharacteristics != null && displayName != null;
+
+  bool hasFullExtraDetails() => false;
+
   @override
   bool operator ==(Object other) {
     if (other is Puppy) {
@@ -45,6 +51,52 @@ class Puppy {
 
     return false;
   }
+
+  Puppy copyWith({
+    String? id,
+    String? name,
+    String? breedCharacteristics,
+    Gender? gender,
+    BreedType? breedType,
+    bool? isFavorite,
+    String? displayName,
+    String? displayCharacteristics,
+    String? asset,
+  }) =>
+      Puppy(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        breedCharacteristics: breedCharacteristics ?? this.breedCharacteristics,
+        asset: asset ?? this.asset,
+        isFavorite: isFavorite ?? this.isFavorite,
+        gender: gender ?? this.gender,
+        breedType: breedType ?? this.breedType,
+        displayName: displayName ?? this.displayName,
+        displayCharacteristics:
+            displayCharacteristics ?? this.displayCharacteristics,
+      );
+
+  Puppy copyWithPuppy(Puppy puppy) => Puppy(
+        id: puppy.id,
+        name: puppy.name,
+        breedCharacteristics: puppy.breedCharacteristics,
+        asset: puppy.asset,
+        isFavorite: puppy.isFavorite,
+        gender: puppy.gender,
+        breedType: puppy.breedType,
+        displayName: puppy.displayName ?? displayName,
+        displayCharacteristics:
+            puppy.displayCharacteristics ?? displayCharacteristics,
+      );
+
+  @override
+  T copyWithEntity<T extends Entity>(T entity) =>
+      copyWithPuppy(entity as Puppy) as T;
+
+  String get genderAsString => PuppyDataConversion.getGenderString(gender);
+
+  String? get breedTypeAsString =>
+      PuppyDataConversion.getBreedTypeString(breedType);
 
   @override
   int get hashCode => super.hashCode;

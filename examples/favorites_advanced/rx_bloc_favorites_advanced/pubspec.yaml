@@ -76,6 +76,10 @@ dependency_overrides:
     git:
       url: https://github.com/StanevPrime/Skeleton-Text.git
       ref: feature/null-safety
+  smooth_star_rating:
+    git:
+      url: https://github.com/bhavin-concetto/smoothratingbar.git
+      ref: dev
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
