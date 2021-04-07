@@ -1,3 +1,4 @@
+import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/src/models/hotel_search_filters.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,9 @@ class HotelsRepository {
               ))
           .toList();
     }
+
+    // Sort items before returning
+    copiedHotels = _sortHotels(copiedHotels, filters?.sortBy ?? SortBy.none);
 
     if (query == '') {
       return copiedHotels;
@@ -116,6 +120,29 @@ class HotelsRepository {
           [bool isNextYear = false]) =>
       DateTime(DateTime.now().year + (isNextYear ? 1 : 0), month, day);
 
+  static List<Hotel> _sortHotels(List<Hotel> hotels, SortBy sortType) {
+    // Sort by price
+    if (sortType == SortBy.priceAsc || sortType == SortBy.priceDesc) {
+      final desc = sortType == SortBy.priceDesc;
+      hotels.sort(
+        (h1, h2) => desc
+            ? h2.perNight.compareTo(h1.perNight)
+            : h1.perNight.compareTo(h2.perNight),
+      );
+    }
+
+    // Sort by distance
+    if (sortType == SortBy.distanceAsc || sortType == SortBy.distanceDesc) {
+      final desc = sortType == SortBy.distanceDesc;
+      hotels.sort(
+        (h1, h2) =>
+            desc ? h1.dist.compareTo(h2.dist) : h2.dist.compareTo(h1.dist),
+      );
+    }
+
+    return hotels;
+  }
+
   static List<Hotel> _generateEntities({required int multiplier}) =>
       List.generate(
               multiplier,
@@ -166,7 +193,7 @@ We speak your language!
       id: '1',
       title: 'Premier Inn Dubai International Airport',
       subTitle: '4 Stars',
-      dist: 123,
+      dist: 120,
       imagePath: 'assets/hotel_0.png',
       perNight: 100,
       rating: 4.3,
@@ -183,9 +210,9 @@ We speak your language!
       id: '2',
       title: 'Avani Deira Dubai Hotel',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 62,
       imagePath: 'assets/hotel_1.png',
-      perNight: 100,
+      perNight: 170,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -200,9 +227,9 @@ We speak your language!
       id: '3',
       title: 'Swissotel Al Ghurair',
       subTitle: '3 Stars',
-      dist: 123,
+      dist: 320,
       imagePath: 'assets/hotel_2.png',
-      perNight: 100,
+      perNight: 135,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -217,9 +244,9 @@ We speak your language!
       id: '4',
       title: 'Hyatt Place Dubai Jumeirah Residences',
       subTitle: '6 Stars',
-      dist: 123,
+      dist: 280,
       imagePath: 'assets/hotel_3.png',
-      perNight: 100,
+      perNight: 200,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -234,9 +261,9 @@ We speak your language!
       id: '5',
       title: 'Ramee Rose Hotel',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 125,
       imagePath: 'assets/hotel_4.png',
-      perNight: 100,
+      perNight: 150,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -251,9 +278,9 @@ We speak your language!
       id: '6',
       title: 'Atana Hotel',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 172,
       imagePath: 'assets/hotel_5.png',
-      perNight: 100,
+      perNight: 220,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -268,9 +295,9 @@ We speak your language!
       id: '7',
       title: 'Rove Healthcare City',
       subTitle: '6 Stars',
-      dist: 123,
+      dist: 88,
       imagePath: 'assets/hotel_6.png',
-      perNight: 100,
+      perNight: 140,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -285,9 +312,9 @@ We speak your language!
       id: '8',
       title: 'Rove Healthcare',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 165,
       imagePath: 'assets/hotel_7.png',
-      perNight: 100,
+      perNight: 85,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -302,9 +329,9 @@ We speak your language!
       id: '9',
       title: 'Millennium Airport Hotel Dubai',
       subTitle: '4 Stars',
-      dist: 123,
+      dist: 150,
       imagePath: 'assets/hotel_8.png',
-      perNight: 100,
+      perNight: 65,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -319,7 +346,7 @@ We speak your language!
       id: '10',
       title: 'Millennium Airport',
       subTitle: '6 Stars',
-      dist: 123,
+      dist: 98,
       imagePath: 'assets/hotel_9.png',
       perNight: 100,
       rating: 4.3,
@@ -336,9 +363,9 @@ We speak your language!
       id: '11',
       title: 'Millennium Airport Hotel Dubai',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 83,
       imagePath: 'assets/hotel_10.png',
-      perNight: 100,
+      perNight: 120,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -353,9 +380,9 @@ We speak your language!
       id: '12',
       title: 'Millennium Airport Hotel Dubai',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 137,
       imagePath: 'assets/hotel_11.png',
-      perNight: 100,
+      perNight: 70,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -370,9 +397,9 @@ We speak your language!
       id: '13',
       title: 'Millennium Airport Hotel Dubai',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 178,
       imagePath: 'assets/hotel_12.png',
-      perNight: 100,
+      perNight: 220,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -387,9 +414,9 @@ We speak your language!
       id: '14',
       title: 'Taj Dubai',
       subTitle: '6 Stars',
-      dist: 123,
+      dist: 283,
       imagePath: 'assets/hotel_13.png',
-      perNight: 100,
+      perNight: 80,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -404,9 +431,9 @@ We speak your language!
       id: '15',
       title: 'Rove Downtown Dubai',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 313,
       imagePath: 'assets/hotel_14.png',
-      perNight: 100,
+      perNight: 110,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -421,9 +448,9 @@ We speak your language!
       id: '16',
       title: 'Premier Inn Dubai Al Jaddaf',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 295,
       imagePath: 'assets/hotel_15.png',
-      perNight: 100,
+      perNight: 99,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -438,9 +465,9 @@ We speak your language!
       id: '17',
       title: 'Hyatt Place Dubai Al Rigga Residences',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 104,
       imagePath: 'assets/hotel_16.png',
-      perNight: 100,
+      perNight: 120,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -455,9 +482,9 @@ We speak your language!
       id: 'Hyatt Place Dubai Al Rigga Residences',
       title: '5 Stars',
       subTitle: 'Subtitle',
-      dist: 123,
+      dist: 192,
       imagePath: 'assets/hotel_17.png',
-      perNight: 100,
+      perNight: 150,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -472,9 +499,9 @@ We speak your language!
       id: '19',
       title: 'Hyatt Place Dubai Al Rigga Residences',
       subTitle: '5 Stars',
-      dist: 123,
+      dist: 380,
       imagePath: 'assets/hotel_18.png',
-      perNight: 100,
+      perNight: 79,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,
@@ -491,7 +518,7 @@ We speak your language!
       subTitle: '6 Stars',
       dist: 123,
       imagePath: 'assets/hotel_19.png',
-      perNight: 100,
+      perNight: 200,
       rating: 4.3,
       reviews: 34,
       isFavorite: false,

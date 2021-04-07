@@ -30,6 +30,9 @@ abstract class HotelListEvents {
   )
   void filterByCapacity({int roomCapacity = 0, int personCapacity = 0});
 
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: SortBy.none)
+  void sortBy({SortBy sort = SortBy.none});
+
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
     seed: _ReloadEventArgs(reset: true, fullReset: false),
@@ -51,6 +54,8 @@ abstract class HotelListStates {
 
   Stream<CapacityFilterData> get capacityFilterData;
 
+  Stream<SortBy> get sortedBy;
+
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
@@ -67,8 +72,9 @@ class HotelListBloc extends $HotelListBloc {
       _$reloadEvent.mapToPayload(
         query: _$filterByQueryEvent,
         dateRange: _$filterByDateRangeEvent,
-        advancedFilters: _$filterByCapacityEvent,
-      )
+        capacityFilters: _$filterByCapacityEvent,
+        sort: _$sortByEvent,
+      ),
     ])
         .startWith(_ReloadData.withInitial())
         .fetchHotels(repository, _hotels)
@@ -96,6 +102,9 @@ class HotelListBloc extends $HotelListBloc {
   @override
   Stream<CapacityFilterData> _mapToCapacityFilterDataState() =>
       _$filterByCapacityEvent.getData();
+
+  @override
+  Stream<SortBy> _mapToSortedByState() => _$sortByEvent.distinct();
 
   @override
   Future<void> get refreshDone async => _hotels.waitToLoad();

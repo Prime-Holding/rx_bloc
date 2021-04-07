@@ -1,20 +1,24 @@
 import 'package:booking_app/feature_hotel/search/blocs/hotel_list_bloc.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
-class FilterBar extends SliverPersistentHeaderDelegate {
-  @override
-  double get maxExtent => 52.0;
+class SortingBar extends SliverPersistentHeaderDelegate {
+  SortingBar({
+    this.onPressed,
+  });
+
+  final Function(HotelListBlocType, SortBy)? onPressed;
 
   @override
-  double get minExtent => 52.0;
+  double get maxExtent => 52;
 
   @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
+  double get minExtent => 52;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 
   @override
   Widget build(
@@ -33,7 +37,7 @@ class FilterBar extends SliverPersistentHeaderDelegate {
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
                       offset: const Offset(0, -2),
-                      blurRadius: 8.0),
+                      blurRadius: 8),
                 ],
               ),
             ),
@@ -47,7 +51,7 @@ class FilterBar extends SliverPersistentHeaderDelegate {
                 children: <Widget>[
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8),
                       child: RxBlocBuilder<HotelListBlocType, String>(
                         state: (bloc) => bloc.states.hotelsFound,
                         builder: (context, snapshot, bloc) => Text(
@@ -60,39 +64,25 @@ class FilterBar extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      focusColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      splashColor: Colors.grey.withOpacity(0.2),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(4.0),
-                      ),
-                      onTap: () {
-                        // FocusScope.of(context).requestFocus(FocusNode());
-                        // Navigator.push<dynamic>(
-                        //   context,
-                        //   MaterialPageRoute<dynamic>(
-                        //       builder: (BuildContext context) =>
-                        //           FiltersScreen(),
-                        //       fullscreenDialog: true),
-                        // );
+                  RxBlocBuilder<HotelListBlocType, SortBy>(
+                    state: (bloc) => bloc.states.sortedBy,
+                    builder: (context, sortByState, bloc) => FocusButton(
+                      onPressed: () {
+                        onPressed?.call(bloc, sortByState.data ?? SortBy.none);
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8),
                         child: Row(
                           children: <Widget>[
-                            Text(
-                              'Filter',
+                            const Text(
+                              'Sort',
                               style: TextStyle(
                                 fontWeight: FontWeight.w100,
                                 fontSize: 16,
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8),
                               child: Icon(
                                 Icons.sort,
                                 color: HotelAppTheme.buildLightTheme()

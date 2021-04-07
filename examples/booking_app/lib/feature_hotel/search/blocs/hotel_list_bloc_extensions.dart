@@ -63,7 +63,8 @@ extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
   Stream<_ReloadData> mapToPayload({
     required BehaviorSubject<String> query,
     required BehaviorSubject<DateTimeRange?> dateRange,
-    required BehaviorSubject<_FilterByCapacityEventArgs> advancedFilters,
+    required BehaviorSubject<_FilterByCapacityEventArgs> capacityFilters,
+    required BehaviorSubject<SortBy> sort,
     int skipCount = 1,
   }) =>
       skip(skipCount).map(
@@ -73,8 +74,9 @@ extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
           filters: HotelSearchFilters(
             dateRange: dateRange.value,
             query: query.value ?? '',
-            roomCapacity: advancedFilters.value!.roomCapacity,
-            personCapacity: advancedFilters.value!.personCapacity,
+            roomCapacity: capacityFilters.value!.roomCapacity,
+            personCapacity: capacityFilters.value!.personCapacity,
+            sortBy: sort.value!,
           ),
         ),
       );
@@ -87,20 +89,23 @@ extension _StringBehaviourSubjectExtensions on BehaviorSubject<String> {
 }
 
 extension _HotelListEventsUtils on HotelListBloc {
-  Stream<HotelSearchFilters> get _filters => Rx.combineLatest3(
+  Stream<HotelSearchFilters> get _filters => Rx.combineLatest4(
       _$filterByQueryEvent.delayInput(),
       _$filterByDateRangeEvent.distinct(),
       _$filterByCapacityEvent.distinct(),
+      _$sortByEvent.distinct(),
       (
         String query,
         DateTimeRange? dateRange,
         _FilterByCapacityEventArgs advancedFilters,
+        SortBy sortType,
       ) =>
           HotelSearchFilters(
             query: query,
             dateRange: dateRange,
             roomCapacity: advancedFilters.roomCapacity,
             personCapacity: advancedFilters.personCapacity,
+            sortBy: sortType,
           ));
 }
 
