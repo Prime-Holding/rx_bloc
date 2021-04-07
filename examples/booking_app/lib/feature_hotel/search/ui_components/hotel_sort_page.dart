@@ -1,4 +1,4 @@
-import 'package:booking_app/base/utils/enums.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 

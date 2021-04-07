@@ -1,5 +1,4 @@
 import 'package:booking_app/base/ui_components/sorting_bar.dart';
-import 'package:booking_app/base/utils/enums.dart';
 import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
@@ -62,26 +61,23 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 childCount: 1,
               ),
             ),
-            RxBlocBuilder<HotelListBlocType, SortBy>(
-              state: (bloc) => bloc.states.sortedBy,
-              builder: (context, sortByState, bloc) => SliverPersistentHeader(
-                pinned: true,
-                floating: true,
-                delegate: SortingBar(
-                  onPressed: () async {
-                    await Alert(
-                      context: context,
-                      title: 'Sort by',
-                      buttons: [],
-                      onWillPopActive: true,
-                      content: HotelSortPage(
-                        initialSelection: sortByState.data ?? SortBy.none,
-                        onApplyPressed: (sortBy) =>
-                            bloc.events.sortBy(sort: sortBy),
-                      ),
-                    ).show();
-                  },
-                ),
+            SliverPersistentHeader(
+              pinned: true,
+              floating: true,
+              delegate: SortingBar(
+                onPressed: (bloc, sortBy) async {
+                  await Alert(
+                    context: context,
+                    title: 'Sort by',
+                    buttons: [],
+                    onWillPopActive: true,
+                    content: HotelSortPage(
+                      initialSelection: sortBy,
+                      onApplyPressed: (sortBy) =>
+                          bloc.events.sortBy(sort: sortBy),
+                    ),
+                  ).show();
+                },
               ),
             ),
           ],

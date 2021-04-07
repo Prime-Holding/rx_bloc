@@ -47,6 +47,9 @@ abstract class $HotelListBloc extends RxBlocBase
   late final Stream<CapacityFilterData> _capacityFilterDataState =
       _mapToCapacityFilterDataState();
 
+  /// The state of [sortedBy] implemented in [_mapToSortedByState]
+  late final Stream<SortBy> _sortedByState = _mapToSortedByState();
+
   @override
   void filterByQuery(String query) => _$filterByQueryEvent.add(query);
 
@@ -73,9 +76,14 @@ abstract class $HotelListBloc extends RxBlocBase
   @override
   Stream<CapacityFilterData> get capacityFilterData => _capacityFilterDataState;
 
+  @override
+  Stream<SortBy> get sortedBy => _sortedByState;
+
   Stream<DateRangeFilterData> _mapToDateRangeFilterDataState();
 
   Stream<CapacityFilterData> _mapToCapacityFilterDataState();
+
+  Stream<SortBy> _mapToSortedByState();
 
   @override
   HotelListEvents get events => this;

@@ -9,7 +9,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
     this.onPressed,
   });
 
-  final VoidCallback? onPressed;
+  final Function(HotelListBlocType, SortBy)? onPressed;
 
   @override
   double get maxExtent => 52;
@@ -64,30 +64,33 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
-                  FocusButton(
-                    onPressed: () {
-                      onPressed?.call();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        children: <Widget>[
-                          const Text(
-                            'Sort',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
+                  RxBlocBuilder<HotelListBlocType, SortBy>(
+                    state: (bloc) => bloc.states.sortedBy,
+                    builder: (context, sortByState, bloc) => FocusButton(
+                      onPressed: () {
+                        onPressed?.call(bloc, sortByState.data ?? SortBy.none);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Row(
+                          children: <Widget>[
+                            const Text(
+                              'Sort',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w100,
+                                fontSize: 16,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(
-                              Icons.sort,
-                              color:
-                                  HotelAppTheme.buildLightTheme().primaryColor,
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Icon(
+                                Icons.sort,
+                                color: HotelAppTheme.buildLightTheme()
+                                    .primaryColor,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
