@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
 import '../../../base/repositories/paginated_hotels_repository.dart';
@@ -116,11 +117,7 @@ class HotelListBloc extends $HotelListBloc {
   Stream<String> get queryFilter => _$filterByQueryEvent;
 
   @override
-  Stream<String> get hotelsFound => _hotels.map(
-        (list) => (list.totalCount ?? 0) > 0
-            ? '${list.totalCount} hotels found'
-            : 'No hotels found',
-      );
+  Stream<String> get hotelsFound => _hotels.mapToHotelsFound().distinct();
 
   @override
   void dispose() {

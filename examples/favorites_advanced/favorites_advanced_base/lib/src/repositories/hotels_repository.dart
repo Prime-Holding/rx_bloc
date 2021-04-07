@@ -146,7 +146,7 @@ class HotelsRepository {
   static List<Hotel> _generateEntities({required int multiplier}) =>
       List.generate(
               multiplier,
-              (index) => [..._hotelsDB]
+              (index) => [...hotelsDB]
                   .map(
                     (hotel) => hotel.copyWith(
                       id: "$index-${hotel.id}",
@@ -188,7 +188,7 @@ We speak your language!
     'Family rooms',
     'Bar',
   ];
-  static final _hotelsDB = [
+  static final hotelsDB = [
     Hotel(
       id: '1',
       title: 'Premier Inn Dubai International Airport',
