@@ -143,7 +143,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       );
     }
 
-    return RxAnimatedListItem(
+    return AnimatedListItem(
       animationController: animationController,
       animation: animation,
       child: HotelListItem(
