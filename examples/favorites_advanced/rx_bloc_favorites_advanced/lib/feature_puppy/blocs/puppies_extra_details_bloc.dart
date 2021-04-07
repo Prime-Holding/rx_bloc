@@ -1,5 +1,6 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
@@ -18,7 +19,7 @@ abstract class PuppiesExtraDetailsStates {}
 class PuppiesExtraDetailsBloc extends $PuppiesExtraDetailsBloc {
   PuppiesExtraDetailsBloc(
     CoordinatorBlocType coordinatorBloc,
-    PuppiesRepository repository,
+    PaginatedPuppiesRepository repository,
   ) {
     // This event is emitted when a puppy entity becomes visible on the screen.
     _$fetchExtraDetailsEvent

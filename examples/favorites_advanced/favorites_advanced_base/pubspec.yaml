@@ -16,10 +16,25 @@ dependencies:
   connectivity: ^3.0.2
   image_picker: ^0.7.0
   collection: ^1.15.0-nullsafety.4
+  font_awesome_flutter: ^9.0.0
+  intl: ^0.17.0
+  smooth_star_rating: ^1.1.1
+  rflutter_alert: ^2.0.2
+  equatable: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+override_dependencies:
+  skeleton_text:
+    git:
+      url: https://github.com/StanevPrime/Skeleton-Text.git
+      ref: feature/null-safety
+  smooth_star_rating:
+    git:
+      url: https://github.com/bhavin-concetto/smoothratingbar.git
+      ref: dev
 
 
 # For information on the generic Dart part of this file, see the

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatelessWidget {
-  LoadingWidget({Key? key}) : super(key: key);
+  LoadingWidget({
+    this.alignment = Alignment.center,
+    Key? key,
+  }) : super(key: key);
+
+  final Alignment alignment;
 
   @override
-  Widget build(BuildContext context) => const Center(
-        child: CircularProgressIndicator(),
+  Widget build(BuildContext context) => Align(
+        alignment: alignment,
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: CircularProgressIndicator(),
+        ),
       );
 }
