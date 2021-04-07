@@ -21,7 +21,7 @@ class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? _searchAppBar(ctx, snapshot.data!)
           : AppBar(
               title: Text(
-                snapshot.hasData ? snapshot.data!.type.asTitle() : '',
+                snapshot.hasData ? snapshot.data!.type.asHotelTitle() : '',
               ),
               centerTitle: false,
             );
@@ -69,7 +69,7 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.search:
         return 'Book a hotel';
       case NavigationItemType.favorites:
-        return 'Favorites hotels';
+        return 'Favorite hotels';
     }
   }
 }

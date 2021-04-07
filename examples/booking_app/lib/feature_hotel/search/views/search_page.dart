@@ -68,7 +68,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 onPressed: (bloc, sortBy) async {
                   await Alert(
                     context: context,
-                    title: 'Sort by',
+                    title: 'Sort hotels by',
                     buttons: [],
                     onWillPopActive: true,
                     content: HotelSortPage(

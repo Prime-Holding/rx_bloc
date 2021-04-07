@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HotelSortPage extends StatefulWidget {
-  HotelSortPage({
+  const HotelSortPage({
     this.onApplyPressed,
     this.initialSelection = SortBy.none,
   });
@@ -48,41 +48,66 @@ class _HotelSortPageState extends State<HotelSortPage> {
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           children: [
-            _buildItem(name: 'Price descending', id: SortBy.priceDesc),
-            _buildItem(name: 'Price ascending', id: SortBy.priceAsc),
-            _buildItem(name: 'Distance descending', id: SortBy.distanceDesc),
-            _buildItem(name: 'Distance ascending', id: SortBy.distanceAsc),
+            _buildSortingRow(
+              label: 'Expensive',
+              highest: SortBy.priceDesc,
+              lowest: SortBy.priceAsc,
+            ),
+            _buildSortingRow(
+              label: 'Closest',
+              highest: SortBy.distanceDesc,
+              lowest: SortBy.distanceAsc,
+            ),
           ],
         ),
       );
 
+  Row _buildSortingRow({
+    required String label,
+    required SortBy highest,
+    required SortBy lowest,
+  }) =>
+      Row(
+        children: [
+          Expanded(child: Text(label)),
+          _buildItem(name: highest.displayString, id: highest),
+          _buildItem(name: lowest.displayString, id: lowest),
+        ],
+      );
+
   Widget _buildItem({required String name, required SortBy id}) => Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: GestureDetector(
           onTap: () {
             setState(() {
               selected = id;
             });
           },
-          child: Container(
-            height: 40,
-            decoration: BoxDecoration(
-              color: selected == id ? Colors.blue : Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                    color: selected == id ? Colors.white : Colors.blue,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
+          child: Chip(
+            labelStyle: ChipTheme.of(context)
+                .labelStyle
+                .copyWith(color: selected == id ? Colors.white : Colors.black),
+            label: Text(name),
+            backgroundColor:
+                selected == id ? Theme.of(context).accentColor : null,
           ),
         ),
       );
+}
+
+extension _SortByUtils on SortBy {
+  String get displayString {
+    switch (this) {
+      case SortBy.none:
+        return 'None';
+      case SortBy.priceAsc:
+        return 'last';
+      case SortBy.priceDesc:
+        return 'first';
+      case SortBy.distanceAsc:
+        return 'last';
+      case SortBy.distanceDesc:
+        return 'first';
+    }
+  }
 }
