@@ -21,37 +21,35 @@ class PuppyAnimatedListView extends StatelessWidget {
   final Stream<List<Puppy>> _puppyList;
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-        child: AnimatedStreamList<Puppy>(
-          streamList: _puppyList,
-          primary: true,
-          padding: const EdgeInsets.only(bottom: 67),
-          itemBuilder: (item, index, context, animation) => _createTile(
-            PuppyCard(
-              key: Key('${key.toString()}${item.id}'),
-              puppy: item,
-              onCardPressed: (item) => _onPuppyPressed?.call(item),
-              onFavorite: (puppy, isFavorite) =>
-                  RxBlocProvider.of<PuppyManageBlocType>(context)
-                      .events
-                      .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
-            ),
-            animation,
+  Widget build(BuildContext context) => AnimatedStreamList<Puppy>(
+        streamList: _puppyList,
+        primary: true,
+        padding: const EdgeInsets.only(bottom: 67),
+        itemBuilder: (item, index, context, animation) => _createTile(
+          PuppyCard(
+            key: Key('${key.toString()}${item.id}'),
+            puppy: item,
+            onCardPressed: (item) => _onPuppyPressed?.call(item),
+            onFavorite: (puppy, isFavorite) =>
+                RxBlocProvider.of<PuppyManageBlocType>(context)
+                    .events
+                    .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
           ),
-          itemRemovedBuilder: (item, index, context, animation) =>
-              _createRemovedTile(
-            PuppyCard(
-              key: Key('${key.toString()}${item.id}'),
-              puppy: item,
-              onFavorite: (_, isFavorite) {},
-              onCardPressed: (puppy) {},
-              onVisible: (puppy) => context
-                  .read<PuppiesExtraDetailsBlocType>()
-                  .events
-                  .fetchExtraDetails(puppy),
-            ),
-            animation,
+          animation,
+        ),
+        itemRemovedBuilder: (item, index, context, animation) =>
+            _createRemovedTile(
+          PuppyCard(
+            key: Key('${key.toString()}${item.id}'),
+            puppy: item,
+            onFavorite: (_, isFavorite) {},
+            onCardPressed: (puppy) {},
+            onVisible: (puppy) => context
+                .read<PuppiesExtraDetailsBlocType>()
+                .events
+                .fetchExtraDetails(puppy),
           ),
+          animation,
         ),
       );
 

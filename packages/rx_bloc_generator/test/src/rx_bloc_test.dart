@@ -109,25 +109,39 @@ abstract class $CounterBloc extends RxBlocBase
 
   /// Тhe [Subject] where events sink to by calling
   /// [withAnnotationAndPositional]
-  final _$withAnnotationAndPositionalEvent = BehaviorSubject.seeded(0);
+  final _$withAnnotationAndPositionalEvent = BehaviorSubject<int>.seeded(0);
 
   /// Тhe [Subject] where events sink to by calling
   /// [withAnnotationAnd2Positional]
-  final _$withAnnotationAnd2PositionalEvent = BehaviorSubject.seeded(
-      const _WithAnnotationAnd2PositionalEventArgs(1, 2));
+  final _$withAnnotationAnd2PositionalEvent =
+      BehaviorSubject<_WithAnnotationAnd2PositionalEventArgs>.seeded(
+          const _WithAnnotationAnd2PositionalEventArgs(1, 2));
 
   /// Тhe [Subject] where events sink to by calling
   /// [withSeededPositionalAndOptional]
-  final _$withSeededPositionalAndOptionalEvent = BehaviorSubject.seeded(
-      const _WithSeededPositionalAndOptionalEventArgs(1, 2));
+  final _$withSeededPositionalAndOptionalEvent =
+      BehaviorSubject<_WithSeededPositionalAndOptionalEventArgs>.seeded(
+          const _WithSeededPositionalAndOptionalEventArgs(1, 2));
+
+  /// Тhe [Subject] where events sink to by calling
+  /// [withSeededTwoPositionalOptionalDefaultNull]
+  final _$withSeededTwoPositionalOptionalDefaultNullEvent =
+      BehaviorSubject<_WithAnnotationAnd2PositionalEventArgs?>.seeded(null);
+
+  /// Тhe [Subject] where events sink to by calling
+  /// [withSeededTwoPositionalOptional]
+  final _$withSeededTwoPositionalOptionalEvent =
+      BehaviorSubject<_WithAnnotationAnd2PositionalEventArgs?>.seeded(
+          TestEnumParam.seed);
 
   /// Тhe [Subject] where events sink to by calling [withSeededPositionalEnum]
   final _$withSeededPositionalEnumEvent =
-      BehaviorSubject.seeded(TestEnumParam.seed);
+      BehaviorSubject<TestEnumParam>.seeded(TestEnumParam.seed);
 
   /// Тhe [Subject] where events sink to by calling [withSeeded2PositionalEnum]
-  final _$withSeeded2PositionalEnumEvent = BehaviorSubject.seeded(
-      const _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed));
+  final _$withSeeded2PositionalEnumEvent =
+      BehaviorSubject<_WithSeeded2PositionalEnumEventArgs>.seeded(
+          const _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed));
 
   /// The state of [isNotIgnored] implemented in [_mapToIsNotIgnoredState]
   late final Stream<bool> _isNotIgnoredState = _mapToIsNotIgnoredState();
@@ -245,6 +259,16 @@ abstract class $CounterBloc extends RxBlocBase
           .add(_WithSeededPositionalAndOptionalEventArgs(pp, op));
 
   @override
+  void withSeededTwoPositionalOptionalDefaultNull(
+          _WithAnnotationAnd2PositionalEventArgs? op) =>
+      _$withSeededTwoPositionalOptionalDefaultNullEvent.add(op);
+
+  @override
+  void withSeededTwoPositionalOptional(
+          _WithAnnotationAnd2PositionalEventArgs? op) =>
+      _$withSeededTwoPositionalOptionalEvent.add(op);
+
+  @override
   void withSeededPositionalEnum(TestEnumParam op) =>
       _$withSeededPositionalEnumEvent.add(op);
 
@@ -292,6 +316,8 @@ abstract class $CounterBloc extends RxBlocBase
     _$withAnnotationAndPositionalEvent.close();
     _$withAnnotationAnd2PositionalEvent.close();
     _$withSeededPositionalAndOptionalEvent.close();
+    _$withSeededTwoPositionalOptionalDefaultNullEvent.close();
+    _$withSeededTwoPositionalOptionalEvent.close();
     _$withSeededPositionalEnumEvent.close();
     _$withSeeded2PositionalEnumEvent.close();
     _compositeSubscription.dispose();
@@ -556,6 +582,22 @@ abstract class CounterBlocEvents {
     seed: _WithSeededPositionalAndOptionalEventArgs(1, 2),
   )
   void withSeededPositionalAndOptional(int pp, [int op]);
+
+  @RxBlocEvent(
+    type: RxBlocEventType.behaviour,
+    seed: null,
+  )
+  void withSeededTwoPositionalOptionalDefaultNull(
+    _WithAnnotationAnd2PositionalEventArgs? op,
+  );
+
+  @RxBlocEvent(
+    type: RxBlocEventType.behaviour,
+    seed: TestEnumParam.seed,
+  )
+  void withSeededTwoPositionalOptional(
+    _WithAnnotationAnd2PositionalEventArgs? op,
+  );
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
