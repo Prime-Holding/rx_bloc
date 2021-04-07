@@ -4,7 +4,10 @@ part of 'favorite_puppies_bloc.dart';
 abstract class FavoritePuppiesEvent {}
 
 class MarkAsFavoriteEvent extends FavoritePuppiesEvent {
-  MarkAsFavoriteEvent({required this.puppy, required this.isFavorite});
+  MarkAsFavoriteEvent({
+    required this.puppy,
+    required this.isFavorite,
+  });
 
   final Puppy puppy;
   final bool isFavorite;

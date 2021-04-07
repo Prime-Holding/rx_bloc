@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/repositories.dart';
@@ -14,38 +15,54 @@ part 'puppy_list_event.dart';
 part 'puppy_list_state.dart';
 
 class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
-  PuppyListBloc(this.repository)
+  PuppyListBloc(this._repository, this.favoritePuppiesBloc)
       : super(const PuppyListState(
           searchedPuppies: [],
           status: PuppyListStatus.initial,
-        ));
+        )) {
+    favoritePuppiesStateSubscription =
+        favoritePuppiesBloc.stream.listen((state) {
+      // print('STREAM _favoritePuppiesStateSubscription');
+      add(FavoritePuppiesUpdatedEvent(
+          favoritePuppies: favoritePuppiesBloc.state.favoritePuppies!));
+    });
+  }
 
-  PuppiesRepository repository;
+  final FavoritePuppiesBloc favoritePuppiesBloc;
+  final PuppiesRepository _repository;
   var allPuppies = <Puppy>[];
-  late var emptyPuppies = <Puppy>[];
+
+  late StreamSubscription favoritePuppiesStateSubscription;
+
+  @override
+  Future<void> close() {
+    favoritePuppiesStateSubscription.cancel();
+    return super.close();
+  }
 
   @override
   Stream<Transition<PuppyListEvent, PuppyListState>> transformEvents(
     Stream<PuppyListEvent> events,
     TransitionFunction<PuppyListEvent, PuppyListState> transitionFn,
-  ) => super.transformEvents(
-        Rx.merge([
-          events.doOnData((event) {
-            // print('-- Events: ${event.props}');
+  ) =>
+      super.transformEvents(
+          Rx.merge([
+            events.doOnData((event) {
+              // print('-- Events: ${event.props}');
+            }),
+            events
+                .whereType<PuppyFetchExtraDetailsEvent>()
+                .mapEventToList()
+                .distinct()
+                .doOnData((event) {
+              // print(
+              //     '-- PuppyListFetchExtraDetailsEvent: ${event
+              //         .filteredPuppies}');
+            }),
+          ]).distinct().doOnData((event) {
+            // print('-- MERGED stream : ${event.props}');
           }),
-          events
-              .whereType<PuppyFetchExtraDetailsEvent>()
-              .mapEventToList()
-              .distinct()
-              .doOnData((event) {
-             // print(
-             //     '-- PuppyListFetchExtraDetailsEvent: ${event
-             //         .filteredPuppies}');
-          }),
-        ]).distinct().doOnData((event) {
-          // print('-- MERGED stream : ${event.props}');
-        }),
-        transitionFn);
+          transitionFn);
 
   @override
   Stream<PuppyListState> mapEventToState(
@@ -63,12 +80,19 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
       }
       yield await _mapPuppyListFetchExtraDetailsEventToState(
           event.filteredPuppies, state);
+    } else if (event is FavoritePuppiesUpdatedEvent) {
+      yield _mapFavoritePuppyToState(event.favoritePuppies, state);
     }
+    // _favoritePuppiesBloc.state.favoritePuppies;
   }
+
+  PuppyListState _mapFavoritePuppyToState(
+      List<Puppy> puppyList, PuppyListState state) => PuppyListState(
+        searchedPuppies: allPuppies, status: PuppyListStatus.success);
 
   Future<PuppyListState> _mapPuppyListFetchExtraDetailsEventToState(
       List<Puppy> filteredPuppies, PuppyListState state) async {
-    final puppiesWithDetails = await repository.fetchFullEntities(
+    final puppiesWithDetails = await _repository.fetchFullEntities(
         filteredPuppies.map((element) => element.id).toList());
 
     allPuppies = allPuppies.mergeWith(puppiesWithDetails);
@@ -79,7 +103,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   Future<PuppyListState> _mapPuppiesFetchedToState(PuppyListState state) async {
     try {
-      final puppies = await repository.getPuppies(query: '');
+      final puppies = await _repository.getPuppies(query: '');
       allPuppies = puppies;
       return state.copyWith(
         searchedPuppies: allPuppies,
@@ -92,7 +116,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   Future<PuppyListState> _mapPuppiesReloadFetchToState(
       PuppyListState state) async {
-    allPuppies = await repository.getPuppies(query: '');
+    allPuppies = await _repository.getPuppies(query: '');
 
     return state.copyWith(
       searchedPuppies: allPuppies,

@@ -23,7 +23,19 @@ class PuppyFetchExtraDetailsEvent extends PuppyListEvent {
 class PuppyListFetchExtraDetailsEvent extends PuppyListEvent {
   PuppyListFetchExtraDetailsEvent({required this.filteredPuppies});
 
-  final List<Puppy> filteredPuppies ;
+  final List<Puppy> filteredPuppies;
+
   @override
   List<Object?> get props => [filteredPuppies];
+}
+
+class FavoritePuppiesUpdatedEvent extends PuppyListEvent {
+  FavoritePuppiesUpdatedEvent({
+    required this.favoritePuppies,
+  });
+
+  final List<Puppy> favoritePuppies;
+
+  @override
+  List<Object?> get props => [favoritePuppies];
 }
