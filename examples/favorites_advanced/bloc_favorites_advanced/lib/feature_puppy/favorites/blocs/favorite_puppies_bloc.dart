@@ -18,7 +18,7 @@ class FavoritePuppiesBloc
 
   PuppiesRepository puppiesRepository;
   var favoritePuppies = <Puppy>[];
-  // var favoritePuppy;
+
   @override
   Stream<FavoritePuppiesState> mapEventToState(
     FavoritePuppiesEvent event,
@@ -29,17 +29,10 @@ class FavoritePuppiesBloc
     if (event is MarkAsFavoriteEvent) {
       yield await _mapToFavoritesPuppies(event);
       // print('Favorite puppies state: ${state.favoritePuppies}');
-      // yield await _mapToFavoritePuppy(event);
     }
   }
 
-  // Future<FavoritePuppyState> _mapToFavoritePuppy(
-  //   MarkAsFavoriteEvent event,
-  // ) async {
-  //   var puppy = event.puppy;
-  //
-  //   return FavoritePuppyState(favoritePuppy: puppy);
-  // }
+
 
   Future<void> _getInitialFavoritePuppies() async {
     favoritePuppies = await puppiesRepository.getFavoritePuppies();
@@ -60,11 +53,21 @@ class FavoritePuppiesBloc
     );
     // favoritePuppy = updatedPuppy;
     if (isFavoriteNew) {
-      favoritePuppies.add(updatedPuppy);
+      if(!favoritePuppies.any((element) => element.id == updatedPuppy.id)) {
+        favoritePuppies.add(updatedPuppy);
+      }
     } else {
       favoritePuppies.removeWhere((element) => element.id == updatedPuppy.id);
       // favoritePuppies.remove(updatedPuppy);
     }
     return FavoritePuppiesState(favoritePuppies: favoritePuppies);
   }
+
+// Future<FavoritePuppyState> _mapToFavoritePuppy(
+//   MarkAsFavoriteEvent event,
+// ) async {
+//   var puppy = event.puppy;
+//
+//   return FavoritePuppyState(favoritePuppy: puppy);
+// }
 }

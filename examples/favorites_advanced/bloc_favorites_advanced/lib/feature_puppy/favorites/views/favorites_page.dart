@@ -12,7 +12,7 @@ class FavoritesPage extends StatelessWidget {
         key: const ValueKey(Keys.puppyFavoritesPage),
         builder: (context, state) => Center(
               child: Text(
-                state.favoritePuppies!.length.toString(),
+                state.favoritePuppies.length.toString(),
               ),
             ),
       );

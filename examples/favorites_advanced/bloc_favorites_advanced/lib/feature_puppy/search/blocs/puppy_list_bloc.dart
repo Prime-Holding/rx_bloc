@@ -17,14 +17,27 @@ part 'puppy_list_state.dart';
 class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   PuppyListBloc(this._repository, this.favoritePuppiesBloc)
       : super(const PuppyListState(
-          searchedPuppies: [],
-          status: PuppyListStatus.initial,
-        )) {
+    searchedPuppies: [],
+    status: PuppyListStatus.initial,
+  )) {
+    // favoritePuppiesStateSubscription =
+    // favoritePuppiesBloc.stream.doOnData((state) {
+    //   print('-------_____---------');
+    //   add(FavoritePuppiesUpdatedEvent(
+    //       favoritePuppies: state.favoritePuppies!));
+    // }).listen((event) => print('p'));
+
     favoritePuppiesStateSubscription =
         favoritePuppiesBloc.stream.listen((state) {
-      // print('STREAM _favoritePuppiesStateSubscription');
+
+      // if(state.favoritePuppies.isNotEmpty){
+      // print(
+      //     'STREAM Subscription: ${state.favoritePuppies}');
       add(FavoritePuppiesUpdatedEvent(
-          favoritePuppies: favoritePuppiesBloc.state.favoritePuppies!));
+          favoritePuppies: state.favoritePuppies));
+      // }else{
+      //   print('State list is empty');
+      // }
     });
   }
 
@@ -37,14 +50,14 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   @override
   Future<void> close() {
     favoritePuppiesStateSubscription.cancel();
+    print('StateSubscription.cancel()');
     return super.close();
   }
 
   @override
   Stream<Transition<PuppyListEvent, PuppyListState>> transformEvents(
-    Stream<PuppyListEvent> events,
-    TransitionFunction<PuppyListEvent, PuppyListState> transitionFn,
-  ) =>
+      Stream<PuppyListEvent> events,
+      TransitionFunction<PuppyListEvent, PuppyListState> transitionFn,) =>
       super.transformEvents(
           Rx.merge([
             events.doOnData((event) {
@@ -65,9 +78,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
           transitionFn);
 
   @override
-  Stream<PuppyListState> mapEventToState(
-    PuppyListEvent event,
-  ) async* {
+  Stream<PuppyListState> mapEventToState(PuppyListEvent event,) async* {
     // print('mapEventToState : ${event.toString()}');
     if (event is LoadPuppyListEvent) {
       yield await _mapPuppiesFetchedToState(state);
@@ -81,14 +92,19 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
       yield await _mapPuppyListFetchExtraDetailsEventToState(
           event.filteredPuppies, state);
     } else if (event is FavoritePuppiesUpdatedEvent) {
-      yield _mapFavoritePuppyToState(event.favoritePuppies, state);
+      yield _mapFavoritePuppiesToState(event.favoritePuppies, state);
     }
     // _favoritePuppiesBloc.state.favoritePuppies;
   }
 
-  PuppyListState _mapFavoritePuppyToState(
-      List<Puppy> puppyList, PuppyListState state) => PuppyListState(
+  PuppyListState _mapFavoritePuppiesToState(List<Puppy> puppyList,
+      PuppyListState state) {
+    // print('MapFavoritePuppiesToState list : $puppyList');
+
+    allPuppies = allPuppies.mergeWith(puppyList);
+    return PuppyListState(
         searchedPuppies: allPuppies, status: PuppyListStatus.success);
+  }
 
   Future<PuppyListState> _mapPuppyListFetchExtraDetailsEventToState(
       List<Puppy> filteredPuppies, PuppyListState state) async {
@@ -102,6 +118,13 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   }
 
   Future<PuppyListState> _mapPuppiesFetchedToState(PuppyListState state) async {
+    // favoritePuppiesStateSubscription =
+    //     favoritePuppiesBloc.stream.listen((state) {
+    //   print(
+    //       'STREAM Subscription: ${state.favoritePuppies}');
+    //   add(FavoritePuppiesUpdatedEvent(
+    //       favoritePuppies: favoritePuppiesBloc.state.favoritePuppies!));
+    // });
     try {
       final puppies = await _repository.getPuppies(query: '');
       allPuppies = puppies;
@@ -150,8 +173,9 @@ List<Puppy> puppiesTEST = [
 extension _PuppyEventToList on Stream<PuppyFetchExtraDetailsEvent> {
   Stream<PuppyListFetchExtraDetailsEvent> mapEventToList() =>
 // Get puppies only without extra details
-      bufferTime(const Duration(microseconds: 100)).map(
-        (puppyFetchList) => PuppyListFetchExtraDetailsEvent(
+  bufferTime(const Duration(microseconds: 100)).map(
+        (puppyFetchList) =>
+        PuppyListFetchExtraDetailsEvent(
           // Save the list of puppies to the new event and return the event
           filteredPuppies: puppyFetchList
               .map((puppyFetchEvent) => puppyFetchEvent.puppy)
@@ -159,5 +183,5 @@ extension _PuppyEventToList on Stream<PuppyFetchExtraDetailsEvent> {
               .where((puppy) => !puppy.hasExtraDetails())
               .toList(),
         ),
-      );
+  );
 }

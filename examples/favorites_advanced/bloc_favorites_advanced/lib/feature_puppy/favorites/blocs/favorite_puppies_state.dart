@@ -12,7 +12,7 @@ class FavoritePuppiesState extends Equatable {
     required this.favoritePuppies,
   });
 
-  final List<Puppy>? favoritePuppies;
+  final List<Puppy> favoritePuppies;
 
   FavoritePuppiesState copyWith({
     List<Puppy>? favoritePuppies,

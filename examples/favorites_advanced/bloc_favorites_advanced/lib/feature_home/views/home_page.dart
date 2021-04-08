@@ -80,11 +80,11 @@ class HomePage extends StatelessWidget {
 extension NavigationItemToWidget on NavigationItem {
   Widget? asWidget() => type == NavigationItemType.favorites
       ? BlocBuilder<FavoritePuppiesBloc, FavoritePuppiesState>(
-          builder: (context, state) => state.favoritePuppies!.isEmpty
+          builder: (context, state) => state.favoritePuppies.isEmpty
               ? type.asIcon()!
               : Badge(
                   padding: const EdgeInsets.all(3),
-                  badgeContent: Text(state.favoritePuppies!.length.toString(),
+                  badgeContent: Text(state.favoritePuppies.length.toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
