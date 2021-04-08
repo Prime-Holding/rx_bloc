@@ -1,11 +1,7 @@
-import 'package:appbar_textfield/appbar_textfield.dart';
-import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-
 import '../../feature_home/blocs/navigation_bar_bloc.dart';
-import '../../feature_hotel/search/blocs/hotel_list_bloc.dart';
 
 class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -21,7 +17,7 @@ class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? _searchAppBar(ctx, snapshot.data!)
           : AppBar(
               title: Text(
-                snapshot.hasData ? snapshot.data!.type.asTitle() : '',
+                snapshot.hasData ? snapshot.data!.type.asHotelTitle() : '',
               ),
               centerTitle: false,
             );
@@ -69,7 +65,7 @@ extension NavigationItemTypeTitle on NavigationItemType {
       case NavigationItemType.search:
         return 'Book a hotel';
       case NavigationItemType.favorites:
-        return 'Favorites hotels';
+        return 'Favorite hotels';
     }
   }
 }

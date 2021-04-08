@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:favorites_advanced_base/src/models/entity.dart';
 
-class Hotel implements Entity {
+// ignore: must_be_immutable
+class Hotel extends Equatable implements Entity {
   final String id;
   final String imagePath;
   final String title;
@@ -135,48 +137,20 @@ class Hotel implements Entity {
       displayDescription != null && displayFeatures != null;
 
   @override
-  bool operator ==(Object other) {
-    if (other is Hotel) {
-      return id == other.id &&
-          description == other.description &&
-          features == other.features &&
-          imagePath == other.imagePath &&
-          title == other.title &&
-          subTitle == other.subTitle &&
-          perNight == other.perNight &&
-          dist == other.dist &&
-          rating == other.rating &&
-          reviews == other.reviews &&
-          roomCapacity == other.roomCapacity &&
-          personCapacity == other.personCapacity &&
-          startWorkDate == other.startWorkDate &&
-          endWorkDate == other.endWorkDate &&
-          displayDist == other.displayDist &&
-          displayFeatures == other.displayFeatures &&
-          displayDescription == other.displayDescription;
-    }
-
-    return false;
-  }
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      imagePath.hashCode ^
-      title.hashCode ^
-      subTitle.hashCode ^
-      perNight.hashCode ^
-      dist.hashCode ^
-      rating.hashCode ^
-      reviews.hashCode ^
-      description.hashCode ^
-      features.hashCode ^
-      roomCapacity.hashCode ^
-      personCapacity.hashCode ^
-      startWorkDate.hashCode ^
-      endWorkDate.hashCode ^
-      displayDist.hashCode;
-
-  @override
-  String toString() => '{$id, $title, $subTitle, $perNight}';
+  List<Object?> get props => [
+        id,
+        imagePath,
+        title,
+        subTitle,
+        perNight,
+        dist,
+        rating,
+        reviews,
+        // description,
+        features,
+        roomCapacity,
+        personCapacity,
+        endWorkDate,
+        isFavorite
+      ];
 }

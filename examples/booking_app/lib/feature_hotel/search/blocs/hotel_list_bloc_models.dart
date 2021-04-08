@@ -1,6 +1,6 @@
 part of 'hotel_list_bloc.dart';
 
-class _ReloadData {
+class _ReloadData with EquatableMixin {
   _ReloadData({
     required this.reset,
     required this.filters,
@@ -18,23 +18,5 @@ class _ReloadData {
   final HotelSearchFilters filters;
 
   @override
-  bool operator ==(Object other) {
-    if (other is _ReloadData) {
-      return reset == other.reset &&
-          filters.query == other.filters.query &&
-          filters.dateRange == other.filters.dateRange &&
-          fullReset == other.fullReset;
-    }
-
-    return false;
-  }
-
-  @override
-  String toString() =>
-      '{reset: $reset, fullReset: $fullReset, query: ${filters.query}, '
-      'dateRange: ${filters.dateRange}';
-
-  @override
-  int get hashCode =>
-      reset.hashCode ^ fullReset.hashCode ^ filters.query.hashCode;
+  List<Object?> get props => [reset, filters, fullReset];
 }

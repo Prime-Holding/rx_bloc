@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import '../../core.dart';
@@ -39,6 +40,8 @@ class HotelHeader extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         fontSize: 22,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Container(
                       padding: _padding,
@@ -56,16 +59,16 @@ class HotelHeader extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 4,
-                          ),
+                          const SizedBox(width: 4),
                           if (hotel.displayDist != null)
                             Icon(
                               FontAwesomeIcons.mapMarkerAlt,
                               size: 12,
                               color: Theme.of(context).primaryColor,
                             ),
+                          const SizedBox(width: 4),
                           Expanded(
+                            flex: 2,
                             child: SkeletonText(
                               text: hotel.displayDist == null
                                   ? null

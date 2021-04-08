@@ -14,7 +14,6 @@ class HotelListItem extends StatelessWidget {
   final OnFavorite _onFavorite;
   final Function(Hotel hotel)? _onVisible;
   final Function(Hotel hotel) _onCardPressed;
-  final double _aspectRatio;
 
   const HotelListItem({
     required this.hotel,
@@ -27,7 +26,6 @@ class HotelListItem extends StatelessWidget {
   })  : _onFavorite = onFavorite,
         _onVisible = onVisible,
         _onCardPressed = onCardPressed,
-        _aspectRatio = aspectRatio,
         super(key: key);
 
   @override
@@ -47,7 +45,11 @@ class HotelListItem extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () => _onCardPressed(hotel),
-        child: HotelCard(hotel: hotel, onFavorite: _onFavorite),
+        child: HotelCard(
+          hotel: hotel,
+          onFavorite: _onFavorite,
+          padding: EdgeInsets.only(top: 4),
+        ),
       ),
     );
   }

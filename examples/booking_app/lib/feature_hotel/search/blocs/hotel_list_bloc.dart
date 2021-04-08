@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
 import '../../../base/repositories/paginated_hotels_repository.dart';
@@ -29,6 +30,9 @@ abstract class HotelListEvents {
     seed: _FilterByCapacityEventArgs(roomCapacity: 0, personCapacity: 0),
   )
   void filterByCapacity({int roomCapacity = 0, int personCapacity = 0});
+
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: SortBy.none)
+  void sortBy({SortBy sort = SortBy.none});
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
@@ -51,6 +55,8 @@ abstract class HotelListStates {
 
   Stream<CapacityFilterData> get capacityFilterData;
 
+  Stream<SortBy> get sortedBy;
+
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
@@ -67,8 +73,9 @@ class HotelListBloc extends $HotelListBloc {
       _$reloadEvent.mapToPayload(
         query: _$filterByQueryEvent,
         dateRange: _$filterByDateRangeEvent,
-        advancedFilters: _$filterByCapacityEvent,
-      )
+        capacityFilters: _$filterByCapacityEvent,
+        sort: _$sortByEvent,
+      ),
     ])
         .startWith(_ReloadData.withInitial())
         .fetchHotels(repository, _hotels)
@@ -98,6 +105,9 @@ class HotelListBloc extends $HotelListBloc {
       _$filterByCapacityEvent.getData();
 
   @override
+  Stream<SortBy> _mapToSortedByState() => _$sortByEvent.distinct();
+
+  @override
   Future<void> get refreshDone async => _hotels.waitToLoad();
 
   @override
@@ -107,11 +117,7 @@ class HotelListBloc extends $HotelListBloc {
   Stream<String> get queryFilter => _$filterByQueryEvent;
 
   @override
-  Stream<String> get hotelsFound => _hotels.map(
-        (list) => (list.totalCount ?? 0) > 0
-            ? '${list.totalCount} hotels found'
-            : 'No hotels found',
-      );
+  Stream<String> get hotelsFound => _hotels.mapToHotelsFound().distinct();
 
   @override
   void dispose() {

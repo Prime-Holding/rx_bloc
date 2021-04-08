@@ -2,7 +2,7 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 
 class ItemValueChooser extends StatefulWidget {
-  ItemValueChooser({
+  const ItemValueChooser({
     required this.initialValue,
     required this.onValueChanged,
     required this.title,
