@@ -46,7 +46,11 @@ class HotelListItem extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () => _onCardPressed(hotel),
-        child: HotelCard(hotel: hotel, onFavorite: _onFavorite),
+        child: HotelCard(
+          hotel: hotel,
+          onFavorite: _onFavorite,
+          padding: EdgeInsets.only(top: 4),
+        ),
       ),
     );
   }
