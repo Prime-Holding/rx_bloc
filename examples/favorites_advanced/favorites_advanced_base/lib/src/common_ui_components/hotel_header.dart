@@ -40,6 +40,8 @@ class HotelHeader extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         fontSize: 22,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Container(
                       padding: _padding,
@@ -57,9 +59,7 @@ class HotelHeader extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 4,
-                          ),
+                          const SizedBox(width: 4),
                           if (hotel.displayDist != null)
                             Icon(
                               FontAwesomeIcons.mapMarkerAlt,
@@ -67,7 +67,9 @@ class HotelHeader extends StatelessWidget {
                               color:
                                   HotelAppTheme.buildLightTheme().primaryColor,
                             ),
+                          const SizedBox(width: 4),
                           Expanded(
+                            flex: 2,
                             child: SkeletonText(
                               text: hotel.displayDist == null
                                   ? null
