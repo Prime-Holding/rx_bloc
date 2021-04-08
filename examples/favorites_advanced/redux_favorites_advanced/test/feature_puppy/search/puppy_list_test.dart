@@ -46,7 +46,7 @@ void main() {
 
       store.dispatch(PuppiesFetchRequestedAction());
 
-      verifyNever(repository.getPuppies());
+      verify(repository.getPuppies());
 
       //expectLater(actual, matcher)
 
