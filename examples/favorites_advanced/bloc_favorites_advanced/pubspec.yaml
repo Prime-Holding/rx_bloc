@@ -57,6 +57,10 @@ dependency_overrides:
     git:
       url: https://github.com/StanevPrime/appbar_textfield.git
       ref: null-safety
+  smooth_star_rating:
+    git:
+      url: https://github.com/bhavin-concetto/smoothratingbar.git
+      ref: dev
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
