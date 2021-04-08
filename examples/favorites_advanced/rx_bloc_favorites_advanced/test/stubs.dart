@@ -39,18 +39,14 @@ class Stub {
     isFavorite: true,
   );
 
-  static final puppies12 = [
-    puppy1,
-    puppy2,
-  ];
+  static final puppies12 = [puppy1, puppy2];
 
-  static final puppies23 = [
-    puppy2,
-    puppy3,
-  ];
+  static final puppies23 = [puppy2, puppy3];
 
   static final puppies123 = [puppy1, puppy2, puppy3];
+
   static final puppies123Test = [puppy1, puppy2, puppy3, puppyTest];
+
   static final puppies123TestUpdated = [
     puppy1,
     puppy2,

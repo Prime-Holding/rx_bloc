@@ -7,7 +7,7 @@ extension _StreamFetchExtraDetails on Stream<Puppy> {
   /// `Side effect`: Emmits an event to [CoordinatorBloc]
   /// once the details are fetched.
   Stream<List<Puppy>> fetchExtraDetails(
-    PuppiesRepository repository,
+    PaginatedPuppiesRepository repository,
     CoordinatorBlocType coordinatorBloc,
   ) =>
       // Collect puppies in 100 milliseconds buckets

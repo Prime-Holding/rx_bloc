@@ -18,11 +18,13 @@ import '../../models.dart';
 /// - [state] is the state of the BLoC that will be listened for changes. The
 /// state is a `Stream<PaginatedList<T>>` where T is the type of the data that
 /// is being paginated.
-/// - [builder] is the method which creates the child widget. Every time the
-/// state updates, this method is executed and the widget is rebuild. Inside the
-/// builder method you have access to the `BuildContext`,
-/// `AsyncSnapshot<PaginatedList<T>>` of the data that is being paginated and
-/// the `BLoC` that contains the listened state.
+/// - [buildSuccess] is a callback which is invoked when the [state] stream
+/// produces [PaginatedList] with non empty [PaginatedList.list] or all
+/// further data loads, such as next page loads.
+/// - [buildError] Callback which is invoked when the [state] stream produces
+/// [PaginatedList] where [PaginatedList.error] is not null.
+/// - [buildLoading] is a callback which is invoked when the [state] stream
+/// produces [PaginatedList] where [PaginatedList.isInitialLoading] is true.
 /// - [onBottomScrolled] is a callback that is executed once the end of the list
 /// is reached. This can be, for instance, used for fetching the next page of
 /// data.
@@ -32,7 +34,7 @@ import '../../models.dart';
 ///
 /// The [wrapperBuilder] method is a builder method with the intention of
 /// creating a wrapper widget around the child widget built using the main
-/// [builder] method. The wrapperBuilder method gives you access to the
+/// [buildSuccess] method. The wrapperBuilder method gives you access to the
 /// `BuildContext`, `BLoC` containing the state that is listened and the
 /// `Widget` that is build with the `builder` method. This method can be used
 /// for adding additional functionality or help in cases when the built child
@@ -60,7 +62,22 @@ import '../../models.dart';
 /// RxPaginatedBuilder<UserBlocType, User>(
 ///   state: (bloc) => bloc.states.paginatedUsers,
 ///   onBottomScrolled: (bloc) => bloc.events.loadNextPage(),
-///   builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
+///   buildSuccess: (context, list, bloc) => ListView.builder(
+///     itemBuilder: (context, index) {
+///       final user = list.getItem(index);
+///
+///       if (user == null) {
+///         return const YourProgressIndicator();
+///       }
+///
+///       return YourListTile(user: user);
+///     },
+///     itemCount: list.itemCount,
+///   ),
+///   buildLoading: (context, list, bloc) =>
+///     const YourProgressIndicator(),
+///   buildError: (context, list, bloc) =>
+///     YourErrorWidget(error: list.error!),
 /// );
 /// ```
 ///
@@ -82,18 +99,38 @@ import '../../models.dart';
 ///
 /// ```
 /// RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
-///   state: (bloc) => bloc.states.paginatedUsers,
-///   onBottomScrolled: (bloc) => bloc.events.loadNextPage(),
-///   builder: (context, snapshot, bloc) => _buildPaginatedList(snapshot),
-///   onRefresh: (bloc) async => bloc.events.refreshData();
-/// );
+///   state: (bloc) => bloc.states.paginatedList,
+///   onBottomScrolled: (bloc) => bloc.events.loadPage(),
+///   onRefresh: (bloc) async {
+///     bloc.events.loadPage(reset: true);
+///     return bloc.states.refreshDone;
+///   },
+///   buildSuccess: (context, list, bloc) => ListView.builder(
+///     itemBuilder: (context, index) {
+///       final user = list.getItem(index);
+///
+///       if (user == null) {
+///         return const YourProgressIndicator();
+///       }
+///
+///       return YourListTile(user: user);
+///     },
+///     itemCount: list.itemCount,
+///   ),
+///   buildLoading: (context, list, bloc) =>
+///     const YourProgressIndicator(),
+///   buildError: (context, list, bloc) =>
+///     YourErrorWidget(error: list.error!),
+/// )
 /// ```
 ///
 class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   /// RxPaginatedBuilder default constructor
   RxPaginatedBuilder({
     required this.state,
-    required this.builder,
+    required this.buildSuccess,
+    required this.buildError,
+    required this.buildLoading,
     required this.onBottomScrolled,
     this.wrapperBuilder,
     this.onScrolled,
@@ -108,8 +145,9 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   /// the pull-down to refresh feature.
   factory RxPaginatedBuilder.withRefreshIndicator({
     required Stream<PaginatedList<T>> Function(B) state,
-    required Widget Function(BuildContext, AsyncSnapshot<PaginatedList<T>>, B)
-        builder,
+    required Widget Function(BuildContext, PaginatedList<T>, B) buildSuccess,
+    required Widget Function(BuildContext, PaginatedList<T>, B) buildError,
+    required Widget Function(BuildContext, PaginatedList<T>?, B) buildLoading,
     required void Function(B) onBottomScrolled,
     required Future<void> Function(B) onRefresh,
     Function(bool)? onScrolled,
@@ -120,7 +158,9 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
       RxPaginatedBuilder(
         bloc: bloc,
         state: state,
-        builder: builder,
+        buildSuccess: buildSuccess,
+        buildLoading: buildLoading,
+        buildError: buildError,
         onBottomScrolled: onBottomScrolled,
         onScrolled: onScrolled,
         scrollThreshold: scrollThreshold,
@@ -131,13 +171,18 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
         ),
       );
 
-  /// Builder method which is triggered each time when new data has been fetched
-  /// and should return a widget as result.
-  ///
-  /// The [builder] method providers a [BuildContext], the [AsyncSnapshot] data
-  /// containing a [PaginatedList] of items and the BLoC.
-  final Widget Function(BuildContext, AsyncSnapshot<PaginatedList<T>>, B)
-      builder;
+  /// Callback which is invoked when the [state] stream produces [PaginatedList]
+  /// with non empty [PaginatedList.list] or all further data loads, such as
+  /// next page loads.
+  final Widget Function(BuildContext, PaginatedList<T>, B) buildSuccess;
+
+  /// Callback which is invoked when the [state] stream produces [PaginatedList]
+  /// where [PaginatedList.error] is not null.
+  final Widget Function(BuildContext, PaginatedList<T>, B) buildError;
+
+  /// Callback which is invoked when the [state] stream produces [PaginatedList]
+  /// where [PaginatedList.isInitialLoading] is true.
+  final Widget Function(BuildContext, PaginatedList<T>?, B) buildLoading;
 
   /// The state of the BLoC to listen to for changes in data. The state is
   /// represented as a [Stream] of [PaginatedList], which contains individual
@@ -150,10 +195,10 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   final void Function(B) onBottomScrolled;
 
   /// Optional builder method that is intended for creation of a wrapper widget
-  /// on top of the widget built using the [builder] method. This can be handy
-  /// when implementing onRefresh or any other features requiring the widget
-  /// beforehand (for example for building a [RefreshIndicator] around the
-  /// widget).
+  /// on top of the widget built using the [buildSuccess] method.
+  /// This can be handy when implementing onRefresh or any other features
+  /// requiring the widget beforehand (for example for building a
+  /// [RefreshIndicator] around the widget).
   ///
   /// The [wrapperBuilder] method provides a [BuildContext], the BLoC and the
   /// build childWidget.
@@ -194,12 +239,29 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
           bloc: bloc,
           state: widget.state,
           builder: (context, snapshot, bloc) {
-            final builtWidget = widget.builder(context, snapshot, bloc);
+            final buildChild = _buildChild(context, snapshot, bloc);
+
             if (widget.wrapperBuilder != null)
-              return widget.wrapperBuilder!.call(context, bloc, builtWidget);
-            return builtWidget;
+              return widget.wrapperBuilder!.call(context, bloc, buildChild);
+            return buildChild;
           }),
     );
+  }
+
+  Widget _buildChild(
+    BuildContext context,
+    AsyncSnapshot<PaginatedList<T>> snapshot,
+    B bloc,
+  ) {
+    if (!snapshot.hasData || snapshot.isInitialLoading) {
+      return widget.buildLoading(context, snapshot.data, bloc);
+    }
+
+    if (snapshot.hasPageError) {
+      return widget.buildError(context, snapshot.data!, bloc);
+    }
+
+    return widget.buildSuccess(context, snapshot.data!, bloc);
   }
 
   /// Callback executed once the user starts scrolling the portion of the screen

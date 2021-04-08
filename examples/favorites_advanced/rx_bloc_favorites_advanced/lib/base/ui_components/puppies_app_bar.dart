@@ -47,13 +47,13 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
         cursorColor: Colors.white,
         onBackPressed: () => RxBlocProvider.of<PuppyListBlocType>(context)
             .events
-            .filterPuppies(query: ''),
+            .filter(query: ''),
         onClearPressed: () => RxBlocProvider.of<PuppyListBlocType>(context)
             .events
-            .filterPuppies(query: ''),
+            .filter(query: ''),
         onChanged: (query) => RxBlocProvider.of<PuppyListBlocType>(context)
             .events
-            .filterPuppies(query: query),
+            .filter(query: query),
       );
 
   @override
