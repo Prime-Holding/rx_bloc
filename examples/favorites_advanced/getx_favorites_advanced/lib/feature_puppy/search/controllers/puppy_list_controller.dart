@@ -29,10 +29,7 @@ class PuppyListController extends GetxController with StateMixin {
   }
 
   void updatePuppiesWithExtraDetails(List<Puppy> puppiesToUpdate) {
-    puppiesToUpdate.toList().forEach((newPuppyData) {
-      final index = _puppies.indexWhere((puppy) => puppy.id == newPuppyData.id);
-      _puppies.replaceRange(index, index + 1, [newPuppyData]);
-    });
+    _puppies.mergeWith(puppiesToUpdate);
   }
 
   void onPuppyUpdated(List<Puppy> puppiesToUpdate) {
