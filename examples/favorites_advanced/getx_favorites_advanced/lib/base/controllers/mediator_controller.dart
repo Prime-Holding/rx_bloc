@@ -3,17 +3,16 @@ import 'package:get/get.dart';
 import 'package:favorites_advanced_base/core.dart';
 
 class MediatorController extends GetxController {
-  MediatorController();
 
-  final lastFetchedPuppiesLocal = <Puppy>[].obs;
-  final puppiesToChangeFavoriteStatus = <Puppy>[].obs;
+  final lastFetchedPuppies = <Puppy>[].obs;
+  final puppiesToUpdate = <Puppy>[].obs;
   final toClearFetchedExtraDetails = 0.obs;
 
-  void updatePuppiesWithExtraDetails(RxList<Puppy> lastFetchedPuppies) =>
-      lastFetchedPuppiesLocal.assignAll(lastFetchedPuppies);
+  void updatePuppiesWithExtraDetails(RxList<Puppy> newFetchedPuppies) =>
+      lastFetchedPuppies.assignAll(newFetchedPuppies);
 
-  void puppiesUpdated(List<Puppy> puppiesToUpdate) =>
-      puppiesToChangeFavoriteStatus.assignAll(puppiesToUpdate);
+  void puppiesUpdated(List<Puppy> updatedPuppies) =>
+      puppiesToUpdate.assignAll(updatedPuppies);
 
   void puppyUpdated(Puppy puppy) => puppiesUpdated([puppy]);
 

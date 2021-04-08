@@ -47,9 +47,9 @@ class FavoritePuppiesController extends GetxController with StateMixin {
   @override
   void onReady() {
     ever(
-        _mediatorController.puppiesToChangeFavoriteStatus,
+        _mediatorController.puppiesToUpdate,
             (_) => updateFavoritePuppies(
-            _mediatorController.puppiesToChangeFavoriteStatus));
+            _mediatorController.puppiesToUpdate));
     super.onReady();
   }
 }

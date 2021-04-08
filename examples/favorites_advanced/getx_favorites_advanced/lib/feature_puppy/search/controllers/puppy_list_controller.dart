@@ -16,6 +16,7 @@ class PuppyListController extends GetxController with StateMixin {
 
   @override
   Future<void> onInit() async {
+    change(_puppies, status: RxStatus.loading());
     await _initPuppies();
     super.onInit();
   }
@@ -43,7 +44,6 @@ class PuppyListController extends GetxController with StateMixin {
   }
 
   Future<void> _initPuppies() async {
-    change(_puppies, status: RxStatus.loading());
     try {
       final puppies = await _repository.getPuppies(query: '');
       _puppies.assignAll(puppies);
@@ -56,12 +56,12 @@ class PuppyListController extends GetxController with StateMixin {
 
   @override
   void onReady() {
-    ever(_mediatorController.lastFetchedPuppiesLocal, (_) {
+    ever(_mediatorController.lastFetchedPuppies, (_) {
       updatePuppiesWithExtraDetails(
-          _mediatorController.lastFetchedPuppiesLocal);
+          _mediatorController.lastFetchedPuppies);
     });
-    ever(_mediatorController.puppiesToChangeFavoriteStatus, (_) {
-      onPuppyUpdated(_mediatorController.puppiesToChangeFavoriteStatus);
+    ever(_mediatorController.puppiesToUpdate, (_) {
+      onPuppyUpdated(_mediatorController.puppiesToUpdate);
     });
     super.onReady();
   }

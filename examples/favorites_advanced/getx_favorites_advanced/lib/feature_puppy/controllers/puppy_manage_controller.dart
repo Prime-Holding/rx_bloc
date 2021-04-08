@@ -10,8 +10,6 @@ class PuppyManageController extends GetxController with StateMixin {
   final PuppiesRepository _repository;
   final MediatorController _mediatorController;
 
-  final puppyToUpdate = <Puppy>[].obs;
-
   Future<void> markAsFavorite(
       {required Puppy puppy, required bool isFavorite}) async {
     _mediatorController.puppyUpdated(puppy.copyWith(isFavorite: isFavorite));
