@@ -8,7 +8,7 @@ import 'package:favorites_advanced_base/src/models/puppy.dart' as _i2;
 import 'package:favorites_advanced_base/src/repositories/puppies_repository.dart'
     as _i4;
 import 'package:favorites_advanced_base/src/utils/enums.dart' as _i6;
-import 'package:image_picker_platform_interface/src/types/picked_file/unsupported.dart'
+import 'package:image_picker_platform_interface/src/types/picked_file/picked_file.dart'
     as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
