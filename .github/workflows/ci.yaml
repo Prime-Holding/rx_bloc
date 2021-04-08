@@ -19,10 +19,12 @@ jobs:
       matrix:
         folder:
           [
+            "examples/booking_app",
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
             "examples/favorites_advanced/getx_favorites_advanced",
+            "packages/rx_bloc_list",
           ]
       fail-fast: false
     runs-on: ubuntu-latest

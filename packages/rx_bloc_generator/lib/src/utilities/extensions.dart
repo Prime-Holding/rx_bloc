@@ -86,7 +86,8 @@ extension _EventMethodElement on MethodElement {
 
   /// Provides the stream type based on the [RxBlocEventType] annotation
   String get eventStreamType => isBehavior
-      ? _BlocEventStreamTypes.behavior + (hasSeedAnnotation ? '.seeded' : '')
+      ? _BlocEventStreamTypes.behavior +
+          (hasSeedAnnotation ? '<$publishSubjectGenericType>.seeded' : '')
       : _BlocEventStreamTypes.publish;
 
   /// Provides the first annotation as [ElementAnnotation] if exists

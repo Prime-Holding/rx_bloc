@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,16 +17,16 @@ import 'puppy_manage_bloc_test.mocks.dart';
   CoordinatorStates,
   CoordinatorEvents,
   CoordinatorBlocType,
-  PuppiesRepository,
+  PaginatedPuppiesRepository,
 ])
 void main() {
   late MockCoordinatorBlocType coordinatorMock;
-  late MockPuppiesRepository repositoryMock;
+  late MockPaginatedPuppiesRepository repositoryMock;
 
   setUp(() {
     coordinatorMock = MockCoordinatorBlocType();
     when(coordinatorMock.events).thenReturn(MockCoordinatorEvents());
-    repositoryMock = MockPuppiesRepository();
+    repositoryMock = MockPaginatedPuppiesRepository();
   });
 
   group('PuppyManageBloc edit puppy', () {

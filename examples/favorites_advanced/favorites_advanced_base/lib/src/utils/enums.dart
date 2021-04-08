@@ -29,3 +29,11 @@ enum BreedType {
   Chihuahua,
   DobermanPinscher,
 }
+
+enum SortBy {
+  none,
+  priceAsc,
+  priceDesc,
+  distanceAsc,
+  distanceDesc,
+}
