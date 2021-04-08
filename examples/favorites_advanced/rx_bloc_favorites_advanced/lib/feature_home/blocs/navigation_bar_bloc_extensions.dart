@@ -7,8 +7,10 @@ extension _Mapper on Stream<List<NavigationItem>> {
 
   /// Map to the selected [NavigationItem] based on [NavigationItem.isSelected]
   Stream<NavigationItem> get selected => map(
-        (items) =>
-            items.firstWhere((item) => item.isSelected, orElse: () => null),
+        (items) => items.firstWhere(
+          (item) => item.isSelected,
+          orElse: () => items.first,
+        ),
       );
 }
 
@@ -17,7 +19,7 @@ extension _ListenToUpdateItems on Stream<NavigationItemType> {
   StreamSubscription<List<NavigationItem>> updateItems(
     BehaviorSubject<List<NavigationItem>> items,
   ) =>
-      map((selectedItem) => items.value
+      map((selectedItem) => items.value!
           .map((item) => item.copyWith(isSelected: selectedItem == item.type))
           .toList()).bind(items);
 }

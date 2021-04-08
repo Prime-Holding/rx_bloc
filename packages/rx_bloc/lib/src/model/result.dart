@@ -55,9 +55,9 @@ class ResultSuccess<T> implements Result<T> {
     }
 
     // Compare list
-    if (other.data is List && data is List) {
+    if (other.data is List && other.data != null && data is List) {
       final data = this.data as List;
-      final otherData = other.data as List;
+      final otherData = other.data! as List;
 
       if (data.isEmpty && otherData.isEmpty) {
         return true;

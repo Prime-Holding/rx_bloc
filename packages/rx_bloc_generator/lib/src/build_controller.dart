@@ -3,32 +3,31 @@ part of rx_bloc_generator;
 /// Validates the main bloc file and provides the generator the needed data
 class _BuildController {
   _BuildController({
-    this.rxBlocClass,
-    this.eventClass,
-    this.stateClass,
-  })  : assert(rxBlocClass != null),
-        assert(eventClass != null),
-        assert(stateClass != null);
+    required this.rxBlocClass,
+    required this.eventClass,
+    required this.stateClass,
+  });
 
   final ClassElement rxBlocClass;
-  final ClassElement eventClass;
-  final ClassElement stateClass;
+  final ClassElement? eventClass;
+  final ClassElement? stateClass;
 
   String generate() {
     // Check for any broken rules
     _validate();
 
-    final String blocTypeClassName = '${rxBlocClass.displayName}Type';
-    final String blocClassName = '\$${rxBlocClass.displayName}';
-    final String eventClassName = eventClass.displayName;
-    final String stateClassName = stateClass.displayName;
-    final String blocFilePath = rxBlocClass.location.components.first;
-    final String mainBlocFileName =
+    final blocTypeClassName = '${rxBlocClass.displayName}Type';
+    final blocClassName = '\$${rxBlocClass.displayName}';
+    final eventClassName = eventClass!.displayName;
+    final stateClassName = stateClass!.displayName;
+    final blocFilePath = rxBlocClass.location?.components.first ?? '';
+    final mainBlocFileName =
         Uri.tryParse(blocFilePath, (blocFilePath.lastIndexOf('/') + 1))
-            ?.toString();
+                ?.toString() ??
+            '';
 
     /// The output buffer containing all the generated code
-    final StringBuffer _output = StringBuffer();
+    final _output = StringBuffer();
 
     <String>[
       /// .. part of '[rx_bloc_name]_bloc.dart'
@@ -48,20 +47,21 @@ class _BuildController {
         blocTypeClassName,
         eventClassName,
         stateClassName,
-        eventClass.methods,
-        stateClass.fields
+        eventClass!.methods,
+        stateClass!.fields
             // Skip @RxBlocIgnoreState() ignored states
             .where((FieldElement field) =>
                 field.getter is PropertyAccessorElement &&
-                (field.getter.metadata.isEmpty ||
+                field.getter != null &&
+                (field.getter!.metadata.isEmpty ||
                     !const TypeChecker.fromRuntime(RxBlocIgnoreState)
-                        .hasAnnotationOf(field.getter)))
+                        .hasAnnotationOf(field.getter!)))
             .toList(),
       ).build().toDartCodeString(),
 
       // class _[EventMethodName]EventArgs
       // ..._eventMethodsArgsClasses(),
-      ...eventClass.methods
+      ...eventClass!.methods
           .where((MethodElement method) => method.isUsingArgumentClass)
           .map((MethodElement method) {
         return _EventArgumentsClass(method).build().toDartCodeString();
@@ -81,14 +81,17 @@ class _BuildController {
     // Events class required
     if (eventClass == null) {
       throw _RxBlocGeneratorException(
-        _generateMissingClassError(eventClass.displayName, rxBlocClass.name),
+        _generateMissingClassError(
+          eventClass?.displayName ?? '',
+          rxBlocClass.name,
+        ),
       );
     }
 
     // Methods only - No fields should exist
-    eventClass.fields.forEach((field) {
+    eventClass!.fields.forEach((field) {
       throw _RxBlocGeneratorException(
-          '${eventClass.name} should contain methods only,'
+          '${eventClass!.name} should contain methods only,'
           ' while ${field.name} seems to be a field.');
     });
   }
@@ -97,17 +100,20 @@ class _BuildController {
     // States class required
     if (stateClass == null) {
       throw _RxBlocGeneratorException(
-        _generateMissingClassError(eventClass.displayName, rxBlocClass.name),
+        _generateMissingClassError(
+          eventClass?.displayName ?? '',
+          rxBlocClass.name,
+        ),
       );
     }
 
     // Fields only - No methods should exist
-    stateClass.methods.forEach((method) {
+    stateClass!.methods.forEach((method) {
       throw _RxBlocGeneratorException(
           'State ${method.name}should be defined using the get keyword.');
     });
 
-    stateClass.accessors.forEach((fieldElement) {
+    stateClass!.accessors.forEach((fieldElement) {
       if (!fieldElement.isAbstract) {
         final name = fieldElement.name.replaceAll('=', '');
         throw _RxBlocGeneratorException(

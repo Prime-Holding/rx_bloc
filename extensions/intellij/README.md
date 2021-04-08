@@ -14,7 +14,7 @@ You can find the plugin in the official IntelliJ and Android Studio marketplace:
 
 ### How to use
 
-Simply right click on the File Project view, go to `New -> RxBloc Class`, give it a name, select if you want to use some of the additional states and/or extensions, and click on `OK` to see all the boilerplate generated.
+Simply right click on the File Project view, go to `New -> RxBloc Class`, give it a name, select if you want to use some of the additional states, dedicated extensions file and if your version of the project supports null safety, and click on `OK` to see all the boilerplate generated.
 
 
 ### Post-installation steps

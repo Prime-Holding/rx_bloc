@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// [RxFieldException] handles updating reactive forms with an exception
 /// without loosing the field value
 ///
@@ -8,8 +6,8 @@ import 'package:flutter/foundation.dart';
 class RxFieldException<T> implements Exception {
   ///the default constructor, all members are required
   const RxFieldException({
-    @required this.error,
-    @required this.fieldValue,
+    required this.error,
+    required this.fieldValue,
   });
 
   ///The value the form should be updated with in case of error

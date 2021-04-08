@@ -4,12 +4,16 @@ import 'dart:async';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/dart/element/element.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:code_builder/code_builder.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:dart_style/dart_style.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen/source_gen.dart';
 import 'package:build/build.dart';
 import 'package:logging/logging.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 
 part 'src/rx_bloc_generator_for_annotation.dart';
 part 'src/build_controller.dart';

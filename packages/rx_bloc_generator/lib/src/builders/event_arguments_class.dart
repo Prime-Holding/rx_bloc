@@ -8,7 +8,7 @@ part of rx_bloc_generator;
 /// ..    final int argExample;
 /// .. }
 class _EventArgumentsClass implements _BuilderContract {
-  const _EventArgumentsClass(this.method) : assert(method != null);
+  const _EventArgumentsClass(this.method);
 
   final MethodElement method;
 
@@ -17,19 +17,17 @@ class _EventArgumentsClass implements _BuilderContract {
         (b) => b
           ..docs.addAll([
             '/// Helps providing the arguments in the [Subject.add] for',
-            '/// [${method.enclosingElement?.name ?? ''}.${method.name}] event'
+            '/// [${method.enclosingElement.name ?? ''}.${method.name}] event'
           ])
           ..name = '_${method.name.capitalize()}EventArgs'
           ..constructors.add(
             Constructor(
-              (b) => b
+              (builder) => builder
                 ..constant = true
-                ..optionalParameters.addAll(
-                  method.buildOptionalParameters(toThis: true),
-                )
                 ..requiredParameters.addAll(
-                  method.buildRequiredParameters(toThis: true),
-                ),
+                    method.parameters.whereRequired().clone(toThis: true))
+                ..optionalParameters.addAll(
+                    method.parameters.whereOptional().clone(toThis: true)),
             ),
           )
           ..fields.addAll(
@@ -37,9 +35,7 @@ class _EventArgumentsClass implements _BuilderContract {
               (ParameterElement parameter) => Field(
                 (b) => b
                   ..modifier = FieldModifier.final$
-                  ..type = refer(
-                    parameter.type.getDisplayString(withNullability: false),
-                  )
+                  ..type = refer(parameter.getTypeDisplayName())
                   ..name = parameter.name,
               ),
             ),

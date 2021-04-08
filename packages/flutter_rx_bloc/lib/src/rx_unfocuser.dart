@@ -31,19 +31,19 @@ import 'package:flutter/rendering.dart';
 ///  * [RenderParagraph] - A render object that displays a paragraph of text.
 class RxUnfocuser extends StatefulWidget {
   ///Default constructor
-  const RxUnfocuser({Key key, this.child}) : super(key: key);
+  const RxUnfocuser({Key? key, this.child}) : super(key: key);
 
   /// The widget below this widget in the tree.
   ///
   /// The hit test area depends on the size of this widget
-  final Widget child;
+  final Widget? child;
 
   @override
   _RxUnfocuserState createState() => _RxUnfocuserState();
 }
 
 class _RxUnfocuserState extends State<RxUnfocuser> {
-  RenderBox _lastRenderBox;
+  RenderBox? _lastRenderBox;
 
   @override
   Widget build(BuildContext context) => Listener(
@@ -104,7 +104,7 @@ class _RxUnfocuserState extends State<RxUnfocuser> {
 ///  * [RxForceUnfocuser] - used to force keyboard dismiss within an area
 class RxIgnoreUnfocuser extends SingleChildRenderObjectWidget {
   ///Default Constructor
-  const RxIgnoreUnfocuser({@required Widget child}) : super(child: child);
+  const RxIgnoreUnfocuser({required Widget child}) : super(child: child);
 
   @override
   RxIgnoreUnfocuserRenderBox createRenderObject(BuildContext context) =>
@@ -129,7 +129,7 @@ class RxIgnoreUnfocuser extends SingleChildRenderObjectWidget {
 ///  * [RxUnfocuser] - used to force keyboard dismiss within an area.
 class RxForceUnfocuser extends SingleChildRenderObjectWidget {
   ///Default Constructor
-  const RxForceUnfocuser({@required Widget child}) : super(child: child);
+  const RxForceUnfocuser({required Widget child}) : super(child: child);
 
   @override
   RxForceUnfocuserRenderBox createRenderObject(BuildContext context) =>

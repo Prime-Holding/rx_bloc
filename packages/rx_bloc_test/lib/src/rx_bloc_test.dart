@@ -35,11 +35,11 @@ import 'package:test/test.dart' as tester;
 @isTest
 void rxBlocTest<B extends RxBlocTypeBase, StateOutputType>(
   String message, {
-  @required Future<B> Function() build,
-  @required Stream<StateOutputType> Function(B) state,
-  Future<void> Function(B) act,
-  Iterable expect,
-  Duration wait,
+  required Future<B> Function() build,
+  required Stream<StateOutputType> Function(B) state,
+  Future<void> Function(B)? act,
+  Iterable? expect,
+  Duration? wait,
   int skip = 0,
 }) {
   FakeAsync().run((async) {

@@ -3,12 +3,12 @@ import 'package:skeleton_text/skeleton_text.dart';
 
 class SkeletonText extends StatelessWidget {
   const SkeletonText({
-    @required this.text,
-    @required this.height,
-    Key key,
+    required this.text,
+    required this.height,
+    Key? key,
   }) : super(key: key);
 
-  final String text;
+  final String? text;
   final double height;
 
   @override

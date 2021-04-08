@@ -5,7 +5,7 @@
 
     <description>
         <![CDATA[
-            RxBloc Library Tools for effectively creating reactive blocs. <br /><br />
+            <a href="https://pub.dev/packages/rx_bloc" target="_blank">RxBloc</a> Library Tools for effectively creating reactive blocs. <br /><br />
 
             By selecting New -> RxBloc Class the plugin will create the following files <br />
             <ul>

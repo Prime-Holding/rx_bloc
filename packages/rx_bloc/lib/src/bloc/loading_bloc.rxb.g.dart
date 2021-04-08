@@ -24,7 +24,7 @@ abstract class $LoadingBloc
 
   final _$setLoadingEvent = PublishSubject<bool>();
   @override
-  void setLoading({@required bool isLoading}) =>
+  void setLoading({required bool isLoading}) =>
       _$setLoadingEvent.add(isLoading);
 
   ///endregion setLoading
@@ -34,10 +34,10 @@ abstract class $LoadingBloc
   ///region States
 
   ///region isLoading
-  Stream<bool> _isLoadingState;
+  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   @override
-  Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
+  Stream<bool> get isLoading => _isLoadingState;
 
   Stream<bool> _mapToIsLoadingState();
 

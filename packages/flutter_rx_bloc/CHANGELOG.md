@@ -1,3 +1,6 @@
+## [2.0.0] - March 10, 2021
+* Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
+
 ## [1.2.1] - February 01, 2021
 * Fix static code analysis issues
 
