@@ -19,19 +19,19 @@ abstract class $PuppyListBloc extends RxBlocBase
     implements PuppyListEvents, PuppyListStates, PuppyListBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [filterPuppies]
-  final _$filterPuppiesEvent = BehaviorSubject.seeded('');
+  /// Тhe [Subject] where events sink to by calling [filter]
+  final _$filterEvent = BehaviorSubject<String>.seeded('');
 
-  /// Тhe [Subject] where events sink to by calling [reloadFavoritePuppies]
-  final _$reloadFavoritePuppiesEvent = BehaviorSubject.seeded(false);
-
-  @override
-  void filterPuppies({required String query}) =>
-      _$filterPuppiesEvent.add(query);
+  /// Тhe [Subject] where events sink to by calling [reload]
+  final _$reloadEvent = BehaviorSubject<_ReloadEventArgs>.seeded(
+      const _ReloadEventArgs(reset: true, fullReset: false));
 
   @override
-  void reloadFavoritePuppies({required bool silently}) =>
-      _$reloadFavoritePuppiesEvent.add(silently);
+  void filter({required String query}) => _$filterEvent.add(query);
+
+  @override
+  void reload({required bool reset, bool fullReset = false}) =>
+      _$reloadEvent.add(_ReloadEventArgs(reset: reset, fullReset: fullReset));
 
   @override
   PuppyListEvents get events => this;
@@ -41,9 +41,19 @@ abstract class $PuppyListBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$filterPuppiesEvent.close();
-    _$reloadFavoritePuppiesEvent.close();
+    _$filterEvent.close();
+    _$reloadEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [PuppyListEvents.reload] event
+class _ReloadEventArgs {
+  const _ReloadEventArgs({required this.reset, this.fullReset = false});
+
+  final bool reset;
+
+  final bool fullReset;
 }

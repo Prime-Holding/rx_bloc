@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:favorites_advanced_base/repositories.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:test/test.dart';
 
@@ -14,14 +14,14 @@ import 'puppies_extra_details_bloc_test.mocks.dart';
   CoordinatorEvents,
   CoordinatorStates,
   CoordinatorBlocType,
-  PuppiesRepository,
+  PaginatedPuppiesRepository,
 ])
 void main() {
   late MockCoordinatorBlocType coordinatorMock;
   late MockCoordinatorStates mockCoordinatorStates;
   late MockCoordinatorEvents mockCoordinatorEvents;
 
-  late MockPuppiesRepository repositoryMock;
+  late MockPaginatedPuppiesRepository repositoryMock;
   late PuppiesExtraDetailsBloc bloc;
 
   setUp(() {
@@ -32,7 +32,7 @@ void main() {
     when(coordinatorMock.states).thenReturn(mockCoordinatorStates);
     when(coordinatorMock.events).thenReturn(mockCoordinatorEvents);
 
-    repositoryMock = MockPuppiesRepository();
+    repositoryMock = MockPaginatedPuppiesRepository();
     bloc = PuppiesExtraDetailsBloc(coordinatorMock, repositoryMock);
   });
 

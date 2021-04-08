@@ -10,7 +10,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
   /// `Side effect`: once the puppy gets updated emmit an event to
   /// [CoordinatorBloc]
   Stream<Puppy> markPuppyAsFavorite(
-    PuppiesRepository puppiesRepository,
+    PaginatedPuppiesRepository puppiesRepository,
     PuppyManageBloc bloc,
   ) =>
       throttleTime(const Duration(milliseconds: 200))
@@ -46,7 +46,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
 }
 
 extension _PickImage on Stream<ImagePickerAction> {
-  Stream<String> pickImagePath(PuppiesRepository repository) =>
+  Stream<String> pickImagePath(PaginatedPuppiesRepository repository) =>
       switchMap((source) => repository.pickPuppyImage(source).asStream())
           .where((event) => event != null)
           .map((event) => event!.path);

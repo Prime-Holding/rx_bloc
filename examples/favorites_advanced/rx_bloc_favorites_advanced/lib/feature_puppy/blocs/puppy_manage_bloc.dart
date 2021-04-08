@@ -1,5 +1,6 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/validators/puppy_validator.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -51,7 +52,7 @@ abstract class PuppyManageStates {
 @RxBloc()
 class PuppyManageBloc extends $PuppyManageBloc {
   PuppyManageBloc(
-    PuppiesRepository puppiesRepository,
+    PaginatedPuppiesRepository puppiesRepository,
     CoordinatorBlocType coordinatorBloc, {
     PuppyValidator validator = const PuppyValidator(),
     Puppy? puppy,
@@ -74,7 +75,7 @@ class PuppyManageBloc extends $PuppyManageBloc {
   final Puppy? _puppy;
 
   final PuppyValidator _puppyValidator;
-  final PuppiesRepository _puppiesRepository;
+  final PaginatedPuppiesRepository _puppiesRepository;
   final CoordinatorBlocType _coordinatorBloc;
 
   final _lastUpdatedPuppy = BehaviorSubject<Puppy>();

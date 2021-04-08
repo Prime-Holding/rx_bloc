@@ -1,7 +1,13 @@
 class Keys {
-  static const puppyCardNamePrefix = 'PuppyCardItem';
-  static const puppyHomePage = 'PuppyHomePage';
-  static const puppySearchPage = 'PuppySearchPage';
-  static const puppyFavoritesPage = 'PuppyFavoritesPage';
-  static const puppyDetailsPage = 'PuppyDetailsPage';
+  static const hotelCardNamePrefix = 'HotelCardItem';
+  static const hotelHomePage = 'HotelHomePage';
+  static const hotelSearchPage = 'HotelSearchPage';
+  static const hotelFavoritesPage = 'HotelFavoritesPage';
+  static const hotelDetailsPage = 'HotelDetailsPage';
+
+  static const puppyCardNamePrefix = 'puppyCardItem';
+  static const puppyHomePage = 'puppyHomePage';
+  static const puppySearchPage = 'puppySearchPage';
+  static const puppyFavoritesPage = 'puppyFavoritesPage';
+  static const puppyDetailsPage = 'puppyDetailsPage';
 }
