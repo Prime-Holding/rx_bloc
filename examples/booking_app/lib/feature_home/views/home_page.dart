@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:booking_app/base/ui_components/favorite_message_listener.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/resources.dart';
@@ -10,8 +11,8 @@ import 'package:provider/provider.dart';
 
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/hotels_app_bar.dart';
-import '../../feature_hotel/blocs/hotels_extra_details_bloc.dart';
 import '../../feature_hotel/blocs/hotel_manage_bloc.dart';
+import '../../feature_hotel/blocs/hotels_extra_details_bloc.dart';
 import '../../feature_hotel/favorites/blocs/favorite_hotels_bloc.dart';
 import '../../feature_hotel/favorites/views/favorites_page.dart';
 import '../../feature_hotel/search/views/search_page.dart';
@@ -68,12 +69,14 @@ class HomePage extends StatelessWidget {
           builder: (context, snapshot, bloc) =>
               snapshot.build((navItems) => CurvedNavigationBar(
                     index: navItems.toCurrentIndex(),
-                    color: Colors.blueAccent,
+                    color: DesignSystemOptions.of(context)
+                        .colors
+                        .curvedNavigationBarColor,
                     backgroundColor: Colors.transparent,
                     items: navItems
                         .map((item) => Padding(
                               padding: const EdgeInsets.all(8),
-                              child: item.asWidget(),
+                              child: item.asWidget(context),
                             ))
                         .toList(),
                     onTap: (index) => bloc.events.selectPage(
@@ -98,25 +101,27 @@ class HomePage extends StatelessWidget {
 }
 
 extension NavigationItemToWitget on NavigationItem {
-  Widget? asWidget() => type == NavigationItemType.favorites
+  Widget? asWidget(BuildContext context) => type == NavigationItemType.favorites
       ? RxBlocBuilder<FavoriteHotelsBlocType, int>(
           state: (bloc) => bloc.states.count,
           builder: (ctx, snapshot, bloc) =>
               snapshot.hasData && snapshot.data! <= 0
-                  ? type.asIcon()!
+                  ? type.asIcon(context)!
                   : Badge(
                       padding: const EdgeInsets.all(3),
                       badgeContent: snapshot.build((count) => Text(
                             count.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: DesignSystemOptions.of(context)
+                                  .colors
+                                  .curvedNavigationIconColor,
                               fontSize: 12,
                             ),
                           )),
                       badgeColor: Colors.transparent,
                       elevation: 0,
-                      child: type.asIcon(),
+                      child: type.asIcon(context),
                     ),
         )
-      : type.asIcon();
+      : type.asIcon(context);
 }

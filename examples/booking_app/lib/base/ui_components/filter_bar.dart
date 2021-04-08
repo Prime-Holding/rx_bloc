@@ -1,8 +1,6 @@
 import 'package:booking_app/feature_hotel/search/blocs/hotel_list_bloc.dart';
-import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 class FilterBar extends SliverPersistentHeaderDelegate {
   @override
@@ -28,7 +26,7 @@ class FilterBar extends SliverPersistentHeaderDelegate {
             child: Container(
               height: 24,
               decoration: BoxDecoration(
-                color: HotelAppTheme.buildLightTheme().backgroundColor,
+                color: Theme.of(context).backgroundColor,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
@@ -39,7 +37,7 @@ class FilterBar extends SliverPersistentHeaderDelegate {
             ),
           ),
           Container(
-            color: HotelAppTheme.buildLightTheme().backgroundColor,
+            color: Theme.of(context).backgroundColor,
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
@@ -95,8 +93,7 @@ class FilterBar extends SliverPersistentHeaderDelegate {
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(
                                 Icons.sort,
-                                color: HotelAppTheme.buildLightTheme()
-                                    .primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ],

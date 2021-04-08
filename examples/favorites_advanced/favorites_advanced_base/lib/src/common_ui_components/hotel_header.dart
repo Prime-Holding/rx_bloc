@@ -19,7 +19,7 @@ class HotelHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: HotelAppTheme.buildLightTheme().backgroundColor,
+      color: Theme.of(context).backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +63,7 @@ class HotelHeader extends StatelessWidget {
                             Icon(
                               FontAwesomeIcons.mapMarkerAlt,
                               size: 12,
-                              color:
-                                  HotelAppTheme.buildLightTheme().primaryColor,
+                              color: Theme.of(context).primaryColor,
                             ),
                           Expanded(
                             child: SkeletonText(
@@ -90,10 +89,8 @@ class HotelHeader extends StatelessWidget {
                               starCount: 5,
                               rating: hotel.rating,
                               size: 20,
-                              color:
-                                  HotelAppTheme.buildLightTheme().primaryColor,
-                              borderColor:
-                                  HotelAppTheme.buildLightTheme().primaryColor,
+                              color: Theme.of(context).primaryColor,
+                              borderColor: Theme.of(context).primaryColor,
                             ),
                           Expanded(
                             child: SkeletonText(

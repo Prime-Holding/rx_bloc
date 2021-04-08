@@ -1,9 +1,5 @@
 import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/src/common_ui_components/skeleton_text.dart';
-import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import 'hotel_header.dart';
@@ -100,7 +96,7 @@ class HotelCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
                       hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: HotelAppTheme.buildLightTheme().primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),

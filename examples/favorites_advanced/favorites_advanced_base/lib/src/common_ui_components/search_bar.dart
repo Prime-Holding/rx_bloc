@@ -1,6 +1,4 @@
-import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({
@@ -20,7 +18,7 @@ class SearchBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 16, top: 16, bottom: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: HotelAppTheme.buildLightTheme().backgroundColor,
+                    color: Theme.of(context).backgroundColor,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(38.0),
                     ),
@@ -39,7 +37,7 @@ class SearchBar extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                       ),
-                      cursorColor: HotelAppTheme.buildLightTheme().primaryColor,
+                      cursorColor: Theme.of(context).primaryColor,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Dubai...',

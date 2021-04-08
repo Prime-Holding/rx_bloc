@@ -67,7 +67,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             ),
           ],
           body: Container(
-            color: HotelAppTheme.buildLightTheme().backgroundColor,
+            color: Theme.of(context).backgroundColor,
             child: RxPaginatedBuilder<HotelListBlocType,
                 Hotel>.withRefreshIndicator(
               onBottomScrolled: (bloc) => bloc.events.reload(reset: false),

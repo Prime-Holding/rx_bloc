@@ -1,6 +1,44 @@
 import 'package:flutter/material.dart';
 
+import 'design_system/design_system_color.dart';
+
 class HotelAppTheme {
+  static ThemeData buildTheme(DesignSystemColor designSystemColor) {
+    final colorSchemeTheme = designSystemColor.brightness == Brightness.light
+        ? ColorScheme.light()
+        : ColorScheme.dark();
+    final ColorScheme colorScheme = colorSchemeTheme.copyWith(
+      primary: designSystemColor.primaryColor,
+      secondary: designSystemColor.secondaryColor,
+    );
+
+    final ThemeData base = designSystemColor.brightness == Brightness.light
+        ? ThemeData.light()
+        : ThemeData.dark();
+
+    return base.copyWith(
+      colorScheme: colorScheme,
+      // primaryColor: primaryColor,
+      // buttonColor: primaryColor,
+      indicatorColor: designSystemColor.indicatorColor,
+      splashColor: designSystemColor.splashColor,
+      splashFactory: InkRipple.splashFactory,
+      // accentColor: secondaryColor,
+      canvasColor: designSystemColor.canvasColor,
+      backgroundColor: designSystemColor.backgroundColor,
+      scaffoldBackgroundColor: designSystemColor.scaffoldBackgroundColor,
+      errorColor: designSystemColor.errorColor,
+      buttonTheme: ButtonThemeData(
+        colorScheme: colorScheme,
+        textTheme: ButtonTextTheme.primary,
+      ),
+      textTheme: _buildTextTheme(base.textTheme),
+      primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
+      accentTextTheme: _buildTextTheme(base.accentTextTheme),
+      platform: TargetPlatform.iOS,
+    );
+  }
+
   static TextTheme _buildTextTheme(TextTheme base) {
     const String fontName = 'WorkSans';
     return base.copyWith(
