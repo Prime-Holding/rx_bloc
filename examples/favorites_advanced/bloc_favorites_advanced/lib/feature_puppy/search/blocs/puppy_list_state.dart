@@ -1,6 +1,6 @@
 part of 'puppy_list_bloc.dart';
 
-enum PuppyListStatus { initial,  success, failure, allFetched }
+enum PuppyListStatus { initial, reloading, success, failure, allFetched }
 
 @immutable
 class PuppyListState {
@@ -10,9 +10,9 @@ class PuppyListState {
   });
 
   factory PuppyListState.withInitial() => const PuppyListState(
-        searchedPuppies: [],
-        status: PuppyListStatus.initial,
-      );
+    searchedPuppies: [],
+    status: PuppyListStatus.initial,
+  );
 
   final List<Puppy>? searchedPuppies;
   final PuppyListStatus? status;
@@ -27,7 +27,6 @@ class PuppyListState {
         searchedPuppies: searchedPuppies ?? this.searchedPuppies,
         status: status ?? this.status,
       );
-  // @override
-  //   List<Object?> get props => [searchedPuppies];
+// @override
+//   List<Object?> get props => [searchedPuppies];
 }
-// error state

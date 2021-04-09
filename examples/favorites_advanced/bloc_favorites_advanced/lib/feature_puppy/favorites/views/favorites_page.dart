@@ -10,19 +10,10 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<FavoritePuppiesBloc, FavoritePuppiesState>(
         key: const ValueKey(Keys.puppyFavoritesPage),
-        builder: (context, state) {
-          if(state is FavoritePuppiesListState) {
-            return Center(
-              child: Text(
-                state.favoritePuppies.length.toString(),
-              ),
-            );
-          }
-          return const Center(
-            child: Text(
-              'Empty favorites list',
-            ),
-          );
-        }
+        builder: (context, state) => Center(
+          child: Text(
+            state.favoritePuppies.length.toString(),
+          ),
+        ),
       );
 }
