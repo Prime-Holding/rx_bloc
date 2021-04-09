@@ -1,4 +1,7 @@
 import 'package:favorites_advanced_base/models.dart';
+import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
+import 'package:redux_favorite_advanced_sample/feature_home/models/navigation_state.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
 
 class Stub {
   static final navigation = NavigationStub();
@@ -106,6 +109,12 @@ class Stub {
     puppy2.copyWith(breedCharacteristics: '2', displayName: '2')
   ];
 
+  static final puppies123ExtraDetails = [
+    puppy1.copyWith(displayName: puppy1.name, displayCharacteristics: '1'),
+    puppy2.copyWith(displayName: puppy2.name, displayCharacteristics: '2'),
+    puppy3.copyWith(displayName: puppy3.name, displayCharacteristics: '3'),
+  ];
+
   static final expectedGenderAndBreed0 =
       '${Stub.puppiesWithDetails[2].genderAsString}, '
       '${Stub.puppiesWithDetails[2].breedTypeAsString}';
@@ -115,26 +124,61 @@ class Stub {
       '${PuppyDataConversion.getBreedTypeString(BreedType.Akita)}';
 }
 
-class NavigationStub {
-  final searchTitle = 'Search for Puppies';
-  final favoritesTitle = 'Favorites Puppies';
+class AppStateStub {
+  static const initialState = AppState(
+    navigationState: NavigationState(
+      items: [
+        NavigationItem(
+          type: NavigationItemType.search,
+          isSelected: true,
+        ),
+        NavigationItem(
+          type: NavigationItemType.favorites,
+          isSelected: false,
+        ),
+      ],
+    ),
+    puppyListState: PuppyListState(
+      puppies: [],
+      isError: false,
+    ),
+    favoriteCount: 0,
+    error: '',
+  );
 
-  final searchSelected = const NavigationItem(
+  static final withPuppy1 = AppStateStub.initialState.copyWith(
+    puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+      puppies: [Stub.puppy1],
+    ),
+  );
+
+  static final withPuppy1Favorited = AppStateStub.initialState.copyWith(
+    puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+      puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+    ),
+  );
+}
+
+class NavigationStub {
+  static const searchTitle = 'Search for Puppies';
+  static const favoritesTitle = 'Favorites Puppies';
+
+  static const searchSelected = NavigationItem(
     isSelected: true,
     type: NavigationItemType.search,
   );
 
-  final searchNotSelected = const NavigationItem(
+  static const searchNotSelected = NavigationItem(
     isSelected: false,
     type: NavigationItemType.search,
   );
 
-  final favoritesSelected = const NavigationItem(
+  static const favoritesSelected = NavigationItem(
     isSelected: true,
     type: NavigationItemType.favorites,
   );
 
-  final favoritesNotSelected = const NavigationItem(
+  static const favoritesNotSelected = NavigationItem(
     isSelected: false,
     type: NavigationItemType.favorites,
   );
