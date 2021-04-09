@@ -84,7 +84,7 @@ void main() {
       );
     });
 
-    test('Extra details fetch', () async {
+    test('Extra details fetch', () {
       when(repository.fetchFullEntities(Stub.puppies123.ids))
           .thenAnswer((_) async => Stub.puppies123ExtraDetails);
 
@@ -94,18 +94,20 @@ void main() {
           ..dispatch(ExtraDetailsFetchRequestedAction(puppy: Stub.puppy2))
           ..dispatch(ExtraDetailsFetchRequestedAction(puppy: Stub.puppy3));
       });
-      await Future.delayed(const Duration(milliseconds: 110));
 
       final state = AppStateStub.initialState;
       expect(
         store.onChange,
-        emits(
+        emitsInOrder([
+          state,
+          state,
+          state,
           state.copyWith(
             puppyListState: state.puppyListState.copyWith(
               puppies: Stub.puppies123ExtraDetails,
             ),
           ),
-        ),
+        ]),
       );
     });
 
