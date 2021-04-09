@@ -3,27 +3,23 @@ part of 'home_page.dart';
 List<BlocProvider> _getProviders() => [
       BlocProvider<FavoritePuppiesBloc>(
         create: (context) => FavoritePuppiesBloc(
-          Provider.of(context, listen: false),
+          coordinatorBloc: context.read(),
+          puppiesRepository: context.read(),
         ),
       ),
       BlocProvider<PuppyListBloc>(
         create: (context) => PuppyListBloc(
-          Provider.of(context, listen: false),
-          Provider.of(context, listen: false),
+          coordinatorBloc: context.read(),
+          repository: context.read(),
           // context.read<FavoritePuppiesBloc>(),
         ),
       ),
-      // BlocProvider<FavoritePuppiesBloc>(
-      //   create: (context) => FavoritePuppiesBloc(
-      //     Provider.of(context, listen: false),
-      //   ),
-      // ),
-      // BlocProvider<PuppyListBloc>(
-      //   create: (context) => PuppyListBloc(PuppiesRepository(
-      //     ImagePicker(),
-      //     ConnectivityRepository(),
-      //   )),
-      // ),
+      BlocProvider<PuppiesExtraDetailsBloc>(
+        create: (context) => PuppiesExtraDetailsBloc(
+          repository: context.read(),
+          coordinatorBloc: context.read(),
+        ),
+      ),
       BlocProvider<NavigationBarBloc>(
         create: (context) => NavigationBarBloc(),
       ),
