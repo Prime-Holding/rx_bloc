@@ -9,6 +9,11 @@ class PuppyListState {
     this.status = PuppyListStatus.initial,
   });
 
+  factory PuppyListState.withInitial() => const PuppyListState(
+        searchedPuppies: [],
+        status: PuppyListStatus.initial,
+      );
+
   final List<Puppy>? searchedPuppies;
   final PuppyListStatus? status;
 
@@ -22,7 +27,6 @@ class PuppyListState {
         searchedPuppies: searchedPuppies ?? this.searchedPuppies,
         status: status ?? this.status,
       );
-
   // @override
   //   List<Object?> get props => [searchedPuppies];
 }

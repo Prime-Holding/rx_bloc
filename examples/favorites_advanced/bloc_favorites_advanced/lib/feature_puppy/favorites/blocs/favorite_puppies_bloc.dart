@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 
@@ -13,61 +14,87 @@ part 'favorite_puppies_state.dart';
 
 class FavoritePuppiesBloc
     extends Bloc<FavoritePuppiesEvent, FavoritePuppiesState> {
-  FavoritePuppiesBloc(this.puppiesRepository)
-      : super(const FavoritePuppiesState(favoritePuppies: []));
+  FavoritePuppiesBloc({
+    required PuppiesRepository puppiesRepository,
+    required CoordinatorBloc coordinatorBloc,
+  })   : _coordinatorBloc = coordinatorBloc,
+        _puppiesRepository = puppiesRepository,
+        super(const FavoritePuppiesState(favoritePuppies: []));
 
-  PuppiesRepository puppiesRepository;
-  var favoritePuppies = <Puppy>[];
+  final PuppiesRepository _puppiesRepository;
+  final CoordinatorBloc _coordinatorBloc;
 
   @override
   Stream<FavoritePuppiesState> mapEventToState(
     FavoritePuppiesEvent event,
   ) async* {
-    if (favoritePuppies.isEmpty) {
-      await _getInitialFavoritePuppies();
-    }
-    if (event is MarkAsFavoriteEvent) {
-      yield await _mapToFavoritesPuppies(event);
-      // print('Favorite puppies state: ${state.favoritePuppies}');
+    if (event is FavoritePuppiesFetchEvent) {
+      yield await _mapToFavoritePuppies();
+    } else if (event is FavoritePuppiesMarkAsFavoriteEvent) {
+      yield* _mapToFavoritesPuppies(event);
     }
   }
 
+  ///TODO: handle loading and errors
+  Future<FavoritePuppiesState> _mapToFavoritePuppies() async => state.copyWith(
+        favoritePuppies: await _puppiesRepository.getFavoritePuppies(),
+      );
 
-
-  Future<void> _getInitialFavoritePuppies() async {
-    favoritePuppies = await puppiesRepository.getFavoritePuppies();
-  }
-
-  Future<FavoritePuppiesState> _mapToFavoritesPuppies(
-      MarkAsFavoriteEvent event) async {
+  Stream<FavoritePuppiesState> _mapToFavoritesPuppies(
+    FavoritePuppiesMarkAsFavoriteEvent event,
+  ) async* {
     final puppy = event.puppy;
-    final isFavoriteNew = event.isFavorite;
+    final isFavorite = event.isFavorite;
 
-    // puppy = puppy.copyWith(isFavorite: isFavoriteNew);
-    var updatedPuppy =
-        await puppiesRepository.favoritePuppy(puppy, isFavorite: isFavoriteNew);
-    updatedPuppy = updatedPuppy.copyWith(
-      breedCharacteristics: puppy.breedCharacteristics,
-      displayCharacteristics: puppy.displayCharacteristics,
-      displayName: puppy.displayName,
+    /// Emit an event with the copied instance of the entity, so that UI
+    /// can update immediately
+    final immediateUpdatedPuppy = puppy.copyWith(isFavorite: isFavorite);
+
+    _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(immediateUpdatedPuppy));
+
+    yield state.copyWith(
+      favoritePuppies: state.favoritePuppies
+          .manageList(isFavorite: isFavorite, puppy: puppy),
     );
-    // favoritePuppy = updatedPuppy;
-    if (isFavoriteNew) {
-      if(!favoritePuppies.any((element) => element.id == updatedPuppy.id)) {
-        favoritePuppies.add(updatedPuppy);
-      }
-    } else {
-      favoritePuppies.removeWhere((element) => element.id == updatedPuppy.id);
-      // favoritePuppies.remove(updatedPuppy);
-    }
-    return FavoritePuppiesState(favoritePuppies: favoritePuppies);
-  }
 
-// Future<FavoritePuppyState> _mapToFavoritePuppy(
-//   MarkAsFavoriteEvent event,
-// ) async {
-//   var puppy = event.puppy;
-//
-//   return FavoritePuppyState(favoritePuppy: puppy);
-// }
+    /// Send a request to the API
+    try {
+      final updatedPuppy = (await _puppiesRepository.favoritePuppy(
+        puppy,
+        isFavorite: isFavorite,
+      ))
+          .copyWith(
+        breedCharacteristics: puppy.breedCharacteristics,
+        displayCharacteristics: puppy.displayCharacteristics,
+        displayName: puppy.displayName,
+      );
+
+      _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
+
+      yield state.copyWith(
+        favoritePuppies: state.favoritePuppies.manageList(
+          isFavorite: updatedPuppy.isFavorite,
+          puppy: updatedPuppy,
+        ),
+      );
+    } on Exception catch (e) {
+      ///TODO: Implement the proper error handling here
+    }
+  }
+}
+
+extension _PuppyListUtils on List<Puppy> {
+  List<Puppy> manageList({required isFavorite, required Puppy puppy}) {
+    final copiedList = [...this];
+
+    if (!isFavorite) {
+      copiedList.removeWhere(
+        (element) => element.id == puppy.id,
+      );
+    } else if (indexWhere((element) => element.id == puppy.id) == -1) {
+      copiedList.add(puppy);
+    }
+
+    return copiedList;
+  }
 }

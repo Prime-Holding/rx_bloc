@@ -1,3 +1,4 @@
+import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
@@ -51,15 +52,15 @@ class SearchPage extends StatelessWidget {
                 return PuppyCard(
                   key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                   onVisible: (puppy) => context
-                      .read<PuppyListBloc>()
-                      .add(PuppyFetchExtraDetailsEvent(puppy: puppy)),
+                      .read<PuppiesExtraDetailsBloc>()
+                      .add(FetchPuppyExtraDetailsEvent(puppy)),
                   puppy: item,
                   onCardPressed: (puppy) {},
                   // When we click the favorite_border icon we receive
                   // isFavorite true
                   onFavorite: (puppy, isFavorite) => context
                       .read<FavoritePuppiesBloc>()
-                      .add(MarkAsFavoriteEvent(
+                      .add(FavoritePuppiesMarkAsFavoriteEvent(
                           puppy: puppy, isFavorite: isFavorite)),
                 );
               }),
@@ -72,7 +73,6 @@ class SearchPage extends StatelessWidget {
 // create error retry widget
 
   LoadingWidget _buildPuppyListStatusInitial(BuildContext context) {
-    context.read<PuppyListBloc>().add(LoadPuppyListEvent());
     return LoadingWidget(
       key: const Key('LoadingWidget'),
     );

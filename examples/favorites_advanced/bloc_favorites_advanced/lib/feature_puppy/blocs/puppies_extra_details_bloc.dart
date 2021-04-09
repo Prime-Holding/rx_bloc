@@ -1,48 +1,69 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:meta/meta.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:rxdart/rxdart.dart';
+
 part 'puppies_extra_details_event.dart';
-
 part 'puppies_extra_details_state.dart';
-
-// part 'puppies_extra_details_bloc_extensions.dart';
 
 class PuppiesExtraDetailsBloc
     extends Bloc<PuppiesExtraDetailsEvent, PuppiesExtraDetailsState> {
-  PuppiesExtraDetailsBloc(this.repository)
-      : super(PuppiesExtraDetailsState());
+  PuppiesExtraDetailsBloc({
+    required PuppiesRepository repository,
+    required CoordinatorBloc coordinatorBloc,
+  })   : _coordinatorBloc = coordinatorBloc,
+        _repository = repository,
+        super(PuppiesExtraDetailsState());
 
-  // static final List<Puppy> _initialPuppiesWithDetails = [];
-  List<Puppy> puppiesWithDetails = [];
-  PuppiesRepository repository;
+  @override
+  Stream<Transition<PuppiesExtraDetailsEvent, PuppiesExtraDetailsState>>
+      transformEvents(
+    Stream<PuppiesExtraDetailsEvent> events,
+    TransitionFunction<PuppiesExtraDetailsEvent, PuppiesExtraDetailsState>
+        transitionFn,
+  ) =>
+          super.transformEvents(
+            Rx.merge([
+              events,
+              events.whereType<FetchPuppyExtraDetailsEvent>().mapEventToList()
+            ]),
+            transitionFn,
+          );
 
-  // StreamSubscription puppyListStreamSubscription;
+  final PuppiesRepository _repository;
+  final CoordinatorBloc _coordinatorBloc;
 
   @override
   Stream<PuppiesExtraDetailsState> mapEventToState(
     PuppiesExtraDetailsEvent event,
   ) async* {
-    // if (event is FetchPuppiesExtraDetailsEvent) {
-    //     var puppy = event.puppy;
-      // puppiesWithDetails = puppiesWithDetails //.fetchExtraDetails(repository);
-      // .whereNoExtraDetails()
-      //     .mergeWith(repository.fetchFullEntities(ids))
-      // This event is emitted when a puppy entity becomes
-      // visible on the screen.
-      // yield PuppiesExtraDetailsState();
-    // }
+    if (event is FetchPuppiesExtraDetailsEvent) {
+      _coordinatorBloc.add(
+        CoordinatorPuppiesWithExtraDetailsEvent(
+          await _repository.fetchFullEntities(event.puppies.ids),
+        ),
+      );
+    }
   }
-
-// @override
-// close(){
-//   puppyListStreamSubsciption.cancel();
-// }
 }
 
-// extension _FetchExtraDetails on List<Puppy>{
-//   List<Puppy> fetchExtraDetails(PuppiesRepository repository) =>
-      
-// }
+extension _PuppyEventToList on Stream<FetchPuppyExtraDetailsEvent> {
+  Stream<FetchPuppiesExtraDetailsEvent> mapEventToList() => distinct()
+      .bufferTime(const Duration(microseconds: 100))
+      .map(
+        (puppyFetchList) => FetchPuppiesExtraDetailsEvent(
+          /// Save the list of puppies to the new event and return the event
+          puppyFetchList
+              .map((puppyFetchEvent) => puppyFetchEvent.puppy)
+              .whereType<Puppy>()
+              .where((puppy) => !puppy.hasExtraDetails())
+              .toList(),
+        ),
+      )
+      .where((list) => list.puppies.isNotEmpty)
+      .distinct();
+}
