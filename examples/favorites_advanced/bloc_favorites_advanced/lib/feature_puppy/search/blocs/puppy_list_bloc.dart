@@ -15,29 +15,19 @@ part 'puppy_list_event.dart';
 part 'puppy_list_state.dart';
 
 class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
+
   PuppyListBloc(this._repository, this.favoritePuppiesBloc)
       : super(const PuppyListState(
-    searchedPuppies: [],
-    status: PuppyListStatus.initial,
-  )) {
-    // favoritePuppiesStateSubscription =
-    // favoritePuppiesBloc.stream.doOnData((state) {
-    //   print('-------_____---------');
-    //   add(FavoritePuppiesUpdatedEvent(
-    //       favoritePuppies: state.favoritePuppies!));
-    // }).listen((event) => print('p'));
-
-    favoritePuppiesStateSubscription =
-        favoritePuppiesBloc.stream.listen((state) {
-
-      // if(state.favoritePuppies.isNotEmpty){
-      // print(
-      //     'STREAM Subscription: ${state.favoritePuppies}');
-      add(FavoritePuppiesUpdatedEvent(
-          favoritePuppies: state.favoritePuppies));
-      // }else{
-      //   print('State list is empty');
-      // }
+          searchedPuppies: [],
+          status: PuppyListStatus.initial,
+        )) {
+    favoritePuppiesBloc.stream
+        .doOnData((_) => print('Subscription FAVORITE'))
+        .listen((state) {
+      print('Subscription FAVORITE state: $state');
+      // add(FavoritePuppiesUpdatedEvent(
+      //   favoritePuppies: state.favoritePuppies,
+      // ));
     });
   }
 
@@ -56,8 +46,9 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   @override
   Stream<Transition<PuppyListEvent, PuppyListState>> transformEvents(
-      Stream<PuppyListEvent> events,
-      TransitionFunction<PuppyListEvent, PuppyListState> transitionFn,) =>
+    Stream<PuppyListEvent> events,
+    TransitionFunction<PuppyListEvent, PuppyListState> transitionFn,
+  ) =>
       super.transformEvents(
           Rx.merge([
             events.doOnData((event) {
@@ -78,10 +69,12 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
           transitionFn);
 
   @override
-  Stream<PuppyListState> mapEventToState(PuppyListEvent event,) async* {
-    // print('mapEventToState : ${event.toString()}');
+  Stream<PuppyListState> mapEventToState(
+    PuppyListEvent event,
+  ) async* {
+    print('mapEventToState : ${event.toString()}');
     if (event is LoadPuppyListEvent) {
-      yield await _mapPuppiesFetchedToState(state);
+      yield* _mapPuppiesFetchedToState(state);
     } else if (event is ReloadPuppiesEvent) {
       yield await _mapPuppiesReloadFetchToState(state);
       await Future.delayed(const Duration(milliseconds: 2000));
@@ -94,16 +87,20 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     } else if (event is FavoritePuppiesUpdatedEvent) {
       yield _mapFavoritePuppiesToState(event.favoritePuppies, state);
     }
-    // _favoritePuppiesBloc.state.favoritePuppies;
   }
 
-  PuppyListState _mapFavoritePuppiesToState(List<Puppy> puppyList,
-      PuppyListState state) {
+  // receive event with 1 puppy with updated isFavorite field
+  // merge it in the allPuppies updating it by the id
+  // return the PuppyListState(searchedPuppies: allPuppies)
+  PuppyListState _mapFavoritePuppiesToState(
+      List<Puppy> puppyList, PuppyListState state) {
     // print('MapFavoritePuppiesToState list : $puppyList');
 
     allPuppies = allPuppies.mergeWith(puppyList);
     return PuppyListState(
-        searchedPuppies: allPuppies, status: PuppyListStatus.success);
+      searchedPuppies: allPuppies,
+      status: PuppyListStatus.success,
+    );
   }
 
   Future<PuppyListState> _mapPuppyListFetchExtraDetailsEventToState(
@@ -114,10 +111,13 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     allPuppies = allPuppies.mergeWith(puppiesWithDetails);
 
     return state.copyWith(
-        searchedPuppies: allPuppies, status: PuppyListStatus.success);
+      searchedPuppies: allPuppies,
+      status: PuppyListStatus.success,
+    );
   }
 
-  Future<PuppyListState> _mapPuppiesFetchedToState(PuppyListState state) async {
+  Stream<PuppyListState> _mapPuppiesFetchedToState(
+      PuppyListState state) async* {
     // favoritePuppiesStateSubscription =
     //     favoritePuppiesBloc.stream.listen((state) {
     //   print(
@@ -126,14 +126,23 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     //       favoritePuppies: favoritePuppiesBloc.state.favoritePuppies!));
     // });
     try {
+      yield state.copyWith(
+        searchedPuppies: [],
+        status: PuppyListStatus.initial,
+      );
+      await Future.delayed(const Duration(milliseconds: 3000));
       final puppies = await _repository.getPuppies(query: '');
+
       allPuppies = puppies;
-      return state.copyWith(
+      yield state.copyWith(
         searchedPuppies: allPuppies,
-        status: PuppyListStatus.reloading,
+        status: PuppyListStatus.success,
       );
     } on Exception {
-      return state.copyWith(status: PuppyListStatus.failure);
+      yield state.copyWith(
+        searchedPuppies: [],
+        status: PuppyListStatus.failure,
+      );
     }
   }
 
@@ -143,7 +152,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
     return state.copyWith(
       searchedPuppies: allPuppies,
-      status: PuppyListStatus.reloading,
+      status: PuppyListStatus.success,
     );
   }
 }
@@ -173,9 +182,8 @@ List<Puppy> puppiesTEST = [
 extension _PuppyEventToList on Stream<PuppyFetchExtraDetailsEvent> {
   Stream<PuppyListFetchExtraDetailsEvent> mapEventToList() =>
 // Get puppies only without extra details
-  bufferTime(const Duration(microseconds: 100)).map(
-        (puppyFetchList) =>
-        PuppyListFetchExtraDetailsEvent(
+      bufferTime(const Duration(microseconds: 100)).map(
+        (puppyFetchList) => PuppyListFetchExtraDetailsEvent(
           // Save the list of puppies to the new event and return the event
           filteredPuppies: puppyFetchList
               .map((puppyFetchEvent) => puppyFetchEvent.puppy)
@@ -183,5 +191,5 @@ extension _PuppyEventToList on Stream<PuppyFetchExtraDetailsEvent> {
               .where((puppy) => !puppy.hasExtraDetails())
               .toList(),
         ),
-  );
+      );
 }

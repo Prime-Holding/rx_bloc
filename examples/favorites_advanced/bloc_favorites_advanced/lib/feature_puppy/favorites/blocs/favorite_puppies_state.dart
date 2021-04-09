@@ -1,14 +1,17 @@
 part of 'favorite_puppies_bloc.dart';
 
-// abstract class FavoritePuppiesState extends Equatable {
-//   const FavoritePuppiesState();
-//
-//   // get favoritePuppies => null;
-// }
+enum FavoritePuppiesStatus { loading, success }
 
 @immutable
-class FavoritePuppiesState extends Equatable {
-  const FavoritePuppiesState({
+abstract class FavoritePuppiesState extends Equatable {
+  const FavoritePuppiesState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class FavoritePuppiesListState extends FavoritePuppiesState {
+  const FavoritePuppiesListState({
     required this.favoritePuppies,
   });
 
@@ -17,21 +20,23 @@ class FavoritePuppiesState extends Equatable {
   FavoritePuppiesState copyWith({
     List<Puppy>? favoritePuppies,
   }) =>
-      FavoritePuppiesState(
+      FavoritePuppiesListState(
         favoritePuppies: favoritePuppies ?? this.favoritePuppies,
       );
 
   @override
-  List<Object?> get props => [favoritePuppies];
+  List<Object> get props => [favoritePuppies];
 }
 
-// class FavoritePuppyState extends FavoritePuppiesState {
-//   const FavoritePuppyState({
-//     required this.favoritePuppy,
-//   });
-//
-//   final Puppy favoritePuppy;
-//
-//   @override
-//   List<Object?> get props => [favoritePuppy];
-// }
+class FavoritePuppyState extends FavoritePuppiesState {
+  const FavoritePuppyState({
+    required this.favoritePuppy,
+    required this.status,
+  });
+
+  final Puppy favoritePuppy;
+  final FavoritePuppiesStatus status;
+
+  @override
+  List<Object> get props => [favoritePuppy];
+}

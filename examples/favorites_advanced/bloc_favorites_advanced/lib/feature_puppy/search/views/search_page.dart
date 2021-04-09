@@ -27,7 +27,6 @@ class SearchPage extends StatelessWidget {
               case PuppyListStatus.failure:
                 return _buildPuppyListStatusFailure();
               case PuppyListStatus.success:
-              case PuppyListStatus.reloading:
                 return _buildPuppyListStatusReloading(context, state);
               default:
                 return _buildPuppyListStatusFailure();
@@ -66,6 +65,7 @@ class SearchPage extends StatelessWidget {
         ),
       );
 
+  // Display try again button to reload
   Center _buildPuppyListStatusFailure() =>
       const Center(child: Text('failed to fetch puppies'));
 

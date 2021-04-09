@@ -14,7 +14,9 @@ part 'favorite_puppies_state.dart';
 class FavoritePuppiesBloc
     extends Bloc<FavoritePuppiesEvent, FavoritePuppiesState> {
   FavoritePuppiesBloc(this.puppiesRepository)
-      : super(const FavoritePuppiesState(favoritePuppies: []));
+      : super(const FavoritePuppiesListState(favoritePuppies: [])) {
+    print('CONSTRUCTOR');
+  }
 
   PuppiesRepository puppiesRepository;
   var favoritePuppies = <Puppy>[];
@@ -27,41 +29,77 @@ class FavoritePuppiesBloc
       await _getInitialFavoritePuppies();
     }
     if (event is MarkAsFavoriteEvent) {
-      yield await _mapToFavoritesPuppies(event);
+      // yield await _mapToFavoritesPuppies(event);
+      yield* _mapToFavoritesPuppies(event);
+      // yield test;
+      // Check if it is emitting correctly
       // print('Favorite puppies state: ${state.favoritePuppies}');
+      yield* _mapToFavoritePuppy(event);
+      // yield favoritePuppy;
     }
   }
 
-
+  @override
+  Future<void> close() {
+    print('FAVORITES.cancel()');
+    return super.close();
+  }
 
   Future<void> _getInitialFavoritePuppies() async {
     favoritePuppies = await puppiesRepository.getFavoritePuppies();
   }
 
-  Future<FavoritePuppiesState> _mapToFavoritesPuppies(
-      MarkAsFavoriteEvent event) async {
+  Stream<FavoritePuppyState> _mapToFavoritePuppy(
+      MarkAsFavoriteEvent event) async* {
     final puppy = event.puppy;
     final isFavoriteNew = event.isFavorite;
 
-    // puppy = puppy.copyWith(isFavorite: isFavoriteNew);
-    var updatedPuppy =
-        await puppiesRepository.favoritePuppy(puppy, isFavorite: isFavoriteNew);
-    updatedPuppy = updatedPuppy.copyWith(
-      breedCharacteristics: puppy.breedCharacteristics,
-      displayCharacteristics: puppy.displayCharacteristics,
-      displayName: puppy.displayName,
+    yield FavoritePuppyState(
+      favoritePuppy: puppy,
+      status: FavoritePuppiesStatus.loading,
     );
-    // favoritePuppy = updatedPuppy;
+
+    yield FavoritePuppyState(
+      favoritePuppy: puppy.copyWith(isFavorite: isFavoriteNew),
+      status: FavoritePuppiesStatus.success,
+    );
+    yield FavoritePuppyState(
+      favoritePuppy: puppy,
+      status: FavoritePuppiesStatus.loading,
+    );
+    try {
+      final updatedPuppy = await puppiesRepository.favoritePuppy(puppy,
+          isFavorite: isFavoriteNew);
+
+      yield FavoritePuppyState(
+        favoritePuppy: updatedPuppy.copyWith(
+          breedCharacteristics: puppy.breedCharacteristics,
+          displayCharacteristics: puppy.displayCharacteristics,
+          displayName: puppy.displayName,
+        ),
+        status: FavoritePuppiesStatus.success,
+      );
+    } on Exception catch (e) {}
+
+
+  }
+
+  // Add or remove the puppy from the favoritePuppies list
+  Stream<FavoritePuppiesListState> _mapToFavoritesPuppies(
+          MarkAsFavoriteEvent event) async* {
+    final puppy = event.puppy;
+    final isFavoriteNew = event.isFavorite;
+
     if (isFavoriteNew) {
-      if(!favoritePuppies.any((element) => element.id == updatedPuppy.id)) {
-        favoritePuppies.add(updatedPuppy);
+      if (!favoritePuppies.any((element) => element.id == puppy.id)) {
+        favoritePuppies.add(puppy);
       }
     } else {
-      favoritePuppies.removeWhere((element) => element.id == updatedPuppy.id);
-      // favoritePuppies.remove(updatedPuppy);
+      favoritePuppies.removeWhere((element) => element.id == puppy.id);
     }
-    return FavoritePuppiesState(favoritePuppies: favoritePuppies);
+    yield FavoritePuppiesListState(favoritePuppies: favoritePuppies);
   }
+
 
 // Future<FavoritePuppyState> _mapToFavoritePuppy(
 //   MarkAsFavoriteEvent event,

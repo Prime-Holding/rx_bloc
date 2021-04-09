@@ -1,6 +1,6 @@
 part of 'puppy_list_bloc.dart';
 
-enum PuppyListStatus { initial, reloading, success, failure, allFetched }
+enum PuppyListStatus { initial,  success, failure, allFetched }
 
 @immutable
 class PuppyListState {
@@ -26,3 +26,4 @@ class PuppyListState {
   // @override
   //   List<Object?> get props => [searchedPuppies];
 }
+// error state
