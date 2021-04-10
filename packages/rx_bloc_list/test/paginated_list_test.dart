@@ -6,6 +6,26 @@ void main() {
     final listSize = 100;
     final pageSize = 10;
     final emptyListData = [];
+    final notEmptyListData = [0, 1, 2, 3];
+
+    test('PaginatedList.copyWith', () {
+      final list = PaginatedList(list: emptyListData, pageSize: pageSize);
+
+      expect(list.copyWith(list: notEmptyListData), notEmptyListData);
+    });
+
+    test('PaginatedList.getItem', () {
+      final list = PaginatedList(list: notEmptyListData, pageSize: pageSize);
+
+      expect(list.getItem(1), 1);
+      expect(list.getItem(20), isNull);
+    });
+
+    test('PaginatedList assign to index', () {
+      final list = PaginatedList(list: notEmptyListData, pageSize: pageSize);
+      list[1] = 2;
+      expect(list[1], 2);
+    });
 
     test('List length when list is empty', () {
       final list = PaginatedList(list: emptyListData, pageSize: pageSize);
