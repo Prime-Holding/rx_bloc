@@ -23,6 +23,7 @@ class FavoritePuppiesBloc
 
   final PuppiesRepository _puppiesRepository;
   final CoordinatorBloc _coordinatorBloc;
+  bool errorDisplayed = false;
 
   @override
   Stream<FavoritePuppiesState> mapEventToState(
@@ -77,18 +78,26 @@ class FavoritePuppiesBloc
           puppy: updatedPuppy,
         ),
       );
+      errorDisplayed = false;
     } on Exception catch (e) {
       ///TODO: Implement the proper error handling here
 
       final revertFavoritePuppy = puppy.copyWith(isFavorite: !isFavorite);
 
       _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
+      if(errorDisplayed == false) {
+        yield state.copyWith(
+          favoritePuppies: state.favoritePuppies
+              .manageList(isFavorite: !isFavorite, puppy: puppy),
+          error: e.toString(),
+        );
+        errorDisplayed = true;
+      }
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies
             .manageList(isFavorite: !isFavorite, puppy: puppy),
-        error: e.toString(),
       );
-      // yield state.copyWith(favoritePuppies: state.favoritePuppies)
+
     }
   }
 }
