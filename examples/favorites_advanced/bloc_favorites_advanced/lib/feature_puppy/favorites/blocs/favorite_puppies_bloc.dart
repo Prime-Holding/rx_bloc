@@ -86,7 +86,9 @@ class FavoritePuppiesBloc
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies
             .manageList(isFavorite: !isFavorite, puppy: puppy),
+        error: e.toString(),
       );
+      // yield state.copyWith(favoritePuppies: state.favoritePuppies)
     }
   }
 }
