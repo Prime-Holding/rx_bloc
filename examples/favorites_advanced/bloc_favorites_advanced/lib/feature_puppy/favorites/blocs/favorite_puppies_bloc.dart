@@ -79,6 +79,14 @@ class FavoritePuppiesBloc
       );
     } on Exception catch (e) {
       ///TODO: Implement the proper error handling here
+
+      final revertFavoritePuppy = puppy.copyWith(isFavorite: !isFavorite);
+
+      _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
+      yield state.copyWith(
+        favoritePuppies: state.favoritePuppies
+            .manageList(isFavorite: !isFavorite, puppy: puppy),
+      );
     }
   }
 }
