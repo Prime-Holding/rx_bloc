@@ -30,16 +30,26 @@ class FavoritePuppiesBloc
     FavoritePuppiesEvent event,
   ) async* {
     if (event is FavoritePuppiesFetchEvent) {
-      yield await _mapToFavoritePuppies();
+      yield* _mapToFavoritePuppies();
     } else if (event is FavoritePuppiesMarkAsFavoriteEvent) {
       yield* _mapToFavoritesPuppies(event);
     }
   }
 
   ///TODO: handle loading and errors
-  Future<FavoritePuppiesState> _mapToFavoritePuppies() async => state.copyWith(
+  Stream<FavoritePuppiesState> _mapToFavoritePuppies() async* {
+    try {
+      // await Future.delayed(const Duration(seconds: 5));
+      yield state.copyWith(
         favoritePuppies: await _puppiesRepository.getFavoritePuppies(),
       );
+    } on Exception catch (e){
+      yield state.copyWith(
+        favoritePuppies: [],
+        error: e.toString(),
+      );
+    }
+  }
 
   Stream<FavoritePuppiesState> _mapToFavoritesPuppies(
     FavoritePuppiesMarkAsFavoriteEvent event,
@@ -80,7 +90,6 @@ class FavoritePuppiesBloc
       );
       errorDisplayed = false;
     } on Exception catch (e) {
-      ///TODO: Implement the proper error handling here
 
       final revertFavoritePuppy = puppy.copyWith(isFavorite: !isFavorite);
 

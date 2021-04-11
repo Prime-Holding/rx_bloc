@@ -74,13 +74,11 @@ class SearchPage extends StatelessWidget {
 
   // Display try again button to reload
   ErrorRetryWidget _buildPuppyListStatusFailure(BuildContext context) {
-    // print('_buildPuppyListStatusFailure');
+    print('_buildPuppyListStatusFailure');
     return ErrorRetryWidget(
         onReloadTap: () =>
             context.read<PuppyListBloc>().add(LoadPuppyListEvent()));
   }
-
-// create error retry widget
 
   LoadingWidget _buildPuppyListStatusInitial(BuildContext context) {
     return LoadingWidget(
