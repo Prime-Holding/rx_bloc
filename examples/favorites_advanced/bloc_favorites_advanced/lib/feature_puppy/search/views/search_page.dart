@@ -80,9 +80,8 @@ class SearchPage extends StatelessWidget {
             context.read<PuppyListBloc>().add(LoadPuppyListEvent()));
   }
 
-  LoadingWidget _buildPuppyListStatusInitial(BuildContext context) {
-    return LoadingWidget(
-      key: const Key('LoadingWidget'),
-    );
-  }
+  LoadingWidget _buildPuppyListStatusInitial(BuildContext context) =>
+      LoadingWidget(
+        key: const Key('LoadingWidget'),
+      );
 }

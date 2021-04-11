@@ -8,6 +8,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'puppies_extra_details_event.dart';
+
 part 'puppies_extra_details_state.dart';
 
 class PuppiesExtraDetailsBloc
@@ -29,7 +30,11 @@ class PuppiesExtraDetailsBloc
           super.transformEvents(
             Rx.merge([
               events,
-              events.whereType<FetchPuppyExtraDetailsEvent>().mapEventToList()
+              events
+                  .whereType<FetchPuppyExtraDetailsEvent>()
+                  // .doOnData((event) => print('Puppies Extra
+              // Details puppy : ${event.puppy}'))
+                  .mapEventToList()
             ]),
             transitionFn,
           );
@@ -42,18 +47,21 @@ class PuppiesExtraDetailsBloc
     PuppiesExtraDetailsEvent event,
   ) async* {
     if (event is FetchPuppiesExtraDetailsEvent) {
+      // print('Puppies Extra Details : event
+      // .puppies.ids : ${event.puppies.ids}');
+      final puppiesWithDetails =
+          await _repository.fetchFullEntities(event.puppies.ids);
       _coordinatorBloc.add(
-        CoordinatorPuppiesWithExtraDetailsEvent(
-          await _repository.fetchFullEntities(event.puppies.ids),
-        ),
+        CoordinatorPuppiesWithExtraDetailsEvent(puppiesWithDetails),
       );
     }
   }
 }
 
 extension _PuppyEventToList on Stream<FetchPuppyExtraDetailsEvent> {
-  Stream<FetchPuppiesExtraDetailsEvent> mapEventToList() => distinct()
-      .bufferTime(const Duration(microseconds: 100))
+  Stream<FetchPuppiesExtraDetailsEvent> mapEventToList() =>
+      distinct()
+      .bufferTime(const Duration(milliseconds: 100))
       .map(
         (puppyFetchList) => FetchPuppiesExtraDetailsEvent(
           /// Save the list of puppies to the new event and return the event

@@ -22,8 +22,11 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
         super(PuppyListState.withInitial()) {
     coordinatorBloc.stream
         .whereType<CoordinatorPuppiesUpdatedState>()
+        .doOnData((event) {
+          // print('Puppy List Bloc coordinatorBloc.stream ${event.puppies}');
+        })
         .listen((state) =>
-        add(FavoritePuppiesUpdatedEvent(favoritePuppies: state.puppies)))
+            add(FavoritePuppiesUpdatedEvent(favoritePuppies: state.puppies)))
         .addTo(_compositeSubscription);
 
     add(LoadPuppyListEvent());
@@ -34,8 +37,8 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   @override
   Stream<PuppyListState> mapEventToState(
-      PuppyListEvent event,
-      ) async* {
+    PuppyListEvent event,
+  ) async* {
     if (event is LoadPuppyListEvent) {
       yield* _mapPuppiesFetchedToState(state);
     } else if (event is ReloadPuppiesEvent) {
@@ -44,14 +47,14 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
         loadStatus: PuppyListStatus.reloading,
       );
     } else if (event is FavoritePuppiesUpdatedEvent) {
-      yield _mapFavoritePuppiesToState(event.favoritePuppies, state);
+      yield* _mapFavoritePuppiesToState(event.favoritePuppies, state);
     }
   }
 
   Stream<PuppyListState> _mapPuppiesFetchedToState(
-      PuppyListState state, {
-        loadStatus = PuppyListStatus.initial,
-      }) async* {
+    PuppyListState state, {
+    loadStatus = PuppyListStatus.initial,
+  }) async* {
     try {
       yield state.copyWith(status: loadStatus);
 
@@ -64,14 +67,16 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     }
   }
 
-  PuppyListState _mapFavoritePuppiesToState(
-      List<Puppy> updatedPuppies,
-      PuppyListState state,
-      ) =>
-      state.copyWith(
-        status: PuppyListStatus.success,
-        searchedPuppies: state.searchedPuppies!.mergeWith(updatedPuppies),
-      );
+  Stream<PuppyListState> _mapFavoritePuppiesToState(
+    List<Puppy> updatedPuppies,
+    PuppyListState state,
+  ) async* {
+    // print('Puppy List Bloc _mapFavoritePuppiesToState : ${updatedPuppies}');
+    yield state.copyWith(
+      status: PuppyListStatus.success,
+      searchedPuppies: state.searchedPuppies!.mergeWith(updatedPuppies),
+    );
+  }
 
   @override
   Future<void> close() {
