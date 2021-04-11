@@ -26,11 +26,14 @@ class SearchPage extends StatelessWidget {
               case PuppyListStatus.initial:
                 return _buildPuppyListStatusInitial(context);
               case PuppyListStatus.failure:
-                return _buildPuppyListStatusFailure();
+                // return _buildPuppyListStatusFailure();
+                return _buildPuppyListStatusFailure(context);
               case PuppyListStatus.success:
+              case PuppyListStatus.reloading:
                 return _buildPuppyListStatusReloading(context, state);
               default:
-                return _buildPuppyListStatusFailure();
+                // return _buildPuppyListStatusFailure();
+                return _buildPuppyListStatusFailure(context);
             }
           });
 
@@ -66,9 +69,16 @@ class SearchPage extends StatelessWidget {
         ),
       );
 
+  // Center _buildPuppyListStatusFailure() =>
+  //     const Center(child: Text('failed to fetch puppies'));
+
   // Display try again button to reload
-  Center _buildPuppyListStatusFailure() =>
-      const Center(child: Text('failed to fetch puppies'));
+  ErrorRetryWidget _buildPuppyListStatusFailure(BuildContext context) {
+    print('_buildPuppyListStatusFailure');
+    return ErrorRetryWidget(
+        onReloadTap: () =>
+            context.read<PuppyListBloc>().add(LoadPuppyListEvent()));
+  }
 
 // create error retry widget
 
