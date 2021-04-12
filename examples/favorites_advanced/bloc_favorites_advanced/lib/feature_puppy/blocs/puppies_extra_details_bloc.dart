@@ -32,8 +32,8 @@ class PuppiesExtraDetailsBloc
               events,
               events
                   .whereType<FetchPuppyExtraDetailsEvent>()
-                  // .doOnData((event) => print('Puppies Extra
-              // Details puppy : ${event.puppy}'))
+                  // .doOnData((event) =>
+                  //     print('Puppies Extra Details puppy : ${event.puppy}'))
                   .mapEventToList()
             ]),
             transitionFn,
@@ -47,8 +47,8 @@ class PuppiesExtraDetailsBloc
     PuppiesExtraDetailsEvent event,
   ) async* {
     if (event is FetchPuppiesExtraDetailsEvent) {
-      // print('Puppies Extra Details : event
-      // .puppies.ids : ${event.puppies.ids}');
+      // print('Puppies Extra Details : event.puppies.ids :
+      // ${event.puppies.ids}');
       final puppiesWithDetails =
           await _repository.fetchFullEntities(event.puppies.ids);
       _coordinatorBloc.add(
@@ -61,6 +61,7 @@ class PuppiesExtraDetailsBloc
 extension _PuppyEventToList on Stream<FetchPuppyExtraDetailsEvent> {
   Stream<FetchPuppiesExtraDetailsEvent> mapEventToList() =>
       distinct()
+      // .where((event) => event.puppy.id)
       .bufferTime(const Duration(milliseconds: 100))
       .map(
         (puppyFetchList) => FetchPuppiesExtraDetailsEvent(
@@ -69,7 +70,7 @@ extension _PuppyEventToList on Stream<FetchPuppyExtraDetailsEvent> {
               .map((puppyFetchEvent) => puppyFetchEvent.puppy)
               .whereType<Puppy>()
               .where((puppy) => !puppy.hasExtraDetails())
-              .toList(),
+              .toList()
         ),
       )
       .where((list) => list.puppies.isNotEmpty)

@@ -21,6 +21,9 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   })   : _repository = repository,
         super(PuppyListState.withInitial()) {
     coordinatorBloc.stream
+        .doOnData((event) {
+          // print('Puppy List Bloc coordinatorBloc.stream ! $event');
+        })
         .whereType<CoordinatorPuppiesUpdatedState>()
         .doOnData((event) {
           // print('Puppy List Bloc coordinatorBloc.stream ${event.puppies}');
@@ -34,6 +37,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   final PuppiesRepository _repository;
   final _compositeSubscription = CompositeSubscription();
+  // late final StreamSubscription subscription ;
 
   @override
   Stream<PuppyListState> mapEventToState(
@@ -56,7 +60,9 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     loadStatus = PuppyListStatus.initial,
   }) async* {
     try {
-      yield state.copyWith(status: loadStatus);
+      // if(loadStatus != PuppyListStatus.reloading) {
+        yield state.copyWith(status: loadStatus);
+      // }
 
       yield state.copyWith(
         searchedPuppies: await _repository.getPuppies(query: ''),
@@ -71,7 +77,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     List<Puppy> updatedPuppies,
     PuppyListState state,
   ) async* {
-    // print('Puppy List Bloc _mapFavoritePuppiesToState : ${updatedPuppies}');
+    // print('Puppy List Bloc _mapFavoritePuppiesToState : $updatedPuppies');
     yield state.copyWith(
       status: PuppyListStatus.success,
       searchedPuppies: state.searchedPuppies!.mergeWith(updatedPuppies),
@@ -80,6 +86,8 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   @override
   Future<void> close() {
+    // print('close');
+    // subscription.cancel();
     _compositeSubscription.dispose();
     return super.close();
   }

@@ -22,6 +22,13 @@ class CoordinatorPuppiesUpdatedState extends CoordinatorState {
 
   final List<Puppy> puppies;
 
+  // CoordinatorPuppiesUpdatedState copyWith({
+  //   List<Puppy>? puppies,
+  // }) =>
+  //     CoordinatorPuppiesUpdatedState(
+  //       puppies ?? this.puppies,
+  //     );
+
   @override
   List<Object?> get props => [puppies];
 }
