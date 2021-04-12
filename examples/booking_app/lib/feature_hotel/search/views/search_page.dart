@@ -231,7 +231,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   ),
                 ),
                 if (dateRangeText != 'None')
-                  _buildClearButton(() {
+                  _buildClearButton(context, () {
                     showYesNoMessage(
                       context: context,
                       title: 'Clear date range?',
@@ -303,7 +303,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   ),
                 ),
                 if (capacityFilterText != 'None')
-                  _buildClearButton(() {
+                  _buildClearButton(context, () {
                     showYesNoMessage(
                       context: context,
                       title: 'Clear capacity filter?',
@@ -321,9 +321,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
       );
 
-  Widget _buildClearButton(VoidCallback? onPressed) => FocusButton(
+  Widget _buildClearButton(BuildContext context, VoidCallback? onPressed) =>
+      FocusButton(
         onPressed: onPressed ?? () {},
-        child: const Icon(Icons.cancel, color: Colors.blue),
+        child: Icon(Icons.cancel,
+            color: DesignSystem.of(context).colors.primaryColor),
       );
 
   ///endregion

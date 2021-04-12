@@ -2,6 +2,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../core.dart';
 import 'hotel_header.dart';
 import 'hotel_image.dart';
 
@@ -98,7 +99,7 @@ class HotelCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
                       hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: Theme.of(context).primaryColor,
+                      color: DesignSystem.of(context).colors.primaryColor,
                     ),
                   ),
                 ),

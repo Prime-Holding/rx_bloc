@@ -69,9 +69,7 @@ class HomePage extends StatelessWidget {
           builder: (context, snapshot, bloc) =>
               snapshot.build((navItems) => CurvedNavigationBar(
                     index: navItems.toCurrentIndex(),
-                    color: DesignSystemOptions.of(context)
-                        .colors
-                        .curvedNavigationBarColor,
+                    color: DesignSystem.of(context).colors.primaryVariant,
                     backgroundColor: Colors.transparent,
                     items: navItems
                         .map((item) => Padding(
@@ -104,24 +102,22 @@ extension NavigationItemToWitget on NavigationItem {
   Widget? asWidget(BuildContext context) => type == NavigationItemType.favorites
       ? RxBlocBuilder<FavoriteHotelsBlocType, int>(
           state: (bloc) => bloc.states.count,
-          builder: (ctx, snapshot, bloc) =>
-              snapshot.hasData && snapshot.data! <= 0
-                  ? type.asIcon(context)!
-                  : Badge(
-                      padding: const EdgeInsets.all(3),
-                      badgeContent: snapshot.build((count) => Text(
-                            count.toString(),
-                            style: TextStyle(
-                              color: DesignSystemOptions.of(context)
-                                  .colors
-                                  .curvedNavigationIconColor,
-                              fontSize: 12,
-                            ),
-                          )),
-                      badgeColor: Colors.transparent,
-                      elevation: 0,
-                      child: type.asIcon(context),
-                    ),
+          builder: (ctx, snapshot, bloc) => snapshot.hasData &&
+                  snapshot.data! <= 0
+              ? type.asIcon(context)!
+              : Badge(
+                  padding: const EdgeInsets.all(3),
+                  badgeContent: snapshot.build((count) => Text(
+                        count.toString(),
+                        style: TextStyle(
+                          color: DesignSystem.of(context).colors.secondaryColor,
+                          fontSize: 12,
+                        ),
+                      )),
+                  badgeColor: Colors.transparent,
+                  elevation: 0,
+                  child: type.asIcon(context),
+                ),
         )
       : type.asIcon(context);
 }

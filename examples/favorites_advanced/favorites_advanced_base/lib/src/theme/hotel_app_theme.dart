@@ -18,12 +18,12 @@ class HotelAppTheme {
 
     return base.copyWith(
       colorScheme: colorScheme,
-      // primaryColor: primaryColor,
-      // buttonColor: primaryColor,
+      primaryColor: designSystemColor.primaryColor,
+      buttonColor: designSystemColor.buttonColor,
       indicatorColor: designSystemColor.indicatorColor,
       splashColor: designSystemColor.splashColor,
       splashFactory: InkRipple.splashFactory,
-      // accentColor: secondaryColor,
+      accentColor: designSystemColor.accentColor,
       canvasColor: designSystemColor.canvasColor,
       backgroundColor: designSystemColor.backgroundColor,
       scaffoldBackgroundColor: designSystemColor.scaffoldBackgroundColor,

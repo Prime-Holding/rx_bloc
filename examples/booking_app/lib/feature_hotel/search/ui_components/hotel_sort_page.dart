@@ -33,10 +33,10 @@ class _HotelSortPageState extends State<HotelSortPage> {
               widget.onApplyPressed?.call(selected);
               Navigator.of(context).pop();
             },
-            child: const Text(
+            child: Text(
               'Apply',
               style: TextStyle(
-                color: Colors.white,
+                color: DesignSystem.of(context).colors.secondaryColor,
                 fontSize: 18,
               ),
             ),
@@ -88,8 +88,9 @@ class _HotelSortPageState extends State<HotelSortPage> {
                 .labelStyle
                 .copyWith(color: selected == id ? Colors.white : Colors.black),
             label: Text(name),
-            backgroundColor:
-                selected == id ? Theme.of(context).accentColor : null,
+            backgroundColor: selected == id
+                ? DesignSystem.of(context).colors.accentColor
+                : null,
           ),
         ),
       );

@@ -18,15 +18,18 @@ abstract class DesignSystemColor {
 
   Brightness get brightness;
   Color get primaryColor;
+  Color get primaryVariant;
   Color get secondaryColor;
   Color get indicatorColor;
   Color get splashColor;
   Color get canvasColor;
   Color get backgroundColor;
   Color get scaffoldBackgroundColor;
+  Color get buttonColor;
   Color get errorColor;
-  Color get curvedNavigationBarColor;
-  Color get curvedNavigationIconColor;
+  Color? get accentColor;
+  Color get bodyTextColor1;
+  Color get subtitleColor2;
 }
 
 class DesignSystemColorLight extends DesignSystemColor {
@@ -36,10 +39,13 @@ class DesignSystemColorLight extends DesignSystemColor {
   Brightness get brightness => Brightness.light;
 
   @override
-  Color get primaryColor => _HexColor('#54D3C2');
+  Color get primaryColor => Colors.blue;
 
   @override
-  Color get secondaryColor => _HexColor('#54D3C2');
+  Color get primaryVariant => Colors.blueAccent;
+
+  @override
+  Color get secondaryColor => Colors.white;
 
   @override
   Color get indicatorColor => Colors.white;
@@ -57,13 +63,19 @@ class DesignSystemColorLight extends DesignSystemColor {
   Color get scaffoldBackgroundColor => Colors.white;
 
   @override
+  Color get buttonColor => Colors.white;
+
+  @override
   Color get errorColor => Colors.white;
 
   @override
-  Color get curvedNavigationBarColor => Colors.blueAccent;
+  Color? get accentColor => Colors.blue[500];
 
   @override
-  Color get curvedNavigationIconColor => Colors.white;
+  Color get bodyTextColor1 => Colors.grey.withOpacity(0.8);
+
+  @override
+  Color get subtitleColor2 => Colors.grey.withOpacity(0.8);
 }
 
 class DesignSystemColorDark extends DesignSystemColor {
@@ -73,10 +85,13 @@ class DesignSystemColorDark extends DesignSystemColor {
   Brightness get brightness => Brightness.dark;
 
   @override
-  Color get primaryColor => _HexColor('#54D3C2');
+  Color get primaryColor => Colors.black;
 
   @override
-  Color get secondaryColor => _HexColor('#54D3C2');
+  Color get primaryVariant => Colors.black12;
+
+  @override
+  Color get secondaryColor => Colors.white;
 
   @override
   Color get indicatorColor => Colors.white;
@@ -94,23 +109,17 @@ class DesignSystemColorDark extends DesignSystemColor {
   Color get scaffoldBackgroundColor => Colors.black;
 
   @override
+  Color get buttonColor => Colors.white;
+
+  @override
   Color get errorColor => Colors.white;
 
   @override
-  Color get curvedNavigationBarColor => Colors.white;
+  Color? get accentColor => Colors.tealAccent[200];
 
   @override
-  Color get curvedNavigationIconColor => Colors.black;
-}
+  Color get bodyTextColor1 => Colors.white;
 
-class _HexColor extends Color {
-  _HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
+  @override
+  Color get subtitleColor2 => Colors.white;
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core.dart';
+
 class SearchBar extends StatelessWidget {
   const SearchBar({
     required this.controller,
@@ -18,7 +20,7 @@ class SearchBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 16, top: 16, bottom: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
+                    color: DesignSystem.of(context).colors.backgroundColor,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(38.0),
                     ),
@@ -37,7 +39,7 @@ class SearchBar extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                       ),
-                      cursorColor: Theme.of(context).primaryColor,
+                      cursorColor: DesignSystem.of(context).colors.primaryColor,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Dubai...',

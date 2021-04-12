@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../core.dart';
+
 Widget alertAnimation(Animation<double> animation, Widget child) =>
     FadeTransition(
       opacity: CurvedAnimation(
@@ -37,7 +39,7 @@ Future<void> showYesNoMessage({
               color: Colors.black,
             ),
           ),
-          color: Theme.of(context).buttonColor,
+          color: DesignSystem.of(context).colors.buttonColor,
         ),
         DialogButton(
           onPressed: () {

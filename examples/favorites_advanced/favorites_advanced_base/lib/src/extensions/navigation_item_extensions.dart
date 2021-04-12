@@ -57,15 +57,13 @@ extension NavigationItemTypeTitle on NavigationItemType {
         return Icon(
           Icons.search,
           size: 30,
-          color:
-              DesignSystemOptions.of(context).colors.curvedNavigationIconColor,
+          color: DesignSystem.of(context).colors.secondaryColor,
         );
       case NavigationItemType.favorites:
         return Icon(
           Icons.favorite,
           size: 30,
-          color:
-              DesignSystemOptions.of(context).colors.curvedNavigationIconColor,
+          color: DesignSystem.of(context).colors.secondaryColor,
         );
     }
   }

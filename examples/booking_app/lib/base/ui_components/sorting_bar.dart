@@ -31,7 +31,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
             child: Container(
               height: 24,
               decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
+                color: DesignSystem.of(context).colors.backgroundColor,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
@@ -42,7 +42,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
             ),
           ),
           Container(
-            color: Theme.of(context).backgroundColor,
+            color: DesignSystem.of(context).colors.backgroundColor,
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
@@ -84,7 +84,9 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                               padding: const EdgeInsets.all(8),
                               child: Icon(
                                 Icons.sort,
-                                color: Theme.of(context).primaryColor,
+                                color: DesignSystem.of(context)
+                                    .colors
+                                    .primaryColor,
                               ),
                             ),
                           ],
