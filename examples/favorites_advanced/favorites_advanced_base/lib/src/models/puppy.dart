@@ -117,8 +117,8 @@ class Puppy /*extends Equatable*/ implements Entity {
   //         displayName == other.displayName &&
   //         displayCharacteristics == other.displayCharacteristics;
 
-  // @override
-  // int get hashCode => super.hashCode
+  @override
+  int get hashCode => super.hashCode;
 
   @override
   String toString() => '{$id, $name, $asset, $breedType, $isFavorite,'
