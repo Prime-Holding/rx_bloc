@@ -8,6 +8,15 @@ void main() {
     final emptyListData = [];
     final notEmptyListData = [0, 1, 2, 3];
 
+    test('PaginatedList.toString', () {
+      final list = PaginatedList(list: notEmptyListData, pageSize: pageSize);
+
+      expect(
+        list.toString(),
+        '{list: [0, 1, 2, 3], _backupList: [], loading: false}',
+      );
+    });
+
     test('PaginatedList.copyWith', () {
       final list = PaginatedList(list: emptyListData, pageSize: pageSize);
 

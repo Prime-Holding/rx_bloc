@@ -7,6 +7,36 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'stub.dart';
 
 void main() {
+  group('Stream<PaginatedList<T>>', () {
+    test('waitToLoad completes', () {
+      final pageSubject = BehaviorSubject.seeded(PaginatedList(
+        list: Stub.pageEmpty,
+        pageSize: 1,
+      ));
+
+      Rx.merge<Result<PaginatedList<int>>>([
+        Stub.steamPage(Stub.pageOne, delay: 10),
+      ]).mergeWithPaginatedList(pageSubject).bind(pageSubject);
+
+      expect(
+        pageSubject.waitToLoad(),
+        completes,
+      );
+    });
+
+    test('waitToLoad does not complete', () {
+      final pageSubject = BehaviorSubject.seeded(PaginatedList(
+        list: Stub.pageEmpty,
+        pageSize: 1,
+      ));
+
+      expect(
+        pageSubject.waitToLoad(),
+        doesNotComplete,
+      );
+    });
+  });
+
   group('AsyncSnapshot<PaginatedList<T>>', () {
     test('isInitialLoading has data', () async {
       final snapshot = AsyncSnapshot.withData(
@@ -29,6 +59,76 @@ void main() {
     test('isInitialLoading nothing', () async {
       final snapshot = const AsyncSnapshot<PaginatedList<int>>.nothing();
       expect(snapshot.isInitialLoading, true);
+    });
+
+    test('isNextPageLoading', () async {
+      final snapshotNothing = const AsyncSnapshot<PaginatedList<int>>.nothing();
+      expect(snapshotNothing.isNextPageLoading, true);
+
+      final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
+        ConnectionState.done,
+        PaginatedList(list: [1], isLoading: true, pageSize: 1),
+      );
+
+      expect(snapshotData.isNextPageLoading, true);
+    });
+
+    test('isLoading', () async {
+      final snapshotNothing = const AsyncSnapshot<PaginatedList<int>>.nothing();
+      expect(snapshotNothing.isLoading, true);
+
+      final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
+        ConnectionState.done,
+        PaginatedList(list: [1], isLoading: true, pageSize: 1),
+      );
+
+      expect(snapshotData.isLoading, true);
+    });
+
+    test('hasPageError', () async {
+      final snapshotNothing = const AsyncSnapshot<PaginatedList<int>>.nothing();
+      expect(snapshotNothing.hasPageError, false);
+
+      final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
+        ConnectionState.done,
+        PaginatedList(list: [], pageSize: 1, error: Exception('a')),
+      );
+
+      expect(snapshotData.hasPageError, true);
+    });
+
+    test('getItem', () async {
+      final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
+        ConnectionState.done,
+        PaginatedList(list: [0, 1, 2], pageSize: 1),
+      );
+
+      expect(snapshotData.getItem(1), 1);
+    });
+
+    test('itemCount', () async {
+      final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
+        ConnectionState.done,
+        PaginatedList(list: [0, 1, 2], pageSize: 1),
+      );
+
+      expect(snapshotData.itemCount, 3);
+    });
+
+    test('pageNumber', () async {
+      final snapshotDataPageOne = AsyncSnapshot<PaginatedList<int>>.withData(
+        ConnectionState.done,
+        PaginatedList(list: [0, 1, 2], pageSize: 3, totalCount: 6),
+      );
+
+      expect(snapshotDataPageOne.pageNumber, 1);
+
+      final snapshotDataPageTwo = AsyncSnapshot<PaginatedList<int>>.withData(
+        ConnectionState.done,
+        PaginatedList(list: [0, 1, 2, 3, 4, 5, 6], pageSize: 3),
+      );
+
+      expect(snapshotDataPageTwo.pageNumber, 3);
     });
   });
 
