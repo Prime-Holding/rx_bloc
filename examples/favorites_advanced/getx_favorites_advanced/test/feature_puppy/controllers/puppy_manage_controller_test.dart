@@ -42,7 +42,8 @@ Future<void> main() async {
     //   when(mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
     //       .thenAnswer((_) async => throw Stub.testErr);
     //   // action
-    //   await controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
+    //   await controller
+    //       .markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
     //   final puppiesToUpdate = mediatorController.puppiesToUpdate;
     //   // assert
     //   await expectLater(puppiesToUpdate, <Puppy>[Stub.puppyTest]);
