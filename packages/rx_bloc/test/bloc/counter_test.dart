@@ -1,3 +1,4 @@
+import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
 // ignore: avoid_relative_lib_imports
@@ -9,7 +10,44 @@ import '../../lib/rx_bloc.dart';
 class BlocImpl extends RxBlocBase implements RxBlocTypeBase {}
 
 void main() {
+  group('CounterBloc: _sharedStream', () {
+    test('CounterBloc: _sharedStream - PublishSubject', () {
+      final bloc = BlocImpl();
+      final errorResult = Stream.error(Exception('test')).asResultStream();
+
+      final result = errorResult.setResultStateHandler(
+        bloc,
+        shareReplay: false,
+      );
+
+      expect(result, isA<PublishSubject<Result<dynamic>>>());
+    });
+
+    test('CounterBloc: _sharedStream - ReplaySubject', () {
+      final bloc = BlocImpl();
+      final errorResult = Stream.error(Exception('test')).asResultStream();
+
+      final result = errorResult.setResultStateHandler(
+        bloc,
+        shareReplay: true,
+      );
+
+      expect(result, isA<ReplaySubject<Result<dynamic>>>());
+    });
+  });
+
   group('CounterBloc: isLoading', () {
+    rxBlocTest<CounterBlocType, bool>(
+      'CounterBloc: dispose',
+      build: () async => CounterBloc(ServerSimulator()),
+      state: (bloc) => bloc.states.isLoading,
+      act: (bloc) async => bloc
+        ..events.increment()
+        ..dispose(),
+      wait: ServerSimulator.delayTest,
+      expect: <bool>[false],
+    );
+
     rxBlocTest<CounterBlocType, bool>(
       'CounterBloc: isLoading: no count subscription',
       build: () async => CounterBloc(ServerSimulator()),
