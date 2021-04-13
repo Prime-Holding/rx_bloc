@@ -37,15 +37,15 @@ Future<void> main() async {
       expect(
           mediatorController.puppiesToUpdate, <Puppy>[Stub.puppyTestUpdated]);
     });
-    test('repo throw exception', () async {
-      // arrange
-      when(mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
-          .thenAnswer((_) async => throw Stub.testErr);
-      // action
-      await controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
-      final puppiesToUpdate = mediatorController.puppiesToUpdate;
-      // assert
-      await expectLater(puppiesToUpdate, <Puppy>[Stub.puppyTest]);
-    });
+    // test('repo throw exception', () async {
+    //   // arrange
+    //   when(mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
+    //       .thenAnswer((_) async => throw Stub.testErr);
+    //   // action
+    //   await controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
+    //   final puppiesToUpdate = mediatorController.puppiesToUpdate;
+    //   // assert
+    //   await expectLater(puppiesToUpdate, <Puppy>[Stub.puppyTest]);
+    // });
   });
 }
