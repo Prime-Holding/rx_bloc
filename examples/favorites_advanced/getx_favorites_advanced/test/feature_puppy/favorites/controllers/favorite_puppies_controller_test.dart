@@ -1,8 +1,10 @@
-import 'package:get/get.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:get/get.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
 import 'package:favorites_advanced_base/repositories.dart';
+
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/favorite_puppies_controller.dart';
 
@@ -20,16 +22,30 @@ void main() {
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mediatorController = Get.put(MediatorController());
-    controller = Get.put(FavoritePuppiesController(
-        MockPuppiesRepository(), Get.find<MediatorController>()));
+    when(mockRepo.getFavoritePuppies())
+        .thenAnswer((_) async => Stub.emptyPuppyList);
+    controller =
+        Get.put(FavoritePuppiesController(mockRepo, mediatorController));
   });
 
-  group('FavoritePuppiesController', () {
-    //do this temporally
-    final controller = Get.put(FavoritePuppiesController(
-        Get.find<PuppiesRepository>(), Get.find<MediatorController>()));
-    test('return zero if no favorite puppies', () {
-      expect(controller.count, 0);
+  group('FavoritePuppiesController - ', () {
+    test('initialization', () {
+    //arrange
+    //action
+    final count = controller.count;
+    //assert
+    expect(count,0);
+    });
+    test('updateFavoritePuppies', () {
+    //arrange
+      final updatedPuppies = Stub.puppiesTestUpdated;
+    //action
+    mediatorController.puppiesToUpdate(updatedPuppies);
+    final count = controller.count;
+    final puppy = controller.favoritePuppiesList.first;
+    //assert
+    expect(count, 1);
+    expect(puppy, Stub.puppyTestUpdated);
     });
   });
 }

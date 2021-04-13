@@ -13,11 +13,20 @@ class PuppyListController extends GetxController with StateMixin {
   final MediatorController _mediatorController;
 
   final _puppies = <Puppy>[].obs;
+  late Worker updateFetchedDetailsWorker;
+  late Worker updateFavoriteStatusWorker;
 
   @override
   Future<void> onInit() async {
     change(_puppies, status: RxStatus.loading());
     await _initPuppies();
+    updateFetchedDetailsWorker =
+        ever(_mediatorController.lastFetchedPuppies, (_) {
+      updatePuppiesWith(_mediatorController.lastFetchedPuppies);
+    });
+    updateFavoriteStatusWorker = ever(_mediatorController.puppiesToUpdate, (_) {
+      updatePuppiesWith(_mediatorController.puppiesToUpdate.toList());
+    });
     super.onInit();
   }
 
@@ -28,15 +37,15 @@ class PuppyListController extends GetxController with StateMixin {
     _mediatorController.clearFetchedExtraDetails();
   }
 
-  void updatePuppiesWithExtraDetails(List<Puppy> puppiesToUpdate) {
-    _puppies.mergeWith(puppiesToUpdate);
-  }
-
-  void onPuppyUpdated(List<Puppy> puppiesToUpdate) {
+  void updatePuppiesWith(List<Puppy> puppiesToUpdate) {
+    // _puppies.mergeWith(puppiesToUpdate);
     puppiesToUpdate.forEach((puppy) {
-      final currentIndex =
-          _puppies.indexWhere((element) => element.id == puppy.id);
-      _puppies.replaceRange(currentIndex, currentIndex + 1, [puppy]);
+      final index = _puppies.indexWhere((element) => element.id == puppy.id);
+      if (index >= 0 && index < _puppies.length) {
+        _puppies.replaceRange(index, index + 1, [puppy]);
+      } else {
+        _puppies.add(puppy);
+      }
     });
   }
 
@@ -52,14 +61,9 @@ class PuppyListController extends GetxController with StateMixin {
   }
 
   @override
-  void onReady() {
-    ever(_mediatorController.lastFetchedPuppies, (_) {
-      updatePuppiesWithExtraDetails(
-          _mediatorController.lastFetchedPuppies);
-    });
-    ever(_mediatorController.puppiesToUpdate, (_) {
-      onPuppyUpdated(_mediatorController.puppiesToUpdate);
-    });
-    super.onReady();
+  void onClose() {
+    updateFetchedDetailsWorker.dispose();
+    updateFavoriteStatusWorker.dispose();
+    super.onClose();
   }
 }

@@ -12,13 +12,13 @@ class PuppyExtraDetailsController extends GetxController {
   final PuppiesRepository _repository;
   final MediatorController _mediatorController;
 
-  final lastFetchedPuppies = <Puppy>[].obs;
-  late Worker debounceWorker;
-  late Worker clearWorker;
+  final _lastFetchedPuppies = <Puppy>[].obs;
+  late Worker _debounceWorker;
+  late Worker _clearWorker;
 
   @override
   Future<void> onInit() async {
-    debounceWorker = debounce<List<Puppy>>(lastFetchedPuppies, (data) async {
+    _debounceWorker = debounce<List<Puppy>>(_lastFetchedPuppies, (data) async {
       final filterPuppies =
           data.where((puppy) => !puppy.hasExtraDetails()).toList();
       if (filterPuppies.isEmpty) {
@@ -28,31 +28,29 @@ class PuppyExtraDetailsController extends GetxController {
         final fetchedPuppies = await _repository.fetchFullEntities(
             filterPuppies.map((element) => element.id).toList());
         data.assignAll(fetchedPuppies);
-        _mediatorController.updatePuppiesWithExtraDetails(data.obs);
+        _mediatorController
+            .updatePuppiesWithExtraDetails(fetchedPuppies);
       } catch (error) {
         print(error.toString());
       }
     }, time: const Duration(milliseconds: 100));
+    ever(_mediatorController.toClearFetchedExtraDetails,
+            (_) => _lastFetchedPuppies.clear());
     super.onInit();
   }
 
+  List<Puppy> get lastFetchedPuppies => [..._lastFetchedPuppies];
+
   Future<void> fetchExtraDetails(Puppy puppy) async {
-    if (!lastFetchedPuppies.any((element) => element.id == puppy.id)) {
-      lastFetchedPuppies.add(puppy);
+   if (!_lastFetchedPuppies.any((element) => element.id == puppy.id)) {
+      _lastFetchedPuppies.add(puppy);
     }
   }
 
   @override
-  void onReady() {
-    ever(_mediatorController.toClearFetchedExtraDetails,
-            (_) => lastFetchedPuppies.clear());
-    super.onReady();
-  }
-
-  @override
   void onClose() {
-    debounceWorker.dispose();
-    clearWorker.dispose();
+    _debounceWorker.dispose();
+    _clearWorker.dispose();
     super.onClose();
   }
 }

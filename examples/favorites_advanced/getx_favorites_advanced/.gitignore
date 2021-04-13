@@ -1,4 +1,5 @@
 # Miscellaneous
+*.perl
 *.class
 *.log
 *.pyc
