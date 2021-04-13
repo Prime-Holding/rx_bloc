@@ -76,25 +76,25 @@ void main() {
     });
   });
 
-  // group('PuppyListController - repo exception', () {
-  //   setUp(() {
-  //     reset(mockRepo = MockPuppiesRepository());
-  //     when(mockRepo.getPuppies(query: ''))
-  //         .thenAnswer((_) async => Stub.emptyPuppyList);
-  //     controller =
-  //     Get.put(PuppyListController(mockRepo, mediatorController));
-  //   });
-  //
-  //   test('empty list when no internet connection', () async {
-  //     // arrange
-  //     when(mockRepo.getPuppies(query: ''))
-  //         .thenAnswer((_) async => Stub.emptyPuppyList);
-  //     // action
-  //     await controller.onInit();
-  //     final newPuppies = controller.searchedPuppies();
-  //     // assert
-  //     expect(newPuppies.length, 0);
-  //   });
-  // });
+  group('PuppyListController - repo exception', () {
+    setUp(() {
+      reset(mockRepo = MockPuppiesRepository());
+      when(mockRepo.getPuppies(query: ''))
+          .thenAnswer((_) async => Stub.emptyPuppyList);
+      controller =
+      Get.put(PuppyListController(mockRepo, mediatorController));
+    });
+
+    test('empty list when no internet connection', () async {
+      // arrange
+      when(mockRepo.getPuppies(query: ''))
+          .thenAnswer((_) async => Stub.emptyPuppyList);
+      // action
+      await controller.onInit();
+      final newPuppies = controller.searchedPuppies();
+      // assert
+      expect(newPuppies.length, 0);
+    });
+  });
 
 }

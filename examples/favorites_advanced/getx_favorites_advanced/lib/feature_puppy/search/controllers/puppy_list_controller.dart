@@ -32,9 +32,14 @@ class PuppyListController extends GetxController with StateMixin {
 
   List<Puppy> searchedPuppies() => [..._puppies];
 
-  Future<void> onReload() async {
+  Future<void> onRefresh() async {
     await _initPuppies();
     _mediatorController.clearFetchedExtraDetails();
+  }
+
+  Future<void> onReload() async {
+    change(_puppies, status: RxStatus.loading());
+   await onRefresh();
   }
 
   void updatePuppiesWith(List<Puppy> puppiesToUpdate) {

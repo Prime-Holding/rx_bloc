@@ -5,7 +5,7 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_extra_details_controller.dart';
-import 'file:///C:/Users/snezh/AndroidStudioProjects/rx_bloc/examples/favorites_advanced/getx_favorites_advanced/lib/feature_puppy/search/controllers/puppy_list_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/search/controllers/puppy_list_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
 
 class SearchPage extends GetView<PuppyListController> {
@@ -14,7 +14,7 @@ class SearchPage extends GetView<PuppyListController> {
         body: controller.obx(
           (puppies) => RefreshIndicator(
             onRefresh: () async {
-              await controller.onReload();
+              await controller.onRefresh();
             },
             child: ListView.builder(
               padding: const EdgeInsets.only(bottom: 67),

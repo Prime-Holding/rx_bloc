@@ -6,7 +6,7 @@ import 'package:favorites_advanced_base/repositories.dart';
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 import 'package:getx_favorites_advanced/feature_home/controllers/navbar_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_extra_details_controller.dart';
-import 'file:///C:/Users/snezh/AndroidStudioProjects/rx_bloc/examples/favorites_advanced/getx_favorites_advanced/lib/feature_puppy/search/controllers/puppy_list_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/search/controllers/puppy_list_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/favorite_puppies_controller.dart';
 
