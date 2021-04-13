@@ -22,12 +22,15 @@ void main() {
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mediatorController = Get.put(MediatorController());
-    when(mockRepo.getPuppies(query: ''))
-        .thenAnswer((_) async => Stub.puppies123Test);
-    controller = Get.put(PuppyListController(mockRepo, mediatorController));
   });
 
   group('PuppyListController - ', () {
+    setUp(() async {
+      when(mockRepo.getPuppies(query: ''))
+          .thenAnswer((_) async => Stub.puppies123Test);
+      controller = Get.put(PuppyListController(mockRepo, mediatorController));
+    });
+
     test('full list of puppies', () {
       // arrange
       // action
@@ -35,19 +38,6 @@ void main() {
       // assert
       expect(puppies.length, 4);
     });
-
-    // test('empty list when no internet connection', () async {
-    //   // arrange
-    //   final currentRepo = MockPuppiesRepository();
-    //   when(currentRepo.getPuppies(query: ''))
-    //       .thenAnswer((_) async => Stub.emptyPuppyList);
-    //   // action
-    //   final currentController = Get.put(PuppyListController(
-    //       currentRepo, mediatorController));
-    //   final newPuppies = currentController.searchedPuppies();
-    //   // assert
-    //   expect(newPuppies.length, 2);
-    // });
 
     test('onReload', () async {
       //arrange
@@ -85,4 +75,26 @@ void main() {
       expect(isFavorite, isTrue);
     });
   });
+
+  // group('PuppyListController - repo exception', () {
+  //   setUp(() {
+  //     reset(mockRepo = MockPuppiesRepository());
+  //     when(mockRepo.getPuppies(query: ''))
+  //         .thenAnswer((_) async => Stub.emptyPuppyList);
+  //     controller =
+  //     Get.put(PuppyListController(mockRepo, mediatorController));
+  //   });
+  //
+  //   test('empty list when no internet connection', () async {
+  //     // arrange
+  //     when(mockRepo.getPuppies(query: ''))
+  //         .thenAnswer((_) async => Stub.emptyPuppyList);
+  //     // action
+  //     await controller.onInit();
+  //     final newPuppies = controller.searchedPuppies();
+  //     // assert
+  //     expect(newPuppies.length, 0);
+  //   });
+  // });
+
 }
