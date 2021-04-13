@@ -1,3 +1,5 @@
+![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop/graph/badge.svg)](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
+
 ## rx_bloc_list
 
 The *[rx_bloc_list](https://pub.dev/packages/rx_bloc_list)* package facilitates implementing `infinity scroll` and `pull-to-refresh` features with minimal setup. This package is meant to be used along with *[RxBloc ecosystem](https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e)*.
