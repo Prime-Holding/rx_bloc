@@ -49,11 +49,15 @@ class PuppiesExtraDetailsBloc
     if (event is FetchPuppiesExtraDetailsEvent) {
       // print('Puppies Extra Details : event.puppies.ids :
       // ${event.puppies.ids}');
-      final puppiesWithDetails =
-          await _repository.fetchFullEntities(event.puppies.ids);
-      _coordinatorBloc.add(
-        CoordinatorPuppiesWithExtraDetailsEvent(puppiesWithDetails),
-      );
+      try {
+        final puppiesWithDetails =
+        await _repository.fetchFullEntities(event.puppies.ids);
+        _coordinatorBloc.add(
+          CoordinatorPuppiesWithExtraDetailsEvent(puppiesWithDetails),
+        );
+      } on Exception catch (e){
+        print('Puppy Extra Details Bloc ${e.toString()}');
+      }
     }
   }
 }
