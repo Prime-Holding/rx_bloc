@@ -1,11 +1,16 @@
 part of 'coordinator_bloc.dart';
 
 @immutable
-abstract class CoordinatorState extends Equatable {}
+abstract class CoordinatorState {}
 
 class CoordinatorInitialState extends CoordinatorState {
   @override
-  List<Object?> get props => [];
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CoordinatorInitialState && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 0;
 }
 
 class CoordinatorOnPuppyUpdatedState extends CoordinatorState {
@@ -14,7 +19,14 @@ class CoordinatorOnPuppyUpdatedState extends CoordinatorState {
   final Puppy puppy;
 
   @override
-  List<Object?> get props => [puppy];
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CoordinatorOnPuppyUpdatedState &&
+          runtimeType == other.runtimeType &&
+          puppy == other.puppy;
+
+  @override
+  int get hashCode => puppy.hashCode;
 }
 
 class CoordinatorPuppiesUpdatedState extends CoordinatorState {
@@ -22,15 +34,15 @@ class CoordinatorPuppiesUpdatedState extends CoordinatorState {
 
   final List<Puppy> puppies;
 
-  // CoordinatorPuppiesUpdatedState copyWith({
-  //   List<Puppy>? puppies,
-  // }) =>
-  //     CoordinatorPuppiesUpdatedState(
-  //       puppies ?? this.puppies,
-  //     );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CoordinatorPuppiesUpdatedState &&
+          runtimeType == other.runtimeType &&
+          puppies == other.puppies;
 
   @override
-  List<Object?> get props => [puppies];
+  int get hashCode => puppies.hashCode;
 }
 
 class CoordinatorPuppiesWithExtraDetailsState extends CoordinatorState {
@@ -39,5 +51,12 @@ class CoordinatorPuppiesWithExtraDetailsState extends CoordinatorState {
   final List<Puppy> puppies;
 
   @override
-  List<Object?> get props => [puppies];
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CoordinatorPuppiesWithExtraDetailsState &&
+          runtimeType == other.runtimeType &&
+          puppies == other.puppies;
+
+  @override
+  int get hashCode => puppies.hashCode;
 }

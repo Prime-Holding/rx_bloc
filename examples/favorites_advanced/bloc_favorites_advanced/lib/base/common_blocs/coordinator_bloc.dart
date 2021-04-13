@@ -13,8 +13,6 @@ part 'coordinator_state.dart';
 class CoordinatorBloc extends Bloc<CoordinatorEvent, CoordinatorState> {
   CoordinatorBloc() : super(CoordinatorInitialState());
 
-  final testList = <Puppy>[];
-
   @override
   Stream<Transition<CoordinatorEvent, CoordinatorState>> transformEvents(
     Stream<CoordinatorEvent> events,
@@ -37,22 +35,7 @@ class CoordinatorBloc extends Bloc<CoordinatorEvent, CoordinatorState> {
     CoordinatorEvent event,
   ) async* {
     if (event is CoordinatorPuppiesUpdatedEvent) {
-      // yield CoordinatorPuppiesUpdatedState(event.puppies);
-
       // print('Coordinator Bloc mapEventToState ${event.puppies}');
-      // print('State.props: ${state.props}');
-      // print('State.props.hashCode: ${state.props.hashCode}');
-      // event.puppies.forEach((element) => print(element.hashCode));
-
-      // yield CoordinatorPuppiesUpdatedState(event.puppies);
-      // final test = CoordinatorPuppiesUpdatedState(event.puppies);
-      // final test2 = test.copyWith(puppies: test.puppies);
-      // print('test == test2  ${test == test2}');
-      // print('${test.hashCode}  ${test2.hashCode}');
-      // yield test.copyWith(puppies: test.puppies);
-
-      // Yield an empty list
-      yield CoordinatorPuppiesUpdatedState(testList);
       yield CoordinatorPuppiesUpdatedState(event.puppies);
     }
   }

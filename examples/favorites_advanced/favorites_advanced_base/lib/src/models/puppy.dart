@@ -3,7 +3,7 @@ import 'package:favorites_advanced_base/src/utils/puppy_data_conversion.dart';
 
 import 'entity.dart';
 
-class Puppy /*extends Equatable*/ implements Entity {
+class Puppy implements Entity {
   final String id;
   final String name;
   final String breedCharacteristics;
@@ -39,18 +39,14 @@ class Puppy /*extends Equatable*/ implements Entity {
   @override
   bool operator ==(Object other) {
     if (other is Puppy) {
-      // return false;
       return id == other.id &&
           name == other.name &&
-          asset == other.asset &&
           displayName == other.displayName &&
-          displayCharacteristics == other.displayCharacteristics &&
+          asset == other.asset &&
           isFavorite == other.isFavorite &&
-          breedCharacteristics == other.breedCharacteristics &&
           breedType == other.breedType &&
-          gender == other.gender
-          // hashCode == other.hashCode
-      ;
+          breedCharacteristics == other.breedCharacteristics &&
+          displayCharacteristics == other.displayCharacteristics;
     }
 
     return false;
@@ -102,21 +98,6 @@ class Puppy /*extends Equatable*/ implements Entity {
   String? get breedTypeAsString =>
       PuppyDataConversion.getBreedTypeString(breedType);
 
-  // @override
-  // bool operator ==(Object other) =>
-  //     identical(this, other) ||
-  //     other is Puppy &&
-  //         runtimeType == other.runtimeType &&
-  //         id == other.id &&
-  //         name == other.name &&
-  //         breedCharacteristics == other.breedCharacteristics &&
-  //         asset == other.asset &&
-  //         breedType == other.breedType &&
-  //         gender == other.gender &&
-  //         isFavorite == other.isFavorite &&
-  //         displayName == other.displayName &&
-  //         displayCharacteristics == other.displayCharacteristics;
-
   @override
   int get hashCode => super.hashCode;
 
@@ -124,8 +105,4 @@ class Puppy /*extends Equatable*/ implements Entity {
   String toString() => '{$id, $name, $asset, $breedType, $isFavorite,'
       '${displayName == null ? "no displayName" : displayName}'
       '${displayCharacteristics == null ? "no displayBreedCharacteristics" : ""} }';
-
-  // @override
-  // List<Object?> get props => [id,name,breedCharacteristics,asset,breedType,
-  // gender,isFavorite,displayName,displayCharacteristics];
 }
