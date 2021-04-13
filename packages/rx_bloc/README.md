@@ -1,4 +1,4 @@
-![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/feature%2Frx_bloc_list_tests/graph/badge.svg)](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/feature%2Frx_bloc_list_tests) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
+![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop/graph/badge.svg)](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
 
 # What is rx_bloc ?
 ![Slogan](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/slogan.png)
