@@ -49,7 +49,7 @@ void main() {
         store.dispatch(PuppiesFetchRequestedAction());
       });
 
-      final state = AppStateStub.initialState;
+      const state = AppStateStub.initialState;
       expect(
         store.onChange,
         emitsInOrder([
@@ -70,7 +70,7 @@ void main() {
         store.dispatch(PuppiesFetchRequestedAction());
       });
 
-      final state = AppStateStub.initialState;
+      const state = AppStateStub.initialState;
       expect(
         store.onChange,
         emitsInOrder([
@@ -95,7 +95,7 @@ void main() {
           ..dispatch(ExtraDetailsFetchRequestedAction(puppy: Stub.puppy3));
       });
 
-      final state = AppStateStub.initialState;
+      const state = AppStateStub.initialState;
       expect(
         store.onChange,
         emitsInOrder([

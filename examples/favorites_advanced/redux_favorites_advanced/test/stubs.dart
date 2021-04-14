@@ -139,8 +139,9 @@ class AppStateStub {
       ],
     ),
     puppyListState: PuppyListState(
-      puppies: [],
+      isLoading: false,
       isError: false,
+      puppies: [],
     ),
     favoriteCount: 0,
     error: '',

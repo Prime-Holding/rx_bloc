@@ -7,6 +7,7 @@ import 'actions.dart';
 
 PuppyListState puppyListStateReducer(PuppyListState state, action) =>
     state.copyWith(
+      isLoading: isLoadingReducer(state: state.isLoading, action: action),
       isError: isErrorReducer(state: state.isError, action: action),
       puppies: puppyReducer(state.puppies, action),
     );
@@ -31,6 +32,17 @@ List<Puppy>? extraDetailsFetchSucceededReducer(
 List<Puppy>? puppyFavoriteSucceededReducer(
         List<Puppy>? puppies, PuppyFavoriteSucceededAction action) =>
     puppies!.mergeWith([action.puppy]);
+
+bool? isLoadingReducer({bool? state, action}) {
+  if (action is PuppiesFetchLoadingAction) {
+    return true;
+  }
+  if (action is PuppiesFetchSucceededAction ||
+      action is PuppiesFetchFailedAction) {
+    return false;
+  }
+  return state;
+}
 
 bool? isErrorReducer({bool? state, action}) {
   if (action is PuppiesFetchFailedAction) {

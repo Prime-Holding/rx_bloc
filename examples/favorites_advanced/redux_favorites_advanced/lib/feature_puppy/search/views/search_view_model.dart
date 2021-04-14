@@ -8,14 +8,22 @@ import '../../../feature_puppy/search/redux/actions.dart';
 
 class SearchViewModel extends Equatable {
   const SearchViewModel({
+    required this.isLoading,
     required this.isError,
     required this.puppies,
+    required this.onErrorReload,
     required this.onRefreshFetch,
     required this.onExtraDetailsFetch,
     required this.onToggleFavorite,
   });
 
   factory SearchViewModel.from(Store<AppState> store) {
+    void _onErrorReload() {
+      store
+        ..dispatch(PuppiesFetchLoadingAction())
+        ..dispatch(PuppiesFetchRequestedAction());
+    }
+
     void _onRefreshFetch() {
       store.dispatch(PuppiesFetchRequestedAction());
     }
@@ -32,21 +40,32 @@ class SearchViewModel extends Equatable {
     }
 
     return SearchViewModel(
+      isLoading: store.state.puppyListState.isLoading,
       isError: store.state.puppyListState.isError,
       puppies: store.state.puppyListState.puppies,
+      onErrorReload: _onErrorReload,
       onRefreshFetch: _onRefreshFetch,
       onExtraDetailsFetch: _onExtraDetailsFetch,
       onToggleFavorite: _onToggleFavorite,
     );
   }
 
+  final bool isLoading;
   final bool isError;
   final List<Puppy> puppies;
+  final Function onErrorReload;
   final Function onRefreshFetch;
   final Function onExtraDetailsFetch;
   final Function onToggleFavorite;
 
   @override
-  List<Object> get props =>
-      [isError, puppies, onRefreshFetch, onExtraDetailsFetch, onToggleFavorite];
+  List<Object> get props => [
+        isLoading,
+        isError,
+        puppies,
+        onErrorReload,
+        onRefreshFetch,
+        onExtraDetailsFetch,
+        onToggleFavorite,
+      ];
 }

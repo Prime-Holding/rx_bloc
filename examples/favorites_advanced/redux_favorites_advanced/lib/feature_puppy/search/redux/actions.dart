@@ -10,6 +10,8 @@ class PuppiesFetchSucceededAction {
 
 class PuppiesFetchFailedAction {}
 
+class PuppiesFetchLoadingAction {}
+
 class ExtraDetailsFetchRequestedAction {
   ExtraDetailsFetchRequestedAction({required this.puppy});
 

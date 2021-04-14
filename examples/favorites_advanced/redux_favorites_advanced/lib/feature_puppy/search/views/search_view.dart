@@ -15,12 +15,12 @@ class SearchView extends StatelessWidget {
           key: const Key(Keys.puppySearchPage),
           onInit: (store) => store.dispatch(PuppiesFetchRequestedAction()),
           converter: (store) => SearchViewModel.from(store),
-          builder: (_, viewModel) => (viewModel.isError)
-              ? ErrorRetryWidget(
-                  onReloadTap: () => viewModel.onRefreshFetch(),
-                )
-              : (viewModel.puppies.isEmpty)
-                  ? LoadingWidget()
+          builder: (_, viewModel) => (viewModel.isLoading)
+              ? LoadingWidget()
+              : (viewModel.isError)
+                  ? ErrorRetryWidget(
+                      onReloadTap: () => viewModel.onErrorReload(),
+                    )
                   : RefreshIndicator(
                       onRefresh: () {
                         viewModel.onRefreshFetch();
