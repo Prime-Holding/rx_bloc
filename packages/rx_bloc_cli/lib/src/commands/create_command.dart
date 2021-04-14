@@ -9,6 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:rx_bloc_cli/src/templates/rx_bloc_base_bundle.dart';
 
 final _projectNameString = 'project-name';
+final _orgNameString = 'org';
 
 class CreateCommand extends Command<int> {
   CreateCommand({
@@ -18,6 +19,11 @@ class CreateCommand extends Command<int> {
   })  : _logger = logger ?? Logger(),
         _bundle = bundle ?? rxBlocBaseBundle,
         _generator = generator ?? MasonGenerator.fromBundle {
+    argParser.addOption(
+      _orgNameString,
+      help: 'The organisation name (eg.: com.example ).',
+      defaultsTo: null,
+    );
     argParser.addOption(
       _projectNameString,
       help: 'The project name for this new Flutter project. '
@@ -35,7 +41,10 @@ class CreateCommand extends Command<int> {
 
   ArgResults get _argResults => argResultOverrides ?? argResults;
 
-  final RegExp _identifierRegExp = RegExp('[a-z_][a-z0-9_]*');
+  /// Regex for package name
+  final RegExp _packageNameRegExp = RegExp('[a-z_][a-z0-9_]*');
+  final RegExp _orgNameRegExp =
+      RegExp('^([A-Za-z]{2,6})(\\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))+\$');
 
   @override
   String get name => 'create';
@@ -45,8 +54,28 @@ class CreateCommand extends Command<int> {
 
   @override
   Future<int> run() async {
+    //await _generateViaMasonBundle();
+    await _generateViaShellFile();
+
+    return ExitCode.success.code;
+  }
+
+  void _generateViaShellFile() async {
+    var res = await Process.run(
+      '/Users/pwndp/repos/rx_bloc/packages/rx_bloc_cli/template/create.sh',
+      ['--project-name', _projectName, '--org', _organizationName],
+      workingDirectory: _outputDirectory.path,
+      runInShell: true,
+    );
+
+    //stdout.write(res.stdout);
+    stderr.write(res.stderr);
+  }
+
+  void _generateViaMasonBundle() async {
     final outputDirectory = _outputDirectory;
     final projectName = _projectName;
+
     final generateDone = _logger.progress('Bootstrapping');
     final generator = await _generator(_bundle);
     final fileCount = await generator.generate(
@@ -56,8 +85,6 @@ class CreateCommand extends Command<int> {
 
     generateDone('Bootstrapping complete');
     _writeOutputLog(fileCount);
-
-    return ExitCode.success.code;
   }
 
   void _writeOutputLog(int fileCount) {
@@ -69,6 +96,8 @@ class CreateCommand extends Command<int> {
       ..flush(_logger.success);
   }
 
+  /// region Properties
+
   /// Gets the project name. If no project name was specified, uses the current
   /// directory path name instead.
   String get _projectName {
@@ -78,8 +107,24 @@ class CreateCommand extends Command<int> {
     return projectName;
   }
 
+  String get _organizationName {
+    final orgName = _argResults[_orgNameString];
+    _validateOrganisationName(orgName);
+    return orgName;
+  }
+
+  Directory get _outputDirectory {
+    final rest = _argResults.rest;
+    _validateOutputDirectoryArg(rest);
+    return Directory(rest.first);
+  }
+
+  /// endregion
+
+  /// region Validation
+
   void _validateProjectName(String name) {
-    final isValidProjectName = _isValidPackageName(name);
+    final isValidProjectName = _stringMatchesRegex(_packageNameRegExp, name);
     if (!isValidProjectName) {
       throw UsageException(
         '"$name" is not a valid package name.\n\n'
@@ -87,17 +132,6 @@ class CreateCommand extends Command<int> {
         usage,
       );
     }
-  }
-
-  bool _isValidPackageName(String name) {
-    final match = _identifierRegExp.matchAsPrefix(name);
-    return match != null && match.end == name.length;
-  }
-
-  Directory get _outputDirectory {
-    final rest = _argResults.rest;
-    _validateOutputDirectoryArg(rest);
-    return Directory(rest.first);
   }
 
   void _validateOutputDirectoryArg(List<String> args) {
@@ -112,4 +146,18 @@ class CreateCommand extends Command<int> {
       throw UsageException('Multiple output directories specified.', usage);
     }
   }
+
+  void _validateOrganisationName(String orgName) {
+    if (orgName == null || orgName.trim().isEmpty)
+      throw UsageException('No organisation name specified.', usage);
+    if (!_stringMatchesRegex(_orgNameRegExp, orgName))
+      throw UsageException('Invalid organisation name.', usage);
+  }
+
+  bool _stringMatchesRegex(RegExp regex, String name) {
+    final match = regex.matchAsPrefix(name);
+    return match != null && match.end == name.length;
+  }
+
+  /// endregion
 }
