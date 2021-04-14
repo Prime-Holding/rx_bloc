@@ -20,7 +20,7 @@ class HotelHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: DesignSystem.of(context).colors.backgroundColor,
+      color: DesignSystem.of(context).colors.containerColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,8 +59,9 @@ class HotelHeader extends StatelessWidget {
                             Icon(
                               FontAwesomeIcons.mapMarkerAlt,
                               size: 12,
-                              color:
-                                  DesignSystem.of(context).colors.primaryColor,
+                              color: DesignSystem.of(context)
+                                  .colors
+                                  .primaryIconColor,
                             ),
                           const SizedBox(width: 4),
                           Expanded(
@@ -69,9 +70,8 @@ class HotelHeader extends StatelessWidget {
                               text: hotel.displayDist == null
                                   ? null
                                   : '${hotel.displayDist!.toStringAsFixed(1)} km to city',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey.withOpacity(0.8)),
+                              style:
+                                  DesignSystem.of(context).typography.subtitle2,
                               height: 18,
                             ),
                           ),
@@ -88,20 +88,20 @@ class HotelHeader extends StatelessWidget {
                               starCount: 5,
                               rating: hotel.rating,
                               size: 20,
-                              color:
-                                  DesignSystem.of(context).colors.primaryColor,
-                              borderColor:
-                                  DesignSystem.of(context).colors.primaryColor,
+                              color: DesignSystem.of(context)
+                                  .colors
+                                  .primaryIconColor,
+                              borderColor: DesignSystem.of(context)
+                                  .colors
+                                  .primaryIconColor,
                             ),
                           Expanded(
                             child: SkeletonText(
                               text: hotel.displayReviews == null
                                   ? null
                                   : ' ${hotel.displayReviews!} Reviews',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey.withOpacity(0.8),
-                              ),
+                              style:
+                                  DesignSystem.of(context).typography.subtitle2,
                               height: 19,
                             ),
                           ),
@@ -122,15 +122,11 @@ class HotelHeader extends StatelessWidget {
                 Text(
                   '\$${hotel.perNight}',
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                  ),
+                  style: DesignSystem.of(context).typography.subtitle1,
                 ),
                 Text(
                   '/per night',
-                  style: TextStyle(
-                      fontSize: 14, color: Colors.grey.withOpacity(0.8)),
+                  style: DesignSystem.of(context).typography.subtitle2,
                 ),
               ],
             ),

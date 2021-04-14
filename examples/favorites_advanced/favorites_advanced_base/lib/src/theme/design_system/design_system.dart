@@ -25,7 +25,7 @@ class DesignSystem {
   }
 
   static DesignSystem _create(BuildContext context, Brightness brightness) {
-    final designSystemColor = DesignSystemColor(brightness);
+    final designSystemColor = DesignSystemColor(brightness: brightness);
     final designSystemTypography =
         DesignSystemTypography.withColor(designSystemColor);
 
@@ -35,5 +35,5 @@ class DesignSystem {
     );
   }
 
-  ThemeData get theme => HotelAppTheme.buildTheme(colors);
+  ThemeData get theme => HotelAppTheme.buildTheme(this);
 }

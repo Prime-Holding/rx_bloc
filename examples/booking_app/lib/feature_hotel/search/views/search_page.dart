@@ -85,7 +85,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             ),
           ],
           body: Container(
-            color: Theme.of(context).backgroundColor,
+            color: DesignSystem.of(context).colors.backgroundColor,
             child: RxPaginatedBuilder<HotelListBlocType,
                 Hotel>.withRefreshIndicator(
               onBottomScrolled: (bloc) => bloc.events.reload(reset: false),
@@ -212,20 +212,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Text(
                         'Choose date',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w100,
-                            fontSize: 16,
-                            color: Colors.grey.withOpacity(0.8)),
+                        style: DesignSystem.of(context).typography.headline4,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
                         dateRangeText,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 14,
-                        ),
+                        style: DesignSystem.of(context).typography.headline5,
                       ),
                     ],
                   ),
@@ -284,20 +278,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Text(
                         'Capacity filters',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w100,
-                            fontSize: 16,
-                            color: Colors.grey.withOpacity(0.8)),
+                        style: DesignSystem.of(context).typography.headline4,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
                         capacityFilterText,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 14,
-                        ),
+                        style: DesignSystem.of(context).typography.headline5,
                       ),
                     ],
                   ),

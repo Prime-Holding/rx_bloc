@@ -35,10 +35,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
             },
             child: Text(
               'Apply',
-              style: TextStyle(
-                color: DesignSystem.of(context).colors.secondaryColor,
-                fontSize: 18,
-              ),
+              style: DesignSystem.of(context).typography.buttonMain,
             ),
           ),
         ],

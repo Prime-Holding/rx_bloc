@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Booking app',
           home: HomePage.page(),
-          theme: DesignSystem.fromBrightness(context, Brightness.light).theme,
+          theme: DesignSystem.fromBrightness(context, Brightness.dark).theme,
           darkTheme:
               DesignSystem.fromBrightness(context, Brightness.dark).theme,
         ),

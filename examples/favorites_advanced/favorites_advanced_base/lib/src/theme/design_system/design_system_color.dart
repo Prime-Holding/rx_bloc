@@ -1,125 +1,84 @@
 import 'package:flutter/material.dart';
 
-abstract class DesignSystemColor {
-  factory DesignSystemColor(Brightness brightness) {
-    if (brightness == Brightness.light) {
-      return designSystemColorsLight;
+/// @todo
+/// 1. Dark mode style changes
+/// - Text Field, Navigation, ListItemContainer, Bottom Navigation Love Counter Color
+class DesignSystemColor {
+  late Brightness brightness;
+
+  DesignSystemColor({required this.brightness});
+
+  Color _blackVariant = _HexColor('#36393d');
+
+  bool get lightMode => brightness == Brightness.light;
+
+  Color get primaryColor => lightMode ? Colors.blue : Colors.black;
+
+  Color get primaryVariant => lightMode ? Colors.blueAccent : _blackVariant;
+
+  Color get secondaryColor => Colors.white;
+
+  Color get indicatorColor => Colors.white;
+
+  Color get splashColor => Colors.white24;
+
+  Color get canvasColor => Colors.white;
+
+  Color get backgroundColor => lightMode ? Colors.white : Colors.black;
+
+  Color get scaffoldBackgroundColor => lightMode ? Colors.white : Colors.black;
+
+  Color get buttonColor => Colors.white;
+
+  Color get errorColor => Colors.white;
+
+  Color? get accentColor =>
+      lightMode ? Colors.blue[500] : Colors.tealAccent[200];
+
+  Color get primaryIconColor => lightMode ? Colors.blue : Colors.white;
+
+  Color? get secondaryIconColor => lightMode ? Colors.white : accentColor;
+
+  Color? get tertiaryIconColor => lightMode ? Colors.blue : accentColor;
+
+  Color get bodyTextColor1 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
+  Color get bodyTextColor2 => lightMode ? Colors.black : Colors.white;
+
+  Color get subtitleColor2 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
+  Color get headline1 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
+  Color get headline2 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
+  Color get headline3 => Colors.black;
+
+  Color get headline4 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
+  Color get headline5 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
+  Color get headline6 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
+  Color get containerColor => lightMode ? Colors.white : _blackVariant;
+
+  Color? get appTitleColor => lightMode ? Colors.white : accentColor;
+}
+
+class _HexColor extends Color {
+  _HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
     }
-
-    return designSystemColorsDark;
+    return int.parse(hexColor, radix: 16);
   }
-
-  DesignSystemColor._create();
-
-  static final DesignSystemColorLight designSystemColorsLight =
-      DesignSystemColorLight();
-  static final DesignSystemColorDark designSystemColorsDark =
-      DesignSystemColorDark();
-
-  Brightness get brightness;
-  Color get primaryColor;
-  Color get primaryVariant;
-  Color get secondaryColor;
-  Color get indicatorColor;
-  Color get splashColor;
-  Color get canvasColor;
-  Color get backgroundColor;
-  Color get scaffoldBackgroundColor;
-  Color get buttonColor;
-  Color get errorColor;
-  Color? get accentColor;
-  Color get bodyTextColor1;
-  Color get subtitleColor2;
-}
-
-class DesignSystemColorLight extends DesignSystemColor {
-  DesignSystemColorLight() : super._create();
-
-  @override
-  Brightness get brightness => Brightness.light;
-
-  @override
-  Color get primaryColor => Colors.blue;
-
-  @override
-  Color get primaryVariant => Colors.blueAccent;
-
-  @override
-  Color get secondaryColor => Colors.white;
-
-  @override
-  Color get indicatorColor => Colors.white;
-
-  @override
-  Color get splashColor => Colors.white24;
-
-  @override
-  Color get canvasColor => Colors.white;
-
-  @override
-  Color get backgroundColor => Colors.white;
-
-  @override
-  Color get scaffoldBackgroundColor => Colors.white;
-
-  @override
-  Color get buttonColor => Colors.white;
-
-  @override
-  Color get errorColor => Colors.white;
-
-  @override
-  Color? get accentColor => Colors.blue[500];
-
-  @override
-  Color get bodyTextColor1 => Colors.grey.withOpacity(0.8);
-
-  @override
-  Color get subtitleColor2 => Colors.grey.withOpacity(0.8);
-}
-
-class DesignSystemColorDark extends DesignSystemColor {
-  DesignSystemColorDark() : super._create();
-
-  @override
-  Brightness get brightness => Brightness.dark;
-
-  @override
-  Color get primaryColor => Colors.black;
-
-  @override
-  Color get primaryVariant => Colors.black12;
-
-  @override
-  Color get secondaryColor => Colors.white;
-
-  @override
-  Color get indicatorColor => Colors.white;
-
-  @override
-  Color get splashColor => Colors.white24;
-
-  @override
-  Color get canvasColor => Colors.white;
-
-  @override
-  Color get backgroundColor => Colors.black;
-
-  @override
-  Color get scaffoldBackgroundColor => Colors.black;
-
-  @override
-  Color get buttonColor => Colors.white;
-
-  @override
-  Color get errorColor => Colors.white;
-
-  @override
-  Color? get accentColor => Colors.tealAccent[200];
-
-  @override
-  Color get bodyTextColor1 => Colors.white;
-
-  @override
-  Color get subtitleColor2 => Colors.white;
 }

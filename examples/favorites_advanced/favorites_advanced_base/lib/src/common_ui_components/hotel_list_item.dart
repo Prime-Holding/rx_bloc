@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../core.dart';
-import 'hotel_header.dart';
 import 'hotel_image.dart';
 
 typedef OnFavorite = Function(Hotel hotel, bool isFavorite);

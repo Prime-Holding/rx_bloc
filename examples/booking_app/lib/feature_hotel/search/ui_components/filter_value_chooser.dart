@@ -49,10 +49,7 @@ class _ItemValueChooserState extends State<ItemValueChooser> {
               ),
               Text(
                 '$value',
-                style: const TextStyle(
-                  color: Colors.blue,
-                  fontSize: 18,
-                ),
+                style: DesignSystem.of(context).typography.buttonMain,
               ),
               FocusButton(
                 onPressed: () => changeValue(value + 1),

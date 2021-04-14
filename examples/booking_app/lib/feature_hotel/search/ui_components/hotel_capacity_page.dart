@@ -1,4 +1,5 @@
 import 'package:booking_app/feature_hotel/search/ui_components/filter_value_chooser.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -53,12 +54,9 @@ class _HotelCapacityPageState extends State<HotelCapacityPage> {
             onPressed: () {
               widget.onApplyPressed(roomCapacity, personCapacity);
             },
-            child: const Text(
+            child: Text(
               'Apply',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
+              style: DesignSystem.of(context).typography.buttonMain,
             ),
           ),
         ],

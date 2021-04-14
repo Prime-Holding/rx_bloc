@@ -55,10 +55,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                         state: (bloc) => bloc.states.hotelsFound,
                         builder: (context, snapshot, bloc) => Text(
                           snapshot.data ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w100,
-                            fontSize: 16,
-                          ),
+                          style: DesignSystem.of(context).typography.headline4,
                         ),
                       ),
                     ),
@@ -73,12 +70,10 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                         padding: const EdgeInsets.only(left: 8),
                         child: Row(
                           children: <Widget>[
-                            const Text(
+                            Text(
                               'Sort',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 16,
-                              ),
+                              style:
+                                  DesignSystem.of(context).typography.headline4,
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8),
@@ -86,7 +81,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                                 Icons.sort,
                                 color: DesignSystem.of(context)
                                     .colors
-                                    .primaryColor,
+                                    .primaryIconColor,
                               ),
                             ),
                           ],

@@ -15,33 +15,33 @@ class DesignSystemTypography {
 
   TextStyle get headline1 => TextStyle(
       fontWeight: FontWeight.w100,
-      fontSize: 16,
-      color: Colors.grey.withOpacity(0.8));
+      fontSize: 32,
+      color: _designSystemColor.headline1);
 
   TextStyle get headline2 => TextStyle(
       fontWeight: FontWeight.w100,
-      fontSize: 16,
-      color: Colors.grey.withOpacity(0.8));
+      fontSize: 28,
+      color: _designSystemColor.headline2);
 
   TextStyle get headline3 => TextStyle(
       fontWeight: FontWeight.w100,
-      fontSize: 16,
-      color: Colors.grey.withOpacity(0.8));
+      fontSize: 18,
+      color: _designSystemColor.headline3);
 
   TextStyle get headline4 => TextStyle(
       fontWeight: FontWeight.w100,
       fontSize: 16,
-      color: Colors.grey.withOpacity(0.8));
+      color: _designSystemColor.headline4);
 
   TextStyle get headline5 => TextStyle(
       fontWeight: FontWeight.w100,
-      fontSize: 16,
-      color: Colors.grey.withOpacity(0.8));
+      fontSize: 14,
+      color: _designSystemColor.headline5);
 
   TextStyle get headline6 => TextStyle(
       fontWeight: FontWeight.w100,
-      fontSize: 16,
-      color: Colors.grey.withOpacity(0.8));
+      fontSize: 8,
+      color: _designSystemColor.headline6);
 
   TextStyle get subtitle1 => TextStyle(
         fontWeight: FontWeight.w600,
@@ -61,5 +61,14 @@ class DesignSystemTypography {
   TextStyle get bodyText2 => TextStyle(
       fontWeight: FontWeight.w100,
       fontSize: 16,
-      color: Colors.grey.withOpacity(0.8));
+      color: _designSystemColor.bodyTextColor2);
+
+  TextStyle get buttonMain => TextStyle(
+        color: _designSystemColor.secondaryColor,
+        fontSize: 18,
+      );
+
+  TextStyle get appBarTitle => TextStyle(
+        color: _designSystemColor.appTitleColor,
+      );
 }

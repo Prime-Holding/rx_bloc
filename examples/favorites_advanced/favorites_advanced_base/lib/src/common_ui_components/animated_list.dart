@@ -1,3 +1,4 @@
+import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedListItem extends StatelessWidget {
@@ -29,14 +30,16 @@ class AnimatedListItem extends StatelessWidget {
                   left: 24, right: 24, top: 8, bottom: 16),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.6),
-                      offset: const Offset(4, 4),
-                      blurRadius: 16,
-                    ),
-                  ],
+                  boxShadow: DesignSystem.of(context).colors.brightness ==
+                          Brightness.light
+                      ? <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.6),
+                            offset: const Offset(4, 4),
+                            blurRadius: 16,
+                          ),
+                        ]
+                      : null,
                 ),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(16.0)),
