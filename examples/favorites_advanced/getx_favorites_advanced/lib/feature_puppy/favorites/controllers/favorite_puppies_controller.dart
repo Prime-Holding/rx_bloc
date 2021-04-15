@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
@@ -17,13 +19,16 @@ class FavoritePuppiesController extends GetxController with StateMixin {
 
   List<Puppy> get favoritePuppiesList => [..._favoritePuppies];
 
+  Stream<List<Puppy>> streamPuppiesList() {
+    print('here we come to take our stream');
+    return Stream.fromIterable([_favoritePuppies]).asBroadcastStream();
+  }
+
   @override
   void onInit() {
     _initFavoritePuppies();
-    updatingWorker = ever(
-        _mediatorController.puppiesToUpdate,
-            (_) => _updateFavoritePuppies(
-            _mediatorController.puppiesToUpdate));
+    updatingWorker = ever(_mediatorController.puppiesToUpdate,
+        (_) => _updateFavoritePuppies(_mediatorController.puppiesToUpdate));
     super.onInit();
   }
 
