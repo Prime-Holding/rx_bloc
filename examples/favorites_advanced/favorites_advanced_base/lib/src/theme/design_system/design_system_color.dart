@@ -39,7 +39,7 @@ class DesignSystemColor {
   Color? get tertiaryIconColor => lightMode ? Colors.blue : accentColor;
 
   Color get bodyTextColor1 =>
-      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.black;
 
   Color get bodyTextColor2 => lightMode ? Colors.black : Colors.white;
 
@@ -66,6 +66,11 @@ class DesignSystemColor {
   Color get containerColor => lightMode ? Colors.white : _blackVariant;
 
   Color? get appTitleColor => lightMode ? Colors.white : accentColor;
+
+  Color? get chipTitleColor => lightMode ? Colors.black : accentColor;
+
+  Color get chipBackgroundColor =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.black;
 }
 
 class _HexColor extends Color {

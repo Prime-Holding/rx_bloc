@@ -71,4 +71,8 @@ class DesignSystemTypography {
   TextStyle get appBarTitle => TextStyle(
         color: _designSystemColor.appTitleColor,
       );
+
+  TextStyle get chipTitle => TextStyle(
+        color: _designSystemColor.chipTitleColor,
+      );
 }

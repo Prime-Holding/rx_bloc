@@ -124,7 +124,14 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       (hotelFeature) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: Chip(
-                          label: Text(hotelFeature),
+                          backgroundColor: DesignSystem.of(context)
+                              .colors
+                              .chipBackgroundColor,
+                          label: Text(
+                            hotelFeature,
+                            style:
+                                DesignSystem.of(context).typography.chipTitle,
+                          ),
                         ),
                       ),
                     )

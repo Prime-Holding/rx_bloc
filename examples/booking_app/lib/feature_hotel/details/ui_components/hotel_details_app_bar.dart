@@ -8,11 +8,15 @@ extension _HotelDetailsPageAppBar on _HotelDetailsPageState {
   Widget _buildFavouriteButton(BuildContext context, Hotel hotel) =>
       hotel.isFavorite
           ? IconButton(
-              icon: const IconWithShadow(icon: Icons.favorite),
+              icon: IconWithShadow(
+                  icon: Icons.favorite,
+                  iconColor: DesignSystem.of(context).colors.tertiaryIconColor),
               onPressed: () => _markAsFavorite(context, false, hotel),
             )
           : IconButton(
-              icon: const IconWithShadow(icon: Icons.favorite_border),
+              icon: IconWithShadow(
+                  icon: Icons.favorite_border,
+                  iconColor: DesignSystem.of(context).colors.tertiaryIconColor),
               onPressed: () => _markAsFavorite(context, true, hotel),
             );
 

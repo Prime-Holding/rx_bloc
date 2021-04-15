@@ -98,7 +98,7 @@ class HotelCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
                       hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: DesignSystem.of(context).colors.primaryColor,
+                      color: DesignSystem.of(context).colors.tertiaryIconColor,
                     ),
                   ),
                 ),

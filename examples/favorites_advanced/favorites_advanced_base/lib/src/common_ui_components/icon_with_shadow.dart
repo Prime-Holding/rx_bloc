@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:favorites_advanced_base/resources.dart';
+import 'package:flutter/material.dart';
 
 class IconWithShadow extends StatelessWidget {
   const IconWithShadow({
@@ -10,7 +10,7 @@ class IconWithShadow extends StatelessWidget {
   }) : super(key: key);
 
   final IconData? icon;
-  final Color iconColor;
+  final Color? iconColor;
   final Color shadowColor;
 
   @override
