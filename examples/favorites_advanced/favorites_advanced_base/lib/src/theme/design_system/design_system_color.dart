@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// @todo
-/// 1. Dark mode style changes
-/// - Text Field, Navigation, ListItemContainer, Bottom Navigation Love Counter Color
 class DesignSystemColor {
   late Brightness brightness;
 
