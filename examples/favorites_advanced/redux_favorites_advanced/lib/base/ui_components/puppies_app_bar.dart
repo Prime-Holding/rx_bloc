@@ -31,7 +31,7 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _ViewModel {
-  _ViewModel({@required this.selectedPage});
+  _ViewModel({required this.selectedPage});
 
   factory _ViewModel.from(Store<AppState> store) =>
       _ViewModel(selectedPage: store.state.navigationState.selectedPage);

@@ -4,64 +4,72 @@ import 'package:redux/redux.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 
-import 'package:redux_favorite_advanced_sample/feature_home/models/navigation_state.dart';
+import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
+import 'package:redux_favorite_advanced_sample/base/redux/app_reducer.dart';
 import 'package:redux_favorite_advanced_sample/feature_home/redux/actions.dart';
-import 'package:redux_favorite_advanced_sample/feature_home/redux/reducers.dart';
+
+import '../stubs.dart';
 
 void main() {
+  late Store<AppState> store;
+
+  setUp(() {
+    store = Store<AppState>(
+      appReducer,
+      initialState: AppState.initialState(),
+    );
+  });
+
   group('Navigation Bar State', () {
     test('Initial item count should be 2', () {
-      final store = Store<NavigationState>(
-        navStateReducer,
-        initialState: NavigationState.initialState(),
-      );
-      expect(store.state.items.length, 2);
+      expect(store.state.navigationState.items.length, 2);
     });
     test('Initial selected item should be Search', () {
-      final store = Store<NavigationState>(
-        navStateReducer,
-        initialState: NavigationState.initialState(),
+      // expect(
+      //   store.state.navigationState,
+      //   const NavigationState(items: [
+      //     NavigationStub.searchSelected,
+      //     NavigationStub.favoritesNotSelected,
+      //   ]),
+      // );
+      expect(
+        store.state.navigationState.selectedPage,
+        NavigationItemType.search,
       );
-      expect(store.state.selectedPage, NavigationItemType.search);
     });
     test('Initial title should be Search', () {
-      final store = Store<NavigationState>(
-        navStateReducer,
-        initialState: NavigationState.initialState(),
+      expect(
+        store.state.navigationState.selectedPage.asTitle(),
+        NavigationStub.searchTitle,
       );
-      expect(store.state.selectedPage.asTitle(), 'Search for Puppies');
     });
     test('Favorites should be selected', () {
-      final store = Store<NavigationState>(
-        navStateReducer,
-        initialState: NavigationState.initialState(),
-      )..dispatch(FavoritesViewAction());
-      expect(store.state.selectedPage, NavigationItemType.favorites);
+      store.dispatch(FavoritesViewAction());
+      expect(
+        store.state.navigationState.selectedPage,
+        NavigationItemType.favorites,
+      );
     });
     test('Favorites should be the title', () {
-      final store = Store<NavigationState>(
-        navStateReducer,
-        initialState: NavigationState.initialState(),
-      )..dispatch(FavoritesViewAction());
-      expect(store.state.selectedPage.asTitle(), 'Favorites Puppies');
+      store.dispatch(FavoritesViewAction());
+      expect(
+        store.state.navigationState.selectedPage.asTitle(),
+        NavigationStub.favoritesTitle,
+      );
     });
     test('Search should be selected', () {
-      final store = Store<NavigationState>(
-        navStateReducer,
-        initialState: NavigationState.initialState(),
-      )
-        ..dispatch(FavoritesViewAction())
-        ..dispatch(SearchViewAction());
-      expect(store.state.selectedPage, NavigationItemType.search);
+      store..dispatch(FavoritesViewAction())..dispatch(SearchViewAction());
+      expect(
+        store.state.navigationState.selectedPage,
+        NavigationItemType.search,
+      );
     });
     test('Search should be the title', () {
-      final store = Store<NavigationState>(
-        navStateReducer,
-        initialState: NavigationState.initialState(),
-      )
-        ..dispatch(FavoritesViewAction())
-        ..dispatch(SearchViewAction());
-      expect(store.state.selectedPage.asTitle(), 'Search for Puppies');
+      store..dispatch(FavoritesViewAction())..dispatch(SearchViewAction());
+      expect(
+        store.state.navigationState.selectedPage.asTitle(),
+        NavigationStub.searchTitle,
+      );
     });
   });
 }
