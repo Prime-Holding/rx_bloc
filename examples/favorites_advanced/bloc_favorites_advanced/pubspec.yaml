@@ -29,11 +29,12 @@ dependencies:
   badges: ^2.0.0-nullsafety.1
   animated_stream_list: ^1.1.0
   appbar_textfield: ^1.0.1+1
-  image_picker: ^0.7.3
+  image_picker: ^0.7.0
   bloc: ^7.0.0
   flutter_bloc: ^7.0.0
   bloc_test: ^8.0.0
   equatable: ^2.0.0
+  mockito: ^5.0.4
 
 #  widget_library:
 #    path: ../widget_library
@@ -45,6 +46,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^1.12.2
 
 dependency_overrides:
   favorites_advanced_base:

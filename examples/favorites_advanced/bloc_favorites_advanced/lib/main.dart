@@ -4,6 +4,7 @@ import 'package:favorites_advanced_base/core.dart';
 
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:provider/provider.dart';
 
 import 'base/common_blocs/coordinator_bloc.dart';

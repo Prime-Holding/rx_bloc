@@ -65,7 +65,6 @@ class PuppiesExtraDetailsBloc
 extension _PuppyEventToList on Stream<FetchPuppyExtraDetailsEvent> {
   Stream<FetchPuppiesExtraDetailsEvent> mapEventToList() =>
       distinct()
-      // .where((event) => event.puppy.id)
       .bufferTime(const Duration(milliseconds: 100))
       .map(
         (puppyFetchList) => FetchPuppiesExtraDetailsEvent(
