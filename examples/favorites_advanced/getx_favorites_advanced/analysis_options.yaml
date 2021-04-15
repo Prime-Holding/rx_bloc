@@ -153,3 +153,7 @@ analyzer:
     - lib/feature_puppy/details/blocs/puppy_manage_bloc.rxb.g.dart
     - lib/feature_puppy/favorites/blocs/favorite_puppies_bloc.rxb.g.dart
     - lib/feature_puppy/blocs/puppy_manage_bloc.rxb.g.dart
+    - test/feature_puppy/search/controllers/puppy_list_controller_test.mocks.dart
+    - test/feature_puppy/favorites/controllers/favorite_puppies_controller_test.mocks.dart
+    - test/feature_puppy/controllers/puppy_extra_details_controller_test.mocks.dart
+    - test/feature_puppy/controllers/puppy_manage_controller_test.mocks.dart

@@ -1,30 +1,45 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/favorite_puppies_controller.dart';
+import 'package:favorites_advanced_base/core.dart';
+import 'package:favorites_advanced_base/resources.dart';
 
-class SearchPage extends StatelessWidget {
+import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_extra_details_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/search/controllers/puppy_list_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
+
+class SearchPage extends GetView<PuppyListController> {
   @override
-  Widget build(BuildContext context) => Container(
-      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Text(
-            'SEARCH PAGE',
-            style: TextStyle(fontSize: 20),
+  Widget build(BuildContext context) => Scaffold(
+        body: controller.obx(
+          (puppies) => RefreshIndicator(
+            onRefresh: () async {
+              await controller.onRefresh();
+            },
+            child: ListView.builder(
+              padding: const EdgeInsets.only(bottom: 67),
+              itemCount: puppies.length,
+              itemBuilder: (context, index) => Obx(
+                () {
+                  final Puppy item = puppies[index];
+                  return PuppyCard(
+                    key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
+                    puppy: item,
+                    onVisible: (item) => Get.find<PuppyExtraDetailsController>()
+                        .fetchExtraDetails(item),
+                    onCardPressed: (item) {},
+                    onFavorite: (item, isFavorite) {
+                      Get.find<PuppyManageController>()
+                          .markAsFavorite(puppy: item, isFavorite: isFavorite);
+                    },
+                  );
+                },
+              ),
+            ),
           ),
-          ElevatedButton(
-            onPressed: Get.find<FavoritePuppiesController>().incrementCount,
-            child: const Text('Increment Favorites'),
+          onError: (error) => ErrorRetryWidget(
+            onReloadTap: () => controller.onReload(),
           ),
-          ElevatedButton(
-            onPressed: Get.find<FavoritePuppiesController>().decrementCount,
-            child: const Text('Decrement Favorites'),
-          )
-        ],
-      ),
-    );
+        ),
+      );
 }

@@ -18,17 +18,19 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.9.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
-  appbar_textfield: ^1.0.1+1
-  badges: ^1.2.0
-  curved_navigation_bar: ^0.3.7
-  get: ^3.26.0
-  get_instance: ^3.13.0
+  appbar_textfield: ^2.0.0
+  badges: ^2.0.0-nullsafety.1
+  curved_navigation_bar: ^0.4.0-nullsafety.0
+  get: ^4.1.1
+  rxdart: ^0.26.0
+  favorites_advanced_base:
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,20 +40,20 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
+  build_runner: ^1.12.2
+  mockito: ^5.0.3
 
 dependency_overrides:
   favorites_advanced_base:
     path: ../favorites_advanced_base
-  animated_stream_list:
-    git:
-      url: https://github.com/nilsreichardt/animated-stream-list.git
-      ref: migrate-null-safety
   appbar_textfield:
     git:
       url: https://github.com/StanevPrime/appbar_textfield.git
       ref: null-safety
+  animated_stream_list:
+    git:
+      url: https://github.com/nilsreichardt/animated-stream-list.git
+      ref: migrate-null-safety
   smooth_star_rating:
     git:
       url: https://github.com/bhavin-concetto/smoothratingbar.git
@@ -69,8 +71,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -16,43 +16,47 @@ import 'package:getx_favorites_advanced/feature_puppy/search/views/search_page.d
 
 class HomePage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    final navController = Get.find<NavbarController>();
-    return Scaffold(
-      appBar: PuppiesAppBar(),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: Obx(
-          () => navController.selectedPage.type == NavigationItemType.search
-              ? SearchPage()
-              : FavoritesPage(),
+  Widget build(BuildContext context) => Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: PuppiesAppBar(),
+        body: Obx(
+          () => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: Get.find<NavbarController>().selectedPage.type ==
+                    NavigationItemType.search
+                ? SearchPage()
+                : FavoritesPage(),
+          ),
         ),
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.blueAccent,
-        backgroundColor: Colors.transparent,
-        items: [
-          ...navController.items
-              .map((item) => Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: item.asWidget(),
-                  ))
-              .toList()
-        ],
-        animationDuration: const Duration(milliseconds: 300),
-        onTap: (index) => navController.selectPage(
-          index == 0 ? NavigationItemType.search : NavigationItemType.favorites,
-        ),
-      ),
-    );
-  }
+        bottomNavigationBar: _buildNavigationBar(),
+      );
+}
+
+Widget _buildNavigationBar() {
+  final navController = Get.find<NavbarController>();
+  return CurvedNavigationBar(
+    color: Colors.blueAccent,
+    backgroundColor: Colors.transparent,
+    items: [
+      ...navController.items
+          .map((item) => Padding(
+                padding: const EdgeInsets.all(8),
+                child: item.asWidget(),
+              ))
+          .toList()
+    ],
+    animationDuration: const Duration(milliseconds: 300),
+    onTap: (index) => navController.selectPage(
+      index == 0 ? NavigationItemType.search : NavigationItemType.favorites,
+    ),
+  );
 }
 
 extension NavigationItemToWitget on NavigationItem {
-  Widget asWidget() => type == NavigationItemType.favorites
+  Widget? asWidget() => type == NavigationItemType.favorites
       ? Obx(
           () => Get.find<FavoritePuppiesController>().count <= 0
-              ? type.asIcon()
+              ? type.asIcon()!
               : Badge(
                   padding: const EdgeInsets.all(3),
                   badgeContent: Text(
