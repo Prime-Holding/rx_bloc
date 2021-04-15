@@ -1,11 +1,6 @@
 
 
-<p align="center">
-<a href="https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg"><img src="https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg" alt="style: effective dart"></a>
-<a href="https://github.com/tenhobi/effective_dart"><img src="https://img.shields.io/badge/style-effective_dart-40c4ff.svg" alt="style: effective dart"></a>
-<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
-</p>
-
+![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop/graph/badge.svg)](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
 ---
 
 
