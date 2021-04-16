@@ -20,6 +20,8 @@ dev_dependencies:
     sdk: flutter
   rx_bloc_generator: ^3.0.1
   build_runner:
+  coverage: ^1.0.0
+  clean_coverage: ^0.0.3
 
 flutter:
   uses-material-design: true

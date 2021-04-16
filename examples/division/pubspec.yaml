@@ -15,12 +15,12 @@ dependencies:
   flutter_rx_bloc:
 
 dev_dependencies:
-  remove_from_coverage:
   rx_bloc_generator:
   build_runner:
   rx_bloc_test: ^0.0.3
   flutter_test:
     sdk: flutter
+  clean_coverage: ^0.0.3
 
 dependency_overrides:
   rx_bloc_test:

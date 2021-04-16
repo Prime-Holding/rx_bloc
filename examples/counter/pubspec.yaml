@@ -30,7 +30,7 @@ dev_dependencies:
   rx_bloc_generator:
   rx_bloc_test:
   mockito: ^5.0.0
-  remove_from_coverage: ^1.0.7
+  clean_coverage: ^0.0.3
 #  flutter_driver:
 #    sdk: flutter
 #  flutter_gherkin: ^1.1.7+3
