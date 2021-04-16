@@ -10,9 +10,9 @@ class PuppyListState {
   });
 
   factory PuppyListState.withInitial() => const PuppyListState(
-    searchedPuppies: [],
-    status: PuppyListStatus.initial,
-  );
+        searchedPuppies: [],
+        status: PuppyListStatus.initial,
+      );
 
   final List<Puppy>? searchedPuppies;
   final PuppyListStatus? status;

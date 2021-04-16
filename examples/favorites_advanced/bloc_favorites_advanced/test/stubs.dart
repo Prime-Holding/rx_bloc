@@ -105,6 +105,29 @@ class Stub {
     displayName: 'Buddy',
   );
 
+  static final favoritePuppies12 = [
+    Puppy(
+      id: '1',
+      name: 'Max',
+      asset: 'puppie_2.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+      displayCharacteristics: 'Characteristics Max 1',
+      displayName: 'Max',
+    ),
+    Puppy(
+      id: '2',
+      name: 'Buddy',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+  ];
+
   static final favoritePuppies123 = [
     Puppy(
       id: '1',

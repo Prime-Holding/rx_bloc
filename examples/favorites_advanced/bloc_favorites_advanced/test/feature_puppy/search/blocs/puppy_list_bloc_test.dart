@@ -37,6 +37,47 @@ void main() {
 //change import 'package:image_picker_platform_interface/src/types/picked_file/picked_file.dart'
 
   blocTest<PuppyListBloc, PuppyListState>(
+    'PuppyListBloc FavoritePuppiesUpdatedEvent',
+    build: () {
+      when(mockRepo.getPuppies(query: ''))
+          .thenAnswer((_) async => Stub.favoritePuppies12);
+      return puppyListBloc;
+    },
+    act: (bloc) {
+      bloc.add(FavoritePuppiesUpdatedEvent(
+          favoritePuppies: [Stub.isFavoritePuppy3]));
+    },
+    expect: () => [
+      isA<PuppyListState>(),
+      isA<PuppyListState>(),
+      isA<PuppyListState>(),
+    ],
+    // expect: () => <PuppyListState>[
+    //   const PuppyListState(
+    //       searchedPuppies: [],
+    //       status: PuppyListStatus.initial),
+    //   PuppyListState(
+    //       searchedPuppies: Stub.favoritePuppies12,
+    //       status: PuppyListStatus.success),
+    //   PuppyListState(
+    //       searchedPuppies: Stub.favoritePuppies123,
+    //       status: PuppyListStatus.success),
+    // ],
+  );
+
+  blocTest<PuppyListBloc, PuppyListState>(
+    'PuppyListBloc searchedPuppiesList ',
+    build: () {
+      when(mockRepo.getPuppies(query: ''))
+          .thenAnswer((_) async => Stub.favoritePuppies123);
+      return puppyListBloc;
+    },
+    verify: (_) => {
+      expect(puppyListBloc.state.searchedPuppiesList!.length, 3),
+    }
+  );
+
+  blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc ReloadPuppiesEvent',
     build: () {
       when(mockRepo.getPuppies(query: ''))
@@ -52,7 +93,7 @@ void main() {
       PuppyListState(
           searchedPuppies: Stub.favoritePuppies123,
           status: PuppyListStatus.success),
-       PuppyListState(
+      PuppyListState(
           searchedPuppies: Stub.favoritePuppies123,
           status: PuppyListStatus.reloading),
       PuppyListState(
