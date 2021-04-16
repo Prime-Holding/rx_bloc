@@ -21,10 +21,14 @@ class PuppyAnimatedStreamListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('///////////////////////////////////////////////////////////////');
-
-    _puppyList.listen((event) {
-      print('First List in out stream has ${event.length} elements');
-    });
+    _puppyList
+      .listen((event) {
+        print('In AnimatedList have ${event.runtimeType} ');
+        print('with ${event.length} elements');
+        event.forEach((element) {
+          print('${element.toString()}');
+        });
+      });
     return AnimatedStreamList<Puppy>(
       streamList: _puppyList,
       primary: true,

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:rxdart/rxdart.dart';
 import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
@@ -12,17 +12,17 @@ class FavoritePuppiesController extends GetxController with StateMixin {
   final PuppiesRepository _repository;
   final MediatorController _mediatorController;
 
-  final _favoritePuppies = <Puppy>[].obs;
+  final RxList<Puppy> _favoritePuppies = <Puppy>[].obs;
   late Worker updatingWorker;
 
   int get count => _favoritePuppies.length;
 
   List<Puppy> get favoritePuppiesList => [..._favoritePuppies];
 
-  Stream<List<Puppy>> streamPuppiesList() {
-    print('here we come to take our stream');
-    return Stream.fromIterable([_favoritePuppies]).asBroadcastStream();
-  }
+  Stream<List<Puppy>> streamPuppiesList() =>
+      _favoritePuppies.stream
+          .map((event) => event ?? <Puppy>[])
+          .whereType<List<Puppy>>().asBroadcastStream();
 
   @override
   void onInit() {
