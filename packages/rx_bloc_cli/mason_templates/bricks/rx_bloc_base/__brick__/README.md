@@ -1,4 +1,4 @@
-# {{project_name}}
+# {{#titleCase}}{{project_name}}{{/titleCase}}
 
 ## Project structure
 

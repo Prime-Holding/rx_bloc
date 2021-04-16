@@ -1,0 +1,3 @@
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main.dart

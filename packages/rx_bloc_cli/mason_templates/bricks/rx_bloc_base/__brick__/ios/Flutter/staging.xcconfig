@@ -1,0 +1,4 @@
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_staging.dart
+bundle_suffix=stag
