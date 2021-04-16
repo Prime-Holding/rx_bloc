@@ -11,6 +11,7 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/base/redux/app_reducer.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/favorites/models/favorite_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/actions.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/epics.dart';
 
@@ -195,8 +196,33 @@ void main() {
           AppStateStub.withPuppy1Favorited,
           AppStateStub.withPuppy1Favorited,
           AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1Favorited.copyWith(
+            favoriteListState: FavoriteListState(
+              isError: false,
+              puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+            ),
+            favoriteCount: 1,
+          ),
+          AppStateStub.withPuppy1.copyWith(
+            favoriteListState: FavoriteListState(
+              isError: false,
+              puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+            ),
+            favoriteCount: 1,
+          ),
+          AppStateStub.withPuppy1.copyWith(
+            favoriteListState: FavoriteListState(
+              isError: false,
+              puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+            ),
+            favoriteCount: 1,
+          ),
+          AppStateStub.withPuppy1.copyWith(
+            favoriteListState: FavoriteListState(
+              isError: false,
+              puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+            ),
+          ),
           AppStateStub.withPuppy1,
         ]),
       );

@@ -6,11 +6,13 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import '../../../base/models/app_state.dart';
 import '../../../base/redux/actions.dart';
+import '../../favorites/redux/actions.dart';
 import 'actions.dart';
 
 Epic<AppState> fetchPuppiesEpic(PuppiesRepository repository) =>
     (actions, store) => actions
-            .where((action) => action is PuppiesFetchRequestedAction)
+            //.where((action) => action is PuppiesFetchRequestedAction)
+            .whereType<PuppiesFetchRequestedAction>()
             .switchMap((action) async* {
           try {
             final puppies = await repository.getPuppies();
@@ -41,16 +43,18 @@ Epic<AppState> puppyFavoriteEpic(PuppiesRepository repository) => (actions,
         );
         final puppy = await repository.favoritePuppy(action.puppy,
             isFavorite: action.isFavorite);
+        final detailsPuppy = puppy.copyWith(
+          breedCharacteristics: action.puppy.breedCharacteristics,
+          displayCharacteristics: action.puppy.displayCharacteristics,
+          displayName: action.puppy.displayName,
+        );
         yield PuppyFavoriteSucceededAction(
-          puppy: puppy.copyWith(
-            breedCharacteristics: action.puppy.breedCharacteristics,
-            displayCharacteristics: action.puppy.displayCharacteristics,
-            displayName: action.puppy.displayName,
-          ),
+          puppy: detailsPuppy,
         );
         yield action.isFavorite
             ? FavoriteCountIncrementAction()
             : FavoriteCountDecrementAction();
+        yield AddPuppyToFavoritesListAction(puppy: detailsPuppy);
       } catch (error) {
         yield PuppyFavoriteSucceededAction(puppy: action.puppy);
         yield ErrorAction(error: error.toString());
