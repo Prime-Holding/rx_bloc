@@ -34,6 +34,39 @@ void main() {
     repositoryMock = MockPaginatedPuppiesRepository();
   });
 
+  group('PuppyListBloc refreshDone', () {
+    test('refreshDone', () {
+      when(mockCoordinatorStates.onPuppiesUpdated)
+          .thenAnswer((_) => const Stream.empty());
+
+      when(repositoryMock.getPuppiesPaginated(
+        pageSize: 10,
+        page: 1,
+        query: '',
+      )).thenAnswer(
+        (_) async => PaginatedList(list: Stub.puppies12, pageSize: 10),
+      );
+
+      final bloc = PuppyListBloc(repositoryMock, coordinatorMock);
+      expect(bloc.states.refreshDone, completion(null));
+    });
+
+    test('dispose', () {
+      when(mockCoordinatorStates.onPuppiesUpdated)
+          .thenAnswer((_) => const Stream.empty());
+
+      when(repositoryMock.getPuppiesPaginated(
+        pageSize: 10,
+        page: 1,
+        query: '',
+      )).thenAnswer(
+        (_) async => PaginatedList(list: Stub.puppies12, pageSize: 10),
+      );
+
+      PuppyListBloc(repositoryMock, coordinatorMock).dispose();
+    });
+  });
+
   group('PuppyListBloc searchedPuppies', () {
     rxBlocTest<PuppyListBloc, PaginatedList<Puppy>>(
       // ignore: lines_longer_than_80_chars

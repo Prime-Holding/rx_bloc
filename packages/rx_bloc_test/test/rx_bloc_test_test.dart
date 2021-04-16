@@ -8,6 +8,14 @@ import 'helpers/details_bloc/details_bloc.dart';
 void main() {
   group('CounterBloc tests', () {
     rxBlocTest<CounterBloc, int>(
+      'Basic rxBlocTest with wait',
+      build: () async => CounterBloc(),
+      state: (bloc) => bloc.count,
+      wait: const Duration(milliseconds: 2),
+      expect: <int>[0],
+    );
+
+    rxBlocTest<CounterBloc, int>(
       'Basic rxBlocTest',
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,

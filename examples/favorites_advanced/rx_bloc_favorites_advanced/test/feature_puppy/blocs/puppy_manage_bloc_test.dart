@@ -29,6 +29,16 @@ void main() {
     repositoryMock = MockPaginatedPuppiesRepository();
   });
 
+  group('PuppyManageBloc common', () {
+    test(
+        'PuppyManageBloc.dispose',
+        () => PuppyManageBloc(
+              repositoryMock,
+              coordinatorMock,
+              puppy: Stub.puppy1,
+            ).dispose());
+  });
+
   group('PuppyManageBloc edit puppy', () {
     rxBlocTest<PuppyManageBloc, String>(
       'PuppyManageBloc.imagePath set puppy asset: '
@@ -261,6 +271,7 @@ void main() {
       state: (bloc) => MergeStream([
         bloc.states.error,
         bloc.states.updateComplete,
+        bloc.states.isLoading,
       ]),
       act: (bloc) async {
         bloc.states.imagePath.listen((event) {}, onError: (error) {});
@@ -287,6 +298,7 @@ void main() {
         bloc.events.savePuppy();
       },
       expect: [
+        false,
         Stub.testErr.toString().replaceAll('Exception: ', ''),
         true,
       ],

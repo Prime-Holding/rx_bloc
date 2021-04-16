@@ -36,6 +36,28 @@ void main() {
     repositoryMock = MockPaginatedHotelsRepository();
   });
 
+  group('HotelListBloc.refreshDone state', () {
+    test('refresh done', () {
+      _stubRepositoryWithTwoPages(repositoryMock);
+
+      when(coordinatorStatesMock.onHotelsUpdated)
+          .thenAnswer((realInvocation) => const Stream.empty());
+
+      final bloc = HotelListBloc(repositoryMock, coordinatorMock);
+
+      expect(bloc.refreshDone, completion(null));
+    });
+
+    test('dispose', () {
+      _stubRepositoryWithTwoPages(repositoryMock);
+
+      when(coordinatorStatesMock.onHotelsUpdated)
+          .thenAnswer((realInvocation) => const Stream.empty());
+
+      HotelListBloc(repositoryMock, coordinatorMock).dispose();
+    });
+  });
+
   group('HotelListBloc.hotelsFound state', () {
     rxBlocTest<HotelListBloc, String>(
       // ignore: lines_longer_than_80_chars
