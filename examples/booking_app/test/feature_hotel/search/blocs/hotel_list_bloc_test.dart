@@ -107,8 +107,6 @@ void main() {
       expect: <PaginatedList<Hotel>>[
         Stub.paginatedListEmpty,
         Stub.paginatedListEmpty,
-        Stub.paginatedListEmpty,
-        Stub.paginatedListEmpty,
         Stub.paginatedListOneHotel,
       ],
     );

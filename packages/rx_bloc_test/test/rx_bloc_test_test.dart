@@ -1,6 +1,7 @@
-import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
+// ignore: avoid_relative_lib_imports
+import '../lib/rx_bloc_test.dart';
 import 'helpers/counter_bloc.dart';
 import 'helpers/details_bloc/details_bloc.dart';
 
@@ -44,7 +45,7 @@ void main() {
       'Empty test bloc',
       build: () async => DetailsBloc(repo),
       state: (bloc) => bloc.states.details,
-      expect: <String>[],
+      expect: <String>['Success'],
     );
 
     rxBlocTest<DetailsBloc, String>(
@@ -52,7 +53,6 @@ void main() {
       build: () async => DetailsBloc(repo),
       state: (bloc) => bloc.states.details,
       act: (bloc) async => bloc.events.fetch(),
-      wait: const Duration(milliseconds: 60),
       expect: <String>['Success', 'Success'],
     );
   });

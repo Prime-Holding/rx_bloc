@@ -67,8 +67,7 @@ void main() {
     );
 
     rxBlocTest<PuppyManageBloc, String>(
-      'PuppyManageBloc.name set puppy name: '
-      'success triggered by setName',
+      'PuppyManageBloc.name set puppy name: success triggered by setName',
       build: () async => PuppyManageBloc(
         repositoryMock,
         coordinatorMock,
@@ -86,18 +85,17 @@ void main() {
         //starts with the name of the puppy passed to the bloc
         Stub.puppy1.name,
         //throws name empty error when name is set to empty string
-        Stub.nameEmptyErr,
+        emitsError(Stub.nameEmptyErr),
         //throws name too long error when name is set
         //to a string longer than 30 chars
-        Stub.nameTooLongErr,
+        emitsError(Stub.nameTooLongErr),
         //when name is set to a valid string, it immediately returns said string
         'test',
       ],
     );
 
     rxBlocTest<PuppyManageBloc, BreedType>(
-      'PuppyManageBloc.breed set puppy breed: '
-      'success triggered by setBreed',
+      'PuppyManageBloc.breed set puppy breed: success triggered by setBreed',
       build: () async => PuppyManageBloc(
         repositoryMock,
         coordinatorMock,
@@ -113,15 +111,14 @@ void main() {
         //starts with the breed of the puppy passed to the bloc
         Stub.puppy1.breedType,
         //throws exception if breed is set to none
-        isA<RxFieldException<BreedType>>(),
+        emitsError(isA<RxFieldException<BreedType>>()),
         //if breed is valid, return it
         BreedType.Akita,
       ],
     );
 
     rxBlocTest<PuppyManageBloc, Gender>(
-      'PuppyManageBloc.gender set puppy gender: '
-      'success triggered by setGender',
+      'PuppyManageBloc.gender set puppy gender: success triggered by setGender',
       build: () async => PuppyManageBloc(
         repositoryMock,
         coordinatorMock,
@@ -137,7 +134,7 @@ void main() {
         //starts with the gender of the puppy passed to the bloc
         Stub.puppy1.gender,
         //throws exception if gender is set to none
-        isA<RxFieldException<Gender>>(),
+        emitsError(isA<RxFieldException<Gender>>()),
         Gender.Female,
       ],
     );
@@ -161,8 +158,8 @@ void main() {
       expect: [
         //starts with the gender of the puppy passed to the bloc
         Stub.puppiesWithDetails[0].displayCharacteristics,
-        Stub.characteristicsEmptyErr,
-        Stub.characteristicsTooLongErr,
+        emitsError(Stub.characteristicsEmptyErr),
+        emitsError(Stub.characteristicsTooLongErr),
         'test',
       ],
     );
