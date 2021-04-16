@@ -3,7 +3,7 @@ part of 'puppy_list_bloc.dart';
 enum PuppyListStatus { initial, reloading, success, failure, allFetched }
 
 @immutable
-class PuppyListState extends Equatable{
+class PuppyListState {
   const PuppyListState({
     required this.searchedPuppies,
     this.status = PuppyListStatus.initial,
@@ -27,6 +27,18 @@ class PuppyListState extends Equatable{
         searchedPuppies: searchedPuppies ?? this.searchedPuppies,
         status: status ?? this.status,
       );
-@override
-  List<Object?> get props => [searchedPuppies];
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PuppyListState &&
+          runtimeType == other.runtimeType &&
+          searchedPuppies == other.searchedPuppies &&
+          status == other.status;
+
+  @override
+  int get hashCode => searchedPuppies.hashCode ^ status.hashCode;
+
+// @override
+//   List<Object?> get props => [searchedPuppies,status];
 }

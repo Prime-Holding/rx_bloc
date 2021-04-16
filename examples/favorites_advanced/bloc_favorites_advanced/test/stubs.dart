@@ -61,6 +61,9 @@ class Stub {
   static const pickImageDelay = Duration(seconds: 2, milliseconds: 10);
 
   // Additionally added
+  static const noInternetConnectionError =
+  'Exception: No internet connection. Please check your settings.';
+
   static final favoritePuppies = [
     Puppy(
       id: '1',
@@ -77,6 +80,61 @@ class Stub {
       isFavorite: true,
       gender: Gender.Male,
       breedType: BreedType.GermanShepherd,
+    ),
+  ];
+
+  static final isFavoritePuppy3 = Puppy(
+    id: '3',
+    name: 'Buddy',
+    asset: 'puppie_4.jpeg',
+    isFavorite: true,
+    gender: Gender.Male,
+    breedType: BreedType.GermanShepherd,
+    displayCharacteristics: 'Characteristics Buddy 3',
+    displayName: 'Buddy',
+  );
+
+  static final isNotFavoritePuppy3 = Puppy(
+    id: '3',
+    name: 'Buddy',
+    asset: 'puppie_4.jpeg',
+    isFavorite: false,
+    gender: Gender.Male,
+    breedType: BreedType.GermanShepherd,
+    displayCharacteristics: 'Characteristics Buddy 3',
+    displayName: 'Buddy',
+  );
+
+  static final favoritePuppies123 = [
+    Puppy(
+      id: '1',
+      name: 'Max',
+      asset: 'puppie_2.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+      displayCharacteristics: 'Characteristics Max 1',
+      displayName: 'Max',
+    ),
+    Puppy(
+      id: '2',
+      name: 'Buddy',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+    Puppy(
+      id: '3',
+      name: 'Buddy',
+      asset: 'puppie_4.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 3',
+      displayName: 'Buddy',
     ),
   ];
 
@@ -106,9 +164,9 @@ class Stub {
     ),
   ]
       .map((p) => p.copyWith(
-      displayName: p.name,
-      displayCharacteristics: 'chars ${p.id}',
-      breedCharacteristics: 'chars ${p.id}'))
+          displayName: p.name,
+          displayCharacteristics: 'chars ${p.id}',
+          breedCharacteristics: 'chars ${p.id}'))
       .toList();
 
   static final string31 = ''.padRight(31, 'a');

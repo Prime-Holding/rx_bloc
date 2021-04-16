@@ -37,23 +37,27 @@ void main() {
 //change import 'package:image_picker_platform_interface/src/types/picked_file/picked_file.dart'
 
   blocTest<PuppyListBloc, PuppyListState>(
-    // ignore: lines_longer_than_80_chars
-    'PuppyListBloc return status initial and then status success',
+    'PuppyListBloc ReloadPuppiesEvent',
     build: () {
       when(mockRepo.getPuppies(query: ''))
-          .thenAnswer((_) async => Stub.puppies123Test);
-
+          .thenAnswer((_) async => Stub.favoritePuppies123);
       return puppyListBloc;
+    },
+    act: (bloc) async {
+      bloc.add(ReloadPuppiesEvent());
     },
     expect: () => <PuppyListState>[
       const PuppyListState(
-        searchedPuppies: [],
-        status: PuppyListStatus.initial,
-      ),
+          searchedPuppies: [], status: PuppyListStatus.initial),
       PuppyListState(
-        searchedPuppies: Stub.puppies123Test,
-        status: PuppyListStatus.success,
-      ),
+          searchedPuppies: Stub.favoritePuppies123,
+          status: PuppyListStatus.success),
+       PuppyListState(
+          searchedPuppies: Stub.favoritePuppies123,
+          status: PuppyListStatus.reloading),
+      PuppyListState(
+          searchedPuppies: Stub.favoritePuppies123,
+          status: PuppyListStatus.success),
     ],
   );
 
@@ -66,21 +70,12 @@ void main() {
     expect: () => <PuppyListState>[
       const PuppyListState(
         searchedPuppies: [],
+        status: PuppyListStatus.initial,
+      ),
+      const PuppyListState(
+        searchedPuppies: [],
         status: PuppyListStatus.failure,
       ),
     ],
   );
-
-  // group('PuppyListBloc tests ', () {
-  // setUp(() async {
-  //   when(mockRepo.getPuppies(query: ''))
-  //       .thenAnswer((_) async => Stub.puppies123Test);
-  // });
-
-  // test('full list of puppies', () async {
-  //   puppyListBloc.add(LoadPuppyListEvent());
-  //   when(mockRepo.getPuppies(query: ''))
-  //         .thenAnswer((_) async => Stub.puppies123Test);
-  // });
-  // });
 }
