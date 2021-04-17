@@ -57,6 +57,8 @@ class PuppiesExtraDetailsBloc
         );
       } on Exception catch (e){
         print('Puppy Extra Details Bloc ${e.toString()}');
+        //Puppy Extra Details Bloc Exception: No internet connection.
+        // Please check your settings.
       }
     }
   }

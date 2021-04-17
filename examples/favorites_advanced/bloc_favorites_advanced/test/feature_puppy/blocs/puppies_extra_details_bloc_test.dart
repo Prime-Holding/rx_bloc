@@ -31,27 +31,6 @@ void main() {
     );
   });
 
-  // test('PuppiesExtraDetailsBloc ', () async {
-  //   // Arrange: Setup mocks
-  //   when(mockRepo.fetchFullEntities(['1', '2']))
-  //       .thenAnswer((_) async => Stub.puppies1And2WithExtraDetails);
-  //
-  //   // Fetch puppies 1 and 2
-  //   puppiesExtraDetailsBloc
-  //     ..add(FetchPuppyExtraDetailsEvent(Stub.puppy1))
-  //     ..add(FetchPuppyExtraDetailsEvent(Stub.puppy2));
-  //
-  //   // Pre-verify: Wait longer than the buffer time
-  //   await Future.delayed(const Duration(milliseconds: 110));
-  //
-  //   verify(
-  //     mockCoordinatorBloc.add(
-  //       CoordinatorPuppiesWithExtraDetailsEvent(
-  //           Stub.puppies1And2WithExtraDetails),
-  //     ),
-  //   ).called(1);
-  // });
-
   blocTest<PuppiesExtraDetailsBloc, PuppiesExtraDetailsState>(
     'PuppiesExtraDetailsBloc blocTest',
     build: () {

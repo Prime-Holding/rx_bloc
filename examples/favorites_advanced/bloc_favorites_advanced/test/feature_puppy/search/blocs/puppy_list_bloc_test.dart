@@ -52,30 +52,17 @@ void main() {
       isA<PuppyListState>(),
       isA<PuppyListState>(),
     ],
-    // expect: () => <PuppyListState>[
-    //   const PuppyListState(
-    //       searchedPuppies: [],
-    //       status: PuppyListStatus.initial),
-    //   PuppyListState(
-    //       searchedPuppies: Stub.favoritePuppies12,
-    //       status: PuppyListStatus.success),
-    //   PuppyListState(
-    //       searchedPuppies: Stub.favoritePuppies123,
-    //       status: PuppyListStatus.success),
-    // ],
   );
 
-  blocTest<PuppyListBloc, PuppyListState>(
-    'PuppyListBloc searchedPuppiesList ',
-    build: () {
-      when(mockRepo.getPuppies(query: ''))
-          .thenAnswer((_) async => Stub.favoritePuppies123);
-      return puppyListBloc;
-    },
-    verify: (_) => {
-      expect(puppyListBloc.state.searchedPuppiesList!.length, 3),
-    }
-  );
+  blocTest<PuppyListBloc, PuppyListState>('PuppyListBloc searchedPuppiesList ',
+      build: () {
+        when(mockRepo.getPuppies(query: ''))
+            .thenAnswer((_) async => Stub.favoritePuppies123);
+        return puppyListBloc;
+      },
+      verify: (_) => {
+            expect(puppyListBloc.state.searchedPuppiesList!.length, 3),
+          });
 
   blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc ReloadPuppiesEvent',
