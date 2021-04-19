@@ -8,21 +8,17 @@ class FavoritesPage extends StatelessWidget {
   static const favoritesPage = 'Favorites page';
 
   @override
-  Widget build(BuildContext context) {
-    print('FavoritesPage build');
-    return BlocBuilder<FavoritePuppiesBloc, FavoritePuppiesState>(
-      builder: (context, state) =>
-          Column(
-            key: const ValueKey(Keys.puppyFavoritesPage),
-            children: [
-              Expanded(
-                child: PuppyAnimatedListView(
-                  puppyList: state.favoritePuppies,
-                ),
+  Widget build(BuildContext context) =>
+      BlocBuilder<FavoritePuppiesBloc, FavoritePuppiesState>(
+        builder: (context, state) => Column(
+          key: const ValueKey(Keys.puppyFavoritesPage),
+          children: [
+            Expanded(
+              child: PuppyAnimatedListView(
+                puppyList: state.favoritePuppies,
               ),
-            ],
-          ),
-
-    );
-  }
+            ),
+          ],
+        ),
+      );
 }

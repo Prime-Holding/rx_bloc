@@ -1,3 +1,4 @@
+// import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 // import '../../blocs/puppy_manage_bloc.dart';
 
 class PuppyAnimatedListView extends StatelessWidget {
-  const PuppyAnimatedListView({
+   PuppyAnimatedListView({
     required List<Puppy> puppyList,
     Function(Puppy)? onPuppyPressed,
     Key? key,
@@ -21,11 +22,11 @@ class PuppyAnimatedListView extends StatelessWidget {
 
   final Function(Puppy)? _onPuppyPressed;
   final List<Puppy> _puppyList;
-  // final _myListKey = GlobalKey<AnimatedListState>();
+  final _myListKey = GlobalKey<AnimatedListState>();
 
   @override
   Widget build(BuildContext context) => AnimatedList(
-        // key: _myListKey,
+        key: _myListKey,
 
         padding: const EdgeInsets.only(bottom: 67),
 
@@ -35,7 +36,7 @@ class PuppyAnimatedListView extends StatelessWidget {
           // _myListKey.currentState?.insertItem(index);
           final item = _puppyList[index];
           // itemBuilder: (item, index, context, animation) => _createTile(
-          print('Item builder');
+          // print('Item builder');
           return _createTile(
             PuppyCard(
               key: Key('${key.toString()}${item.id}'),
@@ -52,6 +53,19 @@ class PuppyAnimatedListView extends StatelessWidget {
           );
         },
 
+    //   itemRemovedBuilder: (item, index, context, animation) =>
+    //     _createRemovedTile(
+    //   PuppyCard(
+    //     key: Key('${key.toString()}${item.id}'),
+    //     puppy: item,
+    //     onFavorite: (_, isFavorite) {},
+    //     onCardPressed: (puppy) {},
+    //       onVisible: (puppy) => context
+    //           .read<PuppiesExtraDetailsBloc>()
+    //           .add(FetchPuppyExtraDetailsEvent(puppy))
+    //   ),
+    //   animation,
+    // ),
         // streamList: _puppyList,
         // primary: true,
         // padding: const EdgeInsets.only(bottom: 67),
