@@ -7,6 +7,7 @@ import 'package:io/io.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:rx_bloc_cli/src/templates/rx_bloc_base_bundle.dart';
+import 'package:rx_bloc_cli/src/utils/git_ignore_creator.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
@@ -28,12 +29,18 @@ class CreateCommand extends Command<int> {
           'This must be a valid dart package name.',
       defaultsTo: null,
     );
+    argParser.addOption(
+      _analyticsString,
+      help: 'Enables Google analytics for the project',
+      defaultsTo: 'true',
+    );
   }
 
   /// region Fields
 
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
+  final _analyticsString = 'use-analytics';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -69,7 +76,7 @@ class CreateCommand extends Command<int> {
 
   /// endregion
 
-  /// region Code generation and logging
+  /// region Code generation
 
   void _generateViaMasonBundle() async {
     final outputDirectory = _outputDirectory;
@@ -88,38 +95,21 @@ class CreateCommand extends Command<int> {
         'project_name': projectName,
         'domain_name': orgDomain,
         'organization_name': orgName,
+        'analytics': _enableAnalytics,
       },
     );
+    GitIgnoreCreator.generate(_outputDirectory.path);
 
     generateDone('Bootstrapping done');
     _writeOutputLog(fileCount);
-  }
-
-  void _writeOutputLog(int fileCount) async {
-    final filesGeneratedStr = fileCount == 0
-        ? 'No files generated.'
-        : 'Generated $fileCount file(s):';
-
-    _logger..info('${lightGreen.wrap('✓')} $filesGeneratedStr')..info('');
-
-    if (fileCount > 0) {
-      _logger
-        ..delayed('')
-        ..delayed('${lightGreen.wrap('✓')} '
-            '${white.wrap('Generated project with package name: ')}'
-            '${lightCyan.wrap('$_organizationName.$_projectName')}')
-        ..delayed('');
-    }
-
-    _logger.flush(_logger.success);
   }
 
   /// endregion
 
   /// region Properties
 
-  /// Gets the project name. If no project name was specified, uses the current
-  /// directory path name instead.
+  /// Gets the project name. If no project name was specified, the current
+  /// directory path name is used instead.
   String get _projectName {
     final projectName = _argResults[_projectNameString] ??
         path.basename(path.normalize(_outputDirectory.absolute.path));
@@ -127,16 +117,24 @@ class CreateCommand extends Command<int> {
     return projectName;
   }
 
+  /// Returns the organization name with domain in front of it
   String get _organizationName {
     final orgName = _argResults[_orgNameString];
     _validateOrganisationName(orgName);
     return orgName;
   }
 
+  /// Gets the directory used for the file generation
   Directory get _outputDirectory {
     final rest = _argResults.rest;
     _validateOutputDirectoryArg(rest);
     return Directory(rest.first);
+  }
+
+  /// Returns whether the project will use analytics or not
+  bool get _enableAnalytics {
+    final analyticsEnabled = _argResults[_analyticsString];
+    return analyticsEnabled.toLowerCase() != 'false';
   }
 
   /// endregion
@@ -177,6 +175,46 @@ class CreateCommand extends Command<int> {
   bool _stringMatchesRegex(RegExp regex, String name) {
     final match = regex.matchAsPrefix(name);
     return match != null && match.end == name.length;
+  }
+
+  /// endregion
+
+  /// region Output logging
+
+  /// Writes an output log with the status of the file generation
+  void _writeOutputLog(int fileCount) async {
+    final filesGeneratedStr = fileCount == 0
+        ? 'No files generated.'
+        : 'Generated $fileCount file(s):';
+
+    _logger
+      ..info('${lightGreen.wrap('✓')} $filesGeneratedStr')
+      ..info('')
+      ..delayed('');
+
+    _successMessageLog(fileCount);
+
+    _logger
+      ..delayed('')
+      ..flush(_logger.success);
+  }
+
+  /// Message shown in the output log upon successful generation
+  _successMessageLog(int fileCount) {
+    if (fileCount < 1) return;
+
+    _delayedLog('Generated project with package name: '
+        '${lightCyan.wrap('$_organizationName.$_projectName')}');
+
+    _delayedLog('${_enableAnalytics ? 'Using' : 'Not using'} Google Analytics',
+        success: _enableAnalytics);
+  }
+
+  /// Shows a delayed log with a success symbol in front of it
+  _delayedLog(String text, {success: true, newline: false}) {
+    final symbol = success ? lightGreen.wrap('✓') : red.wrap('x');
+    _logger.delayed('$symbol ${white.wrap(text)}');
+    if (newline) _logger.delayed('');
   }
 
   /// endregion

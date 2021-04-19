@@ -4,3 +4,4 @@ vars:
   - project_name
   - organization_name
   - domain_name
+  - analytics
