@@ -37,6 +37,8 @@ void main() {
   });
 
   group('PuppiesExtraDetailsBloc', () {
+    test('PuppiesExtraDetailsBloc.dispose', () => bloc.dispose());
+
     test('PuppiesExtraDetailsBloc -> CoordinatorBlocType integration ',
         () async {
       // Arrange: Setup mocks

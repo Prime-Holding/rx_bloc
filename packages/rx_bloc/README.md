@@ -7,6 +7,7 @@ Along with the [rx_bloc](https://pub.dev/packages/rx_bloc) the following set of 
 1. [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) that exposes your reactive BloCs to the UI Layer.
 2. [rx_bloc_test](https://pub.dev/packages/rx_bloc_test) that facilitates implementing the unit tests for your BloCs
 3. [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) that boosts development efficiency by making your BloCs zero-boilerplate.
+4. [rx_bloc_list](https://pub.dev/packages/rx_bloc_list) that facilitates implementing infinity scroll and pull-to-refresh features with minimal setup.
 
 # Why rx_bloc ?
 If you are working on a complex project you might be challenged to build a highly interactive UI or a heavy business logic in a combination with the consumption of various data sources such as REST APIs, Web Socket, Secured Storage, Shared Preferences, etc. To achieve this, you might need a sophisticated architecture that facilitates your work during product development.
@@ -171,14 +172,18 @@ class HomePage extends StatelessWidget {
 
 ### Samples
 
+- [Booking app](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/booking_app) - A booking app that solves various tech challenges such as: Content lazy loading, Slick animations, Composite filters, Inter-feature communication, Complete error handling and more.
 - [Favorites Advanced](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/favorites_advanced) - an advanced favorites app that showcase multiple software development challenges.
 - [Counter](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/counter) - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
 - [Division](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/division) - Division sample
+
 
 ## Articles
 
 - [Introducing rx_bloc ecosystem - Part 1](https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e) A set of Flutter packages that help implement the BloC (Business Logic Component) design pattern using the power of reactive streams.
 - [Introducing rx_bloc ecosystem - Part 2](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99) Dart package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of the reactive streams.
 - [Introducing rx_bloc ecosystem - Part 3](https://medium.com/prime-holding-jsc/introducing-flutter-rx-bloc-part-3-69d9114da473) Set of Flutter Widgets that expose your reactive BloCs to the UI Layer.
+- [RxBloc IntelliJ Plugin](https://medium.com/prime-holding-jsc/rxbloc-intellij-plugin-d1d2ddfb7628) - A plugin that helps you create reactive BloCs faster and smoother.
+- [Easy paginated lists in Flutter](https://medium.com/prime-holding-jsc/easy-paginated-lists-in-flutter-b1cfb82188d8) - Implementing infinity scroll and pull-to-refresh in your app was never so easy.
 - [Building complex apps in Flutter through the power of reactive programming](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde) - Implementing complex apps as satisfying the user expectations along with consuming a fragmented API could be challenging nowadays. Learn how you can overcome some of the most common challenges you might face.
 - [Building Forms in Flutter](https://medium.com/prime-holding-jsc/building-forms-in-flutter-454b8d65f48) - Although building forms in Flutter may seem like an easy task, separating the business logic from the UI layer can be a challenge. The separation of concerns makes your app more scalable and maintainable and most importantly the business (validation) logic becomes unit-testable, so let’s see how we can achieve this by using rx_bloc and flutter_rx_bloc.
