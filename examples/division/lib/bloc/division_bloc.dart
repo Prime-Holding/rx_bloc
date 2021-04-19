@@ -1,3 +1,4 @@
+import 'package:example/repositories/calculator_repository.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -27,9 +28,13 @@ abstract class DivisionBlocStates {
 
 @RxBloc()
 class DivisionBloc extends $DivisionBloc {
+  DivisionBloc({this.repository = const CalculatorRepository()});
+
+  final CalculatorRepository repository;
+
   @override
   Stream<String> _mapToDivisionResultState() => _$divideNumbersEvent
-      .calculateAndFormat()
+      .calculateAndFormat(repository)
       .setResultStateHandler(this)
       .whereSuccess();
 
@@ -37,5 +42,5 @@ class DivisionBloc extends $DivisionBloc {
   Stream<bool> get isLoading => loadingState;
 
   @override
-  Stream<String> get errors => errorState.skip(1).toMessage();
+  Stream<String> get errors => errorState.toMessage();
 }

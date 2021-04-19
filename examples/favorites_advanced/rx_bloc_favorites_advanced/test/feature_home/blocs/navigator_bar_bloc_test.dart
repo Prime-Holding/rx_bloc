@@ -7,6 +7,8 @@ import '../../stubs.dart';
 
 void main() {
   group('NavigationBarBloc title', () {
+    test('dispose', () => NavigationBarBloc().dispose());
+
     rxBlocTest<NavigationBarBloc, String>(
       'NavigationBarBloc.title initial state',
       build: () async => NavigationBarBloc(),

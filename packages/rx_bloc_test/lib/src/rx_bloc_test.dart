@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:quiver/testing/async.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:test/test.dart' as tester;
 
@@ -37,28 +36,21 @@ void rxBlocTest<B extends RxBlocTypeBase, StateOutputType>(
   String message, {
   required Future<B> Function() build,
   required Stream<StateOutputType> Function(B) state,
+  required Iterable expect,
   Future<void> Function(B)? act,
-  Iterable? expect,
   Duration? wait,
   int skip = 0,
-}) {
-  FakeAsync().run((async) {
+}) =>
     tester.test(message, () async {
       final bloc = await build();
-      final checkingState = state(bloc);
-      final states = <dynamic>[];
-      final subscription = checkingState.skip(skip).listen(
-        states.add,
-        onError: (Object exception) {
-          states.add(exception);
-        },
-      );
-      await act?.call(bloc);
+      final checkingState = state(bloc).skip(skip).asBroadcastStream();
 
       if (wait != null) await Future<void>.delayed(wait);
-      await Future<void>.delayed(Duration.zero);
-      await subscription.cancel();
-      if (expect != null) tester.expect(states, expect);
+
+      tester.expect(
+        checkingState,
+        tester.emitsInOrder(expect),
+      );
+
+      await act?.call(bloc);
     });
-  });
-}
