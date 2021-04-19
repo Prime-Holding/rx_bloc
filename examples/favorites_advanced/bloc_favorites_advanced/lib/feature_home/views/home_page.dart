@@ -32,8 +32,6 @@ class HomePage extends StatelessWidget {
         appBar: PuppiesAppBar(),
         body: BlocListener<FavoritePuppiesBloc, FavoritePuppiesState>(
           listener: (ctx, state) {
-            // ScaffoldMessenger.of(ctx)
-            //     .showSnackBar(SnackBar(content: Text(state.error!)));
             if (state.error != null) {
               ScaffoldMessenger.of(ctx)
                   .showSnackBar(SnackBar(content: Text(state.error ?? '')));

@@ -73,12 +73,10 @@ class SearchPage extends StatelessWidget {
   //     const Center(child: Text('failed to fetch puppies'));
 
   // Display try again button to reload
-  ErrorRetryWidget _buildPuppyListStatusFailure(BuildContext context) {
-    print('_buildPuppyListStatusFailure');
-    return ErrorRetryWidget(
-        onReloadTap: () =>
-            context.read<PuppyListBloc>().add(LoadPuppyListEvent()));
-  }
+  ErrorRetryWidget _buildPuppyListStatusFailure(BuildContext context) =>
+      ErrorRetryWidget(
+          onReloadTap: () =>
+              context.read<PuppyListBloc>().add(LoadPuppyListEvent()));
 
   LoadingWidget _buildPuppyListStatusInitial(BuildContext context) =>
       LoadingWidget(
