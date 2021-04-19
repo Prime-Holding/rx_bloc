@@ -115,7 +115,7 @@ linter:
     - recursive_getters
     - slash_for_doc_comments
     - sort_constructors_first
-#    - sort_pub_dependencies
+    #   - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - test_types_in_equals
     - throw_in_finally
@@ -153,7 +153,6 @@ analyzer:
     - lib/feature_puppy/details/blocs/puppy_manage_bloc.rxb.g.dart
     - lib/feature_puppy/favorites/blocs/favorite_puppies_bloc.rxb.g.dart
     - lib/feature_puppy/blocs/puppy_manage_bloc.rxb.g.dart
-    - test/feature_puppy/blocs/puppy_manage_bloc_test.mocks.dart
-    - test/feature_puppy/details/blocs/puppy_details_bloc_test.mocks.dart
-    - test/feature_puppy/search/blocs/puppy_list_bloc_test.mocks.dart
     - test/feature_puppy/blocs/puppies_extra_details_bloc_test.mocks.dart
+    - test/feature_puppy/favorites/blocs/favorite_puppies_bloc_test.mocks.dart
+    - test/feature_puppy/search/blocs/puppy_list_bloc_test.mocks.dart

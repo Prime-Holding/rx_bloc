@@ -11,7 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  skeleton_text:
+  skeleton_text: ^3.0.0
+#  skeleton_text:
   visibility_detector: ^0.2.0-nullsafety.1
   connectivity: ^3.0.2
   image_picker: ^0.7.0
@@ -26,7 +27,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-override_dependencies:
+#override_dependencies:
+dependency_overrides:
   skeleton_text:
     git:
       url: https://github.com/StanevPrime/Skeleton-Text.git

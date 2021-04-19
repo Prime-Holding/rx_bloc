@@ -1,8 +1,8 @@
 part of 'navigation_bar_bloc.dart';
 
-
 @immutable
-class NavigationBarEvent{
+class NavigationBarEvent {
+  const NavigationBarEvent(this.itemType);
+
   final NavigationItemType itemType;
-  NavigationBarEvent(this.itemType);
 }

@@ -12,13 +12,6 @@ part 'navigation_bar_event.dart';
 part 'navigation_bar_state.dart';
 
 class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
-  static final _initialItems = [
-    NavigationItem(type: NavigationItemType.search, isSelected: true),
-    NavigationItem(type: NavigationItemType.favorites, isSelected: false),
-  ];
-
-  List<NavigationItem> navItems = _initialItems;
-
   NavigationBarBloc()
       : super(NavigationBarState(
           title: _initialItems.selected.type.asTitle(),
@@ -26,10 +19,18 @@ class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
           items: _initialItems,
         ));
 
+  static final _initialItems = [
+    const NavigationItem(type: NavigationItemType.search, isSelected: true),
+    const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
+  ];
+
+  List<NavigationItem> navItems = _initialItems;
+
   @override
   Stream<NavigationBarState> mapEventToState(
     NavigationBarEvent event,
   ) async* {
+
     navItems = navItems.copyWithSelected(event.itemType);
     yield NavigationBarState(
       title: navItems.selected.type.asTitle(),

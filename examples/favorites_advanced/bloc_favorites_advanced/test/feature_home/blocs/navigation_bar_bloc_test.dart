@@ -10,14 +10,15 @@ void main() {
     blocTest<NavigationBarBloc, NavigationBarState>(
       'NavigationBarBloc.NavigationBarState initial',
       build: () => NavigationBarBloc(),
-      expect: const <NavigationBarState>[],
+      expect: () => const <NavigationBarState>[],
     );
 
     blocTest<NavigationBarBloc, NavigationBarState>(
       'NavigationBarBloc.NavigationBarState favorites',
       build: () => NavigationBarBloc(),
-      act: (bloc) => bloc.add(NavigationBarEvent(NavigationItemType.favorites)),
-      expect: <NavigationBarState>[
+      act: (bloc) =>
+          bloc.add(const NavigationBarEvent(NavigationItemType.favorites)),
+      expect: () => <NavigationBarState>[
         Stub.navigation.favoritesState,
       ],
     );
@@ -25,8 +26,9 @@ void main() {
     blocTest<NavigationBarBloc, NavigationBarState>(
       'NavigationBarBloc.NavigationBarState search',
       build: () => NavigationBarBloc(),
-      act: (bloc) => bloc.add(NavigationBarEvent(NavigationItemType.search)),
-      expect: <NavigationBarState>[
+      act: (bloc) =>
+          bloc.add(const NavigationBarEvent(NavigationItemType.search)),
+      expect: () => <NavigationBarState>[
         Stub.navigation.initialSearchState,
       ],
     );
@@ -35,9 +37,9 @@ void main() {
       'NavigationBarBloc.NavigationBarState search favorites',
       build: () => NavigationBarBloc(),
       act: (bloc) => bloc
-        ..add(NavigationBarEvent(NavigationItemType.search))
-        ..add(NavigationBarEvent(NavigationItemType.favorites)),
-      expect: <NavigationBarState>[
+        ..add(const NavigationBarEvent(NavigationItemType.search))
+        ..add(const NavigationBarEvent(NavigationItemType.favorites)),
+      expect: () => <NavigationBarState>[
         Stub.navigation.initialSearchState,
         Stub.navigation.favoritesState,
       ],
@@ -47,9 +49,9 @@ void main() {
       'NavigationBarBloc.NavigationBarState search search',
       build: () => NavigationBarBloc(),
       act: (bloc) => bloc
-        ..add(NavigationBarEvent(NavigationItemType.search))
-        ..add(NavigationBarEvent(NavigationItemType.search)),
-      expect: <NavigationBarState>[
+        ..add(const NavigationBarEvent(NavigationItemType.search))
+        ..add(const NavigationBarEvent(NavigationItemType.search)),
+      expect: () => <NavigationBarState>[
         Stub.navigation.initialSearchState,
       ],
     );
