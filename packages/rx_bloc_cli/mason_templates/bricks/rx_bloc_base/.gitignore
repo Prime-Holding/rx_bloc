@@ -14,7 +14,8 @@ pubspec.lock
 *.iml
 *.ipr
 *.iws
-.idea/
+!/__brick__/.idea
+!/__brick__/.vscode
 
 # Flutter/Dart/Pub related
 **/doc/api/
