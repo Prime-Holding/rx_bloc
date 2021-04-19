@@ -1,3 +1,8 @@
+## [2.0.1] - April 19, 2021
+* Stability improvements
+* Dependencies clean up
+* Increased code coverage
+
 ## [2.0.0] - March 10, 2021
 * Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
 
