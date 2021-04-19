@@ -12,24 +12,33 @@ import 'package:provider/provider.dart';
 // import '../../blocs/puppy_manage_bloc.dart';
 
 class PuppyAnimatedListView extends StatelessWidget {
-   PuppyAnimatedListView({
+  PuppyAnimatedListView({
     required List<Puppy> puppyList,
     Function(Puppy)? onPuppyPressed,
     Key? key,
-  })  : _puppyList = puppyList,
+  })
+      : _puppyList = puppyList,
         _onPuppyPressed = onPuppyPressed,
-        super(key: key);
+        super(key: key){
+    // print('Constructor');
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //   _myListKey.currentState?.insertItem(_puppyList.length - 1);
+    //
+    // });
+  }
+
 
   final Function(Puppy)? _onPuppyPressed;
   final List<Puppy> _puppyList;
   final _myListKey = GlobalKey<AnimatedListState>();
 
   @override
-  Widget build(BuildContext context) => AnimatedList(
+  Widget build(BuildContext context) {
+    // _myListKey.currentState?.insertItem(_puppyList.length - 1);
+    // print('build');
+    return AnimatedList(
         key: _myListKey,
-
         padding: const EdgeInsets.only(bottom: 67),
-
         initialItemCount: _puppyList.length,
 
         itemBuilder: (context, index, animation) {
@@ -42,10 +51,15 @@ class PuppyAnimatedListView extends StatelessWidget {
               key: Key('${key.toString()}${item.id}'),
               puppy: item,
               onCardPressed: (item) => _onPuppyPressed?.call(item),
-              onFavorite: (puppy, isFavorite) => context
-                  .read<FavoritePuppiesBloc>()
-                  .add(FavoritePuppiesMarkAsFavoriteEvent(
-                      puppy: puppy, isFavorite: isFavorite)),
+              onFavorite: (puppy, isFavorite) {
+                // _myListKey.currentState!
+                //     .removeItem(index, (context, animation) =>
+                //     _createRemovedTile(, animation));
+                return context
+                    .read<FavoritePuppiesBloc>()
+                    .add(FavoritePuppiesMarkAsFavoriteEvent(
+                    puppy: puppy, isFavorite: isFavorite));
+              },
             ),
             animation,
             // context,
@@ -53,19 +67,19 @@ class PuppyAnimatedListView extends StatelessWidget {
           );
         },
 
-    //   itemRemovedBuilder: (item, index, context, animation) =>
-    //     _createRemovedTile(
-    //   PuppyCard(
-    //     key: Key('${key.toString()}${item.id}'),
-    //     puppy: item,
-    //     onFavorite: (_, isFavorite) {},
-    //     onCardPressed: (puppy) {},
-    //       onVisible: (puppy) => context
-    //           .read<PuppiesExtraDetailsBloc>()
-    //           .add(FetchPuppyExtraDetailsEvent(puppy))
-    //   ),
-    //   animation,
-    // ),
+        //   itemRemovedBuilder: (item, index, context, animation) =>
+        //     _createRemovedTile(
+        //   PuppyCard(
+        //     key: Key('${key.toString()}${item.id}'),
+        //     puppy: item,
+        //     onFavorite: (_, isFavorite) {},
+        //     onCardPressed: (puppy) {},
+        //       onVisible: (puppy) => context
+        //           .read<PuppiesExtraDetailsBloc>()
+        //           .add(FetchPuppyExtraDetailsEvent(puppy))
+        //   ),
+        //   animation,
+        // ),
         // streamList: _puppyList,
         // primary: true,
         // padding: const EdgeInsets.only(bottom: 67),
@@ -95,18 +109,22 @@ class PuppyAnimatedListView extends StatelessWidget {
         //   animation,
         // ),
       );
+}
 
-  Widget _createTile(PuppyCard item, Animation<double> animation) =>
+  // Tween<Offset> _offset = Tween(begin: Offset(1,0), end: Offset(0,0));
+  Widget _createTile(PuppyCard item, Animation<double> animation) {
+    // print('Above SizeTransition ');
+    return SizeTransition(
+      axis: Axis.vertical,
+      sizeFactor: animation,
+      child: item,
+    );
+  }
+
+  Widget _createRemovedTile(PuppyCard item, Animation<double> animation) =>
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
         child: item,
       );
-
-  // Widget _createRemovedTile(PuppyCard item, Animation<double> animation) =>
-  //     SizeTransition(
-  //       axis: Axis.vertical,
-  //       sizeFactor: animation,
-  //       child: item,
-  //     );
 }
