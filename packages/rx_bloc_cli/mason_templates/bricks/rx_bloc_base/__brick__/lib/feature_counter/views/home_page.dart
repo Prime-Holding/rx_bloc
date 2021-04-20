@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:{{project_name}}/feature_counter/bloc/counter_bloc.dart';
+
+import '../bloc/counter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   // ignore: public_member_api_docs

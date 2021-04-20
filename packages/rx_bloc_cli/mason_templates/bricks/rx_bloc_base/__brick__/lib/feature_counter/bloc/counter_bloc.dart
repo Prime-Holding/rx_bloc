@@ -1,8 +1,10 @@
-import 'package:{{project_name}}/base/repositories/counter_repository.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/repositories/counter_repository.dart';
+
 part 'counter_bloc.rxb.g.dart';
+part 'counter_bloc_extensions.dart';
 
 /// A contract class containing all events.
 abstract class CounterBlocEvents {
@@ -42,10 +44,10 @@ class CounterBloc extends $CounterBloc {
   Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
         // On increment.
         _$incrementEvent
-            .flatMap((_) => _repository.increment().asResultStream()),
+            .switchMap((_) => _repository.increment().asResultStream()),
         // On decrement.
         _$decrementEvent
-            .flatMap((_) => _repository.decrement().asResultStream()),
+            .switchMap((_) => _repository.decrement().asResultStream()),
       ])
           // This automatically handles the error and loading state.
           .setResultStateHandler(this)
@@ -55,8 +57,7 @@ class CounterBloc extends $CounterBloc {
           .startWith(0);
 
   @override
-  Stream<String> _mapToErrorsState() =>
-      errorState.map((error) => error.toString());
+  Stream<String> _mapToErrorsState() => errorState.toMessage();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

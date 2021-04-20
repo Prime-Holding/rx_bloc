@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:{{project_name}}/base/app/environment_config.dart';
-import 'package:{{project_name}}/base/routers/router.gr.dart' as router;
-import 'package:{{project_name}}/base/utils/providers.dart';
+import '../routers/router.gr.dart' as router;
+import '../utils/global_providers.dart';
+import 'environment_config.dart';
 
 /// This widget is the root of your application.
 class MyApp extends StatelessWidget {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-        providers: Providers.allProviders,
+        providers: GlobalProviders.of(context).providers,
         child: _MyMaterialApp(_router),
       );
 }
