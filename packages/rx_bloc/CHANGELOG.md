@@ -1,4 +1,4 @@
-## [2.0.1] - April 19, 2021
+## [2.0.2] - April 19, 2021
 * `Result` equatable improvements
 * Stability improvements
 * Increased code coverage
