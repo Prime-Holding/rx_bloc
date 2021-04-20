@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
                     items: navItems
                         .map((item) => Padding(
                               padding: const EdgeInsets.all(8),
-                              child: item.asWidget(),
+                              child: item.asWidget(context),
                             ))
                         .toList(),
                     onTap: (index) => bloc.events.selectPage(
@@ -90,12 +90,12 @@ class HomePage extends StatelessWidget {
 }
 
 extension NavigationItemToWitget on NavigationItem {
-  Widget? asWidget() => type == NavigationItemType.favorites
+  Widget? asWidget(BuildContext context) => type == NavigationItemType.favorites
       ? RxBlocBuilder<FavoritePuppiesBlocType, int>(
           state: (bloc) => bloc.states.count,
           builder: (ctx, snapshot, bloc) =>
               snapshot.hasData && snapshot.data! <= 0
-                  ? type.asIcon()!
+                  ? type.asIcon(ctx)!
                   : Badge(
                       padding: const EdgeInsets.all(3),
                       badgeContent: snapshot.build((count) => Text(
@@ -107,8 +107,8 @@ extension NavigationItemToWitget on NavigationItem {
                           )),
                       badgeColor: Colors.transparent,
                       elevation: 0,
-                      child: type.asIcon(),
+                      child: type.asIcon(context),
                     ),
         )
-      : type.asIcon();
+      : type.asIcon(context);
 }
