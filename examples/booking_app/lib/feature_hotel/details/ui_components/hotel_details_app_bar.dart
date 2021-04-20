@@ -9,13 +9,13 @@ extension _HotelDetailsPageAppBar on _HotelDetailsPageState {
       hotel.isFavorite
           ? IconButton(
               icon: IconWithShadow(
-                  icon: Icons.favorite,
+                  icon: DesignSystem.of(context).icons.favorite,
                   iconColor: DesignSystem.of(context).colors.tertiaryIconColor),
               onPressed: () => _markAsFavorite(context, false, hotel),
             )
           : IconButton(
               icon: IconWithShadow(
-                  icon: Icons.favorite_border,
+                  icon: DesignSystem.of(context).icons.favoriteBorder,
                   iconColor: DesignSystem.of(context).colors.tertiaryIconColor),
               onPressed: () => _markAsFavorite(context, true, hotel),
             );

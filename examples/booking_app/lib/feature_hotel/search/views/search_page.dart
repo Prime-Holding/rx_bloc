@@ -312,7 +312,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   Widget _buildClearButton(BuildContext context, VoidCallback? onPressed) =>
       FocusButton(
         onPressed: onPressed ?? () {},
-        child: Icon(Icons.cancel,
+        child: Icon(DesignSystem.of(context).icons.cancel,
             color: DesignSystem.of(context).colors.primaryColor),
       );
 

@@ -71,6 +71,10 @@ class DesignSystemColor {
 
   Color get chipBackgroundColor =>
       lightMode ? Colors.grey.withOpacity(0.8) : Colors.black;
+
+  Color get alertPrimaryTitleColor => Colors.white;
+
+  Color get alertSecondaryTitleColor => Colors.black;
 }
 
 class _HexColor extends Color {

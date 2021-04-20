@@ -109,10 +109,7 @@ extension NavigationItemToWitget on NavigationItem {
                   padding: const EdgeInsets.all(3),
                   badgeContent: snapshot.build((count) => Text(
                         count.toString(),
-                        style: TextStyle(
-                          color: DesignSystem.of(context).colors.secondaryColor,
-                          fontSize: 12,
-                        ),
+                        style: DesignSystem.of(context).typography.counterTitle,
                       )),
                   badgeColor: Colors.transparent,
                   elevation: 0,

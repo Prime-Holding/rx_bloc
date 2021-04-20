@@ -55,13 +55,13 @@ extension NavigationItemTypeTitle on NavigationItemType {
     switch (this) {
       case NavigationItemType.search:
         return Icon(
-          Icons.search,
+          DesignSystem.of(context).icons.search,
           size: 30,
           color: DesignSystem.of(context).colors.secondaryIconColor,
         );
       case NavigationItemType.favorites:
         return Icon(
-          Icons.favorite,
+          DesignSystem.of(context).icons.favorite,
           size: 30,
           color: DesignSystem.of(context).colors.secondaryIconColor,
         );

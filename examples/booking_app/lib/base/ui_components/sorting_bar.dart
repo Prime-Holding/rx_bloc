@@ -78,7 +78,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                             Padding(
                               padding: const EdgeInsets.all(8),
                               child: Icon(
-                                Icons.sort,
+                                DesignSystem.of(context).icons.sort,
                                 color: DesignSystem.of(context)
                                     .colors
                                     .primaryIconColor,

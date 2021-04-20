@@ -1,3 +1,4 @@
+import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 
 class ErrorRetryWidget extends StatelessWidget {
@@ -10,7 +11,7 @@ class ErrorRetryWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.wifi_off, size: 100),
+            Icon(DesignSystem.of(context).icons.wifiOff, size: 100),
             ElevatedButton(
               child: const Text('Try again'),
               onPressed: onReloadTap,

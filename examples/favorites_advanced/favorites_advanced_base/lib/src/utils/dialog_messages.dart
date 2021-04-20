@@ -32,12 +32,9 @@ Future<void> showYesNoMessage({
             onNoPressed?.call();
             Navigator.of(context).pop();
           },
-          child: const Text(
+          child: Text(
             'No',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-            ),
+            style: DesignSystem.of(context).typography.alertSecondaryTitle,
           ),
           color: DesignSystem.of(context).colors.buttonColor,
         ),
@@ -46,12 +43,9 @@ Future<void> showYesNoMessage({
             onYesPressed?.call();
             Navigator.of(context).pop();
           },
-          child: const Text(
+          child: Text(
             'Yes',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
+            style: DesignSystem.of(context).typography.alertPrimaryTitle,
           ),
         ),
       ],

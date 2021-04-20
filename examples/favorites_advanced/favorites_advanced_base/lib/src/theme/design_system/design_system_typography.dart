@@ -75,4 +75,19 @@ class DesignSystemTypography {
   TextStyle get chipTitle => TextStyle(
         color: _designSystemColor.chipTitleColor,
       );
+
+  TextStyle get alertPrimaryTitle => TextStyle(
+        fontSize: 18,
+        color: _designSystemColor.alertPrimaryTitleColor,
+      );
+
+  TextStyle get alertSecondaryTitle => TextStyle(
+        fontSize: 18,
+        color: _designSystemColor.alertSecondaryTitleColor,
+      );
+
+  TextStyle get counterTitle => TextStyle(
+        fontSize: 12,
+        color: _designSystemColor.secondaryIconColor,
+      );
 }
