@@ -44,13 +44,16 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
-            flutter test --coverage --exclude-tags not-tests 
+            flutter test --coverage --exclude-tags=not-tests
           fi
+      - name: Remove unnecessary files
+        working-directory: ${{ matrix.folder }}
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
-          min_coverage: 60
+          min_coverage: 89
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
@@ -83,13 +86,19 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
-            dart test --coverage=coverage --exclude-tags=not-tests && dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib --packages=.packages
+            dart test --coverage=coverage --exclude-tags=not-tests
           fi
+      - name: Format coverage
+        working-directory: ${{ matrix.folder }}
+        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib --packages=.packages
+      - name: Remove unnecessary files
+        working-directory: ${{ matrix.folder }}
+        run: dart run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
-          min_coverage: 60
+          min_coverage: 89
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:

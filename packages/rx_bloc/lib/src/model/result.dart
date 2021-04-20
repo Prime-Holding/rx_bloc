@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 /// A generic Result class used for converting a future to a stream by
 /// `AsResultStream.asResultStream`.
 ///
@@ -50,20 +52,16 @@ class ResultSuccess<T> implements Result<T> {
 
   @override
   bool operator ==(dynamic other) {
-    if (other is! ResultSuccess<T>) {
+    if (other is! ResultSuccess<T> || other.data == null) {
       return false;
     }
 
     // Compare list
-    if (other.data is List && other.data != null && data is List) {
-      final data = this.data as List;
-      final otherData = other.data! as List;
+    if (other.data is List && data is List) {
+      final _otherData = other.data as List;
+      final _data = data as List;
 
-      if (data.isEmpty && otherData.isEmpty) {
-        return true;
-      }
-
-      return otherData.any(data.contains);
+      return const ListEquality().equals(_otherData, _data);
     }
 
     return other.data == data;

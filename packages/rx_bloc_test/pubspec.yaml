@@ -1,6 +1,6 @@
 name: rx_bloc_test
 description: A Flutter package with the goal to enable testing rxBlocs from the FlutterRxBloc package with ease.
-version: 2.0.0
+version: 2.0.1
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_test
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://primeholding.com
@@ -13,13 +13,12 @@ dependencies:
   rxdart: ^0.26.0
   rx_bloc: ^2.0.0
   meta: ^1.2.0
-  quiver: ^3.0.0
 
 dev_dependencies:
   pedantic: ^1.9.0
   mockito: ^5.0.0
-  coverage: ^1.0.2
-
+  coverage: ^1.0.0
+  clean_coverage: ^0.0.3
 
 #dependency_overrides:
 #  rx_bloc:
