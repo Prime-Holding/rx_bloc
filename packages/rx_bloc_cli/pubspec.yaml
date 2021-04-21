@@ -1,7 +1,9 @@
 name: rx_bloc_cli
 description: Rx Bloc Command Line Interface
 version: 0.0.1
-homepage: https://primeholding.com
+repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_cli
+issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
+homepage: https://www.primeholding.com
 
 environment:
   sdk: ">=2.10.0 <3.0.0"

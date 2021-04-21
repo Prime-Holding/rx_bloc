@@ -8,5 +8,5 @@ void main() {
   // See https://flutter.dev/testing/ for more info.
   // enableFlutterDriverExtension();
 
-  runApp(MyApp(config: EnvironmentConfig.dev));
+  runApp({{#pascalCase}}{{project_name}}{{/pascalCase}}(config: EnvironmentConfig.dev));
 }

@@ -19,8 +19,8 @@ import '../utils/global_providers.dart';
 import 'environment_config.dart';
 
 /// This widget is the root of your application.
-class MyApp extends StatelessWidget {
-  MyApp({this.config = EnvironmentConfig.prod});
+class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
+  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod});
 
   final EnvironmentConfig config;
   final _router = router.Router();
@@ -39,7 +39,7 @@ class _MyMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(
-        title: 'My app',
+        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
