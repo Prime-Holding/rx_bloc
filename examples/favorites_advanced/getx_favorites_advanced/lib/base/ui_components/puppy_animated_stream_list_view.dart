@@ -1,5 +1,6 @@
 import 'package:animated_stream_list/animated_stream_list.dart';
 import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,28 +33,34 @@ class PuppyAnimatedStreamListView extends StatelessWidget {
       streamList: _puppyList,
       primary: true,
       padding: const EdgeInsets.only(bottom: 67),
-      itemBuilder: (item, index, context, animation) => _createTile(
+      itemBuilder: (item, index, context, animation) {
+        print('REBUILD ITEM WITH PUPPY OF INDEX $index');
+        return _createTile(
         PuppyCard(
-          key: Key('${key.toString()}${item.id}'),
+          key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
           puppy: item,
           onCardPressed: (item) => _onPuppyPressed?.call(item),
           onFavorite: (puppy, isFavorite) => Get.find<PuppyManageController>()
               .markAsFavorite(puppy: puppy, isFavorite: isFavorite),
         ),
         animation,
-      ),
-      itemRemovedBuilder: (item, index, context, animation) =>
-          _createRemovedTile(
+      );
+      },
+      itemRemovedBuilder: (item, index, context, animation) {
+        print('REBUILD REMOVED ITEM WITH PUPPY OF INDEX $index');
+        return _createRemovedTile(
         PuppyCard(
-          key: Key('${key.toString()}${item.id}'),
+          key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
           puppy: item,
-          onFavorite: (_, isFavorite) {},
-          onCardPressed: (puppy) {},
+          onFavorite:  (_, isFavorite) {},
+          onCardPressed: (puppy) =>
+              Get.showSnackbar(GetBar(message: 'BUILD REMOVE ITEM')),
           onVisible: (puppy) =>
               Get.find<PuppyExtraDetailsController>().fetchExtraDetails(puppy),
         ),
         animation,
-      ),
+      );
+      },
     );
   }
 
@@ -61,13 +68,13 @@ class PuppyAnimatedStreamListView extends StatelessWidget {
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
-        child: GetX(builder: (_) => item),
+        child:  item,
       );
 
   Widget _createRemovedTile(Widget item, Animation<double> animation) =>
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
-        child: GetX(builder: (_) => item),
+        child:item,
       );
 }

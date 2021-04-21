@@ -1,5 +1,4 @@
 import 'dart:async';
-// import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/stubs.dart';
 // import 'package:rxdart/rxdart.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +6,8 @@ import 'package:favorites_advanced_base/core.dart';
 
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
-class FavoritePuppiesController extends GetxController with StateMixin<RxList<Puppy>> {
+class FavoritePuppiesController extends GetxController
+    with StateMixin<List<Puppy>> {
   FavoritePuppiesController(this._repository, this._mediatorController);
 
   final PuppiesRepository _repository;
@@ -21,14 +21,11 @@ class FavoritePuppiesController extends GetxController with StateMixin<RxList<Pu
   int get count => _favoritePuppies.length;
 
   List<Puppy> get favoritePuppiesList => [..._favoritePuppies];
-  RxList<Puppy> get favoritePuppiesRxList => _favoritePuppies;
 
   Stream<List<Puppy>> streamPuppiesList() =>
-      // Stream.fromIterable([Stub.puppies123]).asBroadcastStream();
-      // _favoritePuppies.stream
-      //     .asyncMap((event) => event ?? <Puppy>[])
-      //     .whereType<List<Puppy>>().share();
-  streamContr.stream;
+      _favoritePuppies.stream
+          .map((event) => event ?? <Puppy>[]).asBroadcastStream();
+      // streamContr.stream;
 
   @override
   void onInit() {
@@ -41,10 +38,10 @@ class FavoritePuppiesController extends GetxController with StateMixin<RxList<Pu
 
   Future<void> _initFavoritePuppies() async {
     try {
-      change(_favoritePuppies, status: RxStatus.loading());
+      change(null, status: RxStatus.loading());
       final puppies = await _repository.getFavoritePuppies();
       _favoritePuppies.assignAll(puppies);
-      change(_favoritePuppies, status: RxStatus.success());
+      change(puppies, status: RxStatus.success());
     } catch (e) {
       print(e.toString());
       change(null, status: RxStatus.error());
@@ -63,6 +60,7 @@ class FavoritePuppiesController extends GetxController with StateMixin<RxList<Pu
         }
       },
     );
+    change(favoritePuppiesList, status: RxStatus.success());
   }
 
   @override

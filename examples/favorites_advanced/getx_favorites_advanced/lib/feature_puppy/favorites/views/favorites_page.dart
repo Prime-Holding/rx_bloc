@@ -13,29 +13,24 @@ class FavoritesPage extends GetView<FavoritePuppiesController> {
     print('FavoriteState is Success - ${controller.status.isSuccess}');
     return Scaffold(
       body: controller.obx(
-        (favoritePuppies) =>
-            // const Center(
-            //   child:const Text(
-            //     'SUCCESS...',
-            //     style: TextStyle(fontSize: 50),
-            //   ),
-            // ),
-
-            Container(
+        (favoritePuppies) {
+          final stream = Stream
+              .fromIterable([favoritePuppies?? <Puppy>[]]).asBroadcastStream();
+          return Container(
           key: const ValueKey(Keys.puppyFavoritesPage),
           child: PuppyAnimatedStreamListView(
             puppyList:
-            controller.favoritePuppiesRxList
-                .stream.map((event) => event ?? <Puppy>[]),
+            stream,
             // controller.streamPuppiesList(),
             // Stream<List<Puppy>>.fromIterable([Stub.puppies123])
             //     .asBroadcastStream(),
-            // .favoritePuppiesRxList.stream
-            //                 .asBroadcastStream()
-            //                 .asyncMap((event) => event ?? <Puppy>[]),
-            onPuppyPressed: (puppy) {},
+            onPuppyPressed: (puppy) =>
+                Get.showSnackbar(GetBar(message: 'BUILD TILE ITEM',
+                  duration: const Duration(seconds: 2),
+                  isDismissible: true,)),
           ),
-        ),
+        );
+        },
         onError: (_) => ErrorRetryWidget(
           onReloadTap: () {},
         ),
