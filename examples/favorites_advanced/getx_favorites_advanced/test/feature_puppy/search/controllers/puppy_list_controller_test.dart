@@ -87,18 +87,4 @@ void main() {
       expect(isFavorite, isTrue);
     });
   });
-
-  // test('empty list when no internet connection', () async {
-  //   // arrange
-  //   reset(mockRepo);
-  //   when(mockRepo.getPuppies(query: ''))
-  //       .thenAnswer((_) async => throw Stub.testErr);
-  //   // action
-  //   await controller.onReload();
-  //   final newPuppies = controller.searchedPuppies()
-  //     .. forEach((element) {print(element.toString());});
-  //   // assert
-  //   verify(controller.onRefresh()).called(1);
-  //   expect(controller.status.isError, false);
-  // });
 }

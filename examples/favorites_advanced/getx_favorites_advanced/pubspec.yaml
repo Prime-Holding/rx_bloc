@@ -30,7 +30,7 @@ dependencies:
   get: ^4.1.4
   rxdart: ^0.26.0
   favorites_advanced_base:
-  animated_stream_list:
+  automatic_animated_list: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -46,10 +46,6 @@ dev_dependencies:
 dependency_overrides:
   favorites_advanced_base:
     path: ../favorites_advanced_base
-  animated_stream_list:
-    git:
-      url: https://github.com/nilsreichardt/animated-stream-list.git
-      ref: migrate-null-safety
   appbar_textfield:
     git:
       url: https://github.com/StanevPrime/appbar_textfield.git
