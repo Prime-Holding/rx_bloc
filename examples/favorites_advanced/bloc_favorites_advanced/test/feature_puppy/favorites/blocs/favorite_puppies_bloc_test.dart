@@ -9,10 +9,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 import '../../../stubs.dart';
 import 'favorite_puppies_bloc_test.mocks.dart';
 
-// class MockPuppiesRepository extends Mock implements PuppiesRepository {}
-
-// class MockCoordinatorBloc extends Mock implements CoordinatorBloc {}
-
 @GenerateMocks([
   PuppiesRepository,
   CoordinatorBloc,
@@ -77,7 +73,7 @@ void main() {
             puppy: Stub.isNotFavoritePuppy3, isFavorite: true));
       },
       expect: () => <FavoritePuppiesState>[
-            FavoritePuppiesState(favoritePuppies: [Stub.isNotFavoritePuppy3]),
+            FavoritePuppiesState(favoritePuppies: [Stub.isFavoritePuppy3]),
           ],
       verify: (_) {
         mockCoordinatorBloc
@@ -101,7 +97,6 @@ void main() {
             puppy: Stub.isNotFavoritePuppy3, isFavorite: true));
       },
       expect: () => <FavoritePuppiesState>[
-            FavoritePuppiesState(favoritePuppies: [Stub.isNotFavoritePuppy3]),
             const FavoritePuppiesState(
                 favoritePuppies: [], error: Stub.noInternetConnectionError),
           ],

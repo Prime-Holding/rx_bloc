@@ -16,112 +16,83 @@ class PuppyAnimatedListView extends StatelessWidget {
     required List<Puppy> puppyList,
     Function(Puppy)? onPuppyPressed,
     Key? key,
-  })
-      : _puppyList = puppyList,
+  })  : _puppyList = puppyList,
         _onPuppyPressed = onPuppyPressed,
-        super(key: key){
+        super(key: key) {
     // print('Constructor');
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   _myListKey.currentState?.insertItem(_puppyList.length - 1);
-    //
-    // });
+    // initialLoadingFaster();
+    initialLoading();
   }
-
 
   final Function(Puppy)? _onPuppyPressed;
   final List<Puppy> _puppyList;
   final _myListKey = GlobalKey<AnimatedListState>();
+  final List<Puppy> _tempList = <Puppy>[];
+
+  void initialLoadingFaster() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 2900));
+
+      _puppyList.forEach((element) async {
+        _tempList.add(element);
+        _myListKey.currentState!.insertItem(_tempList.length - 1);
+      });
+    });
+  }
+
+  void initialLoading() {
+    var future = Future(() {});
+    for (var i = 0; i < _puppyList.length; i++) {
+      future = future.then((_) => Future.delayed(
+            const Duration(milliseconds: 300),
+            () {
+              _tempList.add(_puppyList[i]);
+              _myListKey.currentState!.insertItem(_tempList.length - 1);
+              // print('In The Future Then');
+            },
+          ));
+    }
+  }
 
   @override
-  Widget build(BuildContext context) {
-    // _myListKey.currentState?.insertItem(_puppyList.length - 1);
-    // print('build');
-    return AnimatedList(
-        key: _myListKey,
-        padding: const EdgeInsets.only(bottom: 67),
-        initialItemCount: _puppyList.length,
+  Widget build(BuildContext context) => AnimatedList(
+      key: _myListKey,
+      padding: const EdgeInsets.only(bottom: 67),
+      initialItemCount: _tempList.length,
+      itemBuilder: (context, index, animation) =>
+      //print('itemBuilder');
+          buildItem(context, _tempList[index], index, animation));
 
-        itemBuilder: (context, index, animation) {
-          // _myListKey.currentState?.insertItem(index);
-          final item = _puppyList[index];
-          // itemBuilder: (item, index, context, animation) => _createTile(
-          // print('Item builder');
-          return _createTile(
-            PuppyCard(
-              key: Key('${key.toString()}${item.id}'),
-              puppy: item,
-              onCardPressed: (item) => _onPuppyPressed?.call(item),
-              onFavorite: (puppy, isFavorite) {
-                // _myListKey.currentState!
-                //     .removeItem(index, (context, animation) =>
-                //     _createRemovedTile(, animation));
-                return context
-                    .read<FavoritePuppiesBloc>()
-                    .add(FavoritePuppiesMarkAsFavoriteEvent(
-                    puppy: puppy, isFavorite: isFavorite));
-              },
-            ),
-            animation,
-            // context,
-            // index
-          );
-        },
+  Widget buildItem(
+          BuildContext context, item, int index, Animation<double> animation) =>
+      _createTile(
+          PuppyCard(
+            key: Key('${key.toString()}${item.id}'),
+            puppy: item,
+            onCardPressed: (item) => _onPuppyPressed?.call(item),
+            onFavorite: (puppy, isFavorite) {
+              removeItem(index);
+              return context.read<FavoritePuppiesBloc>().add(
+                  FavoritePuppiesMarkAsFavoriteEvent(
+                      puppy: puppy, isFavorite: isFavorite));
+            },
+          ),
+          animation,
+          index);
 
-        //   itemRemovedBuilder: (item, index, context, animation) =>
-        //     _createRemovedTile(
-        //   PuppyCard(
-        //     key: Key('${key.toString()}${item.id}'),
-        //     puppy: item,
-        //     onFavorite: (_, isFavorite) {},
-        //     onCardPressed: (puppy) {},
-        //       onVisible: (puppy) => context
-        //           .read<PuppiesExtraDetailsBloc>()
-        //           .add(FetchPuppyExtraDetailsEvent(puppy))
-        //   ),
-        //   animation,
-        // ),
-        // streamList: _puppyList,
-        // primary: true,
-        // padding: const EdgeInsets.only(bottom: 67),
-        // itemBuilder: (item, index, context, animation) => _createTile(
-        //   PuppyCard(
-        //     key: Key('${key.toString()}${item.id}'),
-        //     puppy: item,
-        //     onCardPressed: (item) => _onPuppyPressed?.call(item),
-        //     onFavorite: (puppy, isFavorite) => context
-        //       .read<FavoritePuppiesBloc>()
-        //       .add(FavoritePuppiesMarkAsFavoriteEvent(
-        //     puppy: puppy, isFavorite: isFavorite)),
-        //   ),
-        //   animation,
-        // ),
-        // itemRemovedBuilder: (item, index, context, animation) =>
-        //     _createRemovedTile(
-        //   PuppyCard(
-        //     key: Key('${key.toString()}${item.id}'),
-        //     puppy: item,
-        //     onFavorite: (_, isFavorite) {},
-        //     onCardPressed: (puppy) {},
-        //       onVisible: (puppy) => context
-        //           .read<PuppiesExtraDetailsBloc>()
-        //           .add(FetchPuppyExtraDetailsEvent(puppy))
-        //   ),
-        //   animation,
-        // ),
-      );
-}
-
-  // Tween<Offset> _offset = Tween(begin: Offset(1,0), end: Offset(0,0));
-  Widget _createTile(PuppyCard item, Animation<double> animation) {
-    // print('Above SizeTransition ');
-    return SizeTransition(
-      axis: Axis.vertical,
-      sizeFactor: animation,
-      child: item,
+  void removeItem(int index) {
+    final item = _tempList.removeAt(index);
+    _myListKey.currentState!.removeItem(
+      index,
+      (context, animation) => buildItem(context, item, index, animation),
     );
   }
 
-  Widget _createRemovedTile(PuppyCard item, Animation<double> animation) =>
+  void insertItem(int index) {
+    _myListKey.currentState?.insertItem(index);
+  }
+
+  Widget _createTile(PuppyCard item, Animation<double> animation, int index) =>
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
