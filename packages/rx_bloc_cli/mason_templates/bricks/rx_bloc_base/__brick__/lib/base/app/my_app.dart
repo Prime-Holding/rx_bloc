@@ -5,6 +5,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+{{#analytics}}
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+{{/analytics}}
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -30,6 +34,7 @@ class MyApp extends StatelessWidget {
 
 class _MyMaterialApp extends StatelessWidget {
   const _MyMaterialApp(this._router);
+
   final router.Router _router;
 
   @override
@@ -44,6 +49,10 @@ class _MyMaterialApp extends StatelessWidget {
         ],
         supportedLocales: AppLocalizations.supportedLocales,
         routeInformationParser: _router.defaultRouteParser(),
-        routerDelegate: _router.delegate(),
+        routerDelegate: _router.delegate({{#analytics}}
+          navigatorObservers: [
+            Provider.of<FirebaseAnalyticsObserver>(context, listen: false),
+          ],
+        {{/analytics}}),
       );
 }

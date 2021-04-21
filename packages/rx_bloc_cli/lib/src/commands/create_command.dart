@@ -40,7 +40,7 @@ class CreateCommand extends Command<int> {
 
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
-  final _analyticsString = 'use-analytics';
+  final _analyticsString = 'include-analytics';
 
   final Logger _logger;
   final MasonBundle _bundle;

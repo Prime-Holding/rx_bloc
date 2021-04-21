@@ -5,6 +5,9 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+{{#analytics}}
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';{{/analytics}}
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +22,15 @@ class GlobalProviders {
   factory GlobalProviders.of(BuildContext context) =>
       GlobalProviders._(context);
 
-  final BuildContext context;
+  final BuildContext context;{{#analytics}}
+  static final _analytics = FirebaseAnalytics();{{/analytics}}
+
+  List<Provider> get _utils => [{{#analytics}}
+      Provider<FirebaseAnalytics>.value(value: _analytics),
+      Provider<FirebaseAnalyticsObserver>(
+        create: (context) => FirebaseAnalyticsObserver(analytics: _analytics),
+      ),
+    {{/analytics}}];
 
   List<Provider> get _repositories => [
         Provider<CounterRepository>(
@@ -35,6 +46,7 @@ class GlobalProviders {
 
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
+        ..._utils,
         ..._repositories,
         ..._blocs,
       ];
