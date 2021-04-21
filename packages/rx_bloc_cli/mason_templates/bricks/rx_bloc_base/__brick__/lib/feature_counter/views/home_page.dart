@@ -1,8 +1,14 @@
-// ignore: public_member_api_docs
+// Copyright (c) 2021, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
+import '../../l10n/l10n.dart';
 import '../bloc/counter_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,7 +19,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Counter sample')),
+        appBar: AppBar(title: Text(context.l10n.counterPageTitle)),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,10 +46,11 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: _buildActionButtons(),
+        floatingActionButton: _buildActionButtons(context),
       );
 
-  Widget _buildActionButtons() => RxBlocBuilder<CounterBlocType, bool>(
+  Widget _buildActionButtons(BuildContext context) =>
+      RxBlocBuilder<CounterBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
         builder: (context, loadingState, bloc) => Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -56,14 +63,14 @@ class HomePage extends StatelessWidget {
             FloatingActionButton(
               backgroundColor: loadingState.buttonColor,
               onPressed: loadingState.isLoading ? null : bloc.events.increment,
-              tooltip: 'Increment',
+              tooltip: context.l10n.increment,
               child: const Icon(Icons.add),
             ),
             const SizedBox(width: 16),
             FloatingActionButton(
               backgroundColor: loadingState.buttonColor,
               onPressed: loadingState.isLoading ? null : bloc.events.decrement,
-              tooltip: 'Decrement',
+              tooltip: context.l10n.decrement,
               child: const Icon(Icons.remove),
             ),
           ],
