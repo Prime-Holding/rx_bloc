@@ -21,14 +21,13 @@ class PuppyAnimatedStreamListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('///////////////////////////////////////////////////////////////');
-    _puppyList
-      .listen((event) {
-        print('In AnimatedList have ${event.runtimeType} ');
-        print('with ${event.length} elements');
-        event.forEach((element) {
-          print('${element.toString()}');
-        });
+    _puppyList.listen((event) {
+      print('In AnimatedList have ${event.runtimeType} ');
+      print('with ${event.length} elements');
+      event.forEach((element) {
+        print('${element.toString()}');
       });
+    });
     return AnimatedStreamList<Puppy>(
       streamList: _puppyList,
       primary: true,
@@ -58,17 +57,17 @@ class PuppyAnimatedStreamListView extends StatelessWidget {
     );
   }
 
-  Widget _createTile(PuppyCard item, Animation<double> animation) =>
+  Widget _createTile(Widget item, Animation<double> animation) =>
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
-        child: item,
+        child: GetX(builder: (_) => item),
       );
 
-  Widget _createRemovedTile(PuppyCard item, Animation<double> animation) =>
+  Widget _createRemovedTile(Widget item, Animation<double> animation) =>
       SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
-        child: item,
+        child: GetX(builder: (_) => item),
       );
 }

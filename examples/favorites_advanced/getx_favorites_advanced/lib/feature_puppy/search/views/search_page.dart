@@ -18,10 +18,10 @@ class SearchPage extends GetView<PuppyListController> {
             },
             child: ListView.builder(
               padding: const EdgeInsets.only(bottom: 67),
-              itemCount: puppies.length,
+              itemCount: puppies!.length,
               itemBuilder: (context, index) => Obx(
                 () {
-                  final Puppy item = puppies[index];
+                  final item = puppies[index];
                   return PuppyCard(
                     key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                     puppy: item,

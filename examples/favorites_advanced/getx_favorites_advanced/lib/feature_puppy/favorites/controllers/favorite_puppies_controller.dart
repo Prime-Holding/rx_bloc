@@ -1,16 +1,19 @@
 import 'dart:async';
-import 'package:rxdart/rxdart.dart';
+// import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/stubs.dart';
+// import 'package:rxdart/rxdart.dart';
 import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
-class FavoritePuppiesController extends GetxController with StateMixin {
+class FavoritePuppiesController extends GetxController with StateMixin<RxList<Puppy>> {
   FavoritePuppiesController(this._repository, this._mediatorController);
 
   final PuppiesRepository _repository;
   final MediatorController _mediatorController;
+
+  final streamContr = StreamController<List<Puppy>>.broadcast();
 
   final RxList<Puppy> _favoritePuppies = <Puppy>[].obs;
   late Worker updatingWorker;
@@ -18,17 +21,21 @@ class FavoritePuppiesController extends GetxController with StateMixin {
   int get count => _favoritePuppies.length;
 
   List<Puppy> get favoritePuppiesList => [..._favoritePuppies];
+  RxList<Puppy> get favoritePuppiesRxList => _favoritePuppies;
 
   Stream<List<Puppy>> streamPuppiesList() =>
-      _favoritePuppies.stream
-          .map((event) => event ?? <Puppy>[])
-          .whereType<List<Puppy>>().asBroadcastStream();
+      // Stream.fromIterable([Stub.puppies123]).asBroadcastStream();
+      // _favoritePuppies.stream
+      //     .asyncMap((event) => event ?? <Puppy>[])
+      //     .whereType<List<Puppy>>().share();
+  streamContr.stream;
 
   @override
   void onInit() {
     _initFavoritePuppies();
     updatingWorker = ever(_mediatorController.puppiesToUpdate,
         (_) => _updateFavoritePuppies(_mediatorController.puppiesToUpdate));
+    ever(_favoritePuppies, (data) => streamContr.add(favoritePuppiesList));
     super.onInit();
   }
 
@@ -40,6 +47,7 @@ class FavoritePuppiesController extends GetxController with StateMixin {
       change(_favoritePuppies, status: RxStatus.success());
     } catch (e) {
       print(e.toString());
+      change(null, status: RxStatus.error());
     }
   }
 
@@ -60,6 +68,7 @@ class FavoritePuppiesController extends GetxController with StateMixin {
   @override
   void onClose() {
     updatingWorker.dispose();
+    streamContr.close();
     super.onClose();
   }
 }

@@ -46,14 +46,22 @@ dev_dependencies:
 dependency_overrides:
   favorites_advanced_base:
     path: ../favorites_advanced_base
-  appbar_textfield:
-    git:
-      url: https://github.com/StanevPrime/appbar_textfield.git
-      ref: null-safety
   animated_stream_list:
     git:
       url: https://github.com/nilsreichardt/animated-stream-list.git
       ref: migrate-null-safety
+  appbar_textfield:
+    git:
+      url: https://github.com/StanevPrime/appbar_textfield.git
+      ref: null-safety
+  badges:
+    git:
+      url: https://github.com/miDeb/flutter_badges.git
+      ref: nnbd
+  skeleton_text:
+    git:
+      url: https://github.com/StanevPrime/Skeleton-Text.git
+      ref: feature/null-safety
   smooth_star_rating:
     git:
       url: https://github.com/bhavin-concetto/smoothratingbar.git

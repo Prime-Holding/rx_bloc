@@ -6,7 +6,7 @@ import 'package:favorites_advanced_base/repositories.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
-class PuppyListController extends GetxController with StateMixin {
+class PuppyListController extends GetxController with StateMixin<RxList<Puppy>> {
   PuppyListController(this._repository, this._mediatorController);
 
   final PuppiesRepository _repository;
