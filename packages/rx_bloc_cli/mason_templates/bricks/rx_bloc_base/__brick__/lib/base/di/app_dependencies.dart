@@ -16,38 +16,24 @@ import 'package:provider/single_child_widget.dart';
 import '../../feature_counter/bloc/counter_bloc.dart';
 import '../repositories/counter_repository.dart';
 
-class GlobalProviders {
-  GlobalProviders._(this.context);
+class AppDependencies {
+  AppDependencies._(this.context);
 
-  factory GlobalProviders.of(BuildContext context) =>
+  factory AppDependencies.of(BuildContext context) =>
       GlobalProviders._(context);
 
   final BuildContext context;{{#analytics}}
-  static final _analytics = FirebaseAnalytics();{{/analytics}}
 
-  List<Provider> get _utils => [{{#analytics}}
-      Provider<FirebaseAnalytics>.value(value: _analytics),
+  {{/analytics}}
+  List<Provider> get _analytics => [{{#analytics}}
+      Provider<FirebaseAnalytics>.create(create(context) => FirebaseAnalytics();),
       Provider<FirebaseAnalyticsObserver>(
         create: (context) => FirebaseAnalyticsObserver(analytics: _analytics),
       ),
     {{/analytics}}];
 
-  List<Provider> get _repositories => [
-        Provider<CounterRepository>(
-          create: (context) => CounterRepository(),
-        ),
-      ];
-
-  List<RxBlocProvider> get _blocs => [
-        RxBlocProvider<CounterBlocType>(
-          create: (context) => CounterBloc(context.read()),
-        ),
-      ];
-
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
-        ..._utils,
-        ..._repositories,
-        ..._blocs,
+        ..._analytics,
       ];
 }

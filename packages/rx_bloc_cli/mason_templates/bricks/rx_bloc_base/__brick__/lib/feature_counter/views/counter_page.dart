@@ -11,11 +11,17 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/counter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class CounterPage extends StatelessWidget implements AutoRouteWrapper {
   // ignore: public_member_api_docs
-  const HomePage({
+  const CounterPage({
     Key? key,
   }) : super(key: key);
+
+  // @override
+  // Widget wrappedRoute(BuildContext context) {
+  //   return Multiprovider(create: (ctx) => ProductsBloc(), child: this) {
+  //     CounterDependencies.of(ctx).providers
+  //   }
 
   @override
   Widget build(BuildContext context) => Scaffold(

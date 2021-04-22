@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../l10n/l10n.dart';
+import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../utils/global_providers.dart';
 import 'environment_config.dart';
@@ -27,7 +28,7 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-        providers: GlobalProviders.of(context).providers,
+        providers: AppDependencies.of(context).providers,
         child: _MyMaterialApp(_router),
       );
 }
