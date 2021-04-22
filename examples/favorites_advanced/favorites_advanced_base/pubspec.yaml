@@ -21,6 +21,7 @@ dependencies:
   smooth_star_rating:
   rflutter_alert: ^2.0.2
   equatable: ^2.0.0
+  declarative_animated_list: ^0.1.0-nullsafety.0
 
 dev_dependencies:
   flutter_test:
