@@ -63,11 +63,6 @@ class FavoritePuppiesBloc
 
     _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(immediateUpdatedPuppy));
 
-    // yield state.copyWith(
-    //   favoritePuppies: state.favoritePuppies
-    //       .manageList(isFavorite: isFavorite, puppy: puppy),
-    // );
-
     /// Send a request to the API
     try {
       final updatedPuppy = (await _puppiesRepository.favoritePuppy(
@@ -106,7 +101,6 @@ class FavoritePuppiesBloc
         favoritePuppies: state.favoritePuppies
             .manageList(isFavorite: !isFavorite, puppy: puppy),
       );
-
     }
   }
 }

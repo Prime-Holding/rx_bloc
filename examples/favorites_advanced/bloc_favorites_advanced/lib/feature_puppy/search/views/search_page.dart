@@ -13,12 +13,6 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<PuppyListBloc, PuppyListState>(
-          // buildWhen: (previous, current) {
-          //   final result = previous.status != current.status;
-          //   print('buildWhen current.status : ${current.status}');
-          //   print('RESULT : $result');
-          //   return result;
-          // },
           key: const Key(Keys.puppySearchPage),
           builder: (context, state) {
             // print('BlocBuilder builder: ${state.status}');

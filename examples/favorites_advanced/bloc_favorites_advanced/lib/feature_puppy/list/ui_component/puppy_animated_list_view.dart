@@ -1,22 +1,18 @@
-// import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-
-// import '../../blocs/puppies_extra_details_bloc.dart';
-// import '../../blocs/puppy_manage_bloc.dart';
 
 class PuppyAnimatedListView extends StatelessWidget {
   PuppyAnimatedListView({
     required List<Puppy> puppyList,
     Function(Puppy)? onPuppyPressed,
     Key? key,
-  })  : _puppyList = puppyList,
+  })
+      : _puppyList = puppyList,
         _onPuppyPressed = onPuppyPressed,
         super(key: key) {
     // print('Constructor');
@@ -44,9 +40,10 @@ class PuppyAnimatedListView extends StatelessWidget {
     var future = Future(() {});
     for (var i = 0; i < _puppyList.length; i++) {
       // Add a delay before every adding of an element
-      future = future.then((_) => Future.delayed(
+      future = future.then((_) =>
+          Future.delayed(
             const Duration(milliseconds: 300),
-            () {
+                () {
               _tempList.add(_puppyList[i]);
               _myListKey.currentState!.insertItem(_tempList.length - 1);
             },
@@ -55,16 +52,17 @@ class PuppyAnimatedListView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => AnimatedList(
-      key: _myListKey,
-      padding: const EdgeInsets.only(bottom: 67),
-      initialItemCount: _tempList.length,
-      itemBuilder: (context, index, animation) =>
+  Widget build(BuildContext context) =>
+      AnimatedList(
+          key: _myListKey,
+          padding: const EdgeInsets.only(bottom: 67),
+          initialItemCount: _tempList.length,
+          itemBuilder: (context, index, animation) =>
           //print('itemBuilder');
           buildItem(context, _tempList[index], index, animation));
 
-  Widget buildItem(
-          BuildContext context, item, int index, Animation<double> animation) =>
+  Widget buildItem(BuildContext context, item, int index,
+      Animation<double> animation) =>
       _createTile(
           PuppyCard(
             key: Key('${key.toString()}${item.id}'),
@@ -84,7 +82,7 @@ class PuppyAnimatedListView extends StatelessWidget {
     final item = _tempList.removeAt(index);
     _myListKey.currentState!.removeItem(
       index,
-      (context, animation) => buildItem(context, item, index, animation),
+          (context, animation) => buildItem(context, item, index, animation),
     );
   }
 
