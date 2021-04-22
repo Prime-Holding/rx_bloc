@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 import 'package:equatable/equatable.dart';
-import 'package:redux_favorite_advanced_sample/feature_puppy/favorites/models/favorite_list_state.dart';
 
 import '../../feature_home/models/navigation_state.dart';
+import '../../feature_puppy/favorites/models/favorite_list_state.dart';
 import '../../feature_puppy/search/models/puppy_list_state.dart';
 
 @immutable

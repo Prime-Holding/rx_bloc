@@ -145,7 +145,6 @@ class AppStateStub {
       puppies: [],
     ),
     favoriteListState: FavoriteListState(
-      isError: false,
       puppies: [],
     ),
     favoriteCount: 0,

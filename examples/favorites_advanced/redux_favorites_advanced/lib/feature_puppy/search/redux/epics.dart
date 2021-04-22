@@ -41,6 +41,12 @@ Epic<AppState> puppyFavoriteEpic(PuppiesRepository repository) => (actions,
         yield PuppyFavoriteSucceededAction(
           puppy: action.puppy.copyWith(isFavorite: action.isFavorite),
         );
+        yield PuppyToFavoritesListAction(
+          puppy: action.puppy.copyWith(isFavorite: false),
+        );
+        yield action.isFavorite
+            ? FavoriteCountIncrementAction()
+            : FavoriteCountDecrementAction();
         final puppy = await repository.favoritePuppy(action.puppy,
             isFavorite: action.isFavorite);
         final detailsPuppy = puppy.copyWith(
@@ -48,15 +54,14 @@ Epic<AppState> puppyFavoriteEpic(PuppiesRepository repository) => (actions,
           displayCharacteristics: action.puppy.displayCharacteristics,
           displayName: action.puppy.displayName,
         );
-        yield PuppyFavoriteSucceededAction(
-          puppy: detailsPuppy,
-        );
-        yield action.isFavorite
-            ? FavoriteCountIncrementAction()
-            : FavoriteCountDecrementAction();
-        yield AddPuppyToFavoritesListAction(puppy: detailsPuppy);
+        yield PuppyFavoriteSucceededAction(puppy: detailsPuppy);
+        yield PuppyToFavoritesListAction(puppy: detailsPuppy);
       } catch (error) {
         yield PuppyFavoriteSucceededAction(puppy: action.puppy);
+        yield PuppyToFavoritesListAction(puppy: action.puppy);
+        yield action.isFavorite
+            ? FavoriteCountDecrementAction()
+            : FavoriteCountIncrementAction();
         yield ErrorAction(error: error.toString());
       }
     });

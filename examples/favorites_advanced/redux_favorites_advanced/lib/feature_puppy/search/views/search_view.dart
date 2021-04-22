@@ -13,7 +13,10 @@ class SearchView extends StatelessWidget {
   Widget build(BuildContext context) => Center(
         child: StoreConnector<AppState, SearchViewModel>(
           key: const Key(Keys.puppySearchPage),
-          onInit: (store) => store.dispatch(PuppiesFetchRequestedAction()),
+          distinct: true,
+          onInit: (store) => store.state.puppyListState.puppies.isEmpty
+              ? store.dispatch(PuppiesFetchRequestedAction())
+              : null,
           converter: (store) => SearchViewModel.from(store),
           builder: (_, viewModel) => (viewModel.isLoading)
               ? LoadingWidget()

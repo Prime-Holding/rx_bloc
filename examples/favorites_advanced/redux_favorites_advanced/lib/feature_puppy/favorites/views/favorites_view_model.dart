@@ -8,7 +8,6 @@ import '../../../feature_puppy/search/redux/actions.dart';
 
 class FavoritesViewModel extends Equatable {
   const FavoritesViewModel({
-    required this.isError,
     required this.puppies,
     required this.onToggleFavorite,
   });
@@ -22,19 +21,16 @@ class FavoritesViewModel extends Equatable {
     }
 
     return FavoritesViewModel(
-      isError: store.state.favoriteListState.isError,
       puppies: store.state.favoriteListState.puppies,
       onToggleFavorite: _onToggleFavorite,
     );
   }
 
-  final bool isError;
   final List<Puppy> puppies;
-  final Function onToggleFavorite;
+  final Function(Puppy, bool) onToggleFavorite;
 
   @override
   List<Object> get props => [
-        isError,
         puppies,
         onToggleFavorite,
       ];
