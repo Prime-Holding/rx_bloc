@@ -162,6 +162,21 @@ class AppStateStub {
       puppies: [Stub.puppy1.copyWith(isFavorite: true)],
     ),
   );
+
+  static final withPuppy1Listed = AppStateStub.withPuppy1.copyWith(
+    favoriteListState: FavoriteListState(
+      puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+    ),
+    favoriteCount: 1,
+  );
+
+  static final withPuppy1FavoritedAndListed =
+      AppStateStub.withPuppy1Favorited.copyWith(
+    favoriteListState: FavoriteListState(
+      puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+    ),
+    favoriteCount: 1,
+  );
 }
 
 class NavigationStub {

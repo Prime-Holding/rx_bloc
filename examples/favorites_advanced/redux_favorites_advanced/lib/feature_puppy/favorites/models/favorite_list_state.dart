@@ -13,13 +13,6 @@ class FavoriteListState extends Equatable {
 
   final List<Puppy> puppies;
 
-  FavoriteListState copyWith({
-    List<Puppy>? puppies,
-  }) =>
-      FavoriteListState(
-        puppies: puppies ?? this.puppies,
-      );
-
   @override
   List<Object> get props => [puppies];
 }

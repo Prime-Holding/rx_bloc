@@ -4,13 +4,13 @@ import '../models/favorite_list_state.dart';
 import 'actions.dart';
 
 FavoriteListState favoriteListStateReducer(FavoriteListState state, action) =>
-    state.copyWith(
+    FavoriteListState(
       puppies: favoritePuppyReducer(state: state.puppies, action: action),
     );
 
-List<Puppy>? favoritePuppyReducer({List<Puppy>? state, action}) {
+List<Puppy> favoritePuppyReducer({required List<Puppy> state, action}) {
   if (action is PuppyToFavoritesListAction) {
-    return state!.manageFavoriteList([action.puppy]);
+    return state.manageFavoriteList([action.puppy]);
   }
   return state;
 }
