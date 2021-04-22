@@ -20,8 +20,8 @@ class PuppyAnimatedListView extends StatelessWidget {
         _onPuppyPressed = onPuppyPressed,
         super(key: key) {
     // print('Constructor');
-    // initialLoadingFaster();
-    initialLoading();
+    initialLoadingOfTheList();
+    // initialLoading();
   }
 
   final Function(Puppy)? _onPuppyPressed;
@@ -29,10 +29,10 @@ class PuppyAnimatedListView extends StatelessWidget {
   final _myListKey = GlobalKey<AnimatedListState>();
   final List<Puppy> _tempList = <Puppy>[];
 
-  void initialLoadingFaster() {
+  // Add a delay before tha adding of all elements
+  void initialLoadingOfTheList() {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 2900));
-
+      await Future.delayed(const Duration(milliseconds: 1000));
       _puppyList.forEach((element) async {
         _tempList.add(element);
         _myListKey.currentState!.insertItem(_tempList.length - 1);
@@ -43,12 +43,12 @@ class PuppyAnimatedListView extends StatelessWidget {
   void initialLoading() {
     var future = Future(() {});
     for (var i = 0; i < _puppyList.length; i++) {
+      // Add a delay before every adding of an element
       future = future.then((_) => Future.delayed(
             const Duration(milliseconds: 300),
             () {
               _tempList.add(_puppyList[i]);
               _myListKey.currentState!.insertItem(_tempList.length - 1);
-              // print('In The Future Then');
             },
           ));
     }
@@ -60,7 +60,7 @@ class PuppyAnimatedListView extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 67),
       initialItemCount: _tempList.length,
       itemBuilder: (context, index, animation) =>
-      //print('itemBuilder');
+          //print('itemBuilder');
           buildItem(context, _tempList[index], index, animation));
 
   Widget buildItem(
