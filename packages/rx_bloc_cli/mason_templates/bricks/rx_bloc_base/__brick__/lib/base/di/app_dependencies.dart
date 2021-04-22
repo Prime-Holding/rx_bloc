@@ -9,26 +9,22 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';{{/analytics}}
 import 'package:flutter/widgets.dart';
-import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-
-import '../../feature_counter/bloc/counter_bloc.dart';
-import '../repositories/counter_repository.dart';
 
 class AppDependencies {
   AppDependencies._(this.context);
 
   factory AppDependencies.of(BuildContext context) =>
-      GlobalProviders._(context);
+AppDependencies._(context);
 
-  final BuildContext context;{{#analytics}}
+  final BuildContext context;
 
-  {{/analytics}}
   List<Provider> get _analytics => [{{#analytics}}
-      Provider<FirebaseAnalytics>.create(create(context) => FirebaseAnalytics();),
+      Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
       Provider<FirebaseAnalyticsObserver>(
-        create: (context) => FirebaseAnalyticsObserver(analytics: _analytics),
+        create: (context) =>
+              FirebaseAnalyticsObserver(analytics: context.read()),
       ),
     {{/analytics}}];
 

@@ -6,11 +6,11 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:auto_route/auto_route.dart';
-import 'package:{{project_name}}/feature_counter/views/home_page.dart';
+import 'package:test_app/feature_counter/views/counter_page.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
-    MaterialRoute(page: HomePage, initial: true),
+    MaterialRoute(page: CounterPage, initial: true),
   ],
 )
 class $Router {}

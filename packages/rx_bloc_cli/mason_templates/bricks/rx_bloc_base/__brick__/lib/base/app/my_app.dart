@@ -6,7 +6,6 @@
 // https://opensource.org/licenses/MIT.
 
 {{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 {{/analytics}}
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../l10n/l10n.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
-import '../utils/global_providers.dart';
 import 'environment_config.dart';
 
 /// This widget is the root of your application.
