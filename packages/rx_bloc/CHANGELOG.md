@@ -1,3 +1,9 @@
+## [2.0.2] - April 19, 2021
+* `Result` equatable improvements
+* Stability improvements
+* Increased code coverage
+* Documentation updates
+
 ## [2.0.0] - March 10, 2021
 * Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
 

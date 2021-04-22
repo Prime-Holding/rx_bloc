@@ -2,6 +2,34 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('Extension on Stream<Result<T>>', () {
+    test('whereError()', () async {
+      await expectLater(
+        Stream.error(Exception('test'))
+            .asResultStream()
+            .whereError()
+            .map((event) => event.toString()),
+        emitsInOrder(
+          [
+            'Exception: test',
+          ],
+        ),
+      );
+    });
+
+    test('isLoading()', () async {
+      await expectLater(
+        Stream.value(1).asResultStream().isLoading(),
+        emitsInOrder(
+          [
+            true,
+            false,
+          ],
+        ),
+      );
+    });
+  });
+
   group('Stream asResultStream', () {
     test('success case', () {
       expect(
