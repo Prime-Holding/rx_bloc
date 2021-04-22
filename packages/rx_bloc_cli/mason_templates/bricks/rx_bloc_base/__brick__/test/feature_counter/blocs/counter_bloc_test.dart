@@ -5,8 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:test_app/feature_counter/bloc/counter_bloc.dart';
-import 'package:test_app/base/repositories/counter_repository.dart';
+import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
+import 'package:{{project_name}}/base/repositories/counter_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
