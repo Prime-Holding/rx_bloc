@@ -16,6 +16,11 @@ class FavoritesPage extends StatelessWidget {
               puppyList: BlocProvider.of<FavoritePuppiesBloc>(context)
                   .state
                   .favoritePuppies,
+              onFavorite: (puppy, isFavorite) =>
+                  context.read<FavoritePuppiesBloc>().add(
+                        FavoritePuppiesMarkAsFavoriteEvent(
+                            puppy: puppy, isFavorite: isFavorite),
+                      ),
             ),
           ),
         ],
