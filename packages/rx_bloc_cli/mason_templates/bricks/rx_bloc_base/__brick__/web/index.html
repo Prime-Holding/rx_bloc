@@ -40,6 +40,23 @@
       });
     }
   </script>
+  {{#analytics}}
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js"></script>
+  <!-- TODO: Add your Firebase Web configuration -->
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  {{/analytics}}
+
+  <!-- Add your scripts here -->
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
