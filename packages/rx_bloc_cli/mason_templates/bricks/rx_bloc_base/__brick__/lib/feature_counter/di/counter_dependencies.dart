@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../base/repositories/counter_repository.dart';
-import '../bloc/counter_bloc.dart';
+import '../blocs/counter_bloc.dart';
 
 class CounterDependencies {
   CounterDependencies._(this.context);
@@ -13,6 +13,12 @@ class CounterDependencies {
       CounterDependencies._(context);
 
   final BuildContext context;
+
+  /// List of all providers used throughout the app
+  List<SingleChildWidget> get providers => [
+        ..._repositories,
+        ..._blocs,
+      ];
 
   List<Provider> get _repositories => [
         Provider<CounterRepository>(
@@ -24,11 +30,5 @@ class CounterDependencies {
         RxBlocProvider<CounterBlocType>(
           create: (context) => CounterBloc(context.read()),
         ),
-      ];
-
-  /// List of all providers used throughout the app
-  List<SingleChildWidget> get providers => [
-        ..._repositories,
-        ..._blocs,
       ];
 }

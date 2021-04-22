@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../l10n/l10n.dart';
-import '../bloc/counter_bloc.dart';
+import '../blocs/counter_bloc.dart';
 import '../di/counter_dependencies.dart';
 
 class CounterPage extends StatelessWidget implements AutoRouteWrapper {
@@ -22,9 +23,9 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-    providers: CounterDependencies.of(context).providers,
-    child: this,
-  );
+        providers: CounterDependencies.of(context).providers,
+        child: this,
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -33,29 +34,33 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              RxBlocListener<CounterBlocType, String>(
-                state: (bloc) => bloc.states.errors,
-                listener: (context, errorMessage) =>
-                    ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(errorMessage ?? ''),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                ),
-              ),
-              RxBlocBuilder<CounterBlocType, int>(
-                state: (bloc) => bloc.states.count,
-                builder: (context, snapshot, bloc) => snapshot.hasData
-                    ? Text(
-                        snapshot.data.toString(),
-                        style: Theme.of(context).textTheme.headline4,
-                      )
-                    : Container(),
-              ),
+              _buildErrorListener(),
+              _buildCount(),
             ],
           ),
         ),
         floatingActionButton: _buildActionButtons(context),
+      );
+
+  Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, errorMessage) =>
+            ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage ?? ''),
+            behavior: SnackBarBehavior.floating,
+          ),
+        ),
+      );
+
+  Widget _buildCount() => RxBlocBuilder<CounterBlocType, int>(
+        state: (bloc) => bloc.states.count,
+        builder: (context, snapshot, bloc) => snapshot.hasData
+            ? Text(
+                snapshot.data.toString(),
+                style: Theme.of(context).textTheme.headline4,
+              )
+            : Container(),
       );
 
   Widget _buildActionButtons(BuildContext context) =>

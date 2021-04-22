@@ -16,9 +16,14 @@ class AppDependencies {
   AppDependencies._(this.context);
 
   factory AppDependencies.of(BuildContext context) =>
-AppDependencies._(context);
+    AppDependencies._(context);
 
   final BuildContext context;
+
+  /// List of all providers used throughout the app
+  List<SingleChildWidget> get providers => [
+    ..._analytics,
+  ];
 
   List<Provider> get _analytics => [{{#analytics}}
       Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
@@ -27,9 +32,4 @@ AppDependencies._(context);
               FirebaseAnalyticsObserver(analytics: context.read()),
       ),
     {{/analytics}}];
-
-  /// List of all providers used throughout the app
-  List<SingleChildWidget> get providers => [
-        ..._analytics,
-      ];
 }
