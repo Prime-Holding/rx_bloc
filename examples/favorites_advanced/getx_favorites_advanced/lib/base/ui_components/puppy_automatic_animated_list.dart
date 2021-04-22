@@ -36,12 +36,15 @@ class PuppyAutomaticAnimatedListView extends StatelessWidget {
 
   Widget _createTile(
           {required Widget item, required Animation<double> animation}) =>
-      SizeTransition(
-        sizeFactor: CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOut,
-          reverseCurve: Curves.easeIn,
+      FadeTransition(
+        opacity: animation,
+        child: SizeTransition(
+          sizeFactor: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+            reverseCurve: Curves.easeIn,
+          ),
+          child: item,
         ),
-        child: item,
       );
 }

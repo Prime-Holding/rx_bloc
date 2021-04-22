@@ -10,14 +10,15 @@ import 'package:getx_favorites_advanced/feature_puppy/favorites/controllers/favo
 class FavoritesPage extends GetView<FavoritePuppiesController> {
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: controller.obx((_) => Container(
-          key: const ValueKey(Keys.puppyFavoritesPage),
-          child: Obx(
-                () => PuppyAutomaticAnimatedListView(
-              puppyList: controller.favoritePuppiesList,
+        body: controller.obx(
+          (_) => Container(
+            key: const ValueKey(Keys.puppyFavoritesPage),
+            child: Obx(
+              () => PuppyAutomaticAnimatedListView(
+                puppyList: controller.favoritePuppiesList,
+              ),
             ),
           ),
-        ),
           onError: (error) => ErrorRetryWidget(
             onReloadTap: () => controller.onReload(),
           ),
