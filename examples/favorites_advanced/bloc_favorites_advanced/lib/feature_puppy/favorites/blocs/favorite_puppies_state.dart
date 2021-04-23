@@ -18,7 +18,7 @@ class FavoritePuppiesState extends Equatable {
   }) =>
       FavoritePuppiesState(
         favoritePuppies: favoritePuppies ?? this.favoritePuppies,
-        error: error ,
+        error: error,
       );
 
   @override

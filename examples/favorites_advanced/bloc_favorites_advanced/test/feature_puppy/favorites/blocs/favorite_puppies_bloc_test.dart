@@ -27,6 +27,10 @@ void main() {
     );
   });
 
+  test('getter',(){
+
+  });
+
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
     'FavoritePuppiesBloc FavoritePuppiesFetchEvent',
     build: () {

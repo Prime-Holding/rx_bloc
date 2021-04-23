@@ -9,9 +9,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 import '../../stubs.dart';
 import 'puppies_extra_details_bloc_test.mocks.dart';
 
-// class MockPuppiesRepository extends Mock implements PuppiesRepository {}
-
-// class MockCoordinatorBloc extends Mock implements CoordinatorBloc {}
 
 @GenerateMocks([
   PuppiesRepository,
