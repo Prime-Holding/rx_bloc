@@ -15,6 +15,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../l10n/l10n.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
+import '../theme/design_system.dart';
 import 'environment_config.dart';
 
 /// This widget is the root of your application.
@@ -39,9 +40,8 @@ class _MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: DesignSystem.fromBrightness(Brightness.light).theme,
+        darkTheme: DesignSystem.fromBrightness(Brightness.dark).theme,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

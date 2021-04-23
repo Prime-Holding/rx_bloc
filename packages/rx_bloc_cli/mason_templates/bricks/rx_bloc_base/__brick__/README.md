@@ -15,12 +15,12 @@
 | `lib/base/repositories/` | Repositories used to fetch and persist models.
 | `lib/base/routers/` | All [routers](https://pub.dev/packages/auto_route#setup-and-usage) are placed here. The main [router](https://pub.dev/packages/auto_route#setup-and-usage) of the app is `lib/base/routers/router.dart`. |
 | `lib/base/routers/guards/` | The routers' [guards](https://pub.dev/packages/auto_route#setup-and-usage) of the app are placed here. |
+| `lib/base/theme/` | The custom theme of the app |
 | `lib/feature_X/` | Feature related classes |
 | `lib/feature_X/blocs` | Feature related [BLoCs](https://pub.dev/packages/rx_bloc#what-is-rx_bloc-) |
 | `lib/feature_X/use_cases/` | Feature related UseCases |
 | `lib/feature_X/ui_components/` | Feature related custom widgets |
 | `lib/feature_X/views/` | Feature related pages and forms |
-| `lib/theme/` | The custom theme of the app |
 | `lib/main.dart` | The main file of the app. If there are more that one main file, each of them is related to separate flavor of the app. |
 
 ## Feature structure

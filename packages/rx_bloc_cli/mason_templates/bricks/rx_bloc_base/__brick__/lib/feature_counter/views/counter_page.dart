@@ -11,6 +11,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../base/extensions/async_snapshot_extensions.dart';
+import '../../base/theme/design_system.dart';
 import '../../l10n/l10n.dart';
 import '../blocs/counter_bloc.dart';
 import '../di/counter_dependencies.dart';
@@ -58,7 +59,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
         builder: (context, snapshot, bloc) => snapshot.hasData
             ? Text(
                 snapshot.data.toString(),
-                style: Theme.of(context).textTheme.headline4,
+                style: context.designSystem.typography.headline4,
               )
             : Container(),
       );
@@ -75,17 +76,17 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
                 child: CircularProgressIndicator(),
               ),
             FloatingActionButton(
-              backgroundColor: loadingState.buttonColor,
+              backgroundColor: loadingState.getButtonColor(context),
               onPressed: loadingState.isLoading ? null : bloc.events.increment,
               tooltip: context.l10n.increment,
-              child: const Icon(Icons.add),
+              child: Icon(context.designSystem.icons.plusSign),
             ),
             const SizedBox(width: 16),
             FloatingActionButton(
-              backgroundColor: loadingState.buttonColor,
+              backgroundColor: loadingState.getButtonColor(context),
               onPressed: loadingState.isLoading ? null : bloc.events.decrement,
               tooltip: context.l10n.decrement,
-              child: const Icon(Icons.remove),
+              child: Icon(context.designSystem.icons.minusSign),
             ),
           ],
         ),
