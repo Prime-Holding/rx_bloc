@@ -9,8 +9,11 @@ import '../blocs/counter_bloc.dart';
 class CounterDependencies {
   CounterDependencies._(this.context);
 
-  factory CounterDependencies.of(BuildContext context) =>
-      CounterDependencies._(context);
+  factory CounterDependencies.of(BuildContext context) => _instance != null
+      ? _instance!
+      : _instance = CounterDependencies._(context);
+
+  static CounterDependencies? _instance;
 
   final BuildContext context;
 

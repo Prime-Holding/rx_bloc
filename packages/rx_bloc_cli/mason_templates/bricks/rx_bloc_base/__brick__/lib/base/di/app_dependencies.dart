@@ -15,8 +15,11 @@ import 'package:provider/single_child_widget.dart';
 class AppDependencies {
   AppDependencies._(this.context);
 
-  factory AppDependencies.of(BuildContext context) =>
-    AppDependencies._(context);
+  factory AppDependencies.of(BuildContext context) => _instance != null
+      ? _instance!
+      : _instance = AppDependencies._(context);
+
+  static AppDependencies? _instance;
 
   final BuildContext context;
 
