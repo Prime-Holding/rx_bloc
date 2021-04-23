@@ -1,6 +1,6 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/resources.dart';
-import 'package:favorites_advanced_base/ui_components.dart';
+import 'package:favorites_advanced_base/ui_components.dart' hide PuppyAnimatedListView;
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
