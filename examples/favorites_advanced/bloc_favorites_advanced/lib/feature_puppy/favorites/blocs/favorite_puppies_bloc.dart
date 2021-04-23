@@ -39,7 +39,6 @@ class FavoritePuppiesBloc
   ///TODO: handle loading and errors
   Stream<FavoritePuppiesState> _mapToFavoritePuppies() async* {
     try {
-      // await Future.delayed(const Duration(seconds: 5));
       yield state.copyWith(
         favoritePuppies: await _puppiesRepository.getFavoritePuppies(),
       );

@@ -30,10 +30,49 @@ void main() {
   test('FavoritePuppiesBloc FavoritePuppiesState count getter', () async {
     when(mockRepo.getFavoritePuppies())
         .thenAnswer((_) async => Stub.favoritePuppies);
+
     favoritePuppiesBloc.add(FavoritePuppiesFetchEvent());
+
     await Future.delayed(const Duration(milliseconds: 200));
+
     expect(favoritePuppiesBloc.state.count, 2);
   });
+
+  // Does not mark copyWith as tested
+  test(
+    'FavoritePuppiesState copyWith',
+    () async {
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.favoritePuppies);
+
+      favoritePuppiesBloc.add(FavoritePuppiesFetchEvent());
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      expect(
+          favoritePuppiesBloc.state.copyWith(
+            favoritePuppies: Stub.favoritePuppies,
+          ),
+          FavoritePuppiesState(favoritePuppies: Stub.favoritePuppies));
+    },
+  );
+
+  // Does not mark copyWith as tested
+  blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
+    'FavoritePuppiesState copyWith',
+    build: () {
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.favoritePuppies);
+      return favoritePuppiesBloc;
+    },
+    act: (bloc) {
+      bloc.add(FavoritePuppiesFetchEvent());
+    },
+    expect: () => <FavoritePuppiesState>[
+      favoritePuppiesBloc.state.copyWith(
+        favoritePuppies: Stub.favoritePuppies,
+      ),
+    ],
+  );
 
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
     'FavoritePuppiesBloc FavoritePuppiesFetchEvent',
