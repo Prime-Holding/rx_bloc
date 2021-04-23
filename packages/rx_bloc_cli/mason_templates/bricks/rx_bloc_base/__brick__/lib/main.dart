@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'base/app/environment_config.dart';
 import 'base/app/{{project_name}}.dart';
+import 'base/utils/helpers.dart';
 
 // ignore_for_file: avoid_void_async
 
@@ -12,7 +13,9 @@ void main() async {
   // See https://flutter.dev/testing/ for more info.
   // enableFlutterDriverExtension();
   WidgetsFlutterBinding.ensureInitialized();
-  {{#analytics}}await Firebase.initializeApp();{{/analytics}}
+  {{#analytics}}
+  // TODO: Add Firebase credentials for prod environment for Android and iOS
+  await safeRun(()=>Firebase.initializeApp());{{/analytics}}
 
   runApp({{#pascalCase}}{{project_name}}{{/pascalCase}}(config: EnvironmentConfig.prod));
 }

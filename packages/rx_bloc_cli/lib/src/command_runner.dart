@@ -2,8 +2,9 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:io/io.dart';
 import 'package:mason/mason.dart';
-import 'package:rx_bloc_cli/src/commands/create_command.dart';
 
+import 'commands/create_command.dart';
+import 'package_version.dart';
 import 'rx_bloc_command_exception.dart';
 
 class RxBlocCommandRunner extends CommandRunner<int> {
@@ -48,8 +49,7 @@ class RxBlocCommandRunner extends CommandRunner<int> {
   @override
   Future<int> runCommand(ArgResults topLevelResults) async {
     if (topLevelResults['version'] == true) {
-      /// TODO: Replace version with variable
-      _logger.info('package version: 0.0.1');
+      _logger.info('package version: $packageVersion');
       return ExitCode.success.code;
     }
     return super.runCommand(topLevelResults);

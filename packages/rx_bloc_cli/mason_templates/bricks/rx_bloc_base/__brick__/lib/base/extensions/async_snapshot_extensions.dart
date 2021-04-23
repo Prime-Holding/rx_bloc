@@ -6,4 +6,5 @@ extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {
 
   /// The color based on the isLoading state
   Color get buttonColor => isLoading ? Colors.blueGrey : Colors.blue;
+
 }
