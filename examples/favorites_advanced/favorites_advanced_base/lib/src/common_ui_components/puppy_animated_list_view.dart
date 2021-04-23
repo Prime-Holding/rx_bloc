@@ -4,8 +4,8 @@ import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 
-class PuppyDeclarativeListView extends StatelessWidget {
-  const PuppyDeclarativeListView({
+class PuppyAnimatedListView extends StatelessWidget {
+  const PuppyAnimatedListView({
     required List<Puppy> puppyList,
     Function(Puppy)? onPuppyPressed,
     Function(Puppy, bool)? onFavorite,

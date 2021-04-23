@@ -14,7 +14,7 @@ class FavoritesView extends StatelessWidget {
           key: const Key(Keys.puppyFavoritesPage),
           distinct: true,
           converter: (store) => FavoritesViewModel.from(store),
-          builder: (ctx, viewModel) => PuppyDeclarativeListView(
+          builder: (ctx, viewModel) => PuppyAnimatedListView(
             puppyList: viewModel.puppies,
             onFavorite: (puppy, isFavorite) =>
                 viewModel.onToggleFavorite(puppy, isFavorite),
