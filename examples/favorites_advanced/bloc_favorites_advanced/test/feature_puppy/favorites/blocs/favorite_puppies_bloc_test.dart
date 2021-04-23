@@ -27,8 +27,12 @@ void main() {
     );
   });
 
-  test('getter',(){
-
+  test('FavoritePuppiesBloc FavoritePuppiesState count getter', () async {
+    when(mockRepo.getFavoritePuppies())
+        .thenAnswer((_) async => Stub.favoritePuppies);
+    favoritePuppiesBloc.add(FavoritePuppiesFetchEvent());
+    await Future.delayed(const Duration(milliseconds: 200));
+    expect(favoritePuppiesBloc.state.count, 2);
   });
 
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
