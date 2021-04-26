@@ -44,11 +44,9 @@
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js"></script>
-  <!-- TODO: Add your Firebase Web configuration -->
-  <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-    };
+  <!-- Add SDKs for other Firebase products that you want to use HERE -->
+  <script type="module">
+    import { firebaseConfig } from '/lib/base/local_data_sources/firebase_web_config.js';
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
@@ -57,6 +55,7 @@
 
   <!-- Add your scripts here -->
 
+  <!-- Make sure you run `flutter clean` after making changes to this file. -->
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
