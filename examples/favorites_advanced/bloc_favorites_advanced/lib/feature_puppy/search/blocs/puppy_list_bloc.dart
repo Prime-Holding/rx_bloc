@@ -51,6 +51,26 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
       );
     } else if (event is FavoritePuppiesUpdatedEvent) {
       yield* _mapFavoritePuppiesToState(event.favoritePuppies, state);
+    } else if (event is PuppyListFilterEvent) {
+      yield* _mapPuppiesFilteredToState(event.query, state);
+    }
+  }
+
+  //TODO
+  Stream<PuppyListState> _mapPuppiesFilteredToState(
+      String query, PuppyListState state) async* {
+    try {
+      // First yield PuppyListStatus.initial to display LoadingWidget
+      yield state.copyWith(status: PuppyListStatus.initial);
+
+      // Then yield the resulting list
+      yield state.copyWith(
+        searchedPuppies: await _repository.getPuppies(query: query),
+        status: PuppyListStatus.success,
+      );
+    } on Exception {
+      // print('Filter puppies fetch exception');
+      yield state.copyWith(status: PuppyListStatus.failure);
     }
   }
 
