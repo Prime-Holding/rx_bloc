@@ -80,4 +80,4 @@ Run "rx_bloc_cli help <command>" for more information about a command.
 [static_analysis_lnk]: https://dart.dev/guides/language/analysis-options
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [push_notifications_lnk]: https://firebase.google.com/products/cloud-messaging/
-[create_command_gif_lnk]: https://user-images.githubusercontent.com/61236867/116064742-958ff480-a686-11eb-8996-599f3845b2e1.png
+[create_command_gif_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/rx_bloc_cli/packages/rx_bloc_cli/doc/assets/rx_bloc_cli_create.gif
