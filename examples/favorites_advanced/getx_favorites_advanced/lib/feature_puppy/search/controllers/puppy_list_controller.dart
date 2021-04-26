@@ -17,6 +17,8 @@ class PuppyListController extends GetxController
   final filteredBy = ''.obs;
   late Worker updateFetchedDetailsWorker;
   late Worker updateFavoriteStatusWorker;
+  late Worker searchMatchingChecker;
+
 
   @override
   Future<void> onInit() async {
@@ -29,13 +31,22 @@ class PuppyListController extends GetxController
     updateFavoriteStatusWorker = ever(_mediatorController.puppiesToUpdate, (_) {
       updatePuppiesWith(_mediatorController.puppiesToUpdate.toList());
     });
+    searchMatchingChecker = ever(_puppies, (_) => _puppies.isEmpty
+    ? change(_puppies, status: RxStatus.empty())
+    : change(_puppies, status: RxStatus.success()));
     super.onInit();
   }
 
-  List<Puppy> searchedPuppies() => [..._puppies];
+  List<Puppy> searchedPuppies() {
+    if(_puppies.isEmpty){
+      change(_puppies, status: RxStatus.empty());
+    }
+    return [..._puppies];
+  }
 
   Future<void> onRefresh() async {
     await _loadPuppies('');
+    filteredBy('');
     _mediatorController.clearFetchedExtraDetails();
   }
 
@@ -60,7 +71,6 @@ class PuppyListController extends GetxController
     try {
       final puppies = await _repository.getPuppies(query: query);
       _puppies.assignAll(puppies);
-      await Future.delayed(const Duration(milliseconds: 150));
       change(_puppies, status: RxStatus.success());
     } catch (e) {
       change(_puppies, status: RxStatus.error(e.toString().substring(10)));
@@ -78,6 +88,7 @@ class PuppyListController extends GetxController
   void onClose() {
     updateFetchedDetailsWorker.dispose();
     updateFavoriteStatusWorker.dispose();
+    searchMatchingChecker.dispose();
     super.onClose();
   }
 }
