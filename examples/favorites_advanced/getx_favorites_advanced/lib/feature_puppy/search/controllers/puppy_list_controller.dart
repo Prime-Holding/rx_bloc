@@ -14,13 +14,14 @@ class PuppyListController extends GetxController
   final MediatorController _mediatorController;
 
   final _puppies = <Puppy>[].obs;
+  final filteredBy = ''.obs;
   late Worker updateFetchedDetailsWorker;
   late Worker updateFavoriteStatusWorker;
 
   @override
   Future<void> onInit() async {
     change(_puppies, status: RxStatus.loading());
-    await _initPuppies();
+    await _loadPuppies('');
     updateFetchedDetailsWorker =
         ever(_mediatorController.lastFetchedPuppies, (_) {
       updatePuppiesWith(_mediatorController.lastFetchedPuppies);
@@ -34,7 +35,7 @@ class PuppyListController extends GetxController
   List<Puppy> searchedPuppies() => [..._puppies];
 
   Future<void> onRefresh() async {
-    await _initPuppies();
+    await _loadPuppies('');
     _mediatorController.clearFetchedExtraDetails();
   }
 
@@ -55,15 +56,22 @@ class PuppyListController extends GetxController
     });
   }
 
-  Future<void> _initPuppies() async {
+  Future<void> _loadPuppies(String query) async {
     try {
-      final puppies = await _repository.getPuppies(query: '');
+      final puppies = await _repository.getPuppies(query: query);
       _puppies.assignAll(puppies);
+      await Future.delayed(const Duration(milliseconds: 150));
       change(_puppies, status: RxStatus.success());
     } catch (e) {
       change(_puppies, status: RxStatus.error(e.toString().substring(10)));
       print(e.toString());
     }
+  }
+
+  void filterPuppies(String keyString){
+    _loadPuppies(keyString);
+    filteredBy(keyString);
+    _mediatorController.clearFetchedExtraDetails();
   }
 
   @override
