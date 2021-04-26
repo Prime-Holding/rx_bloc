@@ -1,5 +1,5 @@
 name: rx_bloc_cli
-description: Rx Bloc Command Line Interface
+description: "rx_bloc_cli that enables quick project setup including: flavors, localization [intl], state management [rx_bloc], routing [auto_route], design system, analytics [firebase], tests"
 version: 0.0.1
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_cli
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues

@@ -5,9 +5,11 @@ class DesignSystemColors {
 
   late Brightness brightness;
 
-  final Color _blackVariant = _HexColor('#36393d');
+  /// region Essential (Material and component) colors
 
   bool get lightMode => brightness == Brightness.light;
+
+  final Color _blackVariant = _HexColor('#36393d');
 
   Color get primaryColor => lightMode ? Colors.blue : Colors.black;
 
@@ -43,6 +45,9 @@ class DesignSystemColors {
 
   Color get bodyTextColor2 => lightMode ? Colors.black : Colors.white;
 
+  Color get subtitleColor1 =>
+      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+
   Color get subtitleColor2 =>
       lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
 
@@ -63,8 +68,6 @@ class DesignSystemColors {
   Color get headline6 =>
       lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
 
-  Color get containerColor => lightMode ? Colors.white : _blackVariant;
-
   Color? get appTitleColor => lightMode ? Colors.white : accentColor;
 
   Color? get chipTitleColor => lightMode ? Colors.black : accentColor;
@@ -76,9 +79,15 @@ class DesignSystemColors {
 
   Color get alertSecondaryTitleColor => Colors.black;
 
-  Color get blueGray => Colors.blueGrey;
+  /// endregion
 
-  Color get blue => Colors.blue;
+  /// region App-specific colors
+
+  Color get inactiveButtonColor => Colors.blueGrey;
+
+  Color get activeButtonColor => Colors.blue;
+
+  /// endregion
 }
 
 class _HexColor extends Color {

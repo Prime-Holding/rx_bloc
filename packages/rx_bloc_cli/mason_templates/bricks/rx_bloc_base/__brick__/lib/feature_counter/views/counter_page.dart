@@ -59,7 +59,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
         builder: (context, snapshot, bloc) => snapshot.hasData
             ? Text(
                 snapshot.data.toString(),
-                style: context.designSystem.typography.headline4,
+                style: context.designSystem.typography.headline2,
               )
             : Container(),
       );

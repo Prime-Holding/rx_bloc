@@ -19,15 +19,16 @@ class CreateCommand extends Command<int> {
         _bundle = bundle ?? rxBlocBaseBundle,
         _generator = generator ?? MasonGenerator.fromBundle {
     argParser.addOption(
-      _orgNameString,
-      help: 'The organisation name (eg.: com.example ).',
+      _projectNameString,
+      help: 'The project name for this new Flutter project. This must be a '
+          'valid dart package name. If no project name is supplied, the name of'
+          ' the directory is used as the project name.',
       defaultsTo: null,
     );
     argParser.addOption(
-      _projectNameString,
-      help: 'The project name for this new Flutter project. '
-          'This must be a valid dart package name.',
-      defaultsTo: null,
+      _orgNameString,
+      help: 'The organisation name.',
+      defaultsTo: 'com.example',
     );
     argParser.addOption(
       _analyticsString,
@@ -89,7 +90,7 @@ class CreateCommand extends Command<int> {
     _logger.info('');
     final generateDone = _logger.progress('Bootstrapping');
     final generator = await _generator(_bundle);
-    final fileCount = await generator.generate(
+    var fileCount = await generator.generate(
       DirectoryGeneratorTarget(outputDirectory, _logger),
       vars: {
         'project_name': projectName,
@@ -98,7 +99,10 @@ class CreateCommand extends Command<int> {
         'analytics': _enableAnalytics,
       },
     );
+
+    // Manually create gitignore
     GitIgnoreCreator.generate(_outputDirectory.path);
+    fileCount++;
 
     generateDone('Bootstrapping done');
     _writeOutputLog(fileCount);
