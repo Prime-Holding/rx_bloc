@@ -51,6 +51,29 @@ void main() {
       expect(controller.status.isError, true);
     });
 
+    // test('filter puppies returns list of puppies', () async {
+    //   // arrange
+    //   reset(mockRepo);
+    //   when(mockRepo.getPuppies(query: 'est'))
+    //       .thenAnswer((_) async => Stub.puppiesTest);
+    //   // action
+    //   controller.filterPuppies('est');
+    //   // assert
+    //   final puppies = controller.searchedPuppies();
+    //   expect(controller.status.isSuccess, true);
+    //   expect(puppies.length, 1);
+    //   expect(puppies.first, Stub.puppyTest);
+    //   // arrange
+    //   reset(mockRepo);
+    //   when(mockRepo.getPuppies(query: 'dada'))
+    //       .thenAnswer((_) async => throw Stub.testErr);
+    //   // action
+    //   controller.filterPuppies('dada');
+    //   // assert
+    //   final puppies = controller.searchedPuppies();
+    //   expect(controller.status.isEmpty, true);
+    // });
+
     test('onReload', () async {
       //arrange
       final initValue = mediatorController.toClearFetchedExtraDetails.value;

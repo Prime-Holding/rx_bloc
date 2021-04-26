@@ -45,8 +45,7 @@ class PuppyListController extends GetxController
   }
 
   Future<void> onRefresh() async {
-    await _loadPuppies('');
-    filteredBy('');
+    await _loadPuppies(filteredBy.value);
     _mediatorController.clearFetchedExtraDetails();
   }
 
