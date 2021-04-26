@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../model/loading_with_tag.dart';
 import '../model/result.dart';
 import 'loading_bloc.dart';
 
@@ -41,13 +42,13 @@ abstract class RxBlocBase {
 
   /// The loading states of all handled result streams.
   @protected
-  Stream<bool> get loadingState => _loadingBloc.states.isLoading;
+  Stream<Result> get loadingState => _loadingBloc.states.result;
 
   /// The errors of all handled result streams.
   @protected
-  Stream<Exception> get errorState => _resultStreamExceptionsSubject;
+  Stream<ResultError> get errorState => _resultStreamExceptionsSubject;
 
-  final _resultStreamExceptionsSubject = BehaviorSubject<Exception>();
+  final _resultStreamExceptionsSubject = BehaviorSubject<ResultError>();
 
   final _compositeSubscription = CompositeSubscription();
 

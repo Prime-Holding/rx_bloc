@@ -23,7 +23,7 @@ abstract class CounterBlocStates {
   Stream<int> get count;
 
   /// Loading state
-  Stream<bool> get isLoading;
+  Stream<LoadingWithTag> get isLoading;
 
   /// Error messages
   Stream<String> get errors;
@@ -37,15 +37,18 @@ class CounterBloc extends $CounterBloc {
 
   final CounterRepository _repository;
 
+  static final tagIncrement = 'Increment';
+  static final tagDecrement = 'Decrement';
+
   /// Map increment and decrement events to `count` state
   @override
   Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
         // On increment.
-        _$incrementEvent
-            .flatMap((_) => _repository.increment().asResultStream()),
+        _$incrementEvent.flatMap(
+            (_) => _repository.increment().asResultStream(tag: tagIncrement)),
         // On decrement.
-        _$decrementEvent
-            .flatMap((_) => _repository.decrement().asResultStream()),
+        _$decrementEvent.flatMap(
+            (_) => _repository.decrement().asResultStream(tag: tagDecrement)),
       ])
           // This automatically handles the error and loading state.
           .setResultStateHandler(this)
@@ -56,8 +59,9 @@ class CounterBloc extends $CounterBloc {
 
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((Exception error) => error.toString());
+      errorState.map((result) => result.error.toString());
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<LoadingWithTag> _mapToIsLoadingState() =>
+      loadingState.isLoadingWithTag();
 }

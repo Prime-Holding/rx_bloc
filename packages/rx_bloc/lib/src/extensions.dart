@@ -19,6 +19,13 @@ extension ResultStream<T> on Stream<Result<T>> {
   /// Returns `true` if the [Result] is [ResultLoading],
   /// otherwise returns `false`
   Stream<bool> isLoading() => map((data) => data is ResultLoading);
+
+  /// Returns `true` if the [Result] is [ResultLoading],
+  /// otherwise returns `false`
+  Stream<LoadingWithTag> isLoadingWithTag() => map((data) => LoadingWithTag(
+        isLoading: data is ResultLoading,
+        tag: data.tag,
+      ));
 }
 
 /// Result utility extension methods.
@@ -28,12 +35,17 @@ extension AsResultStream<T> on Stream<T> {
   /// As soon as the [Stream] is being subscribed it emits
   /// [ResultLoading] immediately,
   /// as afterwards emits either [ResultError] or [ResultSuccess]
-  Stream<Result<T>> asResultStream() => map((data) => Result<T>.success(data))
-      .onErrorReturnWith(
-        (error) => Result<T>.error(
-            error is Exception ? error : Exception(error.toString())),
-      )
-      .startWith(Result<T>.loading());
+  Stream<Result<T>> asResultStream({
+    String tag = '',
+  }) =>
+      map((data) => Result<T>.success(data, tag: tag))
+          .onErrorReturnWith(
+            (error) => Result<T>.error(
+              error is Exception ? error : Exception(error.toString()),
+              tag: tag,
+            ),
+          )
+          .startWith(Result<T>.loading(tag: tag));
 }
 
 /// Future asResultStream utilities
@@ -43,7 +55,8 @@ extension FutureAsResultStream<T> on Future<T> {
   /// As soon as the [Stream] is being subscribed it emits
   /// [ResultLoading] immediately,
   /// as afterwards emits either [ResultError] or [ResultSuccess]
-  Stream<Result<T>> asResultStream() => asStream().asResultStream();
+  Stream<Result<T>> asResultStream({String tag = ''}) =>
+      asStream().asResultStream(tag: tag);
 }
 
 /// Stream loading and error handlers
@@ -60,8 +73,9 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
     bool shareReplay = true,
   }) =>
       doOnData(
-        (event) =>
-            bloc._loadingBloc.setLoading(isLoading: event is ResultLoading<T>),
+        (event) => bloc._loadingBloc.setResult(
+          result: event,
+        ),
       ).asSharedStream(shareReplay: shareReplay);
 
   /// Handle [ResultError] states from the stream.
@@ -77,7 +91,7 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
   }) =>
       doOnData((event) {
         if (event is ResultError<T>) {
-          bloc._resultStreamExceptionsSubject.sink.add(event.error);
+          bloc._resultStreamExceptionsSubject.sink.add(event);
         }
       }).asSharedStream(shareReplay: shareReplay);
 

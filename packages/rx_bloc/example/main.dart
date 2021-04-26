@@ -93,10 +93,10 @@ class CounterBloc extends $CounterBloc {
   Stream<String> _mapToErrorsState() =>
 
       /// Transform any exception into a readable string.
-      errorState.map((Exception error) => error.toString());
+      errorState.map((error) => error.error.toString());
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool> _mapToIsLoadingState() => loadingState.isLoading();
 }
 
 /// This will simulate a server with 100 milliseconds response time.
