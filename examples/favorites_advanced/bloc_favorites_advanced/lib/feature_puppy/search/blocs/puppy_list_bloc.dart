@@ -37,6 +37,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   final PuppiesRepository _repository;
   final _compositeSubscription = CompositeSubscription();
+  var lastSearchedQuery = '';
 
   @override
   Stream<PuppyListState> mapEventToState(
@@ -56,14 +57,11 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     }
   }
 
-  //TODO
   Stream<PuppyListState> _mapPuppiesFilteredToState(
       String query, PuppyListState state) async* {
     try {
-      // First yield PuppyListStatus.initial to display LoadingWidget
       yield state.copyWith(status: PuppyListStatus.initial);
-
-      // Then yield the resulting list
+      lastSearchedQuery = query;
       yield state.copyWith(
         searchedPuppies: await _repository.getPuppies(query: query),
         status: PuppyListStatus.success,
@@ -82,9 +80,10 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
       yield state.copyWith(status: loadStatus);
 
       yield state.copyWith(
-        searchedPuppies: await _repository.getPuppies(query: ''),
+        searchedPuppies: await _repository.getPuppies(query: lastSearchedQuery),
         status: PuppyListStatus.success,
       );
+      lastSearchedQuery = '';
     } on Exception {
       yield state.copyWith(status: PuppyListStatus.failure);
     }
