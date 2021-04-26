@@ -14,6 +14,8 @@ $ dart pub global activate rx_bloc_cli
 
 ### `$ rx_bloc_cli create`
 
+![Create command][create_command_gif_lnk]
+
 Create a new project at the given directory with lots of already set-up features out of the box. Cusomize your project with the following properties:
 
 |  parameter |defaults to | description |
@@ -68,13 +70,14 @@ Available commands:
 Run "rx_bloc_cli help <command>" for more information about a command.
 ```
 
-[null_safety_lnk]:[https://dart.dev/null-safety]
-[localization_lnk]:[https://flutter.dev/docs/development/accessibility-and-localization/internationalization]
-[cross_platform_support_lnk]:[https://flutter.dev/docs/development/tools/sdk/release-notes/supported-platforms]
-[flutter_flavors_lnk]:[https://flutter.dev/docs/deployment/flavors]
-[rx_bloc_lnk]:[https://pub.dev/packages/rx_bloc]
-[design_system_lnk]:[https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969]
-[testing_lnk]:[https://flutter.dev/docs/testing]
-[static_analysis_lnk]:[https://dart.dev/guides/language/analysis-options]
-[firebase_analytics_lnk]:[https://pub.dev/packages/firebase_analytics]
-[push_notifications_lnk]:[https://firebase.google.com/products/cloud-messaging/]
+[null_safety_lnk]: https://dart.dev/null-safety
+[localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
+[cross_platform_support_lnk]: https://flutter.dev/docs/development/tools/sdk/release-notes/supported-platforms
+[flutter_flavors_lnk]: https://flutter.dev/docs/deployment/flavors
+[rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
+[design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
+[testing_lnk]: https://flutter.dev/docs/testing
+[static_analysis_lnk]: https://dart.dev/guides/language/analysis-options
+[firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
+[push_notifications_lnk]: https://firebase.google.com/products/cloud-messaging/
+[create_command_gif_lnk]: https://user-images.githubusercontent.com/61236867/116064742-958ff480-a686-11eb-8996-599f3845b2e1.png
