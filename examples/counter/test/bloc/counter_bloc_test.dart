@@ -93,9 +93,9 @@ void main() {
       },
       state: (bloc) => bloc.states.isLoading,
       expect: <LoadingWithTag>[
-        LoadingWithTag(isLoading: false),
-        LoadingWithTag(isLoading: true, tag: CounterBloc.tagIncrement),
-        LoadingWithTag(isLoading: false, tag: CounterBloc.tagIncrement),
+        LoadingWithTag(loading: false),
+        LoadingWithTag(loading: true, tag: CounterBloc.tagIncrement),
+        LoadingWithTag(loading: false, tag: CounterBloc.tagIncrement),
       ],
     );
   });

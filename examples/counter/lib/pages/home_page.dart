@@ -105,7 +105,7 @@ class ActionButton extends StatelessWidget {
 
 extension AsyncSnapshotLoadingWithTag on AsyncSnapshot<LoadingWithTag> {
   /// The loading state extracted from the snapshot
-  bool get isLoading => hasData && data!.isLoading;
+  bool get isLoading => hasData && data!.loading;
 
   /// The color based on the isLoading state
   Color get buttonColor => isLoading ? Colors.blueGrey : Colors.blue;

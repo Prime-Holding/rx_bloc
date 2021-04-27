@@ -1,20 +1,20 @@
 /// Just a simple container of
-/// [LoadingWithTag.isLoading] and [LoadingWithTag.tag]
+/// [LoadingWithTag.loading] and [LoadingWithTag.tag]
 class LoadingWithTag {
   /// Default constructor
   LoadingWithTag({
-    required this.isLoading,
+    required this.loading,
     this.tag = '',
   });
 
   /// Is loading flag that is used in async operations
-  final bool isLoading;
+  final bool loading;
 
   /// A tag that holds the intention of a async result
   final String tag;
 
   @override
-  String toString() => '{isLoading: $isLoading, tag: $tag}';
+  String toString() => '{loading: $loading, tag: $tag}';
 
   @override
   bool operator ==(dynamic other) {
@@ -22,9 +22,9 @@ class LoadingWithTag {
       return false;
     }
 
-    return other.isLoading == isLoading && other.tag == tag;
+    return other.loading == loading && other.tag == tag;
   }
 
   @override
-  int get hashCode => tag.hashCode ^ isLoading.hashCode;
+  int get hashCode => tag.hashCode ^ loading.hashCode;
 }

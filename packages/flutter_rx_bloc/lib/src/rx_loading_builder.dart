@@ -27,7 +27,7 @@ class RxLoadingBuilder<B extends RxBlocTypeBase> extends StatelessWidget {
 
         return builder(
           buildContext,
-          snapshot.data!.isLoading,
+          snapshot.data!.loading,
           snapshot.data!.tag,
           block,
         );

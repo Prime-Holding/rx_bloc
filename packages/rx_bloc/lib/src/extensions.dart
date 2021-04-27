@@ -22,7 +22,7 @@ extension ResultStream<T> on Stream<Result<T>> {
 
   /// Returns a container []
   Stream<LoadingWithTag> isLoadingWithTag() => map((data) => LoadingWithTag(
-        isLoading: data is ResultLoading,
+        loading: data is ResultLoading,
         tag: data.tag,
       ));
 }
