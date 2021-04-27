@@ -42,10 +42,16 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
         clearBtnIcon: const Icon(Icons.close, color: Colors.white),
         backBtnIcon: const Icon(Icons.arrow_back, color: Colors.white),
         cursorColor: Colors.white,
-        onBackPressed: () => BlocProvider.of<PuppyListBloc>(context)
-            .add(PuppyListFilterEvent(query: '')),
-        onClearPressed: () => BlocProvider.of<PuppyListBloc>(context)
-            .add(PuppyListFilterEvent(query: '')),
+        onBackPressed: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+          return BlocProvider.of<PuppyListBloc>(context)
+              .add(PuppyListFilterEvent(query: ''));
+        },
+        onClearPressed: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+          return BlocProvider.of<PuppyListBloc>(context)
+              .add(PuppyListFilterEvent(query: ''));
+        },
         onChanged: (query) => BlocProvider.of<PuppyListBloc>(context)
             .add(PuppyListFilterEvent(query: query)),
       );
