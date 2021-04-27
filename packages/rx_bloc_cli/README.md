@@ -37,7 +37,7 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ✅ [Sound Null-Safety][null_safety_lnk] - With sound null safety support, protect your app from null-dereference exceptions at runtime
 
-✅ [RxBloc][rx_bloc_lnk] - Integrated RxBlocs that help separate business logic from the presentation of the data in a clean, scalable and testable manner
+✅ [rx_bloc][rx_bloc_lnk] - Integrated RxBlocs that help separate business logic from the presentation of the data in a clean, scalable and testable manner
 
 ✅ [Design system][design_system_lnk] - A single place where you can define all your colors, typography, assets and more. Your app's Light and Dark mode are already configured
 
