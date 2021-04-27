@@ -16,7 +16,7 @@ import '../../l10n/l10n.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../theme/design_system.dart';
-import 'environment_config.dart';
+import 'config/environment_config.dart';
 
 /// This widget is the root of your application.
 class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {

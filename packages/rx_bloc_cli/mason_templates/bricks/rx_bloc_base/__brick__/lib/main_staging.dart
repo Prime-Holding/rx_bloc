@@ -1,7 +1,7 @@
 {{#analytics}}import 'package:firebase_core/firebase_core.dart';{{/analytics}}
 import 'package:flutter/material.dart';
 
-import 'base/app/environment_config.dart';
+import 'base/app/config/environment_config.dart';
 import 'base/app/{{project_name}}.dart';
 import 'base/utils/helpers.dart';
 
