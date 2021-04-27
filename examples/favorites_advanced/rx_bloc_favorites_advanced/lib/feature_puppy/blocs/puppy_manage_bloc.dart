@@ -83,7 +83,7 @@ class PuppyManageBloc extends $PuppyManageBloc {
 
   @override
   Stream<String> get error =>
-      Rx.merge([errorState.whereError(), _favoritePuppyError])
+      Rx.merge([errorState.mapToException(), _favoritePuppyError])
           .mapToString()
           .share();
 

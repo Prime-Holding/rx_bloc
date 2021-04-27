@@ -1,5 +1,11 @@
 part of 'bloc/rx_bloc_base.dart';
 
+/// ResultErrorStream utility extension methods.
+extension ResultErrorStream<T> on Stream<ResultError<T>> {
+  /// Map the ResultError to the the exception that holds
+  Stream<Exception> mapToException() => map((error) => error.error);
+}
+
 /// ResultStream utility extension methods.
 extension ResultStream<T> on Stream<Result<T>> {
   /// Finds the [ResultSuccess] as unwraps the [ResultSuccess.data] from it.

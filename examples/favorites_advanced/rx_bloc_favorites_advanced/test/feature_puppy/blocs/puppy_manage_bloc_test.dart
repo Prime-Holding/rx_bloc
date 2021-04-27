@@ -3,6 +3,7 @@ import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
@@ -268,7 +269,7 @@ void main() {
         coordinatorMock,
         puppy: Stub.puppiesWithDetails.first,
       ),
-      state: (bloc) => MergeStream([
+      state: (bloc) => Rx.merge<dynamic>([
         bloc.states.error,
         bloc.states.updateComplete,
         bloc.states.isLoading,
