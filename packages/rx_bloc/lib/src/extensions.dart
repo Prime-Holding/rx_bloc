@@ -20,8 +20,7 @@ extension ResultStream<T> on Stream<Result<T>> {
   /// otherwise returns `false`
   Stream<bool> isLoading() => map((data) => data is ResultLoading);
 
-  /// Returns `true` if the [Result] is [ResultLoading],
-  /// otherwise returns `false`
+  /// Returns a container []
   Stream<LoadingWithTag> isLoadingWithTag() => map((data) => LoadingWithTag(
         isLoading: data is ResultLoading,
         tag: data.tag,

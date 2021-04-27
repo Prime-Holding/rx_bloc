@@ -44,28 +44,25 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons() =>
-      RxBlocBuilder<CounterBlocType, LoadingWithTag>(
+  Widget _buildActionButtons() => RxLoadingBuilder<CounterBlocType>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, state, bloc) => Row(
+        builder: (context, isLoading, tag, bloc) => Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ActionButton(
               tooltip: 'Increment',
               iconData: Icons.add,
               onPressed: bloc.events.increment,
-              disabled: state.isLoading,
-              loading: state.isLoading &&
-                  state.data!.tag == CounterBloc.tagIncrement,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagIncrement,
             ),
             const SizedBox(width: 16),
             ActionButton(
               tooltip: 'Decrement',
               iconData: Icons.remove,
               onPressed: bloc.events.decrement,
-              disabled: state.isLoading,
-              loading: state.isLoading &&
-                  state.data!.tag == CounterBloc.tagDecrement,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagDecrement,
             ),
           ],
         ),
