@@ -7,7 +7,7 @@ extension _DivideNumbersEventArgsMappers on Stream<_DivideNumbersEventArgs> {
       );
 }
 
-extension _ExceptionMappers on Stream<Exception> {
+extension _ExceptionMappers on Stream<ResultError<dynamic>> {
   Stream<String> toMessage() => map((exception) {
         String msg = exception.toString();
         if (msg.contains('Exception:')) msg = msg.replaceAll('Exception:', '');

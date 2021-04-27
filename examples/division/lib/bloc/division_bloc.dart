@@ -39,7 +39,7 @@ class DivisionBloc extends $DivisionBloc {
       .whereSuccess();
 
   @override
-  Stream<bool> get isLoading => loadingState;
+  Stream<bool> get isLoading => loadingState.isLoading();
 
   @override
   Stream<String> get errors => errorState.toMessage();

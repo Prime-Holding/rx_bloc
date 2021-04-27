@@ -42,11 +42,13 @@ class NewsBloc extends $NewsBloc {
 
   /// Presentable error messages
   @override
-  Stream<String> get errors => errorState.map((exception) => exception.message);
+  Stream<String> get errors => errorState.whereError().map(
+        (exception) => exception.message,
+      );
 
   /// Loading state caused by any registered request
   @override
-  Stream<bool> get isLoading => loadingState;
+  Stream<bool> get isLoading => loadingState.isLoading();
 }
 
 extension _ExceptionMessage on Exception {
