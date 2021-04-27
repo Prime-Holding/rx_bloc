@@ -35,3 +35,14 @@ class PuppyListFilterEvent extends PuppyListEvent {
   @override
   List<Object?> get props => [query];
 }
+
+class PuppyListFilterUpdatedQueryEvent extends PuppyListEvent {
+  PuppyListFilterUpdatedQueryEvent({
+    required this.query,
+  });
+
+  final String query;
+
+  @override
+  List<Object?> get props => [query];
+}
