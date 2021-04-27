@@ -63,7 +63,7 @@ void main() {
       // action
       await controller.filterPuppies('est');
       // assert
-      var puppies = controller.searchedPuppies();
+      final puppies = controller.searchedPuppies();
       expect(controller.status.isSuccess, true);
       expect(puppies.length, 1);
       expect(puppies.first, Stub.puppyTest);
