@@ -26,21 +26,25 @@ void main() {
     Get.put<PuppiesRepository>(mockRepo);
     when(mockRepo.getPuppies(query: ''))
         .thenAnswer((_) async => Stub.puppies123Test);
-    controller = Get.put(
-        PuppyListController(Get.find<PuppiesRepository>(), mediatorController));
+    controller = Get.put(PuppyListController(mockRepo, mediatorController));
   });
 
   tearDown(() {
-    Get.delete<MockPuppiesRepository>();
+    Get..delete<MockPuppiesRepository>()
+      ..delete<PuppyListController>();
   });
 
   group('PuppyListController - ', () {
-    test('initialization', () async {
+    test('successful initialization', () async {
       // arrange
       // action
       final puppies = controller.searchedPuppies();
       // assert
       expect(puppies.length, 4);
+    });
+
+    test('initialization when Repository throws', () async {
+      // arrange
       reset(mockRepo);
       when(mockRepo.getPuppies(query: ''))
           .thenAnswer((_) async => throw Stub.testErr);
@@ -51,30 +55,34 @@ void main() {
       expect(controller.status.isError, true);
     });
 
-    // test('filter puppies returns list of puppies', () async {
-    //   // arrange
-    //   reset(mockRepo);
-    //   when(mockRepo.getPuppies(query: 'est'))
-    //       .thenAnswer((_) async => Stub.puppiesTest);
-    //   // action
-    //   controller.filterPuppies('est');
-    //   // assert
-    //   final puppies = controller.searchedPuppies();
-    //   expect(controller.status.isSuccess, true);
-    //   expect(puppies.length, 1);
-    //   expect(puppies.first, Stub.puppyTest);
-    //   // arrange
-    //   reset(mockRepo);
-    //   when(mockRepo.getPuppies(query: 'dada'))
-    //       .thenAnswer((_) async => throw Stub.testErr);
-    //   // action
-    //   controller.filterPuppies('dada');
-    //   // assert
-    //   final puppies = controller.searchedPuppies();
-    //   expect(controller.status.isEmpty, true);
-    // });
+    test('filter puppies returns list of puppies', () async {
+      // arrange
+      reset(mockRepo);
+      when(mockRepo.getPuppies(query: 'est'))
+          .thenAnswer((_) async => Stub.puppiesTest);
+      // action
+      await controller.filterPuppies('est');
+      // assert
+      var puppies = controller.searchedPuppies();
+      expect(controller.status.isSuccess, true);
+      expect(puppies.length, 1);
+      expect(puppies.first, Stub.puppyTest);
+    });
 
-    test('onReload', () async {
+    test('filter puppies returns empty list when Repository throws', () async {
+      // arrange
+      reset(mockRepo);
+      when(mockRepo.getPuppies(query: 'dada'))
+          .thenAnswer((_) async => throw Stub.testErr);
+      // action
+      await controller.filterPuppies('dada');
+      // assert
+      final puppies = controller.searchedPuppies();
+      expect(puppies.length, 0);
+      expect(controller.status.isEmpty, true);
+    });
+
+    test('onReload clear extra fetched details', () async {
       //arrange
       final initValue = mediatorController.toClearFetchedExtraDetails.value;
       //action
@@ -97,7 +105,7 @@ void main() {
       expect(hasExtraDetails, isTrue);
     });
 
-    test('onPuppyUpdated', () async {
+    test('onPuppyUpdated - update favorite status', () async {
       //arrange
       final puppyToUpdate = Stub.puppyTestUpdated;
       //action

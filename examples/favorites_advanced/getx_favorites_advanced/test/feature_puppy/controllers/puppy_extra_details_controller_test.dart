@@ -20,6 +20,7 @@ void main() {
   late PuppyExtraDetailsController controller;
 
   setUp(() {
+    Get.testMode = true;
     mockRepo = MockPuppiesRepository();
     mediatorController = Get.put(MediatorController());
     controller =
@@ -27,17 +28,20 @@ void main() {
   });
 
   tearDown(() {
-    Get.delete<MockPuppiesRepository>();
+    Get..delete<MockPuppiesRepository>()
+      ..delete<PuppyExtraDetailsController>();
   });
 
   group('PuppyExtraDetailsController - ', () {
-    test('initialization', () {
+    test('initialization', () async {
       //arrange
-      final puppiesCount = controller.lastFetchedPuppies.length;
       //action
+      await controller.onInit();
       //assert
+      final puppiesCount = controller.lastFetchedPuppies.length;
       expect(puppiesCount, 0);
     });
+
     test('fetchExtraDetails', () async {
       //arrange
       when(mockRepo.fetchFullEntities(['1', '2'])).thenAnswer(
@@ -50,6 +54,21 @@ void main() {
       final updatedPuppies = controller.lastFetchedPuppies.length;
       expect(updatedPuppies, 2);
     });
+
+    test('does not fetch details when Repository throws Exception', () async {
+      //arrange
+      when(mockRepo.fetchFullEntities(['1', '2']))
+          .thenAnswer((_) async => throw Stub.testErr);
+      //action
+      await controller.fetchExtraDetails(Stub.puppy1);
+      await controller.fetchExtraDetails(Stub.puppy2);
+      await Future.delayed(const Duration(milliseconds: 110));
+      //assert
+      final hasPuppyExtraDetail =
+          controller.lastFetchedPuppies.first.hasExtraDetails();
+      expect(hasPuppyExtraDetail, isFalse);
+    });
+
     test('clearExtraFetchedDetails', () async {
       //arrange
       when(mockRepo.fetchFullEntities(['1', '2']))

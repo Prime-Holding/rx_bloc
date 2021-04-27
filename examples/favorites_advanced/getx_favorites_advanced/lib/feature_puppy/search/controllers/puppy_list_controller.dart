@@ -72,13 +72,14 @@ class PuppyListController extends GetxController
       _puppies.assignAll(puppies);
       change(_puppies, status: RxStatus.success());
     } catch (e) {
+      _puppies.clear();
       change(_puppies, status: RxStatus.error(e.toString().substring(10)));
       print(e.toString());
     }
   }
 
-  void filterPuppies(String keyString){
-    _loadPuppies(keyString);
+  Future<void> filterPuppies(String keyString)async {
+    await _loadPuppies(keyString);
     filteredBy(keyString);
     _mediatorController.clearFetchedExtraDetails();
   }
