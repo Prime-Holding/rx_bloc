@@ -11,9 +11,7 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
   final controller = Get.find<PuppyListController>();
 
   AppBarTextField _searchAppBar() => AppBarTextField(
-        title: controller.filteredBy.value == ''
-      ?const Text('Search for Puppies')
-    : Text('Puppies filtered by \"${controller.filteredBy}\"...'),
+        title: const Text('Search for Puppies'),
         style: const TextStyle(color: Colors.white),
         autofocus: false,
         decoration: const InputDecoration(
