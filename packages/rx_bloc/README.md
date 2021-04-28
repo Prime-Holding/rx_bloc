@@ -86,7 +86,7 @@ Here is where the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator
 ```dart
 dev_dependencies:
   build_runner:
-  rx_bloc_generator:^3.0.0
+  rx_bloc_generator:
 ```
 
 Once added to the `pubspec.yaml`, run the flutter command for getting the newly added dependencies `flutter pub get`, and then just start the generator by execuing this command `flutter packages pub run build_runner watch --delete-conflicting-outputs`.
