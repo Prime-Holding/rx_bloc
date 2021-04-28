@@ -18,7 +18,7 @@ class PuppyListController extends GetxController
   late Worker updateFetchedDetailsWorker;
   late Worker updateFavoriteStatusWorker;
   late Worker searchMatchingChecker;
-
+  late Worker filteringDebounce;
 
   @override
   Future<void> onInit() async {
@@ -31,17 +31,26 @@ class PuppyListController extends GetxController
     updateFavoriteStatusWorker = ever(_mediatorController.puppiesToUpdate, (_) {
       updatePuppiesWith(_mediatorController.puppiesToUpdate.toList());
     });
-    searchMatchingChecker = ever(_puppies, (_) => _puppies.isEmpty
-    ? change(_puppies, status: RxStatus.empty())
-    : change(_puppies, status: RxStatus.success()));
+    searchMatchingChecker = ever(
+        _puppies,
+        (_) => _puppies.isEmpty
+            ? change(_puppies, status: RxStatus.empty())
+            : change(_puppies, status: RxStatus.success()));
+    filteringDebounce = debounce<String>(
+        filteredBy, (filterString) => filterPuppies(filterString),
+        time: const Duration(milliseconds: 500));
     super.onInit();
   }
 
   List<Puppy> searchedPuppies() {
-    if(_puppies.isEmpty){
+    if (_puppies.isEmpty) {
       change(_puppies, status: RxStatus.empty());
     }
     return [..._puppies];
+  }
+
+  void setFilter(String keyString) {
+    filteredBy(keyString);
   }
 
   Future<void> onRefresh() async {
@@ -51,7 +60,7 @@ class PuppyListController extends GetxController
 
   Future<void> onReload() async {
     change(_puppies, status: RxStatus.loading());
-   await onRefresh();
+    await onRefresh();
   }
 
   void updatePuppiesWith(List<Puppy> puppiesToUpdate) {
@@ -78,7 +87,8 @@ class PuppyListController extends GetxController
     }
   }
 
-  Future<void> filterPuppies(String keyString)async {
+  Future<void> filterPuppies(String keyString) async {
+    change(_puppies, status: RxStatus.loading());
     await _loadPuppies(keyString);
     filteredBy(keyString);
     _mediatorController.clearFetchedExtraDetails();
@@ -89,6 +99,7 @@ class PuppyListController extends GetxController
     updateFetchedDetailsWorker.dispose();
     updateFavoriteStatusWorker.dispose();
     searchMatchingChecker.dispose();
+    filteringDebounce.dispose();
     super.onClose();
   }
 }

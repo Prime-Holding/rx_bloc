@@ -31,11 +31,11 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
         cursorColor: Colors.white,
         onBackPressed: () => _clearSearching(unfocus: true),
         onClearPressed: () => _clearSearching(unfocus: false),
-        onChanged: (text) => controller.filterPuppies(text),
+        onChanged: (text) => controller.setFilter(text),
       );
 
   void _clearSearching({required bool unfocus}){
-    controller.filterPuppies('');
+    controller.setFilter('');
     if(unfocus){
       Get.focusScope?.unfocus();
     }

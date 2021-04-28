@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:favorites_advanced_base/repositories.dart';
+import 'package:favorites_advanced_base/models.dart';
 
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_extra_details_controller.dart';
@@ -53,6 +54,9 @@ void main() {
       //assert
       final updatedPuppies = controller.lastFetchedPuppies.length;
       expect(updatedPuppies, 2);
+      verifyNever(mockRepo.fetchFullEntities([Stub.puppy1.id]));
+      verifyNever(mockRepo.fetchFullEntities([Stub.puppy2.id]));
+      verify(mockRepo.fetchFullEntities(Stub.puppies12.ids)).called(1);
     });
 
     test('does not fetch details when Repository throws Exception', () async {

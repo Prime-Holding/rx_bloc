@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mockito/annotations.dart';
@@ -67,6 +69,41 @@ void main() {
       expect(controller.status.isSuccess, true);
       expect(puppies.length, 1);
       expect(puppies.first, Stub.puppyTest);
+    });
+
+    test('filter puppies set filteredBy property', () {
+      // arrange
+      controller.filteredBy('');
+      reset(mockRepo);
+      when(mockRepo.getPuppies(query: 'est'))
+          .thenAnswer((_) async => Stub.puppiesTest);
+      // action
+      controller.setFilter('est');
+      // assert
+      expect(controller.filteredBy.value, 'est');
+    });
+
+    test('filter puppies work with debounce', () async {
+      // arrange
+      reset(mockRepo);
+      when(mockRepo.getPuppies(query: 'e'))
+          .thenAnswer((_) async => Stub.puppiesTest);
+      when(mockRepo.getPuppies(query: 'es'))
+          .thenAnswer((_) async => Stub.puppiesTest);
+      when(mockRepo.getPuppies(query: 'est'))
+          .thenAnswer((_) async => Stub.puppiesTest);
+      // action
+      scheduleMicrotask(() async {
+        controller..setFilter('e')
+        ..setFilter('es')
+        ..setFilter('est');
+      },
+      );
+      await Future.delayed(const Duration(milliseconds: 1000));
+      // assert
+      verifyNever(mockRepo.getPuppies(query: 'e'));
+      verifyNever(mockRepo.getPuppies(query: 'es'));
+      verify(mockRepo.getPuppies(query: 'est')).called(1);
     });
 
     test('filter puppies returns empty list when Repository throws', () async {
