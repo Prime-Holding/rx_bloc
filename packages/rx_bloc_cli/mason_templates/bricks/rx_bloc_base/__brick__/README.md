@@ -29,6 +29,9 @@ Each feature represents a separate flow in the app. They can be composed of one 
 
 The logic of each page should be placed into its own [BLoC][rx_bloc_lnk]. This is desired especially if the page has to be a **Stateful Widget**. The BLoC is placed inside the `blocs` directory. In order for the BLoC to be more readable, its implementation details can be offloaded to its own extensions file ( `[bloc_name]_extensions.dart`, placed inside the same directory) or one or more usecases.
 
+## Architecture
+<img src="docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
+
 ### Navigation
 
 Navigation throughout the app is handled by [Auto Route][autoroute_lnk].
