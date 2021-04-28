@@ -106,3 +106,7 @@ coverage/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+
+# Generated examples
+packages/rx_bloc_cli/example/test_app

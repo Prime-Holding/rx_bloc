@@ -1,3 +1,14 @@
+## [3.0.0] - April 28, 2021
+* Added an optional param `tag` to (Future/Stream).asResultStream()
+* Added utility (extension) methods
+  * `Stream<ResultError<T>>`.`mapToException()`
+  * `Stream<Result<T>>`.`isLoadingWithTag()`
+* **Breaking changes**
+  * Added possibility of getting the tag from `errorState` and `loadingState`
+    * The type of `RxBlocBase.errorState` is now `ResultError` instead of `Exception`
+    * The type of `RxBlocBase.loadingState` is now `ResultLoading` instead of `bool`
+
+
 ## [2.0.2] - April 19, 2021
 * `Result` equatable improvements
 * Stability improvements

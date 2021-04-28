@@ -1,3 +1,8 @@
+## [3.0.0] - April 28, 2021
+* Added RxLoadingBuilder
+* Upgraded dependencies:
+  * `rx_bloc` *3.0.0*
+
 ## [2.0.0] - March 10, 2021
 * Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
 

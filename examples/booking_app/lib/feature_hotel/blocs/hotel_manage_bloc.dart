@@ -45,7 +45,7 @@ class HotelManageBloc extends $HotelManageBloc {
 
   @override
   Stream<String> get error =>
-      Rx.merge([errorState.whereError(), _favoriteHotelError])
+      Rx.merge([errorState.mapToException(), _favoriteHotelError])
           .mapToString()
           .share();
 

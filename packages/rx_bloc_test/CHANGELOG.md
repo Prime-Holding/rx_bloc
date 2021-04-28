@@ -1,3 +1,7 @@
+## [2.1.0] - April 28, 2021
+* Upgraded dependencies:
+  * `rx_bloc` *3.0.0*
+
 ## [2.0.1] - April 19, 2021
 * Stability improvements
 * Dependencies clean up
