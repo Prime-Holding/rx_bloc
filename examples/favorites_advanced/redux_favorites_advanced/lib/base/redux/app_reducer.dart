@@ -1,4 +1,5 @@
 import '../../feature_home/redux/reducers.dart';
+import '../../feature_puppy/favorites/redux/reducers.dart';
 import '../../feature_puppy/search/redux/reducers.dart';
 import '../models/app_state.dart';
 import 'actions.dart';
@@ -6,6 +7,8 @@ import 'actions.dart';
 AppState appReducer(AppState state, dynamic action) => state.copyWith(
       navigationState: navStateReducer(state.navigationState, action),
       puppyListState: puppyListStateReducer(state.puppyListState, action),
+      favoriteListState:
+          favoriteListStateReducer(state.favoriteListState, action),
       favoriteCount: favoriteCountReducer(state.favoriteCount, action),
       error: errorReducer(state.error, action),
     );

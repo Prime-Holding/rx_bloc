@@ -146,6 +146,8 @@ void main() {
           AppStateStub.withPuppy1Favorited,
           AppStateStub.withPuppy1Favorited,
           AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1FavoritedAndListed,
         ]),
       );
     });
@@ -164,6 +166,11 @@ void main() {
         emitsInOrder([
           AppStateStub.initialState,
           AppStateStub.withPuppy1Favorited,
+          AppStateStub.withPuppy1Favorited,
+          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          //exception
+          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
           AppStateStub.withPuppy1,
           AppStateStub.withPuppy1.copyWith(
             error: Stub.testErr.toString(),
@@ -172,7 +179,7 @@ void main() {
       );
     });
 
-    test('Unfavorite puppy', () {
+    test('Unfavorite puppy success', () {
       when(repository.favoritePuppy(Stub.puppy1, isFavorite: true))
           .thenAnswer((_) async => Stub.puppy1.copyWith(isFavorite: true));
 
@@ -195,9 +202,53 @@ void main() {
           AppStateStub.withPuppy1Favorited,
           AppStateStub.withPuppy1Favorited,
           AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1FavoritedAndListed,
+          AppStateStub.withPuppy1Listed,
           AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
           AppStateStub.withPuppy1,
+          AppStateStub.withPuppy1,
+          AppStateStub.withPuppy1,
+        ]),
+      );
+    });
+
+    test('Unfavorite puppy error', () {
+      when(repository.favoritePuppy(Stub.puppy1, isFavorite: true))
+          .thenAnswer((_) async => Stub.puppy1.copyWith(isFavorite: true));
+
+      when(repository.favoritePuppy(Stub.puppy1, isFavorite: false))
+          .thenAnswer((_) async => throw Stub.testErr);
+
+      scheduleMicrotask(() {
+        store
+          ..dispatch(
+              PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: true))
+          ..dispatch(
+              PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: false));
+      });
+
+      expect(
+        store.onChange,
+        emitsInOrder([
+          AppStateStub.initialState,
+          AppStateStub.initialState,
+          AppStateStub.withPuppy1Favorited,
+          AppStateStub.withPuppy1Favorited,
+          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1FavoritedAndListed,
+          AppStateStub.withPuppy1Listed,
+          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1,
+          //exception
+          AppStateStub.withPuppy1,
+          AppStateStub.withPuppy1,
+          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          AppStateStub.withPuppy1.copyWith(
+            error: Stub.testErr.toString(),
+            favoriteCount: 1,
+          ),
         ]),
       );
     });

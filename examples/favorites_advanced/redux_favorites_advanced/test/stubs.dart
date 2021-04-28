@@ -1,6 +1,7 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_home/models/navigation_state.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/favorites/models/favorite_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
 
 class Stub {
@@ -143,6 +144,9 @@ class AppStateStub {
       isError: false,
       puppies: [],
     ),
+    favoriteListState: FavoriteListState(
+      puppies: [],
+    ),
     favoriteCount: 0,
     error: '',
   );
@@ -157,6 +161,21 @@ class AppStateStub {
     puppyListState: AppStateStub.initialState.puppyListState.copyWith(
       puppies: [Stub.puppy1.copyWith(isFavorite: true)],
     ),
+  );
+
+  static final withPuppy1Listed = AppStateStub.withPuppy1.copyWith(
+    favoriteListState: FavoriteListState(
+      puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+    ),
+    favoriteCount: 1,
+  );
+
+  static final withPuppy1FavoritedAndListed =
+      AppStateStub.withPuppy1Favorited.copyWith(
+    favoriteListState: FavoriteListState(
+      puppies: [Stub.puppy1.copyWith(isFavorite: true)],
+    ),
+    favoriteCount: 1,
   );
 }
 
