@@ -1,4 +1,5 @@
 import 'package:appbar_textfield/appbar_textfield.dart';
+import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,12 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
         clearBtnIcon: const Icon(Icons.close, color: Colors.white),
         backBtnIcon: const Icon(Icons.arrow_back, color: Colors.white),
         cursorColor: Colors.white,
+        onBackPressed: () => BlocProvider.of<PuppyListBloc>(context)
+            .add(PuppyListFilterEvent(query: '')),
+        onClearPressed: () => BlocProvider.of<PuppyListBloc>(context)
+            .add(PuppyListFilterEvent(query: '')),
+        onChanged: (query) => BlocProvider.of<PuppyListBloc>(context)
+            .add(PuppyListFilterEvent(query: query)),
       );
 
   @override
