@@ -20,6 +20,7 @@ void main() {
   late FavoritePuppiesController controller;
 
   setUp(() {
+    Get.testMode = true;
     mockRepo = MockPuppiesRepository();
     mediatorController = Get.put(MediatorController());
     when(mockRepo.getFavoritePuppies())
@@ -29,12 +30,29 @@ void main() {
   });
 
   tearDown(() {
-    Get.delete<MockPuppiesRepository>();
+    Get..delete<MockPuppiesRepository>()
+      ..delete<FavoritePuppiesController>();
   });
 
   group('FavoritePuppiesController - ', () {
+    test('successful initialization with empty list', () async {
+      //assert
+      expect(controller.count, 0);
+    });
 
-    test('initialization', () async {
+    test('successful initialization with full list', () async {
+      //arrange
+      reset(mockRepo);
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.puppiesTestUpdated);
+      // action
+      await controller.onReload();
+      final puppiesCount = controller.favoritePuppiesList.length;
+      // assert
+      expect(puppiesCount, 1);
+    });
+
+    test('initialization when Repository throws', () async {
       //assert
       expect(controller.count, 0);
       //arrange
@@ -45,15 +63,6 @@ void main() {
       await controller.onReload();
       //assert
       expect(controller.status.isError, true);
-      //arrange
-      reset(mockRepo);
-      when(mockRepo.getFavoritePuppies())
-          .thenAnswer((_) async => Stub.puppiesTestUpdated);
-      // action
-      await controller.onReload();
-      final puppiesCount = controller.favoritePuppiesList.length;
-      // assert
-      expect(puppiesCount, 1);
     });
 
     test('updateFavoritePuppies', () async {
@@ -66,24 +75,30 @@ void main() {
       final puppy = controller.favoritePuppiesList.first;
       expect(puppy.isFavorite, isTrue);
       expect(puppy, Stub.puppyTestUpdated);
-      //arrange
-      final updatedPuppy = Stub.puppyTest;
-      //action
-      mediatorController.puppyUpdated(updatedPuppy);
-      final count = controller.count;
-      //assert
-      expect(count, 0);
     });
-    test('updateFavoritePuppies - unfavorite puppy', () async {
-      //arrange
+
+    test('updateFavoritePuppies - favorite puppy', () async {
       final updatedPuppy = Stub.puppyTestUpdated;
       //action
+      await controller.onReload();
       mediatorController.puppyUpdated(updatedPuppy);
       final count = controller.count;
       //assert
       expect(count, 1);
-      final puppy = controller.favoritePuppiesList.first;
-      expect(puppy.isFavorite, isTrue);
+    });
+
+    test('updateFavoritePuppies - unfavorite puppy', () async {
+      //arrange
+      reset(mockRepo);
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.puppiesTestUpdated);
+      final unfavoritePuppy = Stub.puppyTest;
+      //action
+      await controller.onReload();
+      mediatorController.puppyUpdated(unfavoritePuppy);
+      final count = controller.count;
+      //assert
+      expect(count, 0);
     });
   });
 }

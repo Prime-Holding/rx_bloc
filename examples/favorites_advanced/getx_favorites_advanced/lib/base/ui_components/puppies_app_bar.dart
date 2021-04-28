@@ -4,8 +4,12 @@ import 'package:appbar_textfield/appbar_textfield.dart';
 
 import 'package:favorites_advanced_base/models.dart';
 import 'package:getx_favorites_advanced/feature_home/controllers/navbar_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/search/controllers/puppy_list_controller.dart';
 
 class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
+
+  final controller = Get.find<PuppyListController>();
+
   AppBarTextField _searchAppBar() => AppBarTextField(
         title: const Text('Search for Puppies'),
         style: const TextStyle(color: Colors.white),
@@ -25,10 +29,17 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Colors.white,
         ),
         cursorColor: Colors.white,
-        onBackPressed: () {},
-        onClearPressed: () {},
-        onChanged: (_) {},
+        onBackPressed: () => _clearSearching(unfocus: true),
+        onClearPressed: () => _clearSearching(unfocus: false),
+        onChanged: (text) => controller.setFilter(text),
       );
+
+  void _clearSearching({required bool unfocus}){
+    controller.setFilter('');
+    if(unfocus){
+      Get.focusScope?.unfocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Obx(

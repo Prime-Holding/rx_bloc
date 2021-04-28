@@ -34,7 +34,7 @@ class PuppyExtraDetailsController extends GetxController {
         print(error.toString());
       }
     }, time: const Duration(milliseconds: 100));
-    ever(_mediatorController.toClearFetchedExtraDetails,
+    _clearWorker = ever(_mediatorController.toClearFetchedExtraDetails,
             (_) => _lastFetchedPuppies.clear());
     super.onInit();
   }
