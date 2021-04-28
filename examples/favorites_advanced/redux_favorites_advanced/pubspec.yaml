@@ -31,6 +31,7 @@ dependencies:
   flutter_redux: ^0.8.2
   redux_epics: ^0.15.0
   rxdart: ^0.26.0
+  clean_coverage: ^0.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
