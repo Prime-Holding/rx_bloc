@@ -20,6 +20,7 @@ void main() {
       fetchPuppiesEpic(repository),
       fetchExtraDetailsEpic(repository),
       puppyFavoriteEpic(repository),
+      searchQueryEpic(repository),
     ]),
   );
 

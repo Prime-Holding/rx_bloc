@@ -49,16 +49,11 @@ void main() {
         store.dispatch(PuppiesFetchRequestedAction());
       });
 
-      const state = AppStateStub.initialState;
       expect(
         store.onChange,
         emitsInOrder([
-          state,
-          state.copyWith(
-            puppyListState: state.puppyListState.copyWith(
-              puppies: Stub.puppies123,
-            ),
-          ),
+          AppStateStub.initialState,
+          AppStateStub.withPuppies123,
         ]),
       );
     });
@@ -252,5 +247,24 @@ void main() {
         ]),
       );
     });
+
+    // test('Search', () {
+    //   when(repository.getPuppies()).thenAnswer((_) async => Stub.puppies123);
+    //
+    //   when(repository.getPuppies(query: '1'))
+    //       .thenAnswer((_) async => [Stub.puppy1]);
+    //
+    //   scheduleMicrotask(() {
+    //     store.dispatch(SearchAction(query: '1'));
+    //   });
+    //
+    //   expect(
+    //     store.onChange,
+    //     emitsInOrder([
+    //       AppStateStub.initialState,
+    //       AppStateStub.withPuppies123,
+    //     ]),
+    //   );
+    // });
   });
 }

@@ -142,6 +142,7 @@ class AppStateStub {
     puppyListState: PuppyListState(
       isLoading: false,
       isError: false,
+      searchQuery: '',
       puppies: [],
     ),
     favoriteListState: FavoriteListState(
@@ -149,6 +150,11 @@ class AppStateStub {
     ),
     favoriteCount: 0,
     error: '',
+  );
+
+  static final withPuppies123 = AppStateStub.initialState.copyWith(
+    puppyListState: AppStateStub.initialState.puppyListState
+        .copyWith(puppies: Stub.puppies123),
   );
 
   static final withPuppy1 = AppStateStub.initialState.copyWith(

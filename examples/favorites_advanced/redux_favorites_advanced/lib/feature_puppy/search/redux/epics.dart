@@ -15,7 +15,8 @@ Epic<AppState> fetchPuppiesEpic(PuppiesRepository repository) =>
             .whereType<PuppiesFetchRequestedAction>()
             .switchMap((action) async* {
           try {
-            final puppies = await repository.getPuppies();
+            final puppies =
+                await repository.getPuppies(query: action.query ?? '');
             yield PuppiesFetchSucceededAction(puppies: puppies);
           } catch (_) {
             yield PuppiesFetchFailedAction();
@@ -65,3 +66,13 @@ Epic<AppState> puppyFavoriteEpic(PuppiesRepository repository) => (actions,
         yield ErrorAction(error: error.toString());
       }
     });
+
+Epic<AppState> searchQueryEpic(PuppiesRepository repository) =>
+    (actions, store) => actions
+            .whereType<SearchAction>()
+            .debounceTime(const Duration(milliseconds: 500))
+            .switchMap((action) async* {
+          yield PuppiesFetchLoadingAction();
+          yield SaveSearchQueryAction(query: action.query);
+          yield PuppiesFetchRequestedAction(query: action.query);
+        });
