@@ -1,0 +1,7 @@
+name: rx_bloc_base
+description: Rx Bloc Core Flutter App
+vars:
+  - project_name
+  - organization_name
+  - domain_name
+  - analytics
