@@ -27,9 +27,9 @@ dev_dependencies:
   clean_coverage: ^0.0.3
 
 
-#dependency_overrides:
-#  rx_bloc:
-#    path: ../rx_bloc
+dependency_overrides:
+  rx_bloc:
+    path: ../rx_bloc
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
