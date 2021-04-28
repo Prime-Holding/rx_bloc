@@ -19,24 +19,36 @@ void main() {
   late MediatorController mediatorController;
   late PuppyListController controller;
 
-  setUp(() {
+  setUp(() async {
+    Get.testMode = true;
     mockRepo = MockPuppiesRepository();
     mediatorController = Get.put(MediatorController());
+    Get.put<PuppiesRepository>(mockRepo);
+    when(mockRepo.getPuppies(query: ''))
+        .thenAnswer((_) async => Stub.puppies123Test);
+    controller = Get.put(
+        PuppyListController(Get.find<PuppiesRepository>(), mediatorController));
+  });
+
+  tearDown(() {
+    Get.delete<MockPuppiesRepository>();
   });
 
   group('PuppyListController - ', () {
-    setUp(() async {
-      when(mockRepo.getPuppies(query: ''))
-          .thenAnswer((_) async => Stub.puppies123Test);
-      controller = Get.put(PuppyListController(mockRepo, mediatorController));
-    });
-
-    test('full list of puppies', () {
+    test('initialization', () async {
       // arrange
       // action
       final puppies = controller.searchedPuppies();
       // assert
       expect(puppies.length, 4);
+      reset(mockRepo);
+      when(mockRepo.getPuppies(query: ''))
+          .thenAnswer((_) async => throw Stub.testErr);
+      // action
+      await controller.onReload();
+      // assert
+      verify(controller.onRefresh()).called(1);
+      expect(controller.status.isError, true);
     });
 
     test('onReload', () async {
@@ -75,25 +87,4 @@ void main() {
       expect(isFavorite, isTrue);
     });
   });
-
-  // group('PuppyListController - repo exception', () {
-  //   setUp(() {
-  //     reset(mockRepo = MockPuppiesRepository());
-  //     when(mockRepo.getPuppies(query: ''))
-  //         .thenAnswer((_) async => Stub.emptyPuppyList);
-  //     controller =
-  //     Get.put(PuppyListController(mockRepo, mediatorController));
-  //   });
-  //
-  //   test('empty list when no internet connection', () async {
-  //     // arrange
-  //     when(mockRepo.getPuppies(query: ''))
-  //         .thenAnswer((_) async => Stub.emptyPuppyList);
-  //     // action
-  //     await controller.onInit();
-  //     final newPuppies = controller.searchedPuppies();
-  //     // assert
-  //     expect(newPuppies.length, 0);
-  //   });
-  // });
 }

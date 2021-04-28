@@ -23,6 +23,9 @@ dev_dependencies:
   build_runner: ^1.11.1
   test: ^1.16.0
   source_gen_test: any
+  coverage: ^1.0.0
+  clean_coverage: ^0.0.3
+
 
 #dependency_overrides:
 #  rx_bloc:

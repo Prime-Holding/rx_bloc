@@ -25,6 +25,11 @@ void main() {
     controller =
         Get.put(PuppyExtraDetailsController(mockRepo, mediatorController));
   });
+
+  tearDown(() {
+    Get.delete<MockPuppiesRepository>();
+  });
+
   group('PuppyExtraDetailsController - ', () {
     test('initialization', () {
       //arrange
@@ -44,10 +49,6 @@ void main() {
       //assert
       final updatedPuppies = controller.lastFetchedPuppies.length;
       expect(updatedPuppies, 2);
-      // expect(controller.lastFetchedPuppies,
-      // Stub.puppies1And2WithExtraDetails);
-      // expect(mediatorController.lastFetchedPuppies,
-      // Stub.puppies1And2WithExtraDetails);
     });
     test('clearExtraFetchedDetails', () async {
       //arrange

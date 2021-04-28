@@ -27,11 +27,10 @@ dependencies:
   appbar_textfield: ^2.0.0
   badges: ^2.0.0-nullsafety.1
   curved_navigation_bar: ^0.4.0-nullsafety.0
-  get: ^4.1.1
+  get: ^4.1.4
   rxdart: ^0.26.0
   favorites_advanced_base:
-
-
+  clean_coverage: ^0.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -50,10 +49,14 @@ dependency_overrides:
     git:
       url: https://github.com/StanevPrime/appbar_textfield.git
       ref: null-safety
-  animated_stream_list:
+  badges:
     git:
-      url: https://github.com/nilsreichardt/animated-stream-list.git
-      ref: migrate-null-safety
+      url: https://github.com/miDeb/flutter_badges.git
+      ref: nnbd
+  skeleton_text:
+    git:
+      url: https://github.com/StanevPrime/Skeleton-Text.git
+      ref: feature/null-safety
   smooth_star_rating:
     git:
       url: https://github.com/bhavin-concetto/smoothratingbar.git

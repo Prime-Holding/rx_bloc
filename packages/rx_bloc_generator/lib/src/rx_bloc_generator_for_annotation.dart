@@ -8,19 +8,12 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
   /// Generates the bloc based on the class with the @RxBloc() annotation.
   /// If either the states or events class is missing the file is not generated.
   @override
-  Future<String?> generateForAnnotatedElement(
+  Future<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    // return early if annotation is used for a none class element
-    if (element is! ClassElement) {
-      // Internal package error
-      _logError('The @RxBloc must be used for class only.');
-      return null;
-    }
-
-    final classElement = element;
+    final classElement = element as ClassElement;
 
     final libraryReader = LibraryReader(classElement.library);
 
@@ -51,7 +44,7 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
     } on _RxBlocGeneratorException catch (e) {
       // User error
       _logError(e.message);
-      return null;
+      return '/**\n${e.message}\n*/';
     } on FormatterException catch (e) {
       var message = e.errors.map((AnalysisError e) => e.message).join('\n');
       // Format error
@@ -59,14 +52,14 @@ class RxBlocGeneratorForAnnotation extends GeneratorForAnnotation<RxBloc> {
         'FormatterException \n $message',
         libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
-      return null;
+      return '/**\n${e.message}\n*/';
     } on Exception catch (e) {
       // System error
       _reportIssue(
         e.toString(),
         libraryReader.allElements.first.source?.contents.data.toString() ?? '',
       );
-      return null;
+      return '/**\n$e\n*/';
     }
   }
 }

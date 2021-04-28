@@ -28,24 +28,62 @@ void main() {
         Get.put(FavoritePuppiesController(mockRepo, mediatorController));
   });
 
+  tearDown(() {
+    Get.delete<MockPuppiesRepository>();
+  });
+
   group('FavoritePuppiesController - ', () {
-    test('initialization', () {
-    //arrange
-    //action
-    final count = controller.count;
-    //assert
-    expect(count,0);
+
+    test('initialization', () async {
+      //assert
+      expect(controller.count, 0);
+      //arrange
+      reset(mockRepo);
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => throw Stub.testErr);
+      //action
+      await controller.onReload();
+      //assert
+      expect(controller.status.isError, true);
+      //arrange
+      reset(mockRepo);
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.puppiesTestUpdated);
+      // action
+      await controller.onReload();
+      final puppiesCount = controller.favoritePuppiesList.length;
+      // assert
+      expect(puppiesCount, 1);
     });
-    test('updateFavoritePuppies', () {
-    //arrange
-      final updatedPuppies = Stub.puppiesTestUpdated;
-    //action
-    mediatorController.puppiesToUpdate(updatedPuppies);
-    final count = controller.count;
-    final puppy = controller.favoritePuppiesList.first;
-    //assert
-    expect(count, 1);
-    expect(puppy, Stub.puppyTestUpdated);
+
+    test('updateFavoritePuppies', () async {
+      //arrange
+      reset(mockRepo);
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.puppiesTestUpdated);
+      await controller.onReload();
+      expect(controller.count, 1);
+      final puppy = controller.favoritePuppiesList.first;
+      expect(puppy.isFavorite, isTrue);
+      expect(puppy, Stub.puppyTestUpdated);
+      //arrange
+      final updatedPuppy = Stub.puppyTest;
+      //action
+      mediatorController.puppyUpdated(updatedPuppy);
+      final count = controller.count;
+      //assert
+      expect(count, 0);
+    });
+    test('updateFavoritePuppies - unfavorite puppy', () async {
+      //arrange
+      final updatedPuppy = Stub.puppyTestUpdated;
+      //action
+      mediatorController.puppyUpdated(updatedPuppy);
+      final count = controller.count;
+      //assert
+      expect(count, 1);
+      final puppy = controller.favoritePuppiesList.first;
+      expect(puppy.isFavorite, isTrue);
     });
   });
 }
