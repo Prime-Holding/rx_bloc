@@ -98,7 +98,7 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
-          min_coverage: 49
+          min_coverage: 89
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
