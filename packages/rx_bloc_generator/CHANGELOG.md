@@ -1,3 +1,6 @@
+## [4.0.0] - April 28, 2021
+* Upgraded (`null-safety`) dependencies
+
 ## [3.0.2] - April 05, 2021
 * Added type to the BehaviorSubject with seed value, Example: `final _$reloadEvent = BehaviorSubject<bool>.seeded(null);`
 

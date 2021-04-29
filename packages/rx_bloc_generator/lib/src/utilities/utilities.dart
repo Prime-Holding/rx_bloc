@@ -4,7 +4,7 @@ part of rx_bloc_generator;
 const Symbol _logKey = #buildLog;
 
 /// The log instance for the currently running BuildStep.
-Logger get log => Zone.current[_logKey] as Logger;
+Logger? get log => Zone.current[_logKey] as Logger?;
 
 /// Logs message as a `severe` error displayed in red color for easier noticing.
 void _logError(String str) {
@@ -14,7 +14,11 @@ void _logError(String str) {
     msg = msg.substring(msg.indexOf(exceptionStr) + exceptionStr.length);
   }
   msg = '[ERROR] $msg';
-  log.severe('\n${msg.toRedString()}\n');
+  if (log != null) {
+    log!.severe('\n${msg.toRedString()}\n');
+  } else {
+    print('\n${msg.toRedString()}\n');
+  }
 }
 
 /// Logs a package error with the suggestion to report it
