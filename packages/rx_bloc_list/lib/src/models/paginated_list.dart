@@ -141,4 +141,8 @@ class PaginatedList<E> extends ListBase<E> {
 
     length = 0;
   }
+
+  @override
+  String toString() =>
+      '{list: $list, _backupList: $_backupList, loading: $isLoading}';
 }
