@@ -160,7 +160,7 @@ class HotelsRepository {
           .entries
           .map(
             (entry) => entry.value
-                .copyWith(title: "${entry.value.title} ${entry.key}"),
+                .copyWith(title: "${entry.key} - ${entry.value.title}"),
           )
           .toList();
 

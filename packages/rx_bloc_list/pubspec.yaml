@@ -18,8 +18,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  rx_bloc_generator: ^3.0.1
-  build_runner:
+  rx_bloc_generator: ^4.0.0
+  build_runner: ^2.0.0
+  coverage: ^1.0.0
+  clean_coverage: ^0.0.3
 
 flutter:
   uses-material-design: true
+
+dependency_overrides:
+  rx_bloc_generator:
+    path: ../rx_bloc_generator
+  rx_bloc:
+    path: ../rx_bloc
+  flutter_rx_bloc:
+    path: ../flutter_rx_bloc

@@ -71,6 +71,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     title: 'Sort hotels by',
                     buttons: [],
                     onWillPopActive: true,
+                    alertAnimation:
+                        (context, animation, secondaryAnimation, child) =>
+                            alertAnimation(animation, child),
                     content: HotelSortPage(
                       initialSelection: sortBy,
                       onApplyPressed: (sortBy) =>
@@ -259,6 +262,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       title: '',
                       buttons: [],
                       onWillPopActive: true,
+                      alertAnimation:
+                          (context, animation, secondaryAnimation, child) =>
+                              alertAnimation(animation, child),
                       content: HotelCapacityPage(
                         roomCapacity: capacityData?.rooms ?? 0,
                         personCapacity: capacityData?.persons ?? 0,
@@ -300,7 +306,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   _buildClearButton(() {
                     showYesNoMessage(
                       context: context,
-                      title: 'Clear advanced filters?',
+                      title: 'Clear capacity filter?',
                       onYesPressed: () {
                         bloc.events.filterByCapacity(
                           roomCapacity: 0,

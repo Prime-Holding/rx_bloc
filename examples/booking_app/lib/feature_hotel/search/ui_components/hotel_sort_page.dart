@@ -45,7 +45,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
       );
 
   Widget _buildSortItems() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         child: Column(
           children: [
             _buildSortingRow(

@@ -2,6 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+Widget alertAnimation(Animation<double> animation, Widget child) =>
+    FadeTransition(
+      opacity: CurvedAnimation(
+        parent: animation,
+        curve: Curves.slowMiddle,
+      ),
+      child: child,
+    );
+
 Future<void> showYesNoMessage({
   required BuildContext context,
   required String title,
@@ -12,22 +21,10 @@ Future<void> showYesNoMessage({
     await Alert(
       context: context,
       onWillPopActive: true,
+      alertAnimation: (context, animation, secondaryAnimation, child) =>
+          alertAnimation(animation, child),
       title: title,
       buttons: [
-        DialogButton(
-          onPressed: () {
-            onYesPressed?.call();
-            Navigator.of(context).pop();
-          },
-          color: Colors.red,
-          child: const Text(
-            'Yes',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
-        ),
         DialogButton(
           onPressed: () {
             onNoPressed?.call();
@@ -35,6 +32,20 @@ Future<void> showYesNoMessage({
           },
           child: const Text(
             'No',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+          ),
+          color: Theme.of(context).buttonColor,
+        ),
+        DialogButton(
+          onPressed: () {
+            onYesPressed?.call();
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            'Yes',
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
