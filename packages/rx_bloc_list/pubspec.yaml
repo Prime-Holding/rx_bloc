@@ -23,11 +23,11 @@ dev_dependencies:
   coverage: ^1.0.0
   clean_coverage: ^0.0.3
 
-dependency_overrides:
-  rx_bloc:
-    path: ../rx_bloc
-  flutter_rx_bloc:
-    path: ../flutter_rx_bloc
+#dependency_overrides:
+#  rx_bloc:
+#    path: ../rx_bloc
+#  flutter_rx_bloc:
+#    path: ../flutter_rx_bloc
 
 flutter:
   uses-material-design: true

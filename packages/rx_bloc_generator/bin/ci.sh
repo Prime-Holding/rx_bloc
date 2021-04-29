@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-echo "🚀 Starting rx_bloc CI" 🚀
+echo "🚀 Starting rx_bloc_generator CI" 🚀
 dart pub get || exit
 flutter analyze lib || exit
 dart test --coverage=coverage --exclude-tags=not-tests  || exit
