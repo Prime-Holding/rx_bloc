@@ -17,10 +17,7 @@ class PuppyDetailsController extends GetxController {
         _mediatorController.puppiesToUpdate,
         (_) => _mediatorController.puppiesToUpdate.forEach((element) {
               if (element.id == _puppy.id) {
-                print('current puppy is ${element.displayName} with favorite status ${puppy!.value.isFavorite}');
-                print('element status is ${element.isFavorite}');
                 puppy!(element);
-                print('current puppy is ${element.displayName} with favorite status ${puppy!.value.isFavorite}');
               }
             }));
     super.onInit();
