@@ -11,7 +11,7 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
   final controller = Get.find<PuppyListController>();
 
   AppBarTextField _searchAppBar() => AppBarTextField(
-        title: const Text('Search for Puppies'),
+        title: _createTitle(),
         style: const TextStyle(color: Colors.white),
         autofocus: false,
         decoration: const InputDecoration(
@@ -40,6 +40,16 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
       Get.focusScope?.unfocus();
     }
   }
+
+  Widget _createTitle() =>
+      controller.filteredBy.value != ''
+        ? Row(
+          children: [
+            const SizedBox(width: 30,),
+            Text('${controller.filteredBy}...'),
+          ],
+        )
+        :const Text('Search for Puppies');
 
   @override
   Widget build(BuildContext context) => Obx(
