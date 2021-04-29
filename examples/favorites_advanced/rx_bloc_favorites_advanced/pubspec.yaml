@@ -40,7 +40,7 @@ dev_dependencies:
 #  flutter_test:
 #    sdk: flutter
 #  test: 1.15.2
-  build_runner: ^1.10.1
+  build_runner: ^2.0.0
   rx_bloc_generator:
   rx_bloc_test: ^0.0.5
   mockito: ^5.0.0

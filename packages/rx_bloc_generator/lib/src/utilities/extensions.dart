@@ -20,7 +20,7 @@ extension _StringExtensions on String {
 extension _SpecExtensions on Spec {
   String toDartCodeString() => DartFormatter().format(
         accept(
-          DartEmitter(Allocator.none, false, true),
+          DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true),
         ).toString(),
       );
 }
@@ -209,7 +209,7 @@ extension _ListParameterElementClone on Iterable<ParameterElement> {
             ..toThis = toThis
             ..required = parameter.isRequiredNamed
             ..defaultTo = parameter.defaultValueCode != null
-                ? Code(parameter.defaultValueCode)
+                ? Code(parameter.defaultValueCode ?? '')
                 : null
             ..named = parameter.isNamed
             ..name = parameter.name
