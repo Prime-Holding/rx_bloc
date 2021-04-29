@@ -4,34 +4,32 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/details/controllers/puppy_details_controller.dart';
 
 class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Puppy _puppy = Get.arguments;
-    final _mediatorController = Get.find<MediatorController>();
     final controller =
-        Get.put(PuppyDetailsController(_puppy, _mediatorController));
-    final puppy = controller.puppy!=null ? controller.puppy!.value : _puppy;
+        Get.find<PuppyDetailsController>();
+    // final puppy = controller.puppy!=null ? controller.puppy!.value : _puppy;
+    final puppy = controller.puppy!.value;
     final name = puppy.displayName;
     final gender = puppy.gender;
     final bread = puppy.breedTypeAsString;
     final characteristics = puppy.breedCharacteristics;
-    final isFavorite = controller.isFavorite.value;
+    // final isFavorite = controller.isFavorite.value;
     final imagePath = puppy.asset;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        bottomOpacity: 0,
-        backgroundColor: Colors.transparent,
-        actions: [
-          _buildFavoriteIcon(puppy, isFavorite),
-          IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
-        ],
-      ),
+      // appBar: AppBar(
+      //   bottomOpacity: 0,
+      //   backgroundColor: Colors.transparent,
+      //   actions: [
+      //     _buildFavoriteIcon(puppy, isFavorite),
+      //     IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+      //   ],
+      // ),
       body: Stack(
         children: [
           Container(
@@ -69,7 +67,9 @@ class DetailsPage extends StatelessWidget {
                 )
               ],
             ),
-          )
+          ),
+          _buildAppBar(),
+          // _buildAppBar(puppy, isFavorite),
         ],
       ),
     );
@@ -77,22 +77,49 @@ class DetailsPage extends StatelessWidget {
 
   Widget _buildFavoriteIcon(Puppy puppy, bool isFavorite) {
     var favoriteStatus  = isFavorite;
-    return favoriteStatus
-      ? IconButton(
-          icon: const Icon(Icons.favorite),
-          onPressed: () {
-            Get.find<PuppyManageController>()
-                .markAsFavorite(puppy: puppy, isFavorite: false);
-            favoriteStatus = false;
-          },
-        )
-      : IconButton(
-          icon: const Icon(Icons.favorite_border),
-          onPressed: () {
-            Get.find<PuppyManageController>()
+    return
+      favoriteStatus
+          ? IconButton(
+        icon: const Icon(Icons.favorite),
+        onPressed: () {
+          Get.find<PuppyManageController>()
+              .markAsFavorite(puppy: puppy, isFavorite: false);
+          favoriteStatus = false;
+        },
+      )
+          : IconButton(
+        icon: const Icon(Icons.favorite_border),
+        onPressed: () {
+          Get.find<PuppyManageController>()
               .markAsFavorite(puppy: puppy, isFavorite: true);
-            favoriteStatus = true;
-          },
-        );
+          favoriteStatus = true;
+        }
+    );
+
   }
+
+  Widget _buildAppBar()=> Obx(
+        () {
+          final detailsController = Get.find<PuppyDetailsController>();
+          final puppy = detailsController.puppy!.value;
+          final isFavorite = detailsController.isFavorite.value;
+          return AppBar(
+          bottomOpacity: 0,
+          backgroundColor: Colors.transparent,
+          actions: [
+            _buildFavoriteIcon(puppy, isFavorite),
+            IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+          ],
+        );
+        }
+    );
+
+  // Widget _buildAppBar(Puppy puppy, bool isFavorite)=>  AppBar(
+  //         bottomOpacity: 0,
+  //         backgroundColor: Colors.transparent,
+  //         actions: [
+  //           _buildFavoriteIcon(puppy, isFavorite),
+  //           IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+  //         ],
+  //       );
 }
