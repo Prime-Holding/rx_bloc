@@ -11,7 +11,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/base/redux/app_reducer.dart';
-import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/actions.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/epics.dart';
 
