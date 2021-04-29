@@ -148,7 +148,7 @@ dev_dependencies:
     sdk: flutter
   flutter_gherkin: ^1.1.7+3
   build_runner:
-  rx_bloc_generator: ^0.0.1
+  rx_bloc_generator:
 ```
 ### Directory Structure 
 Create the following directory structure:
