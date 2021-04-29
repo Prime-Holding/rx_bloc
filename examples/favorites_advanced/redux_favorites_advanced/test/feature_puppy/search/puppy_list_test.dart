@@ -32,6 +32,7 @@ void main() {
         fetchPuppiesEpic(repository),
         fetchExtraDetailsEpic(repository),
         puppyFavoriteEpic(repository),
+        searchQueryEpic(repository),
       ]),
     );
     store = Store<AppState>(
@@ -49,16 +50,11 @@ void main() {
         store.dispatch(PuppiesFetchRequestedAction());
       });
 
-      const state = AppStateStub.initialState;
       expect(
         store.onChange,
         emitsInOrder([
-          state,
-          state.copyWith(
-            puppyListState: state.puppyListState.copyWith(
-              puppies: Stub.puppies123,
-            ),
-          ),
+          AppStateStub.initialState,
+          AppStateStub.withPuppies123,
         ]),
       );
     });
@@ -248,6 +244,52 @@ void main() {
           AppStateStub.withPuppy1.copyWith(
             error: Stub.testErr.toString(),
             favoriteCount: 1,
+          ),
+        ]),
+      );
+    });
+
+    test('Search', () {
+      when(repository.getPuppies(query: 'test'))
+          .thenAnswer((_) async => [Stub.puppyTest]);
+
+      scheduleMicrotask(() {
+        store
+          ..dispatch(SearchAction(query: 't'))
+          ..dispatch(SearchAction(query: 'te'))
+          ..dispatch(SearchAction(query: 'tes'))
+          ..dispatch(SearchAction(query: 'test'));
+      });
+
+      expect(
+        store.onChange,
+        emitsInOrder([
+          AppStateStub.initialState,
+          AppStateStub.initialState,
+          AppStateStub.initialState,
+          AppStateStub.initialState,
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              isLoading: true,
+            ),
+          ),
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              isLoading: true,
+              searchQuery: 'test',
+            ),
+          ),
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              isLoading: true,
+              searchQuery: 'test',
+            ),
+          ),
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              searchQuery: 'test',
+              puppies: [Stub.puppyTest],
+            ),
           ),
         ]),
       );

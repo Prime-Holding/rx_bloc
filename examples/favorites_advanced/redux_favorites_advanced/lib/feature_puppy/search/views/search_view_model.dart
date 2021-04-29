@@ -25,7 +25,9 @@ class SearchViewModel extends Equatable {
     }
 
     void _onRefreshFetch() {
-      store.dispatch(PuppiesFetchRequestedAction());
+      store
+        ..dispatch(PuppiesFetchRequestedAction())
+        ..dispatch(SaveSearchQueryAction(query: ''));
     }
 
     void _onExtraDetailsFetch(Puppy puppy) {

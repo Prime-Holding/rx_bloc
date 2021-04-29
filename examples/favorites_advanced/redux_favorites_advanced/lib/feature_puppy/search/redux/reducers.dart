@@ -9,6 +9,7 @@ PuppyListState puppyListStateReducer(PuppyListState state, action) =>
     state.copyWith(
       isLoading: isLoadingReducer(state: state.isLoading, action: action),
       isError: isErrorReducer(state: state.isError, action: action),
+      searchQuery: searchQueryReducer(state: state.searchQuery, action: action),
       puppies: puppyReducer(state.puppies, action),
     );
 
@@ -27,7 +28,7 @@ List<Puppy>? puppiesFetchSucceededReducer(
 
 List<Puppy>? extraDetailsFetchSucceededReducer(
         List<Puppy>? puppies, ExtraDetailsFetchSucceededAction action) =>
-    puppies!.mergeWith(action.puppies!);
+    puppies!.mergeWith(action.puppies);
 
 List<Puppy>? puppyFavoriteSucceededReducer(
         List<Puppy>? puppies, PuppyFavoriteSucceededAction action) =>
@@ -50,6 +51,13 @@ bool? isErrorReducer({bool? state, action}) {
   }
   if (action is PuppiesFetchSucceededAction) {
     return false;
+  }
+  return state;
+}
+
+String? searchQueryReducer({String? state, action}) {
+  if (action is SaveSearchQueryAction) {
+    return action.query;
   }
   return state;
 }

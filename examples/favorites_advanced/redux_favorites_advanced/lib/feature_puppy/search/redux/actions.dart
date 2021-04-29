@@ -1,11 +1,15 @@
 import 'package:favorites_advanced_base/models.dart';
 
-class PuppiesFetchRequestedAction {}
+class PuppiesFetchRequestedAction {
+  PuppiesFetchRequestedAction({this.query});
+
+  final String? query;
+}
 
 class PuppiesFetchSucceededAction {
   PuppiesFetchSucceededAction({required this.puppies});
 
-  final List<Puppy>? puppies;
+  final List<Puppy> puppies;
 }
 
 class PuppiesFetchFailedAction {}
@@ -21,7 +25,7 @@ class ExtraDetailsFetchRequestedAction {
 class ExtraDetailsFetchSucceededAction {
   ExtraDetailsFetchSucceededAction({required this.puppies});
 
-  final List<Puppy>? puppies;
+  final List<Puppy> puppies;
 }
 
 class PuppyToggleFavoriteAction {
@@ -37,8 +41,14 @@ class PuppyFavoriteSucceededAction {
   final Puppy puppy;
 }
 
-// class ExtraDetailsFetchFailedAction {
-//   ExtraDetailsFetchFailedAction({required this.message});
-//
-//   final String message;
-// }
+class SearchAction {
+  SearchAction({this.query});
+
+  final String? query;
+}
+
+class SaveSearchQueryAction {
+  SaveSearchQueryAction({this.query});
+
+  final String? query;
+}
