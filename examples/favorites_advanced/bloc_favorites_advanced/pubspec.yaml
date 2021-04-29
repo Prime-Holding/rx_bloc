@@ -36,6 +36,7 @@ dependencies:
   equatable: ^2.0.0
   mockito: ^5.0.4
   declarative_animated_list: ^0.1.0-nullsafety.0
+  clean_coverage: ^0.0.3
 #  widget_library:
 #    path: ../widget_library
 
