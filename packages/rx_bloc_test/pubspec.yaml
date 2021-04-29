@@ -18,6 +18,8 @@ dependencies:
 dev_dependencies:
   pedantic: ^1.9.0
   mockito: ^5.0.0
+  coverage: ^1.0.0
+  clean_coverage: ^0.0.3
 
 
 #dependency_overrides:

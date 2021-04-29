@@ -19,7 +19,8 @@ dev_dependencies:
   test: ^1.15.2
   mockito: ^5.0.0
   quiver: ^3.0.0
-
+  coverage: ^1.0.0
+  clean_coverage: ^0.0.3
 
 dependency_overrides:
   rx_bloc_test:

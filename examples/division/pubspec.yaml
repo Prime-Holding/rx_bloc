@@ -20,6 +20,7 @@ dev_dependencies:
   rx_bloc_test: ^0.0.3
   flutter_test:
     sdk: flutter
+  clean_coverage: ^0.0.3
 
 dependency_overrides:
   rx_bloc_test:

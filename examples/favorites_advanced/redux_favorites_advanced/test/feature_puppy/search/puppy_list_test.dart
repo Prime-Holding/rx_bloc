@@ -11,6 +11,7 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/base/redux/app_reducer.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/actions.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/epics.dart';
 
@@ -32,6 +33,7 @@ void main() {
         fetchPuppiesEpic(repository),
         fetchExtraDetailsEpic(repository),
         puppyFavoriteEpic(repository),
+        searchQueryEpic(repository),
       ]),
     );
     store = Store<AppState>(
@@ -248,23 +250,50 @@ void main() {
       );
     });
 
-    // test('Search', () {
-    //   when(repository.getPuppies()).thenAnswer((_) async => Stub.puppies123);
-    //
-    //   when(repository.getPuppies(query: '1'))
-    //       .thenAnswer((_) async => [Stub.puppy1]);
-    //
-    //   scheduleMicrotask(() {
-    //     store.dispatch(SearchAction(query: '1'));
-    //   });
-    //
-    //   expect(
-    //     store.onChange,
-    //     emitsInOrder([
-    //       AppStateStub.initialState,
-    //       AppStateStub.withPuppies123,
-    //     ]),
-    //   );
-    // });
+    test('Search', () {
+      when(repository.getPuppies(query: 'test'))
+          .thenAnswer((_) async => [Stub.puppyTest]);
+
+      scheduleMicrotask(() {
+        store
+          ..dispatch(SearchAction(query: 't'))
+          ..dispatch(SearchAction(query: 'te'))
+          ..dispatch(SearchAction(query: 'tes'))
+          ..dispatch(SearchAction(query: 'test'));
+      });
+
+      expect(
+        store.onChange,
+        emitsInOrder([
+          AppStateStub.initialState,
+          AppStateStub.initialState,
+          AppStateStub.initialState,
+          AppStateStub.initialState,
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              isLoading: true,
+            ),
+          ),
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              isLoading: true,
+              searchQuery: 'test',
+            ),
+          ),
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              isLoading: true,
+              searchQuery: 'test',
+            ),
+          ),
+          AppStateStub.initialState.copyWith(
+            puppyListState: AppStateStub.initialState.puppyListState.copyWith(
+              searchQuery: 'test',
+              puppies: [Stub.puppyTest],
+            ),
+          ),
+        ]),
+      );
+    });
   });
 }
