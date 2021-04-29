@@ -2,7 +2,9 @@ part of 'app_pages.dart';
 
 abstract class Routes{
 static const home = _Paths.home;
+static const details = _Paths.details;
 }
 abstract class _Paths{
 static const home = '/';
+static const details = 'details';
 }
