@@ -35,8 +35,20 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     add(LoadPuppyListEvent());
   }
 
+  @override
+  Stream<Transition<PuppyListEvent, PuppyListState>> transformEvents(
+          Stream<PuppyListEvent> events,
+          TransitionFunction<PuppyListEvent, PuppyListState> transitionFn) =>
+      super.transformEvents(
+          Rx.merge([
+            events,
+            events.whereType<PuppyListFilterEvent>().mapToPayload()
+          ]),
+          transitionFn);
+
   final PuppiesRepository _repository;
   final _compositeSubscription = CompositeSubscription();
+  var lastSearchedQuery = '';
 
   @override
   Stream<PuppyListState> mapEventToState(
@@ -51,6 +63,24 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
       );
     } else if (event is FavoritePuppiesUpdatedEvent) {
       yield* _mapFavoritePuppiesToState(event.favoritePuppies, state);
+    } else if (event is PuppyListFilterUpdatedQueryEvent) {
+      yield* _mapPuppiesFilteredToState(event.query, state);
+    }
+  }
+
+  Stream<PuppyListState> _mapPuppiesFilteredToState(
+      String query, PuppyListState state) async* {
+    try {
+      // print('_mapPuppiesFilteredToState query : $query');
+      yield state.copyWith(status: PuppyListStatus.initial);
+      lastSearchedQuery = query;
+      yield state.copyWith(
+        searchedPuppies: await _repository.getPuppies(query: query),
+        status: PuppyListStatus.success,
+      );
+    } on Exception {
+      // print('Filter puppies fetch exception');
+      yield state.copyWith(status: PuppyListStatus.failure);
     }
   }
 
@@ -62,9 +92,10 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
       yield state.copyWith(status: loadStatus);
 
       yield state.copyWith(
-        searchedPuppies: await _repository.getPuppies(query: ''),
+        searchedPuppies: await _repository.getPuppies(query: lastSearchedQuery),
         status: PuppyListStatus.success,
       );
+      lastSearchedQuery = '';
     } on Exception {
       yield state.copyWith(status: PuppyListStatus.failure);
     }
@@ -87,4 +118,17 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     _compositeSubscription.dispose();
     return super.close();
   }
+}
+
+extension _FilterPuppiesEventExtension on Stream<PuppyListFilterEvent> {
+  Stream<PuppyListFilterUpdatedQueryEvent> mapToPayload() => distinct()
+      .doOnData((event) {
+        // print('Extension 1 event.query : ${event.query}');
+      })
+      .debounceTime(const Duration(milliseconds: 600))
+      .map(
+          (newQuery) => PuppyListFilterUpdatedQueryEvent(query: newQuery.query))
+      .doOnData((event) {
+        // print('Extension 2 event.query : ${event.query}');
+      });
 }

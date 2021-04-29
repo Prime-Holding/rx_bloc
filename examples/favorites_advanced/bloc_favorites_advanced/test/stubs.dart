@@ -128,6 +128,42 @@ class Stub {
     ),
   ];
 
+  static final queryPuppiesTest1 = [
+    Puppy(
+      id: '2',
+      name: 'test',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+  ];
+
+  static final queryPuppiesTest2 = [
+    Puppy(
+      id: '1',
+      name: 'First',
+      asset: 'puppie_2.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+      displayCharacteristics: 'Characteristics Max 1',
+      displayName: 'Max',
+    ),
+    Puppy(
+      id: '2',
+      name: 'test',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+  ];
+
   static final favoritePuppies123 = [
     Puppy(
       id: '1',

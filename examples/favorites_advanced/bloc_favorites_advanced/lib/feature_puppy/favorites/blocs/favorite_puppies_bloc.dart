@@ -39,7 +39,6 @@ class FavoritePuppiesBloc
   ///TODO: handle loading and errors
   Stream<FavoritePuppiesState> _mapToFavoritePuppies() async* {
     try {
-      // await Future.delayed(const Duration(seconds: 5));
       yield state.copyWith(
         favoritePuppies: await _puppiesRepository.getFavoritePuppies(),
       );
@@ -62,11 +61,6 @@ class FavoritePuppiesBloc
     final immediateUpdatedPuppy = puppy.copyWith(isFavorite: isFavorite);
 
     _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(immediateUpdatedPuppy));
-
-    yield state.copyWith(
-      favoritePuppies: state.favoritePuppies
-          .manageList(isFavorite: isFavorite, puppy: puppy),
-    );
 
     /// Send a request to the API
     try {
@@ -106,7 +100,6 @@ class FavoritePuppiesBloc
         favoritePuppies: state.favoritePuppies
             .manageList(isFavorite: !isFavorite, puppy: puppy),
       );
-
     }
   }
 }

@@ -9,10 +9,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 import '../../../stubs.dart';
 import 'favorite_puppies_bloc_test.mocks.dart';
 
-// class MockPuppiesRepository extends Mock implements PuppiesRepository {}
-
-// class MockCoordinatorBloc extends Mock implements CoordinatorBloc {}
-
 @GenerateMocks([
   PuppiesRepository,
   CoordinatorBloc,
@@ -30,6 +26,53 @@ void main() {
       coordinatorBloc: mockCoordinatorBloc,
     );
   });
+
+  test('FavoritePuppiesBloc FavoritePuppiesState count getter', () async {
+    when(mockRepo.getFavoritePuppies())
+        .thenAnswer((_) async => Stub.favoritePuppies);
+
+    favoritePuppiesBloc.add(FavoritePuppiesFetchEvent());
+
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    expect(favoritePuppiesBloc.state.count, 2);
+  });
+
+  // Does not mark copyWith as tested
+  test(
+    'FavoritePuppiesState copyWith',
+    () async {
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.favoritePuppies);
+
+      favoritePuppiesBloc.add(FavoritePuppiesFetchEvent());
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      expect(
+          favoritePuppiesBloc.state.copyWith(
+            favoritePuppies: Stub.favoritePuppies,
+          ),
+          FavoritePuppiesState(favoritePuppies: Stub.favoritePuppies));
+    },
+  );
+
+  // Does not mark copyWith as tested
+  blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
+    'FavoritePuppiesState copyWith',
+    build: () {
+      when(mockRepo.getFavoritePuppies())
+          .thenAnswer((_) async => Stub.favoritePuppies);
+      return favoritePuppiesBloc;
+    },
+    act: (bloc) {
+      bloc.add(FavoritePuppiesFetchEvent());
+    },
+    expect: () => <FavoritePuppiesState>[
+      favoritePuppiesBloc.state.copyWith(
+        favoritePuppies: Stub.favoritePuppies,
+      ),
+    ],
+  );
 
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
     'FavoritePuppiesBloc FavoritePuppiesFetchEvent',
@@ -77,7 +120,7 @@ void main() {
             puppy: Stub.isNotFavoritePuppy3, isFavorite: true));
       },
       expect: () => <FavoritePuppiesState>[
-            FavoritePuppiesState(favoritePuppies: [Stub.isNotFavoritePuppy3]),
+            FavoritePuppiesState(favoritePuppies: [Stub.isFavoritePuppy3]),
           ],
       verify: (_) {
         mockCoordinatorBloc
@@ -101,7 +144,6 @@ void main() {
             puppy: Stub.isNotFavoritePuppy3, isFavorite: true));
       },
       expect: () => <FavoritePuppiesState>[
-            FavoritePuppiesState(favoritePuppies: [Stub.isNotFavoritePuppy3]),
             const FavoritePuppiesState(
                 favoritePuppies: [], error: Stub.noInternetConnectionError),
           ],
