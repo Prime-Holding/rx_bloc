@@ -12,33 +12,21 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller =
         Get.find<PuppyDetailsController>();
-    // final puppy = controller.puppy!=null ? controller.puppy!.value : _puppy;
     final puppy = controller.puppy!.value;
-    final name = puppy.displayName;
-    final gender = puppy.gender;
-    final bread = puppy.breedTypeAsString;
-    final characteristics = puppy.breedCharacteristics;
-    // final isFavorite = controller.isFavorite.value;
-    final imagePath = puppy.asset;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   bottomOpacity: 0,
-      //   backgroundColor: Colors.transparent,
-      //   actions: [
-      //     _buildFavoriteIcon(puppy, isFavorite),
-      //     IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
-      //   ],
-      // ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: imagePath.contains('asset')
-                      ? AssetImage(imagePath)
-                      : FileImage(File(imagePath)) as ImageProvider<Object>,
-                  fit: BoxFit.cover),
+          Hero(
+            tag: 'PuppyCardAnimationTag ${puppy.id}',
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: puppy.asset.contains('asset')
+                        ? AssetImage(puppy.asset)
+                        : FileImage(File(puppy.asset)) as ImageProvider<Object>,
+                    fit: BoxFit.cover),
+              ),
             ),
           ),
           Padding(
@@ -48,23 +36,23 @@ class DetailsPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name ?? 'MyName',
-                  style: TextStyles.titleTextStyle,
-                ),
+                    puppy.displayName ?? 'MyName',
+                    style: TextStyles.titleTextStyle,
+                  ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  '$gender, $bread',
-                  style: TextStyles.subtitleTextStyle,
-                ),
+                    '${puppy.genderAsString}, ${puppy.breedTypeAsString}',
+                    style: TextStyles.subtitleTextStyle,
+                  ),
                 const SizedBox(
                   height: 24,
                 ),
                 Text(
-                  characteristics,
-                  style: TextStyles.subtitleTextStyle,
-                )
+                    puppy.displayCharacteristics!,
+                    style: TextStyles.subtitleTextStyle,
+                  ),
               ],
             ),
           ),
@@ -75,34 +63,28 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFavoriteIcon(Puppy puppy, bool isFavorite) {
-    var favoriteStatus  = isFavorite;
-    return
-      favoriteStatus
+  Widget _buildFavoriteIcon(Puppy puppy, bool isFavorite) =>
+      puppy.isFavorite
           ? IconButton(
         icon: const Icon(Icons.favorite),
-        onPressed: () {
+        onPressed: () =>
           Get.find<PuppyManageController>()
-              .markAsFavorite(puppy: puppy, isFavorite: false);
-          favoriteStatus = false;
-        },
+              .markAsFavorite(puppy: puppy, isFavorite: false)
       )
           : IconButton(
         icon: const Icon(Icons.favorite_border),
-        onPressed: () {
+        onPressed: () =>
           Get.find<PuppyManageController>()
-              .markAsFavorite(puppy: puppy, isFavorite: true);
-          favoriteStatus = true;
-        }
+              .markAsFavorite(puppy: puppy, isFavorite: true)
     );
 
-  }
+
 
   Widget _buildAppBar()=> Obx(
         () {
           final detailsController = Get.find<PuppyDetailsController>();
           final puppy = detailsController.puppy!.value;
-          final isFavorite = detailsController.isFavorite.value;
+          final isFavorite = puppy.isFavorite;
           return AppBar(
           bottomOpacity: 0,
           backgroundColor: Colors.transparent,

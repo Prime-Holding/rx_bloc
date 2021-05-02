@@ -6,13 +6,16 @@ class PuppyDetailsController extends GetxController {
   PuppyDetailsController(this._puppy, this._mediatorController);
   final MediatorController _mediatorController;
   final Puppy _puppy;
-  Rx<Puppy>? puppy;
-  var isFavorite = false.obs;
+  late Rx<Puppy>? puppy;
+  // late Rx<String> name;
+  // late RxBool isFavorite;
+  // late RxString gender;
+  // late RxString bread;
+  // late RxString description;
 
   @override
   void onInit() {
     puppy= _puppy.obs;
-    isFavorite(puppy?.value.isFavorite);
     ever(
         _mediatorController.puppiesToUpdate,
         (_) => _mediatorController.puppiesToUpdate.forEach((element) {
