@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
   final FocusNode _searchFocus = FocusNode();
-
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<NavigationBarBloc, NavigationBarState>(
@@ -31,7 +30,8 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
   ) =>
       AppBarTextField(
         searchContainerColor: Colors.blue,
-        title: Text(item.type.asTitle()),
+        // title: Text(item.type.asTitle()),
+        title: _createTitle(context),
         style: const TextStyle(color: Colors.white),
         autofocus: false,
         focusNode: _searchFocus,
@@ -59,6 +59,17 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
             .add(PuppyListFilterEvent(query: query)),
       );
 
+  Widget _createTitle(BuildContext context) {
+    final lastQuery = context.read<PuppyListBloc>().lastSearchedQuery;
+    return lastQuery != ''
+        ? Row(
+      children: [
+        const SizedBox(width: 30,),
+        Text('$lastQuery...'),
+      ],
+    )
+        : const Text('Search for Puppies');
+  }
   @override
   Size get preferredSize => const Size.fromHeight(56);
 }
