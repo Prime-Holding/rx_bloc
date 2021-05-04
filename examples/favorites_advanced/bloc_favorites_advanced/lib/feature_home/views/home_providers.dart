@@ -23,4 +23,7 @@ List<BlocProvider> _getProviders() => [
       BlocProvider<NavigationBarBloc>(
         create: (context) => NavigationBarBloc(),
       ),
+  // BlocProvider<PuppyDetailsBloc>(
+  //     create: (context) => PuppyDetailsBloc(
+  //     coordinatorBloc: context.read(), ))
     ];
