@@ -4,6 +4,7 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_favorites_advanced/base/routes/app_pages.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/details/controllers/puppy_details_controller.dart';
 
@@ -90,7 +91,8 @@ class DetailsPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           actions: [
             _buildFavoriteIcon(puppy, isFavorite),
-            IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.edit),
+                onPressed: () {Get.toNamed(AppPages.edit, arguments: puppy);}),
           ],
         );
         }
