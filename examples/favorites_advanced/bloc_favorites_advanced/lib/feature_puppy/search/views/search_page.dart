@@ -1,7 +1,8 @@
 import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
 import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
 // import 'package:bloc_sample/feature_puppy/details/blocs/puppy_details_bloc.dart';
-import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
+// import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
@@ -62,8 +63,8 @@ class SearchPage extends StatelessWidget {
                   // When we click the favorite_border icon we receive
                   // isFavorite true
                   onFavorite: (puppy, isFavorite) => context
-                      .read<FavoritePuppiesBloc>()
-                      .add(FavoritePuppiesMarkAsFavoriteEvent(
+                      .read<PuppyManageBloc>()
+                      .add(PuppyManageMarkAsFavoriteEvent(
                           puppy: puppy, isFavorite: isFavorite)),
                 );
               }),

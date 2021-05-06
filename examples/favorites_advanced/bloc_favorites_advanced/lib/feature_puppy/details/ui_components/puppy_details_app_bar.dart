@@ -1,6 +1,8 @@
 import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
 import 'package:bloc_sample/base/ui_components/icon_with_shadow.dart';
-import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
+import 'package:bloc_sample/feature_puppy/details/blocs/puppy_details_bloc.dart';
+// import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 // import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
@@ -52,10 +54,14 @@ class PuppyDetailsAppBar extends StatelessWidget
         },
       );
 
-  void _markAsFavorite(BuildContext context, bool isFavorite) =>
-      BlocProvider.of<FavoritePuppiesBloc>(context).add(
-          FavoritePuppiesMarkAsFavoriteEvent(
-              puppy: _puppy, isFavorite: isFavorite));
+  void _markAsFavorite(BuildContext context, bool isFavorite) {
+    BlocProvider.of<PuppyManageBloc>(context).add(
+        PuppyManageMarkAsFavoriteEvent(
+            puppy: _puppy, isFavorite: isFavorite));
+    BlocProvider.of<PuppyDetailsBloc>(context).add(
+        PuppyDetailsEvent(puppy: _puppy)
+    );
+  }
 
   @override
   Size get preferredSize => const Size.fromHeight(56);

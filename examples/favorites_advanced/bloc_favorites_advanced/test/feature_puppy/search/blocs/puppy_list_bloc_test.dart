@@ -44,7 +44,7 @@ void main() {
       return puppyListBloc;
     },
     act: (bloc) {
-      bloc.add(FavoritePuppiesUpdatedEvent(
+      bloc.add(PuppyListFavoritePuppiesUpdatedEvent(
           favoritePuppies: [Stub.isFavoritePuppy3]));
     },
     expect: () => [

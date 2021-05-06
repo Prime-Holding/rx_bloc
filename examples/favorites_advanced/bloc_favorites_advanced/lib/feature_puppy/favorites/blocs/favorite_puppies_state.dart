@@ -2,7 +2,7 @@ part of 'favorite_puppies_bloc.dart';
 
 @immutable
 class FavoritePuppiesState extends Equatable {
-  const FavoritePuppiesState({
+   const FavoritePuppiesState({
     required this.favoritePuppies,
     this.error,
   });

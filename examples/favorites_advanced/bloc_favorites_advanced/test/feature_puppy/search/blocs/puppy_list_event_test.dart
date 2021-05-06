@@ -20,10 +20,10 @@ void main() {
     group('FavoritePuppiesUpdatedEvent', () {
       test('support value comparisons', () {
         expect(
-          FavoritePuppiesUpdatedEvent(
+          PuppyListFavoritePuppiesUpdatedEvent(
             favoritePuppies: Stub.favoritePuppies,
           ),
-          FavoritePuppiesUpdatedEvent(
+          PuppyListFavoritePuppiesUpdatedEvent(
             favoritePuppies: Stub.favoritePuppies,
           ),
         );

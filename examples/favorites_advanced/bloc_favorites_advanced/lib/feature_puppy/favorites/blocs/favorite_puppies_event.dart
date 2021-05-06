@@ -14,3 +14,11 @@ class FavoritePuppiesMarkAsFavoriteEvent extends FavoritePuppiesEvent {
   final Puppy puppy;
   final bool isFavorite;
 }
+
+class FavoritePuppiesUpdatedEvent extends FavoritePuppiesEvent {
+  FavoritePuppiesUpdatedEvent({
+    required this.puppies,
+  });
+
+  final List<Puppy> puppies;
+}

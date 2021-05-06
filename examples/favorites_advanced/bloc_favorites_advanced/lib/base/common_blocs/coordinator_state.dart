@@ -45,6 +45,22 @@ class CoordinatorPuppiesUpdatedState extends CoordinatorState {
   int get hashCode => puppies.hashCode;
 }
 
+class CoordinatorFavoritePuppyUpdatedState extends CoordinatorState {
+  CoordinatorFavoritePuppyUpdatedState(this.favoritePuppy);
+
+  final Puppy favoritePuppy;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CoordinatorFavoritePuppyUpdatedState &&
+              runtimeType == other.runtimeType &&
+              favoritePuppy == other.favoritePuppy;
+
+  @override
+  int get hashCode => favoritePuppy.hashCode;
+}
+
 class CoordinatorPuppiesWithExtraDetailsState extends CoordinatorState {
   CoordinatorPuppiesWithExtraDetailsState(this.puppies);
 

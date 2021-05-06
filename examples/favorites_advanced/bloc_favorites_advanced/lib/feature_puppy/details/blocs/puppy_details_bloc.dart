@@ -15,7 +15,7 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
      Puppy? puppy,
   })   : _coordinatorBloc = coordinatorBloc,
         _puppy = puppy,
-        super(const PuppyDetailsState());
+        super( PuppyDetailsState());
 
   final CoordinatorBloc _coordinatorBloc;
    final Puppy? _puppy;
@@ -27,8 +27,8 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   ) async* {
     // print('mapEventToState');
     // _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(_puppy!));
-
-
+    // print('Puppy Details puppy: ${_puppy}');
+    state.puppy = _puppy!.copyWith(isFavorite: !_puppy!.isFavorite);
     yield state;
   }
 }

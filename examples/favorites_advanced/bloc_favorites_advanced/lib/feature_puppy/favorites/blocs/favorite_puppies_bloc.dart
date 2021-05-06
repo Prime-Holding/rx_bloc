@@ -7,6 +7,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'favorite_puppies_event.dart';
 
@@ -19,9 +20,25 @@ class FavoritePuppiesBloc
     required CoordinatorBloc coordinatorBloc,
   })   : _coordinatorBloc = coordinatorBloc,
         _puppiesRepository = puppiesRepository,
-        super(const FavoritePuppiesState(favoritePuppies: []));
+        super(const FavoritePuppiesState(favoritePuppies: [])) {
+    _coordinatorBloc.stream
+        .doOnData((event) {
+          // print('Puppy List Bloc coordinatorBloc.stream ! $event');
+        })
+        .whereType<CoordinatorFavoritePuppyUpdatedState>()
+        .doOnData((event) {
+          // print(
+          //     'Favorite Puppies Bloc coordinatorBloc.stream ${
+          //         event.favoritePuppy}');
+        })
+        .listen((state) => add(FavoritePuppiesMarkAsFavoriteEvent(
+            puppy: state.favoritePuppy,
+            isFavorite: state.favoritePuppy.isFavorite)))
+        .addTo(_compositeSubscription);
+  }
 
   final PuppiesRepository _puppiesRepository;
+  final _compositeSubscription = CompositeSubscription();
   final CoordinatorBloc _coordinatorBloc;
   bool errorDisplayed = false;
 
@@ -33,7 +50,57 @@ class FavoritePuppiesBloc
       yield* _mapToFavoritePuppies();
     } else if (event is FavoritePuppiesMarkAsFavoriteEvent) {
       yield* _mapToFavoritesPuppies(event);
+    } else if (event is FavoritePuppiesUpdatedEvent) {
+      yield* _mapToFavoritePuppiesUpdatedEvent(event.puppies, state);
     }
+  }
+
+  Stream<FavoritePuppiesState> _mapToFavoritePuppiesUpdatedEvent(
+    List<Puppy> updatedPuppies,
+    FavoritePuppiesState state,
+  ) async* {
+    // print('_mapToFavoritePuppiesUpdatedEvent ${updatedPuppies}');
+    // print(
+    //     '_mapToFavoritePuppiesUpdatedEvent BEFORE ADD '
+    //         '${state.favoritePuppies}');
+    // var favoritePuppies = await _puppiesRepository.getFavoritePuppies();
+    // favoritePuppies.forEach((puppy) {
+    //   state.favoritePuppies = await _puppiesRepository.getFavoritePuppies();
+    // });
+    // print(
+    //     '_mapToFavoritePuppiesUpdatedEvent
+    //     AFTER ADD ${state.favoritePuppies}');
+    final puppies = await _puppiesRepository.getFavoritePuppies();
+
+    final test = <Puppy>[];
+    puppies.forEach((puppy) {
+      test.add(puppy.copyWith(
+        breedCharacteristics: puppy.breedCharacteristics,
+        displayCharacteristics: puppy.displayCharacteristics,
+        displayName: puppy.displayName,
+      ));
+    });
+
+    state.favoritePuppies.mergeWith(test);
+    yield state;
+    // final updatedPuppy = (await _puppiesRepository.favoritePuppy(
+    //   puppy,
+    //   isFavorite: isFavorite,
+    // ))
+    //     .copyWith(
+    //   breedCharacteristics: puppy.breedCharacteristics,
+    //   displayCharacteristics: puppy.displayCharacteristics,
+    //   displayName: puppy.displayName,
+    // );
+
+    // _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
+
+    // yield state.copyWith(
+    //   favoritePuppies: state.favoritePuppies.manageList(
+    //     isFavorite: updatedPuppy.isFavorite,
+    //     puppy: updatedPuppy,
+    //   ),
+    // );
   }
 
   ///TODO: handle loading and errors
@@ -42,7 +109,7 @@ class FavoritePuppiesBloc
       yield state.copyWith(
         favoritePuppies: await _puppiesRepository.getFavoritePuppies(),
       );
-    } on Exception catch (e){
+    } on Exception catch (e) {
       yield state.copyWith(
         favoritePuppies: [],
         error: e.toString(),
@@ -60,6 +127,7 @@ class FavoritePuppiesBloc
     /// can update immediately
     final immediateUpdatedPuppy = puppy.copyWith(isFavorite: isFavorite);
 
+    // print('Favorite bloc BEFORE adding in coordinator bloc ');
     _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(immediateUpdatedPuppy));
 
     /// Send a request to the API
@@ -84,11 +152,10 @@ class FavoritePuppiesBloc
       );
       errorDisplayed = false;
     } on Exception catch (e) {
-
       final revertFavoritePuppy = puppy.copyWith(isFavorite: !isFavorite);
 
       _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
-      if(errorDisplayed == false) {
+      if (errorDisplayed == false) {
         yield state.copyWith(
           favoritePuppies: state.favoritePuppies
               .manageList(isFavorite: !isFavorite, puppy: puppy),

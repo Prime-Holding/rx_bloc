@@ -28,8 +28,8 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
         .doOnData((event) {
           // print('Puppy List Bloc coordinatorBloc.stream ${event.puppies}');
         })
-        .listen((state) =>
-            add(FavoritePuppiesUpdatedEvent(favoritePuppies: state.puppies)))
+        .listen((state) => add(PuppyListFavoritePuppiesUpdatedEvent(
+            favoritePuppies: state.puppies)))
         .addTo(_compositeSubscription);
 
     add(LoadPuppyListEvent());
@@ -61,7 +61,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
         state,
         loadStatus: PuppyListStatus.reloading,
       );
-    } else if (event is FavoritePuppiesUpdatedEvent) {
+    } else if (event is PuppyListFavoritePuppiesUpdatedEvent) {
       yield* _mapFavoritePuppiesToState(event.favoritePuppies, state);
     } else if (event is PuppyListFilterUpdatedQueryEvent) {
       yield* _mapPuppiesFilteredToState(event.query, state);

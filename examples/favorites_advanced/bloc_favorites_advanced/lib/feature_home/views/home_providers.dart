@@ -7,6 +7,12 @@ List<BlocProvider> _getProviders() => [
           puppiesRepository: context.read(),
         ),
       ),
+      BlocProvider<PuppyManageBloc>(
+        create: (context) => PuppyManageBloc(
+          coordinatorBloc: context.read(),
+          puppiesRepository: context.read(),
+        ),
+      ),
       BlocProvider<PuppyListBloc>(
         create: (context) => PuppyListBloc(
           coordinatorBloc: context.read(),
@@ -23,7 +29,7 @@ List<BlocProvider> _getProviders() => [
       BlocProvider<NavigationBarBloc>(
         create: (context) => NavigationBarBloc(),
       ),
-  // BlocProvider<PuppyDetailsBloc>(
-  //     create: (context) => PuppyDetailsBloc(
-  //     coordinatorBloc: context.read(), ))
+      // BlocProvider<PuppyDetailsBloc>(
+      //     create: (context) => PuppyDetailsBloc(
+      //     coordinatorBloc: context.read(), ))
     ];

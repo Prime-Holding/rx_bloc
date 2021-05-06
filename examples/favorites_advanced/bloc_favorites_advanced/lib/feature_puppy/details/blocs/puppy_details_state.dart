@@ -2,7 +2,7 @@ part of 'puppy_details_bloc.dart';
 
 @immutable
 class PuppyDetailsState {
-  const PuppyDetailsState({this.imagePath, this.name, this.breed, this.gender,
+   PuppyDetailsState({this.imagePath, this.name, this.breed, this.gender,
       this.characteristics, this.isFavourite, this.genderAndBreed, this.puppy});
 
   final String? imagePath;
@@ -19,7 +19,7 @@ class PuppyDetailsState {
 
   final String? genderAndBreed;
 
-  final Puppy? puppy;
+   Puppy? puppy;
 }
 
 // class PuppyDetailsInitial extends PuppyDetailsState {}

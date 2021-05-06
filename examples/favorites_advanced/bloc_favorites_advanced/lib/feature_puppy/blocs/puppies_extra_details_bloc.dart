@@ -52,6 +52,7 @@ class PuppiesExtraDetailsBloc
       try {
         final puppiesWithDetails =
         await _repository.fetchFullEntities(event.puppies.ids);
+        // print('EXTRA DETAIL before adding in coordinator');
         _coordinatorBloc.add(
           CoordinatorPuppiesWithExtraDetailsEvent(puppiesWithDetails),
         );
