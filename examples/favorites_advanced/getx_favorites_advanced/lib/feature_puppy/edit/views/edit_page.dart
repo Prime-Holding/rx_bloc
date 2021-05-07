@@ -12,24 +12,42 @@ class EditPage extends GetView<PuppyEditingController> {
             _buildSaveIcon(),
           ],
         ),
-    body: PuppyEditForm(),
+        body: PuppyEditForm(),
       );
 
-  Widget _buildSaveIcon() => IconButton(
-          icon: controller.isLoading.value
-              ? Container(
-              height: 24,
-              width: 24,
-              child: const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.white),
-              ))
-              : Icon(
-            Icons.save,
-            color: controller.isSaveEnabled.value ? Colors.white : Colors.grey,
-          ),
-          onPressed: () {
-            if (controller.isSaveEnabled.value) {
-              // TODO implement saving
-            }
-          });
+  Widget _buildSaveIcon() => Obx(
+        () => IconButton(
+            icon: controller.isLoading.value
+                ? Container(
+                    height: 24,
+                    width: 24,
+                    child: const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ))
+                : Obx(
+                    () => Icon(
+                      Icons.save,
+                      color: controller.isSaveEnabled()
+                          ? Colors.white
+                          : Colors.grey,
+                    ),
+                  ),
+            onPressed: () async {
+              if (controller.isSaveEnabled()) {
+                final isSavedSuccessfully = await controller.savePuppy();
+                if (isSavedSuccessfully) {
+                  Get.back();
+                  await Get.showSnackbar(
+                    GetBar(
+                      message: 'Puppy is saved successfully',
+                      backgroundColor: Colors.black54,
+                      snackPosition: SnackPosition.BOTTOM,
+                      isDismissible: true,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
+              }
+            }),
+      );
 }

@@ -6,45 +6,87 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_favorites_advanced/feature_puppy/edit/controllers/puppy_editing_controller.dart';
 
-class PuppyEditForm extends StatelessWidget {
-  final controller = Get.find<PuppyEditingController>();
+class PuppyEditForm extends GetView<PuppyEditingController> {
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              _createPuppyAvatar(),
-              const SizedBox(
-                height: 16,
-              ),
-              EditFormItem(
-                icon: Icons.account_box,
-                title: 'Name',
-                formField: TextFormField(),
-              ),
-              EditFormItem(
-                icon: Icons.pets,
-                title: 'Breed',
-                formField: DropdownButtonFormField(
-                  items: [
-                    DropdownMenuItem(child: Text(BreedType.Akita.toString()))
-                  ],
+          child: Form(
+            key: controller.globalFormKey,
+            autovalidateMode: AutovalidateMode.always,
+            child: Column(
+              children: [
+                _createPuppyAvatar(),
+                const SizedBox(
+                  height: 16,
                 ),
-              ),
-              EditFormItem(
-                icon: Icons.wc,
-                title: 'Gender',
-                formField: Radio(
-                    value: [],
-                    groupValue: [Text('Male'), Text('Female')],
-                    onChanged: (_) {}),
-              ),
-              EditFormItem(
+                EditFormItem(
+                  icon: Icons.account_box,
+                  title: 'Name',
+                  formField: TextFormField(
+                    controller: controller.nameController,
+                    keyboardType: TextInputType.name,
+                    validator: (value) => controller.validateName(value),
+                    onSaved: (value) => controller.setName(value!),
+                    onChanged: (value) => controller.changeLocalName(value),
+                    maxLines: 1,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                EditFormItem(
+                  icon: Icons.pets,
+                  title: 'Breed',
+                  formField: DropdownButtonFormField(
+                    items: [
+                      DropdownMenuItem(child: Text(BreedType.Akita.toString()))
+                    ],
+                  ),
+                ),
+                EditFormItem(
+                  icon: Icons.wc,
+                  title: 'Gender',
+                  formField: Row(
+                    children: [
+                      Obx(
+                        () => Radio(
+                          key: const ValueKey('PuppyGenderMale'),
+                          value: 1,
+                          groupValue: controller.radioGroup.value,
+                          onChanged: (value) =>
+                              controller.handleGenderChanging(value as int),
+                        ),
+                      ),
+                      const Text('Male'),
+                      Obx(
+                        () => Radio(
+                          key: const ValueKey('PuppyGenderFemale'),
+                          value: 2,
+                          groupValue: controller.radioGroup.value,
+                          onChanged: (value) =>
+                              controller.handleGenderChanging(value as int),
+                        ),
+                      ),
+                      const Text('Female'),
+                    ],
+                  ),
+                ),
+                EditFormItem(
                   icon: Icons.article,
                   title: 'Characteristics',
-                  formField: TextFormField())
-            ],
+                  formField: TextFormField(
+                    controller: controller.characteristicsController,
+                    keyboardType: TextInputType.text,
+                    validator: (value) =>
+                        controller.validateCharacteristics(value),
+                    onSaved: (value) => controller.setCharacteristics(value!),
+                    onChanged: (value) =>
+                        controller.changeLocalCharacteristics(value),
+                    maxLines: 8,
+                    textInputAction: TextInputAction.next,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );

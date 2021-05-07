@@ -19,5 +19,6 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
         ),
         getPages: AppPages.routes,
+    debugShowCheckedModeBanner: false,
       );
 }

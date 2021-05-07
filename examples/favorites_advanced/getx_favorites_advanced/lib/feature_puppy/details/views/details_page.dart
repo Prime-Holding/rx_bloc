@@ -9,9 +9,10 @@ import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_c
 import 'package:getx_favorites_advanced/feature_puppy/details/controllers/puppy_details_controller.dart';
 
 class DetailsPage extends StatelessWidget {
+  final controller = Get.find<PuppyDetailsController>();
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PuppyDetailsController>();
     final puppy = controller.puppy!.value;
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -35,23 +36,30 @@ class DetailsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  puppy.displayName ?? 'MyName',
-                  style: TextStyles.titleTextStyle,
+                Obx(
+                  () => Text(
+                    controller.puppy!.value.displayName ?? 'MyName',
+                    style: TextStyles.titleTextStyle,
+                  ),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                Text(
-                  '${puppy.genderAsString}, ${puppy.breedTypeAsString}',
-                  style: TextStyles.subtitleTextStyle,
+                Obx(
+                  () => Text(
+                    '${controller.puppy!.value.genderAsString}, '
+                        '${controller.puppy!.value.breedTypeAsString}',
+                    style: TextStyles.subtitleTextStyle,
+                  ),
                 ),
                 const SizedBox(
                   height: 24,
                 ),
-                Text(
-                  puppy.displayCharacteristics!,
-                  style: TextStyles.subtitleTextStyle,
+                Obx(
+                  () => Text(
+                    controller.puppy!.value.displayCharacteristics!,
+                    style: TextStyles.subtitleTextStyle,
+                  ),
                 ),
               ],
             ),
@@ -82,8 +90,11 @@ class DetailsPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           actions: [
             _buildFavoriteIcon(puppy, isFavorite),
-            IconButton(icon: const Icon(Icons.edit),
-                onPressed: () {Get.toNamed(AppPages.edit, arguments: puppy);}),
+            IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  Get.toNamed(AppPages.edit, arguments: puppy);
+                }),
           ],
         );
       });
