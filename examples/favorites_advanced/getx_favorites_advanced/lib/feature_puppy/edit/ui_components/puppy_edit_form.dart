@@ -31,6 +31,7 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                     onChanged: (value) => controller.changeLocalName(value),
                     maxLines: 1,
                     textInputAction: TextInputAction.next,
+                    style: TextStyles.editableTextStyle,
                   ),
                 ),
                 EditFormItem(
@@ -46,27 +47,42 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                   icon: Icons.wc,
                   title: 'Gender',
                   formField: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Obx(
-                        () => Radio(
-                          key: const ValueKey('PuppyGenderMale'),
-                          value: 1,
-                          groupValue: controller.radioGroup.value,
-                          onChanged: (value) =>
-                              controller.handleGenderChanging(value as int),
-                        ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Male',
+                            style: TextStyles.editableTextStyle,
+                          ),
+                          Obx(
+                            () => Radio(
+                              key: const ValueKey('PuppyGenderMale'),
+                              value: 1,
+                              groupValue: controller.radioGroup.value,
+                              onChanged: (value) =>
+                                  controller.handleGenderChanging(value as int),
+                            ),
+                          ),
+                        ],
                       ),
-                      const Text('Male'),
-                      Obx(
-                        () => Radio(
-                          key: const ValueKey('PuppyGenderFemale'),
-                          value: 2,
-                          groupValue: controller.radioGroup.value,
-                          onChanged: (value) =>
-                              controller.handleGenderChanging(value as int),
-                        ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Female',
+                            style: TextStyles.editableTextStyle,
+                          ),
+                          Obx(
+                            () => Radio(
+                              key: const ValueKey('PuppyGenderFemale'),
+                              value: 2,
+                              groupValue: controller.radioGroup.value,
+                              onChanged: (value) =>
+                                  controller.handleGenderChanging(value as int),
+                            ),
+                          ),
+                        ],
                       ),
-                      const Text('Female'),
                     ],
                   ),
                 ),
@@ -83,6 +99,7 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                         controller.changeLocalCharacteristics(value),
                     maxLines: 8,
                     textInputAction: TextInputAction.next,
+                    style: TextStyles.editableTextStyle,
                   ),
                 )
               ],
