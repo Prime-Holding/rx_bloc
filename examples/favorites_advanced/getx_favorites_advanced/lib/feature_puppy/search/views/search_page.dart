@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
-import 'package:getx_favorites_advanced/base/flow_builders/puppy_flow.dart';
 import 'package:getx_favorites_advanced/base/routes/app_pages.dart';
 
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_extra_details_controller.dart';
@@ -30,7 +29,6 @@ class SearchPage extends GetView<PuppyListController> {
                     onVisible: (item) => Get.find<PuppyExtraDetailsController>()
                         .fetchExtraDetails(item),
                     onCardPressed: (item) =>
-                    // Get.to(PuppyFlow.route(puppy: item)),
                         Get.toNamed(AppPages.details, arguments: item),
                     onFavorite: (item, isFavorite) {
                       Get.find<PuppyManageController>()
