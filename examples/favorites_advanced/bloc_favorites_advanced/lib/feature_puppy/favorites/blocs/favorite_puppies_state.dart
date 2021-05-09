@@ -22,5 +22,5 @@ class FavoritePuppiesState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [favoritePuppies];
+  List<Object?> get props => [favoritePuppies,error];
 }

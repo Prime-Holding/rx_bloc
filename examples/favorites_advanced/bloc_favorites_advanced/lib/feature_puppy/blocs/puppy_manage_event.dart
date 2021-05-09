@@ -9,6 +9,6 @@ class PuppyManageMarkAsFavoriteEvent extends PuppyManageEvent {
     required this.isFavorite,
   });
 
-  Puppy puppy;
-  bool isFavorite;
+  final Puppy puppy;
+  final bool isFavorite;
 }

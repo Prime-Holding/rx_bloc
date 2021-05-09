@@ -125,11 +125,15 @@ class FavoritePuppiesBloc
 
     /// Emit an event with the copied instance of the entity, so that UI
     /// can update immediately
-    final immediateUpdatedPuppy = puppy.copyWith(isFavorite: isFavorite);
+    // final immediateUpdatedPuppy = puppy.copyWith(isFavorite: isFavorite);
 
     // print('Favorite bloc BEFORE adding in coordinator bloc ');
-    _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(immediateUpdatedPuppy));
-
+    _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(puppy));
+    // yield state.copyWith(
+    //   favoritePuppies: state.favoritePuppies.manageList(
+    //     puppy: puppy, isFavorite: !puppy.isFavorite,
+    //   ),
+    // );
     /// Send a request to the API
     try {
       final updatedPuppy = (await _puppiesRepository.favoritePuppy(
@@ -152,21 +156,34 @@ class FavoritePuppiesBloc
       );
       errorDisplayed = false;
     } on Exception catch (e) {
-      final revertFavoritePuppy = puppy.copyWith(isFavorite: !isFavorite);
+      // final revertFavoritePuppy = puppy.copyWith(isFavorite: !isFavorite);
 
-      _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
-      if (errorDisplayed == false) {
+      // _coordinatorBloc.add(
+      // CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
+
+      // if (errorDisplayed == false) {
         yield state.copyWith(
           favoritePuppies: state.favoritePuppies
               .manageList(isFavorite: !isFavorite, puppy: puppy),
           error: e.toString(),
         );
-        errorDisplayed = true;
-      }
+        await Future.delayed(const Duration(milliseconds: 200));
+        // errorDisplayed = true;
+      // }
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies
-            .manageList(isFavorite: !isFavorite, puppy: puppy),
+            .manageList(isFavorite: isFavorite, puppy: puppy),
       );
+      // print(
+      //     'Favorite bloc state.listLength: ${
+      //         state.favoritePuppies.length}');
+      //
+      // yield state.copyWith(
+      //   favoritePuppies: state.favoritePuppies
+      //       .manageList(isFavorite: !isFavorite, puppy: puppy),
+      // );
+      // print('Favorite bloc state.favoritePuppies.length: ${
+      //     state.favoritePuppies.length}');
     }
   }
 }

@@ -15,8 +15,7 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
   PuppyManageBloc({
     required PuppiesRepository puppiesRepository,
     required CoordinatorBloc coordinatorBloc,
-  })
-      : _puppiesRepository = puppiesRepository,
+  })   : _puppiesRepository = puppiesRepository,
         _coordinatorBloc = coordinatorBloc,
         super(const PuppyManageState());
 
@@ -24,7 +23,9 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
   final CoordinatorBloc _coordinatorBloc;
 
   @override
-  Stream<PuppyManageState> mapEventToState(PuppyManageEvent event,) async* {
+  Stream<PuppyManageState> mapEventToState(
+    PuppyManageEvent event,
+  ) async* {
     if (event is PuppyManageMarkAsFavoriteEvent) {
       yield* _mapToMarkAsFavorite(event);
     }
@@ -35,16 +36,37 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
     final puppy = event.puppy;
     final isFavorite = event.isFavorite;
     // print('MANAGE bloc _mapToMarkAsFavorite $puppy');
-    _coordinatorBloc.add(
-        CoordinatorFavoritePuppyUpdatedEvent(puppy
-        .copyWith(isFavorite: isFavorite)));
-    yield state.copyWith(puppy: puppy);
-    // try{
-    //   await _puppiesRepository.favoritePuppy(puppy, isFavorite: isFavorite);
-    // } on Exception catch (e) {
-    //   print('_mapToMarkAsFavorite $e');
-    //   // _coordinatorBloc.add(
-    //   //     CoordinatorPuppyUpdatedEvent(puppy));
-    // }
+    try {
+      ///Send event to search list to change the icon immediately
+      _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(
+          puppy.copyWith(isFavorite: isFavorite)));
+
+       await _puppiesRepository.favoritePuppy(
+        puppy,
+        isFavorite: isFavorite,
+      );
+
+      _coordinatorBloc
+          .add(CoordinatorFavoritePuppyUpdatedEvent(
+          puppy.copyWith(isFavorite: isFavorite)));
+
+      // _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
+
+      // errorDisplayed = false;
+    } on Exception catch (e) {
+      // _coordinatorBloc.add(
+      //     CoordinatorFavoritePuppyUpdatedEvent(puppy
+      //         .copyWith(isFavorite: !isFavorite)));
+      final revertFavoritePuppy = puppy.copyWith(isFavorite: !isFavorite);
+      _coordinatorBloc
+          .add(CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
+
+      // _coordinatorBloc
+      //     .add(CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
+      yield state.copyWith(error: e.toString());
+      _coordinatorBloc
+          .add(CoordinatorFavoritePuppyUpdatedEvent(puppy));
+    }
+    // yield state.copyWith(puppy: puppy);
   }
 }
