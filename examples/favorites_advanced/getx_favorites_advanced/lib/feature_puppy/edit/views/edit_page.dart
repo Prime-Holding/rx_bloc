@@ -34,19 +34,19 @@ class EditPage extends GetView<PuppyEditingController> {
                   ),
             onPressed: () async {
               if (controller.isSaveEnabled()) {
-                final isSavedSuccessfully = await controller.savePuppy();
-                if (isSavedSuccessfully) {
+                Get.focusScope!.unfocus();
+                final resultMessage = await controller.savePuppy();
+                if(resultMessage.contains('success')){
                   Get.back();
-                  await Get.showSnackbar(
-                    GetBar(
-                      message: 'Puppy is saved successfully',
-                      backgroundColor: Colors.black54,
-                      snackPosition: SnackPosition.BOTTOM,
-                      isDismissible: true,
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
                 }
+                await Get.showSnackbar(GetBar(
+                  message: resultMessage,
+                  backgroundColor: Colors.black54,
+                  snackPosition: SnackPosition.BOTTOM,
+                  snackStyle: SnackStyle.FLOATING,
+                  isDismissible: true,
+                  duration: const Duration(seconds: 2),
+                ));
               }
             }),
       );

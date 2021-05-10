@@ -10,6 +10,8 @@ class PuppyEditingController extends GetxController {
   final PuppiesRepository _repository;
   final MediatorController _mediatorController;
   final Puppy _puppy;
+  static const invalidValue = 'Please enter valid values in all fields!';
+  static const successfullySaved = 'Puppy is saved successfully.';
 
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   late TextEditingController nameController, characteristicsController;
@@ -75,12 +77,12 @@ class PuppyEditingController extends GetxController {
     _editedPuppy = _editedPuppy!.copyWith(gender: Gender.values[value]);
   }
 
-  Future<bool> savePuppy() async {
+  Future<String> savePuppy() async {
     isLoading(true);
     final isValid = globalFormKey.currentState!.validate();
     if (!isValid) {
       isLoading(false);
-      return false;
+      return invalidValue;
     }
     try {
       globalFormKey.currentState!.save();
@@ -89,17 +91,11 @@ class PuppyEditingController extends GetxController {
       _mediatorController.puppyUpdated(updatedPuppy);
       await Future.delayed(const Duration(milliseconds: 2000));
       isLoading(false);
-      return true;
+      return successfullySaved;
     } catch (e) {
-      await Get.showSnackbar(GetBar(
-        message: e.toString().substring(10),
-        snackStyle: SnackStyle.FLOATING,
-        isDismissible: true,
-        duration: const Duration(seconds: 2),
-      ));
       _mediatorController.puppyUpdated(_puppy);
       isLoading(false);
-      return false;
+      return e.toString().substring(10);
     }
   }
 
