@@ -11,7 +11,7 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
   final controller = Get.find<PuppyListController>();
 
   AppBarTextField _searchAppBar() => AppBarTextField(
-        title: _createTitle(),
+        title: _buildTitle(),
         style: const TextStyle(color: Colors.white),
         autofocus: false,
         decoration: const InputDecoration(
@@ -41,8 +41,8 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
   }
 
-  Widget _createTitle() =>
-      controller.filteredBy.value != ''
+  Widget _buildTitle() =>
+      controller.filteredBy.value.isNotEmpty
         ? Row(
           children: [
             const SizedBox(width: 30,),
