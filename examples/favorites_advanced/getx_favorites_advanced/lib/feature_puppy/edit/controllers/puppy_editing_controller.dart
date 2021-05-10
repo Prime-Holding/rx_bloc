@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
 class PuppyEditingController extends GetxController {
-  PuppyEditingController(this._mediatorController, this._puppy);
+  PuppyEditingController(
+      this._repository, this._mediatorController, this._puppy);
+
+  final PuppiesRepository _repository;
   final MediatorController _mediatorController;
   final Puppy _puppy;
 
@@ -35,9 +38,9 @@ class PuppyEditingController extends GetxController {
   }
 
   bool isSaveEnabled() =>
-      _name.value != _puppy.name
-        || _characteristics.value != _puppy.displayCharacteristics
-        || radioGroup.value != _puppy.gender.index;
+      _name.value != _puppy.name ||
+      _characteristics.value != _puppy.displayCharacteristics ||
+      radioGroup.value != _puppy.gender.index;
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -60,17 +63,14 @@ class PuppyEditingController extends GetxController {
   void changeLocalName(String value) => _name(value);
 
   void setName(String value) =>
-    _editedPuppy = _editedPuppy!.copyWith(name: value, displayName: value);
-
+      _editedPuppy = _editedPuppy!.copyWith(name: value, displayName: value);
 
   void changeLocalCharacteristics(String value) => _characteristics(value);
 
-
   void setCharacteristics(String value) =>
-    _editedPuppy = _editedPuppy!.copyWith(displayCharacteristics: value);
+      _editedPuppy = _editedPuppy!.copyWith(displayCharacteristics: value);
 
-
-  void handleGenderChanging(int value){
+  void handleGenderChanging(int value) {
     radioGroup(value);
     _editedPuppy = _editedPuppy!.copyWith(gender: Gender.values[value]);
   }
@@ -78,15 +78,29 @@ class PuppyEditingController extends GetxController {
   Future<bool> savePuppy() async {
     isLoading(true);
     final isValid = globalFormKey.currentState!.validate();
-    if(!isValid){
+    if (!isValid) {
       isLoading(false);
       return false;
     }
-    globalFormKey.currentState!.save();
-    _mediatorController.puppyUpdated(_editedPuppy!);
-    await Future.delayed(const Duration(milliseconds: 2000));
-    isLoading(false);
-    return true;
+    try {
+      globalFormKey.currentState!.save();
+      final updatedPuppy =
+          await _repository.updatePuppy(_editedPuppy!.id, _editedPuppy!);
+      _mediatorController.puppyUpdated(updatedPuppy);
+      await Future.delayed(const Duration(milliseconds: 2000));
+      isLoading(false);
+      return true;
+    } catch (e) {
+      await Get.showSnackbar(GetBar(
+        message: e.toString().substring(10),
+        snackStyle: SnackStyle.FLOATING,
+        isDismissible: true,
+        duration: const Duration(seconds: 2),
+      ));
+      _mediatorController.puppyUpdated(_puppy);
+      isLoading(false);
+      return false;
+    }
   }
 
   @override
@@ -95,5 +109,4 @@ class PuppyEditingController extends GetxController {
     characteristicsController.dispose();
     super.onClose();
   }
-
 }

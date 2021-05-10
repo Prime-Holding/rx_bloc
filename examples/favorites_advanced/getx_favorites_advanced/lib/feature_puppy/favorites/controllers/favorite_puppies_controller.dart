@@ -46,8 +46,12 @@ class FavoritePuppiesController extends GetxController
             favoritePuppies.indexWhere((element) => element.id == puppy.id);
         if (currentIndex < 0 && puppy.isFavorite) {
           favoritePuppies.add(puppy);
-        } else if(currentIndex >=0 && !puppy.isFavorite){
-          favoritePuppies.removeAt(currentIndex);
+        } else if(currentIndex >=0){
+          if( !puppy.isFavorite){
+            favoritePuppies.removeAt(currentIndex);
+          }else {
+            favoritePuppies.replaceRange(currentIndex, currentIndex+1, [puppy]);
+          }
         }
       },
     );
