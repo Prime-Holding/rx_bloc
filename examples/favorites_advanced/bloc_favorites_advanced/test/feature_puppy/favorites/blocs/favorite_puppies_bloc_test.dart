@@ -21,6 +21,7 @@ void main() {
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mockCoordinatorBloc = MockCoordinatorBloc();
+    when(mockCoordinatorBloc.stream).thenAnswer((_) => const Stream.empty());
     favoritePuppiesBloc = FavoritePuppiesBloc(
       puppiesRepository: mockRepo,
       coordinatorBloc: mockCoordinatorBloc,
@@ -103,7 +104,8 @@ void main() {
     expect: () => <FavoritePuppiesState>[
       const FavoritePuppiesState(
         favoritePuppies: [],
-        error: Stub.noInternetConnectionError,
+        error: Stub.testErrString,
+        // error: Stub.noInternetConnectionError,
       ),
     ],
   );
@@ -111,7 +113,8 @@ void main() {
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
       'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent',
       build: () {
-        when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3, isFavorite: true))
+        when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+        isFavorite: true))
             .thenAnswer((_) async => Stub.isFavoritePuppy3);
         return favoritePuppiesBloc;
       },
@@ -145,7 +148,9 @@ void main() {
       },
       expect: () => <FavoritePuppiesState>[
             const FavoritePuppiesState(
-                favoritePuppies: [], error: Stub.noInternetConnectionError),
+                favoritePuppies: [], error: Stub.testErrString),
+            FavoritePuppiesState(
+                favoritePuppies: [Stub.isNotFavoritePuppy3], error: null),
           ],
       verify: (_) {
         mockCoordinatorBloc

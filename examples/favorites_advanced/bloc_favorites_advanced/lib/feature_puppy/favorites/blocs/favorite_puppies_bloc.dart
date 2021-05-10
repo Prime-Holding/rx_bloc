@@ -50,15 +50,16 @@ class FavoritePuppiesBloc
       yield* _mapToFavoritePuppies();
     } else if (event is FavoritePuppiesMarkAsFavoriteEvent) {
       yield* _mapToFavoritesPuppies(event);
-    } else if (event is FavoritePuppiesUpdatedEvent) {
-      yield* _mapToFavoritePuppiesUpdatedEvent(event.puppies, state);
     }
+    // else if (event is FavoritePuppiesUpdatedEvent) {
+    //   yield* _mapToFavoritePuppiesUpdatedEvent(event.puppies, state);
+    // }
   }
 
-  Stream<FavoritePuppiesState> _mapToFavoritePuppiesUpdatedEvent(
-    List<Puppy> updatedPuppies,
-    FavoritePuppiesState state,
-  ) async* {
+  // Stream<FavoritePuppiesState> _mapToFavoritePuppiesUpdatedEvent(
+  //   List<Puppy> updatedPuppies,
+  //   FavoritePuppiesState state,
+  // ) async* {
     // print('_mapToFavoritePuppiesUpdatedEvent ${updatedPuppies}');
     // print(
     //     '_mapToFavoritePuppiesUpdatedEvent BEFORE ADD '
@@ -70,19 +71,19 @@ class FavoritePuppiesBloc
     // print(
     //     '_mapToFavoritePuppiesUpdatedEvent
     //     AFTER ADD ${state.favoritePuppies}');
-    final puppies = await _puppiesRepository.getFavoritePuppies();
-
-    final test = <Puppy>[];
-    puppies.forEach((puppy) {
-      test.add(puppy.copyWith(
-        breedCharacteristics: puppy.breedCharacteristics,
-        displayCharacteristics: puppy.displayCharacteristics,
-        displayName: puppy.displayName,
-      ));
-    });
-
-    state.favoritePuppies.mergeWith(test);
-    yield state;
+    // final puppies = await _puppiesRepository.getFavoritePuppies();
+    //
+    // final test = <Puppy>[];
+    // puppies.forEach((puppy) {
+    //   test.add(puppy.copyWith(
+    //     breedCharacteristics: puppy.breedCharacteristics,
+    //     displayCharacteristics: puppy.displayCharacteristics,
+    //     displayName: puppy.displayName,
+    //   ));
+    // });
+    //
+    // state.favoritePuppies.mergeWith(test);
+    // yield state;
     // final updatedPuppy = (await _puppiesRepository.favoritePuppy(
     //   puppy,
     //   isFavorite: isFavorite,
@@ -101,7 +102,7 @@ class FavoritePuppiesBloc
     //     puppy: updatedPuppy,
     //   ),
     // );
-  }
+  // }
 
   ///TODO: handle loading and errors
   Stream<FavoritePuppiesState> _mapToFavoritePuppies() async* {

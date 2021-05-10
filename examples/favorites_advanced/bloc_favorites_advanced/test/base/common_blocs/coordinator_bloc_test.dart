@@ -10,15 +10,22 @@ void main() {
   setUp(() {
     coordinatorBloc = CoordinatorBloc();
   });
+
   blocTest<CoordinatorBloc, CoordinatorState>(
-      'CoordinatorBloc CoordinatorPuppiesUpdatedEvent',
-      build: () => coordinatorBloc,
-      act: (bloc) {
-        bloc.add(CoordinatorPuppiesUpdatedEvent(Stub.favoritePuppies123));
-      },
-      expect: () => <CoordinatorState>[
-        CoordinatorPuppiesUpdatedState(Stub.favoritePuppies123)
-      ],
+    'CoordinatorBloc CoordinatorFavoritePuppyUpdatedEvent',
+    build: () => coordinatorBloc,
+    act: (bloc) {
+      bloc.add(CoordinatorFavoritePuppyUpdatedEvent(
+        favoritePuppy: Stub.isNotFavoritePuppy3,
+        updateException: '',
+      ));
+    },
+    expect: () => <CoordinatorState>[
+      CoordinatorFavoritePuppyUpdatedState(
+        favoritePuppy: Stub.isNotFavoritePuppy3,
+        updateException: '',
+      ),
+    ],
   );
 
   blocTest<CoordinatorBloc, CoordinatorState>(
@@ -32,4 +39,14 @@ void main() {
     ],
   );
 
+  blocTest<CoordinatorBloc, CoordinatorState>(
+    'CoordinatorBloc CoordinatorPuppiesUpdatedEvent',
+    build: () => coordinatorBloc,
+    act: (bloc) {
+      bloc.add(CoordinatorPuppiesUpdatedEvent(Stub.favoritePuppies123));
+    },
+    expect: () => <CoordinatorState>[
+      CoordinatorPuppiesUpdatedState(Stub.favoritePuppies123)
+    ],
+  );
 }

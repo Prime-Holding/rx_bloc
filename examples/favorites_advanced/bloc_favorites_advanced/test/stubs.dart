@@ -257,6 +257,7 @@ class Stub {
   // );
 
   static final testErr = Exception('test error');
+  static const testErrString = 'Exception: test error';
 
   static Stream<T> delayed<T>(T value, [int milliseconds = 100]) =>
       Future.delayed(Duration(milliseconds: milliseconds), () async => value)
