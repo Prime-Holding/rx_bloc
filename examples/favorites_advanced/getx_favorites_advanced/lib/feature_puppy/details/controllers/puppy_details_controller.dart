@@ -12,9 +12,13 @@ class PuppyDetailsController extends GetxController {
   void onInit() {
     puppy = _puppy.obs;
     ever(_mediatorController.puppiesToUpdate, (_) {
-      final updatedPuppy = _mediatorController.puppiesToUpdate
-          .firstWhere((element) => element.id == _puppy.id);
-      puppy!(updatedPuppy);
+      try{
+        final updatedPuppy = _mediatorController.puppiesToUpdate
+            .firstWhere((element) => element.id == _puppy.id);
+        puppy!(updatedPuppy);
+      }catch (e){
+        print(e.toString());
+      }
     });
     super.onInit();
   }

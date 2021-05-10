@@ -26,9 +26,22 @@ void main() {
     });
 
     test('update edited puppy', () {
-      _mediatorController
-          .puppyUpdated(Stub.puppyTestUpdated.copyWith(name: 'UpdatedName'));
+      // arrange
+      final puppy = Stub.puppyTestUpdated.copyWith(name: 'UpdatedName');
+      // action
+      _mediatorController.puppyUpdated(puppy);
+      // assert
       expect(controller.puppy!.value.name, 'UpdatedName');
     });
+
+    test('does not update puppy if updatedPuppies do not contain it', () {
+      // arrange
+      final puppy = Stub.puppy3.copyWith(name: 'UpdatedName');
+      // action
+      _mediatorController.puppyUpdated(puppy);
+      // assert
+      expect(controller.puppy!.value.name, 'Test');
+    });
+
   });
 }
