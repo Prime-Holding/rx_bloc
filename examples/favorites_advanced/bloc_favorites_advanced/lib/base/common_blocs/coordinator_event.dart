@@ -22,12 +22,16 @@ class CoordinatorPuppiesUpdatedEvent extends CoordinatorEvent {
 }
 
 class CoordinatorFavoritePuppyUpdatedEvent extends CoordinatorEvent {
-  CoordinatorFavoritePuppyUpdatedEvent(this.favoritePuppy);
+  CoordinatorFavoritePuppyUpdatedEvent({
+    required this.favoritePuppy,
+    required this.updateException,
+  });
 
   final Puppy favoritePuppy;
+  final String updateException;
 
   @override
-  List<Object?> get props => [favoritePuppy];
+  List<Object?> get props => [favoritePuppy, updateException];
 }
 
 class CoordinatorPuppiesWithExtraDetailsEvent extends CoordinatorEvent {

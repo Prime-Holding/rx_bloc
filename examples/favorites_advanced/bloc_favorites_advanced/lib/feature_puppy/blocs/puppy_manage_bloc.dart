@@ -48,7 +48,8 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
 
       _coordinatorBloc
           .add(CoordinatorFavoritePuppyUpdatedEvent(
-          puppy.copyWith(isFavorite: isFavorite)));
+          favoritePuppy: puppy.copyWith(isFavorite: isFavorite),
+      updateException: ''));
 
       // _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
 
@@ -65,7 +66,8 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
       //     .add(CoordinatorPuppyUpdatedEvent(revertFavoritePuppy));
       yield state.copyWith(error: e.toString());
       _coordinatorBloc
-          .add(CoordinatorFavoritePuppyUpdatedEvent(puppy));
+          .add(CoordinatorFavoritePuppyUpdatedEvent(favoritePuppy: puppy,
+      updateException: e.toString()));
     }
     // yield state.copyWith(puppy: puppy);
   }

@@ -37,10 +37,12 @@ class CoordinatorBloc extends Bloc<CoordinatorEvent, CoordinatorState> {
     if (event is CoordinatorPuppiesUpdatedEvent) {
       // print('Coordinator Bloc mapEventToState ${event.puppies}');
       yield CoordinatorPuppiesUpdatedState(event.puppies);
-    }
-    else if(event is CoordinatorFavoritePuppyUpdatedEvent){
+    } else if (event is CoordinatorFavoritePuppyUpdatedEvent) {
       // print('Coordinator Bloc CoordinatorFavoritePuppyUpdatedEvent');
-      yield CoordinatorFavoritePuppyUpdatedState(event.favoritePuppy);
+      yield CoordinatorFavoritePuppyUpdatedState(
+        favoritePuppy: event.favoritePuppy,
+        updateException: event.updateException,
+      );
     }
   }
 }

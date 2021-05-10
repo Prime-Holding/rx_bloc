@@ -75,9 +75,17 @@ class PuppyDetails extends StatelessWidget {
               ),
               Positioned(
                 child: BlocBuilder<PuppyDetailsBloc, PuppyDetailsState>(
-                  builder: (context, state) => PuppyDetailsAppBar(
-                    puppy: state.puppy ?? puppy,
-                  ),
+                  builder: (context, state) {
+                    if(state.puppy != null) {
+                      print('puppy details: state state.puppy.isFavorite: ${
+                          state.puppy!.isFavorite}');
+                    }
+                    // print('puppy details: state state.puppy.isFavorite: ${
+                    //     state.isFavourite}');
+                    return PuppyDetailsAppBar(
+                      puppy: state.puppy ?? puppy,
+                    );
+                  },
                 ),
               ),
             ],

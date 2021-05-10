@@ -46,19 +46,24 @@ class CoordinatorPuppiesUpdatedState extends CoordinatorState {
 }
 
 class CoordinatorFavoritePuppyUpdatedState extends CoordinatorState {
-  CoordinatorFavoritePuppyUpdatedState(this.favoritePuppy);
+  CoordinatorFavoritePuppyUpdatedState({
+    required this.favoritePuppy,
+    required this.updateException,
+  });
 
   final Puppy favoritePuppy;
+  final String updateException;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is CoordinatorFavoritePuppyUpdatedState &&
-              runtimeType == other.runtimeType &&
-              favoritePuppy == other.favoritePuppy;
+      other is CoordinatorFavoritePuppyUpdatedState &&
+          runtimeType == other.runtimeType &&
+          favoritePuppy == other.favoritePuppy &&
+          updateException == other.updateException;
 
   @override
-  int get hashCode => favoritePuppy.hashCode;
+  int get hashCode => favoritePuppy.hashCode ^ updateException.hashCode;
 }
 
 class CoordinatorPuppiesWithExtraDetailsState extends CoordinatorState {
