@@ -31,7 +31,7 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppBarTextField(
         searchContainerColor: Colors.blue,
         // title: Text(item.type.asTitle()),
-        title: _createTitle(context),
+        title: _buildTitle(context),
         style: const TextStyle(color: Colors.white),
         autofocus: false,
         focusNode: _searchFocus,
@@ -59,9 +59,9 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
             .add(PuppyListFilterEvent(query: query)),
       );
 
-  Widget _createTitle(BuildContext context) {
+  Widget _buildTitle(BuildContext context) {
     final lastQuery = context.read<PuppyListBloc>().lastSearchedQuery;
-    return lastQuery != ''
+    return lastQuery.isNotEmpty
         ? Row(
       children: [
         const SizedBox(width: 30,),
