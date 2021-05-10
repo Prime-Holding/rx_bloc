@@ -8,3 +8,4 @@ cd example/test_app
 flutter pub get
 cp README.md ../
 cd ../..
+dartfmt -w lib
