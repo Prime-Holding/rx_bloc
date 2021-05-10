@@ -1,6 +1,7 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_home/models/navigation_state.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/details/models/details_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/favorites/models/favorite_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
 
@@ -126,8 +127,8 @@ class Stub {
 }
 
 class AppStateStub {
-  static const initialState = AppState(
-    navigationState: NavigationState(
+  static AppState initialState = AppState(
+    navigationState: const NavigationState(
       items: [
         NavigationItem(
           type: NavigationItemType.search,
@@ -139,15 +140,16 @@ class AppStateStub {
         ),
       ],
     ),
-    puppyListState: PuppyListState(
+    puppyListState: const PuppyListState(
       isLoading: false,
       isError: false,
       searchQuery: '',
       puppies: [],
     ),
-    favoriteListState: FavoriteListState(
+    favoriteListState: const FavoriteListState(
       puppies: [],
     ),
+    detailsState: DetailsState(puppy: Puppy(asset: '', id: '', name: '')),
     favoriteCount: 0,
     error: '',
   );
@@ -169,6 +171,11 @@ class AppStateStub {
     ),
   );
 
+  static final withPuppy1FavoritedAndInDetails =
+      AppStateStub.withPuppy1Favorited.copyWith(
+    detailsState: DetailsState(puppy: Stub.puppy1.copyWith(isFavorite: true)),
+  );
+
   static final withPuppy1Listed = AppStateStub.withPuppy1.copyWith(
     favoriteListState: FavoriteListState(
       puppies: [Stub.puppy1.copyWith(isFavorite: true)],
@@ -182,6 +189,11 @@ class AppStateStub {
       puppies: [Stub.puppy1.copyWith(isFavorite: true)],
     ),
     favoriteCount: 1,
+  );
+
+  static final withPuppy1FavoritedAndListedInDetails =
+      AppStateStub.withPuppy1FavoritedAndListed.copyWith(
+    detailsState: DetailsState(puppy: Stub.puppy1.copyWith(isFavorite: true)),
   );
 }
 

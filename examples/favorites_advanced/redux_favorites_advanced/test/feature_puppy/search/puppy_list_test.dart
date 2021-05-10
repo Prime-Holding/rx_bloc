@@ -11,6 +11,8 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/base/redux/app_reducer.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/details/models/details_state.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/redux/epics.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/actions.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/epics.dart';
 
@@ -66,18 +68,25 @@ void main() {
         store.dispatch(PuppiesFetchRequestedAction());
       });
 
-      const state = AppStateStub.initialState;
+      final state = AppStateStub.initialState;
       expect(
-        store.onChange,
-        emitsInOrder([
-          state,
-          state.copyWith(
-            puppyListState: state.puppyListState.copyWith(
-              isError: true,
+          store.onChange,
+          emitsThrough(
+            state.copyWith(
+              puppyListState: state.puppyListState.copyWith(
+                isError: true,
+              ),
             ),
-          ),
-        ]),
-      );
+          )
+          // emitsInOrder([
+          //   state,
+          //   state.copyWith(
+          //     puppyListState: state.puppyListState.copyWith(
+          //       isError: true,
+          //     ),
+          //   ),
+          // ]),
+          );
     });
 
     test('Extra details fetch', () {
@@ -91,19 +100,26 @@ void main() {
           ..dispatch(ExtraDetailsFetchRequestedAction(puppy: Stub.puppy3));
       });
 
-      const state = AppStateStub.initialState;
+      final state = AppStateStub.initialState;
       expect(
         store.onChange,
-        emitsInOrder([
-          state,
-          state,
-          state,
+        emitsThrough(
           state.copyWith(
             puppyListState: state.puppyListState.copyWith(
               puppies: Stub.puppies123ExtraDetails,
             ),
           ),
-        ]),
+        ),
+        // emitsInOrder([
+        //   state,
+        //   state,
+        //   state,
+        //   state.copyWith(
+        //     puppyListState: state.puppyListState.copyWith(
+        //       puppies: Stub.puppies123ExtraDetails,
+        //     ),
+        //   ),
+        // ]),
       );
     });
 
@@ -137,14 +153,20 @@ void main() {
 
       expect(
         store.onChange,
-        emitsInOrder([
-          AppStateStub.initialState,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1FavoritedAndListed,
-        ]),
+        emitsThrough(
+          AppStateStub.withPuppy1FavoritedAndListedInDetails,
+        ),
+        // emitsInOrder([
+        //   AppStateStub.initialState,
+        //   AppStateStub.withPuppy1Favorited,
+        //   AppStateStub.withPuppy1FavoritedAndInDetails,
+        //   AppStateStub.withPuppy1FavoritedAndInDetails,
+        //   AppStateStub.withPuppy1FavoritedAndInDetails
+        //       .copyWith(favoriteCount: 1),
+        //   AppStateStub.withPuppy1FavoritedAndInDetails
+        //       .copyWith(favoriteCount: 1),
+        //   AppStateStub.withPuppy1FavoritedAndListedInDetails,
+        // ]),
       );
     });
 
@@ -158,21 +180,27 @@ void main() {
       });
 
       expect(
-        store.onChange,
-        emitsInOrder([
-          AppStateStub.initialState,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          //exception
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1,
-          AppStateStub.withPuppy1.copyWith(
-            error: Stub.testErr.toString(),
-          ),
-        ]),
-      );
+          store.onChange,
+          emitsThrough(
+            AppStateStub.withPuppy1.copyWith(
+              detailsState: DetailsState(puppy: Stub.puppy1),
+              error: Stub.testErr.toString(),
+            ),
+          )
+          // emitsInOrder([
+          //   AppStateStub.initialState,
+          //   AppStateStub.withPuppy1Favorited,
+          //   AppStateStub.withPuppy1Favorited,
+          //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          //   //exception
+          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          //   AppStateStub.withPuppy1,
+          //   AppStateStub.withPuppy1.copyWith(
+          //     error: Stub.testErr.toString(),
+          //   ),
+          // ]),
+          );
     });
 
     test('Unfavorite puppy success', () {
@@ -192,20 +220,22 @@ void main() {
 
       expect(
         store.onChange,
-        emitsInOrder([
-          AppStateStub.initialState,
-          AppStateStub.initialState,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1FavoritedAndListed,
-          AppStateStub.withPuppy1Listed,
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1,
-          AppStateStub.withPuppy1,
-          AppStateStub.withPuppy1,
-        ]),
+        emitsThrough(AppStateStub.withPuppy1
+            .copyWith(detailsState: DetailsState(puppy: Stub.puppy1))),
+        // emitsInOrder([
+        //   AppStateStub.initialState,
+        //   AppStateStub.initialState,
+        //   AppStateStub.withPuppy1Favorited,
+        //   AppStateStub.withPuppy1Favorited,
+        //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+        //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+        //   AppStateStub.withPuppy1FavoritedAndListed,
+        //   AppStateStub.withPuppy1Listed,
+        //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+        //   AppStateStub.withPuppy1,
+        //   AppStateStub.withPuppy1,
+        //   AppStateStub.withPuppy1,
+        // ]),
       );
     });
 
@@ -225,28 +255,35 @@ void main() {
       });
 
       expect(
-        store.onChange,
-        emitsInOrder([
-          AppStateStub.initialState,
-          AppStateStub.initialState,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited,
-          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1FavoritedAndListed,
-          AppStateStub.withPuppy1Listed,
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1,
-          //exception
-          AppStateStub.withPuppy1,
-          AppStateStub.withPuppy1,
-          AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          AppStateStub.withPuppy1.copyWith(
-            error: Stub.testErr.toString(),
-            favoriteCount: 1,
-          ),
-        ]),
-      );
+          store.onChange,
+          emitsThrough(
+            AppStateStub.withPuppy1.copyWith(
+              detailsState: DetailsState(puppy: Stub.puppy1),
+              favoriteCount: 1,
+              error: Stub.testErr.toString(),
+            ),
+          )
+          // emitsInOrder([
+          //   AppStateStub.initialState,
+          //   AppStateStub.initialState,
+          //   AppStateStub.withPuppy1Favorited,
+          //   AppStateStub.withPuppy1Favorited,
+          //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
+          //   AppStateStub.withPuppy1FavoritedAndListed,
+          //   AppStateStub.withPuppy1Listed,
+          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          //   AppStateStub.withPuppy1,
+          //   //exception
+          //   AppStateStub.withPuppy1,
+          //   AppStateStub.withPuppy1,
+          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
+          //   AppStateStub.withPuppy1.copyWith(
+          //     favoriteCount: 1,
+          //     error: Stub.testErr.toString(),
+          //   ),
+          // ]),
+          );
     });
 
     test('Search', () {

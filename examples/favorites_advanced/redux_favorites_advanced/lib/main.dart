@@ -10,6 +10,7 @@ import 'base/models/app_state.dart';
 import 'base/redux/app_reducer.dart';
 
 import 'feature_home/views/home_view.dart';
+import 'feature_puppy/redux/epics.dart';
 import 'feature_puppy/search/redux/epics.dart';
 
 void main() {
