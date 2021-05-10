@@ -20,7 +20,7 @@ class PuppyEditingController extends GetxController {
   final _name = ''.obs;
   final _characteristics = ''.obs;
   Puppy? _editedPuppy;
-  final radioGroup = 1.obs;
+  final gender = Gender.None.obs;
 
   @override
   void onInit() {
@@ -33,7 +33,7 @@ class PuppyEditingController extends GetxController {
     _name(_puppy.name);
     _characteristics(_puppy.displayCharacteristics);
     _editedPuppy = _puppy;
-    radioGroup(_puppy.gender.index);
+    gender(_puppy.gender);
     nameController = TextEditingController(text: _puppy.displayName);
     characteristicsController =
         TextEditingController(text: _puppy.displayCharacteristics);
@@ -42,7 +42,7 @@ class PuppyEditingController extends GetxController {
   bool isSaveEnabled() =>
       _name.value != _puppy.name ||
       _characteristics.value != _puppy.displayCharacteristics ||
-      radioGroup.value != _puppy.gender.index;
+      gender.value != _puppy.gender;
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -72,9 +72,9 @@ class PuppyEditingController extends GetxController {
   void setCharacteristics(String value) =>
       _editedPuppy = _editedPuppy!.copyWith(displayCharacteristics: value);
 
-  void handleGenderChanging(int value) {
-    radioGroup(value);
-    _editedPuppy = _editedPuppy!.copyWith(gender: Gender.values[value]);
+  void handleGenderChanging(Gender value) {
+    gender(value);
+    _editedPuppy = _editedPuppy!.copyWith(gender: value);
   }
 
   Future<String> savePuppy() async {

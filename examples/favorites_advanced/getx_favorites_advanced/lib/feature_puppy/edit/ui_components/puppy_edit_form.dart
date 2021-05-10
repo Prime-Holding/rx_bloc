@@ -56,12 +56,12 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                             style: TextStyles.editableTextStyle,
                           ),
                           Obx(
-                            () => Radio(
+                            () => Radio<Gender>(
                               key: const ValueKey('PuppyGenderMale'),
-                              value: 1,
-                              groupValue: controller.radioGroup.value,
+                              value: Gender.Male,
+                              groupValue: controller.gender.value,
                               onChanged: (value) =>
-                                  controller.handleGenderChanging(value as int),
+                                  controller.handleGenderChanging(value!),
                             ),
                           ),
                         ],
@@ -73,12 +73,12 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                             style: TextStyles.editableTextStyle,
                           ),
                           Obx(
-                            () => Radio(
+                            () => Radio<Gender>(
                               key: const ValueKey('PuppyGenderFemale'),
-                              value: 2,
-                              groupValue: controller.radioGroup.value,
+                              value: Gender.Female,
+                              groupValue: controller.gender.value,
                               onChanged: (value) =>
-                                  controller.handleGenderChanging(value as int),
+                                  controller.handleGenderChanging(value!),
                             ),
                           ),
                         ],
