@@ -2,7 +2,7 @@ part of 'puppy_manage_bloc.dart';
 
 @immutable
 class PuppyManageState extends Equatable {
-   const PuppyManageState({this.puppy, this.error});
+  const PuppyManageState({this.puppy, this.error});
 
   final Puppy? puppy;
   final String? error;
@@ -17,13 +17,5 @@ class PuppyManageState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [puppy,error];
-// PuppyManageState copyWith({
-//   List<Puppy>? favoritePuppies,
-//   String? error,
-// }) =>
-//     PuppyManageState(
-//       favoritePuppies: favoritePuppies ?? this.favoritePuppies,
-//       error: error,
-//     );
+  List<Object?> get props => [puppy, error];
 }

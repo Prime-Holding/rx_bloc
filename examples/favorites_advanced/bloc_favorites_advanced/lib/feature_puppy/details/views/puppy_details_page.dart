@@ -29,12 +29,6 @@ class PuppyDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         body: MultiBlocProvider(
           providers: [
-            // BlocProvider(
-            //   create: (context) => PuppyDetailsBloc(
-            //     coordinatorBloc: context.read(),
-            //     puppy: puppy,
-            //   ),
-            // ),
             BlocProvider(
               create: (context) => FavoritePuppiesBloc(
                 puppiesRepository: context.read(),

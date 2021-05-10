@@ -22,14 +22,14 @@ class PuppyFlowState {
       );
 }
 
-List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages){
-  if( state.manage == false){
+List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages) {
+  if (state.manage == false) {
     return [
       PuppyDetailsPage.page(puppy: state.puppy),
     ];
   }
 
-  if(state.manage == true){
+  if (state.manage == true) {
     return [
       PuppyDetailsPage.page(puppy: state.puppy),
       // PuppyEditPage.page(puppy: state.puppy),
@@ -38,6 +38,7 @@ List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages){
 
   return [];
 }
+
 class PuppyFlow extends StatelessWidget {
   const PuppyFlow({
     required this.puppy,
@@ -45,41 +46,16 @@ class PuppyFlow extends StatelessWidget {
   }) : super(key: key);
 
   static Route<PuppyFlowState> route({required Puppy puppy}) =>
-    MaterialPageRoute(builder: (_) => PuppyFlow(puppy: puppy));
+      MaterialPageRoute(builder: (_) => PuppyFlow(puppy: puppy));
 
   final Puppy puppy;
 
   @override
-  Widget build(BuildContext context) =>
-      FlowBuilder(
-          state: PuppyFlowState(
-            puppy: puppy,
-            manage: false,
-          ),
-          onGeneratePages: onGeneratePuppyPages,
+  Widget build(BuildContext context) => FlowBuilder(
+        state: PuppyFlowState(
+          puppy: puppy,
+          manage: false,
+        ),
+        onGeneratePages: onGeneratePuppyPages,
       );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

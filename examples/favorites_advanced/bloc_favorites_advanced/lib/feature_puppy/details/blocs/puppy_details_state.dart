@@ -2,7 +2,7 @@ part of 'puppy_details_bloc.dart';
 
 @immutable
 class PuppyDetailsState extends Equatable {
-  PuppyDetailsState(
+  const PuppyDetailsState(
       {this.imagePath,
       this.name,
       this.breed,
@@ -26,7 +26,7 @@ class PuppyDetailsState extends Equatable {
 
   final String? genderAndBreed;
 
-  Puppy? puppy;
+  final Puppy? puppy;
 
   @override
   List<Object?> get props => [
@@ -39,8 +39,7 @@ class PuppyDetailsState extends Equatable {
         genderAndBreed,
         puppy
       ];
-  PuppyDetailsState copyWith({  required Puppy puppy})=>
+
+  PuppyDetailsState copyWith({required Puppy puppy}) =>
       PuppyDetailsState(puppy: puppy);
 }
-
-// class PuppyDetailsInitial extends PuppyDetailsState {}

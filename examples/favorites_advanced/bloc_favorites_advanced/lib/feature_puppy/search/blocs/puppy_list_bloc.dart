@@ -6,7 +6,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -114,7 +113,6 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   @override
   Future<void> close() {
-    // print('close');
     _compositeSubscription.dispose();
     return super.close();
   }

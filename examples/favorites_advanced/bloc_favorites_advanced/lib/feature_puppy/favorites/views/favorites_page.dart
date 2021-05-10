@@ -22,8 +22,7 @@ class FavoritesPage extends StatelessWidget {
                         PuppyManageMarkAsFavoriteEvent(
                             puppy: puppy, isFavorite: isFavorite)),
                 onPuppyPressed: (puppy) =>
-                    Navigator.of(context)
-                        .push(PuppyFlow.route(puppy: puppy)),
+                    Navigator.of(context).push(PuppyFlow.route(puppy: puppy)),
               ),
             ),
           ),
