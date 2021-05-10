@@ -6,4 +6,5 @@ pub global activate -s path . --overwrite
 rx_bloc_cli create --org com.primeholding --project-name test_app --include-analytics true example/test_app
 cd example/test_app
 flutter pub get
+cp README.md ../
 cd ../..
