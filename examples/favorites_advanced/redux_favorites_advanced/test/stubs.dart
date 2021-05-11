@@ -165,22 +165,15 @@ class AppStateStub {
     ),
   );
 
+  static final withPuppy1Error = AppStateStub.withPuppy1.copyWith(
+    detailsState: DetailsState(puppy: Stub.puppy1),
+    error: Stub.testErr.toString(),
+  );
+
   static final withPuppy1Favorited = AppStateStub.initialState.copyWith(
     puppyListState: AppStateStub.initialState.puppyListState.copyWith(
       puppies: [Stub.puppy1.copyWith(isFavorite: true)],
     ),
-  );
-
-  static final withPuppy1FavoritedAndInDetails =
-      AppStateStub.withPuppy1Favorited.copyWith(
-    detailsState: DetailsState(puppy: Stub.puppy1.copyWith(isFavorite: true)),
-  );
-
-  static final withPuppy1Listed = AppStateStub.withPuppy1.copyWith(
-    favoriteListState: FavoriteListState(
-      puppies: [Stub.puppy1.copyWith(isFavorite: true)],
-    ),
-    favoriteCount: 1,
   );
 
   static final withPuppy1FavoritedAndListed =
@@ -189,11 +182,6 @@ class AppStateStub {
       puppies: [Stub.puppy1.copyWith(isFavorite: true)],
     ),
     favoriteCount: 1,
-  );
-
-  static final withPuppy1FavoritedAndListedInDetails =
-      AppStateStub.withPuppy1FavoritedAndListed.copyWith(
-    detailsState: DetailsState(puppy: Stub.puppy1.copyWith(isFavorite: true)),
   );
 }
 

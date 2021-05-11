@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:favorites_advanced_base/models.dart';
-
 import '../../../base/models/app_state.dart';
 import '../ui_components/puppy_details.dart';
 import 'puppy_details_view_model.dart';

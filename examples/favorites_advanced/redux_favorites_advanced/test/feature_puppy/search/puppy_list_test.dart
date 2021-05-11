@@ -11,8 +11,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/base/redux/app_reducer.dart';
-import 'package:redux_favorite_advanced_sample/feature_puppy/details/models/details_state.dart';
-import 'package:redux_favorite_advanced_sample/feature_puppy/redux/epics.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/actions.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/epics.dart';
 
@@ -33,7 +31,6 @@ void main() {
       combineEpics<AppState>([
         fetchPuppiesEpic(repository),
         fetchExtraDetailsEpic(repository),
-        puppyFavoriteEpic(repository),
         searchQueryEpic(repository),
       ]),
     );
@@ -44,7 +41,7 @@ void main() {
     );
   });
 
-  group('Epic Middleware', () {
+  group('Search Epic Middleware', () {
     test('Fetch puppies success', () {
       when(repository.getPuppies()).thenAnswer((_) async => Stub.puppies123);
 
@@ -70,23 +67,15 @@ void main() {
 
       final state = AppStateStub.initialState;
       expect(
-          store.onChange,
-          emitsThrough(
-            state.copyWith(
-              puppyListState: state.puppyListState.copyWith(
-                isError: true,
-              ),
+        store.onChange,
+        emitsThrough(
+          state.copyWith(
+            puppyListState: state.puppyListState.copyWith(
+              isError: true,
             ),
-          )
-          // emitsInOrder([
-          //   state,
-          //   state.copyWith(
-          //     puppyListState: state.puppyListState.copyWith(
-          //       isError: true,
-          //     ),
-          //   ),
-          // ]),
-          );
+          ),
+        ),
+      );
     });
 
     test('Extra details fetch', () {
@@ -110,16 +99,6 @@ void main() {
             ),
           ),
         ),
-        // emitsInOrder([
-        //   state,
-        //   state,
-        //   state,
-        //   state.copyWith(
-        //     puppyListState: state.puppyListState.copyWith(
-        //       puppies: Stub.puppies123ExtraDetails,
-        //     ),
-        //   ),
-        // ]),
       );
     });
 
@@ -141,150 +120,6 @@ void main() {
     //     ]),
     //   );
     // });
-
-    test('Favorite puppy success', () {
-      when(repository.favoritePuppy(Stub.puppy1, isFavorite: true))
-          .thenAnswer((_) async => Stub.puppy1.copyWith(isFavorite: true));
-
-      scheduleMicrotask(() {
-        store.dispatch(
-            PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: true));
-      });
-
-      expect(
-        store.onChange,
-        emitsThrough(
-          AppStateStub.withPuppy1FavoritedAndListedInDetails,
-        ),
-        // emitsInOrder([
-        //   AppStateStub.initialState,
-        //   AppStateStub.withPuppy1Favorited,
-        //   AppStateStub.withPuppy1FavoritedAndInDetails,
-        //   AppStateStub.withPuppy1FavoritedAndInDetails,
-        //   AppStateStub.withPuppy1FavoritedAndInDetails
-        //       .copyWith(favoriteCount: 1),
-        //   AppStateStub.withPuppy1FavoritedAndInDetails
-        //       .copyWith(favoriteCount: 1),
-        //   AppStateStub.withPuppy1FavoritedAndListedInDetails,
-        // ]),
-      );
-    });
-
-    test('Favorite puppy error', () {
-      when(repository.favoritePuppy(Stub.puppy1, isFavorite: true))
-          .thenAnswer((_) async => throw Stub.testErr);
-
-      scheduleMicrotask(() {
-        store.dispatch(
-            PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: true));
-      });
-
-      expect(
-          store.onChange,
-          emitsThrough(
-            AppStateStub.withPuppy1.copyWith(
-              detailsState: DetailsState(puppy: Stub.puppy1),
-              error: Stub.testErr.toString(),
-            ),
-          )
-          // emitsInOrder([
-          //   AppStateStub.initialState,
-          //   AppStateStub.withPuppy1Favorited,
-          //   AppStateStub.withPuppy1Favorited,
-          //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          //   //exception
-          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          //   AppStateStub.withPuppy1,
-          //   AppStateStub.withPuppy1.copyWith(
-          //     error: Stub.testErr.toString(),
-          //   ),
-          // ]),
-          );
-    });
-
-    test('Unfavorite puppy success', () {
-      when(repository.favoritePuppy(Stub.puppy1, isFavorite: true))
-          .thenAnswer((_) async => Stub.puppy1.copyWith(isFavorite: true));
-
-      when(repository.favoritePuppy(Stub.puppy1, isFavorite: false))
-          .thenAnswer((_) async => Stub.puppy1.copyWith(isFavorite: false));
-
-      scheduleMicrotask(() {
-        store
-          ..dispatch(
-              PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: true))
-          ..dispatch(
-              PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: false));
-      });
-
-      expect(
-        store.onChange,
-        emitsThrough(AppStateStub.withPuppy1
-            .copyWith(detailsState: DetailsState(puppy: Stub.puppy1))),
-        // emitsInOrder([
-        //   AppStateStub.initialState,
-        //   AppStateStub.initialState,
-        //   AppStateStub.withPuppy1Favorited,
-        //   AppStateStub.withPuppy1Favorited,
-        //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-        //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-        //   AppStateStub.withPuppy1FavoritedAndListed,
-        //   AppStateStub.withPuppy1Listed,
-        //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-        //   AppStateStub.withPuppy1,
-        //   AppStateStub.withPuppy1,
-        //   AppStateStub.withPuppy1,
-        // ]),
-      );
-    });
-
-    test('Unfavorite puppy error', () {
-      when(repository.favoritePuppy(Stub.puppy1, isFavorite: true))
-          .thenAnswer((_) async => Stub.puppy1.copyWith(isFavorite: true));
-
-      when(repository.favoritePuppy(Stub.puppy1, isFavorite: false))
-          .thenAnswer((_) async => throw Stub.testErr);
-
-      scheduleMicrotask(() {
-        store
-          ..dispatch(
-              PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: true))
-          ..dispatch(
-              PuppyToggleFavoriteAction(puppy: Stub.puppy1, isFavorite: false));
-      });
-
-      expect(
-          store.onChange,
-          emitsThrough(
-            AppStateStub.withPuppy1.copyWith(
-              detailsState: DetailsState(puppy: Stub.puppy1),
-              favoriteCount: 1,
-              error: Stub.testErr.toString(),
-            ),
-          )
-          // emitsInOrder([
-          //   AppStateStub.initialState,
-          //   AppStateStub.initialState,
-          //   AppStateStub.withPuppy1Favorited,
-          //   AppStateStub.withPuppy1Favorited,
-          //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          //   AppStateStub.withPuppy1Favorited.copyWith(favoriteCount: 1),
-          //   AppStateStub.withPuppy1FavoritedAndListed,
-          //   AppStateStub.withPuppy1Listed,
-          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          //   AppStateStub.withPuppy1,
-          //   //exception
-          //   AppStateStub.withPuppy1,
-          //   AppStateStub.withPuppy1,
-          //   AppStateStub.withPuppy1.copyWith(favoriteCount: 1),
-          //   AppStateStub.withPuppy1.copyWith(
-          //     favoriteCount: 1,
-          //     error: Stub.testErr.toString(),
-          //   ),
-          // ]),
-          );
-    });
 
     test('Search', () {
       when(repository.getPuppies(query: 'test'))
