@@ -12,3 +12,12 @@ class PuppyManageMarkAsFavoriteEvent extends PuppyManageEvent {
   final Puppy puppy;
   final bool isFavorite;
 }
+
+class PuppyManageSavePuppyEvent extends PuppyManageEvent{
+  PuppyManageSavePuppyEvent();
+}
+
+class PuppyManageSetImageEvent extends PuppyManageEvent {
+  PuppyManageSetImageEvent(this.source);
+  final ImagePickerAction source;
+}

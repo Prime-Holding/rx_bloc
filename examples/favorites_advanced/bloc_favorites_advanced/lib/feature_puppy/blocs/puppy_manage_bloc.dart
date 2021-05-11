@@ -15,10 +15,14 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
   PuppyManageBloc({
     required PuppiesRepository puppiesRepository,
     required CoordinatorBloc coordinatorBloc,
-  })   : _puppiesRepository = puppiesRepository,
+    Puppy? puppy,
+  })   : _puppy = puppy,
+        _puppiesRepository = puppiesRepository,
         _coordinatorBloc = coordinatorBloc,
         super(const PuppyManageState());
 
+  final Puppy? _puppy;
+  // final PuppyValidator _puppyValidator;
   final PuppiesRepository _puppiesRepository;
   final CoordinatorBloc _coordinatorBloc;
 
