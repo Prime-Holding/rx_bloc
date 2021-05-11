@@ -22,7 +22,7 @@ void main() {
 
   group('PuppyDetailsController ', () {
     test('initialization returns correct puppy', () {
-      expect(controller.puppy!.value, Stub.puppyTestUpdated);
+      expect(controller.puppy.value, Stub.puppyTestUpdated);
     });
 
     test('update edited puppy', () {
@@ -31,7 +31,7 @@ void main() {
       // action
       _mediatorController.puppyUpdated(puppy);
       // assert
-      expect(controller.puppy!.value.name, 'UpdatedName');
+      expect(controller.puppy.value.name, 'UpdatedName');
     });
 
     test('does not update puppy if updatedPuppies do not contain it', () {
@@ -40,7 +40,7 @@ void main() {
       // action
       _mediatorController.puppyUpdated(puppy);
       // assert
-      expect(controller.puppy!.value.name, 'Test');
+      expect(controller.puppy.value.name, 'Test');
     });
 
   });

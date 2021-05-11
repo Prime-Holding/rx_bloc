@@ -6,7 +6,7 @@ class PuppyDetailsController extends GetxController {
   PuppyDetailsController(this._puppy, this._mediatorController);
   final MediatorController _mediatorController;
   final Puppy _puppy;
-  late Rx<Puppy>? puppy;
+  late Rx<Puppy> puppy;
 
   @override
   void onInit() {
@@ -15,7 +15,7 @@ class PuppyDetailsController extends GetxController {
         final updatedPuppy = _mediatorController.puppiesToUpdate
             .firstWhereOrNull((element) => element.id == _puppy.id);
         if(updatedPuppy != null){
-          puppy!(updatedPuppy);
+          puppy(updatedPuppy);
         }
     });
     super.onInit();

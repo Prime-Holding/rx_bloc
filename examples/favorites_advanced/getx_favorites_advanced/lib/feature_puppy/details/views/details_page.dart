@@ -11,7 +11,7 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<PuppyDetailsController>();
-    final puppy = controller.puppy!.value;
+    final puppy = controller.puppy.value;
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -74,7 +74,7 @@ class DetailsPage extends StatelessWidget {
 
   Widget _buildAppBar() => Obx(() {
         final detailsController = Get.find<PuppyDetailsController>();
-        final puppy = detailsController.puppy!.value;
+        final puppy = detailsController.puppy.value;
         final isFavorite = puppy.isFavorite;
         return AppBar(
           bottomOpacity: 0,
