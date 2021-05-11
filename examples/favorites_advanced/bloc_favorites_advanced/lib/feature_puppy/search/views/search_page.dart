@@ -16,18 +16,15 @@ class SearchPage extends StatelessWidget {
       BlocBuilder<PuppyListBloc, PuppyListState>(
           key: const Key(Keys.puppySearchPage),
           builder: (context, state) {
-            // print('BlocBuilder builder: ${state.status}');
             switch (state.status) {
               case PuppyListStatus.initial:
                 return _buildPuppyListStatusInitial(context);
               case PuppyListStatus.failure:
-                // return _buildPuppyListStatusFailure();
                 return _buildPuppyListStatusFailure(context);
               case PuppyListStatus.success:
               case PuppyListStatus.reloading:
                 return _buildPuppyListStatusReloading(context, state);
               default:
-                // return _buildPuppyListStatusFailure();
                 return _buildPuppyListStatusFailure(context);
             }
           });
@@ -45,7 +42,6 @@ class SearchPage extends StatelessWidget {
               itemCount: state.searchedPuppies!.length,
               itemBuilder: (context, index) {
                 final item = state.searchedPuppies![index];
-                // print('PuppyListStatus  : ${state.status}');
                 return PuppyCard(
                   key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                   onVisible: (puppy) => context
@@ -53,8 +49,6 @@ class SearchPage extends StatelessWidget {
                       .add(FetchPuppyExtraDetailsEvent(puppy)),
                   puppy: item,
                   onCardPressed: (puppy) {
-                    // context.read<PuppyDetailsBloc>()
-                    // .add( PuppyDetailsEvent(puppy: puppy));
                     Navigator.of(context).push(PuppyFlow.route(puppy: puppy));
                   },
                   // When we click the favorite_border icon we receive
@@ -67,9 +61,6 @@ class SearchPage extends StatelessWidget {
               }),
         ),
       );
-
-  // Center _buildPuppyListStatusFailure() =>
-  //     const Center(child: Text('failed to fetch puppies'));
 
   // Display try again button to reload
   ErrorRetryWidget _buildPuppyListStatusFailure(BuildContext context) =>

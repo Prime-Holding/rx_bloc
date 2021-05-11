@@ -19,15 +19,7 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
         _puppy = puppy,
         super(const PuppyDetailsState()) {
     _coordinatorBloc.stream
-        .doOnData((event) {
-          // print('Puppy List Bloc coordinatorBloc.stream ! $event');
-        })
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
-        .doOnData((event) {
-          // print(
-          // 'Puppies Details Bloc coordinatorBloc.stream ${
-          //     event.favoritePuppy}');
-        })
         .listen((state) => add(PuppyDetailsEvent(
               puppy: state.favoritePuppy,
               updateException: state.updateException,
@@ -44,8 +36,6 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
     PuppyDetailsEvent event,
   ) async* {
     final puppy = event.puppy;
-    // print('Puppy Details puppy: $puppy');
-    // print('Puppy Details event.updateException: ${event.updateException}');
     if (event.updateException.isEmpty) {
       yield state.copyWith(
           puppy: _puppy!.copyWith(isFavorite: puppy.isFavorite));

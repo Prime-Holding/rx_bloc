@@ -35,7 +35,6 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
       PuppyManageMarkAsFavoriteEvent event) async* {
     final puppy = event.puppy;
     final isFavorite = event.isFavorite;
-    // print('MANAGE bloc _mapToMarkAsFavorite $puppy');
     try {
       ///Send event to search list to change the icon immediately
       _coordinatorBloc.add(
