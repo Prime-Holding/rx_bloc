@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:get/get.dart';
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
@@ -19,15 +20,5 @@ class PuppyDetailsController extends GetxController {
         }
     });
     super.onInit();
-  }
-
-}
-
-extension FirstWhereOrNullExtension<E> on RxList<E> {
-  E? firstWhereOrNull(bool Function(E) test) {
-    for (final element in this) {
-      if (test(element)) return element;
-    }
-    return null;
   }
 }
