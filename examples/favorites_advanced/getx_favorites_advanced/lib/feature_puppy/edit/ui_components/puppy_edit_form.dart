@@ -60,8 +60,8 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                               key: const ValueKey('PuppyGenderMale'),
                               value: Gender.Male,
                               groupValue: controller.gender.value,
-                              onChanged: (value) =>
-                                  controller.handleGenderChanging(value!),
+                              onChanged: (value) => controller
+                                  .handleGenderChanging(value ?? Gender.None),
                             ),
                           ),
                         ],
@@ -77,8 +77,8 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                               key: const ValueKey('PuppyGenderFemale'),
                               value: Gender.Female,
                               groupValue: controller.gender.value,
-                              onChanged: (value) =>
-                                  controller.handleGenderChanging(value!),
+                              onChanged: (value) => controller
+                                  .handleGenderChanging(value ?? Gender.None),
                             ),
                           ),
                         ],

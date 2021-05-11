@@ -39,6 +39,13 @@ class PuppyEditingController extends GetxController {
         TextEditingController(text: _puppy.breedCharacteristics);
   }
 
+  Puppy get editedPuppy => Puppy(
+      id: _editedPuppy!.id,
+      name: _editedPuppy!.name,
+      asset: _editedPuppy!.asset,
+      gender: _editedPuppy!.gender,
+      breedCharacteristics: _editedPuppy!.breedCharacteristics);
+
   bool isSaveEnabled() =>
       _name.value != _puppy.name ||
       _characteristics.value != _puppy.breedCharacteristics ||

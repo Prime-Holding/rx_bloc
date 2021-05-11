@@ -15,6 +15,7 @@ class PuppyDetailsController extends GetxController {
       try{
         final updatedPuppy = _mediatorController.puppiesToUpdate
             .firstWhere((element) => element.id == _puppy.id);
+        print('Gender of updated puppy is ${updatedPuppy.genderAsString}');
         puppy!(updatedPuppy);
       }catch (e){
         print(e.toString());

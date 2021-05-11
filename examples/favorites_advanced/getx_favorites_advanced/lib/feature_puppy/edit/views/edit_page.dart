@@ -37,7 +37,7 @@ class EditPage extends GetView<PuppyEditingController> {
                 Get.focusScope!.unfocus();
                 final resultMessage = await controller.savePuppy();
                 if(resultMessage.contains('success')){
-                  Get.back();
+                  Get.back(result: controller.editedPuppy);
                 }
                 await Get.showSnackbar(GetBar(
                   message: resultMessage,
