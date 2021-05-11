@@ -12,14 +12,22 @@ class PuppyDetailsController extends GetxController {
   void onInit() {
     puppy = _puppy.obs;
     ever(_mediatorController.puppiesToUpdate, (_) {
-      try{
         final updatedPuppy = _mediatorController.puppiesToUpdate
-            .firstWhere((element) => element.id == _puppy.id);
-        puppy!(updatedPuppy);
-      }catch (e){
-        print(e.toString());
-      }
+            .firstWhereOrNull((element) => element.id == _puppy.id);
+        if(updatedPuppy != null){
+          puppy!(updatedPuppy);
+        }
     });
     super.onInit();
+  }
+
+}
+
+extension FirstWhereOrNullExtension<E> on RxList<E> {
+  E? firstWhereOrNull(bool Function(E) test) {
+    for (final element in this) {
+      if (test(element)) return element;
+    }
+    return null;
   }
 }
