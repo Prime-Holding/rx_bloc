@@ -6,21 +6,28 @@ class PuppyDetailsController extends GetxController {
   PuppyDetailsController(this._puppy, this._mediatorController);
   final MediatorController _mediatorController;
   final Puppy _puppy;
-  late Rx<Puppy>? puppy;
+  late Rx<Puppy> puppy;
 
   @override
   void onInit() {
     puppy = _puppy.obs;
     ever(_mediatorController.puppiesToUpdate, (_) {
-      try{
-        final updatedPuppy = _mediatorController.puppiesToUpdate
-            .firstWhere((element) => element.id == _puppy.id);
-        print('Gender of updated puppy is ${updatedPuppy.genderAsString}');
-        puppy!(updatedPuppy);
-      }catch (e){
-        print(e.toString());
+      final updatedPuppy = _mediatorController.puppiesToUpdate
+          .firstWhereOrNull((element) => element.id == _puppy.id);
+      if(updatedPuppy != null){
+        puppy(updatedPuppy);
       }
     });
     super.onInit();
+  }
+
+}
+
+extension FirstWhereOrNullExtension<E> on RxList<E> {
+  E? firstWhereOrNull(bool Function(E) test) {
+    for (final element in this) {
+      if (test(element)) return element;
+    }
+    return null;
   }
 }

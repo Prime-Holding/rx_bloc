@@ -13,7 +13,7 @@ class DetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final puppy = controller.puppy!.value;
+    final puppy = controller.puppy.value;
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -38,7 +38,7 @@ class DetailsPage extends StatelessWidget {
               children: [
                 Obx(
                   () => Text(
-                    controller.puppy!.value.displayName!,
+                    controller.puppy.value.displayName!,
                     style: TextStyles.titleTextStyle,
                   ),
                 ),
@@ -47,8 +47,8 @@ class DetailsPage extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    '${controller.puppy!.value.genderAsString}, '
-                        '${controller.puppy!.value.breedTypeAsString}',
+                    '${controller.puppy.value.genderAsString}, '
+                        '${controller.puppy.value.breedTypeAsString}',
                     style: TextStyles.subtitleTextStyle,
                   ),
                 ),
@@ -57,7 +57,7 @@ class DetailsPage extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    controller.puppy!.value.displayCharacteristics!,
+                    controller.puppy.value.displayCharacteristics!,
                     style: TextStyles.subtitleTextStyle,
                   ),
                 ),
@@ -83,7 +83,7 @@ class DetailsPage extends StatelessWidget {
 
   Widget _buildAppBar() => Obx(() {
         final detailsController = Get.find<PuppyDetailsController>();
-        final puppy = detailsController.puppy!.value;
+        final puppy = detailsController.puppy.value;
         final isFavorite = puppy.isFavorite;
         return AppBar(
           bottomOpacity: 0,
