@@ -38,7 +38,7 @@ class DetailsPage extends StatelessWidget {
               children: [
                 Obx(
                   () => Text(
-                    controller.puppy!.value.displayName ?? 'MyName',
+                    controller.puppy!.value.displayName!,
                     style: TextStyles.titleTextStyle,
                   ),
                 ),

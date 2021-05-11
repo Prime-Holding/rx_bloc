@@ -7,24 +7,19 @@ class PuppyDetailsController extends GetxController {
   final MediatorController _mediatorController;
   final Puppy _puppy;
   late Rx<Puppy>? puppy;
-  // late Rx<String> name;
-  // late RxBool isFavorite;
-  // late RxString gender;
-  // late RxString bread;
-  // late RxString description;
 
   @override
   void onInit() {
-    puppy= _puppy.obs;
-    ever(
-        _mediatorController.puppiesToUpdate,
-        (_) => _mediatorController.puppiesToUpdate.forEach((element) {
-              if (element.id == _puppy.id) {
-                puppy!(element);
-              }
-            }));
+    puppy = _puppy.obs;
+    ever(_mediatorController.puppiesToUpdate, (_) {
+      try{
+        final updatedPuppy = _mediatorController.puppiesToUpdate
+            .firstWhere((element) => element.id == _puppy.id);
+        puppy!(updatedPuppy);
+      }catch (e){
+        print(e.toString());
+      }
+    });
     super.onInit();
   }
-
-
 }

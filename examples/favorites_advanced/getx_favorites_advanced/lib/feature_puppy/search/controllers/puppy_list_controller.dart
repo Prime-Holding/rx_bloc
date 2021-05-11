@@ -29,7 +29,7 @@ class PuppyListController extends GetxController
       updatePuppiesWith(_mediatorController.lastFetchedPuppies);
     });
     updateFavoriteStatusWorker = ever(_mediatorController.puppiesToUpdate, (_) {
-      updatePuppiesWith(_mediatorController.puppiesToUpdate.toList());
+      updatePuppiesWith(_mediatorController.puppiesToUpdate);
     });
     searchMatchingChecker = ever(
         _puppies,

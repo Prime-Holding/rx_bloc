@@ -31,17 +31,17 @@ class PuppyEditingController extends GetxController {
   void _initFields() {
     asset(_puppy.asset);
     _name(_puppy.name);
-    _characteristics(_puppy.displayCharacteristics);
+    _characteristics(_puppy.breedCharacteristics);
     _editedPuppy = _puppy;
     gender(_puppy.gender);
     nameController = TextEditingController(text: _puppy.displayName);
     characteristicsController =
-        TextEditingController(text: _puppy.displayCharacteristics);
+        TextEditingController(text: _puppy.breedCharacteristics);
   }
 
   bool isSaveEnabled() =>
       _name.value != _puppy.name ||
-      _characteristics.value != _puppy.displayCharacteristics ||
+      _characteristics.value != _puppy.breedCharacteristics ||
       gender.value != _puppy.gender;
 
   String? validateName(String? value) {
@@ -65,14 +65,15 @@ class PuppyEditingController extends GetxController {
   void changeLocalName(String value) => _name(value);
 
   void setName(String value) =>
-      _editedPuppy = _editedPuppy!.copyWith(name: value, displayName: value);
+      _editedPuppy = _editedPuppy!.copyWith(name: value);
 
   void changeLocalCharacteristics(String value) => _characteristics(value);
 
   void setCharacteristics(String value) =>
-      _editedPuppy = _editedPuppy!.copyWith(displayCharacteristics: value);
+      _editedPuppy = _editedPuppy!.copyWith(breedCharacteristics: value);
 
   void handleGenderChanging(Gender value) {
+    print(value);
     gender(value);
     _editedPuppy = _editedPuppy!.copyWith(gender: value);
   }
