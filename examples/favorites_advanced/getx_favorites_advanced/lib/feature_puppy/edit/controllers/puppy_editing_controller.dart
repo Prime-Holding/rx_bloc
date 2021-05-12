@@ -21,11 +21,13 @@ class PuppyEditingController extends GetxController {
   final _characteristics = ''.obs;
   late Puppy _editedPuppy;
   final _gender = Gender.None.obs;
+  final _breed = BreedType.None.obs;
 
   static const invalidValue = 'Please enter valid values in all fields!';
   static const successfullySaved = 'Puppy is saved successfully.';
 
   Gender get genderValue => _gender.value;
+  BreedType get breed => _breed.value;
 
   @override
   void onInit() {
@@ -39,6 +41,8 @@ class PuppyEditingController extends GetxController {
     _characteristics(_puppy.breedCharacteristics);
     _editedPuppy = _puppy;
     _gender(_puppy.gender);
+    _breed(_puppy.breedType);
+
     nameController = TextEditingController(text: _puppy.name);
     characteristicsController =
         TextEditingController(text: _puppy.breedCharacteristics);
@@ -47,7 +51,8 @@ class PuppyEditingController extends GetxController {
   bool isSaveEnabled() =>
       _name.value != _puppy.name ||
       _characteristics.value != _puppy.breedCharacteristics ||
-      _gender.value != _puppy.gender;
+      _gender.value != _puppy.gender ||
+      _breed.value != _puppy.breedType;
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -80,6 +85,12 @@ class PuppyEditingController extends GetxController {
   void handleGenderChanging(Gender value) {
     _gender(value);
     _editedPuppy = _editedPuppy.copyWith(gender: value);
+  }
+
+  void handleBreedChanging(BreedType value) {
+    _breed(value);
+    _editedPuppy = _editedPuppy.copyWith(breedType: value);
+    print(value.toString());
   }
 
   Future<String> savePuppy() async {

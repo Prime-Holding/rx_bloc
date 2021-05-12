@@ -83,10 +83,23 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
   Widget _buildBreedDropDownButton() => EditFormItem(
         icon: Icons.pets,
         title: 'Breed',
-        formField: DropdownButtonFormField(
-          items: [DropdownMenuItem(child: Text(BreedType.Akita.toString()))],
+        formField: Obx(
+          () => DropdownButton<BreedType>(
+            hint: Obx(
+              () => Text(controller.breed.toString().substring(10)),
+            ),
+            value: controller.breed,
+            style: TextStyles.editableTextStyle,
+            onChanged: (value) => controller.handleBreedChanging(value!),
+            items: _buildMenuItems(),
+          ),
         ),
       );
+
+  List<DropdownMenuItem<BreedType>> _buildMenuItems() => BreedType.values
+      .map((e) => DropdownMenuItem<BreedType>(
+          value: e, child: Text(e.toString().substring(10))))
+      .toList();
 
   Widget _buildGenderRadioButtons() => EditFormItem(
         icon: Icons.wc,
