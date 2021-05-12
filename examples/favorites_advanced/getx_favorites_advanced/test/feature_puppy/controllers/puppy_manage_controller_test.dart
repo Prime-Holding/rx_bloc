@@ -16,38 +16,41 @@ import 'puppy_manage_controller_test.mocks.dart';
   PuppiesRepository,
 ])
 Future<void> main() async {
-  late MockPuppiesRepository mockRepo;
-  late MediatorController mediatorController;
-  late PuppyManageController controller;
+  late MockPuppiesRepository _mockRepo;
+  late MediatorController _mediatorController;
+  late PuppyManageController _controller;
 
   setUp(() {
     Get.testMode = true;
-    mockRepo = MockPuppiesRepository();
-    Get.put<PuppiesRepository>(mockRepo);
-    mediatorController = Get.put(MediatorController());
-    controller = Get.put(PuppyManageController(mockRepo, mediatorController));
+    _mockRepo = MockPuppiesRepository();
+    Get.put<PuppiesRepository>(_mockRepo);
+    _mediatorController = Get.put(MediatorController());
+    _controller = Get.put(
+        PuppyManageController(_mockRepo, _mediatorController));
   });
 
   tearDown(() {
-    Get.delete<PuppiesRepository>();
+    Get..delete<PuppiesRepository>()
+    ..delete<MediatorController>()
+    ..delete<PuppyManageController>();
   });
 
   group('PuppyManageController - markAsFavorite - ', () {
     test('successful called function', () async {
       // arrange
-      when(mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
+      when(_mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
           .thenAnswer((_) async => Stub.puppyTestUpdated);
       // action
-      await controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
+      await _controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
       // assert
       expect(
-          mediatorController.puppiesToUpdate, <Puppy>[Stub.puppyTestUpdated]);
+          _mediatorController.puppiesToUpdate, <Puppy>[Stub.puppyTestUpdated]);
       // arrange
-      when(mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
+      when(_mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
           .thenAnswer((_) async => throw Stub.testErr);
       // action
-      await controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
-      final puppiesToUpdate = mediatorController.puppiesToUpdate;
+      await _controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
+      final puppiesToUpdate = _mediatorController.puppiesToUpdate;
       // assert
       await expectLater(puppiesToUpdate, <Puppy>[Stub.puppyTest]);
     });

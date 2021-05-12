@@ -26,7 +26,10 @@ class PuppyEditingController extends GetxController {
   static const invalidValue = 'Please enter valid values in all fields!';
   static const successfullySaved = 'Puppy is saved successfully.';
 
-  Gender get genderValue => _gender.value;
+  Puppy get editedPuppy => _editedPuppy;
+  String get name => _name.value;
+  String get characteristics => _characteristics.value;
+  Gender get gender => _gender.value;
   BreedType get breed => _breed.value;
 
   @override
@@ -90,7 +93,6 @@ class PuppyEditingController extends GetxController {
   void handleBreedChanging(BreedType value) {
     _breed(value);
     _editedPuppy = _editedPuppy.copyWith(breedType: value);
-    print(value.toString());
   }
 
   Future<String> savePuppy() async {

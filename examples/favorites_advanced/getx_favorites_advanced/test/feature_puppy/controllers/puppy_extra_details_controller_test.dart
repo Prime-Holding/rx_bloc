@@ -16,20 +16,22 @@ import 'puppy_extra_details_controller_test.mocks.dart';
   PuppiesRepository,
 ])
 void main() {
-  late MockPuppiesRepository mockRepo;
-  late MediatorController mediatorController;
-  late PuppyExtraDetailsController controller;
+  late MockPuppiesRepository _mockRepo;
+  late MediatorController _mediatorController;
+  late PuppyExtraDetailsController _controller;
 
   setUp(() {
     Get.testMode = true;
-    mockRepo = MockPuppiesRepository();
-    mediatorController = Get.put(MediatorController());
-    controller =
-        Get.put(PuppyExtraDetailsController(mockRepo, mediatorController));
+    _mockRepo = MockPuppiesRepository();
+    Get.put<PuppiesRepository>(_mockRepo);
+    _mediatorController = Get.put(MediatorController());
+    _controller =
+        Get.put(PuppyExtraDetailsController(_mockRepo, _mediatorController));
   });
 
   tearDown(() {
     Get..delete<MockPuppiesRepository>()
+      ..delete<MediatorController>()
       ..delete<PuppyExtraDetailsController>();
   });
 
@@ -37,53 +39,54 @@ void main() {
     test('initialization', () async {
       //arrange
       //action
-      await controller.onInit();
+      await _controller.onInit();
       //assert
-      final puppiesCount = controller.lastFetchedPuppies.length;
+      final puppiesCount = _controller.lastFetchedPuppies.length;
       expect(puppiesCount, 0);
     });
 
     test('fetchExtraDetails', () async {
       //arrange
-      when(mockRepo.fetchFullEntities(['1', '2'])).thenAnswer(
+      when(_mockRepo.fetchFullEntities(['1', '2'])).thenAnswer(
           (_) async => Future.value(Stub.puppies1And2WithExtraDetails));
       //action
-      await controller.fetchExtraDetails(Stub.puppy1);
-      await controller.fetchExtraDetails(Stub.puppy2);
-      await Future.delayed(const Duration(milliseconds: 110));
+      await _controller.fetchExtraDetails(Stub.puppy1);
+      await _controller.fetchExtraDetails(Stub.puppy2);
+      await Stub.delayed(Stub.puppy3, milliseconds: 120);
       //assert
-      final updatedPuppies = controller.lastFetchedPuppies.length;
+      final updatedPuppies = _controller.lastFetchedPuppies.length;
       expect(updatedPuppies, 2);
-      verifyNever(mockRepo.fetchFullEntities([Stub.puppy1.id]));
-      verifyNever(mockRepo.fetchFullEntities([Stub.puppy2.id]));
-      verify(mockRepo.fetchFullEntities(Stub.puppies12.ids)).called(1);
+      verifyNever(_mockRepo.fetchFullEntities([Stub.puppy1.id]));
+      verifyNever(_mockRepo.fetchFullEntities([Stub.puppy2.id]));
+      verifyNever(_mockRepo.fetchFullEntities(Stub.puppies123.ids));
+      verify(_mockRepo.fetchFullEntities(Stub.puppies12.ids)).called(1);
     });
 
     test('does not fetch details when Repository throws Exception', () async {
       //arrange
-      when(mockRepo.fetchFullEntities(['1', '2']))
+      when(_mockRepo.fetchFullEntities(['1', '2']))
           .thenAnswer((_) async => throw Stub.testErr);
       //action
-      await controller.fetchExtraDetails(Stub.puppy1);
-      await controller.fetchExtraDetails(Stub.puppy2);
+      await _controller.fetchExtraDetails(Stub.puppy1);
+      await _controller.fetchExtraDetails(Stub.puppy2);
       await Future.delayed(const Duration(milliseconds: 110));
       //assert
       final hasPuppyExtraDetail =
-          controller.lastFetchedPuppies.first.hasExtraDetails();
+          _controller.lastFetchedPuppies.first.hasExtraDetails();
       expect(hasPuppyExtraDetail, isFalse);
     });
 
     test('clearExtraFetchedDetails', () async {
       //arrange
-      when(mockRepo.fetchFullEntities(['1', '2']))
+      when(_mockRepo.fetchFullEntities(['1', '2']))
           .thenAnswer((_) async => Stub.puppies1And2WithExtraDetails);
       //action
-      await controller.fetchExtraDetails(Stub.puppy1);
-      await controller.fetchExtraDetails(Stub.puppy2);
+      await _controller.fetchExtraDetails(Stub.puppy1);
+      await _controller.fetchExtraDetails(Stub.puppy2);
       await Future.delayed(const Duration(milliseconds: 110));
-      mediatorController.clearFetchedExtraDetails();
+      _mediatorController.clearFetchedExtraDetails();
       //assert
-      final updatedPuppies = controller.lastFetchedPuppies.length;
+      final updatedPuppies = _controller.lastFetchedPuppies.length;
       expect(updatedPuppies, 0);
     });
   });

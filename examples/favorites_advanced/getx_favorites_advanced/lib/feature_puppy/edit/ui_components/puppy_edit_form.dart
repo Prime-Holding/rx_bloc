@@ -117,7 +117,7 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                   () => Radio<Gender>(
                     key: const ValueKey('PuppyGenderMale'),
                     value: Gender.Male,
-                    groupValue: controller.genderValue,
+                    groupValue: controller.gender,
                     onChanged: (value) =>
                         controller.handleGenderChanging(value ?? Gender.None),
                   ),
@@ -134,7 +134,7 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
                   () => Radio<Gender>(
                     key: const ValueKey('PuppyGenderFemale'),
                     value: Gender.Female,
-                    groupValue: controller.genderValue,
+                    groupValue: controller.gender,
                     onChanged: (value) =>
                         controller.handleGenderChanging(value ?? Gender.None),
                   ),
