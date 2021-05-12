@@ -11,6 +11,12 @@ class PuppyDetailsController extends GetxController {
   final Puppy _puppy;
   late Rx<Puppy> puppy;
 
+  String get name => puppy.value.name;
+  String get characteristics => puppy.value.breedCharacteristics;
+  String get gender => puppy.value.genderAsString;
+  String get breed => puppy.value.breedTypeAsString!;
+  String get asset => puppy.value.asset;
+
   @override
   void onInit() {
     puppy = _puppy.obs;

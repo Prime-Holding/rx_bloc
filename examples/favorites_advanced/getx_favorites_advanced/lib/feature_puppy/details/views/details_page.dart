@@ -39,7 +39,7 @@ class DetailsPage extends StatelessWidget {
               children: [
                 Obx(
                   () => Text(
-                    puppy.name,
+                    controller.name,
                     style: TextStyles.titleTextStyle,
                   ),
                 ),
@@ -48,8 +48,8 @@ class DetailsPage extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    '${puppy.gender}, '
-                    '${puppy.breedTypeAsString}',
+                    '${controller.gender}, '
+                        '${controller.breed}',
                     style: TextStyles.subtitleTextStyle,
                   ),
                 ),
@@ -58,7 +58,7 @@ class DetailsPage extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    puppy.breedCharacteristics,
+                    controller.characteristics,
                     style: TextStyles.subtitleTextStyle,
                   ),
                 ),
