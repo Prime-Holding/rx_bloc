@@ -25,6 +25,11 @@ class PuppyEditingController extends GetxController {
 
   static const invalidValue = 'Please enter valid values in all fields!';
   static const successfullySaved = 'Puppy is saved successfully.';
+  static const emptyName = 'Name must not be empty.';
+  static const tooLongName = 'Name too long.';
+  static const emptyCharacteristics = 'Characteristics must not be empty.';
+  static const tooLongCharacteristics =
+      'Characteristics must not exceed 250 characters.';
 
   Puppy get editedPuppy => _editedPuppy;
   String get name => _name.value;
@@ -59,19 +64,19 @@ class PuppyEditingController extends GetxController {
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Name must not be empty.';
+      return emptyName;
     }
     if (value.trim().length > 30) {
-      return 'Name too long.';
+      return tooLongName;
     }
   }
 
   String? validateCharacteristics(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Characteristics must not be empty.';
+      return emptyCharacteristics;
     }
     if (value.trim().length > 250) {
-      return 'Characteristics must not exceed 250 characters .';
+      return tooLongCharacteristics;
     }
   }
 
