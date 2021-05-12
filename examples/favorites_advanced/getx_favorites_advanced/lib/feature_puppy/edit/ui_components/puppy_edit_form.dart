@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:getx_favorites_advanced/feature_puppy/edit/controllers/puppy_editing_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/edit/ui_components/edit_form_item.dart';
 
 class PuppyEditForm extends GetView<PuppyEditingController> {
   @override
@@ -16,99 +18,21 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
             autovalidateMode: AutovalidateMode.always,
             child: Column(
               children: [
-                _createPuppyAvatar(),
+                _buildPuppyAvatar(),
                 const SizedBox(
                   height: 16,
                 ),
-                EditFormItem(
-                  icon: Icons.account_box,
-                  title: 'Name',
-                  formField: TextFormField(
-                    controller: controller.nameController,
-                    keyboardType: TextInputType.name,
-                    validator: (value) => controller.validateName(value),
-                    onSaved: (value) => controller.setName(value!),
-                    onChanged: (value) => controller.changeLocalName(value),
-                    maxLines: 1,
-                    textInputAction: TextInputAction.next,
-                    style: TextStyles.editableTextStyle,
-                  ),
-                ),
-                EditFormItem(
-                  icon: Icons.pets,
-                  title: 'Breed',
-                  formField: DropdownButtonFormField(
-                    items: [
-                      DropdownMenuItem(child: Text(BreedType.Akita.toString()))
-                    ],
-                  ),
-                ),
-                EditFormItem(
-                  icon: Icons.wc,
-                  title: 'Gender',
-                  formField: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        children: [
-                          const Text(
-                            'Male',
-                            style: TextStyles.editableTextStyle,
-                          ),
-                          Obx(
-                            () => Radio<Gender>(
-                              key: const ValueKey('PuppyGenderMale'),
-                              value: Gender.Male,
-                              groupValue: controller.gender.value,
-                              onChanged: (value) => controller
-                                  .handleGenderChanging(value ?? Gender.None),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Female',
-                            style: TextStyles.editableTextStyle,
-                          ),
-                          Obx(
-                            () => Radio<Gender>(
-                              key: const ValueKey('PuppyGenderFemale'),
-                              value: Gender.Female,
-                              groupValue: controller.gender.value,
-                              onChanged: (value) => controller
-                                  .handleGenderChanging(value ?? Gender.None),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                EditFormItem(
-                  icon: Icons.article,
-                  title: 'Characteristics',
-                  formField: TextFormField(
-                    controller: controller.characteristicsController,
-                    keyboardType: TextInputType.text,
-                    validator: (value) =>
-                        controller.validateCharacteristics(value),
-                    onSaved: (value) => controller.setCharacteristics(value!),
-                    onChanged: (value) =>
-                        controller.changeLocalCharacteristics(value),
-                    maxLines: 8,
-                    textInputAction: TextInputAction.next,
-                    style: TextStyles.editableTextStyle,
-                  ),
-                )
+                _buildNameFormField(),
+                _buildBreedDropDownButton(),
+                _buildGenderRadioButtons(),
+                _buildCharacteristicsFormField(),
               ],
             ),
           ),
         ),
       );
 
-  Widget _createPuppyAvatar() => Container(
+  Widget _buildPuppyAvatar() => Container(
         color: Colors.transparent,
         alignment: Alignment.center,
         child: Stack(
@@ -140,56 +64,86 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
           ],
         ),
       );
-}
 
-class EditFormItem extends StatelessWidget {
-  const EditFormItem({
-    required IconData icon,
-    required String title,
-    required Widget formField,
-    Key? key,
-  })  : _title = title,
-        _icon = icon,
-        _formField = formField,
-        super(key: key);
-
-  final IconData _icon;
-  final String _title;
-  final Widget _formField;
-
-  @override
-  Widget build(BuildContext context) => Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
+  Widget _buildNameFormField() => EditFormItem(
+        icon: Icons.account_box,
+        title: 'Name',
+        formField: TextFormField(
+          controller: controller.nameController,
+          keyboardType: TextInputType.name,
+          validator: (value) => controller.validateName(value),
+          onSaved: (value) => controller.setName(value!),
+          onChanged: (value) => controller.changeLocalName(value),
+          maxLines: 1,
+          textInputAction: TextInputAction.next,
+          style: TextStyles.editableTextStyle,
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    _icon,
-                    color: Colors.black54,
+      );
+
+  Widget _buildBreedDropDownButton() => EditFormItem(
+        icon: Icons.pets,
+        title: 'Breed',
+        formField: DropdownButtonFormField(
+          items: [DropdownMenuItem(child: Text(BreedType.Akita.toString()))],
+        ),
+      );
+
+  Widget _buildGenderRadioButtons() => EditFormItem(
+        icon: Icons.wc,
+        title: 'Gender',
+        formField: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                const Text(
+                  'Male',
+                  style: TextStyles.editableTextStyle,
+                ),
+                Obx(
+                  () => Radio<Gender>(
+                    key: const ValueKey('PuppyGenderMale'),
+                    value: Gender.Male,
+                    groupValue: controller.genderValue,
+                    onChanged: (value) =>
+                        controller.handleGenderChanging(value ?? Gender.None),
                   ),
-                  const SizedBox(
-                    width: 8,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Text(
+                  'Female',
+                  style: TextStyles.editableTextStyle,
+                ),
+                Obx(
+                  () => Radio<Gender>(
+                    key: const ValueKey('PuppyGenderFemale'),
+                    value: Gender.Female,
+                    groupValue: controller.genderValue,
+                    onChanged: (value) =>
+                        controller.handleGenderChanging(value ?? Gender.None),
                   ),
-                  Text(
-                    _title,
-                    style: TextStyles.editableTextStyle
-                        .copyWith(color: Colors.black54),
-                  ),
-                ],
-              ),
-              const Divider(
-                thickness: 1,
-              ),
-              _formField,
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildCharacteristicsFormField() => EditFormItem(
+        icon: Icons.article,
+        title: 'Characteristics',
+        formField: TextFormField(
+          controller: controller.characteristicsController,
+          keyboardType: TextInputType.text,
+          validator: (value) => controller.validateCharacteristics(value),
+          onSaved: (value) => controller.setCharacteristics(value!),
+          onChanged: (value) => controller.changeLocalCharacteristics(value),
+          maxLines: 8,
+          textInputAction: TextInputAction.next,
+          style: TextStyles.editableTextStyle,
         ),
       );
 }

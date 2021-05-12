@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:favorites_advanced_base/core.dart';
 import 'package:get/get.dart';
+
+import 'package:favorites_advanced_base/core.dart';
+
 import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
 
 class PuppyEditingController extends GetxController {
@@ -10,8 +12,6 @@ class PuppyEditingController extends GetxController {
   final PuppiesRepository _repository;
   final MediatorController _mediatorController;
   final Puppy _puppy;
-  static const invalidValue = 'Please enter valid values in all fields!';
-  static const successfullySaved = 'Puppy is saved successfully.';
 
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   late TextEditingController nameController, characteristicsController;
@@ -19,8 +19,13 @@ class PuppyEditingController extends GetxController {
   final asset = ''.obs;
   final _name = ''.obs;
   final _characteristics = ''.obs;
-  Puppy? _editedPuppy;
-  final gender = Gender.None.obs;
+  late Puppy _editedPuppy;
+  final _gender = Gender.None.obs;
+
+  static const invalidValue = 'Please enter valid values in all fields!';
+  static const successfullySaved = 'Puppy is saved successfully.';
+
+  Gender get genderValue => _gender.value;
 
   @override
   void onInit() {
@@ -33,23 +38,16 @@ class PuppyEditingController extends GetxController {
     _name(_puppy.name);
     _characteristics(_puppy.breedCharacteristics);
     _editedPuppy = _puppy;
-    gender(_puppy.gender);
-    nameController = TextEditingController(text: _puppy.displayName);
+    _gender(_puppy.gender);
+    nameController = TextEditingController(text: _puppy.name);
     characteristicsController =
         TextEditingController(text: _puppy.breedCharacteristics);
   }
 
-  Puppy get editedPuppy => Puppy(
-      id: _editedPuppy!.id,
-      name: _editedPuppy!.name,
-      asset: _editedPuppy!.asset,
-      gender: _editedPuppy!.gender,
-      breedCharacteristics: _editedPuppy!.breedCharacteristics);
-
   bool isSaveEnabled() =>
       _name.value != _puppy.name ||
       _characteristics.value != _puppy.breedCharacteristics ||
-      gender.value != _puppy.gender;
+      _gender.value != _puppy.gender;
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -72,17 +70,16 @@ class PuppyEditingController extends GetxController {
   void changeLocalName(String value) => _name(value);
 
   void setName(String value) =>
-      _editedPuppy = _editedPuppy!.copyWith(name: value);
+      _editedPuppy = _editedPuppy.copyWith(name: value);
 
   void changeLocalCharacteristics(String value) => _characteristics(value);
 
   void setCharacteristics(String value) =>
-      _editedPuppy = _editedPuppy!.copyWith(breedCharacteristics: value);
+      _editedPuppy = _editedPuppy.copyWith(breedCharacteristics: value);
 
   void handleGenderChanging(Gender value) {
-    print(value);
-    gender(value);
-    _editedPuppy = _editedPuppy!.copyWith(gender: value);
+    _gender(value);
+    _editedPuppy = _editedPuppy.copyWith(gender: value);
   }
 
   Future<String> savePuppy() async {
@@ -95,9 +92,9 @@ class PuppyEditingController extends GetxController {
     try {
       globalFormKey.currentState!.save();
       final updatedPuppy =
-          await _repository.updatePuppy(_editedPuppy!.id, _editedPuppy!);
+          await _repository.updatePuppy(_editedPuppy.id, _editedPuppy);
       _mediatorController.puppyUpdated(updatedPuppy);
-      await Future.delayed(const Duration(milliseconds: 2000));
+      await Future.delayed(const Duration(milliseconds: 1500));
       isLoading(false);
       return successfullySaved;
     } catch (e) {

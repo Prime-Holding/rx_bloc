@@ -22,13 +22,13 @@ void main() {
 
   group('PuppyDetailsController ', () {
     test('initialization returns correct puppy', () {
-      expect(controller.puppy!.value, Stub.puppyTestUpdated);
+      expect(controller.puppy.value, Stub.puppyTestUpdated);
     });
 
     test('update edited puppy', () {
       _mediatorController
           .puppyUpdated(Stub.puppyTestUpdated.copyWith(name: 'UpdatedName'));
-      expect(controller.puppy!.value.name, 'UpdatedName');
+      expect(controller.puppy.value.name, 'UpdatedName');
     });
   });
 }

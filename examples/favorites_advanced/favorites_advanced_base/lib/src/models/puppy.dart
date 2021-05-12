@@ -46,7 +46,8 @@ class Puppy implements Entity {
           isFavorite == other.isFavorite &&
           breedType == other.breedType &&
           breedCharacteristics == other.breedCharacteristics &&
-          displayCharacteristics == other.displayCharacteristics;
+          displayCharacteristics == other.displayCharacteristics &&
+          gender == other.gender;
     }
 
     return false;
