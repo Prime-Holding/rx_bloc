@@ -20,22 +20,23 @@ class PuppyEditAvatar extends StatelessWidget {
           Hero(
             tag: heroTag,
             child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(90),
-                ),
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: PuppyAvatar(
-                        asset: imgPath,
-                        radius: 128,
-                      ),
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(90),
+              ),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: PuppyAvatar(
+                      asset: imgPath,
+                      radius: 128,
                     ),
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
           Positioned(
             right: 1,

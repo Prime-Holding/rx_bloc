@@ -7,29 +7,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'puppy_edit_providers.dart';
 
-class PuppyEditPage extends StatefulWidget{
+class PuppyEditPage extends StatefulWidget {
   const PuppyEditPage({
     required Puppy? puppy,
     Key? key,
-}) : _puppy = puppy,
-  super(key: key);
+  })  : _puppy = puppy,
+        super(key: key);
 
   static Page page({required Puppy? puppy}) => MaterialPage(
-    child: MultiBlocProvider(
-      providers: _getProviders(puppy),
-      child: PuppyEditPage(puppy: puppy),
-    )
-  );
+          child: MultiBlocProvider(
+        providers: _getProviders(puppy),
+        child: PuppyEditPage(puppy: puppy),
+      ));
 
   final Puppy? _puppy;
 
   @override
   _PuppyEditPageState createState() => _PuppyEditPageState();
-
 }
-class _PuppyEditPageState extends State<PuppyEditPage>{
+
+class _PuppyEditPageState extends State<PuppyEditPage> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -38,39 +37,21 @@ class _PuppyEditPageState extends State<PuppyEditPage>{
       BlocBuilder<PuppyManageBloc, PuppyManageState>(
         builder: (context, state) => WillPopScope(
           onWillPop: () =>
-          state.puppy! != null ? Future.value(false) : Future.value(true),
+              state.puppy! != null ? Future.value(false) : Future.value(true),
           child: BlocBuilder<PuppyManageBloc, PuppyManageState>(
             builder: (context, manageState) => Scaffold(
               appBar: PuppyEditAppBar(
                 enabled: true,
                 // onSavePressed: () => SavePuppyEvent(),
-                onSavePressed: () => context.read<PuppyManageBloc>().add(
-                  PuppyManageSavePuppyEvent()
-                ),
+                onSavePressed: () => context
+                    .read<PuppyManageBloc>()
+                    .add(PuppyManageSavePuppyEvent()),
               ),
               body: PuppyEditForm(
                 puppy: widget._puppy,
               ),
             ),
           ),
-            ),
+        ),
       );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
