@@ -26,10 +26,10 @@ class PuppyListController extends GetxController
     await _loadPuppies('');
     updateFetchedDetailsWorker =
         ever(_mediatorController.lastFetchedPuppies, (_) {
-      updatePuppiesWith(_mediatorController.lastFetchedPuppies);
+      _updatePuppiesWith(_mediatorController.lastFetchedPuppies);
     });
     updateFavoriteStatusWorker = ever(_mediatorController.puppiesToUpdate, (_) {
-      updatePuppiesWith(_mediatorController.puppiesToUpdate);
+      _updatePuppiesWith(_mediatorController.puppiesToUpdate);
     });
     searchMatchingChecker = ever(
         _puppies,
@@ -54,8 +54,8 @@ class PuppyListController extends GetxController
   }
 
   Future<void> onRefresh() async {
-    await _loadPuppies(filteredBy.value);
     _mediatorController.clearFetchedExtraDetails();
+    await _loadPuppies(filteredBy.value);
   }
 
   Future<void> onReload() async {
@@ -63,7 +63,7 @@ class PuppyListController extends GetxController
     await onRefresh();
   }
 
-  void updatePuppiesWith(List<Puppy> puppiesToUpdate) {
+  void _updatePuppiesWith(List<Puppy> puppiesToUpdate) {
     // _puppies.mergeWith(puppiesToUpdate);
     puppiesToUpdate.forEach((puppy) {
       final index = _puppies.indexWhere((element) => element.id == puppy.id);
@@ -83,7 +83,6 @@ class PuppyListController extends GetxController
     } catch (e) {
       _puppies.clear();
       change(_puppies, status: RxStatus.error(e.toString().substring(10)));
-      print(e.toString());
     }
   }
 
