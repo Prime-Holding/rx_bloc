@@ -38,6 +38,7 @@ dependencies:
   declarative_animated_list: ^0.1.0-nullsafety.0
   clean_coverage: ^0.0.3
   flow_builder: ^0.0.1
+  flutter_form_bloc: ^0.20.0
 #  widget_library:
 #    path: ../widget_library
 
