@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
 
 import '../../stubs.dart';
@@ -17,21 +17,21 @@ import 'puppy_manage_controller_test.mocks.dart';
 ])
 Future<void> main() async {
   late MockPuppiesRepository _mockRepo;
-  late MediatorController _mediatorController;
+  late CoordinatorController _mediatorController;
   late PuppyManageController _controller;
 
   setUp(() {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(MediatorController());
+    _mediatorController = Get.put(CoordinatorController());
     _controller = Get.put(
         PuppyManageController(_mockRepo, _mediatorController));
   });
 
   tearDown(() {
     Get..delete<PuppiesRepository>()
-    ..delete<MediatorController>()
+    ..delete<CoordinatorController>()
     ..delete<PuppyManageController>();
   });
 

@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 
-class MediatorController extends GetxController {
+class CoordinatorController extends GetxController {
   var lastFetchedPuppies = <Puppy>[].obs;
   final puppiesToUpdate = <Puppy>[].obs;
   final toClearFetchedExtraDetails = 0.obs;

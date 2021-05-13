@@ -2,17 +2,17 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 
 class PuppyManageController extends GetxController with StateMixin {
-  PuppyManageController(this._repository, this._mediatorController);
+  PuppyManageController(this._repository, this._coordinatorController);
 
   final PuppiesRepository _repository;
-  final MediatorController _mediatorController;
+  final CoordinatorController _coordinatorController;
 
   Future<void> markAsFavorite(
       {required Puppy puppy, required bool isFavorite}) async {
-    _mediatorController.puppyUpdated(puppy.copyWith(isFavorite: isFavorite));
+    _coordinatorController.puppyUpdated(puppy.copyWith(isFavorite: isFavorite));
     try {
       await _repository.favoritePuppy(puppy, isFavorite: isFavorite);
     } catch (e) {
@@ -22,7 +22,7 @@ class PuppyManageController extends GetxController with StateMixin {
         isDismissible: true,
         duration: const Duration(seconds: 2),
       ));
-      _mediatorController.puppyUpdated(puppy);
+      _coordinatorController.puppyUpdated(puppy);
     }
   }
 }

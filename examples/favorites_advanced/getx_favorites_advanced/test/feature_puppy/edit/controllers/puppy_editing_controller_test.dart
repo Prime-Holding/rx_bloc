@@ -1,7 +1,7 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/edit/controllers/puppy_editing_controller.dart';
 import 'package:mockito/annotations.dart';
 
@@ -14,7 +14,7 @@ import 'puppy_editing_controller_test.mocks.dart';
 void main() {
 
   late MockPuppiesRepository _mockRepo;
-  late MediatorController _mediatorController;
+  late CoordinatorController _mediatorController;
   late PuppyEditingController _controller;
   final _puppy = Stub.puppiesWithDetails[2];
 
@@ -22,13 +22,13 @@ void main() {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(MediatorController());
+    _mediatorController = Get.put(CoordinatorController());
     _controller = Get.put(
         PuppyEditingController(_mockRepo, _mediatorController, _puppy));
   });
   tearDown((){
     Get..delete<MockPuppiesRepository>()
-      ..delete<MediatorController>()
+      ..delete<CoordinatorController>()
       ..delete<PuppyEditingController>();
   });
 

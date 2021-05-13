@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 
 class PuppyEditingController extends GetxController {
   PuppyEditingController(
-      this._repository, this._mediatorController, this._puppy);
+      this._repository, this._coordinatorController, this._puppy);
 
   final PuppiesRepository _repository;
-  final MediatorController _mediatorController;
+  final CoordinatorController _coordinatorController;
   final Puppy _puppy;
 
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
@@ -111,12 +111,11 @@ class PuppyEditingController extends GetxController {
       globalFormKey.currentState!.save();
       final updatedPuppy =
           await _repository.updatePuppy(_editedPuppy.id, _editedPuppy);
-      _mediatorController.puppyUpdated(updatedPuppy);
-      await Future.delayed(const Duration(milliseconds: 1500));
+      _coordinatorController.puppyUpdated(updatedPuppy);
       isLoading(false);
       return successfullySaved;
     } catch (e) {
-      _mediatorController.puppyUpdated(_puppy);
+      _coordinatorController.puppyUpdated(_puppy);
       isLoading(false);
       return e.toString().substring(10);
     }

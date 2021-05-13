@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 
 class PuppyListController extends GetxController
     with StateMixin<RxList<Puppy>> {
-  PuppyListController(this._repository, this._mediatorController);
+  PuppyListController(this._repository, this._coordinatorController);
 
   final PuppiesRepository _repository;
-  final MediatorController _mediatorController;
+  final CoordinatorController _coordinatorController;
 
   final _puppies = <Puppy>[].obs;
   final filteredBy = ''.obs;
@@ -25,11 +25,11 @@ class PuppyListController extends GetxController
     change(_puppies, status: RxStatus.loading());
     await _loadPuppies('');
     updateFetchedDetailsWorker =
-        ever(_mediatorController.lastFetchedPuppies, (_) {
-      _updatePuppiesWith(_mediatorController.lastFetchedPuppies);
+        ever(_coordinatorController.lastFetchedPuppies, (_) {
+      _updatePuppiesWith(_coordinatorController.lastFetchedPuppies);
     });
-    updateFavoriteStatusWorker = ever(_mediatorController.puppiesToUpdate, (_) {
-      _updatePuppiesWith(_mediatorController.puppiesToUpdate);
+    updateFavoriteStatusWorker = ever(_coordinatorController.puppiesToUpdate, (_) {
+      _updatePuppiesWith(_coordinatorController.puppiesToUpdate);
     });
     searchMatchingChecker = ever(
         _puppies,
@@ -54,7 +54,7 @@ class PuppyListController extends GetxController
   }
 
   Future<void> onRefresh() async {
-    _mediatorController.clearFetchedExtraDetails();
+    _coordinatorController.clearFetchedExtraDetails();
     await _loadPuppies(filteredBy.value);
   }
 
@@ -90,7 +90,7 @@ class PuppyListController extends GetxController
     change(_puppies, status: RxStatus.loading());
     await _loadPuppies(keyString);
     filteredBy(keyString);
-    _mediatorController.clearFetchedExtraDetails();
+    _coordinatorController.clearFetchedExtraDetails();
   }
 
   @override

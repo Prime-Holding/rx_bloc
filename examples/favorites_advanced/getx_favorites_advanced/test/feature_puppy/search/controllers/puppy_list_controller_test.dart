@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 
 import 'package:favorites_advanced_base/repositories.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/search/controllers/puppy_list_controller.dart';
 
 import '../../../stubs.dart';
@@ -18,14 +18,14 @@ import 'puppy_list_controller_test.mocks.dart';
 ])
 void main() {
   late MockPuppiesRepository _mockRepo;
-  late MediatorController _mediatorController;
+  late CoordinatorController _mediatorController;
   late PuppyListController _controller;
 
   setUp(() async {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(MediatorController());
+    _mediatorController = Get.put(CoordinatorController());
     when(_mockRepo.getPuppies(query: ''))
         .thenAnswer((_) async => Stub.puppies123Test);
     _controller = Get.put(PuppyListController(_mockRepo, _mediatorController));
@@ -33,7 +33,7 @@ void main() {
 
   tearDown(() {
     Get..delete<MockPuppiesRepository>()
-      ..delete<MediatorController>()
+      ..delete<CoordinatorController>()
       ..delete<PuppyListController>();
   });
 

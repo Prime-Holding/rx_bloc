@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 
 class FavoritePuppiesController extends GetxController
     with StateMixin<List<Puppy>> {
-  FavoritePuppiesController(this._repository, this._mediatorController);
+  FavoritePuppiesController(this._repository, this._coordinatorController);
 
   final PuppiesRepository _repository;
-  final MediatorController _mediatorController;
+  final CoordinatorController _coordinatorController;
 
   final RxList<Puppy> favoritePuppies = <Puppy>[].obs;
   late Worker updatingWorker;
@@ -22,8 +22,8 @@ class FavoritePuppiesController extends GetxController
   @override
   void onInit() {
     _initFavoritePuppies();
-    updatingWorker = ever(_mediatorController.puppiesToUpdate,
-        (_) => _updateFavoritePuppies(_mediatorController.puppiesToUpdate));
+    updatingWorker = ever(_coordinatorController.puppiesToUpdate,
+        (_) => _updateFavoritePuppies(_coordinatorController.puppiesToUpdate));
     super.onInit();
   }
 
@@ -60,7 +60,7 @@ class FavoritePuppiesController extends GetxController
 
   Future<void> onReload() async {
     await _initFavoritePuppies();
-    _mediatorController.clearFetchedExtraDetails();
+    _coordinatorController.clearFetchedExtraDetails();
   }
 
   @override

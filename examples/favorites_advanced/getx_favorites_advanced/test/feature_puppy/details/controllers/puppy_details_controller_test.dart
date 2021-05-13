@@ -3,24 +3,24 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/details/controllers/puppy_details_controller.dart';
 
 import '../../../stubs.dart';
 
 void main() {
-  late MediatorController _mediatorController;
+  late CoordinatorController _mediatorController;
   late PuppyDetailsController _controller;
   final _puppy = Stub.puppyTestUpdated;
 
   setUp(() {
     Get.testMode = true;
-    _mediatorController = Get.put(MediatorController());
+    _mediatorController = Get.put(CoordinatorController());
     _controller = Get.put(PuppyDetailsController(_puppy, _mediatorController));
   });
 
   tearDown(() {
-    Get..delete<PuppyDetailsController>()..delete<MediatorController>();
+    Get..delete<PuppyDetailsController>()..delete<CoordinatorController>();
   });
 
   group('PuppyDetailsController ', () {
