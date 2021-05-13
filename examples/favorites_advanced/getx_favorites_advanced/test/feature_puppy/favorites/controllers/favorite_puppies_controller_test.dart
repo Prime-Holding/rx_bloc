@@ -16,18 +16,18 @@ import 'favorite_puppies_controller_test.mocks.dart';
 ])
 void main() {
   late MockPuppiesRepository _mockRepo;
-  late CoordinatorController _mediatorController;
+  late CoordinatorController _coordinatorController;
   late FavoritePuppiesController _controller;
 
   setUp(() {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(CoordinatorController());
+    _coordinatorController = Get.put(CoordinatorController());
     when(_mockRepo.getFavoritePuppies())
         .thenAnswer((_) async => Stub.emptyPuppyList);
     _controller =
-        Get.put(FavoritePuppiesController(_mockRepo, _mediatorController));
+        Get.put(FavoritePuppiesController(_mockRepo, _coordinatorController));
   });
 
   tearDown(() {
@@ -83,7 +83,7 @@ void main() {
       final updatedPuppy = Stub.puppyTestUpdated;
       //action
       await _controller.onReload();
-      _mediatorController.puppyUpdated(updatedPuppy);
+      _coordinatorController.puppyUpdated(updatedPuppy);
       final count = _controller.count;
       final puppy = _controller.favoritePuppiesList.first;
       //assert
@@ -99,7 +99,7 @@ void main() {
       final unfavoritePuppy = Stub.puppyTest;
       //action
       await _controller.onReload();
-      _mediatorController.puppyUpdated(unfavoritePuppy);
+      _coordinatorController.puppyUpdated(unfavoritePuppy);
       final count = _controller.count;
       //assert
       expect(count, 0);
@@ -113,7 +113,7 @@ void main() {
       final editedPuppy = Stub.puppyTestUpdated.copyWith(name: 'NewName');
       //action
       await _controller.onReload();
-      _mediatorController.puppyUpdated(editedPuppy);
+      _coordinatorController.puppyUpdated(editedPuppy);
       final puppy = _controller.favoritePuppiesList.first;
       //assert
       expect(puppy.name, 'NewName');

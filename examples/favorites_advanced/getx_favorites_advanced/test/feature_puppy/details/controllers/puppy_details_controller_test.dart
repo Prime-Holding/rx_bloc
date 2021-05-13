@@ -9,14 +9,14 @@ import 'package:getx_favorites_advanced/feature_puppy/details/controllers/puppy_
 import '../../../stubs.dart';
 
 void main() {
-  late CoordinatorController _mediatorController;
+  late CoordinatorController _coordinatorController;
   late PuppyDetailsController _controller;
   final _puppy = Stub.puppyTestUpdated;
 
   setUp(() {
     Get.testMode = true;
-    _mediatorController = Get.put(CoordinatorController());
-    _controller = Get.put(PuppyDetailsController(_puppy, _mediatorController));
+    _coordinatorController = Get.put(CoordinatorController());
+    _controller = Get.put(PuppyDetailsController(_puppy, _coordinatorController));
   });
 
   tearDown(() {
@@ -32,7 +32,7 @@ void main() {
       //arrange
       final puppy = Stub.puppyTestUpdated.copyWith(name: 'UpdatedName');
       //action
-      _mediatorController
+      _coordinatorController
           .puppyUpdated(puppy);
       //assert
       expect(_controller.puppy.value.name, 'UpdatedName');
@@ -47,7 +47,7 @@ void main() {
         breedType: BreedType.Beagle,
         asset: 'asset');
     //action
-    _mediatorController.puppyUpdated(puppy);
+    _coordinatorController.puppyUpdated(puppy);
     //assert
     expect(_controller.name, 'MyName');
     expect(_controller.characteristics, 'Some random text');

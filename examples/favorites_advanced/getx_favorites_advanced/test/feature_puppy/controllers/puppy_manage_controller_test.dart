@@ -17,16 +17,16 @@ import 'puppy_manage_controller_test.mocks.dart';
 ])
 Future<void> main() async {
   late MockPuppiesRepository _mockRepo;
-  late CoordinatorController _mediatorController;
+  late CoordinatorController _coordinatorController;
   late PuppyManageController _controller;
 
   setUp(() {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(CoordinatorController());
+    _coordinatorController = Get.put(CoordinatorController());
     _controller = Get.put(
-        PuppyManageController(_mockRepo, _mediatorController));
+        PuppyManageController(_mockRepo, _coordinatorController));
   });
 
   tearDown(() {
@@ -44,13 +44,13 @@ Future<void> main() async {
       await _controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
       // assert
       expect(
-          _mediatorController.puppiesToUpdate, <Puppy>[Stub.puppyTestUpdated]);
+          _coordinatorController.puppiesToUpdate, <Puppy>[Stub.puppyTestUpdated]);
       // arrange
       when(_mockRepo.favoritePuppy(Stub.puppyTest, isFavorite: true))
           .thenAnswer((_) async => throw Stub.testErr);
       // action
       await _controller.markAsFavorite(puppy: Stub.puppyTest, isFavorite: true);
-      final puppiesToUpdate = _mediatorController.puppiesToUpdate;
+      final puppiesToUpdate = _coordinatorController.puppiesToUpdate;
       // assert
       await expectLater(puppiesToUpdate, <Puppy>[Stub.puppyTest]);
     });

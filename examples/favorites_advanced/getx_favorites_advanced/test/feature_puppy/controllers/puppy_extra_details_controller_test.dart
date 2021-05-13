@@ -17,16 +17,16 @@ import 'puppy_extra_details_controller_test.mocks.dart';
 ])
 void main() {
   late MockPuppiesRepository _mockRepo;
-  late CoordinatorController _mediatorController;
+  late CoordinatorController _coordinatorController;
   late PuppyExtraDetailsController _controller;
 
   setUp(() {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(CoordinatorController());
+    _coordinatorController = Get.put(CoordinatorController());
     _controller =
-        Get.put(PuppyExtraDetailsController(_mockRepo, _mediatorController));
+        Get.put(PuppyExtraDetailsController(_mockRepo, _coordinatorController));
   });
 
   tearDown(() {
@@ -84,7 +84,7 @@ void main() {
       await _controller.fetchExtraDetails(Stub.puppy1);
       await _controller.fetchExtraDetails(Stub.puppy2);
       await Future.delayed(const Duration(milliseconds: 110));
-      _mediatorController.clearFetchedExtraDetails();
+      _coordinatorController.clearFetchedExtraDetails();
       //assert
       final updatedPuppies = _controller.lastFetchedPuppies.length;
       expect(updatedPuppies, 0);

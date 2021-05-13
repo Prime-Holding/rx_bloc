@@ -18,17 +18,17 @@ import 'puppy_list_controller_test.mocks.dart';
 ])
 void main() {
   late MockPuppiesRepository _mockRepo;
-  late CoordinatorController _mediatorController;
+  late CoordinatorController _coordinatorController;
   late PuppyListController _controller;
 
   setUp(() async {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(CoordinatorController());
+    _coordinatorController = Get.put(CoordinatorController());
     when(_mockRepo.getPuppies(query: ''))
         .thenAnswer((_) async => Stub.puppies123Test);
-    _controller = Get.put(PuppyListController(_mockRepo, _mediatorController));
+    _controller = Get.put(PuppyListController(_mockRepo, _coordinatorController));
   });
 
   tearDown(() {
@@ -122,10 +122,10 @@ void main() {
 
     test('onReload clear extra fetched details', () async {
       //arrange
-      final initValue = _mediatorController.toClearFetchedExtraDetails.value;
+      final initValue = _coordinatorController.toClearFetchedExtraDetails.value;
       //action
       await _controller.onReload();
-      final newValue = _mediatorController.toClearFetchedExtraDetails.value;
+      final newValue = _coordinatorController.toClearFetchedExtraDetails.value;
       //assert
       expect(newValue, initValue + 1);
     });
@@ -134,7 +134,7 @@ void main() {
       //arrange
       final puppiesToUpdate = Stub.puppiesWithDetails;
       //action
-      _mediatorController.updatePuppiesWithExtraDetails(puppiesToUpdate);
+      _coordinatorController.updatePuppiesWithExtraDetails(puppiesToUpdate);
       final hasExtraDetails = _controller
           .searchedPuppies()
           .firstWhere((puppy) => puppy.id == '1')
@@ -147,7 +147,7 @@ void main() {
       //arrange
       final puppyToUpdate = Stub.puppyTestUpdated;
       //action
-      _mediatorController.puppyUpdated(puppyToUpdate);
+      _coordinatorController.puppyUpdated(puppyToUpdate);
       final isFavorite = _controller
           .searchedPuppies()
           .firstWhere((puppy) => puppy.name == 'Test')

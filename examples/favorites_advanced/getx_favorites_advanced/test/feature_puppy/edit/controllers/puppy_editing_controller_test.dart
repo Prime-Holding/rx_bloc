@@ -14,7 +14,7 @@ import 'puppy_editing_controller_test.mocks.dart';
 void main() {
 
   late MockPuppiesRepository _mockRepo;
-  late CoordinatorController _mediatorController;
+  late CoordinatorController _coordinatorController;
   late PuppyEditingController _controller;
   final _puppy = Stub.puppiesWithDetails[2];
 
@@ -22,9 +22,9 @@ void main() {
     Get.testMode = true;
     _mockRepo = MockPuppiesRepository();
     Get.put<PuppiesRepository>(_mockRepo);
-    _mediatorController = Get.put(CoordinatorController());
+    _coordinatorController = Get.put(CoordinatorController());
     _controller = Get.put(
-        PuppyEditingController(_mockRepo, _mediatorController, _puppy));
+        PuppyEditingController(_mockRepo, _coordinatorController, _puppy));
   });
   tearDown((){
     Get..delete<MockPuppiesRepository>()
