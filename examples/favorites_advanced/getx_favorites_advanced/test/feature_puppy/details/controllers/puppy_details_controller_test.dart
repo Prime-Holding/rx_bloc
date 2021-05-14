@@ -16,7 +16,8 @@ void main() {
   setUp(() {
     Get.testMode = true;
     _coordinatorController = Get.put(CoordinatorController());
-    _controller = Get.put(PuppyDetailsController(_puppy, _coordinatorController));
+    _controller =
+        Get.put(PuppyDetailsController(_puppy, _coordinatorController));
   });
 
   tearDown(() {
@@ -32,28 +33,27 @@ void main() {
       //arrange
       final puppy = Stub.puppyTestUpdated.copyWith(name: 'UpdatedName');
       //action
-      _coordinatorController
-          .puppyUpdated(puppy);
+      _coordinatorController.puppyUpdated(puppy);
       //assert
       expect(_controller.puppy.value.name, 'UpdatedName');
     });
 
     test('getters return correct values', () {
-    //arrange
-    final puppy = Stub.puppyTestUpdated.copyWith(
-        name: 'MyName',
-        breedCharacteristics: 'Some random text',
-        gender: Gender.Female,
-        breedType: BreedType.Beagle,
-        asset: 'asset');
-    //action
-    _coordinatorController.puppyUpdated(puppy);
-    //assert
-    expect(_controller.name, 'MyName');
-    expect(_controller.characteristics, 'Some random text');
-    expect(_controller.gender, 'Female');
-    expect(_controller.breed, 'Beagle');
-    expect(_controller.asset, 'asset');
+      //arrange
+      final puppy = Stub.puppyTestUpdated.copyWith(
+          name: 'MyName',
+          breedCharacteristics: 'Some random text',
+          gender: Gender.Female,
+          breedType: BreedType.Beagle,
+          asset: 'asset');
+      //action
+      _coordinatorController.puppyUpdated(puppy);
+      //assert
+      expect(_controller.name, 'MyName');
+      expect(_controller.characteristics, 'Some random text');
+      expect(_controller.gender, 'Female');
+      expect(_controller.breed, 'Beagle');
+      expect(_controller.asset, 'asset');
     });
   });
 }

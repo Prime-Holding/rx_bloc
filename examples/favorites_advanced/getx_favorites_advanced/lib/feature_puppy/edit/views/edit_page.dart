@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:getx_favorites_advanced/feature_puppy/edit/controllers/puppy_editing_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_form.dart';
 
-class EditPage extends GetView<PuppyEditingController> {
+class EditPage extends StatelessWidget {
+  final controller = Get.find<PuppyManageController>(tag:'Edit');
+  final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -13,7 +16,7 @@ class EditPage extends GetView<PuppyEditingController> {
             _buildSaveIcon(),
           ],
         ),
-        body: PuppyEditForm(),
+        body: PuppyEditForm(globalFormKey, controller.editedPuppy),
       );
 
   Widget _buildSaveIcon() => Obx(
@@ -34,8 +37,11 @@ class EditPage extends GetView<PuppyEditingController> {
                     ),
                   ),
             onPressed: () async {
-              if (controller.isSaveEnabled()) {
+              controller.enableValidation();
+              if (controller.isSaveEnabled() &&
+                  globalFormKey.currentState!.validate()) {
                 Get.focusScope!.unfocus();
+                globalFormKey.currentState!.save();
                 final resultMessage = await controller.savePuppy();
                 if(resultMessage.contains('success')){
                   Get.back();

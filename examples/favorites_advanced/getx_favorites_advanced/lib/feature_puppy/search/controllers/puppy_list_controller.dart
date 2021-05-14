@@ -28,7 +28,8 @@ class PuppyListController extends GetxController
         ever(_coordinatorController.lastFetchedPuppies, (_) {
       _updatePuppiesWith(_coordinatorController.lastFetchedPuppies);
     });
-    updateFavoriteStatusWorker = ever(_coordinatorController.puppiesToUpdate, (_) {
+    updateFavoriteStatusWorker =
+        ever(_coordinatorController.puppiesToUpdate, (_) {
       _updatePuppiesWith(_coordinatorController.puppiesToUpdate);
     });
     searchMatchingChecker = ever(

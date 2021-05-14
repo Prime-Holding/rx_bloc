@@ -5,28 +5,43 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 
-import 'package:getx_favorites_advanced/feature_puppy/edit/controllers/puppy_editing_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
 import 'package:getx_favorites_advanced/feature_puppy/edit/ui_components/edit_form_item.dart';
 
-class PuppyEditForm extends GetView<PuppyEditingController> {
+class PuppyEditForm extends StatelessWidget {
+
+  PuppyEditForm(this.globalFormKey, Puppy puppy)
+  : nameController = TextEditingController(text: puppy.name),
+  characteristicsController =
+  TextEditingController(text: puppy.breedCharacteristics);
+
+  final TextEditingController nameController;
+  final TextEditingController characteristicsController;
+  final GlobalKey<FormState> globalFormKey;
+  final controller = Get.find<PuppyManageController>(tag:'Edit');
+
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Form(
-            key: controller.globalFormKey,
-            autovalidateMode: AutovalidateMode.always,
-            child: Column(
-              children: [
-                _buildPuppyAvatar(),
-                const SizedBox(
-                  height: 16,
-                ),
-                _buildNameFormField(),
-                _buildBreedDropDownButton(),
-                _buildGenderRadioButtons(),
-                _buildCharacteristicsFormField(),
-              ],
+          child: Obx(
+            () => Form(
+              key: globalFormKey,
+              autovalidateMode:controller.validateEnabled.value
+                  ? AutovalidateMode.always
+                  : AutovalidateMode.disabled,
+              child: Column(
+                children: [
+                  _buildPuppyAvatar(),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  _buildNameFormField(),
+                  _buildBreedDropDownButton(),
+                  _buildGenderRadioButtons(),
+                  _buildCharacteristicsFormField(),
+                ],
+              ),
             ),
           ),
         ),
@@ -69,7 +84,7 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
         icon: Icons.account_box,
         title: 'Name',
         formField: TextFormField(
-          controller: controller.nameController,
+          controller: nameController,
           keyboardType: TextInputType.name,
           validator: (value) => controller.validateName(value),
           onSaved: (value) => controller.setName(value!),
@@ -149,7 +164,7 @@ class PuppyEditForm extends GetView<PuppyEditingController> {
         icon: Icons.article,
         title: 'Characteristics',
         formField: TextFormField(
-          controller: controller.characteristicsController,
+          controller: characteristicsController,
           keyboardType: TextInputType.text,
           validator: (value) => controller.validateCharacteristics(value),
           onSaved: (value) => controller.setCharacteristics(value!),

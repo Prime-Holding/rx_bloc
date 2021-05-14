@@ -33,7 +33,7 @@ class HomeBinding implements Bindings {
     ))
       ..put(PuppyManageController(
           Get.find<PuppiesRepository>(),
-          Get.find<CoordinatorController>()
+          Get.find<CoordinatorController>(),
       ))
       ..lazyPut(() => PuppyExtraDetailsController(
           Get.find<PuppiesRepository>(),

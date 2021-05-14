@@ -28,11 +28,13 @@ void main() {
     _coordinatorController = Get.put(CoordinatorController());
     when(_mockRepo.getPuppies(query: ''))
         .thenAnswer((_) async => Stub.puppies123Test);
-    _controller = Get.put(PuppyListController(_mockRepo, _coordinatorController));
+    _controller =
+        Get.put(PuppyListController(_mockRepo, _coordinatorController));
   });
 
   tearDown(() {
-    Get..delete<MockPuppiesRepository>()
+    Get
+      ..delete<MockPuppiesRepository>()
       ..delete<CoordinatorController>()
       ..delete<PuppyListController>();
   });
@@ -94,11 +96,10 @@ void main() {
       when(_mockRepo.getPuppies(query: 'est'))
           .thenAnswer((_) async => Stub.puppiesTest);
       // action
-      scheduleMicrotask(() async {
-        _controller..setFilter('e')
-        ..setFilter('es')
-        ..setFilter('est');
-      },
+      scheduleMicrotask(
+        () async {
+          _controller..setFilter('e')..setFilter('es')..setFilter('est');
+        },
       );
       await Future.delayed(const Duration(milliseconds: 1000));
       // assert
