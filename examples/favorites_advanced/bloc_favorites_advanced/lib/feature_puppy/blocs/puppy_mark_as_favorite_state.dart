@@ -1,4 +1,4 @@
-part of 'puppy_manage_bloc.dart';
+part of 'puppy_mark_as_favorite_bloc_.dart';
 
 @immutable
 class PuppyManageState extends Equatable {

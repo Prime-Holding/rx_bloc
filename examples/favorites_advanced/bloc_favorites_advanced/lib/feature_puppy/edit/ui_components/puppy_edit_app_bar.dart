@@ -1,7 +1,8 @@
-import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
+import 'package:bloc_sample/feature_puppy/edit/bloc/puppy_edit_form_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget{
   const PuppyEditAppBar({
@@ -25,9 +26,21 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget{
     ]
   );
 
-  Widget _buildSaveButton() => BlocBuilder<PuppyManageBloc, PuppyManageState>(
-    builder: (context, state) =>
-    state.puppy != null ? _buildLoading() : _buildIcon(),
+  Widget _buildSaveButton() => BlocBuilder<PuppyEditFormBloc, FormBlocState>(
+    builder: (context, state) {
+      // state.canSubmit ? _buildLoading() : _buildIcon(),
+      // state.canSubmit ? _buildIcon()  : _buildLoading(),
+      if (state is FormBlocSubmitting) {
+        //emitSubmitting() changes the state to FormBlocSubmitting
+        // print('_buildSaveButton FormBlocSubmitting ${state.canSubmit}');
+        return _buildLoading();
+      } else if (state.canSubmit){
+        // print('_buildSaveButton state.canSubmit ${state.canSubmit}');
+        return _buildIcon();
+      }
+      // print('_buildSaveButton Last return ${state.canSubmit}');
+      return _buildIcon();
+    },
   );
 
   Widget _buildIcon() => IconButton(

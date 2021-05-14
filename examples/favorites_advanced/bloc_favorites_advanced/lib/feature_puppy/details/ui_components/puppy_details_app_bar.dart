@@ -1,6 +1,6 @@
 import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
 import 'package:bloc_sample/base/ui_components/icon_with_shadow.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
 
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';

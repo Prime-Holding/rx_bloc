@@ -1,5 +1,5 @@
 import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

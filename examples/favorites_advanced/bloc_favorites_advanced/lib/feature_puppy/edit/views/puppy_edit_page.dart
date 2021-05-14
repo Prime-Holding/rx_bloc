@@ -1,9 +1,11 @@
-import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
+import 'package:bloc_sample/feature_puppy/edit/bloc/puppy_edit_form_bloc.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_app_bar.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_form.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 part 'puppy_edit_providers.dart';
 
@@ -33,25 +35,36 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<PuppyManageBloc, PuppyManageState>(
-        builder: (context, state) => WillPopScope(
-          onWillPop: () =>
-              state.puppy! != null ? Future.value(false) : Future.value(true),
-          child: BlocBuilder<PuppyManageBloc, PuppyManageState>(
-            builder: (context, manageState) => Scaffold(
-              appBar: PuppyEditAppBar(
-                enabled: true,
-                // onSavePressed: () => SavePuppyEvent(),
-                onSavePressed: () => context
-                    .read<PuppyManageBloc>()
-                    .add(PuppyManageSavePuppyEvent()),
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => PuppyEditFormBloc(),
+        child: Builder(
+          builder: (context) {
+            final puppyEditFormBloc =
+                BlocProvider.of<PuppyEditFormBloc>(context);
+            // print(puppyEditFormBloc.name);
+            return BlocBuilder<PuppyEditFormBloc, FormBlocState>(
+              // print('puppy edit page state : ${state.runtimeType}');
+
+              builder: (context, state) => WillPopScope(
+                onWillPop: () => Future.value(true),
+                // () => state.puppy! != null
+                // ? Future.value(false)
+                // : Future.value(true),
+                child: Scaffold(
+                  appBar: PuppyEditAppBar(
+                    enabled: state is FormBlocUpdatingFields ? true : false,
+
+                    // enabled: false,
+                    onSavePressed: () => puppyEditFormBloc.submit(),
+                    // onSavePressed: () => {},
+                  ),
+                  body: PuppyEditForm(
+                    puppy: widget._puppy,
+                  ),
+                ),
               ),
-              body: PuppyEditForm(
-                puppy: widget._puppy,
-              ),
-            ),
-          ),
+            );
+          },
         ),
       );
 }

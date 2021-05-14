@@ -1,6 +1,6 @@
 import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
 import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
