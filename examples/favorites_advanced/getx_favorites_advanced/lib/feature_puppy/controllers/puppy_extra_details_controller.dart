@@ -31,7 +31,7 @@ class PuppyExtraDetailsController extends GetxController {
         _coordinatorController
             .updatePuppiesWithExtraDetails(fetchedPuppies);
       } catch (error) {
-        print(error.toString());
+        print('Fetching all puppies list failed: ${error.toString()}');
       }
     }, time: const Duration(milliseconds: 100));
     _clearWorker = ever(_coordinatorController.toClearFetchedExtraDetails,

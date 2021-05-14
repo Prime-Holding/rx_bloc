@@ -34,7 +34,7 @@ class FavoritePuppiesController extends GetxController
       favoritePuppies.assignAll(puppies);
       change(puppies, status: RxStatus.success());
     } catch (e) {
-      print(e.toString());
+      print('Fetching favorite puppies failed: ${e.toString()}');
       change(<Puppy>[], status: RxStatus.error());
     }
   }
