@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:favorites_advanced_base/models.dart';
 
 import '../../../base/models/app_state.dart';
+import '../../../feature_puppy/details/redux/actions.dart';
 import '../../../feature_puppy/search/redux/actions.dart';
 
 class SearchViewModel extends Equatable {
@@ -15,6 +16,7 @@ class SearchViewModel extends Equatable {
     required this.onRefreshFetch,
     required this.onExtraDetailsFetch,
     required this.onToggleFavorite,
+    required this.onDetailsPuppy,
   });
 
   factory SearchViewModel.from(Store<AppState> store) {
@@ -41,6 +43,10 @@ class SearchViewModel extends Equatable {
       ));
     }
 
+    void _onDetailsPuppy(Puppy puppy) {
+      store.dispatch(ModifyDetailsPuppy(puppy: puppy));
+    }
+
     return SearchViewModel(
       isLoading: store.state.puppyListState.isLoading,
       isError: store.state.puppyListState.isError,
@@ -49,6 +55,7 @@ class SearchViewModel extends Equatable {
       onRefreshFetch: _onRefreshFetch,
       onExtraDetailsFetch: _onExtraDetailsFetch,
       onToggleFavorite: _onToggleFavorite,
+      onDetailsPuppy: _onDetailsPuppy,
     );
   }
 
@@ -59,6 +66,7 @@ class SearchViewModel extends Equatable {
   final Function onRefreshFetch;
   final Function onExtraDetailsFetch;
   final Function onToggleFavorite;
+  final Function onDetailsPuppy;
 
   @override
   List<Object> get props => [
@@ -69,5 +77,6 @@ class SearchViewModel extends Equatable {
         onRefreshFetch,
         onExtraDetailsFetch,
         onToggleFavorite,
+        onDetailsPuppy,
       ];
 }
