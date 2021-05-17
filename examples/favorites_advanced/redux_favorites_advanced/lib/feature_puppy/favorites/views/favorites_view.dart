@@ -19,7 +19,7 @@ class FavoritesView extends StatelessWidget {
             puppyList: viewModel.puppies,
             onPuppyPressed: (puppy) {
               viewModel.onDetailsPuppy(puppy);
-              Navigator.of(context).push(PuppyFlow.route());
+              Navigator.of(context).push(PuppyFlow.route(puppy: puppy));
             },
             onFavorite: (puppy, isFavorite) =>
                 viewModel.onToggleFavorite(puppy, isFavorite),

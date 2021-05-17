@@ -149,7 +149,10 @@ class AppStateStub {
     favoriteListState: const FavoriteListState(
       puppies: [],
     ),
-    detailsState: DetailsState(puppy: Puppy(asset: '', id: '', name: '')),
+    detailsState: DetailsState(
+      isLoading: false,
+      puppy: Puppy(asset: '', id: '', name: ''),
+    ),
     favoriteCount: 0,
     error: '',
   );
@@ -166,7 +169,7 @@ class AppStateStub {
   );
 
   static final withPuppy1Error = AppStateStub.withPuppy1.copyWith(
-    detailsState: DetailsState(puppy: Stub.puppy1),
+    detailsState: DetailsState(isLoading: false, puppy: Stub.puppy1),
     error: Stub.testErr.toString(),
   );
 

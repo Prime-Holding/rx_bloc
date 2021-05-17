@@ -53,7 +53,7 @@ void main() {
         store.onChange,
         emitsThrough(
           AppStateStub.withPuppy1FavoritedAndListed.copyWith(
-            detailsState: DetailsState(
+            detailsState: AppStateStub.initialState.detailsState.copyWith(
               puppy: Stub.puppy1.copyWith(isFavorite: true),
             ),
           ),
@@ -97,7 +97,7 @@ void main() {
         store.onChange,
         emitsThrough(
           AppStateStub.withPuppy1.copyWith(
-            detailsState: DetailsState(puppy: Stub.puppy1),
+            detailsState: DetailsState(isLoading: false, puppy: Stub.puppy1),
           ),
         ),
       );

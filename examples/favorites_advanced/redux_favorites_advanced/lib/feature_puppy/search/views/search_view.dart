@@ -43,7 +43,8 @@ class SearchView extends StatelessWidget {
                               puppy: item,
                               onCardPressed: (puppy) {
                                 viewModel.onDetailsPuppy(puppy);
-                                Navigator.of(context).push(PuppyFlow.route());
+                                Navigator.of(context)
+                                    .push(PuppyFlow.route(puppy: puppy));
                               },
                               onFavorite: (puppy, isFavorite) =>
                                   viewModel.onToggleFavorite(puppy, isFavorite),
