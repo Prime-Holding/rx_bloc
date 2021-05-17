@@ -107,6 +107,10 @@ class Stub {
   static const characteristicsTooLongErr =
       'Characteristics must not exceed 250 characters.';
 
+  static const successfullySaved = 'Puppy is saved successfully.';
+
+  static const invalidValue = 'Please enter valid values in all fields!';
+
   static final testErr = Exception('test error');
 
   static Future<T> delayed<T>(T value, {int milliseconds = 100}) =>
