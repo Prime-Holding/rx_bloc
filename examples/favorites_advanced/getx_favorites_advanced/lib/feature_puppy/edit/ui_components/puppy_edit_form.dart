@@ -9,16 +9,15 @@ import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_c
 import 'package:getx_favorites_advanced/feature_puppy/edit/ui_components/edit_form_item.dart';
 
 class PuppyEditForm extends StatelessWidget {
-
   PuppyEditForm(this.globalFormKey, Puppy puppy)
-  : nameController = TextEditingController(text: puppy.name),
-  characteristicsController =
-  TextEditingController(text: puppy.breedCharacteristics);
+      : nameController = TextEditingController(text: puppy.name),
+        characteristicsController =
+            TextEditingController(text: puppy.breedCharacteristics);
 
   final TextEditingController nameController;
   final TextEditingController characteristicsController;
   final GlobalKey<FormState> globalFormKey;
-  final controller = Get.find<PuppyManageController>(tag:'Edit');
+  final controller = Get.find<PuppyManageController>(tag: 'Edit');
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
@@ -27,7 +26,7 @@ class PuppyEditForm extends StatelessWidget {
           child: Obx(
             () => Form(
               key: globalFormKey,
-              autovalidateMode:controller.validateEnabled.value
+              autovalidateMode: controller.validateEnabled.value
                   ? AutovalidateMode.always
                   : AutovalidateMode.disabled,
               child: Column(
@@ -57,28 +56,64 @@ class PuppyEditForm extends StatelessWidget {
               shape: const CircleBorder(),
               child: Container(
                 padding: const EdgeInsets.all(8),
-                child: PuppyAvatar(
-                  asset: controller.asset.value,
-                  radius: 128,
+                child: Obx(
+                  () => PuppyAvatar(
+                    asset: controller.pickedImagePath.isNotEmpty
+                        ? controller.pickedImagePath
+                        : controller.asset.value,
+                    radius: 128,
+                  ),
                 ),
               ),
             ),
-            const Positioned(
-                right: 1,
-                bottom: 1,
-                child: Card(
-                  elevation: 5,
-                  shape: CircleBorder(),
-                  child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
+            Positioned(
+              right: 1,
+              bottom: 1,
+              child: Card(
+                elevation: 5,
+                shape: const CircleBorder(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: IconButton(
+                      icon: const Icon(
                         Icons.edit,
-                        size: 26,
-                      )),
-                ))
+                        size: 24,
+                      ),
+                      onPressed: () => editPicture()),
+                ),
+              ),
+            )
           ],
         ),
       );
+
+  void editPicture() {
+    Get.bottomSheet(BottomSheet(
+        onClosing: () => Get.close(1),
+        builder: (_) => Container(
+          height: 120,
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.camera_enhance_rounded),
+                    title: const Text('Camera'),
+                    onTap: () {
+                      controller.pickImage(ImagePickerAction.camera);
+                      Get.back();
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.image),
+                    title: const Text('Gallery'),
+                    onTap: () {
+                      controller.pickImage(ImagePickerAction.gallery);
+                      Get.back();
+                    },
+                  ),
+                ],
+              ),
+            )));
+  }
 
   Widget _buildNameFormField() => EditFormItem(
         icon: Icons.account_box,

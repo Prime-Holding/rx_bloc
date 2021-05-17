@@ -21,14 +21,20 @@ class DetailsPage extends StatelessWidget {
         children: [
           Hero(
             tag: '$PuppyCardAnimationTag ${puppy.id}',
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: puppy.asset.contains('asset')
-                        ? AssetImage(puppy.asset)
-                        : FileImage(File(puppy.asset)) as ImageProvider<Object>,
-                    fit: BoxFit.cover),
-              ),
+            child: Obx(
+              () {
+                final path = controller.puppy.value.asset;
+                return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: path.contains('asset')
+                          ? AssetImage(path,)
+                          : FileImage(File(path))
+                              as ImageProvider<Object>,
+                      fit: BoxFit.cover),
+                ),
+              );
+              },
             ),
           ),
           Padding(
@@ -49,7 +55,7 @@ class DetailsPage extends StatelessWidget {
                 Obx(
                   () => Text(
                     '${controller.gender}, '
-                        '${controller.breed}',
+                    '${controller.breed}',
                     style: TextStyles.subtitleTextStyle,
                   ),
                 ),

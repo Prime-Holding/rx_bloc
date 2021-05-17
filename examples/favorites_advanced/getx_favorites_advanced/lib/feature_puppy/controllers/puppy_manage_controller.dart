@@ -22,6 +22,7 @@ class PuppyManageController extends GetxController {
   late Puppy _editedPuppy;
   final _gender = Gender.None.obs;
   final _breed = BreedType.None.obs;
+  String pickedImagePath = '';
 
   static const invalidValue = 'Please enter valid values in all fields!';
   static const successfullySaved = 'Puppy is saved successfully.';
@@ -58,7 +59,8 @@ class PuppyManageController extends GetxController {
       _name.value != _puppy!.name ||
       _characteristics.value != _puppy!.breedCharacteristics ||
       _gender.value != _puppy!.gender ||
-      _breed.value != _puppy!.breedType;
+      _breed.value != _puppy!.breedType ||
+      asset.value != _puppy!.asset;
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -95,16 +97,25 @@ class PuppyManageController extends GetxController {
       _editedPuppy = _editedPuppy.copyWith(breedCharacteristics: value);
 
   void handleGenderChanging(Gender value) {
-    if(value != _editedPuppy.gender){
+    if (value != _editedPuppy.gender) {
       _gender(value);
       _editedPuppy = _editedPuppy.copyWith(gender: value);
     }
   }
 
   void handleBreedChanging(BreedType value) {
-    if(value != _editedPuppy.breedType){
+    if (value != _editedPuppy.breedType) {
       _breed(value);
       _editedPuppy = _editedPuppy.copyWith(breedType: value);
+    }
+  }
+
+  Future<void> pickImage(ImagePickerAction imageSource) async {
+    final pickedImage = await _repository.pickPuppyImage(imageSource);
+    if (pickedImage != null) {
+      pickedImagePath = pickedImage.path;
+      asset(pickedImagePath);
+      _editedPuppy = _editedPuppy.copyWith(asset: pickedImagePath);
     }
   }
 
@@ -128,9 +139,8 @@ class PuppyManageController extends GetxController {
     }
   }
 
-  void enableValidation(){
+  void enableValidation() {
     validateEnabled(true);
-
   }
 
   Future<void> markAsFavorite(
