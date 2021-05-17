@@ -43,6 +43,17 @@ void main() {
       );
     });
 
+    test('whereSuccess()', () async {
+      await expectLater(
+        Stream.value('test').asResultStream().whereSuccess(),
+        emitsInOrder(
+          [
+            'test',
+          ],
+        ),
+      );
+    });
+
     test('isLoading()', () async {
       await expectLater(
         Stream.value(1).asResultStream().isLoading(),
