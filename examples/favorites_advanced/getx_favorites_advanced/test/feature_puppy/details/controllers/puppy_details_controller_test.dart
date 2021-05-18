@@ -60,9 +60,9 @@ void main() {
       // arrange
       final puppy = Stub.puppy3.copyWith(name: 'UpdatedName');
       // action
-      _mediatorController.puppyUpdated(puppy);
+      _coordinatorController.puppyUpdated(puppy);
       // assert
-      expect(controller.puppy.value.name, 'Test');
+      expect(_controller.puppy.value.name, 'Test');
     });
 
   });
