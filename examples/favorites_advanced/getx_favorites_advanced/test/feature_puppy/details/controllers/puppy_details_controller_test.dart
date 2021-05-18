@@ -55,5 +55,15 @@ void main() {
       expect(_controller.breed, 'Beagle');
       expect(_controller.asset, 'asset');
     });
+
+    test('does not update puppy if updatedPuppies do not contain it', () {
+      // arrange
+      final puppy = Stub.puppy3.copyWith(name: 'UpdatedName');
+      // action
+      _mediatorController.puppyUpdated(puppy);
+      // assert
+      expect(controller.puppy.value.name, 'Test');
+    });
+
   });
 }
