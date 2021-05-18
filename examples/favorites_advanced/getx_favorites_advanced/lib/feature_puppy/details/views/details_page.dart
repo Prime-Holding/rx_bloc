@@ -94,6 +94,7 @@ class DetailsPage extends StatelessWidget {
         final isFavorite = puppy.isFavorite;
         return AppBar(
           bottomOpacity: 0,
+          elevation: 0,
           backgroundColor: Colors.transparent,
           actions: [
             _buildFavoriteIcon(puppy, isFavorite),
