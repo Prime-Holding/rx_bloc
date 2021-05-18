@@ -124,10 +124,10 @@ class CounterBloc extends $CounterBloc {
     
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((Exception error) => error.toString());
+      errorState.map((result) => result.error.toString());
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool> _mapToIsLoadingState() => loadingState.isLoading();
 }
 ```
 As you can see, by extending [$CounterBloc](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.rxb.g.dart#L20), we must implement `Stream<int>` `_mapToCountState()` , which is the method responsible for the events-to-state business logic. Furthermore, we have [_$incrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L44) and [_$decrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L47), which are the [subjects](https://pub.dev/documentation/rxdart/latest/rx_subjects/rx_subjects-library.html) where the events will flow when [increment()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L10) and [decrement()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L13) methods are invoked from the UI Layer.
