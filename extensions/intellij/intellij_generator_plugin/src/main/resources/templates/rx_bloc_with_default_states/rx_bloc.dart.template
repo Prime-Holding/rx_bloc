@@ -23,8 +23,8 @@ class ${bloc_pascal_case}Bloc extends ${bloc_dollar_pascal_case}Bloc {
   /// TODO: Implement error event-to-state logic
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((error) => error.toString());
+      errorState.map((result) => result.error.toString());
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool> _mapToIsLoadingState() => loadingState.isLoading();
 }

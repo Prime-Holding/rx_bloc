@@ -4,7 +4,7 @@ part of '${bloc_snake_case}_bloc.dart';
 /// Thus, the BloC will contain only declarations, which improves the readability and the maintainability.
 extension _${bloc_pascal_case}Extension on ${bloc_pascal_case}Bloc {}
 
-extension _ToError on Stream<Exception> {
+extension _ToError on Stream<ResultError<dynamic>> {
   /// TODO: Implement error event-to-state logic
-  Stream<String> toMessage() => map((errorState) => errorState.toString());
+  Stream<String> toMessage() => map((result) => result.error.toString());
 }
