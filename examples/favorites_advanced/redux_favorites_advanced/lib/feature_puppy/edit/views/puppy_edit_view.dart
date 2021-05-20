@@ -1,30 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flow_builder/flow_builder.dart';
 
-import 'package:favorites_advanced_base/models.dart';
-
+import '../../../base/flow_builders/puppy_flow.dart';
+import '../../../base/models/app_state.dart';
 import '../ui_components/puppy_edit_app_bar.dart';
 import '../ui_components/puppy_edit_form.dart';
+import 'puppy_edit_view_model.dart';
 
 class PuppyEditView extends StatelessWidget {
-  const PuppyEditView({
-    required Puppy puppy,
+  PuppyEditView({
     Key? key,
-  })  : _puppy = puppy,
-        super(key: key);
+  }) : super(key: key);
 
-  final Puppy _puppy;
+  final _formKey = GlobalKey<FormState>();
 
-  static Page page({required Puppy puppy}) => MaterialPage(
-        child: PuppyEditView(puppy: puppy),
+  static Page page() => MaterialPage(
+        child: PuppyEditView(),
       );
 
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () => Future.value(true),
-        child: Scaffold(
-          appBar: const PuppyEditAppBar(enabled: false),
-          body: PuppyEditForm(
-            puppy: _puppy,
+        child: StoreConnector<AppState, PuppyEditViewModel>(
+          converter: (store) => PuppyEditViewModel.from(store),
+          onDidChange: (viewModel, _) => (viewModel!.error != '')
+              ? ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(viewModel.error)))
+              : viewModel.isUpdated
+                  ? {
+                      context
+                          .flow<PuppyFlowState>()
+                          .update((_) => PuppyFlowState(manage: false)),
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('The puppy was updated successfully.')))
+                    }
+                  : null,
+          builder: (_, viewModel) => Scaffold(
+            appBar: PuppyEditAppBar(formKey: _formKey, viewModel: viewModel),
+            body: PuppyEditForm(formKey: _formKey, viewModel: viewModel),
           ),
         ),
       );

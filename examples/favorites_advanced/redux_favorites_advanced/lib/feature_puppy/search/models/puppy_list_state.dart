@@ -12,11 +12,12 @@ class PuppyListState extends Equatable {
     required this.puppies,
   });
 
-  PuppyListState.initialState()
-      : isLoading = false,
-        isError = false,
-        searchQuery = '',
-        puppies = [];
+  factory PuppyListState.initialState() => const PuppyListState(
+        isLoading: false,
+        isError: false,
+        searchQuery: '',
+        puppies: [],
+      );
 
   final bool isLoading;
   final bool isError;

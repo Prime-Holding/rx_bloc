@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
-import '../../../base/models/app_state.dart';
 import '../views/puppy_edit_view_model.dart';
 
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
-    required bool enabled,
-    //void Function()? onSavePressed,
-    PuppyEditViewModel? viewModel,
+    required GlobalKey<FormState> formKey,
+    required PuppyEditViewModel viewModel,
     Key? key,
-  })  : _enabled = enabled,
-        //_onSavePressed = onSavePressed,
+  })  : _formKey = formKey,
         _viewModel = viewModel,
         super(key: key);
 
-  final bool _enabled;
-  //final void Function()? _onSavePressed;
-  final PuppyEditViewModel? _viewModel;
+  final GlobalKey<FormState> _formKey;
+  final PuppyEditViewModel _viewModel;
 
   double get loadingIndicatorSize => 24;
 
@@ -25,25 +20,20 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) => AppBar(
         title: const Text('Edit Puppy'),
         actions: [
-          StoreConnector<AppState, PuppyEditViewModel>(
-            builder: (_, viewModel) =>
-                viewModel.isLoading ? _buildLoading() : _buildIcon(),
-            converter: (store) => PuppyEditViewModel.from(store),
-          ),
+          if (_viewModel.isLoading) _buildLoading() else _buildIcon(),
         ],
       );
 
   Widget _buildIcon() => IconButton(
-        icon: Icon(
-          Icons.save,
-          color: _enabled ? Colors.white : Colors.grey,
-        ),
-        onPressed: () {
-          if (_enabled) {
-            //_onSavePressed?.call();
-          }
-        },
-      );
+      icon: Icon(
+        Icons.save,
+        color: _viewModel.isChanged ? Colors.white : Colors.grey,
+      ),
+      onPressed: () => (_viewModel.isChanged)
+          ? (_formKey.currentState!.validate())
+              ? _viewModel.onSubmit()
+              : null
+          : null);
 
   Widget _buildLoading() => IconButton(
         icon: Container(

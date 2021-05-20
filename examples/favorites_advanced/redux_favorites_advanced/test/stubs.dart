@@ -2,6 +2,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_home/models/navigation_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/details/models/details_state.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/edit/models/edit_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/favorites/models/favorite_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
 
@@ -150,8 +151,14 @@ class AppStateStub {
       puppies: [],
     ),
     detailsState: DetailsState(
-      isLoading: false,
       puppy: Puppy(asset: '', id: '', name: ''),
+    ),
+    editState: EditState(
+      isSubmitAttempted: false,
+      isLoading: false,
+      isUpdated: false,
+      puppy: Puppy(asset: '', id: '', name: ''),
+      error: '',
     ),
     favoriteCount: 0,
     error: '',
@@ -169,7 +176,7 @@ class AppStateStub {
   );
 
   static final withPuppy1Error = AppStateStub.withPuppy1.copyWith(
-    detailsState: DetailsState(isLoading: false, puppy: Stub.puppy1),
+    detailsState: DetailsState(puppy: Stub.puppy1),
     error: Stub.testErr.toString(),
   );
 

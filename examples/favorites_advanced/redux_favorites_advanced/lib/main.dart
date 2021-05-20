@@ -11,6 +11,7 @@ import 'base/redux/app_reducer.dart';
 
 import 'feature_home/views/home_view.dart';
 import 'feature_puppy/redux/epics.dart';
+import 'feature_puppy/edit/redux/epics.dart';
 import 'feature_puppy/search/redux/epics.dart';
 
 void main() {
@@ -22,6 +23,8 @@ void main() {
       fetchExtraDetailsEpic(repository),
       puppyFavoriteEpic(repository),
       searchQueryEpic(repository),
+      pickImageEpic(repository),
+      updatePuppyEpic(repository),
     ]),
   );
 

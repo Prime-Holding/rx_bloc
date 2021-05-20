@@ -5,3 +5,9 @@ class PuppyToFavoritesListAction {
 
   final Puppy puppy;
 }
+
+class UpdateFavoritesStatePuppyAction {
+  UpdateFavoritesStatePuppyAction({required this.puppy});
+
+  final Puppy puppy;
+}

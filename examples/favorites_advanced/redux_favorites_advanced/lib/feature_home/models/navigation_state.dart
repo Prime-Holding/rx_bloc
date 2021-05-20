@@ -9,13 +9,10 @@ class NavigationState extends Equatable {
     required this.items,
   });
 
-  NavigationState.initialState()
-      : items = [
-          const NavigationItem(
-              type: NavigationItemType.search, isSelected: true),
-          const NavigationItem(
-              type: NavigationItemType.favorites, isSelected: false),
-        ];
+  factory NavigationState.initialState() => const NavigationState(items: [
+        NavigationItem(type: NavigationItemType.search, isSelected: true),
+        NavigationItem(type: NavigationItemType.favorites, isSelected: false),
+      ]);
 
   final List<NavigationItem> items;
 

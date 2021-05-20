@@ -9,7 +9,8 @@ class FavoriteListState extends Equatable {
     required this.puppies,
   });
 
-  FavoriteListState.initialState() : puppies = [];
+  factory FavoriteListState.initialState() =>
+      const FavoriteListState(puppies: []);
 
   final List<Puppy> puppies;
 
