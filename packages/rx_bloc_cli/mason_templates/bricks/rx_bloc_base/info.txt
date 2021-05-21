@@ -1,0 +1,7 @@
+mason init 					// Initializes the current directory for mason (call only once)
+mason new brickName 		// Creates a new mason brick
+mason bundle -t dart .  	// Generates a mason bundle as a dart file from the provided brick files
+
+When a new mason brick is created, you can add files you want to generate inside the `__brick__` folder.
+Added files inside the `__brick__` folder represent templates and can have custom variables (in mustache format. See more at: http://mustache.github.io/mustache.5.html).
+Those variables, if found inside the bricks `brick.yaml` file under the `vars` section, will be replaced with values passed from the generator (make sure you pass them there).
