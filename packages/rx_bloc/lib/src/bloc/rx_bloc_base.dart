@@ -40,9 +40,19 @@ abstract class RxBlocBase {
   ///
   final LoadingBloc _loadingBloc = LoadingBloc();
 
-  /// The loading states of all handled result streams.
+  /// The loading states with tags of all handled result streams.
   @protected
-  Stream<Result> get loadingState => _loadingBloc.states.result;
+  Stream<LoadingWithTag> get loadingWithTagState =>
+      _loadingBloc.states.isLoadingWithTag;
+
+  /// The loading states without tags of all handled result streams.
+  @protected
+  Stream<bool> get loadingState => _loadingBloc.states.isLoading;
+
+  /// The loading states with tags of all handled result streams.
+  @protected
+  Stream<bool> loadingForTagState(String tag) =>
+      _loadingBloc.states.isLoadingForTag(tag);
 
   /// The errors of all handled result streams.
   @protected
