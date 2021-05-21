@@ -9,6 +9,7 @@ environment:
 dependencies:
   auto_route: ^1.0.2
   cupertino_icons: ^1.0.2{{#analytics}}
+  dio: ^4.0.0
   firebase_analytics: ^8.0.1
   firebase_core: ^1.0.4{{/analytics}}
   flutter:
@@ -16,10 +17,15 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^2.0.0
+  json_annotation: ^4.0.1
+  json_serializable: ^4.1.2
   intl: ^0.17.0
   provider: ^5.0.0
+  retrofit: ^2.0.0
   rx_bloc: ^2.0.0
   rxdart: ^0.26.0
+
+
 
 dev_dependencies:
   auto_route_generator: ^1.0.2
@@ -29,6 +35,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.0.3
+  retrofit_generator: ^2.0.0
   rx_bloc_generator: ^3.0.2
   rx_bloc_test: ^2.0.0
   test: ^1.16.5

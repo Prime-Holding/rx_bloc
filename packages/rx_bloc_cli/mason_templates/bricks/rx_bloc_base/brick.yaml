@@ -5,3 +5,4 @@ vars:
   - organization_name
   - domain_name
   - analytics
+  - http-client
