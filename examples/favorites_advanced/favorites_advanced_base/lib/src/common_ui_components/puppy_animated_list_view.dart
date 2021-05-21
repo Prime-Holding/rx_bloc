@@ -22,6 +22,8 @@ class PuppyAnimatedListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DeclarativeList(
         items: _puppyList,
+        primary: true,
+        padding: const EdgeInsets.only(bottom: 76),
         itemBuilder: (context, Puppy puppy, index, animation) => _createTile(
           item: PuppyCard(
             key: Key('${Keys.puppyCardNamePrefix}${puppy.id}'),

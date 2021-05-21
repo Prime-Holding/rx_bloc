@@ -27,14 +27,20 @@ class EditState extends Equatable {
   final Puppy puppy;
   final String error;
 
-  // EditState copyWith({
-  //   bool? isLoading,
-  //   Puppy? puppy,
-  // }) =>
-  //     EditState(
-  //       isLoading: isLoading ?? this.isLoading,
-  //       puppy: puppy ?? this.puppy,
-  //     );
+  EditState copyWith({
+    bool? isSubmitAttempted,
+    bool? isLoading,
+    bool? isUpdated,
+    Puppy? puppy,
+    String? error,
+  }) =>
+      EditState(
+        isSubmitAttempted: isSubmitAttempted ?? this.isSubmitAttempted,
+        isLoading: isLoading ?? this.isLoading,
+        isUpdated: isUpdated ?? this.isUpdated,
+        puppy: puppy ?? this.puppy,
+        error: error ?? this.error,
+      );
 
   @override
   List<Object> get props => [

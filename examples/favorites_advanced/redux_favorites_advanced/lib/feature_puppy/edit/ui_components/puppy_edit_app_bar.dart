@@ -31,8 +31,8 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       onPressed: () => (_viewModel.isChanged)
           ? (_formKey.currentState!.validate())
-              ? _viewModel.onSubmit()
-              : null
+              ? _viewModel.onPuppySaved()
+              : _viewModel.onSubmitAttempted()
           : null);
 
   Widget _buildLoading() => IconButton(

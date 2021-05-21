@@ -24,10 +24,11 @@ class PuppyEditForm extends StatelessWidget {
   Widget build(BuildContext context) => SafeArea(
           child: SingleChildScrollView(
         child: Container(
+          padding: const EdgeInsets.all(8),
           child: Form(
             key: _formKey,
-            autovalidateMode: (_viewModel.isSubmitAttempted)
-                ? AutovalidateMode.always
+            autovalidateMode: _viewModel.isSubmitAttempted
+                ? AutovalidateMode.onUserInteraction
                 : AutovalidateMode.disabled,
             child: Column(
               children: [
@@ -36,17 +37,18 @@ class PuppyEditForm extends StatelessWidget {
                   imgPath: _viewModel.puppy.asset,
                   pickImage: (source) => _viewModel.onImagePicker(source!),
                 ),
+                const SizedBox(height: 20),
                 PuppyEditCard(
                   label: 'Name',
                   content: TextFormField(
                     key: const ValueKey('PuppyNameInputField'),
-                    //controller: _nameController,
                     maxLines: 1,
                     initialValue: _viewModel.puppy.name,
                     cursorColor: const Color(0xff333333),
                     style: TextStyles.editableTextStyle,
                     textInputAction: TextInputAction.next,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                    decoration: InputStyles.textFieldDecoration,
                     onChanged: (name) => _viewModel.onNameChange(name),
                     validator: (value) => (value == null || value.isEmpty)
                         ? 'Name must not be empty.'
@@ -137,6 +139,7 @@ class PuppyEditForm extends StatelessWidget {
                     style: TextStyles.editableTextStyle,
                     textInputAction: TextInputAction.done,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                    decoration: InputStyles.textFieldDecoration,
                     onChanged: (characteristics) =>
                         _viewModel.onCharacteristicsChange(characteristics),
                     validator: (value) => (value == null || value.isEmpty)

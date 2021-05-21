@@ -6,8 +6,8 @@ class EditLoadingAction {}
 
 class UpdateSucceededAction {}
 
-class UpdateFailedAction {
-  UpdateFailedAction({required this.error});
+class UpdateErrorAction {
+  UpdateErrorAction({required this.error});
 
   final String error;
 }

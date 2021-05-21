@@ -18,7 +18,8 @@ class PuppyEditViewModel extends Equatable {
     required this.onBreedChange,
     required this.onGenderChange,
     required this.onCharacteristicsChange,
-    required this.onSubmit,
+    required this.onSubmitAttempted,
+    required this.onPuppySaved,
     required this.error,
   });
 
@@ -43,10 +44,12 @@ class PuppyEditViewModel extends Equatable {
       store.dispatch(CharacteristicsAction(characteristics: characteristics));
     }
 
-    void _onSubmit() {
-      store
-        ..dispatch(SubmitAttemptedAction())
-        ..dispatch(UpdatePuppyAction(puppy: store.state.editState.puppy));
+    void _onSubmitAttempted() {
+      store.dispatch(SubmitAttemptedAction());
+    }
+
+    void _onPuppySaved() {
+      store.dispatch(UpdatePuppyAction(puppy: store.state.editState.puppy));
     }
 
     return PuppyEditViewModel(
@@ -60,7 +63,8 @@ class PuppyEditViewModel extends Equatable {
       onBreedChange: _onBreedChange,
       onGenderChange: _onGenderChange,
       onCharacteristicsChange: _onCharacteristicsChange,
-      onSubmit: _onSubmit,
+      onSubmitAttempted: _onSubmitAttempted,
+      onPuppySaved: _onPuppySaved,
       error: store.state.editState.error,
     );
   }
@@ -75,7 +79,8 @@ class PuppyEditViewModel extends Equatable {
   final Function(BreedType) onBreedChange;
   final Function(Gender) onGenderChange;
   final Function(String) onCharacteristicsChange;
-  final Function() onSubmit;
+  final Function() onSubmitAttempted;
+  final Function() onPuppySaved;
   final String error;
 
   @override
@@ -90,6 +95,8 @@ class PuppyEditViewModel extends Equatable {
         onBreedChange,
         onGenderChange,
         onCharacteristicsChange,
-        onSubmit,
+        onSubmitAttempted,
+        onPuppySaved,
+        error,
       ];
 }

@@ -18,7 +18,9 @@ Epic<AppState> pickImageEpic(PuppiesRepository repository) =>
               yield ImagePathAction(imagePath: pickedImage!.path);
             }
           } catch (_) {
-            //yield PuppiesFetchFailedAction();
+            yield UpdateErrorAction(
+              error: 'Error: Please grant camera permissions.',
+            );
           }
         });
 
@@ -34,6 +36,6 @@ Epic<AppState> updatePuppyEpic(PuppiesRepository repository) =>
             yield UpdateSearchStatePuppyAction(puppy: updatedPuppy);
             yield UpdateFavoritesStatePuppyAction(puppy: updatedPuppy);
           } catch (error) {
-            yield UpdateFailedAction(error: error.toString());
+            yield UpdateErrorAction(error: error.toString());
           }
         });

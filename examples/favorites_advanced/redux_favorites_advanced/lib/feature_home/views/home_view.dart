@@ -18,21 +18,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: PuppiesAppBar(),
-        bottomNavigationBar: StoreConnector<AppState, HomeViewModel>(
-          converter: (store) => HomeViewModel.from(store),
-          distinct: true,
-          builder: (_, viewModel) => CurvedNavigationBar(
-            color: Colors.blueAccent,
-            backgroundColor: Colors.transparent,
-            items: viewModel.items
-                .map((item) => Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: item.asWidget(),
-                    ))
-                .toList(),
-            onTap: (index) => viewModel.onTapNavBar(index),
-          ),
-        ),
         body: StoreConnector<AppState, HomeViewModel>(
           onDidChange: (viewModel, _) {
             if (viewModel!.error != '') {
@@ -42,10 +27,29 @@ class HomeView extends StatelessWidget {
           },
           converter: (store) => HomeViewModel.from(store),
           distinct: true,
-          builder: (_, viewModel) => viewModel.items.toCurrentIndex() == 0
-              ? SearchView()
-              : FavoritesView(),
+          builder: (_, viewModel) => Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              if (viewModel.items.toCurrentIndex() == 0)
+                SearchView()
+              else
+                FavoritesView(),
+              _buildNavBar(viewModel),
+            ],
+          ),
         ),
+      );
+
+  Widget _buildNavBar(HomeViewModel viewModel) => CurvedNavigationBar(
+        color: Colors.blueAccent,
+        backgroundColor: Colors.transparent,
+        items: viewModel.items
+            .map((item) => Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: item.asWidget(),
+                ))
+            .toList(),
+        onTap: (index) => viewModel.onTapNavBar(index),
       );
 }
 

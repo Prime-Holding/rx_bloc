@@ -20,7 +20,7 @@ bool isSubmitAttemptedReducer({required bool state, action}) {
 
 bool isLoadingReducer({required bool state, action}) {
   if (action is EditLoadingAction) return true;
-  if (action is UpdateSucceededAction || action is UpdateFailedAction) {
+  if (action is UpdateSucceededAction || action is UpdateErrorAction) {
     return false;
   }
   return state;
@@ -54,6 +54,6 @@ Puppy editPuppyReducer({required Puppy state, action}) {
 }
 
 String errorReducer({required String state, action}) {
-  if (action is UpdateFailedAction) return action.error;
+  if (action is UpdateErrorAction) return action.error;
   return '';
 }
