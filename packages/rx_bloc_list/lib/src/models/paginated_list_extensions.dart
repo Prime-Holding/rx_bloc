@@ -9,7 +9,13 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
   ) =>
       map<PaginatedList<T>>((result) {
         // Get the current paginated list data
-        final subjectValue = paginatedList.value;
+        final subjectValue = paginatedList.hasValue
+            ? paginatedList.value
+            : PaginatedList<T>(
+                list: [],
+                pageSize: 0,
+                isLoading: false,
+              );
 
         // If the data is still being fetched/loading, respond with isLoading as true
         if (result is ResultLoading<PaginatedList<T>>) {
