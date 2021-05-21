@@ -1,3 +1,7 @@
+## [5.0.0] - May 21, 2021
+* Migrated to Flutter `2.2` and Dart `2.13`.
+* Update dependencies to latest
+
 ## [4.0.0] - April 28, 2021
 * Upgraded (`null-safety`) dependencies
 

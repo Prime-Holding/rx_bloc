@@ -86,7 +86,7 @@ Here is where the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator
 ```dart
 dev_dependencies:
   build_runner: ^2.0.1
-  rx_bloc_generator: ^4.0.0
+  rx_bloc_generator: any
 ```
 
 Once added to the `pubspec.yaml`, run the flutter command for getting the newly added dependencies `flutter pub get`, and then just start the generator by execuing this command `flutter packages pub run build_runner watch --delete-conflicting-outputs`.
@@ -138,7 +138,7 @@ First, make sure you have added [flutter_rx_bloc](https://pub.dev/packages/flutt
 
 ```dart
 dependencies:
-  flutter_rx_bloc: ^2.0.0
+  flutter_rx_bloc: any
 ```
 
 [RxBlocProvider](https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html) is a Flutter widget that provides a BloC to its children via RxBlocProvider.of<T>(context). It is used as a dependency injection (DI) widget so that a single instance of a BloC can be provided to multiple widgets within a subtree.
