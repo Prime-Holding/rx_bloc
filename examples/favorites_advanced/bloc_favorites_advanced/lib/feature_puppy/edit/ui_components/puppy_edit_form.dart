@@ -26,7 +26,7 @@ class PuppyEditForm extends StatelessWidget {
     puppyPublic = _puppy;
     return
       BlocProvider(
-        create: (context) => PuppyEditFormBloc(),
+        create: (context) => PuppyEditFormBloc(puppy: _puppy),
         child: Builder(
           builder: (context) {
             final formBloc = BlocProvider.of<PuppyEditFormBloc>(context);

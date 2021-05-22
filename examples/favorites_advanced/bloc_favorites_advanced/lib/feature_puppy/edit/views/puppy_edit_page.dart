@@ -43,26 +43,24 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
                 BlocProvider.of<PuppyEditFormBloc>(context);
             // print(puppyEditFormBloc.name);
             return BlocBuilder<PuppyEditFormBloc, FormBlocState>(
-              // print('puppy edit page state : ${state.runtimeType}');
-
               builder: (context, state) => WillPopScope(
-                onWillPop: () => Future.value(true),
-                // () => state.puppy! != null
-                // ? Future.value(false)
-                // : Future.value(true),
-                child: Scaffold(
-                  appBar: PuppyEditAppBar(
-                    enabled: state is FormBlocUpdatingFields ? true : false,
+                  onWillPop: () => Future.value(true),
+                  // () => state.puppy! != null
+                  // ? Future.value(false)
+                  // : Future.value(true),
+                  child: Scaffold(
+                    appBar: PuppyEditAppBar(
+                      enabled: state is FormBlocUpdatingFields ? true : false,
 
-                    // enabled: false,
-                    onSavePressed: () => puppyEditFormBloc.submit(),
-                    // onSavePressed: () => {},
-                  ),
-                  body: PuppyEditForm(
-                    puppy: widget._puppy,
+                      // enabled: false,
+                      onSavePressed: () => puppyEditFormBloc.submit(),
+                      // onSavePressed: () => {},
+                    ),
+                    body: PuppyEditForm(
+                      puppy: widget._puppy,
+                    ),
                   ),
                 ),
-              ),
             );
           },
         ),
