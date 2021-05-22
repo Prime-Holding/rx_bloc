@@ -92,6 +92,8 @@ class FavoritePuppiesBloc
             .manageList(isFavorite: !isFavorite, puppy: puppy),
         error: e.toString(),
       );
+      // On the search page, when there is no internet the count of
+      // favorite puppies is not rebuilding without the delay
       await Future.delayed(const Duration(milliseconds: 200));
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies

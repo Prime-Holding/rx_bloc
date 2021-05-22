@@ -42,7 +42,9 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
     } else {
       yield state.copyWith(
           puppy: puppy.copyWith(isFavorite: !puppy.isFavorite));
-
+      // On details page, when there is no internet, the favorite icon is
+      // not rebuilding without the delay
+      await Future.delayed(const Duration(milliseconds: 400));
       yield state.copyWith(puppy: puppy.copyWith(isFavorite: puppy.isFavorite));
     }
   }

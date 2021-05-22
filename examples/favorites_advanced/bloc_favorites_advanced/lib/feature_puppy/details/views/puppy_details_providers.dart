@@ -19,5 +19,4 @@ List<BlocProvider> _getProviders(Puppy puppy) => [
           coordinatorBloc: context.read(),
         ),
       ),
-      // BlocProvider.value(value: BlocProvider.of<PuppyDetailsBloc>(context))
     ];
