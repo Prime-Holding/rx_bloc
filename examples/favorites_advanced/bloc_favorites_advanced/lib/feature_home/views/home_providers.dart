@@ -7,8 +7,8 @@ List<BlocProvider> _getProviders() => [
           puppiesRepository: context.read(),
         ),
       ),
-      BlocProvider<PuppyManageBloc>(
-        create: (context) => PuppyManageBloc(
+      BlocProvider<PuppyMarkAsFavoriteBloc>(
+        create: (context) => PuppyMarkAsFavoriteBloc(
           coordinatorBloc: context.read(),
           puppiesRepository: context.read(),
         ),

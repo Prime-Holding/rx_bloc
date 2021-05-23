@@ -1,5 +1,5 @@
 import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -16,19 +16,19 @@ import 'puppy_manage_bloc_test.mocks.dart';
 void main() {
   late MockPuppiesRepository mockRepo;
   late MockCoordinatorBloc mockCoordinatorBloc;
-  late PuppyManageBloc puppyManageBloc;
+  late PuppyMarkAsFavoriteBloc puppyManageBloc;
 
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mockCoordinatorBloc = MockCoordinatorBloc();
     when(mockCoordinatorBloc.stream).thenAnswer((_) => const Stream.empty());
-    puppyManageBloc = PuppyManageBloc(
+    puppyManageBloc = PuppyMarkAsFavoriteBloc(
       puppiesRepository: mockRepo,
       coordinatorBloc: mockCoordinatorBloc,
     );
   });
 
-  blocTest<PuppyManageBloc, PuppyManageState>(
+  blocTest<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
     'PuppyManageBloc PuppyManageEvent',
     build: () {
       when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3, isFavorite: true))
@@ -36,7 +36,7 @@ void main() {
       return puppyManageBloc;
     },
     act: (bloc) {
-      bloc.add(PuppyManageMarkAsFavoriteEvent(
+      bloc.add(PuppyMarkAsFavoriteEvent(
         puppy: Stub.isNotFavoritePuppy3,
         isFavorite: true,
       ));
@@ -55,7 +55,7 @@ void main() {
     },
   );
 
-  blocTest<PuppyManageBloc, PuppyManageState>(
+  blocTest<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
     'PuppyManageBloc PuppyManageEvent throws exception',
     build: () {
       when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3, isFavorite: true))
@@ -63,12 +63,12 @@ void main() {
       return puppyManageBloc;
     },
     act: (bloc) {
-      bloc.add(PuppyManageMarkAsFavoriteEvent(
+      bloc.add(PuppyMarkAsFavoriteEvent(
         puppy: Stub.isNotFavoritePuppy3,
         isFavorite: true,
       ));
     },
-    expect: () => <PuppyManageState>[
+    expect: () => <PuppyMarkAsFavoriteState>[
       puppyManageBloc.state.copyWith(error: Stub.testErrString),
       // const PuppyManageState(puppy: null,error: Stub.testErrString),
     ],

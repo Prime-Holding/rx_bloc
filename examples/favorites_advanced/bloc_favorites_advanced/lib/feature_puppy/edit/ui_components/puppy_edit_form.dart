@@ -4,7 +4,7 @@ import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/services.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_card.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class PuppyEditForm extends StatelessWidget {
                       //     }
                       //   }
                       // ),
-                      BlocBuilder<PuppyManageBloc, PuppyManageState>(
+                      BlocBuilder<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
                         builder: (context, state) =>
                             PuppyEditAvatar(
                               heroTag:

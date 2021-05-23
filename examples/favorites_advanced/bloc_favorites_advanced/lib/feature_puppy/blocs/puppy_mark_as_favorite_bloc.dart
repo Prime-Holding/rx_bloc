@@ -11,8 +11,8 @@ part 'puppy_mark_as_favorite_event.dart';
 
 part 'puppy_mark_as_favorite_state.dart';
 
-class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
-  PuppyManageBloc({
+class PuppyMarkAsFavoriteBloc extends Bloc<PuppyManageEvent, PuppyMarkAsFavoriteState> {
+  PuppyMarkAsFavoriteBloc({
     required PuppiesRepository puppiesRepository,
     required CoordinatorBloc coordinatorBloc,
     // Puppy? puppy,
@@ -20,7 +20,7 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
         // _puppy = puppy,
         _puppiesRepository = puppiesRepository,
         _coordinatorBloc = coordinatorBloc,
-        super(const PuppyManageState());
+        super(const PuppyMarkAsFavoriteState());
 
   // final Puppy? _puppy;
   // final PuppyValidator _puppyValidator;
@@ -28,16 +28,16 @@ class PuppyManageBloc extends Bloc<PuppyManageEvent, PuppyManageState> {
   final CoordinatorBloc _coordinatorBloc;
 
   @override
-  Stream<PuppyManageState> mapEventToState(
+  Stream<PuppyMarkAsFavoriteState> mapEventToState(
     PuppyManageEvent event,
   ) async* {
-    if (event is PuppyManageMarkAsFavoriteEvent) {
+    if (event is PuppyMarkAsFavoriteEvent) {
       yield* _mapToMarkAsFavorite(event);
     }
   }
 
-  Stream<PuppyManageState> _mapToMarkAsFavorite(
-      PuppyManageMarkAsFavoriteEvent event) async* {
+  Stream<PuppyMarkAsFavoriteState> _mapToMarkAsFavorite(
+      PuppyMarkAsFavoriteEvent event) async* {
     final puppy = event.puppy;
     final isFavorite = event.isFavorite;
     try {

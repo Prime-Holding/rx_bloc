@@ -1,8 +1,8 @@
 part of 'puppy_details_page.dart';
 
 List<BlocProvider> _getProviders(Puppy puppy) => [
-      BlocProvider<PuppyManageBloc>(
-        create: (context) => PuppyManageBloc(
+      BlocProvider<PuppyMarkAsFavoriteBloc>(
+        create: (context) => PuppyMarkAsFavoriteBloc(
           coordinatorBloc: context.read(),
           puppiesRepository: context.read(),
         ),

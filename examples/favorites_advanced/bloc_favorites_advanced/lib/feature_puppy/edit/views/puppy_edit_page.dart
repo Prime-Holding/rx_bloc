@@ -1,4 +1,4 @@
-import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_sample/feature_puppy/edit/bloc/puppy_edit_form_bloc.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_app_bar.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_form.dart';

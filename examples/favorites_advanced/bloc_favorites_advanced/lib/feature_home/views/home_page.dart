@@ -1,6 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc_.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/views/favorites_page.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: PuppiesAppBar(),
-        body: BlocListener<PuppyManageBloc, PuppyManageState>(
+        body: BlocListener<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
           listener: (ctx, state) {
             // print('HOME PAGE BlocListener
             // FavoritePuppiesState${state.error}');

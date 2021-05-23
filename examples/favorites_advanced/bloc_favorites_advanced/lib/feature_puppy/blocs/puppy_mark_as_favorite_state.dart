@@ -1,8 +1,8 @@
-part of 'puppy_mark_as_favorite_bloc_.dart';
+part of 'puppy_mark_as_favorite_bloc.dart';
 
 @immutable
-class PuppyManageState extends Equatable {
-  const PuppyManageState({
+class PuppyMarkAsFavoriteState extends Equatable {
+  const PuppyMarkAsFavoriteState({
     this.imagePath,
     this.name,
     this.breed,
@@ -26,11 +26,11 @@ class PuppyManageState extends Equatable {
   final String? error;
   final bool? updateComplete;
 
-  PuppyManageState copyWith({
+  PuppyMarkAsFavoriteState copyWith({
     Puppy? puppy,
     String? error,
   }) =>
-      PuppyManageState(
+      PuppyMarkAsFavoriteState(
         puppy: puppy,
         error: error,
       );
