@@ -1,5 +1,5 @@
 import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_manage_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +18,8 @@ class FavoritesPage extends StatelessWidget {
               builder: (context, state) => PuppyAnimatedListView(
                 puppyList: state.favoritePuppies,
                 onFavorite: (puppy, isFavorite) =>
-                    BlocProvider.of<PuppyManageBloc>(context).add(
-                        PuppyManageMarkAsFavoriteEvent(
+                    BlocProvider.of<PuppyMarkAsFavoriteBloc>(context).add(
+                        PuppyMarkAsFavoriteEvent(
                             puppy: puppy, isFavorite: isFavorite)),
                 onPuppyPressed: (puppy) =>
                     Navigator.of(context).push(PuppyFlow.route(puppy: puppy)),

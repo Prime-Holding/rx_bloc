@@ -1,10 +1,10 @@
-part of 'puppy_manage_bloc.dart';
+part of 'puppy_mark_as_favorite_bloc.dart';
 
 @immutable
 abstract class PuppyManageEvent {}
 
-class PuppyManageMarkAsFavoriteEvent extends PuppyManageEvent {
-  PuppyManageMarkAsFavoriteEvent({
+class PuppyMarkAsFavoriteEvent extends PuppyManageEvent {
+  PuppyMarkAsFavoriteEvent({
     required this.puppy,
     required this.isFavorite,
   });

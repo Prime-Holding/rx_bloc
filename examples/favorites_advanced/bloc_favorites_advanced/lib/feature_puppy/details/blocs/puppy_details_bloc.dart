@@ -15,9 +15,9 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   PuppyDetailsBloc({
     required CoordinatorBloc coordinatorBloc,
     required Puppy puppy,
-  })  : _coordinatorBloc = coordinatorBloc,
+  })   : _coordinatorBloc = coordinatorBloc,
         _puppy = puppy,
-        super( PuppyDetailsState(puppy: puppy)) {
+        super(PuppyDetailsState(puppy: puppy)) {
     _coordinatorBloc.stream
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
         .listen((state) => add(PuppyDetailsEvent(
