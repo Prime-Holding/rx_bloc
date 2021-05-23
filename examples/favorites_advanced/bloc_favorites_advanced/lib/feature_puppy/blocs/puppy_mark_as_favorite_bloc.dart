@@ -11,7 +11,8 @@ part 'puppy_mark_as_favorite_event.dart';
 
 part 'puppy_mark_as_favorite_state.dart';
 
-class PuppyMarkAsFavoriteBloc extends Bloc<PuppyManageEvent, PuppyMarkAsFavoriteState> {
+class PuppyMarkAsFavoriteBloc
+    extends Bloc<PuppyManageEvent, PuppyMarkAsFavoriteState> {
   PuppyMarkAsFavoriteBloc({
     required PuppiesRepository puppiesRepository,
     required CoordinatorBloc coordinatorBloc,
