@@ -14,10 +14,10 @@ part 'puppy_details_state.dart';
 class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   PuppyDetailsBloc({
     required CoordinatorBloc coordinatorBloc,
-    Puppy? puppy,
+    required Puppy puppy,
   })  : _coordinatorBloc = coordinatorBloc,
         _puppy = puppy,
-        super(const PuppyDetailsState()) {
+        super( PuppyDetailsState(puppy: puppy)) {
     _coordinatorBloc.stream
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
         .listen((state) => add(PuppyDetailsEvent(

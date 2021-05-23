@@ -3,40 +3,41 @@ part of 'puppy_details_bloc.dart';
 @immutable
 class PuppyDetailsState extends Equatable {
   const PuppyDetailsState(
-      {this.imagePath,
-      this.name,
-      this.breed,
-      this.gender,
-      this.characteristics,
-      this.isFavourite,
-      this.genderAndBreed,
-      this.puppy});
+      {
+        // this.imagePath,
+      // this.name,
+      // this.breed,
+      // this.gender,
+      // this.characteristics,
+      // this.isFavourite,
+      // this.genderAndBreed,
+      required this.puppy});
 
-  final String? imagePath;
+  // final String? imagePath;
 
-  final String? name;
+  // final String? name;
 
-  final String? breed;
+  // final String? breed;
 
-  final String? gender;
+  // final String? gender;
 
-  final String? characteristics;
+  // final String? characteristics;
 
-  final bool? isFavourite;
+  // final bool? isFavourite;
 
-  final String? genderAndBreed;
+  // final String? genderAndBreed;
 
-  final Puppy? puppy;
+  final Puppy puppy;
 
   @override
   List<Object?> get props => [
-        imagePath,
-        name,
-        breed,
-        gender,
-        characteristics,
-        isFavourite,
-        genderAndBreed,
+        // imagePath,
+        // name,
+        // breed,
+        // gender,
+        // characteristics,
+        // isFavourite,
+        // genderAndBreed,
         puppy
       ];
 
