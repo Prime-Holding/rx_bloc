@@ -33,8 +33,6 @@ class PuppyDetails extends StatelessWidget {
                   tag: '$PuppyCardAnimationTag ${puppy.id}',
                   child: _buildPuppyBackgroundImage(
                       state.puppy.asset),
-                      // state.imagePath ?? puppy.asset),
-                      // state.imagePath ?? puppy.asset),
                 ),
               ),
               Padding(
@@ -61,7 +59,8 @@ class PuppyDetails extends StatelessWidget {
                     ),
                     BlocBuilder<PuppyDetailsBloc, PuppyDetailsState>(
                       builder: (context, state) => Text(
-                        state.puppy.displayCharacteristics!,
+                        state.puppy.displayCharacteristics
+                             ?? '',
                         style: TextStyles.subtitleTextStyle,
                       ),
                     ),

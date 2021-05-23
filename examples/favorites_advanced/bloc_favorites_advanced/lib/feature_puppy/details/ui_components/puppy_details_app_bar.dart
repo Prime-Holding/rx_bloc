@@ -53,9 +53,8 @@ class PuppyDetailsAppBar extends StatelessWidget
       );
 
   void _markAsFavorite(BuildContext context, bool isFavorite) =>
-      BlocProvider.of<PuppyMarkAsFavoriteBloc>(context).add(
-          PuppyMarkAsFavoriteEvent(
-              puppy: _puppy, isFavorite: isFavorite));
+      BlocProvider.of<PuppyMarkAsFavoriteBloc>(context)
+          .add(PuppyMarkAsFavoriteEvent(puppy: _puppy, isFavorite: isFavorite));
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
