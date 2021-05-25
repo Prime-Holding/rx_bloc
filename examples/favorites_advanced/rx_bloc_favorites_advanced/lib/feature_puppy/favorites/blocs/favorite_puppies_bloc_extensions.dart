@@ -28,7 +28,9 @@ extension _StreamBindToPuppies on Stream<List<Puppy>> {
     BehaviorSubject<Result<List<Puppy>>> puppiesToUpdate,
   ) =>
       map((puppies) {
-        final puppiesResult = puppiesToUpdate.value ?? Result.success([]);
+        final puppiesResult = puppiesToUpdate.hasValue
+            ? puppiesToUpdate.value
+            : Result<List<Puppy>>.success([]);
 
         if (puppiesResult is ResultSuccess<List<Puppy>>) {
           return Result.success(puppiesResult.data.manageFavoriteList(puppies));
