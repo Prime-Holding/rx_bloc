@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:project_name/base/count_data_source/count_data_source.dart';
+import 'package:project_name/base/count_data_source/count_local_data_source.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -19,13 +21,20 @@ class CounterDependencies {
 
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
+        ..._dataSources,
         ..._repositories,
         ..._blocs,
       ];
 
+  List<Provider> get _dataSources => [
+        Provider<CountDataSource>(
+          create: (context) => CountLocalDataSource(),
+        ),
+      ];
+
   List<Provider> get _repositories => [
         Provider<CounterRepository>(
-          create: (context) => CounterRepository(),
+          create: (context) => CounterRepository(context.read()),
         ),
       ];
 

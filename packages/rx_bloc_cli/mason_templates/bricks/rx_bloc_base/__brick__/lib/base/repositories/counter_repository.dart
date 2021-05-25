@@ -5,31 +5,18 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:project_name/base/count_data_source/count_data_source.dart';
+import 'package:project_name/base/models/count.dart';
+
 /// This will simulate a server with 100 milliseconds response time
 class CounterRepository {
-  int _counter = 0;
 
-  /// Increment the stored counter by one
-  Future<int> increment() async {
-    // Server response time.
-    await Future.delayed(const Duration(milliseconds: 800));
-    // Simulate an error from the server when the counter reached 2.
-    if (_counter == 2) {
-      throw Exception('Maximum number is reached!');
-    }
+  CounterRepository(this.countDataSource);
 
-    return ++_counter;
-  }
+  final CountDataSource countDataSource;
 
-  /// Decrement the stored counter by one
-  Future<int> decrement() async {
-    // Server response time.
-    await Future.delayed(const Duration(milliseconds: 800));
-    // Simulate an error from the server when the counter reached 2.
-    if (_counter <= 0) {
-      throw Exception('Minimum number is reached!');
-    }
+  Future<Count> getCurrent()=> countDataSource.getCurrent();
+  Future<Count> increment()=> countDataSource.increment();
+  Future<Count> decrement()=> countDataSource.decrement();
 
-    return --_counter;
-  }
 }

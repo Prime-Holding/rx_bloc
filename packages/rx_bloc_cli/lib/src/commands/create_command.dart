@@ -104,7 +104,7 @@ class CreateCommand extends Command<int> {
         'domain_name': orgDomain,
         'organization_name': orgName,
         'analytics': _enableAnalytics,
-        'http_client' : _httpClientType,
+        'http_client': _httpClientType,
       },
     );
 
@@ -152,8 +152,8 @@ class CreateCommand extends Command<int> {
   /// Returns http client type
   HttpClientType get _httpClientType {
     final clientType = _argResults[_httpClientString];
-    return HttpClientType.values.firstWhere((element) =>
-        element.toString().contains(clientType));
+    return HttpClientType.values
+        .firstWhere((element) => element.toString().contains(clientType));
   }
 
   /// endregion
@@ -243,4 +243,4 @@ class CreateCommand extends Command<int> {
 
 }
 
-enum HttpClientType{dio}
+enum HttpClientType { dio }
