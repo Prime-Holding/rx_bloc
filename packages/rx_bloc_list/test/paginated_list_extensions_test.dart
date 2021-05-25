@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:rx_bloc/rx_bloc.dart';
 
 import 'stub.dart';
 
@@ -176,7 +176,7 @@ void main() {
         Stub.steamPage(
           Stub.pageOne,
           delay: 30,
-          onEvent: () => pageSubject.value!.reset(),
+          onEvent: () => pageSubject.value.reset(),
         ),
       ]).mergeWithPaginatedList(pageSubject).bind(pageSubject);
 
@@ -208,7 +208,7 @@ void main() {
         Stub.steamPage(
           Stub.pageOne,
           delay: 20,
-          onEvent: () => pageSubject.value!.reset(),
+          onEvent: () => pageSubject.value.reset(),
         ),
       ]).mergeWithPaginatedList(pageSubject).bind(pageSubject);
 
