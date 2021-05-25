@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../core.dart';
 import 'design_system_color.dart';
 
+// Wraps up all the Design system components
 class DesignSystem {
   final DesignSystemColor colors;
   final DesignSystemTypography typography;
@@ -40,5 +41,6 @@ class DesignSystem {
     );
   }
 
+  // Access theme instance directly
   ThemeData get theme => HotelAppTheme.buildTheme(this);
 }
