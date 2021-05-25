@@ -12,9 +12,9 @@ import 'package:rx_bloc_cli/src/utils/git_ignore_creator.dart';
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
   CreateCommand({
-    Logger logger,
-    MasonBundle bundle,
-    Future<MasonGenerator> Function(MasonBundle) generator,
+    Logger? logger,
+    MasonBundle? bundle,
+    Future<MasonGenerator> Function(MasonBundle)? generator,
   })  : _logger = logger ?? Logger(),
         _bundle = bundle ?? rxBlocBaseBundle,
         _generator = generator ?? MasonGenerator.fromBundle {
@@ -55,9 +55,10 @@ class CreateCommand extends Command<int> {
   final Future<MasonGenerator> Function(MasonBundle) _generator;
 
   /// [ArgResults] which can be overridden for testing.
-  ArgResults argResultOverrides;
+  ArgResults? argResultOverrides;
 
-  ArgResults get _argResults => argResultOverrides ?? argResults;
+  ArgResults get _argResults =>
+      argResultOverrides != null ? argResultOverrides! : argResults!;
 
   /// Regex for package name
   final RegExp _packageNameRegExp = RegExp('[a-z_][a-z0-9_]*');
@@ -185,7 +186,7 @@ class CreateCommand extends Command<int> {
   }
 
   void _validateOrganisationName(String orgName) {
-    if (orgName == null || orgName.trim().isEmpty) {
+    if (orgName.trim().isEmpty) {
       throw UsageException('No organisation name specified.', usage);
     }
 
