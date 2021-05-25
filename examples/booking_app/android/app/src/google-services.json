@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "240744827211",
+    "project_id": "booking-2c3df",
+    "storage_bucket": "booking-2c3df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240744827211:android:c300e018a655f62f6bc0ce",
+        "android_client_info": {
+          "package_name": "com.primeholding.booking_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240744827211-10gdfbdsr5uddnj3k4fuvbddktsrfdq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF7mqHA-m5wocBizSXIoRUJEkmhBaK_BY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240744827211-10gdfbdsr5uddnj3k4fuvbddktsrfdq4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "240744827211-35ahf1krnqboakqkc54t5lpeivhkat4t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.primeholding.bookingApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

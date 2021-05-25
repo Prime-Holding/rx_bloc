@@ -32,6 +32,9 @@ dependencies:
   image_picker: ^0.7.0
   rflutter_alert: ^2.0.2
   intl: ^0.17.0
+  firebase_core: ^1.2.0
+  cloud_firestore: ^2.2.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0

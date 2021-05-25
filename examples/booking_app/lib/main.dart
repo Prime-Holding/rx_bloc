@@ -1,3 +1,5 @@
+import 'package:booking_app/base/remote_data_sources/hotels_remote_data_source_factory.dart';
+import 'package:booking_app/base/ui_components/firebase_initializer.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
@@ -9,36 +11,37 @@ import 'base/repositories/paginated_hotels_repository.dart';
 import 'feature_home/views/home_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) => MultiProvider(
-        providers: [
-          Provider<PaginatedHotelsRepository>(
-            create: (context) => PaginatedHotelsRepository(
-              HotelsRepository(
-                ConnectivityRepository(),
-                multiplier: 100,
+  Widget build(BuildContext context) => FirebaseInitializer(
+        child: MultiProvider(
+          providers: [
+            Provider<PaginatedHotelsRepository>(
+              create: (context) => PaginatedHotelsRepository(HotelsRepository(
+                  hotelsDataSource:
+                      HotelsRemoteDataSourceFactory.withFirebaseDataSource())),
+            ),
+            Provider<CoordinatorBlocType>(
+                create: (context) => CoordinatorBloc()),
+            Provider<HotelListBlocType>(
+              create: (context) => HotelListBloc(
+                Provider.of(context, listen: false),
+                Provider.of(context, listen: false),
               ),
             ),
-          ),
-          Provider<CoordinatorBlocType>(create: (context) => CoordinatorBloc()),
-          Provider<HotelListBlocType>(
-            create: (context) => HotelListBloc(
-              Provider.of(context, listen: false),
-              Provider.of(context, listen: false),
+          ],
+          child: MaterialApp(
+            title: 'Booking app',
+            home: HomePage.page(),
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
             ),
-          ),
-        ],
-        child: MaterialApp(
-          title: 'Booking app',
-          home: HomePage.page(),
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: ColorStyles.scaffoldBackgroundColor,
           ),
         ),
       );
