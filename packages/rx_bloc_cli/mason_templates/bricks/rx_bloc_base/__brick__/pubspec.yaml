@@ -7,7 +7,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  auto_route: ^1.0.2
+  auto_route: ^2.2.0
   cupertino_icons: ^1.0.2{{#analytics}}
   firebase_analytics: ^8.0.1
   firebase_core: ^1.0.4{{/analytics}}
@@ -15,23 +15,23 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^2.0.0
+  flutter_rx_bloc: ^3.0.0
   intl: ^0.17.0
   provider: ^5.0.0
-  rx_bloc: ^2.0.0
-  rxdart: ^0.26.0
+  rx_bloc: ^3.0.0
+  rxdart: ^0.27.0
 
 dev_dependencies:
-  auto_route_generator: ^1.0.2
-  build_runner: ^1.12.2
+  auto_route_generator: ^2.1.0
+  build_runner: ^2.0.3
   # flutter_driver:
   #   sdk: flutter
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.3
-  rx_bloc_generator: ^3.0.2
-  rx_bloc_test: ^2.0.0
-  test: ^1.16.5
+  mockito: ^5.0.8
+  rx_bloc_generator: ^5.0.0
+  rx_bloc_test: ^3.0.0
+  test: ^1.16.8
 
 flutter:
   uses-material-design: true

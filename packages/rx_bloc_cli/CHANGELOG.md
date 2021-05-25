@@ -1,3 +1,6 @@
+## [0.0.3] - May 25, 2021
+* Update generated project with latest dependencies
+
 ## [0.0.2] - May 10, 2021
 * Documentation improvements
 
