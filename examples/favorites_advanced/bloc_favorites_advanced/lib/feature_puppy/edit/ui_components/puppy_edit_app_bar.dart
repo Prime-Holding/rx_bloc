@@ -32,12 +32,13 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget{
       // state.canSubmit ? _buildIcon()  : _buildLoading(),
       if (state is FormBlocSubmitting) {
         //emitSubmitting() changes the state to FormBlocSubmitting
-        // print('_buildSaveButton FormBlocSubmitting ${state.canSubmit}');
+        // print('_buildSaveButton FormBlocSubmitting1 ${state.runtimeType}');
         return _buildLoading();
-      } else if (state.canSubmit){
-        // print('_buildSaveButton state.canSubmit ${state.canSubmit}');
-        return _buildIcon();
       }
+      // else if (state.canSubmit){
+        // print('_buildSaveButton state.canSubmit ${state.canSubmit}');
+        // return _buildIcon();
+      // }
       // print('_buildSaveButton Last return ${state.canSubmit}');
       return _buildIcon();
     },

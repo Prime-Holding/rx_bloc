@@ -13,13 +13,16 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({
-    Puppy? puppy,
+    required Puppy puppy,
+    required PuppyEditFormBloc puppyEditFormBloc,
     Key? key,
   })  : _puppy = puppy,
+  _formBloc = puppyEditFormBloc,
         super(key: key);
 
-  final Puppy? _puppy;
+  final Puppy _puppy;
   static Puppy? puppyPublic;
+  final PuppyEditFormBloc _formBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -28,72 +31,88 @@ class PuppyEditForm extends StatelessWidget {
       create: (context) => PuppyEditFormBloc(puppy: _puppy),
       child: Builder(
         builder: (context) {
-          final formBloc = BlocProvider.of<PuppyEditFormBloc>(context);
-
+          // final formBloc = BlocProvider.of<PuppyEditFormBloc>(context);
+          print('');
           return SafeArea(
             key: const ValueKey('PuppyEditPage'),
-            child: SingleChildScrollView(
-              // physics: const ClampingScrollPhysics(),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  children: [
-                    // BlocListener<PuppyManageBloc, PuppyManageState>(
-                    //   listener: (context, state) {
-                    //     ///TODO change this
-                    //     if(state.updateComplete != null){
-                    //       context.flow<PuppyFlowState>().complete();
-                    //     }
-                    //   },
-                    // ),
-                    // BlocListener<PuppyManageBloc, PuppyManageState>(
-                    //   listener: (context, state){
-                    //     if(state.error != null){
-                    //       ScaffoldMessenger.of(context)
-                    //           .showSnackBar(SnackBar(content:
-                    //           Text(state.error!)));
-                    //     }
-                    //   }
-                    // ),
-                    BlocBuilder<PuppyMarkAsFavoriteBloc,
-                        PuppyMarkAsFavoriteState>(
-                      builder: (context, state) => PuppyEditAvatar(
-                        heroTag:
-                            '$PuppyCardAnimationTag ${_puppy?.id ??
-                                'newpuppy'}',
-                        imgPath: _puppy!.asset,
-                        pickImage: (source) {
-                          if (source != null) {
-                            // BlocProvider.of<PuppyManageBloc>(context)
-                            //     .add(PuppyManageSetImageEvent(source));
-                          }
-                        },
+            child: BlocBuilder<PuppyEditFormBloc, FormBlocState>(
+              // buildWhen: (previous, current) =>
+              // previous.runtimeType != current.runtimeType ||
+              //     previous is FormBlocLoading && current is FormBlocLoading,
+              builder:(context, state) {
+                if(state is FormBlocLoading){
+                  // print('puppy_edit_form state is : FormBlocLoading');
+                  return const Center(child: CircularProgressIndicator());
+                }else {
+                  // print('puppy_edit_form state is : ${state.runtimeType}');
+
+                  return SingleChildScrollView(
+                    // physics: const ClampingScrollPhysics(),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          // BlocListener<PuppyManageBloc, PuppyManageState>(
+                          //   listener: (context, state) {
+                          //     ///TODO change this
+                          //     if(state.updateComplete != null){
+                          //       context.flow<PuppyFlowState>().complete();
+                          //     }
+                          //   },
+                          // ),
+                          // BlocListener<PuppyManageBloc, PuppyManageState>(
+                          //   listener: (context, state){
+                          //     if(state.error != null){
+                          //       ScaffoldMessenger.of(context)
+                          //           .showSnackBar(SnackBar(content:
+                          //           Text(state.error!)));
+                          //     }
+                          //   }
+                          // ),
+                          BlocBuilder<PuppyMarkAsFavoriteBloc,
+                              PuppyMarkAsFavoriteState>(
+                            builder: (context, state) =>
+                                PuppyEditAvatar(
+                                  heroTag:
+                                  '$PuppyCardAnimationTag ${_puppy.id}',
+                                  imgPath: _puppy.asset,
+                                  pickImage: (source) {
+                                    if (source != null) {
+                                      // BlocProvider.of<PuppyManageBloc>
+                                      // (context)
+                                      //     .add(PuppyManageSetImageEvent
+                                      //     (source));
+                                    }
+                                  },
+                                ),
+                          ),
+                          const SizedBox(height: 20),
+                          PuppyEditCard(
+                            label: 'Name',
+                            content: _buildNameField(_formBloc),
+                            icon: Icons.account_box,
+                          ),
+                          PuppyEditCard(
+                            label: 'Breed',
+                            content: _buildBreedSelection(_formBloc),
+                            icon: Icons.pets,
+                          ),
+                          PuppyEditCard(
+                            label: 'Gender',
+                            content: _buildGenderSelection(_formBloc),
+                            icon: Icons.wc,
+                          ),
+                          PuppyEditCard(
+                            label: 'Characteristics',
+                            content: _buildCharacteristicsField(_formBloc),
+                            icon: Icons.article,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    PuppyEditCard(
-                      label: 'Name',
-                      content: _buildNameField(formBloc),
-                      icon: Icons.account_box,
-                    ),
-                    PuppyEditCard(
-                      label: 'Breed',
-                      content: _buildBreedSelection(formBloc),
-                      icon: Icons.pets,
-                    ),
-                    PuppyEditCard(
-                      label: 'Gender',
-                      content: _buildGenderSelection(formBloc),
-                      icon: Icons.wc,
-                    ),
-                    PuppyEditCard(
-                      label: 'Characteristics',
-                      content: _buildCharacteristicsField(formBloc),
-                      icon: Icons.article,
-                    ),
-                  ],
-                ),
-              ),
+                  );
+                }
+              }
             ),
           );
         },
@@ -126,7 +145,8 @@ class PuppyEditForm extends StatelessWidget {
               Expanded(
                 child: RadioButtonGroupFieldBlocBuilder(
                   selectFieldBloc: formBloc.gender,
-                  itemBuilder: (context, value) => value.toString(),
+                  itemBuilder: (context, value) => value
+                      .toString().substring(7),
                 ),
               ),
             ],

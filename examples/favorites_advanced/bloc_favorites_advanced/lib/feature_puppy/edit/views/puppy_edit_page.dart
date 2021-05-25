@@ -11,18 +11,18 @@ part 'puppy_edit_providers.dart';
 
 class PuppyEditPage extends StatefulWidget {
   const PuppyEditPage({
-    required Puppy? puppy,
+    required Puppy puppy,
     Key? key,
   })  : _puppy = puppy,
         super(key: key);
 
-  static Page page({required Puppy? puppy}) => MaterialPage(
+  static Page page({required Puppy puppy}) => MaterialPage(
           child: MultiBlocProvider(
         providers: _getProviders(puppy),
         child: PuppyEditPage(puppy: puppy),
       ));
 
-  final Puppy? _puppy;
+  final Puppy _puppy;
 
   @override
   _PuppyEditPageState createState() => _PuppyEditPageState();
@@ -36,32 +36,42 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (context) => PuppyEditFormBloc(),
+        create: (context) => PuppyEditFormBloc(puppy: widget._puppy),
         child: Builder(
           builder: (context) {
             final puppyEditFormBloc =
                 BlocProvider.of<PuppyEditFormBloc>(context);
             // print(puppyEditFormBloc.name);
-            return BlocBuilder<PuppyEditFormBloc, FormBlocState>(
-              builder: (context, state) => WillPopScope(
-                  onWillPop: () => Future.value(true),
-                  // () => state.puppy! != null
-                  // ? Future.value(false)
-                  // : Future.value(true),
-                  child: Scaffold(
-                    appBar: PuppyEditAppBar(
-                      enabled: state is FormBlocUpdatingFields ? true : false,
+            // return BlocBuilder<PuppyEditFormBloc, FormBlocState>(
+            //     builder: (context, state) {
+            //   print('puppy_edit_page state: ${state.runtimeType}');
+              return StreamBuilder<bool>(
+                stream: puppyEditFormBloc.isFormValid$,
+                builder: (context, snapshot) => WillPopScope(
+                    onWillPop: () =>
+                    // state is FormBlocLoading
+                    //     ? Future.value(false)
+                         Future.value(true),
+                    child: Scaffold(
+                      appBar: PuppyEditAppBar(
+                        // enabled:state is FormUpdatingFields ? true: false,
+                        // enabled: state is FormBlocUpdatingFields ?
+                        // true : false,
+                        enabled: snapshot.data == true ? true : false,
+                        // enabled: true,
 
-                      // enabled: false,
-                      onSavePressed: () => puppyEditFormBloc.submit(),
-                      // onSavePressed: () => {},
+                        // enabled: false,
+                        onSavePressed: ()  => puppyEditFormBloc.submit,
+                        // onSavePressed: () => {},
+                      ),
+                      body: PuppyEditForm(
+                        puppy: widget._puppy,
+                        puppyEditFormBloc: puppyEditFormBloc,
+                      ),
                     ),
-                    body: PuppyEditForm(
-                      puppy: widget._puppy,
-                    ),
-                  ),
-                ),
-            );
+                  )
+              );
+            // });
           },
         ),
       );
