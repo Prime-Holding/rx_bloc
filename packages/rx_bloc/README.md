@@ -1,13 +1,14 @@
-![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop/graph/badge.svg)](https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
+![CI][ci_badge_lnk] [![codecov][codecov_badge_lnk]][codecov_branch_lnk] ![style][code_style_lnk] ![license][license_lnk]
 
 # What is rx_bloc ?
-![Slogan](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/slogan.png)
+![Slogan][rx_bloc_slogan_lnk]
 
-Along with the [rx_bloc](https://pub.dev/packages/rx_bloc) the following set of packages will help you during the product development.
-1. [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) that exposes your reactive BloCs to the UI Layer.
-2. [rx_bloc_test](https://pub.dev/packages/rx_bloc_test) that facilitates implementing the unit tests for your BloCs
-3. [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) that boosts development efficiency by making your BloCs zero-boilerplate.
-4. [rx_bloc_list](https://pub.dev/packages/rx_bloc_list) that facilitates implementing infinity scroll and pull-to-refresh features with minimal setup.
+Along with the [rx_bloc][rx_bloc_lnk] the following set of packages will help you during the product development.
+1. [flutter_rx_bloc][flutter_rx_bloc_lnk] that exposes your reactive BloCs to the UI Layer.
+2. [rx_bloc_test][rx_bloc_test_lnk] that facilitates implementing the unit tests for your BloCs
+3. [rx_bloc_generator][rx_bloc_generator_lnk] that boosts development efficiency by making your BloCs zero-boilerplate.
+4. [rx_bloc_list][rx_bloc_list_lnk] that facilitates implementing infinity scroll and pull-to-refresh features with minimal setup.
+5. [rx_bloc_cli][rx_bloc_cli_lnk] which helps you bootstrap fully functional and feature-rich projects in seconds.
 
 # Why rx_bloc ?
 If you are working on a complex project you might be challenged to build a highly interactive UI or a heavy business logic in a combination with the consumption of various data sources such as REST APIs, Web Socket, Secured Storage, Shared Preferences, etc. To achieve this, you might need a sophisticated architecture that facilitates your work during product development.
@@ -36,7 +37,7 @@ RaisedButton(
 ```
 
 ## States
-The same way as with the events, now you can see that we have declarations for multiple states grouped in one abstract class (CounterBlocStates). Depending on your goals, you can either have just one stream with all needed data or you can split it into individual streams. In the latter case, you can apply the [Single-responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle) or any performance optimizations.
+The same way as with the events, now you can see that we have declarations for multiple states grouped in one abstract class (CounterBlocStates). Depending on your goals, you can either have just one stream with all needed data or you can split it into individual streams. In the latter case, you can apply the [Single-responsibility principle][single_responsibility_principle_lnk] or any performance optimizations.
 
 ```dart
 /// A contract, containing all Counter BloC states
@@ -60,7 +61,7 @@ abstract class CounterBlocStates {
 ## Zero-boilerplate BloC
 
 Then you need to create a CounterBloc class in **counter_bloc.dart** (just after the contracts) as shown below
-[counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
+[counter_bloc.dart][counter_bloc_example_line_ref]
 ```dart
 ...
 @RxBloc()
@@ -69,8 +70,8 @@ class CounterBloc extends $CounterBloc {}
 
 ### Android Studio Plugin
 
-You can create the contracts along with the BloC class by yourself, but this seems to be a tedious task, isn't it? It's recommended using the [RxBloC Plugin for Android Studio](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true) that helps effectively creating reactive BloCs.
-[![Android Plugin](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/android_plugin.png)](https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true)
+You can create the contracts along with the BloC class by yourself, but this seems to be a tedious task, isn't it? It's recommended using the [RxBloC Plugin for Android Studio][android_studio_rx_bloc_plugin_lnk] that helps effectively creating reactive BloCs.
+[![Android Plugin][android_studio_rx_bloc_plugin_preview_lnk]][android_studio_rx_bloc_plugin_lnk]
 
 
 By selecting `New` -> `RxBloc Class` the plugin will create the following files
@@ -80,20 +81,20 @@ By selecting `New` -> `RxBloc Class` the plugin will create the following files
 ### Generator
 
 The plugin creates just the initial state of the BloC. For all further updates, you will need a tool, which will be updating the generated file (`${name}_bloc.rxb.g.dart`) based on your needs.
-Here is where the [rx_bloc_generator](https://pub.dev/packages/rx_bloc_generator) package helps, as automatically writes all the boring boilerplate code so you can focus on your business logic instead. You just need to add it to your pubspec.yaml file as follows:
+Here is where the [rx_bloc_generator][rx_bloc_generator_lnk] package helps, as automatically writes all the boring boilerplate code so you can focus on your business logic instead. You just need to add it to your pubspec.yaml file as follows:
 
 
 ```dart
 dev_dependencies:
-  build_runner: ^2.0.1
-  rx_bloc_generator: ^4.0.0
+  build_runner: ^2.0.3
+  rx_bloc_generator: any
 ```
 
 Once added to the `pubspec.yaml`, run the flutter command for getting the newly added dependencies `flutter pub get`, and then just start the generator by execuing this command `flutter packages pub run build_runner watch --delete-conflicting-outputs`.
 
 
 ### Implementing the business logic
-[counter_bloc.dart](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33)
+[counter_bloc.dart][counter_bloc_example_line_ref]
 ```dart
 ...
 /// A BloC responsible for count calculations
@@ -130,18 +131,18 @@ class CounterBloc extends $CounterBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 }
 ```
-As you can see, by extending [$CounterBloc](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.rxb.g.dart#L20), we must implement `Stream<int>` `_mapToCountState()` , which is the method responsible for the events-to-state business logic. Furthermore, we have [_$incrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L44) and [_$decrementEvent](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L47), which are the [subjects](https://pub.dev/documentation/rxdart/latest/rx_subjects/rx_subjects-library.html) where the events will flow when [increment()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L10) and [decrement()](https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L13) methods are invoked from the UI Layer.
-In the code above we declare that as soon as the user taps on the increment or decrement button, an API call will be executed. Since both _$incrementEvent and _$decrementEvent are grouped in one stream by the merge operator, the result of their API calls allows us to register our BloC as a state handler. For more information what is State Handler and how it works, look at [this article](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99#c627). We then extract only the “success” result and finally put an initial value of 0.
+As you can see, by extending [$CounterBloc][abstract_counter_bloc_ref], we must implement `Stream<int>` `_mapToCountState()` , which is the method responsible for the events-to-state business logic. Furthermore, we have [_$incrementEvent][increment_event_example_line_ref] and [_$decrementEvent][decrement_event_example_line_ref], which are the [subjects][rxdart_subjects_lnk] where the events will flow when [increment()][increment_event_method_example_line_ref] and [decrement()][decrement_event_method_example_line_ref] methods are invoked from the UI Layer.
+In the code above we declare that as soon as the user taps on the increment or decrement button, an API call will be executed. Since both _$incrementEvent and _$decrementEvent are grouped in one stream by the merge operator, the result of their API calls allows us to register our BloC as a state handler. For more information what is State Handler and how it works, look at [this article][intro_to_rx_bloc_pt_2_lnk]. We then extract only the “success” result and finally put an initial value of 0.
 
 ## Accessing the BloC from the widget tree
-First, make sure you have added [flutter_rx_bloc](https://pub.dev/packages/flutter_rx_bloc) to your pubspec.yaml file and after exexuting `flutter pub get` you will have access to the following `widget` binders.
+First, make sure you have added [flutter_rx_bloc][flutter_rx_bloc_lnk] to your pubspec.yaml file and after exexuting `flutter pub get` you will have access to the following `widget` binders.
 
 ```dart
 dependencies:
-  flutter_rx_bloc: ^2.0.0
+  flutter_rx_bloc: any
 ```
 
-[RxBlocProvider](https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html) is a Flutter widget that provides a BloC to its children via RxBlocProvider.of<T>(context). It is used as a dependency injection (DI) widget so that a single instance of a BloC can be provided to multiple widgets within a subtree.
+[RxBlocProvider][rx_bloc_provider_lnk] is a Flutter widget that provides a BloC to its children via RxBlocProvider.of<T>(context). It is used as a dependency injection (DI) widget so that a single instance of a BloC can be provided to multiple widgets within a subtree.
   
 ```dart
 MaterialApp(
@@ -152,7 +153,7 @@ MaterialApp(
     ),
 );
 ```
-[RxBlocBuilder](https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocBuilder-class.html) is a Flutter widget that requires a RxBloc, a builder, and a state function. RxBlocBuilder handles building the widget in response to new states. RxBlocBuilder is very similar to StreamBuilder but has a more simple API to reduce the amount of boilerplate code needed.
+[RxBlocBuilder][rx_bloc_builder_lnk] is a Flutter widget that requires a RxBloc, a builder, and a state function. RxBlocBuilder handles building the widget in response to new states. RxBlocBuilder is very similar to StreamBuilder but has a more simple API to reduce the amount of boilerplate code needed.
 ```dart
 class HomePage extends StatelessWidget {
   @override
@@ -172,18 +173,56 @@ class HomePage extends StatelessWidget {
 
 ### Samples
 
-- [Booking app](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/booking_app) - A booking app that solves various tech challenges such as: Content lazy loading, Slick animations, Composite filters, Inter-feature communication, Complete error handling and more.
-- [Favorites Advanced](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/favorites_advanced) - an advanced favorites app that showcase multiple software development challenges.
-- [Counter](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/counter) - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
-- [Division](https://github.com/Prime-Holding/rx_bloc/tree/master/examples/division) - Division sample
+- [Booking app][booking_app_sample_lnk] - A booking app that solves various tech challenges such as: Content lazy loading, Slick animations, Composite filters, Inter-feature communication, Complete error handling and more.
+- [Favorites Advanced][favourites_advanced_sample_lnk] - an advanced favorites app that showcase multiple software development challenges.
+- [Counter][counter_bloc_sample_lnk] - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
+- [Division][division_sample_lnk] - Division sample
 
 
 ## Articles
 
-- [Introducing rx_bloc ecosystem - Part 1](https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e) A set of Flutter packages that help implement the BloC (Business Logic Component) design pattern using the power of reactive streams.
-- [Introducing rx_bloc ecosystem - Part 2](https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99) Dart package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of the reactive streams.
-- [Introducing rx_bloc ecosystem - Part 3](https://medium.com/prime-holding-jsc/introducing-flutter-rx-bloc-part-3-69d9114da473) Set of Flutter Widgets that expose your reactive BloCs to the UI Layer.
-- [RxBloc IntelliJ Plugin](https://medium.com/prime-holding-jsc/rxbloc-intellij-plugin-d1d2ddfb7628) - A plugin that helps you create reactive BloCs faster and smoother.
-- [Easy paginated lists in Flutter](https://medium.com/prime-holding-jsc/easy-paginated-lists-in-flutter-b1cfb82188d8) - Implementing infinity scroll and pull-to-refresh in your app was never so easy.
-- [Building complex apps in Flutter through the power of reactive programming](https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde) - Implementing complex apps as satisfying the user expectations along with consuming a fragmented API could be challenging nowadays. Learn how you can overcome some of the most common challenges you might face.
-- [Building Forms in Flutter](https://medium.com/prime-holding-jsc/building-forms-in-flutter-454b8d65f48) - Although building forms in Flutter may seem like an easy task, separating the business logic from the UI layer can be a challenge. The separation of concerns makes your app more scalable and maintainable and most importantly the business (validation) logic becomes unit-testable, so let’s see how we can achieve this by using rx_bloc and flutter_rx_bloc.
+- [Introducing rx_bloc ecosystem - Part 1][intro_to_rx_bloc_pt_1_lnk] A set of Flutter packages that help implement the BloC (Business Logic Component) design pattern using the power of reactive streams.
+- [Introducing rx_bloc ecosystem - Part 2][intro_to_rx_bloc_pt_2_lnk] Dart package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of the reactive streams.
+- [Introducing rx_bloc ecosystem - Part 3][intro_to_rx_bloc_pt_3_lnk] Set of Flutter Widgets that expose your reactive BloCs to the UI Layer.
+- [RxBloc IntelliJ Plugin][rx_bloc_intellij_plugin_lnk] - A plugin that helps you create reactive BloCs faster and smoother.
+- [Easy paginated lists in Flutter][paginated_lists_article_lnk] - Implementing infinity scroll and pull-to-refresh in your app was never so easy.
+- [Bootstrapping Your Flutter App With Ease][rx_bloc_cli_article_lnk] - Setting up and configuring new projects can be a tedious task. However rx_bloc_cli is here to help!
+- [Building complex apps in Flutter through the power of reactive programming][reactive_programming_in_flutter_article_lnk] - Implementing complex apps as satisfying the user expectations along with consuming a fragmented API could be challenging nowadays. Learn how you can overcome some of the most common challenges you might face.
+- [Building Forms in Flutter][building_forms_in_flutter_article_lnk] - Although building forms in Flutter may seem like an easy task, separating the business logic from the UI layer can be a challenge. The separation of concerns makes your app more scalable and maintainable and most importantly the business (validation) logic becomes unit-testable, so let’s see how we can achieve this by using rx_bloc and flutter_rx_bloc.
+
+[ci_badge_lnk]: https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg
+[codecov_badge_lnk]: https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop/graph/badge.svg
+[codecov_branch_lnk]: https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop
+[code_style_lnk]: https://img.shields.io/badge/style-effective_dart-40c4ff.svg
+[license_lnk]: https://img.shields.io/badge/license-MIT-purple.svg
+[rx_bloc_slogan_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/slogan.png
+[rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
+[flutter_rx_bloc_lnk]: https://pub.dev/packages/flutter_rx_bloc
+[rx_bloc_test_lnk]: https://pub.dev/packages/rx_bloc_test
+[rx_bloc_generator_lnk]: https://pub.dev/packages/rx_bloc_generator
+[rx_bloc_list_lnk]: https://pub.dev/packages/rx_bloc_list
+[rx_bloc_cli_lnk]: https://pub.dev/packages/rx_bloc_cli
+[single_responsibility_principle_lnk]: https://en.wikipedia.org/wiki/Single-responsibility_principle
+[counter_bloc_example_line_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33
+[android_studio_rx_bloc_plugin_lnk]: https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true
+[android_studio_rx_bloc_plugin_preview_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/android_plugin.png
+[abstract_counter_bloc_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.rxb.g.dart#L20
+[increment_event_example_line_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L44
+[decrement_event_example_line_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L47
+[rxdart_subjects_lnk]: https://pub.dev/documentation/rxdart/latest/rx_subjects/rx_subjects-library.html
+[increment_event_method_example_line_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L10
+[decrement_event_method_example_line_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L13
+[rx_bloc_provider_lnk]: https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html
+[rx_bloc_builder_lnk]: https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocBuilder-class.html
+[booking_app_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/booking_app
+[favourites_advanced_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/favorites_advanced
+[counter_bloc_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/counter
+[division_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/division
+[intro_to_rx_bloc_pt_1_lnk]: https://medium.com/prime-holding-jsc/introducing-rx-bloc-ecosystem-part-1-3cc5f4fff14e
+[intro_to_rx_bloc_pt_2_lnk]: https://medium.com/prime-holding-jsc/introducing-rx-bloc-part-2-faf956f2bd99#c627
+[intro_to_rx_bloc_pt_3_lnk]: https://medium.com/prime-holding-jsc/introducing-flutter-rx-bloc-part-3-69d9114da473
+[rx_bloc_intellij_plugin_lnk]: https://medium.com/prime-holding-jsc/rxbloc-intellij-plugin-d1d2ddfb7628
+[paginated_lists_article_lnk]: https://medium.com/prime-holding-jsc/easy-paginated-lists-in-flutter-b1cfb82188d8
+[rx_bloc_cli_article_lnk]: https://medium.com/prime-holding-jsc/bootstrapping-your-flutter-app-with-ease-7efad0aa697a
+[reactive_programming_in_flutter_article_lnk]: https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde
+[building_forms_in_flutter_article_lnk]: https://medium.com/prime-holding-jsc/building-forms-in-flutter-454b8d65f48
