@@ -30,8 +30,9 @@ extension AsResultStream<T> on Stream<T> {
   /// as afterwards emits either [ResultError] or [ResultSuccess]
   Stream<Result<T>> asResultStream() => map((data) => Result<T>.success(data))
       .onErrorReturnWith(
-        (error) => Result<T>.error(
-            error is Exception ? error : Exception(error.toString())),
+        (error, stackTrace) => Result<T>.error(
+          error is Exception ? error : Exception(error.toString()),
+        ),
       )
       .startWith(Result<T>.loading());
 }

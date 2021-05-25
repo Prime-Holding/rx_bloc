@@ -11,14 +11,14 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
       switchMap(
         (reloadData) {
           if (reloadData.reset) {
-            _paginatedList.value!.reset(hard: reloadData.fullReset);
+            _paginatedList.value.reset(hard: reloadData.fullReset);
           }
 
           return repository
               .getPuppiesPaginated(
                 query: reloadData.query,
-                pageSize: _paginatedList.value!.pageSize,
-                page: _paginatedList.value!.pageNumber + 1,
+                pageSize: _paginatedList.value.pageSize,
+                page: _paginatedList.value.pageNumber + 1,
               )
               .asResultStream();
         },
@@ -35,8 +35,8 @@ extension StreamBindToPuppies on Stream<List<Puppy>> {
   ) =>
       map(
         (puppies) => PaginatedList(
-          list: puppiesToUpdate.value!.mergeWith(puppies),
-          pageSize: puppiesToUpdate.value!.pageSize,
+          list: puppiesToUpdate.value.mergeWith(puppies),
+          pageSize: puppiesToUpdate.value.pageSize,
         ),
       ).bind(puppiesToUpdate);
 }
@@ -66,7 +66,7 @@ extension _ReloadFavoritePuppiesEventExtensions on Stream<_ReloadEventArgs> {
         (reloadData) => _ReloadData(
           reset: reloadData.reset,
           fullReset: reloadData.fullReset,
-          query: filterPuppiesEvent.value ?? '',
+          query: filterPuppiesEvent.hasValue ? filterPuppiesEvent.value : '',
         ),
       );
 }
