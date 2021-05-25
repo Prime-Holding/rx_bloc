@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_form.dart';
+// import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_form.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
@@ -121,6 +121,13 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
             breed != _puppy.breedType ||
             characteristics != _puppy.displayCharacteristics,
       ).startWith(false);
+
+  void dispose() {
+    _name.close();
+    _gender.close();
+    _breed.close();
+    _characteristics.close();
+  }
 
   // bool isSaveEnabled() {
   //   final String name = _name.value!;
