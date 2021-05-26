@@ -3,7 +3,7 @@ import 'package:bloc_sample/feature_puppy/details/blocs/puppy_details_bloc.dart'
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mockito/mockito.dart' as mock;
 
 import '../../../stubs.dart';
 import 'puppy_details_bloc_test.mocks.dart';
@@ -17,7 +17,8 @@ void main() {
 
   setUp(() {
     mockCoordinatorBloc = MockCoordinatorBloc();
-    when(mockCoordinatorBloc.stream).thenAnswer((_) => const Stream.empty());
+    mock.when(mockCoordinatorBloc.stream)
+        .thenAnswer((_) => const Stream.empty());
     puppyDetailsBloc = PuppyDetailsBloc(
       coordinatorBloc: mockCoordinatorBloc,
       puppy: Stub.isNotFavoritePuppy3,
