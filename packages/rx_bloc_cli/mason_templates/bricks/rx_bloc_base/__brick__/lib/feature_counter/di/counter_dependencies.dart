@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:project_name/base/count_data_source/count_data_source.dart';
-import 'package:project_name/base/count_data_source/count_local_data_source.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../base/count_data_source/count_data_source.dart';
+import '../../base/count_data_source/count_local_data_source.dart';
 import '../../base/repositories/counter_repository.dart';
 import '../blocs/counter_bloc.dart';
 

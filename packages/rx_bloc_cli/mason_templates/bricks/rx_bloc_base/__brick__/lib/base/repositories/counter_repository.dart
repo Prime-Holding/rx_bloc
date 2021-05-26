@@ -5,8 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:project_name/base/count_data_source/count_data_source.dart';
-import 'package:project_name/base/models/count.dart';
+import '../../base/count_data_source/count_data_source.dart';
+import '../../base/models/count.dart';
 
 /// This will simulate a server with 100 milliseconds response time
 class CounterRepository {

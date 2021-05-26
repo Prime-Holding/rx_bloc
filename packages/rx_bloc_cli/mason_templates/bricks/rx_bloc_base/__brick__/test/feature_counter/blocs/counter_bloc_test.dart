@@ -5,8 +5,9 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
+import 'package:{{project_name}}/base/models/count.dart';
 import 'package:{{project_name}}/base/repositories/counter_repository.dart';
+import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -33,7 +34,7 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Incrementing value',
       build: () async {
-        when(repo.increment()).thenAnswer((_) async => 1);
+        when(repo.increment()).thenAnswer((_) async => Count(1));
         return CounterBloc(repo);
       },
       act: (bloc) async => bloc.events.increment(),
@@ -44,7 +45,7 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Decrementing value',
       build: () async {
-        when(repo.decrement()).thenAnswer((_) async => -1);
+        when(repo.decrement()).thenAnswer((_) async => Count(-1));
         return CounterBloc(repo);
       },
       act: (bloc) async => bloc.events.decrement(),
@@ -55,8 +56,8 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Increment and decrement value',
       build: () async {
-        when(repo.increment()).thenAnswer((_) async => 1);
-        when(repo.decrement()).thenAnswer((_) async => 0);
+        when(repo.increment()).thenAnswer((_) async => Count(1));
+        when(repo.decrement()).thenAnswer((_) async => Count(0));
         return CounterBloc(repo);
       },
       act: (bloc) async {
@@ -86,7 +87,7 @@ void main() {
     rxBlocTest<CounterBlocType, bool>(
       'Loading state',
       build: () async {
-        when(repo.increment()).thenAnswer((_) async => 1);
+        when(repo.increment()).thenAnswer((_) async => Count(1));
         return CounterBloc(repo);
       },
       act: (bloc) async {
