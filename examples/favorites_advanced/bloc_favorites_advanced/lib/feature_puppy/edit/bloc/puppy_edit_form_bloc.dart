@@ -6,15 +6,17 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'puppy_edit_form_event.dart';
+
 part 'puppy_edit_form_state.dart';
 
 class PuppyEditFormBloc extends FormBloc<String, String> {
-  PuppyEditFormBloc({required this.repository,required Puppy puppy})
+  PuppyEditFormBloc({required this.repository, required Puppy puppy})
       : _puppy = puppy,
         // puppy1 = puppy,
         super(autoValidate: false, isLoading: true) {
     addFieldBlocs(
       fieldBlocs: [
+        image,
         // isSaveEnabled,
         name,
         breed,
@@ -23,6 +25,17 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       ],
     );
 
+    image.onValueChanges(onData: (previous, current) async* {
+      // print('onValueChanges ImagePickerAction: ${current.value}');
+      final pickedImage = await repository.pickPuppyImage(current.value!);
+      // print('pickedImage.path: ${pickedImage!.path}');
+      if (pickedImage != null) {
+        _asset.sink.add(pickedImage.path);
+
+        // print(current.value);
+        // print('pickedImage.path not null: ${pickedImage.path}');
+      }
+    });
 
     name.onValueChanges(onData: (previous, current) async* {
       if (previous != current) {
@@ -45,7 +58,6 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
 
           if (_puppy.gender.toString().substring(7) !=
               current.value.toString()) {
-
             emitUpdatingFields();
           } else {
             emitLoaded();
@@ -83,7 +95,6 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
         }
       },
     );
-
   }
 
   // CoordinatorBloc _coordinatorBloc;
@@ -130,7 +141,10 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     _breed.close();
     _characteristics.close();
   }
+
   // final isSaveEnabled = BooleanFieldBloc();
+
+  final InputFieldBloc<ImagePickerAction, Object> image = InputFieldBloc();
 
   final name = TextFieldBloc(
     validators: [
@@ -195,25 +209,6 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     }
     return null;
   }
-
-  // @override
-  // Stream<FormBlocState<String, String>> mapEventToState(
-  //     FormBlocEvent event) async* {
-  //   if(event is PuppyEditFormSetImageEvent){
-  //   //   var source = event.source;
-  //   //   print('mapEventToState event.source: ${event.source}');
-  //   //   emitLoaded();
-  //   //   // yield FormBlocLoaded();
-  //     yield  PuppyEditFormState(path: '');
-  //   }else if(event is LoadFormBloc){
-  //     emitLoading(progress: 1);
-  //   }
-  //   // yield FormBlocLoading(progress: 1);
-  //   // emitSuccess();
-  //
-  //   yield FormBlocLoading(progress: 1);
-  //   // yield state.toLoaded();
-  // }
 
   @override
   // ignore: avoid_void_async

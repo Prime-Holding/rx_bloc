@@ -1,11 +1,9 @@
+import 'package:bloc_sample/feature_puppy/edit/bloc/image_field_bloc_builder.dart';
 import 'package:bloc_sample/feature_puppy/edit/bloc/puppy_edit_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
-import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/services.dart';
-// import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
-import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,41 +38,7 @@ class PuppyEditForm extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       child: Column(
                         children: [
-                          // BlocListener<PuppyManageBloc, PuppyManageState>(
-                          //   listener: (context, state) {
-                          //     ///TODO change this
-                          //     if(state.updateComplete != null){
-                          //       context.flow<PuppyFlowState>().complete();
-                          //     }
-                          //   },
-                          // ),
-                          // BlocListener<PuppyManageBloc, PuppyManageState>(
-                          //   listener: (context, state){
-                          //     if(state.error != null){
-                          //       ScaffoldMessenger.of(context)
-                          //           .showSnackBar(SnackBar(content:
-                          //           Text(state.error!)));
-                          //     }
-                          //   }
-                          // ),
-                          BlocBuilder<PuppyEditFormBloc, FormBlocState>(
-                            builder: (context, state) => PuppyEditAvatar(
-                              heroTag: '$PuppyCardAnimationTag ${_puppy.id}',
-                              imgPath: _puppy.asset,
-                              pickImage: (source) {
-                                if (source != null) {
-                                  // print('ImagePickerAction source $source');
-                                  _formBloc.add(PuppyEditFormSetImageEvent(
-                                      source: source));
-                                  // print(source);
-                                  // BlocProvider.of<PuppyManageBloc>
-                                  // (context)
-                                  //     .add(PuppyManageSetImageEvent
-                                  //     (source));
-                                }
-                              },
-                            ),
-                          ),
+                          _buildImage(_formBloc),
                           const SizedBox(height: 20),
                           PuppyEditCard(
                             label: 'Name',
@@ -104,7 +68,15 @@ class PuppyEditForm extends StatelessWidget {
         ),
       );
 
-  Widget _buildNameField(PuppyEditFormBloc formBloc) => TextFieldBlocBuilder(
+
+  Widget _buildImage(PuppyEditFormBloc formBloc) => ImageFieldBlocBuilder(
+       fileFieldBloc: formBloc.image,
+      formBloc: _formBloc,
+    puppy: _puppy,
+  );
+
+  Widget _buildNameField(PuppyEditFormBloc formBloc) =>
+          TextFieldBlocBuilder(
         textFieldBloc: formBloc.name,
         cursorColor: const Color(0xff333333),
         style: TextStyles.editableTextStyle,

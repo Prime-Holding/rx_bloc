@@ -1,17 +1,21 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 class PuppyEditAvatar extends StatelessWidget {
   const PuppyEditAvatar({
+    required this.fileFieldBloc,
     required this.heroTag,
     required this.imgPath,
     required this.pickImage,
+    required this.formBloc,
     Key? key,
   }) : super(key: key);
-
+  final InputFieldBloc<ImagePickerAction, Object> fileFieldBloc;
   final String heroTag;
   final String imgPath;
   final void Function(ImagePickerAction? source) pickImage;
+  final FormBloc formBloc;
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -43,34 +47,54 @@ class PuppyEditAvatar extends StatelessWidget {
             bottom: 1,
             child: Card(
               elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35),
-              ),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      // print('presentPhotosBottomSheet source: ');
-                      PhotoPickerActionSelectionBottomSheet
-                          .presentPhotosBottomSheet(
-                        context,
-                        (source) => pickImage(source),
-                        // print('presentPhotosBottomSheet source: ${source}');
-                      );
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.edit,
-                        size: 24,
-                      ),
-                    ),
+              shape: const CircleBorder(),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.edit,
+                    size: 24,
                   ),
+                  onPressed: () => editPicture(context),
                 ),
               ),
             ),
           ),
         ],
       );
+
+  // ignore: avoid_void_async
+  void editPicture(BuildContext context) async {
+    await showModalBottomSheet<ImagePickerAction>(
+      context: context,
+      builder: (context) => Container(
+        height: 150,
+        color: Colors.white,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                  leading: const Icon(Icons.camera_enhance),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    // print('Camera1');
+                    fileFieldBloc.updateValue(ImagePickerAction.camera);
+                    Navigator.of(context).pop(ImagePickerAction.camera);
+                  }),
+              ListTile(
+                  leading: const Icon(Icons.image),
+                  title: const Text('Gallery'),
+                  onTap: () {
+                    // print('Gallery1');
+                    fileFieldBloc.updateValue(ImagePickerAction.gallery);
+                    Navigator.of(context).pop(ImagePickerAction.gallery);
+                  }),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

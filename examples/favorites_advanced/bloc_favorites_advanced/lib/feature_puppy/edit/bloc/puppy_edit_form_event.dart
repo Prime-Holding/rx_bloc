@@ -1,7 +1,7 @@
 part of 'puppy_edit_form_bloc.dart';
 
 @immutable
-abstract class PuppyEditFormEvent extends FormBlocEvent{}
+abstract class PuppyEditFormEvent extends FormBlocEvent {}
 
 class PuppyEditFormSetImageEvent extends PuppyEditFormEvent {
   PuppyEditFormSetImageEvent({required this.source});
@@ -9,5 +9,14 @@ class PuppyEditFormSetImageEvent extends PuppyEditFormEvent {
   final ImagePickerAction source;
 
   @override
-  List<Object?> get props =>  [source];
+  List<Object?> get props => [source];
+}
+
+class ImageFieldBlocEvent extends FieldBlocEvent {
+  ImageFieldBlocEvent({required this.source});
+
+  final ImagePickerAction source;
+
+  @override
+  List<Object?> get props => [source];
 }
