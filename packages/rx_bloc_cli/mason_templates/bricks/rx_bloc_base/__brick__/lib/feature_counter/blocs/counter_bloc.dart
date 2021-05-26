@@ -50,20 +50,25 @@ class CounterBloc extends $CounterBloc {
   @override
   Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
         // On increment.
-        _$incrementEvent
-            .switchMap((_) => _repository.increment()
-            .then((count) => count.value).asResultStream()),
+        _$incrementEvent.switchMap((_) => _repository
+            .increment()
+            .then((count) => count.value)
+            .asResultStream()),
         // On decrement.
-        _$decrementEvent
-            .switchMap((_) => _repository.decrement()
-            .then((count) => count.value).asResultStream()),
+        _$decrementEvent.switchMap((_) => _repository
+            .decrement()
+            .then((count) => count.value)
+            .asResultStream()),
+        // Get initial value
+        _repository
+            .getCurrent()
+            .then((value) => value.value)
+            .asResultStream(),
       ])
           // This automatically handles the error and loading state.
           .setResultStateHandler(this)
           // Provide success response only.
-          .whereSuccess()
-          //emit 0 as initial value
-          .startWith(0);
+          .whereSuccess();
 
   @override
   Stream<String> _mapToErrorsState() => errorState.toMessage();
