@@ -1,4 +1,4 @@
-# {{#titleCase}}{{project_name}}{{/titleCase}}
+# Test App
 
 ## Project structure
 
@@ -46,7 +46,6 @@ You define localizations by adding a translation file in the `lib/l10n/arb/app_[
 
 Upon rebuild, your translations are auto-generated inside `.dart_tool/flutter_gen/gen_l10n`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey`.
 
-{{#analytics}}
 ### Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
@@ -58,7 +57,6 @@ Before you start using analytics, you need to add platform specific configuratio
 
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
-{{/analytics}}
 ### Design system
 
 A [design system][design_system_lnk] is a centralized place where you can define your apps design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
