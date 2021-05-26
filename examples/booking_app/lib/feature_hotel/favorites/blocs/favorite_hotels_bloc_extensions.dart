@@ -28,7 +28,9 @@ extension _StreamBindToHotels on Stream<List<Hotel>> {
     BehaviorSubject<Result<List<Hotel>>> hotelsToUpdate,
   ) =>
       map((hotels) {
-        final hotelsResult = hotelsToUpdate.value ?? Result.success([]);
+        final hotelsResult = hotelsToUpdate.hasValue
+            ? hotelsToUpdate.value
+            : Result<List<Hotel>>.success([]);
 
         if (hotelsResult is ResultSuccess<List<Hotel>>) {
           return Result.success(hotelsResult.data.manageFavoriteList(hotels));
