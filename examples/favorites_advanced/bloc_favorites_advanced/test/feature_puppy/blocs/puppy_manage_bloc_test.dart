@@ -4,7 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:favorites_advanced_base/repositories.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mockito/mockito.dart' as mock;
 
 import '../../stubs.dart';
 import 'puppy_manage_bloc_test.mocks.dart';
@@ -21,7 +21,8 @@ void main() {
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mockCoordinatorBloc = MockCoordinatorBloc();
-    when(mockCoordinatorBloc.stream).thenAnswer((_) => const Stream.empty());
+    mock.when(mockCoordinatorBloc.stream)
+        .thenAnswer((_) => const Stream.empty());
     puppyManageBloc = PuppyMarkAsFavoriteBloc(
       puppiesRepository: mockRepo,
       coordinatorBloc: mockCoordinatorBloc,
@@ -31,7 +32,8 @@ void main() {
   blocTest<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
     'PuppyManageBloc PuppyManageEvent',
     build: () {
-      when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3, isFavorite: true))
+      mock.when(mockRepo.favoritePuppy(
+          Stub.isNotFavoritePuppy3, isFavorite: true))
           .thenAnswer((_) async => Stub.isFavoritePuppy3);
       return puppyManageBloc;
     },
@@ -58,7 +60,8 @@ void main() {
   blocTest<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
     'PuppyManageBloc PuppyManageEvent throws exception',
     build: () {
-      when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3, isFavorite: true))
+      mock.when(mockRepo.favoritePuppy(
+          Stub.isNotFavoritePuppy3, isFavorite: true))
           .thenThrow(Stub.testErr);
       return puppyManageBloc;
     },

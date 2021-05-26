@@ -125,9 +125,9 @@ void main() {
   blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc PuppyListFilterEvent PuppyListFilterUpdatedQueryEvent',
     build: () {
-      when(mockRepo.getPuppies(query: ''))
+      mock.when(mockRepo.getPuppies(query: ''))
           .thenAnswer((_) async => Stub.queryPuppiesTest2);
-      when(mockRepo.getPuppies(query: 'test'))
+      mock.when(mockRepo.getPuppies(query: 'test'))
           .thenAnswer((_) async => Stub.queryPuppiesTest1);
       return puppyListBloc;
     },
