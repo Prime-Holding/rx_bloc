@@ -1,5 +1,7 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.2] - May 10, 2021
+* Documentation improvements
 
+## [0.0.1] - April 28, 2021
 * Initial release
 * Created projects include following features:
     - Flavors
