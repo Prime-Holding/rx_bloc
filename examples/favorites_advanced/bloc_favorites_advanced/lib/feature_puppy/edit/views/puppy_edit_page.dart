@@ -36,7 +36,9 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (context) => PuppyEditFormBloc(puppy: widget._puppy),
+        create: (context) => PuppyEditFormBloc(
+            repository: context.read(),
+            puppy: widget._puppy),
         child: Builder(
           builder: (context) {
             final puppyEditFormBloc =

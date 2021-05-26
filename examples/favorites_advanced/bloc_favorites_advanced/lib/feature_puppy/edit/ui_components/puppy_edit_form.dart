@@ -4,7 +4,7 @@ import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/services.dart';
-import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
+// import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_card.dart';
 import 'package:flutter/material.dart';
@@ -17,37 +17,25 @@ class PuppyEditForm extends StatelessWidget {
     required PuppyEditFormBloc puppyEditFormBloc,
     Key? key,
   })  : _puppy = puppy,
-  _formBloc = puppyEditFormBloc,
+        _formBloc = puppyEditFormBloc,
         super(key: key);
 
   final Puppy _puppy;
-  static Puppy? puppyPublic;
+
+  // static Puppy? puppyPublic;
   final PuppyEditFormBloc _formBloc;
 
   @override
-  Widget build(BuildContext context) {
-    puppyPublic = _puppy;
-    return BlocProvider(
-      create: (context) => PuppyEditFormBloc(puppy: _puppy),
-      child: Builder(
-        builder: (context) {
-          // final formBloc = BlocProvider.of<PuppyEditFormBloc>(context);
-          print('');
-          return SafeArea(
-            key: const ValueKey('PuppyEditPage'),
-            child: BlocBuilder<PuppyEditFormBloc, FormBlocState>(
-              // buildWhen: (previous, current) =>
-              // previous.runtimeType != current.runtimeType ||
-              //     previous is FormBlocLoading && current is FormBlocLoading,
-              builder:(context, state) {
-                if(state is FormBlocLoading){
-                  // print('puppy_edit_form state is : FormBlocLoading');
-                  return const Center(child: CircularProgressIndicator());
-                }else {
-                  // print('puppy_edit_form state is : ${state.runtimeType}');
-
-                  return SingleChildScrollView(
-                    // physics: const ClampingScrollPhysics(),
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => PuppyEditFormBloc(
+          repository: context.read(),
+          puppy: _puppy,
+        ),
+        child: Builder(
+          builder: (context) => SafeArea(
+              key: const ValueKey('PuppyEditPage'),
+              child: BlocBuilder<PuppyEditFormBloc, FormBlocState>(
+                  builder: (context, state) => SingleChildScrollView(
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Column(
@@ -69,22 +57,23 @@ class PuppyEditForm extends StatelessWidget {
                           //     }
                           //   }
                           // ),
-                          BlocBuilder<PuppyMarkAsFavoriteBloc,
-                              PuppyMarkAsFavoriteState>(
-                            builder: (context, state) =>
-                                PuppyEditAvatar(
-                                  heroTag:
-                                  '$PuppyCardAnimationTag ${_puppy.id}',
-                                  imgPath: _puppy.asset,
-                                  pickImage: (source) {
-                                    if (source != null) {
-                                      // BlocProvider.of<PuppyManageBloc>
-                                      // (context)
-                                      //     .add(PuppyManageSetImageEvent
-                                      //     (source));
-                                    }
-                                  },
-                                ),
+                          BlocBuilder<PuppyEditFormBloc, FormBlocState>(
+                            builder: (context, state) => PuppyEditAvatar(
+                              heroTag: '$PuppyCardAnimationTag ${_puppy.id}',
+                              imgPath: _puppy.asset,
+                              pickImage: (source) {
+                                if (source != null) {
+                                  // print('ImagePickerAction source $source');
+                                  _formBloc.add(PuppyEditFormSetImageEvent(
+                                      source: source));
+                                  // print(source);
+                                  // BlocProvider.of<PuppyManageBloc>
+                                  // (context)
+                                  //     .add(PuppyManageSetImageEvent
+                                  //     (source));
+                                }
+                              },
+                            ),
                           ),
                           const SizedBox(height: 20),
                           PuppyEditCard(
@@ -110,15 +99,10 @@ class PuppyEditForm extends StatelessWidget {
                         ],
                       ),
                     ),
-                  );
-                }
-              }
+                  )),
             ),
-          );
-        },
-      ),
-    );
-  }
+        ),
+      );
 
   Widget _buildNameField(PuppyEditFormBloc formBloc) => TextFieldBlocBuilder(
         textFieldBloc: formBloc.name,
@@ -136,17 +120,15 @@ class PuppyEditForm extends StatelessWidget {
       );
 
   Widget _buildGenderSelection(PuppyEditFormBloc formBloc) => Column(
-        // mainAxisSize: ,
         children: [
           Row(
-            // mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
                 child: RadioButtonGroupFieldBlocBuilder(
                   selectFieldBloc: formBloc.gender,
-                  itemBuilder: (context, value) => value
-                      .toString().substring(7),
+                  itemBuilder: (context, value) =>
+                      value.toString().substring(7),
                 ),
               ),
             ],

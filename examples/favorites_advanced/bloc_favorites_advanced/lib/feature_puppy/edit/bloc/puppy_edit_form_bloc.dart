@@ -1,24 +1,28 @@
 import 'dart:async';
-
-// import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_form.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:rxdart/rxdart.dart';
 
+part 'puppy_edit_form_event.dart';
+part 'puppy_edit_form_state.dart';
+
 class PuppyEditFormBloc extends FormBloc<String, String> {
-  PuppyEditFormBloc({required Puppy puppy})
+  PuppyEditFormBloc({required this.repository,required Puppy puppy})
       : _puppy = puppy,
         // puppy1 = puppy,
         super(autoValidate: false, isLoading: true) {
     addFieldBlocs(
       fieldBlocs: [
+        // isSaveEnabled,
         name,
         breed,
         gender,
         characteristics,
       ],
     );
+
 
     name.onValueChanges(onData: (previous, current) async* {
       if (previous != current) {
@@ -41,7 +45,6 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
 
           if (_puppy.gender.toString().substring(7) !=
               current.value.toString()) {
-            // _gender.sink.add(current.value.toString());
 
             emitUpdatingFields();
           } else {
@@ -81,25 +84,21 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       },
     );
 
-    // _coordinatorBloc.stream.listen((event) {
-    //   if(event is CoordinatorPuppiesUpdatedState){
-    //     add(event.puppies)
-    //   }
-    // })
-    // print('Constructor $_puppy');
   }
 
   // CoordinatorBloc _coordinatorBloc;
   final Puppy _puppy;
-
-  // static  Puppy? puppy1;
+  final PuppiesRepository repository;
   static const int _maxCharacteristicsLength = 250;
   static const int _maxNameLength = 30;
 
+  final _asset = BehaviorSubject<String>();
   final _name = BehaviorSubject<String>();
   final _gender = BehaviorSubject<Gender>();
   final _characteristics = BehaviorSubject<String>();
   final _breed = BehaviorSubject<BreedType>();
+
+  Stream<String> get asset$ => _asset.stream.startWith(_puppy.asset);
 
   Stream<String> get name$ => _name.stream.startWith(_puppy.name);
 
@@ -110,12 +109,14 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
 
   Stream<BreedType> get breed$ => _breed.stream.startWith(_puppy.breedType);
 
-  Stream<bool> get isFormValid$ => Rx.combineLatest4(
+  Stream<bool> get isFormValid$ => Rx.combineLatest5(
+        asset$,
         name$,
         gender$,
         breed$,
         characteristics$,
-        (name, gender, breed, characteristics) =>
+        (asset, name, gender, breed, characteristics) =>
+            asset != _puppy.asset ||
             name != _puppy.name ||
             gender != _puppy.gender ||
             breed != _puppy.breedType ||
@@ -123,38 +124,19 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       ).startWith(false);
 
   void dispose() {
+    _asset.close();
     _name.close();
     _gender.close();
     _breed.close();
     _characteristics.close();
   }
-
-  // bool isSaveEnabled() {
-  //   final String name = _name.value!;
-  //   print('');
-  //   return false;
-  // return _name != _puppy.name ||
-  //     _gender != _puppy.gender;
-  // }
-
-  // late Gender _gender = Gender.None;
+  // final isSaveEnabled = BooleanFieldBloc();
 
   final name = TextFieldBloc(
-    // initialValue: PuppyEditForm.puppyPublic?.name,
-    // initialValue: puppy1!.name,
     validators: [
-      // FieldBlocValidators.required,
       _nameValidation,
     ],
   );
-
-  // Stream<bool> test;
-  // test.listen((event) {})
-  // Stream<FormBlocState> _hasChanges() {
-  //   return Rx.combineLatest4(
-  //       Stream.value(onValueChanges), streamB, streamC, streamD,
-  //           (a, b, c, d) => null)
-  // }
 
   // Test string
   //0123456789012345678901234567891
@@ -171,7 +153,6 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
 
   final breed = SelectFieldBloc(
     items: BreedType.values,
-    // initialValue: PuppyEditForm.puppyPublic?.breedType,
     validators: [
       _breedValidation,
     ],
@@ -180,13 +161,10 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   final gender = SelectFieldBloc(
     // items: ['Male', 'Female'],
     items: [Gender.Male, Gender.Female],
-    // initialValue: PuppyEditForm.puppyPublic?.gender.toString().substring(7),
     validators: [_genderValidation],
   );
 
   final characteristics = TextFieldBloc(
-    // initialValue: 'initial characteristics',
-    // initialValue: PuppyEditForm.puppyPublic?.displayCharacteristics,
     validators: [_characteristicsValidation],
   );
 
@@ -194,7 +172,6 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     if (breedType == BreedType.None) {
       return 'You have to select a breed.';
     }
-
     return null;
   }
 
@@ -219,19 +196,33 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     return null;
   }
 
+  // @override
+  // Stream<FormBlocState<String, String>> mapEventToState(
+  //     FormBlocEvent event) async* {
+  //   if(event is PuppyEditFormSetImageEvent){
+  //   //   var source = event.source;
+  //   //   print('mapEventToState event.source: ${event.source}');
+  //   //   emitLoaded();
+  //   //   // yield FormBlocLoaded();
+  //     yield  PuppyEditFormState(path: '');
+  //   }else if(event is LoadFormBloc){
+  //     emitLoading(progress: 1);
+  //   }
+  //   // yield FormBlocLoading(progress: 1);
+  //   // emitSuccess();
+  //
+  //   yield FormBlocLoading(progress: 1);
+  //   // yield state.toLoaded();
+  // }
+
   @override
   // ignore: avoid_void_async
   void onLoading() async {
     try {
-      // await Future<void>.delayed(const Duration(milliseconds: 1500));
-
-      // name.updateInitialValue('TEST');
-      // name.updateInitialValue(PuppyEditForm.puppyPublic?.name);
       name.updateInitialValue(_puppy.name);
       breed.updateInitialValue(_puppy.breedType);
       gender.updateInitialValue(_puppy.gender);
       characteristics.updateInitialValue(_puppy.displayCharacteristics);
-      // print('onLoading ${name.value}');
       emitLoaded();
     } catch (e) {
       emitLoadFailed();

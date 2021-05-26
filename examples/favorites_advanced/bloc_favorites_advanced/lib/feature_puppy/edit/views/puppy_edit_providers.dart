@@ -5,11 +5,12 @@ List<BlocProvider> _getProviders(Puppy puppy) => [
         create: (context) => PuppyMarkAsFavoriteBloc(
           puppiesRepository: context.read(),
           coordinatorBloc: context.read(),
-          // puppy: puppy,
-          // validator: const PuppyValidator(),
         ),
       ),
       BlocProvider<PuppyEditFormBloc>(
-        create: (context) => PuppyEditFormBloc(puppy: puppy),
+        create: (context) => PuppyEditFormBloc(
+          repository: context.read(),
+          puppy: puppy,
+        ),
       ),
     ];

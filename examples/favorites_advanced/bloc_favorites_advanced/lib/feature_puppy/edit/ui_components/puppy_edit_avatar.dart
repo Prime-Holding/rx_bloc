@@ -51,10 +51,12 @@ class PuppyEditAvatar extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
+                      // print('presentPhotosBottomSheet source: ');
                       PhotoPickerActionSelectionBottomSheet
                           .presentPhotosBottomSheet(
                         context,
                         (source) => pickImage(source),
+                        // print('presentPhotosBottomSheet source: ${source}');
                       );
                     },
                     child: const Padding(
