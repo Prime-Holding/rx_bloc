@@ -3,7 +3,7 @@ import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart'
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mockito/mockito.dart' as mock;
 import 'package:favorites_advanced_base/repositories.dart';
 
 import '../../stubs.dart';
@@ -32,7 +32,7 @@ void main() {
     'PuppiesExtraDetailsBloc blocTest',
     build: () {
       // Arrange: Setup mocks
-      when(mockRepo.fetchFullEntities(['1', '2']))
+      mock.when(mockRepo.fetchFullEntities(['1', '2']))
           .thenAnswer((_) async => Stub.puppies1And2WithExtraDetails);
       return puppiesExtraDetailsBloc;
     },
@@ -44,7 +44,7 @@ void main() {
     verify: (_) {
       // Verify: Make sure `CoordinatorPuppiesWithExtraDetailsEvent` have
       // collected puppies one and two with their extra details
-      verify(
+      mock.verify(
         mockCoordinatorBloc.add(
           CoordinatorPuppiesWithExtraDetailsEvent(
               Stub.puppies1And2WithExtraDetails),
