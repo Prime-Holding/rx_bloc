@@ -10,6 +10,7 @@ class AuthInterceptor extends Interceptor {
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
+  //  Add your logic here
   }
 
   Future<String?> getToken() async =>  Future.value('token');

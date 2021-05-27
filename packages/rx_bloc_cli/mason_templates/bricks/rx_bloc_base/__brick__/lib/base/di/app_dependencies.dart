@@ -6,11 +6,14 @@
 // https://opensource.org/licenses/MIT.
 
 {{#analytics}}
+import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';{{/analytics}}
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import '../../base/remote_data_sources/interceptors/analytics_interceptor.dart';
+import '../../base/remote_data_sources/interceptors/auth_interceptor.dart';
 
 class AppDependencies {
   AppDependencies._(this.context);
@@ -26,6 +29,7 @@ class AppDependencies {
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
     ..._analytics,
+    ..._httpClients,
   ];
 
   List<Provider> get _analytics => [{{#analytics}}
@@ -35,4 +39,14 @@ class AppDependencies {
               FirebaseAnalyticsObserver(analytics: context.read()),
       ),
     {{/analytics}}];
+
+  List<Provider> get _httpClients => [
+      Provider<Dio>(create: (context) {
+      final _dio = Dio();
+      _dio.interceptors
+        ..add(AuthInterceptor())
+        ..add(AnalyticsInterceptor());
+      return _dio;
+      }),
+  ];
 }

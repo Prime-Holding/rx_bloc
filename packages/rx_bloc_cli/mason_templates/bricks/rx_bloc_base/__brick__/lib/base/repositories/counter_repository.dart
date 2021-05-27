@@ -8,7 +8,6 @@
 import '../../base/count_data_source/count_data_source.dart';
 import '../../base/models/count.dart';
 
-/// This will simulate a server with 100 milliseconds response time
 class CounterRepository {
 
   CounterRepository(this.countDataSource);

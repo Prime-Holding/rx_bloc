@@ -6,9 +6,8 @@ import 'count_data_source.dart';
 
 part 'count_remote_data_source.g.dart';
 
-@RestApi(baseUrl: "http://api.primeholding.com")
+@RestApi(baseUrl: "https://api.primeholding.com")
 abstract class CountRemoteDataSource implements CountDataSource{
-  // factory CountRemoteDataSource(Dio dio)=> CountRemoteDataSource(dio);
   factory CountRemoteDataSource(Dio dio,
       {String baseUrl}) = _CountRemoteDataSource;
 
