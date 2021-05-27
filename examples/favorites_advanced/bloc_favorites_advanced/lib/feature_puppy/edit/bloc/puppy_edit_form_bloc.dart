@@ -12,7 +12,6 @@ part 'puppy_edit_form_state.dart';
 class PuppyEditFormBloc extends FormBloc<String, String> {
   PuppyEditFormBloc({required this.repository, required Puppy puppy})
       : _puppy = puppy,
-        // puppy1 = puppy,
         super(autoValidate: false, isLoading: true) {
     addFieldBlocs(
       fieldBlocs: [
@@ -28,12 +27,12 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     image.onValueChanges(onData: (previous, current) async* {
       // print('onValueChanges ImagePickerAction: ${current.value}');
       final pickedImage = await repository.pickPuppyImage(current.value!);
-      // print('pickedImage.path: ${pickedImage!.path}');
+      // print('pickedImage.path: ${pickedImage?.path}');
       if (pickedImage != null) {
         _asset.sink.add(pickedImage.path);
 
         // print(current.value);
-        // print('pickedImage.path not null: ${pickedImage.path}');
+        // print('_asset.sink.add(pickedImage.path): ${pickedImage.path}');
       }
     });
 

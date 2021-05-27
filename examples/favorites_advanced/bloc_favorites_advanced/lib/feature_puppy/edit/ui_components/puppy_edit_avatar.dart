@@ -8,14 +8,12 @@ class PuppyEditAvatar extends StatelessWidget {
     required this.heroTag,
     required this.imgPath,
     required this.pickImage,
-    required this.formBloc,
     Key? key,
   }) : super(key: key);
   final InputFieldBloc<ImagePickerAction, Object> fileFieldBloc;
   final String heroTag;
   final String imgPath;
   final void Function(ImagePickerAction? source) pickImage;
-  final FormBloc formBloc;
 
   @override
   Widget build(BuildContext context) => Stack(

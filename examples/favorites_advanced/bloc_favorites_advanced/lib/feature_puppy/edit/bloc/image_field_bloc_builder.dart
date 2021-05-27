@@ -10,28 +10,28 @@ class ImageFieldBlocBuilder extends StatelessWidget {
   const ImageFieldBlocBuilder({
     required this.puppy,
     required this.fileFieldBloc,
-    required this.formBloc,
+    required this.puppyEditFormBloc,
   });
 
   final InputFieldBloc<ImagePickerAction, Object> fileFieldBloc;
-  final FormBloc formBloc;
+  final PuppyEditFormBloc puppyEditFormBloc;
   final Puppy puppy;
 
   @override
-  Widget build(BuildContext context) => Builder(builder: (context) {
-        final puppyEditFormBloc = BlocProvider.of<PuppyEditFormBloc>(context);
-        return StreamBuilder<String>(
-            stream: puppyEditFormBloc.asset$,
-            builder: (context, snapshot) => PuppyEditAvatar(
-                  // print('image_field_bloc_builder: ${snapshot.data}');
+  Widget build(BuildContext context) => Builder(
+        builder: (context) => StreamBuilder<String>(
+          stream: puppyEditFormBloc.asset$,
+          builder: (context, snapshot) =>
+              // print('image_field_bloc_builder: ${snapshot.data}');
 
-                  fileFieldBloc: fileFieldBloc,
-                  formBloc: formBloc,
-                  heroTag: '$PuppyCardAnimationTag ${puppy.id}',
-                  imgPath: snapshot.data ?? puppy.asset,
-                  pickImage: (source) {
-                    if (source != null) {}
-                  },
-                ));
-      });
+              PuppyEditAvatar(
+            fileFieldBloc: fileFieldBloc,
+            heroTag: '$PuppyCardAnimationTag ${puppy.id}',
+            imgPath: snapshot.data ?? puppy.asset,
+            pickImage: (source) {
+              if (source != null) {}
+            },
+          ),
+        ),
+      );
 }

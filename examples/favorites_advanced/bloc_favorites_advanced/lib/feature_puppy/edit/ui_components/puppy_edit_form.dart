@@ -71,7 +71,7 @@ class PuppyEditForm extends StatelessWidget {
 
   Widget _buildImage(PuppyEditFormBloc formBloc) => ImageFieldBlocBuilder(
        fileFieldBloc: formBloc.image,
-      formBloc: _formBloc,
+    puppyEditFormBloc: _formBloc,
     puppy: _puppy,
   );
 
