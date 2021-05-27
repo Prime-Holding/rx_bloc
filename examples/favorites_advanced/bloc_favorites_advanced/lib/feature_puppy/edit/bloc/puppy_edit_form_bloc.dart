@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
@@ -10,8 +11,12 @@ part 'puppy_edit_form_event.dart';
 part 'puppy_edit_form_state.dart';
 
 class PuppyEditFormBloc extends FormBloc<String, String> {
-  PuppyEditFormBloc({required this.repository, required Puppy puppy})
+  PuppyEditFormBloc(
+      {required this.coordinatorBloc,
+      required this.repository,
+      required Puppy puppy})
       : _puppy = puppy,
+        _editedPuppy = puppy,
         super(autoValidate: false, isLoading: true) {
     addFieldBlocs(
       fieldBlocs: [
@@ -29,8 +34,14 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       final pickedImage = await repository.pickPuppyImage(current.value!);
       // print('pickedImage.path: ${pickedImage?.path}');
       if (pickedImage != null) {
-        _asset.sink.add(pickedImage.path);
+        final newPath = pickedImage.path;
+        // print('NEW pickedImage.path: $newPath');
+        _asset.sink.add(newPath);
+        setImagePath(newPath);
 
+        // print('_editedPuppy.asset: ${_editedPuppy.asset}' );
+        emitUpdatingFields();
+        emitLoaded();
         // print(current.value);
         // print('_asset.sink.add(pickedImage.path): ${pickedImage.path}');
       }
@@ -40,9 +51,15 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       if (previous != current) {
         // print('name current value: ${current.value}');
         _name.sink.add(current.value.toString());
-
-        if (_puppy.name != current.value.toString()) {
+        final newName = current.value.toString();
+        if (_puppy.name != newName) {
+          // print('NEW Name $newName');
+          if (newName.trim().length < 30) {
+            setName(newName);
+          }
+          // print('_editedPuppy.name: ${_editedPuppy.name}');
           emitUpdatingFields();
+          emitLoaded();
         } else {
           emitLoaded();
         }
@@ -54,10 +71,14 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
         if (previous != current) {
           // print('gender current value: ${current.value}');
           _gender.sink.add(current.value ?? Gender.None);
-
           if (_puppy.gender.toString().substring(7) !=
               current.value.toString()) {
+            final newGender = current.value;
+            // print('NEW Gender:$newGender');
+            setGender(newGender ?? _editedPuppy.gender);
+            // print('_editedPuppy.gender: ${_editedPuppy.gender}');
             emitUpdatingFields();
+            emitLoaded();
           } else {
             emitLoaded();
           }
@@ -70,9 +91,16 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
         if (previous != current) {
           // print('breed current value: ${current.value}');
           _breed.sink.add(current.value ?? BreedType.None);
-
           if (_puppy.breedType != current.value) {
+            final newBreed = current.value;
+            // print('New Breed: $newBreed');
+            if (newBreed != null && newBreed != BreedType.None) {
+              setBreed(newBreed);
+            }
+            // print('_editedPuppy.breedType ${_editedPuppy.breedType}');
+
             emitUpdatingFields();
+            emitLoaded();
           } else {
             emitLoaded();
           }
@@ -85,9 +113,20 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
         if (previous != current) {
           // print('displayCharacteristics current value: ${current.value}');
           _characteristics.sink.add(current.value.toString());
-
           if (_puppy.displayCharacteristics != current.value) {
+            final newCharacteristics = current.value;
+            // print('New Characteristics: $newCharacteristics');
+            if (newCharacteristics != null &&
+                newCharacteristics.trim().length < 250 &&
+                newCharacteristics.trim().isNotEmpty) {
+              setCharacteristics(newCharacteristics);
+            }
+            // print(
+            //     '_editedPuppy.displayCharacteristics:
+            //     ${_editedPuppy.displayCharacteristics}');
+
             emitUpdatingFields();
+            emitLoaded();
           } else {
             emitLoaded();
           }
@@ -98,9 +137,18 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
 
   // CoordinatorBloc _coordinatorBloc;
   final Puppy _puppy;
+  late Puppy _editedPuppy;
   final PuppiesRepository repository;
+  final CoordinatorBloc coordinatorBloc;
   static const int _maxCharacteristicsLength = 250;
   static const int _maxNameLength = 30;
+  static const _nameMustNotBeEmpty = 'Name must not be empty.';
+  static const _nameTooLong = 'Name too long.';
+  static const _selectABreed = 'You have to select a breed.';
+  static const _selectAGender = 'You have to select a gender.';
+  static const _charMustNotBeEmpty = 'Characteristics must not be empty';
+  static const _charLengthLimitation = 'Characteristics must not exceed '
+      '$_maxCharacteristicsLength characters.';
 
   final _asset = BehaviorSubject<String>();
   final _name = BehaviorSubject<String>();
@@ -141,6 +189,21 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     _characteristics.close();
   }
 
+  void setImagePath(String value) =>
+      _editedPuppy = _editedPuppy.copyWith(asset: value);
+
+  void setName(String value) =>
+      _editedPuppy = _editedPuppy.copyWith(name: value);
+
+  void setBreed(BreedType value) =>
+      _editedPuppy = _editedPuppy.copyWith(breedType: value);
+
+  void setGender(Gender value) =>
+      _editedPuppy = _editedPuppy.copyWith(gender: value);
+
+  void setCharacteristics(String value) => _editedPuppy = _editedPuppy.copyWith(
+      displayCharacteristics: value, breedCharacteristics: value);
+
   // final isSaveEnabled = BooleanFieldBloc();
 
   final InputFieldBloc<ImagePickerAction, Object> image = InputFieldBloc();
@@ -155,13 +218,13 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   //0123456789012345678901234567891
   static String? _nameValidation(String? username) {
     if (username != null && username.isEmpty) {
-      return 'Name must not be empty.';
+      return _nameMustNotBeEmpty;
     }
 
     if (username != null && username.length > _maxNameLength) {
-      return 'Name too long.';
+      return _nameTooLong;
     }
-    return '';
+    return null;
   }
 
   final breed = SelectFieldBloc(
@@ -182,36 +245,34 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   );
 
   static String? _breedValidation(BreedType? breedType) {
-    if (breedType == BreedType.None) {
-      return 'You have to select a breed.';
+    if (breedType == BreedType.None || breedType == null) {
+      return _selectABreed;
     }
     return null;
   }
 
   static String? _genderValidation(Gender? gender) {
-    if (gender == Gender.None) {
-      return 'You have to select a gender.';
+    if (gender == Gender.None || gender == null) {
+      return _selectAGender;
     }
     return null;
   }
 
   static String? _characteristicsValidation(String? characteristics) {
     if (characteristics!.isEmpty) {
-      return 'Characteristics must not be empty';
+      return _charMustNotBeEmpty;
     }
 
     final trimmedChars = characteristics.trim();
 
     if (trimmedChars.length > _maxCharacteristicsLength) {
-      return 'Characteristics must not exceed '
-          '$_maxCharacteristicsLength characters.';
+      return _charLengthLimitation;
     }
     return null;
   }
 
   @override
-  // ignore: avoid_void_async
-  void onLoading() async {
+  void onLoading() {
     try {
       name.updateInitialValue(_puppy.name);
       breed.updateInitialValue(_puppy.breedType);
@@ -223,24 +284,37 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     }
   }
 
+  // @override
+  // Stream<FormBlocState<String, String>> onSubmitting() async* {
+  //    print(name.value);
+  //     print(breed.value);
+  //     print(gender.value);
+  //     print(characteristics.value);
+  //    emitSubmitting();
+  //    yield state.toSuccess();
+  // }
+
   @override
   // ignore: avoid_void_async
   void onSubmitting() async {
-    ///Send event to coordinator
-    try {
-      // print('onSubmitting name.value: ${name.value}');
-      await Future<void>.delayed(const Duration(milliseconds: 500));
-
-      emitSubmitting();
-    } catch (e) {
-      // print('onSubmitting error: ${e.toString()}');
-
-      emitFailure();
-    }
-
-    // print(name.value);
-    // print(breed.value);
+    // print('onSubmitting ${name.value}');
+    // print('onSubmitting ${breed.value}');
     // print(gender.value);
     // print(characteristics.value);
+
+    try {
+      // print('onSubmitting name.value: ${name.value}');
+
+      emitSubmitting();
+      await Future.delayed(const Duration(milliseconds: 900));
+      final updatedPuppy =
+          await repository.updatePuppy(_editedPuppy.id, _editedPuppy);
+      coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
+
+      emitSuccess();
+    } catch (e) {
+      // print('onSubmitting error: ${e.toString()}');
+      emitFailure();
+    }
   }
 }

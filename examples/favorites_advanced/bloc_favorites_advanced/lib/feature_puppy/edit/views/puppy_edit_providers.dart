@@ -9,6 +9,7 @@ List<BlocProvider> _getProviders(Puppy puppy) => [
       ),
       BlocProvider<PuppyEditFormBloc>(
         create: (context) => PuppyEditFormBloc(
+          coordinatorBloc: context.read(),
           repository: context.read(),
           puppy: puppy,
         ),

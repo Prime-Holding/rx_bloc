@@ -37,6 +37,7 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => PuppyEditFormBloc(
+          coordinatorBloc: context.read(),
             repository: context.read(),
             puppy: widget._puppy),
         child: Builder(
@@ -64,7 +65,10 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
                         // enabled: true,
 
                         // enabled: false,
-                        onSavePressed: ()  => puppyEditFormBloc.submit,
+                        onSavePressed: () =>
+                          puppyEditFormBloc.submit
+                        ,
+                        puppyEditFormBloc: puppyEditFormBloc,
                         // onSavePressed: () => {},
                       ),
                       body: PuppyEditForm(

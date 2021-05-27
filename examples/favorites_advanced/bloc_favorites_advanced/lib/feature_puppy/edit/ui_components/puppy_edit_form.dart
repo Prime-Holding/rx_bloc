@@ -26,6 +26,7 @@ class PuppyEditForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => PuppyEditFormBloc(
+          coordinatorBloc: context.read(),
           repository: context.read(),
           puppy: _puppy,
         ),
