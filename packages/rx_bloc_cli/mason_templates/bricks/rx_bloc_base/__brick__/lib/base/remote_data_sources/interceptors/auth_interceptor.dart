@@ -9,7 +9,13 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
+/// This class contains example of auth interceptor.
+/// Current project doesn't have authentication and does not need it.
+/// If your oun project doesn't have authentication, you can delete it.
+/// Otherwise you have to implement your ologic to handle
+/// all situations that can appere regarding authentication
 class AuthInterceptor extends Interceptor {
+
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
@@ -19,31 +25,6 @@ class AuthInterceptor extends Interceptor {
     }
   //  Add your logic here
   }
-
-  Future<String?> getToken() async =>  Future.value('token');
-  Future<String?> fetchToken() async =>  Future.value('token');
-  Future<String?> getRefreshToken() async => Future.value('refreshToken');
-
-  Future<void> saveToken(String token) async { }
-  Future<void> saveRefreshToken(String refreshToken) async { }
-
-
-  Future<void> loadNewToken()async{
-    final refreshToken = await getRefreshToken();
-    if(refreshToken == null){
-      throw Exception('No access');
-    }
-    try {
-      final token = await fetchToken();
-      await saveToken(token!);
-    }catch (e){
-      throw Exception(e);
-    }
-  }
-
-  Future<void> logout()async{}
-
-
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler)async {
@@ -55,8 +36,35 @@ class AuthInterceptor extends Interceptor {
         }on Exception catch(e){
           await logout();
         }
-
       }
     }
   }
+
+  Future<void> loadNewToken()async{
+    final refreshToken = await getRefreshToken();
+    if(refreshToken == null){
+      //  Add your logic here
+      throw Exception('Something went wrong.');
+    }
+    try {
+      final token = await fetchToken();
+      await saveToken(token!);
+    }catch (e){
+      //  Add your logic here
+      throw Exception(e);
+    }
+  }
+
+  ///Next methods should be implemented regarding app logic
+  Future<String?> getToken() async =>  Future.value('token');
+
+  Future<String?> fetchToken() async =>  Future.value('token');
+
+  Future<String?> getRefreshToken() async => Future.value('refreshToken');
+
+  Future<void> saveToken(String token) async { }
+
+  Future<void> saveRefreshToken(String refreshToken) async { }
+
+  Future<void> logout()async{}
 }

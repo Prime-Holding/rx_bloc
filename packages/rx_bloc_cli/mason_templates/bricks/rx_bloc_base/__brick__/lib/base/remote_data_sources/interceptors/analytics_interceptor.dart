@@ -7,6 +7,7 @@
 
 import 'package:dio/dio.dart';
 
+/// Add logic if need. For example if use notifications.
 class AnalyticsInterceptor extends Interceptor{
 
 }

@@ -9,6 +9,8 @@ import '../../base/models/count.dart';
 
 import 'count_data_source.dart';
 
+///This class simulate local data source.
+///It holds the state of the app and all calculating logic.
 class CountLocalDataSource implements CountDataSource{
 
   int _counter = 0;

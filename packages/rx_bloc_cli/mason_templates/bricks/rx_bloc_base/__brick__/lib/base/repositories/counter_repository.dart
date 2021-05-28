@@ -8,6 +8,8 @@
 import '../../base/count_data_source/count_data_source.dart';
 import '../../base/models/count.dart';
 
+///Can use any type of data source, that follow the contract
+///and retrieve its response to the business logic layer
 class CounterRepository {
 
   CounterRepository(this.countDataSource);
