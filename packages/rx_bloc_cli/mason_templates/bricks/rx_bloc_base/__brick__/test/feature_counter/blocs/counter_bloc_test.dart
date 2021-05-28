@@ -26,7 +26,10 @@ void main() {
   group('CounterBloc tests', () {
     rxBlocTest<CounterBlocType, int>(
       'Initial state',
-      build: () async => CounterBloc(repo),
+      build: () async {
+        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
+        return CounterBloc(repo);
+      },
       state: (bloc) => bloc.states.count,
       expect: [0],
     );
@@ -34,6 +37,7 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Incrementing value',
       build: () async {
+        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
         return CounterBloc(repo);
       },
@@ -45,6 +49,7 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Decrementing value',
       build: () async {
+        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.decrement()).thenAnswer((_) async => Count(-1));
         return CounterBloc(repo);
       },
@@ -56,6 +61,7 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Increment and decrement value',
       build: () async {
+        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
         when(repo.decrement()).thenAnswer((_) async => Count(0));
         return CounterBloc(repo);
@@ -71,8 +77,9 @@ void main() {
     rxBlocTest<CounterBlocType, String>(
       'Error handling',
       build: () async {
+        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer(
-          (_) => Future.error('test error msg'),
+              (_) => Future.error('test error msg'),
         );
         return CounterBloc(repo);
       },
@@ -87,6 +94,7 @@ void main() {
     rxBlocTest<CounterBlocType, bool>(
       'Loading state',
       build: () async {
+        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
         return CounterBloc(repo);
       },
