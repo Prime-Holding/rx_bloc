@@ -1,4 +1,4 @@
-## [3.0.0] - April 28, 2021
+## [3.1.0] - May 28, 2021
 * Added an optional param `tag` to (Future/Stream).asResultStream()
 * Added utility (extension) methods
   * `Stream<ResultError<T>>`.`mapToException()`
@@ -8,6 +8,9 @@
     * The type of `RxBlocBase.errorState` is now `ResultError` instead of `Exception`
     * The type of `RxBlocBase.loadingState` is now `ResultLoading` instead of `bool`
 
+## [3.0.0] - May 21, 2021
+* Support Flutter `2.2`
+* Update `rxdart` to use version `0.27.0`
 
 ## [2.0.2] - April 19, 2021
 * `Result` equatable improvements
@@ -33,7 +36,7 @@
 * Increased code coverage
 
 ## [1.1.1] - December 08, 2020
-* Upgraded to rx_dart ^0.25.0
+* Upgraded to rxdart ^0.25.0
 * Upgraded to meta: ^1.2.4
 
 ## [1.0.4] - December 02, 2020
@@ -56,7 +59,7 @@
 
 ## [0.3.1] - April 29, 2020
 * Upgraded to last stable Flutter/Dart
-* Upgraded to last stable RxDart
+* Upgraded to last stable rxdart
 * Added an example
 * Stability improvements
 

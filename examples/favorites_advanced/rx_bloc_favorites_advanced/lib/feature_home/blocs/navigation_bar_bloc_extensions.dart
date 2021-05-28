@@ -19,7 +19,7 @@ extension _ListenToUpdateItems on Stream<NavigationItemType> {
   StreamSubscription<List<NavigationItem>> updateItems(
     BehaviorSubject<List<NavigationItem>> items,
   ) =>
-      map((selectedItem) => items.value!
+      map((selectedItem) => items.value
           .map((item) => item.copyWith(isSelected: selectedItem == item.type))
           .toList()).bind(items);
 }

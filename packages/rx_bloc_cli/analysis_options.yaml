@@ -147,3 +147,4 @@ linter:
 analyzer:
   exclude:
     - lib/base/routers/router.gr.dart
+    - mason_templates/*
