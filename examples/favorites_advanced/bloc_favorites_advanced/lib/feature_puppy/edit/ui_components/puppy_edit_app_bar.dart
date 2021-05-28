@@ -7,7 +7,7 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
     required bool enabled,
-    void Function()? onSavePressed,
+    // void Function()? onSavePressed,
     required this.puppyEditFormBloc,
     Key? key,
   })  : _enabled = enabled,
@@ -34,6 +34,10 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
             // ${state.runtimeType}');
             return _buildLoading();
           }
+          // else if(state is FormBlocSuccess){
+          //   print('FormBlocSuccess after submit: FormBlocSuccess');
+          //   Navigator.of(context).pop();
+          // }
           // else if (state.canSubmit){
           // print('_buildSaveButton state.canSubmit ${state.canSubmit}');
           // return _buildIcon();

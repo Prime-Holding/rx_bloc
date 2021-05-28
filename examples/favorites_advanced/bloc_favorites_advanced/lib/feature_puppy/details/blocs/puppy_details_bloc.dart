@@ -42,7 +42,7 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
     } else {
       yield state.copyWith(
           puppy: puppy.copyWith(isFavorite: !puppy.isFavorite));
-      await Future.delayed(const Duration(milliseconds: 400));
+      await Future.delayed(const Duration(milliseconds: 100));
       yield state.copyWith(puppy: puppy.copyWith(isFavorite: puppy.isFavorite));
     }
   }

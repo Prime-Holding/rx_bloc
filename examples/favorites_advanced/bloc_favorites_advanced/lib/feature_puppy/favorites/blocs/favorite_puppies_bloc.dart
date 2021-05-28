@@ -86,6 +86,7 @@ class FavoritePuppiesBloc
           puppy: updatedPuppy,
         ),
       );
+      // print('fav bloc state.favoritePuppies: ${state.favoritePuppies}');
     } on Exception catch (e) {
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies
@@ -111,8 +112,13 @@ extension _PuppyListUtils on List<Puppy> {
       );
     } else if (indexWhere((element) => element.id == puppy.id) == -1) {
       copiedList.add(puppy);
+    } else if (indexWhere((element) => element.id == puppy.id) != -1) {
+      // When a favorite puppy is edited, the updated puppy is replaced
+      // in the list
+      final puppyIndexInCopiedList =
+          copiedList.indexWhere((element) => element.id == puppy.id);
+      copiedList[puppyIndexInCopiedList] = puppy;
     }
-
     return copiedList;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
 import 'package:bloc_sample/feature_puppy/edit/bloc/image_field_bloc_builder.dart';
 import 'package:bloc_sample/feature_puppy/edit/bloc/puppy_edit_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
@@ -8,6 +9,8 @@ import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_card.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:flow_builder/flow_builder.dart';
 
 class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({
@@ -33,8 +36,14 @@ class PuppyEditForm extends StatelessWidget {
         child: Builder(
           builder: (context) => SafeArea(
               key: const ValueKey('PuppyEditPage'),
-              child: BlocBuilder<PuppyEditFormBloc, FormBlocState>(
-                  builder: (context, state) => SingleChildScrollView(
+              child: FormBlocListener<PuppyEditFormBloc, String, String>(
+                  onSuccess: (context, state) {
+                    // if (state is FormBlocSuccess) {
+                      context.flow<PuppyFlowState>().complete();
+                      print('state is FormBlocSuccess');
+                    // }
+                  },
+                     child: SingleChildScrollView(
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Column(

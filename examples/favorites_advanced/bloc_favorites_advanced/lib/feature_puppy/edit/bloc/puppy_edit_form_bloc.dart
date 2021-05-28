@@ -284,15 +284,6 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     }
   }
 
-  // @override
-  // Stream<FormBlocState<String, String>> onSubmitting() async* {
-  //    print(name.value);
-  //     print(breed.value);
-  //     print(gender.value);
-  //     print(characteristics.value);
-  //    emitSubmitting();
-  //    yield state.toSuccess();
-  // }
 
   @override
   // ignore: avoid_void_async
@@ -306,14 +297,20 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       // print('onSubmitting name.value: ${name.value}');
 
       emitSubmitting();
-      await Future.delayed(const Duration(milliseconds: 900));
+      await Future.delayed(const Duration(milliseconds: 200));
       final updatedPuppy =
           await repository.updatePuppy(_editedPuppy.id, _editedPuppy);
+      // print('updatedPuppy: $updatedPuppy');
       coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      coordinatorBloc.add(CoordinatorFavoritePuppyUpdatedEvent(
+        favoritePuppy: updatedPuppy,
+        updateException: '',
+      ));
 
       emitSuccess();
     } catch (e) {
-      // print('onSubmitting error: ${e.toString()}');
       emitFailure();
     }
   }
