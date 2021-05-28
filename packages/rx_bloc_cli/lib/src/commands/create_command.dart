@@ -35,6 +35,11 @@ class CreateCommand extends Command<int> {
         _analyticsString,
         help: 'Enables Google analytics for the project',
         defaultsTo: 'true',
+      )
+      ..addOption(
+        _pushNotificationString,
+        help: 'Enables Firebase push notifications for the project',
+        defaultsTo: 'true',
       );
   }
 
@@ -43,6 +48,7 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
   final _analyticsString = 'include-analytics';
+  final _pushNotificationString = 'push-notifications';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -99,6 +105,7 @@ class CreateCommand extends Command<int> {
         'domain_name': orgDomain,
         'organization_name': orgName,
         'analytics': _enableAnalytics,
+        'push_notifications': _enablePushNotifications,
       },
     );
 
@@ -141,6 +148,12 @@ class CreateCommand extends Command<int> {
   bool get _enableAnalytics {
     final analyticsEnabled = _argResults[_analyticsString];
     return analyticsEnabled.toLowerCase() != 'false';
+  }
+
+  /// Returns whether the project will have push notifications enabled
+  bool get _enablePushNotifications {
+    final pushNotificationsEnabled = _argResults[_pushNotificationString];
+    return pushNotificationsEnabled.toLowerCase() != 'false';
   }
 
   /// endregion
@@ -215,8 +228,13 @@ class CreateCommand extends Command<int> {
     _delayedLog('Generated project with package name: '
         '${lightCyan.wrap('$_organizationName.$_projectName')}');
 
-    _delayedLog('${_enableAnalytics ? 'Using' : 'Not using'} Google Analytics',
+    _delayedLog(
+        '${_enableAnalytics ? 'Using' : 'Not using'} Firebase Analytics',
         success: _enableAnalytics);
+
+    final usingPushMessages = _enablePushNotifications ? 'Using' : 'Not using';
+    _delayedLog('$usingPushMessages Firebase Push Notifications',
+        success: _enablePushNotifications);
   }
 
   /// Shows a delayed log with a success symbol in front of it

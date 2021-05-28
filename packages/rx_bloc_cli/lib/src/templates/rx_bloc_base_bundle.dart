@@ -789,5 +789,11 @@ final rxBlocBaseBundle = MasonBundle.fromJson({
   ],
   "name": "rx_bloc_base",
   "description": "Rx Bloc Core Flutter App",
-  "vars": ["project_name", "organization_name", "domain_name", "analytics"]
+  "vars": [
+    "project_name",
+    "organization_name",
+    "domain_name",
+    "analytics",
+    "push_notifications"
+  ]
 });

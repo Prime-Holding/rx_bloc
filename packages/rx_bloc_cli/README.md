@@ -23,7 +23,7 @@ Create a new project at the given directory with lots of already set-up features
 |  `--project-name`  | Name of directory where the project resides  | The project name for this new Flutter project. This must be a valid dart package name. |
 |  `--org` | `com.example` | The organisation name |
 |  `--include-analytics` |`true` | Enables Google analytics for the project |
-
+|  `--push-notifications` |`true` | Enables Firebase push notifications for the project |
 
 ### What's Included? 📦
 
