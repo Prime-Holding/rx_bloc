@@ -32,6 +32,7 @@ class CountLocalDataSource implements CountDataSource{
     return Count(--_counter);
   }
 
+  /// Get current value
   @override
   Future<Count> getCurrent() async{
     await Future.delayed(const Duration(milliseconds: 800));

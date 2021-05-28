@@ -5,6 +5,7 @@ import 'package:provider/single_child_widget.dart';
 
 import '../../base/count_data_source/count_data_source.dart';
 import '../../base/count_data_source/count_local_data_source.dart';
+import '../../base/count_data_source/count_remote_data_source.dart';
 import '../../base/repositories/counter_repository.dart';
 import '../blocs/counter_bloc.dart';
 
@@ -27,9 +28,14 @@ class CounterDependencies {
       ];
 
   List<Provider> get _dataSources => [
-        Provider<CountDataSource>(
-          create: (context) => CountLocalDataSource(),
-        ),
+    Provider<CountDataSource>(
+      /// Here make your chose witch data source to use
+      /// If want to use remote data source should provide a real api
+      /// in lib\base\count_data_source\count_remote_data_source.dart
+      /// and rerun build_runner
+      // create: (context) => CountRemoteDataSource(context.read()),
+      create: (context) => CountLocalDataSource(),
+    ),
       ];
 
   List<Provider> get _repositories => [
