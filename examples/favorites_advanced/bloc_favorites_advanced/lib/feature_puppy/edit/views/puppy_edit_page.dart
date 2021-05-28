@@ -51,7 +51,7 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
               context.flow<PuppyFlowState>().update((state) =>
               state.copyWith(manage: false));
               // Navigator.of(context).pop();
-              print('state is FormBlocSuccess');
+              // print('state is FormBlocSuccess');
           },
           onFailure: (context, state){
             ScaffoldMessenger.of(context)
