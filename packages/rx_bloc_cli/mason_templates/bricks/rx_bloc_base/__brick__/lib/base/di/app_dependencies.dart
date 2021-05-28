@@ -15,24 +15,25 @@ import 'package:provider/single_child_widget.dart';
 class AppDependencies {
   AppDependencies._(this.context);
 
-  factory AppDependencies.of(BuildContext context) => _instance != null
-      ? _instance!
-      : _instance = AppDependencies._(context);
+  factory AppDependencies.of(BuildContext context) =>
+      _instance != null ? _instance! : _instance = AppDependencies._(context);
 
   static AppDependencies? _instance;
 
   final BuildContext context;
 
   /// List of all providers used throughout the app
-  List<SingleChildWidget> get providers => [
-    ..._analytics,
-  ];
+  List<SingleChildWidget> get providers => [{{^uses_firebase}}
+        Provider(create: (_) => null), // Add your providers here{{/uses_firebase}}{{#analytics}}
+        ..._analytics,{{/analytics}}
+      ];
+{{#analytics}}
 
-  List<Provider> get _analytics => [{{#analytics}}
-      Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
-      Provider<FirebaseAnalyticsObserver>(
-        create: (context) =>
+  List<Provider> get _analytics => [
+        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
+        Provider<FirebaseAnalyticsObserver>(
+          create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
-      ),
-    {{/analytics}}];
+        ),
+      ];{{/analytics}}
 }

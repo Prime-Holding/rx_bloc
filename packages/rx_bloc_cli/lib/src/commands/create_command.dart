@@ -104,6 +104,7 @@ class CreateCommand extends Command<int> {
         'project_name': projectName,
         'domain_name': orgDomain,
         'organization_name': orgName,
+        'uses_firebase': _usesFirebase,
         'analytics': _enableAnalytics,
         'push_notifications': _enablePushNotifications,
       },
@@ -142,6 +143,11 @@ class CreateCommand extends Command<int> {
     final rest = _argResults.rest;
     _validateOutputDirectoryArg(rest);
     return Directory(rest.first);
+  }
+
+  /// Returns whether Firebase is used in the generated project
+  bool get _usesFirebase {
+    return _enableAnalytics || _enablePushNotifications;
   }
 
   /// Returns whether the project will use analytics or not

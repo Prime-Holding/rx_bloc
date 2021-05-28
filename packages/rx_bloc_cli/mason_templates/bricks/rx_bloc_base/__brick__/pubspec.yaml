@@ -9,8 +9,9 @@ environment:
 dependencies:
   auto_route: ^2.2.0
   cupertino_icons: ^1.0.2{{#analytics}}
-  firebase_analytics: ^8.0.1
-  firebase_core: ^1.0.4{{/analytics}}
+  firebase_analytics: ^8.1.0{{/analytics}}{{#uses_firebase}}
+  firebase_core: ^1.2.0{{/uses_firebase}}{{#push_notifications}}
+  firebase_messaging: ^10.0.0{{/push_notifications}}
   flutter:
     sdk: flutter
   flutter_localizations:
