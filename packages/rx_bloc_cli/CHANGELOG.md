@@ -1,6 +1,14 @@
-## [0.0.3] - May 25, 2021
-* Update generated project with latest dependencies
+## [0.0.3] - May 28, 2021
 * Support null safety
+* Update generated project with latest dependencies of following packages:
+    - `build_runner: ^2.0.3`
+    - `auto_route: ^2.2.0`
+    - `auto_route_generator: ^2.0.1`
+    - `flutter_rx_bloc: ^3.0.0`
+    - `mockito: ^5.0.0`
+    - `rx_bloc: ^3.0.0`
+    - `rx_bloc_generator: ^5.0.0`
+    - `rx_bloc_test: ^3.0.0`
 
 ## [0.0.2] - May 10, 2021
 * Documentation improvements

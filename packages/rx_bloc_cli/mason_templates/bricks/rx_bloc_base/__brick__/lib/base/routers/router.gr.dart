@@ -5,17 +5,21 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
+import 'package:flutter/material.dart' as _i2;
 
-import '../../feature_counter/views/counter_page.dart' as _i2;
+import '../../feature_counter/views/counter_page.dart' as _i3;
 
 class Router extends _i1.RootStackRouter {
-  Router();
+  Router([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
+      : super(navigatorKey);
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
-    CounterPageRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: const _i2.CounterPage());
-    }
+    CounterPageRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return const _i3.CounterPage();
+        })
   };
 
   @override

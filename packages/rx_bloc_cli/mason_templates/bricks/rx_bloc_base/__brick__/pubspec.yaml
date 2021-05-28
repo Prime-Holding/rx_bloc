@@ -36,7 +36,7 @@ dev_dependencies:
   retrofit_generator: ^2.0.0
   rx_bloc_generator: ^5.0.0
   rx_bloc_test: ^3.0.0
-  test: ^1.16.5
+  test: any
 
 flutter:
   uses-material-design: true
