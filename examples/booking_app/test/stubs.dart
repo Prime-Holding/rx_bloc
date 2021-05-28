@@ -8,11 +8,11 @@ import 'package:rx_bloc_list/models.dart';
 class Stub {
   static final navigation = NavigationStub();
 
-  static final hotel1 = HotelsLocalDataSource.hotelsDB.first;
+  static final hotel1 = StubDataSource.hotelsDB.first;
   static final hotel1Favorited =
-      HotelsLocalDataSource.hotelsDB.first.copyWith(isFavorite: true);
-  static final hotel2 = HotelsLocalDataSource.hotelsDB[1];
-  static final hotel3 = HotelsLocalDataSource.hotelsDB[2];
+      StubDataSource.hotelsDB.first.copyWith(isFavorite: true);
+  static final hotel2 = StubDataSource.hotelsDB[1];
+  static final hotel3 = StubDataSource.hotelsDB[2];
 
   static final paginatedListEmpty = PaginatedList<Hotel>(
     list: [],

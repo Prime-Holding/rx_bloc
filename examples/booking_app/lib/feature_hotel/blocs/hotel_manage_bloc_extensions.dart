@@ -28,12 +28,8 @@ extension _HotelUpdate on Stream<_MarkAsFavoriteEventArgs> {
                   .favoriteHotel(args.hotel, isFavorite: args.isFavorite);
 
               yield Result.success(updatedHotel.copyWith(
-                displayDist: args.hotel.displayDist,
-                displaySubtitle: args.hotel.displaySubtitle,
-                displayRating: args.hotel.displayRating,
-                displayReviews: args.hotel.displayReviews,
-                displayFeatures: args.hotel.displayFeatures,
-                displayDescription: args.hotel.displayDescription,
+                extraDetails: args.hotel.extraDetails,
+                fullExtraDetails: args.hotel.fullExtraDetails,
               ));
             } on Exception catch (e) {
               // In case of any error rollback the hotel to the previous state

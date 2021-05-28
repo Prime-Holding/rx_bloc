@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:booking_app/base/ui_components/favorite_message_listener.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/resources.dart';

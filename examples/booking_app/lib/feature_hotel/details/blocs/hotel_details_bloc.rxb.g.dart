@@ -19,6 +19,9 @@ abstract class $HotelDetailsBloc extends RxBlocBase
     implements HotelDetailsEvents, HotelDetailsStates, HotelDetailsBlocType {
   final _compositeSubscription = CompositeSubscription();
 
+  /// Тhe [Subject] where events sink to by calling [fetchFullExtraDetails]
+  final _$fetchFullExtraDetailsEvent = PublishSubject<Hotel>();
+
   /// The state of [imagePath] implemented in [_mapToImagePathState]
   late final Stream<String> _imagePathState = _mapToImagePathState();
 
@@ -36,6 +39,10 @@ abstract class $HotelDetailsBloc extends RxBlocBase
 
   /// The state of [hotel] implemented in [_mapToHotelState]
   late final Stream<Hotel> _hotelState = _mapToHotelState();
+
+  @override
+  void fetchFullExtraDetails(Hotel hotel) =>
+      _$fetchFullExtraDetailsEvent.add(hotel);
 
   @override
   Stream<String> get imagePath => _imagePathState;
@@ -75,6 +82,7 @@ abstract class $HotelDetailsBloc extends RxBlocBase
 
   @override
   void dispose() {
+    _$fetchFullExtraDetailsEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
