@@ -150,6 +150,8 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   static const _charLengthLimitation = 'Characteristics must not exceed '
       '$_maxCharacteristicsLength characters.';
   static const _submitSuccessResponse = 'The puppy was saved successfully.';
+  static const _submissionFailureResponse
+  = 'No Internet Connection. Please check your settings.';
 
   final _asset = BehaviorSubject<String>();
   final _name = BehaviorSubject<String>();
@@ -309,7 +311,7 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
 
       emitSuccess(successResponse: _submitSuccessResponse);
     } catch (e) {
-      emitFailure();
+      emitFailure(failureResponse: _submissionFailureResponse);
     }
   }
 }

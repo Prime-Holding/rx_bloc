@@ -47,6 +47,11 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
                   .showSnackBar( SnackBar(content:
               Text(state.successResponse!)));
           },
+          onFailure: (context, state){
+            ScaffoldMessenger.of(context)
+                .showSnackBar( SnackBar(content:
+            Text(state.failureResponse!)));
+          },
           child: Builder(
             builder: (context) {
               final puppyEditFormBloc =
