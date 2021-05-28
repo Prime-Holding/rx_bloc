@@ -7,16 +7,14 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
 
   static ThemeData buildTheme(DesignSystem designSystem) {
     final designSystemColor = designSystem.colors;
-    final colorSchemeTheme = designSystemColor.brightness == Brightness.light
-        ? const ColorScheme.light()
-        : const ColorScheme.dark();
+    final lightModeOn = designSystemColor.brightness == Brightness.light;
+    final colorSchemeTheme =
+        lightModeOn ? const ColorScheme.light() : const ColorScheme.dark();
     final colorScheme = colorSchemeTheme.copyWith(
       primary: designSystemColor.primaryColor,
       secondary: designSystemColor.secondaryColor,
     );
-    final base = designSystemColor.brightness == Brightness.light
-        ? ThemeData.light()
-        : ThemeData.dark();
+    final base = lightModeOn ? ThemeData.light() : ThemeData.dark();
     return base.copyWith(
       colorScheme: colorScheme,
       primaryColor: designSystemColor.primaryColor,
