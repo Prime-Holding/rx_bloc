@@ -10,8 +10,9 @@ abstract class HotelsDataSource {
     required bool isFavorite,
   });
 
-  Future<List<Hotel>> fetchFullEntities(
-    List<String> ids, {
-    bool allProps = false,
-  });
+  Future<List<HotelExtraDetails>> fetchExtraDetails(List<String> ids);
+
+  Future<HotelFullExtraDetails> fetchFullExtraDetails(String hotelId);
+
+  Future<void> seed();
 }

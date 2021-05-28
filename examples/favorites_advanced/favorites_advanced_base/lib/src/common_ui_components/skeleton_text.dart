@@ -28,7 +28,7 @@ class SkeletonText extends StatelessWidget {
               skeletons,
               (index) => Container(
                 padding: skeletons > 1 ? EdgeInsets.only(bottom: 8) : null,
-                child: _buildSkeleton(),
+                child: Text(''),
               ),
             ),
           )
