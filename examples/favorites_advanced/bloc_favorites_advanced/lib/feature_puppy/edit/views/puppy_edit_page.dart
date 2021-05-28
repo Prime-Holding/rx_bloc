@@ -1,3 +1,4 @@
+import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
 import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_sample/feature_puppy/edit/bloc/puppy_edit_form_bloc.dart';
 import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_app_bar.dart';
@@ -6,6 +7,7 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:flow_builder/flow_builder.dart';
 
 part 'puppy_edit_providers.dart';
 
@@ -46,6 +48,10 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
               ScaffoldMessenger.of(context)
                   .showSnackBar( SnackBar(content:
               Text(state.successResponse!)));
+              context.flow<PuppyFlowState>().update((state) =>
+              state.copyWith(manage: false));
+              // Navigator.of(context).pop();
+              print('state is FormBlocSuccess');
           },
           onFailure: (context, state){
             ScaffoldMessenger.of(context)
