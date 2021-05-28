@@ -33,7 +33,7 @@ class CreateCommand extends Command<int> {
       )
       ..addOption(
         _analyticsString,
-        help: 'Enables Google analytics for the project',
+        help: 'Enables Firebase analytics for the project',
         defaultsTo: 'true',
       )
       ..addOption(
@@ -228,13 +228,8 @@ class CreateCommand extends Command<int> {
     _delayedLog('Generated project with package name: '
         '${lightCyan.wrap('$_organizationName.$_projectName')}');
 
-    _delayedLog(
-        '${_enableAnalytics ? 'Using' : 'Not using'} Firebase Analytics',
-        success: _enableAnalytics);
-
-    final usingPushMessages = _enablePushNotifications ? 'Using' : 'Not using';
-    _delayedLog('$usingPushMessages Firebase Push Notifications',
-        success: _enablePushNotifications);
+    _usingLog('Firebase Analytics', _enableAnalytics);
+    _usingLog('Firebase Push Notifications', _enablePushNotifications);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -242,6 +237,12 @@ class CreateCommand extends Command<int> {
     final symbol = success ? lightGreen.wrap('✓') : red.wrap('x');
     _logger.delayed('$symbol ${white.wrap(text)}');
     if (newline) _logger.delayed('');
+  }
+
+  /// Prints a (delayed) log for whether the specified item is being used or not
+  void _usingLog(String item, bool enabled, {newline = false}) {
+    final usingStr = enabled ? 'Using' : 'Not using';
+    _delayedLog('$usingStr $item', success: enabled, newline: newline);
   }
 
   /// endregion
