@@ -41,6 +41,15 @@ class PuppyEditForm extends StatelessWidget {
                     // if (state is FormBlocSuccess) {
                       context.flow<PuppyFlowState>().complete();
                       print('state is FormBlocSuccess');
+
+                      // const snackBar = SnackBar(
+                      //   content: Text('Yay! A SnackBar!'),
+                      // );
+
+                      // Find the ScaffoldMessenger in the widget tree
+                      // and use it to show a SnackBar.
+                      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
                     // }
                   },
                      child: SingleChildScrollView(

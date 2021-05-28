@@ -40,46 +40,54 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
           coordinatorBloc: context.read(),
             repository: context.read(),
             puppy: widget._puppy),
-        child: Builder(
-          builder: (context) {
-            final puppyEditFormBloc =
-                BlocProvider.of<PuppyEditFormBloc>(context);
-            // print(puppyEditFormBloc.name);
-            // return BlocBuilder<PuppyEditFormBloc, FormBlocState>(
-            //     builder: (context, state) {
-            //   print('puppy_edit_page state: ${state.runtimeType}');
-              return StreamBuilder<bool>(
-                stream: puppyEditFormBloc.isFormValid$,
-                builder: (context, snapshot) => WillPopScope(
-                    onWillPop: () =>
-                    // snapshot.data == false ?
-                    // state is FormBlocLoading
-                    //      Future.value(false)
-                         Future.value(true),
-                    child: Scaffold(
-                      appBar: PuppyEditAppBar(
-                        // enabled:state is FormUpdatingFields ? true: false,
-                        // enabled: state is FormBlocUpdatingFields ?
-                        // true : false,
-                        enabled: snapshot.data == true ? true : false,
-                        // enabled: true,
-
-                        // enabled: false,
-                        // onSavePressed: () =>
-                        //   puppyEditFormBloc.submit
-                        // ,
-                        puppyEditFormBloc: puppyEditFormBloc,
-                        // onSavePressed: () => {},
-                      ),
-                      body: PuppyEditForm(
-                        puppy: widget._puppy,
-                        puppyEditFormBloc: puppyEditFormBloc,
-                      ),
-                    ),
-                  )
-              );
-            // });
+        // child: BlocListener<PuppyEditFormBloc, FormBlocState>(
+        child: FormBlocListener<PuppyEditFormBloc, String, String>(
+          onSuccess: (context, state){
+              ScaffoldMessenger.of(context)
+                  .showSnackBar( SnackBar(content:
+              Text(state.successResponse!)));
           },
+          child: Builder(
+            builder: (context) {
+              final puppyEditFormBloc =
+                  BlocProvider.of<PuppyEditFormBloc>(context);
+              // print(puppyEditFormBloc.name);
+              // return BlocBuilder<PuppyEditFormBloc, FormBlocState>(
+              //     builder: (context, state) {
+              //   print('puppy_edit_page state: ${state.runtimeType}');
+                return StreamBuilder<bool>(
+                  stream: puppyEditFormBloc.isFormValid$,
+                  builder: (context, snapshot) => WillPopScope(
+                      onWillPop: () =>
+                      // snapshot.data == false ?
+                      // state is FormBlocLoading
+                      //      Future.value(false)
+                           Future.value(true),
+                      child: Scaffold(
+                        appBar: PuppyEditAppBar(
+                          // enabled:state is FormUpdatingFields ? true: false,
+                          // enabled: state is FormBlocUpdatingFields ?
+                          // true : false,
+                          enabled: snapshot.data == true ? true : false,
+                          // enabled: true,
+
+                          // enabled: false,
+                          // onSavePressed: () =>
+                          //   puppyEditFormBloc.submit
+                          // ,
+                          puppyEditFormBloc: puppyEditFormBloc,
+                          // onSavePressed: () => {},
+                        ),
+                        body: PuppyEditForm(
+                          puppy: widget._puppy,
+                          puppyEditFormBloc: puppyEditFormBloc,
+                        ),
+                      ),
+                    )
+                );
+              // });
+            },
+          ),
         ),
       );
 }

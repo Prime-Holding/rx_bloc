@@ -149,6 +149,7 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   static const _charMustNotBeEmpty = 'Characteristics must not be empty';
   static const _charLengthLimitation = 'Characteristics must not exceed '
       '$_maxCharacteristicsLength characters.';
+  static const _submitSuccessResponse = 'The puppy was saved successfully.';
 
   final _asset = BehaviorSubject<String>();
   final _name = BehaviorSubject<String>();
@@ -297,19 +298,16 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       // print('onSubmitting name.value: ${name.value}');
 
       emitSubmitting();
-      await Future.delayed(const Duration(milliseconds: 200));
       final updatedPuppy =
           await repository.updatePuppy(_editedPuppy.id, _editedPuppy);
       // print('updatedPuppy: $updatedPuppy');
-      coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
-      await Future.delayed(const Duration(milliseconds: 100));
-
-      coordinatorBloc.add(CoordinatorFavoritePuppyUpdatedEvent(
+      coordinatorBloc..add(CoordinatorPuppyUpdatedEvent(updatedPuppy))
+      ..add(CoordinatorFavoritePuppyUpdatedEvent(
         favoritePuppy: updatedPuppy,
         updateException: '',
       ));
 
-      emitSuccess();
+      emitSuccess(successResponse: _submitSuccessResponse);
     } catch (e) {
       emitFailure();
     }
