@@ -1,4 +1,4 @@
-## [0.0.3] - May 27, 2021
+## [0.0.3] - May 28, 2021
 * Support null safety
 * Update generated project with latest dependencies of following packages:
     - `build_runner: ^2.0.3`
@@ -9,7 +9,6 @@
     - `rx_bloc: ^3.0.0`
     - `rx_bloc_generator: ^5.0.0`
     - `rx_bloc_test: ^3.0.0`
-* Lock analyzer version to `analyzer: 1.5.0` as of [this issue](https://github.com/dart-lang/sdk/issues/46136).
 
 ## [0.0.2] - May 10, 2021
 * Documentation improvements
