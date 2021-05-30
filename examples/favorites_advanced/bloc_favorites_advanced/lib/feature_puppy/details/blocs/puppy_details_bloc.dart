@@ -14,10 +14,9 @@ part 'puppy_details_state.dart';
 class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   PuppyDetailsBloc({
     required CoordinatorBloc coordinatorBloc,
-    Puppy? puppy,
-  })  : _coordinatorBloc = coordinatorBloc,
-        _puppy = puppy,
-        super(const PuppyDetailsState()) {
+    required Puppy puppy,
+  })   : _coordinatorBloc = coordinatorBloc,
+        super(PuppyDetailsState(puppy: puppy)) {
     _coordinatorBloc.stream
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
         .listen((state) => add(PuppyDetailsEvent(
@@ -28,7 +27,6 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   }
 
   final CoordinatorBloc _coordinatorBloc;
-  late final Puppy? _puppy; //comes from the search or favorites pages
   final _compositeSubscription = CompositeSubscription();
 
   @override
@@ -37,8 +35,14 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   ) async* {
     final puppy = event.puppy;
     if (event.updateException.isEmpty) {
-      yield state.copyWith(
-          puppy: _puppy!.copyWith(isFavorite: puppy.isFavorite));
+      final copiedPuppy = puppy.copyWith(
+          name: puppy.name,
+          breedType: puppy.breedType,
+          isFavorite: puppy.isFavorite,
+          gender: puppy.gender,
+          displayCharacteristics: puppy.displayCharacteristics);
+      final copiedState = state.copyWith(puppy: copiedPuppy);
+      yield copiedState;
     } else {
       yield state.copyWith(
           puppy: puppy.copyWith(isFavorite: !puppy.isFavorite));

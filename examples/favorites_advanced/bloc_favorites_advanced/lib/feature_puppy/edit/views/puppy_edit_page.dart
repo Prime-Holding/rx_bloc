@@ -40,63 +40,45 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => PuppyEditFormBloc(
           coordinatorBloc: context.read(),
-            repository: context.read(),
-            puppy: widget._puppy),
-        // child: BlocListener<PuppyEditFormBloc, FormBlocState>(
+          repository: context.read(),
+          puppy: widget._puppy,
+        ),
         child: FormBlocListener<PuppyEditFormBloc, String, String>(
-          onSuccess: (context, state){
-              ScaffoldMessenger.of(context)
-                  .showSnackBar( SnackBar(content:
-              Text(state.successResponse!)));
-              context.flow<PuppyFlowState>().update((state) =>
-              state.copyWith(manage: false));
-              // Navigator.of(context).pop();
-              // print('state is FormBlocSuccess');
-          },
-          onFailure: (context, state){
+          onSuccess: (context, state) {
             ScaffoldMessenger.of(context)
-                .showSnackBar( SnackBar(content:
-            Text(state.failureResponse!)));
+                .showSnackBar(SnackBar(content: Text(state.successResponse!)));
+            context
+                .flow<PuppyFlowState>()
+                .update((state) => state.copyWith(manage: false));
+          },
+          onFailure: (context, state) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.failureResponse!)));
           },
           child: Builder(
             builder: (context) {
               final puppyEditFormBloc =
                   BlocProvider.of<PuppyEditFormBloc>(context);
-              // print(puppyEditFormBloc.name);
-              // return BlocBuilder<PuppyEditFormBloc, FormBlocState>(
-              //     builder: (context, state) {
-              //   print('puppy_edit_page state: ${state.runtimeType}');
-                return StreamBuilder<bool>(
-                  stream: puppyEditFormBloc.isFormValid$,
-                  builder: (context, snapshot) => WillPopScope(
-                      onWillPop: () =>
+              return StreamBuilder<bool>(
+                stream: puppyEditFormBloc.isFormValid$,
+                builder: (context, snapshot) => WillPopScope(
+                  onWillPop: () =>
                       // snapshot.data == false ?
                       // state is FormBlocLoading
                       //      Future.value(false)
-                           Future.value(true),
-                      child: Scaffold(
-                        appBar: PuppyEditAppBar(
-                          // enabled:state is FormUpdatingFields ? true: false,
-                          // enabled: state is FormBlocUpdatingFields ?
-                          // true : false,
-                          enabled: snapshot.data == true ? true : false,
-                          // enabled: true,
-
-                          // enabled: false,
-                          // onSavePressed: () =>
-                          //   puppyEditFormBloc.submit
-                          // ,
-                          puppyEditFormBloc: puppyEditFormBloc,
-                          // onSavePressed: () => {},
-                        ),
-                        body: PuppyEditForm(
-                          puppy: widget._puppy,
-                          puppyEditFormBloc: puppyEditFormBloc,
-                        ),
-                      ),
-                    )
-                );
-              // });
+                      Future.value(true),
+                  child: Scaffold(
+                    appBar: PuppyEditAppBar(
+                      enabled: snapshot.data == true ? true : false,
+                      puppyEditFormBloc: puppyEditFormBloc,
+                    ),
+                    body: PuppyEditForm(
+                      puppy: widget._puppy,
+                      puppyEditFormBloc: puppyEditFormBloc,
+                    ),
+                  ),
+                ),
+              );
             },
           ),
         ),

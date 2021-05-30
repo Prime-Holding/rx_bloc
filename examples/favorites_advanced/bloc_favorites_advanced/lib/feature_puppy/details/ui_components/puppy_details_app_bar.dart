@@ -48,14 +48,13 @@ class PuppyDetailsAppBar extends StatelessWidget
         onPressed: () async {
           context
               .flow<PuppyFlowState>()
-              .update((state) => state.copyWith(manage: true));
+              .update((state) => state.copyWith(manage: true, puppy: _puppy));
         },
       );
 
   void _markAsFavorite(BuildContext context, bool isFavorite) =>
-      BlocProvider.of<PuppyMarkAsFavoriteBloc>(context).add(
-          PuppyMarkAsFavoriteEvent(
-              puppy: _puppy, isFavorite: isFavorite));
+      BlocProvider.of<PuppyMarkAsFavoriteBloc>(context)
+          .add(PuppyMarkAsFavoriteEvent(puppy: _puppy, isFavorite: isFavorite));
 
   @override
   Size get preferredSize => const Size.fromHeight(56);

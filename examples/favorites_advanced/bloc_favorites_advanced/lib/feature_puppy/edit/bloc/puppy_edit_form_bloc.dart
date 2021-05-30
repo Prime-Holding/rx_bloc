@@ -150,8 +150,8 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   static const _charLengthLimitation = 'Characteristics must not exceed '
       '$_maxCharacteristicsLength characters.';
   static const _submitSuccessResponse = 'The puppy was saved successfully.';
-  static const _submissionFailureResponse
-  = 'No Internet Connection. Please check your settings.';
+  static const _submissionFailureResponse =
+      'No Internet Connection. Please check your settings.';
 
   final _asset = BehaviorSubject<String>();
   final _name = BehaviorSubject<String>();
@@ -287,27 +287,20 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     }
   }
 
-
   @override
   // ignore: avoid_void_async
   void onSubmitting() async {
-    // print('onSubmitting ${name.value}');
-    // print('onSubmitting ${breed.value}');
-    // print(gender.value);
-    // print(characteristics.value);
-
     try {
-      // print('onSubmitting name.value: ${name.value}');
-
       emitSubmitting();
       final updatedPuppy =
           await repository.updatePuppy(_editedPuppy.id, _editedPuppy);
       // print('updatedPuppy: $updatedPuppy');
-      coordinatorBloc..add(CoordinatorPuppyUpdatedEvent(updatedPuppy))
-      ..add(CoordinatorFavoritePuppyUpdatedEvent(
-        favoritePuppy: updatedPuppy,
-        updateException: '',
-      ));
+      coordinatorBloc
+        ..add(CoordinatorPuppyUpdatedEvent(updatedPuppy))
+        ..add(CoordinatorFavoritePuppyUpdatedEvent(
+          favoritePuppy: updatedPuppy,
+          updateException: '',
+        ));
 
       emitSuccess(successResponse: _submitSuccessResponse);
     } catch (e) {

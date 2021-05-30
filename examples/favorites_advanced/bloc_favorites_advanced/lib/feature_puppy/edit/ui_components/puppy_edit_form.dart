@@ -22,8 +22,6 @@ class PuppyEditForm extends StatelessWidget {
         super(key: key);
 
   final Puppy _puppy;
-
-  // static Puppy? puppyPublic;
   final PuppyEditFormBloc _formBloc;
 
   @override
@@ -35,59 +33,49 @@ class PuppyEditForm extends StatelessWidget {
         ),
         child: Builder(
           builder: (context) => SafeArea(
-              key: const ValueKey('PuppyEditPage'),
-              child: FormBlocListener<PuppyEditFormBloc, String, String>(
-                  onSuccess: (context, state) {
-                    // if (state is FormBlocSuccess) {
-                    //   context.flow<PuppyFlowState>().complete();
-                    //   print('state is FormBlocSuccess');
-
-
-                  },
-                     child: SingleChildScrollView(
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          _buildImage(_formBloc),
-                          const SizedBox(height: 20),
-                          PuppyEditCard(
-                            label: 'Name',
-                            content: _buildNameField(_formBloc),
-                            icon: Icons.account_box,
-                          ),
-                          PuppyEditCard(
-                            label: 'Breed',
-                            content: _buildBreedSelection(_formBloc),
-                            icon: Icons.pets,
-                          ),
-                          PuppyEditCard(
-                            label: 'Gender',
-                            content: _buildGenderSelection(_formBloc),
-                            icon: Icons.wc,
-                          ),
-                          PuppyEditCard(
-                            label: 'Characteristics',
-                            content: _buildCharacteristicsField(_formBloc),
-                            icon: Icons.article,
-                          ),
-                        ],
-                      ),
+            key: const ValueKey('PuppyEditPage'),
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    _buildImage(_formBloc),
+                    const SizedBox(height: 20),
+                    PuppyEditCard(
+                      label: 'Name',
+                      content: _buildNameField(_formBloc),
+                      icon: Icons.account_box,
                     ),
-                  )),
+                    PuppyEditCard(
+                      label: 'Breed',
+                      content: _buildBreedSelection(_formBloc),
+                      icon: Icons.pets,
+                    ),
+                    PuppyEditCard(
+                      label: 'Gender',
+                      content: _buildGenderSelection(_formBloc),
+                      icon: Icons.wc,
+                    ),
+                    PuppyEditCard(
+                      label: 'Characteristics',
+                      content: _buildCharacteristicsField(_formBloc),
+                      icon: Icons.article,
+                    ),
+                  ],
+                ),
+              ),
             ),
+          ),
         ),
       );
 
-
   Widget _buildImage(PuppyEditFormBloc formBloc) => ImageFieldBlocBuilder(
-       fileFieldBloc: formBloc.image,
-    puppyEditFormBloc: _formBloc,
-    puppy: _puppy,
-  );
+        fileFieldBloc: formBloc.image,
+        puppyEditFormBloc: _formBloc,
+        puppy: _puppy,
+      );
 
-  Widget _buildNameField(PuppyEditFormBloc formBloc) =>
-          TextFieldBlocBuilder(
+  Widget _buildNameField(PuppyEditFormBloc formBloc) => TextFieldBlocBuilder(
         textFieldBloc: formBloc.name,
         cursorColor: const Color(0xff333333),
         style: TextStyles.editableTextStyle,
