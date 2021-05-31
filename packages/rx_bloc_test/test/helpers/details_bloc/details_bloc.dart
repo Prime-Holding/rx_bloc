@@ -38,9 +38,8 @@ class DetailsBloc extends $DetailsBloc {
       .whereSuccess();
 
   @override
-  Stream<String> get errors =>
-      errorState.map((result) => result.error.toString());
+  Stream<String> get errors => errorState.map((result) => result.toString());
 
   @override
-  Stream<bool> get isLoading => loadingState.isLoading();
+  Stream<bool> get isLoading => loadingState;
 }

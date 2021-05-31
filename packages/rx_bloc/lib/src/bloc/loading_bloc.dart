@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'loading_bloc.rxb.g.dart';
+part 'loading_bloc_extensions.dart';
+part 'loading_bloc_models.dart';
 
 /// The states of LoadingBloc
 abstract class LoadingBlocStates {
@@ -35,7 +39,7 @@ abstract class LoadingBlocEvents {
   /// Set [result] to BloC
   ///
   /// To observe the current loading state subscribe for
-  /// [LoadingBlocStates.result]
+  /// [LoadingBlocStates.isLoading]
   void setResult({required Result result});
 }
 
@@ -49,78 +53,35 @@ class LoadingBloc extends $LoadingBloc {
   /// Default constructor
   LoadingBloc() {
     _$setLoadingEvent
-        .map(
-          (result) {
-            final tuple = _loadingCounts.value!
-                .firstWhere((element) => element.tag == result.tag,
-                    orElse: () => _TagCountTuple(tag: result.tag, count: 0))
-                .copyWith(incrementCount: result is ResultLoading);
-            return [
-              tuple,
-              ..._loadingCounts.value!
-                  .where((element) => element.tag != result.tag),
-            ];
-          },
-        )
-        .bind(_loadingCounts)
+        .bindToLoadingCounts(_loadingCounts)
         .disposedBy(_compositeSubscription);
   }
 
-  final _loadingCounts = BehaviorSubject<List<_TagCountTuple>>.seeded(
-    [
+  final _loadingCounts = BehaviorSubject.seeded({
+    '': BehaviorSubject.seeded(
       _TagCountTuple(
         tag: '', // default tag value
         count: 0,
       ),
-    ],
-  );
+    )
+  });
 
   final _compositeSubscription = CompositeSubscription();
 
   @override
-  Stream<LoadingWithTag> _mapToIsLoadingWithTagState() => _loadingCounts
-      .map((counts) =>
-          LoadingWithTag(tag: counts.first.tag, loading: counts.isLoading))
+  Stream<LoadingWithTag> _mapToIsLoadingWithTagState() =>
+      _loadingCounts.mapToLoadingWithTag().shareReplay(maxSize: 1);
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => _isLoadingWithTagState
+      .map((event) => event.loading)
       .shareReplay(maxSize: 1);
 
   @override
-  Stream<bool> _mapToIsLoadingState() =>
-      _loadingCounts.map((counts) => counts.isLoading).shareReplay(maxSize: 1);
-
-  @override
-  Stream<bool> isLoadingForTag(String tag) => _loadingCounts
-      .map((events) =>
-          events
-              .firstWhere(
-                (element) => element.tag == tag,
-                orElse: () => _TagCountTuple(tag: tag, count: 0),
-              )
-              .count >
-          0)
-      .shareReplay(maxSize: 1);
-}
-
-class _TagCountTuple {
-  _TagCountTuple({
-    required this.tag,
-    required this.count,
-  });
-
-  final String tag;
-  final int count;
-
-  _TagCountTuple copyWith({
-    required bool incrementCount,
-  }) =>
-      _TagCountTuple(
-        count: incrementCount ? count + 1 : count - 1,
-        tag: tag,
-      );
-
-  @override
-  String toString() => '{tag: $tag, count: $count}';
-}
-
-extension _IsLoadingHelpers on List<_TagCountTuple> {
-  bool get isLoading => any((element) => element.count > 0);
+  Stream<bool> isLoadingForTag(String tag) => _loadingCounts.map((events) {
+        if (events[tag] != null) {
+          return events[tag]!.value.count > 1;
+        }
+        return true;
+      }).shareReplay(maxSize: 1);
 }

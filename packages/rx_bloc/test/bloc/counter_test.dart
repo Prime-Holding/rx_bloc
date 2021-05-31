@@ -3,7 +3,8 @@ import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
-import '../../example/main.dart';
+import '../app/blocs/counter_bloc.dart';
+import '../app/repositories/counter_repository.dart';
 
 class BlocImpl extends RxBlocBase implements RxBlocTypeBase {}
 
@@ -35,96 +36,116 @@ void main() {
   });
 
   group('CounterBloc: isLoading', () {
-    rxBlocTest<CounterBlocType, bool>(
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
       'CounterBloc: dispose',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
       act: (bloc) async => bloc
         ..events.increment()
         ..dispose(),
-      wait: ServerSimulator.delayTest,
-      expect: <bool>[false],
+      expect: <LoadingWithTag>[LoadingWithTag(loading: false)],
     );
 
-    rxBlocTest<CounterBlocType, bool>(
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
       'CounterBloc: isLoading: no count subscription',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
       act: (bloc) async => bloc.events.increment(),
-      wait: ServerSimulator.delayTest,
-      expect: <bool>[false],
+      expect: <LoadingWithTag>[LoadingWithTag(loading: false)],
     );
 
-    rxBlocTest<CounterBlocType, bool>(
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
       'CounterBloc: isLoading one increment event',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
       },
-      wait: ServerSimulator.delayTest,
-      expect: <bool>[false, true, false],
+      expect: <LoadingWithTag>[
+        LoadingWithTag(loading: false),
+        LoadingWithTag(loading: true, tag: CounterBloc.incrementTag),
+        LoadingWithTag(loading: false, tag: CounterBloc.incrementTag),
+      ],
     );
 
-    rxBlocTest<CounterBlocType, bool>(
-      'CounterBloc: isLoading one decrement event',
-      build: () async => CounterBloc(ServerSimulator()),
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
+      'CounterBloc - isLoading one decrement event',
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.decrement();
       },
-      wait: ServerSimulator.delayTest,
-      expect: <bool>[false, true, false],
+      expect: <LoadingWithTag>[
+        LoadingWithTag(loading: false),
+        LoadingWithTag(loading: true, tag: CounterBloc.decrementTag),
+        LoadingWithTag(loading: false, tag: CounterBloc.decrementTag),
+      ],
     );
 
-    rxBlocTest<CounterBlocType, bool>(
-      'CounterBloc: isLoading two increment event',
-      build: () async => CounterBloc(ServerSimulator()),
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
+      'CounterBloc - isLoading multiple increment and decrement events',
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
         bloc.events.increment();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.increment();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.decrement();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.increment();
+        bloc.events.decrement();
+        // await Future.delayed(const Duration(milliseconds: 110));
       },
-      wait: ServerSimulator.delayTest,
-      expect: <bool>[false, true, false],
+      expect: <LoadingWithTag>[
+        LoadingWithTag(loading: false),
+        LoadingWithTag(loading: true, tag: CounterBloc.incrementTag),
+        LoadingWithTag(loading: false, tag: CounterBloc.incrementTag),
+        LoadingWithTag(loading: true, tag: CounterBloc.incrementTag),
+        LoadingWithTag(loading: false, tag: CounterBloc.incrementTag),
+        LoadingWithTag(loading: true, tag: CounterBloc.decrementTag),
+        LoadingWithTag(loading: false, tag: CounterBloc.decrementTag),
+        LoadingWithTag(loading: true, tag: CounterBloc.incrementTag),
+        LoadingWithTag(loading: true, tag: CounterBloc.decrementTag),
+        LoadingWithTag(loading: false, tag: CounterBloc.incrementTag),
+        LoadingWithTag(loading: false, tag: CounterBloc.decrementTag),
+      ],
     );
   });
 
   group('CounterBloc: count', () {
     rxBlocTest<CounterBlocType, int>(
       'CounterBloc: count: one increment event',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.count,
       act: (bloc) async => bloc.events.increment(),
-      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1],
     );
 
     rxBlocTest<CounterBlocType, int>(
       'CounterBloc: count: two increment event',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.count,
       act: (bloc) async {
         bloc.events.increment();
         bloc.events.increment();
       },
-      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1, 2],
     );
 
     rxBlocTest<CounterBlocType, int>(
       'CounterBloc: count: two increment and one decrement event',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.count,
       act: (bloc) async {
         bloc.events.increment();
         bloc.events.decrement();
         bloc.events.increment();
       },
-      wait: ServerSimulator.delayTest,
       expect: <int>[0, 1, 0, 1],
     );
   });
@@ -132,28 +153,28 @@ void main() {
   group('CounterBloc: error', () {
     rxBlocTest<CounterBlocType, String>(
       'CounterBloc: error: no count subscription',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.errors,
       act: (bloc) async => bloc.events.decrement(),
-      wait: ServerSimulator.delayTest,
       expect: <String>[],
     );
 
     rxBlocTest<CounterBlocType, String>(
       'CounterBloc: error: minimum reached',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.errors,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.decrement();
       },
-      wait: ServerSimulator.delayTest,
-      expect: <String>['Exception: Minimum number is reached!'],
+      expect: <String>[
+        'tag: decrement with message Exception: Minimum number is reached!'
+      ],
     );
 
     rxBlocTest<CounterBlocType, String>(
       'CounterBloc: error: maximum reached',
-      build: () async => CounterBloc(ServerSimulator()),
+      build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.errors,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
@@ -162,8 +183,9 @@ void main() {
         bloc.events.increment();
         bloc.events.increment();
       },
-      wait: ServerSimulator.delayTest,
-      expect: <String>['Exception: Maximum number is reached!'],
+      expect: <String>[
+        'tag: increment with message Exception: Maximum number is reached!'
+      ],
     );
   });
 }

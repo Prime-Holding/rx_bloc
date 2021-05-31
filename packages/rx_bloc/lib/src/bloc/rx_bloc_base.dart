@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
+import 'package:rx_bloc/src/model/error_with_tag.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../model/loading_with_tag.dart';
@@ -42,7 +43,7 @@ abstract class RxBlocBase {
 
   /// The loading states with tags of all handled result streams.
   @protected
-  Stream<LoadingWithTag> get loadingWithTagState =>
+  Stream<LoadingWithTag> get loadingStateWithTag =>
       _loadingBloc.states.isLoadingWithTag;
 
   /// The loading states without tags of all handled result streams.
@@ -56,7 +57,13 @@ abstract class RxBlocBase {
 
   /// The errors of all handled result streams.
   @protected
-  Stream<ResultError> get errorState => _resultStreamExceptionsSubject;
+  Stream<Exception> get errorState =>
+      _resultStreamExceptionsSubject.mapToException();
+
+  /// The errors of all handled result streams along with the tag
+  @protected
+  Stream<ErrorWithTag> get errorStateWithTag =>
+      _resultStreamExceptionsSubject.mapToErrorWithTag();
 
   final _resultStreamExceptionsSubject = BehaviorSubject<ResultError>();
 
