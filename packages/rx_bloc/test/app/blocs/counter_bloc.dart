@@ -26,7 +26,13 @@ abstract class CounterBlocStates {
   Stream<int> get count;
 
   /// Loading state
-  Stream<LoadingWithTag> get isLoading;
+  Stream<LoadingWithTag> get isLoadingWithTag;
+
+  /// Loading state
+  Stream<bool> get isLoading;
+
+  /// Loading state
+  Stream<bool> get isLoadingDecrement;
 
   /// Error messages
   Stream<String> get errors;
@@ -68,5 +74,12 @@ class CounterBloc extends $CounterBloc {
       .map((result) => 'tag: ${result.tag} with message ${result.exception}');
 
   @override
-  Stream<LoadingWithTag> _mapToIsLoadingState() => loadingStateWithTag;
+  Stream<LoadingWithTag> _mapToIsLoadingWithTagState() => loadingWithTagState;
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  @override
+  Stream<bool> _mapToIsLoadingDecrementState() =>
+      loadingForTagState(CounterBloc.decrementTag);
 }

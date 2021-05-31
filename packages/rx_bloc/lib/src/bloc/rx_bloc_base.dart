@@ -43,7 +43,7 @@ abstract class RxBlocBase {
 
   /// The loading states with tags of all handled result streams.
   @protected
-  Stream<LoadingWithTag> get loadingStateWithTag =>
+  Stream<LoadingWithTag> get loadingWithTagState =>
       _loadingBloc.states.isLoadingWithTag;
 
   /// The loading states without tags of all handled result streams.

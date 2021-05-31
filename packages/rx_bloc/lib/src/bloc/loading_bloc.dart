@@ -78,10 +78,9 @@ class LoadingBloc extends $LoadingBloc {
       .shareReplay(maxSize: 1);
 
   @override
-  Stream<bool> isLoadingForTag(String tag) => _loadingCounts.map((events) {
-        if (events[tag] != null) {
-          return events[tag]!.value.count > 1;
-        }
-        return true;
-      }).shareReplay(maxSize: 1);
+  Stream<bool> isLoadingForTag(String tag) => _isLoadingWithTagState
+      .where((event) => event.tag == tag)
+      .map((event) => event.loading)
+      .startWith(false)
+      .shareReplay(maxSize: 1);
 }

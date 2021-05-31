@@ -41,12 +41,27 @@ abstract class $CounterBloc extends RxBlocBase
 
   Stream<int> _mapToCountState();
 
-  late final Stream<LoadingWithTag> _isLoadingState = _mapToIsLoadingState();
+  late final Stream<LoadingWithTag> _isLoadingWithTag =
+      _mapToIsLoadingWithTagState();
 
   @override
-  Stream<LoadingWithTag> get isLoading => _isLoadingState;
+  Stream<LoadingWithTag> get isLoadingWithTag => _isLoadingWithTag;
 
-  Stream<LoadingWithTag> _mapToIsLoadingState();
+  Stream<LoadingWithTag> _mapToIsLoadingWithTagState();
+
+  late final Stream<bool> _isLoading = _mapToIsLoadingState();
+
+  @override
+  Stream<bool> get isLoading => _isLoading;
+
+  Stream<bool> _mapToIsLoadingState();
+
+  late final Stream<bool> _isLoadingDecrement = _mapToIsLoadingDecrementState();
+
+  @override
+  Stream<bool> get isLoadingDecrement => _isLoadingDecrement;
+
+  Stream<bool> _mapToIsLoadingDecrementState();
 
   late final Stream<String> _errorsState = _mapToErrorsState();
 

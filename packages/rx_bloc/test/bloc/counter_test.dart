@@ -39,7 +39,7 @@ void main() {
     rxBlocTest<CounterBlocType, LoadingWithTag>(
       'CounterBloc: dispose',
       build: () async => CounterBloc(CounterRepository()),
-      state: (bloc) => bloc.states.isLoading,
+      state: (bloc) => bloc.states.isLoadingWithTag,
       act: (bloc) async => bloc
         ..events.increment()
         ..dispose(),
@@ -47,17 +47,25 @@ void main() {
     );
 
     rxBlocTest<CounterBlocType, LoadingWithTag>(
-      'CounterBloc: isLoading: no count subscription',
+      'CounterBloc: isLoadingWithTag: no count subscription',
       build: () async => CounterBloc(CounterRepository()),
-      state: (bloc) => bloc.states.isLoading,
+      state: (bloc) => bloc.states.isLoadingWithTag,
       act: (bloc) async => bloc.events.increment(),
       expect: <LoadingWithTag>[LoadingWithTag(loading: false)],
     );
 
-    rxBlocTest<CounterBlocType, LoadingWithTag>(
-      'CounterBloc: isLoading one increment event',
+    rxBlocTest<CounterBlocType, bool>(
+      'CounterBloc: isLoading: no count subscription',
       build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
+      act: (bloc) async => bloc.events.increment(),
+      expect: <bool>[false],
+    );
+
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
+      'CounterBloc: isLoadingWithTag one increment event',
+      build: () async => CounterBloc(CounterRepository()),
+      state: (bloc) => bloc.states.isLoadingWithTag,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
@@ -69,10 +77,21 @@ void main() {
       ],
     );
 
-    rxBlocTest<CounterBlocType, LoadingWithTag>(
-      'CounterBloc - isLoading one decrement event',
+    rxBlocTest<CounterBlocType, bool>(
+      'CounterBloc: isLoading one increment event',
       build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
+      act: (bloc) async {
+        bloc.states.count.listen((event) {});
+        bloc.events.increment();
+      },
+      expect: <bool>[false, true, false],
+    );
+
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
+      'CounterBloc - isLoadingWithTag one decrement event',
+      build: () async => CounterBloc(CounterRepository()),
+      state: (bloc) => bloc.states.isLoadingWithTag,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.decrement();
@@ -84,10 +103,21 @@ void main() {
       ],
     );
 
-    rxBlocTest<CounterBlocType, LoadingWithTag>(
-      'CounterBloc - isLoading multiple increment and decrement events',
+    rxBlocTest<CounterBlocType, bool>(
+      'CounterBloc - isLoading one decrement event',
       build: () async => CounterBloc(CounterRepository()),
       state: (bloc) => bloc.states.isLoading,
+      act: (bloc) async {
+        bloc.states.count.listen((event) {});
+        bloc.events.decrement();
+      },
+      expect: <bool>[false, true, false],
+    );
+
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
+      'CounterBloc - isLoadingWithTag multiple increment and decrement events',
+      build: () async => CounterBloc(CounterRepository()),
+      state: (bloc) => bloc.states.isLoadingWithTag,
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
@@ -113,6 +143,64 @@ void main() {
         LoadingWithTag(loading: true, tag: CounterBloc.decrementTag),
         LoadingWithTag(loading: false, tag: CounterBloc.incrementTag),
         LoadingWithTag(loading: false, tag: CounterBloc.decrementTag),
+      ],
+    );
+
+    rxBlocTest<CounterBlocType, bool>(
+      'CounterBloc - isLoading multiple increment and decrement events',
+      build: () async => CounterBloc(CounterRepository()),
+      state: (bloc) => bloc.states.isLoading,
+      act: (bloc) async {
+        bloc.states.count.listen((event) {});
+        bloc.events.increment();
+        bloc.events.increment();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.increment();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.decrement();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.increment();
+        bloc.events.decrement();
+        // await Future.delayed(const Duration(milliseconds: 110));
+      },
+      expect: <bool>[
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+      ],
+    );
+
+    rxBlocTest<CounterBlocType, bool>(
+      'CounterBloc - isLoading for tag multiple increment and decrement events',
+      build: () async => CounterBloc(CounterRepository()),
+      state: (bloc) => bloc.states.isLoadingDecrement,
+      act: (bloc) async {
+        bloc.states.count.listen((event) {});
+        bloc.events.increment();
+        bloc.events.increment();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.increment();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.decrement();
+        await Future.delayed(CounterRepository.delayTest);
+        bloc.events.increment();
+        bloc.events.decrement();
+        // await Future.delayed(const Duration(milliseconds: 110));
+      },
+      expect: <bool>[
+        false,
+        true,
+        false,
+        true,
+        false,
       ],
     );
   });
