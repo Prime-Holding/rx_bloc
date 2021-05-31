@@ -228,7 +228,7 @@
             );
             runOnlyForDeploymentPostprocessing = 0;
             shellPath = /bin/sh;
-            shellScript = "if [ \"${CONFIGURATION}\" == \"Debug-staging\" ] || [ \"${CONFIGURATION}\" == \"Release-staging\" ]; then\n\ncp -r \"${PROJECT_DIR}/Runner/Firebase/staging/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\necho \"Staging plist copied\"\n\nelif [ \"${CONFIGURATION}\" == \"Debug-production\" ] || [ \"${CONFIGURATION}\" == \"Release-production\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp -r \"${PROJECT_DIR}/Runner/Firebase/production/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\necho \"Production plist copied\"\n\nelif [ \"${CONFIGURATION}\" == \"Debug-development\" ] || [ \"${CONFIGURATION}\" == \"Release-development\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n\ncp -r \"${PROJECT_DIR}/Runner/Firebase/development/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\necho \"Development plist copied\"\nfi\n";
+            shellScript = "if [ \"${CONFIGURATION}\" == \"Debug-staging\" ] || [ \"${CONFIGURATION}\" == \"Release-staging\" ]; then\n\ncp -r \"${PROJECT_DIR}/environments/staging/firebase/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\necho \"Staging plist copied\"\n\nelif [ \"${CONFIGURATION}\" == \"Debug-production\" ] || [ \"${CONFIGURATION}\" == \"Release-production\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp -r \"${PROJECT_DIR}/environments/production/firebase/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\necho \"Production plist copied\"\n\nelif [ \"${CONFIGURATION}\" == \"Debug-development\" ] || [ \"${CONFIGURATION}\" == \"Release-development\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n\ncp -r \"${PROJECT_DIR}/environments/development/firebase/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n\necho \"Development plist copied\"\nfi\n";
         };
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -242,7 +242,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -306,6 +306,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/development/development-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -377,6 +378,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/development/development-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -454,6 +456,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/development/development-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -525,6 +528,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/development/development-prod.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -598,6 +602,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/staging/staging-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -675,6 +680,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/staging/staging-prod.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -748,6 +754,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/staging/staging-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -819,6 +826,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/production/production-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -896,6 +904,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/production/production-prod.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -969,6 +978,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/production/production-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1040,6 +1050,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/development/development-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1095,6 +1106,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "environments/development/development-prod.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
