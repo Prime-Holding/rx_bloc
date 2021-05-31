@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
+import 'package:bloc_sample/feature_puppy/validators/puppy_form_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
@@ -11,17 +12,16 @@ part 'puppy_edit_form_event.dart';
 part 'puppy_edit_form_state.dart';
 
 class PuppyEditFormBloc extends FormBloc<String, String> {
-  PuppyEditFormBloc(
-      {required this.coordinatorBloc,
-      required this.repository,
-      required Puppy puppy})
-      : _puppy = puppy,
+  PuppyEditFormBloc({
+    required this.coordinatorBloc,
+    required this.repository,
+    required Puppy puppy,
+  })   : _puppy = puppy,
         _editedPuppy = puppy,
         super(autoValidate: false, isLoading: true) {
     addFieldBlocs(
       fieldBlocs: [
         image,
-        // isSaveEnabled,
         name,
         breed,
         gender,
@@ -47,39 +47,17 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       }
     });
 
-    name.onValueChanges(onData: (previous, current) async* {
-      if (previous != current) {
-        // print('name current value: ${current.value}');
-        _name.sink.add(current.value.toString());
-        final newName = current.value.toString();
-        if (_puppy.name != newName) {
-          // print('NEW Name $newName');
-          if (newName.trim().length < 30) {
-            setName(newName);
-          }
-          // print('_editedPuppy.name: ${_editedPuppy.name}');
-          emitUpdatingFields();
-          emitLoaded();
-        } else {
-          emitLoaded();
-        }
-      }
-    });
-
-    gender.onValueChanges(
+    name.onValueChanges(
       onData: (previous, current) async* {
         if (previous != current) {
-          // print('gender current value: ${current.value}');
-          _gender.sink.add(current.value ?? Gender.None);
-          if (_puppy.gender.toString().substring(7) !=
-              current.value.toString()) {
-            final newGender = current.value;
-            // print('NEW Gender:$newGender');
-            setGender(newGender ?? _editedPuppy.gender);
-            // print('_editedPuppy.gender: ${_editedPuppy.gender}');
-            emitUpdatingFields();
-            emitLoaded();
-          } else {
+          _name.sink.add(current.value.toString());
+          final newName = current.value.toString();
+          if (_puppy.name != newName) {
+            final nameValidated = PuppyFormValidator.nameValidation(newName);
+            if (nameValidated == null) {
+              setName(newName);
+              emitUpdatingFields();
+            }
             emitLoaded();
           }
         }
@@ -89,21 +67,35 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     breed.onValueChanges(
       onData: (previous, current) async* {
         if (previous != current) {
-          // print('breed current value: ${current.value}');
           _breed.sink.add(current.value ?? BreedType.None);
           if (_puppy.breedType != current.value) {
             final newBreed = current.value;
-            // print('New Breed: $newBreed');
-            if (newBreed != null && newBreed != BreedType.None) {
-              setBreed(newBreed);
+            final breedValidated = PuppyFormValidator.breedValidation(newBreed);
+            if (breedValidated == null) {
+              setBreed(newBreed!);
             }
-            // print('_editedPuppy.breedType ${_editedPuppy.breedType}');
-
             emitUpdatingFields();
-            emitLoaded();
-          } else {
-            emitLoaded();
           }
+          emitLoaded();
+        }
+      },
+    );
+
+    gender.onValueChanges(
+      onData: (previous, current) async* {
+        if (previous != current) {
+          _gender.sink.add(current.value ?? Gender.None);
+          if (_puppy.gender.toString().substring(7) !=
+              current.value.toString()) {
+            final newGender = current.value;
+            final genderValidated =
+                PuppyFormValidator.genderValidation(newGender);
+            if (genderValidated == null) {
+              setGender(newGender ?? _editedPuppy.gender);
+            }
+            emitUpdatingFields();
+          }
+          emitLoaded();
         }
       },
     );
@@ -111,44 +103,28 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     characteristics.onValueChanges(
       onData: (previous, current) async* {
         if (previous != current) {
-          // print('displayCharacteristics current value: ${current.value}');
           _characteristics.sink.add(current.value.toString());
           if (_puppy.displayCharacteristics != current.value) {
-            final newCharacteristics = current.value;
-            // print('New Characteristics: $newCharacteristics');
-            if (newCharacteristics != null &&
-                newCharacteristics.trim().length < 250 &&
-                newCharacteristics.trim().isNotEmpty) {
+            final newCharacteristics = current.value.toString();
+            final characteristicsValidated =
+                PuppyFormValidator.characteristicsValidation(
+                    newCharacteristics);
+            if (characteristicsValidated == null) {
               setCharacteristics(newCharacteristics);
             }
-            // print(
-            //     '_editedPuppy.displayCharacteristics:
-            //     ${_editedPuppy.displayCharacteristics}');
-
             emitUpdatingFields();
-            emitLoaded();
-          } else {
-            emitLoaded();
           }
+          emitLoaded();
         }
       },
     );
   }
 
-  // CoordinatorBloc _coordinatorBloc;
   final Puppy _puppy;
   late Puppy _editedPuppy;
   final PuppiesRepository repository;
   final CoordinatorBloc coordinatorBloc;
-  static const int _maxCharacteristicsLength = 250;
-  static const int _maxNameLength = 30;
-  static const _nameMustNotBeEmpty = 'Name must not be empty.';
-  static const _nameTooLong = 'Name too long.';
-  static const _selectABreed = 'You have to select a breed.';
-  static const _selectAGender = 'You have to select a gender.';
-  static const _charMustNotBeEmpty = 'Characteristics must not be empty';
-  static const _charLengthLimitation = 'Characteristics must not exceed '
-      '$_maxCharacteristicsLength characters.';
+
   static const _submitSuccessResponse = 'The puppy was saved successfully.';
   static const _submissionFailureResponse =
       'No Internet Connection. Please check your settings.';
@@ -207,72 +183,29 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   void setCharacteristics(String value) => _editedPuppy = _editedPuppy.copyWith(
       displayCharacteristics: value, breedCharacteristics: value);
 
-  // final isSaveEnabled = BooleanFieldBloc();
-
   final InputFieldBloc<ImagePickerAction, Object> image = InputFieldBloc();
 
   final name = TextFieldBloc(
     validators: [
-      _nameValidation,
+      PuppyFormValidator.nameValidation,
     ],
   );
-
-  // Test string
-  //0123456789012345678901234567891
-  static String? _nameValidation(String? username) {
-    if (username != null && username.isEmpty) {
-      return _nameMustNotBeEmpty;
-    }
-
-    if (username != null && username.length > _maxNameLength) {
-      return _nameTooLong;
-    }
-    return null;
-  }
 
   final breed = SelectFieldBloc(
     items: BreedType.values,
     validators: [
-      _breedValidation,
+      PuppyFormValidator.breedValidation,
     ],
   );
 
   final gender = SelectFieldBloc(
-    // items: ['Male', 'Female'],
     items: [Gender.Male, Gender.Female],
-    validators: [_genderValidation],
+    validators: [PuppyFormValidator.genderValidation],
   );
 
   final characteristics = TextFieldBloc(
-    validators: [_characteristicsValidation],
+    validators: [PuppyFormValidator.characteristicsValidation],
   );
-
-  static String? _breedValidation(BreedType? breedType) {
-    if (breedType == BreedType.None || breedType == null) {
-      return _selectABreed;
-    }
-    return null;
-  }
-
-  static String? _genderValidation(Gender? gender) {
-    if (gender == Gender.None || gender == null) {
-      return _selectAGender;
-    }
-    return null;
-  }
-
-  static String? _characteristicsValidation(String? characteristics) {
-    if (characteristics!.isEmpty) {
-      return _charMustNotBeEmpty;
-    }
-
-    final trimmedChars = characteristics.trim();
-
-    if (trimmedChars.length > _maxCharacteristicsLength) {
-      return _charLengthLimitation;
-    }
-    return null;
-  }
 
   @override
   void onLoading() {

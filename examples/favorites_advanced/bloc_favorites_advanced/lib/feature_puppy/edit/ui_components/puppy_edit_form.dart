@@ -1,5 +1,5 @@
 // import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
-import 'package:bloc_sample/feature_puppy/edit/bloc/image_field_bloc_builder.dart';
+import 'file:///C:/Users/admin-pc/Desktop/Android_programming/rx_bloc_repo/rx_bloc/examples/favorites_advanced/bloc_favorites_advanced/lib/feature_puppy/edit/ui_components/image_field_bloc_builder.dart';
 import 'package:bloc_sample/feature_puppy/edit/bloc/puppy_edit_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';

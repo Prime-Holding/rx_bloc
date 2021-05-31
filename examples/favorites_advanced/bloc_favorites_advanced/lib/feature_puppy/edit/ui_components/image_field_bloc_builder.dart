@@ -22,15 +22,10 @@ class ImageFieldBlocBuilder extends StatelessWidget {
         builder: (context) => StreamBuilder<String>(
           stream: puppyEditFormBloc.asset$,
           builder: (context, snapshot) =>
-              // print('image_field_bloc_builder: ${snapshot.data}');
-
               PuppyEditAvatar(
             fileFieldBloc: fileFieldBloc,
             heroTag: '$PuppyCardAnimationTag ${puppy.id}',
             imgPath: snapshot.data ?? puppy.asset,
-            pickImage: (source) {
-              if (source != null) {}
-            },
           ),
         ),
       );
