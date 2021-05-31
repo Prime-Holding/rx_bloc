@@ -16,6 +16,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^3.0.0
+  golden_toolkit: ^0.9.0
   intl: ^0.17.0
   provider: ^5.0.0
   rx_bloc: ^3.0.0
