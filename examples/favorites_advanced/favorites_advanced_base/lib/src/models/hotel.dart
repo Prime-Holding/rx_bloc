@@ -6,7 +6,7 @@ import 'package:favorites_advanced_base/src/models/hotel_full_extra_details.dart
 // ignore: must_be_immutable
 class Hotel extends Equatable implements Entity {
   final String id;
-  final String imagePath;
+  final String image;
   final String title;
   final int perNight;
   final int roomCapacity;
@@ -14,6 +14,7 @@ class Hotel extends Equatable implements Entity {
   final DateTime startWorkDate;
   final DateTime endWorkDate;
 
+  final String? imagePath;
   final HotelExtraDetails? extraDetails;
   final HotelFullExtraDetails? fullExtraDetails;
 
@@ -21,7 +22,7 @@ class Hotel extends Equatable implements Entity {
 
   Hotel({
     required this.id,
-    required this.imagePath,
+    required this.image,
     required this.title,
     required this.perNight,
     required this.isFavorite,
@@ -29,12 +30,14 @@ class Hotel extends Equatable implements Entity {
     required this.personCapacity,
     required this.startWorkDate,
     required this.endWorkDate,
+    this.imagePath,
     this.extraDetails,
     this.fullExtraDetails,
   });
 
   Hotel copyWith({
     String? id,
+    String? image,
     String? imagePath,
     String? title,
     int? perNight,
@@ -48,6 +51,7 @@ class Hotel extends Equatable implements Entity {
   }) =>
       Hotel(
         id: id ?? this.id,
+        image: image ?? this.image,
         imagePath: imagePath ?? this.imagePath,
         title: title ?? this.title,
         perNight: perNight ?? this.perNight,
@@ -62,7 +66,7 @@ class Hotel extends Equatable implements Entity {
 
   Hotel copyWithHotel(Hotel hotel) => Hotel(
         id: hotel.id,
-        imagePath: hotel.imagePath,
+        image: hotel.image,
         title: hotel.title,
         perNight: hotel.perNight,
         isFavorite: hotel.isFavorite,
@@ -90,9 +94,12 @@ class Hotel extends Equatable implements Entity {
 
   bool hasFullExtraDetails() => fullExtraDetails != null;
 
+  bool hasFeaturedImage() => imagePath != null;
+
   @override
   List<Object?> get props => [
         id,
+        image,
         imagePath,
         title,
         perNight,
@@ -107,7 +114,7 @@ class Hotel extends Equatable implements Entity {
   Hotel.fromJson(Map<String, dynamic> json)
       : this(
           id: json['id'] as String,
-          imagePath: json['imagePath'] as String,
+          image: json['image'] as String,
           title: json['title'] as String,
           perNight: json['perNight'] as int,
           isFavorite: json['isFavorite'] as bool,
@@ -120,7 +127,7 @@ class Hotel extends Equatable implements Entity {
   Map<String, Object?> toJson() {
     return {
       'id': id,
-      'imagePath': imagePath,
+      'image': image,
       'title': title,
       'perNight': perNight,
       'isFavorite': isFavorite,

@@ -24,7 +24,7 @@ We speak your language!
     Hotel(
       id: '1',
       title: 'Premier Inn Dubai International Airport',
-      imagePath: 'assets/hotel_0.png',
+      image: 'hotel_0.png',
       perNight: 100,
       isFavorite: false,
       roomCapacity: 2,
@@ -35,7 +35,7 @@ We speak your language!
     Hotel(
       id: '2',
       title: 'Avani Deira Dubai Hotel',
-      imagePath: 'assets/hotel_1.png',
+      image: 'hotel_1.png',
       perNight: 170,
       isFavorite: false,
       roomCapacity: 1,
@@ -46,7 +46,7 @@ We speak your language!
     Hotel(
       id: '3',
       title: 'Swissotel Al Ghurair',
-      imagePath: 'assets/hotel_2.png',
+      image: 'hotel_2.png',
       perNight: 135,
       isFavorite: false,
       roomCapacity: 1,
@@ -57,7 +57,7 @@ We speak your language!
     Hotel(
       id: '4',
       title: 'Hyatt Place Dubai Jumeirah Residences',
-      imagePath: 'assets/hotel_3.png',
+      image: 'hotel_3.png',
       perNight: 200,
       isFavorite: false,
       roomCapacity: 2,
@@ -68,7 +68,7 @@ We speak your language!
     Hotel(
       id: '5',
       title: 'Ramee Rose Hotel',
-      imagePath: 'assets/hotel_4.png',
+      image: 'hotel_4.png',
       perNight: 150,
       isFavorite: false,
       roomCapacity: 3,
@@ -79,7 +79,7 @@ We speak your language!
     Hotel(
       id: '6',
       title: 'Atana Hotel',
-      imagePath: 'assets/hotel_5.png',
+      image: 'hotel_5.png',
       perNight: 220,
       isFavorite: false,
       roomCapacity: 3,
@@ -90,7 +90,7 @@ We speak your language!
     Hotel(
       id: '7',
       title: 'Rove Healthcare City',
-      imagePath: 'assets/hotel_6.png',
+      image: 'hotel_6.png',
       perNight: 140,
       isFavorite: false,
       roomCapacity: 1,
@@ -101,7 +101,7 @@ We speak your language!
     Hotel(
       id: '8',
       title: 'Rove Healthcare',
-      imagePath: 'assets/hotel_7.png',
+      image: 'hotel_7.png',
       perNight: 85,
       isFavorite: false,
       roomCapacity: 3,
@@ -112,7 +112,7 @@ We speak your language!
     Hotel(
       id: '9',
       title: 'Millennium Airport Hotel Dubai',
-      imagePath: 'assets/hotel_8.png',
+      image: 'hotel_8.png',
       perNight: 65,
       isFavorite: false,
       roomCapacity: 2,
@@ -123,7 +123,7 @@ We speak your language!
     Hotel(
       id: '10',
       title: 'Millennium Airport',
-      imagePath: 'assets/hotel_9.png',
+      image: 'hotel_9.png',
       perNight: 100,
       isFavorite: false,
       roomCapacity: 4,
@@ -134,7 +134,7 @@ We speak your language!
     Hotel(
       id: '11',
       title: 'Millennium Airport Hotel Dubai',
-      imagePath: 'assets/hotel_10.png',
+      image: 'hotel_10.png',
       perNight: 120,
       isFavorite: false,
       roomCapacity: 4,
@@ -145,7 +145,7 @@ We speak your language!
     Hotel(
       id: '12',
       title: 'Millennium Airport Hotel Dubai',
-      imagePath: 'assets/hotel_11.png',
+      image: 'hotel_11.png',
       perNight: 70,
       isFavorite: false,
       roomCapacity: 4,
@@ -156,7 +156,7 @@ We speak your language!
     Hotel(
       id: '13',
       title: 'Millennium Airport Hotel Dubai',
-      imagePath: 'assets/hotel_12.png',
+      image: 'hotel_12.png',
       perNight: 220,
       isFavorite: false,
       roomCapacity: 4,
@@ -167,7 +167,7 @@ We speak your language!
     Hotel(
       id: '14',
       title: 'Taj Dubai',
-      imagePath: 'assets/hotel_13.png',
+      image: 'hotel_13.png',
       perNight: 80,
       isFavorite: false,
       roomCapacity: 2,
@@ -178,7 +178,7 @@ We speak your language!
     Hotel(
       id: '15',
       title: 'Rove Downtown Dubai',
-      imagePath: 'assets/hotel_14.png',
+      image: 'hotel_14.png',
       perNight: 110,
       isFavorite: false,
       roomCapacity: 1,
@@ -189,7 +189,7 @@ We speak your language!
     Hotel(
       id: '16',
       title: 'Premier Inn Dubai Al Jaddaf',
-      imagePath: 'assets/hotel_15.png',
+      image: 'hotel_15.png',
       perNight: 99,
       isFavorite: false,
       roomCapacity: 2,
@@ -200,7 +200,7 @@ We speak your language!
     Hotel(
       id: '17',
       title: 'Hyatt Place Dubai Al Rigga Residences',
-      imagePath: 'assets/hotel_16.png',
+      image: 'hotel_16.png',
       perNight: 120,
       isFavorite: false,
       roomCapacity: 3,
@@ -211,7 +211,7 @@ We speak your language!
     Hotel(
       id: '18',
       title: '5 Stars',
-      imagePath: 'assets/hotel_17.png',
+      image: 'hotel_17.png',
       perNight: 150,
       isFavorite: false,
       roomCapacity: 3,
@@ -222,7 +222,7 @@ We speak your language!
     Hotel(
       id: '19',
       title: 'Hyatt Place Dubai Al Rigga Residences',
-      imagePath: 'assets/hotel_18.png',
+      image: 'hotel_18.png',
       perNight: 79,
       isFavorite: false,
       roomCapacity: 4,
@@ -233,7 +233,7 @@ We speak your language!
     Hotel(
       id: '20',
       title: 'Regal Plaza Hotel',
-      imagePath: 'assets/hotel_19.png',
+      image: 'hotel_19.png',
       perNight: 200,
       isFavorite: false,
       roomCapacity: 1,
@@ -246,7 +246,7 @@ We speak your language!
   static final hotelsExtraDetailsDB = [
     HotelExtraDetails(
       id: '1',
-      hotelId: ['1'],
+      hotelId: '1',
       subTitle: '4 Stars',
       dist: 120,
       rating: 4.3,
@@ -254,7 +254,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '2',
-      hotelId: ['2'],
+      hotelId: '2',
       subTitle: '5 Stars',
       dist: 62,
       rating: 4.3,
@@ -262,7 +262,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '3',
-      hotelId: ['3'],
+      hotelId: '3',
       subTitle: '3 Stars',
       dist: 320,
       rating: 4.3,
@@ -270,7 +270,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '4',
-      hotelId: ['4'],
+      hotelId: '4',
       subTitle: '6 Stars',
       dist: 280,
       rating: 4.3,
@@ -278,7 +278,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '5',
-      hotelId: ['5'],
+      hotelId: '5',
       subTitle: '5 Stars',
       dist: 125,
       rating: 4.3,
@@ -286,7 +286,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '6',
-      hotelId: ['6'],
+      hotelId: '6',
       subTitle: '5 Stars',
       dist: 172,
       rating: 4.3,
@@ -294,7 +294,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '7',
-      hotelId: ['7'],
+      hotelId: '7',
       subTitle: '6 Stars',
       dist: 88,
       rating: 4.3,
@@ -302,7 +302,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '8',
-      hotelId: ['8'],
+      hotelId: '8',
       subTitle: '5 Stars',
       dist: 165,
       rating: 4.3,
@@ -310,7 +310,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '9',
-      hotelId: ['9'],
+      hotelId: '9',
       subTitle: '4 Stars',
       dist: 150,
       rating: 4.3,
@@ -318,7 +318,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '10',
-      hotelId: ['10'],
+      hotelId: '10',
       subTitle: '6 Stars',
       dist: 98,
       rating: 4.3,
@@ -326,7 +326,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '11',
-      hotelId: ['11'],
+      hotelId: '11',
       subTitle: '5 Stars',
       dist: 83,
       rating: 4.3,
@@ -334,7 +334,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '12',
-      hotelId: ['12'],
+      hotelId: '12',
       subTitle: '5 Stars',
       dist: 137,
       rating: 4.3,
@@ -342,7 +342,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '13',
-      hotelId: ['13'],
+      hotelId: '13',
       subTitle: '5 Stars',
       dist: 178,
       rating: 4.3,
@@ -350,7 +350,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '14',
-      hotelId: ['14'],
+      hotelId: '14',
       subTitle: '6 Stars',
       dist: 283,
       rating: 4.3,
@@ -358,7 +358,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '15',
-      hotelId: ['15'],
+      hotelId: '15',
       subTitle: '5 Stars',
       dist: 313,
       rating: 4.3,
@@ -366,7 +366,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '16',
-      hotelId: ['16'],
+      hotelId: '16',
       subTitle: '5 Stars',
       dist: 295,
       rating: 4.3,
@@ -374,7 +374,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '17',
-      hotelId: ['17'],
+      hotelId: '17',
       subTitle: '5 Stars',
       dist: 104,
       rating: 4.3,
@@ -382,7 +382,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '18',
-      hotelId: ['18'],
+      hotelId: '18',
       subTitle: 'Subtitle',
       dist: 192,
       rating: 4.3,
@@ -390,7 +390,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '19',
-      hotelId: ['19'],
+      hotelId: '19',
       subTitle: '5 Stars',
       dist: 380,
       rating: 4.3,
@@ -398,7 +398,7 @@ We speak your language!
     ),
     HotelExtraDetails(
       id: '20',
-      hotelId: ['20'],
+      hotelId: '20',
       subTitle: '6 Stars',
       dist: 123,
       rating: 4.3,
@@ -409,121 +409,121 @@ We speak your language!
   static final hotelsFullExtraDetailsDB = [
     HotelFullExtraDetails(
       id: '1',
-      hotelId: ['1'],
+      hotelId: '1',
       description: _description,
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '2',
-      hotelId: ['2'],
+      hotelId: '2',
       description: 'Avani Deira Dubai Hotel $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '3',
-      hotelId: ['3'],
+      hotelId: '3',
       description: 'Swissotel Al Ghurair $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '4',
-      hotelId: ['4'],
+      hotelId: '4',
       description: 'Hyatt Place Dubai Jumeirah Residences $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '5',
-      hotelId: ['5'],
+      hotelId: '5',
       description: 'Ramee Rose Hotel $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '6',
-      hotelId: ['6'],
+      hotelId: '6',
       description: 'Atana Hotel $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '7',
-      hotelId: ['7'],
+      hotelId: '7',
       description: 'Rove Healthcare City $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '8',
-      hotelId: ['8'],
+      hotelId: '8',
       description: 'Rove Healthcare $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '9',
-      hotelId: ['9'],
+      hotelId: '9',
       description: 'Millennium Airport Hotel Dubai $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '10',
-      hotelId: ['10'],
+      hotelId: '10',
       description: 'Millennium Airport $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '11',
-      hotelId: ['11'],
+      hotelId: '11',
       description: 'Millennium Airport Hotel Dubai $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '12',
-      hotelId: ['12'],
+      hotelId: '12',
       description: 'Millennium Airport Hotel Dubai $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '13',
-      hotelId: ['13'],
+      hotelId: '13',
       description: 'Millennium Airport Hotel Dubai $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '14',
-      hotelId: ['14'],
+      hotelId: '14',
       description: 'Taj Dubai $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '15',
-      hotelId: ['15'],
+      hotelId: '15',
       description: 'Rove Downtown Dubai $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '16',
-      hotelId: ['16'],
+      hotelId: '16',
       description: 'Premier Inn Dubai Al Jaddaf $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '17',
-      hotelId: ['17'],
+      hotelId: '17',
       description: 'Hyatt Place Dubai Al Rigga Residences $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '18',
-      hotelId: ['18'],
+      hotelId: '18',
       description: 'Hyatt Place Dubai Al Rigga Residences $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '19',
-      hotelId: ['19'],
+      hotelId: '19',
       description: 'Hyatt Place Dubai Al Rigga Residences $_description',
       features: _features,
     ),
     HotelFullExtraDetails(
       id: '20',
-      hotelId: ['20'],
+      hotelId: '20',
       description: 'Regal Plaza Hotel $_description',
       features: _features,
     ),

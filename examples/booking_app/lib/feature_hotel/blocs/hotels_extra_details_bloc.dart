@@ -11,6 +11,8 @@ part 'hotels_extra_details_bloc_extensions.dart';
 // ignore: one_member_abstracts
 abstract class HotelsExtraDetailsEvents {
   void fetchExtraDetails(Hotel hotel, {bool allProps = false});
+
+  void fetchFeaturedImage(Hotel hotel);
 }
 
 abstract class HotelsExtraDetailsStates {}
@@ -29,6 +31,10 @@ class HotelsExtraDetailsBloc extends $HotelsExtraDetailsBloc {
         .bind(_lastFetchedHotels)
         // Always make sure your subscriptions are disposed of!
         .disposedBy(_compositeSubscription);
+
+    _$fetchFeaturedImageEvent.doOnEach((notification) {
+      print('UP');
+    });
   }
 
   final _lastFetchedHotels = BehaviorSubject<List<Hotel>>.seeded([]);

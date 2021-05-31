@@ -94,6 +94,10 @@ class MockPaginatedHotelsRepository extends _i1.Mock
               returnValue: Future<_i4.HotelFullExtraDetails>.value(
                   _FakeHotelFullExtraDetails()))
           as _i7.Future<_i4.HotelFullExtraDetails>);
+  @override
+  _i7.Future<String> fetchFeaturedImage(_i3.Hotel? hotel) =>
+      (super.noSuchMethod(Invocation.method(#fetchFeaturedImage, [hotel]),
+          returnValue: Future<String>.value('')) as _i7.Future<String>);
 }
 
 /// A class which mocks [CoordinatorBlocType].

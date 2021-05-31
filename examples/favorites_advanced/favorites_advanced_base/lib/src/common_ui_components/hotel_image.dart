@@ -1,3 +1,5 @@
+import 'package:favorites_advanced_base/core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../models.dart';
@@ -7,7 +9,7 @@ class HotelImage extends StatelessWidget {
     Key? key,
     required double aspectRatio,
     required this.hotel,
-  })   : _aspectRatio = aspectRatio,
+  })  : _aspectRatio = aspectRatio,
         super(key: key);
 
   final double _aspectRatio;
@@ -19,10 +21,17 @@ class HotelImage extends StatelessWidget {
       tag: 'HotelImage${hotel.id}',
       child: AspectRatio(
         aspectRatio: _aspectRatio,
-        child: Image.asset(
-          hotel.imagePath,
-          fit: BoxFit.cover,
-        ),
+        child: hotel.imagePath == null
+            ? LoadingWidget()
+            : Image.network(
+                hotel.imagePath.toString(),
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return LoadingWidget();
+                },
+              ),
       ),
     );
   }

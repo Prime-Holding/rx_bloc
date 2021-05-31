@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:favorites_advanced_base/core.dart';
 
 class HotelsFirebaseDataSource implements HotelsDataSource {
@@ -17,6 +20,7 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
   static HotelsFirebaseDataSource? _instance;
   final fireStore = FirebaseFirestore.instance;
+  final fireStorage = firebase_storage.FirebaseStorage.instance;
 
   late CollectionReference hotelsReference;
   late CollectionReference hotelsExtraDetailsReference;
@@ -31,16 +35,17 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
   @override
   Future<List<HotelExtraDetails>> fetchExtraDetails(List<String> ids) async {
-    final querySnapshot = await hotelsExtraDetailsReference
-        .where('hotelId', arrayContainsAny: ids)
-        .get();
+    print(ids);
+    final querySnapshot =
+        await hotelsExtraDetailsReference.where('hotelId', whereIn: ids).get();
     return querySnapshot.docs.asHotelExtraDetailsList();
   }
 
   @override
   Future<HotelFullExtraDetails> fetchFullExtraDetails(String hotelId) async {
     final querySnapshot = await hotelsFullExtraDetailsReference
-        .where('hotelId', arrayContainsAny: [hotelId]).get();
+        .where('hotelId', isEqualTo: hotelId)
+        .get();
     return querySnapshot.docs.asHotelFullExtraDetailsList().first;
   }
 
@@ -124,6 +129,43 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
     await insertBatch.commit();
   }
+
+  Query getFirebaseFilteredQuery(HotelSearchFilters? filters) {
+    /// WARNING !!! Firebase allows comparison operators(>, >=, <=, <)
+    /// to be applied only on one field !!!
+
+    final query = hotelsReference;
+
+    // If there are any other filters, apply them
+    if (filters?.advancedFiltersOn ?? false) {
+      if (filters!.dateRange != null) {
+        final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+            filters.dateRange!.start.millisecondsSinceEpoch);
+        return query.where(
+          'startWorkDate',
+          isLessThanOrEqualTo: startAtTimestamp,
+        );
+      }
+      if (filters.roomCapacity > 0) {
+        return query.where(
+          'roomCapacity',
+          isGreaterThanOrEqualTo: filters.roomCapacity,
+        );
+      }
+      if (filters.personCapacity > 0) {
+        return query.where(
+          'personCapacity',
+          isGreaterThanOrEqualTo: filters.roomCapacity,
+        );
+      }
+    }
+
+    return query;
+  }
+
+  @override
+  Future<String> fetchFeaturedImage(Hotel hotel) =>
+      fireStorage.ref().child('images').child(hotel.image).getDownloadURL();
 }
 
 extension FireBaseCollection on List<QueryDocumentSnapshot<Object?>> {

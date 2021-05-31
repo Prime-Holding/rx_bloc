@@ -14,5 +14,7 @@ abstract class HotelsDataSource {
 
   Future<HotelFullExtraDetails> fetchFullExtraDetails(String hotelId);
 
+  Future<String> fetchFeaturedImage(Hotel hotel);
+
   Future<void> seed();
 }

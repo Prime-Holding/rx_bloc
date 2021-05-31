@@ -58,6 +58,10 @@ class PaginatedHotelsRepository implements HotelsRepository {
   @override
   Future<HotelFullExtraDetails> fetchFullExtraDetails(String hotelId) =>
       _repository.fetchFullExtraDetails(hotelId);
+
+  @override
+  Future<String> fetchFeaturedImage(Hotel hotel) =>
+      _repository.fetchFeaturedImage(hotel);
 }
 
 extension _HotelList on List<Hotel> {

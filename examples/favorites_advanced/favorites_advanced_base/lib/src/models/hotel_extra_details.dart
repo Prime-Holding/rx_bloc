@@ -11,7 +11,7 @@ class HotelExtraDetails extends Equatable {
   });
 
   final String id;
-  final List<String> hotelId;
+  final String hotelId;
   final String subTitle;
   final int reviews;
   final double rating;
@@ -29,7 +29,7 @@ class HotelExtraDetails extends Equatable {
 
   HotelExtraDetails copyWith({
     String? id,
-    List<String>? hotelId,
+    String? hotelId,
     String? subTitle,
     int? reviews,
     double? rating,
@@ -47,7 +47,7 @@ class HotelExtraDetails extends Equatable {
   HotelExtraDetails.fromJson(Map<String, dynamic> json)
       : this(
           id: json['id'] as String,
-          hotelId: json['hotelId'].cast<String>() as List<String>,
+          hotelId: json['hotelId'] as String,
           subTitle: json['subTitle'] as String,
           dist: json['dist'] as double,
           rating: json['rating'] as double,
