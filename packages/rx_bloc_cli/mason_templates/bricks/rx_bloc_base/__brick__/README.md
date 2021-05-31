@@ -45,7 +45,7 @@ After describing your pages inside the `lib/base/routers/router.dart` file and r
 
 ### App localization
 
-You app supports [localization][localization_lnk] out of the box.
+Your app supports [localization][localization_lnk] out of the box.
 
 You define localizations by adding a translation file in the `lib/l10n/arb/app_[language_code].arb` directory. The `language_code` represents the code of the language you want to support (`en`, `zh`,`de`, ...). Inside that file, in JSON format, you define key-value pairs for your strings. **Make sure that all your translation files contain the same keys!**
 
@@ -64,6 +64,12 @@ Before you start using analytics, you need to add platform specific configuratio
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
 {{/analytics}}
+### Http client
+
+All classes related with external data sources like APIs, should be placed in the `lib/base/remote_data_sources/` directory.
+The initial project has domain related data base folder `lib/base/count_data_sources/`, that contains an example of http-client with Dio and Retrofit. The project use fake API, placed in `lib/base/count_data_sources/count_local_data_source.dart`.
+To use real API, you should provide a data model in `lib/base/models/`, using json_annotation, and correct HttpClient with existing Url in the annotation.
+
 ### Design system
 
 A [design system][design_system_lnk] is a centralized place where you can define your apps design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
