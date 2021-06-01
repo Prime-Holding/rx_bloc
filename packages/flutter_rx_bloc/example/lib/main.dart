@@ -211,11 +211,10 @@ class CounterBloc extends $CounterBloc {
 
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((result) => result.error.toString());
+      errorState.map((error) => error.toString());
 
   @override
-  Stream<LoadingWithTag> _mapToIsLoadingState() =>
-      loadingState.isLoadingWithTag();
+  Stream<LoadingWithTag> _mapToIsLoadingState() => loadingWithTagState;
 }
 
 ///endregion

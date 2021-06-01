@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^5.0.0
-  rx_bloc: ^3.0.0
+  rx_bloc: ^3.1.0
   rxdart: ^0.27.0
 
 dev_dependencies:
@@ -20,9 +20,9 @@ dev_dependencies:
     sdk: flutter
   clean_coverage: ^0.0.3
 
-#dependency_overrides:
-#  rx_bloc:
-#    path: ../rx_bloc
+dependency_overrides:
+  rx_bloc:
+    path: ../rx_bloc
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

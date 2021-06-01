@@ -45,13 +45,10 @@ class HotelManageBloc extends $HotelManageBloc {
 
   @override
   Stream<String> get error =>
-      Rx.merge([errorState.mapToException(), _favoriteHotelError])
-          .mapToString()
-          .share();
+      Rx.merge([errorState, _favoriteHotelError]).mapToString().share();
 
   @override
-  Stream<bool> get isLoading =>
-      loadingState.isLoading().shareReplay(maxSize: 1);
+  Stream<bool> get isLoading => loadingState.shareReplay(maxSize: 1);
 
   @override
   Stream<String> get favoriteMessage => _lastUpdatedHotel

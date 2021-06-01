@@ -83,13 +83,10 @@ class PuppyManageBloc extends $PuppyManageBloc {
 
   @override
   Stream<String> get error =>
-      Rx.merge([errorState.mapToException(), _favoritePuppyError])
-          .mapToString()
-          .share();
+      Rx.merge([errorState, _favoritePuppyError]).mapToString().share();
 
   @override
-  Stream<bool> get isLoading =>
-      loadingState.isLoading().shareReplay(maxSize: 1);
+  Stream<bool> get isLoading => loadingState.shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToImagePathState() => _$setImageEvent
