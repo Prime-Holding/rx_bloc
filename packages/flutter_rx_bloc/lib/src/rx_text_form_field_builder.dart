@@ -231,7 +231,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
           _onBlocStateEvent,
           onError: (exception) {},
         )
-        .addTo(_compositeSubscription);
+        .disposedBy(_compositeSubscription);
   }
 
   void _onBlocStateEvent(String newValue) {

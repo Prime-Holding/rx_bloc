@@ -329,9 +329,9 @@ class CounterWidget extends StatelessWidget {
 }
 ```
 
-## Form Field Builder Widgets
+## Rx Form Field Builder Widgets
 
-`RxFormFieldBuilder` is a convenience widget, which makes it easier to build and update responsive form fields with reactive Streams.
+**RxFormFieldBuilder** is a convenience widget, which makes it easier to build and update responsive form fields with reactive Streams.
 
 This is an example of a drop down menu form field.
 
@@ -373,7 +373,7 @@ Widget build(BuildContext context) =>
     );
 ```
 
-`RxTextFormFieldBuilder` specializes in building text form fields with reactive streams, it handles the most important parts of managing a text field's state.
+**RxTextFormFieldBuilder** specializes in building text form fields with reactive streams, it handles the most important parts of managing a text field's state.
 
 This example shows general use.
 
@@ -425,9 +425,11 @@ Widget build(BuildContext context) =>
 
 The following example shows how to create a type ahead field:  
   
-The page builder method:
+### TypeAheadPage
 
 ```dart
+class TypeAheadFormPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
@@ -474,9 +476,11 @@ The page builder method:
           ),
         ),
       );
+      
+}
 ```
 
-And this is how the bloc works:  
+### TypeAheadBloc
 
 ```dart
 abstract class TypeAheadBlocEvents {
