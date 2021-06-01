@@ -171,8 +171,7 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
 /// as well as some additional ones for managing text field states.
 class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     extends RxFormFieldBuilderState<B, String, RxTextFormFieldBuilder<B>> {
-  late final bool _shouldDisposeController =
-      widget.controller != null ? false : true;
+  late final bool _shouldDisposeController = widget.controller == null;
 
   late bool _isTextObscured = widget.obscureText;
 
