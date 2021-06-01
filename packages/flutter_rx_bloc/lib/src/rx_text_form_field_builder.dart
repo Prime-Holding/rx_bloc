@@ -1,7 +1,23 @@
 part of 'rx_form_field_builder.dart';
 
+///the builder function
 typedef RxTextFormFieldBuilderFunction<B extends RxBlocTypeBase> = Widget
     Function(RxTextFormFieldBuilderState<B> fieldState);
+
+///the behaviour for when the text is changed by the reactive stream
+enum RxTextFormFieldCursorBehaviour {
+  ///when the text is changed by the stream,
+  ///the cursor would jump to the start
+  start,
+
+  ///when the text is changed by the stream,
+  ///the cursor would keep it's previous position
+  preserve,
+
+  ///when the text is changed by the stream,
+  ///the cursor would jump to the end
+  end,
+}
 
 ///   [RxTextFormFieldBuilder] is a [RxFormFieldBuilder] which specializes
 /// in building text form fields with reactive streams, it handles the most
@@ -105,6 +121,7 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
     this.decorationData = const RxInputDecorationData(),
     this.controller,
     this.obscureText = false,
+    this.cursorBehaviour = RxTextFormFieldCursorBehaviour.start,
     B? bloc,
     Key? key,
   })  : textFormBuilder = builder,
@@ -130,6 +147,9 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
   /// an internal one is created and managed.
   final TextEditingController? controller;
 
+  ///   the cursor behaviour for when the text is changed by the [state] stream
+  final RxTextFormFieldCursorBehaviour cursorBehaviour;
+
   ///   The optional [obscureText] field is a boolean value which determines
   /// whether or not the text field should be obscured. If it is set
   /// the text field starts off as obscured, and the generated decoration
@@ -151,21 +171,26 @@ class RxTextFormFieldBuilder<B extends RxBlocTypeBase>
 /// as well as some additional ones for managing text field states.
 class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     extends RxFormFieldBuilderState<B, String, RxTextFormFieldBuilder<B>> {
-  late bool _shouldDisposeController;
-  late TextEditingController _controller;
-  InputDecoration? _decoration;
-  bool? _isTextObscured;
+  late final bool _shouldDisposeController =
+      widget.controller != null ? false : true;
+
+  late bool _isTextObscured = widget.obscureText;
+
+  late InputDecoration _decoration;
+
+  final _controllerValueStream = BehaviorSubject<String>();
+
+  ///   [controller] is the [TextEditingController] which should be used by the
+  /// text field created in the builder function.
+  late final TextEditingController controller =
+      widget.controller ?? TextEditingController();
 
   ///   [isTextObscured] determines weather or not the text in the text field
   /// should be obscured at any given moment, if obscureText is set in the
   /// widget constructor, this value changes depending on user interaction
   /// with the trailing icon of the generated [decoration] which is provided
   /// to the builder.
-  bool? get isTextObscured => _isTextObscured;
-
-  ///   [controller] is the [TextEditingController] which should be used by the
-  /// text field created in the builder function.
-  TextEditingController get controller => _controller;
+  bool get isTextObscured => _isTextObscured;
 
   ///   [decoration] is a decoration which gets generated based on the state of
   /// this widget. It should be used to decorate the generated text field,
@@ -180,20 +205,11 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
   ///   [RxInputDecorationData.iconVisibility] or
   ///   [RxInputDecorationData.iconVisibilityOff] depending on the state of
   ///   [isTextObscured]
-  InputDecoration? get decoration => _decoration;
+  InputDecoration get decoration => _decoration;
 
   @override
   void initState() {
     super.initState();
-
-    _shouldDisposeController = widget.controller != null ? false : true;
-    _controller = widget.controller ?? TextEditingController();
-
-    _isTextObscured = widget.obscureText;
-
-    _controller.addListener(() {
-      widget.onChanged(bloc, _controller.text);
-    });
 
     assert(
       _blocState.isBroadcast,
@@ -201,19 +217,52 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
       'should be a broadcast stream',
     );
 
-    _blocState.listen(
-      (value) {
-        if (_controller.text != value) {
-          _controller.text = value!;
-        }
-      },
-      onError: (exception) {},
-    ).addTo(_compositeSubscription);
+    controller.addListener(() {
+      _controllerValueStream.add(controller.text);
+    });
+
+    _controllerValueStream
+        .distinct()
+        .listen((event) => widget.onChanged(bloc, event))
+        .disposedBy(_compositeSubscription);
+
+    (_blocState as Stream<String>)
+        .where((event) => event != controller.text)
+        .listen(
+          _onBlocStateEvent,
+          onError: (exception) {},
+        )
+        .addTo(_compositeSubscription);
+  }
+
+  void _onBlocStateEvent(String newValue) {
+    switch (widget.cursorBehaviour) {
+      case RxTextFormFieldCursorBehaviour.start:
+        controller.text = newValue;
+        break;
+      case RxTextFormFieldCursorBehaviour.preserve:
+        controller.value = TextEditingValue(
+          text: newValue,
+          selection: newValue.length < controller.value.selection.end
+              ? TextSelection.collapsed(offset: newValue.length)
+              : controller.value.selection,
+          composing: TextRange.empty,
+        );
+        break;
+      case RxTextFormFieldCursorBehaviour.end:
+        controller.value = TextEditingValue(
+          text: newValue,
+          selection: TextSelection.collapsed(offset: newValue.length),
+          composing: TextRange.empty,
+        );
+        break;
+    }
   }
 
   @override
   void dispose() {
-    if (_shouldDisposeController) _controller.dispose();
+    if (_shouldDisposeController) controller.dispose();
+    _controllerValueStream.close();
     super.dispose();
   }
 
@@ -232,11 +281,11 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
             ? GestureDetector(
                 onTap: () {
                   setState(() {
-                    _isTextObscured = !_isTextObscured!;
+                    _isTextObscured = !_isTextObscured;
                   });
                 },
                 child: Padding(
-                  child: _isTextObscured!
+                  child: _isTextObscured
                       ? widget.decorationData.iconVisibility
                       : widget.decorationData.iconVisibilityOff,
                   padding: const EdgeInsets.all(16),
