@@ -1,3 +1,6 @@
+## [3.1.0] - June 01, 2021
+* Improve the bind extension so that you can bind to non-nullable subjects, [look at this PR for more information](https://github.com/Prime-Holding/rx_bloc/pull/151)
+
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`
 * Update `rxdart` to use version `0.27.0`
