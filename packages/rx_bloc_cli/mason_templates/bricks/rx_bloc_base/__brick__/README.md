@@ -52,7 +52,7 @@ Upon rebuild, your translations are auto-generated inside `.dart_tool/flutter_ge
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
 
 Before you start using analytics, you need to add platform specific configurations:
-1. The `iOS` configuration files can be found at `ios/Runner/Firebase/[flavor]/GoogleService-Info.plist`
+1. The `iOS` configuration files can be found at `ios/environments/[flavor]]/firebase/GoogleService-Info.plist`
 2. For `Android` the configuration files are located at `android/app/src/[flavor]/google-services.json`
 3. All `Web` analytics configurations can be found inside `lib/base/app/config/firebase_web_config.js`
 
