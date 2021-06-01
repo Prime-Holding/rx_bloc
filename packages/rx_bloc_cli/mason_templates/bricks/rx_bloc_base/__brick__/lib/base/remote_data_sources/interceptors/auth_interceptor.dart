@@ -9,12 +9,25 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
-/// This class contains example of auth interceptor.
-/// Current project doesn't have authentication and does not need it.
-/// If your oun project doesn't have authentication, you can delete it.
-/// Otherwise you have to implement your ologic to handle
-/// all situations that can appere regarding authentication
+/// Interceptors are a simple way to intercept and modify http requests globally
+/// before they are sent to the server. That allows us to configure
+/// authentication tokens, add logs of the requests,
+/// add custom headers and much more.
+/// Interceptors can perform a variety of implicit tasks, from authentication
+/// to logging, for every HTTP request/response. Without interception, we will
+/// have to implement these tasks explicitly for each HttpClient method call.
+/// The AuthInterceptor will inject a Token in headers.
+/// That will allow us to keep loggedIn on server side, or check if token exist
+/// and allow to some rests function.
+/// Here is an example of AuthInterceptor. You have to implement
+/// your own logic, regarding needs of your application.
 class AuthInterceptor extends Interceptor {
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    // TODO: implement onResponse
+    super.onResponse(response, handler);
+  }
 
   @override
   Future<void> onRequest(
@@ -24,6 +37,7 @@ class AuthInterceptor extends Interceptor {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
   //  Add your logic here
+    super.onRequest(options, handler);
   }
 
   @override
@@ -38,24 +52,23 @@ class AuthInterceptor extends Interceptor {
         }
       }
     }
+    super.onError(err, handler);
   }
 
   Future<void> loadNewToken()async{
     final refreshToken = await getRefreshToken();
     if(refreshToken == null){
       //  Add your logic here
-      throw Exception('Something went wrong.');
     }
     try {
       final token = await fetchToken();
       await saveToken(token!);
     }catch (e){
       //  Add your logic here
-      throw Exception(e);
     }
   }
 
-  ///Next methods should be implemented regarding app logic
+  // TODO Next methods should be implemented regarding app logic
   Future<String?> getToken() async =>  Future.value('token');
 
   Future<String?> fetchToken() async =>  Future.value('token');
@@ -66,5 +79,7 @@ class AuthInterceptor extends Interceptor {
 
   Future<void> saveRefreshToken(String refreshToken) async { }
 
-  Future<void> logout()async{}
+  Future<void> logout()async{
+  //  TODO implement logout functionality
+  }
 }

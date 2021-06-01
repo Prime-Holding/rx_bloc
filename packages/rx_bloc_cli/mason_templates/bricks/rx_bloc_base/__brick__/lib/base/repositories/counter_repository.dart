@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../../base/count_data_source/count_data_source.dart';
+import '../../base/count_data_sources/count_data_source.dart';
 import '../../base/models/count.dart';
 
 ///Can use any type of data source, that follow the contract
