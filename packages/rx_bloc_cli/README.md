@@ -50,7 +50,7 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ✅ [Push notifications][push_notifications_lnk] - (Coming soon) Receive push notifications and messages to your device using Firebase Cloud Messaging
 
-✅ [Http client][dio_http_client_lnk] - Dio is an Http client, which supports Interceptors[interceptors_lnk], Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
+✅ [Http client][dio_http_client_lnk] - Dio is an Http client, which supports [Interceptors][interceptors_lnk], Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
 
 ---
 
