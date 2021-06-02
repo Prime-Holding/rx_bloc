@@ -50,6 +50,10 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ✅ [Push notifications][push_notifications_lnk] - (Coming soon) Receive push notifications and messages to your device using Firebase Cloud Messaging
 
+✅ [Http client][dio_http_client_lnk] - Dio is an Http client, which supports Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
+
+✅ [Interceptors][interceptors_lnk] - Interceptors are a powerful mechanism that can monitor, rewrite, and retry calls.
+
 ---
 
 ### `$ rx_bloc_cli --help`
@@ -82,3 +86,5 @@ Run "rx_bloc_cli help <command>" for more information about a command.
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [push_notifications_lnk]: https://firebase.google.com/products/cloud-messaging/
 [create_command_gif_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/assets/rx_bloc_cli_create.gif
+[dio_http_client_lnk]: https://pub.dev/packages/dio
+[interceptors_lnk]: https://pub.dev/documentation/dio/latest/dio/Interceptor-class.html

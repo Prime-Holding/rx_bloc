@@ -8,7 +8,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../models/count.dart';
+import '../../../../base/models/count.dart';
 import 'count_data_source.dart';
 
 part 'count_remote_data_source.g.dart';

@@ -14,6 +14,9 @@ import 'package:dio/dio.dart';
 /// Interceptors can perform a variety of implicit tasks, from authentication
 /// to logging, for every HTTP request/response. Without interception, we will
 /// have to implement these tasks explicitly for each HttpClient method call.
+/// We use analytics interceptor to push notifications, present adds
+/// and collect data for users behaviour.
+/// You should implement one or more methods from the contract.
 class AnalyticsInterceptor extends Interceptor{
 
   @override

@@ -10,9 +10,9 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../../base/count_data_sources/count_data_source.dart';
-import '../../base/count_data_sources/count_local_data_source.dart';
-import '../../base/count_data_sources/count_remote_data_source.dart';
+import '../../base/data_sources/domain_data_sources/count_data_sources/count_data_source.dart';
+import '../../base/data_sources/domain_data_sources/count_data_sources/count_local_data_source.dart';
+import '../../base/data_sources/domain_data_sources/count_data_sources/count_remote_data_source.dart';
 import '../../base/repositories/counter_repository.dart';
 import '../blocs/counter_bloc.dart';
 
@@ -33,12 +33,14 @@ class CounterDependencies {
         ..._blocs,
       ];
 
+  /// In case your application use API and HttpClient(dio and retrofit
+  /// by default), here should uncomment the row with CountRemoteDataSource
+  /// and comment current "create" function, witch use CountLocalDataSource.
+  /// Also you should provide a real api in
+  /// lib\base\count_data_source\count_remote_data_source.dart
+  /// and data models in lib\base\models and rerun build_runner.
   List<Provider> get _dataSources => [
     Provider<CountDataSource>(
-      /// Here make your chose witch data source to use
-      /// If want to use remote data source should provide a real api
-      /// in lib\base\count_data_source\count_remote_data_source.dart
-      /// and rerun build_runner
       // create: (context) => CountRemoteDataSource(context.read()),
       create: (context) => CountLocalDataSource(),
     ),

@@ -17,8 +17,8 @@ import 'package:dio/dio.dart';
 /// to logging, for every HTTP request/response. Without interception, we will
 /// have to implement these tasks explicitly for each HttpClient method call.
 /// The AuthInterceptor will inject a Token in headers.
-/// That will allow us to keep loggedIn on server side, or check if token exist
-/// and allow to some rests function.
+/// This will allow us to remain logged in on the server side or check
+/// if the token exists and allow further REST api calls.
 /// Here is an example of AuthInterceptor. You have to implement
 /// your own logic, regarding needs of your application.
 class AuthInterceptor extends Interceptor {

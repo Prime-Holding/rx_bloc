@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../../base/models/count.dart';
+import '../../../../base/models/count.dart';
 
 /// A contract class containing all methods,
 /// that  should be implemented by real data source

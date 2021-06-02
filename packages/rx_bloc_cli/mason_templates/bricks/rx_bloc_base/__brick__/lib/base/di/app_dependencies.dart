@@ -12,8 +12,8 @@ import 'package:firebase_analytics/observer.dart';{{/analytics}}
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import '../../base/remote_data_sources/interceptors/analytics_interceptor.dart';
-import '../../base/remote_data_sources/interceptors/auth_interceptor.dart';
+import '../../base/data_sources/remote_data_sources/interceptors/analytics_interceptor.dart';
+import '../../base/data_sources/remote_data_sources/interceptors/auth_interceptor.dart';
 
 class AppDependencies {
   AppDependencies._(this.context);
