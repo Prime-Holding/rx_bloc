@@ -6,5 +6,8 @@
     },
     "counterPageTitle": "Counter sample",
     "increment": "Increment",
-    "decrement": "Decrement"
+    "decrement": "Decrement",
+    "loginPageTitle": "Login sample",
+    "logIn" : "Log in",
+    "resetPassword" : "Reset password"
 }

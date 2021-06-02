@@ -50,8 +50,9 @@ class _MyMaterialApp extends StatelessWidget {
         routeInformationParser: _router.defaultRouteParser(),
         routerDelegate: _router.delegate({{#analytics}}
           navigatorObservers: () => [
-            Provider.of<FirebaseAnalyticsObserver>(context, listen: false),
+            context.read<FirebaseAnalyticsObserver>(),
           ],
         {{/analytics}}),
+        debugShowCheckedModeBanner: false,
       );
 }

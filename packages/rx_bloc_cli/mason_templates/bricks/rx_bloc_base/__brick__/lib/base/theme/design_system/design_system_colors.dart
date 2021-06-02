@@ -25,6 +25,8 @@ class DesignSystemColors {
 
   Color get backgroundColor => lightMode ? Colors.white : Colors.black;
 
+  Color get reverseBackgroundColor => lightMode ? Colors.black : Colors.white;
+
   Color get scaffoldBackgroundColor => lightMode ? Colors.white : Colors.black;
 
   Color get buttonColor => Colors.white;
@@ -79,6 +81,9 @@ class DesignSystemColors {
 
   Color get alertSecondaryTitleColor => Colors.black;
 
+  Color get inputDecorationLabelColor =>
+      lightMode ? const Color(0xff333333) : const Color(0xffcccccc);
+
   /// endregion
 
   /// region App-specific colors
@@ -87,7 +92,7 @@ class DesignSystemColors {
 
   Color get activeButtonColor => Colors.blue;
 
-  /// endregion
+/// endregion
 }
 
 class _HexColor extends Color {
