@@ -10,11 +10,11 @@
 | `lib/base/common_ui_components/` | Reusable widgets (buttons, controls etc) |
 | `lib/base/common_use_cases/` | Global UseCases |
 | `lib/base/data_sources/` | All data sources are placed here. |
-| `lib/base/data_sources/domain_data_sources/` | Data sources,  relating to a specific domain |
-| `lib/base/data_sources/domain_data_sources/count_data_sources/` | Data sources,  relating to the counter domain |
-| `lib/base/data_sources/local_data_sources/` | Local data sources, such as shared preferences, secured storage etc. |
-| `lib/base/data_sources/remote_data_sources/` | External data sources like APIs. Here is placed all [retrofit][retrofit_lnk] code. |
-| `lib/base/data_sources/remote_data_sources/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls. |
+| `lib/base/data_sources/domain/` | Data sources,  relating to a specific domain |
+| `lib/base/data_sources/domain/counter/` | Data sources,  relating to the counter domain |
+| `lib/base/data_sources/local/` | Local data sources, such as shared preferences, secured storage etc. |
+| `lib/base/data_sources/remote/` | External data sources like APIs. Here is placed all [retrofit][retrofit_lnk] code. |
+| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls. |
 | `lib/base/di/` | Global dependencies, available in the whole app|
 | `lib/base/extensions/` | Global [extension methods][extension_methods_lnk] |
 | `lib/base/models/` | Data models used in the project |
@@ -71,11 +71,11 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 Your project has an integrated HTTP client([dio][dio_lnk], [retrofit][retrofit_lnk]).
 
-All classes related with external data sources like APIs, should be placed in the `lib/base/data_sources/remote_data_sources/` directory.
+All classes related with external data sources like APIs, should be placed in the `lib/base/data_sources/remote/` directory.
 
-The initial project has domain related data base folder `lib/base/data_sources/domain_data_sources/count_data_sources/`, which contains an example of http-client with Dio and Retrofit. Initially the project work with fake API, placed in `lib/base/data_sources/domain_data_sources/count_data_sources/count_local_data_source.dart`.
+The initial project has domain related data base folder `lib/base/data_sources/domain/counter/`, which contains an example of http-client with Dio and Retrofit. Initially the project work with fake API, placed in `lib/base/data_sources/domain/counter/count_local_data_source.dart`.
 
-To use real API, you should provide a data model(if it is different from the initial one) in `lib/base/models/`, using json_annotation. Also you have to correct the HttpClient in folder `lib/base/data_sources/domain_data_sources/count_data_sources/` with existing Url in the annotation (using retrofit). Fallow the example and documentation. Finally you need to specify in the repository which data source you are going to use. Pay attention about the structure of directory `lib/base/data_sources` and where to place your files.
+To use real API, you should provide a data model(if it is different from the initial one) in `lib/base/models/`, using json_annotation. Also you have to correct the HttpClient in folder `lib/base/data_sources/domain/counter/` with existing Url in the annotation (using retrofit). Fallow the example and documentation. Finally you need to specify in the repository which data source you are going to use. Pay attention about the structure of directory `lib/base/data_sources` and where to place your files.
 
 ### Design system
 
