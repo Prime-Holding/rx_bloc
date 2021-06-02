@@ -5,7 +5,7 @@
 import 'dart:async' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:{{project_name}}/base/count_data_sources/count_data_source.dart' as _i2;
+import 'package:{{project_name}}/base/data_sources/domain_data_sources/count_data_sources/count_data_source.dart' as _i2;
 import 'package:{{project_name}}/base/models/count.dart' as _i3;
 import 'package:{{project_name}}/base/repositories/counter_repository.dart' as _i4;
 
