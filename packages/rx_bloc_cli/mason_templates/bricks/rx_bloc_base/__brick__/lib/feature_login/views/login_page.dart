@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../test_app_utils.dart';
+import '../../app_extensions.dart';
 import '../di/login_dependencies.dart';
 import '../ui_components/login_form.dart';
 

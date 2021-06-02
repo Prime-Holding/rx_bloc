@@ -8,12 +8,12 @@
 import 'package:auto_route/auto_route.dart';
 
 import '../../feature_counter/views/counter_page.dart';
-import '../../feature_notifications/views/login_page.dart';
+import '../../feature_login/views/login_page.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
-    MaterialRoute(page: LoginPage, initial: true),
-    MaterialRoute(page: CounterPage),
+    MaterialRoute(page: CounterPage, initial: true),
+    MaterialRoute(page: LoginPage),
   ],
 )
 class $Router {}
