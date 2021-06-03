@@ -2,90 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:provider/provider.dart';
 
 import 'package:{{project_name}}/l10n/l10n.dart';
-import 'package:{{project_name}}/feature_counter/di/counter_dependencies.dart';
-import 'package:{{project_name}}/feature_counter/views/counter_page.dart';
 
 import '../../helpers/golden_helper.dart';
+import 'helpers/counter_helper.dart';
+
+enum Theme { light, dark }
 
 void main() {
   group('CounterPage golden tests', () {
-    testGoldens('Light theme', (tester) async {
-      final counterBuilder = deviceBuilderWithScenarios(tester, counterWidget);
-
-      await pumpDeviceBuilderWithLocalizationsAndTheme(tester, counterBuilder);
-
-      await screenMatchesGolden(
-        tester,
-        'counter_light',
-      );
-    });
-
-    testGoldens('Dark theme', (tester) async {
-      final counterBuilder = deviceBuilderWithScenarios(tester, counterWidget);
-
-      await pumpDeviceBuilderWithLocalizationsAndTheme(tester, counterBuilder,
-          theme: ThemeData.dark());
-
-      await screenMatchesGolden(
-        tester,
-        'counter_dark',
-        // customPump: (tester) => tester.pumpAndSettle(
-        //   const Duration(milliseconds: 900),
-        //   EnginePhase.sendSemanticsUpdate,
-        //   const Duration(seconds: 2),
-        // ),
-      );
-    });
+    //test each CustomDeviceBuilder in both light mode and dark mode
+    for (final deviceBuilder in customDeviceBuilders) {
+      runTests(deviceBuilder, Theme.light);
+      runTests(deviceBuilder, Theme.dark);
+    }
   });
 }
 
-Widget get counterWidget => Builder(
-      builder: (context) => MultiProvider(
-        providers: CounterDependencies.of(context).providers,
-        child: const CounterPage(),
-      ),
+void runTests(
+    CustomDeviceBuilder deviceBuilder,
+    Theme theme,
+    ) {
+  testGoldens('$theme', (tester) async {
+    final builder = deviceBuilder(tester);
+
+    await pumpDeviceBuilderWithLocalizationsAndTheme(
+      tester,
+      builder,
+      theme: theme == Theme.dark ? ThemeData.dark() : null,
     );
 
-DeviceBuilder deviceBuilderWithScenarios(WidgetTester tester, Widget widget) =>
-    defaultDeviceBuilder(tester, widget)
-      ..addScenario(
-        name: 'Tap once',
-        widget: widget,
-        onCreate: (scenarioWidgetKey) async {
-          final finder = find.descendant(
-            of: find.byKey(scenarioWidgetKey),
-            matching: find.byIcon(Icons.add),
-          );
-          expect(finder, findsOneWidget);
-          await tester.tap(finder);
-        },
-      )
-      ..addScenario(
-        name: 'Tap twice',
-        widget: widget,
-        onCreate: (scenarioWidgetKey) async {
-          final finder = find.descendant(
-            of: find.byKey(scenarioWidgetKey),
-            matching: find.byIcon(Icons.add),
-          );
-          expect(finder, findsOneWidget);
-          await tester.tap(finder);
-          //await Future.delayed(const Duration(milliseconds: 900));
-          //await tester.tap(finder);
-        },
-      );
+    final directory = theme == Theme.light ? 'light_theme' : 'dark_theme';
+    final fileName = deviceBuilder == deviceBuilderWithCounterScenarios
+        ? 'counter'
+        : deviceBuilder == deviceBuilderWithLoadingScenario
+        ? 'loading'
+        : 'error';
 
+    await screenMatchesGolden(
+      tester,
+      '$directory/$fileName',
+      customPump: deviceBuilder == deviceBuilderWithLoadingScenario
+          ? (tester) => tester.pump(const Duration(milliseconds: 300))
+          : null,
+    );
+  });
+}
+
+/// calls [pumpDeviceBuilderWithMaterialApp] with localizations we need in this
+/// app, and injects an optional theme
 Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
-  WidgetTester tester,
-  DeviceBuilder deviceBuilder, {
-  ThemeData? theme,
-}) =>
+    WidgetTester tester,
+    DeviceBuilder builder, {
+      ThemeData? theme,
+    }) =>
     pumpDeviceBuilderWithMaterialApp(
       tester,
-      deviceBuilder,
+      builder,
       localizations: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
