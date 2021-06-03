@@ -69,13 +69,9 @@ Every flavor represents a separate Firebase project that will be used for app tr
 {{/analytics}}
 ### Http client
 
-Your project has an integrated HTTP client([dio][dio_lnk], [retrofit][retrofit_lnk]).
+Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps us to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
 
-All classes related with external data sources like APIs, should be placed in the `lib/base/data_sources/remote/` directory.
-
-The initial project has domain related data base folder `lib/base/data_sources/domain/counter/`, which contains an example of http-client with Dio and Retrofit. Initially the project work with fake API, placed in `lib/base/data_sources/domain/counter/count_local_data_source.dart`.
-
-To use real API, you should provide a data model(if it is different from the initial one) in `lib/base/models/`, using json_annotation. Also you have to correct the HttpClient in folder `lib/base/data_sources/domain/counter/` with existing Url in the annotation (using retrofit). Fallow the example and documentation. Finally you need to specify in the repository which data source you are going to use. Pay attention about the structure of directory `lib/base/data_sources` and where to place your files.
+To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your Http client in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. Finally tell to your repository which data source you are going to use.
 
 ### Design system
 
@@ -94,3 +90,6 @@ To access the design system from your app, you have to import it from the follow
 [design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
 [retrofit_lnk]: https://pub.dev/packages/retrofit
 [dio_lnk]: https://pub.dev/packages/dio
+[json_annotation_lnk]: https://pub.dev/packages/json_annotation
+[json_serializable_lnk]: https://pub.dev/packages/json_serializable
+

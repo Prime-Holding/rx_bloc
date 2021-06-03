@@ -16,8 +16,13 @@ class CounterRepository {
 
   final CountDataSource countDataSource;
 
+  // Fetch current value of the counter
   Future<Count> getCurrent()=> countDataSource.getCurrent();
+
+  //Fetch incremented value of the counter
   Future<Count> increment()=> countDataSource.increment();
+
+  //Fetch decremented value of the counter
   Future<Count> decrement()=> countDataSource.decrement();
 
 }

@@ -37,7 +37,7 @@ class CounterDependencies {
   /// by default), here should uncomment the row with CountRemoteDataSource
   /// and comment current "create" function, witch use CountLocalDataSource.
   /// Also you should provide a real api in
-  /// lib\base\count_data_source\count_remote_data_source.dart
+  /// lib\base\data_sources\domain\counter\count_remote_data_source.dart
   /// and data models in lib\base\models and rerun build_runner.
   List<Provider> get _dataSources => [
     Provider<CountDataSource>(

@@ -10,7 +10,13 @@ import '../../../../base/models/count.dart';
 /// A contract class containing all methods,
 /// that  should be implemented by real data source
 abstract class CountDataSource{
+
+  // Take current value of the counter
   Future<Count> getCurrent();
+
+  //Increment the value of the counter with one and return it
   Future<Count> increment();
+
+  //Decrement the value of the counter with one and return it
   Future<Count> decrement();
 }
