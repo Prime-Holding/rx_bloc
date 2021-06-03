@@ -19,12 +19,25 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
         super(PuppyDetailsState(puppy: puppy)) {
     _coordinatorBloc.stream
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
-        .listen((state) => add(PuppyDetailsEvent(
+        .listen((state) => add(PuppyDetailsFavoriteEvent(
               puppy: state.favoritePuppy,
               updateException: state.updateException,
             )))
         .addTo(_compositeSubscription);
+
+    _coordinatorBloc.stream
+        .whereType<CoordinatorPuppyDetailsState>()
+        .listen((state) => add(PuppyDetailsMarkAsFavoriteEvent(
+              puppy: state.puppy,
+            )))
+        .addTo(_compositeSubscription);
   }
+
+  @override
+  Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transformTransitions(
+    Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transitions,
+  ) =>
+      transitions.interval(const Duration(milliseconds: 200));
 
   final CoordinatorBloc _coordinatorBloc;
   final _compositeSubscription = CompositeSubscription();
@@ -33,6 +46,23 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   Stream<PuppyDetailsState> mapEventToState(
     PuppyDetailsEvent event,
   ) async* {
+    if (event is PuppyDetailsFavoriteEvent) {
+      yield* _mapToDetailsFavoriteEvent(event);
+    } else if (event is PuppyDetailsMarkAsFavoriteEvent) {
+      yield* _mapToDetailsMarkAsFavoriteEvent(event);
+      // CoordinatorPuppyDetailsState
+    }
+  }
+
+  Stream<PuppyDetailsState> _mapToDetailsMarkAsFavoriteEvent(
+      PuppyDetailsMarkAsFavoriteEvent event) async* {
+    // print('_mapToDetailsMarkAsFavoriteEvent ${event.puppy}');
+    yield state.copyWith(puppy: event.puppy);
+    // await Future.delayed(const Duration(milliseconds: 200));
+  }
+
+  Stream<PuppyDetailsState> _mapToDetailsFavoriteEvent(
+      PuppyDetailsFavoriteEvent event) async* {
     final puppy = event.puppy;
     if (event.updateException.isEmpty) {
       final copiedPuppy = puppy.copyWith(
@@ -42,12 +72,12 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
           gender: puppy.gender,
           displayCharacteristics: puppy.displayCharacteristics);
       final copiedState = state.copyWith(puppy: copiedPuppy);
+      // await Future.delayed(const Duration(milliseconds: 200));
       yield copiedState;
+      // await Future.delayed(const Duration(milliseconds: 200));
     } else {
-      yield state.copyWith(
-          puppy: puppy.copyWith(isFavorite: !puppy.isFavorite));
-      await Future.delayed(const Duration(milliseconds: 100));
-      yield state.copyWith(puppy: puppy.copyWith(isFavorite: puppy.isFavorite));
+      yield state.copyWith(puppy:
+      puppy.copyWith(isFavorite: puppy.isFavorite));
     }
   }
 

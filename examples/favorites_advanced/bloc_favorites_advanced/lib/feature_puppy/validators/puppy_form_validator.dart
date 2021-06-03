@@ -29,11 +29,21 @@ class PuppyFormValidator {
   }
 
   static String? breedValidation(BreedType? breedType) {
+    // print('breed validation $breedType');
     if (breedType == BreedType.None || breedType == null) {
       return _selectABreed;
     }
     return null;
   }
+
+
+  static Future<String?> breedValidationFuture (dynamic breedType) {
+    if (breedType == BreedType.None || breedType == null) {
+      return Future.value(_selectABreed);
+    }
+    return Future.value(null);
+  }
+
 
   static String? genderValidation(Gender? gender) {
     if (gender == Gender.None || gender == null) {

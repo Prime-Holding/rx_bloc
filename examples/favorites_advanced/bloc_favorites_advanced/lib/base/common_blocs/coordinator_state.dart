@@ -49,3 +49,19 @@ class CoordinatorFavoritePuppyUpdatedState extends CoordinatorState {
   @override
   int get hashCode => favoritePuppy.hashCode ^ updateException.hashCode;
 }
+
+class CoordinatorPuppyDetailsState extends CoordinatorState {
+  CoordinatorPuppyDetailsState(this.puppy);
+
+  final Puppy puppy;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CoordinatorPuppyDetailsState &&
+          runtimeType == other.runtimeType &&
+          puppy == other.puppy;
+
+  @override
+  int get hashCode => puppy.hashCode;
+}

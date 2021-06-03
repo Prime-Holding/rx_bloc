@@ -36,6 +36,8 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
     super.initState();
   }
 
+  bool canPop = true;
+
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => PuppyEditFormBloc(
@@ -45,28 +47,36 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
         ),
         child: FormBlocListener<PuppyEditFormBloc, String, String>(
           onSuccess: (context, state) {
+            canPop = true;
+            // print('canPop = true ${canPop}');
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.successResponse!)));
-            context
-                .flow<PuppyFlowState>()
-                .update((state) => state.copyWith(manage: false));
+              context
+                  .flow<PuppyFlowState>()
+                  .update((state) => state.copyWith(manage: false));
           },
           onFailure: (context, state) {
+            canPop = true;
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.failureResponse!)));
+          },
+          onSubmitting: (context, state) {
+            if (state is FormBlocSubmitting) {
+              canPop = false;
+              // print('canPop = false ${canPop}');
+            }
           },
           child: Builder(
             builder: (context) {
               final puppyEditFormBloc =
                   BlocProvider.of<PuppyEditFormBloc>(context);
+
               return StreamBuilder<bool>(
                 stream: puppyEditFormBloc.isFormValid$,
                 builder: (context, snapshot) => WillPopScope(
                   onWillPop: () =>
-                      // snapshot.data == false ?
-                      // state is FormBlocLoading
-                      //      Future.value(false)
-                      Future.value(true),
+                      canPop ? Future.value(true) :
+                      Future.value(false),
                   child: Scaffold(
                     appBar: PuppyEditAppBar(
                       enabled: snapshot.data == true ? true : false,

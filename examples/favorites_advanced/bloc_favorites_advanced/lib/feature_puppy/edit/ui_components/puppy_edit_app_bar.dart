@@ -7,15 +7,12 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
     required bool enabled,
-    // void Function()? onSavePressed,
     required this.puppyEditFormBloc,
     Key? key,
   })  : _enabled = enabled,
-        // _onSavePressed = onSavePressed,
         super(key: key);
 
   final bool _enabled;
-  // final void Function()? _onSavePressed;
   final PuppyEditFormBloc puppyEditFormBloc;
 
   double get loadingIndicatorSize => 24;
@@ -29,20 +26,8 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget _buildSaveButton() => BlocBuilder<PuppyEditFormBloc, FormBlocState>(
         builder: (context, state) {
           if (state is FormBlocSubmitting) {
-            //emitSubmitting() changes the state to FormBlocSubmitting
-            // print('_buildSaveButton FormBlocSubmitting1
-            // ${state.runtimeType}');
             return _buildLoading();
           }
-          // else if(state is FormBlocSuccess){
-          //   print('FormBlocSuccess after submit: FormBlocSuccess');
-          //   Navigator.of(context).pop();
-          // }
-          // else if (state.canSubmit){
-          // print('_buildSaveButton state.canSubmit ${state.canSubmit}');
-          // return _buildIcon();
-          // }
-          // print('_buildSaveButton state.canSubmit ${state.canSubmit}');
           return _buildIcon();
         },
       );
@@ -54,18 +39,7 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         onPressed: () {
           if (_enabled) {
-            // print('_onSavePressed?.call()');
-            // puppyEditFormBloc.state.canSubmit;
-            // print('puppyEditFormBloc.state.: ${puppyEditFormBloc
-            //     .state.runtimeType}');
-            // print(
-            //     'puppyEditFormBloc.state.canSubmit ${puppyEditFormBloc
-            //         .state.canSubmit}');
-            // puppyEditFormBloc.state._isValidByStep;
             puppyEditFormBloc.submit();
-
-            // _onSavePressed!();
-            // _onSavePressed?.call();
           }
         },
       );

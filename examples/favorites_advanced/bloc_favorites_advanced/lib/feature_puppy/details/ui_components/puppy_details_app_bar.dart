@@ -46,9 +46,11 @@ class PuppyDetailsAppBar extends StatelessWidget
   Widget _buildEditButton(BuildContext context) => IconButton(
         icon: const IconWithShadow(icon: Icons.edit),
         onPressed: () async {
+          // WidgetsBinding.instance!.addPostFrameCallback((_) {
           context
               .flow<PuppyFlowState>()
               .update((state) => state.copyWith(manage: true, puppy: _puppy));
+          // });
         },
       );
 

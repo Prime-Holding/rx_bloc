@@ -30,20 +30,13 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     );
 
     image.onValueChanges(onData: (previous, current) async* {
-      // print('onValueChanges ImagePickerAction: ${current.value}');
       final pickedImage = await repository.pickPuppyImage(current.value!);
-      // print('pickedImage.path: ${pickedImage?.path}');
       if (pickedImage != null) {
         final newPath = pickedImage.path;
-        // print('NEW pickedImage.path: $newPath');
         _asset.sink.add(newPath);
         setImagePath(newPath);
-
-        // print('_editedPuppy.asset: ${_editedPuppy.asset}' );
         emitUpdatingFields();
         emitLoaded();
-        // print(current.value);
-        // print('_asset.sink.add(pickedImage.path): ${pickedImage.path}');
       }
     });
 
@@ -71,6 +64,7 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
           if (_puppy.breedType != current.value) {
             final newBreed = current.value;
             final breedValidated = PuppyFormValidator.breedValidation(newBreed);
+            _breedError.sink.add(breedValidated ?? '');
             if (breedValidated == null) {
               setBreed(newBreed!);
             }
@@ -124,6 +118,7 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   late Puppy _editedPuppy;
   final PuppiesRepository repository;
   final CoordinatorBloc coordinatorBloc;
+  String? globalBreedValidate;
 
   static const _submitSuccessResponse = 'The puppy was saved successfully.';
   static const _submissionFailureResponse =
@@ -134,6 +129,9 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   final _gender = BehaviorSubject<Gender>();
   final _characteristics = BehaviorSubject<String>();
   final _breed = BehaviorSubject<BreedType>();
+  final _breedError = BehaviorSubject<String>();
+
+  Stream<String> get breedError$ => _breedError.stream.startWith('');
 
   Stream<String> get asset$ => _asset.stream.startWith(_puppy.asset);
 
@@ -161,6 +159,7 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
       ).startWith(false);
 
   void dispose() {
+    _breedError.close();
     _asset.close();
     _name.close();
     _gender.close();
@@ -225,9 +224,9 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
   void onSubmitting() async {
     try {
       emitSubmitting();
+
       final updatedPuppy =
           await repository.updatePuppy(_editedPuppy.id, _editedPuppy);
-      // print('updatedPuppy: $updatedPuppy');
       coordinatorBloc
         ..add(CoordinatorPuppyUpdatedEvent(updatedPuppy))
         ..add(CoordinatorFavoritePuppyUpdatedEvent(

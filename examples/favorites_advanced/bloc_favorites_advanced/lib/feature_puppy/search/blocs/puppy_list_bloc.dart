@@ -21,6 +21,9 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
         super(PuppyListState.withInitial()) {
     coordinatorBloc.stream
         .whereType<CoordinatorPuppiesUpdatedState>()
+        .doOnData((event) {
+          // print('list bloc ${event.puppies}');
+        })
         .listen((state) => add(PuppyListFavoritePuppiesUpdatedEvent(
             favoritePuppies: state.puppies)))
         .addTo(_compositeSubscription);
