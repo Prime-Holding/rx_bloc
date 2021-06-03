@@ -33,11 +33,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       title: Text(context.l10n.counterPageTitle),
-      actions: const [
-        ProfileAvatar(
-          loggedIn: false,
-        )
-      ],
+      actions: const [ProfileAvatar()],
     ),
     body: Center(
       child: Column(
@@ -87,6 +83,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               backgroundColor: loadingState.getButtonColor(context),
               onPressed: loadingState.isLoading ? null : bloc.events.increment,
               tooltip: context.l10n.increment,
+              heroTag: 'increment',
               child: Icon(context.designSystem.icons.plusSign),
             ),
             const SizedBox(width: 16),
@@ -94,6 +91,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               backgroundColor: loadingState.getButtonColor(context),
               onPressed: loadingState.isLoading ? null : bloc.events.decrement,
               tooltip: context.l10n.decrement,
+              heroTag: 'decrement',
               child: Icon(context.designSystem.icons.minusSign),
             ),
           ],

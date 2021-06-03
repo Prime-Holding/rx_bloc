@@ -11,36 +11,36 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-    providers: LoginDependencies.of(context).providers,
-    child: this,
-  );
+        providers: LoginDependencies.of(context).providers,
+        child: this,
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(context.l10n.loginPageTitle)),
-    body: SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Container(
-              width: 300,
-              height: 300,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                border: Border.all(
-                  color: context.designSystem.colors.reverseBackgroundColor,
+        appBar: AppBar(title: Text(context.l10n.loginPageTitle)),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Container(
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    border: Border.all(
+                      color: context.designSystem.colors.reverseBackgroundColor,
+                    ),
+                  ),
+                  child: LoginForm(
+                    onLoginSuccess: () {
+                      context.router.pop(true);
+                    },
+                  ),
                 ),
               ),
-              child: LoginForm(
-                onLoginSuccess: () {
-                  debugPrint('Logged in!');
-                },
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }

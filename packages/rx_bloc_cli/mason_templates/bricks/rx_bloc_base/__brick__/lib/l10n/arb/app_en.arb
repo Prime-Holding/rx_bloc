@@ -9,5 +9,8 @@
     "decrement": "Decrement",
     "loginPageTitle": "Login sample",
     "logIn" : "Log in",
-    "resetPassword" : "Reset password"
+    "logOut" : "Log out",
+    "resetPassword" : "Reset password",
+    "notificationPageTitle" : "Notification sample",
+    "notifications" : "Notifications"
 }
