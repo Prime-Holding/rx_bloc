@@ -1,3 +1,10 @@
+// Copyright (c) 2021, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 {{#uses_firebase}}import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}
 import 'package:flutter/material.dart';
 

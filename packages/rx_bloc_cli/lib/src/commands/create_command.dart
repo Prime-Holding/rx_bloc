@@ -40,6 +40,11 @@ class CreateCommand extends Command<int> {
         _pushNotificationString,
         help: 'Enables Firebase push notifications for the project',
         defaultsTo: 'true',
+      )
+      ..addOption(
+        _httpClientString,
+        help: 'HTTP client',
+        defaultsTo: 'dio',
       );
   }
 
@@ -49,6 +54,7 @@ class CreateCommand extends Command<int> {
   final _orgNameString = 'org';
   final _analyticsString = 'include-analytics';
   final _pushNotificationString = 'push-notifications';
+  final _httpClientString = 'http-client';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -107,6 +113,7 @@ class CreateCommand extends Command<int> {
         'uses_firebase': _usesFirebase,
         'analytics': _enableAnalytics,
         'push_notifications': _enablePushNotifications,
+        'http_client': _httpClientType,
       },
     );
 
@@ -160,6 +167,13 @@ class CreateCommand extends Command<int> {
   bool get _enablePushNotifications {
     final pushNotificationsEnabled = _argResults[_pushNotificationString];
     return pushNotificationsEnabled.toLowerCase() != 'false';
+  }
+
+  /// Returns http client type
+  HttpClientType get _httpClientType {
+    final clientType = _argResults[_httpClientString];
+    return HttpClientType.values
+        .firstWhere((element) => element.toString().contains(clientType));
   }
 
   /// endregion
@@ -254,3 +268,5 @@ class CreateCommand extends Command<int> {
   /// endregion
 
 }
+
+enum HttpClientType { dio }
