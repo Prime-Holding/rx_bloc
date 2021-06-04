@@ -42,6 +42,8 @@ void main() {
     expect(favoritePuppiesBloc.state.count, 2);
   });
 
+  // tearDown(()=>{
+  // });
   // Does not mark copyWith as tested
   test(
     'FavoritePuppiesState copyWith',
@@ -63,7 +65,7 @@ void main() {
 
   // Does not mark copyWith as tested
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
-    'FavoritePuppiesState copyWith',
+    'FavoritePuppiesState copyWith2',
     build: () {
       mock
           .when(mockRepo.getFavoritePuppies())
@@ -72,8 +74,9 @@ void main() {
     },
     act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
-      await Future.delayed(const Duration(milliseconds: 200));
+      // await Future.delayed(const Duration(milliseconds: 200));
     },
+    wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
       favoritePuppiesBloc.state.copyWith(
         favoritePuppies: Stub.favoritePuppies,
@@ -91,9 +94,9 @@ void main() {
     },
     act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
-      await Future.delayed(const Duration(milliseconds: 200));
-
+      // await Future.delayed(const Duration(milliseconds: 200));
     },
+    wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
       FavoritePuppiesState(
         favoritePuppies: Stub.favoritePuppies,
@@ -109,8 +112,9 @@ void main() {
     },
     act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
-            await Future.delayed(const Duration(milliseconds: 200));
+      // await Future.delayed(const Duration(milliseconds: 200));
     },
+    wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
       const FavoritePuppiesState(
         favoritePuppies: [],
@@ -118,7 +122,6 @@ void main() {
       ),
     ],
   );
-
 
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
       'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent',
@@ -134,9 +137,9 @@ void main() {
             puppy: Stub.isNotFavoritePuppy3,
             isFavorite: true,
             updateException: ''));
-        await Future.delayed(const Duration(milliseconds: 200));
-
+        // await Future.delayed(const Duration(milliseconds: 200));
       },
+      wait: const Duration(milliseconds: 200),
       expect: () => <FavoritePuppiesState>[
             FavoritePuppiesState(favoritePuppies: [Stub.isFavoritePuppy3]),
           ],
@@ -150,35 +153,68 @@ void main() {
           );
       });
 
-  // blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
-  //     'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent throws2',
-  //     build: () {
-  //       mock
-  //           .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
-  //               isFavorite: true))
-  //           .thenThrow(Stub.testErr);
-  //       return favoritePuppiesBloc;
-  //     },
-  //     act: (bloc) async {
-  //       bloc.add(FavoritePuppiesMarkAsFavoriteEvent(
-  //           puppy: Stub.isNotFavoritePuppy3,
-  //           isFavorite: true,
-  //           updateException: Stub.testErrString));
-  //       await Future.delayed(const Duration(milliseconds: 200));
-  //     },
-  //     expect: () => <FavoritePuppiesState>[
-  //           FavoritePuppiesState(
-  //               favoritePuppies: [Stub.isNotFavoritePuppy3],
-  //               error: Stub.testErrString),
-  //           // const FavoritePuppiesState(favoritePuppies: [], error: null),
-  //         ],
-  //     verify: (_) {
-  //       mockCoordinatorBloc
-  //         ..add(
-  //           CoordinatorPuppyUpdatedEvent(Stub.isFavoritePuppy3),
-  //         )
-  //         ..add(
-  //           CoordinatorPuppyUpdatedEvent(Stub.isNotFavoritePuppy3),
-  //         );
-  //     });
+  blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
+      'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent throws2',
+      build: () {
+        mock
+            .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+                isFavorite: true))
+            .thenThrow(Stub.testErr);
+        return FavoritePuppiesBloc(
+          puppiesRepository: mockRepo,
+          coordinatorBloc: mockCoordinatorBloc,
+        );
+      },
+      act: (bloc) async {
+        bloc.add(FavoritePuppiesMarkAsFavoriteEvent(
+            puppy: Stub.isNotFavoritePuppy3,
+            isFavorite: true,
+            updateException: Stub.testErrString));
+        // await Future.delayed(const Duration(milliseconds: 200));
+      },
+      // With wait: const Duration(milliseconds: 200) only the first state
+      // is emitted with 400 both state are emitted
+      wait: const Duration(milliseconds: 400),
+      expect: () => <FavoritePuppiesState>[
+            FavoritePuppiesState(
+                favoritePuppies: [Stub.isNotFavoritePuppy3],
+                error: Stub.testErrString),
+            const FavoritePuppiesState(favoritePuppies: [], error: null),
+          ],
+      verify: (_) {
+        mockCoordinatorBloc.add(
+          CoordinatorPuppyUpdatedEvent(Stub.isNotFavoritePuppy3),
+        );
+      });
+
+  ///updateException is empty and then an exception is thrown
+  blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
+    'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent updateException'
+    'is empty and throws',
+    build: () {
+      mock
+          .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+              isFavorite: true))
+          .thenThrow(Stub.testErr);
+      return FavoritePuppiesBloc(
+        puppiesRepository: mockRepo,
+        coordinatorBloc: mockCoordinatorBloc,
+      );
+    },
+    act: (bloc) async {
+      bloc.add(FavoritePuppiesMarkAsFavoriteEvent(
+          puppy: Stub.isNotFavoritePuppy3,
+          isFavorite: true,
+          updateException: ''));
+      // await Future.delayed(const Duration(milliseconds: 200));
+    },
+    wait: const Duration(milliseconds: 400),
+    expect: () => <FavoritePuppiesState>[
+      const FavoritePuppiesState(
+          favoritePuppies: [], error: Stub.testErrString),
+      FavoritePuppiesState(
+          favoritePuppies: [Stub.isNotFavoritePuppy3], error: null),
+      // const FavoritePuppiesState(favoritePuppies: [], error: null),
+    ],
+  );
 }

@@ -55,13 +55,10 @@ class PuppyMarkAsFavoriteBloc
     final puppy = event.puppy;
     final isFavorite = event.isFavorite;
     try {
-      //Send event to search list to change the favorite icon immediately
-      //Send event to details page to change the favorite icon immediately
-      _coordinatorBloc
-        ..add(CoordinatorPuppyUpdatedEvent(
-            puppy.copyWith(isFavorite: isFavorite)))
-        ..add(CoordinatorPuppyDetailsEvent(
-            puppy.copyWith(isFavorite: isFavorite)));
+      //Send event to search list and to details page to change
+      // the favorite icon immediately
+      _coordinatorBloc.add(
+          CoordinatorPuppyUpdatedEvent(puppy.copyWith(isFavorite: isFavorite)));
 
       await _puppiesRepository.favoritePuppy(
         puppy,

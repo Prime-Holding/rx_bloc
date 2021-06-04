@@ -83,6 +83,17 @@ class Stub {
     ),
   ];
 
+  static final onePuppyWithDetailsList = [Puppy(
+    id: '3',
+    name: 'Buddy',
+    asset: 'puppie_4.jpeg',
+    isFavorite: false,
+    gender: Gender.Male,
+    breedType: BreedType.GermanShepherd,
+    displayCharacteristics: 'Characteristics Buddy 3',
+    displayName: 'Buddy',
+  )];
+
   static final isFavoritePuppy3 = Puppy(
     id: '3',
     name: 'Buddy',

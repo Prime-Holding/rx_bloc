@@ -1,10 +1,10 @@
 part of 'puppy_details_bloc.dart';
 
 @immutable
-abstract class PuppyDetailsEvent{}
+abstract class PuppyDetailsEvent {}
 
-class PuppyDetailsFavoriteEvent extends PuppyDetailsEvent{
-   PuppyDetailsFavoriteEvent({
+class PuppyDetailsFavoriteEvent extends PuppyDetailsEvent {
+  PuppyDetailsFavoriteEvent({
     required this.puppy,
     required this.updateException,
   });
@@ -13,10 +13,10 @@ class PuppyDetailsFavoriteEvent extends PuppyDetailsEvent{
   final String updateException;
 }
 
-class PuppyDetailsMarkAsFavoriteEvent extends PuppyDetailsEvent{
-   PuppyDetailsMarkAsFavoriteEvent({
-    required this.puppy,
+class PuppyDetailsMarkAsFavoriteEvent extends PuppyDetailsEvent {
+  PuppyDetailsMarkAsFavoriteEvent({
+    required this.puppies,
   });
 
-  final Puppy puppy;
+  final List<Puppy> puppies;
 }

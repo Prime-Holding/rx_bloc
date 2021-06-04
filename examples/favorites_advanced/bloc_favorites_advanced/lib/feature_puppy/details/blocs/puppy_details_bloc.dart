@@ -26,9 +26,9 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
         .addTo(_compositeSubscription);
 
     _coordinatorBloc.stream
-        .whereType<CoordinatorPuppyDetailsState>()
+        .whereType<CoordinatorPuppiesUpdatedState>()
         .listen((state) => add(PuppyDetailsMarkAsFavoriteEvent(
-              puppy: state.puppy,
+              puppies: state.puppies,
             )))
         .addTo(_compositeSubscription);
   }
@@ -50,15 +50,14 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
       yield* _mapToDetailsFavoriteEvent(event);
     } else if (event is PuppyDetailsMarkAsFavoriteEvent) {
       yield* _mapToDetailsMarkAsFavoriteEvent(event);
-      // CoordinatorPuppyDetailsState
     }
   }
 
   Stream<PuppyDetailsState> _mapToDetailsMarkAsFavoriteEvent(
       PuppyDetailsMarkAsFavoriteEvent event) async* {
-    // print('_mapToDetailsMarkAsFavoriteEvent ${event.puppy}');
-    yield state.copyWith(puppy: event.puppy);
-    // await Future.delayed(const Duration(milliseconds: 200));
+    //Update Ui immediately
+    // print('_mapToDetailsMarkAsFavoriteEvent ${event.puppies}');
+    yield state.copyWith(puppy: event.puppies[0]);
   }
 
   Stream<PuppyDetailsState> _mapToDetailsFavoriteEvent(
@@ -76,8 +75,7 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
       yield copiedState;
       // await Future.delayed(const Duration(milliseconds: 200));
     } else {
-      yield state.copyWith(puppy:
-      puppy.copyWith(isFavorite: puppy.isFavorite));
+      yield state.copyWith(puppy: puppy.copyWith(isFavorite: puppy.isFavorite));
     }
   }
 

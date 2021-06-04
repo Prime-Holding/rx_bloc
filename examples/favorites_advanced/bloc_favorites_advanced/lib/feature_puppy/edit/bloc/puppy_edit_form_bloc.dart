@@ -1,15 +1,10 @@
 import 'dart:async';
 import 'package:bloc_sample/base/common_blocs/coordinator_bloc.dart';
 import 'package:bloc_sample/feature_puppy/validators/puppy_form_validator.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:rxdart/rxdart.dart';
-
-part 'puppy_edit_form_event.dart';
-
-part 'puppy_edit_form_state.dart';
 
 class PuppyEditFormBloc extends FormBloc<String, String> {
   PuppyEditFormBloc({

@@ -41,10 +41,6 @@ class CoordinatorBloc extends Bloc<CoordinatorEvent, CoordinatorState> {
         favoritePuppy: event.favoritePuppy,
         updateException: event.updateException,
       );
-    }else if(event is CoordinatorPuppyDetailsEvent){
-      yield CoordinatorPuppyDetailsState(
-        event.puppy,
-      );
     }
   }
 }

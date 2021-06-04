@@ -98,16 +98,14 @@ class MockCoordinatorBloc extends _i1.Mock implements _i4.CoordinatorBloc {
 
   @override
   _i5.Stream<
-      _i8.Transition<_i4.CoordinatorEvent,
-          _i4.CoordinatorState>> transformEvents(
+      _i8.Transition<_i4.CoordinatorEvent, _i4.CoordinatorState>> transformEvents(
           _i5.Stream<_i4.CoordinatorEvent>? events,
           _i9.TransitionFunction<_i4.CoordinatorEvent, _i4.CoordinatorState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue:
-                  Stream<_i8.Transition<_i4.CoordinatorEvent,
-                      _i4.CoordinatorState>>.empty())
+                  Stream<_i8.Transition<_i4.CoordinatorEvent, _i4.CoordinatorState>>.empty())
           as _i5.Stream<
               _i8.Transition<_i4.CoordinatorEvent, _i4.CoordinatorState>>);
 
@@ -142,16 +140,13 @@ class MockCoordinatorBloc extends _i1.Mock implements _i4.CoordinatorBloc {
 
   @override
   _i5.Stream<
-      _i8.Transition<_i4.CoordinatorEvent,
-          _i4.CoordinatorState>> transformTransitions(
-          _i5.Stream<_i8.Transition<_i4.CoordinatorEvent,
-              _i4.CoordinatorState>>?
+      _i8.Transition<_i4.CoordinatorEvent, _i4.CoordinatorState>> transformTransitions(
+          _i5.Stream<_i8.Transition<_i4.CoordinatorEvent, _i4.CoordinatorState>>?
               transitions) =>
       (super.noSuchMethod(
               Invocation.method(#transformTransitions, [transitions]),
               returnValue:
-                  Stream<_i8.Transition<_i4.CoordinatorEvent,
-                      _i4.CoordinatorState>>.empty())
+                  Stream<_i8.Transition<_i4.CoordinatorEvent, _i4.CoordinatorState>>.empty())
           as _i5.Stream<
               _i8.Transition<_i4.CoordinatorEvent, _i4.CoordinatorState>>);
 
