@@ -43,6 +43,7 @@ void runTests(
     await screenMatchesGolden(
       tester,
       '$directory/$fileName',
+      //defaults to pumpAndSettle, which causes problems when testing animations
       customPump: deviceBuilder == deviceBuilderWithLoadingScenario
           ? (tester) => tester.pump(const Duration(milliseconds: 300))
           : null,

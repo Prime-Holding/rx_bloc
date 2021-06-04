@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:provider/provider.dart';
-import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:rxdart/rxdart.dart';
 
+import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 import 'package:{{project_name}}/feature_counter/views/counter_page.dart';
 
 import '../../../helpers/golden_helper.dart';
 import '../../../helpers/models/scenario.dart';
-import '../../blocs/counter_bloc_mock.dart';
+import 'counter_helper.mocks.dart';
 
 typedef CustomDeviceBuilder = DeviceBuilder Function(WidgetTester);
 
+@GenerateMocks([
+  CounterBlocEvents,
+  CounterBlocStates,
+  CounterBlocType,
+])
 // these will each get generated as separate golden master files
 List<CustomDeviceBuilder> customDeviceBuilders = [
   deviceBuilderWithCounterScenarios,
@@ -29,7 +37,7 @@ DeviceBuilder deviceBuilderWithCounterScenarios(WidgetTester tester) =>
       ],
     );
 
-//test error snackbar scenarioa
+//test error snackbar scenario
 DeviceBuilder deviceBuilderWithErrorScenario(WidgetTester tester) =>
     generateDeviceBuilder(
       counterPageFactory(count: 2, error: 'Test errors'),
@@ -38,7 +46,7 @@ DeviceBuilder deviceBuilderWithErrorScenario(WidgetTester tester) =>
       ],
     );
 
-//test loading scenario (not working)
+//test loading animation scenario
 DeviceBuilder deviceBuilderWithLoadingScenario(WidgetTester tester) =>
     generateDeviceBuilder(
       counterPageFactory(count: 2, isLoading: true),
@@ -48,12 +56,36 @@ DeviceBuilder deviceBuilderWithLoadingScenario(WidgetTester tester) =>
     );
 
 Widget counterPageFactory({String? error, int? count, bool? isLoading}) {
-  final counterBloc = CounterBlocMock()
-    ..setStates(
-      isLoading: isLoading,
-      error: error,
-      count: count,
-    );
+  final counterBloc = MockCounterBlocType();
+  final eventsMock = MockCounterBlocEvents();
+  final statesMock = MockCounterBlocStates();
+
+  when(counterBloc.events).thenReturn(eventsMock);
+  when(counterBloc.states).thenReturn(statesMock);
+
+  final countSubject = BehaviorSubject<int>();
+  final errorsSubject = BehaviorSubject<String>();
+  final isLoadingSubject = BehaviorSubject<bool>();
+
+  when(statesMock.count).thenAnswer((_) => countSubject);
+  when(statesMock.errors).thenAnswer((_) => errorsSubject);
+  when(statesMock.isLoading).thenAnswer((_) => isLoadingSubject);
+
+  if (count != null) {
+    countSubject.value = count;
+  }
+
+  if (isLoading != null) {
+    isLoadingSubject.value = isLoading;
+  }
+
+  if (error != null) {
+    errorsSubject.value = error;
+  }
+
+  countSubject.close();
+  errorsSubject.close();
+  isLoadingSubject.close();
 
   final providers = [
     Provider<CounterBlocType>(
