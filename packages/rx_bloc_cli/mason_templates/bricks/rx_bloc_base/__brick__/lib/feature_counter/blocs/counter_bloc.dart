@@ -7,6 +7,7 @@
 
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:test_app/base/models/count.dart';
 
 import '../../base/repositories/counter_repository.dart';
 
@@ -48,27 +49,21 @@ class CounterBloc extends $CounterBloc {
 
   /// Map increment and decrement events to `count` state
   @override
-  Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
-        // On increment.
-        _$incrementEvent.switchMap((_) => _repository
-            .increment()
-            .then((count) => count.value)
-            .asResultStream()),
-        // On decrement.
-        _$decrementEvent.switchMap((_) => _repository
-            .decrement()
-            .then((count) => count.value)
-            .asResultStream()),
-        // Get initial value
-        _repository
-            .getCurrent()
-            .then((value) => value.value)
-            .asResultStream(),
-      ])
-          // This automatically handles the error and loading state.
-          .setResultStateHandler(this)
-          // Provide success response only.
-          .whereSuccess();
+  Stream<int> _mapToCountState() => Rx.merge<Result<Count>>([
+    // On increment.
+    _$incrementEvent
+        .switchMap((_) => _repository.increment().asResultStream()),
+    // On decrement.
+    _$decrementEvent
+        .switchMap((_) => _repository.decrement().asResultStream()),
+    // Get initial value
+    _repository.getCurrent().asResultStream(),
+  ])
+  // This automatically handles the error and loading state.
+      .setResultStateHandler(this)
+  // Provide success response only.
+      .whereSuccess()
+      .map((count) => count.value);
 
   @override
   Stream<String> _mapToErrorsState() => errorState.toMessage();
