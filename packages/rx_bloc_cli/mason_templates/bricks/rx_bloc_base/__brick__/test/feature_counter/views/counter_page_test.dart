@@ -21,9 +21,9 @@ void main() {
 }
 
 void runTests(
-    CustomDeviceBuilder deviceBuilder,
-    Theme theme,
-    ) {
+  CustomDeviceBuilder deviceBuilder,
+  Theme theme,
+) {
   testGoldens('$theme', (tester) async {
     final builder = deviceBuilder(tester);
 
@@ -37,8 +37,8 @@ void runTests(
     final fileName = deviceBuilder == deviceBuilderWithCounterScenarios
         ? 'counter'
         : deviceBuilder == deviceBuilderWithLoadingScenario
-        ? 'loading'
-        : 'error';
+            ? 'loading'
+            : 'error';
 
     await screenMatchesGolden(
       tester,
@@ -53,10 +53,10 @@ void runTests(
 /// calls [pumpDeviceBuilderWithMaterialApp] with localizations we need in this
 /// app, and injects an optional theme
 Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
-    WidgetTester tester,
-    DeviceBuilder builder, {
-      ThemeData? theme,
-    }) =>
+  WidgetTester tester,
+  DeviceBuilder builder, {
+  ThemeData? theme,
+}) =>
     pumpDeviceBuilderWithMaterialApp(
       tester,
       builder,
