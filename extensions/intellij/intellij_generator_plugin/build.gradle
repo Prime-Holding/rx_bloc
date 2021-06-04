@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '2.0.0'
+version '1.2.0'
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
@@ -40,7 +40,6 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
-        <li>v2.0.0 - Migrated to rx_bloc 3.0.0. For more details check out the <a href="https://pub.dev/packages/rx_bloc/changelog" target="_blank">changelog</a></li>
         <li>v1.2.0 - Added option for creating Null Safety BloC claseses</li>
         <li>v1.1.0 - Added option for creating BloC extensions</li>
         <li>v1.0.0 - Initial release</li>

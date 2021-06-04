@@ -25,5 +25,5 @@ class ${bloc_pascal_case}Bloc extends ${bloc_dollar_pascal_case}Bloc {
          errorState.toMessage();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState.isLoading();
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 }
