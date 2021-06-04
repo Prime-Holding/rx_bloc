@@ -22,7 +22,7 @@ void main() {
     repo = MockCounterRepository();
   });
 
-  group('CounterBloc tests', () {
+  group('CounterBloc: count state', () {
     rxBlocTest<CounterBlocType, int>(
       'Initial state',
       build: () async => CounterBloc(repo),
@@ -66,7 +66,9 @@ void main() {
       state: (bloc) => bloc.states.count,
       expect: [0, 1, 0],
     );
+  });
 
+  group('CounterBloc: Loading and error handling', () {
     rxBlocTest<CounterBlocType, String>(
       'Error handling',
       build: () async {
@@ -84,7 +86,7 @@ void main() {
     );
 
     rxBlocTest<CounterBlocType, bool>(
-      'Loading state',
+      'Loading handling',
       build: () async {
         when(repo.increment()).thenAnswer((_) async => 1);
         return CounterBloc(repo);
