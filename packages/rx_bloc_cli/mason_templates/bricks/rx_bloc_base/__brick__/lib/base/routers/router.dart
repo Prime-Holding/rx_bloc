@@ -6,10 +6,10 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:auto_route/auto_route.dart';
-import 'package:test_app/feature_login/views/notifications_page.dart';
 
 import '../../feature_counter/views/counter_page.dart';
 import '../../feature_login/views/login_page.dart';
+import '../../feature_login/views/notifications_page.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',

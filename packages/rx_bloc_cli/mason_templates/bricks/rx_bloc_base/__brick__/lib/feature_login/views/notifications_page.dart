@@ -14,6 +14,7 @@ class NotificationsPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _buildButton(context, 'Request notification permissions'),
               _buildButton(context, 'Show notification'),
               _buildButton(context, 'Show notification after 5 seconds'),
             ],

@@ -7,8 +7,8 @@
 
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:test_app/base/models/count.dart';
 
+import '../../base/models/count.dart';
 import '../../base/repositories/counter_repository.dart';
 
 part 'counter_bloc.rxb.g.dart';
