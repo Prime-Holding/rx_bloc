@@ -36,18 +36,19 @@ class AuthInterceptor extends Interceptor {
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
-  //  Add your logic here
+    // TODO: Add your logic here
     super.onRequest(options, handler);
   }
 
   @override
-  Future<void> onError(DioError err, ErrorInterceptorHandler handler)async {
-    if(err.response?.statusCode == 401){
+  Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+    if (err.response?.statusCode == 401) {
       final Map<String, dynamic> errData = jsonDecode(err.response.toString());
-      if(errData['details'] != 'Bad credentials'){
-        try{
+      if (errData['details'] != 'Bad credentials') {
+        try {
           await loadNewToken();
-        }on Exception catch(e){
+        } on Exception catch (e) {
+          print(e.toString());
           await logout();
         }
       }
@@ -55,31 +56,31 @@ class AuthInterceptor extends Interceptor {
     super.onError(err, handler);
   }
 
-  Future<void> loadNewToken()async{
+  Future<void> loadNewToken() async {
     final refreshToken = await getRefreshToken();
-    if(refreshToken == null){
+    if (refreshToken == null) {
       //  Add your logic here
     }
     try {
       final token = await fetchToken();
       await saveToken(token!);
-    }catch (e){
+    } catch (e) {
       //  Add your logic here
     }
   }
 
   // TODO Next methods should be implemented regarding app logic
-  Future<String?> getToken() async =>  Future.value('token');
+  Future<String?> getToken() async => Future.value('token');
 
-  Future<String?> fetchToken() async =>  Future.value('token');
+  Future<String?> fetchToken() async => Future.value('token');
 
   Future<String?> getRefreshToken() async => Future.value('refreshToken');
 
-  Future<void> saveToken(String token) async { }
+  Future<void> saveToken(String token) async {}
 
-  Future<void> saveRefreshToken(String refreshToken) async { }
+  Future<void> saveRefreshToken(String refreshToken) async {}
 
-  Future<void> logout()async{
-  //  TODO implement logout functionality
+  Future<void> logout() async {
+    //  TODO implement logout functionality
   }
 }
