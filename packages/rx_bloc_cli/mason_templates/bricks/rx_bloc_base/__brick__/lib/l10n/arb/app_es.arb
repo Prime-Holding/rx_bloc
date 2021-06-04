@@ -7,10 +7,12 @@
     "counterPageTitle": "Counter sample",
     "increment": "Increment",
     "decrement": "Decrement",
+    "ok" : "OK",
     "loginPageTitle": "Login sample",
     "logIn" : "Log in",
     "logOut" : "Log out",
     "resetPassword" : "Reset password",
     "notificationPageTitle" : "Notification sample",
-    "notifications" : "Notifications"
+    "notifications" : "Notifications",
+    "notificationsPermissionsDenied" : "Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings."
 }

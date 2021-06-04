@@ -14,7 +14,8 @@ dependencies:
   firebase_core: ^1.2.0{{/uses_firebase}}{{#push_notifications}}
   firebase_messaging: ^10.0.0{{/push_notifications}}
   flutter:
-    sdk: flutter
+    sdk: flutter{{#push_notifications}}
+  flutter_local_notifications: ^6.0.0{{/push_notifications}}
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^3.0.0

@@ -5,12 +5,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-{{#uses_firebase}}import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}
 import 'package:flutter/material.dart';
 
+import 'base/app/app_setup.dart';
 import 'base/app/config/environment_config.dart';
 import 'base/app/{{project_name}}.dart';
-import 'base/utils/helpers.dart';
 
 // ignore_for_file: avoid_void_async
 
@@ -20,9 +19,9 @@ void main() async {
   // See https://flutter.dev/testing/ for more info.
   // enableFlutterDriverExtension();
   WidgetsFlutterBinding.ensureInitialized();
-  {{#uses_firebase}}
-  // TODO: Add Firebase credentials for prod environment for Android and iOS
-  await safeRun(()=>Firebase.initializeApp());{{/uses_firebase}}
+
+  // Configure global app tools before launching the app
+  await configureApp();
 
   runApp({{#pascalCase}}{{project_name}}{{/pascalCase}}(config: EnvironmentConfig.prod));
 }
