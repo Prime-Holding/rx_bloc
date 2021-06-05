@@ -24,6 +24,7 @@ dependencies:
   retrofit: ^2.0.0
   rx_bloc: ^3.0.0
   rxdart: ^0.27.0
+  flutter_secure_storage: ^4.2.0
 
 dev_dependencies:
   auto_route_generator: ^2.1.0
