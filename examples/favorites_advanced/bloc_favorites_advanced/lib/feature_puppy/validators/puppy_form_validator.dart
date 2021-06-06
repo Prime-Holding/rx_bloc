@@ -1,8 +1,6 @@
 import 'package:favorites_advanced_base/core.dart';
 
 class PuppyFormValidator {
-  PuppyFormValidator();
-
   static const int _maxNameLength = 30;
   static const int _maxCharacteristicsLength = 250;
   static const _nameMustNotBeEmpty = 'Name must not be empty.';
@@ -35,15 +33,6 @@ class PuppyFormValidator {
     }
     return null;
   }
-
-
-  static Future<String?> breedValidationFuture (dynamic breedType) {
-    if (breedType == BreedType.None || breedType == null) {
-      return Future.value(_selectABreed);
-    }
-    return Future.value(null);
-  }
-
 
   static String? genderValidation(Gender? gender) {
     if (gender == Gender.None || gender == null) {
