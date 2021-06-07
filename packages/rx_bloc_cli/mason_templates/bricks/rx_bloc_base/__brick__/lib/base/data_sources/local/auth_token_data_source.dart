@@ -8,8 +8,8 @@
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AuthDataSource {
-  AuthDataSource(this._storage);
+class AuthTokenDataSource {
+  AuthTokenDataSource(this._storage);
 
   final FlutterSecureStorage _storage;
 

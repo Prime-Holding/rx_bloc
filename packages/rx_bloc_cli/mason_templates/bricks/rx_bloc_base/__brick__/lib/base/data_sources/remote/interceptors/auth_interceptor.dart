@@ -6,8 +6,9 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:dio/dio.dart';
-import 'package:test_app/base/common_use_cases/logout_use_case.dart';
-import 'package:test_app/base/repositories/auth_repository.dart';
+import '../../../common_use_cases/fetch_auth_token_use_case.dart';
+import '../../../common_use_cases/logout_use_case.dart';
+import '../../../repositories/auth_repository.dart';
 
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure
@@ -23,12 +24,14 @@ import 'package:test_app/base/repositories/auth_repository.dart';
 /// your own logic, regarding needs of your application.
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(
-      this._authRepository,
-      this._logoutUseCase,
-      );
+    this._authRepository,
+    this._logoutUseCase,
+    this._fetchAuthTokenUseCase,
+  );
 
   final LogoutUseCase _logoutUseCase;
   final AuthRepository _authRepository;
+  final FetchAuthTokenUseCase _fetchAuthTokenUseCase;
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
@@ -49,7 +52,7 @@ class AuthInterceptor extends Interceptor {
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final newToken = await loadNewToken();
+      final newToken = await _fetchAuthTokenUseCase.fetchNewAccessToken();
       if (newToken == null) {
         await _logoutUseCase.execute();
       }
@@ -57,16 +60,5 @@ class AuthInterceptor extends Interceptor {
     super.onError(err, handler);
   }
 
-  Future<String?> loadNewToken() async {
-    final refreshToken = await getRefreshToken();
-    if (refreshToken == null) {
-      return null;
-    }
-    final newToken = await _authRepository.fetchNewToken();
-    return newToken;
-  }
-
   Future<String?> getToken() async => _authRepository.getToken();
-
-  Future<String?> getRefreshToken() async => _authRepository.getRefreshToken();
 }

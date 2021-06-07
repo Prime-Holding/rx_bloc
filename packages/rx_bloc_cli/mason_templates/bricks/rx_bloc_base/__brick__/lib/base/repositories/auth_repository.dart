@@ -5,12 +5,12 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../../base/data_sources/local/auth_data_source.dart';
+import '../../base/data_sources/local/auth_token_data_source.dart';
 
 class AuthRepository {
   AuthRepository(this._authDataSource);
 
-  final AuthDataSource _authDataSource;
+  final AuthTokenDataSource _authDataSource;
 
   // Get token string if there is saved
   Future<String?> getToken() => _authDataSource.getToken();
