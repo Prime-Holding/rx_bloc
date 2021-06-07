@@ -123,7 +123,7 @@ void main() {
   );
 
   blocTest<PuppyListBloc, PuppyListState>(
-    'PuppyListBloc throws from getPuppies() and returns status failure',
+    'PuppyListBloc throws from getPuppies() and returns status failure ',
     build: () {
       mock.when(mockRepo.getPuppies(query: '')).thenThrow(Stub.testErr);
       return puppyListBloc;
