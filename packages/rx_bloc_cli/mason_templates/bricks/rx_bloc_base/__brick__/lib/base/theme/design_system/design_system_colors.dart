@@ -11,9 +11,9 @@ class DesignSystemColors {
 
   final Color _blackVariant = _HexColor('#36393d');
 
-  Color get primaryColor => lightMode ? Colors.blue : Colors.black;
+  Color get primaryColor => lightMode ? Colors.blue : _blackVariant;
 
-  Color get primaryVariant => lightMode ? Colors.blueAccent : _blackVariant;
+  Color get primaryVariant => lightMode ? Colors.blueAccent : Colors.black;
 
   Color get secondaryColor => Colors.white;
 
