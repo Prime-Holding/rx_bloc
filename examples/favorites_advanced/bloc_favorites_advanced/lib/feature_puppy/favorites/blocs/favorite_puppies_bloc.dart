@@ -17,16 +17,28 @@ class FavoritePuppiesBloc
   FavoritePuppiesBloc({
     required PuppiesRepository puppiesRepository,
     required CoordinatorBloc coordinatorBloc,
-  })   : _coordinatorBloc = coordinatorBloc,
+  })
+      : _coordinatorBloc = coordinatorBloc,
         _puppiesRepository = puppiesRepository,
         super(const FavoritePuppiesState(favoritePuppies: [])) {
     _coordinatorBloc.stream
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
-        .listen((state) => add(FavoritePuppiesMarkAsFavoriteEvent(
-            puppy: state.favoritePuppy,
-            isFavorite: state.favoritePuppy.isFavorite)))
+        .listen((state) =>
+        add(FavoritePuppiesMarkAsFavoriteEvent(
+          puppy: state.favoritePuppy,
+          isFavorite: state.favoritePuppy.isFavorite,
+          updateException: state.updateException,
+        )))
         .addTo(_compositeSubscription);
   }
+
+  @override
+  Stream<Transition<FavoritePuppiesEvent, FavoritePuppiesState>>
+  transformTransitions(Stream<
+      Transition<FavoritePuppiesEvent, FavoritePuppiesState>> transitions,)
+  =>
+      transitions.interval(const Duration(milliseconds: 100));
+  // .doOnData((event) {print('transformTransitions $event'); });
 
   final PuppiesRepository _puppiesRepository;
   final _compositeSubscription = CompositeSubscription();
@@ -34,8 +46,7 @@ class FavoritePuppiesBloc
 
   @override
   Stream<FavoritePuppiesState> mapEventToState(
-    FavoritePuppiesEvent event,
-  ) async* {
+      FavoritePuppiesEvent event,) async* {
     if (event is FavoritePuppiesFetchEvent) {
       yield* _mapToFavoritePuppies();
     } else if (event is FavoritePuppiesMarkAsFavoriteEvent) {
@@ -57,48 +68,68 @@ class FavoritePuppiesBloc
   }
 
   Stream<FavoritePuppiesState> _mapToFavoritesPuppies(
-    FavoritePuppiesMarkAsFavoriteEvent event,
-  ) async* {
+      FavoritePuppiesMarkAsFavoriteEvent event,) async* {
     final puppy = event.puppy;
     final isFavorite = event.isFavorite;
-
-    /// Emit an event with the copied instance of the entity, so that UI
-    /// can update immediately
-    _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(puppy));
-
-    /// Send a request to the API
-    try {
-      final updatedPuppy = (await _puppiesRepository.favoritePuppy(
-        puppy,
-        isFavorite: isFavorite,
-      ))
-          .copyWith(
-        breedCharacteristics: puppy.breedCharacteristics,
-        displayCharacteristics: puppy.displayCharacteristics,
-        displayName: puppy.displayName,
-      );
-
-      _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
-
+    if (event.updateException.isNotEmpty) {
+      _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(puppy));
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies.manageList(
-          isFavorite: updatedPuppy.isFavorite,
-          puppy: updatedPuppy,
+          isFavorite: puppy.isFavorite == false ? true : false,
+          puppy: puppy,
+        ),
+        error: event.updateException,
+      );
+
+      // await Future.delayed(const Duration(milliseconds: 200));
+      yield state.copyWith(
+        favoritePuppies: state.favoritePuppies.manageList(
+          isFavorite: puppy.isFavorite == false ? false : true,
+          puppy: puppy,
         ),
       );
-    } on Exception catch (e) {
-      yield state.copyWith(
-        favoritePuppies: state.favoritePuppies
-            .manageList(isFavorite: !isFavorite, puppy: puppy),
-        error: e.toString(),
-      );
-      // On the search page, when there is no internet the count of
-      // favorite puppies is not rebuilding without the delay
-      await Future.delayed(const Duration(milliseconds: 200));
-      yield state.copyWith(
-        favoritePuppies: state.favoritePuppies
-            .manageList(isFavorite: isFavorite, puppy: puppy),
-      );
+      // await Future.delayed(const Duration(milliseconds: 200));
+    } else {
+      /// Emit an event with the copied instance of the entity, so that UI
+      /// can update immediately
+      _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(puppy));
+
+      /// Send a request to the API
+      try {
+        final updatedPuppy = (await _puppiesRepository.favoritePuppy(
+          puppy,
+          isFavorite: isFavorite,
+        ))
+            .copyWith(
+          breedCharacteristics: puppy.breedCharacteristics,
+          displayCharacteristics: puppy.displayCharacteristics,
+          displayName: puppy.displayName,
+        );
+
+        _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(updatedPuppy));
+
+        yield state.copyWith(
+          favoritePuppies: state.favoritePuppies.manageList(
+            isFavorite: updatedPuppy.isFavorite,
+            puppy: updatedPuppy,
+          ),
+        );
+        // await Future.delayed(const Duration(milliseconds: 200));
+      } on Exception catch (e) {
+
+        final tempList = state.favoritePuppies
+            .manageList(isFavorite: !isFavorite, puppy: puppy);
+        yield state.copyWith(
+          favoritePuppies: tempList,
+          error: e.toString(),
+        );
+        // await Future.delayed(const Duration(milliseconds: 200));
+        final updatedList = state.favoritePuppies
+            .manageList(isFavorite: isFavorite, puppy: puppy);
+        yield state.copyWith(
+          favoritePuppies: updatedList,
+        );
+      }
     }
   }
 }
@@ -109,12 +140,17 @@ extension _PuppyListUtils on List<Puppy> {
 
     if (!isFavorite) {
       copiedList.removeWhere(
-        (element) => element.id == puppy.id,
+            (element) => element.id == puppy.id,
       );
     } else if (indexWhere((element) => element.id == puppy.id) == -1) {
       copiedList.add(puppy);
+    } else if (indexWhere((element) => element.id == puppy.id) != -1) {
+      // When a favorite puppy is edited, the updated puppy is replaced
+      // in the list
+      final puppyIndexInCopiedList =
+      copiedList.indexWhere((element) => element.id == puppy.id);
+      copiedList[puppyIndexInCopiedList] = puppy;
     }
-
     return copiedList;
   }
 }

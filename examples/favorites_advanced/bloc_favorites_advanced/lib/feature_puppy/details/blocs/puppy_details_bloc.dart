@@ -16,35 +16,65 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
     required CoordinatorBloc coordinatorBloc,
     required Puppy puppy,
   })   : _coordinatorBloc = coordinatorBloc,
-        _puppy = puppy,
         super(PuppyDetailsState(puppy: puppy)) {
     _coordinatorBloc.stream
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
-        .listen((state) => add(PuppyDetailsEvent(
-              puppy: state.favoritePuppy,
-              updateException: state.updateException,
-            )))
+        .listen((state) => add(PuppyDetailsFavoriteEvent(
+      puppy: state.favoritePuppy,
+      updateException: state.updateException,
+    )))
+        .addTo(_compositeSubscription);
+
+    _coordinatorBloc.stream
+        .whereType<CoordinatorPuppiesUpdatedState>()
+        .listen((state) => add(PuppyDetailsMarkAsFavoriteEvent(
+      puppies: state.puppies,
+    )))
         .addTo(_compositeSubscription);
   }
 
+  @override
+  Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transformTransitions(
+      Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transitions,
+      ) =>
+      transitions.interval(const Duration(milliseconds: 200));
+
   final CoordinatorBloc _coordinatorBloc;
-  late final Puppy? _puppy; //comes from the search or favorites pages
   final _compositeSubscription = CompositeSubscription();
 
   @override
   Stream<PuppyDetailsState> mapEventToState(
-    PuppyDetailsEvent event,
-  ) async* {
+      PuppyDetailsEvent event,
+      ) async* {
+    if (event is PuppyDetailsFavoriteEvent) {
+      yield* _mapToDetailsFavoriteEvent(event);
+    } else if (event is PuppyDetailsMarkAsFavoriteEvent) {
+      yield* _mapToDetailsMarkAsFavoriteEvent(event);
+    }
+  }
+
+  Stream<PuppyDetailsState> _mapToDetailsMarkAsFavoriteEvent(
+      PuppyDetailsMarkAsFavoriteEvent event) async* {
+    //Update Ui immediately
+    // print('_mapToDetailsMarkAsFavoriteEvent ${event.puppies}');
+    yield state.copyWith(puppy: event.puppies[0]);
+  }
+
+  Stream<PuppyDetailsState> _mapToDetailsFavoriteEvent(
+      PuppyDetailsFavoriteEvent event) async* {
     final puppy = event.puppy;
     if (event.updateException.isEmpty) {
-      yield state.copyWith(
-          puppy: _puppy!.copyWith(isFavorite: puppy.isFavorite));
+      final copiedPuppy = puppy.copyWith(
+          name: puppy.name,
+          breedType: puppy.breedType,
+          isFavorite: puppy.isFavorite,
+          gender: puppy.gender,
+          displayCharacteristics: puppy.displayCharacteristics);
+      final copiedState = state.copyWith(puppy: copiedPuppy);
+      // await Future.delayed(const Duration(milliseconds: 200));
+      yield copiedState;
+      // await Future.delayed(const Duration(milliseconds: 200));
     } else {
-      yield state.copyWith(
-          puppy: puppy.copyWith(isFavorite: !puppy.isFavorite));
-      // On details page, when there is no internet, the favorite icon is
-      // not rebuilding without the delay
-      await Future.delayed(const Duration(milliseconds: 400));
       yield state.copyWith(puppy: puppy.copyWith(isFavorite: puppy.isFavorite));
     }
   }
