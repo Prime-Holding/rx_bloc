@@ -3,7 +3,7 @@ import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart' as mock;
+import 'package:mockito/mockito.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 
 import '../../../stubs.dart';
@@ -25,8 +25,7 @@ void main() {
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mockCoordinatorBloc = MockCoordinatorBloc();
-    mock.when(mockCoordinatorBloc.stream)
-        .thenAnswer((_) => const Stream.empty());
+    when(mockCoordinatorBloc.stream).thenAnswer((_) => const Stream.empty());
     puppyListBloc = PuppyListBloc(
       repository: mockRepo,
       coordinatorBloc: mockCoordinatorBloc,
@@ -40,7 +39,7 @@ void main() {
   blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc FavoritePuppiesUpdatedEvent',
     build: () {
-      mock.when(mockRepo.getPuppies(query: ''))
+      when(mockRepo.getPuppies(query: ''))
           .thenAnswer((_) async => Stub.favoritePuppies12);
       return puppyListBloc;
     },
@@ -57,7 +56,7 @@ void main() {
 
   blocTest<PuppyListBloc, PuppyListState>('PuppyListBloc searchedPuppiesList ',
       build: () {
-        mock.when(mockRepo.getPuppies(query: ''))
+        when(mockRepo.getPuppies(query: ''))
             .thenAnswer((_) async => Stub.favoritePuppies123);
         return puppyListBloc;
       },
@@ -68,7 +67,7 @@ void main() {
   blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc ReloadPuppiesEvent',
     build: () {
-      mock.when(mockRepo.getPuppies(query: ''))
+      when(mockRepo.getPuppies(query: ''))
           .thenAnswer((_) async => Stub.favoritePuppies123);
       return puppyListBloc;
     },
@@ -93,9 +92,9 @@ void main() {
   blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc PuppyListFilterUpdatedQueryEvent',
     build: () {
-      mock.when(mockRepo.getPuppies(query: ''))
+      when(mockRepo.getPuppies(query: ''))
           .thenAnswer((_) async => Stub.queryPuppiesTest2);
-      mock.when(mockRepo.getPuppies(query: 'test'))
+      when(mockRepo.getPuppies(query: 'test'))
           .thenAnswer((_) async => Stub.queryPuppiesTest1);
       return puppyListBloc;
     },
@@ -125,7 +124,7 @@ void main() {
   blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc throws from getPuppies() and returns status failure',
     build: () {
-      mock.when(mockRepo.getPuppies(query: '')).thenThrow(Stub.testErr);
+      when(mockRepo.getPuppies(query: '')).thenThrow(Stub.testErr);
       return puppyListBloc;
     },
     expect: () => <PuppyListState>[
