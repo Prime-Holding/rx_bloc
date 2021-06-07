@@ -30,7 +30,7 @@ void main() {
     );
   });
 
-  test('FavoritePuppiesBloc FavoritePuppiesState count getter', () async {
+  test('FavoritePuppiesBloc FavoritePuppiesState count getter ', () async {
     mock
         .when(mockRepo.getFavoritePuppies())
         .thenAnswer((_) async => Stub.favoritePuppies);
