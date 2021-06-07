@@ -8,7 +8,7 @@ import 'package_version.dart';
 import 'rx_bloc_command_exception.dart';
 
 class RxBlocCommandRunner extends CommandRunner<int> {
-  RxBlocCommandRunner({Logger logger})
+  RxBlocCommandRunner({Logger? logger})
       : _logger = logger ?? Logger(),
         super('rx_bloc_cli', 'Rx Bloc Command Line Interface') {
     argParser.addFlag(
@@ -21,7 +21,7 @@ class RxBlocCommandRunner extends CommandRunner<int> {
   }
 
   final Logger _logger;
-  ArgResults _argResults;
+  late ArgResults _argResults;
 
   @override
   Future<int> run(Iterable<String> args) async {
@@ -47,7 +47,7 @@ class RxBlocCommandRunner extends CommandRunner<int> {
   }
 
   @override
-  Future<int> runCommand(ArgResults topLevelResults) async {
+  Future<int?> runCommand(ArgResults topLevelResults) async {
     if (topLevelResults['version'] == true) {
       _logger.info('package version: $packageVersion');
       return ExitCode.success.code;
