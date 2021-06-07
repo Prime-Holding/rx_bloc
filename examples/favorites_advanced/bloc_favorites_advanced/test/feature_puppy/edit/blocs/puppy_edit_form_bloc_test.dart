@@ -101,21 +101,22 @@ void main() {
     );
     final bloc = puppyEditFormBloc.breed;
 
-    bloc.updateInitialValue(Stub.isNotFavoritePuppy3.breedType);
-    await Future.delayed(const Duration(milliseconds: 20));
+    puppyEditFormBloc.breed
+        .updateInitialValue(Stub.isNotFavoritePuppy3.breedType);
+    await Future.delayed(const Duration(milliseconds: 10));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3.breedType);
     bloc.updateValue(BreedType.GoldenRetriever);
 
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 10));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3Edit.breedType);
 
     bloc.updateValue(BreedType.None);
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 10));
     await expectLater(puppyEditFormBloc.breedError$,
         emitsInOrder(['', Stub.breedNotSelectedErr]));
 
     bloc.updateValue(null);
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 10));
 
     await expectLater(puppyEditFormBloc.breedError$,
         emitsInOrder(['', Stub.breedNotSelectedErr]));
@@ -131,21 +132,21 @@ void main() {
 
     puppyEditFormBloc.gender
         .updateInitialValue(Stub.isNotFavoritePuppy3.gender);
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 10));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3.gender);
     bloc.updateValue(Gender.Female);
 
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 10));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3Edit.gender);
 
     bloc.updateValue(Gender.None);
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 10));
     expect(bloc.state.error, Stub.emptyGenderFieldError);
 
     bloc.updateValue(null);
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 10));
     expect(bloc.state.error, Stub.emptyGenderFieldError);
   });
 

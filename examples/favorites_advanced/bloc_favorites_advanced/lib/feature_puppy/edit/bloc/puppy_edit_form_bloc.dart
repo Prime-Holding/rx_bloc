@@ -38,7 +38,7 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     name.onValueChanges(
       onData: (previous, current) async* {
         if (previous != current) {
-          print('_name.sink.add ${current.value.toString()}');
+          // print('_name.sink.add ${current.value.toString()}');
           _name.sink.add(current.value.toString());
           final newName = current.value.toString();
           if (_puppy.name != newName) {
