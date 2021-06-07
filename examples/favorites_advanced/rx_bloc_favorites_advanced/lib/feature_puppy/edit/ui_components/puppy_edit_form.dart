@@ -8,7 +8,7 @@ import 'package:rx_bloc_favorites_advanced/base/resources/rx_input_styles.dart';
 import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
 import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_card.dart';
+import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flow_builder/flow_builder.dart';
 
 class PuppyEditForm extends StatelessWidget {
