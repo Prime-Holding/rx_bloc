@@ -32,6 +32,7 @@ class AuthInterceptor extends Interceptor {
   final LogoutUseCase _logoutUseCase;
   final AuthRepository _authRepository;
   final fetchNewAccessTokenUseCase _fetchNewAccessTokenUseCase;
+  final Dio _httpClient = Dio();
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
@@ -55,6 +56,24 @@ class AuthInterceptor extends Interceptor {
       final newToken = await _fetchNewAccessTokenUseCase.execute();
       if (newToken == null) {
         await _logoutUseCase.execute();
+      }else {
+        _httpClient.options
+          ..headers['Authorization'] = 'Bearer $newToken'
+          ..baseUrl = err.requestOptions.baseUrl
+          ..method = err.requestOptions.method
+          ..queryParameters = err.requestOptions.queryParameters
+          ..extra = err.requestOptions.extra
+          ..responseType = err.requestOptions.responseType
+          ..connectTimeout = err.requestOptions.connectTimeout
+          ..receiveTimeout = err.requestOptions.receiveTimeout;
+        handler.resolve(await _httpClient.request(
+          err.requestOptions.path,
+          cancelToken: err.requestOptions.cancelToken,
+          data: err.requestOptions.data,
+          queryParameters: err.requestOptions.queryParameters,
+          onReceiveProgress: err.requestOptions.onReceiveProgress,
+          onSendProgress: err.requestOptions.onSendProgress,
+        ));
       }
     }
     super.onError(err, handler);
