@@ -14,7 +14,6 @@ import 'puppy_details_bloc_test.mocks.dart';
 void main() {
   late MockCoordinatorBloc mockCoordinatorBloc;
   late PuppyDetailsBloc puppyDetailsBloc;
-// setUpAll(body);
   setUp(() {
     mockCoordinatorBloc = MockCoordinatorBloc();
     mock
@@ -32,16 +31,14 @@ void main() {
       coordinatorBloc: mockCoordinatorBloc,
       puppy: Stub.isNotFavoritePuppy3,
     ),
-    wait: const Duration(milliseconds: 400),
+    wait: const Duration(milliseconds: 40),
     act: (bloc) async {
       bloc.add(PuppyDetailsFavoriteEvent(
         puppy: Stub.isNotFavoritePuppy3,
         updateException: '',
       ));
-      // await Future.delayed(const Duration(milliseconds: 200));
     },
-    expect: () =>  <PuppyDetailsState>[
-      // puppyDetailsBloc.state.copyWith(puppy: Stub.isNotFavoritePuppy3),
+    expect: () => <PuppyDetailsState>[
       PuppyDetailsState(puppy: Stub.isNotFavoritePuppy3),
     ],
   );
@@ -54,13 +51,10 @@ void main() {
         puppy: Stub.isNotFavoritePuppy3,
         updateException: Stub.testErrString,
       ));
-      // await Future.delayed(const Duration(milliseconds: 200));
     },
-    wait: const Duration(milliseconds: 400),
+    wait: const Duration(milliseconds: 40),
     expect: () => <PuppyDetailsState>[
-      // puppyDetailsBloc.state.copyWith(puppy: Stub.isNotFavoritePuppy3),
       PuppyDetailsState(puppy: Stub.isNotFavoritePuppy3),
-      // puppyDetailsBloc.state.copyWith(puppy: Stub.isNotFavoritePuppy3),
     ],
   );
 
@@ -75,10 +69,9 @@ void main() {
         puppies: Stub.onePuppyWithDetailsList,
       ));
     },
-    wait: const Duration(milliseconds: 400),
+    wait: const Duration(milliseconds: 40),
     expect: () => <PuppyDetailsState>[
       PuppyDetailsState(puppy: Stub.onePuppyWithDetailsList[0]),
     ],
   );
-
 }

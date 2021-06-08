@@ -37,7 +37,7 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
   Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transformTransitions(
       Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transitions,
       ) =>
-      transitions.interval(const Duration(milliseconds: 200));
+      transitions.interval(const Duration(milliseconds: 20));
 
   final CoordinatorBloc _coordinatorBloc;
   final _compositeSubscription = CompositeSubscription();
