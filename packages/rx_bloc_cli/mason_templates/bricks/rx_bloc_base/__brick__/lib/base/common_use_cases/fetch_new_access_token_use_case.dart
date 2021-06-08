@@ -1,20 +1,18 @@
 import '../repositories/auth_repository.dart';
 
-class FetchAuthTokenUseCase {
-  FetchAuthTokenUseCase(
+class fetchNewAccessTokenUseCase {
+  fetchNewAccessTokenUseCase(
     this._authRepository,
   );
 
   final AuthRepository _authRepository;
 
-  Future<String?> fetchNewAccessToken() async {
-    final refreshToken = await getRefreshToken();
+  Future<String?> execute() async {
+    final refreshToken = await _authRepository.getRefreshToken();
     if (refreshToken == null) {
       return null;
     }
     final newToken = await _authRepository.fetchNewToken();
     return newToken;
   }
-
-  Future<String?> getRefreshToken() async => _authRepository.getRefreshToken();
 }

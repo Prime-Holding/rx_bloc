@@ -557,7 +557,7 @@ final rxBlocBaseBundle = MasonBundle.fromJson({
       "type": "text"
     },
     {
-      "path": "lib\\base\\common_use_cases\\fetch_auth_token_use_case.dart",
+      "path": "lib\\base\\common_use_cases\\fetch_new_access_token_use_case.dart",
       "data":
           "aW1wb3J0ICcuLi9yZXBvc2l0b3JpZXMvYXV0aF9yZXBvc2l0b3J5LmRhcnQnOw0KDQpjbGFzcyBGZXRjaEF1dGhUb2tlblVzZUNhc2Ugew0KICBGZXRjaEF1dGhUb2tlblVzZUNhc2UoDQogICAgdGhpcy5fYXV0aFJlcG9zaXRvcnksDQogICk7DQoNCiAgZmluYWwgQXV0aFJlcG9zaXRvcnkgX2F1dGhSZXBvc2l0b3J5Ow0KDQogIEZ1dHVyZTxTdHJpbmc/PiBmZXRjaE5ld0FjY2Vzc1Rva2VuKCkgYXN5bmMgew0KICAgIGZpbmFsIHJlZnJlc2hUb2tlbiA9IGF3YWl0IGdldFJlZnJlc2hUb2tlbigpOw0KICAgIGlmIChyZWZyZXNoVG9rZW4gPT0gbnVsbCkgew0KICAgICAgcmV0dXJuIG51bGw7DQogICAgfQ0KICAgIGZpbmFsIG5ld1Rva2VuID0gYXdhaXQgX2F1dGhSZXBvc2l0b3J5LmZldGNoTmV3VG9rZW4oKTsNCiAgICByZXR1cm4gbmV3VG9rZW47DQogIH0NCg0KICBGdXR1cmU8U3RyaW5nPz4gZ2V0UmVmcmVzaFRva2VuKCkgYXN5bmMgPT4gX2F1dGhSZXBvc2l0b3J5LmdldFJlZnJlc2hUb2tlbigpOw0KfQ0K",
       "type": "text"

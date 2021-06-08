@@ -6,7 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:dio/dio.dart';
-import '../../../common_use_cases/fetch_auth_token_use_case.dart';
+import '../../../common_use_cases/fetch_new_access_token_use_case.dart';
 import '../../../common_use_cases/logout_use_case.dart';
 import '../../../repositories/auth_repository.dart';
 
@@ -26,12 +26,12 @@ class AuthInterceptor extends Interceptor {
   AuthInterceptor(
     this._authRepository,
     this._logoutUseCase,
-    this._fetchAuthTokenUseCase,
+    this._fetchNewAccessTokenUseCase,
   );
 
   final LogoutUseCase _logoutUseCase;
   final AuthRepository _authRepository;
-  final FetchAuthTokenUseCase _fetchAuthTokenUseCase;
+  final fetchNewAccessTokenUseCase _fetchNewAccessTokenUseCase;
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
@@ -52,7 +52,7 @@ class AuthInterceptor extends Interceptor {
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final newToken = await _fetchAuthTokenUseCase.fetchNewAccessToken();
+      final newToken = await _fetchNewAccessTokenUseCase.execute();
       if (newToken == null) {
         await _logoutUseCase.execute();
       }

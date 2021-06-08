@@ -13,7 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../common_use_cases/fetch_auth_token_use_case.dart';
+import '../common_use_cases/fetch_new_access_token_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
@@ -35,8 +35,7 @@ class AppDependencies {
         ..._analytics,
         ..._authDataSource,
         ..._authRepo,
-        ..._logoutUseCase,
-        ..._fetchAuthTokenUseCase,
+        ..._useCases,
         ..._httpClients,
       ];
 
@@ -59,14 +58,11 @@ class AppDependencies {
             create: (context) => AuthRepository(context.read())),
       ];
 
-  List<Provider> get _logoutUseCase => [
+  List<Provider> get _useCases => [
         Provider<LogoutUseCase>(
             create: (context) => LogoutUseCase(context.read())),
-      ];
-
-  List<Provider> get _fetchAuthTokenUseCase => [
-        Provider<FetchAuthTokenUseCase>(
-            create: (context) => FetchAuthTokenUseCase(context.read())),
+        Provider<fetchNewAccessTokenUseCase>(
+            create: (context) => fetchNewAccessTokenUseCase(context.read())),
       ];
 
   List<Provider> get _httpClients => [
