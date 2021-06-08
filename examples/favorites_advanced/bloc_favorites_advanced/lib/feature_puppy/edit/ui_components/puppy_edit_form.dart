@@ -3,7 +3,7 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/services.dart';
-import 'package:bloc_sample/feature_puppy/edit/ui_components/puppy_edit_card.dart';
+import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
