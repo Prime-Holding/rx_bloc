@@ -71,7 +71,7 @@ class AppDependencies {
           _dio.interceptors
             ..add(
                 AuthInterceptor(context.read(), context.read(), context.read()))
-            ..add(AnalyticsInterceptor());
+            ..add(AnalyticsInterceptor(context.read()));
           return _dio;
         }),
       ];
