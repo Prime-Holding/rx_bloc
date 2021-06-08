@@ -48,7 +48,6 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
         child: FormBlocListener<PuppyEditFormBloc, String, String>(
           onSuccess: (context, state) {
             canPop = true;
-            // print('canPop = true ${canPop}');
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.successResponse!)));
               context
@@ -63,7 +62,6 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
           onSubmitting: (context, state) {
             if (state is FormBlocSubmitting) {
               canPop = false;
-              // print('canPop = false ${canPop}');
             }
           },
           child: Builder(

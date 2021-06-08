@@ -75,7 +75,6 @@ class PuppyEditAvatar extends StatelessWidget {
                   leading: const Icon(Icons.camera_enhance),
                   title: const Text('Camera'),
                   onTap: () {
-                    // print('Camera1');
                     fileFieldBloc.updateValue(ImagePickerAction.camera);
                     Navigator.of(context).pop(ImagePickerAction.camera);
                   }),
@@ -83,7 +82,6 @@ class PuppyEditAvatar extends StatelessWidget {
                   leading: const Icon(Icons.image),
                   title: const Text('Gallery'),
                   onTap: () {
-                    // print('Gallery1');
                     fileFieldBloc.updateValue(ImagePickerAction.gallery);
                     Navigator.of(context).pop(ImagePickerAction.gallery);
                   }),

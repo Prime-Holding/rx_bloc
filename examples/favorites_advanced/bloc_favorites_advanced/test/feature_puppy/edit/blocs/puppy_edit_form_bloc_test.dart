@@ -178,6 +178,9 @@ void main() {
     );
     final bloc = puppyEditFormBloc.image;
 
+    // await Future.delayed(Stub.pickImageDelay);
+    // expect(bloc.state.value, null);
+    // expect(bloc.value, null);
     mock
         .when(mockRepo.pickPuppyImage(ImagePickerAction.camera))
         .thenAnswer((_) async => PickedFile('camera image'));

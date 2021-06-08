@@ -11,20 +11,17 @@ import 'package:provider/provider.dart';
 
 import 'image_field_bloc_builder.dart';
 
-// ignore: must_be_immutable
 class PuppyEditForm extends StatelessWidget {
-  PuppyEditForm({
+   const PuppyEditForm({
     required Puppy puppy,
     required PuppyEditFormBloc puppyEditFormBloc,
     Key? key,
   })  : _puppy = puppy,
         _formBloc = puppyEditFormBloc,
-        breedHasError = false,
         super(key: key);
 
   final Puppy _puppy;
   final PuppyEditFormBloc _formBloc;
-  bool breedHasError;
 
   @override
   Widget build(BuildContext context) => BlocProvider(
@@ -93,6 +90,7 @@ class PuppyEditForm extends StatelessWidget {
         stream: formBloc.breedError$,
         builder: (context, snapshot) {
           final result = snapshot.data != null ? true : false;
+          var breedHasError = false;
           if (result) {
             if (snapshot.data!.isNotEmpty) {
               breedHasError = true;

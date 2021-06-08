@@ -55,8 +55,7 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
 
   Stream<PuppyDetailsState> _mapToDetailsMarkAsFavoriteEvent(
       PuppyDetailsMarkAsFavoriteEvent event) async* {
-    //Update Ui immediately
-    // print('_mapToDetailsMarkAsFavoriteEvent ${event.puppies}');
+    // Update Ui immediately
     yield state.copyWith(puppy: event.puppies[0]);
   }
 

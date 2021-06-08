@@ -25,20 +25,23 @@ class PuppyEditFormBloc extends FormBloc<String, String> {
     );
 
     image.onValueChanges(onData: (previous, current) async* {
-      final pickedImage = await repository.pickPuppyImage(current.value!);
-      if (pickedImage != null) {
-        final newPath = pickedImage.path;
-        _asset.sink.add(newPath);
-        setImagePath(newPath);
-        emitUpdatingFields();
-        emitLoaded();
+      try {
+        final pickedImage = await repository.pickPuppyImage(current.value!);
+        if (pickedImage != null) {
+          final newPath = pickedImage.path;
+          _asset.sink.add(newPath);
+          setImagePath(newPath);
+          emitUpdatingFields();
+          emitLoaded();
+        }
+      } catch (e) {
+        emitFailure(failureResponse: _submissionFailureResponse);
       }
     });
 
     name.onValueChanges(
       onData: (previous, current) async* {
         if (previous != current) {
-          // print('_name.sink.add ${current.value.toString()}');
           _name.sink.add(current.value.toString());
           final newName = current.value.toString();
           if (_puppy.name != newName) {
