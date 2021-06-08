@@ -26,6 +26,11 @@ dependencies:
   rxdart: ^0.27.0
   flutter_secure_storage: ^4.2.0
 
+  # Only for testing purposes
+  shelf: ^1.0.0
+  shelf_router: ^1.0.0
+  shelf_static: ^1.0.0
+
 dev_dependencies:
   auto_route_generator: ^2.1.0
   build_runner: ^2.0.3
@@ -38,6 +43,9 @@ dev_dependencies:
   rx_bloc_generator: ^5.0.0
   rx_bloc_test: ^3.0.0
   test: any
+
+  # Only for testing purposes
+  http: ^0.13.0
 
 flutter:
   uses-material-design: true
