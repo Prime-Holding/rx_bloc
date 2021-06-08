@@ -48,9 +48,9 @@ class SearchPage extends StatelessWidget {
                       .read<PuppiesExtraDetailsBloc>()
                       .add(FetchPuppyExtraDetailsEvent(puppy)),
                   puppy: item,
-                  onCardPressed: (puppy) {
-                    Navigator.of(context).push(PuppyFlow.route(puppy: puppy));
-                  },
+                  onCardPressed: (puppy) =>
+                    Navigator.of(context).push(PuppyFlow.route(puppy: puppy))
+                  ,
                   // When we click the favorite_border icon we receive
                   // isFavorite true
                   onFavorite: (puppy, isFavorite) => context

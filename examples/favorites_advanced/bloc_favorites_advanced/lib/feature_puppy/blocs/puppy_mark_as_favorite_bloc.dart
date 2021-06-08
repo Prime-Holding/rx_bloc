@@ -22,21 +22,15 @@ class PuppyMarkAsFavoriteBloc
         super(const PuppyMarkAsFavoriteState());
 
   @override
-  Stream<
-      Transition<PuppyManageEvent, PuppyMarkAsFavoriteState>> transformEvents(
-          Stream<PuppyManageEvent> events,
-          TransitionFunction<PuppyManageEvent, PuppyMarkAsFavoriteState>
-              transitionFn) =>
-      super.transformEvents(
-          events
-              .doOnData((event) {
-                // print('mark as fav transformEvents1 $event');
-              })
-              .throttleTime(const Duration(milliseconds: 500), leading: true)
-              .doOnData((event) {
-                // print('mark as fav transformEvents2 $event');
-              }),
-          transitionFn);
+  Stream<Transition<PuppyManageEvent, PuppyMarkAsFavoriteState>>
+      transformEvents(
+              Stream<PuppyManageEvent> events,
+              TransitionFunction<PuppyManageEvent, PuppyMarkAsFavoriteState>
+                  transitionFn) =>
+          super.transformEvents(
+              events.throttleTime(const Duration(milliseconds: 500),
+                  leading: true),
+              transitionFn);
 
   final PuppiesRepository _puppiesRepository;
   final CoordinatorBloc _coordinatorBloc;
