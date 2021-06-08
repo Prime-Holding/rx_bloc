@@ -13,7 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../common_use_cases/fetch_new_access_token_use_case.dart';
+import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
@@ -33,8 +33,8 @@ class AppDependencies {
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
         ..._analytics,
-        ..._authDataSource,
-        ..._authRepo,
+        ..._dataSources,
+        ..._repositories,
         ..._useCases,
         ..._httpClients,
       ];
@@ -47,13 +47,13 @@ class AppDependencies {
         ),
       ];
 
-  List<Provider> get _authDataSource => [
+  List<Provider> get _dataSources => [
         Provider<AuthTokenDataSource>(
             create: (context) =>
                 AuthTokenDataSource(const FlutterSecureStorage())),
       ];
 
-  List<Provider> get _authRepo => [
+  List<Provider> get _repositories => [
         Provider<AuthRepository>(
             create: (context) => AuthRepository(context.read())),
       ];
@@ -61,8 +61,8 @@ class AppDependencies {
   List<Provider> get _useCases => [
         Provider<LogoutUseCase>(
             create: (context) => LogoutUseCase(context.read())),
-        Provider<fetchNewAccessTokenUseCase>(
-            create: (context) => fetchNewAccessTokenUseCase(context.read())),
+        Provider<FetchAccessTokenUseCase>(
+            create: (context) => FetchAccessTokenUseCase(context.read())),
       ];
 
   List<Provider> get _httpClients => [
@@ -70,7 +70,7 @@ class AppDependencies {
           final _dio = Dio();
           _dio.interceptors
             ..add(
-                AuthInterceptor(context.read(), context.read(), context.read()))
+                AuthInterceptor(context.read(), context.read()))
             ..add(AnalyticsInterceptor(context.read()));
           return _dio;
         }),
