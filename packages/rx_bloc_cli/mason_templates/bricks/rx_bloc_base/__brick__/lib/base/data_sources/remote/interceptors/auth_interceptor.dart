@@ -5,9 +5,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
+import '../../../common_use_cases/fetch_new_access_token_use_case.dart';
+import '../../../common_use_cases/logout_use_case.dart';
+import '../../../repositories/auth_repository.dart';
 
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure
@@ -22,6 +23,16 @@ import 'package:dio/dio.dart';
 /// Here is an example of AuthInterceptor. You have to implement
 /// your own logic, regarding needs of your application.
 class AuthInterceptor extends Interceptor {
+  AuthInterceptor(
+    this._authRepository,
+    this._logoutUseCase,
+    this._fetchNewAccessTokenUseCase,
+  );
+
+  final LogoutUseCase _logoutUseCase;
+  final AuthRepository _authRepository;
+  final fetchNewAccessTokenUseCase _fetchNewAccessTokenUseCase;
+  final Dio _httpClient = Dio();
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
@@ -36,51 +47,37 @@ class AuthInterceptor extends Interceptor {
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
-    // TODO: Add your logic here
     super.onRequest(options, handler);
   }
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final Map<String, dynamic> errData = jsonDecode(err.response.toString());
-      if (errData['details'] != 'Bad credentials') {
-        try {
-          await loadNewToken();
-        } on Exception catch (e) {
-          print(e.toString());
-          await logout();
-        }
+      final newToken = await _fetchNewAccessTokenUseCase.execute();
+      if (newToken == null) {
+        await _logoutUseCase.execute();
+      }else {
+        _httpClient.options
+          ..headers['Authorization'] = 'Bearer $newToken'
+          ..baseUrl = err.requestOptions.baseUrl
+          ..method = err.requestOptions.method
+          ..queryParameters = err.requestOptions.queryParameters
+          ..extra = err.requestOptions.extra
+          ..responseType = err.requestOptions.responseType
+          ..connectTimeout = err.requestOptions.connectTimeout
+          ..receiveTimeout = err.requestOptions.receiveTimeout;
+        handler.resolve(await _httpClient.request(
+          err.requestOptions.path,
+          cancelToken: err.requestOptions.cancelToken,
+          data: err.requestOptions.data,
+          queryParameters: err.requestOptions.queryParameters,
+          onReceiveProgress: err.requestOptions.onReceiveProgress,
+          onSendProgress: err.requestOptions.onSendProgress,
+        ));
       }
     }
     super.onError(err, handler);
   }
 
-  Future<void> loadNewToken() async {
-    final refreshToken = await getRefreshToken();
-    if (refreshToken == null) {
-      //  Add your logic here
-    }
-    try {
-      final token = await fetchToken();
-      await saveToken(token!);
-    } catch (e) {
-      //  Add your logic here
-    }
-  }
-
-  // TODO Next methods should be implemented regarding app logic
-  Future<String?> getToken() async => Future.value('token');
-
-  Future<String?> fetchToken() async => Future.value('token');
-
-  Future<String?> getRefreshToken() async => Future.value('refreshToken');
-
-  Future<void> saveToken(String token) async {}
-
-  Future<void> saveRefreshToken(String refreshToken) async {}
-
-  Future<void> logout() async {
-    //  TODO implement logout functionality
-  }
+  Future<String?> getToken() async => _authRepository.getToken();
 }

@@ -5,15 +5,20 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-{{#analytics}}
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';{{/analytics}}
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import '../../base/data_sources/remote/interceptors/analytics_interceptor.dart';
-import '../../base/data_sources/remote/interceptors/auth_interceptor.dart';
+
+import '../common_use_cases/fetch_new_access_token_use_case.dart';
+import '../common_use_cases/logout_use_case.dart';
+import '../data_sources/local/auth_token_data_source.dart';
+import '../data_sources/remote/interceptors/analytics_interceptor.dart';
+import '../data_sources/remote/interceptors/auth_interceptor.dart';
+import '../repositories/auth_repository.dart';
 
 class AppDependencies {
   AppDependencies._(this.context);
@@ -28,7 +33,9 @@ class AppDependencies {
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [{{#analytics}}
     ..._analytics,
-    {{/analytics}}..._httpClients,
+    {{/analytics}}..._authentication,
+    ..._useCases,
+    ..._httpClients,
   ];
 {{#analytics}}
 
@@ -40,13 +47,29 @@ class AppDependencies {
         ),
       ];{{/analytics}}
 
+  List<Provider> get _authentication => [
+    Provider<AuthTokenDataSource>(
+        create: (context) =>
+            AuthTokenDataSource(const FlutterSecureStorage())),
+    Provider<AuthRepository>(
+        create: (context) => AuthRepository(context.read())),
+  ];
+
+  List<Provider> get _useCases => [
+    Provider<LogoutUseCase>(
+        create: (context) => LogoutUseCase(context.read())),
+    Provider<fetchNewAccessTokenUseCase>(
+        create: (context) => fetchNewAccessTokenUseCase(context.read())),
+  ];
+
   List<Provider> get _httpClients => [
-      Provider<Dio>(create: (context) {
+    Provider<Dio>(create: (context) {
       final _dio = Dio();
       _dio.interceptors
-        ..add(AuthInterceptor())
-        ..add(AnalyticsInterceptor());
+        ..add(
+            AuthInterceptor(context.read(), context.read(), context.read()))
+        ..add(AnalyticsInterceptor(context.read()));
       return _dio;
-      }),
+    }),
   ];
 }
