@@ -14,8 +14,8 @@ class LoadPuppyListEvent extends PuppyListEvent {
   LoadPuppyListEvent();
 }
 
-class FavoritePuppiesUpdatedEvent extends PuppyListEvent {
-  FavoritePuppiesUpdatedEvent({
+class PuppyListFavoritePuppiesUpdatedEvent extends PuppyListEvent {
+  PuppyListFavoritePuppiesUpdatedEvent({
     required this.favoritePuppies,
   });
 

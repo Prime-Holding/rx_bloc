@@ -6,7 +6,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -21,15 +20,9 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   })   : _repository = repository,
         super(PuppyListState.withInitial()) {
     coordinatorBloc.stream
-        .doOnData((event) {
-          // print('Puppy List Bloc coordinatorBloc.stream ! $event');
-        })
         .whereType<CoordinatorPuppiesUpdatedState>()
-        .doOnData((event) {
-          // print('Puppy List Bloc coordinatorBloc.stream ${event.puppies}');
-        })
-        .listen((state) =>
-            add(FavoritePuppiesUpdatedEvent(favoritePuppies: state.puppies)))
+        .listen((state) => add(PuppyListFavoritePuppiesUpdatedEvent(
+            favoritePuppies: state.puppies)))
         .addTo(_compositeSubscription);
 
     add(LoadPuppyListEvent());
@@ -61,7 +54,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
         state,
         loadStatus: PuppyListStatus.reloading,
       );
-    } else if (event is FavoritePuppiesUpdatedEvent) {
+    } else if (event is PuppyListFavoritePuppiesUpdatedEvent) {
       yield* _mapFavoritePuppiesToState(event.favoritePuppies, state);
     } else if (event is PuppyListFilterUpdatedQueryEvent) {
       yield* _mapPuppiesFilteredToState(event.query, state);
@@ -71,7 +64,6 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
   Stream<PuppyListState> _mapPuppiesFilteredToState(
       String query, PuppyListState state) async* {
     try {
-      // print('_mapPuppiesFilteredToState query : $query');
       yield state.copyWith(status: PuppyListStatus.initial);
       lastSearchedQuery = query;
       yield state.copyWith(
@@ -79,7 +71,6 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
         status: PuppyListStatus.success,
       );
     } on Exception {
-      // print('Filter puppies fetch exception');
       yield state.copyWith(status: PuppyListStatus.failure);
     }
   }
@@ -105,7 +96,6 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
     List<Puppy> updatedPuppies,
     PuppyListState state,
   ) async* {
-    // print('Puppy List Bloc _mapFavoritePuppiesToState : $updatedPuppies');
     yield state.copyWith(
       status: PuppyListStatus.success,
       searchedPuppies: state.searchedPuppies!.mergeWith(updatedPuppies),
@@ -114,7 +104,6 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
   @override
   Future<void> close() {
-    // print('close');
     _compositeSubscription.dispose();
     return super.close();
   }
@@ -122,13 +111,7 @@ class PuppyListBloc extends Bloc<PuppyListEvent, PuppyListState> {
 
 extension _FilterPuppiesEventExtension on Stream<PuppyListFilterEvent> {
   Stream<PuppyListFilterUpdatedQueryEvent> mapToPayload() => distinct()
-      .doOnData((event) {
-        // print('Extension 1 event.query : ${event.query}');
-      })
       .debounceTime(const Duration(milliseconds: 600))
-      .map(
-          (newQuery) => PuppyListFilterUpdatedQueryEvent(query: newQuery.query))
-      .doOnData((event) {
-        // print('Extension 2 event.query : ${event.query}');
-      });
+      .map((newQuery) =>
+          PuppyListFilterUpdatedQueryEvent(query: newQuery.query));
 }

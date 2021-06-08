@@ -83,6 +83,17 @@ class Stub {
     ),
   ];
 
+  static final onePuppyWithDetailsList = [Puppy(
+    id: '3',
+    name: 'Buddy',
+    asset: 'puppie_4.jpeg',
+    isFavorite: false,
+    gender: Gender.Male,
+    breedType: BreedType.GermanShepherd,
+    displayCharacteristics: 'Characteristics Buddy 3',
+    displayName: 'Buddy',
+  )];
+
   static final isFavoritePuppy3 = Puppy(
     id: '3',
     name: 'Buddy',
@@ -257,6 +268,7 @@ class Stub {
   // );
 
   static final testErr = Exception('test error');
+  static const testErrString = 'Exception: test error';
 
   static Stream<T> delayed<T>(T value, [int milliseconds = 100]) =>
       Future.delayed(Duration(milliseconds: milliseconds), () async => value)

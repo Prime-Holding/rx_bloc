@@ -45,7 +45,7 @@ void main() {
       return puppyListBloc;
     },
     act: (bloc) {
-      bloc.add(FavoritePuppiesUpdatedEvent(
+      bloc.add(PuppyListFavoritePuppiesUpdatedEvent(
           favoritePuppies: [Stub.isFavoritePuppy3]));
     },
     expect: () => [
@@ -123,7 +123,41 @@ void main() {
   );
 
   blocTest<PuppyListBloc, PuppyListState>(
-    'PuppyListBloc throws from getPuppies() and returns status failure ',
+    'PuppyListBloc PuppyListFilterEvent PuppyListFilterUpdatedQueryEvent',
+    build: () {
+      mock.when(mockRepo.getPuppies(query: ''))
+          .thenAnswer((_) async => Stub.queryPuppiesTest2);
+      mock.when(mockRepo.getPuppies(query: 'test'))
+          .thenAnswer((_) async => Stub.queryPuppiesTest1);
+      return puppyListBloc;
+    },
+    act: (bloc) async {
+      bloc
+        ..add(PuppyListFilterEvent(query: 'test'))
+        ..add(PuppyListFilterUpdatedQueryEvent(query: 'test'));
+    },
+    expect: () => <PuppyListState>[
+      const PuppyListState(
+        searchedPuppies: [],
+        status: PuppyListStatus.initial,
+      ),
+      PuppyListState(
+        searchedPuppies: Stub.queryPuppiesTest2,
+        status: PuppyListStatus.success,
+      ),
+      PuppyListState(
+        searchedPuppies: Stub.queryPuppiesTest2,
+        status: PuppyListStatus.initial,
+      ),
+      PuppyListState(
+        searchedPuppies: Stub.queryPuppiesTest1,
+        status: PuppyListStatus.success,
+      ),
+    ],
+  );
+
+  blocTest<PuppyListBloc, PuppyListState>(
+    'PuppyListBloc throws from getPuppies() and returns status failure',
     build: () {
       mock.when(mockRepo.getPuppies(query: '')).thenThrow(Stub.testErr);
       return puppyListBloc;

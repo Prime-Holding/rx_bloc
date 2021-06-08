@@ -35,8 +35,12 @@ class CoordinatorBloc extends Bloc<CoordinatorEvent, CoordinatorState> {
     CoordinatorEvent event,
   ) async* {
     if (event is CoordinatorPuppiesUpdatedEvent) {
-      // print('Coordinator Bloc mapEventToState ${event.puppies}');
       yield CoordinatorPuppiesUpdatedState(event.puppies);
+    } else if (event is CoordinatorFavoritePuppyUpdatedEvent) {
+      yield CoordinatorFavoritePuppyUpdatedState(
+        favoritePuppy: event.favoritePuppy,
+        updateException: event.updateException,
+      );
     }
   }
 }
@@ -47,10 +51,7 @@ extension _CoordinatorEventUtils on Stream<CoordinatorEvent> {
           whereType<CoordinatorPuppyUpdatedEvent>()
               .map((event) => [event.puppy]),
           whereType<CoordinatorPuppiesWithExtraDetailsEvent>()
-              .map((event) => event.puppies)
-              .doOnData((event1) {
-            // print('Coordinator Bloc mapToPuppies : $event1');
-          }),
+              .map((event) => event.puppies),
         ],
       );
 }

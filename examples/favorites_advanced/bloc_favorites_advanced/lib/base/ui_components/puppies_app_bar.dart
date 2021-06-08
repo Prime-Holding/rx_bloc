@@ -18,16 +18,16 @@ class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
       state.selectedItem.type == NavigationItemType.search
           ? _searchAppBar(context, state.selectedItem)
           : AppBar(
-              title: Text(
-                state.selectedItem.type.asTitle(),
-              ),
-              centerTitle: false,
-            );
+        title: Text(
+          state.selectedItem.type.asTitle(),
+        ),
+        centerTitle: false,
+      );
 
   AppBarTextField _searchAppBar(
-    BuildContext context,
-    NavigationItem item,
-  ) =>
+      BuildContext context,
+      NavigationItem item,
+      ) =>
       AppBarTextField(
         searchContainerColor: Colors.blue,
         // title: Text(item.type.asTitle()),

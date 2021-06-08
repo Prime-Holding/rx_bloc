@@ -38,7 +38,4 @@ class PuppyListState {
 
   @override
   int get hashCode => searchedPuppies.hashCode ^ status.hashCode;
-
-// @override
-//   List<Object?> get props => [searchedPuppies,status];
 }

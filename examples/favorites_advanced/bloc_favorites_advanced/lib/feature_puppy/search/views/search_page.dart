@@ -1,5 +1,6 @@
+import 'package:bloc_sample/base/flow_builders/puppy_flow.dart';
 import 'package:bloc_sample/feature_puppy/blocs/puppies_extra_details_bloc.dart';
-import 'package:bloc_sample/feature_puppy/favorites/blocs/favorite_puppies_bloc.dart';
+import 'package:bloc_sample/feature_puppy/blocs/puppy_mark_as_favorite_bloc.dart';
 import 'package:bloc_sample/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
@@ -15,18 +16,15 @@ class SearchPage extends StatelessWidget {
       BlocBuilder<PuppyListBloc, PuppyListState>(
           key: const Key(Keys.puppySearchPage),
           builder: (context, state) {
-            // print('BlocBuilder builder: ${state.status}');
             switch (state.status) {
               case PuppyListStatus.initial:
                 return _buildPuppyListStatusInitial(context);
               case PuppyListStatus.failure:
-                // return _buildPuppyListStatusFailure();
                 return _buildPuppyListStatusFailure(context);
               case PuppyListStatus.success:
               case PuppyListStatus.reloading:
                 return _buildPuppyListStatusReloading(context, state);
               default:
-                // return _buildPuppyListStatusFailure();
                 return _buildPuppyListStatusFailure(context);
             }
           });
@@ -44,27 +42,25 @@ class SearchPage extends StatelessWidget {
               itemCount: state.searchedPuppies!.length,
               itemBuilder: (context, index) {
                 final item = state.searchedPuppies![index];
-                // print('PuppyListStatus  : ${state.status}');
                 return PuppyCard(
                   key: Key('${Keys.puppyCardNamePrefix}${item.id}'),
                   onVisible: (puppy) => context
                       .read<PuppiesExtraDetailsBloc>()
                       .add(FetchPuppyExtraDetailsEvent(puppy)),
                   puppy: item,
-                  onCardPressed: (puppy) {},
+                  onCardPressed: (puppy) =>
+                    Navigator.of(context).push(PuppyFlow.route(puppy: puppy))
+                  ,
                   // When we click the favorite_border icon we receive
                   // isFavorite true
                   onFavorite: (puppy, isFavorite) => context
-                      .read<FavoritePuppiesBloc>()
-                      .add(FavoritePuppiesMarkAsFavoriteEvent(
+                      .read<PuppyMarkAsFavoriteBloc>()
+                      .add(PuppyMarkAsFavoriteEvent(
                           puppy: puppy, isFavorite: isFavorite)),
                 );
               }),
         ),
       );
-
-  // Center _buildPuppyListStatusFailure() =>
-  //     const Center(child: Text('failed to fetch puppies'));
 
   // Display try again button to reload
   ErrorRetryWidget _buildPuppyListStatusFailure(BuildContext context) =>

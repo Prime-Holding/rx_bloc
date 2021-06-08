@@ -21,14 +21,18 @@ void main() {
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mockCoordinatorBloc = MockCoordinatorBloc();
+    mock
+        .when(mockCoordinatorBloc.stream)
+        .thenAnswer((_) => const Stream.empty());
     favoritePuppiesBloc = FavoritePuppiesBloc(
       puppiesRepository: mockRepo,
       coordinatorBloc: mockCoordinatorBloc,
     );
   });
 
-  test('FavoritePuppiesBloc FavoritePuppiesState count getter', () async {
-    mock.when(mockRepo.getFavoritePuppies())
+  test('FavoritePuppiesBloc FavoritePuppiesState count getter ', () async {
+    mock
+        .when(mockRepo.getFavoritePuppies())
         .thenAnswer((_) async => Stub.favoritePuppies);
 
     favoritePuppiesBloc.add(FavoritePuppiesFetchEvent());
@@ -41,8 +45,9 @@ void main() {
   // Does not mark copyWith as tested
   test(
     'FavoritePuppiesState copyWith',
-    () async {
-      mock.when(mockRepo.getFavoritePuppies())
+        () async {
+      mock
+          .when(mockRepo.getFavoritePuppies())
           .thenAnswer((_) async => Stub.favoritePuppies);
 
       favoritePuppiesBloc.add(FavoritePuppiesFetchEvent());
@@ -58,15 +63,17 @@ void main() {
 
   // Does not mark copyWith as tested
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
-    'FavoritePuppiesState copyWith',
+    'FavoritePuppiesState copyWith2',
     build: () {
-      mock.when(mockRepo.getFavoritePuppies())
+      mock
+          .when(mockRepo.getFavoritePuppies())
           .thenAnswer((_) async => Stub.favoritePuppies);
       return favoritePuppiesBloc;
     },
-    act: (bloc) {
+    act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
     },
+    wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
       favoritePuppiesBloc.state.copyWith(
         favoritePuppies: Stub.favoritePuppies,
@@ -77,13 +84,15 @@ void main() {
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
     'FavoritePuppiesBloc FavoritePuppiesFetchEvent',
     build: () {
-      mock.when(mockRepo.getFavoritePuppies())
+      mock
+          .when(mockRepo.getFavoritePuppies())
           .thenAnswer((_) async => Stub.favoritePuppies);
       return favoritePuppiesBloc;
     },
-    act: (bloc) {
+    act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
     },
+    wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
       FavoritePuppiesState(
         favoritePuppies: Stub.favoritePuppies,
@@ -92,18 +101,19 @@ void main() {
   );
 
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
-    'FavoritePuppiesBloc FavoritePuppiesFetchEvent throws',
+    'FavoritePuppiesBloc FavoritePuppiesFetchEvent throws1',
     build: () {
       mock.when(mockRepo.getFavoritePuppies()).thenThrow(Stub.testErr);
       return favoritePuppiesBloc;
     },
-    act: (bloc) {
+    act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
     },
+    wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
       const FavoritePuppiesState(
         favoritePuppies: [],
-        error: Stub.noInternetConnectionError,
+        error: Stub.testErrString,
       ),
     ],
   );
@@ -111,18 +121,22 @@ void main() {
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
       'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent',
       build: () {
-        mock.when(mockRepo.favoritePuppy(
-            Stub.isNotFavoritePuppy3, isFavorite: true))
+        mock
+            .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+            isFavorite: true))
             .thenAnswer((_) async => Stub.isFavoritePuppy3);
         return favoritePuppiesBloc;
       },
-      act: (bloc) {
+      act: (bloc) async {
         bloc.add(FavoritePuppiesMarkAsFavoriteEvent(
-            puppy: Stub.isNotFavoritePuppy3, isFavorite: true));
+            puppy: Stub.isNotFavoritePuppy3,
+            isFavorite: true,
+            updateException: ''));
       },
+      wait: const Duration(milliseconds: 200),
       expect: () => <FavoritePuppiesState>[
-            FavoritePuppiesState(favoritePuppies: [Stub.isFavoritePuppy3]),
-          ],
+        FavoritePuppiesState(favoritePuppies: [Stub.isFavoritePuppy3]),
+      ],
       verify: (_) {
         mockCoordinatorBloc
           ..add(
@@ -134,28 +148,65 @@ void main() {
       });
 
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
-      'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent throws',
+      'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent throws2',
       build: () {
-        mock.when(mockRepo.favoritePuppy(
-            Stub.isNotFavoritePuppy3, isFavorite: true))
+        mock
+            .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+            isFavorite: true))
             .thenThrow(Stub.testErr);
-        return favoritePuppiesBloc;
+        return FavoritePuppiesBloc(
+          puppiesRepository: mockRepo,
+          coordinatorBloc: mockCoordinatorBloc,
+        );
       },
-      act: (bloc) {
+      act: (bloc) async {
         bloc.add(FavoritePuppiesMarkAsFavoriteEvent(
-            puppy: Stub.isNotFavoritePuppy3, isFavorite: true));
+            puppy: Stub.isNotFavoritePuppy3,
+            isFavorite: true,
+            updateException: Stub.testErrString));
       },
+      // With wait: const Duration(milliseconds: 200) only the first state
+      // is emitted with 400 both state are emitted
+      wait: const Duration(milliseconds: 400),
       expect: () => <FavoritePuppiesState>[
-            const FavoritePuppiesState(
-                favoritePuppies: [], error: Stub.noInternetConnectionError),
-          ],
+        FavoritePuppiesState(
+            favoritePuppies: [Stub.isNotFavoritePuppy3],
+            error: Stub.testErrString),
+        const FavoritePuppiesState(favoritePuppies: [], error: null),
+      ],
       verify: (_) {
-        mockCoordinatorBloc
-          ..add(
-            CoordinatorPuppyUpdatedEvent(Stub.isFavoritePuppy3),
-          )
-          ..add(
-            CoordinatorPuppyUpdatedEvent(Stub.isNotFavoritePuppy3),
-          );
+        mockCoordinatorBloc.add(
+          CoordinatorPuppyUpdatedEvent(Stub.isNotFavoritePuppy3),
+        );
       });
+
+  //updateException is empty and then an exception is thrown
+  blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
+    'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent updateException'
+        'is empty and throws',
+    build: () {
+      mock
+          .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+          isFavorite: true))
+          .thenThrow(Stub.testErr);
+      return FavoritePuppiesBloc(
+        puppiesRepository: mockRepo,
+        coordinatorBloc: mockCoordinatorBloc,
+      );
+    },
+    act: (bloc) async {
+      bloc.add(FavoritePuppiesMarkAsFavoriteEvent(
+          puppy: Stub.isNotFavoritePuppy3,
+          isFavorite: true,
+          updateException: ''));
+    },
+    wait: const Duration(milliseconds: 400),
+    expect: () => <FavoritePuppiesState>[
+      const FavoritePuppiesState(
+          favoritePuppies: [], error: Stub.testErrString),
+      FavoritePuppiesState(
+          favoritePuppies: [Stub.isNotFavoritePuppy3], error: null),
+    ],
+  );
 }
+

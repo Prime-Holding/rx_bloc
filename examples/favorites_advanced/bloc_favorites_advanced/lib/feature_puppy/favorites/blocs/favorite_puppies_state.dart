@@ -2,7 +2,7 @@ part of 'favorite_puppies_bloc.dart';
 
 @immutable
 class FavoritePuppiesState extends Equatable {
-  const FavoritePuppiesState({
+   const FavoritePuppiesState({
     required this.favoritePuppies,
     this.error,
   });
@@ -22,5 +22,5 @@ class FavoritePuppiesState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [favoritePuppies];
+  List<Object?> get props => [favoritePuppies,error];
 }

@@ -156,3 +156,6 @@ analyzer:
     - test/feature_puppy/blocs/puppies_extra_details_bloc_test.mocks.dart
     - test/feature_puppy/favorites/blocs/favorite_puppies_bloc_test.mocks.dart
     - test/feature_puppy/search/blocs/puppy_list_bloc_test.mocks.dart
+    - test/feature_puppy/details/blocs/puppy_details_bloc_test.mocks.dart
+    - test/feature_puppy/blocs/puppy_manage_bloc_test.mocks.dart
+    - test/feature_puppy/blocs/puppy_mark_as_favorite_bloc_test.mocks.dart

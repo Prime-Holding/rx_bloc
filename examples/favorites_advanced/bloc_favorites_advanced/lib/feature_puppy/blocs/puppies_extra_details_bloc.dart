@@ -30,11 +30,7 @@ class PuppiesExtraDetailsBloc
           super.transformEvents(
             Rx.merge([
               events,
-              events
-                  .whereType<FetchPuppyExtraDetailsEvent>()
-                  // .doOnData((event) =>
-                  //     print('Puppies Extra Details puppy : ${event.puppy}'))
-                  .mapEventToList()
+              events.whereType<FetchPuppyExtraDetailsEvent>().mapEventToList()
             ]),
             transitionFn,
           );
@@ -47,36 +43,31 @@ class PuppiesExtraDetailsBloc
     PuppiesExtraDetailsEvent event,
   ) async* {
     if (event is FetchPuppiesExtraDetailsEvent) {
-      // print('Puppies Extra Details : event.puppies.ids :
-      // ${event.puppies.ids}');
       try {
         final puppiesWithDetails =
-        await _repository.fetchFullEntities(event.puppies.ids);
+            await _repository.fetchFullEntities(event.puppies.ids);
         _coordinatorBloc.add(
           CoordinatorPuppiesWithExtraDetailsEvent(puppiesWithDetails),
         );
-      } on Exception catch (e){
+      } on Exception catch (e) {
         print('Puppy Extra Details Bloc ${e.toString()}');
-        //Puppy Extra Details Bloc Exception: No internet connection.
-        // Please check your settings.
       }
     }
   }
 }
 
 extension _PuppyEventToList on Stream<FetchPuppyExtraDetailsEvent> {
-  Stream<FetchPuppiesExtraDetailsEvent> mapEventToList() =>
-      distinct()
+  Stream<FetchPuppiesExtraDetailsEvent> mapEventToList() => distinct()
       .bufferTime(const Duration(milliseconds: 100))
       .map(
         (puppyFetchList) => FetchPuppiesExtraDetailsEvent(
-          /// Save the list of puppies to the new event and return the event
-          puppyFetchList
-              .map((puppyFetchEvent) => puppyFetchEvent.puppy)
-              .whereType<Puppy>()
-              .where((puppy) => !puppy.hasExtraDetails())
-              .toList()
-        ),
+
+            /// Save the list of puppies to the new event and return the event
+            puppyFetchList
+                .map((puppyFetchEvent) => puppyFetchEvent.puppy)
+                .whereType<Puppy>()
+                .where((puppy) => !puppy.hasExtraDetails())
+                .toList()),
       )
       .where((list) => list.puppies.isNotEmpty)
       .distinct();
