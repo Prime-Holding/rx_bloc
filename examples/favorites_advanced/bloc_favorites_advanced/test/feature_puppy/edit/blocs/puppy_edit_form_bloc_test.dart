@@ -17,6 +17,7 @@ import 'puppy_edit_form_bloc_test.mocks.dart';
   CoordinatorBloc,
 ])
 void main() {
+  const stateChangeDelay = 10;
   late MockPuppiesRepository mockRepo;
   late MockCoordinatorBloc mockCoordinatorBloc;
   late PuppyEditFormBloc puppyEditFormBloc;
@@ -46,14 +47,14 @@ void main() {
     );
 
     puppyEditFormBloc.name.updateValue('newValue');
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 20));
     expect(puppyEditFormBloc.state, isA<FormBlocLoaded>());
 
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 20));
     expect(puppyEditFormBloc.state, isA<FormBlocSubmitting>());
 
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 20));
     expect(puppyEditFormBloc.state, isA<FormBlocSuccess>());
   });
 
@@ -66,21 +67,21 @@ void main() {
     final bloc = puppyEditFormBloc.name;
 
     puppyEditFormBloc.name.updateInitialValue(Stub.isNotFavoritePuppy3.name);
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3.name);
 
     bloc.updateValue('Buddy1');
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3Edit.name);
 
     bloc.updateValue('');
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.error, Stub.nameMustNotBeEmpty);
 
     bloc.updateValue(Stub.string31);
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.error, Stub.nameTooLongError);
   });
 
@@ -94,22 +95,22 @@ void main() {
 
     puppyEditFormBloc.characteristics
         .updateInitialValue(Stub.isNotFavoritePuppy3.displayCharacteristics);
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3.displayCharacteristics);
     bloc.updateValue('Characteristics Buddy 31');
 
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(
         bloc.state.value, Stub.isNotFavoritePuppy3Edit.displayCharacteristics);
 
     bloc.updateValue('');
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.error, Stub.characteristicsEmptyErr);
 
     bloc.updateValue(Stub.string251);
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.error, Stub.characteristicsTooLongErr);
   });
 
@@ -123,20 +124,20 @@ void main() {
 
     puppyEditFormBloc.breed
         .updateInitialValue(Stub.isNotFavoritePuppy3.breedType);
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3.breedType);
     bloc.updateValue(BreedType.GoldenRetriever);
 
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3Edit.breedType);
 
     bloc.updateValue(BreedType.None);
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     await expectLater(puppyEditFormBloc.breedError$,
         emitsInOrder(['', Stub.breedNotSelectedErr]));
 
     bloc.updateValue(null);
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
 
     await expectLater(puppyEditFormBloc.breedError$,
         emitsInOrder(['', Stub.breedNotSelectedErr]));
@@ -152,21 +153,21 @@ void main() {
 
     puppyEditFormBloc.gender
         .updateInitialValue(Stub.isNotFavoritePuppy3.gender);
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3.gender);
     bloc.updateValue(Gender.Female);
 
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.value, Stub.isNotFavoritePuppy3Edit.gender);
 
     bloc.updateValue(Gender.None);
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.error, Stub.emptyGenderFieldError);
 
     bloc.updateValue(null);
     puppyEditFormBloc.submit();
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     expect(bloc.state.error, Stub.emptyGenderFieldError);
   });
 
@@ -178,9 +179,6 @@ void main() {
     );
     final bloc = puppyEditFormBloc.image;
 
-    // await Future.delayed(Stub.pickImageDelay);
-    // expect(bloc.state.value, null);
-    // expect(bloc.value, null);
     mock
         .when(mockRepo.pickPuppyImage(ImagePickerAction.camera))
         .thenAnswer((_) async => PickedFile('camera image'));
@@ -219,7 +217,7 @@ void main() {
     );
 
     final nameBloc = puppyEditFormBloc.name;
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     nameBloc.updateValue('NewName');
     await expectLater(
         puppyEditFormBloc.name$,
@@ -237,10 +235,10 @@ void main() {
       repository: mockRepo,
       puppy: Stub.isNotFavoritePuppy3,
     );
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
 
     puppyEditFormBloc.gender.updateValue(Gender.Female);
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
 
     await expectLater(
         puppyEditFormBloc.gender$,
@@ -256,10 +254,10 @@ void main() {
       repository: mockRepo,
       puppy: Stub.isNotFavoritePuppy3,
     );
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
 
     puppyEditFormBloc.characteristics.updateValue('NewValue');
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
 
     await expectLater(
         puppyEditFormBloc.characteristics$,
@@ -275,10 +273,10 @@ void main() {
       repository: mockRepo,
       puppy: Stub.isNotFavoritePuppy3,
     );
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
 
     puppyEditFormBloc.breed.updateValue(BreedType.Akita);
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
 
     await expectLater(
         puppyEditFormBloc.breed$,
@@ -309,9 +307,9 @@ void main() {
       puppy: Stub.isNotFavoritePuppy3,
     );
     final nameBloc = puppyEditFormBloc.name;
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     nameBloc.updateValue('NewValue');
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: stateChangeDelay));
     await expectLater(
         puppyEditFormBloc.isFormValid$, emitsInOrder([false, true]));
   });

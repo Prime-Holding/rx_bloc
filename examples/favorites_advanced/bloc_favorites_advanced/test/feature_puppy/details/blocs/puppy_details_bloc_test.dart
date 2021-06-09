@@ -12,6 +12,7 @@ import 'puppy_details_bloc_test.mocks.dart';
   CoordinatorBloc,
 ])
 void main() {
+  const addEventDelay = 40;
   late MockCoordinatorBloc mockCoordinatorBloc;
   late PuppyDetailsBloc puppyDetailsBloc;
   setUp(() {
@@ -31,7 +32,7 @@ void main() {
       coordinatorBloc: mockCoordinatorBloc,
       puppy: Stub.isNotFavoritePuppy3,
     ),
-    wait: const Duration(milliseconds: 40),
+    wait: const Duration(milliseconds: addEventDelay),
     act: (bloc) async {
       bloc.add(PuppyDetailsFavoriteEvent(
         puppy: Stub.isNotFavoritePuppy3,
@@ -52,7 +53,7 @@ void main() {
         updateException: Stub.testErrString,
       ));
     },
-    wait: const Duration(milliseconds: 40),
+    wait: const Duration(milliseconds: addEventDelay),
     expect: () => <PuppyDetailsState>[
       PuppyDetailsState(puppy: Stub.isNotFavoritePuppy3),
     ],
@@ -69,7 +70,7 @@ void main() {
         puppies: Stub.onePuppyWithDetailsList,
       ));
     },
-    wait: const Duration(milliseconds: 40),
+    wait: const Duration(milliseconds: addEventDelay),
     expect: () => <PuppyDetailsState>[
       PuppyDetailsState(puppy: Stub.onePuppyWithDetailsList[0]),
     ],

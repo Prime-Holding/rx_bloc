@@ -42,9 +42,6 @@ void main() {
     expect(favoritePuppiesBloc.state.count, 2);
   });
 
-  // tearDown(()=>{
-  // });
-  // Does not mark copyWith as tested
   test(
     'FavoritePuppiesState copyWith',
     () async {
@@ -74,7 +71,6 @@ void main() {
     },
     act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
-      // await Future.delayed(const Duration(milliseconds: 200));
     },
     wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
@@ -94,7 +90,6 @@ void main() {
     },
     act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
-      // await Future.delayed(const Duration(milliseconds: 200));
     },
     wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
@@ -112,7 +107,6 @@ void main() {
     },
     act: (bloc) async {
       bloc.add(FavoritePuppiesFetchEvent());
-      // await Future.delayed(const Duration(milliseconds: 200));
     },
     wait: const Duration(milliseconds: 200),
     expect: () => <FavoritePuppiesState>[
@@ -137,7 +131,6 @@ void main() {
             puppy: Stub.isNotFavoritePuppy3,
             isFavorite: true,
             updateException: ''));
-        // await Future.delayed(const Duration(milliseconds: 200));
       },
       wait: const Duration(milliseconds: 200),
       expect: () => <FavoritePuppiesState>[
@@ -170,7 +163,6 @@ void main() {
             puppy: Stub.isNotFavoritePuppy3,
             isFavorite: true,
             updateException: Stub.testErrString));
-        // await Future.delayed(const Duration(milliseconds: 200));
       },
       // With wait: const Duration(milliseconds: 200) only the first state
       // is emitted with 400 both state are emitted
@@ -206,7 +198,6 @@ void main() {
           puppy: Stub.isNotFavoritePuppy3,
           isFavorite: true,
           updateException: ''));
-      // await Future.delayed(const Duration(milliseconds: 200));
     },
     wait: const Duration(milliseconds: 400),
     expect: () => <FavoritePuppiesState>[
@@ -214,7 +205,6 @@ void main() {
           favoritePuppies: [], error: Stub.testErrString),
       FavoritePuppiesState(
           favoritePuppies: [Stub.isNotFavoritePuppy3], error: null),
-      // const FavoritePuppiesState(favoritePuppies: [], error: null),
     ],
   );
 }
