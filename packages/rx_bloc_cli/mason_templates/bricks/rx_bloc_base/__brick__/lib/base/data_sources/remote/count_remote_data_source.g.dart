@@ -8,7 +8,7 @@ part of 'count_remote_data_source.dart';
 
 class _CountRemoteDataSource implements CountRemoteDataSource {
   _CountRemoteDataSource(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://api.primeholding.com';
+    baseUrl ??= 'http://0.0.0.0:8080/api';
   }
 
   final Dio _dio;
@@ -37,7 +37,7 @@ class _CountRemoteDataSource implements CountRemoteDataSource {
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<Count>(
-            Options(method: 'PUT', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/count/increment',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -52,7 +52,7 @@ class _CountRemoteDataSource implements CountRemoteDataSource {
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<Count>(
-            Options(method: 'PUT', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/count/decrement',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));

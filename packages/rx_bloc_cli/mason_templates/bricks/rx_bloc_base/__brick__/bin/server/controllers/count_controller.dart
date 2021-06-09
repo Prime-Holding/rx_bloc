@@ -8,12 +8,12 @@ class CountController {
   final _responseBuilder = ResponseBuilder();
 
   Response getCountHandler(Request request) =>
-      _responseBuilder.buildOK({'count': _count});
+      _responseBuilder.buildOK({'value': _count});
 
   Response incrementCountHandler(Request request) {
     try {
       _increment();
-      return _responseBuilder.buildOK({'count': _count});
+      return _responseBuilder.buildOK({'value': _count});
     } on Exception catch (e) {
       return _responseBuilder.buildUnprocessableEntity(e);
     }
@@ -22,7 +22,7 @@ class CountController {
   Response decrementCountHandler(Request request) {
     try {
       _decrement();
-      return _responseBuilder.buildOK({'count': _count});
+      return _responseBuilder.buildOK({'value': _count});
     } on Exception catch (e) {
       return _responseBuilder.buildUnprocessableEntity(e);
     }
