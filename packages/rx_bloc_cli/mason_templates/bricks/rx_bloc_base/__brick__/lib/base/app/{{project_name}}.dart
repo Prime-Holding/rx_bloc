@@ -6,8 +6,8 @@
 // https://opensource.org/licenses/MIT.
 
 {{#analytics}}
-import 'package:firebase_analytics/observer.dart';
-{{/analytics}}
+import 'package:firebase_analytics/observer.dart';{{/analytics}}{{#push_notifications}}
+import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,8 @@ import '../../l10n/l10n.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../theme/design_system.dart';
-import 'config/environment_config.dart';
+import 'config/environment_config.dart';{{#push_notifications}}
+import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}}
 
 /// This widget is the root of your application.
 class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
@@ -32,10 +33,26 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
       );
 }
 
-class _MyMaterialApp extends StatelessWidget {
+class _MyMaterialApp extends StatefulWidget {
   const _MyMaterialApp(this._router);
 
   final router.Router _router;
+
+@override
+__MyMaterialAppState createState() => __MyMaterialAppState();
+}
+
+class __MyMaterialAppState extends State<_MyMaterialApp> {
+
+  @override
+  void initState() { {{#push_notifications}}
+    FirebaseMessaging.instance.getInitialMessage().then(onInitialMessageOpened);
+    FirebaseMessaging.instance.onTokenRefresh.listen(onFCMTokenRefresh);
+    FirebaseMessaging.onMessage.listen(onForegroundMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedFromBackground);{{/push_notifications}}
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(
@@ -47,8 +64,8 @@ class _MyMaterialApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,
-        routeInformationParser: _router.defaultRouteParser(),
-        routerDelegate: _router.delegate({{#analytics}}
+        routeInformationParser: widget._router.defaultRouteParser(),
+        routerDelegate: widget._router.delegate({{#analytics}}
           navigatorObservers: () => [
             context.read<FirebaseAnalyticsObserver>(),
           ],
