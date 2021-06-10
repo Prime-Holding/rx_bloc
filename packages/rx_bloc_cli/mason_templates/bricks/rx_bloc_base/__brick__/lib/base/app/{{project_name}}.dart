@@ -16,6 +16,8 @@ import '../../l10n/l10n.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../theme/design_system.dart';
+import '../utils/helpers.dart';
+import 'config/app_constants.dart';
 import 'config/environment_config.dart';{{#push_notifications}}
 import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}}
 
@@ -46,13 +48,24 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   @override
   void initState() { {{#push_notifications}}
-    FirebaseMessaging.instance.getInitialMessage().then(onInitialMessageOpened);
-    FirebaseMessaging.instance.onTokenRefresh.listen(onFCMTokenRefresh);
-    FirebaseMessaging.onMessage.listen(onForegroundMessage);
-    FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedFromBackground);{{/push_notifications}}
+    _configureWebFCM();
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((message) => onInitialMessageOpened(context, message));
+    FirebaseMessaging.instance.onTokenRefresh
+        .listen((token) => onFCMTokenRefresh(context, token));
+    FirebaseMessaging.onMessage
+        .listen((message) => onForegroundMessage(context, message));
+    FirebaseMessaging.onMessageOpenedApp
+        .listen((message) => onMessageOpenedFromBackground(context, message));{{/push_notifications}}
 
     super.initState();
-  }
+  }{{#push_notifications}}
+
+  Future<void> _configureWebFCM() async {
+    await safeRun(
+        () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
+  }{{/push_notifications}}
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(
