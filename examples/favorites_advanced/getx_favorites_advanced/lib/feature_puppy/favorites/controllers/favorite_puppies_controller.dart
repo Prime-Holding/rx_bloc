@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 
 class FavoritePuppiesController extends GetxController
     with StateMixin<List<Puppy>> {
-  FavoritePuppiesController(this._repository, this._mediatorController);
+  FavoritePuppiesController(this._repository, this._coordinatorController);
 
   final PuppiesRepository _repository;
-  final MediatorController _mediatorController;
+  final CoordinatorController _coordinatorController;
 
   final RxList<Puppy> favoritePuppies = <Puppy>[].obs;
   late Worker updatingWorker;
@@ -22,8 +22,8 @@ class FavoritePuppiesController extends GetxController
   @override
   void onInit() {
     _initFavoritePuppies();
-    updatingWorker = ever(_mediatorController.puppiesToUpdate,
-        (_) => _updateFavoritePuppies(_mediatorController.puppiesToUpdate));
+    updatingWorker = ever(_coordinatorController.puppiesToUpdate,
+        (_) => _updateFavoritePuppies(_coordinatorController.puppiesToUpdate));
     super.onInit();
   }
 
@@ -34,7 +34,7 @@ class FavoritePuppiesController extends GetxController
       favoritePuppies.assignAll(puppies);
       change(puppies, status: RxStatus.success());
     } catch (e) {
-      print(e.toString());
+      print('Fetching favorite puppies failed: ${e.toString()}');
       change(<Puppy>[], status: RxStatus.error());
     }
   }
@@ -44,10 +44,14 @@ class FavoritePuppiesController extends GetxController
       (puppy) {
         final currentIndex =
             favoritePuppies.indexWhere((element) => element.id == puppy.id);
-        if (currentIndex < 0) {
+        if (currentIndex < 0 && puppy.isFavorite) {
           favoritePuppies.add(puppy);
-        } else {
-          favoritePuppies.removeAt(currentIndex);
+        } else if(currentIndex >=0){
+          if( !puppy.isFavorite){
+            favoritePuppies.removeAt(currentIndex);
+          }else {
+            favoritePuppies.replaceRange(currentIndex, currentIndex+1, [puppy]);
+          }
         }
       },
     );
@@ -56,7 +60,7 @@ class FavoritePuppiesController extends GetxController
 
   Future<void> onReload() async {
     await _initFavoritePuppies();
-    _mediatorController.clearFetchedExtraDetails();
+    _coordinatorController.clearFetchedExtraDetails();
   }
 
   @override

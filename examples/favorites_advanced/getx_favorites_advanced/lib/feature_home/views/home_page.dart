@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
+
         appBar: PuppiesAppBar(),
         body: Obx(
           () => AnimatedSwitcher(

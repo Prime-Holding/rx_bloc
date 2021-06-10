@@ -46,14 +46,14 @@ class Stub {
     puppy2,
   ];
 
-  static final puppies23 = [
+  static final puppies23 = [ //unused
     puppy2,
     puppy3,
   ];
 
-  static final puppies123 = [puppy1, puppy2, puppy3];
+  static final puppies123 = [puppy1, puppy2, puppy3]; //unused
   static final puppies123Test = [puppy1, puppy2, puppy3, puppyTest];
-  static final puppies123TestUpdated = [
+  static final puppies123TestUpdated = [ //unused
     puppy1,
     puppy2,
     puppy3,
@@ -62,7 +62,7 @@ class Stub {
   static final puppiesTest = [puppyTest];
   static final puppiesTestUpdated = [puppyTestUpdated];
 
-  static const pickImageDelay = Duration(seconds: 2, milliseconds: 10);
+  static const pickImageDelay = Duration(seconds: 2, milliseconds: 10); //unused
 
   static final puppiesWithDetails = [
     Puppy(
@@ -97,48 +97,35 @@ class Stub {
 
   static final string31 = ''.padRight(31, 'a');
   static final string251 = ''.padRight(251, 'a');
-  //
-  // static const nameEmptyErr = RxFieldException<String>(
-  //   fieldValue: '',
-  //   error: 'Name must not be empty.',
-  // );
-  //
-  // static final nameTooLongErr = RxFieldException<String>(
-  //   fieldValue: Stub.string31,
-  //   error: 'Name too long.',
-  // );
-  //
-  // static const characteristicsEmptyErr = RxFieldException<String>(
-  //   fieldValue: '',
-  //   error: 'Characteristics must not be empty.',
-  // );
-  //
-  // static const characteristicsNullErr = RxFieldException<String?>(
-  //   fieldValue: null,
-  //   error: 'Characteristics must not be empty.',
-  // );
-  //
-  // static final characteristicsTooLongErr = RxFieldException<String>(
-  //   fieldValue: Stub.string251,
-  //   error: 'Characteristics must not exceed 250 characters.',
-  // );
+
+  static const nameEmptyErr = 'Name must not be empty.';
+
+  static const nameTooLongErr = 'Name too long.';
+
+  static const characteristicsEmptyErr = 'Characteristics must not be empty.';
+
+  static const characteristicsTooLongErr =
+      'Characteristics must not exceed 250 characters.';
+
+  static const successfullySaved = 'Puppy is saved successfully.';
+
+  static const invalidValue = 'Please enter valid values in all fields!';
 
   static final testErr = Exception('test error');
 
-  static Stream<T> delayed<T>(T value, [int milliseconds = 100]) =>
-      Future.delayed(Duration(milliseconds: milliseconds), () async => value)
-          .asStream();
+  static Future<T> delayed<T>(T value, {int milliseconds = 100}) =>
+      Future.delayed(Duration(milliseconds: milliseconds), () async => value);
 
   static final puppies1And2WithExtraDetails = [
     puppy1.copyWith(breedCharacteristics: '1', displayName: '1'),
     puppy2.copyWith(breedCharacteristics: '2', displayName: '2')
   ];
 
-  static final expectedGenderAndBreed0 =
+  static final expectedGenderAndBreed0 = //unused
       '${Stub.puppiesWithDetails[2].genderAsString}, '
       '${Stub.puppiesWithDetails[2].breedTypeAsString}';
 
-  static final expectedGenderAndBreed1 =
+  static final expectedGenderAndBreed1 = //unused
       '${PuppyDataConversion.getGenderString(Gender.Female)}, '
       '${PuppyDataConversion.getBreedTypeString(BreedType.Akita)}';
 }

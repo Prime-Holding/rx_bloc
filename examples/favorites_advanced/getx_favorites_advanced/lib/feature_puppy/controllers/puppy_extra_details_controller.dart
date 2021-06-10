@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 
-import 'package:getx_favorites_advanced/base/controllers/mediator_controller.dart';
+import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
 
 class PuppyExtraDetailsController extends GetxController {
-  PuppyExtraDetailsController(this._repository, this._mediatorController);
+  PuppyExtraDetailsController(this._repository, this._coordinatorController);
 
   final PuppiesRepository _repository;
-  final MediatorController _mediatorController;
+  final CoordinatorController _coordinatorController;
 
   final _lastFetchedPuppies = <Puppy>[].obs;
   late Worker _debounceWorker;
@@ -28,13 +28,13 @@ class PuppyExtraDetailsController extends GetxController {
         final fetchedPuppies = await _repository.fetchFullEntities(
             filterPuppies.map((element) => element.id).toList());
         data.assignAll(fetchedPuppies);
-        _mediatorController
+        _coordinatorController
             .updatePuppiesWithExtraDetails(fetchedPuppies);
       } catch (error) {
-        print(error.toString());
+        print('Fetching all puppies list failed: ${error.toString()}');
       }
     }, time: const Duration(milliseconds: 100));
-    _clearWorker = ever(_mediatorController.toClearFetchedExtraDetails,
+    _clearWorker = ever(_coordinatorController.toClearFetchedExtraDetails,
             (_) => _lastFetchedPuppies.clear());
     super.onInit();
   }

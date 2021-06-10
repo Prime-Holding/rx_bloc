@@ -15,8 +15,6 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: comment_references
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeDuration extends _i1.Fake implements Duration {}
-
 class _FakePuppy extends _i1.Fake implements _i2.Puppy {}
 
 class _FakePickedFile extends _i1.Fake implements _i3.PickedFile {}
@@ -29,18 +27,6 @@ class MockPuppiesRepository extends _i1.Mock implements _i4.PuppiesRepository {
     _i1.throwOnMissingStub(this);
   }
 
-  @override
-  Duration get artificialDelay =>
-      (super.noSuchMethod(Invocation.getter(#artificialDelay),
-          returnValue: _FakeDuration()) as Duration);
-  @override
-  List<_i2.Puppy> get puppies => (super
-          .noSuchMethod(Invocation.getter(#puppies), returnValue: <_i2.Puppy>[])
-      as List<_i2.Puppy>);
-  @override
-  set puppies(List<_i2.Puppy>? _puppies) =>
-      super.noSuchMethod(Invocation.setter(#puppies, _puppies),
-          returnValueForMissingStub: null);
   @override
   _i5.Future<List<_i2.Puppy>> getPuppies({String? query = r''}) =>
       (super.noSuchMethod(Invocation.method(#getPuppies, [], {#query: query}),
