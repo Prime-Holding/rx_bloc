@@ -1,8 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
+import 'package:{{project_name}}/base/theme/design_system.dart';
+import 'package:{{project_name}}/l10n/l10n.dart';
+
+import 'models/labeled_device_builder.dart';
 import 'models/scenario.dart';
+
+enum Themes { light, dark }
 
 /// returns a [DeviceBuilder] with an arbitrary amount of scenarios rendered
 /// on all device sizes
@@ -10,11 +18,12 @@ import 'models/scenario.dart';
 /// [widget] - to be rendered in the golden master
 ///
 /// [scenarios] - list of [Scenario] which will be created
-DeviceBuilder generateDeviceBuilder(
-  Widget widget, {
+LabeledDeviceBuilder generateDeviceBuilder({
+  required String label,
+  required Widget widget,
   required List<Scenario> scenarios,
 }) {
-  final deviceBuilder = DeviceBuilder()
+  final deviceBuilder = LabeledDeviceBuilder(label: label)
     ..overrideDevicesForAllScenarios(
       devices: [
         Device.phone,
@@ -32,6 +41,65 @@ DeviceBuilder generateDeviceBuilder(
   }
   return deviceBuilder;
 }
+
+/// executes golden tests for each [LabeledDeviceBuilder] in every [theme]
+///
+/// [deviceBuilders] - list of [LabeledDeviceBuilder] to be pumped
+///
+/// [pumpFunction] (optional) - function for executing custom pumping
+/// behavior instead of [pumpDeviceBuilderWithLocalizationsAndTheme]
+void runGoldenTests(
+  List<LabeledDeviceBuilder> deviceBuilders, {
+  Future<void> Function(WidgetTester, DeviceBuilder, Themes? theme)?
+      pumpFunction,
+}) {
+  for (final db in deviceBuilders) {
+    //test each DeviceBuilder in both light mode and dark mode
+    for (final theme in Themes.values) {
+      final themeName = describeEnum(theme);
+      final directory = '${themeName}_theme';
+
+      testGoldens('$db - $themeName', (tester) async {
+        pumpFunction != null
+            ? await pumpFunction.call(tester, db, theme)
+            : await pumpDeviceBuilderWithLocalizationsAndTheme(
+                tester,
+                db,
+                theme: theme,
+              );
+
+        await screenMatchesGolden(
+          tester,
+          '$directory/$db',
+          //defaults to pumpAndSettle, causing problems when testing animations
+          customPump: db.label.contains('loading')
+              ? (tester) => tester.pump(const Duration(milliseconds: 300))
+              : null,
+        );
+      });
+    }
+  }
+}
+
+/// calls [pumpDeviceBuilderWithMaterialApp] with localizations we need in this
+/// app, and injects an optional theme
+Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
+  WidgetTester tester,
+  DeviceBuilder builder, {
+  Themes? theme,
+}) =>
+    pumpDeviceBuilderWithMaterialApp(
+      tester,
+      builder,
+      localizations: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      localeOverrides: AppLocalizations.supportedLocales,
+      theme: theme == Themes.light
+          ? DesignSystem.fromBrightness(Brightness.light).theme
+          : DesignSystem.fromBrightness(Brightness.dark).theme,
+    );
 
 /// Wraps a [DeviceBuilder] in a [materialAppWrapper] using any of the
 /// parameters we specify and pumps it

@@ -67,9 +67,11 @@ To access the design system from your app, you have to import it from the follow
 
 A [golden test][golden_test_lnk] lets you generate golden master images of a widget or screen, and compare against them so you know your design is always pixel-perfect and there have been no subtle or breaking changes in UI between builds. To make this easier, we employ the use of the [golden_toolkit][golden_toolkit_lnk] package.
 
-We generate `DeviceBuilder` with a list of device sizes to be rendered, the widget/screen itself, as well as a list of `Scenario`s each with an optional `onCreate` function which executes arbitrary behavior to be tested. Examples are shown in the `counter_helper.dart` and `golden_helper.dart` files. After setting up our DeviceBuilders, we pump them with optional `materialAppWrapper` parameters and run the tests, as shown in `counter_page_test.dart`.
+To get started, you just need to generate a list of `LabeledDeviceBuilder` and pass it to the `runGoldenTests` function. That's done by calling `generateDeviceBuilder` with a label, the widget/screen to be tested, as well as a list of `Scenario`s. A `Scenario` provides an optional `onCreate` function which lets us execute arbitrary behavior upon testing. Each `DeviceBuilder` will have two generated golden master files, one for each theme.
 
-In order for the goldens to be generated, you need to run `flutter test --update-goldens --name=Golden`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme` for each custom `DeviceBuilder`. The `failures` folder is used in case of any mismatched tests.
+Due to the way fonts are loaded in tests, any custom fonts you intend to golden test should be included in `pubspec.yaml`
+
+In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
 
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
