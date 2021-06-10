@@ -1,4 +1,4 @@
-## [0.0.4] - June 03, 2021
+## [0.0.4] - June 10, 2021
 * Update generated project with golden tests
 
 ## [0.0.3] - May 28, 2021
