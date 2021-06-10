@@ -30,9 +30,8 @@ class PuppyDetails extends StatelessWidget {
             children: [
               BlocBuilder<PuppyDetailsBloc, PuppyDetailsState>(
                 builder: (context, state) => Hero(
-                  tag: '$PuppyCardAnimationTag ${puppy.id}',
-                  child: _buildPuppyBackgroundImage(
-                      state.puppy.asset),
+                  tag: '$PuppyCardAnimationTag ${state.puppy.id}',
+                  child: _buildPuppyBackgroundImage(state.puppy.asset),
                 ),
               ),
               Padding(
@@ -50,8 +49,8 @@ class PuppyDetails extends StatelessWidget {
                     const SizedBox(height: 5),
                     BlocBuilder<PuppyDetailsBloc, PuppyDetailsState>(
                         builder: (context, state) => Text(
-                              '${puppy.genderAsString}, '
-                              '${puppy.breedTypeAsString}',
+                              '${state.puppy.genderAsString}, '
+                              '${state.puppy.breedTypeAsString}',
                               style: TextStyles.subtitleTextStyle,
                             )),
                     const SizedBox(
@@ -59,8 +58,8 @@ class PuppyDetails extends StatelessWidget {
                     ),
                     BlocBuilder<PuppyDetailsBloc, PuppyDetailsState>(
                       builder: (context, state) => Text(
-                        state.puppy.displayCharacteristics
-                             ?? '',
+                        state.puppy.displayCharacteristics ??
+                            puppy.displayCharacteristics!,
                         style: TextStyles.subtitleTextStyle,
                       ),
                     ),

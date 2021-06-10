@@ -159,3 +159,4 @@ analyzer:
     - test/feature_puppy/details/blocs/puppy_details_bloc_test.mocks.dart
     - test/feature_puppy/blocs/puppy_manage_bloc_test.mocks.dart
     - test/feature_puppy/blocs/puppy_mark_as_favorite_bloc_test.mocks.dart
+    - test/feature_puppy/edit/blocs/puppy_edit_form_bloc_test.mocks.dart

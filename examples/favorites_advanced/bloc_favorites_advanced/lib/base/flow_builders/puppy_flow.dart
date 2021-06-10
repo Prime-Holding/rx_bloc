@@ -1,4 +1,5 @@
 import 'package:bloc_sample/feature_puppy/details/views/puppy_details_page.dart';
+import 'package:bloc_sample/feature_puppy/edit/views/puppy_edit_page.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages) {
   if (state.manage == true) {
     return [
       PuppyDetailsPage.page(puppy: state.puppy),
-      // PuppyEditPage.page(puppy: state.puppy),
+      PuppyEditPage.page(puppy: state.puppy),
     ];
   }
 

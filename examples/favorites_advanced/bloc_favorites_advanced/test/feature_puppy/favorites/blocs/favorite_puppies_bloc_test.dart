@@ -30,7 +30,7 @@ void main() {
     );
   });
 
-  test('FavoritePuppiesBloc FavoritePuppiesState count getter ', () async {
+  test('FavoritePuppiesBloc FavoritePuppiesState count getter', () async {
     mock
         .when(mockRepo.getFavoritePuppies())
         .thenAnswer((_) async => Stub.favoritePuppies);
@@ -42,10 +42,9 @@ void main() {
     expect(favoritePuppiesBloc.state.count, 2);
   });
 
-  // Does not mark copyWith as tested
   test(
     'FavoritePuppiesState copyWith',
-        () async {
+    () async {
       mock
           .when(mockRepo.getFavoritePuppies())
           .thenAnswer((_) async => Stub.favoritePuppies);
@@ -123,7 +122,7 @@ void main() {
       build: () {
         mock
             .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
-            isFavorite: true))
+                isFavorite: true))
             .thenAnswer((_) async => Stub.isFavoritePuppy3);
         return favoritePuppiesBloc;
       },
@@ -135,8 +134,8 @@ void main() {
       },
       wait: const Duration(milliseconds: 200),
       expect: () => <FavoritePuppiesState>[
-        FavoritePuppiesState(favoritePuppies: [Stub.isFavoritePuppy3]),
-      ],
+            FavoritePuppiesState(favoritePuppies: [Stub.isFavoritePuppy3]),
+          ],
       verify: (_) {
         mockCoordinatorBloc
           ..add(
@@ -152,7 +151,7 @@ void main() {
       build: () {
         mock
             .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
-            isFavorite: true))
+                isFavorite: true))
             .thenThrow(Stub.testErr);
         return FavoritePuppiesBloc(
           puppiesRepository: mockRepo,
@@ -169,25 +168,25 @@ void main() {
       // is emitted with 400 both state are emitted
       wait: const Duration(milliseconds: 400),
       expect: () => <FavoritePuppiesState>[
-        FavoritePuppiesState(
-            favoritePuppies: [Stub.isNotFavoritePuppy3],
-            error: Stub.testErrString),
-        const FavoritePuppiesState(favoritePuppies: [], error: null),
-      ],
+            FavoritePuppiesState(
+                favoritePuppies: [Stub.isNotFavoritePuppy3],
+                error: Stub.testErrString),
+            const FavoritePuppiesState(favoritePuppies: [], error: null),
+          ],
       verify: (_) {
         mockCoordinatorBloc.add(
           CoordinatorPuppyUpdatedEvent(Stub.isNotFavoritePuppy3),
         );
       });
 
-  //updateException is empty and then an exception is thrown
+  ///updateException is empty and then an exception is thrown
   blocTest<FavoritePuppiesBloc, FavoritePuppiesState>(
     'FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent updateException'
-        'is empty and throws',
+    'is empty and throws',
     build: () {
       mock
           .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
-          isFavorite: true))
+              isFavorite: true))
           .thenThrow(Stub.testErr);
       return FavoritePuppiesBloc(
         puppiesRepository: mockRepo,
@@ -209,4 +208,3 @@ void main() {
     ],
   );
 }
-

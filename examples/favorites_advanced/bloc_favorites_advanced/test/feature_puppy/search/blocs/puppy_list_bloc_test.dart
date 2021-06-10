@@ -9,10 +9,6 @@ import 'package:favorites_advanced_base/repositories.dart';
 import '../../../stubs.dart';
 import 'puppy_list_bloc_test.mocks.dart';
 
-// class MockPuppiesRepository extends Mock implements PuppiesRepository {}
-
-// class MockCoordinatorBloc extends Mock implements CoordinatorBloc {}
-
 @GenerateMocks([
   PuppiesRepository,
   CoordinatorBloc,
@@ -33,9 +29,9 @@ void main() {
     );
   });
 
-//flutter pub run build_runner build
+// First run: flutter pub run build_runner build
 // After generating puppy_list_bloc_test.mocks.dart change
-//change import 'package:image_picker_platform_interface/src/types/picked_file/picked_file.dart'
+// import 'package:image_picker_platform_interface/src/types/picked_file/picked_file.dart'
 
   blocTest<PuppyListBloc, PuppyListState>(
     'PuppyListBloc FavoritePuppiesUpdatedEvent',

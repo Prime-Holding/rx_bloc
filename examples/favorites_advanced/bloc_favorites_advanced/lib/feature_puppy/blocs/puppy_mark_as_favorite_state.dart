@@ -2,7 +2,10 @@ part of 'puppy_mark_as_favorite_bloc.dart';
 
 @immutable
 class PuppyMarkAsFavoriteState extends Equatable {
-  const PuppyMarkAsFavoriteState({this.puppy, this.error});
+  const PuppyMarkAsFavoriteState({
+    this.puppy,
+    this.error,
+  });
 
   final Puppy? puppy;
   final String? error;

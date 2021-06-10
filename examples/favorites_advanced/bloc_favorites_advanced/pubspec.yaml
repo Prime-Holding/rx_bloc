@@ -37,7 +37,8 @@ dependencies:
   mockito: ^5.0.4
   declarative_animated_list: ^0.1.0-nullsafety.0
   clean_coverage: ^0.0.3
-  flow_builder: ^0.0.2
+  flow_builder: ^0.0.1
+  flutter_form_bloc: ^0.20.0
 #  widget_library:
 #    path: ../widget_library
 
@@ -51,6 +52,7 @@ dev_dependencies:
   build_runner: ^1.12.2
 
 dependency_overrides:
+  analyzer: '1.5.0'
   favorites_advanced_base:
     path: ../favorites_advanced_base
   animated_stream_list:

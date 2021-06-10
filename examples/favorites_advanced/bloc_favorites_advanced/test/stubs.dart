@@ -60,10 +60,6 @@ class Stub {
 
   static const pickImageDelay = Duration(seconds: 2, milliseconds: 10);
 
-  // Additionally added
-  static const noInternetConnectionError =
-  'Exception: No internet connection. Please check your settings.';
-
   static final favoritePuppies = [
     Puppy(
       id: '1',
@@ -83,16 +79,18 @@ class Stub {
     ),
   ];
 
-  static final onePuppyWithDetailsList = [Puppy(
-    id: '3',
-    name: 'Buddy',
-    asset: 'puppie_4.jpeg',
-    isFavorite: false,
-    gender: Gender.Male,
-    breedType: BreedType.GermanShepherd,
-    displayCharacteristics: 'Characteristics Buddy 3',
-    displayName: 'Buddy',
-  )];
+  static final onePuppyWithDetailsList = [
+    Puppy(
+      id: '3',
+      name: 'Buddy',
+      asset: 'puppie_4.jpeg',
+      isFavorite: false,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 3',
+      displayName: 'Buddy',
+    )
+  ];
 
   static final isFavoritePuppy3 = Puppy(
     id: '3',
@@ -113,6 +111,17 @@ class Stub {
     gender: Gender.Male,
     breedType: BreedType.GermanShepherd,
     displayCharacteristics: 'Characteristics Buddy 3',
+    displayName: 'Buddy',
+  );
+
+  static final isNotFavoritePuppy3Edit = Puppy(
+    id: '3',
+    name: 'Buddy1',
+    asset: 'puppie_4.jpeg',
+    isFavorite: false,
+    gender: Gender.Female,
+    breedType: BreedType.GoldenRetriever,
+    displayCharacteristics: 'Characteristics Buddy 31',
     displayName: 'Buddy',
   );
 
@@ -242,31 +251,16 @@ class Stub {
   static final string31 = ''.padRight(31, 'a');
   static final string251 = ''.padRight(251, 'a');
 
-  // static const nameEmptyErr = RxFieldException<String>(
-  //   fieldValue: '',
-  //   error: 'Name must not be empty.',
-  // );
-  //
-  // static final nameTooLongErr = RxFieldException<String>(
-  //   fieldValue: Stub.string31,
-  //   error: 'Name too long.',
-  // );
-  //
-  // static const characteristicsEmptyErr = RxFieldException<String>(
-  //   fieldValue: '',
-  //   error: 'Characteristics must not be empty.',
-  // );
-  //
-  // static const characteristicsNullErr = RxFieldException<String?>(
-  //   fieldValue: null,
-  //   error: 'Characteristics must not be empty.',
-  // );
-  //
-  // static final characteristicsTooLongErr = RxFieldException<String>(
-  //   fieldValue: Stub.string251,
-  //   error: 'Characteristics must not exceed 250 characters.',
-  // );
-
+  static const submitSuccessResponse = 'The puppy was saved successfully.';
+  static const noInternetConnectionError =
+      'Exception: No internet connection. Please check your settings.';
+  static const nameMustNotBeEmpty = 'Name must not be empty.';
+  static const nameTooLongError = 'Name too long.';
+  static const emptyGenderFieldError = 'You have to select a gender.';
+  static const characteristicsEmptyErr = 'Characteristics must not be empty';
+  static const characteristicsTooLongErr =
+      'Characteristics must not exceed 250 characters.';
+  static const breedNotSelectedErr = 'You have to select a breed.';
   static final testErr = Exception('test error');
   static const testErrString = 'Exception: test error';
 

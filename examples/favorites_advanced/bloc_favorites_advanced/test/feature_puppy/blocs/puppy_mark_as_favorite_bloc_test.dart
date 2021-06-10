@@ -21,7 +21,8 @@ void main() {
   setUp(() {
     mockRepo = MockPuppiesRepository();
     mockCoordinatorBloc = MockCoordinatorBloc();
-    mock.when(mockCoordinatorBloc.stream)
+    mock
+        .when(mockCoordinatorBloc.stream)
         .thenAnswer((_) => const Stream.empty());
     puppyManageBloc = PuppyMarkAsFavoriteBloc(
       puppiesRepository: mockRepo,
@@ -32,8 +33,9 @@ void main() {
   blocTest<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
     'PuppyManageBloc PuppyManageEvent',
     build: () {
-      mock.when(mockRepo.favoritePuppy(
-          Stub.isNotFavoritePuppy3, isFavorite: true))
+      mock
+          .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+              isFavorite: true))
           .thenAnswer((_) async => Stub.isFavoritePuppy3);
       return puppyManageBloc;
     },
@@ -60,8 +62,9 @@ void main() {
   blocTest<PuppyMarkAsFavoriteBloc, PuppyMarkAsFavoriteState>(
     'PuppyManageBloc PuppyManageEvent throws exception',
     build: () {
-      mock.when(mockRepo.favoritePuppy(
-          Stub.isNotFavoritePuppy3, isFavorite: true))
+      mock
+          .when(mockRepo.favoritePuppy(Stub.isNotFavoritePuppy3,
+              isFavorite: true))
           .thenThrow(Stub.testErr);
       return puppyManageBloc;
     },
@@ -71,10 +74,6 @@ void main() {
         isFavorite: true,
       ));
     },
-    expect: ()  => <PuppyMarkAsFavoriteState>[
-      // puppyManageBloc.state.copyWith(error: Stub.testErrString),
-      // const PuppyManageState(puppy: null,error: Stub.testErrString),
-    ],
     verify: (_) {
       mockCoordinatorBloc
         ..add(

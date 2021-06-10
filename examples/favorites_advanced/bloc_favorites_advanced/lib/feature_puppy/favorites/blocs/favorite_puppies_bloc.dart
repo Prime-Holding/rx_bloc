@@ -36,9 +36,9 @@ class FavoritePuppiesBloc
   Stream<Transition<FavoritePuppiesEvent, FavoritePuppiesState>>
   transformTransitions(Stream<
       Transition<FavoritePuppiesEvent, FavoritePuppiesState>> transitions,)
-  =>
+      =>
       transitions.interval(const Duration(milliseconds: 100));
-  // .doOnData((event) {print('transformTransitions $event'); });
+          // .doOnData((event) {print('transformTransitions $event'); });
 
   final PuppiesRepository _puppiesRepository;
   final _compositeSubscription = CompositeSubscription();
@@ -72,6 +72,9 @@ class FavoritePuppiesBloc
     final puppy = event.puppy;
     final isFavorite = event.isFavorite;
     if (event.updateException.isNotEmpty) {
+      // print('favorite puppies bloc ${event.updateException}');
+      // final copiedPuppy = puppy.copyWith(isFavorite: !puppy.isFavorite);
+      // print('copiedPuppy $puppy');
       _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(puppy));
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies.manageList(
@@ -81,6 +84,8 @@ class FavoritePuppiesBloc
         error: event.updateException,
       );
 
+      /// true adds
+      /// false removes
       // await Future.delayed(const Duration(milliseconds: 200));
       yield state.copyWith(
         favoritePuppies: state.favoritePuppies.manageList(
@@ -88,8 +93,13 @@ class FavoritePuppiesBloc
           puppy: puppy,
         ),
       );
+      //Added so that the test can run:
+      // FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent throws
       // await Future.delayed(const Duration(milliseconds: 200));
+
+      // print('');
     } else {
+      // print('fav pup bloc ELSE');
       /// Emit an event with the copied instance of the entity, so that UI
       /// can update immediately
       _coordinatorBloc.add(CoordinatorPuppyUpdatedEvent(puppy));
@@ -114,8 +124,14 @@ class FavoritePuppiesBloc
             puppy: updatedPuppy,
           ),
         );
+        //Added so that the test can run:
+        // FavoritePuppiesBloc FavoritePuppiesMarkAsFavoriteEvent
+        //otherwise   Actual: []
         // await Future.delayed(const Duration(milliseconds: 200));
+        // print('fav bloc state.favoritePuppies: ${state.favoritePuppies}');
       } on Exception catch (e) {
+        // print('fav pup bloc EXCEPTION');
+
 
         final tempList = state.favoritePuppies
             .manageList(isFavorite: !isFavorite, puppy: puppy);

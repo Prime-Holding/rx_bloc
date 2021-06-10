@@ -20,23 +20,23 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
     _coordinatorBloc.stream
         .whereType<CoordinatorFavoritePuppyUpdatedState>()
         .listen((state) => add(PuppyDetailsFavoriteEvent(
-      puppy: state.favoritePuppy,
-      updateException: state.updateException,
-    )))
+              puppy: state.favoritePuppy,
+              updateException: state.updateException,
+            )))
         .addTo(_compositeSubscription);
 
     _coordinatorBloc.stream
         .whereType<CoordinatorPuppiesUpdatedState>()
         .listen((state) => add(PuppyDetailsMarkAsFavoriteEvent(
-      puppies: state.puppies,
-    )))
+              puppies: state.puppies,
+            )))
         .addTo(_compositeSubscription);
   }
 
   @override
   Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transformTransitions(
-      Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transitions,
-      ) =>
+    Stream<Transition<PuppyDetailsEvent, PuppyDetailsState>> transitions,
+  ) =>
       transitions.interval(const Duration(milliseconds: 20));
 
   final CoordinatorBloc _coordinatorBloc;
@@ -44,8 +44,8 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
 
   @override
   Stream<PuppyDetailsState> mapEventToState(
-      PuppyDetailsEvent event,
-      ) async* {
+    PuppyDetailsEvent event,
+  ) async* {
     if (event is PuppyDetailsFavoriteEvent) {
       yield* _mapToDetailsFavoriteEvent(event);
     } else if (event is PuppyDetailsMarkAsFavoriteEvent) {
@@ -55,8 +55,7 @@ class PuppyDetailsBloc extends Bloc<PuppyDetailsEvent, PuppyDetailsState> {
 
   Stream<PuppyDetailsState> _mapToDetailsMarkAsFavoriteEvent(
       PuppyDetailsMarkAsFavoriteEvent event) async* {
-    //Update Ui immediately
-    // print('_mapToDetailsMarkAsFavoriteEvent ${event.puppies}');
+    // Update UI immediately
     yield state.copyWith(puppy: event.puppies[0]);
   }
 
