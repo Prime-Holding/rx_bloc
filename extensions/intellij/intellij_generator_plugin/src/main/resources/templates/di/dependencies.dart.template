@@ -1,0 +1,31 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+
+import '../blocs/${feature_underscore_case}_bloc.dart';
+
+class ${feature_pascal_case}Dependencies {
+  ${feature_pascal_case}Dependencies._(this.context);
+
+  factory ${feature_pascal_case}Dependencies.of(BuildContext context) => _instance != null
+      ? _instance!
+      : _instance = ${feature_pascal_case}Dependencies._(context);
+
+  static ${feature_pascal_case}Dependencies? _instance;
+
+  final BuildContext context;
+
+  List<SingleChildWidget> get providers => [
+        ..._repositories,
+        ..._blocs,
+      ];
+
+  List<Provider> get _repositories => [];
+
+  List<RxBlocProvider> get _blocs => [
+        RxBlocProvider<${feature_pascal_case}BlocType>(
+          create: (context) => ${feature_pascal_case}Bloc(),
+        ),
+      ];
+}

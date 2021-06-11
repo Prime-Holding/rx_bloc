@@ -15,4 +15,5 @@ class RxBlocGenerator(
     templateName = "rx_bloc"
 ) {
     override fun fileName() = "${snakeCase()}_bloc.${fileExtension()}"
+    override fun contextDirectoryName(): String = "blocs"
 }

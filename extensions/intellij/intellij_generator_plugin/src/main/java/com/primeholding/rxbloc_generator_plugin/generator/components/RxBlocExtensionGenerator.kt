@@ -16,4 +16,5 @@ class RxBlocExtensionGenerator(
 ) {
 
     override fun fileName() = "${snakeCase()}_bloc_extensions.${fileExtension()}"
+    override fun contextDirectoryName(): String = "blocs"
 }

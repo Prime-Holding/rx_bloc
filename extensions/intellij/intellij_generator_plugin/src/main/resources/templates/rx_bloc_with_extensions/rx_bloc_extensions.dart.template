@@ -3,3 +3,12 @@ part of '${bloc_snake_case}_bloc.dart';
 /// TODO: Here you can add the implementation details of your BloC or any stream extensions you might need.
 /// Thus, the BloC will contain only declarations, which improves the readability and the maintainability.
 extension _${bloc_pascal_case}Extension on ${bloc_pascal_case}Bloc {}
+
+extension _MapFetchEventToData on Stream<void> {
+  ///TODO: Replace the code below with a repository invocation
+  Stream<Result<String>> mapToData() => switchMap((value) async* {
+        yield Result<String>.loading();
+        await Future.delayed(const Duration(seconds: 1));
+        yield Result<String>.success('Some specific async state');
+      });
+}

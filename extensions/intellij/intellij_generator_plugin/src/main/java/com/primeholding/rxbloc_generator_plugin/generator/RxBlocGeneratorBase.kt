@@ -55,6 +55,8 @@ abstract class RxBlocGeneratorBase(private val name: String,
     private fun dollarPascalCase(): String = "$" + pascalCase()
     private fun pascalCase(): String = name.toUpperCamelCase().replace("Bloc", "")
 
+    fun featureDirectoryName() = "feature_" + snakeCase()
+    abstract fun contextDirectoryName(): String
     fun snakeCase() = name.toLowerSnakeCase().replace("_bloc", "")
     fun fileExtension() = "dart"
 }

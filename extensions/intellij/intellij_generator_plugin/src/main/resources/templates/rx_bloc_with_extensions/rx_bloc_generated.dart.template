@@ -19,6 +19,14 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
     implements ${bloc_pascal_case}BlocEvents, ${bloc_pascal_case}BlocStates, ${bloc_pascal_case}BlocType {
   final _compositeSubscription = CompositeSubscription();
 
+  /// The state of [data] implemented in [_mapToDataState]
+  Stream<String> _dataState;
+
+  @override
+  Stream<String> get data => _dataState ??= _mapToDataState();
+
+  Stream<String> _mapToDataState();
+
   @override
   ${bloc_pascal_case}BlocEvents get events => this;
 

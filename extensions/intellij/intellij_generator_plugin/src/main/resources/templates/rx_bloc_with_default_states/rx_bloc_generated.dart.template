@@ -25,15 +25,23 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
   /// The state of [errors] implemented in [_mapToErrorsState]
   Stream<String> _errorsState;
 
+  /// The state of [data] implemented in [_mapToDataState]
+  Stream<String> _dataState;
+
   @override
   Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
 
   @override
   Stream<String> get errors => _errorsState ??= _mapToErrorsState();
 
+  @override
+  Stream<String> get data => _dataState ??= _mapToDataState();
+
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
+
+  Stream<String> _mapToDataState();
 
   @override
   ${bloc_pascal_case}BlocEvents get events => this;
