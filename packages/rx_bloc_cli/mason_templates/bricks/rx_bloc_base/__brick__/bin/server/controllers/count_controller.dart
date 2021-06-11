@@ -1,31 +1,28 @@
 import 'package:shelf/shelf.dart';
 
-import '../utils/response_builder.dart';
+import '../utils/api_controller.dart';
 
-class CountController {
+class CountController extends ApiController {
   var _count = 0;
 
-  final _responseBuilder = ResponseBuilder();
+  @override
+  void mapRequests() {
+    addRequest(RequestType.GET, '/api/count', getCountHandler);
+    addRequest(RequestType.POST, '/api/count/increment', incrementCountHandler);
+    addRequest(RequestType.POST, '/api/count/decrement', decrementCountHandler);
+  }
 
   Response getCountHandler(Request request) =>
-      _responseBuilder.buildOK({'count': _count});
+      responseBuilder.buildOK(data: {'value': _count});
 
   Response incrementCountHandler(Request request) {
-    try {
-      _increment();
-      return _responseBuilder.buildOK({'count': _count});
-    } on Exception catch (e) {
-      return _responseBuilder.buildUnprocessableEntity(e);
-    }
+    _increment();
+    return responseBuilder.buildOK(data: {'value': _count});
   }
 
   Response decrementCountHandler(Request request) {
-    try {
-      _decrement();
-      return _responseBuilder.buildOK({'count': _count});
-    } on Exception catch (e) {
-      return _responseBuilder.buildUnprocessableEntity(e);
-    }
+    _decrement();
+    return responseBuilder.buildOK(data: {'value': _count});
   }
 
   void _increment() {
