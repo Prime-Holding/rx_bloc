@@ -1,3 +1,8 @@
+import 'package:shelf/shelf.dart';
+
+import 'response_builder.dart';
+import 'server_exceptions.dart';
+
 final _statusCodeMessages = {
   // 2xx : Success codes
   200: '200 OK',
@@ -25,8 +30,20 @@ final _statusCodeMessages = {
   511: '511 Network Authentication Required'
 };
 
-/// Returns a status message for given code
-String getStatusMessage(int code) {
-  final msg = _statusCodeMessages[code];
-  return msg ?? 'Unknown Error';
-}
+/// Returns a status message for the given code.
+String getStatusMessage(int code) =>
+    _statusCodeMessages[code] ?? 'Unknown Error';
+
+/// Builds a wrapper around the callback which helps easily detect and respond
+/// to different kinds of errors/exceptions.
+Handler buildSafeHandler(Handler callback, ResponseBuilder responseBuilder) =>
+        (request) {
+      try {
+        final response = callback(request);
+        return response;
+      } on ResponseException catch (e) {
+        return responseBuilder.buildErrorResponse(e, request: request);
+      } on Exception catch (e) {
+        return responseBuilder.buildUnprocessableEntity(e, request: request);
+      }
+    };

@@ -5,7 +5,7 @@ import '../utils/server_exceptions.dart';
 
 class AuthenticationController extends ApiController {
   @override
-  void mapRequests() {
+  void registerRequests() {
     addRequest(RequestType.POST, '/api/authenticate', authenticationHandler);
     addRequest(RequestType.POST, '/api/logout', logoutHandler);
   }

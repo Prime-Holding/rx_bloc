@@ -6,7 +6,7 @@ class PushNotificationsController extends ApiController {
   final _pushTokens = <String>[];
 
   @override
-  void mapRequests() {
+  void registerRequests() {
     addRequest(RequestType.POST, '/api/user/push-notification-subscriptions',
         registerPushHandler);
     addRequest(RequestType.DELETE, '/api/user/push-notification-subscriptions',

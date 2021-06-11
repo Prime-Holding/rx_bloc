@@ -6,7 +6,7 @@ class CountController extends ApiController {
   var _count = 0;
 
   @override
-  void mapRequests() {
+  void registerRequests() {
     addRequest(RequestType.GET, '/api/count', getCountHandler);
     addRequest(RequestType.POST, '/api/count/increment', incrementCountHandler);
     addRequest(RequestType.POST, '/api/count/decrement', decrementCountHandler);

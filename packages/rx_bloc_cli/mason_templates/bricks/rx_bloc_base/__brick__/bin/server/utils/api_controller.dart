@@ -3,10 +3,11 @@ import 'package:shelf_router/shelf_router.dart' as shelf_router;
 
 import 'response_builder.dart';
 import 'server_exceptions.dart';
+import 'utilities.dart';
 
 // ignore_for_file: constant_identifier_names
 
-typedef RequestCallback = Function(shelf.Request);
+typedef RequestCallback = shelf.Response Function(shelf.Request);
 
 /// Supported REST service request types
 enum RequestType { GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS }
@@ -25,27 +26,13 @@ abstract class ApiController {
 
   /// Registers a callback that is triggered once the specified endpoint has
   /// been reached with a request of the provided request type
-  void addRequest(RequestType type, String endpoint, RequestCallback callback) {
-    final _callback = _buildWrappedCallback(callback);
-    final _mapping = _APIEndpointModel(type, endpoint, _callback);
-    _mappedRequests.add(_mapping);
+  void addRequest(RequestType type, String endpoint, shelf.Handler callback) {
+    final _callback = buildSafeHandler(callback, responseBuilder);
+    _mappedRequests.add(_APIEndpointModel(type, endpoint, _callback));
   }
 
   /// Controller specific request mappings should be implemented in this method.
-  void mapRequests();
-
-  /// Builds a wrapper around the callback which helps easily detect and respond
-  /// to different kinds of errors/exceptions
-  Function _buildWrappedCallback(RequestCallback callback) => (request) {
-    try {
-      final response = callback(request);
-      return response;
-    } on ResponseException catch (e) {
-      return responseBuilder.buildErrorResponse(e, request: request);
-    } on Exception catch (e) {
-      return responseBuilder.buildUnprocessableEntity(e, request: request);
-    }
-  };
+  void registerRequests();
 }
 
 /// [RouteGenerator] is a class that automates the generation and registering of
@@ -77,7 +64,7 @@ class RouteGenerator {
     final _router = _buildRouter(routeNotFoundHandler);
 
     for (final controller in _controllers) {
-      if (controller._mappedRequests.isEmpty) controller.mapRequests();
+      if (controller._mappedRequests.isEmpty) controller.registerRequests();
       controller._mappedRequests.forEach((request) {
         _registerRequest(_router, request);
       });
@@ -88,23 +75,16 @@ class RouteGenerator {
 
   /// Builds a default router with an optional handler for the case when the
   /// requested url could not be found.
-  shelf_router.Router _buildRouter([shelf.Handler? handler]) {
-    final _router = shelf_router.Router(notFoundHandler: (request) {
-      try {
-        if (handler != null) {
-          final response = handler(request);
-          return response;
-        }
-        throw NotFoundException('The requested URL could not be found.');
-      } on ResponseException catch (e) {
-        return _responseBuilder.buildErrorResponse(e, request: request);
-      } on Exception catch (e) {
-        return _responseBuilder.buildUnprocessableEntity(e, request: request);
-      }
-    });
-
-    return _router;
-  }
+  shelf_router.Router _buildRouter([shelf.Handler? handler]) =>
+      shelf_router.Router(
+        notFoundHandler: buildSafeHandler((request) {
+          if (handler != null) {
+            final response = handler(request);
+            return response;
+          }
+          throw NotFoundException('The requested URL could not be found.');
+        }, _responseBuilder),
+      );
 
   /// Registers a specific endpoint to the router
   void _registerRequest(
