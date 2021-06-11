@@ -8,6 +8,7 @@
 {{#analytics}}
 import 'package:firebase_analytics/observer.dart';{{/analytics}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,9 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
       );
 }
 
+/// Wrapper around the MaterialApp widget to provide additional functionality
+/// accessible throughout the app (such as App-level dependencies, Firebase
+/// services, etc).
 class _MyMaterialApp extends StatefulWidget {
   const _MyMaterialApp(this._router);
 
@@ -48,7 +52,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   @override
   void initState() { {{#push_notifications}}
-    _configureWebFCM();
+    /// Initialize the FCM callbacks
+    if (kIsWeb) _configureWebFCM();
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((message) => onInitialMessageOpened(context, message));

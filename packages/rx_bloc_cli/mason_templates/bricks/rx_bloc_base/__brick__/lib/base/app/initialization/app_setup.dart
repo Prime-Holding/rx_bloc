@@ -15,6 +15,8 @@ import 'package:flutter/foundation.dart';{{/push_notifications}}
 import '../../utils/helpers.dart';{{#push_notifications}}
 import 'firebase_messaging_callbacks.dart';{{/push_notifications}}
 
+/// Configures application tools and packages before running the app. Services
+/// such as Firebase or background handlers can be defined here.
 Future configureApp() async {
   {{#uses_firebase}}
   // TODO: Add Firebase credentials for used environments

@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-
-import '../blocs/login_bloc.dart';
 
 class LoginDependencies {
   LoginDependencies._(this.context);
@@ -19,9 +17,7 @@ class LoginDependencies {
     ..._blocs,
   ];
 
-  List<RxBlocProvider> get _blocs => [
-    RxBlocProvider<LoginBlocType>(
-      create: (context) => LoginBloc(),
-    ),
+  List<Provider> get _blocs => [
+    Provider(create: (_) => null),
   ];
 }

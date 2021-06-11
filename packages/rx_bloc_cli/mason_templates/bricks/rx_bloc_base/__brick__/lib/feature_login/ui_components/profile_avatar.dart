@@ -6,19 +6,18 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/popup_builder.dart';
 
 // ignore_for_file: avoid_field_initializers_in_const_classes
 
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
-    this.loggedIn = true,
     Key? key,
   }) : super(key: key);
-
-  final bool loggedIn;
 
   final _notificationKey = 'notifications';
   final _logoutKey = 'logout';
@@ -26,11 +25,15 @@ class ProfileAvatar extends StatelessWidget {
   /// region Builders
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(12),
-        child: loggedIn
-            ? _buildLoggedInAvatar(context)
-            : _buildLoginButton(context),
+  Widget build(BuildContext context) =>
+      RxBlocBuilder<UserAccountBlocType, bool>(
+        state: (bloc) => bloc.states.loggedIn,
+        builder: (context, loggedInState, bloc) => Padding(
+          padding: const EdgeInsets.all(12),
+          child: (loggedInState.hasData && loggedInState.data!)
+              ? _buildLoggedInAvatar(context)
+              : _buildLoginButton(context),
+        ),
       );
 
   Widget _buildLoginButton(BuildContext context) => OutlinedButton(
@@ -63,8 +66,7 @@ class ProfileAvatar extends StatelessWidget {
           if (selected == _notificationKey) {
             context.router.push(const NotificationsRoute());
           } else if (selected == _logoutKey) {
-            // Perform a logout
-            debugPrint('User logged out');
+            RxBlocProvider.of<UserAccountBlocType>(context).events.logout();
           }
         },
         child: const Icon(Icons.person),

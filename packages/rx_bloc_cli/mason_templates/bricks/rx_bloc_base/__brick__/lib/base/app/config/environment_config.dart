@@ -7,6 +7,8 @@
 
 enum EnvironmentType { dev, staging, prod }
 
+/// Environment configuration that enables you to get define and reuse
+/// environment specific properties (such as API endpoints, server secrets, ...)
 class EnvironmentConfig {
   const EnvironmentConfig._({
     this.environment = EnvironmentType.dev,

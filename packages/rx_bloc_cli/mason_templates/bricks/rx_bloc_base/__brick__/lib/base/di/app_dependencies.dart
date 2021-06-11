@@ -13,7 +13,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../common_blocs/user_account_bloc.dart';
 import '../common_use_cases/fetch_new_access_token_use_case.dart';
+import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
@@ -36,6 +38,7 @@ class AppDependencies {
     {{/analytics}}..._authentication,
     ..._useCases,
     ..._httpClients,
+    ..._blocs,
   ];
 {{#analytics}}
 
@@ -56,6 +59,8 @@ class AppDependencies {
   ];
 
   List<Provider> get _useCases => [
+    Provider<LoginUseCase>(
+        create: (context) => LoginUseCase(context.read())),
     Provider<LogoutUseCase>(
         create: (context) => LogoutUseCase(context.read())),
     Provider<fetchNewAccessTokenUseCase>(
@@ -71,5 +76,14 @@ class AppDependencies {
         ..add(AnalyticsInterceptor(context.read()));
       return _dio;
     }),
+  ];
+
+  List<SingleChildWidget> get _blocs => [
+    Provider<UserAccountBlocType>(
+      create: (context) => UserAccountBloc(
+        context.read(),
+        context.read(),
+      ),
+    ),
   ];
 }
