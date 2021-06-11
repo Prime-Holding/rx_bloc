@@ -76,17 +76,18 @@ class CounterBloc extends $CounterBloc {
       _lastFetchedCount.whereSuccess().map((count) => count.value);
 
   @override
-  Stream<String> _mapToErrorsState() => errorState.mapFromDio().toMessage();
+  Stream<String> _mapToErrorsState() =>
+      Rx.merge<Exception>([_lastFetchedCount.whereError().mapFromDio()])
+          .toMessage()
+          .asBroadcastStream();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool> _mapToIsLoadingState() =>
+      Rx.merge<bool>([_lastFetchedCount.map((value) => value is ResultLoading)])
+          .asBroadcastStream();
 
   @override
-  Stream<Result<Count>> _mapToCounterResultState() =>
-      _lastFetchedCount.where((event) =>
-      event != Result.error(Exception()) ||
-          (event == Result.error(Exception()) &&
-              (event as DioError).response == null));
+  Stream<Result<Count>> _mapToCounterResultState() => _lastFetchedCount;
 
   @override
   void dispose() {

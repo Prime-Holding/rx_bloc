@@ -33,20 +33,18 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: Text(context.l10n.counterPageTitle)),
     body: Center(
-      child: RxResultBuilder<CounterBlocType, Count>(
-        state: (bloc) => bloc.states.counterResult,
-        buildSuccess: (context, countState, bloc) => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildErrorListener(),
-            _buildCount(),
-          ],
-        ),
-        buildLoading: (context, bloc) => const Center(
-          child: CircularProgressIndicator(),
-        ),
-        buildError: (context, countState, bloc) =>
-            _buildErrorScreen(context, bloc),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildErrorListener(),
+          RxResultBuilder<CounterBlocType, Count>(
+            state: (bloc) => bloc.states.counterResult,
+            buildSuccess: (context, countState, bloc) => _buildCount(),
+            buildLoading: (context, bloc) => _buildLoadingScreen(),
+            buildError: (context, errorMessage, bloc) =>
+                _buildErrorScreen(context, errorMessage, bloc),
+          ),
+        ],
       ),
     ),
     floatingActionButton: _buildActionButtons(context),
@@ -62,26 +60,33 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
         : Container(),
   );
 
+  Widget _buildLoadingScreen() =>
+      const Center(child: CircularProgressIndicator());
 
   Widget _buildErrorScreen(
       BuildContext context,
+      String errorMessage,
       CounterBlocType bloc,
       ) =>
-      Container(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(
-              'Your API is not running. \nRun command \'bin/start_server.sh\' and try again.',
-              textAlign: TextAlign.center,
-              style: context.designSystem.typography.headline5,
-          ),
-          ElevatedButton(
-              onPressed: bloc.events.current,
-              child: Text(
-                'RETRY',
-                style: context.designSystem.typography.buttonMain,
-              )),
-        ]),
-      );
+      !errorMessage.contains('Http status error [422]')
+          ? Container(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Your API is not running. \nRun command \'bin/start_server.sh\' and try again.',
+                textAlign: TextAlign.center,
+                style: context.designSystem.typography.headline5,
+              ),
+              ElevatedButton(
+                  onPressed: bloc.events.current,
+                  child: Text(
+                    'RETRY',
+                    style: context.designSystem.typography.buttonMain,
+                  )),
+            ]),
+      )
+          : _buildCount();
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
     state: (bloc) => bloc.states.errors,
