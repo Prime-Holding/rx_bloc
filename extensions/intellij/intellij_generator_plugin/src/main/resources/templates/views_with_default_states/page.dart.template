@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../blocs/${feature_underscore_case}_bloc.dart';
-import '../di/${feature_underscore_case}_dependencies.dart';
+import '../blocs/${feature_snake_case}_bloc.dart';
+import '../di/${feature_snake_case}_dependencies.dart';
 
 class ${feature_pascal_case}Page extends StatelessWidget implements AutoRouteWrapper {
   const ${feature_pascal_case}Page({
@@ -19,25 +19,26 @@ class ${feature_pascal_case}Page extends StatelessWidget implements AutoRouteWra
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(),
-        body: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildErrorListener(),
-              Expanded(child: Center(child: _buildContainer())),
-              ElevatedButton(
-                onPressed: context.read<${feature_pascal_case}BlocType>().events.fetchData,
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
+        appBar: _buildAppBar(context),
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _buildErrorListener(),
+            Center(child: _buildDataContainer()),
+          ],
         ),
       );
 
-  Widget _buildContainer() => RxResultBuilder<${feature_pascal_case}BlocType, String>(
+  AppBar _buildAppBar(BuildContext context) => AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: context.read<${feature_pascal_case}BlocType>().events.fetchData,
+          ),
+        ],
+      );
+
+  Widget _buildDataContainer() => RxResultBuilder<${feature_pascal_case}BlocType, String>(
         state: (bloc) => bloc.states.data,
         buildLoading: (ctx, bloc) => const CircularProgressIndicator(),
         buildError: (ctx, error, bloc) => Text(error),

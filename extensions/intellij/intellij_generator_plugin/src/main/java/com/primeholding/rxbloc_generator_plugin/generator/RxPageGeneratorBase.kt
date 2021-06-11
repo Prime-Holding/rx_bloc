@@ -6,35 +6,30 @@ import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
-abstract class RxBlocGeneratorBase(private val name: String,
+abstract class RxPageGeneratorBase(private val name: String,
                                    withDefaultStates: Boolean,
                                    includeExtensions: Boolean,
                                    includeNullSafety: Boolean,
                                    templateName: String): RxGeneratorBase(name, withDefaultStates, includeExtensions, includeNullSafety, templateName) {
 
-    private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
-    private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"
-    private val TEMPLATE_BLOC_SNAKE_CASE = "bloc_snake_case"
+    private val TEMPLATE_FEATURE_PASCAL_CASE = "feature_pascal_case"
+    private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"
 
     private val templateString: String
     private val templateValues: MutableMap<String, String>
 
     init {
         templateValues = mutableMapOf(
-            TEMPLATE_BLOC_PASCAL_CASE to pascalCase(),
-            TEMPLATE_BLOC_DOLLAR_PASCAL_CASE to dollarPascalCase(),
-            TEMPLATE_BLOC_SNAKE_CASE to snakeCase()
+            TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
+            TEMPLATE_FEATURE_SNAKE_CASE to snakeCase()
         )
         try {
             val templateFolder = StringBuilder()
-            if(withDefaultStates && !includeExtensions) {
-                templateFolder.append("rx_bloc_with_default_states")
-            } else if(withDefaultStates && includeExtensions) {
-                templateFolder.append("rx_bloc_with_extensions_with_default_states")
-            } else if (!withDefaultStates && includeExtensions) {
-                templateFolder.append("rx_bloc_with_extensions")
+
+            if(withDefaultStates) {
+                templateFolder.append("views_with_default_states")
             } else {
-                templateFolder.append("rx_bloc")
+                templateFolder.append("views")
             }
 
             val resource = "/templates/${templateFolder}/$templateName.dart.template"
@@ -49,6 +44,4 @@ abstract class RxBlocGeneratorBase(private val name: String,
         val substitutor = StrSubstitutor(templateValues)
         return substitutor.replace(templateString)
     }
-
-    private fun dollarPascalCase(): String = "$" + pascalCase()
 }

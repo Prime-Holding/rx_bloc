@@ -5,8 +5,10 @@ part of '${bloc_snake_case}_bloc.dart';
 extension _${bloc_pascal_case}Extension on ${bloc_pascal_case}Bloc {}
 
 extension _MapFetchEventToData on Stream<void> {
-  ///TODO: Replace the code below with a repository invocation
-  Stream<Result<String>> mapToData() => switchMap((value) async* {
+  Stream<Result<String>> mapToData() => throttleTime(
+        const Duration(milliseconds: 200),
+      ).switchMap((value) async* {
+        ///TODO: Replace the code below with a repository invocation
         yield Result<String>.loading();
         await Future.delayed(const Duration(seconds: 1));
         yield Result<String>.success('Some specific async state');

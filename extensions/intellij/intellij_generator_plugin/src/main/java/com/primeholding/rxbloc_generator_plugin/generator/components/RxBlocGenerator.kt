@@ -4,12 +4,12 @@ import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
 
 class RxBlocGenerator(
     name: String,
-    useEquatable: Boolean,
+    withDefaultStates: Boolean,
     includeExtensions: Boolean,
     includeNullSafety: Boolean
 ) : RxBlocGeneratorBase(
     name,
-    useEquatable,
+    withDefaultStates,
     includeExtensions,
     includeNullSafety,
     templateName = "rx_bloc"

@@ -19,6 +19,9 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
     implements ${bloc_pascal_case}BlocEvents, ${bloc_pascal_case}BlocStates, ${bloc_pascal_case}BlocType {
   final _compositeSubscription = CompositeSubscription();
 
+  /// Тhe [Subject] where events sink to by calling [fetchData]
+  final _$fetchDataEvent = PublishSubject<void>();
+
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   Stream<bool> _isLoadingState;
 
@@ -26,7 +29,7 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
   Stream<String> _errorsState;
 
   /// The state of [data] implemented in [_mapToDataState]
-  Stream<String> _dataState;
+  Stream<Result<String>> _dataState;
 
   @override
   Stream<bool> get isLoading => _isLoadingState ??= _mapToIsLoadingState();
@@ -35,13 +38,16 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
   Stream<String> get errors => _errorsState ??= _mapToErrorsState();
 
   @override
-  Stream<String> get data => _dataState ??= _mapToDataState();
+  Stream<Result<String>> get data => _dataState ??= _mapToDataState();
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<String> _mapToDataState();
+  Stream<Result<String>> _mapToDataState();
+
+  @override
+  void fetchData() => _$fetchDataEvent.add(null);
 
   @override
   ${bloc_pascal_case}BlocEvents get events => this;

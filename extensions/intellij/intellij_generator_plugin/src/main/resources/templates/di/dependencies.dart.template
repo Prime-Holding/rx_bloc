@@ -3,7 +3,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../blocs/${feature_underscore_case}_bloc.dart';
+import '../blocs/${feature_snake_case}_bloc.dart';
 
 class ${feature_pascal_case}Dependencies {
   ${feature_pascal_case}Dependencies._(this.context);

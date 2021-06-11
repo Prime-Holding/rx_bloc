@@ -7,27 +7,27 @@ import com.primeholding.rxbloc_generator_plugin.generator.components.RxGenerated
 object RxBlocGeneratorFactory {
     fun getBlocGenerators(
         name: String,
-        useEquatable: Boolean,
+        withDefaultStates: Boolean,
         includeExtensions: Boolean,
         includeNullSafety: Boolean
-    ): List<RxBlocGeneratorBase> {
+    ): List<RxGeneratorBase> {
         val bloc = com.primeholding.rxbloc_generator_plugin.generator.components.RxBlocGenerator(
             name,
-            useEquatable,
+            withDefaultStates,
             includeExtensions,
             includeNullSafety)
 
-        val generatedBloc = if(useEquatable && includeNullSafety) {
+        val generatedBloc = if(includeNullSafety) {
             RxGeneratedNullSafetyBlocGenerator(
                 name,
-                useEquatable,
+                withDefaultStates,
                 includeExtensions,
                 includeNullSafety
             )
         } else {
             RxGeneratedBlocGenerator(
                 name,
-                useEquatable,
+                withDefaultStates,
                 includeExtensions,
                 includeNullSafety
             )
@@ -35,7 +35,7 @@ object RxBlocGeneratorFactory {
 
         if(includeExtensions) {
             val blocExtensions = RxBlocExtensionGenerator(name,
-                useEquatable,
+                withDefaultStates,
                 includeExtensions,
                 includeNullSafety
             )

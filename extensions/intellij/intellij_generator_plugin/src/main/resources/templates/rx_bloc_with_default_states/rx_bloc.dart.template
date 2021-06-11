@@ -27,6 +27,7 @@ class ${bloc_pascal_case}Bloc extends ${bloc_dollar_pascal_case}Bloc {
   @override
   Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
       .startWith(null)
+      .throttleTime(const Duration(milliseconds: 200))
       .switchMap((value) async* {
         ///TODO: Replace the code below with a repository invocation
         yield Result<String>.loading();
