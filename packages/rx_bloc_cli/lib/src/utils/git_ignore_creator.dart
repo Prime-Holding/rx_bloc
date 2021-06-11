@@ -6,8 +6,8 @@ class GitIgnoreCreator {
 
   /// Generates a .gitignore file at the specified path
   static void generate(String path) {
-    final file = File('$path/.gitignore');
-    file.writeAsStringSync(_gitIgnoreContents);
+    final file = File('$path/.gitignore')
+      ..writeAsStringSync(_gitIgnoreContents);
   }
 }
 

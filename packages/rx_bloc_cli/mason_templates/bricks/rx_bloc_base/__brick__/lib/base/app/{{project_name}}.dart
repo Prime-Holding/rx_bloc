@@ -49,7 +49,7 @@ class _MyMaterialApp extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         routeInformationParser: _router.defaultRouteParser(),
         routerDelegate: _router.delegate({{#analytics}}
-          navigatorObservers: [
+          navigatorObservers: () => [
             Provider.of<FirebaseAnalyticsObserver>(context, listen: false),
           ],
         {{/analytics}}),
