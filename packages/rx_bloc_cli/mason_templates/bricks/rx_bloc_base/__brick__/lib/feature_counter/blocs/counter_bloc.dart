@@ -26,7 +26,7 @@ abstract class CounterBlocEvents {
   void decrement();
 
   /// Get the current count
-  void current();
+  void reload();
 }
 
 /// A contract class containing all states for our multi state BloC.
@@ -61,7 +61,7 @@ class CounterBloc extends $CounterBloc {
       _$decrementEvent
           .switchMap((_) => _repository.decrement().asResultStream()),
       // Get current value
-      _$currentEvent
+      _$reloadEvent
           .switchMap((_) => _repository.getCurrent().asResultStream()),
       // Get initial value
       _repository.getCurrent().asResultStream(),
@@ -83,7 +83,7 @@ class CounterBloc extends $CounterBloc {
 
   @override
   Stream<bool> _mapToIsLoadingState() =>
-      Rx.merge<bool>([_lastFetchedCount.map((value) => value is ResultLoading)])
+      Rx.merge<bool>([_lastFetchedCount.isLoading()])
           .asBroadcastStream();
 
   @override

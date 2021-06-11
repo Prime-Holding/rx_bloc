@@ -79,7 +79,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
                 style: context.designSystem.typography.headline5,
               ),
               ElevatedButton(
-                  onPressed: bloc.events.current,
+                  onPressed: bloc.events.reload,
                   child: Text(
                     'RETRY',
                     style: context.designSystem.typography.buttonMain,

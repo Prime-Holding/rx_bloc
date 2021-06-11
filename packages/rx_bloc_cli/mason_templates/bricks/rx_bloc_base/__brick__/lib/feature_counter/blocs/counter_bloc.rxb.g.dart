@@ -25,8 +25,8 @@ abstract class $CounterBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [decrement]
   final _$decrementEvent = PublishSubject<void>();
 
-  /// Тhe [Subject] where events sink to by calling [current]
-  final _$currentEvent = PublishSubject<void>();
+  /// Тhe [Subject] where events sink to by calling [reload]
+  final _$reloadEvent = PublishSubject<void>();
 
   /// The state of [count] implemented in [_mapToCountState]
   late final Stream<int> _countState = _mapToCountState();
@@ -48,7 +48,7 @@ abstract class $CounterBloc extends RxBlocBase
   void decrement() => _$decrementEvent.add(null);
 
   @override
-  void current() => _$currentEvent.add(null);
+  void reload() => _$reloadEvent.add(null);
 
   @override
   Stream<int> get count => _countState;
@@ -80,7 +80,7 @@ abstract class $CounterBloc extends RxBlocBase
   void dispose() {
     _$incrementEvent.close();
     _$decrementEvent.close();
-    _$currentEvent.close();
+    _$reloadEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

@@ -16,13 +16,15 @@ extension _ToError on Stream<Exception> {
   Stream<String> toMessage() =>
       map((errorState) => errorState.toString().substring(10));
 
-  /// Filter exceptions and present custom message, thrown from the API
-  Stream<Exception> mapFromDio() => where((exception) =>
-  exception is DioError &&
-      exception.response != null &&
-      exception.response!.statusCode == 422).map((exception) {
-    final message =
-    jsonDecode((exception as DioError).response?.data)['title'];
-    return Exception(message);
+  /// Map DioError to present readable custom message, thrown from the API
+  Stream<Exception> mapFromDio() => map((exception) {
+    if (exception is DioError &&
+        exception.response != null &&
+        exception.response!.statusCode == 422) {
+      final message =
+      jsonDecode((exception as DioError).response?.data)['title'];
+      return Exception(message);
+    }
+    return exception;
   });
 }
