@@ -8,8 +8,7 @@
 import '../../base/data_sources/remote/count_remote_data_source.dart';
 import '../../base/models/count.dart';
 
-///Can use any type of data source, that follow the contract
-///and retrieve its response to the business logic layer
+/// Decouple Data Layer and Business Logic Layer
 class CounterRepository {
 
   CounterRepository(this.countRemoteDataSource);

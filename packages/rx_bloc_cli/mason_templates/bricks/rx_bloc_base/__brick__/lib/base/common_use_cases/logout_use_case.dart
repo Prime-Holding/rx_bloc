@@ -13,7 +13,7 @@ class LogoutUseCase{
   final AuthRepository _authRepository;
 
   Future<void> execute() async {
-    // TODO Add some logic here
+    // TODO Add your logic for logging out here
       await _authRepository.clearAuthData();
   }
 

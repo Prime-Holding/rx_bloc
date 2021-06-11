@@ -5,6 +5,9 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -21,6 +24,9 @@ abstract class CounterBlocEvents {
 
   /// Decrement the count
   void decrement();
+
+  /// Get the current count
+  void current();
 }
 
 /// A contract class containing all states for our multi state BloC.
@@ -37,37 +43,54 @@ abstract class CounterBlocStates {
 
   /// Error messages
   Stream<String> get errors;
+
+  /// Result state
+  Stream<Result<Count>> get counterResult;
 }
 
 /// A BloC responsible for count calculations
 @RxBloc()
 class CounterBloc extends $CounterBloc {
-  /// Default constructor
-  CounterBloc(this._repository);
+  /// Bloc constructor
+  CounterBloc(this._repository) {
+    Rx.merge<Result<Count>>([
+      // On increment.
+      _$incrementEvent
+          .switchMap((_) => _repository.increment().asResultStream()),
+      // On decrement.
+      _$decrementEvent
+          .switchMap((_) => _repository.decrement().asResultStream()),
+      // Get current value
+      _$currentEvent
+          .switchMap((_) => _repository.getCurrent().asResultStream()),
+      // Get initial value
+      _repository.getCurrent().asResultStream(),
+    ]).bind(_lastFetchedCount).disposedBy(_compositeSubscription);
+  }
 
   final CounterRepository _repository;
-
-  /// Map increment and decrement events to `count` state
-  @override
-  Stream<int> _mapToCountState() => Rx.merge<Result<Count>>([
-    // On increment.
-    _$incrementEvent
-        .switchMap((_) => _repository.increment().asResultStream()),
-    // On decrement.
-    _$decrementEvent
-        .switchMap((_) => _repository.decrement().asResultStream()),
-    // Get initial value
-    _repository.getCurrent().asResultStream(),
-  ])
-  // This automatically handles the error and loading state.
-      .setResultStateHandler(this)
-  // Provide success response only.
-      .whereSuccess()
-      .map((count) => count.value);
+  final _lastFetchedCount = BehaviorSubject<Result<Count>>();
 
   @override
-  Stream<String> _mapToErrorsState() => errorState.toMessage();
+  Stream<int> _mapToCountState() =>
+      _lastFetchedCount.whereSuccess().map((count) => count.value);
+
+  @override
+  Stream<String> _mapToErrorsState() => errorState.mapFromDio().toMessage();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  @override
+  Stream<Result<Count>> _mapToCounterResultState() =>
+      _lastFetchedCount.where((event) =>
+      event != Result.error(Exception()) ||
+          (event == Result.error(Exception()) &&
+              (event as DioError).response == null));
+
+  @override
+  void dispose() {
+    _lastFetchedCount.close();
+    super.dispose();
+  }
 }

@@ -13,5 +13,16 @@ extension _CounterExtension on CounterBloc {}
 
 extension _ToError on Stream<Exception> {
   /// TODO: Implement error event-to-state logic
-  Stream<String> toMessage() => map((errorState) => errorState.toString());
+  Stream<String> toMessage() =>
+      map((errorState) => errorState.toString().substring(10));
+
+  /// Filter exceptions and present custom message, thrown from the API
+  Stream<Exception> mapFromDio() => where((exception) =>
+  exception is DioError &&
+      exception.response != null &&
+      exception.response!.statusCode == 422).map((exception) {
+    final message =
+    jsonDecode((exception as DioError).response?.data)['title'];
+    return Exception(message);
+  });
 }

@@ -31,10 +31,7 @@ class CounterDependencies {
         ..._blocs,
       ];
 
-  /// In case your application use API and HttpClient(dio and retrofit
-  /// by default), here should uncomment the row with CountRemoteDataSource
-  /// and comment current "create" function, witch use CountLocalDataSource.
-  /// Also you should provide a real api in
+  /// For your project you should provide a real api in
   /// lib\base\data_sources\domain\counter\count_remote_data_source.dart
   /// and data models in lib\base\models and rerun build_runner.
   List<Provider> get _dataSources => [

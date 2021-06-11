@@ -69,9 +69,11 @@ Every flavor represents a separate Firebase project that will be used for app tr
 {{/analytics}}
 ### Http client
 
-Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps us to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
+Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
 
-To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. Finally tell to your repository which data source you are going to use with specifying it in your dependencies class(in this case lib\feature_counter\di\counter_dependencies.dart).
+To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class(in this case lib\feature_counter\di\counter_dependencies.dart) specify which data source you are going to use in every repository.
+
+In our project in directory `bin/server/` we have implemented local Rest API using [shelf][shelf_lnk]. To test the project you have to run it first. In your root folder run 'bin/start_server.sh'. If you are running in your emulator and can not connect to the server, check this [sollution][sollution_lnk].
 
 ### Design system
 
@@ -92,4 +94,5 @@ To access the design system from your app, you have to import it from the follow
 [dio_lnk]: https://pub.dev/packages/dio
 [json_annotation_lnk]: https://pub.dev/packages/json_annotation
 [json_serializable_lnk]: https://pub.dev/packages/json_serializable
-
+[shelf_lnk]: https://pub.dev/packages/shelf
+[sollution_lnk]: https://github.com/flutterchina/dio/issues/76#issuecomment-430011361
