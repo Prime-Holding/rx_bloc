@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:shelf/shelf.dart';
 
 import 'response_builder.dart';
@@ -30,6 +32,9 @@ final _statusCodeMessages = {
   511: '511 Network Authentication Required'
 };
 
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789';
+Random _random = Random();
+
 /// Returns a status message for the given code.
 String getStatusMessage(int code) =>
     _statusCodeMessages[code] ?? 'Unknown Error';
@@ -37,9 +42,9 @@ String getStatusMessage(int code) =>
 /// Builds a wrapper around the callback which helps easily detect and respond
 /// to different kinds of errors/exceptions.
 Handler buildSafeHandler(Handler callback, ResponseBuilder responseBuilder) =>
-        (request) {
+        (request) async {
       try {
-        final response = callback(request);
+        final response = await callback(request);
         return response;
       } on ResponseException catch (e) {
         return responseBuilder.buildErrorResponse(e, request: request);
@@ -47,3 +52,8 @@ Handler buildSafeHandler(Handler callback, ResponseBuilder responseBuilder) =>
         return responseBuilder.buildUnprocessableEntity(e, request: request);
       }
     };
+
+/// Generates a random string of given length
+String generateRandomString([int charsNum = 64]) =>
+    String.fromCharCodes(Iterable.generate(
+        charsNum, (_) => _chars.codeUnitAt(_random.nextInt(_chars.length))));

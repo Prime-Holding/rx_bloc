@@ -1,38 +1,62 @@
 import 'package:shelf/shelf.dart';
 
+import '../repositories/push_token_repository.dart';
 import '../utils/api_controller.dart';
+import 'authentication_controller.dart';
+
+// ignore_for_file: cascade_invocations
 
 class PushNotificationsController extends ApiController {
-  final _pushTokens = <String>[];
+  final _pushTokens = PushTokenRepository();
 
   @override
-  void registerRequests() {
-    addRequest(RequestType.POST, '/api/user/push-notification-subscriptions',
-        registerPushHandler);
-    addRequest(RequestType.DELETE, '/api/user/push-notification-subscriptions',
-        unregisterPushHandler);
+  void registerRequests(WrappedRouter router) {
+    router.addRequest(
+      RequestType.GET,
+      '/api/user/push-notification-subscriptions',
+      _getPushTokensHandler,
+    );
+    router.addRequest(
+      RequestType.POST,
+      '/api/user/push-notification-subscriptions',
+      _registerPushHandler,
+    );
+    router.addRequest(
+      RequestType.DELETE,
+      '/api/user/push-notification-subscriptions',
+      _unregisterPushHandler,
+    );
   }
 
-  Response registerPushHandler(Request request) {
-    print('Authenticating');
-    _registerPushToken('123');
+  Response _getPushTokensHandler(Request request) {
+    controllers
+        .getController<AuthenticationController>()
+        ?.isAuthenticated(request);
+
+    /// Return all push tokens for current user
+
     return responseBuilder.buildOK();
   }
 
-  Response unregisterPushHandler(Request request) {
-    _unregisterPushToken('123');
+  Response _registerPushHandler(Request request) {
+    controllers
+        .getController<AuthenticationController>()
+        ?.isAuthenticated(request);
+
+    /// Add push token to query url when making request
+    _pushTokens.addPushToken('12345');
+
     return responseBuilder.buildOK();
   }
 
-  void _registerPushToken(String pushToken) {
-    if (!_pushTokens.contains(pushToken)) {
-      _pushTokens.add(pushToken);
-    }
-  }
+  Response _unregisterPushHandler(Request request) {
+    controllers
+        .getController<AuthenticationController>()
+        ?.isAuthenticated(request);
 
-  void _unregisterPushToken(String pushToken) {
-    if (_pushTokens.contains(pushToken)) {
-      _pushTokens.remove(pushToken);
-    }
+    /// Remove the token based on the user data
+    _pushTokens.removePushToken('12345');
+
+    return responseBuilder.buildOK();
   }
 }

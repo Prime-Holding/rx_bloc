@@ -2,14 +2,28 @@ import 'package:shelf/shelf.dart';
 
 import '../utils/api_controller.dart';
 
+// ignore_for_file: cascade_invocations
+
 class CountController extends ApiController {
   var _count = 0;
 
   @override
-  void registerRequests() {
-    addRequest(RequestType.GET, '/api/count', getCountHandler);
-    addRequest(RequestType.POST, '/api/count/increment', incrementCountHandler);
-    addRequest(RequestType.POST, '/api/count/decrement', decrementCountHandler);
+  void registerRequests(WrappedRouter router) {
+    router.addRequest(
+      RequestType.GET,
+      '/api/count',
+      getCountHandler,
+    );
+    router.addRequest(
+      RequestType.POST,
+      '/api/count/increment',
+      incrementCountHandler,
+    );
+    router.addRequest(
+      RequestType.POST,
+      '/api/count/decrement',
+      decrementCountHandler,
+    );
   }
 
   Response getCountHandler(Request request) =>
