@@ -12,16 +12,15 @@ import 'models/scenario.dart';
 
 enum Themes { light, dark }
 
-/// returns a [DeviceBuilder] with an arbitrary amount of scenarios rendered
-/// on all device sizes
+/// return a [LabeledDeviceBuilder] with a scenario rendered on all device sizes
 ///
 /// [widget] - to be rendered in the golden master
 ///
-/// [scenarios] - list of [Scenario] which will be created
+/// [scenario] - [Scenario] which will be added to [DeviceBuilder]
 LabeledDeviceBuilder generateDeviceBuilder({
   required String label,
   required Widget widget,
-  required List<Scenario> scenarios,
+  required Scenario scenario,
 }) {
   final deviceBuilder = LabeledDeviceBuilder(label: label)
     ..overrideDevicesForAllScenarios(
@@ -31,14 +30,12 @@ LabeledDeviceBuilder generateDeviceBuilder({
         Device.tabletPortrait,
         Device.tabletLandscape,
       ],
-    );
-  for (final s in scenarios) {
-    deviceBuilder.addScenario(
+    )
+    ..addScenario(
       widget: widget,
-      name: s.name,
-      onCreate: s.onCreate,
+      name: scenario.name,
+      onCreate: scenario.onCreate,
     );
-  }
   return deviceBuilder;
 }
 
