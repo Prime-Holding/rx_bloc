@@ -9,9 +9,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:test_app/base/data_sources/local/auth_token_shared_dara_source.dart';
 
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
@@ -32,47 +32,49 @@ class AppDependencies {
 
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
-        ..._analytics,
-        ..._dataSources,
-        ..._repositories,
-        ..._useCases,
-        ..._httpClients,
-      ];
+    ..._analytics,
+    ..._dataSources,
+    ..._repositories,
+    ..._useCases,
+    ..._httpClients,
+  ];
 
   List<Provider> get _analytics => [
-        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
-        Provider<FirebaseAnalyticsObserver>(
-          create: (context) =>
-              FirebaseAnalyticsObserver(analytics: context.read()),
-        ),
-      ];
+    Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
+    Provider<FirebaseAnalyticsObserver>(
+      create: (context) =>
+          FirebaseAnalyticsObserver(analytics: context.read()),
+    ),
+  ];
 
+  /// Chose one of both implemented AuthTokenDataSources or create your own
   List<Provider> get _dataSources => [
-        Provider<AuthTokenDataSource>(
-            create: (context) =>
-                AuthTokenDataSource(const FlutterSecureStorage())),
-      ];
+    Provider<AuthTokenDataSource>(
+        create: (context) => AuthTokenSharedDataSource()),
+    // create: (context) => AuthTokenSecureDataSource()),
+
+  ];
 
   List<Provider> get _repositories => [
-        Provider<AuthRepository>(
-            create: (context) => AuthRepository(context.read())),
-      ];
+    Provider<AuthRepository>(
+        create: (context) => AuthRepository(context.read())),
+  ];
 
   List<Provider> get _useCases => [
-        Provider<LogoutUseCase>(
-            create: (context) => LogoutUseCase(context.read())),
-        Provider<FetchAccessTokenUseCase>(
-            create: (context) => FetchAccessTokenUseCase(context.read())),
-      ];
+    Provider<LogoutUseCase>(
+        create: (context) => LogoutUseCase(context.read())),
+    Provider<FetchAccessTokenUseCase>(
+        create: (context) => FetchAccessTokenUseCase(context.read())),
+  ];
 
   List<Provider> get _httpClients => [
-        Provider<Dio>(create: (context) {
-          final _dio = Dio();
-          _dio.interceptors
-            ..add(
-                AuthInterceptor(context.read(), context.read()))
-            ..add(AnalyticsInterceptor(context.read()));
-          return _dio;
-        }),
-      ];
+    Provider<Dio>(create: (context) {
+      final _dio = Dio();
+      _dio.interceptors
+        ..add(
+            AuthInterceptor(context.read(), context.read()))
+        ..add(AnalyticsInterceptor(context.read()));
+      return _dio;
+    }),
+  ];
 }
