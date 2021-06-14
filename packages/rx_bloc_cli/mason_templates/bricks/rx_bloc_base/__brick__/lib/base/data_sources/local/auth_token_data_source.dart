@@ -25,7 +25,7 @@ abstract class AuthTokenDataSource {
   Future<void> clear();
 }
 
-class SecureStorageKeys {
+class DataSourceKeys {
   static const token = 'token';
   static const refreshToken = 'refreshToken';
 }

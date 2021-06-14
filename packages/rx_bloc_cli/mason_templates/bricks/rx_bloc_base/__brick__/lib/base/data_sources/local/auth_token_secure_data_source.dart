@@ -13,24 +13,32 @@ import 'auth_token_data_source.dart';
 /// Suitable for mobile.
 /// Persist and get auth information to make it  available trough the app.
 class AuthTokenSecureDataSource implements AuthTokenDataSource {
+  AuthTokenSecureDataSource(){
+    _storage = const FlutterSecureStorage();
+  }
 
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  late FlutterSecureStorage _storage;
 
   /// Get stored access token
-  Future<String?> getToken() => _storage.read(key: SecureStorageKeys.token);
+  @override
+  Future<String?> getToken() => _storage.read(key: DataSourceKeys.token);
 
   /// Persist access token
+  @override
   Future<void> saveToken(String newToken) =>
-      _storage.write(key: SecureStorageKeys.token, value: newToken);
+      _storage.write(key: DataSourceKeys.token, value: newToken);
 
   /// Get stored refresh token
+  @override
   Future<String?> getRefreshToken() =>
-      _storage.read(key: SecureStorageKeys.refreshToken);
+      _storage.read(key: DataSourceKeys.refreshToken);
 
   /// Persist new refresh token
+  @override
   Future<void> saveRefreshToken(String newRefreshToken) => _storage.write(
-      key: SecureStorageKeys.refreshToken, value: newRefreshToken);
+      key: DataSourceKeys.refreshToken, value: newRefreshToken);
 
   /// Delete all saved data
+  @override
   Future<void> clear() => _storage.deleteAll();
 }
