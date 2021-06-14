@@ -31,7 +31,7 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-        providers: AppDependencies.of(context).providers,
+        providers: AppDependencies.of(context,config).providers,
         child: _MyMaterialApp(_router),
       );
 }

@@ -13,31 +13,42 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../app/config/environment_config.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_use_cases/fetch_new_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
+import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
+import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/push_notification_subscription_repository.dart';
+import '../repositories/user_authentication_repository.dart';
 
 class AppDependencies {
-  AppDependencies._(this.context);
+  AppDependencies._(this.context,this.config);
 
-  factory AppDependencies.of(BuildContext context) =>
-      _instance != null ? _instance! : _instance = AppDependencies._(context);
+  factory AppDependencies.of(
+      BuildContext context, EnvironmentConfig envConfig) =>
+      _instance != null
+          ? _instance!
+          : _instance = AppDependencies._(context, envConfig);
 
   static AppDependencies? _instance;
 
   final BuildContext context;
+  final EnvironmentConfig config;
 
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [{{#analytics}}
     ..._analytics,
     {{/analytics}}..._authentication,
-    ..._useCases,
     ..._httpClients,
+    ..._dataSources,
+    ..._repositories,
+    ..._useCases,
     ..._blocs,
   ];
 {{#analytics}}
@@ -56,6 +67,26 @@ class AppDependencies {
             AuthTokenDataSource(const FlutterSecureStorage())),
     Provider<AuthRepository>(
         create: (context) => AuthRepository(context.read())),
+  ];
+
+  List<Provider> get _dataSources => [
+    Provider<AuthDataSource>(
+      create: (context) =>
+          AuthDataSource(context.read(), baseUrl: config.baseApiUrl),
+    ),
+    Provider<PushNotificationsDataSource>(
+      create: (context) => PushNotificationsDataSource(context.read(),
+          baseUrl: config.baseApiUrl),
+    ),
+  ];
+
+  List<Provider> get _repositories => [
+    Provider<UserAuthRepository>(
+        create: (context) => UserAuthRepository(context.read())),
+    Provider<PushNotificationSubscriptionRepository>(
+      create: (context) =>
+          PushNotificationSubscriptionRepository(context.read()),
+    ),
   ];
 
   List<Provider> get _useCases => [

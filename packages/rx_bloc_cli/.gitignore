@@ -75,5 +75,5 @@ build/
 
 
 # rx_bloc_cli related stuf
-example/_test_app
+example/test_app
 lib/src/templates/*.dart

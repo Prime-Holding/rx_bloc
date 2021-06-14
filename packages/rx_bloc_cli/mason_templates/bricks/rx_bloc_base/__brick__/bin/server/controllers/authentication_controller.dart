@@ -43,7 +43,7 @@ class AuthenticationController extends ApiController {
     final params = request.url.queryParameters;
     final refreshToken = params['refreshToken'];
 
-    if (refreshToken == null) {
+    if (refreshToken == null || refreshToken.isEmpty) {
       if (params['username']?.isEmpty ?? true) {
         throw BadRequestException('The username cannot be empty.');
       }
