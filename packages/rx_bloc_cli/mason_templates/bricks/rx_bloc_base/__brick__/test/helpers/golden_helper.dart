@@ -18,11 +18,10 @@ enum Themes { light, dark }
 ///
 /// [scenario] - [Scenario] which will be added to [DeviceBuilder]
 LabeledDeviceBuilder generateDeviceBuilder({
-  required String label,
   required Widget widget,
   required Scenario scenario,
 }) {
-  final deviceBuilder = LabeledDeviceBuilder(label: label)
+  final deviceBuilder = LabeledDeviceBuilder(label: scenario.name)
     ..overrideDevicesForAllScenarios(
       devices: [
         Device.phone,

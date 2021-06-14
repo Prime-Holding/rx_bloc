@@ -8,19 +8,16 @@ void main() {
   group('CounterPage golden tests', () {
     final deviceBuilders = [
       generateDeviceBuilder(
-        label: 'counter',
+        scenario: Scenario(name: 'counter'),
         widget: counterPageFactory(count: 2),
-        scenario: Scenario(name: 'Default'),
       ),
       generateDeviceBuilder(
-        label: 'error',
+        scenario: Scenario(name: 'error'),
         widget: counterPageFactory(count: 2, error: 'Test errors'),
-        scenario: Scenario(name: 'Error scenario'),
       ),
       generateDeviceBuilder(
-        label: 'loading',
+        scenario: Scenario(name: 'loading'),
         widget: counterPageFactory(count: 2, isLoading: true),
-        scenario: Scenario(name: 'Loading scenario'),
       ),
     ];
 
