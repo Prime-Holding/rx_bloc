@@ -1,6 +1,8 @@
+import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+
 import '../../feature_home/blocs/navigation_bar_bloc.dart';
 
 class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -18,6 +20,7 @@ class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
           : AppBar(
               title: Text(
                 snapshot.hasData ? snapshot.data!.type.asHotelTitle() : '',
+                style: DesignSystem.of(ctx).typography.appBarTitle,
               ),
               centerTitle: false,
             );
@@ -28,7 +31,10 @@ class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
   ) =>
       AppBar(
         // searchContainerColor: Colors.blue,
-        title: Text(item.type.asHotelTitle()),
+        title: Text(
+          item.type.asHotelTitle(),
+          style: DesignSystem.of(context).typography.appBarTitle,
+        ),
         centerTitle: false,
 
         // style: const TextStyle(color: Colors.white),

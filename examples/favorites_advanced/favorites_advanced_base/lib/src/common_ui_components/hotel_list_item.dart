@@ -1,9 +1,8 @@
 import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import 'hotel_header.dart';
+import '../../core.dart';
 import 'hotel_image.dart';
 
 typedef OnFavorite = Function(Hotel hotel, bool isFavorite);
@@ -98,8 +97,10 @@ class HotelCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
-                      hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: HotelAppTheme.buildLightTheme().primaryColor,
+                      hotel.isFavorite
+                          ? DesignSystem.of(context).icons.favorite
+                          : DesignSystem.of(context).icons.favoriteBorder,
+                      color: DesignSystem.of(context).colors.tertiaryIconColor,
                     ),
                   ),
                 ),

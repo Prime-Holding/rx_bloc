@@ -1,5 +1,6 @@
-import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../../core.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({
@@ -19,30 +20,32 @@ class SearchBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 16, top: 16, bottom: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: HotelAppTheme.buildLightTheme().backgroundColor,
+                    color: DesignSystem.of(context).colors.secondaryColor,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(38.0),
                     ),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          offset: const Offset(0, 2),
-                          blurRadius: 8.0),
-                    ],
+                    boxShadow: DesignSystem.of(context).colors.brightness ==
+                            Brightness.light
+                        ? <BoxShadow>[
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                offset: const Offset(0, 2),
+                                blurRadius: 8.0),
+                          ]
+                        : null,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 16, right: 16, top: 4, bottom: 4),
                     child: TextField(
                       controller: controller,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                      cursorColor: HotelAppTheme.buildLightTheme().primaryColor,
+                      style: DesignSystem.of(context).typography.headline3,
+                      cursorColor: DesignSystem.of(context).colors.primaryColor,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Dubai...',
-                      ),
+                          border: InputBorder.none,
+                          hintText: 'Dubai...',
+                          hintStyle:
+                              DesignSystem.of(context).typography.headline3),
                     ),
                   ),
                 ),

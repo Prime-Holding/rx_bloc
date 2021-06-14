@@ -85,7 +85,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             ),
           ],
           body: Container(
-            color: HotelAppTheme.buildLightTheme().backgroundColor,
+            color: DesignSystem.of(context).colors.backgroundColor,
             child: RxPaginatedBuilder<HotelListBlocType,
                 Hotel>.withRefreshIndicator(
               onBottomScrolled: (bloc) => bloc.events.reload(reset: false),
@@ -212,26 +212,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Text(
                         'Choose date',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w100,
-                            fontSize: 16,
-                            color: Colors.grey.withOpacity(0.8)),
+                        style: DesignSystem.of(context).typography.headline4,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
                         dateRangeText,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 14,
-                        ),
+                        style: DesignSystem.of(context).typography.headline5,
                       ),
                     ],
                   ),
                 ),
                 if (dateRangeText != 'None')
-                  _buildClearButton(() {
+                  _buildClearButton(context, () {
                     showYesNoMessage(
                       context: context,
                       title: 'Clear date range?',
@@ -284,26 +278,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Text(
                         'Capacity filters',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w100,
-                            fontSize: 16,
-                            color: Colors.grey.withOpacity(0.8)),
+                        style: DesignSystem.of(context).typography.headline4,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
                         capacityFilterText,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 14,
-                        ),
+                        style: DesignSystem.of(context).typography.headline5,
                       ),
                     ],
                   ),
                 ),
                 if (capacityFilterText != 'None')
-                  _buildClearButton(() {
+                  _buildClearButton(context, () {
                     showYesNoMessage(
                       context: context,
                       title: 'Clear capacity filter?',
@@ -321,9 +309,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
       );
 
-  Widget _buildClearButton(VoidCallback? onPressed) => FocusButton(
+  Widget _buildClearButton(BuildContext context, VoidCallback? onPressed) =>
+      FocusButton(
         onPressed: onPressed ?? () {},
-        child: const Icon(Icons.cancel, color: Colors.blue),
+        child: Icon(DesignSystem.of(context).icons.cancel,
+            color: DesignSystem.of(context).colors.primaryColor),
       );
 
   ///endregion

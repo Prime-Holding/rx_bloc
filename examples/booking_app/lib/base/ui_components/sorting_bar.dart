@@ -31,7 +31,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
             child: Container(
               height: 24,
               decoration: BoxDecoration(
-                color: HotelAppTheme.buildLightTheme().backgroundColor,
+                color: DesignSystem.of(context).colors.backgroundColor,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
@@ -42,7 +42,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
             ),
           ),
           Container(
-            color: HotelAppTheme.buildLightTheme().backgroundColor,
+            color: DesignSystem.of(context).colors.backgroundColor,
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
@@ -55,10 +55,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                         state: (bloc) => bloc.states.hotelsFound,
                         builder: (context, snapshot, bloc) => Text(
                           snapshot.data ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w100,
-                            fontSize: 16,
-                          ),
+                          style: DesignSystem.of(context).typography.headline4,
                         ),
                       ),
                     ),
@@ -73,19 +70,18 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                         padding: const EdgeInsets.only(left: 8),
                         child: Row(
                           children: <Widget>[
-                            const Text(
+                            Text(
                               'Sort',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 16,
-                              ),
+                              style:
+                                  DesignSystem.of(context).typography.headline4,
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8),
                               child: Icon(
-                                Icons.sort,
-                                color: HotelAppTheme.buildLightTheme()
-                                    .primaryColor,
+                                DesignSystem.of(context).icons.sort,
+                                color: DesignSystem.of(context)
+                                    .colors
+                                    .primaryIconColor,
                               ),
                             ),
                           ],

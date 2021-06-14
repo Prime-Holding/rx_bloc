@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../core.dart';
 import '../../models.dart';
 
 extension NavigationItemUtils on NavigationItem {
@@ -50,19 +51,19 @@ extension NavigationItemTypeTitle on NavigationItemType {
   }
 
   /// Convert [NavigationItemType] to an icon based on its type.
-  Icon? asIcon() {
+  Icon? asIcon(BuildContext context) {
     switch (this) {
       case NavigationItemType.search:
-        return const Icon(
-          Icons.search,
+        return Icon(
+          DesignSystem.of(context).icons.search,
           size: 30,
-          color: Colors.white,
+          color: DesignSystem.of(context).colors.secondaryIconColor,
         );
       case NavigationItemType.favorites:
-        return const Icon(
-          Icons.favorite,
+        return Icon(
+          DesignSystem.of(context).icons.favorite,
           size: 30,
-          color: Colors.white,
+          color: DesignSystem.of(context).colors.secondaryIconColor,
         );
     }
   }
