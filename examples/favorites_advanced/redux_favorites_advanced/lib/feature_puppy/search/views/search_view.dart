@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 
+import '../../../base/flow_builders/puppy_flow.dart';
 import '../../../base/models/app_state.dart';
 import '../../../feature_puppy/search/redux/actions.dart';
 import 'search_view_model.dart';
@@ -40,7 +41,10 @@ class SearchView extends StatelessWidget {
                               onVisible: (puppy) =>
                                   viewModel.onExtraDetailsFetch(puppy),
                               puppy: item,
-                              onCardPressed: (puppy) {},
+                              onCardPressed: (puppy) {
+                                viewModel.onDetailsPuppy(puppy);
+                                Navigator.of(context).push(PuppyFlow.route());
+                              },
                               onFavorite: (puppy, isFavorite) =>
                                   viewModel.onToggleFavorite(puppy, isFavorite),
                             );
