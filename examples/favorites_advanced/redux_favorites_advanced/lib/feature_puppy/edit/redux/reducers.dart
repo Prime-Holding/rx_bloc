@@ -1,4 +1,5 @@
 import 'package:favorites_advanced_base/models.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/edit/validators/form_validators.dart';
 
 import '../models/edit_state.dart';
 import 'actions.dart';
@@ -9,6 +10,9 @@ EditState editStateReducer(EditState state, action) => EditState(
       isLoading: isLoadingReducer(state: state.isLoading, action: action),
       isUpdated: isUpdatedReducer(state: state.isUpdated, action: action),
       puppy: editPuppyReducer(state: state.puppy, action: action),
+      nameError: nameErrorReducer(state: state.nameError, action: action),
+      characteristicsError: characteristicsErrorReducer(
+          state: state.characteristicsError, action: action),
       error: errorReducer(state: state.error, action: action),
     );
 
@@ -49,6 +53,18 @@ Puppy editPuppyReducer({required Puppy state, action}) {
   }
   if (action is CharacteristicsAction) {
     return state.copyWith(breedCharacteristics: action.characteristics);
+  }
+  return state;
+}
+
+String nameErrorReducer({required String state, action}) {
+  if (action is ValidateNameAction) return nameValidator(action.name);
+  return state;
+}
+
+String characteristicsErrorReducer({required String state, action}) {
+  if (action is ValidateCharacteristicsAction) {
+    return characteristicsValidator(action.characteristics);
   }
   return state;
 }

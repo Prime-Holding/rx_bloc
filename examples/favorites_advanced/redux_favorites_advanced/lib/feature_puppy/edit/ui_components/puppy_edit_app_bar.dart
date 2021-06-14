@@ -4,14 +4,11 @@ import '../views/puppy_edit_view_model.dart';
 
 class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
-    required GlobalKey<FormState> formKey,
     required PuppyEditViewModel viewModel,
     Key? key,
-  })  : _formKey = formKey,
-        _viewModel = viewModel,
+  })  : _viewModel = viewModel,
         super(key: key);
 
-  final GlobalKey<FormState> _formKey;
   final PuppyEditViewModel _viewModel;
 
   double get loadingIndicatorSize => 24;
@@ -25,15 +22,13 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
 
   Widget _buildIcon() => IconButton(
-      icon: Icon(
-        Icons.save,
-        color: _viewModel.isChanged ? Colors.white : Colors.grey,
-      ),
-      onPressed: () => (_viewModel.isChanged)
-          ? (_formKey.currentState!.validate())
-              ? _viewModel.onPuppySaved()
-              : _viewModel.onSubmitAttempted()
-          : null);
+        icon: Icon(
+          Icons.save,
+          color: _viewModel.isChanged ? Colors.white : Colors.grey,
+        ),
+        onPressed: () =>
+            (_viewModel.isChanged) ? _viewModel.onPuppySaved() : null,
+      );
 
   Widget _buildLoading() => IconButton(
         icon: Container(

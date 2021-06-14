@@ -15,6 +15,7 @@ import 'package:redux_favorite_advanced_sample/base/redux/app_reducer.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/details/models/details_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/edit/redux/actions.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/edit/redux/epics.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/edit/validators/form_validators.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/favorites/models/favorite_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/redux/epics.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/redux/actions.dart';
@@ -50,8 +51,8 @@ void main() {
     );
   });
 
-  group('Update Epic Middleware', () {
-    test('Update puppy change fields', () {
+  group('Update Puppy Epic Middleware', () {
+    test('Change fields', () {
       scheduleMicrotask(() {
         store
           ..dispatch(EditPuppyAction(puppy: Stub.puppy1))
@@ -78,7 +79,7 @@ void main() {
       );
     });
 
-    test('Update puppy change image success', () {
+    test('Change image - success', () {
       when(repository.pickPuppyImage(ImagePickerAction.gallery))
           .thenAnswer((_) async => PickedFile('test1'));
 
@@ -102,7 +103,7 @@ void main() {
       );
     });
 
-    test('Update puppy change image error', () {
+    test('Change image - error', () {
       when(repository.pickPuppyImage(ImagePickerAction.camera))
           .thenAnswer((_) async => throw Stub.testErr);
 
@@ -125,7 +126,91 @@ void main() {
       );
     });
 
-    test('Update puppy success', () {
+    test('Name empty validation error', () {
+      scheduleMicrotask(() {
+        store.dispatch(
+          UpdatePuppyAction(puppy: Stub.puppy1.copyWith(name: '')),
+        );
+      });
+
+      expect(
+        store.onChange,
+        emitsThrough(
+          state.copyWith(
+            editState: state.editState.copyWith(
+              nameError: nameEmptyError,
+            ),
+          ),
+        ),
+      );
+    });
+
+    test('Name too long validation error', () {
+      scheduleMicrotask(() {
+        store.dispatch(
+          UpdatePuppyAction(
+            puppy:
+                Stub.puppy1.copyWith(name: 'iuinq1nGaj5mfhWANPLqi44P1UmXaP2'),
+          ),
+        );
+      });
+
+      expect(
+        store.onChange,
+        emitsThrough(
+          state.copyWith(
+            editState: state.editState.copyWith(
+              nameError: nameLengthError,
+            ),
+          ),
+        ),
+      );
+    });
+
+    test('Characteristics empty validation error', () {
+      scheduleMicrotask(() {
+        store.dispatch(
+          UpdatePuppyAction(
+              puppy: Stub.puppy1.copyWith(breedCharacteristics: '')),
+        );
+      });
+
+      expect(
+        store.onChange,
+        emitsThrough(
+          state.copyWith(
+            editState: state.editState.copyWith(
+              characteristicsError: characteristicsEmptyError,
+            ),
+          ),
+        ),
+      );
+    });
+
+    test('Characteristics too long validation error', () {
+      scheduleMicrotask(() {
+        store.dispatch(
+          UpdatePuppyAction(
+            puppy: Stub.puppy1.copyWith(
+                breedCharacteristics:
+                    '''2faqagel1dwIRKsgMgDYXgxWB7svN3nStYH8K7BkHklAyBSwkLgKjriiKy8F7usahF76LDRH8L0ZKz5qEP9lqxalkE9ZKIwf5z0h72Xcm1h3fJZctEhHpLLsD3jyJIEAjHhSFTP7v23nBDN8f6i0ni4qw6uz2WiXAh2reYnQeD8KZEu8kv1B3Ahv4h8HZLNld8chzQpPji5Qbhs895pA5A8SXt1i40evhKCMvsIgLxPsPkTlMO53fwbNmTM'''),
+          ),
+        );
+      });
+
+      expect(
+        store.onChange,
+        emitsThrough(
+          state.copyWith(
+            editState: state.editState.copyWith(
+              characteristicsError: characteristicsLengthError,
+            ),
+          ),
+        ),
+      );
+    });
+
+    test('Update success', () {
       when(repository.getPuppies()).thenAnswer((_) async => Stub.puppies123);
 
       when(repository.favoritePuppy(Stub.puppy1, isFavorite: true))
@@ -171,7 +256,7 @@ void main() {
       );
     });
 
-    test('Update puppy error', () {
+    test('Update error', () {
       when(repository.updatePuppy(
               Stub.puppy1.id, Stub.puppy2.copyWith(id: Stub.puppy1.id)))
           .thenAnswer((_) async => throw Stub.testErr);

@@ -59,3 +59,15 @@ class CharacteristicsAction {
 
   final String characteristics;
 }
+
+class ValidateNameAction {
+  ValidateNameAction({required this.name});
+
+  final String name;
+}
+
+class ValidateCharacteristicsAction {
+  ValidateCharacteristicsAction({required this.characteristics});
+
+  final String characteristics;
+}

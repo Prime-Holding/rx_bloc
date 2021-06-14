@@ -28,13 +28,19 @@ Epic<AppState> updatePuppyEpic(PuppiesRepository repository) =>
     (actions, store) =>
         actions.whereType<UpdatePuppyAction>().switchMap((action) async* {
           try {
-            yield EditLoadingAction();
-            final updatedPuppy =
-                await repository.updatePuppy(action.puppy.id, action.puppy);
-            yield UpdateSucceededAction();
-            yield ModifyDetailsPuppy(puppy: updatedPuppy);
-            yield UpdateSearchStatePuppyAction(puppy: updatedPuppy);
-            yield UpdateFavoritesStatePuppyAction(puppy: updatedPuppy);
+            yield ValidateNameAction(name: action.puppy.name);
+            yield ValidateCharacteristicsAction(
+                characteristics: action.puppy.breedCharacteristics);
+            if (store.state.editState.nameError == '' &&
+                store.state.editState.characteristicsError == '') {
+              yield EditLoadingAction();
+              final updatedPuppy =
+                  await repository.updatePuppy(action.puppy.id, action.puppy);
+              yield UpdateSucceededAction();
+              yield ModifyDetailsPuppy(puppy: updatedPuppy);
+              yield UpdateSearchStatePuppyAction(puppy: updatedPuppy);
+              yield UpdateFavoritesStatePuppyAction(puppy: updatedPuppy);
+            }
           } catch (error) {
             yield UpdateErrorAction(error: error.toString());
           }

@@ -9,13 +9,11 @@ import '../ui_components/puppy_edit_form.dart';
 import 'puppy_edit_view_model.dart';
 
 class PuppyEditView extends StatelessWidget {
-  PuppyEditView({
+  const PuppyEditView({
     Key? key,
   }) : super(key: key);
 
-  final _formKey = GlobalKey<FormState>();
-
-  static Page page() => MaterialPage(
+  static Page page() => const MaterialPage(
         child: PuppyEditView(),
       );
 
@@ -37,8 +35,8 @@ class PuppyEditView extends StatelessWidget {
                     }
                   : null,
           builder: (_, viewModel) => Scaffold(
-            appBar: PuppyEditAppBar(formKey: _formKey, viewModel: viewModel),
-            body: PuppyEditForm(formKey: _formKey, viewModel: viewModel),
+            appBar: PuppyEditAppBar(viewModel: viewModel),
+            body: PuppyEditForm(viewModel: viewModel),
           ),
         ),
       );

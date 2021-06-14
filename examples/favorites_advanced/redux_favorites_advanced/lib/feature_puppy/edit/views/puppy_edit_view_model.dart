@@ -18,8 +18,9 @@ class PuppyEditViewModel extends Equatable {
     required this.onBreedChange,
     required this.onGenderChange,
     required this.onCharacteristicsChange,
-    required this.onSubmitAttempted,
     required this.onPuppySaved,
+    required this.nameError,
+    required this.characteristicsError,
     required this.error,
   });
 
@@ -30,6 +31,9 @@ class PuppyEditViewModel extends Equatable {
 
     void _onNameChange(String name) {
       store.dispatch(NameAction(name: name));
+      if (store.state.editState.isSubmitAttempted) {
+        store.dispatch(ValidateNameAction(name: name));
+      }
     }
 
     void _onBreedChange(BreedType breed) {
@@ -42,14 +46,16 @@ class PuppyEditViewModel extends Equatable {
 
     void _onCharacteristicsChange(String characteristics) {
       store.dispatch(CharacteristicsAction(characteristics: characteristics));
-    }
-
-    void _onSubmitAttempted() {
-      store.dispatch(SubmitAttemptedAction());
+      if (store.state.editState.isSubmitAttempted) {
+        store.dispatch(
+            ValidateCharacteristicsAction(characteristics: characteristics));
+      }
     }
 
     void _onPuppySaved() {
-      store.dispatch(UpdatePuppyAction(puppy: store.state.editState.puppy));
+      store
+        ..dispatch(SubmitAttemptedAction())
+        ..dispatch(UpdatePuppyAction(puppy: store.state.editState.puppy));
     }
 
     return PuppyEditViewModel(
@@ -63,8 +69,9 @@ class PuppyEditViewModel extends Equatable {
       onBreedChange: _onBreedChange,
       onGenderChange: _onGenderChange,
       onCharacteristicsChange: _onCharacteristicsChange,
-      onSubmitAttempted: _onSubmitAttempted,
       onPuppySaved: _onPuppySaved,
+      nameError: store.state.editState.nameError,
+      characteristicsError: store.state.editState.characteristicsError,
       error: store.state.editState.error,
     );
   }
@@ -79,8 +86,9 @@ class PuppyEditViewModel extends Equatable {
   final Function(BreedType) onBreedChange;
   final Function(Gender) onGenderChange;
   final Function(String) onCharacteristicsChange;
-  final Function() onSubmitAttempted;
   final Function() onPuppySaved;
+  final String nameError;
+  final String characteristicsError;
   final String error;
 
   @override
@@ -95,8 +103,9 @@ class PuppyEditViewModel extends Equatable {
         onBreedChange,
         onGenderChange,
         onCharacteristicsChange,
-        onSubmitAttempted,
         onPuppySaved,
+        nameError,
+        characteristicsError,
         error,
       ];
 }

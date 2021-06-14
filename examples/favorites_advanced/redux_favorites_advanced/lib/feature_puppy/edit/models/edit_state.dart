@@ -10,6 +10,8 @@ class EditState extends Equatable {
     required this.isLoading,
     required this.isUpdated,
     required this.puppy,
+    required this.nameError,
+    required this.characteristicsError,
     required this.error,
   });
 
@@ -18,6 +20,8 @@ class EditState extends Equatable {
         isLoading: false,
         isUpdated: false,
         puppy: Puppy(asset: '', id: '', name: ''),
+        nameError: '',
+        characteristicsError: '',
         error: '',
       );
 
@@ -25,6 +29,8 @@ class EditState extends Equatable {
   final bool isLoading;
   final bool isUpdated;
   final Puppy puppy;
+  final String nameError;
+  final String characteristicsError;
   final String error;
 
   EditState copyWith({
@@ -32,6 +38,8 @@ class EditState extends Equatable {
     bool? isLoading,
     bool? isUpdated,
     Puppy? puppy,
+    String? nameError,
+    String? characteristicsError,
     String? error,
   }) =>
       EditState(
@@ -39,6 +47,8 @@ class EditState extends Equatable {
         isLoading: isLoading ?? this.isLoading,
         isUpdated: isUpdated ?? this.isUpdated,
         puppy: puppy ?? this.puppy,
+        nameError: nameError ?? this.nameError,
+        characteristicsError: characteristicsError ?? this.characteristicsError,
         error: error ?? this.error,
       );
 
@@ -48,6 +58,8 @@ class EditState extends Equatable {
         isLoading,
         isUpdated,
         puppy,
+        nameError,
+        characteristicsError,
         error,
       ];
 }

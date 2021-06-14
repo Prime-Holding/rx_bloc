@@ -158,6 +158,8 @@ class AppStateStub {
       isLoading: false,
       isUpdated: false,
       puppy: Puppy(asset: '', id: '', name: ''),
+      nameError: '',
+      characteristicsError: '',
       error: '',
     ),
     favoriteCount: 0,

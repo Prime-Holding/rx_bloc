@@ -10,26 +10,18 @@ import 'puppy_edit_avatar.dart';
 
 class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({
-    required GlobalKey<FormState> formKey,
     required PuppyEditViewModel viewModel,
     Key? key,
-  })  : _formKey = formKey,
-        _viewModel = viewModel,
+  })  : _viewModel = viewModel,
         super(key: key);
 
-  final GlobalKey<FormState> _formKey;
   final PuppyEditViewModel _viewModel;
 
   @override
   Widget build(BuildContext context) => SafeArea(
-          child: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: _viewModel.isSubmitAttempted
-                ? AutovalidateMode.onUserInteraction
-                : AutovalidateMode.disabled,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(8),
             child: Column(
               children: [
                 PuppyEditAvatar(
@@ -48,13 +40,11 @@ class PuppyEditForm extends StatelessWidget {
                     style: TextStyles.editableTextStyle,
                     textInputAction: TextInputAction.next,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    decoration: InputStyles.textFieldDecoration,
+                    decoration: (_viewModel.nameError != '')
+                        ? InputStyles.textFieldDecoration
+                            .copyWith(errorText: _viewModel.nameError)
+                        : InputStyles.textFieldDecoration,
                     onChanged: (name) => _viewModel.onNameChange(name),
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'Name must not be empty.'
-                        : (value.length > 30)
-                            ? 'Name too long.'
-                            : null,
                   ),
                   icon: Icons.account_box,
                 ),
@@ -139,14 +129,12 @@ class PuppyEditForm extends StatelessWidget {
                     style: TextStyles.editableTextStyle,
                     textInputAction: TextInputAction.done,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    decoration: InputStyles.textFieldDecoration,
+                    decoration: (_viewModel.characteristicsError != '')
+                        ? InputStyles.textFieldDecoration.copyWith(
+                            errorText: _viewModel.characteristicsError)
+                        : InputStyles.textFieldDecoration,
                     onChanged: (characteristics) =>
                         _viewModel.onCharacteristicsChange(characteristics),
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'Characteristics must not be empty.'
-                        : (value.length > 250)
-                            ? 'Characteristics must not exceed 250 characters.'
-                            : null,
                   ),
                   icon: Icons.article,
                 ),
@@ -154,5 +142,5 @@ class PuppyEditForm extends StatelessWidget {
             ),
           ),
         ),
-      ));
+      );
 }
