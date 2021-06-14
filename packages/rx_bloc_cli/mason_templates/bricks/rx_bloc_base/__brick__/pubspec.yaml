@@ -19,6 +19,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^3.0.0
+  golden_toolkit: ^0.9.0
   intl: ^0.17.0
   json_annotation: ^4.0.1
   json_serializable: ^4.1.2
@@ -57,6 +58,15 @@ flutter:
   assets:
     - assets/images/
 
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: fonts/WorkSans/WorkSans-Light.ttf
+          weight: 300
+        - asset: fonts/WorkSans/WorkSans-Regular.ttf
+          weight: 400
+        - asset: fonts/WorkSans/WorkSans-Medium.ttf
+          weight: 500
   # fonts:
   #   - family: Schyler
   #     fonts:

@@ -9,5 +9,5 @@ cd example/test_app
 flutter pub get
 cp README.md ../
 cd ../..
-dartfmt -w lib
-dartfmt -w example/test_app
+dart format lib
+dart format example/test_app

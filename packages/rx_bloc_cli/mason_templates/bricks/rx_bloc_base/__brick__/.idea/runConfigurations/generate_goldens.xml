@@ -1,0 +1,7 @@
+<component name="RunManager">
+    <configuration name="Generate all goldens" type="FlutterTestConfigType" factoryName="Flutter Test">
+        <option name="testDir" value="$PROJECT_DIR$/test" />
+        <option name="additionalArgs" value="--update-goldens --name=Golden" />
+        <method v="2" />
+    </configuration>
+</component>

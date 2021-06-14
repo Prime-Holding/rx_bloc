@@ -69,15 +69,25 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
 
-To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class(in this case lib\feature_counter\di\counter_dependencies.dart) specify which data source you are going to use in every repository.
+To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class (in this case `lib/feature_counter/di/counter_dependencies.dart` ) specify which data source you are going to use in every repository.
 
-In our project in directory `bin/server/` we have implemented local Rest API using [shelf][shelf_lnk]. To test the project you have to run it first. In your root folder run 'bin/start_server.sh'. If you are running in your emulator and can not connect to the server, check this [sollution][sollution_lnk].
+In our project in directory `bin/server/` we have implemented local Rest API using [shelf][shelf_lnk]. To test the project you have to run it first. In your root folder run `bin/start_server.sh`. If you are running in your emulator and can not connect to the server, check this [solution][solution_lnk].
 
 ### Design system
 
 A [design system][design_system_lnk] is a centralized place where you can define your apps design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
 
 To access the design system from your app, you have to import it from the following location`lib/app/base/theme/design_system.dart'`. After that, you can access different parts of the design system by using the BuildContext (for example: `context.designSystem.typography.headline1` or `context.designSystem.icons.someIcon`).
+
+### Golden tests
+
+A [golden test][golden_test_lnk] lets you generate golden master images of a widget or screen, and compare against them so you know your design is always pixel-perfect and there have been no subtle or breaking changes in UI between builds. To make this easier, we employ the use of the [golden_toolkit][golden_toolkit_lnk] package.
+
+To get started, you just need to generate a list of `LabeledDeviceBuilder` and pass it to the `runGoldenTests` function. That's done by calling `generateDeviceBuilder` with a label, the widget/screen to be tested, as well as a `Scenario`. They provide an optional `onCreate` function which lets us execute arbitrary behavior upon testing. Each `DeviceBuilder` will have two generated golden master files, one for each theme.
+
+Due to the way fonts are loaded in tests, any custom fonts you intend to golden test should be included in `pubspec.yaml`
+
+In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
 
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
@@ -93,4 +103,6 @@ To access the design system from your app, you have to import it from the follow
 [json_annotation_lnk]: https://pub.dev/packages/json_annotation
 [json_serializable_lnk]: https://pub.dev/packages/json_serializable
 [shelf_lnk]: https://pub.dev/packages/shelf
-[sollution_lnk]: https://github.com/flutterchina/dio/issues/76#issuecomment-430011361
+[solution_lnk]: https://github.com/flutterchina/dio/issues/76#issuecomment-430011361
+[golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
+[golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
