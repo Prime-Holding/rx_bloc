@@ -5,8 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../../base/data_sources/remote/count_remote_data_source.dart';
-import '../../base/models/count.dart';
+import '../data_sources/remote/count_remote_data_source.dart';
+import '../models/count.dart';
 
 /// Decouple Data Layer and Business Logic Layer
 class CounterRepository {

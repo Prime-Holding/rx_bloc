@@ -8,6 +8,7 @@
 import 'package:dio/dio.dart'; {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart'; {{/analytics}}
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -18,6 +19,7 @@ import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
+import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
@@ -75,11 +77,13 @@ class AppDependencies {
     }),
   ];
 
-  /// Chose one of both implemented AuthTokenDataSources or create your own
+  /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
         Provider<AuthTokenDataSource>(
-            create: (context) => AuthTokenSharedDataSource()),
-        // create: (context) => AuthTokenSecureDataSource()),
+            create: (context) =>
+            kIsWeb
+                ? AuthTokenSharedDataSource()
+                : AuthTokenSecureDataSource()),
         Provider<AuthDataSource>(
           create: (context) =>
               AuthDataSource(context.read(), baseUrl: config.baseApiUrl),
@@ -126,4 +130,5 @@ class AppDependencies {
           ),
         ),
       ];
+
 }

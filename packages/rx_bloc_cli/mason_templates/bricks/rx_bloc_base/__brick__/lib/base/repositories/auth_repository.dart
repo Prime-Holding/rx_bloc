@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../../base/data_sources/local/auth_token_data_source.dart';
+import '../data_sources/local/auth_token_data_source.dart';
 
 class AuthRepository {
   AuthRepository(this._authDataSource);

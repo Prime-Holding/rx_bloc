@@ -18,28 +18,28 @@ class AuthTokenSharedDataSource implements AuthTokenDataSource {
   @override
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(SecureStorageKeys.token);
+    return prefs.getString(DataSourceKeys.token);
   }
 
   /// Persist access token
   @override
   Future<bool> saveToken(String newToken) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.setString(SecureStorageKeys.token, newToken);
+    return prefs.setString(DataSourceKeys.token, newToken);
   }
 
   /// Get stored refresh token
   @override
   Future<String?> getRefreshToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(SecureStorageKeys.refreshToken);
+    return prefs.getString(DataSourceKeys.refreshToken);
   }
 
   /// Persist new refresh token
   @override
   Future<bool> saveRefreshToken(String newRefreshToken) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.setString(SecureStorageKeys.refreshToken, newRefreshToken);
+    return prefs.setString(DataSourceKeys.refreshToken, newRefreshToken);
   }
 
   /// Delete all saved data

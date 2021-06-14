@@ -8,8 +8,8 @@
 {{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 
-import '../../base/repositories/auth_repository.dart';
 import '../app/config/app_constants.dart';
+import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_subscription_repository.dart';
 import '../repositories/user_authentication_repository.dart';
 

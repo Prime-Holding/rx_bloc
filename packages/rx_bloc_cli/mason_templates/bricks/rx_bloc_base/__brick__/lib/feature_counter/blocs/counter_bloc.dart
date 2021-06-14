@@ -31,67 +31,44 @@ abstract class CounterBlocEvents {
 
 /// A contract class containing all states for our multi state BloC.
 abstract class CounterBlocStates {
+
+  /// Loading state of the bloc
+  ///
+  /// It is true when the bloc is waiting for the repository to returns data
+  /// or throws an Exception
+  Stream<bool> get isLoading;
+
+  /// Error state of the bloc
+  ///
+  /// Emits an error message, when the repository throws an Exception
+  Stream<String> get errors;
+
   /// The count of the Counter
   ///
   /// It can be controlled by executing [CounterBlocEvents.increment] and
   /// [CounterBlocEvents.decrement]
   ///
-  Stream<int> get count;
-
-  /// Loading state
-  Stream<bool> get isLoading;
-
-  /// Error messages
-  Stream<String> get errors;
-
-  /// Result state
-  Stream<Result<Count>> get counterResult;
+  Stream<Count> get counter;
 }
 
 /// A BloC responsible for count calculations
 @RxBloc()
 class CounterBloc extends $CounterBloc {
   /// Bloc constructor
-  CounterBloc(this._repository) {
-    Rx.merge<Result<Count>>([
-      // On increment.
-      _$incrementEvent
-          .switchMap((_) => _repository.increment().asResultStream()),
-      // On decrement.
-      _$decrementEvent
-          .switchMap((_) => _repository.decrement().asResultStream()),
-      // Get current value
-      _$reloadEvent
-          .switchMap((_) => _repository.getCurrent().asResultStream()),
-      // Get initial value
-      _repository.getCurrent().asResultStream(),
-    ]).bind(_lastFetchedCount).disposedBy(_compositeSubscription);
-  }
+  CounterBloc({required CounterRepository repository})
+      : _repository = repository;
 
   final CounterRepository _repository;
-  final _lastFetchedCount = BehaviorSubject<Result<Count>>();
 
   @override
-  Stream<int> _mapToCountState() =>
-      _lastFetchedCount.whereSuccess().map((count) => count.value);
+  Stream<String> _mapToErrorsState() => errorState.mapFromDio().toMessage();
 
   @override
-  Stream<String> _mapToErrorsState() =>
-      Rx.merge<Exception>([_lastFetchedCount.whereError().mapFromDio()])
-          .toMessage()
-          .asBroadcastStream();
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  Stream<bool> _mapToIsLoadingState() =>
-      Rx.merge<bool>([_lastFetchedCount.isLoading()])
-          .asBroadcastStream();
-
-  @override
-  Stream<Result<Count>> _mapToCounterResultState() => _lastFetchedCount;
-
-  @override
-  void dispose() {
-    _lastFetchedCount.close();
-    super.dispose();
-  }
+  Stream<Count> _mapToCounterState() => countState
+      .setResultStateHandler(this)
+      .whereSuccess()
+      .shareReplay(maxSize: 1);
 }

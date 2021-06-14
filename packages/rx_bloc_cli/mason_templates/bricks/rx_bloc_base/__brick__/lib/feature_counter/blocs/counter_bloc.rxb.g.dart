@@ -28,18 +28,14 @@ abstract class $CounterBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [reload]
   final _$reloadEvent = PublishSubject<void>();
 
-  /// The state of [count] implemented in [_mapToCountState]
-  late final Stream<int> _countState = _mapToCountState();
-
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [counterResult] implemented in [_mapToCounterResultState]
-  late final Stream<Result<Count>> _counterResultState =
-  _mapToCounterResultState();
+  /// The state of [counter] implemented in [_mapToCounterState]
+  late final Stream<Count> _counterState = _mapToCounterState();
 
   @override
   void increment() => _$incrementEvent.add(null);
@@ -51,24 +47,19 @@ abstract class $CounterBloc extends RxBlocBase
   void reload() => _$reloadEvent.add(null);
 
   @override
-  Stream<int> get count => _countState;
-
-  @override
   Stream<bool> get isLoading => _isLoadingState;
 
   @override
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<Result<Count>> get counterResult => _counterResultState;
-
-  Stream<int> _mapToCountState();
+  Stream<Count> get counter => _counterState;
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<Result<Count>> _mapToCounterResultState();
+  Stream<Count> _mapToCounterState();
 
   @override
   CounterBlocEvents get events => this;
