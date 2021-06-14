@@ -1,3 +1,6 @@
+## [0.0.4] - June 10, 2021
+* Update generated project with golden tests
+
 ## [0.0.3] - May 28, 2021
 * Support null safety
 * Update generated project with latest dependencies of following packages:
