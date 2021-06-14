@@ -12,29 +12,30 @@ import 'package:rx_bloc_cli/src/utils/git_ignore_creator.dart';
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
   CreateCommand({
-    Logger logger,
-    MasonBundle bundle,
-    Future<MasonGenerator> Function(MasonBundle) generator,
+    Logger? logger,
+    MasonBundle? bundle,
+    Future<MasonGenerator> Function(MasonBundle)? generator,
   })  : _logger = logger ?? Logger(),
         _bundle = bundle ?? rxBlocBaseBundle,
         _generator = generator ?? MasonGenerator.fromBundle {
-    argParser.addOption(
-      _projectNameString,
-      help: 'The project name for this new Flutter project. This must be a '
-          'valid dart package name. If no project name is supplied, the name of'
-          ' the directory is used as the project name.',
-      defaultsTo: null,
-    );
-    argParser.addOption(
-      _orgNameString,
-      help: 'The organisation name.',
-      defaultsTo: 'com.example',
-    );
-    argParser.addOption(
-      _analyticsString,
-      help: 'Enables Google analytics for the project',
-      defaultsTo: 'true',
-    );
+    argParser
+      ..addOption(
+        _projectNameString,
+        help: 'The project name for this new Flutter project. This must be a '
+            'valid dart package name. If no project name is supplied,'
+            'the name of the directory is used as the project name.',
+        defaultsTo: null,
+      )
+      ..addOption(
+        _orgNameString,
+        help: 'The organisation name.',
+        defaultsTo: 'com.example',
+      )
+      ..addOption(
+        _analyticsString,
+        help: 'Enables Google analytics for the project',
+        defaultsTo: 'true',
+      );
   }
 
   /// region Fields
@@ -48,9 +49,10 @@ class CreateCommand extends Command<int> {
   final Future<MasonGenerator> Function(MasonBundle) _generator;
 
   /// [ArgResults] which can be overridden for testing.
-  ArgResults argResultOverrides;
+  ArgResults? argResultOverrides;
 
-  ArgResults get _argResults => argResultOverrides ?? argResults;
+  ArgResults get _argResults =>
+      argResultOverrides != null ? argResultOverrides! : argResults!;
 
   /// Regex for package name
   final RegExp _packageNameRegExp = RegExp('[a-z_][a-z0-9_]*');
@@ -79,7 +81,7 @@ class CreateCommand extends Command<int> {
 
   /// region Code generation
 
-  void _generateViaMasonBundle() async {
+  Future<void> _generateViaMasonBundle() async {
     final outputDirectory = _outputDirectory;
     final projectName = _projectName;
 
@@ -105,7 +107,7 @@ class CreateCommand extends Command<int> {
     fileCount++;
 
     generateDone('Bootstrapping done');
-    _writeOutputLog(fileCount);
+    await _writeOutputLog(fileCount);
   }
 
   /// endregion
@@ -170,10 +172,13 @@ class CreateCommand extends Command<int> {
   }
 
   void _validateOrganisationName(String orgName) {
-    if (orgName == null || orgName.trim().isEmpty)
+    if (orgName.trim().isEmpty) {
       throw UsageException('No organisation name specified.', usage);
-    if (!_stringMatchesRegex(_orgNameDomainRegExp, orgName))
+    }
+
+    if (!_stringMatchesRegex(_orgNameDomainRegExp, orgName)) {
       throw UsageException('Invalid organisation name.', usage);
+    }
   }
 
   bool _stringMatchesRegex(RegExp regex, String name) {
@@ -186,7 +191,7 @@ class CreateCommand extends Command<int> {
   /// region Output logging
 
   /// Writes an output log with the status of the file generation
-  void _writeOutputLog(int fileCount) async {
+  Future<void> _writeOutputLog(int fileCount) async {
     final filesGeneratedStr = fileCount == 0
         ? 'No files generated.'
         : 'Generated $fileCount file(s):';
@@ -204,7 +209,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Message shown in the output log upon successful generation
-  _successMessageLog(int fileCount) {
+  void _successMessageLog(int fileCount) {
     if (fileCount < 1) return;
 
     _delayedLog('Generated project with package name: '
@@ -215,7 +220,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Shows a delayed log with a success symbol in front of it
-  _delayedLog(String text, {success: true, newline: false}) {
+  void _delayedLog(String text, {success = true, newline = false}) {
     final symbol = success ? lightGreen.wrap('✓') : red.wrap('x');
     _logger.delayed('$symbol ${white.wrap(text)}');
     if (newline) _logger.delayed('');
