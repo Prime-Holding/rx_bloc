@@ -8,7 +8,6 @@
 import 'package:dio/dio.dart';
 import '../../../common_use_cases/fetch_access_token_use_case.dart';
 import '../../../common_use_cases/logout_use_case.dart';
-import '../../../repositories/auth_repository.dart';
 
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure

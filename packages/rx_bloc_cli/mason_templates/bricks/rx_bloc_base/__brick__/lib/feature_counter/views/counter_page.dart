@@ -9,9 +9,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/base/models/count.dart';
 
 import '../../base/extensions/async_snapshot_extensions.dart';
+import '../../base/models/count.dart';
 import '../../base/theme/design_system.dart';
 import '../../l10n/l10n.dart';
 import '../blocs/counter_bloc.dart';
@@ -37,12 +37,10 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildErrorListener(),
-          RxResultBuilder<CounterBlocType, Count>(
-            state: (bloc) => bloc.states.counterResult,
-            buildSuccess: (context, countState, bloc) => _buildCount(),
-            buildLoading: (context, bloc) => _buildLoadingScreen(),
-            buildError: (context, errorMessage, bloc) =>
-                _buildErrorScreen(context, errorMessage, bloc),
+          RxBlocBuilder<CounterBlocType, Count>(
+            state: (bloc) => bloc.states.counter,
+            builder: (context, countState, bloc) =>
+                _buildCount(context, countState),
           ),
         ],
       ),
@@ -50,43 +48,18 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
     floatingActionButton: _buildActionButtons(context),
   );
 
-  Widget _buildCount() => RxBlocBuilder<CounterBlocType, int>(
-    state: (bloc) => bloc.states.count,
-    builder: (context, snapshot, bloc) => snapshot.hasData
-        ? Text(
-      snapshot.data.toString(),
-      style: context.designSystem.typography.headline2,
-    )
-        : Container(),
-  );
-
-  Widget _buildLoadingScreen() =>
-      const Center(child: CircularProgressIndicator());
-
-  Widget _buildErrorScreen(
-      BuildContext context,
-      String errorMessage,
-      CounterBlocType bloc,
-      ) =>
-      !errorMessage.contains('Http status error [422]')
-          ? Container(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Your API is not running. \nRun command \'bin/start_server.sh\' and try again.',
-                textAlign: TextAlign.center,
-                style: context.designSystem.typography.headline5,
-              ),
-              ElevatedButton(
-                  onPressed: bloc.events.reload,
-                  child: Text(
-                    'RETRY',
-                    style: context.designSystem.typography.buttonMain,
-                  )),
-            ]),
+  Widget _buildCount(BuildContext context, AsyncSnapshot<Count> snapshot) =>
+      snapshot.hasData
+          ? Text(
+        snapshot.data!.value.toString(),
+        style: context.designSystem.typography.headline2,
       )
-          : _buildCount();
+          : Container(
+        child: Text(
+          snapshot.connectionState.toString(),
+          style: context.designSystem.typography.bodyText1,
+        ),
+      );
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
     state: (bloc) => bloc.states.errors,

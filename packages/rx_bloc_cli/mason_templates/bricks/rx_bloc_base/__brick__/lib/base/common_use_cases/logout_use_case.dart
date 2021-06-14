@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../../base/repositories/auth_repository.dart';
+import '../repositories/auth_repository.dart';
 
 class LogoutUseCase{
   LogoutUseCase(this._authRepository);
