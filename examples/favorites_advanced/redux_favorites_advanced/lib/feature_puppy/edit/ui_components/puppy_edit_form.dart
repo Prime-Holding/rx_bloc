@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
+import 'package:favorites_advanced_base/ui_components.dart';
 
-import '../ui_components/puppy_edit_card.dart';
 import '../views/puppy_edit_view_model.dart';
 import 'puppy_edit_avatar.dart';
 
