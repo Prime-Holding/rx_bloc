@@ -5,29 +5,27 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+/// Persist and get auth information in/from data source
+/// so this information will be available trough the app
+abstract class AuthTokenDataSource {
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+  /// Get stored access token
+  Future<String?> getToken();
 
-class AuthTokenDataSource {
-  AuthTokenDataSource(this._storage);
+  /// Persist access token
+  Future<void> saveToken(String newToken);
 
-  final FlutterSecureStorage _storage;
+  /// Get stored refresh token
+  Future<String?> getRefreshToken();
 
-  Future<String?> getToken() => _storage.read(key: SecureStorageKeys._token);
+  /// Persist new refresh token
+  Future<void> saveRefreshToken(String newRefreshToken);
 
-  Future<void> saveToken(String newToken) =>
-      _storage.write(key: SecureStorageKeys._token, value: newToken);
-
-  Future<String?> getRefreshToken() =>
-      _storage.read(key: SecureStorageKeys._refreshToken);
-
-  Future<void> saveRefreshToken(String newRefreshToken) => _storage.write(
-      key: SecureStorageKeys._refreshToken, value: newRefreshToken);
-
-  Future<void> clear() => _storage.deleteAll();
+  /// Delete all saved data
+  Future<void> clear();
 }
 
 class SecureStorageKeys {
-  static const _token = 'token';
-  static const _refreshToken = 'refreshToken';
+  static const token = 'token';
+  static const refreshToken = 'refreshToken';
 }

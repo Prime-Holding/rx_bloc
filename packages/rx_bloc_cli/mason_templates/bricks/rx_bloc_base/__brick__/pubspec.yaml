@@ -27,6 +27,7 @@ dependencies:
   rx_bloc: ^3.0.0
   rxdart: ^0.27.0
   flutter_secure_storage: ^4.2.0
+  shared_preferences: ^2.0.6
 
   # Only for testing purposes
   shelf: ^1.0.0

@@ -5,24 +5,23 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../../base/data_sources/domain/counter/count_data_source.dart';
+import '../../base/data_sources/remote/count_remote_data_source.dart';
 import '../../base/models/count.dart';
 
-///Can use any type of data source, that follow the contract
-///and retrieve its response to the business logic layer
+/// Decouple Data Layer and Business Logic Layer
 class CounterRepository {
 
-  CounterRepository(this.countDataSource);
+  CounterRepository(this.countRemoteDataSource);
 
-  final CountDataSource countDataSource;
+  final CountRemoteDataSource countRemoteDataSource;
 
   // Fetch current value of the counter
-  Future<Count> getCurrent()=> countDataSource.getCurrent();
+  Future<Count> getCurrent()=> countRemoteDataSource.getCurrent();
 
   //Fetch incremented value of the counter
-  Future<Count> increment()=> countDataSource.increment();
+  Future<Count> increment()=> countRemoteDataSource.increment();
 
   //Fetch decremented value of the counter
-  Future<Count> decrement()=> countDataSource.decrement();
+  Future<Count> decrement()=> countRemoteDataSource.decrement();
 
 }

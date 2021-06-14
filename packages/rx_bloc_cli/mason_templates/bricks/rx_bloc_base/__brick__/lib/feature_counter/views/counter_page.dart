@@ -11,6 +11,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../base/extensions/async_snapshot_extensions.dart';
+import '../../base/models/count.dart';
 import '../../base/theme/design_system.dart';
 import '../../feature_login/ui_components/profile_avatar.dart';
 import '../../l10n/l10n.dart';
@@ -25,48 +26,82 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-    providers: CounterDependencies.of(context).providers,
-    child: this,
-  );
+        providers: CounterDependencies.of(context).providers,
+        child: this,
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(context.l10n.counterPageTitle),
-      actions: const [ProfileAvatar()],
-    ),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _buildErrorListener(),
-          _buildCount(),
-        ],
-      ),
-    ),
-    floatingActionButton: _buildActionButtons(context),
-  );
+        appBar: AppBar(
+          title: Text(context.l10n.counterPageTitle),
+          actions: const [ProfileAvatar()],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildErrorListener(),
+              RxResultBuilder<CounterBlocType, Count>(
+                state: (bloc) => bloc.states.counterResult,
+                buildSuccess: (context, countState, bloc) => _buildCount(),
+                buildLoading: (context, bloc) => _buildLoadingScreen(),
+                buildError: (context, errorMessage, bloc) =>
+                    _buildErrorScreen(context, errorMessage, bloc),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: _buildActionButtons(context),
+      );
+
+  Widget _buildCount() => RxBlocBuilder<CounterBlocType, int>(
+        state: (bloc) => bloc.states.count,
+        builder: (context, snapshot, bloc) => snapshot.hasData
+            ? Text(
+                snapshot.data.toString(),
+                style: context.designSystem.typography.headline2,
+              )
+            : Container(),
+      );
+
+  Widget _buildLoadingScreen() =>
+      const Center(child: CircularProgressIndicator());
+
+  Widget _buildErrorScreen(
+    BuildContext context,
+    String errorMessage,
+    CounterBlocType bloc,
+  ) =>
+      !errorMessage.contains('Http status error [422]')
+          ? Container(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Your API is not running. \nRun command \'bin/start_server.sh\' and try again.',
+                      textAlign: TextAlign.center,
+                      style: context.designSystem.typography.headline5,
+                    ),
+                    ElevatedButton(
+                        onPressed: bloc.events.reload,
+                        child: Text(
+                          'RETRY',
+                          style: context.designSystem.typography.buttonMain,
+                        )),
+                  ]),
+            )
+          : _buildCount();
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
-    state: (bloc) => bloc.states.errors,
-    listener: (context, errorMessage) =>
-        ScaffoldMessenger.of(context).showSnackBar(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, errorMessage) =>
+            ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage ?? ''),
             behavior: SnackBarBehavior.floating,
           ),
         ),
-  );
-
-  Widget _buildCount() => RxBlocBuilder<CounterBlocType, int>(
-    state: (bloc) => bloc.states.count,
-    builder: (context, snapshot, bloc) => snapshot.hasData
-        ? Text(
-      snapshot.data.toString(),
-      style: context.designSystem.typography.headline2,
-    )
-        : Container(),
-  );
+      );
 
   Widget _buildActionButtons(BuildContext context) =>
       RxBlocBuilder<CounterBlocType, bool>(

@@ -6,7 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:dio/dio.dart';
-import '../../../common_use_cases/fetch_new_access_token_use_case.dart';
+import '../../../common_use_cases/fetch_access_token_use_case.dart';
 import '../../../common_use_cases/logout_use_case.dart';
 import '../../../repositories/auth_repository.dart';
 
@@ -24,14 +24,12 @@ import '../../../repositories/auth_repository.dart';
 /// your own logic, regarding needs of your application.
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(
-    this._authRepository,
     this._logoutUseCase,
-    this._fetchNewAccessTokenUseCase,
+    this._fetchAccessTokenUseCase,
   );
 
   final LogoutUseCase _logoutUseCase;
-  final AuthRepository _authRepository;
-  final fetchNewAccessTokenUseCase _fetchNewAccessTokenUseCase;
+  final FetchAccessTokenUseCase _fetchAccessTokenUseCase;
   final Dio _httpClient = Dio();
 
   @override
@@ -43,7 +41,7 @@ class AuthInterceptor extends Interceptor {
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final accessToken = await getToken();
+    final accessToken = await _fetchAccessTokenUseCase.execute();
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
@@ -53,7 +51,8 @@ class AuthInterceptor extends Interceptor {
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final newToken = await _fetchNewAccessTokenUseCase.execute();
+      final newToken = await _fetchAccessTokenUseCase
+          .execute(forceFetchNewToken: true);
       if (newToken == null) {
         await _logoutUseCase.execute();
       }else {
@@ -78,6 +77,4 @@ class AuthInterceptor extends Interceptor {
     }
     super.onError(err, handler);
   }
-
-  Future<String?> getToken() async => _authRepository.getToken();
 }
