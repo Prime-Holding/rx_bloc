@@ -7,6 +7,7 @@
 
 import '../data_sources/remote/auth_data_source.dart';
 import '../models/auth_token_model.dart';
+import '../models/request_models/authenticate_user_request_model.dart';
 
 class UserAuthRepository {
   UserAuthRepository(this._authDataSource);
@@ -14,8 +15,9 @@ class UserAuthRepository {
   final AuthDataSource _authDataSource;
 
   Future<AuthTokenModel> authenticate(
-          String? email, String? password, String? refreshToken) =>
-      _authDataSource.authenticate(email, password, refreshToken);
+          {String? email, String? password, String? refreshToken}) =>
+      _authDataSource.authenticate(AuthUserRequestModel(
+          username: email, password: password, refreshToken: refreshToken));
 
   Future<void> logout() => _authDataSource.logout();
 }

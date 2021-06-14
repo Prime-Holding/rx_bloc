@@ -45,11 +45,11 @@ class AppDependencies {
   ///
   List<SingleChildWidget> get providers => [ {{#analytics}}
         ..._analytics,{{/analytics}}
+        ..._httpClients,
         ..._dataSources,
         ..._repositories,
         ..._useCases,
         ..._blocs,
-        ..._httpClients,
       ];
 
   {{#analytics}}
@@ -65,9 +65,12 @@ class AppDependencies {
   List<Provider> get _httpClients => [
     Provider<Dio>(create: (context) {
       final _dio = Dio();
+      /// TODO: Fix interceptor injection order
+      /*
       _dio.interceptors
         ..add(AuthInterceptor(context.read(), context.read()))
       {{#analytics}}..add(AnalyticsInterceptor(context.read())){{/analytics}};
+       */
       return _dio;
     }),
   ];
@@ -100,9 +103,17 @@ class AppDependencies {
 
   List<Provider> get _useCases => [
         Provider<LoginUseCase>(
-            create: (context) => LoginUseCase(context.read())),
+            create: (context) => LoginUseCase(
+              context.read(),
+              context.read(),
+              context.read(),
+            )),
         Provider<LogoutUseCase>(
-            create: (context) => LogoutUseCase(context.read())),
+            create: (context) => LogoutUseCase(
+              context.read(),
+              context.read(),
+              context.read(),
+            )),
         Provider<FetchAccessTokenUseCase>(
             create: (context) => FetchAccessTokenUseCase(context.read())),
       ];

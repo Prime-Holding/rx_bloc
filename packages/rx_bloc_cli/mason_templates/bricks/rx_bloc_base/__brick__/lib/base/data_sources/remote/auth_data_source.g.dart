@@ -8,7 +8,7 @@ part of 'auth_data_source.dart';
 
 class _AuthDataSource implements AuthDataSource {
   _AuthDataSource(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://0.0.0.0:8080';
+    baseUrl ??= 'http://0.0.0.0:8080';
   }
 
   final Dio _dio;
@@ -16,11 +16,11 @@ class _AuthDataSource implements AuthDataSource {
   String? baseUrl;
 
   @override
-  Future<AuthTokenModel> authenticate(email, password, refreshToken) async {
+  Future<AuthTokenModel> authenticate(authData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _data = email;
+    final _data = <String, dynamic>{};
+    _data.addAll(authData.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AuthTokenModel>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)

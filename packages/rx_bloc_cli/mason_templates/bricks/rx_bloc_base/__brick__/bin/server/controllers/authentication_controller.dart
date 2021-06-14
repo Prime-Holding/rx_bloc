@@ -39,8 +39,8 @@ class AuthenticationController extends ApiController {
     return true;
   }
 
-  Response _authenticationHandler(Request request) {
-    final params = request.url.queryParameters;
+  Future<Response> _authenticationHandler(Request request) async {
+    final params = await request.bodyFromFormData();
     final refreshToken = params['refreshToken'];
 
     if (refreshToken == null || refreshToken.isEmpty) {
@@ -52,7 +52,7 @@ class AuthenticationController extends ApiController {
       }
     }
     final _token = _issueNewToken(refreshToken);
-    return responseBuilder.buildOK(data: {'token': _token.toJson()});
+    return responseBuilder.buildOK(data: _token.toJson());
   }
 
   Response _logoutHandler(Request request) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf_router/shelf_router.dart' as shelf_router;
@@ -152,5 +154,57 @@ class WrappedRouter {
         _router.options(path, callback);
         break;
     }
+  }
+}
+
+/// Extensions
+extension RequestBodyExtensions on shelf.Request {
+  static const _formContentDescriptor = 'Content-Disposition: form-data; ';
+  static const _formDashSeparator = '----------------------------';
+
+  /// Parses the contents of the body and return it as a Map of values
+  Future<Map<String, dynamic>> bodyFromFormData() async {
+    final bodyAsString = await readAsString();
+
+    // If the body does contains at least one 'form-data' substring, the
+    // request body is formatted as form data.
+    if (bodyAsString.contains('form-data')) {
+      return _fromFormData(bodyAsString);
+    } else if (bodyAsString.startsWith('{') && bodyAsString.endsWith('}')) {
+      // The data is a json string, so parse it
+      return json.decode(bodyAsString);
+    }
+
+    // Else the format is not recognized, so return an empty map
+    return {};
+  }
+
+  Map<String, String> _fromFormData(String body) {
+    String? key, value;
+    final data = <String, String>{};
+
+    body
+        .split('\n')
+        .where(
+            (ln) => ln.trim().isNotEmpty && !ln.startsWith(_formDashSeparator))
+        .map((ln) => ln.replaceAll(_formContentDescriptor, ''))
+        .toList()
+        .forEach((line) {
+      final ln = line.trim();
+      print(ln);
+      if (ln.startsWith('name="') && ln.endsWith('"')) {
+        key = ln.replaceAll('name=', '').replaceAll('"', '');
+        value = null;
+      } else {
+        value = ln;
+      }
+
+      if (key != null && value != null) {
+        data.addAll({key!: value!});
+        key = null;
+      }
+    });
+
+    return data;
   }
 }
