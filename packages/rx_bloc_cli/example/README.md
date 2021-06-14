@@ -29,7 +29,7 @@
 | `lib/feature_X/use_cases/` | Feature related UseCases |
 | `lib/feature_X/ui_components/` | Feature related custom widgets |
 | `lib/feature_X/views/` | Feature related pages and forms |
-| `lib/main.dart` | The main file of the app. If there are more than one main file, each of them is related to separate flavor of the app. |
+| `lib/main.dart` | The main file of the app. If there are more that one main file, each of them is related to separate flavor of the app. |
 
 ## Feature structure
 
@@ -79,15 +79,28 @@ A [design system][design_system_lnk] is a centralized place where you can define
 
 To access the design system from your app, you have to import it from the following location`lib/app/base/theme/design_system.dart'`. After that, you can access different parts of the design system by using the BuildContext (for example: `context.designSystem.typography.headline1` or `context.designSystem.icons.someIcon`).
 
+### Golden tests
+
+A [golden test][golden_test_lnk] lets you generate golden master images of a widget or screen, and compare against them so you know your design is always pixel-perfect and there have been no subtle or breaking changes in UI between builds. To make this easier, we employ the use of the [golden_toolkit][golden_toolkit_lnk] package.
+
+To get started, you just need to generate a list of `LabeledDeviceBuilder` and pass it to the `runGoldenTests` function. That's done by calling `generateDeviceBuilder` with a label, the widget/screen to be tested, as well as a `Scenario`. They provide an optional `onCreate` function which lets us execute arbitrary behavior upon testing. Each `DeviceBuilder` will have two generated golden master files, one for each theme.
+
+Due to the way fonts are loaded in tests, any custom fonts you intend to golden test should be included in `pubspec.yaml`
+
+In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
+
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
 [extension_methods_lnk]: https://dart.dev/guides/language/extension-methods
+[retrofit_lnk]: https://pub.dev/packages/retrofit
 [autoroute_lnk]: https://pub.dev/packages/auto_route
 [autoroute_usage_lnk]: https://pub.dev/packages/auto_route#setup-and-usage
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [firebase_configs_lnk]: https://support.google.com/firebase/answer/7015592
 [design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
+[golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
+[golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
 [retrofit_lnk]: https://pub.dev/packages/retrofit
 [dio_lnk]: https://pub.dev/packages/dio
 [json_annotation_lnk]: https://pub.dev/packages/json_annotation

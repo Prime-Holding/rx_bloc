@@ -1,7 +1,10 @@
-## [0.0.4] - June 02, 2021
+## [0.0.5] - June 02, 2021
 * Update generated project, adding following features:
     - Http-client(Dio by default)
     - Interceptors
+
+## [0.0.4] - June 10, 2021
+* Update generated project with golden tests
 
 ## [0.0.3] - May 28, 2021
 * Support null safety
