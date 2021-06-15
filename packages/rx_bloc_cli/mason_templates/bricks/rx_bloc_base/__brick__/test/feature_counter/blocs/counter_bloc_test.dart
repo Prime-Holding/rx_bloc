@@ -15,7 +15,6 @@ import 'package:{{project_name}}/base/models/count.dart';
 import 'package:{{project_name}}/base/repositories/counter_repository.dart';
 import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 
-
 import 'counter_bloc_test.mocks.dart';
 
 @GenerateMocks([CounterRepository])
@@ -82,7 +81,7 @@ void main() {
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer(
-              (_) async => Future.error('test error msg'),
+          (_) async => Future.error('test error msg'),
         );
         return CounterBloc(repository: repo);
       },
@@ -91,7 +90,7 @@ void main() {
         bloc.events.increment();
       },
       state: (bloc) => bloc.states.errors,
-      expect: ['Exception: test error msg'],
+      expect: [contains('test error msg')],
     );
 
     rxBlocTest<CounterBlocType, bool>(
