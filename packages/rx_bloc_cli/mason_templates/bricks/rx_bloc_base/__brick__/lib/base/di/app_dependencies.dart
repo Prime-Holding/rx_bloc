@@ -10,8 +10,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
@@ -35,6 +37,8 @@ class AppDependencies {
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
     ..._analytics,
+    _sharedPreferences,
+    _secureStorage,
     ..._dataSources,
     ..._repositories,
     ..._useCases,
@@ -49,13 +53,19 @@ class AppDependencies {
     ),
   ];
 
+  FutureProvider get _sharedPreferences => FutureProvider<SharedPreferences?>(
+      create: (context) async => SharedPreferences.getInstance(),
+      initialData: null);
+
+  Provider get _secureStorage => Provider<FlutterSecureStorage>(
+      create: (context) => const FlutterSecureStorage());
+
   /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
     Provider<AuthTokenDataSource>(
-        create: (context) =>
-        kIsWeb
-            ? AuthTokenSharedDataSource()
-            : AuthTokenSecureDataSource()),
+        create: (context) => kIsWeb
+            ? AuthTokenSharedDataSource(storage: context.read())
+            : AuthTokenSecureDataSource(storage: context.read())),
   ];
 
   List<Provider> get _repositories => [
@@ -74,7 +84,7 @@ class AppDependencies {
     Provider<Dio>(create: (context) {
       final _dio = Dio();
       _dio.interceptors
-        ..add(AuthInterceptor(context.read(), context.read()))
+        ..add(AuthInterceptor(context.read(), context.read(), _dio))
         ..add(AnalyticsInterceptor(context.read()));
       return _dio;
     }),

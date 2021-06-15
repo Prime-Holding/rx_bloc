@@ -92,7 +92,6 @@ In order for the goldens to be generated, we have provided VS Code and IDEA run 
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
 [extension_methods_lnk]: https://dart.dev/guides/language/extension-methods
-[retrofit_lnk]: https://pub.dev/packages/retrofit
 [autoroute_lnk]: https://pub.dev/packages/auto_route
 [autoroute_usage_lnk]: https://pub.dev/packages/auto_route#setup-and-usage
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization

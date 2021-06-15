@@ -23,13 +23,14 @@ import '../../../common_use_cases/logout_use_case.dart';
 /// your own logic, regarding needs of your application.
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(
-    this._logoutUseCase,
-    this._fetchAccessTokenUseCase,
-  );
+      this._logoutUseCase,
+      this._fetchAccessTokenUseCase,
+      this._httpClient,
+      );
 
   final LogoutUseCase _logoutUseCase;
   final FetchAccessTokenUseCase _fetchAccessTokenUseCase;
-  final Dio _httpClient = Dio();
+  final Dio _httpClient;
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
