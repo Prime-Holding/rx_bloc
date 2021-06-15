@@ -37,8 +37,7 @@ class AppDependencies {
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
     ..._analytics,
-    _sharedPreferences,
-    _secureStorage,
+    ..._dataStorages,
     ..._dataSources,
     ..._repositories,
     ..._useCases,
@@ -53,12 +52,13 @@ class AppDependencies {
     ),
   ];
 
-  FutureProvider get _sharedPreferences => FutureProvider<SharedPreferences?>(
-      create: (context) async => SharedPreferences.getInstance(),
-      initialData: null);
-
-  Provider get _secureStorage => Provider<FlutterSecureStorage>(
-      create: (context) => const FlutterSecureStorage());
+  List<SingleChildWidget> get _dataStorages => [
+    FutureProvider<SharedPreferences?>(
+        create: (context) async => SharedPreferences.getInstance(),
+        initialData: null),
+    Provider<FlutterSecureStorage>(
+        create: (context) => const FlutterSecureStorage()),
+  ];
 
   /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [

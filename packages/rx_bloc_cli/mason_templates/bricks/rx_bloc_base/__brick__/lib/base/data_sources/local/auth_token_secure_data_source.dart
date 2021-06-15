@@ -13,8 +13,7 @@ import 'auth_token_data_source.dart';
 /// Suitable for mobile.
 /// Persist and get auth information to make it  available trough the app.
 class AuthTokenSecureDataSource implements AuthTokenDataSource {
-  AuthTokenSecureDataSource({required FlutterSecureStorage storage})
-      : _storage = storage;
+  AuthTokenSecureDataSource(this._storage);
 
   final FlutterSecureStorage _storage;
 

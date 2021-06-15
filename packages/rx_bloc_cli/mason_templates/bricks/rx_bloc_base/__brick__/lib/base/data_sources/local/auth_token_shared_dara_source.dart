@@ -13,8 +13,7 @@ import 'auth_token_data_source.dart';
 /// Suitable for mobile and web.
 /// Persist and get auth information to make it  available trough the app.
 class AuthTokenSharedDataSource implements AuthTokenDataSource {
-  AuthTokenSharedDataSource({required SharedPreferences storage})
-      : _storage = storage;
+  AuthTokenSharedDataSource(this._storage);
 
   final SharedPreferences _storage;
 
