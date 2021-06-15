@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import '../data_sources/remote/push_notification_data_source.dart';
+import '../models/request_models/push_message_request_model.dart';
 import '../models/request_models/push_notification_data_request_model.dart';
 
 class PushNotificationSubscriptionRepository {
@@ -18,4 +19,9 @@ class PushNotificationSubscriptionRepository {
 
   Future<void> unsubscribePush(String pushToken) =>
       _pushDataSource.unsubscribePushToken(pushToken);
+
+  Future<void> sendPushMessage(
+          {required String message, String? title, int? delay}) =>
+      _pushDataSource.sendPushMessage(PushMessageRequestModel(
+          message: message, title: title, delay: delay ?? 0));
 }

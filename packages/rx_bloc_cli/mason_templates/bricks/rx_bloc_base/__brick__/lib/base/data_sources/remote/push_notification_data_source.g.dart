@@ -43,6 +43,19 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
     return null;
   }
 
+  @override
+  Future<void> sendPushMessage(message) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = message;
+    await _dio.fetch<void>(_setStreamType<void>(
+        Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+            .compose(_dio.options, '/api/send-push-message',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    return null;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

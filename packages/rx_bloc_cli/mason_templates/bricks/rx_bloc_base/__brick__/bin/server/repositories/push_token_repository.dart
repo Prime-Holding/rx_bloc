@@ -17,4 +17,6 @@ class PushTokenRepository {
   }
 
   bool hasToken(String token) => _pushTokens.containsKey(token);
+
+  List<PushNotificationToken> get tokens => _pushTokens.values.toList();
 }

@@ -14,12 +14,14 @@ dependencies:
   firebase_core: ^1.2.1{{/uses_firebase}}{{#push_notifications}}
   firebase_messaging: ^10.0.1{{/push_notifications}}
   flutter:
-    sdk: flutter{{#push_notifications}}
-  flutter_local_notifications: ^6.0.0{{/push_notifications}}
+    sdk: flutter
+  flutter_local_notifications: ^6.0.0
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^3.0.0
+  flutter_secure_storage: ^4.2.0
   golden_toolkit: ^0.9.0
+  http: ^0.13.3
   intl: ^0.17.0
   json_annotation: ^4.0.1
   json_serializable: ^4.1.2
@@ -27,7 +29,6 @@ dependencies:
   retrofit: ^2.0.0
   rx_bloc: ^3.0.0
   rxdart: ^0.27.0
-  flutter_secure_storage: ^4.2.0
   shared_preferences: ^2.0.6
 
   # Only for testing purposes

@@ -7,17 +7,18 @@ import '../common_use_cases/logout_use_case.dart';
 import '../utils/validators/validators.dart';
 
 part 'user_account_bloc.rxb.g.dart';
+part 'user_account_bloc_extensions.dart';
 
 // ignore_for_file: avoid_types_on_closure_parameters
 
 abstract class UserAccountBlocEvents {
-  void login();
-
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setUsername(String username);
 
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setPassword(String password);
+
+  void login();
 
   void logout();
 }
@@ -58,21 +59,13 @@ class UserAccountBloc extends $UserAccountBloc {
   Stream<bool> _mapToLoggedInState() => Rx.merge([
         _$logoutEvent
             .switchMap((value) {
-              // Reset the current username and password
-              setUsername('');
-              setPassword('');
+              _resetCredentials();
               return _logoutUseCase.execute().asResultStream();
             })
             .whereSuccess()
             .map((_) => false),
         _$loginEvent
-            .switchMap((value) => _validateAllFields())
-            .where((isValid) => isValid)
-            .withLatestFrom2(
-                _$setUsernameEvent,
-                _$setPasswordEvent,
-                (_, String username, String password) =>
-                    _LoginCredentials(username, password))
+            .validateCredentials(this)
             .switchMap((args) => _loginUseCase
                 .execute(username: args.username, password: args.password)
                 .asResultStream())
@@ -107,12 +100,6 @@ class UserAccountBloc extends $UserAccountBloc {
       .switchMap((event) => _validateAllFields().map((event) => true))
       .startWith(false)
       .shareReplay(maxSize: 1);
-
-  Stream<bool> _validateAllFields() => Rx.combineLatest2<String, String, bool>(
-        username,
-        password,
-        (email, password) => true,
-      ).onErrorReturn(false);
 }
 
 class _LoginCredentials {
