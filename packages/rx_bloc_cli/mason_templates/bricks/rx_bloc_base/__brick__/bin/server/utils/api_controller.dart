@@ -123,14 +123,34 @@ class WrappedRouter {
   final ResponseBuilder _responseBuilder;
 
   /// Adds a new request to the router
-  void addRequest(RequestType type, String path, shelf.Handler callback) {
+  void addRequest(RequestType type, String path, Function callback) {
     final _callback = buildSafeHandler(callback, _responseBuilder);
     _registerCallback(type, path, _callback);
   }
 
+  /// Adds a new request to the router that contains a parameter
+  void addRequestWithParam(RequestType type, String path, Function callback) {
+    final _callback = _buildSafeHandlerParam(callback, _responseBuilder);
+    _registerCallback(type, path, _callback);
+  }
+
+  /// Builds a wrapper around the callback with a parameter which helps easily
+  /// detect and respond to different kinds of errors/exceptions.
+  Function _buildSafeHandlerParam(
+          Function callback, ResponseBuilder responseBuilder) =>
+      (request, param) async {
+        try {
+          final response = await callback(request, param);
+          return response;
+        } on ResponseException catch (e) {
+          return responseBuilder.buildErrorResponse(e, request: request);
+        } on Exception catch (e) {
+          return responseBuilder.buildUnprocessableEntity(e, request: request);
+        }
+      };
+
   /// Registers the request of supported types
-  void _registerCallback(
-      RequestType type, String path, shelf.Handler callback) {
+  void _registerCallback(RequestType type, String path, Function callback) {
     switch (type) {
       case RequestType.GET:
         _router.get(path, callback);

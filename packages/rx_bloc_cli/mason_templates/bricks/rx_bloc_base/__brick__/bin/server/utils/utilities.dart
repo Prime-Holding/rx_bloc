@@ -41,8 +41,8 @@ String getStatusMessage(int code) =>
 
 /// Builds a wrapper around the callback which helps easily detect and respond
 /// to different kinds of errors/exceptions.
-Handler buildSafeHandler(Handler callback, ResponseBuilder responseBuilder) =>
-        (request) async {
+Handler buildSafeHandler(Function callback, ResponseBuilder responseBuilder) =>
+    (request) async {
       try {
         final response = await callback(request);
         return response;

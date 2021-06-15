@@ -52,6 +52,7 @@ class AppDependencies {
         ..._repositories,
         ..._useCases,
         ..._blocs,
+        ..._interceptors,
       ];
 
   {{#analytics}}
@@ -65,16 +66,7 @@ class AppDependencies {
       ]; {{/analytics}}
 
   List<Provider> get _httpClients => [
-    Provider<Dio>(create: (context) {
-      final _dio = Dio();
-      /// TODO: Fix interceptor injection order
-      /*
-      _dio.interceptors
-        ..add(AuthInterceptor(context.read(), context.read()))
-      {{#analytics}}..add(AnalyticsInterceptor(context.read())){{/analytics}};
-       */
-      return _dio;
-    }),
+    Provider<Dio>(create: (context) => Dio()),
   ];
 
   /// Use different data source regarding of if it is running in web ot not
@@ -130,5 +122,26 @@ class AppDependencies {
           ),
         ),
       ];
+
+  List<Provider> get _interceptors => [
+    Provider<AuthInterceptor>(
+      create: (context) {
+        final interceptor = AuthInterceptor(
+          context.read(),
+          context.read(),
+          context.read()
+        );
+        context.read<Dio>().interceptors.add(interceptor);
+        return interceptor;
+      },
+    ),{{#analytics}}
+    Provider<AnalyticsInterceptor>(
+      create: (context) {
+        final interceptor = AnalyticsInterceptor(context.read());
+        context.read<Dio>().interceptors.add(interceptor);
+        return interceptor;
+      },
+    ),{{/analytics}}
+  ];
 
 }

@@ -8,6 +8,8 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
+import '../../models/request_models/push_notification_data_request_model.dart';
+
 part 'push_notification_data_source.g.dart';
 
 @RestApi(baseUrl: 'http://0.0.0.0:8080')
@@ -16,7 +18,8 @@ abstract class PushNotificationsDataSource {
       _PushNotificationsDataSource;
 
   @POST('/api/user/push-notification-subscriptions')
-  Future<void> subscribePushToken(@Body() String pushToken);
+  Future<void> subscribePushToken(
+      @Body() PushNotificationDataRequestModel pushToken);
 
   @DELETE('/api/user/push-notification-subscriptions/{pushToken}')
   Future<void> unsubscribePushToken(@Path() String pushToken);

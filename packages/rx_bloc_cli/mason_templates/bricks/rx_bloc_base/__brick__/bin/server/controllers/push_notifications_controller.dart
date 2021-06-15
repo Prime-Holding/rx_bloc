@@ -17,19 +17,21 @@ class PushNotificationsController extends ApiController {
       '/api/user/push-notification-subscriptions',
       _registerPushHandler,
     );
-    router.addRequest(
+    router.addRequestWithParam(
       RequestType.DELETE,
-      '/api/user/push-notification-subscriptions',
+      '/api/user/push-notification-subscriptions/<pushToken>',
       _unregisterPushHandler,
     );
   }
 
-  Response _registerPushHandler(Request request) {
+  Future<Response> _registerPushHandler(Request request) async {
     controllers
         .getController<AuthenticationController>()
         ?.isAuthenticated(request);
 
-    final pushToken = request.url.queryParameters['pushToken'];
+    final params = await request.bodyFromFormData();
+    final pushToken = params['pushToken'];
+
     if (pushToken == null || pushToken.isEmpty) {
       throw BadRequestException('Push token can not be empty.');
     }
@@ -39,13 +41,12 @@ class PushNotificationsController extends ApiController {
     return responseBuilder.buildOK();
   }
 
-  Response _unregisterPushHandler(Request request) {
+  Response _unregisterPushHandler(Request request, String pushToken) {
     controllers
         .getController<AuthenticationController>()
         ?.isAuthenticated(request);
 
-    final pushToken = request.url.queryParameters['pushToken'];
-    if (pushToken == null || pushToken.isEmpty) {
+    if (pushToken.isEmpty) {
       throw BadRequestException('Push token can not be empty.');
     }
 

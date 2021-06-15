@@ -19,7 +19,8 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   Future<void> subscribePushToken(pushToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = pushToken;
+    final _data = <String, dynamic>{};
+    _data.addAll(pushToken.toJson());
     await _dio.fetch<void>(_setStreamType<void>(
         Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
             .compose(_dio.options, '/api/user/push-notification-subscriptions',
