@@ -1,4 +1,4 @@
-# Ccvoiptest
+# {{#titleCase}}{{project_name}}{{/titleCase}}
 
 ## Project structure
 
