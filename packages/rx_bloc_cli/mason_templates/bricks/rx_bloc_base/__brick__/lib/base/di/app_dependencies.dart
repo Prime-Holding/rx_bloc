@@ -64,8 +64,8 @@ class AppDependencies {
   List<Provider> get _dataSources => [
     Provider<AuthTokenDataSource>(
         create: (context) => kIsWeb
-            ? AuthTokenSharedDataSource(storage: context.read())
-            : AuthTokenSecureDataSource(storage: context.read())),
+            ? AuthTokenSharedDataSource(context.read())
+            : AuthTokenSecureDataSource(context.read())),
   ];
 
   List<Provider> get _repositories => [
