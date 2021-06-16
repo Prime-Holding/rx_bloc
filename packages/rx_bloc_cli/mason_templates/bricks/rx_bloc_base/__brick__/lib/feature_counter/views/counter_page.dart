@@ -11,7 +11,6 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../base/extensions/async_snapshot_extensions.dart';
-import '../../base/models/count.dart';
 import '../../base/theme/design_system.dart';
 import '../../feature_login/ui_components/profile_avatar.dart';
 import '../../l10n/l10n.dart';
@@ -36,26 +35,26 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
           title: Text(context.l10n.counterPageTitle),
           actions: const [ProfileAvatar()],
         ),
+        floatingActionButton: _buildActionButtons(context),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildErrorListener(),
-              RxBlocBuilder<CounterBlocType, Count>(
-                state: (bloc) => bloc.states.counter,
+              RxBlocBuilder<CounterBlocType, int>(
+                state: (bloc) => bloc.states.count,
                 builder: (context, countState, bloc) =>
                     _buildCount(context, countState),
               ),
             ],
           ),
         ),
-        floatingActionButton: _buildActionButtons(context),
       );
 
-  Widget _buildCount(BuildContext context, AsyncSnapshot<Count> snapshot) =>
+  Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>
       snapshot.hasData
           ? Text(
-              snapshot.data!.value.toString(),
+              snapshot.data!.toString(),
               style: context.designSystem.typography.headline2,
             )
           : Container(

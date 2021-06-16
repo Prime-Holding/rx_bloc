@@ -10,8 +10,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart'; {{/analytics}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/config/environment_config.dart';
 import '../common_blocs/user_account_bloc.dart';
@@ -44,10 +46,10 @@ class AppDependencies {
   final EnvironmentConfig config;
 
   /// List of all providers used throughout the app
-  ///
   List<SingleChildWidget> get providers => [ {{#analytics}}
         ..._analytics,{{/analytics}}
         ..._httpClients,
+        ..._dataStorages,
         ..._dataSources,
         ..._repositories,
         ..._useCases,
@@ -69,13 +71,21 @@ class AppDependencies {
     Provider<Dio>(create: (context) => Dio()),
   ];
 
+  List<SingleChildWidget> get _dataStorages => [
+    FutureProvider<SharedPreferences?>(
+        create: (context) async => SharedPreferences.getInstance(),
+        initialData: null),
+    Provider<FlutterSecureStorage>(
+        create: (context) => const FlutterSecureStorage()),
+  ];
+
   /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
         Provider<AuthTokenDataSource>(
             create: (context) =>
             kIsWeb
-                ? AuthTokenSharedDataSource()
-                : AuthTokenSecureDataSource()),
+                ? AuthTokenSharedDataSource(context.read())
+                : AuthTokenSecureDataSource(context.read())),
         Provider<AuthDataSource>(
           create: (context) =>
               AuthDataSource(context.read(), baseUrl: config.baseApiUrl),

@@ -34,8 +34,8 @@ abstract class $CounterBloc extends RxBlocBase
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [counter] implemented in [_mapToCounterState]
-  late final Stream<Count> _counterState = _mapToCounterState();
+  /// The state of [count] implemented in [_mapToCountState]
+  late final Stream<int> _countState = _mapToCountState();
 
   @override
   void increment() => _$incrementEvent.add(null);
@@ -53,13 +53,13 @@ abstract class $CounterBloc extends RxBlocBase
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<Count> get counter => _counterState;
+  Stream<int> get count => _countState;
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<Count> _mapToCounterState();
+  Stream<int> _mapToCountState();
 
   @override
   CounterBlocEvents get events => this;

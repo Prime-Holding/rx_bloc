@@ -31,7 +31,6 @@ abstract class CounterBlocEvents {
 
 /// A contract class containing all states for our multi state BloC.
 abstract class CounterBlocStates {
-
   /// Loading state of the bloc
   ///
   /// It is true when the bloc is waiting for the repository to returns data
@@ -48,7 +47,7 @@ abstract class CounterBlocStates {
   /// It can be controlled by executing [CounterBlocEvents.increment] and
   /// [CounterBlocEvents.decrement]
   ///
-  Stream<Count> get counter;
+  Stream<int> get count;
 }
 
 /// A BloC responsible for count calculations
@@ -67,8 +66,9 @@ class CounterBloc extends $CounterBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  Stream<Count> _mapToCounterState() => countState
+  Stream<int> _mapToCountState() => countState
       .setResultStateHandler(this)
       .whereSuccess()
+      .map((event) => event.value)
       .shareReplay(maxSize: 1);
 }

@@ -29,7 +29,7 @@
 | `lib/feature_X/use_cases/` | Feature related UseCases |
 | `lib/feature_X/ui_components/` | Feature related custom widgets |
 | `lib/feature_X/views/` | Feature related pages and forms |
-| `lib/main.dart` | The main file of the app. If there are more than one main file, each of them is related to separate flavor of the app. |
+| `lib/main.dart` | The main file of the app. If there are more that one main file, each of them is related to separate flavor of the app. |
 
 ## Feature structure
 
@@ -108,14 +108,14 @@ In order to make the notifications work on your target platform, make sure you f
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [firebase_configs_lnk]: https://support.google.com/firebase/answer/7015592
 [design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
+[golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
+[golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
 [retrofit_lnk]: https://pub.dev/packages/retrofit
 [dio_lnk]: https://pub.dev/packages/dio
 [json_annotation_lnk]: https://pub.dev/packages/json_annotation
 [json_serializable_lnk]: https://pub.dev/packages/json_serializable
 [shelf_lnk]: https://pub.dev/packages/shelf
 [solution_lnk]: https://github.com/flutterchina/dio/issues/76#issuecomment-430011361
-[golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
-[golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
 [fcm_lnk]: https://firebase.flutter.dev/docs/messaging/overview
 [fcm_web_config_ref]: https://github.com/FirebaseExtended/flutterfire/blob/4c9b5d28de9eeb5ce76c856fbd0c7b3ec8615e45/docs/messaging/usage.mdx#web-tokens
 [flutter_local_notifications_lnk]: https://pub.dev/packages/flutter_local_notifications

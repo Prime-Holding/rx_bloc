@@ -5,13 +5,15 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:{{project_name}}/base/models/count.dart';
-import 'package:{{project_name}}/base/repositories/counter_repository.dart';
-import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
+import 'package:{{project_name}}/base/models/count.dart';
+import 'package:{{project_name}}/base/repositories/counter_repository.dart';
+import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 
 import 'counter_bloc_test.mocks.dart';
 
@@ -23,12 +25,12 @@ void main() {
     repo = MockCounterRepository();
   });
 
-  group('CounterBloc: count state', () {
+  group('CounterBloc tests', () {
     rxBlocTest<CounterBlocType, int>(
       'Initial state',
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        return CounterBloc(repo);
+        return CounterBloc(repository: repo);
       },
       state: (bloc) => bloc.states.count,
       expect: [0],
@@ -39,7 +41,7 @@ void main() {
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
-        return CounterBloc(repo);
+        return CounterBloc(repository: repo);
       },
       act: (bloc) async => bloc.events.increment(),
       state: (bloc) => bloc.states.count,
@@ -51,7 +53,7 @@ void main() {
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.decrement()).thenAnswer((_) async => Count(-1));
-        return CounterBloc(repo);
+        return CounterBloc(repository: repo);
       },
       act: (bloc) async => bloc.events.decrement(),
       state: (bloc) => bloc.states.count,
@@ -64,7 +66,7 @@ void main() {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
         when(repo.decrement()).thenAnswer((_) async => Count(0));
-        return CounterBloc(repo);
+        return CounterBloc(repository: repo);
       },
       act: (bloc) async {
         bloc.events.increment();
@@ -73,32 +75,30 @@ void main() {
       state: (bloc) => bloc.states.count,
       expect: [0, 1, 0],
     );
-  });
 
-  group('CounterBloc: Loading and error handling', () {
     rxBlocTest<CounterBlocType, String>(
       'Error handling',
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer(
-              (_) => Future.error('test error msg'),
+          (_) async => Future.error('test error msg'),
         );
-        return CounterBloc(repo);
+        return CounterBloc(repository: repo);
       },
       act: (bloc) async {
         bloc.states.count.listen((event) {});
         bloc.events.increment();
       },
       state: (bloc) => bloc.states.errors,
-      expect: ['Exception: test error msg'],
+      expect: [contains('test error msg')],
     );
 
     rxBlocTest<CounterBlocType, bool>(
-      'Loading handling',
+      'Loading state',
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
-        return CounterBloc(repo);
+        return CounterBloc(repository: repo);
       },
       act: (bloc) async {
         bloc.states.count.listen((event) {});

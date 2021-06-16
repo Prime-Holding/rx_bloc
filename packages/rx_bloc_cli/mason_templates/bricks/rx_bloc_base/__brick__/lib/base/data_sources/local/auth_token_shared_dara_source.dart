@@ -13,39 +13,30 @@ import 'auth_token_data_source.dart';
 /// Suitable for mobile and web.
 /// Persist and get auth information to make it  available trough the app.
 class AuthTokenSharedDataSource implements AuthTokenDataSource {
+  AuthTokenSharedDataSource(this._storage);
+
+  final SharedPreferences _storage;
 
   /// Get stored access token
   @override
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(DataSourceKeys.token);
-  }
+  Future<String?> getToken() async => _storage.getString(DataSourceKeys.token);
 
   /// Persist access token
   @override
-  Future<bool> saveToken(String newToken) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.setString(DataSourceKeys.token, newToken);
-  }
+  Future<bool> saveToken(String newToken) async =>
+      _storage.setString(DataSourceKeys.token, newToken);
 
   /// Get stored refresh token
   @override
-  Future<String?> getRefreshToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(DataSourceKeys.refreshToken);
-  }
+  Future<String?> getRefreshToken() async =>
+      _storage.getString(DataSourceKeys.refreshToken);
 
   /// Persist new refresh token
   @override
-  Future<bool> saveRefreshToken(String newRefreshToken) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.setString(DataSourceKeys.refreshToken, newRefreshToken);
-  }
+  Future<bool> saveRefreshToken(String newRefreshToken) async =>
+      _storage.setString(DataSourceKeys.refreshToken, newRefreshToken);
 
   /// Delete all saved data
   @override
-  Future<bool> clear() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.clear();
-  }
+  Future<bool> clear() async => _storage.clear();
 }
