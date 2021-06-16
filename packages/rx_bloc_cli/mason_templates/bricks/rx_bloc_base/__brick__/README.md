@@ -1,4 +1,4 @@
-# {{#titleCase}}{{project_name}}{{/titleCase}}
+# Ccvoiptest
 
 ## Project structure
 
@@ -54,7 +54,6 @@ You define localizations by adding a translation file in the `lib/l10n/arb/app_[
 
 Upon rebuild, your translations are auto-generated inside `.dart_tool/flutter_gen/gen_l10n`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey`.
 
-{{#analytics}}
 ### Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
@@ -66,7 +65,6 @@ Before you start using analytics, you need to add platform specific configuratio
 
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
-{{/analytics}}
 ### Http client
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
@@ -91,6 +89,14 @@ Due to the way fonts are loaded in tests, any custom fonts you intend to golden 
 
 In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
 
+### Push notifications
+
+[Firebase Cloud Messaging (FCM)][fcm_lnk] allows your integrating push notifications in your very own app. You can receive notifications while the app is in the foreground, background or even terminated. It even allows for event callbacks customizations, such when the app is opened via a notification from a specific state. All customizable callbacks can be found inside `lib/base/app/initialization/firebase_messaging_callbacks.dart`.
+
+In order to make the notifications work on your target platform, make sure you first add the config file in the proper location (as descibed in the ***Analytic*** section). For Web you also need to specify the `vapid` key inside `lib/base/app/config/app_constants.dart` and manually add the firebase web configuration to `web/firebase-messaging-sw.js`(for more info refer to [this link][fcm_web_config_ref]).
+
+*Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
+
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
 [extension_methods_lnk]: https://dart.dev/guides/language/extension-methods
@@ -108,3 +114,6 @@ In order for the goldens to be generated, we have provided VS Code and IDEA run 
 [solution_lnk]: https://github.com/flutterchina/dio/issues/76#issuecomment-430011361
 [golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
 [golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
+[fcm_lnk]: https://firebase.flutter.dev/docs/messaging/overview
+[fcm_web_config_ref]: https://github.com/FirebaseExtended/flutterfire/blob/4c9b5d28de9eeb5ce76c856fbd0c7b3ec8615e45/docs/messaging/usage.mdx#web-tokens
+[flutter_local_notifications_lnk]: https://pub.dev/packages/flutter_local_notifications
