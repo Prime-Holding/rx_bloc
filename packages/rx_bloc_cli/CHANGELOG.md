@@ -1,7 +1,8 @@
-## [0.0.5] - June 14, 2021
+## [0.0.5] - June 16, 2021
 * Update generated project, adding following features:
     - Http-client(Dio by default)
     - Interceptors
+    - Push Notifications via Firebase Cloud Messaging
 
 ## [0.0.4] - June 10, 2021
 * Update generated project with golden tests

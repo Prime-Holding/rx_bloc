@@ -16,7 +16,7 @@ $ dart pub global activate rx_bloc_cli
 
 ![Create command][create_command_gif_lnk]
 
-Create a new project at the given directory with lots of already set-up features out of the box. Cusomize your project with the following properties:
+Create a new project at the given directory with lots of already set-up features out of the box. Customize your project with the following properties:
 
 |  parameter |defaults to | description |
 | ------------ | :------------: | :------------: |
@@ -48,7 +48,7 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ✅ [Analytics][firebase_analytics_lnk] - (Optional) Firebase analytics that keep track of how your app is used
 
-✅ [Push notifications][push_notifications_lnk] - (Coming soon) Receive push notifications and messages to your device using Firebase Cloud Messaging
+✅ [Push notifications][push_notifications_lnk] - Receive push notifications and messages to your device using Firebase Cloud Messaging
 
 ✅ [Http client][dio_http_client_lnk] - Dio is an Http client, which supports [Interceptors][interceptors_lnk], Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
 
