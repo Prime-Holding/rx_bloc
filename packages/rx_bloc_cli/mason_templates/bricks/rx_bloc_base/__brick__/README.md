@@ -65,6 +65,8 @@ Before you start using analytics, you need to add platform specific configuratio
 
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
+*Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.stag` is appended to the package name when using `staging` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
+
 ### Http client
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
