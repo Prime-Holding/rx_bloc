@@ -13,13 +13,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
+import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../repositories/auth_repository.dart';
@@ -53,9 +53,8 @@ class AppDependencies {
   ];
 
   List<SingleChildWidget> get _dataStorages => [
-    FutureProvider<SharedPreferences?>(
-        create: (context) async => SharedPreferences.getInstance(),
-        initialData: null),
+    Provider<SharedPreferencesInstance>(
+        create: (context) => SharedPreferencesInstance()),
     Provider<FlutterSecureStorage>(
         create: (context) => const FlutterSecureStorage()),
   ];

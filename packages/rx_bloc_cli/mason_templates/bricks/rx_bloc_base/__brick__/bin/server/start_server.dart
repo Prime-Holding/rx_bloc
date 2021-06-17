@@ -10,6 +10,7 @@ import 'package:shelf_router/shelf_router.dart' as shelf_router;
 import 'package:shelf_static/shelf_static.dart' as shelf_static;
 
 import 'controllers/count_controller.dart';
+import 'utils/response_builder.dart';
 
 Future main() async {
   // If the "PORT" environment variable is set, listen to it. Otherwise, 8080.
@@ -45,8 +46,12 @@ final _countController = CountController();
 final _staticHandler = shelf_static.createStaticHandler('bin/server/public',
     defaultDocument: 'index.html');
 
+Response _responseOk() => ResponseBuilder().buildOK({});
+
 // Router instance to handler requests.
 final _router = shelf_router.Router()
   ..get('/api/count', _countController.getCountHandler)
   ..post('/api/count/increment', _countController.incrementCountHandler)
-  ..post('/api/count/decrement', _countController.decrementCountHandler);
+  ..options('/api/count/increment', _responseOk)
+  ..post('/api/count/decrement', _countController.decrementCountHandler)
+  ..options('/api/count/decrement', _responseOk);

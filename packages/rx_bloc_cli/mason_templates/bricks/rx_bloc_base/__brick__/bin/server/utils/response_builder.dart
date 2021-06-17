@@ -11,6 +11,10 @@ class ResponseBuilder {
         }),
         headers: {
           'content-type': 'application/problem+json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': '*',
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Credentials': 'true',
         },
       );
 
@@ -18,6 +22,10 @@ class ResponseBuilder {
         const JsonEncoder.withIndent(' ').convert(data),
         headers: {
           'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': '*',
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Credentials': 'true',
         },
       );
 }

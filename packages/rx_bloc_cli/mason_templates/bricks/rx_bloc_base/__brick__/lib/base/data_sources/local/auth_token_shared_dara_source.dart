@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:shared_preferences/shared_preferences.dart';
+import '../local/shared_preferences_instance.dart';
 
 import 'auth_token_data_source.dart';
 
@@ -15,7 +15,7 @@ import 'auth_token_data_source.dart';
 class AuthTokenSharedDataSource implements AuthTokenDataSource {
   AuthTokenSharedDataSource(this._storage);
 
-  final SharedPreferences _storage;
+  final SharedPreferencesInstance _storage;
 
   /// Get stored access token
   @override
