@@ -1,5 +1,11 @@
 # Test App
 
+## Getting started
+
+Before you start working on your app, make sure you familiarize yourself with the structure of the generated project and the essentials that are included with it.
+
+*Note:* The app contains features that request data from API endpoints hosted on a local server. For the app to function properly, make sure the local server is up and running. For more info, check out the [server topic](#server).
+
 ## Project structure
 
 | Path | Contains |
@@ -40,11 +46,15 @@ The logic of each page should be placed into its own [BLoC][rx_bloc_lnk]. This i
 ## Architecture
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
+<div id="navigation"/>
+
 ### Navigation
 
 Navigation throughout the app is handled by [Auto Route][autoroute_lnk].
 
 After describing your pages inside the `lib/base/routers/router.dart` file and running the shell script `bin/build_runner_build.sh`(or `bin/build_runner_watch.sh`), you can access the generated routes by using the `context.navigator` widget.
+
+<div id="locatization"/>
 
 ### App localization
 
@@ -53,6 +63,8 @@ Your app supports [localization][localization_lnk] out of the box.
 You define localizations by adding a translation file in the `lib/l10n/arb/app_[language_code].arb` directory. The `language_code` represents the code of the language you want to support (`en`, `zh`,`de`, ...). Inside that file, in JSON format, you define key-value pairs for your strings. **Make sure that all your translation files contain the same keys!**
 
 Upon rebuild, your translations are auto-generated inside `.dart_tool/flutter_gen/gen_l10n`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey`.
+
+<div id="analytics"/>
 
 ### Analytics
 
@@ -67,6 +79,8 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 *Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.stag` is appended to the package name when using `staging` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
 
+<div id="httpClient"/>
+
 ### Http client
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
@@ -75,11 +89,15 @@ To use its benefits you should define a data model in `lib/base/models/`, using 
 
 In our project in directory `bin/server/` we have implemented local Rest API using [shelf][shelf_lnk]. To test the project you have to run it first. In your root folder run `bin/start_server.sh`. If you are running in your emulator and can not connect to the server, check this [solution][solution_lnk].
 
+<div id="designSystem"/>
+
 ### Design system
 
 A [design system][design_system_lnk] is a centralized place where you can define your apps design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
 
 To access the design system from your app, you have to import it from the following location`lib/app/base/theme/design_system.dart'`. After that, you can access different parts of the design system by using the BuildContext (for example: `context.designSystem.typography.headline1` or `context.designSystem.icons.someIcon`).
+
+<div id="goldenTests"/>
 
 ### Golden tests
 
@@ -91,11 +109,33 @@ Due to the way fonts are loaded in tests, any custom fonts you intend to golden 
 
 In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
 
+<div id="server"/>
+
+### Server
+
+Your app comes with a small preconfigured local server (written in Dart) that you can use for testing purposes or even expand it. It is built using [shelf][shelf_lnk], [shelf_router][shelf_router_lnk] and [shelf_static][shelf_static_lnk]. The server comes with several out-of-the-box APIs that work with the generated app.
+
+In order to run the server locally, make sure to run `bin/start_server.sh`. The server should be running on `http://0.0.0.0:8080`, if not configured otherwise.
+
+Some of the important paths are:
+
+| Path | Contains |
+| :------------ | :------------ |
+| `bin/server/` | The root of the server |
+| `bin/server/start_server.dart` | The main entry point of the server app |
+| `bin/server/controllers/` | All controllers are located here |
+| `bin/server/models/` | Data models are placed here |
+| `bin/server/repositories/` | Repositories that are used by the controllers reside here |
+
+*Note:* When creating a new controller, make sure you also register it inside the `_registerControllers()` method in `start_server.dart`.
+
+<div id="pushNotifications"/>
+
 ### Push notifications
 
 [Firebase Cloud Messaging (FCM)][fcm_lnk] allows your integrating push notifications in your very own app. You can receive notifications while the app is in the foreground, background or even terminated. It even allows for event callbacks customizations, such when the app is opened via a notification from a specific state. All customizable callbacks can be found inside `lib/base/app/initialization/firebase_messaging_callbacks.dart`.
 
-In order to make the notifications work on your target platform, make sure you first add the config file in the proper location (as descibed in the ***Analytic*** section). For Web you also need to specify the `vapid` key inside `lib/base/app/config/app_constants.dart` and manually add the firebase web configuration to `web/firebase-messaging-sw.js`(for more info refer to [this link][fcm_web_config_ref]).
+In order to make the notifications work on your target platform, make sure you first add the config file in the proper location (as descibed in the [**Analytic**](#analytics) section). For Web you also need to specify the `vapid` key inside `lib/base/app/config/app_constants.dart` and manually add the firebase web configuration to `web/firebase-messaging-sw.js`(for more info refer to [this link][fcm_web_config_ref]).
 
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
 
@@ -119,3 +159,6 @@ In order to make the notifications work on your target platform, make sure you f
 [fcm_lnk]: https://firebase.flutter.dev/docs/messaging/overview
 [fcm_web_config_ref]: https://github.com/FirebaseExtended/flutterfire/blob/4c9b5d28de9eeb5ce76c856fbd0c7b3ec8615e45/docs/messaging/usage.mdx#web-tokens
 [flutter_local_notifications_lnk]: https://pub.dev/packages/flutter_local_notifications
+[shelf_lnk]: https://pub.dev/packages/shelf
+[shelf_router_lnk]: https://pub.dev/packages/shelf_router
+[shelf_static_lnk]: https://pub.dev/packages/shelf_static

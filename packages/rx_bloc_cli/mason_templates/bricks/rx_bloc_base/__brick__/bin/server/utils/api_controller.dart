@@ -157,15 +157,18 @@ class WrappedRouter {
         break;
       case RequestType.POST:
         _router.post(path, callback);
+        _router.options(path, (_) => _responseBuilder.buildOK());
         break;
       case RequestType.DELETE:
         _router.delete(path, callback);
         break;
       case RequestType.PUT:
         _router.put(path, callback);
+        _router.options(path, (_) => _responseBuilder.buildOK());
         break;
       case RequestType.PATCH:
         _router.patch(path, callback);
+        _router.options(path, (_) => _responseBuilder.buildOK());
         break;
       case RequestType.HEAD:
         _router.head(path, callback);

@@ -36,14 +36,15 @@ class CreateCommand extends Command<int> {
         help: 'Enables Firebase analytics for the project',
         defaultsTo: 'true',
       )
+      /*
       ..addOption(
         _pushNotificationString,
         help: 'Enables Firebase push notifications for the project',
         defaultsTo: 'true',
-      )
+      )*/
       ..addOption(
         _httpClientString,
-        help: 'HTTP client',
+        help: 'Use Http client configuration for the project',
         defaultsTo: 'dio',
       );
   }
@@ -165,8 +166,11 @@ class CreateCommand extends Command<int> {
 
   /// Returns whether the project will have push notifications enabled
   bool get _enablePushNotifications {
+    /*
     final pushNotificationsEnabled = _argResults[_pushNotificationString];
     return pushNotificationsEnabled.toLowerCase() != 'false';
+     */
+    return true;
   }
 
   /// Returns http client type
