@@ -25,55 +25,55 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: CounterDependencies.of(context).providers,
-        child: this,
-      );
+    providers: CounterDependencies.of(context).providers,
+    child: this,
+  );
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(context.l10n.counterPageTitle),
-          actions: const [ProfileAvatar()],
-        ),
-        floatingActionButton: _buildActionButtons(context),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildErrorListener(),
-              RxBlocBuilder<CounterBlocType, int>(
-                state: (bloc) => bloc.states.count,
-                builder: (context, countState, bloc) =>
-                    _buildCount(context, countState),
-              ),
-            ],
+    appBar: AppBar(
+      title: Text(context.l10n.counterPageTitle),
+      actions: const [ProfileAvatar()],
+    ),
+    floatingActionButton: _buildActionButtons(context),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildErrorListener(),
+          RxBlocBuilder<CounterBlocType, int>(
+            state: (bloc) => bloc.states.count,
+            builder: (context, countState, bloc) =>
+                _buildCount(context, countState),
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 
   Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>
       snapshot.hasData
           ? Text(
-              snapshot.data!.toString(),
-              style: context.designSystem.typography.headline2,
-            )
+        snapshot.data!.toString(),
+        style: context.designSystem.typography.headline2,
+      )
           : Container(
-              child: Text(
-                snapshot.connectionState.toString(),
-                style: context.designSystem.typography.bodyText1,
-              ),
-            );
+        child: Text(
+          snapshot.connectionState.toString(),
+          style: context.designSystem.typography.bodyText1,
+        ),
+      );
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
-        state: (bloc) => bloc.states.errors,
-        listener: (context, errorMessage) =>
-            ScaffoldMessenger.of(context).showSnackBar(
+    state: (bloc) => bloc.states.errors,
+    listener: (context, errorMessage) =>
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage ?? ''),
             behavior: SnackBarBehavior.floating,
           ),
         ),
-      );
+  );
 
   Widget _buildActionButtons(BuildContext context) =>
       RxBlocBuilder<CounterBlocType, bool>(
@@ -91,7 +91,10 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               onPressed: loadingState.isLoading ? null : bloc.events.increment,
               tooltip: context.l10n.increment,
               heroTag: 'increment',
-              child: Icon(context.designSystem.icons.plusSign),
+              child: Icon(
+                context.designSystem.icons.plusSign,
+                color: context.designSystem.colors.iconColor,
+              ),
             ),
             const SizedBox(width: 16),
             FloatingActionButton(
@@ -99,7 +102,10 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               onPressed: loadingState.isLoading ? null : bloc.events.decrement,
               tooltip: context.l10n.decrement,
               heroTag: 'decrement',
-              child: Icon(context.designSystem.icons.minusSign),
+              child: Icon(
+                context.designSystem.icons.minusSign,
+                color: context.designSystem.colors.iconColor,
+              ),
             ),
           ],
         ),

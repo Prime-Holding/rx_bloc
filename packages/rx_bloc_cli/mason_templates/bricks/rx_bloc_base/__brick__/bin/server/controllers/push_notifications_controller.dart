@@ -5,6 +5,7 @@ import 'package:shelf/shelf.dart';
 
 import '../repositories/push_token_repository.dart';
 import '../utils/api_controller.dart';
+import '../utils/server_config.dart';
 import '../utils/server_exceptions.dart';
 import 'authentication_controller.dart';
 
@@ -13,9 +14,6 @@ import 'authentication_controller.dart';
 
 class PushNotificationsController extends ApiController {
   final _pushTokens = PushTokenRepository();
-
-  /// TODO: In order to use FCM and send push messages to target devices, you need to add your server key
-  final _serverKey = '';
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -94,12 +92,13 @@ class PushNotificationsController extends ApiController {
   Future<http.Response> _sendMessage({
     String? title,
     String message = '',
+    Map<String, Object?> data = const {},
   }) async =>
       http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'key=$_serverKey',
+          'Authorization': 'key=$firebasePushServerKey',
         },
         body: jsonEncode({
           'registration_ids': _pushTokens.tokens.map((e) => e.token).toList(),
@@ -107,10 +106,7 @@ class PushNotificationsController extends ApiController {
             'title': title ?? 'Hello world!',
             'body': message,
           },
-          'data': {
-            'myCustomData': 'someValue',
-            'awesomenessInPercent': 100,
-          }
+          'data': jsonEncode(data),
         }),
       );
 }

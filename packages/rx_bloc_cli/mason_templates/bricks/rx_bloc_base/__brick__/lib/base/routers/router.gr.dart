@@ -9,7 +9,7 @@ import 'package:flutter/material.dart' as _i2;
 
 import '../../feature_counter/views/counter_page.dart' as _i3;
 import '../../feature_login/views/login_page.dart' as _i4;
-import '../../feature_login/views/notifications_page.dart' as _i5;
+import '../../feature_notifications/views/notifications_page.dart' as _i5;
 
 class Router extends _i1.RootStackRouter {
   Router([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])

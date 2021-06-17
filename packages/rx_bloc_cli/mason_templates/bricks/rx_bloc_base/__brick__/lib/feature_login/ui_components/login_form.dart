@@ -77,7 +77,6 @@ class _LoginFormState extends State<LoginForm> {
                         context.read<UserAccountBlocType>().events.login(),
                     child: Text(
                       context.l10n.logIn,
-                      style: context.designSystem.typography.buttonFaded,
                     ),
                   ),
                 ),

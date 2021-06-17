@@ -5,18 +5,15 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-part of 'send_notifications_bloc.dart';
+part of 'notifications_bloc.dart';
 
-extension _SendNotificationsBlocExtensions on SendNotificationsBloc {
+/// Extensions for the NotificationsBloc
+extension _SendNotificationsBlocExtensions on NotificationsBloc {
   // Checks if the user has granted permissions for displaying push messages.
   // If called the very first time, the user is asked to grant permissions.
   Future<bool> _getAuthStatus() async {
-    {{#push_notifications}}
     final settings = await FirebaseMessaging.instance.requestPermission();
-    return settings.authorizationStatus != AuthorizationStatus.denied; {{/push_notifications}} {{^push_notifications}}
-    // TODO: Implement your logic for granting permissions for push messages
-    return true;
-    {{/push_notifications}}
+    return settings.authorizationStatus != AuthorizationStatus.denied;
   }
 
   // Sends a push message to the remote server
@@ -25,4 +22,17 @@ extension _SendNotificationsBlocExtensions on SendNotificationsBloc {
         message: args.message, title: args.title, delay: args.delay);
     return true;
   }
+}
+
+/// Extensions for Publish Subjects of type _SendMessageEventArgs
+extension _PushSubjectMsgArgsExtensions
+on PublishSubject<_SendMessageEventArgs> {
+  Stream<Result<bool>> _sendMessage(NotificationsBloc bloc) =>
+      switchMap((args) => bloc._sendMessage(args).asResultStream());
+}
+
+/// Extensions for Publish Subjects of type void
+extension _PushSubjectVoidExtensions on PublishSubject<void> {
+  Stream<Result<bool>> _requestPermissions(NotificationsBloc bloc) =>
+      switchMap((_) => bloc._getAuthStatus().asResultStream());
 }

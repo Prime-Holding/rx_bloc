@@ -13,4 +13,8 @@ class DesignSystemIcon {
   IconData get plusSign => Icons.add;
 
   IconData get minusSign => Icons.remove;
+
+  IconData get info => Icons.info;
+
+  IconData get login => Icons.login;
 }

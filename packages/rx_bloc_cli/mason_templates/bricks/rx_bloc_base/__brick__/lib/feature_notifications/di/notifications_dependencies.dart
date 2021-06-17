@@ -3,7 +3,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../blocs/send_notifications_bloc.dart';
+import '../blocs/notifications_bloc.dart';
 
 class NotificationsDependencies {
   NotificationsDependencies._(this.context);
@@ -17,16 +17,16 @@ class NotificationsDependencies {
 
   final BuildContext context;
 
-  /// List of all providers used throughout the app
-  List<SingleChildWidget> get providers => [
-        ..._blocs,
-      ];
+  late List<SingleChildWidget> providers = [
+    ..._repositories,
+    ..._blocs,
+  ];
 
-  List<RxBlocProvider> get _blocs => [
-        RxBlocProvider<SendNotificationsBlocType>(
-          create: (context) => SendNotificationsBloc(
-            context.read(),
-          ),
-        ),
-      ];
+  late final List<Provider> _repositories = [];
+
+  late final List<RxBlocProvider> _blocs = [
+    RxBlocProvider<NotificationsBlocType>(
+      create: (context) => NotificationsBloc(context.read()),
+    ),
+  ];
 }

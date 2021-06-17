@@ -20,7 +20,7 @@ class DesignSystemColors {
 
   Color get primaryColor => lightMode ? Colors.blue : _blackVariant;
 
-  Color get primaryVariant => lightMode ? Colors.blueAccent : Colors.black;
+  Color get primaryVariant => lightMode ? Colors.blue.shade700 : Colors.black;
 
   Color get secondaryColor => Colors.white;
 
@@ -90,6 +90,10 @@ class DesignSystemColors {
 
   Color get inputDecorationLabelColor =>
       lightMode ? const Color(0xff333333) : const Color(0xffcccccc);
+
+  Color get iconColor => Colors.white;
+
+  Color get outlinedButtonTextColor => Colors.white;
 
   /// endregion
 

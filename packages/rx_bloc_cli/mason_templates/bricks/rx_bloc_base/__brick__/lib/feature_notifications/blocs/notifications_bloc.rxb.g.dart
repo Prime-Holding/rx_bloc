@@ -4,22 +4,22 @@
 // Generator: RxBlocGeneratorForAnnotation
 // **************************************************************************
 
-part of 'send_notifications_bloc.dart';
+part of 'notifications_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
-abstract class SendNotificationsBlocType extends RxBlocTypeBase {
-  SendNotificationsBlocEvents get events;
-  SendNotificationsBlocStates get states;
+abstract class NotificationsBlocType extends RxBlocTypeBase {
+  NotificationsBlocEvents get events;
+  NotificationsBlocStates get states;
 }
 
-/// [$SendNotificationsBloc] extended by the [SendNotificationsBloc]
+/// [$NotificationsBloc] extended by the [NotificationsBloc]
 /// {@nodoc}
-abstract class $SendNotificationsBloc extends RxBlocBase
+abstract class $NotificationsBloc extends RxBlocBase
     implements
-        SendNotificationsBlocEvents,
-        SendNotificationsBlocStates,
-        SendNotificationsBlocType {
+        NotificationsBlocEvents,
+        NotificationsBlocStates,
+        NotificationsBlocType {
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling
@@ -49,10 +49,10 @@ abstract class $SendNotificationsBloc extends RxBlocBase
   Stream<bool> _mapToPermissionsAuthorizedState();
 
   @override
-  SendNotificationsBlocEvents get events => this;
+  NotificationsBlocEvents get events => this;
 
   @override
-  SendNotificationsBlocStates get states => this;
+  NotificationsBlocStates get states => this;
 
   @override
   void dispose() {
@@ -64,7 +64,7 @@ abstract class $SendNotificationsBloc extends RxBlocBase
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [SendNotificationsBlocEvents.sendMessage] event
+/// [NotificationsBlocEvents.sendMessage] event
 class _SendMessageEventArgs {
   const _SendMessageEventArgs(this.message, {this.title, this.delay});
 
