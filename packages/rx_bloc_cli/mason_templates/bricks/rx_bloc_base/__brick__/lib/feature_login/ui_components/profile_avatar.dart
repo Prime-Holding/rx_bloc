@@ -29,7 +29,7 @@ class ProfileAvatar extends StatelessWidget {
       RxBlocBuilder<UserAccountBlocType, bool>(
         state: (bloc) => bloc.states.loggedIn,
         builder: (context, loggedInState, bloc) => Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: (loggedInState.hasData && loggedInState.data!)
               ? _buildLoggedInAvatar(context)
               : _buildLoginButton(context),

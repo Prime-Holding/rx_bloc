@@ -5,6 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +48,9 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
     ),
     body: SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(
+          horizontal: kIsWeb ? MediaQuery.of(context).size.width / 4 : 20,
+        ),
         child: Center(
           child: Card(
             shape: RoundedRectangleBorder(
@@ -151,7 +154,8 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
       borderRadius: BorderRadius.circular(10),
     ),
     elevation: 8,
-    child: Padding(
+    child: Container(
+      width: MediaQuery.of(context).size.width / (kIsWeb ? 3 : 1),
       padding: const EdgeInsets.all(12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
