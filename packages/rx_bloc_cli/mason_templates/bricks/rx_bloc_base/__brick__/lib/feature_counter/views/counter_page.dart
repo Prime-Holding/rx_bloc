@@ -30,7 +30,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(context.l10n.counterPageTitle)),
+    appBar: _buildAppBar(context),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -45,6 +45,20 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
       ),
     ),
     floatingActionButton: _buildActionButtons(context),
+  );
+
+  AppBar _buildAppBar(BuildContext context) => AppBar(
+    title: Text(context.l10n.counterPageTitle),
+    actions: [
+      RxBlocBuilder<CounterBlocType, bool>(
+        state: (bloc) => bloc.states.isLoading,
+        builder: (context, loadingState, bloc) => IconButton(
+            color: loadingState.isLoading ? Colors.grey : Colors.white,
+            onPressed: () =>
+            loadingState.isLoading ? null : bloc.events.reload(),
+            icon: const Icon(Icons.update)),
+      )
+    ],
   );
 
   Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>
