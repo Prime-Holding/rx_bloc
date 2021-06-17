@@ -92,21 +92,29 @@ class PushNotificationsController extends ApiController {
   Future<http.Response> _sendMessage({
     String? title,
     String message = '',
-    Map<String, Object?> data = const {},
-  }) async =>
-      http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'key=$firebasePushServerKey',
+    Map<String, Object?>? data,
+    bool logMessage = true,
+  }) async {
+    final res = await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'key=$firebasePushServerKey',
+      },
+      body: jsonEncode({
+        'registration_ids': _pushTokens.tokens.map((e) => e.token).toList(),
+        // "to" : single_push_token, // Use this for only one recipient
+        'notification': {
+          'title': title ?? 'Hello world!',
+          'body': message,
         },
-        body: jsonEncode({
-          'registration_ids': _pushTokens.tokens.map((e) => e.token).toList(),
-          'notification': {
-            'title': title ?? 'Hello world!',
-            'body': message,
-          },
-          'data': jsonEncode(data),
-        }),
-      );
+        'data': data ?? {},
+      }),
+    );
+    if (logMessage) {
+      print(
+          'Notification sent: StatusCode: ${res.statusCode}  ResponseBody: ${res.body}');
+    }
+    return res;
+  }
 }
