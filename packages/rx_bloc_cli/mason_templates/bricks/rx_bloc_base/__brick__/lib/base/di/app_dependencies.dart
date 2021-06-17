@@ -19,6 +19,7 @@ import '../common_blocs/user_account_bloc.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
+import '../data_sources/domain/firebase/firebase_messaging_data_source.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';

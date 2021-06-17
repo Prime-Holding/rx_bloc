@@ -26,7 +26,10 @@ class NotificationsDependencies {
 
   late final List<RxBlocProvider> _blocs = [
     RxBlocProvider<NotificationsBlocType>(
-      create: (context) => NotificationsBloc(context.read()),
+      create: (context) => NotificationsBloc(
+        context.read(),
+        context.read(),
+      ),
     ),
   ];
 }

@@ -1,7 +1,14 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+// Copyright (c) 2021, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/data_sources/domain/firebase/firebase_messaging_data_source.dart';
 import '../../base/repositories/push_notification_subscription_repository.dart';
 
 part 'notifications_bloc.rxb.g.dart';
@@ -24,9 +31,10 @@ abstract class NotificationsBlocStates {
 
 @RxBloc()
 class NotificationsBloc extends $NotificationsBloc {
-  NotificationsBloc(this._notificationsRepo);
+  NotificationsBloc(this._notificationsRepo, this._firebaseMessagingDataSource);
 
   final PushNotificationSubscriptionRepository _notificationsRepo;
+  final FirebaseMessagingDataSource _firebaseMessagingDataSource;
 
   @override
   Stream<bool> _mapToPermissionsAuthorizedState() => Rx.merge([

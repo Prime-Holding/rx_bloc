@@ -9,13 +9,6 @@ part of 'notifications_bloc.dart';
 
 /// Extensions for the NotificationsBloc
 extension _SendNotificationsBlocExtensions on NotificationsBloc {
-  // Checks if the user has granted permissions for displaying push messages.
-  // If called the very first time, the user is asked to grant permissions.
-  Future<bool> _getAuthStatus() async {
-    final settings = await FirebaseMessaging.instance.requestPermission();
-    return settings.authorizationStatus != AuthorizationStatus.denied;
-  }
-
   // Sends a push message to the remote server
   Future<bool> _sendMessage(_SendMessageEventArgs args) async {
     await _notificationsRepo.sendPushMessage(
@@ -34,5 +27,7 @@ on PublishSubject<_SendMessageEventArgs> {
 /// Extensions for Publish Subjects of type void
 extension _PushSubjectVoidExtensions on PublishSubject<void> {
   Stream<Result<bool>> _requestPermissions(NotificationsBloc bloc) =>
-      switchMap((_) => bloc._getAuthStatus().asResultStream());
+      switchMap((_) => bloc._firebaseMessagingDataSource
+          .requestNotificationPermissions()
+          .asResultStream());
 }
