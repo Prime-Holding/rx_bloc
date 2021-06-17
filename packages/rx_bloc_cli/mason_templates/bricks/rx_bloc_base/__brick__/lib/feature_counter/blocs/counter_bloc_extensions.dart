@@ -45,6 +45,10 @@ extension _ToError on Stream<Exception> {
       jsonDecode(exception.response?.data)['title'];
       return Exception(message);
     }
+    if(exception is DioError &&
+        exception.message.contains('Connection refused')){
+      return Exception('http://0.0.0.0:8080/ can’t be reached');
+    }
     return exception;
   });
 }
