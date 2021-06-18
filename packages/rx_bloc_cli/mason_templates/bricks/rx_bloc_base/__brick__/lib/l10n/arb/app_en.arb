@@ -6,5 +6,6 @@
     },
     "counterPageTitle": "Counter sample",
     "increment": "Increment",
-    "decrement": "Decrement"
+    "decrement": "Decrement",
+    "reload": "Reload"
 }
