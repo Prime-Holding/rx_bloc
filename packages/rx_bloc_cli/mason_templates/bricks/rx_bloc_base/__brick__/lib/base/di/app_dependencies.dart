@@ -77,6 +77,9 @@ class AppDependencies {
         create: (context) => SharedPreferencesInstance()),
     Provider<FlutterSecureStorage>(
         create: (context) => const FlutterSecureStorage()),
+    Provider<FirebaseMessagingDataSource>(
+      create: (_) => FirebaseMessagingDataSource(),
+    ),
   ];
 
   /// Use different data source regarding of if it is running in web ot not
