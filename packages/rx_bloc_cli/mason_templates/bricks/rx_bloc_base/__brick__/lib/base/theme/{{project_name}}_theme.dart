@@ -25,7 +25,6 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
     return base.copyWith(
       colorScheme: colorScheme,
       primaryColor: designSystemColor.primaryColor,
-      buttonColor: designSystemColor.buttonColor,
       indicatorColor: designSystemColor.indicatorColor,
       splashColor: designSystemColor.splashColor,
       splashFactory: InkRipple.splashFactory,
