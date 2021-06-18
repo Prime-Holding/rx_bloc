@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/common_ui_components/update_button.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/theme/design_system.dart';
 import '../../l10n/l10n.dart';
@@ -52,11 +53,10 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
     actions: [
       RxBlocBuilder<CounterBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => IconButton(
-            color: loadingState.isLoading ? Colors.grey : Colors.white,
-            onPressed: () =>
-            loadingState.isLoading ? null : bloc.events.reload(),
-            icon: const Icon(Icons.update)),
+        builder: (context, loadingState, bloc) => UpdateButton(
+          isActive: !loadingState.isLoading,
+          onPressed: () => bloc.events.reload(),
+        ),
       )
     ],
   );
