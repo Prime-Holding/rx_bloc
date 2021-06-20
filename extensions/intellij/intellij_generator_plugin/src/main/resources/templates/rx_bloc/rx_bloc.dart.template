@@ -5,15 +5,28 @@ part '${bloc_snake_case}_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the ${bloc_pascal_case}BloC
 abstract class ${bloc_pascal_case}BlocEvents {
-  /// TODO: Declare your first event
-  // void fetchData();
+  /// TODO: Document the event
+  void fetchData();
 }
 
 /// A contract class containing all states of the ${bloc_pascal_case}BloC.
 abstract class ${bloc_pascal_case}BlocStates {
-  /// TODO: Declare your first state
-  // Stream<String> get data;
+  /// TODO: Document the state
+  Stream<Result<String>> get data;
 }
 
 @RxBloc()
-class ${bloc_pascal_case}Bloc extends ${bloc_dollar_pascal_case}Bloc {}
+class ${bloc_pascal_case}Bloc extends ${bloc_dollar_pascal_case}Bloc {
+  @override
+  Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
+      .startWith(null)
+      .throttleTime(const Duration(milliseconds: 200))
+      .switchMap((value) async* {
+        ///TODO: Replace the code below with a repository invocation
+        yield Result<String>.loading();
+        await Future.delayed(const Duration(seconds: 1));
+        yield Result<String>.success('Some specific async state');
+      })
+      .setResultStateHandler(this)
+      .shareReplay(maxSize: 1);
+}
