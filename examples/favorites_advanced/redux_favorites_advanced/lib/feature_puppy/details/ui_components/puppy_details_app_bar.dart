@@ -52,7 +52,6 @@ class PuppyDetailsAppBar extends StatelessWidget
           _viewModel.onEditPuppy(_puppy);
           context
               .flow<PuppyFlowState>()
-              //.update((state) => state.copyWith(manage: true));
               .update((_) => PuppyFlowState(manage: true));
         },
       );

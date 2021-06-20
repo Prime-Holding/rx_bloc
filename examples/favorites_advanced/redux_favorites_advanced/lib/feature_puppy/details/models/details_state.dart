@@ -14,13 +14,6 @@ class DetailsState extends Equatable {
 
   final Puppy puppy;
 
-  // DetailsState copyWith({
-  //   Puppy? puppy,
-  // }) =>
-  //     DetailsState(
-  //       puppy: puppy ?? this.puppy,
-  //     );
-
   @override
   List<Object> get props => [puppy];
 }
