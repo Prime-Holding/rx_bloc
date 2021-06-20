@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:favorites_advanced_base/core.dart';
 
 import 'package:getx_favorites_advanced/base/controllers/coordinator_controller.dart';
+import 'package:getx_favorites_advanced/feature_puppy/edit/validators/puppy_form_validator.dart' as validator;
 
 class PuppyManageController extends GetxController {
   PuppyManageController(this._repository, this._coordinatorController,
@@ -26,11 +27,6 @@ class PuppyManageController extends GetxController {
 
   static const invalidValue = 'Please enter valid values in all fields!';
   static const successfullySaved = 'Puppy is saved successfully.';
-  static const emptyName = 'Name must not be empty.';
-  static const tooLongName = 'Name too long.';
-  static const emptyCharacteristics = 'Characteristics must not be empty.';
-  static const tooLongCharacteristics =
-      'Characteristics must not exceed 250 characters.';
 
   Puppy get editedPuppy => _editedPuppy;
   String get name => _name.value;
@@ -63,25 +59,19 @@ class PuppyManageController extends GetxController {
       asset.value != _puppy!.asset;
 
   String? validateName(String? value) {
-    if (value == null || value.isEmpty) {
+    final errorString = validator.validateName(value);
+    if(errorString != null){
       hasErrors = true;
-      return emptyName;
-    }
-    if (value.trim().length > 30) {
-      hasErrors = true;
-      return tooLongName;
+      return errorString;
     }
     hasErrors = false;
   }
 
   String? validateCharacteristics(String? value) {
-    if (value == null || value.isEmpty) {
+    final errorString = validator.validateCharacteristics(value);
+    if(errorString != null){
       hasErrors = true;
-      return emptyCharacteristics;
-    }
-    if (value.trim().length > 250) {
-      hasErrors = true;
-      return tooLongCharacteristics;
+      return errorString;
     }
     hasErrors = false;
   }
