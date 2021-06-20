@@ -7,10 +7,14 @@ class CountController {
 
   final _responseBuilder = ResponseBuilder();
 
-  Response getCountHandler(Request request) =>
-      _responseBuilder.buildOK({'value': _count});
+  Future<Response> getCountHandler(Request request) async => Future.delayed(
+        const Duration(milliseconds: 300),
+        () => _responseBuilder.buildOK({'value': _count}),
+      );
 
-  Response incrementCountHandler(Request request) {
+  Future<Response> incrementCountHandler(Request request) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
     try {
       _increment();
       return _responseBuilder.buildOK({'value': _count});
@@ -19,7 +23,9 @@ class CountController {
     }
   }
 
-  Response decrementCountHandler(Request request) {
+  Future<Response> decrementCountHandler(Request request) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
     try {
       _decrement();
       return _responseBuilder.buildOK({'value': _count});

@@ -46,12 +46,9 @@ final _countController = CountController();
 final _staticHandler = shelf_static.createStaticHandler('bin/server/public',
     defaultDocument: 'index.html');
 
-Response _responseOk() => ResponseBuilder().buildOK({});
-
-// Router instance to handler requests.
 final _router = shelf_router.Router()
   ..get('/api/count', _countController.getCountHandler)
   ..post('/api/count/increment', _countController.incrementCountHandler)
-  ..options('/api/count/increment', _responseOk)
+  ..options('/api/count/increment', _countController.incrementCountHandler)
   ..post('/api/count/decrement', _countController.decrementCountHandler)
-  ..options('/api/count/decrement', _responseOk);
+  ..options('/api/count/decrement', _countController.decrementCountHandler);
