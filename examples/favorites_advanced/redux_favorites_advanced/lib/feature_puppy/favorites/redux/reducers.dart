@@ -12,5 +12,11 @@ List<Puppy> favoritePuppyReducer({required List<Puppy> state, action}) {
   if (action is PuppyToFavoritesListAction) {
     return state.manageFavoriteList([action.puppy]);
   }
+  if (action is UpdateFavoritesStatePuppyAction) {
+    return state.map((puppy) {
+      if (puppy.id == action.puppy.id) return action.puppy;
+      return puppy;
+    }).toList();
+  }
   return state;
 }

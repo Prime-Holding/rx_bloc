@@ -2,6 +2,7 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:redux_favorite_advanced_sample/base/models/app_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_home/models/navigation_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/details/models/details_state.dart';
+import 'package:redux_favorite_advanced_sample/feature_puppy/edit/models/edit_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/favorites/models/favorite_list_state.dart';
 import 'package:redux_favorite_advanced_sample/feature_puppy/search/models/puppy_list_state.dart';
 
@@ -149,7 +150,18 @@ class AppStateStub {
     favoriteListState: const FavoriteListState(
       puppies: [],
     ),
-    detailsState: DetailsState(puppy: Puppy(asset: '', id: '', name: '')),
+    detailsState: DetailsState(
+      puppy: Puppy(asset: '', id: '', name: ''),
+    ),
+    editState: EditState(
+      isSubmitAttempted: false,
+      isLoading: false,
+      isUpdated: false,
+      puppy: Puppy(asset: '', id: '', name: ''),
+      nameError: '',
+      characteristicsError: '',
+      error: '',
+    ),
     favoriteCount: 0,
     error: '',
   );

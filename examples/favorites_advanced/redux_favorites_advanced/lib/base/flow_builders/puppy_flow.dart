@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flow_builder/flow_builder.dart';
 
 import '../../feature_puppy/details/views/puppy_details_view.dart';
+import '../../feature_puppy/edit/views/puppy_edit_view.dart';
 
 class PuppyFlowState {
   PuppyFlowState({
@@ -9,13 +10,6 @@ class PuppyFlowState {
   });
 
   final bool manage;
-
-  PuppyFlowState copyWith({
-    bool? manage,
-  }) =>
-      PuppyFlowState(
-        manage: manage ?? this.manage,
-      );
 }
 
 List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages) {
@@ -28,7 +22,7 @@ List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages) {
   if (state.manage == true) {
     return [
       PuppyDetailsView.page(),
-      //PuppyEditPage.page(puppy: state.puppy),
+      PuppyEditView.page(),
     ];
   }
 
@@ -45,9 +39,7 @@ class PuppyFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FlowBuilder(
-        state: PuppyFlowState(
-          manage: false,
-        ),
+        state: PuppyFlowState(manage: false),
         onGeneratePages: onGeneratePuppyPages,
       );
 }

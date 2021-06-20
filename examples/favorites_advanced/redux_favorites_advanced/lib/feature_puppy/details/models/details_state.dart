@@ -9,7 +9,8 @@ class DetailsState extends Equatable {
     required this.puppy,
   });
 
-  DetailsState.initialState() : puppy = Puppy(asset: '', id: '', name: '');
+  factory DetailsState.initialState() =>
+      DetailsState(puppy: Puppy(asset: '', id: '', name: ''));
 
   final Puppy puppy;
 

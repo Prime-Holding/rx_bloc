@@ -16,9 +16,7 @@ class PuppyDetailsView extends StatelessWidget {
         child: StoreConnector<AppState, PuppyDetailsViewModel>(
           distinct: true,
           converter: (store) => PuppyDetailsViewModel.from(store),
-          builder: (_, viewModel) => PuppyDetailsView(
-            viewModel: viewModel,
-          ),
+          builder: (_, viewModel) => PuppyDetailsView(viewModel: viewModel),
         ),
       );
 
@@ -26,8 +24,6 @@ class PuppyDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: PuppyDetails(
-          viewModel: _viewModel,
-        ),
+        body: PuppyDetails(viewModel: _viewModel),
       );
 }

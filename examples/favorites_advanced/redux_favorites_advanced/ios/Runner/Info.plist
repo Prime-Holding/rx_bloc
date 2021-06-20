@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Needed for choosing a puppy photo from library</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Needed for capturing a puppy photo from camera</string>
 </dict>
 </plist>

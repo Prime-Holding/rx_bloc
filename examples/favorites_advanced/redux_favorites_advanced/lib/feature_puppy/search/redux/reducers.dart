@@ -20,6 +20,7 @@ Reducer<List<Puppy>?> puppyReducer = combineReducers<List<Puppy>?>([
       extraDetailsFetchSucceededReducer),
   TypedReducer<List<Puppy>?, PuppyFavoriteSucceededAction>(
       puppyFavoriteSucceededReducer),
+  TypedReducer<List<Puppy>?, UpdateSearchStatePuppyAction>(updatedPuppyReducer),
 ]);
 
 List<Puppy>? puppiesFetchSucceededReducer(
@@ -33,6 +34,13 @@ List<Puppy>? extraDetailsFetchSucceededReducer(
 List<Puppy>? puppyFavoriteSucceededReducer(
         List<Puppy>? puppies, PuppyFavoriteSucceededAction action) =>
     puppies!.mergeWith([action.puppy]);
+
+List<Puppy> updatedPuppyReducer(
+        List<Puppy>? puppies, UpdateSearchStatePuppyAction action) =>
+    puppies!.map((puppy) {
+      if (puppy.id == action.puppy.id) return action.puppy;
+      return puppy;
+    }).toList();
 
 bool? isLoadingReducer({bool? state, action}) {
   if (action is PuppiesFetchLoadingAction) {

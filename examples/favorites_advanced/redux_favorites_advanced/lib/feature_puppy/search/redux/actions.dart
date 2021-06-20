@@ -41,6 +41,12 @@ class PuppyFavoriteSucceededAction {
   final Puppy puppy;
 }
 
+class UpdateSearchStatePuppyAction {
+  UpdateSearchStatePuppyAction({required this.puppy});
+
+  final Puppy puppy;
+}
+
 class SearchAction {
   SearchAction({this.query});
 

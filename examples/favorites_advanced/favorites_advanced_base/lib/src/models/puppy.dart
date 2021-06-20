@@ -45,6 +45,7 @@ class Puppy implements Entity {
           asset == other.asset &&
           isFavorite == other.isFavorite &&
           breedType == other.breedType &&
+          gender == other.gender &&
           breedCharacteristics == other.breedCharacteristics &&
           displayCharacteristics == other.displayCharacteristics;
     }
