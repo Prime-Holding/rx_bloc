@@ -19,21 +19,21 @@ class AuthTokenSharedDataSource implements AuthTokenDataSource {
 
   /// Get stored access token
   @override
-  Future<String?> getToken() async => _storage.getString(DataSourceKeys.token);
+  Future<String?> getToken() => _storage.getString(DataSourceKeys.token);
 
   /// Persist access token
   @override
-  Future<bool> saveToken(String newToken) async =>
+  Future<bool> saveToken(String newToken) =>
       _storage.setString(DataSourceKeys.token, newToken);
 
   /// Get stored refresh token
   @override
-  Future<String?> getRefreshToken() async =>
+  Future<String?> getRefreshToken() =>
       _storage.getString(DataSourceKeys.refreshToken);
 
   /// Persist new refresh token
   @override
-  Future<bool> saveRefreshToken(String newRefreshToken) async =>
+  Future<bool> saveRefreshToken(String newRefreshToken) =>
       _storage.setString(DataSourceKeys.refreshToken, newRefreshToken);
 
   /// Delete all saved data
