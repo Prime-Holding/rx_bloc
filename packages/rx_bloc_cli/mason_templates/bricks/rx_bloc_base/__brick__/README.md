@@ -5,19 +5,27 @@
 | Path | Contains |
 | ------------ | ------------ |
 | `lib/base/` | Common code used on more than one **feature** in the project. |
+| `lib/base/app/` | The root of the application and Environment configuration. |
 | `lib/base/common_blocs/` | Global [BLoCs][rx_bloc_info_lnk]|
 | `lib/base/common_ui_components/` | Reusable widgets (buttons, controls etc) |
 | `lib/base/common_use_cases/` | Global UseCases |
+| `lib/base/data_sources/` | All data sources are placed here. |
+| `lib/base/data_sources/domain/` | Data sources,  relating to a specific domain |
+| `lib/base/data_sources/domain/counter/` | Data sources,  relating to the counter domain |
+| `lib/base/data_sources/local/` | Local data sources, such as shared preferences, secured storage etc. |
+| `lib/base/data_sources/remote/` | External data sources like APIs. Here is placed all [retrofit][retrofit_lnk] code. |
+| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls. |
+| `lib/base/di/` | Global dependencies, available in the whole app|
 | `lib/base/extensions/` | Global [extension methods][extension_methods_lnk] |
 | `lib/base/models/` | Data models used in the project |
-| `lib/base/remote_data_sources/` | External data sources like APIs. Here is placed all [retrofit][retrofit_lnk] code. |
-| `lib/base/local_data_sources/` | Local data sources, such as shared preferences, secured storage etc. |
 | `lib/base/repositories/` | Repositories used to fetch and persist models.
 | `lib/base/routers/` | All [routers][autoroute_usage_lnk] are placed here. The main [router][autoroute_usage_lnk] of the app is `lib/base/routers/router.dart`. |
 | `lib/base/routers/guards/` | The routers' [guards][autoroute_usage_lnk] of the app are placed here. |
 | `lib/base/theme/` | The custom theme of the app |
+| `lib/base/utils/` | Global utils |
 | `lib/feature_X/` | Feature related classes |
 | `lib/feature_X/blocs` | Feature related [BLoCs][rx_bloc_info_lnk] |
+| `lib/feature_X/di` | Feature related dependencies |
 | `lib/feature_X/use_cases/` | Feature related UseCases |
 | `lib/feature_X/ui_components/` | Feature related custom widgets |
 | `lib/feature_X/views/` | Feature related pages and forms |
@@ -40,7 +48,7 @@ After describing your pages inside the `lib/base/routers/router.dart` file and r
 
 ### App localization
 
-You app supports [localization][localization_lnk] out of the box.
+Your app supports [localization][localization_lnk] out of the box.
 
 You define localizations by adding a translation file in the `lib/l10n/arb/app_[language_code].arb` directory. The `language_code` represents the code of the language you want to support (`en`, `zh`,`de`, ...). Inside that file, in JSON format, you define key-value pairs for your strings. **Make sure that all your translation files contain the same keys!**
 
@@ -59,6 +67,14 @@ Before you start using analytics, you need to add platform specific configuratio
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
 {{/analytics}}
+### Http client
+
+Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
+
+To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class(in this case lib\feature_counter\di\counter_dependencies.dart) specify which data source you are going to use in every repository.
+
+In our project in directory `bin/server/` we have implemented local Rest API using [shelf][shelf_lnk]. To test the project you have to run it first. In your root folder run 'bin/start_server.sh'. If you are running in your emulator and can not connect to the server, check this [sollution][sollution_lnk].
+
 ### Design system
 
 A [design system][design_system_lnk] is a centralized place where you can define your apps design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
@@ -78,7 +94,6 @@ In order for the goldens to be generated, we have provided VS Code and IDEA run 
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
 [extension_methods_lnk]: https://dart.dev/guides/language/extension-methods
-[retrofit_lnk]: https://pub.dev/packages/retrofit
 [autoroute_lnk]: https://pub.dev/packages/auto_route
 [autoroute_usage_lnk]: https://pub.dev/packages/auto_route#setup-and-usage
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
@@ -87,3 +102,9 @@ In order for the goldens to be generated, we have provided VS Code and IDEA run 
 [design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
 [golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
 [golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
+[retrofit_lnk]: https://pub.dev/packages/retrofit
+[dio_lnk]: https://pub.dev/packages/dio
+[json_annotation_lnk]: https://pub.dev/packages/json_annotation
+[json_serializable_lnk]: https://pub.dev/packages/json_serializable
+[shelf_lnk]: https://pub.dev/packages/shelf
+[sollution_lnk]: https://github.com/flutterchina/dio/issues/76#issuecomment-430011361

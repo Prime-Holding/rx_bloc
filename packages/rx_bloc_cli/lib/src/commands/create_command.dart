@@ -35,6 +35,11 @@ class CreateCommand extends Command<int> {
         _analyticsString,
         help: 'Enables Google analytics for the project',
         defaultsTo: 'true',
+      )
+      ..addOption(
+        _httpClientString,
+        help: 'HTTP client',
+        defaultsTo: 'dio',
       );
   }
 
@@ -43,6 +48,7 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
   final _analyticsString = 'include-analytics';
+  final _httpClientString = 'http-client';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -99,6 +105,7 @@ class CreateCommand extends Command<int> {
         'domain_name': orgDomain,
         'organization_name': orgName,
         'analytics': _enableAnalytics,
+        'http_client': _httpClientType,
       },
     );
 
@@ -141,6 +148,13 @@ class CreateCommand extends Command<int> {
   bool get _enableAnalytics {
     final analyticsEnabled = _argResults[_analyticsString];
     return analyticsEnabled.toLowerCase() != 'false';
+  }
+
+  /// Returns http client type
+  HttpClientType get _httpClientType {
+    final clientType = _argResults[_httpClientString];
+    return HttpClientType.values
+        .firstWhere((element) => element.toString().contains(clientType));
   }
 
   /// endregion
@@ -229,3 +243,5 @@ class CreateCommand extends Command<int> {
   /// endregion
 
 }
+
+enum HttpClientType { dio }

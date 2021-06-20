@@ -9,8 +9,8 @@
 import 'package:firebase_analytics/observer.dart';
 {{/analytics}}
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
 import '../di/app_dependencies.dart';
