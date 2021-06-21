@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/common_ui_components/update_button.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/theme/design_system.dart';
 import '../../feature_login/ui_components/profile_avatar.dart';
@@ -25,67 +26,66 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-    providers: CounterDependencies.of(context).providers,
-    child: this,
-  );
+        providers: CounterDependencies.of(context).providers,
+        child: this,
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: _buildAppBar(context),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildErrorListener(),
-          RxBlocBuilder<CounterBlocType, int>(
-            state: (bloc) => bloc.states.count,
-            builder: (context, countState, bloc) =>
-                _buildCount(context, countState),
+        appBar: _buildAppBar(context),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildErrorListener(),
+              RxBlocBuilder<CounterBlocType, int>(
+                state: (bloc) => bloc.states.count,
+                builder: (context, countState, bloc) =>
+                    _buildCount(context, countState),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-    floatingActionButton: _buildActionButtons(context),
-  );
+        ),
+        floatingActionButton: _buildActionButtons(context),
+      );
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
-    title: Text(context.l10n.counterPageTitle),
-    actions: [
-      RxBlocBuilder<CounterBlocType, bool>(
-        state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => IconButton(
-            color: loadingState.isLoading ? Colors.grey : Colors.white,
-            onPressed: () =>
-            loadingState.isLoading ? null : bloc.events.reload(),
-            icon: const Icon(Icons.update)),
-      ),
-      ProfileAvatar(),
-    ],
-  );
+        title: Text(context.l10n.counterPageTitle),
+        actions: [
+          RxBlocBuilder<CounterBlocType, bool>(
+            state: (bloc) => bloc.states.isLoading,
+            builder: (context, loadingState, bloc) => UpdateButton(
+              isActive: !loadingState.isLoading,
+              onPressed: () => bloc.events.reload(),
+            ),
+          ),
+          ProfileAvatar(),
+        ],
+      );
 
   Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>
       snapshot.hasData
           ? Text(
-        snapshot.data!.toString(),
-        style: context.designSystem.typography.headline2,
-      )
+              snapshot.data!.toString(),
+              style: context.designSystem.typography.headline2,
+            )
           : Container(
-        child: Text(
-          snapshot.connectionState.toString(),
-          style: context.designSystem.typography.bodyText1,
-        ),
-      );
+              child: Text(
+                snapshot.connectionState.toString(),
+                style: context.designSystem.typography.bodyText1,
+              ),
+            );
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
-    state: (bloc) => bloc.states.errors,
-    listener: (context, errorMessage) =>
-        ScaffoldMessenger.of(context).showSnackBar(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, errorMessage) =>
+            ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage ?? ''),
             behavior: SnackBarBehavior.floating,
           ),
         ),
-  );
+      );
 
   Widget _buildActionButtons(BuildContext context) =>
       RxBlocBuilder<CounterBlocType, bool>(

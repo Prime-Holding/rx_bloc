@@ -12,19 +12,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// This class is using as wrapper of SharedPreferences to avoid async
 /// instance in app_dependencies.dart
 class SharedPreferencesInstance {
-  SharedPreferencesInstance() {
-    _instantiate();
-  }
+  Future<SharedPreferences> get _instance => SharedPreferences.getInstance();
 
-  late SharedPreferences data;
+  Future<String?> getString(String key) async =>
+      (await _instance).getString(key);
 
-  Future<void> _instantiate() async =>
-      data = await SharedPreferences.getInstance();
+  Future<bool> setString(String key, String value) async =>
+      (await _instance).setString(key, value);
 
-  String? getString(String key) => data.getString(key);
-
-  Future<bool> setString(String key, String value) =>
-      data.setString(key, value);
-
-  Future<bool> clear() => data.clear();
+  Future<bool> clear() async => (await _instance).clear();
 }

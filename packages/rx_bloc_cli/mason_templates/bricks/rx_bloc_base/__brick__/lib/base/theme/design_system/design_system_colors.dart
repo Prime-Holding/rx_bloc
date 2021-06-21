@@ -36,8 +36,6 @@ class DesignSystemColors {
 
   Color get scaffoldBackgroundColor => lightMode ? Colors.white : Colors.black;
 
-  Color get buttonColor => Colors.white;
-
   Color get errorColor => Colors.white;
 
   Color? get accentColor =>
@@ -103,7 +101,11 @@ class DesignSystemColors {
 
   Color get activeButtonColor => Colors.blue;
 
-/// endregion
+  Color get inactiveButtonTextColor => Colors.grey;
+
+  Color get activeButtonTextColor => Colors.white;
+
+  /// endregion
 }
 
 class _HexColor extends Color {

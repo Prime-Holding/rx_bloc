@@ -7,6 +7,7 @@
     "counterPageTitle": "Counter sample",
     "increment": "Increment",
     "decrement": "Decrement",
+    "reload": "Reload",
     "ok" : "OK",
     "loginPageTitle": "Login sample",
     "logIn" : "Log in",
