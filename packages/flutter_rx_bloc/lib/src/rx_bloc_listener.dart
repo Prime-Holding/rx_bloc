@@ -188,10 +188,9 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
   void _subscribe() {
     if (_bloc != null && _subscription == null) {
       _subscription = widget.state(_bloc!).listen((S? state) {
-        if (_previousState != state &&
-            (widget.condition == null
-                ? true
-                : widget.condition!.call(_previousState, state))) {
+        if (widget.condition == null
+            ? true
+            : widget.condition!.call(_previousState, state)) {
           widget.listener(context, state);
         }
 

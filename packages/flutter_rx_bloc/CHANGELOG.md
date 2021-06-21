@@ -1,3 +1,6 @@
+## [3.1.0]
+* Fixed issue with RxBlocListener where the first element is `null`
+
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`
 * Update `rxdart` to use version `0.27.0`
