@@ -117,12 +117,15 @@ Your app comes with a small preconfigured local server (written in Dart) that yo
 
 In order to run the server locally, make sure to run `bin/start_server.sh`. The server should be running on `http://0.0.0.0:8080`, if not configured otherwise.
 
+When running the app on the Android emulator, in order to access your running local server, make sure you execute the following command: `adb reverse tcp:8080 tcp:8080`.
+
 Some of the important paths are:
 
 | Path | Contains |
 | :------------ | :------------ |
-| `bin/server/` | The root of the server |
+| `bin/server/` | The root directory of the server |
 | `bin/server/start_server.dart` | The main entry point of the server app |
+| `bin/server/utils/server_config.dart` | All server-related configurations and secrets are located here |
 | `bin/server/controllers/` | All controllers are located here |
 | `bin/server/models/` | Data models are placed here |
 | `bin/server/repositories/` | Repositories that are used by the controllers reside here |
@@ -138,6 +141,8 @@ Some of the important paths are:
 In order to make the notifications work on your target platform, make sure you first add the config file in the proper location (as descibed in the [**Analytic**](#analytics) section). For Web you also need to specify the `vapid` key inside `lib/base/app/config/app_constants.dart` and manually add the firebase web configuration to `web/firebase-messaging-sw.js`(for more info refer to [this link][fcm_web_config_ref]).
 
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
+
+*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/utils/server_config.dart` file.
 
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
