@@ -1,3 +1,10 @@
+// Copyright (c) 2021, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'package:flutter/material.dart';
 
 class DesignSystemColors {
@@ -26,8 +33,6 @@ class DesignSystemColors {
   Color get backgroundColor => lightMode ? Colors.white : Colors.black;
 
   Color get scaffoldBackgroundColor => lightMode ? Colors.white : Colors.black;
-
-  Color get buttonColor => Colors.white;
 
   Color get errorColor => Colors.white;
 
@@ -86,6 +91,10 @@ class DesignSystemColors {
   Color get inactiveButtonColor => Colors.blueGrey;
 
   Color get activeButtonColor => Colors.blue;
+
+  Color get inactiveButtonTextColor => Colors.grey;
+
+  Color get activeButtonTextColor => Colors.white;
 
   /// endregion
 }
