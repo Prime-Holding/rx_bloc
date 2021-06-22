@@ -2,7 +2,7 @@
 * Fix infinite feedback loop issue with RxTextFormFieldBuilder
 * Nullability improvements for RxTextFormFieldBuilder
 * Add the ability to chose how the cursor in RxTextFormFieldBuilder behaves, [look at this PR for more information](https://github.com/Prime-Holding/rx_bloc/pull/151)
-* Fixed issue with RxBlocListener not building widget where the incoming element is the same as the previous one
+* Fixed issue with RxBlocListener not executing callback when the incoming element is the same as the previous one
 
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`
