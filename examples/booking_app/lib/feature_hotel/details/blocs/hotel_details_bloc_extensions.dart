@@ -6,7 +6,7 @@ extension _ExtractHotelProperties on Stream<Hotel> {
   Stream<String> mapToSubTitle() =>
       map((hotel) => hotel.extraDetails!.subTitle);
 
-  Stream<String> mapToImagePath() => map((hotel) => hotel.imagePath ?? '');
+  Stream<String> mapToImagePath() => map((hotel) => hotel.image);
 
   Stream<String> mapToRating() =>
       map((hotel) => hotel.extraDetails!.rating.toString());

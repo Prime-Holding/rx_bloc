@@ -7,7 +7,6 @@ class HotelExtraDetails extends Equatable {
     required this.subTitle,
     required this.reviews,
     required this.rating,
-    required this.dist,
   });
 
   final String id;
@@ -15,7 +14,6 @@ class HotelExtraDetails extends Equatable {
   final String subTitle;
   final int reviews;
   final double rating;
-  final double dist;
 
   @override
   List<Object?> get props => [
@@ -24,7 +22,6 @@ class HotelExtraDetails extends Equatable {
         subTitle,
         reviews,
         rating,
-        dist,
       ];
 
   HotelExtraDetails copyWith({
@@ -33,7 +30,6 @@ class HotelExtraDetails extends Equatable {
     String? subTitle,
     int? reviews,
     double? rating,
-    double? dist,
   }) =>
       HotelExtraDetails(
         id: id ?? this.id,
@@ -41,7 +37,6 @@ class HotelExtraDetails extends Equatable {
         subTitle: subTitle ?? this.subTitle,
         reviews: reviews ?? this.reviews,
         rating: rating ?? this.rating,
-        dist: dist ?? this.dist,
       );
 
   HotelExtraDetails.fromJson(Map<String, dynamic> json)
@@ -49,7 +44,6 @@ class HotelExtraDetails extends Equatable {
           id: json['id'] as String,
           hotelId: json['hotelId'] as String,
           subTitle: json['subTitle'] as String,
-          dist: json['dist'] as double,
           rating: json['rating'] as double,
           reviews: json['reviews'] as int,
         );
@@ -59,7 +53,6 @@ class HotelExtraDetails extends Equatable {
       'id': id,
       'hotelId': hotelId,
       'subTitle': subTitle,
-      'dist': dist,
       'rating': rating,
       'reviews': reviews,
     };

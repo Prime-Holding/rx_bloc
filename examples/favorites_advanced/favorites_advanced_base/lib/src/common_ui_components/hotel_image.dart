@@ -21,17 +21,19 @@ class HotelImage extends StatelessWidget {
       tag: 'HotelImage${hotel.id}',
       child: AspectRatio(
         aspectRatio: _aspectRatio,
-        child: hotel.imagePath == null
-            ? LoadingWidget()
-            : Image.network(
-                hotel.imagePath.toString(),
-                fit: BoxFit.cover,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return LoadingWidget();
-                },
-              ),
+        child: Image.network(
+          hotel.image,
+          fit: BoxFit.cover,
+          loadingBuilder: (BuildContext context, Widget child,
+              ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) return child;
+            return LoadingWidget();
+          },
+          errorBuilder:
+              (BuildContext context, Object error, StackTrace? stackTrace) {
+            return Icon(Icons.error);
+          },
+        ),
       ),
     );
   }

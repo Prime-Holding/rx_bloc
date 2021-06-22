@@ -40,20 +40,6 @@ extension _StreamFetchExtraDetails on Stream<_FetchExtraDetailsEventArgs> {
       );
 }
 
-extension Test on Stream<Hotel> {
-  void fetchFeaturedImage(
-    PaginatedHotelsRepository repository,
-    CoordinatorBlocType coordinatorBloc,
-  ) =>
-      map((hotel) async {
-        print('haahha');
-        final featuredImagePath = await repository.fetchFeaturedImage(hotel);
-        print(featuredImagePath);
-        coordinatorBloc.events
-            .hotelUpdated(hotel.copyWith(imagePath: featuredImagePath));
-      });
-}
-
 class _HotelsContainer {
   _HotelsContainer({
     required this.hotels,

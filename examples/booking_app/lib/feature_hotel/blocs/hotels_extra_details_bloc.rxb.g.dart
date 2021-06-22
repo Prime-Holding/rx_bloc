@@ -26,16 +26,10 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
   final _$fetchExtraDetailsEvent =
       PublishSubject<_FetchExtraDetailsEventArgs>();
 
-  /// Тhe [Subject] where events sink to by calling [fetchFeaturedImage]
-  final _$fetchFeaturedImageEvent = PublishSubject<Hotel>();
-
   @override
   void fetchExtraDetails(Hotel hotel, {bool allProps = false}) =>
       _$fetchExtraDetailsEvent
           .add(_FetchExtraDetailsEventArgs(hotel, allProps: allProps));
-
-  @override
-  void fetchFeaturedImage(Hotel hotel) => _$fetchFeaturedImageEvent.add(hotel);
 
   @override
   HotelsExtraDetailsEvents get events => this;
@@ -46,7 +40,6 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
   @override
   void dispose() {
     _$fetchExtraDetailsEvent.close();
-    _$fetchFeaturedImageEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

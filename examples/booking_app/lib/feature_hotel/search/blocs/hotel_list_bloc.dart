@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,14 @@ class HotelListBloc extends $HotelListBloc {
       ),
     ])
         .startWith(_ReloadData.withInitial())
-        .fetchHotels(repository, _hotels)
+        .where((event) => _noMoreResults.value == false)
+        .fetchHotels(
+            repository, _hotels, _lastFetchedDocumentSnapshot, _noMoreResults)
+        .doOnData((event) {
+          if (((event as ResultSuccess).data as List).length < 10) {
+            _noMoreResults.add(true);
+          }
+        })
         .mergeWithPaginatedList(_hotels)
         .bind(_hotels)
         .disposedBy(_compositeSubscription);
@@ -95,6 +103,11 @@ class HotelListBloc extends $HotelListBloc {
       list: [],
     ),
   );
+
+  final _lastFetchedDocumentSnapshot =
+      BehaviorSubject<QueryDocumentSnapshot?>();
+
+  final _noMoreResults = BehaviorSubject<bool>.seeded(false);
 
   @override
   Stream<DateRangeFilterData> _mapToDateRangeFilterDataState() =>
@@ -122,6 +135,8 @@ class HotelListBloc extends $HotelListBloc {
   @override
   void dispose() {
     _hotels.close();
+    _noMoreResults.close();
+    _lastFetchedDocumentSnapshot.close();
     super.dispose();
   }
 }

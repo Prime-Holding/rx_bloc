@@ -109,7 +109,7 @@ extension _HotelExtensions on Hotel {
 
   /// Does the current hotel work within the current date range?
   bool _withinWorkRange(DateTimeRange? range) => range != null
-      ? (startWorkDate.isBefore(range.start) && endWorkDate.isAfter(range.end))
+      ? (workingDate.isBefore(range.start) && workingDate.isAfter(range.end))
       : true;
 
   /// Has the current hotel enough rooms?
@@ -131,14 +131,14 @@ List<Hotel> _sortHotels(List<Hotel> hotels, SortBy sortType) {
     );
   }
 
-// Sort by distance
-//   if (sortType == SortBy.distanceAsc || sortType == SortBy.distanceDesc) {
-//     final desc = sortType == SortBy.distanceDesc;
-//     hotels.sort(
-//       (h1, h2) =>
-//           desc ? h1.dist.compareTo(h2.dist) : h2.dist.compareTo(h1.dist),
-//     );
-//   }
+//Sort by distance
+  if (sortType == SortBy.distanceAsc || sortType == SortBy.distanceDesc) {
+    final desc = sortType == SortBy.distanceDesc;
+    hotels.sort(
+      (h1, h2) =>
+          desc ? h1.dist.compareTo(h2.dist) : h2.dist.compareTo(h1.dist),
+    );
+  }
 
   return hotels;
 }

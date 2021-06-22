@@ -44,17 +44,10 @@ class HotelAnimatedListView extends StatelessWidget {
             hotel: item,
             onFavorite: (_, isFavorite) {},
             onCardPressed: (hotel) {},
-            onVisible: (hotel) {
-              context
-                  .read<HotelsExtraDetailsBlocType>()
-                  .events
-                  .fetchExtraDetails(hotel);
-              print('LIST');
-              context
-                  .read<HotelsExtraDetailsBlocType>()
-                  .events
-                  .fetchFeaturedImage(hotel);
-            },
+            onVisible: (hotel) => context
+                .read<HotelsExtraDetailsBlocType>()
+                .events
+                .fetchExtraDetails(hotel),
           ),
           animation,
         ),

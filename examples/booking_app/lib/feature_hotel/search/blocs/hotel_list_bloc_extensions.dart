@@ -9,22 +9,34 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
   Stream<Result<PaginatedList<Hotel>>> fetchHotels(
     PaginatedHotelsRepository repository,
     BehaviorSubject<PaginatedList<Hotel>> _paginatedList,
+    BehaviorSubject<QueryDocumentSnapshot?> lastFetchedDocument,
+    BehaviorSubject<bool> noMoreResults,
   ) =>
       switchMap(
         (reloadData) {
           if (reloadData.reset) {
             _paginatedList.value!.reset(hard: reloadData.fullReset);
+            lastFetchedDocument.add(null);
+            noMoreResults.add(false);
           }
 
           return repository
               .getHotelsPaginated(
-                filters: reloadData.filters,
-                pageSize: _paginatedList.value!.pageSize,
-                page: _paginatedList.value!.pageNumber + 1,
-              )
-              .asResultStream();
+                  filters: reloadData.filters,
+                  pageSize: _paginatedList.value!.pageSize,
+                  page: _paginatedList.value!.pageNumber + 1,
+                  lastFetchedDocument: lastFetchedDocument.value)
+              .asStream();
         },
-      );
+      ).map((hotels) {
+        lastFetchedDocument.add(hotels.isNotEmpty ? hotels.last : null);
+
+        final paginatedHotels = PaginatedList(
+          list: hotels.asHotelList(),
+          pageSize: 10,
+        );
+        return Result.success(paginatedHotels);
+      });
 }
 
 extension StreamBindToHotels on Stream<List<Hotel>> {
@@ -161,6 +173,22 @@ extension _PaginatedListHotelUtils on Stream<PaginatedList<Hotel>> {
         (list) => (list.totalCount ?? 0) > 0
             // ignore: lines_longer_than_80_chars
             ? '${list.totalCount} ${list.totalCount == 1 ? 'hotel' : 'hotels'} found'
-            : 'No hotels found',
+            : 'No hotels found: unavailable',
       );
+}
+
+extension FireBaseCollection on List<QueryDocumentSnapshot<Object?>> {
+  List<Hotel> asHotelList() => map(
+        (docs) => Hotel.fromJson(docs.data() as Map<String, dynamic>),
+      ).toList();
+
+  List<HotelExtraDetails> asHotelExtraDetailsList() => map(
+        (docs) =>
+            HotelExtraDetails.fromJson(docs.data() as Map<String, dynamic>),
+      ).toList();
+
+  List<HotelFullExtraDetails> asHotelFullExtraDetailsList() => map(
+        (docs) =>
+            HotelFullExtraDetails.fromJson(docs.data() as Map<String, dynamic>),
+      ).toList();
 }

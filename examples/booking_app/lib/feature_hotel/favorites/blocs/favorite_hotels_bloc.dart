@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:booking_app/base/repositories/hotels_repository.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/repositories.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:booking_app/base/repositories/paginated_hotels_repository.dart';
 import 'package:rxdart/rxdart.dart';

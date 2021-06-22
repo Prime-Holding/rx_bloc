@@ -1,8 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elastic_client/elastic_client.dart' as elastic_client;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:favorites_advanced_base/core.dart';
+
+import 'hotels_data_source.dart';
 
 class HotelsFirebaseDataSource implements HotelsDataSource {
   factory HotelsFirebaseDataSource() {
@@ -35,7 +36,6 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
   @override
   Future<List<HotelExtraDetails>> fetchExtraDetails(List<String> ids) async {
-    print(ids);
     final querySnapshot =
         await hotelsExtraDetailsReference.where('hotelId', whereIn: ids).get();
     return querySnapshot.docs.asHotelExtraDetailsList();
@@ -58,9 +58,19 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
   }
 
   @override
-  Future<List<Hotel>> getHotels({HotelSearchFilters? filters}) async {
-    final querySnapshot = await hotelsReference.get();
-    return querySnapshot.docs.asHotelList();
+  Future<List<QueryDocumentSnapshot>> getHotels(
+      {HotelSearchFilters? filters, QueryDocumentSnapshot? lastFetched}) async {
+    var querySnapshot = getFirebaseFilteredQuery(filters);
+
+    querySnapshot = querySnapshot.orderBy('id');
+    if (lastFetched != null) {
+      querySnapshot = querySnapshot.startAfterDocument(lastFetched);
+    }
+
+    querySnapshot = querySnapshot.limit(10);
+
+    final snap = await querySnapshot.get();
+    return snap.docs;
   }
 
   @override
@@ -85,8 +95,10 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
       deleteBatch.delete(document.reference);
     });
 
+    // Commit batch
     await deleteBatch.commit();
 
+    // Insert records
     final insertBatch = FirebaseFirestore.instance.batch();
 
     final querySnapshotHotelsExtraDetails =
@@ -132,31 +144,58 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
   Query getFirebaseFilteredQuery(HotelSearchFilters? filters) {
     /// WARNING !!! Firebase allows comparison operators(>, >=, <=, <)
-    /// to be applied only on one field !!!
+    /// to be applied only on only one field !!!
 
-    final query = hotelsReference;
+    Query query = hotelsReference;
 
     // If there are any other filters, apply them
     if (filters?.advancedFiltersOn ?? false) {
       if (filters!.dateRange != null) {
         final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
             filters.dateRange!.start.millisecondsSinceEpoch);
-        return query.where(
-          'startWorkDate',
-          isLessThanOrEqualTo: startAtTimestamp,
+        final endAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+            filters.dateRange!.end.millisecondsSinceEpoch);
+        query = query.where(
+          'workingDate',
+          isGreaterThanOrEqualTo: startAtTimestamp,
+        );
+
+        query = query.where(
+          'workingDate',
+          isLessThanOrEqualTo: endAtTimestamp,
         );
       }
+
       if (filters.roomCapacity > 0) {
-        return query.where(
+        query = query.where(
           'roomCapacity',
-          isGreaterThanOrEqualTo: filters.roomCapacity,
+          isEqualTo: filters.roomCapacity,
         );
       }
+
       if (filters.personCapacity > 0) {
-        return query.where(
+        query = query.where(
           'personCapacity',
-          isGreaterThanOrEqualTo: filters.roomCapacity,
+          isEqualTo: filters.personCapacity,
         );
+      }
+    }
+
+    if (filters!.sortBy != SortBy.none) {
+      if (filters.sortBy == SortBy.priceAsc) {
+        query = query.orderBy('perNight');
+      }
+
+      if (filters.sortBy == SortBy.priceDesc) {
+        query = query.orderBy('perNight', descending: true);
+      }
+
+      if (filters.sortBy == SortBy.distanceAsc) {
+        query = query.orderBy('dist', descending: true);
+      }
+
+      if (filters.sortBy == SortBy.distanceDesc) {
+        query = query.orderBy('dist', descending: false);
       }
     }
 

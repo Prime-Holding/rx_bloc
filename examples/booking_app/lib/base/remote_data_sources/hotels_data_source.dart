@@ -1,7 +1,9 @@
-import '../../models.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:favorites_advanced_base/core.dart';
 
 abstract class HotelsDataSource {
-  Future<List<Hotel>> getHotels({HotelSearchFilters? filters});
+  Future<List<QueryDocumentSnapshot>> getHotels(
+      {HotelSearchFilters? filters, QueryDocumentSnapshot? lastFetched});
 
   Future<List<Hotel>> getFavoriteHotels();
 

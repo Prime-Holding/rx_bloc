@@ -1,7 +1,7 @@
+import 'package:booking_app/base/remote_data_sources/hotels_data_source.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/src/models/hotel_search_filters.dart';
-
-import '../models/hotel.dart';
 
 class HotelsRepository {
   HotelsRepository({
@@ -10,8 +10,9 @@ class HotelsRepository {
 
   final HotelsDataSource _hotelsDataSource;
 
-  Future<List<Hotel>> getHotels({HotelSearchFilters? filters}) =>
-      _hotelsDataSource.getHotels(filters: filters);
+  Future<List<QueryDocumentSnapshot>> getHotels(
+          {HotelSearchFilters? filters, QueryDocumentSnapshot? lastFetched}) =>
+      _hotelsDataSource.getHotels(filters: filters, lastFetched: lastFetched);
 
   Future<List<Hotel>> getFavoriteHotels() =>
       _hotelsDataSource.getFavoriteHotels();

@@ -11,10 +11,9 @@ class Hotel extends Equatable implements Entity {
   final int perNight;
   final int roomCapacity;
   final int personCapacity;
-  final DateTime startWorkDate;
-  final DateTime endWorkDate;
+  final DateTime workingDate;
+  final double dist;
 
-  final String? imagePath;
   final HotelExtraDetails? extraDetails;
   final HotelFullExtraDetails? fullExtraDetails;
 
@@ -28,9 +27,8 @@ class Hotel extends Equatable implements Entity {
     required this.isFavorite,
     required this.roomCapacity,
     required this.personCapacity,
-    required this.startWorkDate,
-    required this.endWorkDate,
-    this.imagePath,
+    required this.workingDate,
+    required this.dist,
     this.extraDetails,
     this.fullExtraDetails,
   });
@@ -38,13 +36,12 @@ class Hotel extends Equatable implements Entity {
   Hotel copyWith({
     String? id,
     String? image,
-    String? imagePath,
     String? title,
     int? perNight,
     int? roomCapacity,
     int? personCapacity,
-    DateTime? startWorkDate,
-    DateTime? endWorkDate,
+    DateTime? workingDate,
+    double? dist,
     HotelExtraDetails? extraDetails,
     HotelFullExtraDetails? fullExtraDetails,
     bool? isFavorite,
@@ -52,14 +49,13 @@ class Hotel extends Equatable implements Entity {
       Hotel(
         id: id ?? this.id,
         image: image ?? this.image,
-        imagePath: imagePath ?? this.imagePath,
         title: title ?? this.title,
         perNight: perNight ?? this.perNight,
         isFavorite: isFavorite ?? this.isFavorite,
         roomCapacity: roomCapacity ?? this.roomCapacity,
         personCapacity: personCapacity ?? this.personCapacity,
-        startWorkDate: startWorkDate ?? this.startWorkDate,
-        endWorkDate: endWorkDate ?? this.endWorkDate,
+        workingDate: workingDate ?? this.workingDate,
+        dist: dist ?? this.dist,
         extraDetails: extraDetails ?? this.extraDetails,
         fullExtraDetails: fullExtraDetails ?? this.fullExtraDetails,
       );
@@ -72,15 +68,15 @@ class Hotel extends Equatable implements Entity {
         isFavorite: hotel.isFavorite,
         roomCapacity: hotel.roomCapacity,
         personCapacity: hotel.personCapacity,
-        startWorkDate: hotel.startWorkDate,
-        endWorkDate: hotel.endWorkDate,
+        workingDate: hotel.workingDate,
+        dist: hotel.dist,
         extraDetails: hotel.extraDetails,
         fullExtraDetails: hotel.fullExtraDetails,
       );
 
   int? get displayReviews => extraDetails?.reviews;
   double? get displayRating => extraDetails?.rating;
-  double? get displayDist => extraDetails?.dist;
+  double? get displayDist => dist;
   String? get displaySubtitle => extraDetails?.subTitle;
   String? get displayDescription => fullExtraDetails?.description;
   List<String>? get displayFeatures => fullExtraDetails?.features;
@@ -94,18 +90,16 @@ class Hotel extends Equatable implements Entity {
 
   bool hasFullExtraDetails() => fullExtraDetails != null;
 
-  bool hasFeaturedImage() => imagePath != null;
-
   @override
   List<Object?> get props => [
         id,
         image,
-        imagePath,
         title,
         perNight,
         roomCapacity,
         personCapacity,
-        endWorkDate,
+        dist,
+        workingDate,
         extraDetails,
         fullExtraDetails,
         isFavorite
@@ -120,8 +114,8 @@ class Hotel extends Equatable implements Entity {
           isFavorite: json['isFavorite'] as bool,
           roomCapacity: json['roomCapacity'] as int,
           personCapacity: json['personCapacity'] as int,
-          startWorkDate: json['startWorkDate'].toDate() as DateTime,
-          endWorkDate: json['startWorkDate'].toDate() as DateTime,
+          workingDate: json['workingDate'].toDate() as DateTime,
+          dist: json['dist'] as double,
         );
 
   Map<String, Object?> toJson() {
@@ -133,8 +127,9 @@ class Hotel extends Equatable implements Entity {
       'isFavorite': isFavorite,
       'roomCapacity': roomCapacity,
       'personCapacity': personCapacity,
-      'startWorkDate': startWorkDate,
-      'endWorkDate': endWorkDate,
+      'startWorkDate': workingDate,
+      'workingDate': workingDate,
+      'dist': dist,
     };
   }
 }
