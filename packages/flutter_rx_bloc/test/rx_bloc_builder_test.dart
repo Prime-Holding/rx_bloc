@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 
 import 'counter/blocs/counter_bloc.dart';
 import 'counter/views/counter_widget.dart';
@@ -11,7 +12,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: RxBlocProvider<CounterBlocType>(
-            create: (ctx) => CounterBloc(countEvents: [1, 2]),
+            create: (ctx) => CounterBloc(initialState: Result.success(2)),
             child: const CounterWidget(),
           ),
         ),
@@ -29,7 +30,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: CounterWidget(
-            bloc: CounterBloc(countEvents: [1, 2]),
+            bloc: CounterBloc(initialState: Result.success(2)),
           ),
         ),
       );
@@ -46,7 +47,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: CounterWidget(
-            bloc: CounterBloc(countEvents: []),
+            bloc: CounterBloc(),
           ),
         ),
       );

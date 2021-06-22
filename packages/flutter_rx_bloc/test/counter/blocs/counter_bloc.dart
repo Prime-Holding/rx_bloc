@@ -1,7 +1,22 @@
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/rxdart.dart';
+
+part 'counter_bloc.rxb.g.dart';
+
+/// This BloC and its event and state contracts usually
+/// resides in counter_bloc.dart
 
 /// A contract class containing all events.
-abstract class CounterBlocEvents {}
+abstract class CounterBlocEvents {
+  /// Increment the count
+  void setCount(int count);
+
+  /// Decrement the count
+  void setLoading();
+
+  /// Decrement the count
+  void setError(Exception error);
+}
 
 /// A contract class containing all states for our multi state BloC.
 abstract class CounterBlocStates {
@@ -10,7 +25,7 @@ abstract class CounterBlocStates {
   /// It can be controlled by executing [CounterBlocEvents.increment] and
   /// [CounterBlocEvents.decrement]
   ///
-  Stream<int> get count;
+  Stream<Result<int>> get count;
 
   /// Loading state
   Stream<bool> get isLoading;
@@ -19,41 +34,35 @@ abstract class CounterBlocStates {
   Stream<String> get errors;
 }
 
-abstract class CounterBlocType extends RxBlocTypeBase {
-  // ignore: public_member_api_docs
-  CounterBlocEvents get events;
+/// A BloC responsible for count calculations
+@RxBloc()
+class CounterBloc extends $CounterBloc {
+  CounterBloc({Result<int>? initialState}) {
+    if (initialState != null) {
+      _countSubject.add(initialState);
+    }
 
-  // ignore: public_member_api_docs
-  CounterBlocStates get states;
-}
+    Rx.merge([
+      _$setCountEvent.map((event) => Result.success(1)),
+      _$setLoadingEvent.map((event) => Result.loading()),
+      _$setErrorEvent.map((event) => Result.error(event)),
+    ])
+        .setResultStateHandler(this)
+        .doOnData(print)
+        .bind(_countSubject)
+        .disposedBy(_compositeSubscription);
+  }
 
-class CounterBloc
-    implements CounterBlocEvents, CounterBlocStates, CounterBlocType {
-  CounterBloc({
-    this.countEvents = const [],
-    this.errorEvents = const [],
-    this.isLoadingEvents = const [],
-  });
+  final _countSubject = BehaviorSubject<Result<int>>();
 
-  final List<int> countEvents;
-  final List<String> errorEvents;
-  final List<bool> isLoadingEvents;
+  /// Map increment and decrement events to `count` state
+  @override
+  Stream<Result<int>> _mapToCountState() => _countSubject;
 
   @override
-  Stream<int> get count => Stream.fromIterable(countEvents);
+  Stream<String> _mapToErrorsState() =>
+      errorState.map((Exception error) => error.toString());
 
   @override
-  Stream<String> get errors => Stream.fromIterable(errorEvents);
-
-  @override
-  Stream<bool> get isLoading => Stream.fromIterable(isLoadingEvents);
-
-  @override
-  void dispose() {}
-
-  @override
-  CounterBlocEvents get events => this;
-
-  @override
-  CounterBlocStates get states => this;
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 }
