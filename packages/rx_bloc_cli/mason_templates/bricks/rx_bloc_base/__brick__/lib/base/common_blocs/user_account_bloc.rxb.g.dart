@@ -22,14 +22,14 @@ abstract class $UserAccountBloc extends RxBlocBase
         UserAccountBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [login]
-  final _$loginEvent = PublishSubject<void>();
-
   /// Тhe [Subject] where events sink to by calling [setUsername]
   final _$setUsernameEvent = BehaviorSubject<String>.seeded('');
 
   /// Тhe [Subject] where events sink to by calling [setPassword]
   final _$setPasswordEvent = BehaviorSubject<String>.seeded('');
+
+  /// Тhe [Subject] where events sink to by calling [login]
+  final _$loginEvent = PublishSubject<void>();
 
   /// Тhe [Subject] where events sink to by calling [logout]
   final _$logoutEvent = PublishSubject<void>();
@@ -53,13 +53,13 @@ abstract class $UserAccountBloc extends RxBlocBase
   late final Stream<String> _errorsState = _mapToErrorsState();
 
   @override
-  void login() => _$loginEvent.add(null);
-
-  @override
   void setUsername(String username) => _$setUsernameEvent.add(username);
 
   @override
   void setPassword(String password) => _$setPasswordEvent.add(password);
+
+  @override
+  void login() => _$loginEvent.add(null);
 
   @override
   void logout() => _$logoutEvent.add(null);
@@ -102,9 +102,9 @@ abstract class $UserAccountBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$loginEvent.close();
     _$setUsernameEvent.close();
     _$setPasswordEvent.close();
+    _$loginEvent.close();
     _$logoutEvent.close();
     _compositeSubscription.dispose();
     super.dispose();

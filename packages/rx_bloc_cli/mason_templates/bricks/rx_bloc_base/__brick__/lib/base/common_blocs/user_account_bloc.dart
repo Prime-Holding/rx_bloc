@@ -57,36 +57,27 @@ class UserAccountBloc extends $UserAccountBloc {
 
   @override
   Stream<bool> _mapToLoggedInState() => Rx.merge([
-        _$logoutEvent
-            .switchMap((value) {
-              _resetCredentials();
-              return _logoutUseCase.execute().asResultStream();
-            })
-            .whereSuccess()
-            .map((_) => false),
-        _$loginEvent
-            .validateCredentials(this)
-            .switchMap((args) => _loginUseCase
-                .execute(username: args.username, password: args.password)
-                .asResultStream())
-            .whereSuccess(),
-      ]).startWith(false).share();
+        _$logoutEvent.logoutUser(this),
+        _$loginEvent.validateCredentials(this).loginUser(this),
+      ]).startWith(false).shareReplay(maxSize: 1);
 
   @override
-  Stream<String> _mapToUsernameState() => _$setUsernameEvent
-      .validateField(fieldValidators.validateEmail)
-      .shareReplay(maxSize: 1);
+  Stream<String> _mapToUsernameState() => Rx.merge([
+        _$setUsernameEvent.validateField(fieldValidators.validateEmail),
+        _$logoutEvent.map((_) => ''),
+      ]).startWith('').shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToPasswordState() => Rx.merge([
         _$setPasswordEvent.validateField(fieldValidators.validatePassword),
+        _$logoutEvent.map((_) => ''),
         errorState.map(
           (event) => throw RxFieldException(
             error: 'Wrong email or password',
             fieldValue: _$setPasswordEvent.value,
           ),
         )
-      ]).shareReplay(maxSize: 1);
+      ]).startWith('').shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToErrorsState() =>
@@ -97,7 +88,7 @@ class UserAccountBloc extends $UserAccountBloc {
 
   @override
   Stream<bool> _mapToShowErrorsState() => _$loginEvent
-      .switchMap((event) => _validateAllFields().map((event) => true))
+      .switchMap((event) => _validateAllFields().map((_) => true))
       .startWith(false)
       .shareReplay(maxSize: 1);
 }
@@ -106,4 +97,7 @@ class _LoginCredentials {
   _LoginCredentials(this.username, this.password);
   final String username;
   final String password;
+
+  bool equals(_LoginCredentials credentials) =>
+      username == credentials.username && password == credentials.password;
 }

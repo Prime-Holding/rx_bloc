@@ -23,8 +23,8 @@ import '../data_sources/domain/firebase/firebase_messaging_data_source.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
-import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
+import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
@@ -138,22 +138,14 @@ class AppDependencies {
 
   List<Provider> get _interceptors => [
     Provider<AuthInterceptor>(
-      create: (context) {
-        final interceptor = AuthInterceptor(
-          context.read(),
-          context.read(),
-          context.read()
-        );
-        context.read<Dio>().interceptors.add(interceptor);
-        return interceptor;
-      },
+      create: (context) => AuthInterceptor(
+        context.read(),
+        context.read(),
+        context.read(),
+      ),
     ),{{#analytics}}
     Provider<AnalyticsInterceptor>(
-      create: (context) {
-        final interceptor = AnalyticsInterceptor(context.read());
-        context.read<Dio>().interceptors.add(interceptor);
-        return interceptor;
-      },
+      create: (context) => AnalyticsInterceptor(context.read()),
     ),{{/analytics}}
   ];
 

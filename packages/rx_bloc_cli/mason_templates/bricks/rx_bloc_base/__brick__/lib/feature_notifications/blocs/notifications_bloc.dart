@@ -38,7 +38,7 @@ class NotificationsBloc extends $NotificationsBloc {
 
   @override
   Stream<bool> _mapToPermissionsAuthorizedState() => Rx.merge([
-    _$sendMessageEvent._sendMessage(this),
-    _$requestNotificationPermissionsEvent._requestPermissions(this),
-  ]).setResultStateHandler(this).whereSuccess();
+        _$sendMessageEvent.sendMessage(this),
+        _$requestNotificationPermissionsEvent.requestPermissions(this),
+      ]).setResultStateHandler(this).whereSuccess();
 }

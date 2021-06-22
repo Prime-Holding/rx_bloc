@@ -154,9 +154,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Returns whether Firebase is used in the generated project
-  bool get _usesFirebase {
-    return _enableAnalytics || _enablePushNotifications;
-  }
+  bool get _usesFirebase => _enableAnalytics || _enablePushNotifications;
 
   /// Returns whether the project will use analytics or not
   bool get _enableAnalytics {

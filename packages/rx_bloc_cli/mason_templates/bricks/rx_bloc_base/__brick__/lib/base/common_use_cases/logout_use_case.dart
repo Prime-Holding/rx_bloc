@@ -25,7 +25,6 @@ class LogoutUseCase{
   final PushNotificationSubscriptionRepository _pushSubscriptionRepository;
 
   Future<void> execute() async {
-    // TODO Add your logic for logging out here
 
     // Unsubscribe user push token
     try {

@@ -13,7 +13,7 @@ import 'base/app/{{project_name}}.dart';
 
 // ignore_for_file: avoid_void_async
 
-/// Main entry point for the production environment
+/// Main entry point for the development environment
 void main() async {
   // Enable integration testing with the Flutter Driver extension.
   // See https://flutter.dev/testing/ for more info.
