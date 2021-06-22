@@ -25,10 +25,19 @@
 
     <actions>
         <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocAction"
-                description="Generate a new RxBloc"
+                description="Generate a new RxBloc Class"
                 id="GenerateRxBlocId"
                 icon="/icons/rx_bloc.png"
                 text="RxBloc Class">
+            <add-to-group
+                    group-id="NewGroup"
+                    anchor="first"/>
+        </action>
+        <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocFeatureAction"
+                description="Generate a new RxBloc Feature"
+                id="GenerateRxBlocFeatureId"
+                icon="/icons/rx_bloc.png"
+                text="RxBloc Feature">
             <add-to-group
                     group-id="NewGroup"
                     anchor="first"/>

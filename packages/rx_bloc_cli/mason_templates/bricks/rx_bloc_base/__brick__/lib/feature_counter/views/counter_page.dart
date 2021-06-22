@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/common_ui_components/update_button.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/theme/design_system.dart';
 import '../../l10n/l10n.dart';
@@ -24,45 +25,65 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: CounterDependencies.of(context).providers,
-        child: this,
-      );
+    providers: CounterDependencies.of(context).providers,
+    child: this,
+  );
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text(context.l10n.counterPageTitle)),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildErrorListener(),
-              _buildCount(),
-            ],
+    appBar: _buildAppBar(context),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildErrorListener(),
+          RxBlocBuilder<CounterBlocType, int>(
+            state: (bloc) => bloc.states.count,
+            builder: (context, countState, bloc) =>
+                _buildCount(context, countState),
           ),
+        ],
+      ),
+    ),
+    floatingActionButton: _buildActionButtons(context),
+  );
+
+  AppBar _buildAppBar(BuildContext context) => AppBar(
+    title: Text(context.l10n.counterPageTitle),
+    actions: [
+      RxBlocBuilder<CounterBlocType, bool>(
+        state: (bloc) => bloc.states.isLoading,
+        builder: (context, loadingState, bloc) => UpdateButton(
+          isActive: !loadingState.isLoading,
+          onPressed: () => bloc.events.reload(),
         ),
-        floatingActionButton: _buildActionButtons(context),
+      )
+    ],
+  );
+
+  Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>
+      snapshot.hasData
+          ? Text(
+        snapshot.data!.toString(),
+        style: context.designSystem.typography.headline2,
+      )
+          : Container(
+        child: Text(
+          snapshot.connectionState.toString(),
+          style: context.designSystem.typography.bodyText1,
+        ),
       );
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
-        state: (bloc) => bloc.states.errors,
-        listener: (context, errorMessage) =>
-            ScaffoldMessenger.of(context).showSnackBar(
+    state: (bloc) => bloc.states.errors,
+    listener: (context, errorMessage) =>
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage ?? ''),
             behavior: SnackBarBehavior.floating,
           ),
         ),
-      );
-
-  Widget _buildCount() => RxBlocBuilder<CounterBlocType, int>(
-        state: (bloc) => bloc.states.count,
-        builder: (context, snapshot, bloc) => snapshot.hasData
-            ? Text(
-                snapshot.data.toString(),
-                style: context.designSystem.typography.headline2,
-              )
-            : Container(),
-      );
+  );
 
   Widget _buildActionButtons(BuildContext context) =>
       RxBlocBuilder<CounterBlocType, bool>(

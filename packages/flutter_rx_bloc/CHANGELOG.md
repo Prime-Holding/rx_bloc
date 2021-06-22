@@ -1,5 +1,8 @@
-## [3.1.0]
-* Fixed issue with RxBlocListener where the first element is `null`
+## [3.1.0] - June 01, 2021
+* Fix infinite feedback loop issue with RxTextFormFieldBuilder
+* Nullability improvements for RxTextFormFieldBuilder
+* Add the ability to chose how the cursor in RxTextFormFieldBuilder behaves, [look at this PR for more information](https://github.com/Prime-Holding/rx_bloc/pull/151)
+* Fixed issue with RxBlocListener not building widget where the first element is `null`
 
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`

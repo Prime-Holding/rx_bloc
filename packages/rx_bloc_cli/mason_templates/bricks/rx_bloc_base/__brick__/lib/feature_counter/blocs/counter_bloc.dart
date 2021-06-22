@@ -5,9 +5,13 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/models/count.dart';
 import '../../base/repositories/counter_repository.dart';
 
 part 'counter_bloc.rxb.g.dart';
@@ -20,52 +24,51 @@ abstract class CounterBlocEvents {
 
   /// Decrement the count
   void decrement();
+
+  /// Get the current count
+  void reload();
 }
 
 /// A contract class containing all states for our multi state BloC.
 abstract class CounterBlocStates {
+  /// Loading state of the bloc
+  ///
+  /// It is true when the bloc is waiting for the repository to returns data
+  /// or throws an Exception
+  Stream<bool> get isLoading;
+
+  /// Error state of the bloc
+  ///
+  /// Emits an error message, when the repository throws an Exception
+  Stream<String> get errors;
+
   /// The count of the Counter
   ///
   /// It can be controlled by executing [CounterBlocEvents.increment] and
   /// [CounterBlocEvents.decrement]
   ///
   Stream<int> get count;
-
-  /// Loading state
-  Stream<bool> get isLoading;
-
-  /// Error messages
-  Stream<String> get errors;
 }
 
 /// A BloC responsible for count calculations
 @RxBloc()
 class CounterBloc extends $CounterBloc {
-  /// Default constructor
-  CounterBloc(this._repository);
+  /// Bloc constructor
+  CounterBloc({required CounterRepository repository})
+      : _repository = repository;
 
   final CounterRepository _repository;
 
-  /// Map increment and decrement events to `count` state
   @override
-  Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
-        // On increment.
-        _$incrementEvent
-            .switchMap((_) => _repository.increment().asResultStream()),
-        // On decrement.
-        _$decrementEvent
-            .switchMap((_) => _repository.decrement().asResultStream()),
-      ])
-          // This automatically handles the error and loading state.
-          .setResultStateHandler(this)
-          // Provide success response only.
-          .whereSuccess()
-          //emit 0 as initial value
-          .startWith(0);
-
-  @override
-  Stream<String> _mapToErrorsState() => errorState.toMessage();
+  Stream<String> _mapToErrorsState() => errorState.mapFromDio().toMessage();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  @override
+  Stream<int> _mapToCountState() => countState
+      .setResultStateHandler(this)
+      .whereSuccess()
+      .map((event) => event.value)
+      .shareReplay(maxSize: 1);
 }
