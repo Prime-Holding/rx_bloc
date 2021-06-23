@@ -87,8 +87,6 @@ Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][ret
 
 To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class (in this case `lib/feature_counter/di/counter_dependencies.dart` ) specify which data source you are going to use in every repository.
 
-In our project in directory `bin/server/` we have implemented local Rest API using [shelf][shelf_lnk]. To test the project you have to run it first. In your root folder run `bin/start_server.sh`. If you are running in your emulator and can not connect to the server, check this [solution][solution_lnk].
-
 <div id="designSystem"/>
 
 ### Design system
@@ -125,7 +123,7 @@ Some of the important paths are:
 | :------------ | :------------ |
 | `bin/server/` | The root directory of the server |
 | `bin/server/start_server.dart` | The main entry point of the server app |
-| `bin/server/utils/server_config.dart` | All server-related configurations and secrets are located here |
+| `bin/server/config.dart` | All server-related configurations and secrets are located here |
 | `bin/server/controllers/` | All controllers are located here |
 | `bin/server/models/` | Data models are placed here |
 | `bin/server/repositories/` | Repositories that are used by the controllers reside here |
@@ -159,8 +157,6 @@ In order to make the notifications work on your target platform, make sure you f
 [dio_lnk]: https://pub.dev/packages/dio
 [json_annotation_lnk]: https://pub.dev/packages/json_annotation
 [json_serializable_lnk]: https://pub.dev/packages/json_serializable
-[shelf_lnk]: https://pub.dev/packages/shelf
-[solution_lnk]: https://github.com/flutterchina/dio/issues/76#issuecomment-430011361
 [fcm_lnk]: https://firebase.flutter.dev/docs/messaging/overview
 [fcm_web_config_ref]: https://github.com/FirebaseExtended/flutterfire/blob/4c9b5d28de9eeb5ce76c856fbd0c7b3ec8615e45/docs/messaging/usage.mdx#web-tokens
 [flutter_local_notifications_lnk]: https://pub.dev/packages/flutter_local_notifications

@@ -34,10 +34,10 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(pushToken.toJson());
     await _dio.fetch<void>(_setStreamType<void>(
         Options(method: 'DELETE', headers: <String, dynamic>{}, extra: _extra)
-            .compose(_dio.options,
-                '/api/user/push-notification-subscriptions/$pushToken',
+            .compose(_dio.options, '/api/user/push-notification-subscriptions',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     return null;
@@ -47,7 +47,8 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   Future<void> sendPushMessage(message) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = message;
+    final _data = <String, dynamic>{};
+    _data.addAll(message.toJson());
     await _dio.fetch<void>(_setStreamType<void>(
         Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
             .compose(_dio.options, '/api/send-push-message',

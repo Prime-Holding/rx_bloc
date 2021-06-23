@@ -18,7 +18,9 @@ class PushNotificationSubscriptionRepository {
       .subscribePushToken(PushNotificationDataRequestModel(pushToken));
 
   Future<void> unsubscribePush(String pushToken) =>
-      _pushDataSource.unsubscribePushToken(pushToken);
+      _pushDataSource.unsubscribePushToken(
+        PushNotificationDataRequestModel(pushToken),
+      );
 
   Future<void> sendPushMessage(
           {required String message, String? title, int? delay}) =>

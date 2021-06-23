@@ -32,6 +32,11 @@ abstract class ApiController {
 
   /// Controller specific request mappings should be implemented in this method.
   void registerRequests(WrappedRouter router);
+
+  /// Throws an exception if the provided parameter is not valid
+  void throwIfEmpty(String? param, Exception exception) {
+    if (param?.isEmpty ?? true) throw exception;
+  }
 }
 
 /// [RouteGenerator] is a class that automates the generation and registering of
@@ -123,13 +128,28 @@ class WrappedRouter {
   final ResponseBuilder _responseBuilder;
 
   /// Adds a new request to the router
-  void addRequest(RequestType type, String path, Function callback) {
+  void addRequest(
+    RequestType type,
+    String path,
+    Function(shelf.Request) callback,
+  ) {
     final _callback = buildSafeHandler(callback, _responseBuilder);
     _registerCallback(type, path, _callback);
   }
 
-  /// Adds a new request to the router that contains a parameter
-  void addRequestWithParam(RequestType type, String path, Function callback) {
+  /// Adds a new request to the router that contains a parameter as part of the
+  /// path. That parameter in the path should be placed between < and > . Also,
+  /// the provided callback should be able to accept that parameter as String.
+  ///
+  /// Example:
+  ///
+  /// /api/users/<userId>/profile
+  ///
+  void addRequestWithParam(
+    RequestType type,
+    String path,
+    Function(shelf.Request, String) callback,
+  ) {
     final _callback = _buildSafeHandlerParam(callback, _responseBuilder);
     _registerCallback(type, path, _callback);
   }

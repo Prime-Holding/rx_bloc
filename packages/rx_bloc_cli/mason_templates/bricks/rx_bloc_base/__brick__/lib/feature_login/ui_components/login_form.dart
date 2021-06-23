@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_blocs/user_account_bloc.dart';
+import '../../base/common_ui_components/primary_button.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -69,13 +70,30 @@ class _LoginFormState extends State<LoginForm> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: OutlinedButton(
-                    onPressed: () =>
-                        context.read<UserAccountBlocType>().events.login(),
-                    child: Text(
-                      context.l10n.logIn,
+                  child: RxBlocBuilder<UserAccountBlocType, bool>(
+                    state: (bloc) => bloc.states.isLoading,
+                    builder: (context, loadingState, _) => PrimaryButton(
+                      isLoading:
+                          loadingState.hasData ? loadingState.data! : false,
+                      onPressed: () =>
+                          context.read<UserAccountBlocType>().events.login(),
+                      child: Text(
+                        context.l10n.logIn,
+                      ),
                     ),
                   ),
+                ),
+                RxBlocListener<UserAccountBlocType, String>(
+                  state: (bloc) => bloc.states.errors,
+                  listener: (context, error) {
+                    if (error?.isEmpty ?? true) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(error!),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
                 ),
                 RxBlocListener<UserAccountBlocType, bool>(
                   state: (bloc) => bloc.states.loggedIn,

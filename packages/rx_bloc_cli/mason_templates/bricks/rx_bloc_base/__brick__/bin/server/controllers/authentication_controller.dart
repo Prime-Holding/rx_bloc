@@ -44,12 +44,14 @@ class AuthenticationController extends ApiController {
     final refreshToken = params['refreshToken'];
 
     if (refreshToken == null || refreshToken.isEmpty) {
-      if (params['username']?.isEmpty ?? true) {
-        throw BadRequestException('The username cannot be empty.');
-      }
-      if (params['password']?.isEmpty ?? true) {
-        throw BadRequestException('The password cannot be empty.');
-      }
+      throwIfEmpty(
+        params['username'],
+        BadRequestException('The username cannot be empty.'),
+      );
+      throwIfEmpty(
+        params['password'],
+        BadRequestException('The password cannot be empty.'),
+      );
     }
     final _token = _issueNewToken(refreshToken);
     return responseBuilder.buildOK(data: _token.toJson());

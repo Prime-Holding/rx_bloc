@@ -37,38 +37,40 @@ class ProfileAvatar extends StatelessWidget {
       );
 
   Widget _buildLoginButton(BuildContext context) => IconButton(
-    icon: Icon(context.designSystem.icons.login),
-    onPressed: () => context.router.push(const LoginRoute()),
-  );
+        icon: Icon(context.designSystem.icons.login),
+        tooltip: context.l10n.logIn,
+        onPressed: () => context.router.push(const LoginRoute()),
+      );
 
   Widget _buildLoggedInAvatar(BuildContext context) => PopupBuilder<String>(
-    items: [
-      PopupMenuItem<String>(
-        value: _notificationKey,
-        child: Text(
-          context.l10n.notifications,
-          style: context.designSystem.typography.fadedButtonText,
-        ),
-      ),
-      const PopupMenuDivider(height: 2),
-      PopupMenuItem<String>(
-        value: _logoutKey,
-        child: Text(
-          context.l10n.logOut,
-          style: context.designSystem.typography.fadedButtonText,
-        ),
-      ),
-    ],
-    onSelected: (selected) {
-      if (selected == _notificationKey) {
-        context.router.push(const NotificationsRoute());
-      } else if (selected == _logoutKey) {
-        RxBlocProvider.of<UserAccountBlocType>(context).events.logout();
-      }
-    },
-    child: const Icon(Icons.person),
-  );
+        tooltip: context.l10n.profile,
+        items: [
+          PopupMenuItem<String>(
+            value: _notificationKey,
+            child: Text(
+              context.l10n.notifications,
+              style: context.designSystem.typography.fadedButtonText,
+            ),
+          ),
+          const PopupMenuDivider(height: 2),
+          PopupMenuItem<String>(
+            value: _logoutKey,
+            child: Text(
+              context.l10n.logOut,
+              style: context.designSystem.typography.fadedButtonText,
+            ),
+          ),
+        ],
+        onSelected: (selected) {
+          if (selected == _notificationKey) {
+            context.router.push(const NotificationsRoute());
+          } else if (selected == _logoutKey) {
+            RxBlocProvider.of<UserAccountBlocType>(context).events.logout();
+          }
+        },
+        child: const Icon(Icons.person),
+      );
 
-/// endregion
+  /// endregion
 
 }

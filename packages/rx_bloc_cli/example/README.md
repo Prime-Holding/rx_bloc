@@ -125,7 +125,7 @@ Some of the important paths are:
 | :------------ | :------------ |
 | `bin/server/` | The root directory of the server |
 | `bin/server/start_server.dart` | The main entry point of the server app |
-| `bin/server/utils/server_config.dart` | All server-related configurations and secrets are located here |
+| `bin/server/config.dart` | All server-related configurations and secrets are located here |
 | `bin/server/controllers/` | All controllers are located here |
 | `bin/server/models/` | Data models are placed here |
 | `bin/server/repositories/` | Repositories that are used by the controllers reside here |

@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   child: LoginForm(
                     onLoginSuccess: () {
-                      context.router.pop(true);
+                      context.router.replace(const NotificationsRoute());
                     },
                   ),
                 ),

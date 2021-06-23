@@ -59,7 +59,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               onPressed: () => bloc.events.reload(),
             ),
           ),
-          ProfileAvatar(),
+          const ProfileAvatar(),
         ],
       );
 

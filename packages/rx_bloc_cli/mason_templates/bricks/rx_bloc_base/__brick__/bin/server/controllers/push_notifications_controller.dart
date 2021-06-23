@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart';
 
+import '../config.dart';
 import '../repositories/push_token_repository.dart';
 import '../utils/api_controller.dart';
-import '../utils/server_config.dart';
 import '../utils/server_exceptions.dart';
 import 'authentication_controller.dart';
 
@@ -22,9 +22,9 @@ class PushNotificationsController extends ApiController {
       '/api/user/push-notification-subscriptions',
       _registerPushHandler,
     );
-    router.addRequestWithParam(
+    router.addRequest(
       RequestType.DELETE,
-      '/api/user/push-notification-subscriptions/<pushToken>',
+      '/api/user/push-notification-subscriptions',
       _unregisterPushHandler,
     );
     router.addRequest(
@@ -42,23 +42,28 @@ class PushNotificationsController extends ApiController {
     final params = await request.bodyFromFormData();
     final pushToken = params['pushToken'];
 
-    if (pushToken == null || pushToken.isEmpty) {
-      throw BadRequestException('Push token can not be empty.');
-    }
+    throwIfEmpty(
+      pushToken,
+      BadRequestException('Push token can not be empty.'),
+    );
 
     _pushTokens.addPushToken(pushToken);
 
     return responseBuilder.buildOK();
   }
 
-  Response _unregisterPushHandler(Request request, String pushToken) {
+  Future<Response> _unregisterPushHandler(Request request) async {
     controllers
         .getController<AuthenticationController>()
         ?.isAuthenticated(request);
 
-    if (pushToken.isEmpty) {
-      throw BadRequestException('Push token can not be empty.');
-    }
+    final params = await request.bodyFromFormData();
+    final pushToken = params['pushToken'];
+
+    throwIfEmpty(
+      pushToken,
+      BadRequestException('Push token can not be empty.'),
+    );
 
     _pushTokens.removePushToken(pushToken);
 
@@ -79,9 +84,10 @@ class PushNotificationsController extends ApiController {
         ? _delayParam
         : int.parse(_delayParam ?? '0');
 
-    if (message == null || message.isEmpty) {
-      throw BadRequestException('Push message can not be empty.');
-    }
+    throwIfEmpty(
+      message,
+      BadRequestException('Push message can not be empty.'),
+    );
 
     Future.delayed(Duration(seconds: delay),
         () async => _sendMessage(title: title, message: message));

@@ -22,8 +22,10 @@ abstract class PushNotificationsDataSource {
   Future<void> subscribePushToken(
       @Body() PushNotificationDataRequestModel pushToken);
 
-  @DELETE('/api/user/push-notification-subscriptions/{pushToken}')
-  Future<void> unsubscribePushToken(@Path() String pushToken);
+  @DELETE('/api/user/push-notification-subscriptions')
+  Future<void> unsubscribePushToken(
+    @Body() PushNotificationDataRequestModel pushToken,
+  );
 
   @POST('/api/send-push-message')
   Future<void> sendPushMessage(@Body() PushMessageRequestModel message);

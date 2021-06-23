@@ -105,6 +105,8 @@ class DesignSystemColors {
 
   Color get activeButtonTextColor => Colors.white;
 
+  Color get progressIndicatorBackgroundColor => Colors.white;
+
   /// endregion
 }
 
