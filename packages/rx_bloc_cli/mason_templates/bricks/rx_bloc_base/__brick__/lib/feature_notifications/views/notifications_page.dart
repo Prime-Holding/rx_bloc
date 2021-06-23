@@ -169,6 +169,13 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                 context.l10n.notificationsPageConfig,
                 textAlign: TextAlign.center,
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: TextButton(
+                  onPressed: () => context.router.pop(),
+                  child: Text(context.l10n.close),
+                ),
+              ),
             ],
           ),
         ),

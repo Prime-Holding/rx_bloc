@@ -22,12 +22,12 @@ class EnvironmentConfig {
 
   static const EnvironmentConfig dev = EnvironmentConfig._(
     environment: EnvironmentType.dev,
-    baseApiUrl: 'http://127.0.0.1',
+    baseApiUrl: 'http://0.0.0.0:8080',
   );
 
   static const EnvironmentConfig staging = EnvironmentConfig._(
     environment: EnvironmentType.staging,
-    baseApiUrl: 'http://127.0.0.1',
+    baseApiUrl: 'http://0.0.0.0:8080',
   );
 
   static const EnvironmentConfig prod = EnvironmentConfig._(

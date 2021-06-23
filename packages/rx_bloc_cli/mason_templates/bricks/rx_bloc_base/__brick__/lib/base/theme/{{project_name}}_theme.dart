@@ -37,6 +37,8 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
         colorScheme: colorScheme,
         textTheme: ButtonTextTheme.primary,
       ),
+      textButtonTheme:
+          _buildTextButtonTheme(base.textButtonTheme, designSystem),
       outlinedButtonTheme:
           _buildOutlinedButtonTheme(base.outlinedButtonTheme, designSystem),
       textTheme: _buildDesignTextTheme(base.textTheme, designSystemColor),
@@ -92,5 +94,15 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
           ),
         ),
       );
+
+  static TextButtonThemeData _buildTextButtonTheme(
+          TextButtonThemeData data, DesignSystem designSystem) =>
+      TextButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: designSystem.colors.primaryColor,
+          textStyle: designSystem.typography.outlinedButtonText,
+          primary: designSystem.colors.outlinedButtonTextColor,
+      ),
+  );
 
 }

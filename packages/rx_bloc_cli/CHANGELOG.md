@@ -1,4 +1,4 @@
-## [0.0.5] - June 22, 2021
+## [0.0.5] - June 24, 2021
 * Update generated project, adding following features:
     - Http-client (Dio by default)
     - Interceptors

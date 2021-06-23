@@ -89,6 +89,8 @@ class DesignSystemColors {
   Color get inputDecorationLabelColor =>
       lightMode ? const Color(0xff333333) : const Color(0xffcccccc);
 
+  Color get inputDecorationErrorLabelColor => Colors.red;
+
   Color get iconColor => Colors.white;
 
   Color get outlinedButtonTextColor => Colors.white;

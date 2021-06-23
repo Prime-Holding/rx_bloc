@@ -146,5 +146,8 @@ class _LoginFormState extends State<LoginForm> {
           color: context.designSystem.colors.inputDecorationLabelColor
               .withOpacity(0.5),
         ),
+        errorStyle: decoration.labelStyle?.copyWith(
+          color: context.designSystem.colors.inputDecorationErrorLabelColor,
+        ),
       );
 }

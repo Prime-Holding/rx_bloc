@@ -9,6 +9,7 @@
     "decrement": "Decrement",
     "reload": "Reload",
     "ok" : "OK",
+    "close" : "Close",
     "profile" : "Profile",
     "loginPageTitle": "Login sample",
     "logIn" : "Log in",
