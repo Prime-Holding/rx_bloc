@@ -26,29 +26,29 @@ class CounterDependencies {
   final BuildContext context;
 
   List<SingleChildWidget> get providers => [
-    ..._dataSources,
-    ..._repositories,
-    ..._blocs,
-  ];
+        ..._dataSources,
+        ..._repositories,
+        ..._blocs,
+      ];
 
   /// For your project you should provide a real api in
   /// lib\base\data_sources\domain\counter\count_remote_data_source.dart
   /// and data models in lib\base\models and rerun build_runner.
   List<Provider> get _dataSources => [
-    Provider<CountRemoteDataSource>(
-      create: (context) => CountRemoteDataSource(context.read()),
-    ),
-  ];
+        Provider<CountRemoteDataSource>(
+          create: (context) => CountRemoteDataSource(context.read()),
+        ),
+      ];
 
   List<Provider> get _repositories => [
-    Provider<CounterRepository>(
-      create: (context) => CounterRepository(context.read()),
-    ),
-  ];
+        Provider<CounterRepository>(
+          create: (context) => CounterRepository(context.read()),
+        ),
+      ];
 
   List<RxBlocProvider> get _blocs => [
-    RxBlocProvider<CounterBlocType>(
-      create: (context) => CounterBloc(repository: context.read()),
-    ),
-  ];
+        RxBlocProvider<CounterBlocType>(
+          create: (context) => CounterBloc(repository: context.read()),
+        ),
+      ];
 }

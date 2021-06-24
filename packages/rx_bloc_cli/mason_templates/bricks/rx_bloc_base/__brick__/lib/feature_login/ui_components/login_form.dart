@@ -9,11 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/primary_button.dart';
+import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -70,44 +69,49 @@ class _LoginFormState extends State<LoginForm> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: RxBlocBuilder<UserAccountBlocType, bool>(
-                    state: (bloc) => bloc.states.isLoading,
-                    builder: (context, loadingState, _) => PrimaryButton(
-                      isLoading:
-                          loadingState.hasData ? loadingState.data! : false,
-                      onPressed: () =>
-                          context.read<UserAccountBlocType>().events.login(),
-                      child: Text(
-                        context.l10n.logIn,
-                      ),
-                    ),
-                  ),
+                  child: _buildLogInButton(),
                 ),
-                RxBlocListener<UserAccountBlocType, String>(
-                  state: (bloc) => bloc.states.errors,
-                  listener: (context, error) {
-                    if (error?.isEmpty ?? true) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(error!),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  },
-                ),
-                RxBlocListener<UserAccountBlocType, bool>(
-                  state: (bloc) => bloc.states.loggedIn,
-                  listener: (_, success) {
-                    if (success ?? false) widget.onLoginSuccess?.call();
-                  },
-                )
+                _buildErrorListener(),
+                _buildLogoutListener(),
               ],
             ),
           ],
         ),
       );
 
-  Widget _buildFieldEmail() => RxTextFormFieldBuilder<UserAccountBlocType>(
+  RxBlocBuilder<LoginBlocType, bool> _buildLogInButton() =>
+      RxBlocBuilder<LoginBlocType, bool>(
+        state: (bloc) => bloc.states.isLoading,
+        builder: (context, loadingState, bloc) => PrimaryButton(
+          isLoading: loadingState.hasData ? loadingState.data! : false,
+          onPressed: bloc.events.login,
+          child: Text(context.l10n.logIn),
+        ),
+      );
+
+  RxBlocListener<LoginBlocType, bool> _buildLogoutListener() =>
+      RxBlocListener<LoginBlocType, bool>(
+        state: (bloc) => bloc.states.loggedIn,
+        listener: (_, success) {
+          if (success ?? false) widget.onLoginSuccess?.call();
+        },
+      );
+
+  RxBlocListener<LoginBlocType, String> _buildErrorListener() =>
+      RxBlocListener<LoginBlocType, String>(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, error) {
+          if (error?.isEmpty ?? true) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error!),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+      );
+
+  Widget _buildFieldEmail() => RxTextFormFieldBuilder<LoginBlocType>(
         state: (bloc) => bloc.states.username,
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setUsername(value),
@@ -121,7 +125,7 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  Widget _buildFieldPassword() => RxTextFormFieldBuilder<UserAccountBlocType>(
+  Widget _buildFieldPassword() => RxTextFormFieldBuilder<LoginBlocType>(
         state: (bloc) => bloc.states.password,
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setPassword(value),

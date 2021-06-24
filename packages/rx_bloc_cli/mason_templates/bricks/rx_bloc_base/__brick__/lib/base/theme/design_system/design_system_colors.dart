@@ -36,7 +36,7 @@ class DesignSystemColors {
 
   Color get scaffoldBackgroundColor => lightMode ? Colors.white : Colors.black;
 
-  Color get errorColor => Colors.white;
+  Color get errorColor => lightMode ? Colors.red : Colors.redAccent;
 
   Color? get accentColor =>
       lightMode ? Colors.blue[500] : Colors.tealAccent[200];

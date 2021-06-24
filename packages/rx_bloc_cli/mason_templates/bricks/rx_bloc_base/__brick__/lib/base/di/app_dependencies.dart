@@ -8,18 +8,20 @@
 import 'package:dio/dio.dart'; {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart'; {{/analytics}}
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../app/config/environment_config.dart';
+import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
-import '../data_sources/domain/firebase/firebase_messaging_data_source.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
@@ -29,8 +31,7 @@ import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/auth_repository.dart';
-import '../repositories/push_notification_subscription_repository.dart';
-import '../repositories/user_authentication_repository.dart';
+import '../repositories/push_notification_repository.dart';
 
 class AppDependencies {
   AppDependencies._(this.context, this.config);
@@ -47,8 +48,8 @@ class AppDependencies {
   final EnvironmentConfig config;
 
   /// List of all providers used throughout the app
-  List<SingleChildWidget> get providers => [ {{#analytics}}
-        ..._analytics,{{/analytics}}
+  List<SingleChildWidget> get providers => [
+        ..._analytics,
         ..._httpClients,
         ..._dataStorages,
         ..._dataSources,
@@ -58,40 +59,39 @@ class AppDependencies {
         ..._interceptors,
       ];
 
-  {{#analytics}}
-
   List<Provider> get _analytics => [
         Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
         Provider<FirebaseAnalyticsObserver>(
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
         ),
-      ]; {{/analytics}}
+      ];
 
   List<Provider> get _httpClients => [
-    Provider<Dio>(create: (context) => Dio()),
-  ];
+        Provider<Dio>(create: (context) => Dio()),
+      ];
 
   List<SingleChildWidget> get _dataStorages => [
-    Provider<SharedPreferencesInstance>(
-        create: (context) => SharedPreferencesInstance()),
-    Provider<FlutterSecureStorage>(
-        create: (context) => const FlutterSecureStorage()),
-    Provider<FirebaseMessagingDataSource>(
-      create: (_) => FirebaseMessagingDataSource(),
-    ),
-  ];
+        Provider<SharedPreferencesInstance>(
+            create: (context) => SharedPreferencesInstance()),
+        Provider<FlutterSecureStorage>(
+            create: (context) => const FlutterSecureStorage()),
+        Provider<FirebaseMessaging>(
+          create: (_) => FirebaseMessaging.instance,
+        ),
+      ];
 
   /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
         Provider<AuthTokenDataSource>(
-            create: (context) =>
-            kIsWeb
+            create: (context) => kIsWeb
                 ? AuthTokenSharedDataSource(context.read())
                 : AuthTokenSecureDataSource(context.read())),
         Provider<AuthDataSource>(
-          create: (context) =>
-              AuthDataSource(context.read(), baseUrl: config.baseApiUrl),
+          create: (context) => AuthDataSource(
+            context.read(),
+            baseUrl: config.baseApiUrl,
+          ),
         ),
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(context.read(),
@@ -101,52 +101,58 @@ class AppDependencies {
 
   List<Provider> get _repositories => [
         Provider<AuthRepository>(
-            create: (context) => AuthRepository(context.read())),
-        Provider<UserAuthRepository>(
-            create: (context) => UserAuthRepository(context.read())),
-        Provider<PushNotificationSubscriptionRepository>(
-          create: (context) =>
-              PushNotificationSubscriptionRepository(context.read()),
+          create: (context) => AuthRepository(
+            authDataSource: context.read(),
+            authTokenDataSource: context.read(),
+          ),
         ),
-      ];
-
-  List<Provider> get _useCases => [
-        Provider<LoginUseCase>(
-            create: (context) => LoginUseCase(
-              context.read(),
-              context.read(),
-              context.read(),
-            )),
-        Provider<LogoutUseCase>(
-            create: (context) => LogoutUseCase(
-              context.read(),
-              context.read(),
-              context.read(),
-            )),
-        Provider<FetchAccessTokenUseCase>(
-            create: (context) => FetchAccessTokenUseCase(context.read())),
-      ];
-
-  List<SingleChildWidget> get _blocs => [
-        Provider<UserAccountBlocType>(
-          create: (context) => UserAccountBloc(
+        Provider<PushNotificationRepository>(
+          create: (context) => PushNotificationRepository(
             context.read(),
             context.read(),
           ),
         ),
       ];
 
-  List<Provider> get _interceptors => [
-    Provider<AuthInterceptor>(
-      create: (context) => AuthInterceptor(
-        context.read(),
-        context.read(),
-        context.read(),
-      ),
-    ),{{#analytics}}
-    Provider<AnalyticsInterceptor>(
-      create: (context) => AnalyticsInterceptor(context.read()),
-    ),{{/analytics}}
-  ];
+  List<Provider> get _useCases => [
+        Provider<LoginUseCase>(
+            create: (context) => LoginUseCase(
+                  context.read(),
+                  context.read(),
+                )),
+        Provider<LogoutUseCase>(
+            create: (context) => LogoutUseCase(
+                  context.read(),
+                  context.read(),
+                )),
+        Provider<FetchAccessTokenUseCase>(
+          create: (context) => FetchAccessTokenUseCase(context.read()),
+        ),
+      ];
 
+  List<SingleChildWidget> get _blocs => [
+        RxBlocProvider<CoordinatorBlocType>(
+          create: (context) => CoordinatorBloc(),
+        ),
+        RxBlocProvider<UserAccountBlocType>(
+          create: (context) => UserAccountBloc(
+            logoutUseCase: context.read(),
+            coordinatorBloc: context.read(),
+            authRepository: context.read(),
+          ),
+        ),
+      ];
+
+  List<Provider> get _interceptors => [
+        Provider<AuthInterceptor>(
+          create: (context) => AuthInterceptor(
+            context.read(),
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<AnalyticsInterceptor>(
+          create: (context) => AnalyticsInterceptor(context.read()),
+        ),
+      ];
 }

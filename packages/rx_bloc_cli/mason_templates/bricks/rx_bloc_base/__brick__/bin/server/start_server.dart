@@ -33,6 +33,7 @@ Future main() async {
   final pipeline = const Pipeline()
       // See https://pub.dev/documentation/shelf/latest/shelf/logRequests.html
       .addMiddleware(logRequests())
+      .addMiddleware(_delayMiddleware())
       .addHandler(cascade.handler);
 
   // See https://pub.dev/documentation/shelf/latest/shelf_io/serve.html
@@ -60,3 +61,13 @@ Future<RouteGenerator> _registerControllers() async {
 
   return generator;
 }
+
+Middleware _delayMiddleware({
+  void Function(String message, bool isError)? logger,
+}) =>
+    (innerHandler) => (request) => Future.delayed(
+          const Duration(
+            milliseconds: 300,
+          ),
+          () => innerHandler(request),
+        );

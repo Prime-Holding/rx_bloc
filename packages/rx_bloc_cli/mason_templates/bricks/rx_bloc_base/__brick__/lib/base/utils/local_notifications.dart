@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -23,7 +22,7 @@ const _maxImportanceChannel = AndroidNotificationChannel(
 
 /// Initializes and returns the notification plugin
 Future<FlutterLocalNotificationsPlugin?> _getNotificationPlugin() async {
-  bool isInit = _notificationsPlugin!=null;
+  bool isInit = _notificationsPlugin != null;
 
   if (!isInit) {
     _notificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -31,7 +30,7 @@ Future<FlutterLocalNotificationsPlugin?> _getNotificationPlugin() async {
     if (Platform.isAndroid) {
       await _notificationsPlugin
           ?.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(_maxImportanceChannel);
     }
   }

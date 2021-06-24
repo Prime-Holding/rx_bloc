@@ -10,47 +10,35 @@ import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notification
 
 import '../app/config/app_constants.dart';
 import '../repositories/auth_repository.dart';
-import '../repositories/push_notification_subscription_repository.dart';
-import '../repositories/user_authentication_repository.dart';
+import '../repositories/push_notification_repository.dart';
 
-class LogoutUseCase{
+class LogoutUseCase {
   LogoutUseCase(
     this._authRepository,
-    this._userAuthRepository,
     this._pushSubscriptionRepository,
   );
 
   final AuthRepository _authRepository;
-  final UserAuthRepository _userAuthRepository;
-  final PushNotificationSubscriptionRepository _pushSubscriptionRepository;
+  final PushNotificationRepository _pushSubscriptionRepository;
 
-  Future<void> execute() async {
-
+  Future<bool> execute() async {
     // Unsubscribe user push token
     try {
-      {{#push_notifications}}
-      final pushToken = await FirebaseMessaging.instance.getToken(vapidKey: webVapidKey);
-      if (pushToken!=null) {
-        await _pushSubscriptionRepository.unsubscribePush(pushToken);
+      final pushToken =
+          await FirebaseMessaging.instance.getToken(vapidKey: webVapidKey);
+      if (pushToken != null) {
+        await _pushSubscriptionRepository.unsubscribe(pushToken);
       }
-      {{/push_notifications}}{{^push_notifications}}
-      final pushToken = '12345';
-      await _pushSubscriptionRepository.unsubscribePush(pushToken);{{/push_notifications}}
-
     } catch (e) {
       print(e);
     }
 
     // Perform user logout
-    try {
-      await _userAuthRepository.logout();
+    await _authRepository.logout();
 
-      // Clear locally stored auth data
-      await _authRepository.clearAuthData();
-    } catch (e) {
-      print(e);
-    }
+    // Clear locally stored auth data
+    await _authRepository.clearAuthData();
 
+    return true;
   }
-
 }

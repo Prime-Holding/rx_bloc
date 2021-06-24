@@ -10,19 +10,16 @@ import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notification
 
 import '../app/config/app_constants.dart';
 import '../repositories/auth_repository.dart';
-import '../repositories/push_notification_subscription_repository.dart';
-import '../repositories/user_authentication_repository.dart';
+import '../repositories/push_notification_repository.dart';
 
 class LoginUseCase {
   LoginUseCase(
     this._authRepository,
-    this._userAuthRepository,
     this._pushSubscriptionRepository,
   );
 
   final AuthRepository _authRepository;
-  final UserAuthRepository _userAuthRepository;
-  final PushNotificationSubscriptionRepository _pushSubscriptionRepository;
+  final PushNotificationRepository _pushSubscriptionRepository;
 
   Future<bool> execute({
     required String username,
@@ -30,30 +27,22 @@ class LoginUseCase {
   }) async {
     if (username.isEmpty || password.isEmpty) return false;
 
-    // Perform user login
-    try {
-      final authToken = await _userAuthRepository.authenticate(
-          email: username, password: password);
+    final authToken = await _authRepository.authenticate(
+      email: username,
+      password: password,
+    );
 
-      // Save response tokens
-      await _authRepository.saveToken(authToken.token);
-      await _authRepository.saveRefreshToken(authToken.refreshToken);
-    } catch (e) {
-      print(e);
-      return false;
-    }
+    // Save response tokens
+    await _authRepository.saveToken(authToken.token);
+    await _authRepository.saveRefreshToken(authToken.refreshToken);
 
     // Subscribe user push token
     try {
-      {{#push_notifications}}
-      final pushToken = await FirebaseMessaging.instance.getToken(vapidKey: webVapidKey);
-      if (pushToken!=null) {
-        await _pushSubscriptionRepository.subscribePush(pushToken);
+      final pushToken =
+          await FirebaseMessaging.instance.getToken(vapidKey: webVapidKey);
+      if (pushToken != null) {
+        await _pushSubscriptionRepository.subscribe(pushToken);
       }
-      {{/push_notifications}}{{^push_notifications}}
-      final pushToken = '12345';
-      await _pushSubscriptionRepository.subscribePush(pushToken);{{/push_notifications}}
-
     } catch (e) {
       print(e);
     }

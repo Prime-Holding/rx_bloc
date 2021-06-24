@@ -8,8 +8,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/data_sources/domain/firebase/firebase_messaging_data_source.dart';
-import '../../base/repositories/push_notification_subscription_repository.dart';
+import '../../base/repositories/push_notification_repository.dart';
 
 part 'notifications_bloc.rxb.g.dart';
 part 'notifications_bloc_extensions.dart';
@@ -31,14 +30,16 @@ abstract class NotificationsBlocStates {
 
 @RxBloc()
 class NotificationsBloc extends $NotificationsBloc {
-  NotificationsBloc(this._notificationsRepo, this._firebaseMessagingDataSource);
+  NotificationsBloc(PushNotificationRepository notificationsRepo)
+      : _notificationsRepo = notificationsRepo;
 
-  final PushNotificationSubscriptionRepository _notificationsRepo;
-  final FirebaseMessagingDataSource _firebaseMessagingDataSource;
+  final PushNotificationRepository _notificationsRepo;
 
   @override
   Stream<bool> _mapToPermissionsAuthorizedState() => Rx.merge([
-        _$sendMessageEvent.sendMessage(this),
-        _$requestNotificationPermissionsEvent.requestPermissions(this),
+        _$sendMessageEvent.sendMessage(_notificationsRepo),
+        _$requestNotificationPermissionsEvent.requestPermissions(
+          _notificationsRepo,
+        ),
       ]).setResultStateHandler(this).whereSuccess();
 }

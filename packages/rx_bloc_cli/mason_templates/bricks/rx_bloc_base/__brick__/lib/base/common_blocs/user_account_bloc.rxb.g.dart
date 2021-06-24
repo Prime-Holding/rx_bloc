@@ -22,29 +22,11 @@ abstract class $UserAccountBloc extends RxBlocBase
         UserAccountBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [setUsername]
-  final _$setUsernameEvent = BehaviorSubject<String>.seeded('');
-
-  /// Тhe [Subject] where events sink to by calling [setPassword]
-  final _$setPasswordEvent = BehaviorSubject<String>.seeded('');
-
-  /// Тhe [Subject] where events sink to by calling [login]
-  final _$loginEvent = PublishSubject<void>();
-
   /// Тhe [Subject] where events sink to by calling [logout]
   final _$logoutEvent = PublishSubject<void>();
 
   /// The state of [loggedIn] implemented in [_mapToLoggedInState]
   late final Stream<bool> _loggedInState = _mapToLoggedInState();
-
-  /// The state of [username] implemented in [_mapToUsernameState]
-  late final Stream<String> _usernameState = _mapToUsernameState();
-
-  /// The state of [password] implemented in [_mapToPasswordState]
-  late final Stream<String> _passwordState = _mapToPasswordState();
-
-  /// The state of [showErrors] implemented in [_mapToShowErrorsState]
-  late final Stream<bool> _showErrorsState = _mapToShowErrorsState();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -53,28 +35,10 @@ abstract class $UserAccountBloc extends RxBlocBase
   late final Stream<String> _errorsState = _mapToErrorsState();
 
   @override
-  void setUsername(String username) => _$setUsernameEvent.add(username);
-
-  @override
-  void setPassword(String password) => _$setPasswordEvent.add(password);
-
-  @override
-  void login() => _$loginEvent.add(null);
-
-  @override
   void logout() => _$logoutEvent.add(null);
 
   @override
   Stream<bool> get loggedIn => _loggedInState;
-
-  @override
-  Stream<String> get username => _usernameState;
-
-  @override
-  Stream<String> get password => _passwordState;
-
-  @override
-  Stream<bool> get showErrors => _showErrorsState;
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -83,12 +47,6 @@ abstract class $UserAccountBloc extends RxBlocBase
   Stream<String> get errors => _errorsState;
 
   Stream<bool> _mapToLoggedInState();
-
-  Stream<String> _mapToUsernameState();
-
-  Stream<String> _mapToPasswordState();
-
-  Stream<bool> _mapToShowErrorsState();
 
   Stream<bool> _mapToIsLoadingState();
 
@@ -102,9 +60,6 @@ abstract class $UserAccountBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$setUsernameEvent.close();
-    _$setPasswordEvent.close();
-    _$loginEvent.close();
     _$logoutEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
