@@ -40,7 +40,7 @@ class UserAccountBloc extends $UserAccountBloc {
         .logoutUser(_logoutUseCase)
         .setResultStateHandler(this)
         .emitLoggedOutToCoordinator(_coordinatorBloc)
-        .listen((event) {})
+        .listen((_) {})
         .disposedBy(_compositeSubscription);
   }
 

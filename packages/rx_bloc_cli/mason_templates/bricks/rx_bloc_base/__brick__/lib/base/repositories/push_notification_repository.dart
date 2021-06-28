@@ -25,6 +25,8 @@ class PushNotificationRepository {
         pushToken,
       ));
 
+  // Sends a push notification to the server which will be broadcast to all
+  // logged in users.
   Future<void> sendPushMessage(
           {required String message, String? title, int? delay}) =>
       _pushDataSource.sendPushMessage(
