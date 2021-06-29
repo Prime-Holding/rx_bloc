@@ -140,5 +140,9 @@ List<Hotel> _sortHotels(List<Hotel> hotels, SortBy sortType) {
     );
   }
 
+  if (sortType == SortBy.none) {
+    hotels.sort((h1, h2) => h1.id.toLowerCase().compareTo(h2.id.toLowerCase()));
+  }
+
   return hotels;
 }

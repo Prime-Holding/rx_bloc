@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc_list/models.dart';
 
@@ -26,23 +25,23 @@ class PaginatedHotelsRepository implements HotelsRepository {
     );
   }
 
-  Future<List<QueryDocumentSnapshot>> getHotelsPaginated({
+  Future<PaginatedList<Hotel>> getHotelsPaginated({
     required HotelSearchFilters filters,
     required int pageSize,
     required int page,
-    QueryDocumentSnapshot? lastFetchedDocument,
   }) async =>
-      getHotels(filters: filters, lastFetched: lastFetchedDocument);
+      getHotels(filters: filters, pageSize: pageSize, page: page);
 
   @override
   Future<List<Hotel>> getFavoriteHotels() => _repository.getFavoriteHotels();
 
   @override
-  Future<List<QueryDocumentSnapshot>> getHotels({
+  Future<PaginatedList<Hotel>> getHotels({
+    required int page,
+    required int pageSize,
     HotelSearchFilters? filters,
-    QueryDocumentSnapshot? lastFetched,
   }) =>
-      _repository.getHotels(filters: filters, lastFetched: lastFetched);
+      _repository.getHotels(filters: filters, pageSize: pageSize, page: page);
 
   @override
   Future<Hotel> favoriteHotel(Hotel hotel, {required bool isFavorite}) =>
@@ -55,10 +54,6 @@ class PaginatedHotelsRepository implements HotelsRepository {
   @override
   Future<HotelFullExtraDetails> fetchFullExtraDetails(String hotelId) =>
       _repository.fetchFullExtraDetails(hotelId);
-
-  @override
-  Future<String> fetchFeaturedImage(Hotel hotel) =>
-      _repository.fetchFeaturedImage(hotel);
 }
 
 extension _HotelList on List<Hotel> {

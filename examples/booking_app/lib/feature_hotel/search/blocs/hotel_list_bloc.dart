@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
 import '../../../base/repositories/paginated_hotels_repository.dart';
+import '../../../constants.dart';
 
 part 'hotel_list_bloc.rxb.g.dart';
 part 'hotel_list_bloc_extensions.dart';
@@ -79,14 +79,7 @@ class HotelListBloc extends $HotelListBloc {
       ),
     ])
         .startWith(_ReloadData.withInitial())
-        .where((event) => _noMoreResults.value == false)
-        .fetchHotels(
-            repository, _hotels, _lastFetchedDocumentSnapshot, _noMoreResults)
-        .doOnData((event) {
-          if (((event as ResultSuccess).data as List).length < 10) {
-            _noMoreResults.add(true);
-          }
-        })
+        .fetchHotels(repository, _hotels)
         .mergeWithPaginatedList(_hotels)
         .bind(_hotels)
         .disposedBy(_compositeSubscription);
@@ -99,15 +92,10 @@ class HotelListBloc extends $HotelListBloc {
   // MARK: - Subjects
   final _hotels = BehaviorSubject<PaginatedList<Hotel>>.seeded(
     PaginatedList(
-      pageSize: 10,
+      pageSize: pageSize,
       list: [],
     ),
   );
-
-  final _lastFetchedDocumentSnapshot =
-      BehaviorSubject<QueryDocumentSnapshot?>();
-
-  final _noMoreResults = BehaviorSubject<bool>.seeded(false);
 
   @override
   Stream<DateRangeFilterData> _mapToDateRangeFilterDataState() =>
@@ -135,8 +123,6 @@ class HotelListBloc extends $HotelListBloc {
   @override
   void dispose() {
     _hotels.close();
-    _noMoreResults.close();
-    _lastFetchedDocumentSnapshot.close();
     super.dispose();
   }
 }

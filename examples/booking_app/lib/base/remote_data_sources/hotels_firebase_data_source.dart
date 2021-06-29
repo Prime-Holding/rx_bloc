@@ -1,25 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elastic_client/elastic_client.dart' as elastic_client;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:favorites_advanced_base/core.dart';
+import 'package:rx_bloc_list/models.dart';
 
 import 'hotels_data_source.dart';
 
 class HotelsFirebaseDataSource implements HotelsDataSource {
-  factory HotelsFirebaseDataSource() {
-    _instance ??= HotelsFirebaseDataSource._();
-
-    return _instance!;
-  }
-
-  HotelsFirebaseDataSource._() {
+  HotelsFirebaseDataSource() {
     hotelsReference = fireStore.collection('hotels');
     hotelsExtraDetailsReference = fireStore.collection('hotelsExtraDetails');
     hotelsFullExtraDetailsReference =
         fireStore.collection('hotelsFullExtraDetails');
   }
 
-  static HotelsFirebaseDataSource? _instance;
   final fireStore = FirebaseFirestore.instance;
   final fireStorage = firebase_storage.FirebaseStorage.instance;
 
@@ -58,19 +51,21 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
   }
 
   @override
-  Future<List<QueryDocumentSnapshot>> getHotels(
-      {HotelSearchFilters? filters, QueryDocumentSnapshot? lastFetched}) async {
-    var querySnapshot = getFirebaseFilteredQuery(filters);
+  Future<PaginatedList<Hotel>> getHotels({
+    required int page,
+    required int pageSize,
+    HotelSearchFilters? filters,
+  }) async {
+    final querySnapshot = await hotelsReference.get();
+    final hotels = querySnapshot.docs.asHotelList();
 
-    querySnapshot = querySnapshot.orderBy('id');
-    if (lastFetched != null) {
-      querySnapshot = querySnapshot.startAfterDocument(lastFetched);
-    }
+    final hotelsFiltered = HotelsService.applyLocalFilters(hotels, filters);
 
-    querySnapshot = querySnapshot.limit(10);
-
-    final snap = await querySnapshot.get();
-    return snap.docs;
+    return PaginatedList(
+      list: hotelsFiltered,
+      pageSize: pageSize,
+      totalCount: hotelsFiltered.length,
+    );
   }
 
   @override
@@ -141,70 +136,6 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
     await insertBatch.commit();
   }
-
-  Query getFirebaseFilteredQuery(HotelSearchFilters? filters) {
-    /// WARNING !!! Firebase allows comparison operators(>, >=, <=, <)
-    /// to be applied only on only one field !!!
-
-    Query query = hotelsReference;
-
-    // If there are any other filters, apply them
-    if (filters?.advancedFiltersOn ?? false) {
-      if (filters!.dateRange != null) {
-        final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
-            filters.dateRange!.start.millisecondsSinceEpoch);
-        final endAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
-            filters.dateRange!.end.millisecondsSinceEpoch);
-        query = query.where(
-          'workingDate',
-          isGreaterThanOrEqualTo: startAtTimestamp,
-        );
-
-        query = query.where(
-          'workingDate',
-          isLessThanOrEqualTo: endAtTimestamp,
-        );
-      }
-
-      if (filters.roomCapacity > 0) {
-        query = query.where(
-          'roomCapacity',
-          isEqualTo: filters.roomCapacity,
-        );
-      }
-
-      if (filters.personCapacity > 0) {
-        query = query.where(
-          'personCapacity',
-          isEqualTo: filters.personCapacity,
-        );
-      }
-    }
-
-    if (filters!.sortBy != SortBy.none) {
-      if (filters.sortBy == SortBy.priceAsc) {
-        query = query.orderBy('perNight');
-      }
-
-      if (filters.sortBy == SortBy.priceDesc) {
-        query = query.orderBy('perNight', descending: true);
-      }
-
-      if (filters.sortBy == SortBy.distanceAsc) {
-        query = query.orderBy('dist', descending: true);
-      }
-
-      if (filters.sortBy == SortBy.distanceDesc) {
-        query = query.orderBy('dist', descending: false);
-      }
-    }
-
-    return query;
-  }
-
-  @override
-  Future<String> fetchFeaturedImage(Hotel hotel) =>
-      fireStorage.ref().child('images').child(hotel.image).getDownloadURL();
 }
 
 extension FireBaseCollection on List<QueryDocumentSnapshot<Object?>> {

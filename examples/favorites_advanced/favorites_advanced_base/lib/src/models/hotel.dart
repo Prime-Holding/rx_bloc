@@ -114,8 +114,8 @@ class Hotel extends Equatable implements Entity {
           isFavorite: json['isFavorite'] as bool,
           roomCapacity: json['roomCapacity'] as int,
           personCapacity: json['personCapacity'] as int,
-          workingDate: json['workingDate'].toDate() as DateTime,
-          dist: json['dist'] as double,
+          workingDate: DateTime.now(),
+          dist: double.parse(json['dist'].toString()),
         );
 
   Map<String, Object?> toJson() {
