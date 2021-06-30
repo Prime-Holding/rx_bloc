@@ -43,4 +43,7 @@ class PushNotificationRepository {
     final settings = await _firebaseMessaging.requestPermission();
     return settings.authorizationStatus != AuthorizationStatus.denied;
   }
+
+  Future<String?> getToken({String? vapidKey}) =>
+      _firebaseMessaging.getToken(vapidKey: vapidKey);
 }

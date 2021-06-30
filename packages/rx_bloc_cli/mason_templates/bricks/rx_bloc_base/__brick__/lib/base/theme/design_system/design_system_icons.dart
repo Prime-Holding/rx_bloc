@@ -19,4 +19,6 @@ class DesignSystemIcon {
   IconData get info => Icons.info;
 
   IconData get login => Icons.login;
+
+  IconData get avatar => Icons.person;
 }

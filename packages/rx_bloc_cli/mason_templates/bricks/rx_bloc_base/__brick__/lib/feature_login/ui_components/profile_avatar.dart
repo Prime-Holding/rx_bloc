@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_blocs/user_account_bloc.dart';
@@ -65,10 +66,10 @@ class ProfileAvatar extends StatelessWidget {
           if (selected == _notificationKey) {
             context.router.push(const NotificationsRoute());
           } else if (selected == _logoutKey) {
-            RxBlocProvider.of<UserAccountBlocType>(context).events.logout();
+            context.read<UserAccountBlocType>().events.logout();
           }
         },
-        child: const Icon(Icons.person),
+        child: Icon(context.designSystem.icons.avatar),
       );
 
   /// endregion

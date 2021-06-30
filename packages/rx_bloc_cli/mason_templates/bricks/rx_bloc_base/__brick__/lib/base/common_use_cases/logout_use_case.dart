@@ -5,9 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-{{#push_notifications}}
-import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
-
 import '../app/config/app_constants.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
@@ -25,7 +22,7 @@ class LogoutUseCase {
     // Unsubscribe user push token
     try {
       final pushToken =
-          await FirebaseMessaging.instance.getToken(vapidKey: webVapidKey);
+          await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
       if (pushToken != null) {
         await _pushSubscriptionRepository.unsubscribe(pushToken);
       }

@@ -79,8 +79,7 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  RxBlocBuilder<LoginBlocType, bool> _buildLogInButton() =>
-      RxBlocBuilder<LoginBlocType, bool>(
+  Widget _buildLogInButton() => RxBlocBuilder<LoginBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
         builder: (context, loadingState, bloc) => PrimaryButton(
           isLoading: loadingState.hasData ? loadingState.data! : false,
@@ -89,16 +88,14 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  RxBlocListener<LoginBlocType, bool> _buildLogoutListener() =>
-      RxBlocListener<LoginBlocType, bool>(
+  Widget _buildLogoutListener() => RxBlocListener<LoginBlocType, bool>(
         state: (bloc) => bloc.states.loggedIn,
         listener: (_, success) {
           if (success ?? false) widget.onLoginSuccess?.call();
         },
       );
 
-  RxBlocListener<LoginBlocType, String> _buildErrorListener() =>
-      RxBlocListener<LoginBlocType, String>(
+  Widget _buildErrorListener() => RxBlocListener<LoginBlocType, String>(
         state: (bloc) => bloc.states.errors,
         listener: (context, error) {
           if (error?.isEmpty ?? true) return;

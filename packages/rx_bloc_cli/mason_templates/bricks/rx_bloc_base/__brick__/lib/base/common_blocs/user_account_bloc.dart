@@ -29,11 +29,11 @@ abstract class UserAccountBlocStates {
 
 @RxBloc()
 class UserAccountBloc extends $UserAccountBloc {
-  UserAccountBloc(
-      {required LogoutUseCase logoutUseCase,
-      required CoordinatorBlocType coordinatorBloc,
-      required AuthRepository authRepository})
-      : _logoutUseCase = logoutUseCase,
+  UserAccountBloc({
+    required LogoutUseCase logoutUseCase,
+    required CoordinatorBlocType coordinatorBloc,
+    required AuthRepository authRepository,
+  })  : _logoutUseCase = logoutUseCase,
         _coordinatorBloc = coordinatorBloc,
         _authRepository = authRepository {
     _$logoutEvent

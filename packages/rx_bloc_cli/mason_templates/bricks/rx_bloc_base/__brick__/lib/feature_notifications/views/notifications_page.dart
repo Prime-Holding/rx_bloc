@@ -62,24 +62,29 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                     _buildButton(
                       context,
                       context.l10n.notificationPermissionRequestText,
-                      () => RxBlocProvider.of<NotificationsBlocType>(context)
+                      () => context
+                          .read<NotificationsBlocType>()
                           .events
                           .requestNotificationPermissions(),
                     ),
                     _buildButton(
                       context,
                       context.l10n.notificationShowText,
-                      () => RxBlocProvider.of<NotificationsBlocType>(context)
+                      () => context
+                          .read<NotificationsBlocType>()
                           .events
                           .sendMessage('This is a notification!'),
                     ),
                     _buildButton(
                       context,
                       context.l10n.notificationShowDelayedText,
-                      () => RxBlocProvider.of<NotificationsBlocType>(context)
+                      () => context
+                          .read<NotificationsBlocType>()
                           .events
-                          .sendMessage('This is a delayed notification!',
-                              delay: 5),
+                          .sendMessage(
+                            'This is a delayed notification!',
+                            delay: 5,
+                          ),
                     ),
                     RxBlocListener<NotificationsBlocType, bool>(
                       state: (bloc) => bloc.states.permissionsAuthorized,
