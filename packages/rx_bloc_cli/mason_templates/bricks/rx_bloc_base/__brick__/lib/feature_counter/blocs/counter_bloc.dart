@@ -5,12 +5,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/extensions/stream_extensions.dart';
 import '../../base/models/count.dart';
 import '../../base/repositories/counter_repository.dart';
 

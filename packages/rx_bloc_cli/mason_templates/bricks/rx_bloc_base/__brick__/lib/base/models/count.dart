@@ -15,7 +15,6 @@ class Count {
 
   final int value;
 
-  factory Count.fromJson(Map<String, dynamic> json) =>
-      _$CountFromJson(json);
+  factory Count.fromJson(Map<String, dynamic> json) => _$CountFromJson(json);
   Map<String, dynamic> toJson() => _$CountToJson(this);
 }

@@ -26,28 +26,3 @@ extension _CounterExtension on CounterBloc {
             .switchMap((_) => _repository.getCurrent().asResultStream()),
       ]);
 }
-
-extension _ToError on Stream<Exception> {
-  /// TODO: Implement error event-to-state logic
-  Stream<String> toMessage() =>
-      map((errorState) => errorState.toString().replaceAll('Exception:', ''));
-
-  /// Map DioErrors to present readable custom messages in snack bars
-  Stream<Exception> mapFromDio() => map((exception) {
-        if (exception is DioError) {
-          final response = exception.response;
-
-          if (response == null) {
-            return Exception('''It looks like the counter server is not running.
-You can start it by executing bin/start_server.sh''');
-          }
-
-          if (response.statusCode == 422) {
-            final message = jsonDecode(exception.response?.data)['title'];
-            return Exception(message);
-          }
-        }
-
-        return exception;
-      });
-}
