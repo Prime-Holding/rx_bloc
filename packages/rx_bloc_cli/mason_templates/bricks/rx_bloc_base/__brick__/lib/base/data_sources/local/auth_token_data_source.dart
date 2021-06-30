@@ -8,7 +8,6 @@
 /// Persist and get auth information in/from data source
 /// so this information will be available trough the app
 abstract class AuthTokenDataSource {
-
   /// Get stored access token
   Future<String?> getToken();
 

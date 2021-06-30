@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:dio/dio.dart';
+
 import '../../../common_use_cases/fetch_access_token_use_case.dart';
 import '../../../common_use_cases/logout_use_case.dart';
 
@@ -23,10 +24,10 @@ import '../../../common_use_cases/logout_use_case.dart';
 /// your own logic, regarding needs of your application.
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(
-      this._logoutUseCase,
-      this._fetchAccessTokenUseCase,
-      this._httpClient,
-      );
+    this._logoutUseCase,
+    this._fetchAccessTokenUseCase,
+    this._httpClient,
+  );
 
   final LogoutUseCase _logoutUseCase;
   final FetchAccessTokenUseCase _fetchAccessTokenUseCase;
@@ -51,11 +52,11 @@ class AuthInterceptor extends Interceptor {
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final newToken = await _fetchAccessTokenUseCase
-          .execute(forceFetchNewToken: true);
+      final newToken =
+          await _fetchAccessTokenUseCase.execute(forceFetchNewToken: true);
       if (newToken == null) {
         await _logoutUseCase.execute();
-      }else {
+      } else {
         _httpClient.options
           ..headers['Authorization'] = 'Bearer $newToken'
           ..baseUrl = err.requestOptions.baseUrl

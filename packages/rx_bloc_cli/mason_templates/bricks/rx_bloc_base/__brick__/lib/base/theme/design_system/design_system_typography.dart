@@ -122,8 +122,24 @@ class DesignSystemTypography {
         color: _designSystemColor.alertSecondaryTitleColor,
       );
 
+  /// UI component typography
+
+  TextStyle get outlinedButtonText => TextStyle(
+        fontWeight: _medium,
+        color: _designSystemColor.outlinedButtonTextColor,
+        fontSize: 14,
+      );
+
+  /// App specific typography
+
   TextStyle get counterTitle => TextStyle(
         fontSize: 12,
         color: _designSystemColor.secondaryIconColor,
+      );
+
+  TextStyle get fadedButtonText => TextStyle(
+        fontWeight: _medium,
+        color: _designSystemColor.reverseBackgroundColor.withOpacity(0.6),
+        fontSize: 14,
       );
 }

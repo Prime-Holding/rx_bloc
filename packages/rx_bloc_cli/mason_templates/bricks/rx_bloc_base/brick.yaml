@@ -4,5 +4,7 @@ vars:
   - project_name
   - organization_name
   - domain_name
+  - uses_firebase
   - analytics
+  - push_notifications
   - http-client

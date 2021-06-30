@@ -1,37 +1,42 @@
 import 'package:shelf/shelf.dart';
 
-import '../utils/response_builder.dart';
+import '../utils/api_controller.dart';
 
-class CountController {
+// ignore_for_file: cascade_invocations
+
+class CountController extends ApiController {
   var _count = 0;
 
-  final _responseBuilder = ResponseBuilder();
-
-  Future<Response> getCountHandler(Request request) async => Future.delayed(
-        const Duration(milliseconds: 300),
-        () => _responseBuilder.buildOK({'value': _count}),
-      );
-
-  Future<Response> incrementCountHandler(Request request) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    try {
-      _increment();
-      return _responseBuilder.buildOK({'value': _count});
-    } on Exception catch (e) {
-      return _responseBuilder.buildUnprocessableEntity(e);
-    }
+  @override
+  void registerRequests(WrappedRouter router) {
+    router.addRequest(
+      RequestType.GET,
+      '/api/count',
+      getCountHandler,
+    );
+    router.addRequest(
+      RequestType.POST,
+      '/api/count/increment',
+      incrementCountHandler,
+    );
+    router.addRequest(
+      RequestType.POST,
+      '/api/count/decrement',
+      decrementCountHandler,
+    );
   }
 
-  Future<Response> decrementCountHandler(Request request) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+  Response getCountHandler(Request request) =>
+      responseBuilder.buildOK(data: {'value': _count});
 
-    try {
-      _decrement();
-      return _responseBuilder.buildOK({'value': _count});
-    } on Exception catch (e) {
-      return _responseBuilder.buildUnprocessableEntity(e);
-    }
+  Response incrementCountHandler(Request request) {
+    _increment();
+    return responseBuilder.buildOK(data: {'value': _count});
+  }
+
+  Response decrementCountHandler(Request request) {
+    _decrement();
+    return responseBuilder.buildOK(data: {'value': _count});
   }
 
   void _increment() {
