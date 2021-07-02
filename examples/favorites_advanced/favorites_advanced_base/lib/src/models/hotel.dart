@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:favorites_advanced_base/src/models/entity.dart';
-import 'package:favorites_advanced_base/src/models/hotel_extra_details.dart';
-import 'package:favorites_advanced_base/src/models/hotel_full_extra_details.dart';
+import 'package:favorites_advanced_base/models.dart';
 
 // ignore: must_be_immutable
 class Hotel extends Equatable implements Entity {

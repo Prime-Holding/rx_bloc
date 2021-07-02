@@ -1,6 +1,6 @@
 import 'package:booking_app/base/remote_data_sources/hotels_data_source.dart';
 import 'package:favorites_advanced_base/core.dart';
-import 'package:favorites_advanced_base/src/models/hotel_search_filters.dart';
+import 'package:favorites_advanced_base/models.dart';
 import 'package:rx_bloc_list/models.dart';
 
 class HotelsRepository {

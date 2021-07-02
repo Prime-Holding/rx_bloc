@@ -109,6 +109,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 );
               },
               buildError: (context, list, bloc) => ErrorRetryWidget(
+                textError: 'Firebase does not support multiple filters '
+                    'or LIKE query search',
                 onReloadTap: () => bloc.events.reload(
                   reset: true,
                   fullReset: true,

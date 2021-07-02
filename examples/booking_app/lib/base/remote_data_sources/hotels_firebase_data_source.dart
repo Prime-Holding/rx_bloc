@@ -15,6 +15,7 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
   final fireStore = FirebaseFirestore.instance;
   final fireStorage = firebase_storage.FirebaseStorage.instance;
+  QueryDocumentSnapshot? lastFetchedRecord;
 
   late CollectionReference hotelsReference;
   late CollectionReference hotelsExtraDetailsReference;
@@ -56,15 +57,23 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
     required int pageSize,
     HotelSearchFilters? filters,
   }) async {
-    final querySnapshot = await hotelsReference.get();
-    final hotels = querySnapshot.docs.asHotelList();
+    var querySnapshot = getFirebaseFilteredQuery(filters);
 
-    final hotelsFiltered = HotelsService.applyLocalFilters(hotels, filters);
+    if (lastFetchedRecord != null && page != 0) {
+      querySnapshot = querySnapshot.startAfterDocument(lastFetchedRecord!);
+    }
+
+    querySnapshot = querySnapshot.limit(pageSize);
+
+    final snap = await querySnapshot.get();
+    lastFetchedRecord = snap.docs.last;
+    print(lastFetchedRecord!.id);
+    final hotels = snap.docs.asHotelList();
 
     return PaginatedList(
-      list: hotelsFiltered,
+      list: hotels,
       pageSize: pageSize,
-      totalCount: hotelsFiltered.length,
+      totalCount: 0,
     );
   }
 
@@ -135,6 +144,71 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
     });
 
     await insertBatch.commit();
+  }
+
+  Query getFirebaseFilteredQuery(HotelSearchFilters? filters) {
+    /// WARNING !!! Firebase allows comparison operators(>, >=, <=, <)
+    /// to be applied only on only one field !!!
+
+    if ((filters!.roomCapacity > 0 && filters.personCapacity > 0) ||
+        filters.query != '') {
+      throw Exception('Firebase does not support multiple filters');
+    }
+
+    Query query = hotelsReference;
+
+    // If there are any other filters, apply them
+    if (filters.advancedFiltersOn == true) {
+      if (filters.dateRange != null) {
+        final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+            filters.dateRange!.start.millisecondsSinceEpoch);
+        final endAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+            filters.dateRange!.end.millisecondsSinceEpoch);
+        query = query.where(
+          'workingDate',
+          isGreaterThanOrEqualTo: startAtTimestamp,
+        );
+
+        query = query.where(
+          'workingDate',
+          isLessThanOrEqualTo: endAtTimestamp,
+        );
+      }
+
+      if (filters.roomCapacity > 0) {
+        query = query.where(
+          'roomCapacity',
+          isEqualTo: filters.roomCapacity,
+        );
+      }
+
+      if (filters.personCapacity > 0) {
+        query = query.where(
+          'personCapacity',
+          isEqualTo: filters.personCapacity,
+        );
+      }
+    }
+
+    if (filters.sortBy != SortBy.none) {
+      if (filters.sortBy == SortBy.priceAsc) {
+        query = query.orderBy('perNight');
+      }
+
+      if (filters.sortBy == SortBy.priceDesc) {
+        query = query.orderBy('perNight', descending: true);
+      }
+
+      if (filters.sortBy == SortBy.distanceAsc) {
+        query = query.orderBy('dist', descending: true);
+      }
+
+      if (filters.sortBy == SortBy.distanceDesc) {
+        query = query.orderBy('dist', descending: false);
+      }
+    }
+
+    return query;
   }
 }
 

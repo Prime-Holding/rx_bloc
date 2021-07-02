@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:booking_app/base/remote_data_sources/hotels_firebase_data_source.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc_list/models.dart';
@@ -34,7 +33,7 @@ class HotelsFirebaseAlgoliaDataSource extends HotelsFirebaseDataSource {
   }
 
   String getQueryString(int page, int pageSize, HotelSearchFilters? filters) {
-    var qParams = <String, dynamic>{};
+    final qParams = <String, dynamic>{};
 
     qParams['page'] = page;
     qParams['page_size'] = pageSize;
