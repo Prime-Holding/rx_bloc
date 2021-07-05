@@ -10,7 +10,7 @@ abstract class RxBlocGeneratorBase(private val name: String,
                                    withDefaultStates: Boolean,
                                    includeExtensions: Boolean,
                                    includeNullSafety: Boolean,
-                                   templateName: String) {
+                                   templateName: String): RxGeneratorBase(name, withDefaultStates, includeExtensions, includeNullSafety, templateName) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
     private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"
@@ -45,16 +45,10 @@ abstract class RxBlocGeneratorBase(private val name: String,
         }
     }
 
-    abstract fun fileName(): String
-
-    fun generate(): String {
+    override fun generate(): String {
         val substitutor = StrSubstitutor(templateValues)
         return substitutor.replace(templateString)
     }
 
     private fun dollarPascalCase(): String = "$" + pascalCase()
-    private fun pascalCase(): String = name.toUpperCamelCase().replace("Bloc", "")
-
-    fun snakeCase() = name.toLowerSnakeCase().replace("_bloc", "")
-    fun fileExtension() = "dart"
 }

@@ -8,6 +8,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
+import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 
 class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
 
@@ -42,7 +43,7 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
     }
 
-    protected fun generate(mainSourceGenerators: List<RxBlocGeneratorBase>) {
+    protected fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         val view = LangDataKeys.IDE_VIEW.getData(dataContext)
         val directory = view?.orChooseDirectory
@@ -58,7 +59,7 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
     }
 
-    private fun createSourceFile(project: Project, generator: RxBlocGeneratorBase, directory: PsiDirectory) {
+    private fun createSourceFile(project: Project, generator: RxGeneratorBase, directory: PsiDirectory) {
         val fileName = generator.fileName()
         val existingPsiFile = directory.findFile(fileName)
         if (existingPsiFile != null) {

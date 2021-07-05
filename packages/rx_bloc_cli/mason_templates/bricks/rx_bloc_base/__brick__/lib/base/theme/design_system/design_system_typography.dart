@@ -1,3 +1,10 @@
+// Copyright (c) 2021, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'package:flutter/material.dart';
 
 import 'design_system_colors.dart';
@@ -115,8 +122,24 @@ class DesignSystemTypography {
         color: _designSystemColor.alertSecondaryTitleColor,
       );
 
+  /// UI component typography
+
+  TextStyle get outlinedButtonText => TextStyle(
+        fontWeight: _medium,
+        color: _designSystemColor.outlinedButtonTextColor,
+        fontSize: 14,
+      );
+
+  /// App specific typography
+
   TextStyle get counterTitle => TextStyle(
         fontSize: 12,
         color: _designSystemColor.secondaryIconColor,
+      );
+
+  TextStyle get fadedButtonText => TextStyle(
+        fontWeight: _medium,
+        color: _designSystemColor.reverseBackgroundColor.withOpacity(0.6),
+        fontSize: 14,
       );
 }

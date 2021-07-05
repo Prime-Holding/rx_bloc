@@ -183,12 +183,10 @@ Lets take a look at how to use `RxBlocBuilder` to hook up a `CounterPage` widget
 
 ### CounterBloc
 ```dart
-import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rxdart/rxdart.dart';
+/// This BloC and its event and state contracts usually
+/// resides in counter_bloc.dart
 
-part 'counter_bloc.rxb.g.dart'; // Refer to the auto-generated boilerplate code
-
-/// A class containing all incoming events to the BloC
+/// A contract class containing all events.
 abstract class CounterBlocEvents {
   /// Increment the count
   void increment();
@@ -197,135 +195,313 @@ abstract class CounterBlocEvents {
   void decrement();
 }
 
-/// A class containing all states (outputs) of the bloc.
+/// A contract class containing all states for our multi state BloC.
 abstract class CounterBlocStates {
   /// The count of the Counter
   ///
   /// It can be controlled by executing [CounterBlocEvents.increment] and
   /// [CounterBlocEvents.decrement]
   ///
-  Stream<String> get count;
+  Stream<int> get count;
 
-  /// The state of the increment action control
-  Stream<bool> get incrementEnabled;
+  /// Loading state
+  Stream<bool> get isLoading;
 
-  /// The state of the decrement action control
-  Stream<bool> get decrementEnabled;
-
-  /// The info message caused by changing action controls' state
-  Stream<String> get infoMessage;
+  /// Error messages
+  Stream<String> get errors;
 }
 
+/// A BloC responsible for count calculations
 @RxBloc()
 class CounterBloc extends $CounterBloc {
-  /// The internal storage of the count
-  final _count = BehaviorSubject.seeded(0);
+  /// Default constructor
+  CounterBloc(this._repository);
 
-  /// Acts as a container for multiple subscriptions that can be canceled at once
-  final _compositeSubscription = CompositeSubscription();
+  final CounterRepository _repository;
 
-  CounterBloc() {
-    MergeStream([
-      _$incrementEvent.map((_) => ++_count.value),
-      _$decrementEvent.map((_) => --_count.value)
-    ]).bind(_count).disposedBy(_compositeSubscription);
-  }
-
-  /// Map the count digit to presentable data
+  /// Map increment and decrement events to `count` state
   @override
-  Stream<String> _mapToCountState() => _count.map((count) => count.toString());
-
-  /// Map the count digit to a decrement enabled state.
-  @override
-  Stream<bool> _mapToDecrementEnabledState() => _count.map((count) => count > 0);
-
-  /// Map the count digit to a increment enabled state.
-  @override
-  Stream<bool> _mapToIncrementEnabledState() => _count.map((count) => count < 5);
-
-  /// Map the increment and decrement enabled state to a informational message.
-  @override
-  Stream<String> _mapToInfoMessageState() => MergeStream([
-        incrementEnabled.mapToMaximumMessage(),
-        decrementEnabled.mapToMinimumMessage(),
-      ]).skip(1).throttleTime(Duration(seconds: 1));
+  Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
+        // On increment.
+        _$incrementEvent
+            .flatMap((_) => _repository.increment().asResultStream()),
+        // On decrement.
+        _$decrementEvent
+            .flatMap((_) => _repository.decrement().asResultStream()),
+      ])
+          // This automatically handles the error and loading state.
+          .setResultStateHandler(this)
+          // Provide success response only.
+          .whereSuccess()
+          //emit 0 as initial value
+          .startWith(0);
 
   @override
-  void dispose() {
-    _compositeSubscription.dispose();
-    super.dispose();
-  }
-}
+  Stream<String> _mapToErrorsState() =>
+      errorState.map((Exception error) => error.toString());
 
-extension _InfoMessage on Stream<bool> {
-  /// Map disabled state to a informational message
-  Stream<String> mapToMaximumMessage() => where((enabled) => !enabled)
-      .map((_) => "You have reached the maximum increment count");
-
-  /// Map disabled state to a informational message
-  Stream<String> mapToMinimumMessage() => where((enabled) => !enabled)
-      .map((_) => "You have reached the minimum decrement count");
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 }
 ```
 
 ### CounterWidget
 ```dart
 class CounterWidget extends StatelessWidget {
+  const CounterWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
-  Widget build(BuildContext context) => Card(
-        elevation: 2,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-               RxBlocListener<CounterBlocType, String>(
-                 state: (bloc) => bloc.states.infoMessage,
-                 listener: (context, state) =>
-                   Scaffold.of(context).showSnackBar(SnackBar(content: Text(state)))
-               ),
-              Expanded(
-                child: Center(
-                  child: RxBlocBuilder<CounterBlocType, String>(
-                    state: (bloc) => bloc.states.count,
-                    builder: (context, snapshot, bloc) => Text(
-                      snapshot.data ?? '',
-                      style: TextStyle(fontSize: 60),
-                    ),
-                  ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Counter widget')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RxBlocListener<CounterBlocType, String>(
+              state: (bloc) => bloc.states.errors,
+              listener: (context, errorMessage) =>
+                  ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(errorMessage ?? 'Unknown error'),
+                  behavior: SnackBarBehavior.floating,
                 ),
               ),
-              Row(
-                children: [
-                  RxBlocBuilder<CounterBlocType, bool>(
-                    state: (bloc) => bloc.states.incrementEnabled,
-                    builder: (context, snapshot, bloc) => Expanded(
-                      child: RaisedButton(
-                        child: Text('Increment'),
-                        onPressed: (snapshot.data ?? false)
-                            ? bloc.events.increment
-                            : null,
+            ),
+            RxBlocBuilder<CounterBlocType, int>(
+              state: (bloc) => bloc.states.count,
+              builder: (context, snapshot, bloc) => snapshot.hasData
+                  ? Text(
+                      snapshot.data.toString(),
+                      style: Theme.of(context).textTheme.headline4,
+                    )
+                  : Container(),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildActionButtons(),
+    );
+  }
+
+  Widget _buildActionButtons() => RxBlocBuilder<CounterBlocType, bool>(
+        state: (bloc) => bloc.states.isLoading,
+        builder: (context, loadingState, bloc) => Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (loadingState.isLoading)
+              const Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: CircularProgressIndicator(),
+              ),
+            FloatingActionButton(
+              backgroundColor: loadingState.buttonColor,
+              onPressed: loadingState.isLoading ? null : bloc.events.increment,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            ),
+            const SizedBox(width: 16),
+            FloatingActionButton(
+              backgroundColor: loadingState.buttonColor,
+              onPressed: loadingState.isLoading ? null : bloc.events.decrement,
+              tooltip: 'Decrement',
+              child: const Icon(Icons.remove),
+            ),
+          ],
+        ),
+      );
+}
+```
+
+## Rx Form Field Builder Widgets
+
+**RxFormFieldBuilder** is a convenience widget, which makes it easier to build and update responsive form fields with reactive Streams.
+
+This is an example of a drop down menu form field.
+
+```dart
+Widget build(BuildContext context) =>
+    RxFormFieldBuilder<ColorSelectionBlocType, ColorEnum>(
+      state: (bloc) => bloc.states.color,
+      showErrorState: (bloc) => bloc.states.showErrors,
+      builder: (fieldState) => Column(
+        children: [
+          Center(
+            child: DropdownButton<ColorEnum>(
+              value: fieldState.value,
+              onChanged: fieldState.bloc.events.setColor,
+              items: ColorEnum.values
+                  .map(
+                    (color) => DropdownMenuItem<ColorEnum>(
+                      value: color,
+                      child: Text(
+                        color.toString(),
                       ),
                     ),
+                  )
+                  .toList(),
+            ),
+          ),
+          //show errors, say for instance the user tries to save the
+          //changes to the form, but they forgot to select a color.
+          if (fieldState.showError)
+            Row(
+              children: [
+                Text(
+                  fieldState.error,
+                ),
+              ],
+            ),
+        ],
+       ),
+    );
+```
+
+**RxTextFormFieldBuilder** specializes in building text form fields with reactive streams, it handles the most important parts of managing a text field's state.
+
+This example shows general use.
+
+```dart
+Widget build(BuildContext context) =>
+  RxTextFormFieldBuilder<EditProfileBlocType>(
+    state: (bloc) => bloc.states.name,
+    showErrorState: (bloc) => bloc.states.showErrors,
+    onChanged: (bloc, value) => bloc.events.setName(value),
+    builder: (fieldState) => TextFormField(
+      //use the controller from the fieldState
+      controller: fieldState.controller,
+      //copy the decoration generated by the builder widget, which
+      //contains stuff like when to show errors, with additional
+      //decoration
+      decoration: fieldState.decoration
+          .copyWithDecoration(InputStyles.textFieldDecoration),
+    ),
+  );
+```
+
+This example shows how to create a password field.
+
+```dart
+Widget build(BuildContext context) =>
+  RxTextFormFieldBuilder<LoginBlocType>(
+    state: (bloc) => bloc.states.password,
+    showErrorState: (bloc) => bloc.states.showErrors,
+    onChanged: (bloc, value) => bloc.events.setPassword(value),
+    decorationData: InputStyles.passwordFieldDecorationData, //optional extra decoration for the field
+    obscureText: true, //tell the password field that it should be obscured
+    builder: (fieldState) => TextFormField(
+      //use the controller from the fieldState
+      controller: fieldState.controller,
+      //use the isTextObscured field from fieldState to determine
+      //when the text should be obscured. The isTextObscured field
+      //automatically changes in response to taps on the suffix icon.
+      //how the suffix icon looks is determined by the iconVisibility
+      //and iconVisibilityOff properties of the decorationData.
+      obscureText: fieldState.isTextObscured,
+      //copy the decoration generated by the builder widget, which
+      //contains stuff like when to show errors, with additional
+      //decoration
+      decoration: fieldState.decoration
+          .copyWithDecoration(InputStyles.passwordFieldDecoration),
+    ),
+  );
+```
+
+The following example shows how to create a type ahead field:  
+  
+### TypeAheadPage
+
+```dart
+class TypeAheadFormPage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              RxTextFormFieldBuilder<TypeAheadBlocType>(
+                state: (bloc) => bloc.states.choice,
+                showErrorState: (bloc) => bloc.states.showErrors,
+                onChanged: (bloc, value) => bloc.events.findLike(value),
+                //we change the cursor behavior so that it doesn't jump
+                //to the beginning of the text field when we choose
+                cursorBehaviour: RxTextFormFieldCursorBehaviour.end,
+                builder: (fieldState) => TextFormField(
+                  controller: fieldState.controller,
+                  decoration: fieldState.decoration,
+                ),
+              ),
+              RxBlocBuilder<TypeAheadBlocType, List<String>>(
+                state: (bloc) => bloc.states.choices,
+                builder: (context, snapshot, bloc) => ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 300),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: max(1, (snapshot.data ?? const []).length),
+                    itemBuilder: (context, index) =>
+                        (snapshot.data ?? []).isEmpty
+                            ? const ListTile(
+                                title: Text(
+                                  'No results for that query',
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () => bloc.events.choose(snapshot.data![index]),
+                                child: ListTile(
+                                  title: Text(
+                                    snapshot.data![index],
+                                  ),
+                                ),
+                              ),
                   ),
-                  const SizedBox(width: 16),
-                  RxBlocBuilder<CounterBlocType, bool>(
-                    state: (bloc) => bloc.states.decrementEnabled,
-                    builder: (context, snapshot, bloc) => Expanded(
-                      child: RaisedButton(
-                        child: Text('Decrement'),
-                        onPressed: (snapshot.data ?? false)
-                            ? bloc.events.decrement
-                            : null,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
         ),
       );
+      
+}
+```
+
+### TypeAheadBloc
+
+```dart
+abstract class TypeAheadBlocEvents {
+  void findLike(String like);
+
+  void choose(String choice);
+}
+
+abstract class TypeAheadBlocStates {
+  Stream<String> get choice;
+
+  Stream<List<String>> get choices;
+
+  Stream<bool> get showErrors;
+}
+
+@RxBloc()
+class TypeAheadBloc extends $TypeAheadBloc {
+  SelectionBoxBloc(this.repository);
+
+  final SelectionBoxRepository repository;
+
+  @override
+  Stream<String> _mapToChoiceState() => MergeStream([
+        _$findLikeEvent,
+        _$chooseEvent,
+      ]).shareReplay(maxSize: 1);
+
+  @override
+  Stream<List<String>> _mapToChoicesState() => choice
+      .switchMap((like) => repository.findLike(like).asStream())
+      .shareReplay(maxSize: 1);
+
+  @override
+  Stream<bool> _mapToShowErrorsState() => BehaviorSubject.seeded(false);
 }
 ```
 

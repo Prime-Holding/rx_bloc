@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" sizes="64x64" href="icon.png">
+  <title>Server example</title>
+</head>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+  }
+  p {
+    margin-top: 1rem;
+    font-size: large;
+    max-width: 600px;
+  }
+  img {
+    max-width: 70vw;
+  }
+  code {
+    background: #eee;
+    padding: 3px;
+  }
+</style>
+
+<body>
+<h1>Server example</h1>
+<img src="/dashland.jpeg" alt="Dashland">
+<p>This file is being served by <a
+        href="https://pub.dev/packages/shelf_static">package:shelf_static</a> from the
+  <code>/public</code> directory.</p>
+<p>This app uses <a
+        href="https://pub.dev/packages/shelf_router">package:shelf_router</a> to define several code-based handlers:</p>
+
+<ul>
+  <li><a href="/api/count">[GET] /api/count</a></li>
+  <li><a href="/api/count/increment">[POST] /api/count/increment</a></li>
+  <li><a href="/api/count/decrement">[POST] /api/count/decrement</a></li>
+  <br/>
+  <li><a href="/api/authenticate">[POST] /api/authenticate</a></li>
+  <li><a href="/api/logout">[POST] /api/logout</a></li>
+  <br/>
+  <li><a href="/api/user/push-notification-subscriptions">[POST] /api/user/push-notification-subscriptions</a></li>
+  <li><a href="/api/user/push-notification-subscriptions">[DELETE] /api/user/push-notification-subscriptions</a></li>
+</ul>
+
+</body>
+
+</html>

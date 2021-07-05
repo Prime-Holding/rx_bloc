@@ -1,3 +1,13 @@
+## [0.0.5] - June 29, 2021
+* Update generated project, adding following features:
+    - Http-client (Dio by default)
+    - Interceptors
+    - Push Notifications via Firebase Cloud Messaging
+    - Local server (written in Dart)
+
+## [0.0.4] - June 14, 2021
+* Update generated project with golden tests
+
 ## [0.0.3] - May 28, 2021
 * Support null safety
 * Update generated project with latest dependencies of following packages:

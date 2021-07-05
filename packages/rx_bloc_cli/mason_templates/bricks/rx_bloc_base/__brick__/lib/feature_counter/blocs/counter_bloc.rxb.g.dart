@@ -25,14 +25,17 @@ abstract class $CounterBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [decrement]
   final _$decrementEvent = PublishSubject<void>();
 
-  /// The state of [count] implemented in [_mapToCountState]
-  late final Stream<int> _countState = _mapToCountState();
+  /// Тhe [Subject] where events sink to by calling [reload]
+  final _$reloadEvent = PublishSubject<void>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
+
+  /// The state of [count] implemented in [_mapToCountState]
+  late final Stream<int> _countState = _mapToCountState();
 
   @override
   void increment() => _$incrementEvent.add(null);
@@ -41,7 +44,7 @@ abstract class $CounterBloc extends RxBlocBase
   void decrement() => _$decrementEvent.add(null);
 
   @override
-  Stream<int> get count => _countState;
+  void reload() => _$reloadEvent.add(null);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -49,11 +52,14 @@ abstract class $CounterBloc extends RxBlocBase
   @override
   Stream<String> get errors => _errorsState;
 
-  Stream<int> _mapToCountState();
+  @override
+  Stream<int> get count => _countState;
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
+
+  Stream<int> _mapToCountState();
 
   @override
   CounterBlocEvents get events => this;
@@ -65,6 +71,7 @@ abstract class $CounterBloc extends RxBlocBase
   void dispose() {
     _$incrementEvent.close();
     _$decrementEvent.close();
+    _$reloadEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
