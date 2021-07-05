@@ -36,6 +36,7 @@ dependencies:
   cloud_firestore: ^2.2.0
   firebase_storage: ^8.1.0
   cloud_functions: ^1.1.2
+  rx_bloc_cli: ^0.0.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

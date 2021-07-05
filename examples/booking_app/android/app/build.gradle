@@ -36,6 +36,18 @@ android {
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        flavorDimensions "environment"
+        productFlavors {
+            local {
+                dimension "environment"
+            }
+            firebase {
+                dimension "environment"
+            }
+            algolia {
+                dimension "environment"
+            }
+        }
     }
 
     buildTypes {

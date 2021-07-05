@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             Provider<PaginatedHotelsRepository>(
               create: (context) => PaginatedHotelsRepository(HotelsRepository(
                   hotelsDataSource: HotelsRemoteDataSourceFactory.fromInput(
-                      'firebase_algolia'))),
+                      const String.fromEnvironment('DATA_SOURCE')))),
             ),
             Provider<CoordinatorBlocType>(
                 create: (context) => CoordinatorBloc()),
