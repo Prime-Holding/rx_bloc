@@ -67,7 +67,6 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
     final snap = await querySnapshot.get();
     lastFetchedRecord = snap.docs.last;
-    print(lastFetchedRecord!.id);
     final hotels = snap.docs.asHotelList();
 
     return PaginatedList(

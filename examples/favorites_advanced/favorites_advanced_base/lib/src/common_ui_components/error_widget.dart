@@ -16,7 +16,7 @@ class ErrorRetryWidget extends StatelessWidget {
             if (textError.isNotEmpty)
               Text(
                 textError,
-                style: TextStyle(fontSize: 1),
+                style: TextStyle(fontSize: 14),
               ),
             ElevatedButton(
               child: const Text('Try again'),
