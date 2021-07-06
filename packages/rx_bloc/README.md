@@ -125,7 +125,7 @@ class CounterBloc extends $CounterBloc {
     
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((result) => result.error.toString());
+      errorState.map((error) => error.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState.isLoading();
