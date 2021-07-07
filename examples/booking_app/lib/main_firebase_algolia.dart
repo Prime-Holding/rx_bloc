@@ -1,9 +1,9 @@
-import 'package:booking_app/base/config/environment_config.dart';
 import 'package:flutter/material.dart';
 
+import 'base/config/environment_config.dart';
 import 'my_app.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp(config: EnvironmentConfig.local));
+  runApp(const MyApp(config: EnvironmentConfig.firebaseAlgolia));
 }

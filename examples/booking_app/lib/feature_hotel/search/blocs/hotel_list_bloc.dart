@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:booking_app/base/remote_data_sources/hotels_firebase_data_source.dart';
-import 'package:booking_app/base/remote_data_sources/hotels_remote_data_source_factory.dart';
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
 import 'package:favorites_advanced_base/core.dart';

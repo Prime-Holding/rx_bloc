@@ -1,3 +1,4 @@
+import 'package:booking_app/base/config/environment_config.dart';
 import 'package:booking_app/base/local_data_sources/hotels_local_data_source.dart';
 import 'package:booking_app/base/remote_data_sources/hotels_firebase_algolia_data_source.dart';
 import 'package:favorites_advanced_base/core.dart';
@@ -15,13 +16,13 @@ class HotelsRemoteDataSourceFactory {
   static HotelsDataSource withLocalDataSource() =>
       HotelsLocalDataSource(connectivityRepository: ConnectivityRepository());
 
-  static HotelsDataSource fromInput(String input) {
-    switch (input) {
-      case 'local':
+  static HotelsDataSource fromConfig(EnvironmentConfig config) {
+    switch (config) {
+      case EnvironmentConfig.local:
         return withLocalDataSource();
-      case 'firebase':
+      case EnvironmentConfig.firebase:
         return withFirebaseDataSource();
-      case 'firebase_algolia':
+      case EnvironmentConfig.firebaseAlgolia:
         return withFirebaseAlgoliaDataSource();
       default:
         return withLocalDataSource();

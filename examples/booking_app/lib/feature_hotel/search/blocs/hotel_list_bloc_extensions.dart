@@ -161,10 +161,6 @@ extension _PaginatedListHotelUtils on Stream<PaginatedList<Hotel>> {
         (list) => (list.totalCount ?? 0) > 0
             // ignore: lines_longer_than_80_chars
             ? '${list.totalCount} ${list.totalCount == 1 ? 'hotel' : 'hotels'} found'
-            : (HotelsRemoteDataSourceFactory.fromInput(
-                        const String.fromEnvironment('DATA_SOURCE'))
-                    is HotelsFirebaseDataSource)
-                ? 'Not Available'
-                : 'No hotels found',
+            : 'No hotels found',
       );
 }
