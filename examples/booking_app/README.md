@@ -16,7 +16,7 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 
-##Purpose of the project 
+## Purpose of the project 
 The main purpose of the project is to showcase the possible solutions when it comes to using Backend-as-a-Service(BaaS) products.
 Installation 
 Checkout and download these two projects: 
@@ -29,13 +29,13 @@ execute [npm run build] and then [firebase emulators:start --only functions]  to
 You can also take a look at the documentation for creating cloud functions presented here: 
 https://firebase.google.com/docs/functions/get-started
 
-#Most popular solutions on the market 
+## Most popular solutions on the market 
  - Firebase 
  - Elasticsearch
  - Algolia
  - Amplify
 
-##The implementation
+## The implementation
 Firebase is the most feature rich service on the market by far, that’s why we’ve decided to use their service as our primary data storage solution. Firebase has also one of the best geolocation services on the market which is very beneficial for mobile applications.
 
 During the process of development we’ve stumbled on some serious limitations from their side including: 
@@ -58,7 +58,7 @@ The main cons are:
 Due to the different advantages and disadvantages of each service we’ve come up with a decision 
 to make the app work with both Firebase and Firebase Cloud Functions + Algolia in order for any client to be aware of what both services can and cannot provide.
 
-##The result 
+## The result 
 The final app works with three types of data sources: 
  - Local data source - the data is generated internally using the local memory. 
  - Firebase data source - the data is migrated into the Firestore Cloud, paginated according to the documentation. The user could face different errors while testing out the app - applying 2 filters, using the search bar & etc. All that because of the above described Firebase API limitations.
