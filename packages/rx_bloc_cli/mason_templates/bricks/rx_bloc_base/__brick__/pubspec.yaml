@@ -27,6 +27,7 @@ dependencies:
   provider: ^5.0.0
   retrofit: ^2.0.0
   rx_bloc: ^3.1.0
+  rx_bloc_list: ^3.0.0
   rxdart: ^0.27.0
   shared_preferences: ^2.0.6
 
