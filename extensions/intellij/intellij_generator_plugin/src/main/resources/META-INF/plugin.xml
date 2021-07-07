@@ -43,4 +43,19 @@
                     anchor="first"/>
         </action>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocResultBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocPaginatedBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+    </extensions>
 </idea-plugin>
