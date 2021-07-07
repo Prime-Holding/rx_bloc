@@ -12,8 +12,9 @@ class HotelsFirebaseAlgoliaDataSource extends HotelsFirebaseDataSource {
     required int pageSize,
     HotelSearchFilters? filters,
   }) async {
-    FirebaseFunctions.instance
-        .useFunctionsEmulator(origin: 'http://localhost:5001');
+    // Use whe you want to simulate locally
+    // FirebaseFunctions.instance
+    //     .useFunctionsEmulator(origin: 'http://localhost:5001');
 
     final queryString = getQueryString(page, pageSize, filters);
     print(queryString);
