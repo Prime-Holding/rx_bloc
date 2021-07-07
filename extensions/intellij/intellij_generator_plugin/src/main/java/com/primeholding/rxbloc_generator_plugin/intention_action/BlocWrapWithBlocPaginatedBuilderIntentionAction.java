@@ -12,6 +12,6 @@ public class BlocWrapWithBlocPaginatedBuilderIntentionAction extends BlocWrapWit
      */
     @NotNull
     public String getText() {
-        return "Wrap with RxPaginatedBuilder";
+        return "Replace with RxPaginatedBuilder";
     }
 }
