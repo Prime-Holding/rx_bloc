@@ -69,11 +69,14 @@ class MockPaginatedHotelsRepository extends _i1.Mock
               returnValue: Future<List<_i3.Hotel>>.value(<_i3.Hotel>[]))
           as _i7.Future<List<_i3.Hotel>>);
   @override
-  _i7.Future<List<_i3.Hotel>> getHotels({_i8.HotelSearchFilters? filters}) =>
+  _i7.Future<_i2.PaginatedList<_i3.Hotel>> getHotels(
+          {int? page, int? pageSize, _i8.HotelSearchFilters? filters}) =>
       (super.noSuchMethod(
-              Invocation.method(#getHotels, [], {#filters: filters}),
-              returnValue: Future<List<_i3.Hotel>>.value(<_i3.Hotel>[]))
-          as _i7.Future<List<_i3.Hotel>>);
+              Invocation.method(#getHotels, [],
+                  {#page: page, #pageSize: pageSize, #filters: filters}),
+              returnValue: Future<_i2.PaginatedList<_i3.Hotel>>.value(
+                  _FakePaginatedList<_i3.Hotel>()))
+          as _i7.Future<_i2.PaginatedList<_i3.Hotel>>);
   @override
   _i7.Future<_i3.Hotel> favoriteHotel(_i3.Hotel? hotel, {bool? isFavorite}) =>
       (super.noSuchMethod(
@@ -94,10 +97,6 @@ class MockPaginatedHotelsRepository extends _i1.Mock
               returnValue: Future<_i4.HotelFullExtraDetails>.value(
                   _FakeHotelFullExtraDetails()))
           as _i7.Future<_i4.HotelFullExtraDetails>);
-  @override
-  _i7.Future<String> fetchFeaturedImage(_i3.Hotel? hotel) =>
-      (super.noSuchMethod(Invocation.method(#fetchFeaturedImage, [hotel]),
-          returnValue: Future<String>.value('')) as _i7.Future<String>);
 }
 
 /// A class which mocks [CoordinatorBlocType].
