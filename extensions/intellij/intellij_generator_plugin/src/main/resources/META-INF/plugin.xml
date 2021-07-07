@@ -42,6 +42,15 @@
                     group-id="NewGroup"
                     anchor="first"/>
         </action>
+        <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateRxListBlocAction"
+            description="Generate a new RxListBloc"
+            id="GenerateRxListBlocId"
+            icon="/icons/rx_bloc.png"
+            text="RxBloc List">
+            <add-to-group
+                group-id="NewGroup"
+                anchor="first"/>
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
