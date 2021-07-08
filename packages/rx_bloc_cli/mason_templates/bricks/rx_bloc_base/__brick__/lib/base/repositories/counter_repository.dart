@@ -5,31 +5,21 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-/// This will simulate a server with 100 milliseconds response time
+import '../data_sources/remote/count_remote_data_source.dart';
+import '../models/count.dart';
+
+/// Decouple Data Layer and Business Logic Layer
 class CounterRepository {
-  int _counter = 0;
+  CounterRepository(this.countRemoteDataSource);
 
-  /// Increment the stored counter by one
-  Future<int> increment() async {
-    // Server response time.
-    await Future.delayed(const Duration(milliseconds: 800));
-    // Simulate an error from the server when the counter reached 2.
-    if (_counter == 2) {
-      throw Exception('Maximum number is reached!');
-    }
+  final CountRemoteDataSource countRemoteDataSource;
 
-    return ++_counter;
-  }
+  // Fetch current value of the counter
+  Future<Count> getCurrent() => countRemoteDataSource.getCurrent();
 
-  /// Decrement the stored counter by one
-  Future<int> decrement() async {
-    // Server response time.
-    await Future.delayed(const Duration(milliseconds: 800));
-    // Simulate an error from the server when the counter reached 2.
-    if (_counter <= 0) {
-      throw Exception('Minimum number is reached!');
-    }
+  //Fetch incremented value of the counter
+  Future<Count> increment() => countRemoteDataSource.increment();
 
-    return --_counter;
-  }
+  //Fetch decremented value of the counter
+  Future<Count> decrement() => countRemoteDataSource.decrement();
 }

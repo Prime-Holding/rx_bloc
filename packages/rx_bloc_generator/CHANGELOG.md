@@ -1,3 +1,7 @@
+## [5.0.0] - May 21, 2021
+* Support Flutter `2.2`
+* Update `rxdart` to use version `0.27.0`
+
 ## [4.0.0] - April 28, 2021
 * Upgraded (`null-safety`) dependencies
 

@@ -1,0 +1,47 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// Generator: RxBlocGeneratorForAnnotation
+// **************************************************************************
+
+part of '${bloc_snake_case}_bloc.dart';
+
+/// Used as a contractor for the bloc, events and states classes
+/// {@nodoc}
+abstract class ${bloc_pascal_case}BlocType extends RxBlocTypeBase {
+  ${bloc_pascal_case}BlocEvents get events;
+  ${bloc_pascal_case}BlocStates get states;
+}
+
+/// [${bloc_dollar_pascal_case}] extended by the [${bloc_pascal_case}]
+/// {@nodoc}
+abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
+    implements ${bloc_pascal_case}BlocEvents, ${bloc_pascal_case}BlocStates, ${bloc_pascal_case}BlocType {
+  final _compositeSubscription = CompositeSubscription();
+
+  /// Тhe [Subject] where events sink to by calling [fetchData]
+  final _$fetchDataEvent = PublishSubject<void>();
+
+  /// The state of [data] implemented in [_mapToDataState]
+  late final Stream<Result<String>> _dataState = _mapToDataState();
+
+  @override
+  Stream<Result<String>> get data => _dataState;
+
+  Stream<Result<String>> _mapToDataState();
+
+  @override
+  void fetchData() => _$fetchDataEvent.add(null);
+
+  @override
+  ${bloc_pascal_case}BlocEvents get events => this;
+
+  @override
+  ${bloc_pascal_case}BlocStates get states => this;
+
+  @override
+  void dispose() {
+    _compositeSubscription.dispose();
+    super.dispose();
+  }
+}

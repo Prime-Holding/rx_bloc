@@ -38,9 +38,8 @@ class LoadingBloc extends $LoadingBloc {
   /// Default constructor
   LoadingBloc() {
     _$setLoadingEvent
-        .map((isLoading) => isLoading
-            ? (_loadingCount.value ?? 0) + 1
-            : (_loadingCount.value ?? 0) - 1)
+        .map((isLoading) =>
+            isLoading ? _loadingCount.value + 1 : _loadingCount.value - 1)
         .bind(_loadingCount)
         .disposedBy(_compositeSubscription);
   }

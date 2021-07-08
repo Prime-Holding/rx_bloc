@@ -13,14 +13,14 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
       switchMap(
         (reloadData) {
           if (reloadData.reset) {
-            _paginatedList.value!.reset(hard: reloadData.fullReset);
+            _paginatedList.value.reset(hard: reloadData.fullReset);
           }
 
           return repository
               .getHotelsPaginated(
                 filters: reloadData.filters,
-                pageSize: _paginatedList.value!.pageSize,
-                page: _paginatedList.value!.pageNumber,
+                pageSize: _paginatedList.value.pageSize,
+                page: _paginatedList.value.pageNumber,
               )
               .asResultStream();
         },
@@ -37,9 +37,9 @@ extension StreamBindToHotels on Stream<List<Hotel>> {
   ) =>
       map(
         (hotels) => PaginatedList(
-          list: hotelsToUpdate.value!.mergeWith(hotels),
-          pageSize: hotelsToUpdate.value!.pageSize,
-          totalCount: hotelsToUpdate.value!.totalCount,
+          list: hotelsToUpdate.value.mergeWith(hotels),
+          pageSize: hotelsToUpdate.value.pageSize,
+          totalCount: hotelsToUpdate.value.totalCount,
         ),
       ).bind(hotelsToUpdate);
 }
@@ -73,10 +73,10 @@ extension _ReloadFavoriteHotelsEventExtensions on Stream<_ReloadEventArgs> {
           fullReset: reloadData.fullReset,
           filters: HotelSearchFilters(
             dateRange: dateRange.value,
-            query: query.value ?? '',
-            roomCapacity: capacityFilters.value!.roomCapacity,
-            personCapacity: capacityFilters.value!.personCapacity,
-            sortBy: sort.value!,
+            query: query.hasValue ? query.value : '',
+            roomCapacity: capacityFilters.value.roomCapacity,
+            personCapacity: capacityFilters.value.personCapacity,
+            sortBy: sort.value,
           ),
         ),
       );

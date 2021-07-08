@@ -1,3 +1,10 @@
+// Copyright (c) 2021, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'package:flutter/material.dart';
 
 class DesignSystemColors {
@@ -11,9 +18,9 @@ class DesignSystemColors {
 
   final Color _blackVariant = _HexColor('#36393d');
 
-  Color get primaryColor => lightMode ? Colors.blue : Colors.black;
+  Color get primaryColor => lightMode ? Colors.blue : _blackVariant;
 
-  Color get primaryVariant => lightMode ? Colors.blueAccent : _blackVariant;
+  Color get primaryVariant => lightMode ? Colors.blue.shade700 : Colors.black;
 
   Color get secondaryColor => Colors.white;
 
@@ -25,11 +32,11 @@ class DesignSystemColors {
 
   Color get backgroundColor => lightMode ? Colors.white : Colors.black;
 
+  Color get reverseBackgroundColor => lightMode ? Colors.black : Colors.white;
+
   Color get scaffoldBackgroundColor => lightMode ? Colors.white : Colors.black;
 
-  Color get buttonColor => Colors.white;
-
-  Color get errorColor => Colors.white;
+  Color get errorColor => lightMode ? Colors.red : Colors.redAccent;
 
   Color? get accentColor =>
       lightMode ? Colors.blue[500] : Colors.tealAccent[200];
@@ -79,6 +86,15 @@ class DesignSystemColors {
 
   Color get alertSecondaryTitleColor => Colors.black;
 
+  Color get inputDecorationLabelColor =>
+      lightMode ? const Color(0xff333333) : const Color(0xffcccccc);
+
+  Color get inputDecorationErrorLabelColor => Colors.red;
+
+  Color get iconColor => Colors.white;
+
+  Color get outlinedButtonTextColor => Colors.white;
+
   /// endregion
 
   /// region App-specific colors
@@ -86,6 +102,12 @@ class DesignSystemColors {
   Color get inactiveButtonColor => Colors.blueGrey;
 
   Color get activeButtonColor => Colors.blue;
+
+  Color get inactiveButtonTextColor => Colors.grey;
+
+  Color get activeButtonTextColor => Colors.white;
+
+  Color get progressIndicatorBackgroundColor => Colors.white;
 
   /// endregion
 }

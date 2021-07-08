@@ -9,9 +9,20 @@ part of 'counter_bloc.dart';
 
 /// TODO: Here you can add the implementation details of your BloC or any stream extensions you might need.
 /// Thus, the BloC will contain only declarations, which improves the readability and the maintainability.
-extension _CounterExtension on CounterBloc {}
 
-extension _ToError on Stream<Exception> {
-  /// TODO: Implement error event-to-state logic
-  Stream<String> toMessage() => map((errorState) => errorState.toString());
+/// Combines data emitted from all events to produce stream of Result<Count>
+/// and load the initial data.
+extension _CounterExtension on CounterBloc {
+  Stream<Result<Count>> get countState => Rx.merge<Result<Count>>([
+        // On increment.
+        _$incrementEvent
+            .switchMap((_) => _repository.increment().asResultStream()),
+        // On decrement.
+        _$decrementEvent
+            .switchMap((_) => _repository.decrement().asResultStream()),
+        // Get current value
+        _$reloadEvent
+            .startWith(null)
+            .switchMap((_) => _repository.getCurrent().asResultStream()),
+      ]);
 }

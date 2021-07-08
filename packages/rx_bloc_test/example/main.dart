@@ -38,8 +38,8 @@ class CounterBloc extends RxBlocBase implements RxBlocTypeBase {
 
   Stream<int> get count => _loadingCount.stream;
 
-  void increase() => _loadingCount.sink.add((_loadingCount.value ?? 0) + 1);
-  void decrease() => _loadingCount.sink.add((_loadingCount.value ?? 0) - 1);
+  void increase() => _loadingCount.sink.add(_loadingCount.value + 1);
+  void decrease() => _loadingCount.sink.add(_loadingCount.value - 1);
 
   @override
   void dispose() {

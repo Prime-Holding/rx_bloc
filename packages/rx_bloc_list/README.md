@@ -18,7 +18,7 @@ The *[rx_bloc_list](https://pub.dev/packages/rx_bloc_list)* package facilitates 
 Before using the actual package add it to the `pubspec.yaml` dependencies:
 ```yaml
 dependencies:
-  rx_bloc_list: latest_version
+  rx_bloc_list: any
 ```
 Also be sure to import the package:
 ```dart
