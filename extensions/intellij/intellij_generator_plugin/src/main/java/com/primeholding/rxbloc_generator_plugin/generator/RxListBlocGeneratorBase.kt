@@ -6,11 +6,8 @@ import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
-abstract class RxBlocGeneratorBase(private val name: String,
-                                   withDefaultStates: Boolean,
-                                   includeExtensions: Boolean,
-                                   includeNullSafety: Boolean,
-                                   templateName: String): RxGeneratorBase(name) {
+abstract class RxListBlocGeneratorBase(private val name: String,
+                                       templateName: String): RxGeneratorBase(name) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
     private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"
@@ -26,19 +23,8 @@ abstract class RxBlocGeneratorBase(private val name: String,
             TEMPLATE_BLOC_SNAKE_CASE to snakeCase()
         )
         try {
-            val templateFolder = StringBuilder()
-            if(withDefaultStates && !includeExtensions) {
-                templateFolder.append("rx_bloc_with_default_states")
-            } else if(withDefaultStates && includeExtensions) {
-                templateFolder.append("rx_bloc_with_extensions_with_default_states")
-            } else if (!withDefaultStates && includeExtensions) {
-                templateFolder.append("rx_bloc_with_extensions")
-            } else {
-                templateFolder.append("rx_bloc")
-            }
-
-            val resource = "/templates/${templateFolder}/$templateName.dart.template"
-            val resourceAsStream = RxBlocGeneratorBase::class.java.getResourceAsStream(resource)
+            val resource = "/templates/rx_list_bloc/$templateName.dart.template"
+            val resourceAsStream = RxListBlocGeneratorBase::class.java.getResourceAsStream(resource)
             templateString = CharStreams.toString(InputStreamReader(resourceAsStream, Charsets.UTF_8))
         } catch (e: Exception) {
             throw RuntimeException(e)
