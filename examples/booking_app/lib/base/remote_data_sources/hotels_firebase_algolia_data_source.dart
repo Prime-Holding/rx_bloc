@@ -17,7 +17,6 @@ class HotelsFirebaseAlgoliaDataSource extends HotelsFirebaseDataSource {
     //     .useFunctionsEmulator(origin: 'http://localhost:5001');
 
     final queryString = getQueryString(page, pageSize, filters);
-    print(queryString);
     final callable =
         FirebaseFunctions.instance.httpsCallable('getHotels$queryString');
     final results = await callable();
