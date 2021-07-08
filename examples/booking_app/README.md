@@ -6,7 +6,7 @@ Flutter booking application.
 The main purpose of the project is to showcase the possible solutions when it comes to using Backend-as-a-Service(BaaS) products.
 Installation 
 Checkout and download these two projects: 
- - https://github.com/Prime-Holding/rx_bloc/tree/feature/firebase
+ - https://github.com/Prime-Holding/rx_bloc/tree/master/examples/booking_app
  - https://github.com/Prime-Holding/firebase-cloud-functions
 
 For the firebase cloud functions project, go inside the functions folder, 
