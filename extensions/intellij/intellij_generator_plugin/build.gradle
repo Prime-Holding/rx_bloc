@@ -43,7 +43,9 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
-        <li>v1.4.0 - Wrap With Quick Action Support (RxBlocBuilder, RxResultBuilder, RxPaginatedBuilder). Introduce "New -> RxBloc List". 
+        <li>v1.4.0 
+        <br /> - Introduce "New -> RxBloc List".  
+        <br /> - Wrap With Quick Action Support (RxBlocBuilder, RxResultBuilder, RxPaginatedBuilder, RxBlocListener, RxFormFieldBuilder, RxTextFormFieldBuilder). 
         </li>
         <li>v1.3.0 - Added option for creating an entire feature that includes bloc, page and dependency inhection</li>
         <li>v1.2.0 - Added option for creating Null Safety BloC claseses</li>

@@ -59,11 +59,23 @@
             <category>RxBloc</category>
         </intentionAction>
         <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocListenerIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
             <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocResultBuilderIntentionAction</className>
             <category>RxBloc</category>
         </intentionAction>
         <intentionAction>
             <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocPaginatedBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithFormFieldBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithFormTextFieldBuilderIntentionAction</className>
             <category>RxBloc</category>
         </intentionAction>
     </extensions>
