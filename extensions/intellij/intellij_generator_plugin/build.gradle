@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '1.3.0'
+version '1.4.0'
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
@@ -40,6 +40,10 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
+        <li>v1.4.0 
+        <br /> - Introduce "New -> RxBloc List".  
+        <br /> - Wrap With Quick Action Support (RxBlocBuilder, RxResultBuilder, RxPaginatedBuilder, RxBlocListener, RxFormFieldBuilder, RxTextFormFieldBuilder). 
+        </li>
         <li>v1.3.0 - Added option for creating an entire feature that includes bloc, page and dependency inhection</li>
         <li>v1.2.0 - Added option for creating Null Safety BloC claseses</li>
         <li>v1.1.0 - Added option for creating BloC extensions</li>
