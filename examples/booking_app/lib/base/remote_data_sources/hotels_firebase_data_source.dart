@@ -151,7 +151,8 @@ class HotelsFirebaseDataSource implements HotelsDataSource {
 
     if ((filters!.roomCapacity > 0 && filters.personCapacity > 0) ||
         filters.query != '') {
-      throw Exception('Firebase does not support multiple filters');
+      throw Exception(
+          "Firebase doesn't support multiple filters or LIKE queries");
     }
 
     Query query = hotelsReference;

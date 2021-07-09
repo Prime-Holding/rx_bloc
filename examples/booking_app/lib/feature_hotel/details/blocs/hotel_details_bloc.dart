@@ -38,12 +38,18 @@ class HotelDetailsBloc extends $HotelDetailsBloc {
   final PaginatedHotelsRepository _hotelsRepository;
   //get the latest updated version of the hotel
   @override
-  Stream<Hotel> _mapToHotelState() => _$fetchFullExtraDetailsEvent
-      .startWith(_hotel)
-      .switchMap((value) =>
-          _hotelsRepository.fetchFullExtraDetails(_hotel.id).asStream())
-      .map((event) => _hotel.copyWith(fullExtraDetails: event))
-      .shareReplay(maxSize: 1);
+  Stream<Hotel> _mapToHotelState() =>
+      _$fetchFullExtraDetailsEvent.startWith(_hotel).asyncMap((hotel) async {
+        final fullExtraDetails =
+            await _hotelsRepository.fetchFullExtraDetails(hotel.id);
+        hotel = hotel.copyWith(fullExtraDetails: fullExtraDetails);
+        if (hotel.extraDetails == null) {
+          final extraDetails =
+              await _hotelsRepository.fetchExtraDetails([hotel.id]);
+          hotel = hotel.copyWith(extraDetails: extraDetails.first);
+        }
+        return hotel;
+      }).shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToImagePathState() => hotel.mapToImagePath();

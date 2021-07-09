@@ -50,6 +50,8 @@ class HotelsFirebaseAlgoliaDataSource extends HotelsFirebaseDataSource {
         final endAtTimestamp = filters.dateRange!.end.microsecondsSinceEpoch;
         qParams['start_at_timestamp'] = startAtTimestamp;
         qParams['end_at_timestamp'] = endAtTimestamp;
+
+        throw Exception('Algolia datetime search is unavailable');
       }
 
       if (filters.roomCapacity > 0) {
@@ -62,6 +64,7 @@ class HotelsFirebaseAlgoliaDataSource extends HotelsFirebaseDataSource {
     }
 
     if (filters!.sortBy != SortBy.none) {
+      throw Exception('Algolia sorting is unavailable');
       if (filters.sortBy == SortBy.priceAsc) {
         qParams['sort_by'] = 'perNight';
         qParams['order'] = 'asc';
