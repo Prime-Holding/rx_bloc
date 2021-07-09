@@ -125,10 +125,10 @@ class CounterBloc extends $CounterBloc {
     
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((Exception error) => error.toString());
+      errorState.map((error) => error.toString());
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool> _mapToIsLoadingState() => loadingState.isLoading();
 }
 ```
 As you can see, by extending [$CounterBloc][abstract_counter_bloc_ref], we must implement `Stream<int>` `_mapToCountState()` , which is the method responsible for the events-to-state business logic. Furthermore, we have [_$incrementEvent][increment_event_example_line_ref] and [_$decrementEvent][decrement_event_example_line_ref], which are the [subjects][rxdart_subjects_lnk] where the events will flow when [increment()][increment_event_method_example_line_ref] and [decrement()][decrement_event_method_example_line_ref] methods are invoked from the UI Layer.

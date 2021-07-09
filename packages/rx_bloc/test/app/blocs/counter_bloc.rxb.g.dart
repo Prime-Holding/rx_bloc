@@ -1,18 +1,23 @@
-part of 'main.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
+// **************************************************************************
+// Generator: RxBlocGeneratorForAnnotation
+// **************************************************************************
+
+part of 'counter_bloc.dart';
+
+/// NO NEED TO ANALYZE IT!
+///
 /// The code below will be automatically generated
 /// for you by `rx_bloc_generator`.
 ///
 /// This generated class usually resides in [file-name].rxb.g.dart.
 /// Find more info at https://pub.dev/packages/rx_bloc_generator.
-
 /// ********************GENERATED CODE**************************************
 /// CounterBlocType class used for bloc event and state access from widgets
 abstract class CounterBlocType extends RxBlocTypeBase {
-  // ignore: public_member_api_docs
   CounterBlocEvents get events;
 
-  // ignore: public_member_api_docs
   CounterBlocStates get states;
 }
 
@@ -36,12 +41,27 @@ abstract class $CounterBloc extends RxBlocBase
 
   Stream<int> _mapToCountState();
 
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
+  late final Stream<LoadingWithTag> _isLoadingWithTag =
+      _mapToIsLoadingWithTagState();
 
   @override
-  Stream<bool> get isLoading => _isLoadingState;
+  Stream<LoadingWithTag> get isLoadingWithTag => _isLoadingWithTag;
+
+  Stream<LoadingWithTag> _mapToIsLoadingWithTagState();
+
+  late final Stream<bool> _isLoading = _mapToIsLoadingState();
+
+  @override
+  Stream<bool> get isLoading => _isLoading;
 
   Stream<bool> _mapToIsLoadingState();
+
+  late final Stream<bool> _isLoadingDecrement = _mapToIsLoadingDecrementState();
+
+  @override
+  Stream<bool> get isLoadingDecrement => _isLoadingDecrement;
+
+  Stream<bool> _mapToIsLoadingDecrementState();
 
   late final Stream<String> _errorsState = _mapToErrorsState();
 

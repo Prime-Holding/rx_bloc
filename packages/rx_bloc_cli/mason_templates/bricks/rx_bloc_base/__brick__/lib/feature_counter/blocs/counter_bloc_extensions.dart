@@ -15,14 +15,16 @@ part of 'counter_bloc.dart';
 extension _CounterExtension on CounterBloc {
   Stream<Result<Count>> get countState => Rx.merge<Result<Count>>([
         // On increment.
-        _$incrementEvent
-            .switchMap((_) => _repository.increment().asResultStream()),
+        _$incrementEvent.switchMap((_) => _repository
+            .increment()
+            .asResultStream(tag: CounterBloc.tagIncrement)),
         // On decrement.
-        _$decrementEvent
-            .switchMap((_) => _repository.decrement().asResultStream()),
+        _$decrementEvent.switchMap((_) => _repository
+            .decrement()
+            .asResultStream(tag: CounterBloc.tagDecrement)),
         // Get current value
-        _$reloadEvent
-            .startWith(null)
-            .switchMap((_) => _repository.getCurrent().asResultStream()),
+        _$reloadEvent.startWith(null).switchMap((_) => _repository
+            .getCurrent()
+            .asResultStream(tag: CounterBloc.tagReload)),
       ]);
 }

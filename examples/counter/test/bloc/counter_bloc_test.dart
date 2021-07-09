@@ -3,6 +3,7 @@ import 'package:example/repository/counter_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 
 import 'counter_bloc_test.mocks.dart';
@@ -79,7 +80,7 @@ void main() {
       expect: ['Exception: test error msg'],
     );
 
-    rxBlocTest<CounterBlocType, bool>(
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
       'Loading state',
       build: () async {
         final mockRepo = MockCounterRepository();
@@ -91,7 +92,11 @@ void main() {
         bloc.events.increment();
       },
       state: (bloc) => bloc.states.isLoading,
-      expect: [false, true, false],
+      expect: <LoadingWithTag>[
+        LoadingWithTag(loading: false),
+        LoadingWithTag(loading: true, tag: CounterBloc.tagIncrement),
+        LoadingWithTag(loading: false, tag: CounterBloc.tagIncrement),
+      ],
     );
   });
 }

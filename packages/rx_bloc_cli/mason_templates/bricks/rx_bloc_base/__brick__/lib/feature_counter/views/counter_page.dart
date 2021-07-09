@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/common_ui_components/action_button.dart';
 import '../../base/common_ui_components/update_button.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/theme/design_system.dart';
@@ -52,10 +53,10 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
   AppBar _buildAppBar(BuildContext context) => AppBar(
         title: Text(context.l10n.counterPageTitle),
         actions: [
-          RxBlocBuilder<CounterBlocType, bool>(
+          RxLoadingBuilder<CounterBlocType>(
             state: (bloc) => bloc.states.isLoading,
-            builder: (context, loadingState, bloc) => UpdateButton(
-              isActive: !loadingState.isLoading,
+            builder: (context, isLoading, tag, bloc) => UpdateButton(
+              isActive: !isLoading,
               onPressed: () => bloc.events.reload(),
             ),
           ),
@@ -88,36 +89,31 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   Widget _buildActionButtons(BuildContext context) =>
-      RxBlocBuilder<CounterBlocType, bool>(
+      RxLoadingBuilder<CounterBlocType>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => Row(
+        builder: (context, isLoading, tag, bloc) => Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (loadingState.isLoading)
-              const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: CircularProgressIndicator(),
-              ),
-            FloatingActionButton(
-              backgroundColor: loadingState.getButtonColor(context),
-              onPressed: loadingState.isLoading ? null : bloc.events.increment,
-              tooltip: context.l10n.increment,
-              heroTag: 'increment',
-              child: Icon(
+            ActionButton(
+              icon: Icon(
                 context.designSystem.icons.plusSign,
                 color: context.designSystem.colors.iconColor,
               ),
+              tooltip: 'Increment',
+              onPressed: bloc.events.increment,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagIncrement,
             ),
             const SizedBox(width: 16),
-            FloatingActionButton(
-              backgroundColor: loadingState.getButtonColor(context),
-              onPressed: loadingState.isLoading ? null : bloc.events.decrement,
-              tooltip: context.l10n.decrement,
-              heroTag: 'decrement',
-              child: Icon(
+            ActionButton(
+              icon: Icon(
                 context.designSystem.icons.minusSign,
                 color: context.designSystem.colors.iconColor,
               ),
+              tooltip: 'Decrement',
+              onPressed: bloc.events.decrement,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagDecrement,
             ),
           ],
         ),
