@@ -1,3 +1,6 @@
+## [1.0.0] - July 09, 2021
+* Upgraded to `rx_bloc: 3.1.0` and `flutter_rx_bloc: 3.2.0`
+
 ## [0.0.5] - June 29, 2021
 * Update generated project, adding following features:
     - Http-client (Dio by default)

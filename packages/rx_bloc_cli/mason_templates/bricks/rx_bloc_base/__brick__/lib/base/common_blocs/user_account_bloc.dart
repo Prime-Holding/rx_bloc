@@ -52,7 +52,7 @@ class UserAccountBloc extends $UserAccountBloc {
   Stream<bool> _mapToLoggedInState() => Rx.merge([
         _coordinatorBloc.states.isAuthenticated,
         _authRepository.isAuthenticated().asStream(),
-      ]);
+      ]).shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToErrorsState() =>

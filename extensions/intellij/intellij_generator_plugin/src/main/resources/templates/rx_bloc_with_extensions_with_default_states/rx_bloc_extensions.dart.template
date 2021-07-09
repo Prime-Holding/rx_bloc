@@ -6,7 +6,7 @@ extension _${bloc_pascal_case}Extension on ${bloc_pascal_case}Bloc {}
 
 extension _ToError on Stream<Exception> {
   /// TODO: Implement error event-to-state logic
-  Stream<String> toMessage() => map((errorState) => errorState.toString());
+  Stream<String> toMessage() => map((error) => error.toString());
 }
 
 extension _MapFetchEventToData on Stream<void> {

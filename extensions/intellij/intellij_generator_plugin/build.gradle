@@ -21,9 +21,6 @@ intellij {
 }
 
 repositories {
-    maven {
-        url "https://dl.bintray.com/fleshgrinder/com.fleshgrinder.kotlin"
-    }
     mavenCentral()
 }
 
