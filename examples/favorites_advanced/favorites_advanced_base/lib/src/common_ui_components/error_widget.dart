@@ -14,9 +14,12 @@ class ErrorRetryWidget extends StatelessWidget {
           children: [
             Icon(Icons.wifi_off, size: 100),
             if (textError.isNotEmpty)
-              Text(
-                textError,
-                style: TextStyle(fontSize: 14),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  textError,
+                  style: TextStyle(fontSize: 14),
+                ),
               ),
             ElevatedButton(
               child: const Text('Try again'),
