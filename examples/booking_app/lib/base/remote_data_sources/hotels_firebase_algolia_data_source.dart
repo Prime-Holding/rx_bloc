@@ -65,25 +65,25 @@ class HotelsFirebaseAlgoliaDataSource extends HotelsFirebaseDataSource {
 
     if (filters!.sortBy != SortBy.none) {
       throw Exception('Algolia sorting is unavailable');
-      if (filters.sortBy == SortBy.priceAsc) {
-        qParams['sort_by'] = 'perNight';
-        qParams['order'] = 'asc';
-      }
-
-      if (filters.sortBy == SortBy.priceDesc) {
-        qParams['sort_by'] = 'perNight';
-        qParams['order'] = 'desc';
-      }
-
-      if (filters.sortBy == SortBy.distanceAsc) {
-        qParams['sort_by'] = 'dist';
-        qParams['order'] = 'asc';
-      }
-
-      if (filters.sortBy == SortBy.distanceDesc) {
-        qParams['sort_by'] = 'dist';
-        qParams['order'] = 'desc';
-      }
+      // if (filters.sortBy == SortBy.priceAsc) {
+      //   qParams['sort_by'] = 'perNight';
+      //   qParams['order'] = 'asc';
+      // }
+      //
+      // if (filters.sortBy == SortBy.priceDesc) {
+      //   qParams['sort_by'] = 'perNight';
+      //   qParams['order'] = 'desc';
+      // }
+      //
+      // if (filters.sortBy == SortBy.distanceAsc) {
+      //   qParams['sort_by'] = 'dist';
+      //   qParams['order'] = 'asc';
+      // }
+      //
+      // if (filters.sortBy == SortBy.distanceDesc) {
+      //   qParams['sort_by'] = 'dist';
+      //   qParams['order'] = 'desc';
+      // }
     }
 
     if (qParams.isEmpty) {
