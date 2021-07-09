@@ -1,4 +1,4 @@
-## [3.1.0] - May 28, 2021
+## [3.1.0] - July 09, 2021
 * Added an optional param `tag` to (Future/Stream).asResultStream(tag: 'someTag'). 
   * This will help to distinguish the action that has been triggered a particular async call. Check the [flutter_rx_bloc example](https://pub.dev/packages/flutter_rx_bloc/example) for more details.
 * Added utility (extension) methods
