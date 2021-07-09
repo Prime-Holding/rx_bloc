@@ -62,7 +62,7 @@ abstract class RxBlocBase {
 
   /// The errors of all handled result streams along with the tag
   @protected
-  Stream<ErrorWithTag> get errorStateWithTag =>
+  Stream<ErrorWithTag> get errorWithTagState =>
       _resultStreamExceptionsSubject.mapToErrorWithTag();
 
   final _resultStreamExceptionsSubject = BehaviorSubject<ResultError>();

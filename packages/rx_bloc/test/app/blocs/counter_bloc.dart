@@ -70,7 +70,7 @@ class CounterBloc extends $CounterBloc {
 
   /// Transform any exception into a readable string.
   @override
-  Stream<String> _mapToErrorsState() => errorStateWithTag
+  Stream<String> _mapToErrorsState() => errorWithTagState
       .map((result) => 'tag: ${result.tag} with message ${result.exception}');
 
   @override
