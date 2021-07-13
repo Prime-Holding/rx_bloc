@@ -109,7 +109,7 @@ extension _HotelExtensions on Hotel {
 
   /// Does the current hotel work within the current date range?
   bool _withinWorkRange(DateTimeRange? range) => range != null
-      ? (workingDate.isBefore(range.start) && workingDate.isAfter(range.end))
+      ? (workingDate.isBefore(range.start) && workingDate.isBefore(range.end))
       : true;
 
   /// Has the current hotel enough rooms?
