@@ -1,18 +1,18 @@
 import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/repositories.dart';
 import 'package:flutter/material.dart';
 import 'package:rx_bloc_list/models.dart';
 
 class Stub {
   static final navigation = NavigationStub();
 
-  static final hotel1 = HotelsRepository.hotelsDB.first;
+  static final hotel1 = StubDataSource.hotelsDB.first;
   static final hotel1Favorited =
-      HotelsRepository.hotelsDB.first.copyWith(isFavorite: true);
-  static final hotel2 = HotelsRepository.hotelsDB[1];
-  static final hotel3 = HotelsRepository.hotelsDB[2];
+      StubDataSource.hotelsDB.first.copyWith(isFavorite: true);
+  static final hotel2 = StubDataSource.hotelsDB[1];
+  static final hotel3 = StubDataSource.hotelsDB[2];
 
   static final paginatedListEmpty = PaginatedList<Hotel>(
     list: [],

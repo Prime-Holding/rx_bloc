@@ -26,16 +26,18 @@ extension _StreamFetchExtraDetails on Stream<_FetchExtraDetailsEventArgs> {
           // Only execute API call if needed.
           .where((container) => container.hotels.isNotEmpty)
           // Get all extra details from the API
-          .flatMap(
-            (value) => repository
-                .fetchFullEntities(value.hotels.ids, allProps: value.allProps)
-                .asStream(),
-          )
+          .asyncMap(
+        (value) async {
+          final extraDetails =
+              await repository.fetchExtraDetails(value.hotels.ids);
+          return value.hotels.mergeWithExtraDetails(extraDetails);
+        },
+      )
           // Notify the coordination BloC
           .doOnData(
-            (hotels) =>
-                coordinatorBloc.events.hotelsWithExtraDetailsFetched(hotels),
-          );
+        (hotels) =>
+            coordinatorBloc.events.hotelsWithExtraDetailsFetched(hotels),
+      );
 }
 
 class _HotelsContainer {
@@ -56,4 +58,16 @@ extension _FetchExtraDetailsEventArgsUtils
         ? hotels.whereNoFullExtraDetails()
         : hotels.whereNoExtraDetails();
   }
+}
+
+extension _MergeExtraDetails on List<Hotel> {
+  List<Hotel> mergeWithExtraDetails(List<HotelExtraDetails> extraDetails) =>
+      map((hotel) {
+        final extras = extraDetails.firstWhereOrNull(
+          (extraDetails) => extraDetails.hotelId.contains(hotel.id),
+        );
+        return hotel.copyWith(
+          extraDetails: extras,
+        );
+      }).toList();
 }

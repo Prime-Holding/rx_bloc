@@ -20,7 +20,7 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
               .getHotelsPaginated(
                 filters: reloadData.filters,
                 pageSize: _paginatedList.value.pageSize,
-                page: _paginatedList.value.pageNumber + 1,
+                page: _paginatedList.value.pageNumber,
               )
               .asResultStream();
         },

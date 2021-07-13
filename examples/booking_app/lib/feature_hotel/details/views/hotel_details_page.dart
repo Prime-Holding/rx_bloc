@@ -37,12 +37,11 @@ class HotelDetailsPage extends StatefulWidget {
 class _HotelDetailsPageState extends State<HotelDetailsPage> {
   @override
   void initState() {
-    context
-        .read<HotelsExtraDetailsBlocType>()
-        .events
-        .fetchExtraDetails(widget._hotel, allProps: true);
-
     super.initState();
+    context
+        .read<HotelDetailsBlocType>()
+        .events
+        .fetchFullExtraDetails(widget._hotel);
   }
 
   @override
@@ -59,7 +58,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   state: (bloc) => bloc.states.hotel,
                   builder: (context, snapshot, bloc) => snapshot.hasData
                       ? _buildPage(bloc, snapshot.data!)
-                      : Container(),
+                      : Center(child: LoadingWidget()),
                 ),
               ),
             ],

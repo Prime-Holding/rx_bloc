@@ -1,6 +1,8 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc_list/models.dart';
 
+import 'hotels_repository.dart';
+
 class PaginatedHotelsRepository implements HotelsRepository {
   PaginatedHotelsRepository(HotelsRepository repository)
       : _repository = repository;
@@ -27,39 +29,31 @@ class PaginatedHotelsRepository implements HotelsRepository {
     required HotelSearchFilters filters,
     required int pageSize,
     required int page,
-  }) async {
-    final hotels = await getHotels(filters: filters);
-
-    return PaginatedList(
-      list: hotels.getPage(
-        pageSize: pageSize,
-        page: page,
-      ),
-      pageSize: pageSize,
-      totalCount: hotels.length,
-    );
-  }
+  }) async =>
+      getHotels(filters: filters, pageSize: pageSize, page: page);
 
   @override
   Future<List<Hotel>> getFavoriteHotels() => _repository.getFavoriteHotels();
 
   @override
-  Future<List<Hotel>> getHotels({HotelSearchFilters? filters}) =>
-      _repository.getHotels(filters: filters);
+  Future<PaginatedList<Hotel>> getHotels({
+    required int page,
+    required int pageSize,
+    HotelSearchFilters? filters,
+  }) =>
+      _repository.getHotels(filters: filters, pageSize: pageSize, page: page);
 
   @override
   Future<Hotel> favoriteHotel(Hotel hotel, {required bool isFavorite}) =>
       _repository.favoriteHotel(hotel, isFavorite: isFavorite);
 
   @override
-  Future<List<Hotel>> fetchFullEntities(
-    List<String> ids, {
-    bool allProps = false,
-  }) =>
-      _repository.fetchFullEntities(
-        ids,
-        allProps: allProps,
-      );
+  Future<List<HotelExtraDetails>> fetchExtraDetails(List<String> ids) =>
+      _repository.fetchExtraDetails(ids);
+
+  @override
+  Future<HotelFullExtraDetails> fetchFullExtraDetails(String hotelId) =>
+      _repository.fetchFullExtraDetails(hotelId);
 }
 
 extension _HotelList on List<Hotel> {

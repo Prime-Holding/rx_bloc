@@ -2,7 +2,7 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:booking_app/base/repositories/paginated_hotels_repository.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:collection/collection.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 
 part 'hotels_extra_details_bloc.rxb.g.dart';

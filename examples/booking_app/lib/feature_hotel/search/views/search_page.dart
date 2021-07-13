@@ -109,6 +109,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 );
               },
               buildError: (context, list, bloc) => ErrorRetryWidget(
+                textError: list.error.toString(),
                 onReloadTap: () => bloc.events.reload(
                   reset: true,
                   fullReset: true,

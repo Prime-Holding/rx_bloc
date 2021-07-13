@@ -1,6 +1,8 @@
+import 'package:booking_app/base/remote_data_sources/hotels_firebase_data_source.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import '../../feature_home/blocs/navigation_bar_bloc.dart';
 
 class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -20,6 +22,16 @@ class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
                 snapshot.hasData ? snapshot.data!.type.asHotelTitle() : '',
               ),
               centerTitle: false,
+              actions: foundation.kReleaseMode == false
+                  ? [
+                      IconButton(
+                        onPressed: () async {
+                          await HotelsFirebaseDataSource().seed(multiplier: 5);
+                        },
+                        icon: const Icon(Icons.room_service_rounded),
+                      )
+                    ]
+                  : null,
             );
 
   AppBar _searchAppBar(

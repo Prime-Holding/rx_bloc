@@ -1,13 +1,15 @@
+import 'package:booking_app/base/repositories/paginated_hotels_repository.dart';
 import 'package:favorites_advanced_base/core.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:booking_app/base/common_blocs/coordinator_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'hotel_details_bloc.rxb.g.dart';
 part 'hotel_details_bloc_extensions.dart';
 
-abstract class HotelDetailsEvents {}
+// ignore: one_member_abstracts
+abstract class HotelDetailsEvents {
+  void fetchFullExtraDetails(Hotel hotel);
+}
 
 abstract class HotelDetailsStates {
   Stream<String> get imagePath;
@@ -26,21 +28,28 @@ abstract class HotelDetailsStates {
 @RxBloc()
 class HotelDetailsBloc extends $HotelDetailsBloc {
   HotelDetailsBloc(
-    CoordinatorBlocType coordinatorBloc, {
+    PaginatedHotelsRepository hotelsRepository, {
     required Hotel hotel,
-  })   : _hotel = hotel,
-        _coordinatorBlocType = coordinatorBloc;
+  })  : _hotel = hotel,
+        _hotelsRepository = hotelsRepository;
 
   final Hotel _hotel;
 
-  final CoordinatorBlocType _coordinatorBlocType;
-
+  final PaginatedHotelsRepository _hotelsRepository;
   //get the latest updated version of the hotel
   @override
-  Stream<Hotel> _mapToHotelState() => _coordinatorBlocType
-      .onHotelUpdated(_hotel)
-      .startWith(_hotel)
-      .shareReplay(maxSize: 1);
+  Stream<Hotel> _mapToHotelState() =>
+      _$fetchFullExtraDetailsEvent.startWith(_hotel).asyncMap((hotel) async {
+        final fullExtraDetails =
+            await _hotelsRepository.fetchFullExtraDetails(hotel.id);
+        hotel = hotel.copyWith(fullExtraDetails: fullExtraDetails);
+        if (hotel.extraDetails == null) {
+          final extraDetails =
+              await _hotelsRepository.fetchExtraDetails([hotel.id]);
+          hotel = hotel.copyWith(extraDetails: extraDetails.first);
+        }
+        return hotel;
+      }).shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToImagePathState() => hotel.mapToImagePath();

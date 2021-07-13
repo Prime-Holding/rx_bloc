@@ -11,7 +11,7 @@ class HotelHeader extends StatelessWidget {
     Key? key,
     required this.hotel,
     required EdgeInsets? padding,
-  })   : _padding = padding,
+  })  : _padding = padding,
         super(key: key);
 
   final Hotel hotel;
@@ -91,7 +91,7 @@ class HotelHeader extends StatelessWidget {
                             SmoothStarRating(
                               allowHalfRating: true,
                               starCount: 5,
-                              rating: hotel.rating,
+                              rating: hotel.extraDetails?.rating ?? 0.0,
                               size: 20,
                               color:
                                   HotelAppTheme.buildLightTheme().primaryColor,

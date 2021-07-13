@@ -13,6 +13,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
 import '../../../base/repositories/paginated_hotels_repository.dart';
+import '../../../constants.dart';
 
 part 'hotel_list_bloc.rxb.g.dart';
 part 'hotel_list_bloc_extensions.dart';
@@ -91,7 +92,7 @@ class HotelListBloc extends $HotelListBloc {
   // MARK: - Subjects
   final _hotels = BehaviorSubject<PaginatedList<Hotel>>.seeded(
     PaginatedList(
-      pageSize: 10,
+      pageSize: pageSize,
       list: [],
     ),
   );

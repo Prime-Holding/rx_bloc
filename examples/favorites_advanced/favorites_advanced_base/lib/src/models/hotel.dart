@@ -1,156 +1,133 @@
 import 'package:equatable/equatable.dart';
-import 'package:favorites_advanced_base/src/models/entity.dart';
+import 'package:favorites_advanced_base/models.dart';
 
 // ignore: must_be_immutable
 class Hotel extends Equatable implements Entity {
   final String id;
-  final String imagePath;
+  final String image;
   final String title;
-  final String subTitle;
   final int perNight;
-  final double dist;
-  final double rating;
-  final int reviews;
-  final String description;
-  final List<String> features;
   final int roomCapacity;
   final int personCapacity;
-  final DateTime startWorkDate;
-  final DateTime endWorkDate;
-  bool isFavorite;
+  final DateTime workingDate;
+  final double dist;
 
-  // Properties that should simulate remote fetching of entity data
-  final List<String>? displayFeatures;
-  final String? displayDescription;
-  final String? displaySubtitle;
-  final int? displayReviews;
-  final double? displayRating;
-  final double? displayDist;
+  final HotelExtraDetails? extraDetails;
+  final HotelFullExtraDetails? fullExtraDetails;
+
+  bool isFavorite;
 
   Hotel({
     required this.id,
-    required this.imagePath,
+    required this.image,
     required this.title,
-    required this.subTitle,
     required this.perNight,
-    required this.dist,
-    required this.rating,
-    required this.reviews,
     required this.isFavorite,
-    required this.features,
     required this.roomCapacity,
     required this.personCapacity,
-    required this.startWorkDate,
-    required this.endWorkDate,
-    required this.description,
-    this.displaySubtitle,
-    this.displayReviews,
-    this.displayRating,
-    this.displayDist,
-    this.displayDescription,
-    this.displayFeatures,
+    required this.workingDate,
+    required this.dist,
+    this.extraDetails,
+    this.fullExtraDetails,
   });
 
   Hotel copyWith({
     String? id,
-    String? imagePath,
+    String? image,
     String? title,
-    String? subTitle,
     int? perNight,
-    double? dist,
-    double? rating,
-    int? reviews,
-    String? description,
-    List<String>? features,
     int? roomCapacity,
     int? personCapacity,
-    DateTime? startWorkDate,
-    DateTime? endWorkDate,
+    DateTime? workingDate,
+    double? dist,
+    HotelExtraDetails? extraDetails,
+    HotelFullExtraDetails? fullExtraDetails,
     bool? isFavorite,
-    String? displaySubtitle,
-    int? displayReviews,
-    double? displayRating,
-    double? displayDist,
-    String? displayDescription,
-    List<String>? displayFeatures,
   }) =>
       Hotel(
         id: id ?? this.id,
-        imagePath: imagePath ?? this.imagePath,
+        image: image ?? this.image,
         title: title ?? this.title,
-        subTitle: subTitle ?? this.subTitle,
         perNight: perNight ?? this.perNight,
-        dist: dist ?? this.dist,
-        rating: rating ?? this.rating,
-        reviews: reviews ?? this.reviews,
         isFavorite: isFavorite ?? this.isFavorite,
-        description: description ?? this.description,
-        features: features ?? this.features,
         roomCapacity: roomCapacity ?? this.roomCapacity,
         personCapacity: personCapacity ?? this.personCapacity,
-        startWorkDate: startWorkDate ?? this.startWorkDate,
-        endWorkDate: endWorkDate ?? this.endWorkDate,
-        displaySubtitle: displaySubtitle ?? this.displaySubtitle,
-        displayReviews: displayReviews ?? this.displayReviews,
-        displayRating: displayRating ?? this.displayRating,
-        displayDist: displayDist ?? this.displayDist,
-        displayDescription: displayDescription ?? this.displayDescription,
-        displayFeatures: displayFeatures ?? this.displayFeatures,
+        workingDate: workingDate ?? this.workingDate,
+        dist: dist ?? this.dist,
+        extraDetails: extraDetails ?? this.extraDetails,
+        fullExtraDetails: fullExtraDetails ?? this.fullExtraDetails,
       );
 
   Hotel copyWithHotel(Hotel hotel) => Hotel(
         id: hotel.id,
-        imagePath: hotel.imagePath,
+        image: hotel.image,
         title: hotel.title,
-        subTitle: hotel.subTitle,
         perNight: hotel.perNight,
-        dist: hotel.dist,
-        rating: hotel.rating,
-        reviews: hotel.reviews,
         isFavorite: hotel.isFavorite,
-        features: hotel.features,
-        description: hotel.description,
         roomCapacity: hotel.roomCapacity,
         personCapacity: hotel.personCapacity,
-        startWorkDate: hotel.startWorkDate,
-        endWorkDate: hotel.endWorkDate,
-        displaySubtitle: hotel.displaySubtitle ?? displaySubtitle,
-        displayReviews: hotel.displayReviews ?? displayReviews,
-        displayRating: hotel.displayRating ?? displayRating,
-        displayDist: hotel.displayDist ?? displayDist,
-        displayFeatures: hotel.displayFeatures ?? displayFeatures,
-        displayDescription: hotel.displayDescription ?? displayDescription,
+        workingDate: hotel.workingDate,
+        dist: hotel.dist,
+        extraDetails: hotel.extraDetails,
+        fullExtraDetails: hotel.fullExtraDetails,
       );
+
+  int? get displayReviews => extraDetails?.reviews;
+  double? get displayRating => extraDetails?.rating;
+  double? get displayDist => dist;
+  String? get displaySubtitle => extraDetails?.subTitle;
+  String? get displayDescription => fullExtraDetails?.description;
+  List<String>? get displayFeatures => fullExtraDetails?.features;
 
   @override
   T copyWithEntity<T extends Entity>(T entity) =>
       copyWithHotel(entity as Hotel) as T;
 
   @override
-  bool hasExtraDetails() =>
-      displayRating != null &&
-      displayReviews != null &&
-      displaySubtitle != null &&
-      displayDist != null;
+  bool hasExtraDetails() => extraDetails != null;
 
-  bool hasFullExtraDetails() =>
-      displayDescription != null && displayFeatures != null;
+  bool hasFullExtraDetails() => fullExtraDetails != null;
 
   @override
   List<Object?> get props => [
         id,
-        imagePath,
+        image,
         title,
-        subTitle,
         perNight,
-        dist,
-        rating,
-        reviews,
-        // description,
-        features,
         roomCapacity,
         personCapacity,
-        endWorkDate,
+        dist,
+        workingDate,
+        extraDetails,
+        fullExtraDetails,
         isFavorite
       ];
+
+  Hotel.fromJson(Map<String, dynamic> json)
+      : this(
+          id: json['id'] as String,
+          image: json['image'] as String,
+          title: json['title'] as String,
+          perNight: json['perNight'] as int,
+          isFavorite: json['isFavorite'] as bool,
+          roomCapacity: json['roomCapacity'] as int,
+          personCapacity: json['personCapacity'] as int,
+          workingDate: DateTime.now(),
+          dist: double.parse(json['dist'].toString()),
+        );
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'image': image,
+      'title': title,
+      'perNight': perNight,
+      'isFavorite': isFavorite,
+      'roomCapacity': roomCapacity,
+      'personCapacity': personCapacity,
+      'startWorkDate': workingDate,
+      'workingDate': workingDate,
+      'dist': dist,
+    };
+  }
 }
