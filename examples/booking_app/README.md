@@ -9,11 +9,11 @@ Checkout and download these two projects:
  - https://github.com/Prime-Holding/rx_bloc/tree/master/examples/booking_app
  - https://github.com/Prime-Holding/firebase-cloud-functions
 
-For the firebase cloud functions project, go inside the functions folder, 
-execute [npm run build] and then [firebase emulators:start --only functions]  to start the local emulators of the functions.
-
-You can also take a look at the documentation for creating cloud functions presented here: 
-https://firebase.google.com/docs/functions/get-started
+To setup the project you have to first to run: [flutter packages pub run build_runner build --delete-conflicting-outputs]
+Then edit configurations your depending what kind of data source you want to use. 
+1. main.dart for entrypoint && [local] flavor argument for local database
+2. main_firebase.dart for entrypoint && [firebase] flavor argument for firebase
+3. main_firebase_algolia.dart for entrypoint && [firebase_algolia] flavor argument for firebase + algolia
 
 ## Most popular solutions on the market 
  - Firebase 

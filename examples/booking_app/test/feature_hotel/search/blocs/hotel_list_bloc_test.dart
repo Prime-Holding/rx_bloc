@@ -19,7 +19,7 @@ import 'hotel_list_bloc_test.mocks.dart';
   CoordinatorEvents,
   CoordinatorStates,
 ])
-void main() {
+Future<void> main() async {
   late MockPaginatedHotelsRepository repositoryMock;
   late MockCoordinatorBlocType coordinatorMock;
   late MockCoordinatorStates coordinatorStatesMock;
