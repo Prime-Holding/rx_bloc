@@ -9,8 +9,8 @@ class GithubReposRepository {
   final GithubReposDataSource _dataSource;
 
   Future<PaginatedList<GithubRepo>> search({
-    required String query,
     required int page,
+    required String query,
     int pageSize = 30,
   }) async {
     final response = await _dataSource.search(

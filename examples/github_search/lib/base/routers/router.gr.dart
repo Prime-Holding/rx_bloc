@@ -5,6 +5,7 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
+import 'package:flutter/foundation.dart' as _i7;
 import 'package:flutter/material.dart' as _i2;
 
 import '../../feature_counter/views/counter_page.dart' as _i3;
@@ -35,8 +36,10 @@ class Router extends _i1.RootStackRouter {
         }),
     GithubRepoListRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return const _i6.GithubRepoListPage();
+        builder: (data) {
+          final args = data.argsAs<GithubRepoListRouteArgs>(
+              orElse: () => const GithubRepoListRouteArgs());
+          return _i6.GithubRepoListPage(key: args.key);
         })
   };
 
@@ -67,8 +70,15 @@ class NotificationsRoute extends _i1.PageRouteInfo {
   static const String name = 'NotificationsRoute';
 }
 
-class GithubRepoListRoute extends _i1.PageRouteInfo {
-  const GithubRepoListRoute() : super(name, path: '/');
+class GithubRepoListRoute extends _i1.PageRouteInfo<GithubRepoListRouteArgs> {
+  GithubRepoListRoute({_i7.Key? key})
+      : super(name, path: '/', args: GithubRepoListRouteArgs(key: key));
 
   static const String name = 'GithubRepoListRoute';
+}
+
+class GithubRepoListRouteArgs {
+  const GithubRepoListRouteArgs({this.key});
+
+  final _i7.Key? key;
 }

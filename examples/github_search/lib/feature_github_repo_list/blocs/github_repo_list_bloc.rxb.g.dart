@@ -23,7 +23,10 @@ abstract class $GithubRepoListBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [loadPage]
-  final _$loadPageEvent = PublishSubject<bool>();
+  final _$loadPageEvent = PublishSubject<_LoadPageEventArgs>();
+
+  /// Тhe [Subject] where events sink to by calling [filterByQuery]
+  final _$filterByQueryEvent = BehaviorSubject<String>.seeded('Flutter');
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -36,7 +39,11 @@ abstract class $GithubRepoListBloc extends RxBlocBase
       _mapToPaginatedListState();
 
   @override
-  void loadPage({bool reset = false}) => _$loadPageEvent.add(reset);
+  void loadPage({bool reset = false, bool hardReset = false}) => _$loadPageEvent
+      .add(_LoadPageEventArgs(reset: reset, hardReset: hardReset));
+
+  @override
+  void filterByQuery(String query) => _$filterByQueryEvent.add(query);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -62,7 +69,18 @@ abstract class $GithubRepoListBloc extends RxBlocBase
   @override
   void dispose() {
     _$loadPageEvent.close();
+    _$filterByQueryEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [GithubRepoListBlocEvents.loadPage] event
+class _LoadPageEventArgs {
+  const _LoadPageEventArgs({this.reset = false, this.hardReset = false});
+
+  final bool reset;
+
+  final bool hardReset;
 }
