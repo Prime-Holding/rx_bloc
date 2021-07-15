@@ -16,7 +16,7 @@ class _GithubReposDataSource implements GithubReposDataSource {
   String? baseUrl;
 
   @override
-  Future<GithubReposResponse> search({required query, required page}) async {
+  Future<GithubReposResponse> search({required query, page = 1}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'q': query, r'page': page};
     final _data = <String, dynamic>{};

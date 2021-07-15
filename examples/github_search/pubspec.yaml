@@ -36,6 +36,10 @@ dependencies:
   shelf_router: ^1.0.0
   shelf_static: ^1.0.0
 
+dependency_overrides:
+  rx_bloc_list:
+    path: ../../packages/rx_bloc_list
+
 dev_dependencies:
   auto_route_generator: ^2.1.0
   build_runner: ^2.0.3

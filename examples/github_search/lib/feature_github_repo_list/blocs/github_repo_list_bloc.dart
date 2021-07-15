@@ -1,5 +1,6 @@
 import 'package:github_search/base/models/github_repo.dart';
 import 'package:github_search/base/repositories/github_repos_repository.dart';
+import 'package:github_search/feature_github_repo_list/models/github_repo_paginated_search.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,9 +10,15 @@ part 'github_repo_list_bloc_extensions.dart';
 
 /// A contract class containing all events of the GithubRepoBloC.
 abstract class GithubRepoListBlocEvents {
-  /// Load the next page of data. If reset is true, refresh the data and load
-  /// the very first page
-  void loadPage({bool reset = false});
+  /// Load the next page of data.
+  ///
+  /// - If [reset] is true, refresh the data and load the very first page
+  /// - If [hardReset] is true, the list will be cleared and a loading
+  /// indicator will appear.
+  void loadPage({bool reset = false, bool hardReset = false});
+
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: 'Flutter')
+  void filterByQuery(String query);
 }
 
 /// A contract class containing all states of the GithubRepoListBloC.
@@ -28,6 +35,9 @@ abstract class GithubRepoListBlocStates {
   /// Returns when the data refreshing has completed
   @RxBlocIgnoreState()
   Future<void> get refreshDone;
+
+  @RxBlocIgnoreState()
+  Stream<String> get queryFilter;
 }
 
 /// GithubRepo Bloc
@@ -35,9 +45,12 @@ abstract class GithubRepoListBlocStates {
 class GithubRepoListBloc extends $GithubRepoListBloc {
   /// GithubRepoListBloc default constructor
   GithubRepoListBloc({required GithubReposRepository repository}) {
-    _$loadPageEvent
+    Rx.merge([
+      _$loadPageEvent.mapToPaginatedSearch(_$filterByQueryEvent),
+      _$filterByQueryEvent.mapToPaginatedSearch(),
+    ])
         // Start the data fetching immediately when the page loads
-        .startWith(true)
+        .startWithDefaults(_$filterByQueryEvent)
         .fetchData(repository, _paginatedList)
         // Enable state handling by the current bloc
         .setResultStateHandler(this)
@@ -69,6 +82,9 @@ class GithubRepoListBloc extends $GithubRepoListBloc {
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  @override
+  Stream<String> get queryFilter => _$filterByQueryEvent;
 
   /// Disposes of all streams to prevent memory leaks
   @override
