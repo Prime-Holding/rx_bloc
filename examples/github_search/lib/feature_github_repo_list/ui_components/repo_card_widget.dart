@@ -11,11 +11,17 @@ class RepoCardWidget extends StatelessWidget {
   final GithubRepo _githubRepo;
 
   @override
-  Widget build(BuildContext context) => Card(
-        elevation: 3,
-        child: ListTile(
-          title: Text(_githubRepo.name),
-          subtitle: Text(_githubRepo.description),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Card(
+          elevation: 3,
+          child: ListTile(
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(_githubRepo.name),
+            ),
+            subtitle: Text(_githubRepo.description),
+          ),
         ),
       );
 }

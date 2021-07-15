@@ -12,6 +12,6 @@ abstract class GithubReposDataSource {
   @GET('/search/repositories')
   Future<GithubReposResponse> search({
     @Query('q') required String query,
-    @Query('page') required int page,
+    @Query('page') int page = 1,
   });
 }
