@@ -106,6 +106,8 @@ Sometimes, you may want to have a working pagination and pull-to-refresh without
 
 Along with the required parameters of the default implementation, *RxPaginatedBuilder.withRefreshIndicator* gets rid of the `wrapperBuilder` but introduces a new required parameter `onRefresh`. The `onRefresh` callback is triggered once a pull-to-refresh has been performed. The callback, containing the BLoC as a parameter, should return a future, which once complete will make the refresh indicator disappear.
 
+## Video tutorials
+- [Building feature-rich lists in Flutter](https://youtu.be/Nc8OLxYhQ0w) A feature-rich ListView implementation in Flutter that demonstrates how easy it is to build common functionalities such as `pull-to-refresh` and `infinite-scroll`.
 
 ## Articles
 - [Easy paginated lists in Flutter](https://medium.com/prime-holding-jsc/easy-paginated-lists-in-flutter-b1cfb82188d8) Implementing `infinity scroll` and `pull-to-refresh` in your app was never so easy.
