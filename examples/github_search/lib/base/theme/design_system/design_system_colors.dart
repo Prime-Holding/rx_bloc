@@ -30,7 +30,10 @@ class DesignSystemColors {
 
   Color get canvasColor => Colors.white;
 
-  Color get backgroundColor => lightMode ? Colors.white : Colors.black;
+  Color get backgroundColor =>
+      lightMode ? Colors.black26.withOpacity(0.03) : Colors.black;
+
+  Color get fieldsBackgroundColor => lightMode ? Colors.white : Colors.black;
 
   Color get reverseBackgroundColor => lightMode ? Colors.black : Colors.white;
 
