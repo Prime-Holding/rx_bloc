@@ -6,11 +6,7 @@ import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
-abstract class RxGeneratorBase(private val name: String,
-                               withDefaultStates: Boolean,
-                               includeExtensions: Boolean,
-                               includeNullSafety: Boolean,
-                               templateName: String) {
+abstract class RxGeneratorBase(private val name: String) {
 
     abstract fun fileName(): String
     abstract fun contextDirectoryName(): String

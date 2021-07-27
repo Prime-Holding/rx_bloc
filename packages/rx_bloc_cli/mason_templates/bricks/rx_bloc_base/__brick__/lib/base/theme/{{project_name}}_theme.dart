@@ -37,6 +37,10 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
         colorScheme: colorScheme,
         textTheme: ButtonTextTheme.primary,
       ),
+      textButtonTheme:
+          _buildTextButtonTheme(base.textButtonTheme, designSystem),
+      outlinedButtonTheme:
+          _buildOutlinedButtonTheme(base.outlinedButtonTheme, designSystem),
       textTheme: _buildDesignTextTheme(base.textTheme, designSystemColor),
       primaryTextTheme:
       _buildDesignTextTheme(base.primaryTextTheme, designSystemColor),
@@ -45,6 +49,7 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
       appBarTheme: AppBarTheme(
         color: designSystemColor.primaryVariant,
       ),
+      iconTheme: _buildIconTheme(base.iconTheme, designSystemColor),
     );
   }
 
@@ -69,5 +74,35 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
       overline: base.overline!.copyWith(fontFamily: fontName),
     );
   }
+
+  static IconThemeData _buildIconTheme(
+          IconThemeData base, DesignSystemColors designSystemColors) =>
+        base.copyWith(
+          color: designSystemColors.iconColor,
+        );
+
+  static OutlinedButtonThemeData _buildOutlinedButtonTheme(
+          OutlinedButtonThemeData data, DesignSystem designSystem) =>
+      OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: designSystem.colors.primaryColor,
+          textStyle: designSystem.typography.outlinedButtonText,
+          primary: designSystem.colors.outlinedButtonTextColor,
+          side: BorderSide(
+            width: 2,
+            color: designSystem.colors.primaryVariant,
+          ),
+        ),
+      );
+
+  static TextButtonThemeData _buildTextButtonTheme(
+          TextButtonThemeData data, DesignSystem designSystem) =>
+      TextButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: designSystem.colors.primaryColor,
+          textStyle: designSystem.typography.outlinedButtonText,
+          primary: designSystem.colors.outlinedButtonTextColor,
+      ),
+  );
 
 }

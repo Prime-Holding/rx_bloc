@@ -7,10 +7,7 @@ import java.io.InputStreamReader
 import java.lang.RuntimeException
 
 abstract class RxDependenciesGeneratorBase(private val name: String,
-                                           withDefaultStates: Boolean,
-                                           includeExtensions: Boolean,
-                                           includeNullSafety: Boolean,
-                                           templateName: String): RxGeneratorBase(name, withDefaultStates, includeExtensions, includeNullSafety, templateName) {
+                                           templateName: String): RxGeneratorBase(name) {
 
     private val TEMPLATE_FEATURE_PASCAL_CASE = "feature_pascal_case"
     private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"

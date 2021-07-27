@@ -1,9 +1,14 @@
-## [0.0.5] - June 02, 2021
-* Update generated project, adding following features:
-    - Http-client(Dio by default)
-    - Interceptors
+## [1.0.0] - July 09, 2021
+* Upgraded to `rx_bloc: 3.1.0` and `flutter_rx_bloc: 3.2.0`
 
-## [0.0.4] - June 10, 2021
+## [0.0.5] - June 29, 2021
+* Update generated project, adding following features:
+    - Http-client (Dio by default)
+    - Interceptors
+    - Push Notifications via Firebase Cloud Messaging
+    - Local server (written in Dart)
+
+## [0.0.4] - June 14, 2021
 * Update generated project with golden tests
 
 ## [0.0.3] - May 28, 2021

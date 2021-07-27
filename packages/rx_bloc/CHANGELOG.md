@@ -1,3 +1,15 @@
+## [3.1.0] - July 09, 2021
+* Added an optional param `tag` to (Future/Stream).asResultStream(tag: 'someTag'). 
+  * This will help to distinguish the action that has been triggered a particular async call. Check the [flutter_rx_bloc example](https://pub.dev/packages/flutter_rx_bloc/example) for more details.
+* Added utility (extension) methods
+  * `Stream<ResultError<T>>`.`mapToException()`
+  * `Stream<ResultError<T>>`.`mapToErrorWithTag()`
+  * `Stream<Result<T>>`.`isLoadingWithTag()`
+* Added new states and methods to RxBlocBase
+    * `RxBlocBase`.`errorWithTagState` 
+    * `RxBlocBase`.`loadingWithTagState`
+    * `RxBlocBase`.`loadingForTagState('someTag')`
+
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`
 * Update `rxdart` to use version `0.27.0`

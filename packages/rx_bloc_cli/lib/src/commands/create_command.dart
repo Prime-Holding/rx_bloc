@@ -33,12 +33,18 @@ class CreateCommand extends Command<int> {
       )
       ..addOption(
         _analyticsString,
-        help: 'Enables Google analytics for the project',
+        help: 'Enables Firebase analytics for the project',
         defaultsTo: 'true',
       )
+      /*
+      ..addOption(
+        _pushNotificationString,
+        help: 'Enables Firebase push notifications for the project',
+        defaultsTo: 'true',
+      )*/
       ..addOption(
         _httpClientString,
-        help: 'HTTP client',
+        help: 'Use Http client configuration for the project',
         defaultsTo: 'dio',
       );
   }
@@ -48,6 +54,7 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
   final _analyticsString = 'include-analytics';
+  final _pushNotificationString = 'push-notifications';
   final _httpClientString = 'http-client';
 
   final Logger _logger;
@@ -104,7 +111,9 @@ class CreateCommand extends Command<int> {
         'project_name': projectName,
         'domain_name': orgDomain,
         'organization_name': orgName,
+        'uses_firebase': _usesFirebase,
         'analytics': _enableAnalytics,
+        'push_notifications': _enablePushNotifications,
         'http_client': _httpClientType,
       },
     );
@@ -144,10 +153,22 @@ class CreateCommand extends Command<int> {
     return Directory(rest.first);
   }
 
+  /// Returns whether Firebase is used in the generated project
+  bool get _usesFirebase => _enableAnalytics || _enablePushNotifications;
+
   /// Returns whether the project will use analytics or not
   bool get _enableAnalytics {
     final analyticsEnabled = _argResults[_analyticsString];
     return analyticsEnabled.toLowerCase() != 'false';
+  }
+
+  /// Returns whether the project will have push notifications enabled
+  bool get _enablePushNotifications {
+    /*
+    final pushNotificationsEnabled = _argResults[_pushNotificationString];
+    return pushNotificationsEnabled.toLowerCase() != 'false';
+     */
+    return true;
   }
 
   /// Returns http client type
@@ -229,8 +250,8 @@ class CreateCommand extends Command<int> {
     _delayedLog('Generated project with package name: '
         '${lightCyan.wrap('$_organizationName.$_projectName')}');
 
-    _delayedLog('${_enableAnalytics ? 'Using' : 'Not using'} Google Analytics',
-        success: _enableAnalytics);
+    _usingLog('Firebase Analytics', _enableAnalytics);
+    _usingLog('Firebase Push Notifications', _enablePushNotifications);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -238,6 +259,12 @@ class CreateCommand extends Command<int> {
     final symbol = success ? lightGreen.wrap('✓') : red.wrap('x');
     _logger.delayed('$symbol ${white.wrap(text)}');
     if (newline) _logger.delayed('');
+  }
+
+  /// Prints a (delayed) log for whether the specified item is being used or not
+  void _usingLog(String item, bool enabled, {newline = false}) {
+    final usingStr = enabled ? 'Using' : 'Not using';
+    _delayedLog('$usingStr $item', success: enabled, newline: newline);
   }
 
   /// endregion
