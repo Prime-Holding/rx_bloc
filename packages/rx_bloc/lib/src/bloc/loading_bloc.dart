@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'loading_bloc.rxb.g.dart';
+part 'loading_bloc_extensions.dart';
+part 'loading_bloc_models.dart';
 
 /// The states of LoadingBloc
 abstract class LoadingBlocStates {
   ///
   /// The isLoading stream starts with initial value false.
-  /// It can be triggered by invoking [LoadingBlocEvents.setLoading]
+  /// It can be triggered by invoking [LoadingBlocEvents.setResult]
   ///
   /// **Example:**
   ///    # Input [LoadingBlocEvents.setLoading]
@@ -16,16 +20,27 @@ abstract class LoadingBlocStates {
   ///    - |----------------------------------------true----------false->
   ///    # are merged into one stream *isLoading*
   ///    - |false--true------------false------------true----------false->
+  Stream<LoadingWithTag> get isLoadingWithTag;
+
+  ///
+  /// Get global isLoading stream
+  ///
   Stream<bool> get isLoading;
+
+  ///
+  /// Get isLoading stream for a specific tag
+  ///
+  @RxBlocIgnoreState()
+  Stream<bool> isLoadingForTag(String tag);
 }
 
 /// The events of LoadingBloc
 abstract class LoadingBlocEvents {
-  /// Set [isLoading] to BloC
+  /// Set [result] to BloC
   ///
   /// To observe the current loading state subscribe for
   /// [LoadingBlocStates.isLoading]
-  void setLoading({required bool isLoading});
+  void setResult({required Result result});
 }
 
 /// The BloC that handles is loading state.
@@ -38,21 +53,34 @@ class LoadingBloc extends $LoadingBloc {
   /// Default constructor
   LoadingBloc() {
     _$setLoadingEvent
-        .map((isLoading) => isLoading
-            ? (_loadingCount.value ?? 0) + 1
-            : (_loadingCount.value ?? 0) - 1)
-        .bind(_loadingCount)
+        .bindToLoadingCounts(_loadingCounts)
         .disposedBy(_compositeSubscription);
   }
 
-  final _loadingCount = BehaviorSubject.seeded(0);
+  final _loadingCounts = BehaviorSubject.seeded({
+    '': BehaviorSubject.seeded(
+      _TagCountTuple(
+        tag: '', // default tag value
+        count: 0,
+      ),
+    )
+  });
+
   final _compositeSubscription = CompositeSubscription();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => _loadingCount
-      .map((count) => count > 0)
-      .distinct()
+  Stream<LoadingWithTag> _mapToIsLoadingWithTagState() =>
+      _loadingCounts.mapToLoadingWithTag().shareReplay(maxSize: 1);
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => _isLoadingWithTagState
+      .map((event) => event.loading)
+      .shareReplay(maxSize: 1);
+
+  @override
+  Stream<bool> isLoadingForTag(String tag) => _isLoadingWithTagState
+      .where((event) => event.tag == tag)
+      .map((event) => event.loading)
       .startWith(false)
-      .distinct()
       .shareReplay(maxSize: 1);
 }

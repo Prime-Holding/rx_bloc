@@ -2,7 +2,33 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('Extension on Stream<ResultError<T>>', () {
+    test('mapToException()', () async {
+      await expectLater(
+        Stream.value(Result.error(Exception('test')) as ResultError)
+            .mapToException()
+            .map((exception) => exception.toString()),
+        emitsInOrder(
+          [
+            'Exception: test',
+          ],
+        ),
+      );
+    });
+  });
+
   group('Extension on Stream<Result<T>>', () {
+    test('isLoadingWithTag()', () async {
+      await expectLater(
+        Stream.value(1).asResultStream(tag: 'tag').isLoadingWithTag(),
+        emitsInOrder(
+          [
+            LoadingWithTag(loading: true, tag: 'tag'),
+            LoadingWithTag(loading: false, tag: 'tag'),
+          ],
+        ),
+      );
+    });
     test('whereError()', () async {
       await expectLater(
         Stream.error(Exception('test'))
@@ -12,6 +38,17 @@ void main() {
         emitsInOrder(
           [
             'Exception: test',
+          ],
+        ),
+      );
+    });
+
+    test('whereSuccess()', () async {
+      await expectLater(
+        Stream.value('test').asResultStream().whereSuccess(),
+        emitsInOrder(
+          [
+            'test',
           ],
         ),
       );

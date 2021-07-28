@@ -33,6 +33,7 @@ class PuppyCard extends StatelessWidget {
       : VisibilityDetector(
           onVisibilityChanged: (info) {
             if (info.visibleFraction > 0.7) {
+              // print('info.visibleFraction > 0.7');
               _onVisible!(_puppy);
             }
           },
@@ -40,46 +41,49 @@ class PuppyCard extends StatelessWidget {
           child: _buildCard(),
         );
 
-  Widget _buildCard() => GestureDetector(
-        onTap: () => _onCardPressed(_puppy),
-        child: Padding(
-          key: Key("PuppyCard${_puppy.id}"),
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-          child: Card(
-            elevation: 2,
-            child: ListTile(
-              contentPadding: EdgeInsets.only(
-                left: 12,
-                right: 0,
-                top: 8,
-                bottom: 4,
+  Widget _buildCard() {
+    // print('_buildCard');
+    return GestureDetector(
+      onTap: () => _onCardPressed(_puppy),
+      child: Padding(
+        key: Key("PuppyCard${_puppy.id}"),
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+        child: Card(
+          elevation: 2,
+          child: ListTile(
+            contentPadding: EdgeInsets.only(
+              left: 12,
+              right: 0,
+              top: 8,
+              bottom: 4,
+            ),
+            leading: Hero(
+              tag: '$PuppyCardAnimationTag ${_puppy.id}',
+              child: PuppyAvatar(
+                asset: _puppy.asset,
+                radius: 56,
               ),
-              leading: Hero(
-                tag: '$PuppyCardAnimationTag ${_puppy.id}',
-                child: PuppyAvatar(
-                  asset: _puppy.asset,
-                  radius: 56,
-                ),
+            ),
+            title: SkeletonText(
+              text: _puppy.displayName,
+              height: 19,
+            ),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 12),
+              child: SkeletonText(
+                text: _puppy.displayCharacteristics,
+                height: 67,
               ),
-              title: SkeletonText(
-                text: _puppy.displayName,
-                height: 19,
-              ),
-              subtitle: Padding(
-                padding: EdgeInsets.only(top: 12),
-                child: SkeletonText(
-                  text: _puppy.displayCharacteristics,
-                  height: 67,
-                ),
-              ),
-              trailing: _puppy.asFavIcon(
-                favorite: () => _onFavorite(_puppy, true),
-                unfavorite: () => _onFavorite(_puppy, false),
-              ),
+            ),
+            trailing: _puppy.asFavIcon(
+              favorite: () => _onFavorite(_puppy, true),
+              unfavorite: () => _onFavorite(_puppy, false),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 extension _PuppyAsFavIcon on Puppy {

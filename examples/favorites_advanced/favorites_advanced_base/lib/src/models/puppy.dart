@@ -40,11 +40,13 @@ class Puppy implements Entity {
   bool operator ==(Object other) {
     if (other is Puppy) {
       return id == other.id &&
+          gender == other.gender &&
           name == other.name &&
           displayName == other.displayName &&
           asset == other.asset &&
           isFavorite == other.isFavorite &&
           breedType == other.breedType &&
+          gender == other.gender &&
           breedCharacteristics == other.breedCharacteristics &&
           displayCharacteristics == other.displayCharacteristics &&
           gender == other.gender;

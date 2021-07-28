@@ -1,0 +1,21 @@
+class CounterScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ListView.builder(
+            itemBuilder: (context, index) {
+                final user = list.getItem(index);
+
+                if (user == null) {
+                    return const YourProgressIndicator();
+                }
+
+                return YourListTile(user: user);
+            },
+            itemCount: list.itemCount,
+         ),
+      ),
+    );
+  }
+}

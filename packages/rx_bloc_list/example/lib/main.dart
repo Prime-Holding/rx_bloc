@@ -175,7 +175,7 @@ class UserBloc extends $UserBloc {
 
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((event) => event.toString());
+      errorState.map((error) => error.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
@@ -197,11 +197,11 @@ extension UserBlocStreamExtensions on Stream<bool> {
   ) =>
       switchMap(
         (reset) {
-          if (reset) _paginatedList.value!.reset();
+          if (reset) _paginatedList.value.reset();
           return _repository
               .fetchPage(
-                _paginatedList.value!.pageNumber + 1,
-                _paginatedList.value!.pageSize,
+                _paginatedList.value.pageNumber + 1,
+                _paginatedList.value.pageSize,
               )
               .asResultStream();
         },

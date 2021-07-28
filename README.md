@@ -9,7 +9,7 @@ Set of flutter packages that make it easy to implement the BLoC Design Pattern u
 
 Following the best practices for building robust mobile applications the architecture below can be used along with the BloC layer.
 
-<img src="https://github.com/Prime-Holding/rx_bloc/raw/master/packages/rx_bloc/doc/asset/ArchitecturalDiagram.png" alt="Rx Bloc Architecture"></img>
+<img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
 ## Packages
 

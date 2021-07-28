@@ -89,11 +89,10 @@ class CounterBloc extends $CounterBloc {
           //emit 0 as initial value
           .startWith(0);
 
+  /// Transform any exception into a readable string.
   @override
   Stream<String> _mapToErrorsState() =>
-
-      /// Transform any exception into a readable string.
-      errorState.map((Exception error) => error.toString());
+      errorState.map((result) => result.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

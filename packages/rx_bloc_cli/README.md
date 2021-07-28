@@ -16,14 +16,14 @@ $ dart pub global activate rx_bloc_cli
 
 ![Create command][create_command_gif_lnk]
 
-Create a new project at the given directory with lots of already set-up features out of the box. Cusomize your project with the following properties:
+Create a new project at the given directory with lots of already set-up features out of the box. Customize your project with the following properties:
 
 |  parameter |defaults to | description |
 | ------------ | :------------: | :------------: |
 |  `--project-name`  | Name of directory where the project resides  | The project name for this new Flutter project. This must be a valid dart package name. |
 |  `--org` | `com.example` | The organisation name |
-|  `--include-analytics` |`true` | Enables Google analytics for the project |
-
+|  `--include-analytics` |`true` | Enables Firebase analytics for the project |
+|  `--http-client` |`dio` | Use Http client configuration for the project |
 
 ### What's Included? 📦
 
@@ -47,7 +47,9 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ✅ [Analytics][firebase_analytics_lnk] - (Optional) Firebase analytics that keep track of how your app is used
 
-✅ [Push notifications][push_notifications_lnk] - (Coming soon) Receive push notifications and messages to your device using Firebase Cloud Messaging
+✅ [Push notifications][push_notifications_lnk] - Receive push notifications and messages to your device using Firebase Cloud Messaging
+
+✅ [Http client][dio_http_client_lnk] - Make API calls, download files, send form data and more using a built-in Http client
 
 ---
 
@@ -81,3 +83,5 @@ Run "rx_bloc_cli help <command>" for more information about a command.
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [push_notifications_lnk]: https://firebase.google.com/products/cloud-messaging/
 [create_command_gif_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/assets/rx_bloc_cli_create.gif
+[dio_http_client_lnk]: https://pub.dev/packages/dio
+[interceptors_lnk]: https://pub.dev/documentation/dio/latest/dio/Interceptor-class.html

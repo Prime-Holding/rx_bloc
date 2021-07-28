@@ -1,0 +1,7 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-staging.xcconfig"
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_staging.dart
+ENVIRONMENT_PLIST = environments/staging/staging.plist
+APP_DISPLAY_NAME = Github Search STAG
+bundle_suffix=stag
