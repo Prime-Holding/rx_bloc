@@ -6,7 +6,6 @@ import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 
 import 'package:getx_favorites_advanced/feature_puppy/controllers/puppy_manage_controller.dart';
-import 'package:getx_favorites_advanced/feature_puppy/edit/ui_components/edit_form_item.dart';
 
 class PuppyEditForm extends StatelessWidget {
   PuppyEditForm(this.globalFormKey, Puppy puppy)
@@ -115,10 +114,10 @@ class PuppyEditForm extends StatelessWidget {
             )));
   }
 
-  Widget _buildNameFormField() => EditFormItem(
+  Widget _buildNameFormField() => PuppyEditCard(
         icon: Icons.account_box,
-        title: 'Name',
-        formField: TextFormField(
+        label: 'Name',
+        content: TextFormField(
           controller: nameController,
           keyboardType: TextInputType.name,
           validator: (value) => controller.validateName(value),
@@ -130,10 +129,10 @@ class PuppyEditForm extends StatelessWidget {
         ),
       );
 
-  Widget _buildBreedDropDownButton() => EditFormItem(
+  Widget _buildBreedDropDownButton() => PuppyEditCard(
         icon: Icons.pets,
-        title: 'Breed',
-        formField: Obx(
+        label: 'Breed',
+        content: Obx(
           () => DropdownButton<BreedType>(
             hint: Obx(
               () => Text(controller.breed.toString().substring(10)),
@@ -151,10 +150,10 @@ class PuppyEditForm extends StatelessWidget {
           value: e, child: Text(e.toString().substring(10))))
       .toList();
 
-  Widget _buildGenderRadioButtons() => EditFormItem(
+  Widget _buildGenderRadioButtons() => PuppyEditCard(
         icon: Icons.wc,
-        title: 'Gender',
-        formField: Row(
+        label: 'Gender',
+        content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
@@ -195,10 +194,10 @@ class PuppyEditForm extends StatelessWidget {
         ),
       );
 
-  Widget _buildCharacteristicsFormField() => EditFormItem(
+  Widget _buildCharacteristicsFormField() => PuppyEditCard(
         icon: Icons.article,
-        title: 'Characteristics',
-        formField: TextFormField(
+        label: 'Characteristics',
+        content: TextFormField(
           controller: characteristicsController,
           keyboardType: TextInputType.text,
           validator: (value) => controller.validateCharacteristics(value),
