@@ -12,6 +12,7 @@ export 'src/common_ui_components/photo_picker_action_selection_bottom_sheet.dart
 export 'src/common_ui_components/puppy_card.dart';
 export 'src/common_ui_components/puppy_edit_card.dart';
 export 'src/common_ui_components/puppy_photo_avatar.dart';
+export 'src/common_ui_components/puppy_animated_list_view.dart';
 export 'src/common_ui_components/animated_list.dart';
 export 'src/common_ui_components/search_bar.dart';
 export 'src/common_ui_components/skeleton_text.dart';
