@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
   skeleton_text: ^3.0.0
-#  skeleton_text:
   visibility_detector: ^0.2.0-nullsafety.1
   connectivity: ^3.0.2
   image_picker: ^0.7.0

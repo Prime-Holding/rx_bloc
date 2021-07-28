@@ -25,6 +25,7 @@ jobs:
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
             "examples/favorites_advanced/bloc_favorites_advanced",
             "examples/favorites_advanced/redux_favorites_advanced",
+            "examples/favorites_advanced/getx_favorites_advanced",
             "packages/rx_bloc_list",
           ]
       fail-fast: false
@@ -55,7 +56,7 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
-          min_coverage: 50
+          min_coverage: 89
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
@@ -100,7 +101,7 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
-          min_coverage: 50
+          min_coverage: 89
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
