@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 enum NavigationItemType { search, favorites }
 
-class NavigationItem {
+class NavigationItem with EquatableMixin {
   const NavigationItem({
     required this.type,
     required this.isSelected,
@@ -8,18 +10,6 @@ class NavigationItem {
 
   final NavigationItemType type;
   final bool isSelected;
-
-  @override
-  bool operator ==(dynamic other) {
-    if (other is NavigationItem) {
-      return type == other.type && isSelected == other.isSelected;
-    }
-
-    return false;
-  }
-
-  @override
-  int get hashCode => super.hashCode;
 
   NavigationItem copyWith({
     NavigationItemType? type,
@@ -29,4 +19,6 @@ class NavigationItem {
         type: type ?? this.type,
         isSelected: isSelected ?? this.isSelected,
       );
+  
+  List<Object?> get props => [type, isSelected];
 }

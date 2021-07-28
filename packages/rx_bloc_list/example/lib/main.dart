@@ -175,7 +175,7 @@ class UserBloc extends $UserBloc {
 
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((event) => event.toString());
+      errorState.map((error) => error.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

@@ -1,0 +1,3 @@
+class SearchViewAction {}
+
+class FavoritesViewAction {}

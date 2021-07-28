@@ -8,18 +8,33 @@ environment:
 
 dependencies:
   auto_route: ^2.2.0
-  cupertino_icons: ^1.0.2{{#analytics}}
-  firebase_analytics: ^8.0.1
-  firebase_core: ^1.0.4{{/analytics}}
+  cupertino_icons: ^1.0.2
+  dio: ^4.0.0{{#analytics}}
+  firebase_analytics: ^8.1.1{{/analytics}}{{#uses_firebase}}
+  firebase_core: ^1.2.1{{/uses_firebase}}{{#push_notifications}}
+  firebase_messaging: ^10.0.1{{/push_notifications}}
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^6.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^3.0.0
+  flutter_rx_bloc: ^3.2.0
+  flutter_secure_storage: ^4.2.0
+  golden_toolkit: ^0.9.0
   intl: ^0.17.0
+  json_annotation: ^4.0.1
+  json_serializable: ^4.1.2
   provider: ^5.0.0
-  rx_bloc: ^3.0.0
+  retrofit: ^2.0.0
+  rx_bloc: ^3.1.0
+  rx_bloc_list: ^3.0.0
   rxdart: ^0.27.0
+  shared_preferences: ^2.0.6
+
+  # Only for testing purposes
+  shelf: ^1.0.0
+  shelf_router: ^1.0.0
+  shelf_static: ^1.0.0
 
 dev_dependencies:
   auto_route_generator: ^2.1.0
@@ -29,9 +44,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.0.8
+  retrofit_generator: ^2.0.0
   rx_bloc_generator: ^5.0.0
   rx_bloc_test: ^3.0.0
   test: any
+
+  # Only for testing purposes (such as in the local server)
+  http: ^0.13.3
 
 flutter:
   uses-material-design: true
@@ -40,6 +59,15 @@ flutter:
   assets:
     - assets/images/
 
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: fonts/WorkSans/WorkSans-Light.ttf
+          weight: 300
+        - asset: fonts/WorkSans/WorkSans-Regular.ttf
+          weight: 400
+        - asset: fonts/WorkSans/WorkSans-Medium.ttf
+          weight: 500
   # fonts:
   #   - family: Schyler
   #     fonts:
