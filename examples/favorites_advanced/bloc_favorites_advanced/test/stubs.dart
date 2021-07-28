@@ -1,0 +1,313 @@
+import 'package:bloc_sample/feature_home/blocs/navigation_bar_bloc.dart';
+import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/extensions.dart';
+import 'package:favorites_advanced_base/src/models/navigation_item.dart';
+
+class Stub {
+  static final navigation = NavigationStub();
+
+  static final puppy1 = Puppy(
+    name: '1',
+    asset: '1',
+    id: '1',
+    isFavorite: false,
+  );
+
+  static final puppy2 = Puppy(
+    name: '2',
+    asset: '2',
+    id: '2',
+    isFavorite: false,
+  );
+
+  static final puppy3 = Puppy(
+    name: '3',
+    asset: '3',
+    id: '3',
+    isFavorite: false,
+  );
+
+  static final puppyTest = Puppy(
+    name: 'Test',
+    asset: '2',
+    id: '2',
+    isFavorite: false,
+  );
+
+  static final puppyTestUpdated = Puppy(
+    name: 'Test',
+    asset: '2',
+    id: '2',
+    isFavorite: true,
+  );
+
+  static final puppies12 = [puppy1, puppy2];
+
+  static final puppies23 = [puppy2, puppy3];
+
+  static final puppies123 = [puppy1, puppy2, puppy3];
+
+  static final puppies123Test = [puppy1, puppy2, puppy3, puppyTest];
+
+  static final puppies123TestUpdated = [
+    puppy1,
+    puppy2,
+    puppy3,
+    puppyTestUpdated
+  ];
+  static final puppiesTest = [puppyTest];
+  static final puppiesTestUpdated = [puppyTestUpdated];
+
+  static const pickImageDelay = Duration(seconds: 2, milliseconds: 10);
+
+  static final favoritePuppies = [
+    Puppy(
+      id: '1',
+      name: 'Max',
+      asset: 'puppie_2.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+    ),
+    Puppy(
+      id: '2',
+      name: 'Buddy',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+    ),
+  ];
+
+  static final onePuppyWithDetailsList = [
+    Puppy(
+      id: '3',
+      name: 'Buddy',
+      asset: 'puppie_4.jpeg',
+      isFavorite: false,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 3',
+      displayName: 'Buddy',
+    )
+  ];
+
+  static final isFavoritePuppy3 = Puppy(
+    id: '3',
+    name: 'Buddy',
+    asset: 'puppie_4.jpeg',
+    isFavorite: true,
+    gender: Gender.Male,
+    breedType: BreedType.GermanShepherd,
+    displayCharacteristics: 'Characteristics Buddy 3',
+    displayName: 'Buddy',
+  );
+
+  static final isNotFavoritePuppy3 = Puppy(
+    id: '3',
+    name: 'Buddy',
+    asset: 'puppie_4.jpeg',
+    isFavorite: false,
+    gender: Gender.Male,
+    breedType: BreedType.GermanShepherd,
+    displayCharacteristics: 'Characteristics Buddy 3',
+    displayName: 'Buddy',
+  );
+
+  static final isNotFavoritePuppy3Edit = Puppy(
+    id: '3',
+    name: 'Buddy1',
+    asset: 'puppie_4.jpeg',
+    isFavorite: false,
+    gender: Gender.Female,
+    breedType: BreedType.GoldenRetriever,
+    displayCharacteristics: 'Characteristics Buddy 31',
+    displayName: 'Buddy',
+  );
+
+  static final favoritePuppies12 = [
+    Puppy(
+      id: '1',
+      name: 'Max',
+      asset: 'puppie_2.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+      displayCharacteristics: 'Characteristics Max 1',
+      displayName: 'Max',
+    ),
+    Puppy(
+      id: '2',
+      name: 'Buddy',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+  ];
+
+  static final queryPuppiesTest1 = [
+    Puppy(
+      id: '2',
+      name: 'test',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+  ];
+
+  static final queryPuppiesTest2 = [
+    Puppy(
+      id: '1',
+      name: 'First',
+      asset: 'puppie_2.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+      displayCharacteristics: 'Characteristics Max 1',
+      displayName: 'Max',
+    ),
+    Puppy(
+      id: '2',
+      name: 'test',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+  ];
+
+  static final favoritePuppies123 = [
+    Puppy(
+      id: '1',
+      name: 'Max',
+      asset: 'puppie_2.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+      displayCharacteristics: 'Characteristics Max 1',
+      displayName: 'Max',
+    ),
+    Puppy(
+      id: '2',
+      name: 'Buddy',
+      asset: 'puppie_3.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 2',
+      displayName: 'Buddy',
+    ),
+    Puppy(
+      id: '3',
+      name: 'Buddy',
+      asset: 'puppie_4.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+      displayCharacteristics: 'Characteristics Buddy 3',
+      displayName: 'Buddy',
+    ),
+  ];
+
+  static final puppiesWithDetails = [
+    Puppy(
+      id: '0',
+      name: 'Charlie',
+      asset: 'puppie_1.jpeg',
+      isFavorite: true,
+      gender: Gender.Male,
+      breedType: BreedType.GoldenRetriever,
+      displayCharacteristics: 'start characteristics',
+    ),
+    Puppy(
+      id: '1',
+      name: 'Max',
+      asset: 'puppie_2.jpeg',
+      gender: Gender.Male,
+      breedType: BreedType.Cavachon,
+    ),
+    Puppy(
+      id: '2',
+      name: 'Buddy',
+      asset: 'puppie_3.jpeg',
+      gender: Gender.Male,
+      breedType: BreedType.GermanShepherd,
+    ),
+  ]
+      .map((p) => p.copyWith(
+          displayName: p.name,
+          displayCharacteristics: 'chars ${p.id}',
+          breedCharacteristics: 'chars ${p.id}'))
+      .toList();
+
+  static final string31 = ''.padRight(31, 'a');
+  static final string251 = ''.padRight(251, 'a');
+
+  static const submitSuccessResponse = 'The puppy was saved successfully.';
+  static const noInternetConnectionError =
+      'Exception: No internet connection. Please check your settings.';
+  static const nameMustNotBeEmpty = 'Name must not be empty.';
+  static const nameTooLongError = 'Name too long.';
+  static const emptyGenderFieldError = 'You have to select a gender.';
+  static const characteristicsEmptyErr = 'Characteristics must not be empty';
+  static const characteristicsTooLongErr =
+      'Characteristics must not exceed 250 characters.';
+  static const breedNotSelectedErr = 'You have to select a breed.';
+  static final testErr = Exception('test error');
+  static const testErrString = 'Exception: test error';
+
+  static Stream<T> delayed<T>(T value, [int milliseconds = 100]) =>
+      Future.delayed(Duration(milliseconds: milliseconds), () async => value)
+          .asStream();
+
+  static final puppies1And2WithExtraDetails = [
+    puppy1.copyWith(breedCharacteristics: '1', displayName: '1'),
+    puppy2.copyWith(breedCharacteristics: '2', displayName: '2')
+  ];
+
+  static final expectedGenderAndBreed0 =
+      '${Stub.puppiesWithDetails[2].genderAsString}, '
+      '${Stub.puppiesWithDetails[2].breedTypeAsString}';
+
+  static final expectedGenderAndBreed1 =
+      '${PuppyDataConversion.getGenderString(Gender.Female)}, '
+      '${PuppyDataConversion.getBreedTypeString(BreedType.Akita)}';
+}
+
+class NavigationStub {
+  static final _initialItems = [
+    const NavigationItem(type: NavigationItemType.search, isSelected: true),
+    const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
+  ];
+
+  static final _favoritesItems = [
+    const NavigationItem(type: NavigationItemType.search, isSelected: false),
+    const NavigationItem(type: NavigationItemType.favorites, isSelected: true),
+  ];
+
+  final initialSearchState = NavigationBarState(
+    title: _initialItems
+        .firstWhere((element) => element.isSelected)
+        .type
+        .asTitle(),
+    items: _initialItems,
+    selectedItem: _initialItems.firstWhere((element) => element.isSelected),
+  );
+
+  final favoritesState = NavigationBarState(
+    title: _favoritesItems
+        .firstWhere((element) => element.isSelected)
+        .type
+        .asTitle(),
+    items: _favoritesItems,
+    selectedItem: _favoritesItems.firstWhere((element) => element.isSelected),
+  );
+}

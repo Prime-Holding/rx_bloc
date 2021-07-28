@@ -11,6 +11,14 @@ class NavigationItem with EquatableMixin {
   final NavigationItemType type;
   final bool isSelected;
 
-  @override
+  NavigationItem copyWith({
+    NavigationItemType? type,
+    bool? isSelected,
+  }) =>
+      NavigationItem(
+        type: type ?? this.type,
+        isSelected: isSelected ?? this.isSelected,
+      );
+  
   List<Object?> get props => [type, isSelected];
 }

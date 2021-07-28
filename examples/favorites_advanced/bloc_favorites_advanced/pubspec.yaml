@@ -18,23 +18,55 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-
+  rxdart: ^0.26.0
+  provider: ^5.0.0
+  curved_navigation_bar: ^0.4.0-nullsafety.0
+  badges: ^2.0.0-nullsafety.1
+  animated_stream_list: ^1.1.0
+  appbar_textfield: ^1.0.1+1
+  image_picker: ^0.7.0
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
+  bloc_test: ^8.0.0
+  equatable: ^2.0.0
+  mockito: ^5.0.4
+  declarative_animated_list: ^0.1.0-nullsafety.0
+  clean_coverage: ^0.0.3
+  flow_builder: ^0.0.1
+  flutter_form_bloc: ^0.20.0
 #  widget_library:
 #    path: ../widget_library
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^1.12.2
 
+dependency_overrides:
+  analyzer: '1.5.0'
+  favorites_advanced_base:
+    path: ../favorites_advanced_base
+  animated_stream_list:
+    git:
+      url: https://github.com/nilsreichardt/animated-stream-list.git
+      ref: migrate-null-safety
+  appbar_textfield:
+    git:
+      url: https://github.com/StanevPrime/appbar_textfield.git
+      ref: null-safety
+  smooth_star_rating:
+    git:
+      url: https://github.com/bhavin-concetto/smoothratingbar.git
+      ref: dev
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -47,8 +79,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+     - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
