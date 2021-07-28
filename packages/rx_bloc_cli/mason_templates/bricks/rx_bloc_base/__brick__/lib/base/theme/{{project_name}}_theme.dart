@@ -1,3 +1,10 @@
+// Copyright (c) 2021, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'package:flutter/material.dart';
 
 import 'design_system.dart';
@@ -18,7 +25,6 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
     return base.copyWith(
       colorScheme: colorScheme,
       primaryColor: designSystemColor.primaryColor,
-      buttonColor: designSystemColor.buttonColor,
       indicatorColor: designSystemColor.indicatorColor,
       splashColor: designSystemColor.splashColor,
       splashFactory: InkRipple.splashFactory,
@@ -31,6 +37,10 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
         colorScheme: colorScheme,
         textTheme: ButtonTextTheme.primary,
       ),
+      textButtonTheme:
+          _buildTextButtonTheme(base.textButtonTheme, designSystem),
+      outlinedButtonTheme:
+          _buildOutlinedButtonTheme(base.outlinedButtonTheme, designSystem),
       textTheme: _buildDesignTextTheme(base.textTheme, designSystemColor),
       primaryTextTheme:
       _buildDesignTextTheme(base.primaryTextTheme, designSystemColor),
@@ -39,6 +49,7 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
       appBarTheme: AppBarTheme(
         color: designSystemColor.primaryVariant,
       ),
+      iconTheme: _buildIconTheme(base.iconTheme, designSystemColor),
     );
   }
 
@@ -63,5 +74,35 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
       overline: base.overline!.copyWith(fontFamily: fontName),
     );
   }
+
+  static IconThemeData _buildIconTheme(
+          IconThemeData base, DesignSystemColors designSystemColors) =>
+        base.copyWith(
+          color: designSystemColors.iconColor,
+        );
+
+  static OutlinedButtonThemeData _buildOutlinedButtonTheme(
+          OutlinedButtonThemeData data, DesignSystem designSystem) =>
+      OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: designSystem.colors.primaryColor,
+          textStyle: designSystem.typography.outlinedButtonText,
+          primary: designSystem.colors.outlinedButtonTextColor,
+          side: BorderSide(
+            width: 2,
+            color: designSystem.colors.primaryVariant,
+          ),
+        ),
+      );
+
+  static TextButtonThemeData _buildTextButtonTheme(
+          TextButtonThemeData data, DesignSystem designSystem) =>
+      TextButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: designSystem.colors.primaryColor,
+          textStyle: designSystem.typography.outlinedButtonText,
+          primary: designSystem.colors.outlinedButtonTextColor,
+      ),
+  );
 
 }

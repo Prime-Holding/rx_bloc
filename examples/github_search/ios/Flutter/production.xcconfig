@@ -1,0 +1,6 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-production.xcconfig"
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main.dart
+ENVIRONMENT_PLIST = environments/production/production.plist
+APP_DISPLAY_NAME = Github Search

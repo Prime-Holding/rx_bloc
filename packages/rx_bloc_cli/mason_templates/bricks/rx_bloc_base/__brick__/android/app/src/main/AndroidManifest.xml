@@ -36,6 +36,10 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2" />
+            android:value="2" />{{#push_notifications}}
+       <!-- This tag below enables push notifications to be registered when app is in foreground -->
+       <meta-data
+           android:name="com.google.firebase.messaging.default_notification_channel_id"
+           android:value="high_importance_channel" />{{/push_notifications}}
     </application>
 </manifest>

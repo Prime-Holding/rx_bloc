@@ -268,7 +268,7 @@ void main() {
         coordinatorMock,
         puppy: Stub.puppiesWithDetails.first,
       ),
-      state: (bloc) => MergeStream([
+      state: (bloc) => Rx.merge<dynamic>([
         bloc.states.error,
         bloc.states.updateComplete,
         bloc.states.isLoading,
