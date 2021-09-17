@@ -25,8 +25,8 @@ import '../../models.dart';
 /// [PaginatedList] where [PaginatedList.error] is not null.
 /// - [buildLoading] is a callback which is invoked when the [state] stream
 /// produces [PaginatedList] where [PaginatedList.isInitialLoading] is true.
-/// - [onBottomScrolled] is a callback that is executed once the end of the list
-/// is reached. This can be, for instance, used for fetching the next page of
+/// - [loadNextPage] is a callback that is executed once the end of the list
+/// is reached and there is next page. This can be, for instance, used for fetching the next page of
 /// data.
 ///
 /// *RxPaginatedBuilder* also comes with additional optional parameters that can
@@ -40,11 +40,11 @@ import '../../models.dart';
 /// for adding additional functionality or help in cases when the built child
 /// widget is needed beforehand.
 ///
-/// You can manage the execution of the [onBottomScrolled] parameter by enabling
+/// You can manage the execution of the [loadNextPage] parameter by enabling
 /// or disabling it via the [enableOnBottomScrolledCallback].
 ///
 /// Additionally, you can define the minimum scroll threshold which will execute
-/// the [onBottomScrolled] callback by changing the value of [scrollThreshold].
+/// the [loadNextPage] callback by changing the value of [scrollThreshold].
 /// The default value of the scroll threshold is 100 pixels.
 ///
 /// The RxPaginatedBuilder also provides the ability to react to scrolling via
@@ -61,7 +61,7 @@ import '../../models.dart';
 /// ```
 /// RxPaginatedBuilder<UserBlocType, User>(
 ///   state: (bloc) => bloc.states.paginatedUsers,
-///   onBottomScrolled: (bloc) => bloc.events.loadNextPage(),
+///   loadNextPage: (bloc) => bloc.events.loadNextPage(),
 ///   buildSuccess: (context, list, bloc) => ListView.builder(
 ///     itemBuilder: (context, index) {
 ///       final user = list.getItem(index);
@@ -100,7 +100,7 @@ import '../../models.dart';
 /// ```
 /// RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
 ///   state: (bloc) => bloc.states.paginatedList,
-///   onBottomScrolled: (bloc) => bloc.events.loadPage(),
+///   loadNextPage: (bloc) => bloc.events.loadPage(),
 ///   onRefresh: (bloc) async {
 ///     bloc.events.loadPage(reset: true);
 ///     return bloc.states.refreshDone;
@@ -131,7 +131,8 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
     required this.buildSuccess,
     required this.buildError,
     required this.buildLoading,
-    required this.onBottomScrolled,
+    required this.loadNextPage,
+    this.onBottomScrolled,
     this.wrapperBuilder,
     this.onScrolled,
     this.scrollThreshold = 100.0,
@@ -148,8 +149,9 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
     required Widget Function(BuildContext, PaginatedList<T>, B) buildSuccess,
     required Widget Function(BuildContext, PaginatedList<T>, B) buildError,
     required Widget Function(BuildContext, PaginatedList<T>?, B) buildLoading,
-    required void Function(B) onBottomScrolled,
+    required void Function(B) loadNextPage,
     required Future<void> Function(B) onRefresh,
+    void Function(B)? onBottomScrolled,
     Function(bool)? onScrolled,
     B? bloc,
     double scrollThreshold = 100,
@@ -162,6 +164,7 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
         buildLoading: buildLoading,
         buildError: buildError,
         onBottomScrolled: onBottomScrolled,
+        loadNextPage: loadNextPage,
         onScrolled: onScrolled,
         scrollThreshold: scrollThreshold,
         enableOnBottomScrolledCallback: enableOnBottomScrolledCallback,
@@ -192,7 +195,14 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   /// Callback triggered once the user gets to the bottom of the list while
   /// scrolling when a threshold has been passed. This callback is triggered
   /// only if the [enableOnBottomScrolledCallback] is set to true.
-  final void Function(B) onBottomScrolled;
+  final void Function(B)? onBottomScrolled;
+
+  /// Callback triggered once the user gets to the bottom of the list and there
+  /// are more records to load, while scrolling when a threshold has been
+  /// passed.
+  /// This callback is triggered
+  /// only if the [enableOnBottomScrolledCallback] is set to true.
+  final void Function(B) loadNextPage;
 
   /// Optional builder method that is intended for creation of a wrapper widget
   /// on top of the widget built using the [buildSuccess] method.
@@ -232,20 +242,28 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
   Widget build(BuildContext context) {
     final bloc = RxBlocProvider.of<B>(context);
 
-    return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollInfo) =>
-          _onScrollNotification(scrollInfo, bloc),
-      child: RxBlocBuilder<B, PaginatedList<T>>(
-          bloc: bloc,
-          state: widget.state,
-          builder: (context, snapshot, bloc) {
-            final buildChild = _buildChild(context, snapshot, bloc);
-
-            if (widget.wrapperBuilder != null)
-              return widget.wrapperBuilder!.call(context, bloc, buildChild);
-            return buildChild;
-          }),
+    return RxBlocBuilder<B, PaginatedList<T>>(
+      bloc: bloc,
+      state: widget.state,
+      builder: (context, snapshot, bloc) =>
+          NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) =>
+            _onScrollNotification(scrollInfo, bloc, snapshot),
+        child: _buildChildWithWrapper(context, snapshot, bloc),
+      ),
     );
+  }
+
+  Widget _buildChildWithWrapper(
+    BuildContext context,
+    AsyncSnapshot<PaginatedList<T>> snapshot,
+    B bloc,
+  ) {
+    final buildChild = _buildChild(context, snapshot, bloc);
+
+    if (widget.wrapperBuilder != null)
+      return widget.wrapperBuilder!.call(context, bloc, buildChild);
+    return buildChild;
   }
 
   Widget _buildChild(
@@ -266,7 +284,11 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
 
   /// Callback executed once the user starts scrolling the portion of the screen
   /// encapsulated with the widget built using the `builder` method.
-  bool _onScrollNotification(ScrollNotification scrollInfo, B bloc) {
+  bool _onScrollNotification(
+    ScrollNotification scrollInfo,
+    B bloc,
+    AsyncSnapshot<PaginatedList<T>> snapshot,
+  ) {
     // Handle case when scrolling through or stopped scrolling through
     if (widget.onScrolled != null) {
       if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == 0) {
@@ -283,7 +305,10 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
         scrollInfo.metrics.axis == Axis.vertical &&
         scrollInfo.metrics.maxScrollExtent - scrollInfo.metrics.pixels <=
             widget.scrollThreshold) {
-      widget.onBottomScrolled(bloc);
+      widget.onBottomScrolled?.call(bloc);
+      if (snapshot.hasData && snapshot.data!.hasNextPage) {
+        widget.loadNextPage(bloc);
+      }
     }
 
     return true;

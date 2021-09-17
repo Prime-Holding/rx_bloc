@@ -153,6 +153,16 @@ void main() {
       expect(list.itemCount, equals(listSize));
     });
 
+    test('Item count when reach the last page', () {
+      final list = PaginatedList(
+        list: List.generate(listSize, (index) => index),
+        pageSize: pageSize,
+        isLoading: true,
+        totalCount: listSize,
+      );
+      expect(list.itemCount, equals(listSize));
+    });
+
     test('Item count when data is loading', () {
       final list = PaginatedList(
         list: List.generate(listSize, (index) => index),
