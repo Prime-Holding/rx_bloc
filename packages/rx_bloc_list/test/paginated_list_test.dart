@@ -13,7 +13,8 @@ void main() {
 
       expect(
         list.toString(),
-        '{pageSize: 10, error: null, totalCount: null, isLoading: false, list: [0, 1, 2, 3]}',
+        '{pageSize: 10, error: null, totalCount: null,'
+        ' isLoading: false, list: [0, 1, 2, 3]}',
       );
     });
 
