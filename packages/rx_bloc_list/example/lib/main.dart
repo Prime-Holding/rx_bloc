@@ -31,7 +31,7 @@ class PaginatedListPage extends StatelessWidget {
         body: SafeArea(
           child: RxPaginatedBuilder<UserBlocType, User>.withRefreshIndicator(
             state: (bloc) => bloc.states.paginatedList,
-            loadNextPage: (bloc) => bloc.events.loadPage(),
+            onBottomScrolled: (bloc) => bloc.events.loadPage(),
             onRefresh: (bloc) async {
               bloc.events.loadPage(reset: true);
               return bloc.states.refreshDone;
