@@ -13,7 +13,7 @@ void main() {
 
       expect(
         list.toString(),
-        '{list: [0, 1, 2, 3], _backupList: [], loading: false}',
+        '{pageSize: 10, error: null, totalCount: null, isLoading: false, list: [0, 1, 2, 3]}',
       );
     });
 
