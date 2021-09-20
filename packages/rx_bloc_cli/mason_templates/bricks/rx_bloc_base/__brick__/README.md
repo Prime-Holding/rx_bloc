@@ -85,7 +85,7 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
 
-To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class (in this case `lib/feature_counter/di/counter_dependencies.dart` ) specify which data source you are going to use in every repository.
+To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class (for example: `lib/feature_counter/di/counter_dependencies.dart` ) specify which data source you are going to use in every repository.
 
 <div id="designSystem"/>
 
@@ -136,11 +136,11 @@ Some of the important paths are:
 
 [Firebase Cloud Messaging (FCM)][fcm_lnk] allows your integrating push notifications in your very own app. You can receive notifications while the app is in the foreground, background or even terminated. It even allows for event callbacks customizations, such when the app is opened via a notification from a specific state. All customizable callbacks can be found inside `lib/base/app/initialization/firebase_messaging_callbacks.dart`.
 
-In order to make the notifications work on your target platform, make sure you first add the config file in the proper location (as descibed in the [**Analytic**](#analytics) section). For Web you also need to specify the `vapid` key inside `lib/base/app/config/app_constants.dart` and manually add the firebase web configuration to `web/firebase-messaging-sw.js`(for more info refer to [this link][fcm_web_config_ref]).
+In order to make the notifications work on your target platform, make sure you first add the config file in the proper location (as described in the [**Analytic**](#analytics) section). For Web you also need to specify the `vapid` key inside `lib/base/app/config/app_constants.dart` and manually add the firebase web configuration to `web/firebase-messaging-sw.js`(for more info refer to [this link][fcm_web_config_ref]).
 
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
 
-*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/utils/server_config.dart` file.
+*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-

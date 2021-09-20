@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 part of 'login_bloc.dart';
 
 extension _UserAccountBlocExtensions on LoginBloc {

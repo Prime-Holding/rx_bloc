@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 part of 'coordinator_bloc.dart';
 
 extension CoordinatorBinderExtensions on Stream<Result<bool>> {

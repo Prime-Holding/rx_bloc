@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  rxdart: ^0.27.0
+  rxdart: ^0.27.2
   rx_bloc: ^3.0.0
   flutter_rx_bloc: ^3.1.0
 
@@ -19,8 +19,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   rx_bloc_generator: ^5.0.0
-  build_runner: ^2.0.0
-  coverage: ^1.0.0
+  build_runner: ^2.1.2
+  coverage: ^1.0.3
   clean_coverage: ^0.0.3
 
 flutter:

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../repositories/auth_repository.dart';
 
 /// Returns access token, if is saved, by default.
