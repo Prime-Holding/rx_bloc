@@ -252,8 +252,10 @@ class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
   ) {
     final buildChild = _buildChild(context, snapshot, bloc);
 
-    if (widget.wrapperBuilder != null)
+    if (widget.wrapperBuilder != null) {
       return widget.wrapperBuilder!.call(context, bloc, buildChild);
+    }
+
     return buildChild;
   }
 
