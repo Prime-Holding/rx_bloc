@@ -144,6 +144,25 @@ class PaginatedList<E> extends ListBase<E> {
   }
 
   @override
+  operator ==(other) =>
+      other is PaginatedList<E> &&
+      other.list == list &&
+      other.pageSize == pageSize &&
+      other.error == error &&
+      other.totalCount == totalCount &&
+      other.isLoading == isLoading &&
+      other._isInitialized == _isInitialized;
+
+  @override
+  int get hashCode =>
+      list.hashCode ^
+      pageSize.hashCode ^
+      error.hashCode ^
+      totalCount.hashCode ^
+      isLoading.hashCode ^
+      _isInitialized.hashCode;
+
+  @override
   String toString() =>
       '{list: $list, _backupList: $_backupList, loading: $isLoading}';
 }
