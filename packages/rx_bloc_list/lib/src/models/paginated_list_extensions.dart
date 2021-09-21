@@ -68,7 +68,7 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
         }
 
         return subjectValue;
-      });
+      }).distinct();
 }
 
 /// PaginatedList stream extensions

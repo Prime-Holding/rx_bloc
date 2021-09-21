@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:favorites_advanced_base/resources.dart';
+import 'package:flutter/material.dart';
 
 class IconWithShadow extends StatelessWidget {
   const IconWithShadow({
