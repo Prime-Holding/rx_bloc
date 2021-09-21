@@ -1,3 +1,6 @@
+## [3.0.2] - September 17, 2021
+* Call onBottomScrolled only if the [enableOnBottomScrolledCallback] is set to true and the fetched items are less than the total count.
+
 ## [3.0.1] - July 21, 2021
 * `PaginatedList`.`reset(hard: true)` now triggers `RxPaginatedBuilder`.`buildLoading`
 

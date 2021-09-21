@@ -89,7 +89,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
                 .copyWith(color: selected == id ? Colors.white : Colors.black),
             label: Text(name),
             backgroundColor:
-                selected == id ? Theme.of(context).accentColor : null,
+                selected == id ? Theme.of(context).colorScheme.secondary : null,
           ),
         ),
       );

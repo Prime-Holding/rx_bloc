@@ -72,7 +72,11 @@ void main() {
 
         return HotelListBloc(repositoryMock, coordinatorMock);
       },
-      act: (bloc) async => bloc.events.reload(reset: false),
+      act: (bloc) async {
+        bloc.events.reload(reset: false);
+        await bloc.states.refreshDone;
+        bloc.events.reload(reset: false);
+      },
       expect: <String>[
         'No hotels found',
         '1 hotel found',
@@ -95,13 +99,17 @@ void main() {
 
         return HotelListBloc(repositoryMock, coordinatorMock);
       },
-      act: (bloc) async => bloc.events.reload(reset: false),
+      act: (bloc) async {
+        bloc.events.reload(reset: false);
+        await bloc.states.refreshDone;
+        bloc.events.reload(reset: false);
+      },
       expect: <PaginatedList<Hotel>>[
         Stub.paginatedListEmpty,
-        Stub.paginatedListEmpty,
+        Stub.paginatedListEmptyLoading,
         Stub.paginatedListOneHotel,
-        Stub.paginatedListOneHotel,
-        Stub.paginatedListTreeHotels
+        Stub.paginatedListOneHotelLoading,
+        Stub.paginatedListTreeHotels,
       ],
     );
 
