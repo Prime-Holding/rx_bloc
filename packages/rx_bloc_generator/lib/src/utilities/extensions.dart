@@ -60,7 +60,7 @@ extension _EventMethodElement on MethodElement {
           ' can not have a `seed` parameter.');
     }
 
-    return isBehavior ? [_seededArgument] : [];
+    return [_seededArgument];
   }
 
   /// Provides the BehaviorSubject.seeded arguments as an [Expression]
@@ -84,7 +84,8 @@ extension _EventMethodElement on MethodElement {
 
   /// Provides the stream type based on the [RxBlocEventType] annotation
   String get eventStreamType => isBehavior
-      ? _BlocEventStreamTypes.behavior
+      ? _BlocEventStreamTypes.behavior +
+          (hasSeedAnnotation ? '<$publishSubjectGenericType>' : '')
       : _BlocEventStreamTypes.publish;
 
   /// Provides the first annotation as [ElementAnnotation] if exists

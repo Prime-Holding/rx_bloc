@@ -23,8 +23,6 @@ class _EventField implements _BuilderContract {
                   .newInstanceNamed(
                     'seeded',
                     method.seedPositionalArguments,
-                    {},
-                    method.streamTypeArguments,
                   )
                   .code
               : refer(method.eventStreamType)
