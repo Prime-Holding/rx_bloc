@@ -97,23 +97,27 @@ void main() {
       // Call reloadFavoritePuppies multiple times
       act: (bloc) async {
         bloc.events.reload(reset: false);
-        await Future.delayed(const Duration(milliseconds: 10));
+        await bloc.states.refreshDone;
         bloc.events.reload(reset: false);
-        await Future.delayed(const Duration(milliseconds: 700));
+        await bloc.states.refreshDone;
+        bloc.events.reload(reset: false);
+        await bloc.states.refreshDone;
       },
       // Make sure the api it's called just once
       expect: <PaginatedList<Puppy>>[
-        PaginatedList(list: [], pageSize: 10),
-        PaginatedList(list: [], pageSize: 10),
-        PaginatedList(list: Stub.puppies12, pageSize: 1),
-        PaginatedList(list: Stub.puppies12, pageSize: 1),
+        PaginatedList(list: [], pageSize: 10, isLoading: false),
+        PaginatedList(list: [], pageSize: 10, isLoading: true),
+        PaginatedList(list: Stub.puppies12, pageSize: 1, isLoading: false),
+        PaginatedList(list: Stub.puppies12, pageSize: 1, isLoading: true),
         PaginatedList(
           list: [...Stub.puppies12, ...Stub.puppies23],
           pageSize: 1,
+          isLoading: false,
         ),
         PaginatedList(
           list: [...Stub.puppies12, ...Stub.puppies23],
           pageSize: 1,
+          isLoading: true,
         ),
         PaginatedList(
           list: [...Stub.puppies12, ...Stub.puppies23, ...Stub.puppies23],
@@ -148,8 +152,9 @@ void main() {
         return PuppyListBloc(repositoryMock, coordinatorMock);
       },
       // Call reloadFavoritePuppies and filterPuppies multiple times
-      act: (bloc) async =>
-          bloc.events..filter(query: '')..filter(query: 'test'),
+      act: (bloc) async => bloc.events
+        ..filter(query: '')
+        ..filter(query: 'test'),
       // Make sure the api it's called just once
       expect: <PaginatedList<Puppy>>[
         PaginatedList(list: [], pageSize: 10, isLoading: false),

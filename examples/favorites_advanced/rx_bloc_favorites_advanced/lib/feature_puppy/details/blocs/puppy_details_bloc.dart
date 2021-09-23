@@ -1,8 +1,9 @@
-import 'package:favorites_advanced_base/core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/base/common_blocs/coordinator_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../base/common_blocs/coordinator_bloc.dart';
 
 part 'puppy_details_bloc.rxb.g.dart';
 part 'puppy_details_bloc_extensions.dart';
@@ -32,7 +33,7 @@ class PuppyDetailsBloc extends $PuppyDetailsBloc {
   PuppyDetailsBloc(
     CoordinatorBlocType coordinatorBloc, {
     required Puppy puppy,
-  })   : _puppy = puppy,
+  })  : _puppy = puppy,
         _coordinatorBlocType = coordinatorBloc;
 
   final Puppy _puppy;

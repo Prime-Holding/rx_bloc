@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:booking_app/base/repositories/paginated_hotels_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
+import '../../../base/repositories/paginated_hotels_repository.dart';
 
 part 'favorite_hotels_bloc.rxb.g.dart';
 part 'favorite_hotels_bloc_extensions.dart';

@@ -18,13 +18,15 @@ class _EventField implements _BuilderContract {
             ],
           ])
           ..modifier = FieldModifier.final$
-          ..assignment = refer(method.eventStreamType)
-              .newInstance(
-                method.seedPositionalArguments,
-                {},
-                method.streamTypeArguments,
-              )
-              .code
+          ..assignment = method.hasSeedAnnotation
+              ? refer(method.eventStreamType)
+                  .newInstanceNamed(
+                    'seeded',
+                    method.seedPositionalArguments,
+                  )
+                  .code
+              : refer(method.eventStreamType)
+                  .newInstance([], {}, method.streamTypeArguments).code
           ..name = method.eventFieldName,
       );
 }

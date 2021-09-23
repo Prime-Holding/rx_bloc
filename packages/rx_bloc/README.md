@@ -170,8 +170,13 @@ class HomePage extends StatelessWidget {
 }
 ```
 
+## Video tutorials
+  
+- [Building feature-rich lists in Flutter](https://youtu.be/Nc8OLxYhQ0w) A feature-rich ListView implementation in Flutter that demonstrates how easy it is to build common functionalities such as `pull-to-refresh` and `infinite-scroll`.
+- [Building Github Search in Flutter](https://youtu.be/qhsSLY0wSwQ) Under ten minutes you will learn how a Github search can be built in Flutter.
 
-### Samples
+  
+## Samples
 
 - [Booking app][booking_app_sample_lnk] - A booking app that solves various tech challenges such as: Content lazy loading, Slick animations, Composite filters, Inter-feature communication, Complete error handling and more.
 - [Favorites Advanced][favourites_advanced_sample_lnk] - an advanced favorites app that showcase multiple software development challenges.
