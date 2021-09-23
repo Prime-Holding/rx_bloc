@@ -1,3 +1,7 @@
+## [3.3.0] - September 24, 2021
+* Support Flutter `2.5`
+* Update `rxdart` to use version `0.27.2`
+
 ## [3.2.0] - July 09, 2021
 * Added widget `RxLoadingBuilder`
 

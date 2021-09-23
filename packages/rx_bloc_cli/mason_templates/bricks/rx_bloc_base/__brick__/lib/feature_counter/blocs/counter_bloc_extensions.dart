@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+// ignore_for_file: lines_longer_than_80_chars
+
 part of 'counter_bloc.dart';
 
 /// TODO: Here you can add the implementation details of your BloC or any stream extensions you might need.
