@@ -24,10 +24,10 @@ dependencies:
   intl: ^0.17.0
   json_annotation: ^4.0.1
   json_serializable: ^4.1.2
-  provider: ^5.0.0
+  provider: ^6.0.0
   retrofit: ^2.0.0
-  rx_bloc: ^3.1.0
-  rx_bloc_list: ^3.0.0
+  rx_bloc: ^3.2.0
+  rx_bloc_list: ^3.1.0
   rxdart: ^0.27.0
   shared_preferences: ^2.0.6
 
@@ -37,6 +37,10 @@ dependencies:
   shelf_static: ^1.0.0
 
 dependency_overrides:
+  flutter_rx_bloc:
+    path: ../../packages/flutter_rx_bloc
+  rx_bloc:
+    path: ../../packages/rx_bloc
   rx_bloc_list:
     path: ../../packages/rx_bloc_list
 

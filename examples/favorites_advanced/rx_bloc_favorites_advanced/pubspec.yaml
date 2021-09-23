@@ -23,7 +23,7 @@ dependencies:
   rx_bloc:
   rx_bloc_list:
   flutter_rx_bloc:
-  provider: ^5.0.0
+  provider: ^6.0.0
   favorites_advanced_base:
   curved_navigation_bar: ^0.4.0-nullsafety.0
   badges: ^1.1.4
