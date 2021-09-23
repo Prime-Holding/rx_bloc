@@ -1,3 +1,6 @@
+## [3.1.2] - September 22, 2021
+* Allow the bind extension to be used with both Publish and Behaviour subjects
+
 ## [3.1.1] - September 21, 2021
 * Added video tutorials and a github search sample to the `README.md`
 
