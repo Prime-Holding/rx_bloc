@@ -131,8 +131,7 @@ extension Bind<T> on Stream<T> {
   /// Be aware that the binding is facilitating the subscribing, so the
   /// unsubscribing needs to be handled accordingly either by
   /// using [CompositeSubscription] or manually.
-  StreamSubscription<T> bind(BehaviorSubject<T> subject) =>
-      listen(subject.sink.add);
+  StreamSubscription<T> bind(Subject<T> subject) => listen(subject.sink.add);
 }
 
 /// Stream subscription disposer

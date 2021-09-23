@@ -85,7 +85,7 @@ Future<void> main() async {
   testAnnotatedElements<RxBloc>(
     await initializeLibraryReaderForDirectory(
       'test/src',
-      'rx_bloc_test_missing_seed.dart',
+      'rx_bloc_test_behaviour_subject_no_seed.dart',
     ),
     const RxBlocGeneratorForAnnotation(),
   );
