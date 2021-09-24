@@ -19,28 +19,24 @@ class Router extends _i1.RootStackRouter {
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
-    CounterRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return const _i3.CounterPage();
-        }),
-    LoginRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return const _i4.LoginPage();
-        }),
-    NotificationsRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return const _i5.NotificationsPage();
-        }),
-    GithubRepoListRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<GithubRepoListRouteArgs>(
-              orElse: () => const GithubRepoListRouteArgs());
-          return _i6.GithubRepoListPage(key: args.key);
-        })
+    CounterRoute.name: (routeData) {
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i3.CounterPage());
+    },
+    LoginRoute.name: (routeData) {
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i4.LoginPage());
+    },
+    NotificationsRoute.name: (routeData) {
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i5.NotificationsPage());
+    },
+    GithubRepoListRoute.name: (routeData) {
+      final args = routeData.argsAs<GithubRepoListRouteArgs>(
+          orElse: () => const GithubRepoListRouteArgs());
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i6.GithubRepoListPage(key: args.key));
+    }
   };
 
   @override
@@ -52,19 +48,19 @@ class Router extends _i1.RootStackRouter {
       ];
 }
 
-class CounterRoute extends _i1.PageRouteInfo {
+class CounterRoute extends _i1.PageRouteInfo<void> {
   const CounterRoute() : super(name, path: '/counter-page');
 
   static const String name = 'CounterRoute';
 }
 
-class LoginRoute extends _i1.PageRouteInfo {
+class LoginRoute extends _i1.PageRouteInfo<void> {
   const LoginRoute() : super(name, path: '/login-page');
 
   static const String name = 'LoginRoute';
 }
 
-class NotificationsRoute extends _i1.PageRouteInfo {
+class NotificationsRoute extends _i1.PageRouteInfo<void> {
   const NotificationsRoute() : super(name, path: '/notifications-page');
 
   static const String name = 'NotificationsRoute';
