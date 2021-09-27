@@ -1,6 +1,7 @@
-## [3.3.0] - September 24, 2021
+## [4.0.0] - September 24, 2021
 * Support Flutter `2.5`
-* Update `rxdart` to use version `0.27.2`
+* Updated `rxdart` to use version `0.27.2`
+* [BREAKING] Changed signature of [RxResultBuilder.buildError] to `Widget Function(BuildContext, Exception, B)`
 
 ## [3.2.0] - July 09, 2021
 * Added widget `RxLoadingBuilder`
@@ -13,7 +14,7 @@
 
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`
-* Update `rxdart` to use version `0.27.0`
+* Updated `rxdart` to use version `0.27.0`
 
 ## [2.0.0] - March 10, 2021
 * Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
