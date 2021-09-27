@@ -47,6 +47,7 @@ dev_dependencies:
   retrofit_generator: ^2.0.1
   rx_bloc_generator: ^5.1.0
   rx_bloc_test: any
+  flutter_lints: any
   test: any
 
   # Server related packages

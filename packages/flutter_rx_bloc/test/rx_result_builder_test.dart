@@ -9,8 +9,7 @@ import 'counter/views/counter_result_widget.dart';
 void main() {
   group('BlocResultBuilder', () {
     testWidgets('Build with lookup', (tester) async {
-      final bloc =
-          CounterBloc(initialState: Result<int>.error(Exception('error')));
+      final bloc = CounterBloc(initialState: Result<int>.loading());
 
       await tester.pumpWidget(
         MaterialApp(
