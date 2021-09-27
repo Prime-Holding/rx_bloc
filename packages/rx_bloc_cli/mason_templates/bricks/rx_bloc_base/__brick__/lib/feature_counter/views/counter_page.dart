@@ -1,9 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +94,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
                 context.designSystem.icons.plusSign,
                 color: context.designSystem.colors.iconColor,
               ),
-              tooltip: 'Increment',
+              tooltip: context.l10n.increment,
               onPressed: bloc.events.increment,
               disabled: isLoading,
               loading: isLoading && tag == CounterBloc.tagIncrement,
@@ -110,7 +105,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
                 context.designSystem.icons.minusSign,
                 color: context.designSystem.colors.iconColor,
               ),
-              tooltip: 'Decrement',
+              tooltip: context.l10n.decrement,
               onPressed: bloc.events.decrement,
               disabled: isLoading,
               loading: isLoading && tag == CounterBloc.tagDecrement,

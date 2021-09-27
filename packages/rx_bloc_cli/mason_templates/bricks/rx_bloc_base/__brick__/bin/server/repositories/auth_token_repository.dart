@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../models/auth_token.dart';
 
 /// Auth token repository stores and manages authentication tokens

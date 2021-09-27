@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../utils/utilities.dart';
 
 class AuthToken {

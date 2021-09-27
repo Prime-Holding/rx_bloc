@@ -7,7 +7,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  auto_route: ^2.2.0
+  auto_route: ^2.4.0
   cupertino_icons: ^1.0.2
   dio: ^4.0.0
   firebase_analytics: ^8.1.1
@@ -15,20 +15,20 @@ dependencies:
   firebase_messaging: ^10.0.1
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^6.0.0
+  flutter_local_notifications: ^8.2.0
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^3.2.0
+  flutter_rx_bloc: ^4.0.0
   flutter_secure_storage: ^4.2.0
-  golden_toolkit: ^0.9.0
+  golden_toolkit: ^0.10.0
   intl: ^0.17.0
   json_annotation: ^4.0.1
-  json_serializable: ^4.1.2
-  provider: ^5.0.0
+  json_serializable: ^5.0.2
+  provider: ^6.0.0
   retrofit: ^2.0.0
-  rx_bloc: ^3.1.0
-  rx_bloc_list: ^3.0.0
-  rxdart: ^0.27.0
+  rx_bloc: ^3.2.0
+  rx_bloc_list: ^3.1.0
+  rxdart: ^0.27.2
   shared_preferences: ^2.0.6
 
   # Only for testing purposes
@@ -36,25 +36,33 @@ dependencies:
   shelf_router: ^1.0.0
   shelf_static: ^1.0.0
 
-dependency_overrides:
-  rx_bloc_list:
-    path: ../../packages/rx_bloc_list
-
 dev_dependencies:
-  auto_route_generator: ^2.1.0
+  auto_route_generator: ^2.4.0
   build_runner: ^2.0.3
   # flutter_driver:
   #   sdk: flutter
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.8
+  mockito: ^5.0.16
   retrofit_generator: ^2.0.0
-  rx_bloc_generator: ^5.0.0
-  rx_bloc_test: ^3.0.0
+  rx_bloc_generator: ^5.1.0
+  rx_bloc_test: ^3.2.0
   test: any
 
   # Only for testing purposes (such as in the local server)
   http: ^0.13.3
+
+dependency_overrides:
+  flutter_rx_bloc:
+    path: ../../packages/flutter_rx_bloc
+  rx_bloc:
+    path: ../../packages/rx_bloc
+  rx_bloc_generator:
+    path: ../../packages/rx_bloc_generator
+  rx_bloc_list:
+    path: ../../packages/rx_bloc_list
+  rx_bloc_test:
+    path: ../../packages/rx_bloc_test
 
 flutter:
   uses-material-design: true

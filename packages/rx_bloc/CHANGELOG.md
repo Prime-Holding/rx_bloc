@@ -1,3 +1,7 @@
+## [3.2.0] - September 24, 2021
+* Support Flutter `2.5`
+* Update `rxdart` to use version `0.27.2`
+
 ## [3.1.2] - September 22, 2021
 * Allow the bind extension to be used with both Publish and Behaviour subjects
 
