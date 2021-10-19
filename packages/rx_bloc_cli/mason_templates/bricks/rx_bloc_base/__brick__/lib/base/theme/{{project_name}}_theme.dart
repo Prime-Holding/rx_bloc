@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'design_system.dart';
-import 'design_system/design_system_colors.dart';
+import './design_system.dart';
+import './design_system/design_system_colors.dart';
 
 class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
 
@@ -18,12 +18,13 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
     );
     final base = lightModeOn ? ThemeData.light() : ThemeData.dark();
     return base.copyWith(
-      colorScheme: colorScheme,
+      colorScheme: colorScheme.copyWith(
+        secondary: designSystemColor.accentColor,
+      ),
       primaryColor: designSystemColor.primaryColor,
       indicatorColor: designSystemColor.indicatorColor,
       splashColor: designSystemColor.splashColor,
       splashFactory: InkRipple.splashFactory,
-      accentColor: designSystemColor.accentColor,
       canvasColor: designSystemColor.canvasColor,
       backgroundColor: designSystemColor.backgroundColor,
       scaffoldBackgroundColor: designSystemColor.scaffoldBackgroundColor,
@@ -39,8 +40,6 @@ class {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme {
       textTheme: _buildDesignTextTheme(base.textTheme, designSystemColor),
       primaryTextTheme:
       _buildDesignTextTheme(base.primaryTextTheme, designSystemColor),
-      accentTextTheme:
-      _buildDesignTextTheme(base.accentTextTheme, designSystemColor),
       appBarTheme: AppBarTheme(
         color: designSystemColor.primaryVariant,
       ),

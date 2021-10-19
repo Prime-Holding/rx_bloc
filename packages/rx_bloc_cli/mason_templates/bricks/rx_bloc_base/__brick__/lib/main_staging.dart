@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'base/app/initialization/app_setup.dart';
 import 'base/app/config/environment_config.dart';
+import 'base/app/initialization/app_setup.dart';
 import 'base/app/{{project_name}}.dart';
 
 // ignore_for_file: avoid_void_async

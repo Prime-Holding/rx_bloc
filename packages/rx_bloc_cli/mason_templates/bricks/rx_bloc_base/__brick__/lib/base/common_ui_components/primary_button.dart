@@ -25,14 +25,12 @@ class PrimaryButton extends StatelessWidget {
       );
 
   Widget _buildChildWidget(BuildContext context) => isLoading
-      ? Container(
-          child: SizedBox(
-            width: loadingIndicatorSize,
-            height: loadingIndicatorSize,
-            child: CircularProgressIndicator.adaptive(
-              backgroundColor:
-                  context.designSystem.colors.progressIndicatorBackgroundColor,
-            ),
+      ? SizedBox(
+          width: loadingIndicatorSize,
+          height: loadingIndicatorSize,
+          child: CircularProgressIndicator.adaptive(
+            backgroundColor:
+                context.designSystem.colors.progressIndicatorBackgroundColor,
           ),
         )
       : child ?? const SizedBox();

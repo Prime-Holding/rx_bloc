@@ -90,11 +90,9 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                         await showAdaptiveDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            content: Container(
-                              child: Text(
-                                context.l10n.notificationsPermissionsDenied,
-                                textAlign: TextAlign.center,
-                              ),
+                            content: Text(
+                              context.l10n.notificationsPermissionsDenied,
+                              textAlign: TextAlign.center,
                             ),
                             actions: <Widget>[
                               Center(
@@ -128,7 +126,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
     Function()? onPressed,
   ]) =>
       Center(
-        child: Container(
+        child: SizedBox(
           height: 60,
           width: MediaQuery.of(context).size.width,
           child: Padding(

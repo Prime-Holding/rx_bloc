@@ -1,7 +1,8 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
+
 import 'counter_bloc_mock.mocks.dart';
 
 @GenerateMocks([

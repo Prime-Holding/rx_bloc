@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 import '../../base/common_ui_components/action_button.dart';
 import '../../base/common_ui_components/update_button.dart';
-import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/theme/design_system.dart';
 import '../../feature_login/ui_components/profile_avatar.dart';
 import '../../l10n/l10n.dart';
@@ -65,11 +64,9 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               snapshot.data!.toString(),
               style: context.designSystem.typography.headline2,
             )
-          : Container(
-              child: Text(
+          : Text(
                 snapshot.connectionState.toString(),
                 style: context.designSystem.typography.bodyText1,
-              ),
             );
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(

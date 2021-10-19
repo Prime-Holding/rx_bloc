@@ -62,12 +62,9 @@ Future<RouteGenerator> _registerControllers() async {
   return generator;
 }
 
-Middleware _delayMiddleware({
-  void Function(String message, bool isError)? logger,
-}) =>
-    (innerHandler) => (request) => Future.delayed(
-          const Duration(
-            milliseconds: 300,
-          ),
-          () => innerHandler(request),
-        );
+Middleware _delayMiddleware() => (innerHandler) => (request) => Future.delayed(
+      const Duration(
+        milliseconds: 300,
+      ),
+      () => innerHandler(request),
+    );

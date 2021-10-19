@@ -1,8 +1,12 @@
 {{> licence.dart }}
 
 import 'package:dio/dio.dart';{{#analytics}}
-import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';{{/analytics}}
+
+{{#analytics}}
+// ignore_for_file: unused_import{{/analytics}}
+// ignore_for_file: unnecessary_overrides
 
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure
