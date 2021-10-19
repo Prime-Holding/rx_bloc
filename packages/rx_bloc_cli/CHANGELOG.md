@@ -1,4 +1,4 @@
-## [1.1.0] - September 24, 2021
+## [1.1.0] - October 19, 2021
 * Upgrade dependencies of generated project to support `flutter 2.5`
 * Updated several inconsistencies in generated project readme file
 
