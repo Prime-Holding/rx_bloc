@@ -20,4 +20,6 @@ analyzer:
     - lib/base/routers/router.gr.dart
     - lib/generated_plugin_registrant.dart
     - lib/assets.dart
+    - mason_templates/*
+    - example/test_app/*
     - '**/*.g.dart'

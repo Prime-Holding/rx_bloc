@@ -6,8 +6,9 @@ import 'package:io/ansi.dart';
 import 'package:io/io.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
-import 'package:rx_bloc_cli/src/templates/rx_bloc_base_bundle.dart';
-import 'package:rx_bloc_cli/src/utils/git_ignore_creator.dart';
+
+import '../templates/rx_bloc_base_bundle.dart';
+import '../utils/git_ignore_creator.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
