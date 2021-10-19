@@ -1,12 +1,7 @@
 {{> licence.dart }}
 
 import 'package:dio/dio.dart';{{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';{{/analytics}}
-
-{{#analytics}}
-// ignore_for_file: unused_import{{/analytics}}
-// ignore_for_file: unnecessary_overrides
 
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure
@@ -22,18 +17,6 @@ class AnalyticsInterceptor extends Interceptor {
   AnalyticsInterceptor( {{#analytics}}this.observer{{/analytics}} );
   {{#analytics}}
   final FirebaseAnalyticsObserver observer;{{/analytics}}
-
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // TODO: implement onRequest
-    super.onRequest(options, handler);
-  }
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
-    super.onResponse(response, handler);
-  }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) { {{#analytics}}

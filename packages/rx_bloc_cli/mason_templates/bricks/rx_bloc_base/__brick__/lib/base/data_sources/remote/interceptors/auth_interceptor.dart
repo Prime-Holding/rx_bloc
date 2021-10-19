@@ -5,8 +5,6 @@ import 'package:dio/dio.dart';
 import '../../../common_use_cases/fetch_access_token_use_case.dart';
 import '../../../common_use_cases/logout_use_case.dart';
 
-// ignore_for_file: unnecessary_overrides
-
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure
 /// authentication tokens, add logs of the requests,
@@ -29,12 +27,6 @@ class AuthInterceptor extends Interceptor {
   final LogoutUseCase _logoutUseCase;
   final FetchAccessTokenUseCase _fetchAccessTokenUseCase;
   final Dio _httpClient;
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
-    super.onResponse(response, handler);
-  }
 
   @override
   Future<void> onRequest(
