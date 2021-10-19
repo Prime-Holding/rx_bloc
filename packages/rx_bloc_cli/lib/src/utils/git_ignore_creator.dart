@@ -39,6 +39,7 @@ pubspec.lock
 .pub-cache/
 .pub/
 /build/
+.fvm/
 
 # Web related
 lib/generated_plugin_registrant.dart
