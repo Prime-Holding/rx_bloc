@@ -54,8 +54,8 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
   final _analyticsString = 'include-analytics';
-  final _pushNotificationString = 'push-notifications';
   final _httpClientString = 'http-client';
+  //final _pushNotificationString = 'push-notifications';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -163,6 +163,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Returns whether the project will have push notifications enabled
+  // ignore: prefer_expression_function_bodies
   bool get _enablePushNotifications {
     /*
     final pushNotificationsEnabled = _argResults[_pushNotificationString];
