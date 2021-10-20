@@ -29,12 +29,6 @@ class AuthInterceptor extends Interceptor {
   final Dio _httpClient;
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
-    super.onResponse(response, handler);
-  }
-
-  @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final accessToken = await _fetchAccessTokenUseCase.execute();

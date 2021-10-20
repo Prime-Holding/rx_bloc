@@ -11,7 +11,7 @@ FlutterLocalNotificationsPlugin? _notificationsPlugin;
 const _maxImportanceChannel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  'This channel is used for important notifications.', // description
+  description: 'This channel is used for important notifications.',
   importance: Importance.max,
 );
 
@@ -50,7 +50,7 @@ Future<void> showLocalNotification({
       android: AndroidNotificationDetails(
         _maxImportanceChannel.id,
         _maxImportanceChannel.name,
-        _maxImportanceChannel.description,
+        channelDescription: _maxImportanceChannel.description,
         icon: icon ?? 'app_icon', // To use your own custom icon for foreground
         // notifications, replace the png file in `android/src/main/res/drawable`
       ),

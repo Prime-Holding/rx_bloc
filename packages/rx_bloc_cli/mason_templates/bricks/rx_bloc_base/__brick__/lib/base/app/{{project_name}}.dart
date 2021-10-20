@@ -21,7 +21,7 @@ import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}
 
 /// This widget is the root of your application.
 class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
-  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod});
+  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod, Key? key}) : super(key: key);
 
   final EnvironmentConfig config;
   final _router = router.Router();
@@ -61,7 +61,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         await safeRun(
             () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
     }
-    FirebaseMessaging.instance
+    await FirebaseMessaging.instance
         .getInitialMessage()
         .then((message) => onInitialMessageOpened(context, message));
     FirebaseMessaging.instance.onTokenRefresh

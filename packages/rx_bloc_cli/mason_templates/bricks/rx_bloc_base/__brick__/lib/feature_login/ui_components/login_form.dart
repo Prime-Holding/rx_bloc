@@ -13,7 +13,8 @@ class LoginForm extends StatefulWidget {
   const LoginForm({
     this.title = 'Enter your login credentials',
     this.onLoginSuccess,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final String title;
   final Function? onLoginSuccess;
@@ -35,7 +36,9 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void dispose() {
     // Since the focus nodes are long living object, they should be disposed.
-    _focusNodes.forEach((focusNode) => focusNode.dispose());
+    for (var focusNode in _focusNodes) {
+      focusNode.dispose();
+    }
     super.dispose();
   }
 

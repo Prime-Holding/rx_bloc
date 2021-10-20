@@ -15,14 +15,11 @@ abstract class CountRemoteDataSource {
       _CountRemoteDataSource;
 
   @GET('/count')
-  @override
   Future<Count> getCurrent();
 
   @POST('/count/increment')
-  @override
   Future<Count> increment();
 
   @POST('/count/decrement')
-  @override
   Future<Count> decrement();
 }

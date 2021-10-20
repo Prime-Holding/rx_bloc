@@ -39,9 +39,10 @@ class AuthRepository {
 
 // Fetch new access token
   Future<String?> fetchNewToken() async {
+    // ignore: unused_local_variable
     final refreshToken = await getRefreshToken();
     try {
-      // TODO try to fetch new access token using refreshToken and save it
+      // TODO: Try to fetch new access token using refreshToken and save it
       // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
     } catch (e) {
       print(e.toString());

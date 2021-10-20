@@ -1,5 +1,7 @@
 import 'dart:io';
 
+// ignore_for_file: unused_local_variable
+
 /// Used for creation of .gitignore files
 class GitIgnoreCreator {
   GitIgnoreCreator();
@@ -39,6 +41,7 @@ pubspec.lock
 .pub-cache/
 .pub/
 /build/
+.fvm/
 
 # Web related
 lib/generated_plugin_registrant.dart
