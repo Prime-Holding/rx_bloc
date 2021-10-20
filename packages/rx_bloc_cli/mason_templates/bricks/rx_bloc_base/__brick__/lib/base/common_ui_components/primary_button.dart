@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 
 import '../theme/design_system.dart';
@@ -23,14 +25,12 @@ class PrimaryButton extends StatelessWidget {
       );
 
   Widget _buildChildWidget(BuildContext context) => isLoading
-      ? Container(
-          child: SizedBox(
-            width: loadingIndicatorSize,
-            height: loadingIndicatorSize,
-            child: CircularProgressIndicator.adaptive(
-              backgroundColor:
-                  context.designSystem.colors.progressIndicatorBackgroundColor,
-            ),
+      ? SizedBox(
+          width: loadingIndicatorSize,
+          height: loadingIndicatorSize,
+          child: CircularProgressIndicator.adaptive(
+            backgroundColor:
+                context.designSystem.colors.progressIndicatorBackgroundColor,
           ),
         )
       : child ?? const SizedBox();

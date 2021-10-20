@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';

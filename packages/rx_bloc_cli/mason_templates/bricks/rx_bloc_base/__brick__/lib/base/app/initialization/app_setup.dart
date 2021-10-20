@@ -4,8 +4,6 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-{{#push_notifications}}
-import 'dart:io';{{/push_notifications}}
 
 {{#uses_firebase}}
 import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#push_notifications}}
@@ -14,6 +12,7 @@ import 'package:flutter/foundation.dart';{{/push_notifications}}
 
 import '../../utils/helpers.dart';{{#push_notifications}}
 import 'firebase_messaging_callbacks.dart';{{/push_notifications}}
+
 
 /// Configures application tools and packages before running the app. Services
 /// such as Firebase or background handlers can be defined here.

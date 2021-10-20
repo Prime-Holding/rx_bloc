@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:shelf/shelf.dart';
 
 import '../utils/api_controller.dart';

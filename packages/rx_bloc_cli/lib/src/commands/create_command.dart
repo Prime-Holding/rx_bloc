@@ -6,8 +6,9 @@ import 'package:io/ansi.dart';
 import 'package:io/io.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
-import 'package:rx_bloc_cli/src/templates/rx_bloc_base_bundle.dart';
-import 'package:rx_bloc_cli/src/utils/git_ignore_creator.dart';
+
+import '../templates/rx_bloc_base_bundle.dart';
+import '../utils/git_ignore_creator.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
@@ -54,8 +55,8 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
   final _analyticsString = 'include-analytics';
-  final _pushNotificationString = 'push-notifications';
   final _httpClientString = 'http-client';
+  //final _pushNotificationString = 'push-notifications';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -163,6 +164,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Returns whether the project will have push notifications enabled
+  // ignore: prefer_expression_function_bodies
   bool get _enablePushNotifications {
     /*
     final pushNotificationsEnabled = _argResults[_pushNotificationString];

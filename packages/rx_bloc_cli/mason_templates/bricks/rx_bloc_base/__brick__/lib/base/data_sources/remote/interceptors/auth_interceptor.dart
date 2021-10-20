@@ -1,9 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:dio/dio.dart';
 
@@ -32,12 +27,6 @@ class AuthInterceptor extends Interceptor {
   final LogoutUseCase _logoutUseCase;
   final FetchAccessTokenUseCase _fetchAccessTokenUseCase;
   final Dio _httpClient;
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
-    super.onResponse(response, handler);
-  }
 
   @override
   Future<void> onRequest(
