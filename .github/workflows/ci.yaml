@@ -55,7 +55,7 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 89
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2.1.0
         with:
           directory: ${{ matrix.folder }}/coverage
   packages:
