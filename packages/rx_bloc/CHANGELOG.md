@@ -1,5 +1,5 @@
 ## [3.2.1] - December 16, 2021
-* Added a [presentation](https://youtu.be/nVX4AzeuVu8) to the documentation
+* Added a [presentation](https://youtu.be/nVX4AzeuVu8) to the README file
 
 ## [3.2.0] - September 24, 2021
 * Support Flutter `2.5`
