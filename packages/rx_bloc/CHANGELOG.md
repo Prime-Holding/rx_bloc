@@ -1,3 +1,6 @@
+## [3.2.1] - December 16, 2021
+* Added a [presentation](https://youtu.be/nVX4AzeuVu8) to the documentation
+
 ## [3.2.0] - September 24, 2021
 * Support Flutter `2.5`
 * Update `rxdart` to use version `0.27.2`
