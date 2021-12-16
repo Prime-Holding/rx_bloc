@@ -206,7 +206,7 @@ class HomePage extends StatelessWidget {
 [code_style_lnk]: https://img.shields.io/badge/style-effective_dart-40c4ff.svg
 [license_lnk]: https://img.shields.io/badge/license-MIT-purple.svg
 [rx_bloc_slogan_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/slogan.png
-[hack_conf_img]: https://github.com/Prime-Holding/rx_bloc/blob/documentation/add-link-to-hack-conf/packages/rx_bloc/doc/asset/IMG_3093.PNG?raw=true
+[hack_conf_img]: https://github.com/Prime-Holding/rx_bloc/blob/documentation/add-link-to-hack-conf/packages/rx_bloc/doc/asset/hack_conf.png?raw=true
 [hack_conf_link]: https://youtu.be/nVX4AzeuVu8  
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [flutter_rx_bloc_lnk]: https://pub.dev/packages/flutter_rx_bloc
