@@ -170,6 +170,9 @@ class HomePage extends StatelessWidget {
 }
 ```
 
+## Presentations
+[![HackConf][hack_conf_img]][hack_conf_link]  
+  
 ## Video tutorials
   
 - [Building feature-rich lists in Flutter](https://youtu.be/Nc8OLxYhQ0w) A feature-rich ListView implementation in Flutter that demonstrates how easy it is to build common functionalities such as `pull-to-refresh` and `infinite-scroll`.
@@ -203,6 +206,8 @@ class HomePage extends StatelessWidget {
 [code_style_lnk]: https://img.shields.io/badge/style-effective_dart-40c4ff.svg
 [license_lnk]: https://img.shields.io/badge/license-MIT-purple.svg
 [rx_bloc_slogan_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/slogan.png
+[hack_conf_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/IMG_3093.PNG
+[hack_conf_link]: https://youtu.be/nVX4AzeuVu8  
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [flutter_rx_bloc_lnk]: https://pub.dev/packages/flutter_rx_bloc
 [rx_bloc_test_lnk]: https://pub.dev/packages/rx_bloc_test
