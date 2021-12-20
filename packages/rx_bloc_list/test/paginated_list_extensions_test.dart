@@ -25,6 +25,7 @@ void main() {
     });
 
     test('waitToLoad does not complete', () {
+      //ignore: close_sinks
       final pageSubject = BehaviorSubject.seeded(PaginatedList(
         list: Stub.pageEmpty,
         pageSize: 1,
@@ -34,8 +35,6 @@ void main() {
         pageSubject.waitToLoad(),
         doesNotComplete,
       );
-
-      pageSubject.close();
     });
   });
 
