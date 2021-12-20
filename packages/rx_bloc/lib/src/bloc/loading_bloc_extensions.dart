@@ -14,6 +14,7 @@ extension _LoadingCountsBinders on Stream<Result<dynamic>> {
     BehaviorSubject<Map<String, BehaviorSubject<_TagCountTuple>>> loadingCounts,
   ) =>
       listen((result) {
+        /// ignore: close_sinks
         final tagPerSubject = loadingCounts.value[result.tag];
 
         if (tagPerSubject != null) {

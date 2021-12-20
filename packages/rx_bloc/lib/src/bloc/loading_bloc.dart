@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../rx_bloc.dart';
 
 part 'loading_bloc.rxb.g.dart';
 part 'loading_bloc_extensions.dart';
@@ -83,4 +84,10 @@ class LoadingBloc extends $LoadingBloc {
       .map((event) => event.loading)
       .startWith(false)
       .shareReplay(maxSize: 1);
+
+  @override
+  void dispose() {
+    _compositeSubscription.dispose();
+    super.dispose();
+  }
 }
