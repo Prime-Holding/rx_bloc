@@ -89,11 +89,7 @@ extension _EventMethodElement on MethodElement {
       : _BlocEventStreamTypes.publish;
 
   /// Provides the first annotation as [ElementAnnotation] if exists
-  ElementAnnotation? get _eventAnnotation =>
-      // TODO(Diev): Check if
-      metadata.isNotEmpty && metadata.first is ElementAnnotation
-          ? metadata.first
-          : null;
+  ElementAnnotation? get _eventAnnotation => metadata.firstOrNull;
 
   /// Provides the [RxBlocEvent] annotation as [DartObject] if exists
   DartObject? get _computedRxBlocEventAnnotation =>
