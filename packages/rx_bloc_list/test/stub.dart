@@ -3,8 +3,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 
 class Stub {
-  static final listSize = 100;
-  static final pageSize = 10;
+  static const listSize = 100;
+  static const pageSize = 10;
   static final pageEmpty = <int>[];
   static final pageOne = <int>[1, 2, 3];
   static final pageTwo = <int>[4, 5, 6];

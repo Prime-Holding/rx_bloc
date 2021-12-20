@@ -126,7 +126,7 @@ import '../../models.dart';
 ///
 class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   /// RxPaginatedBuilder default constructor
-  RxPaginatedBuilder({
+  const RxPaginatedBuilder({
     required this.state,
     required this.buildSuccess,
     required this.buildError,
@@ -137,7 +137,8 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
     this.scrollThreshold = 100.0,
     this.enableOnBottomScrolledCallback = true,
     this.bloc,
-  });
+    Key? key,
+  }) : super(key: key);
 
   /// RxPaginatedBuilder constructor with refresh indicator.
   /// An addition to the default constructor is the requirement for the

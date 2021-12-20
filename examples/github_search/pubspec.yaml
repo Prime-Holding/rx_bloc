@@ -7,50 +7,52 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  auto_route: ^2.4.0
-  cupertino_icons: ^1.0.2
+  auto_route: ^3.2.0
+  cupertino_icons: ^1.0.4
   dio: ^4.0.0
-  firebase_analytics: ^8.1.1
-  firebase_core: ^1.2.1
-  firebase_messaging: ^10.0.1
+  firebase_analytics: ^9.0.4
+  firebase_core: ^1.10.6
+  firebase_messaging: ^11.2.4
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^8.2.0
+  flutter_local_notifications: ^9.1.5
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^4.0.0
-  flutter_secure_storage: ^4.2.0
-  golden_toolkit: ^0.10.0
+  flutter_secure_storage: ^5.0.2
+  golden_toolkit: ^0.12.0
   intl: ^0.17.0
-  json_annotation: ^4.0.1
-  json_serializable: ^5.0.2
-  provider: ^6.0.0
-  retrofit: ^2.0.0
-  rx_bloc: ^3.2.0
+  json_annotation: ^4.4.0
+  json_serializable: ^6.1.3
+  provider: ^6.0.1
+  retrofit: ^3.0.0
+  rx_bloc: ^3.2.1
   rx_bloc_list: ^3.1.0
-  rxdart: ^0.27.2
-  shared_preferences: ^2.0.6
+  rxdart: ^0.27.3
+  shared_preferences: ^2.0.11
 
   # Only for testing purposes
-  shelf: ^1.0.0
-  shelf_router: ^1.0.0
-  shelf_static: ^1.0.0
+  shelf: ^1.2.0
+  shelf_router: ^1.1.2
+  shelf_static: ^1.1.0
 
 dev_dependencies:
-  auto_route_generator: ^2.4.0
-  build_runner: ^2.0.3
+  auto_route_generator: ^3.2.0
+  build_runner: ^2.1.7
   # flutter_driver:
   #   sdk: flutter
   flutter_test:
     sdk: flutter
+  flutter_lints: ^1.0.4
+  # Only for testing purposes (such as in the local server)
+  http: ^0.13.4
   mockito: ^5.0.16
-  retrofit_generator: ^2.0.0
+
+  retrofit_generator: ^3.0.0
   rx_bloc_generator: ^5.1.0
   rx_bloc_test: ^3.2.0
   test: any
 
-  # Only for testing purposes (such as in the local server)
-  http: ^0.13.3
 
 dependency_overrides:
   flutter_rx_bloc:

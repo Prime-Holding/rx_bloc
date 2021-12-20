@@ -4,13 +4,15 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
-  runApp(CounterApp());
+  runApp(const CounterApp());
 }
 
 ///region UI Layer
 
 /// The app widget
 class CounterApp extends StatelessWidget {
+  const CounterApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -187,10 +189,10 @@ class CounterBloc extends $CounterBloc {
   final CounterRepository _repository;
 
   /// Increment action
-  static final tagIncrement = 'Increment';
+  static const tagIncrement = 'Increment';
 
   /// Decrement action
-  static final tagDecrement = 'Decrement';
+  static const tagDecrement = 'Decrement';
 
   /// Map increment and decrement events to `count` state
   @override

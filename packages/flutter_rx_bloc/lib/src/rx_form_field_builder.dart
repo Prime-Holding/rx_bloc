@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:flutter_rx_bloc/src/rx_field_exception.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../flutter_rx_bloc.dart';
+import '../rx_form.dart';
+import 'rx_field_exception.dart';
 
 part 'rx_text_form_field_builder.dart';
 

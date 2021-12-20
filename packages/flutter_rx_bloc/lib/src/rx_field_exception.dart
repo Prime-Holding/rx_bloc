@@ -27,5 +27,5 @@ class RxFieldException<T> implements Exception {
   }
 
   @override
-  int get hashCode => super.hashCode;
+  int get hashCode => fieldValue.hashCode ^ error.hashCode;
 }

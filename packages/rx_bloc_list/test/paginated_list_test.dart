@@ -3,8 +3,8 @@ import 'package:rx_bloc_list/models.dart';
 
 void main() {
   group('PaginatedList tests', () {
-    final listSize = 100;
-    final pageSize = 10;
+    const listSize = 100;
+    const pageSize = 10;
     final emptyListData = [];
     final notEmptyListData = [0, 1, 2, 3];
 

@@ -6,18 +6,20 @@ import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 /// App entry
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RxBlocList Example',
       home: RxBlocProvider<UserBlocType>(
         create: (context) => UserBloc(repository: UserRepository()),
-        child: PaginatedListPage(),
+        child: const PaginatedListPage(),
       ),
     );
   }
@@ -26,6 +28,8 @@ class MyApp extends StatelessWidget {
 /// region Paginated List page
 
 class PaginatedListPage extends StatelessWidget {
+  const PaginatedListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
@@ -93,9 +97,7 @@ class YourErrorWidget extends StatelessWidget {
   final Exception error;
 
   @override
-  Widget build(BuildContext context) => Container(
-        child: Text(error.toString()),
-      );
+  Widget build(BuildContext context) => Text(error.toString());
 }
 
 /// App specific progress indicator
@@ -233,11 +235,12 @@ class UserRepository {
   Future<PaginatedList<User>> fetchPage(int page, int pageSize) async {
     await Future.delayed(const Duration(seconds: 2));
 
-    if (page > 10)
+    if (page > 10) {
       return PaginatedList(
         list: [],
         pageSize: pageSize,
       );
+    }
 
     return PaginatedList(
       list: List.generate(

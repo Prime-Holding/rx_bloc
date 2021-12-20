@@ -34,6 +34,8 @@ void main() {
         pageSubject.waitToLoad(),
         doesNotComplete,
       );
+
+      pageSubject.close();
     });
   });
 
@@ -52,17 +54,17 @@ void main() {
     });
 
     test('isInitialLoading has no data', () async {
-      final snapshot = const AsyncSnapshot<PaginatedList<int>>.waiting();
+      const snapshot = AsyncSnapshot<PaginatedList<int>>.waiting();
       expect(snapshot.isInitialLoading, true);
     });
 
     test('isInitialLoading nothing', () async {
-      final snapshot = const AsyncSnapshot<PaginatedList<int>>.nothing();
+      const snapshot = AsyncSnapshot<PaginatedList<int>>.nothing();
       expect(snapshot.isInitialLoading, true);
     });
 
     test('isNextPageLoading', () async {
-      final snapshotNothing = const AsyncSnapshot<PaginatedList<int>>.nothing();
+      const snapshotNothing = AsyncSnapshot<PaginatedList<int>>.nothing();
       expect(snapshotNothing.isNextPageLoading, true);
 
       final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
@@ -74,7 +76,7 @@ void main() {
     });
 
     test('isLoading', () async {
-      final snapshotNothing = const AsyncSnapshot<PaginatedList<int>>.nothing();
+      const snapshotNothing = AsyncSnapshot<PaginatedList<int>>.nothing();
       expect(snapshotNothing.isLoading, true);
 
       final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
@@ -86,7 +88,7 @@ void main() {
     });
 
     test('hasPageError', () async {
-      final snapshotNothing = const AsyncSnapshot<PaginatedList<int>>.nothing();
+      const snapshotNothing = AsyncSnapshot<PaginatedList<int>>.nothing();
       expect(snapshotNothing.hasPageError, false);
 
       final snapshotData = AsyncSnapshot<PaginatedList<int>>.withData(
