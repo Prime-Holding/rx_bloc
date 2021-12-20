@@ -17,4 +17,4 @@ linter:
 
 analyzer:
   exclude:
-    - ".rxb.g.dart"
+    - "**/*.rxb.g.dart"

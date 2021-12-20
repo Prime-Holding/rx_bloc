@@ -9,10 +9,12 @@ import 'feature_home/views/home_page.dart';
 import 'feature_hotel/search/blocs/hotel_list_bloc.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => MultiProvider(
