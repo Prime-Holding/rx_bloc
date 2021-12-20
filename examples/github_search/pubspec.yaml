@@ -9,7 +9,7 @@ environment:
 dependencies:
   auto_route: ^3.2.0
   cupertino_icons: ^1.0.4
-  dio: ^4.0.0
+  dio: ^4.0.4
   firebase_analytics: ^9.0.4
   firebase_core: ^1.10.6
   firebase_messaging: ^11.2.4
