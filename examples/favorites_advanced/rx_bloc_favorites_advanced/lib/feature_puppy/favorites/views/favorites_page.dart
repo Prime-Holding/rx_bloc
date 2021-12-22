@@ -4,12 +4,14 @@ import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
 
+import '../../../base/flow_builders/puppy_flow.dart';
 import '../../list/ui_components/puppy_animated_list_view.dart';
 import '../blocs/favorite_puppies_bloc.dart';
 
 class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Column(
         key: const ValueKey(Keys.puppyFavoritesPage),
