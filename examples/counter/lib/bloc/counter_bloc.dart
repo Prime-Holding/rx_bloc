@@ -1,6 +1,7 @@
-import 'package:example/repository/counter_repository.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../repository/counter_repository.dart';
 
 part 'counter_bloc.rxb.g.dart';
 
@@ -37,8 +38,8 @@ class CounterBloc extends $CounterBloc {
 
   final CounterRepository _repository;
 
-  static final tagIncrement = 'Increment';
-  static final tagDecrement = 'Decrement';
+  static const tagIncrement = 'Increment';
+  static const tagDecrement = 'Decrement';
 
   /// Map increment and decrement events to `count` state
   @override

@@ -1,10 +1,10 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/validators/puppy_validator.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/repositories/paginated_puppies_repository.dart';
+import '../validators/puppy_validator.dart';
 
 part 'puppy_manage_bloc.rxb.g.dart';
 part 'puppy_manage_bloc_extensions.dart';

@@ -1,13 +1,15 @@
-import 'package:booking_app/feature_hotel/search/ui_components/filter_value_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import 'filter_value_chooser.dart';
 
 class HotelCapacityPage extends StatefulWidget {
   const HotelCapacityPage({
     required this.onApplyPressed,
     this.roomCapacity,
     this.personCapacity,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final void Function(int, int) onApplyPressed;
   final int? roomCapacity;

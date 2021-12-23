@@ -1,15 +1,15 @@
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
-import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
-import 'package:rx_bloc_favorites_advanced/base/resources/rx_input_styles.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_avatar.dart';
+
+import '../../../base/flow_builders/puppy_flow.dart';
+import '../../../base/resources/rx_input_styles.dart';
+import '../../blocs/puppy_manage_bloc.dart';
+import 'puppy_edit_avatar.dart';
 
 class PuppyEditForm extends StatelessWidget {
   const PuppyEditForm({

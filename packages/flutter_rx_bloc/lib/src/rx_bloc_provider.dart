@@ -49,7 +49,7 @@ class RxBlocProvider<T extends RxBlocTypeBase>
 
   /// Internal constructor responsible for creating the [RxBlocProvider].
   /// Used by the [RxBlocProvider] default and value constructors.
-  RxBlocProvider._({
+  const RxBlocProvider._({
     required Create<T> create,
     Key? key,
     Dispose<T>? dispose,
@@ -100,19 +100,19 @@ class RxBlocProvider<T extends RxBlocTypeBase>
       return Provider.of<T>(context, listen: false);
     } on ProviderNotFoundException catch (_) {
       throw FlutterError(
-        """
+        '''
         RxBlocProvider.of() called with a context that does not contain a Bloc of type $T.
         No ancestor could be found starting from the context that was passed to RxBlocProvider.of<$T>().
 
         This can happen if:
         1. The context you used comes from a widget above the RxBlocProvider.
-        2. You used MultiRxBlocProvider and didn\'t explicity provide the RxBlocProvider types.
+        2. You used MultiRxBlocProvider and did not explicity provide the RxBlocProvider types.
 
         Good: RxBlocProvider<$T>(create: (context) => $T())
         Bad: RxBlocProvider(create: (context) => $T()).
 
         The context used was: $context
-        """,
+        ''',
       );
     }
   }
@@ -122,8 +122,8 @@ class RxBlocProvider<T extends RxBlocTypeBase>
     return InheritedProvider<T>(
       create: _create,
       dispose: _dispose,
-      child: child,
       lazy: lazy,
+      child: child,
     );
   }
 }

@@ -4,4 +4,4 @@
 FLUTTER_TARGET=lib/main_dev.dart
 ENVIRONMENT_PLIST = environments/development/development.plist
 APP_DISPLAY_NAME = {{#titleCase}}{{project_name}}{{/titleCase}} DEV
-bundle_suffix=dev
+bundle_suffix=.dev

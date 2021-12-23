@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
+import '../../../base/repositories/paginated_puppies_repository.dart';
 
 part 'favorite_puppies_bloc.rxb.g.dart';
 part 'favorite_puppies_bloc_extensions.dart';
