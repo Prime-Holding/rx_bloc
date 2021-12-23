@@ -13,7 +13,7 @@ dependencies:
   flutter_lints: ^1.0.4
   io: ^1.0.3
   mason: ^0.0.1-dev.57
-  path: ^1.8.0
+  path: ^1.8.1
 
 dev_dependencies:
 
