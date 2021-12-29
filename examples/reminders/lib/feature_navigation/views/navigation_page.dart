@@ -24,10 +24,7 @@ class NavigationPage extends StatelessWidget implements AutoRouteWrapper {
         builder: (context, widget, animation) => widget,
         bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
           currentIndex: tabsRouter.activeIndex,
-          onTap: (index) {
-            // here we switch between tabs
-            tabsRouter.setActiveIndex(index);
-          },
+          onTap: (index) => tabsRouter.setActiveIndex(index),
           items: const [
             BottomNavigationBarItem(
               label: 'Dashboard',

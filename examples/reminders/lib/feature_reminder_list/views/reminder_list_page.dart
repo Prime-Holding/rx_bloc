@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/common_ui_components/app_divider.dart';
 import '../blocs/reminder_list_bloc.dart';
 import '../di/reminder_list_dependencies.dart';
 
@@ -24,7 +25,16 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _buildErrorListener(),
-            Center(child: _buildDataContainer()),
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (context, index) => ListTile(
+                  leading: Text('Lorem ipsum $index'),
+                  trailing: const Text('12/07/12'),
+                ),
+                separatorBuilder: (context, index) => const AppDivider(),
+                itemCount: 100,
+              ),
+            )
           ],
         ),
       );
