@@ -1,58 +1,73 @@
+// **************************************************************************
+// AutoRouteGenerator
+// **************************************************************************
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
 // AutoRouteGenerator
 // **************************************************************************
 
-import 'package:auto_route/auto_route.dart' as _i1;
-import 'package:flutter/material.dart' as _i2;
+import 'package:auto_route/auto_route.dart' as _i4;
+import 'package:flutter/material.dart' as _i5;
 
-import '../../feature_counter/views/counter_page.dart' as _i3;
-import '../../feature_login/views/login_page.dart' as _i4;
-import '../../feature_notifications/views/notifications_page.dart' as _i5;
+import '../../feature_dashboard/views/dashboard_page.dart' as _i2;
+import '../../feature_navigation/views/navigation_page.dart' as _i1;
+import '../../feature_reminder_list/views/reminder_list_page.dart' as _i3;
 
-class Router extends _i1.RootStackRouter {
-  Router([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
+class Router extends _i4.RootStackRouter {
+  Router([_i5.GlobalKey<_i5.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i1.PageFactory> pagesMap = {
-    CounterRoute.name: (routeData) {
-      return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.CounterPage());
+  final Map<String, _i4.PageFactory> pagesMap = {
+    NavigationRoute.name: (routeData) {
+      return _i4.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i1.NavigationPage());
     },
-    LoginRoute.name: (routeData) {
-      return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i4.LoginPage());
+    DashboardRoute.name: (routeData) {
+      return _i4.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.DashboardPage());
     },
-    NotificationsRoute.name: (routeData) {
-      return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.NotificationsPage());
+    ReminderListRoute.name: (routeData) {
+      return _i4.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i3.ReminderListPage());
     }
   };
 
   @override
-  List<_i1.RouteConfig> get routes => [
-        _i1.RouteConfig(CounterRoute.name, path: '/'),
-        _i1.RouteConfig(LoginRoute.name, path: '/login-page'),
-        _i1.RouteConfig(NotificationsRoute.name, path: '/notifications-page')
+  List<_i4.RouteConfig> get routes => [
+        _i4.RouteConfig(NavigationRoute.name, path: '/', children: [
+          _i4.RouteConfig(DashboardRoute.name,
+              path: 'dashboard-page', parent: NavigationRoute.name),
+          _i4.RouteConfig(ReminderListRoute.name,
+              path: 'reminder-list-page', parent: NavigationRoute.name)
+        ])
       ];
 }
 
-class CounterRoute extends _i1.PageRouteInfo<void> {
-  const CounterRoute() : super(name, path: '/');
+/// generated route for
+/// [_i1.NavigationPage]
+class NavigationRoute extends _i4.PageRouteInfo<void> {
+  const NavigationRoute({List<_i4.PageRouteInfo>? children})
+      : super(NavigationRoute.name, path: '/', initialChildren: children);
 
-  static const String name = 'CounterRoute';
+  static const String name = 'NavigationRoute';
 }
 
-class LoginRoute extends _i1.PageRouteInfo<void> {
-  const LoginRoute() : super(name, path: '/login-page');
+/// generated route for
+/// [_i2.DashboardPage]
+class DashboardRoute extends _i4.PageRouteInfo<void> {
+  const DashboardRoute() : super(DashboardRoute.name, path: 'dashboard-page');
 
-  static const String name = 'LoginRoute';
+  static const String name = 'DashboardRoute';
 }
 
-class NotificationsRoute extends _i1.PageRouteInfo<void> {
-  const NotificationsRoute() : super(name, path: '/notifications-page');
+/// generated route for
+/// [_i3.ReminderListPage]
+class ReminderListRoute extends _i4.PageRouteInfo<void> {
+  const ReminderListRoute()
+      : super(ReminderListRoute.name, path: 'reminder-list-page');
 
-  static const String name = 'NotificationsRoute';
+  static const String name = 'ReminderListRoute';
 }

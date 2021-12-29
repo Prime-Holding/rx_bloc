@@ -19,10 +19,11 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   Future<void> subscribePushToken(pushToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(pushToken.toJson());
     await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+        Options(method: 'POST', headers: _headers, extra: _extra)
             .compose(_dio.options, '/api/user/push-notification-subscriptions',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -33,10 +34,11 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   Future<void> unsubscribePushToken(pushToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(pushToken.toJson());
     await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'DELETE', headers: <String, dynamic>{}, extra: _extra)
+        Options(method: 'DELETE', headers: _headers, extra: _extra)
             .compose(_dio.options, '/api/user/push-notification-subscriptions',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -47,10 +49,11 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   Future<void> sendPushMessage(message) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(message.toJson());
     await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+        Options(method: 'POST', headers: _headers, extra: _extra)
             .compose(_dio.options, '/api/send-push-message',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));

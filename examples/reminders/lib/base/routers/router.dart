@@ -5,19 +5,19 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:auto_route/auto_route.dart';
 
-import '../../feature_counter/views/counter_page.dart';
-import '../../feature_login/views/login_page.dart';
-import '../../feature_notifications/views/notifications_page.dart';
+import '../../feature_dashboard/views/dashboard_page.dart';
+import '../../feature_navigation/views/navigation_page.dart';
+import '../../feature_reminder_list/views/reminder_list_page.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    MaterialRoute(page: CounterPage, initial: true),
-    MaterialRoute(page: LoginPage),
-    MaterialRoute(page: NotificationsPage),
+    MaterialRoute(page: NavigationPage, initial: true, children: [
+      MaterialRoute(page: DashboardPage),
+      MaterialRoute(page: ReminderListPage),
+    ]),
   ],
 )
 class $Router {}
