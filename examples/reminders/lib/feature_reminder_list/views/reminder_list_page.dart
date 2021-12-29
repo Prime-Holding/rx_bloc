@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../base/common_ui_components/app_divider.dart';
+import '../../app_extensions.dart';
 import '../blocs/reminder_list_bloc.dart';
 import '../di/reminder_list_dependencies.dart';
+import '../ui_components/reminder_list_view.dart';
 
 class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
   const ReminderListPage({
@@ -25,15 +26,8 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _buildErrorListener(),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) => ListTile(
-                  leading: Text('Lorem ipsum $index'),
-                  trailing: const Text('12/07/12'),
-                ),
-                separatorBuilder: (context, index) => const AppDivider(),
-                itemCount: 100,
-              ),
+            const Expanded(
+              child: ReminderListView(),
             )
           ],
         ),
@@ -46,13 +40,6 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
             onPressed: context.read<ReminderListBlocType>().events.fetchData,
           ),
         ],
-      );
-
-  Widget _buildDataContainer() => RxResultBuilder<ReminderListBlocType, String>(
-        state: (bloc) => bloc.states.data,
-        buildLoading: (ctx, bloc) => const CircularProgressIndicator(),
-        buildError: (ctx, error, bloc) => Text(error.toString()),
-        buildSuccess: (ctx, state, bloc) => Text(state),
       );
 
   Widget _buildErrorListener() => RxBlocListener<ReminderListBlocType, String>(

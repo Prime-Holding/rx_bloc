@@ -5,14 +5,12 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import './design_system.dart';
 import './design_system/design_system_colors.dart';
 
 class RemindersTheme {
-
   static ThemeData buildTheme(DesignSystem designSystem) {
     final designSystemColor = designSystem.colors;
     final lightModeOn = designSystemColor.brightness == Brightness.light;
@@ -45,7 +43,7 @@ class RemindersTheme {
           _buildOutlinedButtonTheme(base.outlinedButtonTheme, designSystem),
       textTheme: _buildDesignTextTheme(base.textTheme, designSystemColor),
       primaryTextTheme:
-      _buildDesignTextTheme(base.primaryTextTheme, designSystemColor),
+          _buildDesignTextTheme(base.primaryTextTheme, designSystemColor),
       appBarTheme: AppBarTheme(
         color: designSystemColor.primaryVariant,
       ),
@@ -66,9 +64,9 @@ class RemindersTheme {
       button: base.button!.copyWith(fontFamily: fontName),
       caption: base.caption!.copyWith(fontFamily: fontName),
       bodyText1: base.bodyText1!.copyWith(
-      fontFamily: fontName, color: designSystemColor.bodyTextColor1),
+          fontFamily: fontName, color: designSystemColor.bodyTextColor1),
       bodyText2: base.bodyText2!.copyWith(
-      fontFamily: fontName, color: designSystemColor.bodyTextColor2),
+          fontFamily: fontName, color: designSystemColor.bodyTextColor2),
       subtitle1: base.subtitle1!.copyWith(fontFamily: fontName),
       subtitle2: base.subtitle2!.copyWith(fontFamily: fontName),
       overline: base.overline!.copyWith(fontFamily: fontName),
@@ -77,9 +75,9 @@ class RemindersTheme {
 
   static IconThemeData _buildIconTheme(
           IconThemeData base, DesignSystemColors designSystemColors) =>
-        base.copyWith(
-          color: designSystemColors.iconColor,
-        );
+      base.copyWith(
+        color: designSystemColors.iconColor,
+      );
 
   static OutlinedButtonThemeData _buildOutlinedButtonTheme(
           OutlinedButtonThemeData data, DesignSystem designSystem) =>
@@ -99,10 +97,9 @@ class RemindersTheme {
           TextButtonThemeData data, DesignSystem designSystem) =>
       TextButtonThemeData(
         style: OutlinedButton.styleFrom(
-          backgroundColor: designSystem.colors.primaryColor,
-          textStyle: designSystem.typography.outlinedButtonText,
-          primary: designSystem.colors.outlinedButtonTextColor,
-      ),
-  );
-
+          backgroundColor: designSystem.colors.backgroundColor,
+          textStyle: designSystem.typography.textButtonText,
+          primary: designSystem.colors.textButtonTextColor,
+        ),
+      );
 }

@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 class DesignSystemColors {
@@ -30,6 +29,8 @@ class DesignSystemColors {
   Color get splashColor => Colors.white24;
 
   Color get canvasColor => Colors.white;
+
+  Color get backgroundHeader => lightMode ? _HexColor('#edf0f2') : Colors.black;
 
   Color get backgroundColor => lightMode ? Colors.white : Colors.black;
 
@@ -95,6 +96,8 @@ class DesignSystemColors {
   Color get iconColor => Colors.white;
 
   Color get outlinedButtonTextColor => Colors.white;
+
+  Color get textButtonTextColor => Colors.black;
 
   /// endregion
 

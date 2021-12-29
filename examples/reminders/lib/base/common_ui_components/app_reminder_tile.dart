@@ -1,0 +1,88 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../models/reminder_model.dart';
+
+class AppReminderTile extends StatefulWidget {
+  const AppReminderTile({
+    required this.reminder,
+    this.onTitleChanged,
+    this.onDueDateChanged,
+    Key? key,
+  }) : super(key: key);
+
+  final ReminderModel reminder;
+  final Function(String)? onTitleChanged;
+  final Function(DateTime)? onDueDateChanged;
+
+  @override
+  State<AppReminderTile> createState() => _AppReminderTileState();
+}
+
+class _AppReminderTileState extends State<AppReminderTile> {
+  late final String dueDate = _getDueDate();
+
+  final _formatter = DateFormat.yMd();
+
+  late TextEditingController _textEditingController;
+
+  String _getDueDate() => _formatter.format(widget.reminder.dueDate);
+
+  @override
+  void initState() {
+    _textEditingController = TextEditingController(text: widget.reminder.title);
+
+    _textEditingController.addListener(
+      () => widget.onTitleChanged?.call(_textEditingController.text),
+    );
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                textInputAction: TextInputAction.done,
+                controller: _textEditingController,
+                minLines: 1,
+                maxLines: 3,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: _onDueDatePressed,
+              child: Text(dueDate),
+            ),
+          ],
+        ),
+      );
+
+  Future<void> _onDueDatePressed() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: widget.reminder.dueDate,
+      firstDate: DateTime.now().subtract(
+        const Duration(days: 365),
+      ),
+      lastDate: DateTime.now().add(
+        const Duration(days: 365),
+      ),
+    );
+
+    if (date != null) {
+      widget.onDueDateChanged?.call(date);
+    }
+  }
+}

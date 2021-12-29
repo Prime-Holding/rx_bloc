@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import 'design_system_colors.dart';
@@ -128,6 +127,12 @@ class DesignSystemTypography {
   TextStyle get outlinedButtonText => TextStyle(
         fontWeight: _medium,
         color: _designSystemColor.outlinedButtonTextColor,
+        fontSize: 14,
+      );
+
+  TextStyle get textButtonText => TextStyle(
+        fontWeight: _regular,
+        color: _designSystemColor.textButtonTextColor,
         fontSize: 14,
       );
 
