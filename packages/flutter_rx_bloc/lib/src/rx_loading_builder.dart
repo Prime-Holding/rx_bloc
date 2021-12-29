@@ -40,11 +40,12 @@ import '../flutter_rx_bloc.dart';
 ///     itself based on a snapshot from interacting with a [Stream].
 class RxLoadingBuilder<B extends RxBlocTypeBase> extends StatelessWidget {
   /// The default constructor
-  RxLoadingBuilder({
+  const RxLoadingBuilder({
     required this.state,
     required this.builder,
     this.bloc,
-  });
+    Key? key,
+  }) : super(key: key);
 
   /// The bloc state the widget is listening to
   final Stream<LoadingWithTag> Function(B) state;

@@ -144,7 +144,7 @@ class PaginatedList<E> extends ListBase<E> {
   }
 
   @override
-  operator ==(other) =>
+  bool operator ==(other) =>
       other is PaginatedList<E> &&
       other.pageSize == pageSize &&
       other.error == error &&

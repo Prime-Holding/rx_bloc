@@ -4,6 +4,7 @@ import 'dart:io';
 
 /// Used for creation of .gitignore files
 class GitIgnoreCreator {
+  /// Default constructor of the git ignore file creator
   GitIgnoreCreator();
 
   /// Generates a .gitignore file at the specified path

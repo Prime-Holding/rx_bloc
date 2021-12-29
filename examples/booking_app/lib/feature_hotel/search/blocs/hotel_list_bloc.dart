@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
-import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/models.dart';
@@ -13,6 +11,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
 import '../../../base/repositories/paginated_hotels_repository.dart';
+import '../models/capacity_filter_data.dart';
+import '../models/date_range_filter_data.dart';
 
 part 'hotel_list_bloc.rxb.g.dart';
 part 'hotel_list_bloc_extensions.dart';

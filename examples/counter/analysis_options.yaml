@@ -18,5 +18,3 @@ linter:
 analyzer:
   exclude:
     - "**/*.rxb.g.dart"
-    - "**/*.gr.dart"
-    - "**/*.mocks.dart"

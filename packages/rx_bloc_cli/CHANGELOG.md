@@ -1,3 +1,6 @@
+## [1.1.2] - December 23, 2021
+* Fixes to generated iOS project
+
 ## [1.1.1] - October 19, 2021
 * Stability improvements
 

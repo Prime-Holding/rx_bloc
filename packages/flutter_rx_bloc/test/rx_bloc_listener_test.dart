@@ -8,7 +8,7 @@ import 'mocks/bloc.dart';
 import 'rx_bloc_listener_test.mocks.dart';
 
 class CallbackFunctions {
-  void onString(BuildContext context, String? value) => null;
+  void onString(BuildContext context, String? value) {}
 }
 
 @GenerateMocks([CallbackFunctions])

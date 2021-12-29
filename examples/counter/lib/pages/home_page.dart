@@ -1,8 +1,8 @@
-// ignore: public_member_api_docs
-import 'package:example/bloc/counter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+
+import '../bloc/counter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   // ignore: public_member_api_docs
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
               listener: (context, errorMessage) =>
                   ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(errorMessage ?? ""),
+                  content: Text(errorMessage ?? ''),
                   behavior: SnackBarBehavior.floating,
                 ),
               ),

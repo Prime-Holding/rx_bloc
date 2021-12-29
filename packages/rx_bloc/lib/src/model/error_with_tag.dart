@@ -1,4 +1,4 @@
-import 'package:rx_bloc/rx_bloc.dart';
+import '../../rx_bloc.dart';
 
 /// Just a simple container of
 /// [ErrorWithTag.exception] and [ErrorWithTag.tag]

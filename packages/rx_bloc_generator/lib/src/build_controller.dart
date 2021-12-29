@@ -89,11 +89,11 @@ class _BuildController {
     }
 
     // Methods only - No fields should exist
-    eventClass!.fields.forEach((field) {
+    for (var field in eventClass!.fields) {
       throw _RxBlocGeneratorException(
           '${eventClass!.name} should contain methods only,'
           ' while ${field.name} seems to be a field.');
-    });
+    }
   }
 
   void _validateStates() {
@@ -108,18 +108,18 @@ class _BuildController {
     }
 
     // Fields only - No methods should exist
-    stateClass!.methods.forEach((method) {
+    for (var method in stateClass!.methods) {
       throw _RxBlocGeneratorException(
           'State ${method.name}should be defined using the get keyword.');
-    });
+    }
 
-    stateClass!.accessors.forEach((fieldElement) {
+    for (var fieldElement in stateClass!.accessors) {
       if (!fieldElement.isAbstract) {
         final name = fieldElement.name.replaceAll('=', '');
         throw _RxBlocGeneratorException(
             'State $name should not contain a body definition.');
       }
-    });
+    }
   }
 
   /// Generate string that represents error when a missing class is detected.

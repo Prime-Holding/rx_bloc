@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:rx_bloc/src/model/error_with_tag.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../model/error_with_tag.dart';
 import '../model/loading_with_tag.dart';
 import '../model/result.dart';
 import 'loading_bloc.dart';

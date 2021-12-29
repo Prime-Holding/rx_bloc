@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
 import 'package:dio/dio.dart';{{#analytics}}
-import 'package:firebase_analytics/observer.dart';{{/analytics}}{{#push_notifications}}
+import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

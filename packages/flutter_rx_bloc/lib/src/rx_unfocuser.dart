@@ -104,7 +104,10 @@ class _RxUnfocuserState extends State<RxUnfocuser> {
 ///  * [RxForceUnfocuser] - used to force keyboard dismiss within an area
 class RxIgnoreUnfocuser extends SingleChildRenderObjectWidget {
   ///Default Constructor
-  const RxIgnoreUnfocuser({required Widget child}) : super(child: child);
+  const RxIgnoreUnfocuser({
+    required Widget child,
+    Key? key,
+  }) : super(child: child, key: key);
 
   @override
   RxIgnoreUnfocuserRenderBox createRenderObject(BuildContext context) =>
@@ -129,7 +132,10 @@ class RxIgnoreUnfocuser extends SingleChildRenderObjectWidget {
 ///  * [RxUnfocuser] - used to force keyboard dismiss within an area.
 class RxForceUnfocuser extends SingleChildRenderObjectWidget {
   ///Default Constructor
-  const RxForceUnfocuser({required Widget child}) : super(child: child);
+  const RxForceUnfocuser({
+    required Widget child,
+    Key? key,
+  }) : super(child: child, key: key);
 
   @override
   RxForceUnfocuserRenderBox createRenderObject(BuildContext context) =>
