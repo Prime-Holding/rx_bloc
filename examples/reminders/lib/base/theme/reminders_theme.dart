@@ -97,7 +97,7 @@ class RemindersTheme {
           TextButtonThemeData data, DesignSystem designSystem) =>
       TextButtonThemeData(
         style: OutlinedButton.styleFrom(
-          backgroundColor: designSystem.colors.backgroundColor,
+          backgroundColor: designSystem.colors.secondaryColor,
           textStyle: designSystem.typography.textButtonText,
           primary: designSystem.colors.textButtonTextColor,
         ),

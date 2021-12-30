@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:reminders/base/common_ui_components/app_divider.dart';
 
 import '../models/reminder_model.dart';
 
@@ -8,12 +9,16 @@ class AppReminderTile extends StatefulWidget {
     required this.reminder,
     this.onTitleChanged,
     this.onDueDateChanged,
+    this.isFirst = false,
+    this.isLast = false,
     Key? key,
   }) : super(key: key);
 
   final ReminderModel reminder;
   final Function(String)? onTitleChanged;
   final Function(DateTime)? onDueDateChanged;
+  final bool isFirst;
+  final bool isLast;
 
   @override
   State<AppReminderTile> createState() => _AppReminderTileState();
@@ -45,23 +50,29 @@ class _AppReminderTileState extends State<AppReminderTile> {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
+        child: Column(
           children: [
-            Expanded(
-              child: TextField(
-                textInputAction: TextInputAction.done,
-                controller: _textEditingController,
-                minLines: 1,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+            if (widget.isFirst) const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    textInputAction: TextInputAction.done,
+                    controller: _textEditingController,
+                    minLines: 1,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                  ),
                 ),
-              ),
+                TextButton(
+                  onPressed: _onDueDatePressed,
+                  child: Text(dueDate),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: _onDueDatePressed,
-              child: Text(dueDate),
-            ),
+            !widget.isLast ? const AppDivider() : const SizedBox(height: 8),
           ],
         ),
       );

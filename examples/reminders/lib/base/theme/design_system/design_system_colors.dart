@@ -30,9 +30,12 @@ class DesignSystemColors {
 
   Color get canvasColor => Colors.white;
 
-  Color get backgroundHeader => lightMode ? Colors.white : Colors.black;
+  Color get backgroundHeader => lightMode ? backgroundListColor : Colors.black;
 
-  Color get backgroundColor => lightMode ? Colors.white : Colors.black;
+  Color get backgroundColor => lightMode ? backgroundListColor : Colors.black;
+
+  Color get backgroundListColor =>
+      lightMode ? const Color(0xE6EEEEEE) : Colors.black;
 
   Color get reverseBackgroundColor => lightMode ? Colors.black : Colors.white;
 

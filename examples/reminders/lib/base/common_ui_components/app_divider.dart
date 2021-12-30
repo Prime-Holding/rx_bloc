@@ -5,6 +5,6 @@ class AppDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Divider(
-        indent: 8,
+        thickness: 0.6,
       );
 }

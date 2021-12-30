@@ -1,15 +1,14 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
-import 'package:reminders/base/common_ui_components/app_reminder_tile.dart';
-import 'package:reminders/base/common_ui_components/app_sticky_header.dart';
-import 'package:reminders/base/models/reminder_model.dart';
 
+import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_reminder_tile.dart';
+import '../../base/common_ui_components/app_sticky_header.dart';
+import '../../base/models/reminder_model.dart';
 import '../blocs/dashboard_bloc.dart';
 import '../di/dashboard_dependencies.dart';
-import '../../app_extensions.dart';
 
 class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   const DashboardPage({
@@ -25,6 +24,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: _buildAppBar(context),
+        backgroundColor: context.designSystem.colors.backgroundListColor,
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -38,13 +38,27 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                     child: DashboardStats(),
                   ),
                   SliverStickyHeader(
-                    header: const AppStickyHeader(
-                      text: 'Overdue',
+                    header: const Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: AppStickyHeader(
+                        text: 'Overdue',
+                      ),
                     ),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (context, i) => AppReminderTile(
-                          reminder: ReminderModel.fromIndex(i),
+                        (context, i) => Container(
+                          decoration: BoxDecoration(
+                            color: context.designSystem.colors.secondaryColor,
+                            borderRadius: _getRadius(i, 4),
+                          ),
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
+                          child: AppReminderTile(
+                            reminder: ReminderModel.fromIndex(i),
+                            isFirst: i == 0,
+                            isLast: i == 3,
+                          ),
                         ),
                         childCount: 4,
                       ),
@@ -83,6 +97,24 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           ),
         ),
       );
+
+  BorderRadiusGeometry? _getRadius(int i, int length) {
+    if (i == 0) {
+      return const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      );
+    }
+
+    if (i == length - 1) {
+      return const BorderRadius.only(
+        bottomRight: Radius.circular(20),
+        bottomLeft: Radius.circular(20),
+      );
+    }
+
+    return null;
+  }
 }
 
 class DashboardStats extends StatelessWidget {
@@ -120,10 +152,10 @@ class DashboardStatItem extends StatelessWidget {
         height: 60,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20)),
-          color: context.designSystem.colors.primaryVariant,
+          color: context.designSystem.colors.secondaryColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withOpacity(0.05),
               spreadRadius: 3,
               blurRadius: 5,
               offset: const Offset(0, 3), // changes position of shadow
@@ -136,14 +168,15 @@ class DashboardStatItem extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(Icons.calendar_today),
+              Icon(
+                Icons.calendar_today,
+                color: context.designSystem.colors.primaryVariant,
+              ),
               Expanded(
                 child: Text(
                   '12',
                   textAlign: TextAlign.center,
-                  style: context.designSystem.typography.bodyText1.copyWith(
-                    color: context.designSystem.colors.secondaryColor,
-                  ),
+                  style: context.designSystem.typography.bodyText1,
                 ),
               ),
             ],
