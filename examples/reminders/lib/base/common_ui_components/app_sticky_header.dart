@@ -18,7 +18,7 @@ class AppStickyHeader extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text(
           text,
-          style: context.designSystem.typography.subtitle1,
+          style: context.designSystem.typography.stickyHeader,
         ),
       );
 }

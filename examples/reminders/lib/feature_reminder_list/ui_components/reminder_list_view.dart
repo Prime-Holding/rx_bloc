@@ -17,7 +17,7 @@ class ReminderListView extends StatelessWidget {
       slivers: [
         SliverStickyHeader(
           header: const AppStickyHeader(
-            text: 'edno',
+            text: 'Today',
           ),
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -30,7 +30,7 @@ class ReminderListView extends StatelessWidget {
         ),
         SliverStickyHeader(
           header: const AppStickyHeader(
-            text: 'dve',
+            text: 'This month',
           ),
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(

@@ -30,7 +30,7 @@ class DesignSystemColors {
 
   Color get canvasColor => Colors.white;
 
-  Color get backgroundHeader => lightMode ? _HexColor('#edf0f2') : Colors.black;
+  Color get backgroundHeader => lightMode ? Colors.white : Colors.black;
 
   Color get backgroundColor => lightMode ? Colors.white : Colors.black;
 
@@ -68,11 +68,9 @@ class DesignSystemColors {
 
   Color get headline3 => Colors.black;
 
-  Color get headline4 =>
-      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+  Color get headline4 => lightMode ? Colors.black : Colors.white;
 
-  Color get headline5 =>
-      lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;
+  Color get headline5 => lightMode ? Colors.black : Colors.white;
 
   Color get headline6 =>
       lightMode ? Colors.grey.withOpacity(0.8) : Colors.white;

@@ -138,6 +138,8 @@ class DesignSystemTypography {
 
   /// App specific typography
 
+  TextStyle get stickyHeader => headline5.copyWith(fontWeight: _medium);
+
   TextStyle get counterTitle => TextStyle(
         fontSize: 12,
         color: _designSystemColor.secondaryIconColor,

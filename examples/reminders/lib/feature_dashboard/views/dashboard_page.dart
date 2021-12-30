@@ -1,10 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
+import 'package:reminders/base/common_ui_components/app_reminder_tile.dart';
+import 'package:reminders/base/common_ui_components/app_sticky_header.dart';
+import 'package:reminders/base/models/reminder_model.dart';
 
 import '../blocs/dashboard_bloc.dart';
 import '../di/dashboard_dependencies.dart';
+import '../../app_extensions.dart';
 
 class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   const DashboardPage({
@@ -24,7 +29,30 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _buildErrorListener(),
-            Center(child: _buildDataContainer()),
+            Expanded(
+              child: CustomScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                slivers: [
+                  const SliverToBoxAdapter(
+                    child: DashboardStats(),
+                  ),
+                  SliverStickyHeader(
+                    header: const AppStickyHeader(
+                      text: 'Overdue',
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, i) => AppReminderTile(
+                          reminder: ReminderModel.fromIndex(i),
+                        ),
+                        childCount: 4,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       );
@@ -52,6 +80,73 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           SnackBar(
             content: Text(errorMessage ?? ''),
             behavior: SnackBarBehavior.floating,
+          ),
+        ),
+      );
+}
+
+class DashboardStats extends StatelessWidget {
+  const DashboardStats({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 24,
+        ),
+        child: Row(
+          children: const [
+            Expanded(
+              child: DashboardStatItem(),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: DashboardStatItem(),
+            ),
+          ],
+        ),
+      );
+}
+
+class DashboardStatItem extends StatelessWidget {
+  const DashboardStatItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
+        height: 60,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          color: context.designSystem.colors.primaryVariant,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_today),
+              Expanded(
+                child: Text(
+                  '12',
+                  textAlign: TextAlign.center,
+                  style: context.designSystem.typography.bodyText1.copyWith(
+                    color: context.designSystem.colors.secondaryColor,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       );

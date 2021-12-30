@@ -20,13 +20,10 @@ class AppReminderTile extends StatefulWidget {
 }
 
 class _AppReminderTileState extends State<AppReminderTile> {
-  late final String dueDate = _getDueDate();
+  late final TextEditingController _textEditingController;
+  late final String dueDate = _formatter.format(widget.reminder.dueDate);
 
   final _formatter = DateFormat.yMd();
-
-  late TextEditingController _textEditingController;
-
-  String _getDueDate() => _formatter.format(widget.reminder.dueDate);
 
   @override
   void initState() {
