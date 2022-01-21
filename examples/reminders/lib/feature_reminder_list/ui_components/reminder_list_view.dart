@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
 import '../../base/models/reminder_model.dart';
-import '../../app_extensions.dart';
 
 class ReminderListView extends StatelessWidget {
   const ReminderListView({

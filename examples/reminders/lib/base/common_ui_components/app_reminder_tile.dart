@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reminders/base/common_ui_components/app_divider.dart';
 
 import '../models/reminder_model.dart';
+import 'app_divider.dart';
 
 class AppReminderTile extends StatefulWidget {
   const AppReminderTile({

@@ -80,13 +80,6 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         ],
       );
 
-  Widget _buildDataContainer() => RxResultBuilder<DashboardBlocType, String>(
-        state: (bloc) => bloc.states.data,
-        buildLoading: (ctx, bloc) => const CircularProgressIndicator(),
-        buildError: (ctx, error, bloc) => Text(error.toString()),
-        buildSuccess: (ctx, state, bloc) => Text(state),
-      );
-
   Widget _buildErrorListener() => RxBlocListener<DashboardBlocType, String>(
         state: (bloc) => bloc.states.errors,
         listener: (context, errorMessage) =>
