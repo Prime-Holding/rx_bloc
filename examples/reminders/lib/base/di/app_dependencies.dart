@@ -14,9 +14,6 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:reminders/base/data_sources/local/reminders_local_data_source.dart';
-import 'package:reminders/base/repositories/reminders_repository.dart';
-import 'package:reminders/base/services/reminders_service.dart';
 
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
@@ -27,6 +24,7 @@ import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
+import '../data_sources/local/reminders_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
@@ -34,6 +32,8 @@ import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
+import '../repositories/reminders_repository.dart';
+import '../services/reminders_service.dart';
 
 class AppDependencies {
   AppDependencies._(this.context, this.config);

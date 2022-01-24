@@ -32,27 +32,36 @@ class ReminderModel {
     required this.id,
     required this.title,
     required this.dueDate,
+    required this.complete,
   });
 
   final String id;
   final String title;
   final DateTime dueDate;
+  final bool complete;
 
   factory ReminderModel.fromIndex(int index) => ReminderModel(
         id: index.toString(),
         title: 'Reminder $index',
-        dueDate: DateTime.now().add(
-          Duration(days: index),
-        ),
+        complete: false,
+        dueDate: DateTime.now()
+            .subtract(
+              const Duration(days: 100),
+            )
+            .add(
+              Duration(days: index),
+            ),
       );
 
   ReminderModel copyWith({
     String? title,
     DateTime? dueDate,
+    bool? complete,
   }) =>
       ReminderModel(
         id: id,
         title: title ?? this.title,
         dueDate: dueDate ?? this.dueDate,
+        complete: complete ?? this.complete,
       );
 }

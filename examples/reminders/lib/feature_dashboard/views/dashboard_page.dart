@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
+import 'package:reminders/feature_dashboard/models/dashboard_model.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
@@ -30,41 +31,51 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           children: <Widget>[
             _buildErrorListener(),
             Expanded(
-              child: CustomScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                slivers: [
-                  const SliverToBoxAdapter(
-                    child: DashboardStats(),
-                  ),
-                  SliverStickyHeader(
-                    header: const Padding(
-                      padding: EdgeInsets.only(left: 12),
-                      child: AppStickyHeader(
-                        text: 'Overdue',
+              child: RxResultBuilder<DashboardBlocType, DashboardModel>(
+                state: (bloc) => bloc.states.data,
+                buildSuccess: (context, data, bloc) => CustomScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: DashboardStats(
+                        completeCount: data.completeCount,
+                        incompleteCount: data.incompleteCount,
                       ),
                     ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, i) => Container(
-                          decoration: BoxDecoration(
-                            color: context.designSystem.colors.secondaryColor,
-                            borderRadius: _getRadius(i, 4),
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ),
-                          child: AppReminderTile(
-                            reminder: ReminderModel.fromIndex(i),
-                            isFirst: i == 0,
-                            isLast: i == 3,
-                          ),
+                    SliverStickyHeader(
+                      header: const Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: AppStickyHeader(
+                          text: 'Overdue',
                         ),
-                        childCount: 4,
                       ),
-                    ),
-                  )
-                ],
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, i) => Container(
+                            decoration: BoxDecoration(
+                              color: context.designSystem.colors.secondaryColor,
+                              borderRadius:
+                                  _getRadius(i, data.reminderList.length),
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                            ),
+                            child: AppReminderTile(
+                              reminder: data.reminderList[i],
+                              isFirst: i == 0,
+                              isLast: i == data.reminderList.length - 1,
+                            ),
+                          ),
+                          childCount: data.reminderList.length,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                buildLoading: (context, bloc) =>
+                    const CircularProgressIndicator(),
+                buildError: (context, error, bloc) => Text(error.toString()),
               ),
             ),
           ],
@@ -112,8 +123,13 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
 
 class DashboardStats extends StatelessWidget {
   const DashboardStats({
+    required this.incompleteCount,
+    required this.completeCount,
     Key? key,
   }) : super(key: key);
+
+  final int incompleteCount;
+  final int completeCount;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -122,13 +138,13 @@ class DashboardStats extends StatelessWidget {
           vertical: 24,
         ),
         child: Row(
-          children: const [
+          children: [
             Expanded(
-              child: DashboardStatItem(),
+              child: DashboardStatItem(count: incompleteCount),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Expanded(
-              child: DashboardStatItem(),
+              child: DashboardStatItem(count: completeCount),
             ),
           ],
         ),
@@ -137,8 +153,11 @@ class DashboardStats extends StatelessWidget {
 
 class DashboardStatItem extends StatelessWidget {
   const DashboardStatItem({
+    required this.count,
     Key? key,
   }) : super(key: key);
+
+  final int count;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -167,7 +186,7 @@ class DashboardStatItem extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '12',
+                  count.toString(),
                   textAlign: TextAlign.center,
                   style: context.designSystem.typography.bodyText1,
                 ),

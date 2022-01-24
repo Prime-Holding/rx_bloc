@@ -1,6 +1,9 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../models/dashboard_model.dart';
+import '../services/dashboard_service.dart';
+
 part 'dashboard_bloc.rxb.g.dart';
 part 'dashboard_bloc_extensions.dart';
 
@@ -19,15 +22,19 @@ abstract class DashboardBlocStates {
   Stream<String> get errors;
 
   /// TODO: Document the state
-  Stream<Result<String>> get data;
+  Stream<Result<DashboardModel>> get data;
 }
 
 @RxBloc()
 class DashboardBloc extends $DashboardBloc {
+  DashboardBloc(this._service);
+
+  final DashboardService _service;
+
   @override
-  Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
+  Stream<Result<DashboardModel>> _mapToDataState() => _$fetchDataEvent
       .startWith(null)
-      .mapToData()
+      .switchMap((value) => _service.getDashboardModel().asResultStream())
       .setResultStateHandler(this)
       .shareReplay(maxSize: 1);
 

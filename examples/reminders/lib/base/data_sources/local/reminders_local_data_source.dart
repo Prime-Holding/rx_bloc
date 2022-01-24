@@ -10,16 +10,29 @@ class RemindersLocalDataSource {
 
   final List<ReminderModel> _data;
 
-  Future<List<ReminderModel>> getAll(ReminderModelRequest request) async {
+  Future<int> getCompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
+    return _data.where((element) => element.complete).length;
+  }
+
+  Future<int> getIncompleteCount() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    return _data.where((element) => !element.complete).length;
+  }
+
+  Future<List<ReminderModel>> getAll(ReminderModelRequest? request) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    if (request == null) {
+      return _data;
+    }
 
     var data = [..._data];
 
     data.sortByDueDate(request.sort);
 
-    data = data
-      ..whereInRange(request.filterByDueDateRange)
-      ..whereInPage(request.page, request.pageSize);
+    data = data.whereInRange(request.filterByDueDateRange);
+    data = data.whereInPage(request.page, request.pageSize);
 
     return data;
   }
@@ -27,11 +40,17 @@ class RemindersLocalDataSource {
   Future<ReminderModel> create({
     required String title,
     required DateTime dueDate,
+    required bool complete,
   }) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final id = (_data.indexOf(_data.last) + 1).toString();
-    final reminder = ReminderModel(dueDate: dueDate, id: id, title: title);
+    final reminder = ReminderModel(
+      dueDate: dueDate,
+      id: id,
+      title: title,
+      complete: complete,
+    );
 
     _data.add(reminder);
 
@@ -52,6 +71,7 @@ class RemindersLocalDataSource {
     var _model = _data[index].copyWith(
       title: model.title,
       dueDate: model.dueDate,
+      complete: model.complete,
     );
 
     _data[index] = _model;
@@ -64,6 +84,10 @@ extension _ListReminderModelX on List<ReminderModel> {
   List<ReminderModel> whereInPage(int page, int pageSize) {
     final start = (page - 1) * pageSize;
     final end = start + pageSize;
+
+    if (end > length) {
+      return this;
+    }
 
     return getRange(start, end).toList();
   }

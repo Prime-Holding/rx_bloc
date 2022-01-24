@@ -25,7 +25,9 @@ class ReminderListDependencies {
 
   late final List<RxBlocProvider> _blocs = [
     RxBlocProvider<ReminderListBlocType>(
-      create: (context) => ReminderListBloc(),
+      create: (context) => ReminderListBloc(
+        context.read(),
+      ),
     ),
   ];
 }

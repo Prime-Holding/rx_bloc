@@ -29,7 +29,7 @@ abstract class $DashboardBloc extends RxBlocBase
   late final Stream<String> _errorsState = _mapToErrorsState();
 
   /// The state of [data] implemented in [_mapToDataState]
-  late final Stream<Result<String>> _dataState = _mapToDataState();
+  late final Stream<Result<DashboardModel>> _dataState = _mapToDataState();
 
   @override
   void fetchData() => _$fetchDataEvent.add(null);
@@ -41,13 +41,13 @@ abstract class $DashboardBloc extends RxBlocBase
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<Result<String>> get data => _dataState;
+  Stream<Result<DashboardModel>> get data => _dataState;
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<Result<String>> _mapToDataState();
+  Stream<Result<DashboardModel>> _mapToDataState();
 
   @override
   DashboardBlocEvents get events => this;

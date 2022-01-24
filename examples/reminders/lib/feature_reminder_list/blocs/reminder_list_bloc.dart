@@ -1,3 +1,4 @@
+import 'package:reminders/base/services/reminders_service.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -24,6 +25,10 @@ abstract class ReminderListBlocStates {
 
 @RxBloc()
 class ReminderListBloc extends $ReminderListBloc {
+  ReminderListBloc(this._service);
+
+  final RemindersService _service;
+
   @override
   Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
       .startWith(null)
