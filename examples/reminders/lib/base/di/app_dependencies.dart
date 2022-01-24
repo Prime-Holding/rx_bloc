@@ -5,8 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
-import 'package:dio/dio.dart'; 
+import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +14,9 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:reminders/base/data_sources/local/reminders_local_data_source.dart';
+import 'package:reminders/base/repositories/reminders_repository.dart';
+import 'package:reminders/base/services/reminders_service.dart';
 
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
@@ -54,13 +56,15 @@ class AppDependencies {
         ..._dataStorages,
         ..._dataSources,
         ..._repositories,
+        ..._services,
         ..._useCases,
         ..._blocs,
         ..._interceptors,
       ];
 
   List<Provider> get _analytics => [
-        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics.instance),
+        Provider<FirebaseAnalytics>(
+            create: (context) => FirebaseAnalytics.instance),
         Provider<FirebaseAnalyticsObserver>(
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
@@ -97,6 +101,9 @@ class AppDependencies {
           create: (context) => PushNotificationsDataSource(context.read(),
               baseUrl: config.baseApiUrl),
         ),
+        Provider<RemindersLocalDataSource>(
+          create: (context) => RemindersLocalDataSource(),
+        ),
       ];
 
   List<Provider> get _repositories => [
@@ -109,6 +116,11 @@ class AppDependencies {
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
             context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<RemindersRepository>(
+          create: (context) => RemindersRepository(
             context.read(),
           ),
         ),
@@ -128,6 +140,13 @@ class AppDependencies {
         Provider<FetchAccessTokenUseCase>(
           create: (context) => FetchAccessTokenUseCase(context.read()),
         ),
+      ];
+
+  List<Provider> get _services => [
+        Provider<RemindersService>(
+            create: (context) => RemindersService(
+                  context.read(),
+                )),
       ];
 
   List<SingleChildWidget> get _blocs => [
