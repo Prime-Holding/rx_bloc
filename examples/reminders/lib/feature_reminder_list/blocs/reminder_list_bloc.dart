@@ -1,6 +1,7 @@
-import 'package:reminders/base/services/reminders_service.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../base/services/reminders_service.dart';
 
 part 'reminder_list_bloc.rxb.g.dart';
 part 'reminder_list_bloc_extensions.dart';

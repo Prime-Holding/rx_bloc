@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
-import 'package:reminders/feature_dashboard/models/dashboard_model.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
-import '../../base/models/reminder_model.dart';
 import '../blocs/dashboard_bloc.dart';
 import '../di/dashboard_dependencies.dart';
+import '../models/dashboard_model.dart';
 
 class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   const DashboardPage({

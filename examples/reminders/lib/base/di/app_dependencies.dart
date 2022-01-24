@@ -15,6 +15,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
@@ -152,6 +153,9 @@ class AppDependencies {
   List<SingleChildWidget> get _blocs => [
         RxBlocProvider<CoordinatorBlocType>(
           create: (context) => CoordinatorBloc(),
+        ),
+        RxBlocProvider<ReminderManageBlocType>(
+          create: (context) => ReminderManageBloc(context.read()),
         ),
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(

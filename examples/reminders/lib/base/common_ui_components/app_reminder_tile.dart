@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
 import '../models/reminder_model.dart';
 import 'app_divider.dart';
@@ -26,6 +28,8 @@ class AppReminderTile extends StatefulWidget {
 
 class _AppReminderTileState extends State<AppReminderTile> {
   late final TextEditingController _textEditingController;
+  late final FocusNode _titleFocusNode = FocusNode();
+
   late final String dueDate = _formatter.format(widget.reminder.dueDate);
 
   final _formatter = DateFormat.yMd();
@@ -34,8 +38,19 @@ class _AppReminderTileState extends State<AppReminderTile> {
   void initState() {
     _textEditingController = TextEditingController(text: widget.reminder.title);
 
-    _textEditingController.addListener(
-      () => widget.onTitleChanged?.call(_textEditingController.text),
+    _titleFocusNode.addListener(
+      () {
+        if (!_titleFocusNode.hasFocus) {
+          context
+              .read<ReminderManageBlocType>()
+              .events
+              .update(widget.reminder.copyWith(
+                title: _textEditingController.text,
+              ));
+
+          widget.onTitleChanged?.call(_textEditingController.text);
+        }
+      },
     );
 
     super.initState();
@@ -44,6 +59,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _titleFocusNode.dispose();
     super.dispose();
   }
 
@@ -57,6 +73,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
               children: [
                 Expanded(
                   child: TextField(
+                    focusNode: _titleFocusNode,
                     textInputAction: TextInputAction.done,
                     controller: _textEditingController,
                     minLines: 1,
@@ -90,6 +107,13 @@ class _AppReminderTileState extends State<AppReminderTile> {
     );
 
     if (date != null) {
+      context
+          .read<ReminderManageBlocType>()
+          .events
+          .update(widget.reminder.copyWith(
+            dueDate: date,
+          ));
+
       widget.onDueDateChanged?.call(date);
     }
   }
