@@ -1,7 +1,6 @@
-import 'package:reminders/base/models/reminder_model.dart';
-import 'package:reminders/feature_dashboard/models/dashboard_model.dart';
-
+import '../../base/models/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
+import '../models/dashboard_model.dart';
 
 class DashboardService {
   DashboardService(this._remindersService);
@@ -15,10 +14,10 @@ class DashboardService {
       _remindersService.getAll(
         ReminderModelRequest(
           page: 1,
-          pageSize: 10,
+          pageSize: 5,
           filterByDueDateRange: DueDateRange(
             to: DateTime.now(),
-            from: DateTime.now().subtract(Duration(days: 10)),
+            from: DateTime.now().subtract(const Duration(days: 10)),
           ),
         ),
       )

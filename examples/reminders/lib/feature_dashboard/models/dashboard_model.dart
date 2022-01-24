@@ -13,12 +13,12 @@ class DashboardModel {
 
   DashboardModel copyWith({
     List<ReminderModel>? reminderList,
-    int? allReminderCount,
-    int? completeReminderCount,
+    int? incompleteCount,
+    int? completeCount,
   }) =>
       DashboardModel(
         reminderList: reminderList ?? this.reminderList,
-        incompleteCount: allReminderCount ?? this.incompleteCount,
-        completeCount: completeReminderCount ?? this.completeCount,
+        incompleteCount: incompleteCount ?? this.incompleteCount,
+        completeCount: completeCount ?? this.completeCount,
       );
 }
