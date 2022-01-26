@@ -22,8 +22,8 @@ abstract class $ReminderListBloc extends RxBlocBase
         ReminderListBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [fetchData]
-  final _$fetchDataEvent = PublishSubject<void>();
+  /// Тhe [Subject] where events sink to by calling [loadPage]
+  final _$loadPageEvent = PublishSubject<bool>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -31,11 +31,12 @@ abstract class $ReminderListBloc extends RxBlocBase
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [data] implemented in [_mapToDataState]
-  late final Stream<Result<String>> _dataState = _mapToDataState();
+  /// The state of [paginatedList] implemented in [_mapToPaginatedListState]
+  late final Stream<PaginatedList<ReminderModel>> _paginatedListState =
+      _mapToPaginatedListState();
 
   @override
-  void fetchData() => _$fetchDataEvent.add(null);
+  void loadPage({bool reset = false}) => _$loadPageEvent.add(reset);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -44,13 +45,13 @@ abstract class $ReminderListBloc extends RxBlocBase
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<Result<String>> get data => _dataState;
+  Stream<PaginatedList<ReminderModel>> get paginatedList => _paginatedListState;
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<Result<String>> _mapToDataState();
+  Stream<PaginatedList<ReminderModel>> _mapToPaginatedListState();
 
   @override
   ReminderListBlocEvents get events => this;
@@ -60,7 +61,7 @@ abstract class $ReminderListBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$fetchDataEvent.close();
+    _$loadPageEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

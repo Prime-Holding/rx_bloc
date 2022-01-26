@@ -37,7 +37,10 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: context.read<ReminderListBlocType>().events.fetchData,
+            onPressed: () => context
+                .read<ReminderListBlocType>()
+                .events
+                .loadPage(reset: true),
           ),
         ],
       );

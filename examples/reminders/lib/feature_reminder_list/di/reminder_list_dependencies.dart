@@ -27,6 +27,7 @@ class ReminderListDependencies {
     RxBlocProvider<ReminderListBlocType>(
       create: (context) => ReminderListBloc(
         context.read(),
+        context.read(),
       ),
     ),
   ];

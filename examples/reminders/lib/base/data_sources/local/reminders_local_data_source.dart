@@ -1,4 +1,5 @@
 import '../../models/reminder_model.dart';
+import '../../models/response_model/reminder_list_reponse.dart';
 
 class RemindersLocalDataSource {
   RemindersLocalDataSource({List<ReminderModel>? seed})
@@ -20,11 +21,14 @@ class RemindersLocalDataSource {
     return _data.where((element) => !element.complete).length;
   }
 
-  Future<List<ReminderModel>> getAll(ReminderModelRequest? request) async {
+  Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
     if (request == null) {
-      return _data;
+      return ReminderListResponse(
+        totalCount: _data.length,
+        items: _data,
+      );
     }
 
     var data = [..._data];
@@ -34,7 +38,10 @@ class RemindersLocalDataSource {
     data = data.whereInRange(request.filterByDueDateRange);
     data = data.whereInPage(request.page, request.pageSize);
 
-    return data;
+    return ReminderListResponse(
+      totalCount: _data.length,
+      items: data,
+    );
   }
 
   Future<ReminderModel> create({

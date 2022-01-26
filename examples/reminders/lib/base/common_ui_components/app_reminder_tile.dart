@@ -35,6 +35,15 @@ class _AppReminderTileState extends State<AppReminderTile> {
   final _formatter = DateFormat.yMd();
 
   @override
+  void didUpdateWidget(covariant AppReminderTile oldWidget) {
+    if (widget.reminder.title != oldWidget.reminder.title) {
+      _textEditingController.text = widget.reminder.title;
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void initState() {
     _textEditingController = TextEditingController(text: widget.reminder.title);
 

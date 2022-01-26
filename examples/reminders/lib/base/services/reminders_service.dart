@@ -1,3 +1,5 @@
+import 'package:rx_bloc_list/models.dart';
+
 import '../models/reminder_model.dart';
 import '../repositories/reminders_repository.dart';
 
@@ -6,7 +8,7 @@ class RemindersService {
 
   final RemindersRepository _repository;
 
-  Future<List<ReminderModel>> getAll(ReminderModelRequest? request) =>
+  Future<PaginatedList<ReminderModel>> getAll(ReminderModelRequest? request) =>
       _repository.getAll(request);
 
   Future<ReminderModel> create({

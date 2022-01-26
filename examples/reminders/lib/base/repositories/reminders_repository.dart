@@ -1,3 +1,5 @@
+import 'package:rx_bloc_list/models.dart';
+
 import '../data_sources/local/reminders_local_data_source.dart';
 import '../models/reminder_model.dart';
 
@@ -6,8 +8,17 @@ class RemindersRepository {
 
   final RemindersLocalDataSource _dataSource;
 
-  Future<List<ReminderModel>> getAll(ReminderModelRequest? request) =>
-      _dataSource.getAll(request);
+  Future<PaginatedList<ReminderModel>> getAll(
+    ReminderModelRequest? request,
+  ) async {
+    final response = await _dataSource.getAll(request);
+
+    return PaginatedList(
+      list: response.items,
+      totalCount: response.totalCount,
+      pageSize: request?.pageSize ?? response.totalCount,
+    );
+  }
 
   Future<ReminderModel> create({
     required String title,
