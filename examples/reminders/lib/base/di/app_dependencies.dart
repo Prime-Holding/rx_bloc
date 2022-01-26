@@ -155,7 +155,10 @@ class AppDependencies {
           create: (context) => CoordinatorBloc(),
         ),
         RxBlocProvider<ReminderManageBlocType>(
-          create: (context) => ReminderManageBloc(context.read()),
+          create: (context) => ReminderManageBloc(
+            context.read(),
+            context.read(),
+          ),
         ),
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(

@@ -1,3 +1,5 @@
+import 'package:rx_bloc_list/models.dart';
+
 enum ReminderModelRequestSort {
   dueDateDesc,
   dueDateAsc,
@@ -27,7 +29,7 @@ class ReminderModelRequest {
   final int pageSize;
 }
 
-class ReminderModel {
+class ReminderModel implements Identifiable {
   ReminderModel({
     required this.id,
     required this.title,
@@ -35,6 +37,7 @@ class ReminderModel {
     required this.complete,
   });
 
+  @override
   final String id;
   final String title;
   final DateTime dueDate;

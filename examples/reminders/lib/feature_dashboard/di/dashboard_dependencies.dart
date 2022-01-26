@@ -30,7 +30,10 @@ class DashboardDependencies {
 
   late final List<RxBlocProvider> _blocs = [
     RxBlocProvider<DashboardBlocType>(
-      create: (context) => DashboardBloc(context.read()),
+      create: (context) => DashboardBloc(
+        context.read(),
+        context.read(),
+      ),
     ),
   ];
 }

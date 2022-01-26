@@ -33,4 +33,14 @@ class DashboardService {
       completeCount: completeCount,
     );
   }
+
+  ///TODO: Implement addToListOnCreate
+  Future<bool> addToListOnCreate(ReminderModel model) async {
+    return true;
+  }
+
+  ///TODO: Implement removeFromListOnUpdate
+  Future<bool> removeFromListOnUpdate(ReminderModel model) async {
+    return false;
+  }
 }

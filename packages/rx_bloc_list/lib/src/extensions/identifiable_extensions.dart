@@ -52,7 +52,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
     final index = indexWhere((element) => element.id == entity.id);
 
     if (index >= 0 && index < length) {
-      replaceRange(index, index + 1, [entity]);
+      this[index] = entity;
       return this;
     }
 
@@ -65,7 +65,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
 }
 
 extension ModelManageEvents<E extends Identifiable> on Stream<E> {
-  Stream<List<E>> mapModelCreateEvents(
+  Stream<List<E>> mapCreatedWithLatestFrom(
     Stream<List<E>> list, {
     required Future<bool> Function(E identifiable) addToListCondition,
   }) =>
@@ -78,7 +78,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
         yield tuple.list;
       });
 
-  Stream<List<E>> mapModelUpdateEvents(
+  Stream<List<E>> mapUpdatedWithLatestFrom(
     Stream<List<E>> list, {
     required Future<bool> Function(E identifiable) removeFromListCondition,
   }) =>
@@ -95,7 +95,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
         },
       );
 
-  Stream<List<E>> mapModelDeleteEvents(
+  Stream<List<E>> mapDeletedWithLatestFrom(
     Stream<List<E>> list,
   ) =>
       _withLatestFromList(list).flatMap((tuple) async* {

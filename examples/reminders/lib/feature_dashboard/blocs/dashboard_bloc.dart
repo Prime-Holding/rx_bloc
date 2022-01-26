@@ -1,6 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/common_blocs/coordinator_bloc.dart';
 import '../models/dashboard_model.dart';
 import '../services/dashboard_service.dart';
 
@@ -27,20 +28,45 @@ abstract class DashboardBlocStates {
 
 @RxBloc()
 class DashboardBloc extends $DashboardBloc {
-  DashboardBloc(this._service);
+  DashboardBloc(this._service, CoordinatorBlocType coordinatorBloc) {
+    _$fetchDataEvent
+        .startWith(null)
+        .switchMap((value) => _service.getDashboardModel().asResultStream())
+        .setResultStateHandler(this)
+        .bind(_dashboardModelResult)
+        .addTo(_compositeSubscription);
+
+    coordinatorBloc
+        .mapReminderManageEventsWithLatestFrom(
+          _dashboardModelResult
+              .whereSuccess()
+              .map((model) => model.reminderList),
+          addToListOnCreate: _service.addToListOnCreate,
+          removeFromListOnUpdate: _service.removeFromListOnUpdate,
+        )
+        .map((reminderList) => _dashboardModelResult.value
+            .mapResult((model) => model.copyWith(reminderList: reminderList)))
+        .bind(_dashboardModelResult)
+        .addTo(_compositeSubscription);
+  }
 
   final DashboardService _service;
 
   @override
-  Stream<Result<DashboardModel>> _mapToDataState() => _$fetchDataEvent
-      .startWith(null)
-      .switchMap((value) => _service.getDashboardModel().asResultStream())
-      .setResultStateHandler(this)
-      .shareReplay(maxSize: 1);
+  Stream<Result<DashboardModel>> _mapToDataState() => _dashboardModelResult;
+
+  final _dashboardModelResult =
+      BehaviorSubject<Result<DashboardModel>>.seeded(Result.loading());
 
   @override
   Stream<String> _mapToErrorsState() => errorState.toMessage();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
+
+  @override
+  void dispose() {
+    _dashboardModelResult.close();
+    super.dispose();
+  }
 }

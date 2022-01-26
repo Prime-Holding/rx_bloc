@@ -1,6 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/models/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 
@@ -32,13 +33,14 @@ abstract class ReminderManageBlocStates {
 
 @RxBloc()
 class ReminderManageBloc extends $ReminderManageBloc {
-  ReminderManageBloc(this._service) {
+  ReminderManageBloc(this._service, this._coordinatorBloc) {
     onDeleted.connect().disposedBy(_compositeSubscription);
     onCreated.connect().disposedBy(_compositeSubscription);
     onUpdated.connect().disposedBy(_compositeSubscription);
   }
 
   final RemindersService _service;
+  final CoordinatorBlocType _coordinatorBloc;
 
   /// TODO: Implement error event-to-state logic
   @override
@@ -59,6 +61,7 @@ class ReminderManageBloc extends $ReminderManageBloc {
               )
               .asResultStream())
           .setResultStateHandler(this)
+          .doOnData(_coordinatorBloc.events.reminderCreated)
           .publish();
 
   @override
@@ -70,6 +73,7 @@ class ReminderManageBloc extends $ReminderManageBloc {
               .mapTo(reminder)
               .asResultStream())
           .setResultStateHandler(this)
+          .doOnData(_coordinatorBloc.events.reminderDeleted)
           .publish();
 
   @override
@@ -77,5 +81,6 @@ class ReminderManageBloc extends $ReminderManageBloc {
       _$updateEvent
           .switchMap((reminder) => _service.update(reminder).asResultStream())
           .setResultStateHandler(this)
+          .doOnData(_coordinatorBloc.events.reminderUpdated)
           .publish();
 }

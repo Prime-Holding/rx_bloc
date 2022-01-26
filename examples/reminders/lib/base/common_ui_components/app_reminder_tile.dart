@@ -30,7 +30,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
   late final TextEditingController _textEditingController;
   late final FocusNode _titleFocusNode = FocusNode();
 
-  late final String dueDate = _formatter.format(widget.reminder.dueDate);
+  String get dueDate => _formatter.format(widget.reminder.dueDate);
 
   final _formatter = DateFormat.yMd();
 

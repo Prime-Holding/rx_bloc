@@ -22,9 +22,30 @@ abstract class $CoordinatorBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [authenticated]
   final _$authenticatedEvent = PublishSubject<bool>();
 
+  /// Тhe [Subject] where events sink to by calling [reminderDeleted]
+  final _$reminderDeletedEvent = PublishSubject<Result<ReminderModel>>();
+
+  /// Тhe [Subject] where events sink to by calling [reminderCreated]
+  final _$reminderCreatedEvent = PublishSubject<Result<ReminderModel>>();
+
+  /// Тhe [Subject] where events sink to by calling [reminderUpdated]
+  final _$reminderUpdatedEvent = PublishSubject<Result<ReminderModel>>();
+
   @override
   void authenticated({required bool isAuthenticated}) =>
       _$authenticatedEvent.add(isAuthenticated);
+
+  @override
+  void reminderDeleted(Result<ReminderModel> reminderResult) =>
+      _$reminderDeletedEvent.add(reminderResult);
+
+  @override
+  void reminderCreated(Result<ReminderModel> reminderResult) =>
+      _$reminderCreatedEvent.add(reminderResult);
+
+  @override
+  void reminderUpdated(Result<ReminderModel> reminderResult) =>
+      _$reminderUpdatedEvent.add(reminderResult);
 
   @override
   CoordinatorEvents get events => this;
@@ -35,6 +56,9 @@ abstract class $CoordinatorBloc extends RxBlocBase
   @override
   void dispose() {
     _$authenticatedEvent.close();
+    _$reminderDeletedEvent.close();
+    _$reminderCreatedEvent.close();
+    _$reminderUpdatedEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
