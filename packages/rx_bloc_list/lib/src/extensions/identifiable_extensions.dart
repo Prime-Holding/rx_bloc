@@ -6,7 +6,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
   /// Get a list of unique [Identifiable.id]
   List<String> get ids => map((element) => element.id).toSet().toList();
 
-  bool containIdentifiable(Identifiable identifiable) {
+  bool containsIdentifiable(Identifiable identifiable) {
     try {
       firstWhere((element) => element.id == identifiable.id);
 
@@ -126,7 +126,7 @@ extension _ListX<E extends Identifiable> on List<E> {
   List<E> complexRemoveFromList(E identifiable) {
     final that = this;
 
-    if (that is PaginatedList<E> && that.containIdentifiable(identifiable)) {
+    if (that is PaginatedList<E> && that.containsIdentifiable(identifiable)) {
       final totalCount = that.totalCount;
 
       return that.copyWith(
