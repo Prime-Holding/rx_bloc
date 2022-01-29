@@ -1,5 +1,4 @@
 @Tags(['not-tests'])
-
 import 'package:rx_bloc/rx_bloc.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
@@ -143,6 +142,9 @@ abstract class $CounterBloc extends RxBlocBase
       BehaviorSubject<_WithSeeded2PositionalEnumEventArgs>.seeded(
           const _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed));
 
+  /// Тhe [Subject] where events sink to by calling [withAnnotationNoSeed]
+  final _$withAnnotationNoSeedEvent = BehaviorSubject<int>();
+
   /// The state of [isNotIgnored] implemented in [_mapToIsNotIgnoredState]
   late final Stream<bool> _isNotIgnoredState = _mapToIsNotIgnoredState();
 
@@ -278,6 +280,9 @@ abstract class $CounterBloc extends RxBlocBase
           .add(_WithSeeded2PositionalEnumEventArgs(pp1, pp2));
 
   @override
+  void withAnnotationNoSeed(int pp) => _$withAnnotationNoSeedEvent.add(pp);
+
+  @override
   Stream<bool> get isNotIgnored => _isNotIgnoredState;
 
   Stream<bool> _mapToIsNotIgnoredState();
@@ -320,6 +325,7 @@ abstract class $CounterBloc extends RxBlocBase
     _$withSeededTwoPositionalOptionalEvent.close();
     _$withSeededPositionalEnumEvent.close();
     _$withSeeded2PositionalEnumEvent.close();
+    _$withAnnotationNoSeedEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
@@ -610,6 +616,9 @@ abstract class CounterBlocEvents {
     seed: _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed),
   )
   void withSeeded2PositionalEnum(int pp1, TestEnumParam pp2);
+
+  @RxBlocEvent(type: RxBlocEventType.behaviour)
+  void withAnnotationNoSeed(int pp);
 }
 
 /// A contract class containing all states for our multi state BloC.
