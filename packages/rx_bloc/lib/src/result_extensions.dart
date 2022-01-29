@@ -4,6 +4,12 @@ import '../src/model/result.dart';
 
 extension ResultMapStreamX<E> on Stream<E> {
   /// Map the value of the stream to ResultSuccess<E>
+  ///
+  /// Example:
+  /// ```
+  /// ResultSuccess<int> result = Stream.value(10).mapToResult();
+  /// ResultSuccess<int> result = Stream.value(10).mapToResult((mapper) => (value) => value * 10);
+  /// ```
   Stream<Result<E>> mapToResult({E Function(E)? mapper}) => map((data) {
         if (mapper != null) {
           return Result<E>.success(mapper(data));
@@ -17,6 +23,14 @@ extension ResultMapStreamX<E> on Stream<E> {
   ///
   /// Use [mapSuccess] to map the current stream with the
   /// given [stream] to a new [Result] stream.
+  ///
+  /// Example:
+  /// ```
+  /// Result<String> result = Stream.value(0).mapResultWithLatestFrom<String>(
+  ///     Stream.value(Result.success('1')),
+  ///     (value, resultValue) => '$value, $resultValue', //0, 1
+  /// );
+  /// ```
   Stream<Result<R>> mapResultWithLatestFrom<R>(
     Stream<Result<R>> stream,
     R Function(E, R) mapSuccess,
@@ -34,6 +48,12 @@ extension ResultMapStream<E> on Stream<Result<E>> {
   ///
   /// Use the [mapSuccess] to map the success from the current stream to the
   /// result stream.
+  /// Example:
+  /// ```
+  /// Result<String> result = Stream.value(Result.success(10))
+  ///   .mapResult((value) => value * 10)
+  ///   .mapResult((value) => value.toString()); // Result.success('100')
+  /// ```
   Stream<Result<T>> mapResult<T>(T Function(E) mapSuccess) => map(
         (result) => result.mapResult(mapSuccess),
       );
@@ -43,6 +63,13 @@ extension ResultMapStream<E> on Stream<Result<E>> {
   ///
   /// Use the [mapSuccess] callback to map the success from the current stream
   /// to the result stream in async manner.
+  ///
+  /// Example:
+  /// ```
+  /// Result<String> result = Stream.value(Result.success(10))
+  ///   .asyncMapResult((value) async => value * 10)
+  ///   .asyncMapResult((value) async => value.toString()); // Result.success('100')
+  /// ```
   Stream<Result<T>> asyncMapResult<T>(Future<T> Function(E) mapSuccess) =>
       asyncMap(
         (result) => result.asyncMapResult(mapSuccess),
