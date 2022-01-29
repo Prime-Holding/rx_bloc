@@ -4,4 +4,4 @@
 FLUTTER_TARGET=lib/main_staging.dart
 ENVIRONMENT_PLIST = environments/staging/staging.plist
 APP_DISPLAY_NAME = {{#titleCase}}{{project_name}}{{/titleCase}} STAG
-bundle_suffix=stag
+bundle_suffix=.stag

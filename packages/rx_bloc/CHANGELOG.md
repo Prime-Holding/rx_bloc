@@ -1,3 +1,12 @@
+## [3.2.1] - December 16, 2021
+* Added a [presentation](https://youtu.be/nVX4AzeuVu8) to the README file
+* Fixed memory leak caused by a not closed subscription in the LoadingBloc
+* Upgraded to rxdart ^0.27.3
+
+## [3.2.0] - September 24, 2021
+* Support Flutter `2.5`
+* Update `rxdart` to use version `0.27.2`
+
 ## [3.1.2] - September 22, 2021
 * Allow the bind extension to be used with both Publish and Behaviour subjects
 

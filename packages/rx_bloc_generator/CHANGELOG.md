@@ -1,3 +1,10 @@
+## [5.1.1] - December 24, 2021
+* Update dependencies 
+
+## [5.1.0] - September 24, 2021
+* Support Flutter `2.5`
+* Update `rxdart` to use version `0.27.2`
+
 ## [5.0.1] - September 22, 2021
 * Allow generating behaviour subject events without a seed
 

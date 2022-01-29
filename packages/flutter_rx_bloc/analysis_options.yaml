@@ -3,6 +3,8 @@ analyzer:
     implicit-casts: false
   errors:
     close_sinks: ignore
+  exclude:
+    - lib/src/bloc/loading_bloc.rxb.g.dart
 
 linter:
   rules:
@@ -22,6 +24,7 @@ linter:
     - camel_case_types
     - cancel_subscriptions
     - cascade_invocations
+    - comment_references
     - constant_identifier_names
     - control_flow_in_finally
     - directives_ordering

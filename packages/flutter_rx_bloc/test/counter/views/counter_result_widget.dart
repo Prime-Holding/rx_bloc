@@ -24,7 +24,7 @@ class CounterResultWidget extends StatelessWidget {
           key: const Key(countKey),
         ),
         buildError: (ctx, error, bloc) => Text(
-          error,
+          error.toString(),
           key: const Key(errorKey),
         ),
         buildLoading: (ctx, bloc) => Container(

@@ -5,8 +5,9 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart' as _i2;
 import 'package:rx_bloc/src/model/loading_with_tag.dart' as _i4;
+import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart'
+    as _i2;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references

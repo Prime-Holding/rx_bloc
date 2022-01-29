@@ -1,9 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/auth_data_source.dart';
@@ -44,9 +39,10 @@ class AuthRepository {
 
 // Fetch new access token
   Future<String?> fetchNewToken() async {
+    // ignore: unused_local_variable
     final refreshToken = await getRefreshToken();
     try {
-      // TODO try to fetch new access token using refreshToken and save it
+      // TODO: Try to fetch new access token using refreshToken and save it
       // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
     } catch (e) {
       print(e.toString());

@@ -1,13 +1,7 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:dio/dio.dart'; {{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart'; {{/analytics}}
+import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -60,7 +54,7 @@ class AppDependencies {
       ];
 
   List<Provider> get _analytics => [
-        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
+        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics.instance),
         Provider<FirebaseAnalyticsObserver>(
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),

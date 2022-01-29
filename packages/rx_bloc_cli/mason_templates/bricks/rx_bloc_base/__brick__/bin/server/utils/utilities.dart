@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'dart:math';
 
 import 'package:shelf/shelf.dart';

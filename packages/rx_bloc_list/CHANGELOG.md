@@ -1,3 +1,9 @@
+## [3.1.0] - September 24, 2021
+* Support Flutter `2.5`
+* Updated `rxdart` to use version `0.27.2`
+* Updated `flutter_rx_bloc` to use version `4.0.0`
+* Updated `rx_bloc` to use version `3.2.0`
+
 ## [3.0.2] - September 17, 2021
 * Call onBottomScrolled only if the [enableOnBottomScrolledCallback] is set to true and the fetched items are less than the total count.
 

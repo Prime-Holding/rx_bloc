@@ -8,7 +8,7 @@ Logger? get log => Zone.current[_logKey] as Logger?;
 
 /// Logs message as a `severe` error displayed in red color for easier noticing.
 void _logError(String str) {
-  final exceptionStr = 'Exception: ';
+  const exceptionStr = 'Exception: ';
   var msg = str;
   if (msg.contains(exceptionStr)) {
     msg = msg.substring(msg.indexOf(exceptionStr) + exceptionStr.length);

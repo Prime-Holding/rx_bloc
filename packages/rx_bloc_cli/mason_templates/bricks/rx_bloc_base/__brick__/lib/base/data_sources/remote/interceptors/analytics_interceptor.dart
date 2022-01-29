@@ -1,12 +1,6 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:dio/dio.dart';{{#analytics}}
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 
 /// Interceptors are a simple way to intercept and modify http requests globally
@@ -23,18 +17,6 @@ class AnalyticsInterceptor extends Interceptor {
   AnalyticsInterceptor( {{#analytics}}this.observer{{/analytics}} );
   {{#analytics}}
   final FirebaseAnalyticsObserver observer;{{/analytics}}
-
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // TODO: implement onRequest
-    super.onRequest(options, handler);
-  }
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
-    super.onResponse(response, handler);
-  }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) { {{#analytics}}

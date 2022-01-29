@@ -17,7 +17,7 @@ dependencies:
 dev_dependencies:
   rx_bloc_generator:
   build_runner:
-  rx_bloc_test: ^0.0.3
+  rx_bloc_test: ^3.2.0
   flutter_test:
     sdk: flutter
   clean_coverage: ^0.0.3

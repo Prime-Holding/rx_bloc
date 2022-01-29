@@ -1,9 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -95,11 +90,9 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                         await showAdaptiveDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            content: Container(
-                              child: Text(
-                                context.l10n.notificationsPermissionsDenied,
-                                textAlign: TextAlign.center,
-                              ),
+                            content: Text(
+                              context.l10n.notificationsPermissionsDenied,
+                              textAlign: TextAlign.center,
                             ),
                             actions: <Widget>[
                               Center(
@@ -133,7 +126,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
     Function()? onPressed,
   ]) =>
       Center(
-        child: Container(
+        child: SizedBox(
           height: 60,
           width: MediaQuery.of(context).size.width,
           child: Padding(

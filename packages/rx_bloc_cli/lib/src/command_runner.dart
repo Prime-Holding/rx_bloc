@@ -7,7 +7,9 @@ import 'commands/create_command.dart';
 import 'package_version.dart';
 import 'rx_bloc_command_exception.dart';
 
+/// Command runner that executes RxBloc specific actions
 class RxBlocCommandRunner extends CommandRunner<int> {
+  /// RxBloc Command Runner containing all currently supported commands
   RxBlocCommandRunner({Logger? logger})
       : _logger = logger ?? Logger(),
         super('rx_bloc_cli', 'Rx Bloc Command Line Interface') {

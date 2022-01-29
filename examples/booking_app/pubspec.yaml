@@ -17,51 +17,36 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  flutter:
-    sdk: flutter
-  rxdart: ^0.27.0
-  rx_bloc:
-  rx_bloc_list:
-  flutter_rx_bloc:
-  provider: ^5.0.0
-  favorites_advanced_base:
-  curved_navigation_bar: ^0.4.0-nullsafety.0
-  badges: ^1.1.4
   animated_stream_list:
   appbar_textfield: ^1.0.1+1
-  image_picker: ^0.7.0
-  rflutter_alert: ^2.0.2
-  intl: ^0.17.0
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
+  badges: ^1.1.4
   collection: ^1.15.0-nullsafety.4
+  cupertino_icons: ^1.0.0
+  curved_navigation_bar: ^0.4.0-nullsafety.0
   equatable: ^2.0.0
+  favorites_advanced_base:
+  flutter:
+    sdk: flutter
+  flutter_rx_bloc:
+  image_picker: ^0.7.0
+  intl: ^0.17.0
+  provider: ^6.0.0
+  rflutter_alert: ^2.0.2
+  rx_bloc:
+  rx_bloc_list:
+  rxdart: ^0.27.0
 
 dev_dependencies:
-#  flutter_test:
-#    sdk: flutter
-#  test: 1.15.2
   build_runner: ^2.0.0
-  rx_bloc_generator:
-  rx_bloc_test: ^0.0.5
+  clean_coverage: ^0.0.3
+  flutter_lints: any
   mockito: ^5.0.0
   quiver: ^3.0.0
-  clean_coverage: ^0.0.3
+  rx_bloc_generator:
+  rx_bloc_test: ^3.2.0
+
 
 dependency_overrides:
-  rx_bloc_list:
-    path: ../../packages/rx_bloc_list
-  rx_bloc:
-    path: ../../packages/rx_bloc
-  flutter_rx_bloc:
-    path: ../../packages/flutter_rx_bloc
-  rx_bloc_generator:
-    path: ../../packages/rx_bloc_generator
-  rx_bloc_test:
-    path: ../../packages/rx_bloc_test
-  favorites_advanced_base:
-    path: ../favorites_advanced/favorites_advanced_base
   animated_stream_list:
     git:
       url: https://github.com/nilsreichardt/animated-stream-list.git
@@ -74,6 +59,19 @@ dependency_overrides:
     git:
       url: https://github.com/miDeb/flutter_badges.git
       ref: nnbd
+  favorites_advanced_base:
+    path: ../favorites_advanced/favorites_advanced_base
+  flutter_rx_bloc:
+    path: ../../packages/flutter_rx_bloc
+  rx_bloc:
+    path: ../../packages/rx_bloc
+  rx_bloc_generator:
+    path: ../../packages/rx_bloc_generator
+  rx_bloc_list:
+    path: ../../packages/rx_bloc_list
+  rx_bloc_test:
+    path: ../../packages/rx_bloc_test
+
   skeleton_text:
     git:
       url: https://github.com/StanevPrime/Skeleton-Text.git

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 export 'package:auto_route/auto_route.dart';
 
 export 'base/routers/router.gr.dart';

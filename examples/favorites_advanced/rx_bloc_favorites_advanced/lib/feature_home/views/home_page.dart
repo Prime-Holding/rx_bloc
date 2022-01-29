@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: PuppiesAppBar(),
+        appBar: const PuppiesAppBar(),
         body: RxBlocListener<PuppyManageBlocType, String>(
           state: (bloc) => bloc.states.error,
           listener: (ctx, state) => ScaffoldMessenger.of(ctx)
@@ -82,9 +82,9 @@ class HomePage extends StatelessWidget {
 
     switch (type.data!.type) {
       case NavigationItemType.search:
-        return SearchPage();
+        return const SearchPage();
       case NavigationItemType.favorites:
-        return FavoritesPage();
+        return const FavoritesPage();
     }
   }
 }

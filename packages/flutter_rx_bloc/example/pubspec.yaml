@@ -23,20 +23,22 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  rxdart: ^0.27.0
-  rx_bloc:
   flutter_rx_bloc:
+  rx_bloc:
+  rxdart: ^0.27.2
+
 
 dev_dependencies:
+  flutter_lints: ^1.0.4
   flutter_test:
     sdk: flutter
   rx_bloc_generator:
 
 dependency_overrides:
-  rx_bloc:
-    path: ../../rx_bloc
   flutter_rx_bloc:
     path: ../
+  rx_bloc:
+    path: ../../rx_bloc
   rx_bloc_generator:
     path: ../../rx_bloc_generator
 # For information on the generic Dart part of this file, see the

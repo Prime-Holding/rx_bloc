@@ -1,1 +1,2 @@
-const packageVersion = '0.0.5';
+/// Indicates the version of the package
+const packageVersion = '1.1.2';

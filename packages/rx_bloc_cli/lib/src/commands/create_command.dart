@@ -6,11 +6,16 @@ import 'package:io/ansi.dart';
 import 'package:io/io.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
-import 'package:rx_bloc_cli/src/templates/rx_bloc_base_bundle.dart';
-import 'package:rx_bloc_cli/src/utils/git_ignore_creator.dart';
+
+import '../templates/rx_bloc_base_bundle.dart';
+import '../utils/git_ignore_creator.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
+  /// Allows you to customize the creation of the project by providing
+  /// additional parameters to the cli command. It accesses the default template
+  /// if none is provided. You can however provide your own mason bundle to
+  /// generate the project from.
   CreateCommand({
     Logger? logger,
     MasonBundle? bundle,
@@ -54,8 +59,8 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _orgNameString = 'org';
   final _analyticsString = 'include-analytics';
-  final _pushNotificationString = 'push-notifications';
   final _httpClientString = 'http-client';
+  //final _pushNotificationString = 'push-notifications';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -133,15 +138,16 @@ class CreateCommand extends Command<int> {
   /// Gets the project name. If no project name was specified, the current
   /// directory path name is used instead.
   String get _projectName {
-    final projectName = _argResults[_projectNameString] ??
-        path.basename(path.normalize(_outputDirectory.absolute.path));
+    final projectName = (_argResults[_projectNameString] ??
+            path.basename(path.normalize(_outputDirectory.absolute.path)))
+        as String;
     _validateProjectName(projectName);
     return projectName;
   }
 
   /// Returns the organization name with domain in front of it
   String get _organizationName {
-    final orgName = _argResults[_orgNameString];
+    final orgName = (_argResults[_orgNameString] ?? '') as String;
     _validateOrganisationName(orgName);
     return orgName;
   }
@@ -163,6 +169,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Returns whether the project will have push notifications enabled
+  // ignore: prefer_expression_function_bodies
   bool get _enablePushNotifications {
     /*
     final pushNotificationsEnabled = _argResults[_pushNotificationString];
@@ -173,7 +180,7 @@ class CreateCommand extends Command<int> {
 
   /// Returns http client type
   HttpClientType get _httpClientType {
-    final clientType = _argResults[_httpClientString];
+    final clientType = (_argResults[_httpClientString] ?? '') as String;
     return HttpClientType.values
         .firstWhere((element) => element.toString().contains(clientType));
   }
@@ -255,14 +262,14 @@ class CreateCommand extends Command<int> {
   }
 
   /// Shows a delayed log with a success symbol in front of it
-  void _delayedLog(String text, {success = true, newline = false}) {
+  void _delayedLog(String text, {bool success = true, bool newline = false}) {
     final symbol = success ? lightGreen.wrap('✓') : red.wrap('x');
     _logger.delayed('$symbol ${white.wrap(text)}');
     if (newline) _logger.delayed('');
   }
 
   /// Prints a (delayed) log for whether the specified item is being used or not
-  void _usingLog(String item, bool enabled, {newline = false}) {
+  void _usingLog(String item, bool enabled, {bool newline = false}) {
     final usingStr = enabled ? 'Using' : 'Not using';
     _delayedLog('$usingStr $item', success: enabled, newline: newline);
   }
@@ -271,4 +278,8 @@ class CreateCommand extends Command<int> {
 
 }
 
-enum HttpClientType { dio }
+/// HTTP clients supported by rx_bloc_cli
+enum HttpClientType {
+  /// Dio HTTP client (https://pub.dev/packages/dio)
+  dio,
+}

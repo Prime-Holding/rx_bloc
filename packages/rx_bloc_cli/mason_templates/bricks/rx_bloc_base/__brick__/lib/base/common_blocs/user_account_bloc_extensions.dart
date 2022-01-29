@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 part of 'user_account_bloc.dart';
 
 extension _LogingOutExtensions on Stream<void> {

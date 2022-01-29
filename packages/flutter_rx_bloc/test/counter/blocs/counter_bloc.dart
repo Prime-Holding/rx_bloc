@@ -43,9 +43,9 @@ class CounterBloc extends $CounterBloc {
     }
 
     Rx.merge([
-      _$setCountEvent.map((event) => Result.success(1)),
-      _$setLoadingEvent.map((event) => Result.loading()),
-      _$setErrorEvent.map((event) => Result.error(event)),
+      _$setCountEvent.map((event) => Result<int>.success(1)),
+      _$setLoadingEvent.map((event) => Result<int>.loading()),
+      _$setErrorEvent.map((event) => Result<int>.error(event)),
     ])
         .setResultStateHandler(this)
         .doOnData(print)
