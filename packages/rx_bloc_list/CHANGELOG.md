@@ -1,4 +1,4 @@
-## [3.2.0] January 30, 2022
+## [3.2.0-dev.1] January 30, 2022
 - Added `Identifiable` interface for handling inter-feature communication
 - Added `List<T extends Identifiable>` extensions: `ids`, `containsIdentifiable`, `removeIdentifiable`, `mergeWith`
 - Added `Stream<T extends Identifiable>` extensions: `mapCreatedWithLatestFrom`, `mapUpdatedWithLatestFrom`, `mapDeletedWithLatestFrom`
