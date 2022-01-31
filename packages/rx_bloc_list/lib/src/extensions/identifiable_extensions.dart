@@ -2,6 +2,17 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../models.dart';
 
+enum ManageOperation {
+  /// Merge the given object to the list
+  merge,
+
+  /// Remove the given object from the list
+  remove,
+
+  /// Neither merge or remove the given object from the list
+  ignore,
+}
+
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
   /// Get a list of unique [Identifiable.id]
   List<String> get ids => map((element) => element.id).toSet().toList();
@@ -65,41 +76,48 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
 }
 
 extension ModelManageEvents<E extends Identifiable> on Stream<E> {
-  Stream<List<E>> mapCreatedWithLatestFrom(
+  /// Merge or remove the value of the stream from the latest [list] value.
+  ///
+  /// Examples:
+  /// 1. The stream value will be removed from the [list] value
+  /// ```
+  /// objectStream.identifiableWithLatestFrom(
+  ///     listStream,
+  ///     operationCallback: (identifiable) async => ManageOperation.remove,
+  /// )
+  /// ```
+  ///
+  /// 2. The stream value will be merged into the [list] value
+  /// ```
+  /// objectStream.identifiableWithLatestFrom(
+  ///     listStream,
+  ///     operationCallback: (identifiable) async => ManageOperation.merge,
+  /// )
+  /// ```
+  ///
+  /// 3. The stream value won't be neither merged or removed from the [list] value
+  /// ```
+  /// objectStream.identifiableWithLatestFrom(
+  ///     listStream,
+  ///     operationCallback: (identifiable) async => ManageOperation.ignore,
+  /// )
+  /// ```
+  Stream<List<E>> identifiableWithLatestFrom(
     Stream<List<E>> list, {
-    required Future<bool> Function(E identifiable) addToListCondition,
+    required Future<ManageOperation> Function(E identifiable) operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
-        if (await addToListCondition(tuple.item)) {
-          yield tuple.list.complexMergeWith([tuple.item]);
-          return;
+        switch (await operationCallback(tuple.item)) {
+          case ManageOperation.merge:
+            yield tuple.list._mergeWithList([tuple.item]);
+            break;
+          case ManageOperation.remove:
+            yield tuple.list._removeFromList(tuple.item);
+            break;
+          case ManageOperation.ignore:
+            yield tuple.list;
+            break;
         }
-
-        yield tuple.list;
-      });
-
-  Stream<List<E>> mapUpdatedWithLatestFrom(
-    Stream<List<E>> list, {
-    required Future<bool> Function(E identifiable) removeFromListCondition,
-  }) =>
-      _withLatestFromList(list).flatMap(
-        (tuple) async* {
-          final removeFromList = await removeFromListCondition(tuple.item);
-
-          if (removeFromList) {
-            yield tuple.list.complexRemoveFromList(tuple.item);
-            return;
-          }
-
-          yield tuple.list.complexMergeWith([tuple.item]);
-        },
-      );
-
-  Stream<List<E>> mapDeletedWithLatestFrom(
-    Stream<List<E>> list,
-  ) =>
-      _withLatestFromList(list).flatMap((tuple) async* {
-        yield tuple.list.complexRemoveFromList(tuple.item);
       });
 
   Stream<_Tuple<E>> _withLatestFromList(Stream<List<E>> list) =>
@@ -111,7 +129,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
 }
 
 extension _ListX<E extends Identifiable> on List<E> {
-  List<E> complexMergeWith(List<E> list) {
+  List<E> _mergeWithList(List<E> list) {
     if (this is PaginatedList<E>) {
       final paginatedList = (this as PaginatedList<E>);
 
@@ -123,7 +141,7 @@ extension _ListX<E extends Identifiable> on List<E> {
     return mergeWith(list);
   }
 
-  List<E> complexRemoveFromList(E identifiable) {
+  List<E> _removeFromList(E identifiable) {
     final that = this;
 
     if (that is PaginatedList<E> && that.containsIdentifiable(identifiable)) {
