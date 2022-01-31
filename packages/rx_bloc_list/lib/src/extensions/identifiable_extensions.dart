@@ -36,7 +36,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
     return list;
   }
 
-  /// Merge the current list with the given list of [T].
+  /// Return a new list with the given [list] merged into the current list.
   ///
   /// 1. In case that any of the provided [T] it not part of the current
   /// list, the returned result will include the entities from the provided [T]
@@ -79,6 +79,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
 
 extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// Merge or remove the value of the stream from the latest [list] value.
+  /// The result, based on the [operationCallback], will be emitted as a new value.
   ///
   /// Examples:
   /// 1. The stream value will be removed from the [list] value
