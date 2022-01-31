@@ -47,7 +47,7 @@ void main() {
           IdentifiableModel('1'),
           IdentifiableModel('2'),
           IdentifiableModel('3'),
-        ].removeIdentifiable(IdentifiableModel('2')),
+        ].removedIdentifiable(IdentifiableModel('2')),
         [
           IdentifiableModel('1'),
           IdentifiableModel('3'),
