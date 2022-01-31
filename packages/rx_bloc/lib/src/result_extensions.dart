@@ -8,9 +8,9 @@ extension ResultMapStreamX<E> on Stream<E> {
   /// Example:
   /// ```
   /// ResultSuccess<int> result = Stream.value(10).mapToResult();
-  /// ResultSuccess<int> result = Stream.value(10).mapToResult((mapper) => (value) => value * 10);
+  /// ResultSuccess<int> result = Stream.value(10).mapToResult((value) => value * 10);
   /// ```
-  Stream<Result<E>> mapToResult({E Function(E)? mapper}) => map((data) {
+  Stream<Result<E>> mapToResult([E Function(E)? mapper]) => map((data) {
         if (mapper != null) {
           return Result<E>.success(mapper(data));
         }
@@ -86,7 +86,7 @@ extension ResultMap<E> on Result<E> {
       return Result<T>.success(await mapSuccess(that.data));
     }
 
-    return _mapResultToErrorOrLoading();
+    return _mapResultToErrorOrLoading<T>();
   }
 
   /// Map the current [Result] to a new [Result],
@@ -98,7 +98,7 @@ extension ResultMap<E> on Result<E> {
       return Result<T>.success(mapSuccess(that.data));
     }
 
-    return _mapResultToErrorOrLoading();
+    return _mapResultToErrorOrLoading<T>();
   }
 
   Result<T> _mapResultToErrorOrLoading<T>() {
