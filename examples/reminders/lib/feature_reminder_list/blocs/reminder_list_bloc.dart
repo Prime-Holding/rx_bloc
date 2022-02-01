@@ -1,3 +1,4 @@
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
@@ -55,10 +56,16 @@ class ReminderListBloc extends $ReminderListBloc {
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          addToListOnCreate: (_) async => true,
-          removeFromListOnUpdate: (_) async => false,
+          operationCallback: (model) async => ManageOperation.merge,
         )
         .cast<PaginatedList<ReminderModel>>()
+        .map(
+          (list) => list.copyWith(
+            list: list.list.sorted(
+              (a, b) => a.dueDate.compareTo(b.dueDate),
+            ),
+          ),
+        )
         .bind(_paginatedList)
         .addTo(_compositeSubscription);
   }

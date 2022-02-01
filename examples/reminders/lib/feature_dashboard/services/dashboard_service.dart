@@ -1,6 +1,9 @@
+import 'package:rx_bloc_list/models.dart';
+
 import '../../base/models/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 import '../models/dashboard_model.dart';
+import 'package:collection/collection.dart';
 
 class DashboardService {
   DashboardService(this._remindersService);
@@ -15,10 +18,7 @@ class DashboardService {
         ReminderModelRequest(
           page: 1,
           pageSize: 5,
-          filterByDueDateRange: DueDateRange(
-            to: DateTime.now(),
-            from: DateTime.now().subtract(const Duration(days: 10)),
-          ),
+          filterByDueDateRange: _getDateRange(),
         ),
       )
     ]);
@@ -34,13 +34,22 @@ class DashboardService {
     );
   }
 
-  ///TODO: Implement addToListOnCreate
-  Future<bool> addToListOnCreate(ReminderModel model) async {
-    return true;
+  List<ReminderModel> sorted(List<ReminderModel> list) =>
+      list.sorted((a, b) => a.dueDate.compareTo(b.dueDate));
+
+  Future<ManageOperation> getManageOperation(ReminderModel model) async {
+    final dateRange = _getDateRange();
+
+    if (model.dueDate.isAfter(dateRange.from) &&
+        model.dueDate.isBefore(dateRange.to)) {
+      return ManageOperation.merge;
+    }
+
+    return ManageOperation.remove;
   }
 
-  ///TODO: Implement removeFromListOnUpdate
-  Future<bool> removeFromListOnUpdate(ReminderModel model) async {
-    return false;
-  }
+  DueDateRange _getDateRange() => DueDateRange(
+        to: DateTime.now(),
+        from: DateTime.now().subtract(const Duration(days: 10)),
+      );
 }

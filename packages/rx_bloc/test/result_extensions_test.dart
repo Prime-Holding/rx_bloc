@@ -12,7 +12,7 @@ void main() {
 
     test('mapToResult() with mapper callback', () async {
       await expectLater(
-        Stream.value(1).mapToResult(mapper: (data) => data * 10),
+        Stream.value(1).mapToResult((value) => value * 10),
         emitsInOrder([Result.success(10)]),
       );
     });

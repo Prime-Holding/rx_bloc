@@ -23,7 +23,6 @@ dev_dependencies:
   clean_coverage: ^0.0.3
   coverage: ^1.0.3
   flutter_lints: ^1.0.4
-  pedantic: ^1.11.1
   source_gen_test: any
   test: ^1.18.2
 

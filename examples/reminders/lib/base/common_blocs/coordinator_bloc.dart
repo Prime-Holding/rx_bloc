@@ -69,27 +69,28 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   /// - reminder create [CoordinatorStates.onReminderCreated]
   /// - reminder delete [CoordinatorStates.onReminderDeleted]
   ///
-  /// Based on the result of the callback [addToListOnCreate] the newly create task
+  /// Based on the result of the callback [onCreateOperation] the newly create task
   ///  will/will not be merged into the value of the provided [subject].
   ///
-  /// Based on the result of the callback [removeFromListOnUpdate] the updated task
+  /// Based on the result of the callback [onUpdateOperation] the updated task
   ///  will/will not be removed from value of the provided [subject].
   Stream<List<ReminderModel>> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
-    required Future<bool> Function(ReminderModel model) addToListOnCreate,
-    required Future<bool> Function(ReminderModel model) removeFromListOnUpdate,
+    required Future<ManageOperation> Function(ReminderModel model)
+        operationCallback,
   }) =>
       Rx.merge([
-        states.onReminderCreated.whereSuccess().mapCreatedWithLatestFrom(
+        states.onReminderCreated.whereSuccess().identifiableWithLatestFrom(
               reminderList,
-              addToListCondition: addToListOnCreate,
+              operationCallback: operationCallback,
             ),
-        states.onReminderDeleted
-            .whereSuccess()
-            .mapDeletedWithLatestFrom(reminderList),
-        states.onReminderUpdated.whereSuccess().mapUpdatedWithLatestFrom(
+        states.onReminderDeleted.whereSuccess().identifiableWithLatestFrom(
               reminderList,
-              removeFromListCondition: removeFromListOnUpdate,
+              operationCallback: (reminder) async => ManageOperation.remove,
+            ),
+        states.onReminderUpdated.whereSuccess().identifiableWithLatestFrom(
+              reminderList,
+              operationCallback: operationCallback,
             ),
       ]);
 }

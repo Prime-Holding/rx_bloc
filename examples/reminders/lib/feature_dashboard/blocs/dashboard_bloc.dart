@@ -41,9 +41,9 @@ class DashboardBloc extends $DashboardBloc {
           _dashboardModelResult
               .whereSuccess()
               .map((model) => model.reminderList),
-          addToListOnCreate: _service.addToListOnCreate,
-          removeFromListOnUpdate: _service.removeFromListOnUpdate,
+          operationCallback: _service.getManageOperation,
         )
+        .map(_service.sorted)
         .map((reminderList) => _dashboardModelResult.value
             .mapResult((model) => model.copyWith(reminderList: reminderList)))
         .bind(_dashboardModelResult)

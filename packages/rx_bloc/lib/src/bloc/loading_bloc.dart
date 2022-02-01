@@ -88,6 +88,17 @@ class LoadingBloc extends $LoadingBloc {
   @override
   void dispose() {
     _compositeSubscription.dispose();
+
+    _loadingCounts.forEach(
+      (element) {
+        for (var subject in element.values) {
+          subject.close();
+        }
+      },
+    );
+
+    _loadingCounts.close();
+
     super.dispose();
   }
 }
