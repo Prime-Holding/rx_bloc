@@ -7,6 +7,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -16,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentionAction implements IntentionAction {
+
+    final static String BLOCS_DIRECTORY = "blocs";
     final SnippetType snippetType;
     PsiElement callExpressionElement;
 
@@ -41,8 +44,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
      *
      * <p>Note: this method must do its checks quickly and return.</p>
      *
-     * @param project a reference to the Project object being edited.
-     * @param editor  a reference to the object editing the project source
+     * @param project    a reference to the Project object being edited.
+     * @param editor     a reference to the object editing the project source
      * @param psiElement a reference to the PSI element currently under the caret
      * @return {@code true} if the caret is in a literal string element, so this functionality should be added to the
      * intention menu or {@code false} for all other types of caret positions
@@ -62,11 +65,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         }
 
         callExpressionElement = WrapHelper.callExpressionFinder(psiElement);
-        if (callExpressionElement == null) {
-            return false;
-        }
-
-        return true;
+        return callExpressionElement != null;
     }
 
     /**
@@ -96,13 +95,44 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             return;
         }
 
+        String blocTypeDirectorySuggest = null;
+
+        PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
+
+        if (psiFile != null) {
+            VirtualFile vFile = psiFile.getOriginalFile().getVirtualFile();
+
+            VirtualFile viewsDir = vFile.getParent();//by convention this should be called 'views'.
+            if (viewsDir.isDirectory()) {
+                VirtualFile feature_dir = viewsDir.getParent();
+
+                VirtualFile[] children = feature_dir.getChildren();
+                for (VirtualFile file : children) {
+                    if (file.isDirectory() && file.getName().equals(BLOCS_DIRECTORY)) {
+
+
+                        for (VirtualFile blocFile : file.getChildren()) {
+                            if (blocFile.getName().equals(vFile.getName().replace("page.dart", "") + "bloc.dart")) {
+
+                                blocTypeDirectorySuggest = vFile.getName().replace("page.dart", "");
+                                blocTypeDirectorySuggest = toCamelCase(blocTypeDirectorySuggest) + "Bloc";
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+
+
         final String selectedText = document.getText(TextRange.create(offsetStart, offsetEnd));
-        final String replaceWith = Snippets.getSnippet(snippetType, selectedText);
+
+        final String replaceWith = Snippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest);
 
         // wrap the widget:
-        WriteCommandAction.runWriteCommandAction(project, () -> {
-                    document.replaceString(offsetStart, offsetEnd, replaceWith);
-                }
+        WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith)
         );
 
         // place cursors to specify types:
@@ -165,4 +195,40 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
     private PsiFile getCurrentFile(Project project, Editor editor) {
         return PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
     }
+
+    public static String fixSpaceTwoDotsSwash(String init) {
+        return init.replaceAll(" ", "_").replaceAll("-", "_").replaceAll(":", "_");
+    }
+
+    public static String toCamelCase(String init) {
+        if (init == null)
+            return null;
+
+        init = fixSpaceTwoDotsSwash(init);
+        StringBuilder ret = new StringBuilder(init.length());
+
+        for (final String word : init.split(" ")) {
+            if (!word.isEmpty()) {
+                ret.append(word.substring(0, 1).toUpperCase());
+                ret.append(word.substring(1).toLowerCase());
+            }
+            if (!(ret.length() == init.length()))
+                ret.append(" ");
+        }
+
+        String[] split = ret.toString().split("_");
+        ret = new StringBuilder();
+        for (String string : split) {
+            if (!string.isEmpty()) {
+                ret.append(string.substring(0, 1).toUpperCase());
+                ret.append(string.substring(1).toLowerCase());
+            }
+        }
+
+        if (ret.toString().equals("App")) {
+            return "App1";
+        }
+        return ret.toString();
+    }
+
 }
