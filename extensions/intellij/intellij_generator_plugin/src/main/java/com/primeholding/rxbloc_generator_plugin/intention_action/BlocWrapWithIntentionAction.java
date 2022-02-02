@@ -110,7 +110,6 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 for (VirtualFile file : children) {
                     if (file.isDirectory() && file.getName().equals(BLOCS_DIRECTORY)) {
 
-
                         for (VirtualFile blocFile : file.getChildren()) {
                             if (blocFile.getName().equals(vFile.getName().replace("page.dart", "") + "bloc.dart")) {
 
