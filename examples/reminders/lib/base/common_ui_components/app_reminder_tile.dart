@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
+import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../models/reminder_model.dart';
 import 'app_divider.dart';
 
@@ -73,7 +73,11 @@ class _AppReminderTileState extends State<AppReminderTile> {
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => Dismissible(
+      onDismissed: (direction) =>
+          context.read<ReminderManageBlocType>().events.delete(widget.reminder),
+      key: Key('Reminder${widget.reminder.id}'),
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
@@ -101,7 +105,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
             !widget.isLast ? const AppDivider() : const SizedBox(height: 8),
           ],
         ),
-      );
+      ));
 
   Future<void> _onDueDatePressed() async {
     final date = await showDatePicker(

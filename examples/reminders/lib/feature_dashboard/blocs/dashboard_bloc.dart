@@ -44,8 +44,8 @@ class DashboardBloc extends $DashboardBloc {
           operationCallback: _service.getManageOperation,
         )
         .map(_service.sorted)
-        .map((reminderList) => _dashboardModelResult.value
-            .mapResult((model) => model.copyWith(reminderList: reminderList)))
+        .switchMap(
+            (reminderList) => _service.getDashboardModel().asResultStream())
         .bind(_dashboardModelResult)
         .addTo(_compositeSubscription);
   }

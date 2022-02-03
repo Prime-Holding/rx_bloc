@@ -7,6 +7,7 @@ import '../../app_extensions.dart';
 import '../blocs/reminder_list_bloc.dart';
 import '../di/reminder_list_dependencies.dart';
 import '../ui_components/reminder_list_view.dart';
+import 'add_reminder_dialog.dart';
 
 class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
   const ReminderListPage({
@@ -30,6 +31,11 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
               child: ReminderListView(),
             )
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => addDialog(context),
+          tooltip: 'add',
+          child: const Icon(Icons.add),
         ),
       );
 
@@ -55,4 +61,12 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
           ),
         ),
       );
+
+  Future<void> addDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return const AddReminderDialog();
+        });
+  }
 }
