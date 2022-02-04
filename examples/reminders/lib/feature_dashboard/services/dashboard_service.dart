@@ -1,9 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:rx_bloc_list/models.dart';
 
 import '../../base/models/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 import '../models/dashboard_model.dart';
-import 'package:collection/collection.dart';
 
 class DashboardService {
   DashboardService(this._remindersService);

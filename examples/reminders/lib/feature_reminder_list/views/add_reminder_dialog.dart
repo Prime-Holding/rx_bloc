@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +6,7 @@ import '../../base/models/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
 class AddReminderDialog extends StatefulWidget {
-  static const int max = 1000000;
+  static int nextReminderId = 1000000;
 
   const AddReminderDialog({Key? key}) : super(key: key);
 
@@ -59,11 +57,10 @@ class AddReminderDialogState extends State<AddReminderDialog> {
           TextButton(
             child: const Text('OK'),
             onPressed: () {
+              AddReminderDialog.nextReminderId++;
               context.read<ReminderManageBlocType>().events.create(
                   ReminderModel(
-                      id: Random.secure()
-                          .nextInt(AddReminderDialog.max)
-                          .toString(),
+                      id: AddReminderDialog.nextReminderId.toString(),
                       complete: false,
                       dueDate: dueDate,
                       title: _textEditingController.text));
