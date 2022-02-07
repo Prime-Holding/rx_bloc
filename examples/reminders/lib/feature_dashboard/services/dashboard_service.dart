@@ -16,6 +16,7 @@ class DashboardService {
       _remindersService.getIncompleteCount(),
       _remindersService.getAll(
         ReminderModelRequest(
+          sort: ReminderModelRequestSort.dueDateDesc,
           page: 1,
           pageSize: 5,
           filterByDueDateRange: _getDateRange(),
