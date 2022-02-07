@@ -28,10 +28,11 @@ abstract class DashboardBlocStates {
 
 @RxBloc()
 class DashboardBloc extends $DashboardBloc {
-  DashboardBloc(this._service, CoordinatorBlocType coordinatorBloc) {
+  DashboardBloc(this._dashboardService, CoordinatorBlocType coordinatorBloc) {
     _$fetchDataEvent
         .startWith(null)
-        .switchMap((value) => _service.getDashboardModel().asResultStream())
+        .switchMap(
+            (value) => _dashboardService.getDashboardModel().asResultStream())
         .setResultStateHandler(this)
         .bind(_dashboardModelResult)
         .addTo(_compositeSubscription);
@@ -41,22 +42,22 @@ class DashboardBloc extends $DashboardBloc {
           _dashboardModelResult
               .whereSuccess()
               .map((model) => model.reminderList),
-          operationCallback: _service.getManageOperation,
+          operationCallback: _dashboardService.getManageOperation,
         )
-        .map(_service.sorted)
+        .map(_dashboardService.sorted)
         // .map((reminderList) => _dashboardModelResult.value
         //     .mapResult((model) => model.copyWith(reminderList: reminderList)))
 
         //this need to be reloaded, because the _dashboardModelResult does not contain only the list of reminders,
         // but also a summary. Otherwise it will not get updated
-        .switchMap(
-            (reminderList) => _service.getDashboardModel().asResultStream())
+        .switchMap((reminderList) =>
+            _dashboardService.getDashboardModel().asResultStream())
         .setResultStateHandler(this)
         .bind(_dashboardModelResult)
         .addTo(_compositeSubscription);
   }
 
-  final DashboardService _service;
+  final DashboardService _dashboardService;
 
   @override
   Stream<Result<DashboardModel>> _mapToDataState() => _dashboardModelResult;
