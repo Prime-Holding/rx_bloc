@@ -5,12 +5,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../data_sources/remote/push_notification_data_source.dart';
-import '../models/request_models/push_message_request_model.dart';
-import '../models/request_models/push_notification_data_request_model.dart';
+import '../models/push/push_message_request_model.dart';
+import '../models/push/push_notification_data_request_model.dart';
 
 class PushNotificationRepository {
   PushNotificationRepository(this._pushDataSource, this._firebaseMessaging);

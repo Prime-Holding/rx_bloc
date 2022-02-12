@@ -2,7 +2,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
-import '../../base/models/reminder_model.dart';
+import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 
 part 'reminder_manage_bloc.rxb.g.dart';
@@ -11,7 +11,11 @@ part 'reminder_manage_bloc.rxb.g.dart';
 abstract class ReminderManageBlocEvents {
   void update(ReminderModel reminder);
 
-  void create(ReminderModel reminder);
+  void create({
+    required String title,
+    required DateTime dueDate,
+    required bool complete,
+  });
 
   void delete(ReminderModel reminder);
 }

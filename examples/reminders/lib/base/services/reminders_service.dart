@@ -1,6 +1,6 @@
 import 'package:rx_bloc_list/models.dart';
 
-import '../models/reminder_model.dart';
+import '../models/reminder/reminder_model.dart';
 import '../repositories/reminders_repository.dart';
 
 class RemindersService {

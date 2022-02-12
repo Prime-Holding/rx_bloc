@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
-import '../models/reminder_model.dart';
+import '../models/reminder/reminder_model.dart';
 import 'app_divider.dart';
 
 class AppReminderTile extends StatefulWidget {

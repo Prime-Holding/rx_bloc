@@ -1,7 +1,7 @@
 import 'package:rx_bloc_list/models.dart';
 
 import '../data_sources/local/reminders_local_data_source.dart';
-import '../models/reminder_model.dart';
+import '../models/reminder/reminder_model.dart';
 
 class RemindersRepository {
   RemindersRepository(this._dataSource);

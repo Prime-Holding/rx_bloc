@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:rx_bloc_list/models.dart';
 
-import '../../base/models/reminder_model.dart';
+import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 import '../models/dashboard_model.dart';
 
@@ -35,8 +35,11 @@ class DashboardService {
     );
   }
 
-  List<ReminderModel> sorted(List<ReminderModel> list) =>
-      list.sorted((a, b) => a.dueDate.compareTo(b.dueDate));
+  DashboardModel sortedReminderList(DashboardModel dashboardModel) =>
+      dashboardModel.copyWith(
+        reminderList: dashboardModel.reminderList
+            .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
+      );
 
   Future<ManageOperation> getManageOperation(ReminderModel model) async {
     final dateRange = _getDateRange();

@@ -1,4 +1,4 @@
-import '../reminder_model.dart';
+import 'reminder_model.dart';
 
 class ReminderListResponse {
   ReminderListResponse({

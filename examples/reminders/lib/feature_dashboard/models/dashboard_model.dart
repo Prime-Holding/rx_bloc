@@ -1,4 +1,4 @@
-import '../../base/models/reminder_model.dart';
+import '../../base/models/reminder/reminder_model.dart';
 
 class DashboardModel {
   DashboardModel({

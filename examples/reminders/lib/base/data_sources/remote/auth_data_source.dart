@@ -5,12 +5,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
-import '../../models/auth_token_model.dart';
-import '../../models/request_models/authenticate_user_request_model.dart';
+import '../../models/auth/auth_token_model.dart';
+import '../../models/auth/authenticate_user_request_model.dart';
 
 part 'auth_data_source.g.dart';
 

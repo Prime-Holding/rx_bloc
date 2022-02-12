@@ -5,7 +5,7 @@ import 'package:rx_bloc_list/rx_bloc_list.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
-import '../../base/models/reminder_model.dart';
+import '../../base/models/reminder/reminder_model.dart';
 import '../blocs/reminder_list_bloc.dart';
 
 class ReminderListView extends StatelessWidget {
