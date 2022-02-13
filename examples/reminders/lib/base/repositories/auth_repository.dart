@@ -49,6 +49,7 @@ class AuthRepository {
     try {
       // TODO: Try to fetch new access token using refreshToken and save it
       // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
+      return null;
     } catch (e) {
       print(e.toString());
       return null;

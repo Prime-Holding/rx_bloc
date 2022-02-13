@@ -86,7 +86,11 @@ void main() {
           operationCallback: (identifiable) async => ManageOperation.merge,
         ),
         emitsInOrder([
-          [IdentifiableModel('1'), IdentifiableModel('2')],
+          ManagedList(
+            [IdentifiableModel('1'), IdentifiableModel('2')],
+            identifiable: IdentifiableModel('2'),
+            operation: ManageOperation.merge,
+          )
         ]),
       );
     });
@@ -98,7 +102,11 @@ void main() {
           operationCallback: (identifiable) async => ManageOperation.ignore,
         ),
         emitsInOrder([
-          [IdentifiableModel('1')],
+          ManagedList(
+            [IdentifiableModel('1')],
+            identifiable: IdentifiableModel('2'),
+            operation: ManageOperation.ignore,
+          ),
         ]),
       );
     });
@@ -113,7 +121,11 @@ void main() {
           operationCallback: (identifiable) async => ManageOperation.remove,
         ),
         emitsInOrder([
-          [IdentifiableModel('1')],
+          ManagedList(
+            [IdentifiableModel('1')],
+            identifiable: IdentifiableModel('2'),
+            operation: ManageOperation.remove,
+          )
         ]),
       );
     });
@@ -128,10 +140,14 @@ void main() {
           operationCallback: (identifiable) async => ManageOperation.ignore,
         ),
         emitsInOrder([
-          [
-            IdentifiableModel('1'),
-            IdentifiableModel('2'),
-          ],
+          ManagedList(
+            [
+              IdentifiableModel('1'),
+              IdentifiableModel('2'),
+            ],
+            identifiable: IdentifiableModel('2'),
+            operation: ManageOperation.ignore,
+          )
         ]),
       );
     });
@@ -148,9 +164,11 @@ void main() {
           operationCallback: (identifiable) async => ManageOperation.remove,
         ),
         emitsInOrder([
-          [
-            IdentifiableModel('1'),
-          ],
+          ManagedList(
+            [IdentifiableModel('1')],
+            identifiable: IdentifiableModel('2'),
+            operation: ManageOperation.remove,
+          ),
         ]),
       );
     });
@@ -171,11 +189,15 @@ void main() {
           operationCallback: (identifiable) async => ManageOperation.merge,
         ),
         emitsInOrder([
-          PaginatedList(
-            list: [IdentifiableModel('1'), IdentifiableModel('2')],
-            pageSize: 1,
-            totalCount: 11,
-          ),
+          ManagedList(
+            PaginatedList(
+              list: [IdentifiableModel('1'), IdentifiableModel('2')],
+              pageSize: 1,
+              totalCount: 11,
+            ),
+            identifiable: IdentifiableModel('2'),
+            operation: ManageOperation.merge,
+          )
         ]),
       );
     });
@@ -197,10 +219,14 @@ void main() {
         ),
         emitsInOrder(
           [
-            PaginatedList(
-              list: [IdentifiableModel('1')],
-              pageSize: 2,
-              totalCount: 9,
+            ManagedList(
+              PaginatedList(
+                list: [IdentifiableModel('1')],
+                pageSize: 2,
+                totalCount: 9,
+              ),
+              identifiable: IdentifiableModel('2'),
+              operation: ManageOperation.remove,
             )
           ],
         ),
