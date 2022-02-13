@@ -11,7 +11,6 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../feature_dashboard/models/dashboard_model.dart';
 import '../models/reminder/reminder_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
@@ -75,7 +74,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   ///
   /// Based on the result of the callback [onUpdateOperation] the updated task
   ///  will/will not be removed from value of the provided [subject].
-  Stream<List<ReminderModel>> mapReminderManageEventsWithLatestFrom(
+  Stream<ManagedList<ReminderModel>> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
     required Future<ManageOperation> Function(ReminderModel model)
         operationCallback,
@@ -94,76 +93,4 @@ extension CoordinatingTasksX on CoordinatorBlocType {
               operationCallback: operationCallback,
             ),
       ]);
-
-  ///TODO: Move this extension and all related methods to the dashboard feature
-  Stream<DashboardModel> mapDashboardManageEventsWithLatestFrom(
-    Stream<DashboardModel> dashboard, {
-    required Future<ManageOperation> Function(ReminderModel model)
-        operationCallback,
-  }) =>
-      Rx.merge([
-        states.onReminderCreated
-            .whereSuccess()
-            .identifiableWithLatestFrom(
-              dashboard.map((dashboard) => dashboard.reminderList),
-              operationCallback: operationCallback,
-            )
-            .withLatestFrom2(
-              dashboard,
-              states.onReminderCreated.whereSuccess(),
-              _computeDashboard,
-            ),
-        states.onReminderDeleted
-            .whereSuccess()
-            .identifiableWithLatestFrom(
-              dashboard.map((dashboard) => dashboard.reminderList),
-              operationCallback: (reminder) async => ManageOperation.remove,
-            )
-            .withLatestFrom2(
-              dashboard,
-              states.onReminderDeleted.whereSuccess(),
-              _computeDashboardOnDelete,
-            ),
-        states.onReminderUpdated
-            .whereSuccess()
-            .identifiableWithLatestFrom(
-              dashboard.map((dashboard) => dashboard.reminderList),
-              operationCallback: operationCallback,
-            )
-            .withLatestFrom2(
-              dashboard,
-              states.onReminderUpdated.whereSuccess(),
-              _computeDashboard,
-            ),
-      ]);
 }
-
-DashboardModel _computeDashboard(
-  List<ReminderModel> reminderList,
-  DashboardModel dashboardModel,
-  ReminderModel managedReminder,
-) =>
-    DashboardModel(
-      reminderList: reminderList,
-      incompleteCount: !managedReminder.complete
-          ? dashboardModel.incompleteCount + 1
-          : dashboardModel.incompleteCount,
-      completeCount: managedReminder.complete
-          ? dashboardModel.completeCount + 1
-          : dashboardModel.completeCount,
-    );
-
-DashboardModel _computeDashboardOnDelete(
-  List<ReminderModel> reminderList,
-  DashboardModel dashboardModel,
-  ReminderModel managedReminder,
-) =>
-    DashboardModel(
-      reminderList: reminderList,
-      incompleteCount: !managedReminder.complete
-          ? dashboardModel.incompleteCount - 1
-          : dashboardModel.incompleteCount,
-      completeCount: managedReminder.complete
-          ? dashboardModel.completeCount - 1
-          : dashboardModel.completeCount,
-    );
