@@ -5,12 +5,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
-import '../../models/request_models/push_message_request_model.dart';
-import '../../models/request_models/push_notification_data_request_model.dart';
+import '../../models/push/push_message_request_model.dart';
+import '../../models/push/push_notification_data_request_model.dart';
 
 part 'push_notification_data_source.g.dart';
 

@@ -26,7 +26,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
   final _$updateEvent = PublishSubject<ReminderModel>();
 
   /// Тhe [Subject] where events sink to by calling [create]
-  final _$createEvent = PublishSubject<ReminderModel>();
+  final _$createEvent = PublishSubject<_CreateEventArgs>();
 
   /// Тhe [Subject] where events sink to by calling [delete]
   final _$deleteEvent = PublishSubject<ReminderModel>();
@@ -53,7 +53,12 @@ abstract class $ReminderManageBloc extends RxBlocBase
   void update(ReminderModel reminder) => _$updateEvent.add(reminder);
 
   @override
-  void create(ReminderModel reminder) => _$createEvent.add(reminder);
+  void create(
+          {required String title,
+          required DateTime dueDate,
+          required bool complete}) =>
+      _$createEvent.add(
+          _CreateEventArgs(title: title, dueDate: dueDate, complete: complete));
 
   @override
   void delete(ReminderModel reminder) => _$deleteEvent.add(reminder);
@@ -97,4 +102,17 @@ abstract class $ReminderManageBloc extends RxBlocBase
     _compositeSubscription.dispose();
     super.dispose();
   }
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [ReminderManageBlocEvents.create] event
+class _CreateEventArgs {
+  const _CreateEventArgs(
+      {required this.title, required this.dueDate, required this.complete});
+
+  final String title;
+
+  final DateTime dueDate;
+
+  final bool complete;
 }

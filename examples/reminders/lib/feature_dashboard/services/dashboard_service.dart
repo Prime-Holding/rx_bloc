@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:rx_bloc_list/models.dart';
 
-import '../../base/models/reminder_model.dart';
+import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 import '../models/dashboard_model.dart';
 
@@ -35,8 +35,11 @@ class DashboardService {
     );
   }
 
-  List<ReminderModel> sorted(List<ReminderModel> list) =>
-      list.sorted((a, b) => a.dueDate.compareTo(b.dueDate));
+  DashboardModel sortedReminderList(DashboardModel dashboardModel) =>
+      dashboardModel.copyWith(
+        reminderList: dashboardModel.reminderList
+            .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
+      );
 
   Future<ManageOperation> getManageOperation(ReminderModel model) async {
     final dateRange = _getDateRange();
@@ -53,4 +56,50 @@ class DashboardService {
         to: DateTime.now(),
         from: DateTime.now().subtract(const Duration(days: 10)),
       );
+
+  DashboardModel getDashboardModelFromManagedList({
+    required DashboardModel dashboard,
+    required ManagedList<ReminderModel> managedList,
+  }) =>
+      dashboard.copyWith(
+        reminderList: managedList.list,
+        completeCount: dashboard.recalculateCompleteWith(
+          operation: managedList.operation,
+          reminderModel: managedList.identifiable,
+        ),
+        incompleteCount: dashboard.recalculateIncompleteWith(
+          operation: managedList.operation,
+          reminderModel: managedList.identifiable,
+        ),
+      );
+}
+
+extension _DashboardModelX on DashboardModel {
+  int recalculateIncompleteWith({
+    required ManageOperation operation,
+    required ReminderModel reminderModel,
+  }) {
+    switch (operation) {
+      case ManageOperation.merge:
+        return !reminderModel.complete ? incompleteCount + 1 : incompleteCount;
+      case ManageOperation.remove:
+        return !reminderModel.complete ? incompleteCount - 1 : incompleteCount;
+      case ManageOperation.ignore:
+        return incompleteCount;
+    }
+  }
+
+  int recalculateCompleteWith({
+    required ManageOperation operation,
+    required ReminderModel reminderModel,
+  }) {
+    switch (operation) {
+      case ManageOperation.merge:
+        return reminderModel.complete ? completeCount + 1 : completeCount;
+      case ManageOperation.remove:
+        return reminderModel.complete ? completeCount - 1 : completeCount;
+      case ManageOperation.ignore:
+        return completeCount;
+    }
+  }
 }

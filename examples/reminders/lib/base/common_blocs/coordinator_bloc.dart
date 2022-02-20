@@ -11,7 +11,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/reminder_model.dart';
+import '../models/reminder/reminder_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
 part 'coordinator_bloc_extensions.dart';
@@ -74,7 +74,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   ///
   /// Based on the result of the callback [onUpdateOperation] the updated task
   ///  will/will not be removed from value of the provided [subject].
-  Stream<List<ReminderModel>> mapReminderManageEventsWithLatestFrom(
+  Stream<ManagedList<ReminderModel>> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
     required Future<ManageOperation> Function(ReminderModel model)
         operationCallback,

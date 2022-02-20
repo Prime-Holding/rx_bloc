@@ -5,11 +5,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/auth_data_source.dart';
-import '../models/auth_token_model.dart';
-import '../models/request_models/authenticate_user_request_model.dart';
+import '../models/auth/auth_token_model.dart';
+import '../models/auth/authenticate_user_request_model.dart';
 
 class AuthRepository {
   AuthRepository(
@@ -50,16 +49,23 @@ class AuthRepository {
     try {
       // TODO: Try to fetch new access token using refreshToken and save it
       // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
+      return null;
     } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
-  Future<AuthTokenModel> authenticate(
-          {String? email, String? password, String? refreshToken}) =>
+  Future<AuthTokenModel> authenticate({
+    String? email,
+    String? password,
+    String? refreshToken,
+  }) =>
       _authDataSource.authenticate(AuthUserRequestModel(
-          username: email, password: password, refreshToken: refreshToken));
+        username: email,
+        password: password,
+        refreshToken: refreshToken,
+      ));
 
   Future<void> logout() => _authDataSource.logout();
 }

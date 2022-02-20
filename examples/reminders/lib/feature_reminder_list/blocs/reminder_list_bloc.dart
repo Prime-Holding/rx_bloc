@@ -1,10 +1,10 @@
-import 'package:collection/src/iterable_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
-import '../../base/models/reminder_model.dart';
+import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 
 part 'reminder_list_bloc.rxb.g.dart';
@@ -58,6 +58,7 @@ class ReminderListBloc extends $ReminderListBloc {
           _paginatedList,
           operationCallback: (model) async => ManageOperation.merge,
         )
+        .mapToList()
         .cast<PaginatedList<ReminderModel>>()
         .map(
           (list) => list.copyWith(

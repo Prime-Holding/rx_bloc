@@ -1,5 +1,5 @@
-import '../../models/reminder_model.dart';
-import '../../models/response_model/reminder_list_reponse.dart';
+import '../../models/reminder/reminder_list_reponse.dart';
+import '../../models/reminder/reminder_model.dart';
 
 class RemindersLocalDataSource {
   RemindersLocalDataSource({List<ReminderModel>? seed})
