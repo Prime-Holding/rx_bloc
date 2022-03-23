@@ -6,6 +6,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
@@ -13,8 +14,12 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
+import com.primeholding.rxbloc_generator_plugin.parser.Bloc;
+import com.primeholding.rxbloc_generator_plugin.parser.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentionAction implements IntentionAction {
 
@@ -77,8 +82,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
      * @throws IncorrectOperationException Thrown by underlying (Psi model) write action context
      *                                     when manipulation of the psi tree fails.
      */
-    public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element)
-            throws IncorrectOperationException {
+    public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
         Runnable runnable = () -> invokeSnippetAction(project, editor, snippetType);
         WriteCommandAction.runWriteCommandAction(project, runnable);
     }
@@ -112,9 +116,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
 
                         for (VirtualFile blocFile : file.getChildren()) {
                             if (blocFile.getName().equals(vFile.getName().replace("page.dart", "") + "bloc.dart")) {
-
-                                blocTypeDirectorySuggest = vFile.getName().replace("page.dart", "");
-                                blocTypeDirectorySuggest = toCamelCase(blocTypeDirectorySuggest) + "BlocType";
+                                blocTypeDirectorySuggest = (getBlocTypeFromFile(blocFile.getName()));
                                 break;
                             }
                         }
@@ -124,15 +126,30 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 }
             }
         }
-
-
         final String selectedText = document.getText(TextRange.create(offsetStart, offsetEnd));
+        String stateTypeDirectorySuggest = "";
+        String stateVariableNameSuggest = "";
+        VirtualFile lib = project.getBaseDir().findChild("lib");
+        if (lib != null) {
+            List<Bloc> blocs = Utils.Companion.analyzeLib(lib);
 
-        final String replaceWith = Snippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest);
+            Bloc blocFromPath = getBLoc(blocTypeDirectorySuggest, blocs);
+            if (blocFromPath != null) {
+
+                int chooseState = Messages.showDialog("Choose State", "Choose State", blocFromPath.getStateVariableNames().toArray(new String[0]), 0, null);
+                if (chooseState >= 0) {
+
+                    blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
+                    stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(chooseState);
+                    stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(chooseState);
+                }
+            }
+        }
+
+        final String replaceWith = Snippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
 
         // wrap the widget:
-        WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith)
-        );
+        WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith));
 
         // place cursors to specify types:
         final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
@@ -181,6 +198,22 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         });
     }
 
+    private String getBlocTypeFromFile(String vFileName) {
+        String s = vFileName.replace("page.dart", "").replace(".dart", "");
+        return toCamelCase(s) + "Type";
+    }
+
+    private Bloc getBLoc(String blocTypeDirectorySuggest, List<Bloc> blocs) {
+        for (Bloc bloc : blocs) {
+            String blocTypeFromFile = getBlocTypeFromFile(bloc.getFileName());
+            if (blocTypeFromFile.equals(blocTypeDirectorySuggest)) {
+                return bloc;
+
+            }
+        }
+        return null;
+    }
+
     /**
      * Indicates this intention action expects the Psi framework to provide the write action context for any changes.
      *
@@ -200,8 +233,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
     }
 
     public static String toCamelCase(String init) {
-        if (init == null)
-            return null;
+        if (init == null) return null;
 
         init = fixSpaceTwoDotsSwash(init);
         StringBuilder ret = new StringBuilder(init.length());
@@ -211,8 +243,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 ret.append(word.substring(0, 1).toUpperCase());
                 ret.append(word.substring(1).toLowerCase());
             }
-            if (!(ret.length() == init.length()))
-                ret.append(" ");
+            if (!(ret.length() == init.length())) ret.append(" ");
         }
 
         String[] split = ret.toString().split("_");
