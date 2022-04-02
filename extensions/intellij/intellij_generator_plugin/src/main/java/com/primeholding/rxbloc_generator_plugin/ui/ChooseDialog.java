@@ -3,19 +3,18 @@ package com.primeholding.rxbloc_generator_plugin.ui;
 import com.android.annotations.Nullable;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.primeholding.rxbloc_generator_plugin.parser.Bloc;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ChooseBlocDialog extends DialogWrapper {
+public class ChooseDialog<T> extends DialogWrapper {
 
-    private final ComboBox<String> comboBox;
+    private final ComboBox<T> comboBox;
 
-    public ChooseBlocDialog(ComboBox<String> comboBox) {
-        super(true); // use current window as parent
+    public ChooseDialog(ComboBox<T> comboBox, String typeOfStuffToChoose) {
+        super(true);
         this.comboBox = comboBox;
-        setTitle("Choose Bloc State");
+        setTitle("Choose " + typeOfStuffToChoose);
         init();
     }
 

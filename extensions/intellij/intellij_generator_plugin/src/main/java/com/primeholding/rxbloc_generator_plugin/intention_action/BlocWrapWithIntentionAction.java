@@ -7,7 +7,6 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
@@ -17,11 +16,10 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
 import com.primeholding.rxbloc_generator_plugin.parser.Bloc;
 import com.primeholding.rxbloc_generator_plugin.parser.Utils;
-import com.primeholding.rxbloc_generator_plugin.ui.ChooseBlocDialog;
+import com.primeholding.rxbloc_generator_plugin.ui.ChooseDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.List;
 
 public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentionAction implements IntentionAction {
@@ -141,7 +139,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
 
                 ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
 
-                boolean isOK = new ChooseBlocDialog(comboBox).showAndGet();
+                boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
                 int chooseState = comboBox.getSelectedIndex();
                 if (isOK) {
 
