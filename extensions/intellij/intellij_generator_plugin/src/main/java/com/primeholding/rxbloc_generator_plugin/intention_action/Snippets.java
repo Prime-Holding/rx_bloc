@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class Snippets {
     public static final String BLOC_SNIPPET_KEY = "BlocType";
-    public static final String STATE_TYPE_SNIPPET_KEY = "StateType";
-    public static final String STATE_SNIPPET_KEY = "someState";
+//    public static final String STATE_TYPE_SNIPPET_KEY = "StateType";
+//    public static final String STATE_SNIPPET_KEY = "someState";
 
     static String getSnippet(SnippetType snippetType, String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         switch (snippetType) {
@@ -30,7 +30,7 @@ public class Snippets {
     private static String formTextFieldSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxTextFormFieldBuilder<%1$s>( \n" +
-                        " state: (bloc) => bloc.states.%2$s, // pick a specific state you want to listen for\n" +
+                        " state: (bloc) => bloc.states.%2$s\n" +
                         " showErrorState: (bloc) => bloc.states.showErrors,\n" +
                         " onChanged: (bloc, value) => bloc.events.specificEvent(value), // pick a specific event the field will to send data to\n" +
                         "   ///TODO: Use the controller from the fieldState\n" +
@@ -54,7 +54,7 @@ public class Snippets {
     private static String formFieldSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxFormFieldBuilder<%1$s, %2$s>(\n" +
-                "     state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
+                "     state: (bloc) => bloc.states.%3$s,\n" +
                 "     showErrorState: (bloc) => bloc.states.showErrors,\n" +
                 "     builder: (fieldState) => Column(\n" +
                 "       children: [\n" +
@@ -71,13 +71,13 @@ public class Snippets {
                 "           ),\n" +
                 "       ],\n" +
                 "      ),\n" +
-                "   )\n", blocTypeDirectorySuggest, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
+                "   )\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
     }
 
     private static String blocListenerSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxBlocListener<%1$s, %2$s>(\n" +
-                "  state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
+                "  state: (bloc) => bloc.states.%3$s\n" +
                 "  listener: (context, state) {\n" +
                 "    // do stuff here based on BlocA's state\n" +
                 "  }, \n" +
@@ -88,7 +88,7 @@ public class Snippets {
     private static String blocBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxBlocBuilder<%1$s, %2$s>(\n" +
-                "  state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n"+
+                "  state: (bloc) => bloc.states.%3$s,\n"+
                 "  builder: (context, snapshot, bloc) =>\n" +
                 "    %4$s,\n" +
                 ")\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
@@ -97,7 +97,7 @@ public class Snippets {
     private static String blocPaginatedBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxPaginatedBuilder<%1$s, %2$s>.withRefreshIndicator(\n" +
-                        "          state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
+                        "          state: (bloc) => bloc.states.%3$s,\n" +
                         "          onBottomScrolled: (bloc) => bloc.events.loadPage(),\n" +
                         "          onRefresh: (bloc) async {\n" +
                         "            bloc.events.loadPage(reset: true);\n" +
@@ -123,7 +123,7 @@ public class Snippets {
     private static String blocResultBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxResultBuilder<%1$s, %2$s>(\n" +
-                " state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
+                " state: (bloc) => bloc.states.%3$s,\n" +
                 " buildSuccess: (context, data, bloc) => %4$s,\n" +
                 " buildLoading: (context, bloc) => \n" +
                 "   const CircularProgressIndicator(),\n" +
