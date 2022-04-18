@@ -38,8 +38,8 @@ void main() {
           Result.success(10),
           Result.error(Exception('1'))
         ])
-            .mapResult((value) => value * 10)
-            .asyncMapResult((value) async => value.toString()),
+            .mapResultStream((value) => value * 10)
+            .asyncMapResultStream((value) async => value.toString()),
         emitsInOrder(<Result<String>>[
           Result.loading(),
           Result.success('100'),

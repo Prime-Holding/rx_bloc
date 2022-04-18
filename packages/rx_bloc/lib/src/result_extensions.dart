@@ -7,8 +7,10 @@ extension ResultMapStreamX<E> on Stream<E> {
   ///
   /// Example:
   /// ```
-  /// ResultSuccess<int> result = Stream.value(10).mapToResult();
-  /// ResultSuccess<int> result = Stream.value(10).mapToResult((value) => value * 10);
+  /// ResultSuccess<int> result = Stream.value(10)
+  ///   .mapToResult(); // Result.success('10')
+  /// ResultSuccess<int> result = Stream.value(10)
+  ///   .mapToResult((value) => value * 10); // Result.success('100')
   /// ```
   Stream<Result<E>> mapToResult([E Function(E)? mapper]) => map((data) {
         if (mapper != null) {
@@ -18,7 +20,7 @@ extension ResultMapStreamX<E> on Stream<E> {
         return Result<E>.success(data);
       });
 
-  /// Map the give stream to a new one [Result] stream,
+  /// Map the give stream to a new [Result] one,
   /// as combining it with another [stream].
   ///
   /// Use [mapSuccess] to map the current stream with the
@@ -44,41 +46,41 @@ extension ResultMapStreamX<E> on Stream<E> {
 
 extension ResultMapStream<E> on Stream<Result<E>> {
   /// Map the current [Result] stream to a new [Result] one,
-  /// which could by from different type.
+  /// which could be from a different type.
   ///
   /// Use the [mapSuccess] to map the success from the current stream to the
   /// result stream.
   /// Example:
   /// ```
   /// Result<String> result = Stream.value(Result.success(10))
-  ///   .mapResult((value) => value * 10)
-  ///   .mapResult((value) => value.toString()); // Result.success('100')
+  ///   .mapResultStream((value) => value * 10)
+  ///   .mapResultStream((value) => value.toString()); // Result.success('100')
   /// ```
-  Stream<Result<T>> mapResult<T>(T Function(E) mapSuccess) => map(
+  Stream<Result<T>> mapResultStream<T>(T Function(E) mapSuccess) => map(
         (result) => result.mapResult(mapSuccess),
       );
 
   /// Map the current [Result] stream to a new [Result] one,
-  /// which could by from different type.
+  /// which could be from a different type.
   ///
   /// Use the [mapSuccess] callback to map the success from the current stream
-  /// to the result stream in async manner.
+  /// to the result stream in an async manner.
   ///
   /// Example:
   /// ```
   /// Result<String> result = Stream.value(Result.success(10))
-  ///   .asyncMapResult((value) async => value * 10)
-  ///   .asyncMapResult((value) async => value.toString()); // Result.success('100')
+  ///   .asyncMapResultStream((value) async => value * 10)
+  ///   .asyncMapResultStream((value) async => value.toString()); // Result.success('100')
   /// ```
-  Stream<Result<T>> asyncMapResult<T>(Future<T> Function(E) mapSuccess) =>
+  Stream<Result<T>> asyncMapResultStream<T>(Future<T> Function(E) mapSuccess) =>
       asyncMap(
         (result) => result.asyncMapResult(mapSuccess),
       );
 }
 
 extension ResultMap<E> on Result<E> {
-  /// Map the current [Result] to a new [Result],
-  /// which could be from different type.
+  /// Map the current [Result] to a new [Result] one,
+  /// which could be from a different type.
   Future<Result<T>> asyncMapResult<T>(Future<T> Function(E) mapSuccess) async {
     final that = this;
 
@@ -89,8 +91,8 @@ extension ResultMap<E> on Result<E> {
     return _mapResultToErrorOrLoading<T>();
   }
 
-  /// Map the current [Result] to a new [Result],
-  /// which could be from different type.
+  /// Map the current [Result] to a new [Result] one,
+  /// which could be from a different type.
   Result<T> mapResult<T>(T Function(E) mapSuccess) {
     final that = this;
 

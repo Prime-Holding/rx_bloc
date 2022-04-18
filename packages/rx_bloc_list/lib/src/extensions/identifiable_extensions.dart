@@ -28,7 +28,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
     }
   }
 
-  /// Return a new list with removed first occurrence of [identifiable] from this list.
+  /// Return a new list with removed all occurrence of [identifiable] from this list.
   List<T> removedIdentifiable(Identifiable identifiable) {
     final list = [...this];
     list.removeWhere((element) => element.id == identifiable.id);
@@ -38,9 +38,9 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
 
   /// Return a new list with the given [list] merged into the current list.
   ///
-  /// 1. In case that any of the provided [T] it not part of the current
+  /// 1. In case that any of the provided [T] is not part of the current
   /// list, the returned result will include the entities from the provided [T]
-  /// 2. [addIfNotExist] In case that any of the provided [T] it's not part of the
+  /// 2. [addIfNotExist] In case that any of the provided [T] is not part of the
   /// current list it will be added at the end of the list.
   List<T> mergeWith(
     List<T> list, {
@@ -98,7 +98,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// )
   /// ```
   ///
-  /// 3. The stream value won't be neither merged or removed from the [list] value
+  /// 3. The stream value won't be neither merged nor removed from the [list] value
   /// ```
   /// objectStream.identifiableWithLatestFrom(
   ///     listStream,
