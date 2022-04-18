@@ -81,14 +81,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         ),
       );
 
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: context.read<DashboardBlocType>().events.fetchData,
-          ),
-        ],
-      );
+  AppBar _buildAppBar(BuildContext context) => AppBar();
 
   Widget _buildErrorListener() => RxBlocListener<DashboardBlocType, String>(
         state: (bloc) => bloc.states.errors,
