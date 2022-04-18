@@ -53,10 +53,10 @@ extension ResultMapStream<E> on Stream<Result<E>> {
   /// Example:
   /// ```
   /// Result<String> result = Stream.value(Result.success(10))
-  ///   .mapResultStream((value) => value * 10)
-  ///   .mapResultStream((value) => value.toString()); // Result.success('100')
+  ///   .mapResult((value) => value * 10)
+  ///   .mapResult((value) => value.toString()); // Result.success('100')
   /// ```
-  Stream<Result<T>> mapResultStream<T>(T Function(E) mapSuccess) => map(
+  Stream<Result<T>> mapResult<T>(T Function(E) mapSuccess) => map(
         (result) => result.mapResult(mapSuccess),
       );
 
@@ -69,10 +69,10 @@ extension ResultMapStream<E> on Stream<Result<E>> {
   /// Example:
   /// ```
   /// Result<String> result = Stream.value(Result.success(10))
-  ///   .asyncMapResultStream((value) async => value * 10)
-  ///   .asyncMapResultStream((value) async => value.toString()); // Result.success('100')
+  ///   .asyncMapResult((value) async => value * 10)
+  ///   .asyncMapResult((value) async => value.toString()); // Result.success('100')
   /// ```
-  Stream<Result<T>> asyncMapResultStream<T>(Future<T> Function(E) mapSuccess) =>
+  Stream<Result<T>> asyncMapResult<T>(Future<T> Function(E) mapSuccess) =>
       asyncMap(
         (result) => result.asyncMapResult(mapSuccess),
       );
