@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
+import '../../base/models/reminder/reminder_model.dart';
+import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../blocs/dashboard_bloc.dart';
 import '../di/dashboard_dependencies.dart';
 import '../models/dashboard_model.dart';
@@ -28,6 +31,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            _onDeletedListener(),
             _buildErrorListener(),
             Expanded(
               child: RxResultBuilder<DashboardBlocType, DashboardModel>(
@@ -99,6 +103,23 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
             behavior: SnackBarBehavior.floating,
           ),
         ),
+      );
+
+  Widget _onDeletedListener() =>
+      RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
+        state: (bloc) => bloc.states.onDeleted,
+        listener: (context, onDeleted) {
+          if (onDeleted is ResultSuccess && onDeleted != null) {
+            final _reminderTitleName =
+                (onDeleted as ResultSuccess<ReminderModel>).data.title;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.l10n.reminderDeleted(_reminderTitleName)),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
       );
 
   BorderRadiusGeometry? _getRadius(int i, int length) {

@@ -63,7 +63,7 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
                 (onCreated as ResultSuccess<ReminderModel>).data.title;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(context.l10n.reminderTitleName(_reminderTitleName)),
+                content: Text(context.l10n.reminderCreated(_reminderTitleName)),
                 behavior: SnackBarBehavior.floating,
               ),
             );
