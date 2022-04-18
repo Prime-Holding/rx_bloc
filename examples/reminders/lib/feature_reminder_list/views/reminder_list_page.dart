@@ -1,9 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../app_extensions.dart';
+import '../../base/models/reminder/reminder_model.dart';
+import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../blocs/reminder_list_bloc.dart';
 import '../di/reminder_list_dependencies.dart';
 import '../ui_components/reminder_list_view.dart';
@@ -26,6 +28,7 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            _onCreatedListener(),
             _buildErrorListener(),
             const Expanded(
               child: ReminderListView(),
@@ -49,6 +52,23 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
                 .loadPage(reset: true),
           ),
         ],
+      );
+
+  Widget _onCreatedListener() =>
+      RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
+        state: (bloc) => bloc.states.onCreated,
+        listener: (context, onCreated) {
+          if (onCreated is ResultSuccess && onCreated != null) {
+            final _reminderTitleName =
+                (onCreated as ResultSuccess<ReminderModel>).data.title;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.l10n.reminderTitleName(_reminderTitleName)),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
       );
 
   Widget _buildErrorListener() => RxBlocListener<ReminderListBlocType, String>(
