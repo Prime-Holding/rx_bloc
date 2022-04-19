@@ -51,7 +51,7 @@ class RxBlocCommandRunner extends CommandRunner<int> {
   @override
   Future<int?> runCommand(ArgResults topLevelResults) async {
     if (topLevelResults['version'] == true) {
-      _logger.info('package version: $packageVersion');
+      _logger.info('package version: $rxBlocCliPackageVersion');
       return ExitCode.success.code;
     }
     return super.runCommand(topLevelResults);
