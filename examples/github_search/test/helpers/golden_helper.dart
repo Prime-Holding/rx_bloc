@@ -1,11 +1,12 @@
+// ignore_for_file: directives_ordering
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
-
 import 'package:github_search/base/theme/design_system.dart';
 import 'package:github_search/l10n/l10n.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
 
 import 'models/labeled_device_builder.dart';
 import 'models/scenario.dart';

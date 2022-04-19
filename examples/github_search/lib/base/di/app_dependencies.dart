@@ -5,15 +5,15 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+// ignore_for_file: prefer_relative_imports
+
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:github_search/base/data_sources/remote/github_repos_data_source.dart';
 import 'package:github_search/base/repositories/github_repos_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -29,6 +29,7 @@ import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/auth_data_source.dart';
+import '../data_sources/remote/github_repos_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
@@ -62,7 +63,8 @@ class AppDependencies {
       ];
 
   List<Provider> get _analytics => [
-        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
+        Provider<FirebaseAnalytics>(
+            create: (context) => FirebaseAnalytics.instance),
         Provider<FirebaseAnalyticsObserver>(
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
