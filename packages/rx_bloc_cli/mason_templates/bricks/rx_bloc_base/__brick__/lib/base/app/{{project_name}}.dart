@@ -50,7 +50,6 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   @override
   void initState() { {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
-    _addInterceptors();
 
     super.initState();
   }{{#push_notifications}}
@@ -73,16 +72,29 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   }{{/push_notifications}}
 
   void _addInterceptors(){
-    context.read<Dio>().interceptors.addAll([
+    final _interceptors = context.read<Dio>().interceptors;
+
+    final _toAdd = [
       AuthInterceptor(context.read(), context.read(), context.read()),{{#analytics}}
       AnalyticsInterceptor(context.read()),{{/analytics}}
 
-      /// TODO: Add your own interceptors here
-    ]);
+    /// TODO: Add your own interceptors here
+    ];
+
+    for (var _interceptor in _toAdd) {
+      final hasInterceptorOfSameType =
+          _interceptors.any((e) => e.runtimeType == _interceptor.runtimeType);
+      if (!hasInterceptorOfSameType) _interceptors.add(_interceptor);
+    }
   }
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
+  Widget build(BuildContext context) {
+    // After the widget has been re-built (when using hot restart),
+    // register any missing interceptors.
+    WidgetsBinding.instance?.addPostFrameCallback((_) => _addInterceptors());
+
+    return MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
         theme: DesignSystem.fromBrightness(Brightness.light).theme,
         darkTheme: DesignSystem.fromBrightness(Brightness.dark).theme,
@@ -99,4 +111,5 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         {{/analytics}}),
         debugShowCheckedModeBanner: false,
       );
+  }
 }

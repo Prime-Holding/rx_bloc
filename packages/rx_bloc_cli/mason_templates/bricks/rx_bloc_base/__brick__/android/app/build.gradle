@@ -33,14 +33,13 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "{{domain_name}}.{{organization_name}}.{{project_name}}"
         minSdkVersion 21
         targetSdkVersion 30
@@ -104,6 +103,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"{{#analytics}}
-    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+    implementation platform('com.google.firebase:firebase-bom:29.2.1')
     implementation 'com.google.firebase:firebase-analytics'{{/analytics}}
 }
