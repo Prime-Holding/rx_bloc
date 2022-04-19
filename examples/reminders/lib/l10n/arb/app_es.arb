@@ -23,7 +23,7 @@
     "notificationShowDelayedText" : "Show notification after 5 seconds",
     "notificationsPageDescription" : "In order to receive push notifications on your device, you need first to grant access to them. This applies for iOS and Web, as the permissions on Android are granted upfront.",
     "notificationsPageConfig" : "When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated.",
-    "reminderCreated": "Reminder: {reminderTitle} was created",
+    "reminderCreated": "Reminder with title: {reminderTitle} was created",
     "@reminderCreated": {
         "placeholders": {
             "reminderTitle": {
@@ -31,8 +31,24 @@
             }
         }
     },
-    "reminderDeleted": "Reminder: {reminderTitle} was deleted",
+    "reminderDeleted": "Reminder with title: {reminderTitle} was deleted",
     "@reminderDeleted": {
+        "placeholders": {
+            "reminderTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "reminderDeletedFromDashboard": "Reminder with title: {reminderTitle} was removed from Dashboard page",
+    "@reminderDeletedFromDashboard": {
+        "placeholders": {
+            "reminderTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "reminderAddedToDashboard": "Reminder with title: {reminderTitle} was added to Dashboard page",
+    "@reminderAddedToDashboard": {
         "placeholders": {
             "reminderTitle": {
                 "type": "String"

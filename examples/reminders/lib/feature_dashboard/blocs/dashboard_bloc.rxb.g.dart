@@ -22,6 +22,9 @@ abstract class $DashboardBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [fetchData]
   final _$fetchDataEvent = PublishSubject<void>();
 
+  /// Тhe [Subject] where events sink to by calling [checkForUpdatedReminder]
+  final _$checkForUpdatedReminderEvent = PublishSubject<List<ReminderModel>>();
+
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
@@ -31,8 +34,16 @@ abstract class $DashboardBloc extends RxBlocBase
   /// The state of [data] implemented in [_mapToDataState]
   late final Stream<Result<DashboardModel>> _dataState = _mapToDataState();
 
+  /// The state of [updatedReminder] implemented in [_mapToUpdatedReminderState]
+  late final Stream<ReminderModel?> _updatedReminderState =
+      _mapToUpdatedReminderState();
+
   @override
   void fetchData() => _$fetchDataEvent.add(null);
+
+  @override
+  void checkForUpdatedReminder(List<ReminderModel> reminderModels) =>
+      _$checkForUpdatedReminderEvent.add(reminderModels);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -43,11 +54,16 @@ abstract class $DashboardBloc extends RxBlocBase
   @override
   Stream<Result<DashboardModel>> get data => _dataState;
 
+  @override
+  Stream<ReminderModel?> get updatedReminder => _updatedReminderState;
+
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
   Stream<Result<DashboardModel>> _mapToDataState();
+
+  Stream<ReminderModel?> _mapToUpdatedReminderState();
 
   @override
   DashboardBlocEvents get events => this;
@@ -58,6 +74,7 @@ abstract class $DashboardBloc extends RxBlocBase
   @override
   void dispose() {
     _$fetchDataEvent.close();
+    _$checkForUpdatedReminderEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

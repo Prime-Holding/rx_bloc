@@ -35,6 +35,7 @@ class ReminderModel implements Identifiable {
     required this.title,
     required this.dueDate,
     required this.complete,
+    this.isRemoved,
   });
 
   @override
@@ -42,6 +43,7 @@ class ReminderModel implements Identifiable {
   final String title;
   final DateTime dueDate;
   final bool complete;
+  final bool? isRemoved;
 
   factory ReminderModel.fromIndex(int index) => ReminderModel(
         id: index.toString(),
@@ -60,11 +62,13 @@ class ReminderModel implements Identifiable {
     String? title,
     DateTime? dueDate,
     bool? complete,
+    bool? isRemoved,
   }) =>
       ReminderModel(
         id: id,
         title: title ?? this.title,
         dueDate: dueDate ?? this.dueDate,
         complete: complete ?? this.complete,
+        isRemoved: isRemoved ?? this.isRemoved,
       );
 }

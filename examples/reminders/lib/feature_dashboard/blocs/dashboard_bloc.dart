@@ -1,19 +1,21 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../models/dashboard_model.dart';
 import '../services/dashboard_service.dart';
 
 part 'dashboard_bloc.rxb.g.dart';
+
 part 'dashboard_bloc_extensions.dart';
 
 /// A contract class containing all events of the DashboardBloC.
 abstract class DashboardBlocEvents {
   /// TODO: Document the event
   void fetchData();
+
+  void checkForUpdatedReminder(List<ReminderModel> reminderModels);
 }
 
 /// A contract class containing all states of the DashboardBloC.
@@ -26,6 +28,8 @@ abstract class DashboardBlocStates {
 
   /// TODO: Document the state
   Stream<Result<DashboardModel>> get data;
+
+  Stream<ReminderModel?> get updatedReminder;
 }
 
 @RxBloc()
@@ -46,6 +50,9 @@ class DashboardBloc extends $DashboardBloc {
               .map((dashboard) => dashboard.reminderList),
           operationCallback: _dashboardService.getManageOperation,
         )
+        .doOnData((event) {
+          checkForUpdatedReminder(event.list);
+        })
         .map(managedListToDashboard)
         .mapResult(_dashboardService.sortedReminderList)
         .bind(_dashboardModelResult)
@@ -70,6 +77,11 @@ class DashboardBloc extends $DashboardBloc {
 
     return dashboard;
   }
+
+  @override
+  Stream<ReminderModel?> _mapToUpdatedReminderState() =>
+      _$checkForUpdatedReminderEvent
+          ._dashboardUpdatedReminder(_dashboardModelResult);
 
   @override
   Stream<Result<DashboardModel>> _mapToDataState() => _dashboardModelResult;

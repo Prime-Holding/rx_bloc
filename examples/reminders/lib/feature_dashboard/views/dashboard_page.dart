@@ -32,6 +32,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _onDeletedListener(),
+            _updatedReminderListener(),
             _buildErrorListener(),
             Expanded(
               child: RxResultBuilder<DashboardBlocType, DashboardModel>(
@@ -103,6 +104,35 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
             behavior: SnackBarBehavior.floating,
           ),
         ),
+      );
+
+  Widget _updatedReminderListener() =>
+      RxBlocListener<DashboardBlocType, ReminderModel?>(
+        state: (bloc) => bloc.states.updatedReminder,
+        listener: (context, updatedReminder) {
+          if (updatedReminder != null) {
+            if (updatedReminder.isRemoved != null &&
+                updatedReminder.isRemoved!) {
+              final reminderTitle = updatedReminder.title;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      context.l10n.reminderDeletedFromDashboard(reminderTitle)),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            } else if (updatedReminder.isRemoved! == false) {
+              final reminderTitle = updatedReminder.title;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      context.l10n.reminderAddedToDashboard(reminderTitle)),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            }
+          }
+        },
       );
 
   Widget _onDeletedListener() =>
