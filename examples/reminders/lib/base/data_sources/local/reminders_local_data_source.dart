@@ -22,7 +22,7 @@ class RemindersLocalDataSource {
   }
 
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 2000));
 
     if (request == null) {
       return ReminderListResponse(

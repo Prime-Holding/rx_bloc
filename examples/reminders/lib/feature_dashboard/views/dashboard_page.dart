@@ -25,59 +25,64 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => Scaffold(
         appBar: _buildAppBar(context),
         backgroundColor: context.designSystem.colors.backgroundListColor,
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildErrorListener(),
-            Expanded(
-              child: RxResultBuilder<DashboardBlocType, DashboardModel>(
-                state: (bloc) => bloc.states.data,
-                buildSuccess: (context, data, bloc) => CustomScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: DashboardStats(
-                        completeCount: data.completeCount,
-                        incompleteCount: data.incompleteCount,
-                      ),
-                    ),
-                    SliverStickyHeader(
-                      header: const Padding(
-                        padding: EdgeInsets.only(left: 12),
-                        child: AppStickyHeader(
-                          text: 'Overdue',
+        body: RefreshIndicator(
+          onRefresh: () async =>
+              context.read<DashboardBlocType>().events.fetchData(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildErrorListener(),
+              Expanded(
+                child: RxResultBuilder<DashboardBlocType, DashboardModel>(
+                  state: (bloc) => bloc.states.data,
+                  buildSuccess: (context, data, bloc) => CustomScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: DashboardStats(
+                          completeCount: data.completeCount,
+                          incompleteCount: data.incompleteCount,
                         ),
                       ),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, i) => Container(
-                            decoration: BoxDecoration(
-                              color: context.designSystem.colors.secondaryColor,
-                              borderRadius:
-                                  _getRadius(i, data.reminderList.length),
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                            ),
-                            child: AppReminderTile(
-                              reminder: data.reminderList[i],
-                              isFirst: i == 0,
-                              isLast: i == data.reminderList.length - 1,
-                            ),
+                      SliverStickyHeader(
+                        header: const Padding(
+                          padding: EdgeInsets.only(left: 12),
+                          child: AppStickyHeader(
+                            text: 'Overdue',
                           ),
-                          childCount: data.reminderList.length,
                         ),
-                      ),
-                    )
-                  ],
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, i) => Container(
+                              decoration: BoxDecoration(
+                                color:
+                                    context.designSystem.colors.secondaryColor,
+                                borderRadius:
+                                    _getRadius(i, data.reminderList.length),
+                              ),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: AppReminderTile(
+                                reminder: data.reminderList[i],
+                                isFirst: i == 0,
+                                isLast: i == data.reminderList.length - 1,
+                              ),
+                            ),
+                            childCount: data.reminderList.length,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  buildLoading: (context, bloc) =>
+                      const CircularProgressIndicator(),
+                  buildError: (context, error, bloc) => Text(error.toString()),
                 ),
-                buildLoading: (context, bloc) =>
-                    const CircularProgressIndicator(),
-                buildError: (context, error, bloc) => Text(error.toString()),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 
