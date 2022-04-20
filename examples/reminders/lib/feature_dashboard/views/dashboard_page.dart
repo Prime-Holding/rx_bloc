@@ -4,6 +4,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
 import '../blocs/dashboard_bloc.dart';
@@ -77,7 +78,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                     ],
                   ),
                   buildLoading: (context, bloc) =>
-                      const CircularProgressIndicator(),
+                  const AppProgressIndicator(),
                   buildError: (context, error, bloc) => Text(error.toString()),
                 ),
               ),
