@@ -139,11 +139,17 @@ class DashboardStats extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: DashboardStatItem(count: incompleteCount),
+              child: DashboardStatItem(
+                count: incompleteCount,
+                label: context.l10n.incomplete,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: DashboardStatItem(count: completeCount),
+              child: DashboardStatItem(
+                count: completeCount,
+                label: context.l10n.complete,
+              ),
             ),
           ],
         ),
@@ -153,45 +159,58 @@ class DashboardStats extends StatelessWidget {
 class DashboardStatItem extends StatelessWidget {
   const DashboardStatItem({
     required this.count,
+    required this.label,
     Key? key,
   }) : super(key: key);
 
   final int count;
+  final String label;
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 60,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          color: context.designSystem.colors.secondaryColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.05),
-              spreadRadius: 3,
-              blurRadius: 5,
-              offset: const Offset(0, 3), // changes position of shadow
+  Widget build(BuildContext context) => Column(
+        children: [
+          SizedBox(
+            height: 30,
+            child: Text(
+              label,
+              style: context.designSystem.typography.alertSecondaryTitle,
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
           ),
-          child: Row(
-            children: [
-              Icon(
-                Icons.calendar_today,
-                color: context.designSystem.colors.primaryVariant,
-              ),
-              Expanded(
-                child: Text(
-                  count.toString(),
-                  textAlign: TextAlign.center,
-                  style: context.designSystem.typography.bodyText1,
+          Container(
+            height: 60,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              color: context.designSystem.colors.secondaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.05),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3), // changes position of shadow
                 ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
               ),
-            ],
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    color: context.designSystem.colors.primaryVariant,
+                  ),
+                  Expanded(
+                    child: Text(
+                      count.toString(),
+                      textAlign: TextAlign.center,
+                      style: context.designSystem.typography.bodyText1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       );
 }
