@@ -20,7 +20,7 @@ extension ResultMapStreamX<E> on Stream<E> {
         return Result<E>.success(data);
       });
 
-  /// Map the give stream to a new [Result] one,
+  /// Map the current stream to a new [Result] stream,
   /// as combining it with another [stream].
   ///
   /// Use [mapSuccess] to map the current stream with the
@@ -28,12 +28,12 @@ extension ResultMapStreamX<E> on Stream<E> {
   ///
   /// Example:
   /// ```
-  /// Result<String> result = Stream.value(0).mapResultWithLatestFrom<String>(
+  /// Result<String> result = Stream.value(0).withLatestFromResult<String>(
   ///     Stream.value(Result.success('1')),
   ///     (value, resultValue) => '$value, $resultValue', //0, 1
   /// );
   /// ```
-  Stream<Result<R>> mapResultWithLatestFrom<R>(
+  Stream<Result<R>> withLatestFromResult<R>(
     Stream<Result<R>> stream,
     R Function(E, R) mapSuccess,
   ) {

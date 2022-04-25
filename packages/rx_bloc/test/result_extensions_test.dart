@@ -18,10 +18,10 @@ void main() {
     });
   });
 
-  group('Extension on Stream<T>.mapResultWithLatestFrom()', () {
-    test('mapResultWithLatestFrom()', () async {
+  group('Extension on Stream<T>.withLatestFromResult()', () {
+    test('withLatestFromResult()', () async {
       await expectLater(
-        Stream.value(0).mapResultWithLatestFrom<String>(
+        Stream.value(0).withLatestFromResult<String>(
           Stream.value(Result.success('1')),
           (value, resultValue) => '$value, $resultValue',
         ),

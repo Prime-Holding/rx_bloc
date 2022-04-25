@@ -1,5 +1,5 @@
 ## [3.3.0] - January 30, 2022
-- Added `Stream<T>` extensions: `mapToResult`, `mapResultWithLatestFrom`
+- Added `Stream<T>` extensions: `mapToResult`, `withLatestFromResult`
 - Added `Stream<Result<T>>` extensions: `mapResult`, `asyncMapResult`
 - Added `Result<T>` extensions: `mapResult`, `asyncMapResult`
 
