@@ -87,7 +87,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
           child: Chip(
             labelStyle: ChipTheme.of(context)
                 .labelStyle
-                .copyWith(color: selected == id ? Colors.white : Colors.black),
+                ?.copyWith(color: selected == id ? Colors.white : Colors.black),
             label: Text(name),
             backgroundColor:
                 selected == id ? Theme.of(context).colorScheme.secondary : null,
