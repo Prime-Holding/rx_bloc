@@ -81,7 +81,7 @@ void main() {
   group('ModelManageEvents', () {
     test('mapCreatedWithLatestFrom addToListCondition:true', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([IdentifiableModel('1')]),
           operationCallback: (identifiable) async => ManageOperation.merge,
         ),
@@ -93,7 +93,7 @@ void main() {
 
     test('mapCreatedWithLatestFrom addToListCondition:false', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([IdentifiableModel('1')]),
           operationCallback: (identifiable) async => ManageOperation.ignore,
         ),
@@ -105,7 +105,7 @@ void main() {
 
     test('mapUpdatedWithLatestFrom removeFromListCondition:true', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([
             IdentifiableModel('1'),
             IdentifiableModel('2'),
@@ -120,7 +120,7 @@ void main() {
 
     test('mapUpdatedWithLatestFrom removeFromListCondition:false', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([
             IdentifiableModel('1'),
             IdentifiableModel('2'),
@@ -138,7 +138,7 @@ void main() {
 
     test('mapDeletedWithLatestFrom', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value(
             [
               IdentifiableModel('1'),
@@ -160,7 +160,7 @@ void main() {
     test('PaginatedList mapCreatedWithLatestFrom addToListCondition:true',
         () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value(
             PaginatedList(
               list: [IdentifiableModel('1')],
@@ -182,7 +182,7 @@ void main() {
 
     test('PaginatedList mapDeletedWithLatestFrom', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value(
             PaginatedList(
               list: [

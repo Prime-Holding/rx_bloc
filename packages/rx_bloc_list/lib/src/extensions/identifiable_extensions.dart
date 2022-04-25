@@ -84,7 +84,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// Examples:
   /// 1. The stream value will be removed from the [list] value
   /// ```
-  /// objectStream.identifiableWithLatestFrom(
+  /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
   ///     operationCallback: (identifiable) async => ManageOperation.remove,
   /// )
@@ -92,7 +92,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   ///
   /// 2. The stream value will be merged into the [list] value
   /// ```
-  /// objectStream.identifiableWithLatestFrom(
+  /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
   ///     operationCallback: (identifiable) async => ManageOperation.merge,
   /// )
@@ -100,12 +100,12 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   ///
   /// 3. The stream value won't be neither merged nor removed from the [list] value
   /// ```
-  /// objectStream.identifiableWithLatestFrom(
+  /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
   ///     operationCallback: (identifiable) async => ManageOperation.ignore,
   /// )
   /// ```
-  Stream<List<E>> identifiableWithLatestFrom(
+  Stream<List<E>> withLatestFromIdentifiableList(
     Stream<List<E>> list, {
     required Future<ManageOperation> Function(E identifiable) operationCallback,
   }) =>
