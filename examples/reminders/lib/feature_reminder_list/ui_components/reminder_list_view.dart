@@ -3,6 +3,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
 import '../../base/models/reminder/reminder_model.dart';
@@ -57,8 +58,7 @@ class ReminderListView extends StatelessWidget {
             )
           ],
         ),
-        buildLoading: (context, list, bloc) =>
-            const CircularProgressIndicator(),
+        buildLoading: (context, list, bloc) => const AppProgressIndicator(),
         buildError: (context, list, bloc) => Container(),
       );
 }
