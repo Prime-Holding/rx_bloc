@@ -24,7 +24,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppBar(context),
+        appBar: AppBar(),
         backgroundColor: context.designSystem.colors.backgroundListColor,
         body: RefreshIndicator(
           onRefresh: () async =>
@@ -77,8 +77,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                       )
                     ],
                   ),
-                  buildLoading: (context, bloc) =>
-                  const AppProgressIndicator(),
+                  buildLoading: (context, bloc) => const AppProgressIndicator(),
                   buildError: (context, error, bloc) => Text(error.toString()),
                 ),
               ),
@@ -86,8 +85,6 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           ),
         ),
       );
-
-  AppBar _buildAppBar(BuildContext context) => AppBar();
 
   Widget _buildErrorListener() => RxBlocListener<DashboardBlocType, String>(
         state: (bloc) => bloc.states.errors,
