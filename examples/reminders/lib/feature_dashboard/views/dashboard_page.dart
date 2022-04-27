@@ -4,6 +4,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
 import '../blocs/dashboard_bloc.dart';
@@ -25,59 +26,64 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => Scaffold(
         appBar: _buildAppBar(context),
         backgroundColor: context.designSystem.colors.backgroundListColor,
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildErrorListener(),
-            Expanded(
-              child: RxResultBuilder<DashboardBlocType, DashboardModel>(
-                state: (bloc) => bloc.states.data,
-                buildSuccess: (context, data, bloc) => CustomScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: DashboardStats(
-                        completeCount: data.completeCount,
-                        incompleteCount: data.incompleteCount,
-                      ),
-                    ),
-                    SliverStickyHeader(
-                      header: const Padding(
-                        padding: EdgeInsets.only(left: 12),
-                        child: AppStickyHeader(
-                          text: 'Overdue',
+        body: RefreshIndicator(
+          onRefresh: () async =>
+              context.read<DashboardBlocType>().events.fetchData(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildErrorListener(),
+              Expanded(
+                child: RxResultBuilder<DashboardBlocType, DashboardModel>(
+                  state: (bloc) => bloc.states.data,
+                  buildSuccess: (context, data, bloc) => CustomScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: DashboardStats(
+                          completeCount: data.completeCount,
+                          incompleteCount: data.incompleteCount,
                         ),
                       ),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, i) => Container(
-                            decoration: BoxDecoration(
-                              color: context.designSystem.colors.secondaryColor,
-                              borderRadius:
-                                  _getRadius(i, data.reminderList.length),
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                            ),
-                            child: AppReminderTile(
-                              reminder: data.reminderList[i],
-                              isFirst: i == 0,
-                              isLast: i == data.reminderList.length - 1,
-                            ),
+                      SliverStickyHeader(
+                        header: const Padding(
+                          padding: EdgeInsets.only(left: 12),
+                          child: AppStickyHeader(
+                            text: 'Overdue',
                           ),
-                          childCount: data.reminderList.length,
                         ),
-                      ),
-                    )
-                  ],
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, i) => Container(
+                              decoration: BoxDecoration(
+                                color:
+                                    context.designSystem.colors.secondaryColor,
+                                borderRadius:
+                                    _getRadius(i, data.reminderList.length),
+                              ),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: AppReminderTile(
+                                reminder: data.reminderList[i],
+                                isFirst: i == 0,
+                                isLast: i == data.reminderList.length - 1,
+                              ),
+                            ),
+                            childCount: data.reminderList.length,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  buildLoading: (context, bloc) =>
+                  const AppProgressIndicator(),
+                  buildError: (context, error, bloc) => Text(error.toString()),
                 ),
-                buildLoading: (context, bloc) =>
-                    const CircularProgressIndicator(),
-                buildError: (context, error, bloc) => Text(error.toString()),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 
@@ -132,11 +138,17 @@ class DashboardStats extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: DashboardStatItem(count: incompleteCount),
+              child: DashboardStatItem(
+                count: incompleteCount,
+                label: context.l10n.incomplete,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: DashboardStatItem(count: completeCount),
+              child: DashboardStatItem(
+                count: completeCount,
+                label: context.l10n.complete,
+              ),
             ),
           ],
         ),
@@ -146,45 +158,58 @@ class DashboardStats extends StatelessWidget {
 class DashboardStatItem extends StatelessWidget {
   const DashboardStatItem({
     required this.count,
+    required this.label,
     Key? key,
   }) : super(key: key);
 
   final int count;
+  final String label;
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 60,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          color: context.designSystem.colors.secondaryColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.05),
-              spreadRadius: 3,
-              blurRadius: 5,
-              offset: const Offset(0, 3), // changes position of shadow
+  Widget build(BuildContext context) => Column(
+        children: [
+          SizedBox(
+            height: 30,
+            child: Text(
+              label,
+              style: context.designSystem.typography.alertSecondaryTitle,
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
           ),
-          child: Row(
-            children: [
-              Icon(
-                Icons.calendar_today,
-                color: context.designSystem.colors.primaryVariant,
-              ),
-              Expanded(
-                child: Text(
-                  count.toString(),
-                  textAlign: TextAlign.center,
-                  style: context.designSystem.typography.bodyText1,
+          Container(
+            height: 60,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              color: context.designSystem.colors.secondaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.05),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3), // changes position of shadow
                 ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
               ),
-            ],
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    color: context.designSystem.colors.primaryVariant,
+                  ),
+                  Expanded(
+                    child: Text(
+                      count.toString(),
+                      textAlign: TextAlign.center,
+                      style: context.designSystem.typography.bodyText1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       );
 }
