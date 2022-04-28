@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import '../../app_extensions.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../models/reminder/reminder_model.dart';
 import 'app_divider.dart';
@@ -73,10 +74,10 @@ class _AppReminderTileState extends State<AppReminderTile> {
   }
 
   @override
-  Widget build(BuildContext context) => Dismissible(
-      onDismissed: (direction) =>
-          context.read<ReminderManageBlocType>().events.delete(widget.reminder),
+  Widget build(BuildContext context) => Slidable(
       key: Key('Reminder${widget.reminder.id}'),
+      startActionPane: _buildActionPane(context),
+      endActionPane: _buildActionPane(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -106,6 +107,30 @@ class _AppReminderTileState extends State<AppReminderTile> {
           ],
         ),
       ));
+
+  ActionPane _buildActionPane(BuildContext context) => ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (context) => context
+                .read<ReminderManageBlocType>()
+                .events
+                .delete(widget.reminder),
+            backgroundColor:
+                context.designSystem.colors.inputDecorationErrorLabelColor,
+            foregroundColor: context.designSystem.colors.canvasColor,
+            icon: Icons.delete,
+            label: context.l10n.delete,
+          ),
+          SlidableAction(
+            onPressed: null,
+            backgroundColor: context.designSystem.colors.activeButtonColor,
+            foregroundColor: context.designSystem.colors.canvasColor,
+            icon: Icons.edit,
+            label: context.l10n.edit,
+          ),
+        ],
+      );
 
   Future<void> _onDueDatePressed() async {
     final date = await showDatePicker(

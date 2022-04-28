@@ -23,6 +23,8 @@
     "notificationShowDelayedText" : "Show notification after 5 seconds",
     "notificationsPageDescription" : "In order to receive push notifications on your device, you need first to grant access to them. This applies for iOS and Web, as the permissions on Android are granted upfront.",
     "notificationsPageConfig" : "When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated.",
+    "delete" : "Delete",
+    "edit" : "Edit",
     "incomplete": "Incomplete",
     "complete": "Complete"
 }
