@@ -25,6 +25,24 @@
     "notificationsPageConfig" : "When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated.",
     "delete" : "Delete",
     "edit" : "Edit",
+    "incomplete": "Incomplete",
+    "complete": "Complete",
     "name": "Name:",
-    "date": "Date:"
+    "date": "Date:",
+    "reminderDeleted": "Reminder with title: {reminderTitle} was deleted.",
+    "@reminderDeleted": {
+        "placeholders": {
+            "reminderTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "reminderCreated": "Reminder with title: {reminderTitle} was created.",
+    "@reminderCreated": {
+        "placeholders": {
+            "reminderTitle": {
+                "type": "String"
+            }
+        }
+    }
 }

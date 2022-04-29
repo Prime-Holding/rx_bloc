@@ -28,5 +28,21 @@
     "incomplete": "Incomplete",
     "complete": "Complete",
     "name": "Name:",
-    "date": "Date:"
+    "date": "Date:",
+    "reminderDeleted": "Reminder with title: {reminderTitle} was deleted.",
+    "@reminderDeleted": {
+        "placeholders": {
+            "reminderTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "reminderCreated": "Reminder with title: {reminderTitle} was created.",
+    "@reminderCreated": {
+        "placeholders": {
+            "reminderTitle": {
+                "type": "String"
+            }
+        }
+    }
 }
