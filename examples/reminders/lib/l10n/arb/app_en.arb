@@ -26,5 +26,7 @@
     "delete" : "Delete",
     "edit" : "Edit",
     "incomplete": "Incomplete",
-    "complete": "Complete"
+    "complete": "Complete",
+    "name": "Name:",
+    "date": "Date:"
 }
