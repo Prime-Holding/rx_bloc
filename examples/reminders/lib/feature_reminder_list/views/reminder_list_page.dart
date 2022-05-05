@@ -21,21 +21,24 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppBar(context),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildErrorListener(),
-            const Expanded(
-              child: ReminderListView(),
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => addDialog(context),
-          tooltip: 'add',
-          child: const Icon(Icons.add),
+  Widget build(BuildContext context) => SafeArea(
+        top: false,
+        child: Scaffold(
+          appBar: _buildAppBar(context),
+          body: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildErrorListener(),
+              const Expanded(
+                child: ReminderListView(),
+              )
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => addDialog(context),
+            tooltip: 'add',
+            child: const Icon(Icons.add),
+          ),
         ),
       );
 
