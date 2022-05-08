@@ -81,9 +81,9 @@ extension _DashboardModelX on DashboardModel {
   }) {
     switch (operation) {
       case ManageOperation.merge:
-        return !reminderModel.complete ? incompleteCount + 1 : incompleteCount;
+        return reminderModel.complete ? incompleteCount - 1 : incompleteCount + 1;
       case ManageOperation.remove:
-        return !reminderModel.complete ? incompleteCount - 1 : incompleteCount;
+        return reminderModel.complete ? incompleteCount  : incompleteCount - 1;
       case ManageOperation.ignore:
         return incompleteCount;
     }
@@ -95,7 +95,7 @@ extension _DashboardModelX on DashboardModel {
   }) {
     switch (operation) {
       case ManageOperation.merge:
-        return reminderModel.complete ? completeCount + 1 : completeCount;
+        return reminderModel.complete ? completeCount + 1 : completeCount - 1;
       case ManageOperation.remove:
         return reminderModel.complete ? completeCount - 1 : completeCount;
       case ManageOperation.ignore:

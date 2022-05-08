@@ -109,8 +109,20 @@ class _AppReminderTileState extends State<AppReminderTile> {
       ));
 
   ActionPane _buildActionPane(BuildContext context) => ActionPane(
+        extentRatio: 0.7,
         motion: const ScrollMotion(),
         children: [
+          SlidableAction(
+            onPressed: (context) =>
+              context.read<ReminderManageBlocType>().events.update(widget
+                  .reminder
+                  .copyWith(complete: !widget.reminder.complete))
+            ,
+            backgroundColor: context.designSystem.colors.activeButtonColor,
+            foregroundColor: context.designSystem.colors.canvasColor,
+            icon: Icons.check_box_outlined,
+            label: context.l10n.complete,
+          ),
           SlidableAction(
             onPressed: (context) => context
                 .read<ReminderManageBlocType>()
