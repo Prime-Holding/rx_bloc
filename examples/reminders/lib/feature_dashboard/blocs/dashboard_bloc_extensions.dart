@@ -8,3 +8,9 @@ extension _ToError on Stream<Exception> {
   /// TODO: Implement error event-to-state logic
   Stream<String> toMessage() => map((errorState) => errorState.toString());
 }
+
+extension ResultStreamExtensions on Stream<Result<DashboardModel>> {
+  Future<void> waitToLoad() async {
+    await Future.delayed(const Duration(milliseconds: 2000));
+  }
+}
