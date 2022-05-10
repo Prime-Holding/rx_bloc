@@ -24,7 +24,7 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => SafeArea(
         top: false,
         child: Scaffold(
-          appBar: _buildAppBar(context),
+          appBar: AppBar(),
           body: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -40,18 +40,6 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
             child: const Icon(Icons.add),
           ),
         ),
-      );
-
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => context
-                .read<ReminderListBlocType>()
-                .events
-                .loadPage(reset: true),
-          ),
-        ],
       );
 
   Widget _buildErrorListener() => RxBlocListener<ReminderListBlocType, String>(

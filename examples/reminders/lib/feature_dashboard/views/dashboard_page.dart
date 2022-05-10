@@ -29,7 +29,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => SafeArea(
         top: false,
         child: Scaffold(
-          appBar: _buildAppBar(context),
+          appBar: AppBar(),
           backgroundColor: context.designSystem.colors.backgroundListColor,
           body: RefreshIndicator(
             onRefresh: () async =>
@@ -94,15 +94,6 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
             ),
           ),
         ),
-      );
-
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: context.read<DashboardBlocType>().events.fetchData,
-          ),
-        ],
       );
 
   Widget _buildOnDeletedListener() =>
