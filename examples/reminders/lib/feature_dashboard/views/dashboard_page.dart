@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
+import '../../base/models/reminder/reminder_model.dart';
+import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../blocs/dashboard_bloc.dart';
 import '../di/dashboard_dependencies.dart';
 import '../models/dashboard_model.dart';
@@ -33,6 +36,8 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               _buildErrorListener(),
+              _buildOnDeletedListener(),
+              _buildOnCreatedListener(),
               Expanded(
                 child: RxResultBuilder<DashboardBlocType, DashboardModel>(
                   state: (bloc) => bloc.states.data,
@@ -84,6 +89,49 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
             ],
           ),
         ),
+      );
+
+  AppBar _buildAppBar(BuildContext context) => AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: context.read<DashboardBlocType>().events.fetchData,
+          ),
+        ],
+      );
+
+  Widget _buildOnDeletedListener() =>
+      RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
+        state: (bloc) => bloc.states.onDeleted,
+        listener: (context, onDeleted) {
+          if (onDeleted is ResultSuccess && onDeleted != null) {
+            final _reminderTitleName =
+                (onDeleted as ResultSuccess<ReminderModel>).data.title;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.l10n.reminderDeleted(_reminderTitleName)),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
+      );
+
+  Widget _buildOnCreatedListener() =>
+      RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
+        state: (bloc) => bloc.states.onCreated,
+        listener: (context, onCreated) {
+          if (onCreated is ResultSuccess && onCreated != null) {
+            final _reminderTitleName =
+                (onCreated as ResultSuccess<ReminderModel>).data.title;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.l10n.reminderCreated(_reminderTitleName)),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
       );
 
   Widget _buildErrorListener() => RxBlocListener<DashboardBlocType, String>(
