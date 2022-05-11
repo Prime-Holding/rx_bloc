@@ -113,15 +113,26 @@ class _AppReminderTileState extends State<AppReminderTile> {
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) =>
-              context.read<ReminderManageBlocType>().events.update(widget
-                  .reminder
-                  .copyWith(complete: !widget.reminder.complete))
-            ,
-            backgroundColor: context.designSystem.colors.activeButtonColor,
+            onPressed: (context) => context
+                .read<ReminderManageBlocType>()
+                .events
+                .update(widget.reminder
+                    .copyWith(complete: !widget.reminder.complete)),
+            backgroundColor: widget.reminder.complete
+                ? context.designSystem.colors.actionButtonCompleteColor
+                : context.designSystem.colors.actionButtonInCompleteColor,
             foregroundColor: context.designSystem.colors.canvasColor,
             icon: Icons.check_box_outlined,
-            label: context.l10n.complete,
+            label: widget.reminder.complete
+                ? context.l10n.complete
+                : context.l10n.incomplete,
+          ),
+          SlidableAction(
+            onPressed: null,
+            backgroundColor: context.designSystem.colors.activeButtonColor,
+            foregroundColor: context.designSystem.colors.canvasColor,
+            icon: Icons.edit,
+            label: context.l10n.edit,
           ),
           SlidableAction(
             onPressed: (context) => context
@@ -133,13 +144,6 @@ class _AppReminderTileState extends State<AppReminderTile> {
             foregroundColor: context.designSystem.colors.canvasColor,
             icon: Icons.delete,
             label: context.l10n.delete,
-          ),
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: context.designSystem.colors.activeButtonColor,
-            foregroundColor: context.designSystem.colors.canvasColor,
-            icon: Icons.edit,
-            label: context.l10n.edit,
           ),
         ],
       );

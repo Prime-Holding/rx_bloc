@@ -114,6 +114,10 @@ class DesignSystemColors {
 
   Color get progressIndicatorBackgroundColor => Colors.white;
 
+  Color get actionButtonCompleteColor => Colors.green;
+
+  Color get actionButtonInCompleteColor => Colors.purple;
+
   /// endregion
 }
 
