@@ -20,7 +20,6 @@ class ScrollPosWidget extends StatefulWidget {
 
 class _ScrollPosWidgetState extends State<ScrollPosWidget> {
   late final ScrollPosController _controller;
-  final Map<String, String> _reminderIndexes = {};
 
   @override
   void dispose() {
@@ -31,23 +30,17 @@ class _ScrollPosWidgetState extends State<ScrollPosWidget> {
   @override
   void initState() {
     _controller = ScrollPosController(itemCount: widget.list.length);
-    for (var i = 0; i < widget.list.length; i++) {
-      var element = widget.list[i];
-      _reminderIndexes.putIfAbsent(i.toString(), () => element.id);
-    }
-
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => _scrollToIndex(int.parse(widget.id)));
+    final _correctIndex =
+        widget.list.indexWhere((element) => element.id == widget.id);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _scrollToIndex(_correctIndex);
+    });
     super.initState();
   }
 
   void _scrollToIndex(int i) {
     if (i != 0) {
-      var scrollToIndex = _reminderIndexes.entries
-          .firstWhere((element) => element.value == widget.id)
-          .key;
-
-      _controller.scrollToItem(int.parse(scrollToIndex), center: true);
+      _controller.scrollToItem(i, center: true);
     }
   }
 
