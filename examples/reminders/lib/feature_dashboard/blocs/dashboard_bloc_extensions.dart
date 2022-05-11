@@ -11,6 +11,7 @@ extension _ToError on Stream<Exception> {
 
 extension ResultStreamExtensions on Stream<Result<DashboardModel>> {
   Future<void> waitToLoad() async {
-    await Future.delayed(const Duration(milliseconds: 2000));
+    await firstWhere((resultModel) => resultModel is ResultLoading);
+    await firstWhere((resultModel) => resultModel is! ResultLoading);
   }
 }

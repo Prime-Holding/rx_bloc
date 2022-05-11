@@ -40,8 +40,7 @@ class DashboardBloc extends $DashboardBloc {
         .startWith(false)
         .switchMap((silently) => _dashboardService
             .getDashboardModel()
-            .asResultStream()
-            .skip(silently ? 1 : 0))
+            .asResultStream(tag: silently ? _tagSilently : ''))
         .setResultStateHandler(this)
         .bind(_dashboardModelResult)
         .addTo(_compositeSubscription);
@@ -61,6 +60,8 @@ class DashboardBloc extends $DashboardBloc {
 
   final DashboardService _dashboardService;
 
+  static const _tagSilently = 'silently';
+
   Result<DashboardModel> managedListToDashboard(
     ManagedList<ReminderModel> managedList,
   ) {
@@ -79,7 +80,9 @@ class DashboardBloc extends $DashboardBloc {
   }
 
   @override
-  Stream<Result<DashboardModel>> _mapToDataState() => _dashboardModelResult;
+  Stream<Result<DashboardModel>> _mapToDataState() =>
+      _dashboardModelResult.where((resultModel) =>
+          !(resultModel is ResultLoading && resultModel.tag == _tagSilently));
 
   final _dashboardModelResult =
       BehaviorSubject<Result<DashboardModel>>.seeded(Result.loading());

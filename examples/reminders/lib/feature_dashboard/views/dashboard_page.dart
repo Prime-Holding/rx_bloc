@@ -89,7 +89,9 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                       )
                     ],
                   ),
-                  buildLoading: (context, bloc) => const AppProgressIndicator(),
+                  buildLoading: (context, bloc) {
+                    print('LOADING');
+                    return const AppProgressIndicator();},
                   buildError: (context, error, bloc) => Text(error.toString()),
                 ),
               ),
