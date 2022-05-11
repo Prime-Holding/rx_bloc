@@ -31,13 +31,8 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         backgroundColor: context.designSystem.colors.backgroundListColor,
         body: RefreshIndicator(
           onRefresh: () async {
-            context
-              .read<DashboardBlocType>()
-              .events
-              .fetchData(silently: true);
-          return context
-              .read<DashboardBlocType>()
-              .states.refreshDone;
+            context.read<DashboardBlocType>().events.fetchData(silently: true);
+            return context.read<DashboardBlocType>().states.refreshDone;
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,9 +84,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                       )
                     ],
                   ),
-                  buildLoading: (context, bloc) {
-                    print('LOADING');
-                    return const AppProgressIndicator();},
+                  buildLoading: (context, bloc) => const AppProgressIndicator(),
                   buildError: (context, error, bloc) => Text(error.toString()),
                 ),
               ),
