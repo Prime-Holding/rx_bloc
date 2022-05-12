@@ -40,12 +40,31 @@ class DashboardService {
         reminderList: dashboardModel.reminderList
             .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
       );
+//todo implement and test this method for creation and deletion from reminders list
+  Future<ManageOperation> getManageOperationForRemindersList(ReminderModel model) async {
+    final dateRange = _getDateRange();
+
+    if (model.dueDate.isAfter(dateRange.from) &&
+        model.dueDate.isBefore(dateRange.to)) {
+      // if (model.complete) {
+        //coming from dashboard, when it is complete, remove it from dashboard
+        // return ManageOperation.remove;
+      // }
+      return ManageOperation.merge;
+    }
+
+    return ManageOperation.remove;
+  }
 
   Future<ManageOperation> getManageOperation(ReminderModel model) async {
     final dateRange = _getDateRange();
 
     if (model.dueDate.isAfter(dateRange.from) &&
         model.dueDate.isBefore(dateRange.to)) {
+      if (model.complete) {
+        //coming from dashboard, when it is complete, remove it from dashboard
+        return ManageOperation.remove;
+      }
       return ManageOperation.merge;
     }
 
@@ -81,9 +100,13 @@ extension _DashboardModelX on DashboardModel {
   }) {
     switch (operation) {
       case ManageOperation.merge:
-        return reminderModel.complete ? incompleteCount - 1 : incompleteCount + 1;
+        return reminderModel.complete
+            ? incompleteCount - 1
+            : incompleteCount + 1;
+      // return !reminderModel.complete ? incompleteCount + 1 : incompleteCount;//old
       case ManageOperation.remove:
-        return reminderModel.complete ? incompleteCount  : incompleteCount - 1;
+        return reminderModel.complete ? incompleteCount - 1 : incompleteCount - 1;
+      // return !reminderModel.complete ? incompleteCount - 1 : incompleteCount;//old
       case ManageOperation.ignore:
         return incompleteCount;
     }
@@ -95,9 +118,13 @@ extension _DashboardModelX on DashboardModel {
   }) {
     switch (operation) {
       case ManageOperation.merge:
-        return reminderModel.complete ? completeCount + 1 : completeCount - 1;
+        return reminderModel.complete
+            ? completeCount + 1
+            : completeCount - 1; //new
+      // return reminderModel.complete ? completeCount + 1 : completeCount - 1;
+      // return reminderModel.complete ? completeCount + 1 : completeCount;//old
       case ManageOperation.remove:
-        return reminderModel.complete ? completeCount - 1 : completeCount;
+        return reminderModel.complete ? completeCount + 1 : completeCount;
       case ManageOperation.ignore:
         return completeCount;
     }

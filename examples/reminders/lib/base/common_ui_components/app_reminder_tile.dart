@@ -124,8 +124,8 @@ class _AppReminderTileState extends State<AppReminderTile> {
             foregroundColor: context.designSystem.colors.canvasColor,
             icon: Icons.check_box_outlined,
             label: widget.reminder.complete
-                ? context.l10n.complete
-                : context.l10n.incomplete,
+                ? context.l10n.incomplete
+                : context.l10n.complete,
           ),
           SlidableAction(
             onPressed: null,

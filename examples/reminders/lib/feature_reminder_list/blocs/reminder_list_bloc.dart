@@ -6,8 +6,10 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
+import '../../feature_dashboard/services/dashboard_service.dart';
 
 part 'reminder_list_bloc.rxb.g.dart';
+
 part 'reminder_list_bloc_extensions.dart';
 
 /// A contract class containing all events of the ReminderBloC.
@@ -38,6 +40,7 @@ abstract class ReminderListBlocStates {
 class ReminderListBloc extends $ReminderListBloc {
   /// ReminderListBloc default constructor
   ReminderListBloc(
+    this._dashboardService,
     RemindersService service,
     CoordinatorBlocType coordinatorBloc,
   ) {
@@ -56,7 +59,9 @@ class ReminderListBloc extends $ReminderListBloc {
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          operationCallback: (model) async => ManageOperation.merge,
+          // operationCallback: _dashboardService.getManageOperation,
+          operationCallback: _dashboardService.getManageOperationForRemindersList,
+          // operationCallback: (model) async => ManageOperation.merge,
         )
         .mapToList()
         .cast<PaginatedList<ReminderModel>>()
@@ -70,6 +75,8 @@ class ReminderListBloc extends $ReminderListBloc {
         .bind(_paginatedList)
         .addTo(_compositeSubscription);
   }
+
+  final DashboardService _dashboardService;
 
   /// Internal paginated list stream
   final _paginatedList = BehaviorSubject<PaginatedList<ReminderModel>>.seeded(
