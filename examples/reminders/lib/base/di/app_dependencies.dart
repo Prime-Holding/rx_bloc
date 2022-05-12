@@ -15,7 +15,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../../feature_dashboard/services/dashboard_service.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
@@ -146,11 +145,9 @@ class AppDependencies {
 
   List<Provider> get _services => [
         Provider<RemindersService>(
-            create: (context) => RemindersService(
-                  context.read(),
-                )),
-        Provider<DashboardService>(
-          create: (context) => DashboardService(context.read()),
+          create: (context) => RemindersService(
+            context.read(),
+          ),
         ),
       ];
 

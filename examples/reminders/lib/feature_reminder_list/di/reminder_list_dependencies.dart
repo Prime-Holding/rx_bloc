@@ -28,7 +28,6 @@ class ReminderListDependencies {
       create: (context) => ReminderListBloc(
         context.read(),
         context.read(),
-        context.read(),
       ),
     ),
   ];

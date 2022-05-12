@@ -23,9 +23,9 @@ class DashboardDependencies {
   ];
 
   late final List<Provider> _services = [
-    // Provider<DashboardService>(
-    //   create: (context) => DashboardService(context.read()),
-    // ),
+    Provider<DashboardService>(
+      create: (context) => DashboardService(context.read()),
+    ),
   ];
 
   late final List<RxBlocProvider> _blocs = [

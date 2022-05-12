@@ -18,15 +18,15 @@ enum ManageOperation {
 }
 
 enum CounterOperation {
-  /// increment incomplete
+  /// The operation, which just increments the incomplete counter
   create,
 
-  /// decrement either incomplete or complete
+  /// The operation, which decrements the incomplete or complete counter
   delete,
 
-  /// decrement incomplete and increment complete or
-  /// increment incomplete and decrement complete or
-  /// do nothing
+  /// The operation, which decrements incomplete and increments complete or
+  /// increments incomplete and decrements complete or
+  /// does not change counter
   update,
 }
 
@@ -50,19 +50,6 @@ class ManagedList<T extends Identifiable> {
 
   /// The managed list
   final List<T> list;
-
-  ManagedList copyWith({
-    ManageOperation? operation,
-    CounterOperation? counterOperation,
-    T? identifiable,
-    List<T>? list,
-  }) =>
-      ManagedList(
-        list ?? this.list,
-        operation: operation ?? this.operation,
-        counterOperation: counterOperation ?? this.counterOperation,
-        identifiable: identifiable ?? this.identifiable,
-      );
 
   @override
   bool operator ==(other) {
