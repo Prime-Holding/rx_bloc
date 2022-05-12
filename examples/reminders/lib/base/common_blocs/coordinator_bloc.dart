@@ -14,6 +14,7 @@ import 'package:rxdart/rxdart.dart';
 import '../models/reminder/reminder_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
+
 part 'coordinator_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
@@ -82,14 +83,17 @@ extension CoordinatingTasksX on CoordinatorBlocType {
       Rx.merge([
         states.onReminderCreated.whereSuccess().identifiableWithLatestFrom(
               reminderList,
+              CounterOperation.create,
               operationCallback: operationCallback,
             ),
         states.onReminderDeleted.whereSuccess().identifiableWithLatestFrom(
               reminderList,
+              CounterOperation.delete,
               operationCallback: (reminder) async => ManageOperation.remove,
             ),
         states.onReminderUpdated.whereSuccess().identifiableWithLatestFrom(
               reminderList,
+              CounterOperation.update,
               operationCallback: operationCallback,
             ),
       ]);

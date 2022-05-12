@@ -40,21 +40,23 @@ class DashboardService {
         reminderList: dashboardModel.reminderList
             .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
       );
+
 //todo implement and test this method for creation and deletion from reminders list
-  Future<ManageOperation> getManageOperationForRemindersList(ReminderModel model) async {
-    final dateRange = _getDateRange();
-
-    if (model.dueDate.isAfter(dateRange.from) &&
-        model.dueDate.isBefore(dateRange.to)) {
-      // if (model.complete) {
-        //coming from dashboard, when it is complete, remove it from dashboard
-        // return ManageOperation.remove;
-      // }
-      return ManageOperation.merge;
-    }
-
-    return ManageOperation.remove;
-  }
+//   Future<ManageOperation> getManageOperationForRemindersList(
+//       ReminderModel model) async {
+//     final dateRange = _getDateRange();
+//
+//     if (model.dueDate.isAfter(dateRange.from) &&
+//         model.dueDate.isBefore(dateRange.to)) {
+//       // if (model.complete) {
+//       //coming from dashboard, when it is complete, remove it from dashboard
+//       // return ManageOperation.remove;
+//       // }
+//       return ManageOperation.merge;
+//     }
+//
+//     return ManageOperation.remove;
+//   }
 
   Future<ManageOperation> getManageOperation(ReminderModel model) async {
     final dateRange = _getDateRange();
@@ -62,7 +64,6 @@ class DashboardService {
     if (model.dueDate.isAfter(dateRange.from) &&
         model.dueDate.isBefore(dateRange.to)) {
       if (model.complete) {
-        //coming from dashboard, when it is complete, remove it from dashboard
         return ManageOperation.remove;
       }
       return ManageOperation.merge;
@@ -79,54 +80,98 @@ class DashboardService {
   DashboardModel getDashboardModelFromManagedList({
     required DashboardModel dashboard,
     required ManagedList<ReminderModel> managedList,
-  }) =>
-      dashboard.copyWith(
-        reminderList: managedList.list,
-        completeCount: dashboard.recalculateCompleteWith(
-          operation: managedList.operation,
-          reminderModel: managedList.identifiable,
-        ),
-        incompleteCount: dashboard.recalculateIncompleteWith(
-          operation: managedList.operation,
-          reminderModel: managedList.identifiable,
-        ),
-      );
+  }) {
+    var complete = dashboard.recalculateCompleteWith(
+      operation: managedList.operation,
+      counterOperation: managedList.counterOperation,
+      reminderModel: managedList.identifiable,
+    );
+    var incomplete = dashboard.recalculateIncompleteWith(
+      operation: managedList.operation,
+      counterOperation: managedList.counterOperation,
+      reminderModel: managedList.identifiable,
+    );
+
+    final _updatedReminderModel = managedList.identifiable.copyWith(completeUpdated: false);
+    final _managedList = managedList.copyWith(
+      identifiable: _updatedReminderModel,
+    );
+    return dashboard.copyWith(
+      reminderList: _managedList.list as List<ReminderModel>,
+      completeCount: complete,
+      incompleteCount: incomplete,
+    );
+  }
 }
 
 extension _DashboardModelX on DashboardModel {
   int recalculateIncompleteWith({
     required ManageOperation operation,
+
+    ///TODO remove this
+    required CounterOperation counterOperation,
     required ReminderModel reminderModel,
   }) {
-    switch (operation) {
-      case ManageOperation.merge:
-        return reminderModel.complete
-            ? incompleteCount - 1
-            : incompleteCount + 1;
+    switch (counterOperation) {
+      case CounterOperation.create:
+        return incompleteCount + 1;
+
       // return !reminderModel.complete ? incompleteCount + 1 : incompleteCount;//old
-      case ManageOperation.remove:
-        return reminderModel.complete ? incompleteCount - 1 : incompleteCount - 1;
+      case CounterOperation.delete:
+        return reminderModel.complete ? incompleteCount : incompleteCount - 1;
       // return !reminderModel.complete ? incompleteCount - 1 : incompleteCount;//old
-      case ManageOperation.ignore:
-        return incompleteCount;
+      case CounterOperation.update:
+        return reminderModel.completeUpdated
+            ? reminderModel.complete
+                ? incompleteCount - 1
+                : incompleteCount + 1
+            : incompleteCount;
     }
+    // switch (counterOperation) {
+    //   case ManageOperation.merge:
+    //     return reminderModel.complete
+    //         ? incompleteCount - 1
+    //         : incompleteCount + 1;
+    //   // return !reminderModel.complete ? incompleteCount + 1 : incompleteCount;//old
+    //   case ManageOperation.remove:
+    //     return reminderModel.complete ? incompleteCount - 1 : incompleteCount - 1;
+    //   // return !reminderModel.complete ? incompleteCount - 1 : incompleteCount;//old
+    //   case ManageOperation.ignore:
+    //     return incompleteCount;
+    // }
   }
 
   int recalculateCompleteWith({
     required ManageOperation operation,
+    required CounterOperation counterOperation,
     required ReminderModel reminderModel,
   }) {
-    switch (operation) {
-      case ManageOperation.merge:
-        return reminderModel.complete
-            ? completeCount + 1
-            : completeCount - 1; //new
+    switch (counterOperation) {
+      case CounterOperation.create:
+        return completeCount;
       // return reminderModel.complete ? completeCount + 1 : completeCount - 1;
       // return reminderModel.complete ? completeCount + 1 : completeCount;//old
-      case ManageOperation.remove:
-        return reminderModel.complete ? completeCount + 1 : completeCount;
-      case ManageOperation.ignore:
-        return completeCount;
+      case CounterOperation.delete:
+        return reminderModel.complete ? completeCount - 1 : completeCount;
+      case CounterOperation.update:
+        return reminderModel.completeUpdated
+            ? reminderModel.complete
+                ? completeCount + 1
+                : completeCount - 1
+            : completeCount;
     }
+
+    // switch (operation) {
+    //   case ManageOperation.merge:
+    //     return reminderModel.complete
+    //         ? completeCount + 1
+    //         : completeCount - 1; //new
+    //   return reminderModel.complete ? completeCount + 1 : completeCount - 1;
+    //   return reminderModel.complete ? completeCount + 1 : completeCount;//old
+    // case ManageOperation.remove:
+    //   return reminderModel.complete ? completeCount + 1 : completeCount;
+    // case ManageOperation.ignore:
+    //   return completeCount;
+    // }
   }
 }

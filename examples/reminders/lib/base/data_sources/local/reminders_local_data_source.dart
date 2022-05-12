@@ -48,6 +48,7 @@ class RemindersLocalDataSource {
     required String title,
     required DateTime dueDate,
     required bool complete,
+    required bool completeUpdated,
   }) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
@@ -57,6 +58,7 @@ class RemindersLocalDataSource {
       id: id,
       title: title,
       complete: complete,
+      completeUpdated: completeUpdated,
     );
 
     _data.add(reminder);
@@ -79,6 +81,7 @@ class RemindersLocalDataSource {
       title: model.title,
       dueDate: model.dueDate,
       complete: model.complete,
+      completeUpdated: model.completeUpdated,
     );
 
     _data[index] = _model;

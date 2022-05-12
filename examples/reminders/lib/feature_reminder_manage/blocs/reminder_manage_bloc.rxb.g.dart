@@ -56,9 +56,13 @@ abstract class $ReminderManageBloc extends RxBlocBase
   void create(
           {required String title,
           required DateTime dueDate,
-          required bool complete}) =>
-      _$createEvent.add(
-          _CreateEventArgs(title: title, dueDate: dueDate, complete: complete));
+          required bool complete,
+          required bool completeUpdated}) =>
+      _$createEvent.add(_CreateEventArgs(
+          title: title,
+          dueDate: dueDate,
+          complete: complete,
+          completeUpdated: completeUpdated));
 
   @override
   void delete(ReminderModel reminder) => _$deleteEvent.add(reminder);
@@ -108,11 +112,16 @@ abstract class $ReminderManageBloc extends RxBlocBase
 /// [ReminderManageBlocEvents.create] event
 class _CreateEventArgs {
   const _CreateEventArgs(
-      {required this.title, required this.dueDate, required this.complete});
+      {required this.title,
+      required this.dueDate,
+      required this.complete,
+      required this.completeUpdated});
 
   final String title;
 
   final DateTime dueDate;
 
   final bool complete;
+
+  final bool completeUpdated;
 }

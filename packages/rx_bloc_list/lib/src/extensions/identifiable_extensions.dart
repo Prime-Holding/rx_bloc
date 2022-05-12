@@ -95,7 +95,8 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// )
   /// ```
   Stream<ManagedList<E>> identifiableWithLatestFrom(
-    Stream<List<E>> list, {
+    Stream<List<E>> list,
+    CounterOperation counterOperation, {
     required Future<ManageOperation> Function(E identifiable) operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
@@ -104,6 +105,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
             yield ManagedList(
               tuple.list._mergeWithList([tuple.item]),
               operation: ManageOperation.merge,
+              counterOperation: counterOperation,
               identifiable: tuple.item,
             );
             break;
@@ -111,6 +113,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
             yield ManagedList(
               tuple.list._removeFromList(tuple.item),
               identifiable: tuple.item,
+              counterOperation: counterOperation,
               operation: ManageOperation.remove,
             );
             break;
@@ -118,6 +121,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
             yield ManagedList(
               tuple.list,
               identifiable: tuple.item,
+              counterOperation: counterOperation,
               operation: ManageOperation.ignore,
             );
             break;

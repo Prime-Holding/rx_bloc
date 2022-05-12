@@ -72,6 +72,7 @@ class AddReminderDialogState extends State<AddReminderDialog> {
                     complete: false,
                     dueDate: dueDate,
                     title: _textEditingController.text,
+                    completeUpdated: false,
                   );
               Navigator.of(context).pop();
             },

@@ -24,11 +24,13 @@ class RemindersRepository {
     required String title,
     required DateTime dueDate,
     required bool complete,
+    required bool completeUpdated,
   }) =>
       _dataSource.create(
         title: title,
         dueDate: dueDate,
         complete: complete,
+        completeUpdated: completeUpdated,
       );
 
   Future<void> delete(String id) => _dataSource.delete(id);

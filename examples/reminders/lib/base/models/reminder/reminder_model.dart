@@ -35,6 +35,7 @@ class ReminderModel implements Identifiable {
     required this.title,
     required this.dueDate,
     required this.complete,
+    required this.completeUpdated,
   });
 
   @override
@@ -42,6 +43,9 @@ class ReminderModel implements Identifiable {
   final String title;
   final DateTime dueDate;
   final bool complete;
+
+  /// Shows whether during update operation the complete flag was changed
+  final bool completeUpdated;
 
   factory ReminderModel.fromIndex(int index) => ReminderModel(
         id: index.toString(),
@@ -54,17 +58,20 @@ class ReminderModel implements Identifiable {
             .add(
               Duration(days: index),
             ),
+        completeUpdated: false,
       );
 
   ReminderModel copyWith({
     String? title,
     DateTime? dueDate,
     bool? complete,
+    bool? completeUpdated,
   }) =>
       ReminderModel(
         id: id,
         title: title ?? this.title,
         dueDate: dueDate ?? this.dueDate,
         complete: complete ?? this.complete,
+        completeUpdated: completeUpdated ?? this.completeUpdated,
       );
 }

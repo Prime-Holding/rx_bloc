@@ -15,6 +15,7 @@ abstract class ReminderManageBlocEvents {
     required String title,
     required DateTime dueDate,
     required bool complete,
+    required bool completeUpdated,
   });
 
   void delete(ReminderModel reminder);
@@ -62,6 +63,7 @@ class ReminderManageBloc extends $ReminderManageBloc {
                 title: reminder.title,
                 dueDate: reminder.dueDate,
                 complete: reminder.complete,
+                completeUpdated: reminder.completeUpdated,
               )
               .asResultStream())
           .setResultStateHandler(this)

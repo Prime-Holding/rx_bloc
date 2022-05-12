@@ -56,6 +56,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
               .events
               .update(widget.reminder.copyWith(
                 title: _textEditingController.text,
+                completeUpdated: false,
               ));
 
           widget.onTitleChanged?.call(_textEditingController.text);
@@ -113,11 +114,13 @@ class _AppReminderTileState extends State<AppReminderTile> {
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) => context
-                .read<ReminderManageBlocType>()
-                .events
-                .update(widget.reminder
-                    .copyWith(complete: !widget.reminder.complete)),
+            onPressed: (context) =>
+                context.read<ReminderManageBlocType>().events.update(
+                      widget.reminder.copyWith(
+                        complete: !widget.reminder.complete,
+                        completeUpdated: true,
+                      ),
+                    ),
             backgroundColor: widget.reminder.complete
                 ? context.designSystem.colors.actionButtonCompleteColor
                 : context.designSystem.colors.actionButtonInCompleteColor,
@@ -166,6 +169,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
           .events
           .update(widget.reminder.copyWith(
             dueDate: date,
+            completeUpdated: false,
           ));
 
       widget.onDueDateChanged?.call(date);
