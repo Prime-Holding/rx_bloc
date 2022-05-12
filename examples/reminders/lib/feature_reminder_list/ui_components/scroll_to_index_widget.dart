@@ -8,40 +8,46 @@ import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
 import '../../base/models/reminder/reminder_model.dart';
 
-class ScrollPosWidget extends StatefulWidget {
-  const ScrollPosWidget(this.list, this.id, {Key? key}) : super(key: key);
+class ScrollToPositionWidget extends StatefulWidget {
+  const ScrollToPositionWidget({
+    required this.remindersList,
+    this.createdReminderId,
+    Key? key,
+  }) : super(key: key);
 
-  final PaginatedList<ReminderModel> list;
-  final String id;
+  final PaginatedList<ReminderModel> remindersList;
+  final String? createdReminderId;
 
   @override
-  State<ScrollPosWidget> createState() => _ScrollPosWidgetState();
+  State<ScrollToPositionWidget> createState() => _ScrollToPositionWidgetState();
 }
 
-class _ScrollPosWidgetState extends State<ScrollPosWidget> {
+class _ScrollToPositionWidgetState extends State<ScrollToPositionWidget> {
   late final ScrollPosController _controller;
+
+  @override
+  void initState() {
+    _controller = ScrollPosController(itemCount: widget.remindersList.length);
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ScrollToPositionWidget oldWidget) {
+    if (widget.createdReminderId != null &&
+        oldWidget.createdReminderId != widget.createdReminderId) {
+      final _correctIndex = widget.remindersList
+          .indexWhere((element) => element.id == widget.createdReminderId);
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _controller.scrollToItem(_correctIndex);
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    _controller = ScrollPosController(itemCount: widget.list.length);
-    final _correctIndex =
-        widget.list.indexWhere((element) => element.id == widget.id);
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-        _scrollToIndex(_correctIndex);
-    });
-    super.initState();
-  }
-
-  void _scrollToIndex(int i) {
-    if (i != 0) {
-      _controller.scrollToItem(i, center: true);
-    }
   }
 
   @override
@@ -58,11 +64,11 @@ class _ScrollPosWidgetState extends State<ScrollPosWidget> {
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, i) => AppReminderTile(
-                reminder: widget.list.list[i],
-                isLast: i == (widget.list.length - 1),
+                reminder: widget.remindersList.list[i],
+                isLast: i == (widget.remindersList.length - 1),
                 key: ValueKey(i),
               ),
-              childCount: widget.list.list.length,
+              childCount: widget.remindersList.list.length,
             ),
           ),
         ),

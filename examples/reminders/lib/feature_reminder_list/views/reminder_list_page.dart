@@ -37,17 +37,14 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
                 builder: (context, onCreated, bloc) {
                   if (onCreated.data != null &&
                       onCreated.data! is ResultSuccess) {
-                    final _id = (onCreated.data as ResultSuccess<ReminderModel>)
+                    final _createdReminderId = (onCreated.data as ResultSuccess<ReminderModel>)
                         .data
                         .id;
                     return ReminderListView(
-                      id: _id,
-                      key: GlobalKey(),
+                      createdReminderId: _createdReminderId,
                     );
                   }
-                  return ReminderListView(
-                    key: GlobalKey(),
-                  );
+                  return const ReminderListView();
                 },
               ),
             )

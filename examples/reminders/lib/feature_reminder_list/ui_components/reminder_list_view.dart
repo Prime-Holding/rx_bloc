@@ -8,10 +8,10 @@ import 'scroll_to_index_widget.dart';
 
 class ReminderListView extends StatefulWidget {
   const ReminderListView({
-    this.id = '0',
+    this.createdReminderId,
     Key? key,
   }) : super(key: key);
-  final String id;
+  final String? createdReminderId;
 
   @override
   State<ReminderListView> createState() => _ReminderListViewState();
@@ -27,9 +27,9 @@ class _ReminderListViewState extends State<ReminderListView> {
           bloc.events.loadPage(reset: true);
           return bloc.states.refreshDone;
         },
-        buildSuccess: (context, list, bloc) => ScrollPosWidget(
-          list,
-          widget.id,
+        buildSuccess: (context, list, bloc) => ScrollToPositionWidget(
+          remindersList: list,
+          createdReminderId: widget.createdReminderId,
         ),
         buildLoading: (context, list, bloc) => const AppProgressIndicator(),
         buildError: (context, list, bloc) => Container(),
