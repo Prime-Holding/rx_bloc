@@ -20,7 +20,7 @@ abstract class $DashboardBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [fetchData]
-  final _$fetchDataEvent = PublishSubject<void>();
+  final _$fetchDataEvent = PublishSubject<bool>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -32,7 +32,7 @@ abstract class $DashboardBloc extends RxBlocBase
   late final Stream<Result<DashboardModel>> _dataState = _mapToDataState();
 
   @override
-  void fetchData() => _$fetchDataEvent.add(null);
+  void fetchData({required bool silently}) => _$fetchDataEvent.add(silently);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
