@@ -53,47 +53,45 @@ class _ScrollToPositionWidgetState extends State<ScrollToPositionWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: _controller,
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      slivers: [
-        SliverStickyHeader(
-          header: AppStickyHeader(
-            text: 'Today',
-            color: context.designSystem.colors.secondaryColor,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, i) => AutoScrollTag(
-                controller: _controller,
-                index: i,
-                key: ValueKey(i),
-                child: AppReminderTile(
-                  reminder: widget.remindersList.list[i],
-                  isLast: i == (widget.remindersList.length - 1),
+  Widget build(BuildContext context) => CustomScrollView(
+        controller: _controller,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        slivers: [
+          SliverStickyHeader(
+            header: AppStickyHeader(
+              text: 'Today',
+              color: context.designSystem.colors.secondaryColor,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, i) => AutoScrollTag(
+                  controller: _controller,
+                  index: i,
+                  key: ValueKey(i),
+                  child: AppReminderTile(
+                    reminder: widget.remindersList.list[i],
+                    isLast: i == (widget.remindersList.length - 1),
+                  ),
                 ),
+                childCount: widget.remindersList.list.length,
               ),
-              childCount: widget.remindersList.list.length,
             ),
           ),
-        ),
-        SliverStickyHeader(
-          header: AppStickyHeader(
-            text: 'This month',
-            color: context.designSystem.colors.secondaryColor,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, i) => AppReminderTile(
-                reminder: ReminderModel.fromIndex(i),
-                isLast: i == 13,
+          SliverStickyHeader(
+            header: AppStickyHeader(
+              text: 'This month',
+              color: context.designSystem.colors.secondaryColor,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, i) => AppReminderTile(
+                  reminder: ReminderModel.fromIndex(i),
+                  isLast: i == 13,
+                ),
+                childCount: 14,
               ),
-              childCount: 14,
             ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
