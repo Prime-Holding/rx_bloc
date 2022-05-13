@@ -44,6 +44,7 @@ class ReminderModel implements Identifiable {
   final DateTime dueDate;
   final bool complete;
 
+  /// TODO Remove this property when the needed infrastructure is available
   /// Shows whether during update operation the complete flag was changed
   final bool completeUpdated;
 
