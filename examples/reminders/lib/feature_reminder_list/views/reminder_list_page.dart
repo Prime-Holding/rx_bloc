@@ -24,50 +24,40 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppBar(context),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildErrorListener(),
-            Expanded(
-              child:
-                  RxBlocBuilder<ReminderManageBlocType, Result<ReminderModel>>(
-                state: (bloc) => bloc.states.onCreated,
-                builder: (context, onCreated, bloc) {
-                  if (onCreated.data != null &&
-                      onCreated.data! is ResultSuccess) {
-                    final _createdReminderId = (onCreated.data as ResultSuccess<ReminderModel>)
-                        .data
-                        .id;
-                    return ReminderListView(
-                      createdReminderId: _createdReminderId,
-                    );
-                  }
-                  return const ReminderListView();
-                },
-              ),
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => addDialog(context),
-          tooltip: 'add',
-          child: const Icon(Icons.add),
-        ),
-      );
-
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => context
-                .read<ReminderListBlocType>()
-                .events
-                .loadPage(reset: true),
+  Widget build(BuildContext context) => SafeArea(
+        top: false,
+        child: Scaffold(
+          appBar: AppBar(),
+          body: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildErrorListener(),
+               Expanded(
+                child: RxBlocBuilder<ReminderManageBlocType, Result<ReminderModel>>(
+                  state: (bloc) => bloc.states.onCreated,
+                  builder: (context, onCreated, bloc) {
+                    if (onCreated.data != null &&
+                        onCreated.data! is ResultSuccess) {
+                      final _createdReminderId = (onCreated.data as ResultSuccess<ReminderModel>)
+                          .data
+                          .id;
+                      return ReminderListView(
+                        createdReminderId: _createdReminderId,
+                      );
+                    }
+                    return const ReminderListView();
+                  },
+                ),
+              )
+            ],
           ),
-        ],
-      );
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => addDialog(context),
+            tooltip: 'add',
+            child: const Icon(Icons.add),
+          ),
+        )
+  );
 
   Widget _buildErrorListener() => RxBlocListener<ReminderListBlocType, String>(
         state: (bloc) => bloc.states.errors,
