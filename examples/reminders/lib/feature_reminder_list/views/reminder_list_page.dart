@@ -32,15 +32,17 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               _buildErrorListener(),
-               Expanded(
-                child: RxBlocBuilder<ReminderManageBlocType, Result<ReminderModel>>(
+              Expanded(
+                child: RxBlocBuilder<ReminderManageBlocType,
+                    Result<ReminderModel>>(
                   state: (bloc) => bloc.states.onCreated,
                   builder: (context, onCreated, bloc) {
                     if (onCreated.data != null &&
                         onCreated.data! is ResultSuccess) {
-                      final _createdReminderId = (onCreated.data as ResultSuccess<ReminderModel>)
-                          .data
-                          .id;
+                      final _createdReminderId =
+                          (onCreated.data as ResultSuccess<ReminderModel>)
+                              .data
+                              .id;
                       return ReminderListView(
                         createdReminderId: _createdReminderId,
                       );
@@ -56,8 +58,8 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
             tooltip: 'add',
             child: const Icon(Icons.add),
           ),
-        )
-  );
+        ),
+      );
 
   Widget _buildErrorListener() => RxBlocListener<ReminderListBlocType, String>(
         state: (bloc) => bloc.states.errors,
