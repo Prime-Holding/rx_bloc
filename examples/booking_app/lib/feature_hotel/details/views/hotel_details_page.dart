@@ -31,10 +31,10 @@ class HotelDetailsPage extends StatefulWidget {
   final Hotel _hotel;
 
   @override
-  _HotelDetailsPageState createState() => _HotelDetailsPageState();
+  HotelDetailsPageState createState() => HotelDetailsPageState();
 }
 
-class _HotelDetailsPageState extends State<HotelDetailsPage> {
+class HotelDetailsPageState extends State<HotelDetailsPage> {
   @override
   void initState() {
     context
