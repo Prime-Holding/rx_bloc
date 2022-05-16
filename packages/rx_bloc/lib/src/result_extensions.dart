@@ -38,12 +38,11 @@ extension ResultMapStreamX<E> on Stream<E> {
     Stream<Result<R>> stream,
     R Function(E, R) mapSuccess, {
     String? tag,
-  }) {
-    return withLatestFrom<Result<R>, Result<R>>(
-      stream,
-      (e, t) => t.mapResult((data) => mapSuccess(e, data), tag: tag),
-    );
-  }
+  }) =>
+      withLatestFrom<Result<R>, Result<R>>(
+        stream,
+        (e, t) => t.mapResult((data) => mapSuccess(e, data), tag: tag),
+      );
 }
 
 extension ResultMapStream<E> on Stream<Result<E>> {
