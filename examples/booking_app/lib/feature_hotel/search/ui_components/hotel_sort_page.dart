@@ -13,7 +13,7 @@ class HotelSortPage extends StatefulWidget {
   final SortBy initialSelection;
 
   @override
-  _HotelSortPageState createState() => _HotelSortPageState();
+  State<HotelSortPage> createState() => _HotelSortPageState();
 }
 
 class _HotelSortPageState extends State<HotelSortPage> {

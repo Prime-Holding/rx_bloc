@@ -16,7 +16,7 @@ class HotelCapacityPage extends StatefulWidget {
   final int? personCapacity;
 
   @override
-  _HotelCapacityPageState createState() => _HotelCapacityPageState();
+  State<HotelCapacityPage> createState() => _HotelCapacityPageState();
 }
 
 class _HotelCapacityPageState extends State<HotelCapacityPage> {

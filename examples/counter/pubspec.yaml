@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   flutter_rx_bloc:
   rx_bloc:
+  rxdart: ^0.27.3
+
 
 dev_dependencies:
   build_runner:
