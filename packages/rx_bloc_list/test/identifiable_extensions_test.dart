@@ -95,6 +95,32 @@ void main() {
       );
     });
 
+    test('mapCreatedWithLatestFrom addToListCondition:true (replace)',
+        () async {
+      await expectLater(
+        Stream.value(
+          IdentifiableModel('2', value: '2 updated'),
+        ).withLatestFromIdentifiableList(
+          Stream.value([
+            IdentifiableModel('1'),
+            IdentifiableModel('2'),
+          ]),
+          operationCallback: (updatedIdentifiable, identifiableInList) async {
+            expect(updatedIdentifiable.id, '2');
+            expect(updatedIdentifiable.value, '2 updated');
+            expect(identifiableInList!.value, '');
+            return ManageOperation.merge;
+          },
+        ),
+        emitsInOrder([
+          [
+            IdentifiableModel('1'),
+            IdentifiableModel('2', value: '2 updated'),
+          ],
+        ]),
+      );
+    });
+
     test('mapCreatedWithLatestFrom addToListCondition:false', () async {
       await expectLater(
         Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
