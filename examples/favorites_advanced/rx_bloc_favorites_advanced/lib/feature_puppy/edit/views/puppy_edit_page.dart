@@ -28,7 +28,7 @@ class PuppyEditPage extends StatefulWidget {
   final Puppy? _puppy;
 
   @override
-  _PuppyEditPageState createState() => _PuppyEditPageState();
+  State<PuppyEditPage> createState() => _PuppyEditPageState();
 }
 
 class _PuppyEditPageState extends State<PuppyEditPage> {
