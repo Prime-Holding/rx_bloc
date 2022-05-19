@@ -7,7 +7,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  auto_route: ^3.2.0
+  auto_route: ^4.0.1
   cupertino_icons: ^1.0.4
   dio: ^4.0.4
   firebase_analytics: ^9.0.4
@@ -20,7 +20,7 @@ dependencies:
     sdk: flutter
   flutter_rx_bloc: ^4.0.0
   flutter_secure_storage: ^5.0.2
-  flutter_slidable: ^1.2.0
+  flutter_slidable: ^1.2.1
   flutter_sticky_header: ^0.6.0
   golden_toolkit: ^0.12.0
   intl: ^0.17.0
@@ -39,7 +39,7 @@ dependencies:
   shelf_static: ^1.1.0
 
 dev_dependencies:
-  auto_route_generator: ^3.2.0
+  auto_route_generator: ^4.0.0
   build_runner: ^2.1.7
   # flutter_driver:
   #   sdk: flutter
