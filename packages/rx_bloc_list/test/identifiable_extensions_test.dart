@@ -81,94 +81,121 @@ void main() {
   group('ModelManageEvents', () {
     test('mapCreatedWithLatestFrom addToListCondition:true', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([IdentifiableModel('1')]),
-          operationCallback: (identifiable) async => ManageOperation.merge,
+          operationCallback: (updatedIdentifiable, identifiableInList) async {
+            expect(updatedIdentifiable.id, '2');
+            expect(identifiableInList, isNull);
+            return ManageOperation.merge;
+          },
         ),
         emitsInOrder([
-          ManagedList(
-            [IdentifiableModel('1'), IdentifiableModel('2')],
-            identifiable: IdentifiableModel('2'),
-            operation: ManageOperation.merge,
-          )
+          [IdentifiableModel('1'), IdentifiableModel('2')],
+        ]),
+      );
+    });
+
+    test('mapCreatedWithLatestFrom addToListCondition:true (replace)',
+        () async {
+      await expectLater(
+        Stream.value(
+          IdentifiableModel('2', value: '2 updated'),
+        ).withLatestFromIdentifiableList(
+          Stream.value([
+            IdentifiableModel('1'),
+            IdentifiableModel('2'),
+          ]),
+          operationCallback: (updatedIdentifiable, identifiableInList) async {
+            expect(updatedIdentifiable.id, '2');
+            expect(updatedIdentifiable.value, '2 updated');
+            expect(identifiableInList!.value, '');
+            return ManageOperation.merge;
+          },
+        ),
+        emitsInOrder([
+          [
+            IdentifiableModel('1'),
+            IdentifiableModel('2', value: '2 updated'),
+          ],
         ]),
       );
     });
 
     test('mapCreatedWithLatestFrom addToListCondition:false', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([IdentifiableModel('1')]),
-          operationCallback: (identifiable) async => ManageOperation.ignore,
+          operationCallback: (updatedIdentifiable, identifiableInList) async {
+            expect(updatedIdentifiable.id, '2');
+            expect(identifiableInList, isNull);
+            return ManageOperation.ignore;
+          },
         ),
         emitsInOrder([
-          ManagedList(
-            [IdentifiableModel('1')],
-            identifiable: IdentifiableModel('2'),
-            operation: ManageOperation.ignore,
-          ),
+          [IdentifiableModel('1')],
         ]),
       );
     });
 
     test('mapUpdatedWithLatestFrom removeFromListCondition:true', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2', value: 'b updated'))
+            .withLatestFromIdentifiableList(
           Stream.value([
-            IdentifiableModel('1'),
-            IdentifiableModel('2'),
+            IdentifiableModel('1', value: 'a'),
+            IdentifiableModel('2', value: 'b'),
           ]),
-          operationCallback: (identifiable) async => ManageOperation.remove,
+          operationCallback: (updatedIdentifiable, identifiableInList) async {
+            if (updatedIdentifiable.id == '2') {
+              expect(updatedIdentifiable.value, 'b updated');
+              expect(identifiableInList, isNotNull);
+              expect(identifiableInList!.value, 'b');
+            }
+
+            return ManageOperation.remove;
+          },
         ),
         emitsInOrder([
-          ManagedList(
-            [IdentifiableModel('1')],
-            identifiable: IdentifiableModel('2'),
-            operation: ManageOperation.remove,
-          )
+          [IdentifiableModel('1', value: 'a')],
         ]),
       );
     });
 
     test('mapUpdatedWithLatestFrom removeFromListCondition:false', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([
             IdentifiableModel('1'),
             IdentifiableModel('2'),
           ]),
-          operationCallback: (identifiable) async => ManageOperation.ignore,
+          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+              ManageOperation.ignore,
         ),
         emitsInOrder([
-          ManagedList(
-            [
-              IdentifiableModel('1'),
-              IdentifiableModel('2'),
-            ],
-            identifiable: IdentifiableModel('2'),
-            operation: ManageOperation.ignore,
-          )
+          [
+            IdentifiableModel('1'),
+            IdentifiableModel('2'),
+          ],
         ]),
       );
     });
 
     test('mapDeletedWithLatestFrom', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value(
             [
               IdentifiableModel('1'),
               IdentifiableModel('2'),
             ],
           ),
-          operationCallback: (identifiable) async => ManageOperation.remove,
+          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+              ManageOperation.remove,
         ),
         emitsInOrder([
-          ManagedList(
-            [IdentifiableModel('1')],
-            identifiable: IdentifiableModel('2'),
-            operation: ManageOperation.remove,
-          ),
+          [
+            IdentifiableModel('1'),
+          ],
         ]),
       );
     });
@@ -178,7 +205,7 @@ void main() {
     test('PaginatedList mapCreatedWithLatestFrom addToListCondition:true',
         () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value(
             PaginatedList(
               list: [IdentifiableModel('1')],
@@ -186,25 +213,22 @@ void main() {
               totalCount: 10,
             ),
           ),
-          operationCallback: (identifiable) async => ManageOperation.merge,
+          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+              ManageOperation.merge,
         ),
         emitsInOrder([
-          ManagedList(
-            PaginatedList(
-              list: [IdentifiableModel('1'), IdentifiableModel('2')],
-              pageSize: 1,
-              totalCount: 11,
-            ),
-            identifiable: IdentifiableModel('2'),
-            operation: ManageOperation.merge,
-          )
+          PaginatedList(
+            list: [IdentifiableModel('1'), IdentifiableModel('2')],
+            pageSize: 1,
+            totalCount: 11,
+          ),
         ]),
       );
     });
 
     test('PaginatedList mapDeletedWithLatestFrom', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).identifiableWithLatestFrom(
+        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value(
             PaginatedList(
               list: [
@@ -215,18 +239,15 @@ void main() {
               totalCount: 10,
             ),
           ),
-          operationCallback: (identifiable) async => ManageOperation.remove,
+          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+              ManageOperation.remove,
         ),
         emitsInOrder(
           [
-            ManagedList(
-              PaginatedList(
-                list: [IdentifiableModel('1')],
-                pageSize: 2,
-                totalCount: 9,
-              ),
-              identifiable: IdentifiableModel('2'),
-              operation: ManageOperation.remove,
+            PaginatedList(
+              list: [IdentifiableModel('1')],
+              pageSize: 2,
+              totalCount: 9,
             )
           ],
         ),
