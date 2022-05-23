@@ -1,6 +1,14 @@
+import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../models.dart';
+
+/// The returned [ManageOperation] determines whether the [updatedIdentifiable] will be merged, removed or ignored from the list.
+/// The [identifiableInList] represents an object from the list with the same id as the [updatedIdentifiable].
+typedef OperationCallback<E> = Future<ManageOperation> Function(
+  E updatedIdentifiable,
+  E? identifiableInList,
+);
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
   /// Get a list of unique [Identifiable.id]
@@ -17,7 +25,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
     }
   }
 
-  /// Return a new list with removed first occurrence of [identifiable] from this list.
+  /// Return a new list with removed all occurrence of [identifiable] from this list.
   List<T> removedIdentifiable(Identifiable identifiable) {
     final list = [...this];
     list.removeWhere((element) => element.id == identifiable.id);
@@ -27,9 +35,9 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
 
   /// Return a new list with the given [list] merged into the current list.
   ///
-  /// 1. In case that any of the provided [T] it not part of the current
+  /// 1. In case that any of the provided [T] is not part of the current
   /// list, the returned result will include the entities from the provided [T]
-  /// 2. [addIfNotExist] In case that any of the provided [T] it's not part of the
+  /// 2. [addIfNotExist] In case that any of the provided [T] is not part of the
   /// current list it will be added at the end of the list.
   List<T> mergeWith(
     List<T> list, {
@@ -73,34 +81,37 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// Examples:
   /// 1. The stream value will be removed from the [list] value
   /// ```
-  /// objectStream.identifiableWithLatestFrom(
+  /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (identifiable) async => ManageOperation.remove,
+  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.remove,
   /// )
   /// ```
   ///
   /// 2. The stream value will be merged into the [list] value
   /// ```
-  /// objectStream.identifiableWithLatestFrom(
+  /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (identifiable) async => ManageOperation.merge,
+  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.merge,
   /// )
   /// ```
   ///
-  /// 3. The stream value won't be neither merged or removed from the [list] value
+  /// 3. The stream value won't be neither merged nor removed from the [list] value
   /// ```
-  /// objectStream.identifiableWithLatestFrom(
+  /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (identifiable) async => ManageOperation.ignore,
+  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.ignore,
   /// )
   /// ```
-  Stream<ManagedList<E>> identifiableWithLatestFrom(
+  Stream<ManagedList<E>> withLatestFromIdentifiableList(
     Stream<List<E>> list,
-    CounterOperation counterOperation, {
-    required Future<ManageOperation> Function(E identifiable) operationCallback,
+      CounterOperation counterOperation,{
+    required OperationCallback<E> operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
-        switch (await operationCallback(tuple.item)) {
+        final identifiableInList = tuple.list
+            .firstWhereOrNull((element) => element.id == tuple.item.id);
+
+        switch (await operationCallback(tuple.item, identifiableInList)) {
           case ManageOperation.merge:
             yield ManagedList(
               tuple.list._mergeWithList([tuple.item]),

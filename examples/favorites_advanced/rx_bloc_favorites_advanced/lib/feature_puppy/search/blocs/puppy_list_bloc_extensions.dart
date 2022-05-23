@@ -6,19 +6,19 @@ extension _ReloadDataFetcher on Stream<_ReloadData> {
   /// In case [_ReloadData.reset] is true, the loading event will be skipped.
   Stream<Result<PaginatedList<Puppy>>> fetchPuppies(
     PaginatedPuppiesRepository repository,
-    BehaviorSubject<PaginatedList<Puppy>> _paginatedList,
+    BehaviorSubject<PaginatedList<Puppy>> paginatedList,
   ) =>
       switchMap(
         (reloadData) {
           if (reloadData.reset) {
-            _paginatedList.value.reset(hard: reloadData.fullReset);
+            paginatedList.value.reset(hard: reloadData.fullReset);
           }
 
           return repository
               .getPuppiesPaginated(
                 query: reloadData.query,
-                pageSize: _paginatedList.value.pageSize,
-                page: _paginatedList.value.pageNumber + 1,
+                pageSize: paginatedList.value.pageSize,
+                page: paginatedList.value.pageNumber + 1,
               )
               .asResultStream();
         },

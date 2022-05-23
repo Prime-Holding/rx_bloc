@@ -26,78 +26,79 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppBar(context),
-        backgroundColor: context.designSystem.colors.backgroundListColor,
-        body: RefreshIndicator(
-          onRefresh: () async =>
-              context.read<DashboardBlocType>().events.fetchData(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildErrorListener(),
-              _buildOnDeletedListener(),
-              _buildOnCreatedListener(),
-              Expanded(
-                child: RxResultBuilder<DashboardBlocType, DashboardModel>(
-                  state: (bloc) => bloc.states.data,
-                  buildSuccess: (context, data, bloc) => CustomScrollView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: DashboardStats(
-                          completeCount: data.completeCount,
-                          incompleteCount: data.incompleteCount,
-                        ),
-                      ),
-                      SliverStickyHeader(
-                        header: const Padding(
-                          padding: EdgeInsets.only(left: 12),
-                          child: AppStickyHeader(
-                            text: 'Overdue',
+  Widget build(BuildContext context) => SafeArea(
+        top: false,
+        child: Scaffold(
+          appBar: AppBar(),
+          backgroundColor: context.designSystem.colors.backgroundListColor,
+          body: RefreshIndicator(
+            onRefresh: () async {
+              context
+                  .read<DashboardBlocType>()
+                  .events
+                  .fetchData(silently: true);
+              return context.read<DashboardBlocType>().states.refreshDone;
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _buildErrorListener(),
+                _buildOnDeletedListener(),
+                _buildOnCreatedListener(),
+                Expanded(
+                  child: RxResultBuilder<DashboardBlocType, DashboardModel>(
+                    state: (bloc) => bloc.states.data,
+                    buildSuccess: (context, data, bloc) => CustomScrollView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: DashboardStats(
+                            completeCount: data.completeCount,
+                            incompleteCount: data.incompleteCount,
                           ),
                         ),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, i) => Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    context.designSystem.colors.secondaryColor,
-                                borderRadius:
-                                    _getRadius(i, data.reminderList.length),
-                              ),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: AppReminderTile(
-                                reminder: data.reminderList[i],
-                                isFirst: i == 0,
-                                isLast: i == data.reminderList.length - 1,
-                              ),
+                        SliverStickyHeader(
+                          header: const Padding(
+                            padding: EdgeInsets.only(left: 12),
+                            child: AppStickyHeader(
+                              text: 'Overdue',
                             ),
-                            childCount: data.reminderList.length,
                           ),
-                        ),
-                      )
-                    ],
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, i) => Container(
+                                decoration: BoxDecoration(
+                                  color: context
+                                      .designSystem.colors.secondaryColor,
+                                  borderRadius:
+                                      _getRadius(i, data.reminderList.length),
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: AppReminderTile(
+                                  reminder: data.reminderList[i],
+                                  isFirst: i == 0,
+                                  isLast: i == data.reminderList.length - 1,
+                                ),
+                              ),
+                              childCount: data.reminderList.length,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    buildLoading: (context, bloc) =>
+                        const AppProgressIndicator(),
+                    buildError: (context, error, bloc) =>
+                        Text(error.toString()),
                   ),
-                  buildLoading: (context, bloc) => const AppProgressIndicator(),
-                  buildError: (context, error, bloc) => Text(error.toString()),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      );
-
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: context.read<DashboardBlocType>().events.fetchData,
-          ),
-        ],
       );
 
   Widget _buildOnDeletedListener() =>

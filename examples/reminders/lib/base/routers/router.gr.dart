@@ -25,15 +25,18 @@ class Router extends _i4.RootStackRouter {
   final Map<String, _i4.PageFactory> pagesMap = {
     NavigationRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i1.NavigationPage());
+          routeData: routeData,
+          child: _i4.WrappedRoute(child: const _i1.NavigationPage()));
     },
     DashboardRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.DashboardPage());
+          routeData: routeData,
+          child: _i4.WrappedRoute(child: const _i2.DashboardPage()));
     },
     ReminderListRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.ReminderListPage());
+          routeData: routeData,
+          child: _i4.WrappedRoute(child: const _i3.ReminderListPage()));
     }
   };
 

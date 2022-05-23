@@ -41,7 +41,7 @@ class DashboardService {
             .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
       );
 
-  Future<ManageOperation> getManageOperation(ReminderModel model) async {
+  Future<ManageOperation> getManageOperation(ReminderModel model, ReminderModel? _) async {
     final dateRange = _getDateRange();
 
     if (model.dueDate.isAfter(dateRange.from) &&

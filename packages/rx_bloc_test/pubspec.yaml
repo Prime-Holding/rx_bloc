@@ -16,7 +16,7 @@ dependencies:
 
 dev_dependencies:
   clean_coverage: ^0.0.3
-  coverage: ^1.0.3
+  coverage: ^1.3.2
   flutter_lints: ^1.0.4
   mockito: ^5.0.16
   pedantic: ^1.11.1

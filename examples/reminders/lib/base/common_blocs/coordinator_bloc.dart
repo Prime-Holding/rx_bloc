@@ -77,21 +77,21 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   ///  will/will not be removed from value of the provided [subject].
   Stream<ManagedList<ReminderModel>> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(ReminderModel model)
+    required Future<ManageOperation> Function(ReminderModel model,ReminderModel? identifiableInList)
         operationCallback,
   }) =>
       Rx.merge([
-        states.onReminderCreated.whereSuccess().identifiableWithLatestFrom(
+        states.onReminderCreated.whereSuccess().withLatestFromIdentifiableList(
               reminderList,
               CounterOperation.create,
               operationCallback: operationCallback,
             ),
-        states.onReminderDeleted.whereSuccess().identifiableWithLatestFrom(
+        states.onReminderDeleted.whereSuccess().withLatestFromIdentifiableList(
               reminderList,
               CounterOperation.delete,
-              operationCallback: (reminder) async => ManageOperation.remove,
+              operationCallback: (reminder,identifiableInList) async => ManageOperation.remove,
             ),
-        states.onReminderUpdated.whereSuccess().identifiableWithLatestFrom(
+        states.onReminderUpdated.whereSuccess().withLatestFromIdentifiableList(
               reminderList,
               CounterOperation.update,
               operationCallback: operationCallback,
