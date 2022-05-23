@@ -1,4 +1,4 @@
-package com.example.counter
+package com.primeholding.counter
 
 import io.flutter.embedding.android.FlutterActivity
 
