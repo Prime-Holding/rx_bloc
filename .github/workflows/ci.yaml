@@ -90,7 +90,7 @@ jobs:
           fi
       - name: Format coverage
         working-directory: ${{ matrix.folder }}
-        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib --packages=.packages
+        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
       - name: Remove unnecessary files
         working-directory: ${{ matrix.folder }}
         run: dart run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info

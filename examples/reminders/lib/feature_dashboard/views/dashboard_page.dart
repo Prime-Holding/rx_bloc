@@ -32,8 +32,13 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           appBar: AppBar(),
           backgroundColor: context.designSystem.colors.backgroundListColor,
           body: RefreshIndicator(
-            onRefresh: () async =>
-                context.read<DashboardBlocType>().events.fetchData(),
+            onRefresh: () async {
+              context
+                  .read<DashboardBlocType>()
+                  .events
+                  .fetchData(silently: true);
+              return context.read<DashboardBlocType>().states.refreshDone;
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

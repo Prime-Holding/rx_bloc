@@ -8,12 +8,13 @@ import '../models/dashboard_model.dart';
 import '../services/dashboard_service.dart';
 
 part 'dashboard_bloc.rxb.g.dart';
+
 part 'dashboard_bloc_extensions.dart';
 
 /// A contract class containing all events of the DashboardBloC.
 abstract class DashboardBlocEvents {
   /// TODO: Document the event
-  void fetchData();
+  void fetchData({required bool silently});
 }
 
 /// A contract class containing all states of the DashboardBloC.
@@ -26,15 +27,20 @@ abstract class DashboardBlocStates {
 
   /// TODO: Document the state
   Stream<Result<DashboardModel>> get data;
+
+  /// Returns when the data refreshing has completed
+  @RxBlocIgnoreState()
+  Future<void> get refreshDone;
 }
 
 @RxBloc()
 class DashboardBloc extends $DashboardBloc {
   DashboardBloc(this._dashboardService, CoordinatorBlocType coordinatorBloc) {
     _$fetchDataEvent
-        .startWith(null)
-        .switchMap(
-            (value) => _dashboardService.getDashboardModel().asResultStream())
+        .startWith(false)
+        .switchMap((silently) => _dashboardService
+            .getDashboardModel()
+            .asResultStream(tag: silently ? _tagSilently : ''))
         .setResultStateHandler(this)
         .bind(_dashboardModelResult)
         .addTo(_compositeSubscription);
@@ -54,6 +60,8 @@ class DashboardBloc extends $DashboardBloc {
 
   final DashboardService _dashboardService;
 
+  static const _tagSilently = 'silently';
+
   Result<DashboardModel> managedListToDashboard(
     ManagedList<ReminderModel> managedList,
   ) {
@@ -72,10 +80,15 @@ class DashboardBloc extends $DashboardBloc {
   }
 
   @override
-  Stream<Result<DashboardModel>> _mapToDataState() => _dashboardModelResult;
+  Stream<Result<DashboardModel>> _mapToDataState() =>
+      _dashboardModelResult.where((resultModel) =>
+          !(resultModel is ResultLoading && resultModel.tag == _tagSilently));
 
   final _dashboardModelResult =
       BehaviorSubject<Result<DashboardModel>>.seeded(Result.loading());
+
+  @override
+  Future<void> get refreshDone => _dashboardModelResult.waitToLoad();
 
   @override
   Stream<String> _mapToErrorsState() => errorState.toMessage();

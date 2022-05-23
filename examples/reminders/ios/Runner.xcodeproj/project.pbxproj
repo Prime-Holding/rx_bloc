@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -154,7 +154,6 @@
 				D83ACA62AD1B0E3D8B732C21 /* Pods-Runner.profile-staging.xcconfig */,
 				00C2E2D899B78DB3DF55DA74 /* Pods-Runner.profile-development.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -433,6 +432,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -511,6 +511,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/development/development-debug.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -586,6 +587,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/development/development-debug.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -662,6 +664,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = NO;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/development/development-release.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -741,6 +744,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/staging/staging-debug.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -818,6 +822,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = NO;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/staging/staging-release.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -892,6 +897,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/staging/staging-debug.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -971,6 +977,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/production/production-debug.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1048,6 +1055,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = NO;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/production/production-release.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1122,6 +1130,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/production/production-debug.plist";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1254,6 +1263,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1277,6 +1287,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGNING_ALLOWED = NO;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = ZNE622G954;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
