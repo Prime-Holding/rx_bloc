@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../models.dart';
@@ -8,17 +9,6 @@ typedef OperationCallback<E> = Future<ManageOperation> Function(
   E updatedIdentifiable,
   E? identifiableInList,
 );
-
-enum ManageOperation {
-  /// Merge the given object to the list
-  merge,
-
-  /// Remove the given object from the list
-  remove,
-
-  /// Neither merge or remove the given object from the list
-  ignore,
-}
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
   /// Get a list of unique [Identifiable.id]
@@ -112,7 +102,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.ignore,
   /// )
   /// ```
-  Stream<List<E>> withLatestFromIdentifiableList(
+  Stream<ManagedList<E>> withLatestFromIdentifiableList(
     Stream<List<E>> list, {
     required OperationCallback<E> operationCallback,
   }) =>
@@ -122,13 +112,25 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
 
         switch (await operationCallback(tuple.item, identifiableInList)) {
           case ManageOperation.merge:
-            yield tuple.list._mergeWithList([tuple.item]);
+            yield ManagedList(
+              tuple.list._mergeWithList([tuple.item]),
+              operation: ManageOperation.merge,
+              identifiable: tuple.item,
+            );
             break;
           case ManageOperation.remove:
-            yield tuple.list._removeFromList(tuple.item);
+            yield ManagedList(
+              tuple.list._removeFromList(tuple.item),
+              identifiable: tuple.item,
+              operation: ManageOperation.remove,
+            );
             break;
           case ManageOperation.ignore:
-            yield tuple.list;
+            yield ManagedList(
+              tuple.list,
+              identifiable: tuple.item,
+              operation: ManageOperation.ignore,
+            );
             break;
         }
       });
@@ -139,6 +141,10 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
         (identifiable, lastUpdatedList) =>
             _Tuple(identifiable, lastUpdatedList),
       );
+}
+
+extension ManagedListStreamX<E extends Identifiable> on Stream<ManagedList<E>> {
+  Stream<List<E>> mapToList() => map((managedList) => managedList.list);
 }
 
 extension _ListX<E extends Identifiable> on List<E> {
