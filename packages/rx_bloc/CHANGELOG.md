@@ -1,3 +1,8 @@
+## [3.3.0] - January 30, 2022
+- Added `Stream<T>` extensions: `mapToResult`, `withLatestFromResult`
+- Added `Stream<Result<T>>` extensions: `mapResult`, `asyncMapResult`
+- Added `Result<T>` extensions: `mapResult`, `asyncMapResult`
+
 ## [3.2.1] - December 16, 2021
 * Added a [presentation](https://youtu.be/nVX4AzeuVu8) to the README file
 * Fixed memory leak caused by a not closed subscription in the LoadingBloc
