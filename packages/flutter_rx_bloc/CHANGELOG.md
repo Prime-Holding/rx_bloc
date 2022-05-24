@@ -1,10 +1,15 @@
+## [4.1.0] - May 24, 2022
+* Support Flutter `3.0`
+* Updated `rxdart` to use version `0.27.3`
+* [BREAKING] Changed listener parameter type in RxBlocListener to match the type of the listened state
+
 ## [4.0.0] - September 24, 2021
 * Support Flutter `2.5`
 * Updated `rxdart` to use version `0.27.2`
 * [BREAKING] Changed signature of [RxResultBuilder.buildError] to `Widget Function(BuildContext, Exception, B)`
 
 ## [3.2.0] - July 09, 2021
-* Added widget `RxLoadingBuilder`
+* Added `RxLoadingBuilder` widget
 
 ## [3.1.0] - June 01, 2021
 * Fix infinite feedback loop issue with RxTextFormFieldBuilder
