@@ -1,3 +1,5 @@
+// ignore_for_file: comment_references
+
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
@@ -10,14 +12,14 @@ import 'rx_bloc_provider.dart';
 /// function which takes the `BuildContext`
 /// along with the [bloc] [state]
 /// and is responsible for executing in response to [state] changes.
-typedef RxBlocWidgetListener<S> = void Function(BuildContext context, S? state);
+typedef RxBlocWidgetListener<S> = void Function(BuildContext context, S state);
 
 /// Signature for the [condition] function which takes the previous [state]
 /// and the current [state]
 /// and is responsible for returning a [bool] which determines whether or not
 /// to call [RxBlocWidgetListener]
 /// of [RxBlocListener] with the current [state].
-typedef RxBlocListenerCondition<S> = bool Function(S? previous, S? current);
+typedef RxBlocListenerCondition<S> = bool Function(S? previous, S current);
 
 /// {@template RxBlocListener}
 /// Takes a [RxBlocWidgetListener] and an optional [bloc]
@@ -141,6 +143,7 @@ abstract class RxBlocListenerBase<B extends RxBlocTypeBase, S>
   /// it will default to `true`.
   final RxBlocListenerCondition<S>? condition;
 
+  /// Stream representing the state which will be listened to for changes
   final Stream<S> Function(B) state;
 
   @override
@@ -151,7 +154,7 @@ abstract class RxBlocListenerBase<B extends RxBlocTypeBase, S>
 class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
     extends SingleChildState<RxBlocListenerBase<B, S>> {
   // ignore: cancel_subscriptions
-  StreamSubscription<S?>? _subscription;
+  StreamSubscription<S>? _subscription;
   S? _previousState;
   B? _bloc;
 
@@ -187,7 +190,7 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
 
   void _subscribe() {
     if (_bloc != null && _subscription == null) {
-      _subscription = widget.state(_bloc!).listen((S? state) {
+      _subscription = widget.state(_bloc!).listen((S state) {
         if (widget.condition == null
             ? true
             : widget.condition!.call(_previousState, state)) {
