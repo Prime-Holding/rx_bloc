@@ -62,7 +62,7 @@ class AppDependencies {
       ];
 
   List<Provider> get _analytics => [
-        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics()),
+        Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics.instance),
         Provider<FirebaseAnalyticsObserver>(
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
