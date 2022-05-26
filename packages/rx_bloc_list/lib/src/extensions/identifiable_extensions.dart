@@ -1,6 +1,14 @@
+import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../models.dart';
+
+/// The returned [ManageOperation] determines whether the [updatedIdentifiable] will be merged, removed or ignored from the list.
+/// The [identifiableInList] represents an object from the list with the same id as the [updatedIdentifiable].
+typedef OperationCallback<E> = Future<ManageOperation> Function(
+  E updatedIdentifiable,
+  E? identifiableInList,
+);
 
 enum ManageOperation {
   /// Merge the given object to the list
@@ -86,7 +94,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (identifiable) async => ManageOperation.remove,
+  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.remove,
   /// )
   /// ```
   ///
@@ -94,7 +102,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (identifiable) async => ManageOperation.merge,
+  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.merge,
   /// )
   /// ```
   ///
@@ -102,15 +110,18 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (identifiable) async => ManageOperation.ignore,
+  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.ignore,
   /// )
   /// ```
   Stream<List<E>> withLatestFromIdentifiableList(
     Stream<List<E>> list, {
-    required Future<ManageOperation> Function(E identifiable) operationCallback,
+    required OperationCallback<E> operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
-        switch (await operationCallback(tuple.item)) {
+        final identifiableInList = tuple.list
+            .firstWhereOrNull((element) => element.id == tuple.item.id);
+
+        switch (await operationCallback(tuple.item, identifiableInList)) {
           case ManageOperation.merge:
             yield tuple.list._mergeWithList([tuple.item]);
             break;
