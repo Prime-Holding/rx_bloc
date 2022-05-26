@@ -84,6 +84,15 @@ class ResultSuccess<T> implements Result<T> {
       return other.tag == tag && const ListEquality().equals(_otherData, _data);
     }
 
+    // Compare map
+    if (other.data is Map && data is Map) {
+      final _otherData = other.data as Map;
+      final _data = data as Map;
+
+      return other.tag == tag &&
+          const DeepCollectionEquality().equals(_otherData, _data);
+    }
+
     return other.tag == tag && other.data == data;
   }
 
