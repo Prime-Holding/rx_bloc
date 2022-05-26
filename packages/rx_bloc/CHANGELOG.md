@@ -1,4 +1,7 @@
-## [3.3.0] - January 30, 2022
+## [3.3.1] - May 26, 2022
+- Add equality check [support](https://github.com/Prime-Holding/rx_bloc/pull/247) for maps with nested objects on the [Result](https://pub.dev/documentation/rx_bloc/latest/rx_bloc/Result-class.html) class, thanks to [pangievich](https://github.com/PankovSerge)
+
+## [3.3.0] - May 18, 2022
 - Added `Stream<T>` extensions: `mapToResult`, `withLatestFromResult`
 - Added `Stream<Result<T>>` extensions: `mapResult`, `asyncMapResult`
 - Added `Result<T>` extensions: `mapResult`, `asyncMapResult`
