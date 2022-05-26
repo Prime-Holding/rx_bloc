@@ -27,9 +27,9 @@ class _ReminderListViewState extends State<ReminderListView> {
           bloc.events.loadPage(reset: true);
           return bloc.states.refreshDone;
         },
-        buildSuccess: (context, list, bloc) => ScrollToPositionWidget(
+        buildSuccess: (context, list, bloc) => ReminderListScrollView(
           remindersList: list,
-          createdReminderId: widget.createdReminderId,
+          scrollToReminderId: widget.createdReminderId,
         ),
         buildLoading: (context, list, bloc) => const AppProgressIndicator(),
         buildError: (context, list, bloc) => Container(),

@@ -8,21 +8,21 @@ import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
 import '../../base/models/reminder/reminder_model.dart';
 
-class ScrollToPositionWidget extends StatefulWidget {
-  const ScrollToPositionWidget({
+class ReminderListScrollView extends StatefulWidget {
+  const ReminderListScrollView({
     required this.remindersList,
-    this.createdReminderId,
+    this.scrollToReminderId,
     Key? key,
   }) : super(key: key);
 
   final PaginatedList<ReminderModel> remindersList;
-  final String? createdReminderId;
+  final String? scrollToReminderId;
 
   @override
-  State<ScrollToPositionWidget> createState() => _ScrollToPositionWidgetState();
+  State<ReminderListScrollView> createState() => _ReminderListScrollViewState();
 }
 
-class _ScrollToPositionWidgetState extends State<ScrollToPositionWidget> {
+class _ReminderListScrollViewState extends State<ReminderListScrollView> {
   late final AutoScrollController _controller;
 
   @override
@@ -32,11 +32,11 @@ class _ScrollToPositionWidgetState extends State<ScrollToPositionWidget> {
   }
 
   @override
-  void didUpdateWidget(covariant ScrollToPositionWidget oldWidget) {
-    if (widget.createdReminderId != null &&
-        oldWidget.createdReminderId != widget.createdReminderId) {
+  void didUpdateWidget(covariant ReminderListScrollView oldWidget) {
+    if (widget.scrollToReminderId != null &&
+        oldWidget.scrollToReminderId != widget.scrollToReminderId) {
       final _correctIndex = widget.remindersList
-          .indexWhere((element) => element.id == widget.createdReminderId);
+          .indexWhere((element) => element.id == widget.scrollToReminderId);
       _controller.scrollToIndex(
         _correctIndex,
         duration: const Duration(milliseconds: 50),
