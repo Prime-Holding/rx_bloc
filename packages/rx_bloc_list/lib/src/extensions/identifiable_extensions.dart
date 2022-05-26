@@ -104,13 +104,18 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   Stream<ManagedList<E>> withLatestFromIdentifiableList(
     Stream<List<E>> list,
-      CounterOperation counterOperation,{
+    CounterOperation counterOperation, {
     required OperationCallback<E> operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
+      // _combineLatestWithList(list).flatMap((tuple) async* {
         final identifiableInList = tuple.list
             .firstWhereOrNull((element) => element.id == tuple.item.id);
-
+        if (identifiableInList != null) {
+          print(' identifiableInList Not Null');
+        } else {
+          print(' identifiableInList Is Null');
+        }
         switch (await operationCallback(tuple.item, identifiableInList)) {
           case ManageOperation.merge:
             yield ManagedList(
@@ -118,6 +123,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
               operation: ManageOperation.merge,
               counterOperation: counterOperation,
               identifiable: tuple.item,
+              identifiableInList: identifiableInList,
             );
             break;
           case ManageOperation.remove:
@@ -126,6 +132,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
               identifiable: tuple.item,
               counterOperation: counterOperation,
               operation: ManageOperation.remove,
+              identifiableInList: identifiableInList,
             );
             break;
           case ManageOperation.ignore:
@@ -134,6 +141,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
               identifiable: tuple.item,
               counterOperation: counterOperation,
               operation: ManageOperation.ignore,
+              identifiableInList: identifiableInList,
             );
             break;
         }

@@ -77,7 +77,8 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   ///  will/will not be removed from value of the provided [subject].
   Stream<ManagedList<ReminderModel>> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(ReminderModel model,ReminderModel? identifiableInList)
+    required Future<ManageOperation> Function(
+            ReminderModel model, ReminderModel? identifiableInList)
         operationCallback,
   }) =>
       Rx.merge([
@@ -91,10 +92,26 @@ extension CoordinatingTasksX on CoordinatorBlocType {
               CounterOperation.delete,
               operationCallback: (reminder,identifiableInList) async => ManageOperation.remove,
             ),
+        // Rx.combineLatest2(
+        //     states.onReminderUpdated.whereSuccess(),
+        //     reminderList,
+        //     (updated, list) => myMethod(
+        //           CounterOperation.update,
+        //           operationCallback: operationCallback,
+        //         )),
         states.onReminderUpdated.whereSuccess().withLatestFromIdentifiableList(
               reminderList,
               CounterOperation.update,
               operationCallback: operationCallback,
             ),
       ]);
+
+  // myMethod(
+  //   CounterOperation update, {
+  //   required Future<ManageOperation> Function(
+  //           ReminderModel model, ReminderModel? identifiableInList)
+  //       operationCallback,
+  // }) {
+  //   print('test1');
+  // }
 }

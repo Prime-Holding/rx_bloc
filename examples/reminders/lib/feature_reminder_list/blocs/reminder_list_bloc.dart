@@ -57,8 +57,15 @@ class ReminderListBloc extends $ReminderListBloc {
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          operationCallback: (model,identifiableInList) async => ManageOperation.merge,
+              // .doOnData((event) {
+            // print('22reminderList $event');
+          // }),
+          operationCallback: (model, identifiableInList) async =>
+              ManageOperation.merge,
         )
+        // .doOnData((event) {
+        //   print('dashboardBloc1ReminderListBloc');
+        // })
         .mapToList()
         .cast<PaginatedList<ReminderModel>>()
         .map(

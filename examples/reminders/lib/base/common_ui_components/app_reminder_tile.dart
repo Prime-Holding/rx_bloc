@@ -56,7 +56,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
               .events
               .update(widget.reminder.copyWith(
                 title: _textEditingController.text,
-                completeUpdated: false,
+                // completeUpdated: false,
               ));
 
           widget.onTitleChanged?.call(_textEditingController.text);
@@ -118,7 +118,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
                 context.read<ReminderManageBlocType>().events.update(
                       widget.reminder.copyWith(
                         complete: !widget.reminder.complete,
-                        completeUpdated: true,
+                        // completeUpdated: true,
                       ),
                     ),
             backgroundColor: widget.reminder.complete
@@ -169,7 +169,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
           .events
           .update(widget.reminder.copyWith(
             dueDate: date,
-            completeUpdated: false,
+            // completeUpdated: false,
           ));
 
       widget.onDueDateChanged?.call(date);

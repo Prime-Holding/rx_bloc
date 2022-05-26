@@ -63,24 +63,67 @@ class DashboardService {
   DashboardModel getDashboardModelFromManagedList({
     required DashboardModel dashboard,
     required ManagedList<ReminderModel> managedList,
-  }) =>
-      dashboard.copyWith(
-        reminderList: managedList.list,
-        completeCount: dashboard.recalculateCompleteWith(
-          counterOperation: managedList.counterOperation,
-          reminderModel: managedList.identifiable,
-        ),
-        incompleteCount: dashboard.recalculateIncompleteWith(
-          counterOperation: managedList.counterOperation,
-          reminderModel: managedList.identifiable,
-        ),
-      );
+  }) {
+    //Todo compare managedList.identifiableInList with managedList.identifiable
+    var _identifiableInList = managedList.identifiableInList;
+    var _identifiable = managedList.identifiable;
+    IncrementOperation? incrementOperation;
+    if (_identifiableInList != null &&
+        _identifiable.title == _identifiableInList.title &&
+        _identifiable.dueDate == _identifiableInList.dueDate &&
+        _identifiable.complete != _identifiableInList.complete) {
+      if (_identifiable.complete) {
+        incrementOperation =
+            IncrementOperation.decrementIncompleteIncrementComplete;
+      } else {
+        incrementOperation =
+            IncrementOperation.incrementIncompleteDecrementComplete;
+      }
+    }
+
+    // if (_identifiableInList == null &&
+    //     managedList.counterOperation == CounterOperation.update) {
+    //   if (_identifiable.complete) {
+        ///mark 0 as complete =ManageOperation.remove, CounterOperation.update ,
+        ///identifiable complete = true NOT OK
+        // incrementOperation =
+        //     IncrementOperation.decrementIncompleteIncrementComplete;
+      // } else {
+      //   /increment incomplete, decrement complete
+        /// mark 91 as incomplete gives - ManageOperation.merge, CounterOperation.update ОК
+        // incrementOperation =
+        //     IncrementOperation.incrementIncompleteDecrementComplete;
+      // }
+    // }
+    print('incrementOperation: $incrementOperation');
+    print('compeleteBefore: ${dashboard.completeCount}');
+    print('incompeleteBefore: ${dashboard.incompleteCount}');
+    var complete = dashboard.recalculateCompleteWith(
+      counterOperation: managedList.counterOperation,
+      reminderModel: managedList.identifiable,
+      incrementOperation: incrementOperation,
+    );
+    var inComplete = dashboard.recalculateIncompleteWith(
+      counterOperation: managedList.counterOperation,
+      reminderModel: managedList.identifiable,
+      incrementOperation: incrementOperation,
+    );
+    print('compeleteAfter: $complete');
+    print('incompeleteAfter: $inComplete');
+    print('----------------------------');
+    return dashboard.copyWith(
+      reminderList: managedList.list,
+      completeCount: complete,
+      incompleteCount: inComplete,
+    );
+  }
 }
 
 extension _DashboardModelX on DashboardModel {
   int recalculateIncompleteWith({
     required CounterOperation counterOperation,
     required ReminderModel reminderModel,
+    IncrementOperation? incrementOperation,
   }) {
     switch (counterOperation) {
       case CounterOperation.create:
@@ -88,17 +131,26 @@ extension _DashboardModelX on DashboardModel {
       case CounterOperation.delete:
         return reminderModel.complete ? incompleteCount : incompleteCount - 1;
       case CounterOperation.update:
-        return reminderModel.completeUpdated
-            ? reminderModel.complete
-                ? incompleteCount - 1
-                : incompleteCount + 1
-            : incompleteCount;
+        if (incrementOperation ==
+            IncrementOperation.incrementIncompleteDecrementComplete) {
+          return incompleteCount + 1;
+        } else if (incrementOperation ==
+            IncrementOperation.decrementIncompleteIncrementComplete) {
+          return incompleteCount - 1;
+        }
+        return incompleteCount;
+      // return reminderModel.completeUpdated
+      //     ? reminderModel.complete
+      //         ? incompleteCount - 1
+      //         : incompleteCount + 1
+      //     : incompleteCount;
     }
   }
 
   int recalculateCompleteWith({
     required CounterOperation counterOperation,
     required ReminderModel reminderModel,
+    IncrementOperation? incrementOperation,
   }) {
     switch (counterOperation) {
       case CounterOperation.create:
@@ -106,11 +158,20 @@ extension _DashboardModelX on DashboardModel {
       case CounterOperation.delete:
         return reminderModel.complete ? completeCount - 1 : completeCount;
       case CounterOperation.update:
-        return reminderModel.completeUpdated
-            ? reminderModel.complete
-                ? completeCount + 1
-                : completeCount - 1
-            : completeCount;
+        if (incrementOperation ==
+            IncrementOperation.decrementIncompleteIncrementComplete) {
+          return completeCount + 1;
+        } else if (incrementOperation ==
+            IncrementOperation.incrementIncompleteDecrementComplete) {
+          return completeCount - 1;
+        }
+        return completeCount;
+
+      // return reminderModel.completeUpdated
+      //     ? reminderModel.complete
+      //         ? completeCount + 1
+      //         : completeCount - 1
+      //     : completeCount;
     }
   }
 }

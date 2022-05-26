@@ -58,7 +58,7 @@ class RemindersLocalDataSource {
       id: id,
       title: title,
       complete: complete,
-      completeUpdated: completeUpdated,
+      // completeUpdated: completeUpdated,
     );
 
     _data.add(reminder);
@@ -81,7 +81,7 @@ class RemindersLocalDataSource {
       title: model.title,
       dueDate: model.dueDate,
       complete: model.complete,
-      completeUpdated: model.completeUpdated,
+      // completeUpdated: model.completeUpdated,
     );
 
     _data[index] = _model;
