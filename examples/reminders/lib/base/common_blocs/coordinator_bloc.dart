@@ -25,7 +25,7 @@ abstract class CoordinatorEvents {
 
   void reminderCreated(Result<ReminderModel> reminderResult);
 
-  void reminderUpdated(Result<ReminderModel> reminderResult);
+  void reminderUpdated(Result<IdentifiablePair<ReminderModel>> reminderResult);
 }
 
 abstract class CoordinatorStates {
@@ -36,7 +36,7 @@ abstract class CoordinatorStates {
   Stream<Result<ReminderModel>> get onReminderDeleted;
 
   @RxBlocIgnoreState()
-  Stream<Result<ReminderModel>> get onReminderUpdated;
+  Stream<Result<IdentifiablePair<ReminderModel>>> get onReminderUpdated;
 
   @RxBlocIgnoreState()
   Stream<Result<ReminderModel>> get onReminderCreated;
@@ -90,7 +90,8 @@ extension CoordinatingTasksX on CoordinatorBlocType {
         states.onReminderDeleted.whereSuccess().withLatestFromIdentifiableList(
               reminderList,
               CounterOperation.delete,
-              operationCallback: (reminder,identifiableInList) async => ManageOperation.remove,
+              operationCallback: (reminder, identifiableInList) async =>
+                  ManageOperation.remove,
             ),
         // Rx.combineLatest2(
         //     states.onReminderUpdated.whereSuccess(),
