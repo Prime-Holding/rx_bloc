@@ -7,7 +7,6 @@ import '../../models.dart';
 /// The [identifiableInList] represents an object from the list with the same id as the [updatedIdentifiable].
 typedef OperationCallback<E> = Future<ManageOperation> Function(
   E updatedIdentifiable,
-  E? identifiableInList,
 );
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
@@ -108,18 +107,12 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
     required OperationCallback<E> operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
-      // _combineLatestWithList(list).flatMap((tuple) async* {
         final identifiableInList = tuple.list
             .firstWhereOrNull((element) => element.id == tuple.item.id);
-        if (identifiableInList != null) {
-          print(' identifiableInList Not Null');
-        } else {
-          print(' identifiableInList Is Null');
-        }
-        switch (await operationCallback(tuple.item, identifiableInList)) {
+        switch (await operationCallback(tuple.item)) {
           case ManageOperation.merge:
             yield ManagedList(
-              tuple.list._mergeWithList([tuple.item]),
+              tuple.list.mergeWithList([tuple.item]),
               operation: ManageOperation.merge,
               counterOperation: counterOperation,
               identifiable: tuple.item,
@@ -128,7 +121,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
             break;
           case ManageOperation.remove:
             yield ManagedList(
-              tuple.list._removeFromList(tuple.item),
+              tuple.list.removeFromList(tuple.item),
               identifiable: tuple.item,
               counterOperation: counterOperation,
               operation: ManageOperation.remove,
@@ -159,8 +152,8 @@ extension ManagedListStreamX<E extends Identifiable> on Stream<ManagedList<E>> {
   Stream<List<E>> mapToList() => map((managedList) => managedList.list);
 }
 
-extension _ListX<E extends Identifiable> on List<E> {
-  List<E> _mergeWithList(List<E> list) {
+extension ListX<E extends Identifiable> on List<E> {
+  List<E> mergeWithList(List<E> list) {
     if (this is PaginatedList<E>) {
       final paginatedList = (this as PaginatedList<E>);
 
@@ -172,7 +165,7 @@ extension _ListX<E extends Identifiable> on List<E> {
     return mergeWith(list);
   }
 
-  List<E> _removeFromList(E identifiable) {
+  List<E> removeFromList(E identifiable) {
     final that = this;
 
     if (that is PaginatedList<E> && that.containsIdentifiable(identifiable)) {

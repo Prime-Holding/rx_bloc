@@ -25,7 +25,8 @@ abstract class CoordinatorEvents {
 
   void reminderCreated(Result<ReminderModel> reminderResult);
 
-  void reminderUpdated(Result<IdentifiablePair<ReminderModel>> reminderResult);
+  void reminderUpdated(
+      Result<IdentifiablePair<ReminderModel>> reminderPairResult);
 }
 
 abstract class CoordinatorStates {
@@ -58,7 +59,8 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<Result<ReminderModel>> get onReminderDeleted => _$reminderDeletedEvent;
 
   @override
-  Stream<Result<ReminderModel>> get onReminderUpdated => _$reminderUpdatedEvent;
+  Stream<Result<IdentifiablePair<ReminderModel>>> get onReminderUpdated =>
+      _$reminderUpdatedEvent;
 }
 
 extension CoordinatingTasksX on CoordinatorBlocType {
@@ -77,8 +79,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   ///  will/will not be removed from value of the provided [subject].
   Stream<ManagedList<ReminderModel>> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(
-            ReminderModel model, ReminderModel? identifiableInList)
+    required Future<ManageOperation> Function(ReminderModel model)
         operationCallback,
   }) =>
       Rx.merge([
@@ -90,29 +91,14 @@ extension CoordinatingTasksX on CoordinatorBlocType {
         states.onReminderDeleted.whereSuccess().withLatestFromIdentifiableList(
               reminderList,
               CounterOperation.delete,
-              operationCallback: (reminder, identifiableInList) async =>
-                  ManageOperation.remove,
+              operationCallback: (reminder) async => ManageOperation.remove,
             ),
-        // Rx.combineLatest2(
-        //     states.onReminderUpdated.whereSuccess(),
-        //     reminderList,
-        //     (updated, list) => myMethod(
-        //           CounterOperation.update,
-        //           operationCallback: operationCallback,
-        //         )),
-        states.onReminderUpdated.whereSuccess().withLatestFromIdentifiableList(
+        states.onReminderUpdated
+            .whereSuccess()
+            .withLatestFromIdentifiablePairList(
               reminderList,
               CounterOperation.update,
               operationCallback: operationCallback,
             ),
       ]);
-
-  // myMethod(
-  //   CounterOperation update, {
-  //   required Future<ManageOperation> Function(
-  //           ReminderModel model, ReminderModel? identifiableInList)
-  //       operationCallback,
-  // }) {
-  //   print('test1');
-  // }
 }

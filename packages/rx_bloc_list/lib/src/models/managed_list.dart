@@ -18,9 +18,12 @@ enum ManageOperation {
 }
 
 enum IncrementOperation {
-  incrementIncompleteDecrementComplete, // ++ --
-
-  decrementIncompleteIncrementComplete, // -- ++
+  /// The operation, which increments the incomplete counter and decrements
+  /// the complete counter
+  incrementIncompleteDecrementComplete,
+  /// The operation, which decrements the incomplete counter and increments
+  /// the complete counter
+  decrementIncompleteIncrementComplete,
 }
 
 enum CounterOperation {
@@ -43,7 +46,6 @@ class ManagedList<T extends Identifiable> {
     required this.identifiable,
     required this.operation,
     required this.counterOperation,
-    // this.incrementOperation,
     this.identifiableInList,
   });
 
@@ -60,8 +62,6 @@ class ManagedList<T extends Identifiable> {
 
   /// The managed list
   final List<T> list;
-
-  // final IncrementOperation? incrementOperation;
 
   @override
   bool operator ==(other) {

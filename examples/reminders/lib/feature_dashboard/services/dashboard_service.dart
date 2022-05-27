@@ -41,7 +41,7 @@ class DashboardService {
             .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
       );
 
-  Future<ManageOperation> getManageOperation(ReminderModel model, ReminderModel? _) async {
+  Future<ManageOperation> getManageOperation(ReminderModel model) async {
     final dateRange = _getDateRange();
 
     if (model.dueDate.isAfter(dateRange.from) &&
@@ -64,53 +64,32 @@ class DashboardService {
     required DashboardModel dashboard,
     required ManagedList<ReminderModel> managedList,
   }) {
-    //Todo compare managedList.identifiableInList with managedList.identifiable
-    var _identifiableInList = managedList.identifiableInList;
-    var _identifiable = managedList.identifiable;
-    IncrementOperation? incrementOperation;
+    final _identifiableInList = managedList.identifiableInList;
+    final _identifiable = managedList.identifiable;
+    IncrementOperation? _incrementOperation;
     if (_identifiableInList != null &&
         _identifiable.title == _identifiableInList.title &&
         _identifiable.dueDate == _identifiableInList.dueDate &&
         _identifiable.complete != _identifiableInList.complete) {
-      if (_identifiable.complete) {
-        incrementOperation =
+      if (_identifiableInList.complete) {
+        _incrementOperation =
             IncrementOperation.decrementIncompleteIncrementComplete;
       } else {
-        incrementOperation =
+        _incrementOperation =
             IncrementOperation.incrementIncompleteDecrementComplete;
       }
     }
 
-    // if (_identifiableInList == null &&
-    //     managedList.counterOperation == CounterOperation.update) {
-    //   if (_identifiable.complete) {
-        ///mark 0 as complete =ManageOperation.remove, CounterOperation.update ,
-        ///identifiable complete = true NOT OK
-        // incrementOperation =
-        //     IncrementOperation.decrementIncompleteIncrementComplete;
-      // } else {
-      //   /increment incomplete, decrement complete
-        /// mark 91 as incomplete gives - ManageOperation.merge, CounterOperation.update ОК
-        // incrementOperation =
-        //     IncrementOperation.incrementIncompleteDecrementComplete;
-      // }
-    // }
-    print('incrementOperation: $incrementOperation');
-    print('compeleteBefore: ${dashboard.completeCount}');
-    print('incompeleteBefore: ${dashboard.incompleteCount}');
     var complete = dashboard.recalculateCompleteWith(
       counterOperation: managedList.counterOperation,
       reminderModel: managedList.identifiable,
-      incrementOperation: incrementOperation,
+      incrementOperation: _incrementOperation,
     );
     var inComplete = dashboard.recalculateIncompleteWith(
       counterOperation: managedList.counterOperation,
       reminderModel: managedList.identifiable,
-      incrementOperation: incrementOperation,
+      incrementOperation: _incrementOperation,
     );
-    print('compeleteAfter: $complete');
-    print('incompeleteAfter: $inComplete');
-    print('----------------------------');
     return dashboard.copyWith(
       reminderList: managedList.list,
       completeCount: complete,
@@ -139,11 +118,6 @@ extension _DashboardModelX on DashboardModel {
           return incompleteCount - 1;
         }
         return incompleteCount;
-      // return reminderModel.completeUpdated
-      //     ? reminderModel.complete
-      //         ? incompleteCount - 1
-      //         : incompleteCount + 1
-      //     : incompleteCount;
     }
   }
 
@@ -166,12 +140,6 @@ extension _DashboardModelX on DashboardModel {
           return completeCount - 1;
         }
         return completeCount;
-
-      // return reminderModel.completeUpdated
-      //     ? reminderModel.complete
-      //         ? completeCount + 1
-      //         : completeCount - 1
-      //     : completeCount;
     }
   }
 }

@@ -50,12 +50,8 @@ class DashboardBloc extends $DashboardBloc {
           _dashboardModelResult
               .whereSuccess()
               .map((dashboard) => dashboard.reminderList),
-              // .doOnData((event) {
-            // print('22dashboardList $event');
-          // }),
           operationCallback: _dashboardService.getManageOperation,
         )
-        // .doOnData((event) {print('dashboardBloc1');})
         .map(managedListToDashboard)
         .mapResult(_dashboardService.sortedReminderList)
         .bind(_dashboardModelResult)
