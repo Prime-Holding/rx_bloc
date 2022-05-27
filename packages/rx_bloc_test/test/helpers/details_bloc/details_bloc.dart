@@ -5,7 +5,7 @@ part 'details_bloc.rxb.g.dart';
 
 class DetailsRepository {
   Future<String> fetch() async {
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(milliseconds: 60));
     return Future.value('Success');
   }
 }
