@@ -8,10 +8,8 @@ import '../blocs/${feature_snake_case}_bloc.dart';
 class ${feature_pascal_case}Dependencies {
   ${feature_pascal_case}Dependencies._(this.context);
 
-  factory ${feature_pascal_case}Dependencies.of(BuildContext context) =>
-      _instance != null ? _instance! : _instance = ${feature_pascal_case}Dependencies._(context);
-
-  static ${feature_pascal_case}Dependencies? _instance;
+  factory ${feature_pascal_case}Dependencies.from(BuildContext context) =>
+    = ${feature_pascal_case}Dependencies._(context);
 
   final BuildContext context;
 
