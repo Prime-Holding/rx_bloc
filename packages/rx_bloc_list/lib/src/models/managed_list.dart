@@ -17,34 +17,17 @@ enum ManageOperation {
   ignore,
 }
 
-enum CounterOperation {
-  /// The operation, which just increments the incomplete counter
-  create,
-
-  /// The operation, which decrements the incomplete or complete counter
-  delete,
-
-  /// The operation, which decrements incomplete and increments complete or
-  /// increments incomplete and decrements complete or
-  /// does not change counter
-  update,
-}
-
 /// A class containing the list along with the managed [Identifiable] object.
 class ManagedList<T extends Identifiable> {
   ManagedList(
     this.list, {
     required this.identifiable,
     required this.operation,
-    required this.counterOperation,
     this.identifiableInList,
   });
 
   /// The managed operation of the [identifiable] object
   final ManageOperation operation;
-
-  /// The counter operation of the [identifiable] object
-  final CounterOperation counterOperation;
 
   /// The managed object
   final T identifiable;

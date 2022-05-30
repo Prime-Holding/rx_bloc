@@ -11,6 +11,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../models/counter/increment_operation.dart';
 import '../models/reminder/reminder_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
@@ -77,28 +78,38 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   ///
   /// Based on the result of the callback [onUpdateOperation] the updated task
   ///  will/will not be removed from value of the provided [subject].
-  Stream<ManagedList<ReminderModel>> mapReminderManageEventsWithLatestFrom(
+  Stream<ManagedListCounterOperation> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
     required Future<ManageOperation> Function(ReminderModel model)
         operationCallback,
   }) =>
       Rx.merge([
-        states.onReminderCreated.whereSuccess().withLatestFromIdentifiableList(
+        states.onReminderCreated
+            .whereSuccess()
+            .withLatestFromIdentifiableList(
               reminderList,
-              CounterOperation.create,
               operationCallback: operationCallback,
-            ),
-        states.onReminderDeleted.whereSuccess().withLatestFromIdentifiableList(
+            )
+            .map((managedList) => ManagedListCounterOperation(
+                managedList: managedList,
+                counterOperation: CounterOperation.create)),
+        states.onReminderDeleted
+            .whereSuccess()
+            .withLatestFromIdentifiableList(
               reminderList,
-              CounterOperation.delete,
               operationCallback: (reminder) async => ManageOperation.remove,
-            ),
+            )
+            .map((managedList) => ManagedListCounterOperation(
+                managedList: managedList,
+                counterOperation: CounterOperation.delete)),
         states.onReminderUpdated
             .whereSuccess()
             .withLatestFromIdentifiablePairList(
               reminderList,
-              CounterOperation.update,
               operationCallback: operationCallback,
-            ),
+            )
+            .map((managedList) => ManagedListCounterOperation(
+                managedList: managedList,
+                counterOperation: CounterOperation.update)),
       ]);
 }

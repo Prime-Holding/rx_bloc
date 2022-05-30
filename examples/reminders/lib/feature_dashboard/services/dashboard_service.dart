@@ -64,6 +64,7 @@ class DashboardService {
   DashboardModel getDashboardModelFromManagedList({
     required DashboardModel dashboard,
     required ManagedList<ReminderModel> managedList,
+    required CounterOperation counterOperation,
   }) {
     final _identifiableInList = managedList.identifiableInList;
     final _identifiable = managedList.identifiable;
@@ -81,20 +82,18 @@ class DashboardService {
       }
     }
 
-    var complete = dashboard.recalculateCompleteWith(
-      counterOperation: managedList.counterOperation,
-      reminderModel: managedList.identifiable,
-      incrementOperation: _incrementOperation,
-    );
-    var inComplete = dashboard.recalculateIncompleteWith(
-      counterOperation: managedList.counterOperation,
-      reminderModel: managedList.identifiable,
-      incrementOperation: _incrementOperation,
-    );
     return dashboard.copyWith(
       reminderList: managedList.list,
-      completeCount: complete,
-      incompleteCount: inComplete,
+      completeCount: dashboard.recalculateCompleteWith(
+        counterOperation: counterOperation,
+        reminderModel: managedList.identifiable,
+        incrementOperation: _incrementOperation,
+      ),
+      incompleteCount: dashboard.recalculateIncompleteWith(
+        counterOperation: counterOperation,
+        reminderModel: managedList.identifiable,
+        incrementOperation: _incrementOperation,
+      ),
     );
   }
 }
