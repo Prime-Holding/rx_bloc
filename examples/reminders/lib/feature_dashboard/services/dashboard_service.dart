@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:rx_bloc_list/models.dart';
 
+import '../../base/models/counter/increment_operation.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 import '../models/dashboard_model.dart';
