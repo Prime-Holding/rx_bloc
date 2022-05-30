@@ -48,6 +48,7 @@ rxBlocTest<DetailsBloc,String>(
 For the most complex test cases with multiple events, which contain `throttleTime` or/and `debounceTime` or similar inside, and to speed up test execution,`rxBlocFakeAsyncTest` should be used. It contains an instance of [FakeAsync](https://pub.dev/packages/fake_async) inside `act`, which provides a way to fire all asynchronous events that are scheduled for that time period without actually needing the test to wait for real time to elapse.
 
 **Example**
+
 [DetailsBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_test/test/helpers/details_bloc/details_bloc.dart) email state mapper: 
 ```dart
 @override
@@ -58,22 +59,7 @@ Stream<String> _mapToEmailState() => _$setEmailEvent
   .shareReplay(maxSize: 1);
 ```
 
-**BAD - execution time ±3 sec:**
-```dart
-rxBlocTest<DetailsBloc, String>(
-  'Email test bloc',
-  build: () async => DetailsBloc(repo),
-  state: (bloc) => bloc.states.email,
-  act: (bloc) async {
-    bloc.events.setEmail(' job');
-    bloc.events.setEmail(' job@prime');
-    bloc.events.setEmail(' job@prime.com ');
-  },
-  expect: <String>['', 'job@prime.com'],
-);
-```
-
-**GOOD - execution time ±35 ms:**
+✅ **GOOD - execution time ±35 ms:**
 ```dart
 rxBlocFakeAsyncTest<DetailsBloc, String>(
   'Email fake async test bloc',
@@ -88,4 +74,19 @@ rxBlocFakeAsyncTest<DetailsBloc, String>(
   expect: <String>['', 'job@prime.com'],
 );
 ```
- 
+
+
+❌ **BAD - execution time ±3 sec:**
+```dart
+rxBlocTest<DetailsBloc, String>(
+  'Email test bloc',
+  build: () async => DetailsBloc(repo),
+  state: (bloc) => bloc.states.email,
+  act: (bloc) async {
+    bloc.events.setEmail(' job');
+    bloc.events.setEmail(' job@prime');
+    bloc.events.setEmail(' job@prime.com ');
+  },
+  expect: <String>['', 'job@prime.com'],
+);
+```
