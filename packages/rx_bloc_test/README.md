@@ -47,49 +47,45 @@ rxBlocTest<DetailsBloc,String>(
 ## rxBlocFakeAsyncTest
 For the most complex test cases with multiple events, which contain `throttleTime` or/and `debounceTime` or similar inside, and to speed up test execution,`rxBlocFakeAsyncTest` should be used. It contains an instance of [FakeAsync](https://pub.dev/packages/fake_async) inside `act`, which provides a way to fire all asynchronous events that are scheduled for that time period without actually needing the test to wait for real time to elapse.
 
-**BAD:**
+**Example:**
+[DetailsBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_test/test/helpers/details_bloc/details_bloc.dart) email state mapper: 
 ```dart
-rxBlocTest<TimelineBloc, PaginatedList<SnapshotModel>>(
-      'TimelineBloc - CoordinatorBloc Update Timeline',
-      build: () async {
-        return _createBlocInstance();
-      },
-      state: (bloc) => bloc.states.paginatedList,
-      act: (bloc) async {
-        await Future.delayed(const Duration(milliseconds: 500));
-        coordinatorBloc.events.updateTimeline();
-        await Future.delayed(const Duration(milliseconds: 500));
-      },
-      expect: [
-        Snapshot.emptyList,
-        Snapshot.emptyListLoading,
-        Snapshot.notEmptyList,
-      ],
-    );
- ```
+@override
+Stream<String> _mapToEmailState() => _$setEmailEvent
+  .startWith('')
+  .throttleTime(const Duration(seconds: 3), trailing: true)
+  .map((email) => email.trim())
+  .shareReplay(maxSize: 1);
+```
 
-**GOOD:**
+**BAD - execution time ±3 sec:**
 ```dart
-rxBlocFakeAsyncTest<GlobalSearchBlocType, Result<List<GlobalSearchResultGroupModel>?>>(
-    'GlobalSearchBloc - task updated',
-    state: (bloc) => bloc.states.searchResults,
-    build: () {
-      _setUpMocks(response: GlobalSearchStub.taskSearchResponse);
-      return _createBlocInstance();
-    },
-    act: (bloc, fakeAsync) {
-      final task = GlobalSearchStub.updatedTaskListItemModel;
-      bloc.events.setSearchTerm('hello');
-      fakeAsync.elapse(const Duration(seconds: 2));
-      coordinatorBloc.events.taskUpdated(TaskStub.taskShortName
-          .copyWith(name: task.text, ownerId: task.assigneeIds.first));
-      fakeAsync.elapse(const Duration(seconds: 2));
-    },
-    expect: [
-      GlobalSearchStub.defaultState,
-      GlobalSearchStub.loadingStateTagSearch,
-      GlobalSearchStub.tasksStateWithTag(),
-      GlobalSearchStub.tasksUpdatedStateWithTag(),
-    ],
-  );
-  ```
+rxBlocTest<DetailsBloc, String>(
+  'Email test bloc',
+  build: () async => DetailsBloc(repo),
+  state: (bloc) => bloc.states.email,
+  act: (bloc) async {
+    bloc.events.setEmail(' job');
+    bloc.events.setEmail(' job@prime');
+    bloc.events.setEmail(' job@prime.com ');
+  },
+  expect: <String>['', 'job@prime.com'],
+);
+```
+
+**GOOD - execution time ±35 ms:**
+```dart
+rxBlocFakeAsyncTest<DetailsBloc, String>(
+  'Email fake async test bloc',
+  build: () => DetailsBloc(repo),
+  state: (bloc) => bloc.states.email,
+  act: (bloc, fakeAsync) {
+    bloc.events.setEmail(' job');
+    bloc.events.setEmail(' job@prime');
+    bloc.events.setEmail(' job@prime.com ');
+    fakeAsync.elapse(const Duration(seconds: 3));
+  },
+  expect: <String>['', 'job@prime.com'],
+);
+```
+ 
