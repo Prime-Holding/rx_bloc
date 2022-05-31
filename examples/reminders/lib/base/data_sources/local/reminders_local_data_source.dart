@@ -50,7 +50,6 @@ class RemindersLocalDataSource {
     required String title,
     required DateTime dueDate,
     required bool complete,
-    required bool completeUpdated,
   }) async {
     await Future.delayed(const Duration(milliseconds: 200));
 

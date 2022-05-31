@@ -15,13 +15,11 @@ class RemindersService {
     required String title,
     required DateTime dueDate,
     required bool complete,
-    required bool completeUpdated,
   }) =>
       _repository.create(
         title: title,
         dueDate: dueDate,
         complete: complete,
-        completeUpdated: completeUpdated,
       );
 
   Future<void> delete(String id) => _repository.delete(id);

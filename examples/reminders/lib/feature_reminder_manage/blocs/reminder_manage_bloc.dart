@@ -64,7 +64,6 @@ class ReminderManageBloc extends $ReminderManageBloc {
                 title: reminder.title,
                 dueDate: reminder.dueDate,
                 complete: reminder.complete,
-                completeUpdated: reminder.completeUpdated,
               )
               .asResultStream())
           .setResultStateHandler(this)
