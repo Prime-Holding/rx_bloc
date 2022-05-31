@@ -1,6 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.generator.components
 
-import com.primeholding.rxbloc_generator_plugin.action.Bloc
+import com.primeholding.rxbloc_generator_plugin.parser.Bloc
 import com.primeholding.rxbloc_generator_plugin.generator.RxTestGeneratorBase
 
 class RxTestBlocGenerator(name: String, projectName: String, bloc: Bloc) :

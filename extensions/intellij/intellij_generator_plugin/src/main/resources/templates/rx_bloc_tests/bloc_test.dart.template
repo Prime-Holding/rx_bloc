@@ -19,16 +19,14 @@ ${declaration_of_repositories}
   });
 
   group('test ${bloc_snake_case}', () {
-    rxBlocTest<${bloc_pascal_case}Bloc, bool>('test ${bloc_snake_case}',
+    rxBlocTest<${bloc_pascal_case}BlocType, bool>('test ${bloc_snake_case}',
         build: () async {
           /*
            //Sample mock during a test case
            when(repositoryMock.fetchPage()).thenAnswer(
             (_) => Future.value(Stubs.emptyList),
           ); */
-          return ${bloc_field_case}Bloc(
-           ${pass_as_parameters_repositories}
-          );
+          return ${bloc_field_case}Bloc();
         },
         act: (bloc) async {},
         state: (bloc) => bloc.states.isLoading,
@@ -36,6 +34,4 @@ ${declaration_of_repositories}
   });
 }
 
-${bloc_pascal_case}Bloc ${bloc_field_case}Bloc({
-${bloc_parameters_initialization_with_repos}
-}) => ${bloc_pascal_case}Bloc();//application/bloc specific parameters
+${bloc_pascal_case}Bloc ${bloc_field_case}Bloc() => ${bloc_pascal_case}Bloc();//application/bloc specific parameters
