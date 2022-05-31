@@ -31,7 +31,7 @@ class HotelDetailsPage extends StatefulWidget {
   final Hotel _hotel;
 
   @override
-  _HotelDetailsPageState createState() => _HotelDetailsPageState();
+  State<HotelDetailsPage> createState() => _HotelDetailsPageState();
 }
 
 class _HotelDetailsPageState extends State<HotelDetailsPage> {
