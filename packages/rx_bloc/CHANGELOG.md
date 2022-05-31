@@ -1,3 +1,8 @@
+## [3.3.2] - May 31, 2022
+
+- Update the Template that Genearates - Feature Dependencies class - to not be Singleton. 
+- Bump Android compileSdkVersion to the current version (32)
+
 ## [3.3.1] - May 26, 2022
 - Add equality check [support](https://github.com/Prime-Holding/rx_bloc/pull/247) for maps with nested objects on the [Result](https://pub.dev/documentation/rx_bloc/latest/rx_bloc/Result-class.html) class, thanks to [pangievich](https://github.com/PankovSerge)
 
