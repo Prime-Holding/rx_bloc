@@ -69,6 +69,7 @@ rxBlocFakeAsyncTest<DetailsBloc, String>(
     bloc.events.setEmail(' job');
     bloc.events.setEmail(' job@prime');
     bloc.events.setEmail(' job@prime.com ');
+    
     fakeAsync.elapse(const Duration(seconds: 3));
   },
   expect: <String>['', 'job@prime.com'],
@@ -86,6 +87,8 @@ rxBlocTest<DetailsBloc, String>(
     bloc.events.setEmail(' job');
     bloc.events.setEmail(' job@prime');
     bloc.events.setEmail(' job@prime.com ');
+    
+    await Future.delayed(const Duration(seconds: 3))
   },
   expect: <String>['', 'job@prime.com'],
 );
