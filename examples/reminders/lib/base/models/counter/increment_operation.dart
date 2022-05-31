@@ -24,12 +24,12 @@ enum CounterOperation {
   update,
 }
 
-class ManagedListCounterOperation{
+class ManagedListCounterOperation<E extends Identifiable>{
   ManagedListCounterOperation({
     required this.managedList,
     required this.counterOperation,
   });
 
-  final ManagedList managedList;
+  final ManagedList<E> managedList;
   final CounterOperation counterOperation;
 }

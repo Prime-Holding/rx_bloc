@@ -90,7 +90,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
               reminderList,
               operationCallback: operationCallback,
             )
-            .map((managedList) => ManagedListCounterOperation(
+            .map((managedList) => ManagedListCounterOperation<ReminderModel>(
                 managedList: managedList,
                 counterOperation: CounterOperation.create)),
         states.onReminderDeleted
@@ -99,7 +99,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
               reminderList,
               operationCallback: (reminder) async => ManageOperation.remove,
             )
-            .map((managedList) => ManagedListCounterOperation(
+            .map((managedList) => ManagedListCounterOperation<ReminderModel>(
                 managedList: managedList,
                 counterOperation: CounterOperation.delete)),
         states.onReminderUpdated
@@ -108,7 +108,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
               reminderList,
               operationCallback: operationCallback,
             )
-            .map((managedList) => ManagedListCounterOperation(
+            .map((managedList) => ManagedListCounterOperation<ReminderModel>(
                 managedList: managedList,
                 counterOperation: CounterOperation.update)),
       ]);
