@@ -86,9 +86,7 @@ rxBlocTest<DetailsBloc, String>(
   act: (bloc) async {
     bloc.events.setEmail(' job');
     bloc.events.setEmail(' job@prime');
-    bloc.events.setEmail(' job@prime.com ');
-    
-    await Future.delayed(const Duration(seconds: 3))
+    bloc.events.setEmail(' job@prime.com ');  
   },
   expect: <String>['', 'job@prime.com'],
 );
