@@ -66,14 +66,14 @@ class DashboardService {
     required ManagedList<ReminderModel> managedList,
     required CounterOperation counterOperation,
   }) {
-    final _identifiableInList = managedList.identifiableInList;
-    final _identifiable = managedList.identifiable;
+    final _oldIdentifiable = managedList.identifiablePair.oldIdentifiable as ReminderModel?;
+    final _updatedIdentifiable = managedList.identifiablePair.updatedIdentifiable as ReminderModel;
     IncrementOperation? _incrementOperation;
-    if (_identifiableInList != null &&
-        _identifiable.title == _identifiableInList.title &&
-        _identifiable.dueDate == _identifiableInList.dueDate &&
-        _identifiable.complete != _identifiableInList.complete) {
-      if (_identifiableInList.complete) {
+    if (_oldIdentifiable != null &&
+        _updatedIdentifiable.title == _oldIdentifiable.title &&
+        _updatedIdentifiable.dueDate == _oldIdentifiable.dueDate &&
+        _updatedIdentifiable.complete != _oldIdentifiable.complete) {
+      if (_updatedIdentifiable.complete) {
         _incrementOperation =
             IncrementOperation.decrementIncompleteIncrementComplete;
       } else {
@@ -86,12 +86,12 @@ class DashboardService {
       reminderList: managedList.list,
       completeCount: dashboard.recalculateCompleteWith(
         counterOperation: counterOperation,
-        reminderModel: managedList.identifiable,
+        reminderModel: _updatedIdentifiable,
         incrementOperation: _incrementOperation,
       ),
       incompleteCount: dashboard.recalculateIncompleteWith(
         counterOperation: counterOperation,
-        reminderModel: managedList.identifiable,
+        reminderModel: _updatedIdentifiable,
         incrementOperation: _incrementOperation,
       ),
     );

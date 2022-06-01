@@ -59,8 +59,7 @@ class ReminderListBloc extends $ReminderListBloc {
           _paginatedList,
           operationCallback: (model) async => ManageOperation.merge,
         )
-        .map((event) => event.managedList as ManagedList<ReminderModel>)
-        .mapToList()
+        .map((event) => event.managedList.list)
         .cast<PaginatedList<ReminderModel>>()
         .map(
           (list) => list.copyWith(

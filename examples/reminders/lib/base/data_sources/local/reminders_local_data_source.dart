@@ -87,7 +87,7 @@ class RemindersLocalDataSource {
     _data[index] = _model;
 
     var _identifiablePair =
-        IdentifiablePair<ReminderModel>(old: oldReminder, updated: _model);
+        IdentifiablePair<ReminderModel>(updatedIdentifiable: _model, oldIdentifiable: oldReminder);
     return _identifiablePair;
   }
 }

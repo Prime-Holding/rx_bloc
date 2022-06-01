@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 
-import 'identifiable.dart';
+import '../../models.dart';
 
 /// The managed operation of a [Identifiable] object.
 /// - [merge] - Added or Updated
@@ -21,18 +21,15 @@ enum ManageOperation {
 class ManagedList<T extends Identifiable> {
   ManagedList(
     this.list, {
-    required this.identifiable,
+    required this.identifiablePair,
     required this.operation,
-    this.identifiableInList,
   });
 
-  /// The managed operation of the [identifiable] object
+  /// The managed operation of the [updatedIdentifiable] object
   final ManageOperation operation;
 
-  /// The managed object
-  final T identifiable;
-
-  final T? identifiableInList;
+  /// The object containing the managed object
+  final IdentifiablePair identifiablePair;
 
   /// The managed list
   final List<T> list;
@@ -42,13 +39,12 @@ class ManagedList<T extends Identifiable> {
     if (other is ManagedList<T>) {
       return const ListEquality().equals(other.list, list) &&
           operation == other.operation &&
-          identifiable.id == other.identifiable.id;
+          identifiablePair == other.identifiablePair;
     }
-
     return false;
   }
 
   @override
   int get hashCode =>
-      list.hashCode ^ operation.hashCode ^ identifiable.hashCode;
+      list.hashCode ^ operation.hashCode ^ identifiablePair.hashCode;
 }
