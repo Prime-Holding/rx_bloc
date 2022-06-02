@@ -153,7 +153,6 @@ void main() {
           ManagedList(
             [IdentifiableModel('1', value: 'a')],
             identifiablePair: IdentifiablePair(
-              oldIdentifiable: IdentifiableModel('2'),
               updatedIdentifiable: IdentifiableModel('2'),
             ),
             operation: ManageOperation.remove,
@@ -182,7 +181,6 @@ void main() {
               IdentifiableModel('2'),
             ],
             identifiablePair: IdentifiablePair(
-              oldIdentifiable: IdentifiableModel('2'),
               updatedIdentifiable: IdentifiableModel('2'),
             ),
             operation: ManageOperation.ignore,
@@ -209,7 +207,6 @@ void main() {
               IdentifiableModel('1'),
             ],
             identifiablePair: IdentifiablePair(
-              oldIdentifiable: IdentifiableModel('2'),
               updatedIdentifiable: IdentifiableModel('2'),
             ),
             operation: ManageOperation.remove,
@@ -242,7 +239,6 @@ void main() {
               totalCount: 11,
             ),
             identifiablePair: IdentifiablePair(
-              oldIdentifiable: null,
               updatedIdentifiable: IdentifiableModel('2'),
             ),
             operation: ManageOperation.merge,
@@ -276,7 +272,6 @@ void main() {
                 totalCount: 9,
               ),
               identifiablePair: IdentifiablePair(
-                oldIdentifiable: IdentifiableModel('2'),
                 updatedIdentifiable: IdentifiableModel('2'),
               ),
               operation: ManageOperation.remove,

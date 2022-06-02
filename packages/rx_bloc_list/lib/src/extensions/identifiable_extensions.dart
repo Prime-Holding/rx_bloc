@@ -125,7 +125,6 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
               operation: ManageOperation.remove,
               identifiablePair: IdentifiablePair(
                 updatedIdentifiable: tuple.item,
-                oldIdentifiable: identifiableInList,
               ),
             );
             break;
@@ -135,7 +134,6 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
               operation: ManageOperation.ignore,
               identifiablePair: IdentifiablePair(
                 updatedIdentifiable: tuple.item,
-                oldIdentifiable: identifiableInList,
               ),
             );
             break;

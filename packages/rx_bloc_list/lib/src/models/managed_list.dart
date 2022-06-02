@@ -17,7 +17,8 @@ enum ManageOperation {
   ignore,
 }
 
-/// A class containing the list along with the managed [Identifiable] object.
+/// A class containing the list along with the managed [Identifiable] object:
+/// [updatedIdentifiable], which is part of [identifiablePair].
 class ManagedList<T extends Identifiable> {
   ManagedList(
     this.list, {
@@ -28,7 +29,7 @@ class ManagedList<T extends Identifiable> {
   /// The managed operation of the [updatedIdentifiable] object
   final ManageOperation operation;
 
-  /// The object containing the managed object
+  /// The object containing the managed object [updatedIdentifiable]
   final IdentifiablePair identifiablePair;
 
   /// The managed list
