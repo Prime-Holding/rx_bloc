@@ -192,9 +192,33 @@ class _Tuple<E> {
 
 extension ModelManageEventsPair<E extends Identifiable>
     on Stream<IdentifiablePair<E>> {
-  
   /// Merge or remove the value of the stream from the latest [list] value.
   /// The result, based on the [operationCallback], will be emitted as a new value.
+  ///
+  /// Examples:
+  /// 1. The stream value will be removed from the [list] value
+  /// ```
+  /// objectStream.withLatestFromIdentifiablePairList(
+  ///     listStream,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.remove,
+  /// )
+  /// ```
+  ///
+  /// 2. The stream value will be merged into the [list] value
+  /// ```
+  /// objectStream.withLatestFromIdentifiablePairList(
+  ///     listStream,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.merge,
+  /// )
+  /// ```
+  ///
+  /// 3. The stream value won't be neither merged nor removed from the [list] value
+  /// ```
+  /// objectStream.withLatestFromIdentifiablePairList(
+  ///     listStream,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.ignore,
+  /// )
+  /// ```
   Stream<ManagedList<E>> withLatestFromIdentifiablePairList(
     Stream<List<E>> list, {
     required OperationCallback<E> operationCallback,
