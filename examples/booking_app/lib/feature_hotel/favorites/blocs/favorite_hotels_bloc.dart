@@ -33,11 +33,11 @@ class FavoriteHotelsBloc extends $FavoriteHotelsBloc {
     _$reloadFavoriteHotelsEvent
         .fetchHotels(repository)
         .bind(_favoriteHotels)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
 
     coordinatorBloc.states.onHotelsUpdated
         .updateFavoriteHotels(_favoriteHotels)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   // MARK: - Subjects
