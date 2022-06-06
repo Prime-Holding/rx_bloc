@@ -1,4 +1,4 @@
-package com.primeholding.rxbloc_generator_plugin.parser
+package com.primeholding.rxbloc_generator_plugin.generator.parser
 
 import com.intellij.openapi.vfs.VirtualFile
 import java.io.File
@@ -6,13 +6,13 @@ import java.io.File
 class Utils {
 
     companion object {
-         fun extractBloc(notNullBlocFile: VirtualFile): Bloc? {
+        private fun extractBloc(notNullBlocFile: VirtualFile): Bloc? {
 
             if (!notNullBlocFile.exists() || notNullBlocFile.isDirectory) {
                 return null
             }
-             val stateVariableNames: MutableList<String> = mutableListOf()
-             val stateVariableTypes: MutableList<String> = mutableListOf()
+            val stateVariableNames: MutableList<String> = mutableListOf()
+            val stateVariableTypes: MutableList<String> = mutableListOf()
             val repos: MutableList<String> = mutableListOf()
             val services: MutableList<String> = mutableListOf()
 
@@ -34,23 +34,26 @@ class Utils {
                     notNullBlocFile.path.indexOf("lib") + 3
                 ),
                 stateVariableNames = stateVariableNames,
-                stateVariableTypes =  stateVariableTypes,
+                stateVariableTypes = stateVariableTypes,
                 repos = repos,
                 services = services
             )
         }
 
-         fun analyzeLib(libFolder: VirtualFile): List<Bloc> {
+        fun analyzeLib(libFolder: VirtualFile): List<Bloc> {
             val list = ArrayList<Bloc>()
             var bloc: Bloc?
 
             val repos: MutableList<String> = mutableListOf()
             val services: MutableList<String> = mutableListOf()
 
+            val allowedPrefixes = listOf("feature_", "lib_")
+
             libFolder.children.forEach { libChild ->
-                if (libChild.isDirectory && libChild.name.startsWith("feature_")) {
+                if (libChild.isDirectory && startsWithAnyOf(libChild.name, allowedPrefixes)) {
                     libChild.findChild("blocs")?.let { blocFolder ->
-                        val blocFile = blocFolder.findChild(libChild.name.replace("feature_", "") + "_bloc.dart")
+                        val blocFile =
+                            blocFolder.findChild(replaceAllPrefixes(libChild.name, allowedPrefixes) + "_bloc.dart")
                         blocFile?.let { notNullBlocFile ->
                             bloc = extractBloc(notNullBlocFile)
                             bloc?.let { list.add(it) }
@@ -80,6 +83,24 @@ class Utils {
             }
 
             return list
+        }
+
+        private fun replaceAllPrefixes(name: String, allowedPrefixes: List<String>): String {
+
+            var temp = name
+            allowedPrefixes.forEach {
+                temp = temp.replace(it, "")
+            }
+            return temp
+        }
+
+        private fun startsWithAnyOf(name: String, allowedPrefixes: List<String>): Boolean {
+            allowedPrefixes.forEach {
+                if (name.startsWith(it)) {
+                    return true
+                }
+            }
+            return false
         }
 
 

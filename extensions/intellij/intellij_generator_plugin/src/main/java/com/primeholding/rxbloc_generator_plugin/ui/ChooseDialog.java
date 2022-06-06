@@ -15,6 +15,8 @@ public class ChooseDialog<T> extends DialogWrapper {
         super(true);
         this.comboBox = comboBox;
         setTitle("Choose " + typeOfStuffToChoose);
+        setModal(true);
+        setOKButtonText("Choose");
         init();
     }
 

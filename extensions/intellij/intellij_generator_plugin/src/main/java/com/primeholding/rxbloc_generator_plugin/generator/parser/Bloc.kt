@@ -1,4 +1,4 @@
-package com.primeholding.rxbloc_generator_plugin.parser
+package com.primeholding.rxbloc_generator_plugin.generator.parser
 
 ///path - relative to the lib folder + list of items that the bloc uses.
 data class Bloc(

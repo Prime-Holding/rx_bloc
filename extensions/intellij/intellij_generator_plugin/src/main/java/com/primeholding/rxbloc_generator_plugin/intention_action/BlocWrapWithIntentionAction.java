@@ -7,15 +7,15 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
-import com.primeholding.rxbloc_generator_plugin.parser.Bloc;
-import com.primeholding.rxbloc_generator_plugin.parser.Utils;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils;
 import com.primeholding.rxbloc_generator_plugin.ui.ChooseDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -106,8 +106,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
 
         if (psiFile != null) {
             VirtualFile vFile = psiFile.getOriginalFile().getVirtualFile();
+            VirtualFile viewsDir = vFile.getParent();//by convention this should be called 'views' or "ui" or "ui_components".
 
-            VirtualFile viewsDir = vFile.getParent();//by convention this should be called 'views'.
             if (viewsDir.isDirectory()) {
                 VirtualFile feature_dir = viewsDir.getParent();
 
@@ -116,7 +116,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                     if (file.isDirectory() && file.getName().equals(BLOCS_DIRECTORY)) {
 
                         for (VirtualFile blocFile : file.getChildren()) {
-                            if (blocFile.getName().equals(vFile.getName().replace("page.dart", "") + "bloc.dart")) {
+                            if (blocFile.getName().endsWith("bloc.dart")) {
                                 blocTypeDirectorySuggest = (getBlocTypeFromFile(blocFile.getName()));
                                 break;
                             }
@@ -189,18 +189,16 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             PsiDocumentManager.getInstance(project).commitDocument(document);
             final PsiFile currentFile = getCurrentFile(project, editor);
             if (currentFile != null) {
-//                final String unformattedText = document.getText();
-//                final int unformattedLineCount = document.getLineCount();
+                final String unformattedText = document.getText();
+                final int unformattedLineCount = document.getLineCount();
 
-                CodeStyleManager.getInstance(project).reformat(currentFile);
-
-//                final int formattedLineCount = document.getLineCount();
+                final int formattedLineCount = document.getLineCount();
 
                 // file was incorrectly formatted, revert formatting
-//                if (formattedLineCount > unformattedLineCount + 3) {
-//                    document.setText(unformattedText);
-//                    PsiDocumentManager.getInstance(project).commitDocument(document);
-//                }
+                if (formattedLineCount > unformattedLineCount + 5) {
+                    document.setText(unformattedText);
+                    PsiDocumentManager.getInstance(project).commitDocument(document);
+                }
             }
         });
     }
@@ -262,9 +260,6 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             }
         }
 
-        if (ret.toString().equals("App")) {
-            return "App1";
-        }
         return ret.toString();
     }
 
