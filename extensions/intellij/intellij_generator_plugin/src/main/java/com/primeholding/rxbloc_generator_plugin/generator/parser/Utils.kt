@@ -6,7 +6,7 @@ import java.io.File
 class Utils {
 
     companion object {
-        private fun extractBloc(notNullBlocFile: VirtualFile): Bloc? {
+        fun extractBloc(notNullBlocFile: VirtualFile): Bloc? {
 
             if (!notNullBlocFile.exists() || notNullBlocFile.isDirectory) {
                 return null
