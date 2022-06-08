@@ -10,8 +10,8 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		4D73B020CAACDD0976DA47AE /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE942A624CF22963DE51521 /* Pods_Runner.framework */; };
+		56202B632850830400205B10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56202B622850830400205B10 /* GoogleService-Info.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		883A015D266A473D003AE298 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 883A015C266A473D003AE298 /* GoogleService-Info.plist */; };
 		88463D8F2628C7FE0073536C /* development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 88463D8E2628C7FE0073536C /* development.xcconfig */; };
 		88463D972628CBF50073536C /* staging.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 88463D962628CBF50073536C /* staging.xcconfig */; };
 		88463D992628CC260073536C /* production.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 88463D982628CC260073536C /* production.xcconfig */; };
@@ -44,11 +44,11 @@
 		29DD3C38C22704A735CC2DBC /* Pods-Runner.debug-development.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-development.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-development.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		3BE5E1A41832FF6FBDB3D60F /* Pods-Runner.debug-production.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-production.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-production.xcconfig"; sourceTree = "<group>"; };
+		56202B622850830400205B10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7D7594B3AAA5C52876527D21 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		883A015C266A473D003AE298 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		88463D8E2628C7FE0073536C /* development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = development.xcconfig; path = Flutter/development.xcconfig; sourceTree = "<group>"; };
 		88463D962628CBF50073536C /* staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = staging.xcconfig; path = Flutter/staging.xcconfig; sourceTree = "<group>"; };
 		88463D982628CC260073536C /* production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = production.xcconfig; path = Flutter/production.xcconfig; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				883A015C266A473D003AE298 /* GoogleService-Info.plist */,
+				56202B622850830400205B10 /* GoogleService-Info.plist */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -224,7 +224,7 @@
 			files = (
 				88463D972628CBF50073536C /* staging.xcconfig in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
-				883A015D266A473D003AE298 /* GoogleService-Info.plist in Resources */,
+				56202B632850830400205B10 /* GoogleService-Info.plist in Resources */,
 				88463D992628CC260073536C /* production.xcconfig in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				888E668026666C4D006075A7 /* environments in Resources */,
