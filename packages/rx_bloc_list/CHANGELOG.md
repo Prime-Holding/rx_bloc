@@ -1,3 +1,8 @@
+## [3.2.0-dev.2] June 7, 2022
+- Added `IdentifiablePair<E extends Identifiable>` class
+- Added `Stream<IdentifiablePair<E extends Identifiable>>` extensions: `withLatestFromIdentifiablePairList`
+- Removed parameter `identifiableInList` from `operationCallback` in `Stream<T extends Identifiable>` extension: `withLatestFromIdentifiableList`
+
 ## [3.2.0-dev.1] January 30, 2022
 - Added `Identifiable` interface for handling inter-feature communication
 - Added `List<T extends Identifiable>` extensions: `ids`, `containsIdentifiable`, `removeIdentifiable`, `mergeWith`

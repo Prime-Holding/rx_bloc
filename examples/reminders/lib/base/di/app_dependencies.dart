@@ -145,9 +145,10 @@ class AppDependencies {
 
   List<Provider> get _services => [
         Provider<RemindersService>(
-            create: (context) => RemindersService(
-                  context.read(),
-                )),
+          create: (context) => RemindersService(
+            context.read(),
+          ),
+        ),
       ];
 
   List<SingleChildWidget> get _blocs => [

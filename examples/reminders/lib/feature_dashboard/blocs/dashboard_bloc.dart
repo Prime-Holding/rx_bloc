@@ -3,6 +3,7 @@ import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/models/counter/increment_operation.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../models/dashboard_model.dart';
 import '../services/dashboard_service.dart';
@@ -63,7 +64,7 @@ class DashboardBloc extends $DashboardBloc {
   static const _tagSilently = 'silently';
 
   Result<DashboardModel> managedListToDashboard(
-    ManagedList<ReminderModel> managedList,
+  ManagedListCounterOperation managedListCounterOperation,
   ) {
     final dashboard = _dashboardModelResult.value;
 
@@ -71,7 +72,8 @@ class DashboardBloc extends $DashboardBloc {
       return Result.success(
         _dashboardService.getDashboardModelFromManagedList(
           dashboard: dashboard.data,
-          managedList: managedList,
+          managedList: managedListCounterOperation.managedList as ManagedList<ReminderModel>,
+          counterOperation: managedListCounterOperation.counterOperation,
         ),
       );
     }

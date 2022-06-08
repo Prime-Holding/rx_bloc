@@ -83,16 +83,18 @@ void main() {
       await expectLater(
         Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([IdentifiableModel('1')]),
-          operationCallback: (updatedIdentifiable, identifiableInList) async {
+          operationCallback: (updatedIdentifiable) async {
             expect(updatedIdentifiable.id, '2');
-            expect(identifiableInList, isNull);
             return ManageOperation.merge;
           },
         ),
         emitsInOrder([
           ManagedList(
             [IdentifiableModel('1'), IdentifiableModel('2')],
-            identifiable: IdentifiableModel('2'),
+            identifiablePair: IdentifiablePair(
+              oldIdentifiable: null,
+              updatedIdentifiable: IdentifiableModel('2'),
+            ),
             operation: ManageOperation.merge,
           )
         ]),
@@ -109,39 +111,23 @@ void main() {
             IdentifiableModel('1'),
             IdentifiableModel('2'),
           ]),
-          operationCallback: (updatedIdentifiable, identifiableInList) async {
+          operationCallback: (updatedIdentifiable) async {
             expect(updatedIdentifiable.id, '2');
             expect(updatedIdentifiable.value, '2 updated');
-            expect(identifiableInList!.value, '');
             return ManageOperation.merge;
           },
         ),
         emitsInOrder([
-          ManagedList([
-            IdentifiableModel('1'),
-            IdentifiableModel('2', value: '2 updated'),
-          ],
-              identifiable: IdentifiableModel('2'),
-              operation: ManageOperation.merge),
-        ]),
-      );
-    });
-
-    test('mapCreatedWithLatestFrom addToListCondition:false', () async {
-      await expectLater(
-        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
-          Stream.value([IdentifiableModel('1')]),
-          operationCallback: (updatedIdentifiable, identifiableInList) async {
-            expect(updatedIdentifiable.id, '2');
-            expect(identifiableInList, isNull);
-            return ManageOperation.ignore;
-          },
-        ),
-        emitsInOrder([
           ManagedList(
-            [IdentifiableModel('1')],
-            identifiable: IdentifiableModel('2'),
-            operation: ManageOperation.ignore,
+            [
+              IdentifiableModel('1'),
+              IdentifiableModel('2', value: '2 updated'),
+            ],
+            identifiablePair: IdentifiablePair(
+              oldIdentifiable: IdentifiableModel('2'),
+              updatedIdentifiable: IdentifiableModel('2'),
+            ),
+            operation: ManageOperation.merge,
           ),
         ]),
       );
@@ -155,32 +141,37 @@ void main() {
             IdentifiableModel('1', value: 'a'),
             IdentifiableModel('2', value: 'b'),
           ]),
-          operationCallback: (updatedIdentifiable, identifiableInList) async {
+          operationCallback: (updatedIdentifiable) async {
             if (updatedIdentifiable.id == '2') {
               expect(updatedIdentifiable.value, 'b updated');
-              expect(identifiableInList, isNotNull);
-              expect(identifiableInList!.value, 'b');
             }
 
             return ManageOperation.remove;
           },
         ),
         emitsInOrder([
-          ManagedList([IdentifiableModel('1', value: 'a')],
-              identifiable: IdentifiableModel('2'),
-              operation: ManageOperation.remove)
+          ManagedList(
+            [IdentifiableModel('1', value: 'a')],
+            identifiablePair: IdentifiablePair(
+              updatedIdentifiable: IdentifiableModel('2'),
+            ),
+            operation: ManageOperation.remove,
+          )
         ]),
       );
     });
 
     test('mapUpdatedWithLatestFrom removeFromListCondition:false', () async {
       await expectLater(
-        Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
+        Stream.value(IdentifiableModel('2', value: 'tt'))
+            .withLatestFromIdentifiableList(
           Stream.value([
             IdentifiableModel('1'),
             IdentifiableModel('2'),
           ]),
-          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+          operationCallback: (
+            updatedIdentifiable,
+          ) async =>
               ManageOperation.ignore,
         ),
         emitsInOrder([
@@ -189,7 +180,9 @@ void main() {
               IdentifiableModel('1'),
               IdentifiableModel('2'),
             ],
-            identifiable: IdentifiableModel('2'),
+            identifiablePair: IdentifiablePair(
+              updatedIdentifiable: IdentifiableModel('2'),
+            ),
             operation: ManageOperation.ignore,
           )
         ]),
@@ -205,7 +198,7 @@ void main() {
               IdentifiableModel('2'),
             ],
           ),
-          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+          operationCallback: (updatedIdentifiable) async =>
               ManageOperation.remove,
         ),
         emitsInOrder([
@@ -213,7 +206,9 @@ void main() {
             [
               IdentifiableModel('1'),
             ],
-            identifiable: IdentifiableModel('2'),
+            identifiablePair: IdentifiablePair(
+              updatedIdentifiable: IdentifiableModel('2'),
+            ),
             operation: ManageOperation.remove,
           ),
         ]),
@@ -233,7 +228,7 @@ void main() {
               totalCount: 10,
             ),
           ),
-          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+          operationCallback: (updatedIdentifiable) async =>
               ManageOperation.merge,
         ),
         emitsInOrder([
@@ -243,7 +238,9 @@ void main() {
               pageSize: 1,
               totalCount: 11,
             ),
-            identifiable: IdentifiableModel('2'),
+            identifiablePair: IdentifiablePair(
+              updatedIdentifiable: IdentifiableModel('2'),
+            ),
             operation: ManageOperation.merge,
           )
         ]),
@@ -263,7 +260,7 @@ void main() {
               totalCount: 10,
             ),
           ),
-          operationCallback: (updatedIdentifiable, identifiableInList) async =>
+          operationCallback: (updatedIdentifiable) async =>
               ManageOperation.remove,
         ),
         emitsInOrder(
@@ -274,8 +271,110 @@ void main() {
                 pageSize: 2,
                 totalCount: 9,
               ),
-              identifiable: IdentifiableModel('2'),
+              identifiablePair: IdentifiablePair(
+                updatedIdentifiable: IdentifiableModel('2'),
+              ),
               operation: ManageOperation.remove,
+            )
+          ],
+        ),
+      );
+    });
+  });
+
+  group('ModelManageEvents withLatestFromIdentifiablePairList', () {
+    test('ModelManageEvents mapCreatedWithLatestFrom addToListCondition:true',
+        () async {
+      await expectLater(
+        Stream.value(IdentifiablePair<IdentifiableModel>(
+          oldIdentifiable: IdentifiableModel('2'),
+          updatedIdentifiable: IdentifiableModel('2'),
+        )).withLatestFromIdentifiablePairList(
+          Stream.value(
+            [
+              IdentifiableModel('1'),
+            ],
+          ),
+          operationCallback: (updatedIdentifiable) async =>
+              ManageOperation.merge,
+        ),
+        emitsInOrder(
+          [
+            ManagedList(
+              [
+                IdentifiableModel('1'),
+                IdentifiableModel('2'),
+              ],
+              identifiablePair: IdentifiablePair<IdentifiableModel>(
+                oldIdentifiable: IdentifiableModel('2'),
+                updatedIdentifiable: IdentifiableModel('2'),
+              ),
+              operation: ManageOperation.merge,
+            )
+          ],
+        ),
+      );
+    });
+
+    test('ModelManageEvents mapDeletedWithLatestFrom', () async {
+      await expectLater(
+        Stream.value(IdentifiablePair<IdentifiableModel>(
+          oldIdentifiable: IdentifiableModel('2'),
+          updatedIdentifiable: IdentifiableModel('2'),
+        )).withLatestFromIdentifiablePairList(
+          Stream.value(
+            [
+              IdentifiableModel('1'),
+              IdentifiableModel('2'),
+            ],
+          ),
+          operationCallback: (updatedIdentifiable) async =>
+              ManageOperation.remove,
+        ),
+        emitsInOrder(
+          [
+            ManagedList(
+              [
+                IdentifiableModel('1'),
+              ],
+              identifiablePair: IdentifiablePair<IdentifiableModel>(
+                oldIdentifiable: IdentifiableModel('2'),
+                updatedIdentifiable: IdentifiableModel('2'),
+              ),
+              operation: ManageOperation.remove,
+            )
+          ],
+        ),
+      );
+    });
+
+    test('ModelManageEvents removeFromListCondition:false', () async {
+      await expectLater(
+        Stream.value(IdentifiablePair<IdentifiableModel>(
+          oldIdentifiable: IdentifiableModel('2'),
+          updatedIdentifiable: IdentifiableModel('2'),
+        )).withLatestFromIdentifiablePairList(
+          Stream.value(
+            [
+              IdentifiableModel('1'),
+              IdentifiableModel('2'),
+            ],
+          ),
+          operationCallback: (updatedIdentifiable) async =>
+              ManageOperation.ignore,
+        ),
+        emitsInOrder(
+          [
+            ManagedList(
+              [
+                IdentifiableModel('1'),
+                IdentifiableModel('2'),
+              ],
+              identifiablePair: IdentifiablePair<IdentifiableModel>(
+                oldIdentifiable: IdentifiableModel('2'),
+                updatedIdentifiable: IdentifiableModel('2'),
+              ),
+              operation: ManageOperation.ignore,
             )
           ],
         ),

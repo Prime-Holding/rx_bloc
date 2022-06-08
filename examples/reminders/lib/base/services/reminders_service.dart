@@ -24,7 +24,7 @@ class RemindersService {
 
   Future<void> delete(String id) => _repository.delete(id);
 
-  Future<ReminderModel> update(ReminderModel model) =>
+  Future<IdentifiablePair<ReminderModel>> update(ReminderModel model) =>
       _repository.update(model);
 
   Future<int> getCompleteCount() => _repository.getCompleteCount();

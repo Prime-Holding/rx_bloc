@@ -29,7 +29,8 @@ abstract class $CoordinatorBloc extends RxBlocBase
   final _$reminderCreatedEvent = PublishSubject<Result<ReminderModel>>();
 
   /// Тhe [Subject] where events sink to by calling [reminderUpdated]
-  final _$reminderUpdatedEvent = PublishSubject<Result<ReminderModel>>();
+  final _$reminderUpdatedEvent =
+      PublishSubject<Result<IdentifiablePair<ReminderModel>>>();
 
   @override
   void authenticated({required bool isAuthenticated}) =>
@@ -44,8 +45,9 @@ abstract class $CoordinatorBloc extends RxBlocBase
       _$reminderCreatedEvent.add(reminderResult);
 
   @override
-  void reminderUpdated(Result<ReminderModel> reminderResult) =>
-      _$reminderUpdatedEvent.add(reminderResult);
+  void reminderUpdated(
+          Result<IdentifiablePair<ReminderModel>> reminderPairResult) =>
+      _$reminderUpdatedEvent.add(reminderPairResult);
 
   @override
   CoordinatorEvents get events => this;

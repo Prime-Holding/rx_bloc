@@ -1,4 +1,5 @@
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
@@ -15,6 +16,7 @@ abstract class ReminderManageBlocEvents {
     required String title,
     required DateTime dueDate,
     required bool complete,
+    required bool completeUpdated,
   });
 
   void delete(ReminderModel reminder);
@@ -30,7 +32,7 @@ abstract class ReminderManageBlocStates {
 
   ConnectableStream<Result<ReminderModel>> get onDeleted;
 
-  ConnectableStream<Result<ReminderModel>> get onUpdated;
+  ConnectableStream<Result<IdentifiablePair<ReminderModel>>> get onUpdated;
 
   ConnectableStream<Result<ReminderModel>> get onCreated;
 }
@@ -81,7 +83,8 @@ class ReminderManageBloc extends $ReminderManageBloc {
           .publish();
 
   @override
-  ConnectableStream<Result<ReminderModel>> _mapToOnUpdatedState() =>
+  ConnectableStream<Result<IdentifiablePair<ReminderModel>>>
+  _mapToOnUpdatedState() =>
       _$updateEvent
           .switchMap((reminder) => _service.update(reminder).asResultStream())
           .setResultStateHandler(this)

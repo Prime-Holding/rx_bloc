@@ -3,11 +3,10 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../models.dart';
 
-/// The returned [ManageOperation] determines whether the [updatedIdentifiable] will be merged, removed or ignored from the list.
-/// The [identifiableInList] represents an object from the list with the same id as the [updatedIdentifiable].
+/// The returned [ManageOperation] determines whether the [updatedIdentifiable]
+/// will be merged, removed or ignored from the list.
 typedef OperationCallback<E> = Future<ManageOperation> Function(
   E updatedIdentifiable,
-  E? identifiableInList,
 );
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
@@ -83,7 +82,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.remove,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.remove,
   /// )
   /// ```
   ///
@@ -91,7 +90,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.merge,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.merge,
   /// )
   /// ```
   ///
@@ -99,7 +98,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.ignore,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.ignore,
   /// )
   /// ```
   Stream<ManagedList<E>> withLatestFromIdentifiableList(
@@ -109,27 +108,33 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
       _withLatestFromList(list).flatMap((tuple) async* {
         final identifiableInList = tuple.list
             .firstWhereOrNull((element) => element.id == tuple.item.id);
-
-        switch (await operationCallback(tuple.item, identifiableInList)) {
+        switch (await operationCallback(tuple.item)) {
           case ManageOperation.merge:
             yield ManagedList(
               tuple.list._mergeWithList([tuple.item]),
               operation: ManageOperation.merge,
-              identifiable: tuple.item,
+              identifiablePair: IdentifiablePair(
+                  updatedIdentifiable: tuple.item,
+                  oldIdentifiable: identifiableInList,
+              ),
             );
             break;
           case ManageOperation.remove:
             yield ManagedList(
-              tuple.list._removeFromList(tuple.item),
-              identifiable: tuple.item,
+              tuple.list.removeFromList(tuple.item),
               operation: ManageOperation.remove,
+              identifiablePair: IdentifiablePair(
+                updatedIdentifiable: tuple.item,
+              ),
             );
             break;
           case ManageOperation.ignore:
             yield ManagedList(
               tuple.list,
-              identifiable: tuple.item,
               operation: ManageOperation.ignore,
+              identifiablePair: IdentifiablePair(
+                updatedIdentifiable: tuple.item,
+              ),
             );
             break;
         }
@@ -160,7 +165,7 @@ extension _ListX<E extends Identifiable> on List<E> {
     return mergeWith(list);
   }
 
-  List<E> _removeFromList(E identifiable) {
+  List<E> removeFromList(E identifiable) {
     final that = this;
 
     if (that is PaginatedList<E> && that.containsIdentifiable(identifiable)) {
@@ -180,5 +185,79 @@ class _Tuple<E> {
   _Tuple(this.item, this.list);
 
   final E item;
+  final List<E> list;
+}
+
+extension ModelManageEventsPair<E extends Identifiable>
+    on Stream<IdentifiablePair<E>> {
+  /// Merge or remove the value of the stream from the latest [list] value.
+  /// The result, based on the [operationCallback], will be emitted as a new value.
+  ///
+  /// Examples:
+  /// 1. The stream value will be removed from the [list] value
+  /// ```
+  /// objectStream.withLatestFromIdentifiablePairList(
+  ///     listStream,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.remove,
+  /// )
+  /// ```
+  ///
+  /// 2. The stream value will be merged into the [list] value
+  /// ```
+  /// objectStream.withLatestFromIdentifiablePairList(
+  ///     listStream,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.merge,
+  /// )
+  /// ```
+  ///
+  /// 3. The stream value won't be neither merged nor removed from the [list] value
+  /// ```
+  /// objectStream.withLatestFromIdentifiablePairList(
+  ///     listStream,
+  ///     operationCallback: (updatedIdentifiable) async => ManageOperation.ignore,
+  /// )
+  /// ```
+  Stream<ManagedList<E>> withLatestFromIdentifiablePairList(
+    Stream<List<E>> list, {
+    required OperationCallback<E> operationCallback,
+  }) =>
+      _withLatestFromListPair(list).flatMap((tuple) async* {
+        switch (await operationCallback(tuple.pair.updatedIdentifiable)) {
+          case ManageOperation.merge:
+            yield ManagedList(
+              tuple.list._mergeWithList([tuple.pair.updatedIdentifiable]),
+              operation: ManageOperation.merge,
+              identifiablePair: tuple.pair,
+            );
+            break;
+          case ManageOperation.remove:
+            yield ManagedList(
+              tuple.list.removeFromList(tuple.pair.updatedIdentifiable),
+              operation: ManageOperation.remove,
+              identifiablePair: tuple.pair,
+            );
+            break;
+          case ManageOperation.ignore:
+            yield ManagedList(
+              tuple.list,
+              operation: ManageOperation.ignore,
+              identifiablePair: tuple.pair,
+            );
+            break;
+        }
+      });
+
+  Stream<_TuplePair<E>> _withLatestFromListPair(Stream<List<E>> list) =>
+      withLatestFrom<List<E>, _TuplePair<E>>(
+        list,
+        (identifiablePair, lastUpdatedList) =>
+            _TuplePair(identifiablePair, lastUpdatedList),
+      );
+}
+
+class _TuplePair<E extends Identifiable> {
+  _TuplePair(this.pair, this.list);
+
+  final IdentifiablePair<E> pair;
   final List<E> list;
 }

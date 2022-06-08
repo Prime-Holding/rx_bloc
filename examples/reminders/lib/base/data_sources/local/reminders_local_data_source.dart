@@ -1,3 +1,5 @@
+import 'package:rx_bloc_list/models.dart';
+
 import '../../models/reminder/reminder_list_reponse.dart';
 import '../../models/reminder/reminder_model.dart';
 
@@ -70,20 +72,25 @@ class RemindersLocalDataSource {
     _data.removeWhere((element) => element.id == id);
   }
 
-  Future<ReminderModel> update(ReminderModel model) async {
+  Future<IdentifiablePair<ReminderModel>> update(
+      ReminderModel updatedModel) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
-    final index = _data.indexWhere((element) => element.id == model.id);
-
+    final index = _data.indexWhere((element) => element.id == updatedModel.id);
+    final oldReminder = _data[index];
     var _model = _data[index].copyWith(
-      title: model.title,
-      dueDate: model.dueDate,
-      complete: model.complete,
+      title: updatedModel.title,
+      dueDate: updatedModel.dueDate,
+      complete: updatedModel.complete,
     );
 
     _data[index] = _model;
 
-    return _model;
+    var _identifiablePair = IdentifiablePair<ReminderModel>(
+      updatedIdentifiable: _model,
+      oldIdentifiable: oldReminder,
+    );
+    return _identifiablePair;
   }
 }
 
