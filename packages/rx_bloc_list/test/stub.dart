@@ -48,3 +48,27 @@ class Stub {
     ));
   }
 }
+
+class IdentifiableModel implements Identifiable {
+  @override
+  final String id;
+
+  final String value;
+
+  IdentifiableModel(this.id, {String? value}) : value = value ?? '';
+
+  @override
+  String toString() => '$id, $value';
+
+  @override
+  bool operator ==(Object other) {
+    if (other is IdentifiableModel) {
+      return other.id == id && other.value == value;
+    }
+
+    return false;
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ value.hashCode;
+}

@@ -16,7 +16,7 @@ class ItemValueChooser extends StatefulWidget {
   final void Function(int) onValueChanged;
 
   @override
-  _ItemValueChooserState createState() => _ItemValueChooserState();
+  State<ItemValueChooser> createState() => _ItemValueChooserState();
 }
 
 class _ItemValueChooserState extends State<ItemValueChooser> {
