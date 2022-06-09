@@ -12,6 +12,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils;
@@ -186,6 +187,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 final String unformattedText = document.getText();
                 final int unformattedLineCount = document.getLineCount();
 
+                CodeStyleManager.getInstance(project).reformat(currentFile);
+                
                 final int formattedLineCount = document.getLineCount();
 
                 // file was incorrectly formatted, revert formatting
