@@ -145,6 +145,26 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   Query getFirebaseFilteredQuery(ReminderModelRequest? request) {
     Query query = remindersReference;
+
+    if (request?.filterByDueDateRange != null) {
+      final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+          request!.filterByDueDateRange!.from.millisecondsSinceEpoch);
+      final endAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+          request.filterByDueDateRange!.to.millisecondsSinceEpoch);
+      query = query.where(
+        'dueDate',
+        isGreaterThanOrEqualTo: startAtTimestamp,
+      );
+
+      query = query.where(
+        'dueDate',
+        isLessThanOrEqualTo: endAtTimestamp,
+      );
+    }
+
+    if (request?.sort == ReminderModelRequestSort.dueDateDesc) {
+      query = query.orderBy('dueDate', descending: false);
+    }
     return query;
   }
 }
