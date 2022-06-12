@@ -2,8 +2,9 @@ import 'package:rx_bloc_list/models.dart';
 
 import '../../models/reminder/reminder_list_reponse.dart';
 import '../../models/reminder/reminder_model.dart';
+import '../remote/reminders_data_source.dart';
 
-class RemindersLocalDataSource {
+class RemindersLocalDataSource implements RemindersDataSource {
   RemindersLocalDataSource({List<ReminderModel>? seed})
       : _data = seed ??
             List.generate(
@@ -23,6 +24,7 @@ class RemindersLocalDataSource {
     return _data.where((element) => !element.complete).length;
   }
 
+  @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     await Future.delayed(const Duration(milliseconds: 2000));
 
@@ -91,6 +93,12 @@ class RemindersLocalDataSource {
       oldIdentifiable: oldReminder,
     );
     return _identifiablePair;
+  }
+
+  @override
+  Future<void> seed() {
+    // TODO: implement seed
+    throw UnimplementedError();
   }
 }
 

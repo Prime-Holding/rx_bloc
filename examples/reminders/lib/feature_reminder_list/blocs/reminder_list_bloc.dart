@@ -76,7 +76,7 @@ class ReminderListBloc extends $ReminderListBloc {
   final _paginatedList = BehaviorSubject<PaginatedList<ReminderModel>>.seeded(
     PaginatedList<ReminderModel>(
       list: [],
-      pageSize: 500,
+      pageSize: 10,
     ),
   );
 

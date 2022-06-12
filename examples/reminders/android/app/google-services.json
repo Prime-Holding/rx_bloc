@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1006655871501:android:cb59abb79786b2baad1344",
+        "mobilesdk_app_id": "1:1006655871501:android:fbcb9057671f9ffbad1344",
         "android_client_info": {
           "package_name": "com.example.reminders"
         }
@@ -29,6 +29,13 @@
             {
               "client_id": "1006655871501-spksbc01itt39isujnqrig99h72r32e6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1006655871501-via2gdvpgbghcl14scrvo297akp4ksik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.reminders"
+              }
             }
           ]
         }

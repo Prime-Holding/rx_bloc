@@ -66,8 +66,10 @@ class DashboardService {
     required ManagedList<ReminderModel> managedList,
     required CounterOperation counterOperation,
   }) {
-    final _oldIdentifiable = managedList.identifiablePair.oldIdentifiable as ReminderModel?;
-    final _updatedIdentifiable = managedList.identifiablePair.updatedIdentifiable as ReminderModel;
+    final _oldIdentifiable =
+        managedList.identifiablePair.oldIdentifiable as ReminderModel?;
+    final _updatedIdentifiable =
+        managedList.identifiablePair.updatedIdentifiable as ReminderModel;
     IncrementOperation? _incrementOperation;
     if (_oldIdentifiable != null &&
         _updatedIdentifiable.title == _oldIdentifiable.title &&

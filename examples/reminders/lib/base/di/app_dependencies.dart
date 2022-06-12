@@ -31,6 +31,7 @@ import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
+import '../data_sources/remote/reminders_remote_data_source_factory.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
 import '../repositories/reminders_repository.dart';
@@ -122,7 +123,7 @@ class AppDependencies {
         ),
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            context.read(),
+            dataSource: RemindersRemoteDataSourceFactory.fromConfig(config),
           ),
         ),
       ];

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rx_bloc_list/models.dart';
 
 enum ReminderModelRequestSort {
@@ -67,4 +68,21 @@ class ReminderModel implements Identifiable {
         dueDate: dueDate ?? this.dueDate,
         complete: complete ?? this.complete,
       );
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'dueDate': dueDate,
+      'complete': complete,
+    };
+  }
+
+  ReminderModel.fromJson(Map<String, dynamic> json)
+      : this(
+          id: json['id'] as String,
+          title: json['title'] as String,
+          dueDate: (json['dueDate'] as Timestamp).toDate(),
+          complete: json['complete'] as bool,
+        );
 }
