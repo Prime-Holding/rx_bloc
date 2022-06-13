@@ -58,12 +58,13 @@ class ReminderModel implements Identifiable {
       );
 
   ReminderModel copyWith({
+    String? id,
     String? title,
     DateTime? dueDate,
     bool? complete,
   }) =>
       ReminderModel(
-        id: id,
+        id: id ?? this.id,
         title: title ?? this.title,
         dueDate: dueDate ?? this.dueDate,
         complete: complete ?? this.complete,

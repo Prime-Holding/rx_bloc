@@ -23,15 +23,25 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   Future<ReminderModel> create(
       {required String title,
       required DateTime dueDate,
-      required bool complete}) {
-    // TODO: implement create
-    throw UnimplementedError();
+      required bool complete}) async {
+    var reminder = ReminderModel(
+      dueDate: dueDate,
+      id: '-1',
+      title: title,
+      complete: complete,
+    );
+
+    var createdReminder = await remindersReference.add(reminder.toJson());
+    var createdReminderId  = createdReminder.id;
+    reminder = reminder.copyWith(id:createdReminderId);
+
+    await remindersReference.doc(createdReminderId).update(reminder.toJson());
+    return reminder;
   }
 
   @override
-  Future<void> delete(String id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> delete(String id) async {
+    await remindersReference.doc(id).delete();
   }
 
   /// create a method to fetch the result for the dashboard page
@@ -41,8 +51,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     ///todo remove it from here
     // await seed();
-    // print('STOP it here');
-    // print('getAllRemindersDataSource');
 
     //  Generate a query
     var querySnapshot = getFirebaseFilteredQuery(request);
@@ -89,22 +97,9 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return 14;
   }
 
-  // @override
-  // Future<int> getCompleteCount() {
-  //   TODO: implement getCompleteCount
-  //   print('getCompleteCountFireBase');
-  // throw UnimplementedError();
-  // }
-
-  // @override
-  // Future<int> getIncompleteCount() {
-  //   TODO: implement getIncompleteCount
-  // throw UnimplementedError();
-  // }
-
-  /// Call seed when the app is started only when the returned
+  /// Call seed when the list in Firebase is empty or should be refilled
   @override
-  Future<void> seed({multiplier = 20}) async {
+  Future<void> seed() async {
     _data = List.generate(
       100,
       (index) => ReminderModel.fromIndex(index),
@@ -123,12 +118,9 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
     /// Generate a new collection
     final insertBatch = FirebaseFirestore.instance.batch();
-    // final reminders = RemindersService.generateEntities(multiplier: multiplier);
+
     final reminders = _data;
-    // reminders.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    // .sorted(
-    //   (a, b) => a.dueDate.compareTo(b.dueDate),
-    // )
+
     reminders.forEach((reminder) {
       final docRef = remindersReference.doc(reminder.id);
       insertBatch.set(docRef, reminder.toJson());
