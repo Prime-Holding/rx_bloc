@@ -32,8 +32,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     );
 
     var createdReminder = await remindersReference.add(reminder.toJson());
-    var createdReminderId  = createdReminder.id;
-    reminder = reminder.copyWith(id:createdReminderId);
+    var createdReminderId = createdReminder.id;
+    reminder = reminder.copyWith(id: createdReminderId);
 
     await remindersReference.doc(createdReminderId).update(reminder.toJson());
     return reminder;
@@ -56,7 +56,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     var querySnapshot = getFirebaseFilteredQuery(request);
 
     // Modify the query
-    if (lastFetchedRecord != null && request?.page != 0) {
+    if (lastFetchedRecord != null && request?.page != 1) {
       querySnapshot = querySnapshot.startAfterDocument(lastFetchedRecord!);
     }
     querySnapshot = querySnapshot.limit(request!.pageSize);
@@ -84,6 +84,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     );
   }
 
+  @override
   Future<int> getCompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
     // await seed();
@@ -91,6 +92,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return 12;
   }
 
+  @override
   Future<int> getIncompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
     // return _data.where((element) => !element.complete).length;
@@ -130,9 +132,17 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   @override
-  Future<IdentifiablePair<ReminderModel>> update(ReminderModel updatedModel) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<IdentifiablePair<ReminderModel>> update(
+      ReminderModel updatedModel) async {
+    await remindersReference.doc(updatedModel.id).update({
+      'complete': updatedModel.complete,
+      'dueDate': updatedModel.dueDate,
+      'title': updatedModel.title,
+    });
+
+    return IdentifiablePair(
+      updatedIdentifiable: updatedModel,
+    );
   }
 
   Query getFirebaseFilteredQuery(ReminderModelRequest? request) {
