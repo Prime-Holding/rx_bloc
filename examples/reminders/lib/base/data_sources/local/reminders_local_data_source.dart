@@ -94,12 +94,6 @@ class RemindersLocalDataSource implements RemindersDataSource {
     );
     return _identifiablePair;
   }
-
-  @override
-  Future<void> seed() {
-    // TODO: implement seed
-    throw UnimplementedError();
-  }
 }
 
 extension _ListReminderModelX on List<ReminderModel> {

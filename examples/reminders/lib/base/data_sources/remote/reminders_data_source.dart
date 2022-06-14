@@ -3,8 +3,7 @@ import 'package:rx_bloc_list/models.dart';
 import '../../models/reminder/reminder_list_reponse.dart';
 import '../../models/reminder/reminder_model.dart';
 
-abstract class RemindersDataSource{
-
+abstract class RemindersDataSource {
   Future<int> getCompleteCount();
 
   Future<int> getIncompleteCount();
@@ -19,8 +18,5 @@ abstract class RemindersDataSource{
 
   Future<void> delete(String id);
 
-  Future<IdentifiablePair<ReminderModel>> update(
-      ReminderModel updatedModel);
-
-  Future<void> seed();
+  Future<IdentifiablePair<ReminderModel>> update(ReminderModel updatedModel);
 }

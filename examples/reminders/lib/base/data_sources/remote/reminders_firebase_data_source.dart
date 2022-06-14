@@ -42,9 +42,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
-    ///todo remove it from here
-    // await seed();
-
     //  Generate a query
     var querySnapshot = getFirebaseFilteredQuery(request);
 
@@ -64,9 +61,9 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
     if (request.page == 1) {
       final length = await remindersReference.get();
-      ///temporary call the get method to have the total numbers in order to
-      ///provide the collection length to the paginated list so that the
-      ///pagination works, in future use a firebase function to get the count
+      //Temporary call the get method to have the total numbers in order to
+      //provide the collection length to the paginated list so that the
+      //pagination works, in future use a firebase function to get the count
       remindersCollectionLength = length.size;
     }
 
@@ -78,47 +75,37 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    // await seed();
-    // return _data.where((element) => element.complete).length;
     return -1;
   }
 
   @override
   Future<int> getIncompleteCount() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    // return _data.where((element) => !element.complete).length;
     return -2;
   }
 
-  /// Call seed when the list in Firebase is empty or should be refilled
-  @override
+  /// Generates a list of reminders, deletes the existing reminder documents in
+  /// the reminders collection and uploads the new collection
+  /// Call the seed when the list in Firebase is empty or should be refilled
   Future<void> seed() async {
     _data = List.generate(
       100,
       (index) => ReminderModel.fromIndex(index),
     );
 
-    /// First delete all reminders in the collection
     final deleteBatch = FirebaseFirestore.instance.batch();
-    // Delete all existing data
+
     final deleteSnapshotReminders = await remindersReference.get();
-    deleteSnapshotReminders.docs.forEach((document) {
+    for (var document in deleteSnapshotReminders.docs) {
       deleteBatch.delete(document.reference);
-    });
-
-    // Commit batch
+    }
     await deleteBatch.commit();
-
-    /// Generate a new collection
     final insertBatch = FirebaseFirestore.instance.batch();
-
     final reminders = _data;
 
-    reminders.forEach((reminder) {
+    for (var reminder in reminders) {
       final docRef = remindersReference.doc(reminder.id);
       insertBatch.set(docRef, reminder.toJson());
-    });
+    }
 
     await insertBatch.commit();
   }
