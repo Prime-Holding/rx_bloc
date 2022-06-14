@@ -26,16 +26,12 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       required bool complete}) async {
     var reminder = ReminderModel(
       dueDate: dueDate,
-      id: '-1',
+      id: remindersReference.doc().id,
       title: title,
       complete: complete,
     );
+    await remindersReference.add(reminder.toJson());
 
-    var createdReminder = await remindersReference.add(reminder.toJson());
-    var createdReminderId = createdReminder.id;
-    reminder = reminder.copyWith(id: createdReminderId);
-
-    await remindersReference.doc(createdReminderId).update(reminder.toJson());
     return reminder;
   }
 
@@ -44,9 +40,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     await remindersReference.doc(id).delete();
   }
 
-  /// create a method to fetch the result for the dashboard page
-  /// create a query for all reminders and filter the ones, which are completed
-  /// and the ones which are from and to the given dates
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     ///todo remove it from here
@@ -69,12 +62,11 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
     final reminders = snap.docs.asReminderList();
 
-    if (remindersCollectionLength == 0) {
+    if (request.page == 1) {
       final length = await remindersReference.get();
-
       ///temporary call the get method to have the total numbers in order to
-      ///provide the collection length to the paginated list to work the pagination;
-      ///in future use a firebase function to get the count
+      ///provide the collection length to the paginated list so that the
+      ///pagination works, in future use a firebase function to get the count
       remindersCollectionLength = length.size;
     }
 
@@ -89,14 +81,14 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     await Future.delayed(const Duration(milliseconds: 200));
     // await seed();
     // return _data.where((element) => element.complete).length;
-    return 12;
+    return -1;
   }
 
   @override
   Future<int> getIncompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
     // return _data.where((element) => !element.complete).length;
-    return 14;
+    return -2;
   }
 
   /// Call seed when the list in Firebase is empty or should be refilled
