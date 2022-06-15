@@ -9,7 +9,7 @@
 import 'package:flutter/material.dart';
 
 import 'base/app/config/environment_config.dart';
-import 'base/app/initialization/app_setup.dart';
+// import 'base/app/initialization/app_setup.dart';
 import 'base/app/reminders.dart';
 
 // ignore_for_file: avoid_void_async
@@ -22,7 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Configure global app tools before launching the app
-  await configureApp();
+  // await configureApp();
 
   runApp(Reminders(config: EnvironmentConfig.dev));
 }
