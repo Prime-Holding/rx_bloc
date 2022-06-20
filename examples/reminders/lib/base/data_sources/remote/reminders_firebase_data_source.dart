@@ -79,11 +79,13 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async {
+    ///TODO change this with real data
     return -1;
   }
 
   @override
   Future<int> getIncompleteCount() async {
+    ///TODO change this with real data
     return -2;
   }
 
