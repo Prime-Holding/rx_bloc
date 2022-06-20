@@ -30,7 +30,11 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       title: title,
       complete: complete,
     );
-    await remindersReference.add(reminder.toJson());
+
+    var createdReminder = await remindersReference.add(reminder.toJson());
+    var createdReminderId = createdReminder.id;
+    reminder = reminder.copyWith(id: createdReminderId);
+    await remindersReference.doc(createdReminderId).update(reminder.toJson());
 
     return reminder;
   }
