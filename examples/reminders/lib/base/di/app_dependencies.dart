@@ -6,9 +6,9 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:dio/dio.dart';
-// import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
@@ -54,7 +54,7 @@ class AppDependencies {
 
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
-        // ..._analytics,
+        ..._analytics,
         ..._httpClients,
         ..._dataStorages,
         ..._dataSources,
@@ -65,14 +65,16 @@ class AppDependencies {
         ..._interceptors,
       ];
 
-  // List<Provider> get _analytics => [
-  //       Provider<FirebaseAnalytics>(
-  //           create: (context) => FirebaseAnalytics.instance),
-  //       Provider<FirebaseAnalyticsObserver>(
-  //         create: (context) =>
-  //             FirebaseAnalyticsObserver(analytics: context.read()),
-  //       ),
-  //     ];
+  List<Provider> get _analytics => config == EnvironmentConfig.dev
+      ? []
+      : [
+          Provider<FirebaseAnalytics>(
+              create: (context) => FirebaseAnalytics.instance),
+          Provider<FirebaseAnalyticsObserver>(
+            create: (context) =>
+                FirebaseAnalyticsObserver(analytics: context.read()),
+          ),
+        ];
 
   List<Provider> get _httpClients => [
         Provider<Dio>(create: (context) => Dio()),
@@ -83,9 +85,10 @@ class AppDependencies {
             create: (context) => SharedPreferencesInstance()),
         Provider<FlutterSecureStorage>(
             create: (context) => const FlutterSecureStorage()),
-        // Provider<FirebaseMessaging>(
-        //   create: (_) => FirebaseMessaging.instance,
-        // ),
+        if (config != EnvironmentConfig.dev)
+          Provider<FirebaseMessaging>(
+            create: (_) => FirebaseMessaging.instance,
+          ),
       ];
 
   /// Use different data source regarding of if it is running in web ot not

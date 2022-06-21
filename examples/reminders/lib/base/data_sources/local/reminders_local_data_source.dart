@@ -14,11 +14,13 @@ class RemindersLocalDataSource implements RemindersDataSource {
 
   final List<ReminderModel> _data;
 
+  @override
   Future<int> getCompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return _data.where((element) => element.complete).length;
   }
 
+  @override
   Future<int> getIncompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return _data.where((element) => !element.complete).length;
@@ -48,6 +50,7 @@ class RemindersLocalDataSource implements RemindersDataSource {
     );
   }
 
+  @override
   Future<ReminderModel> create({
     required String title,
     required DateTime dueDate,
@@ -68,6 +71,7 @@ class RemindersLocalDataSource implements RemindersDataSource {
     return reminder;
   }
 
+  @override
   Future<void> delete(String id) async {
     await Future.delayed(const Duration(milliseconds: 200));
 

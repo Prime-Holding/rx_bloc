@@ -4,20 +4,20 @@ import 'reminders_data_source.dart';
 import 'reminders_firebase_data_source.dart';
 
 class RemindersRemoteDataSourceFactory {
-  static RemindersDataSource withFirebaseDataSource() =>
+  static RemindersDataSource _withFirebaseDataSource() =>
       RemindersFirebaseDataSource();
 
-  static RemindersDataSource withLocalDataSource() =>
+  static RemindersDataSource _withLocalDataSource() =>
       RemindersLocalDataSource();
 
   static RemindersDataSource fromConfig(EnvironmentConfig config) {
     switch (config) {
       case EnvironmentConfig.dev:
-        return withLocalDataSource();
+        return _withLocalDataSource();
       case EnvironmentConfig.prod:
-        return withFirebaseDataSource();
+        return _withFirebaseDataSource();
       default:
-        return withLocalDataSource();
+        return _withLocalDataSource();
     }
   }
 }
