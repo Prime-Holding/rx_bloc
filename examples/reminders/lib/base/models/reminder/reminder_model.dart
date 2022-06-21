@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rx_bloc_list/models.dart';
 
 enum ReminderModelRequestSort {
@@ -30,19 +29,36 @@ class ReminderModelRequest {
   final int pageSize;
 }
 
-class ReminderModel implements Identifiable {
-  ReminderModel({
-    required this.id,
+class ReminderModelRequestData {
+  ReminderModelRequestData({
     required this.title,
     required this.dueDate,
     required this.complete,
   });
 
-  @override
-  final String id;
   final String title;
   final DateTime dueDate;
   final bool complete;
+
+  Map<String, Object?> toJson() {
+    return {
+      'title': title,
+      'dueDate': dueDate,
+      'complete': complete,
+    };
+  }
+}
+
+class ReminderModel extends ReminderModelRequestData implements Identifiable {
+  ReminderModel({
+    required this.id,
+    required title,
+    required dueDate,
+    required complete,
+  }) : super(title: title, dueDate: dueDate, complete: complete);
+
+  @override
+  final String id;
 
   factory ReminderModel.fromIndex(int index) => ReminderModel(
         id: index.toString(),
@@ -70,20 +86,11 @@ class ReminderModel implements Identifiable {
         complete: complete ?? this.complete,
       );
 
-  Map<String, Object?> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'dueDate': dueDate,
-      'complete': complete,
-    };
-  }
-
-  ReminderModel.fromJson(Map<String, dynamic> json)
+  ReminderModel.fromJson(Map<String, dynamic> json, String id)
       : this(
-          id: json['id'] as String,
+          id: id,
           title: json['title'] as String,
-          dueDate: (json['dueDate'] as Timestamp).toDate(),
+          dueDate: json['dueDate'].toDate(),
           complete: json['complete'] as bool,
         );
 }

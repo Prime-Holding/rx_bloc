@@ -20,21 +20,25 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   late final List<ReminderModel> _data;
 
   @override
-  Future<ReminderModel> create(
-      {required String title,
-      required DateTime dueDate,
-      required bool complete}) async {
-    var reminder = ReminderModel(
+  Future<ReminderModel> create({
+    required String title,
+    required DateTime dueDate,
+    required bool complete,
+  }) async {
+    final reminderModelRequestData = ReminderModelRequestData(
       dueDate: dueDate,
-      id: remindersReference.doc().id,
       title: title,
       complete: complete,
     );
 
-    var createdReminder = await remindersReference.add(reminder.toJson());
-    var createdReminderId = createdReminder.id;
-    reminder = reminder.copyWith(id: createdReminderId);
-    await remindersReference.doc(createdReminderId).update(reminder.toJson());
+    final createdReminder =
+        await remindersReference.add(reminderModelRequestData.toJson());
+    final createdReminderId = createdReminder.id;
+    final reminder = ReminderModel(
+        id: createdReminderId,
+        title: title,
+        dueDate: dueDate,
+        complete: complete);
 
     return reminder;
   }
@@ -158,6 +162,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
 extension FireBaseCollection on List<QueryDocumentSnapshot<Object?>> {
   List<ReminderModel> asReminderList() => map(
-        (docs) => ReminderModel.fromJson(docs.data() as Map<String, dynamic>),
+        (docs) => ReminderModel.fromJson(
+            docs.data() as Map<String, dynamic>, docs.id),
       ).toList();
 }
