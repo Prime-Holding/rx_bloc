@@ -7,16 +7,24 @@ import 'reminders_data_source.dart';
 
 class RemindersFirebaseDataSource implements RemindersDataSource {
   RemindersFirebaseDataSource() {
-    remindersReference = fireStore.collection('reminders');
+    remindersReference = fireStore.collection(_reminders);
+    countersReference = fireStore.collection(_counters);
   }
 
   final fireStore = FirebaseFirestore.instance;
   late CollectionReference remindersReference;
+  late CollectionReference countersReference;
 
   ///todo remove it from here
   int remindersCollectionLength = 0;
   QueryDocumentSnapshot? lastFetchedRecord;
-
+  static const _reminders = 'reminders';
+  static const _counters = 'counters';
+  static const _countersDocument = 'countersDocument';
+  static const _complete = 'complete';
+  static const _incomplete = 'incomplete';
+  static const _dueDate = 'dueDate';
+  static const _title = 'title';
   late final List<ReminderModel> _data;
 
   @override
@@ -83,14 +91,23 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async {
-    ///TODO change this with real data
-    return -1;
+    var counterDocumentSnapshot =
+        await countersReference.doc(_countersDocument).get();
+    var counterDocument =
+        counterDocumentSnapshot.data() as Map<String, dynamic>;
+    var completeCount = counterDocument[_complete];
+    return completeCount;
   }
 
   @override
   Future<int> getIncompleteCount() async {
-    ///TODO change this with real data
-    return -2;
+    // await seed();
+    var counterDocumentSnapshot =
+        await countersReference.doc(_countersDocument).get();
+    var counterDocument =
+        counterDocumentSnapshot.data() as Map<String, dynamic>;
+    var incompleteCount = counterDocument[_incomplete];
+    return incompleteCount;
   }
 
   /// Generates a list of reminders, deletes the existing reminder documents in
@@ -102,36 +119,64 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       (index) => ReminderModel.fromIndex(index),
     );
 
+    // Delete previous data from the reminders collection
     final deleteBatch = FirebaseFirestore.instance.batch();
-
     final deleteSnapshotReminders = await remindersReference.get();
     for (var document in deleteSnapshotReminders.docs) {
       deleteBatch.delete(document.reference);
     }
     await deleteBatch.commit();
+
+    // Insert new data to the reminders collection
     final insertBatch = FirebaseFirestore.instance.batch();
     final reminders = _data;
-
     for (var reminder in reminders) {
       final docRef = remindersReference.doc(reminder.id);
       insertBatch.set(docRef, reminder.toJson());
     }
-
     await insertBatch.commit();
+
+    // Set the counters values
+    await _updateIncompleteCounter(100);
+    await _updateCompleteCounter(0);
   }
 
   @override
   Future<IdentifiablePair<ReminderModel>> update(
       ReminderModel updatedModel) async {
+    // Fetch the reminder model before its updating for comparison
+    var oldReminderSnapshot =
+        await remindersReference.doc(updatedModel.id).get();
+
     await remindersReference.doc(updatedModel.id).update({
-      'complete': updatedModel.complete,
-      'dueDate': updatedModel.dueDate,
-      'title': updatedModel.title,
+      _complete: updatedModel.complete,
+      _dueDate: updatedModel.dueDate,
+      _title: updatedModel.title,
     });
 
+    var oldReminder = oldReminderSnapshot.data() as Map<String, dynamic>;
+
+    var oldReminderModel = ReminderModel(
+        id: updatedModel.id,
+        title: oldReminder[_title],
+        dueDate: oldReminder[_dueDate].toDate(),
+        complete: oldReminder[_complete]);
     return IdentifiablePair(
       updatedIdentifiable: updatedModel,
+      oldIdentifiable: oldReminderModel,
     );
+  }
+
+  Future<void> _updateIncompleteCounter(int incomplete) async {
+    await countersReference
+        .doc(_countersDocument)
+        .update({_incomplete: incomplete});
+  }
+
+  Future<void> _updateCompleteCounter(int complete) async {
+    await countersReference
+        .doc(_countersDocument)
+        .update({_complete: complete});
   }
 
   Query getFirebaseFilteredQuery(ReminderModelRequest? request) {
@@ -143,20 +188,29 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       final endAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
           request.filterByDueDateRange!.to.millisecondsSinceEpoch);
       query = query.where(
-        'dueDate',
+        _dueDate,
         isGreaterThanOrEqualTo: startAtTimestamp,
       );
 
       query = query.where(
-        'dueDate',
+        _dueDate,
         isLessThanOrEqualTo: endAtTimestamp,
       );
     }
 
     if (request?.sort == ReminderModelRequestSort.dueDateDesc) {
-      query = query.orderBy('dueDate', descending: false);
+      query = query.orderBy(_dueDate, descending: false);
     }
     return query;
+  }
+
+  @override
+  Future<void> updateCountersInDataSource({
+    required int completeCount,
+    required int incompleteCount,
+  }) async {
+    await _updateCompleteCounter(completeCount);
+    await _updateIncompleteCounter(incompleteCount);
   }
 }
 

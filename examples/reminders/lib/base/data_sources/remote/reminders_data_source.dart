@@ -19,4 +19,9 @@ abstract class RemindersDataSource {
   Future<void> delete(String id);
 
   Future<IdentifiablePair<ReminderModel>> update(ReminderModel updatedModel);
+
+  Future<void> updateCountersInDataSource({
+    required int completeCount,
+    required int incompleteCount,
+  });
 }

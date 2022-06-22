@@ -84,18 +84,26 @@ class DashboardService {
       }
     }
 
+    var completeCount = dashboard.recalculateCompleteWith(
+      counterOperation: counterOperation,
+      reminderModel: _updatedIdentifiable,
+      incrementOperation: _incrementOperation,
+    );
+    var incompleteCount = dashboard.recalculateIncompleteWith(
+      counterOperation: counterOperation,
+      reminderModel: _updatedIdentifiable,
+      incrementOperation: _incrementOperation,
+    );
+
+    _remindersService.updateCountersInDataSource(
+      completeCount: completeCount,
+      incompleteCount: incompleteCount,
+    );
+
     return dashboard.copyWith(
       reminderList: managedList.list,
-      completeCount: dashboard.recalculateCompleteWith(
-        counterOperation: counterOperation,
-        reminderModel: _updatedIdentifiable,
-        incrementOperation: _incrementOperation,
-      ),
-      incompleteCount: dashboard.recalculateIncompleteWith(
-        counterOperation: counterOperation,
-        reminderModel: _updatedIdentifiable,
-        incrementOperation: _incrementOperation,
-      ),
+      completeCount: completeCount,
+      incompleteCount: incompleteCount,
     );
   }
 }

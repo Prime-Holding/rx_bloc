@@ -42,10 +42,10 @@ class Reminders extends StatelessWidget {
 /// accessible throughout the app (such as App-level dependencies, Firebase
 /// services, etc).
 class _MyMaterialApp extends StatefulWidget {
-  const _MyMaterialApp(this._router, this.config);
+  const _MyMaterialApp(this._router, this._config);
 
   final router.Router _router;
-  final EnvironmentConfig config;
+  final EnvironmentConfig _config;
 
   @override
   __MyMaterialAppState createState() => __MyMaterialAppState();
@@ -54,7 +54,7 @@ class _MyMaterialApp extends StatefulWidget {
 class __MyMaterialAppState extends State<_MyMaterialApp> {
   @override
   void initState() {
-    if (widget.config != EnvironmentConfig.dev) {
+    if (widget._config != EnvironmentConfig.dev) {
       _configureFCM();
       _addInterceptors();
     }
@@ -100,7 +100,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         supportedLocales: AppLocalizations.supportedLocales,
         routeInformationParser: widget._router.defaultRouteParser(),
         routerDelegate: widget._router.delegate(
-          navigatorObservers: () => widget.config != EnvironmentConfig.dev
+          navigatorObservers: () => widget._config != EnvironmentConfig.dev
               ? [
                   context.read<FirebaseAnalyticsObserver>(),
                 ]

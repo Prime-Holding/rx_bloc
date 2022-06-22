@@ -40,4 +40,10 @@ class RemindersRepository {
   Future<int> getCompleteCount() => _dataSource.getCompleteCount();
 
   Future<int> getIncompleteCount() => _dataSource.getIncompleteCount();
+
+  Future<void> updateCountersInDataSource({
+    required int completeCount,
+    required int incompleteCount,
+  }) =>_dataSource.updateCountersInDataSource(completeCount:completeCount,
+      incompleteCount:incompleteCount);
 }

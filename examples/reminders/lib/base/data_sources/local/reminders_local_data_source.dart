@@ -78,6 +78,7 @@ class RemindersLocalDataSource implements RemindersDataSource {
     _data.removeWhere((element) => element.id == id);
   }
 
+  @override
   Future<IdentifiablePair<ReminderModel>> update(
       ReminderModel updatedModel) async {
     await Future.delayed(const Duration(milliseconds: 200));
@@ -97,6 +98,14 @@ class RemindersLocalDataSource implements RemindersDataSource {
       oldIdentifiable: oldReminder,
     );
     return _identifiablePair;
+  }
+
+  @override
+  Future<void> updateCountersInDataSource({
+    required int completeCount,
+    required int incompleteCount,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 2));
   }
 }
 
