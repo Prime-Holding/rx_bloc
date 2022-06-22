@@ -15,13 +15,14 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   late CollectionReference remindersReference;
   late CollectionReference countersReference;
 
-  ///todo remove it from here
-  int remindersCollectionLength = 0;
+  var remindersCollectionLength = 0;
   QueryDocumentSnapshot? lastFetchedRecord;
   static const _reminders = 'reminders';
   static const _counters = 'counters';
   static const _countersDocument = 'countersDocument';
+  static const _remindersDocumentsLength = 'remindersDocumentsLength';
   static const _complete = 'complete';
+  static const _length = 'length';
   static const _incomplete = 'incomplete';
   static const _dueDate = 'dueDate';
   static const _title = 'title';
@@ -48,12 +49,28 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
         dueDate: dueDate,
         complete: complete);
 
+    var completeCount = await _getRemindersCollectionLength();
+    completeCount++;
+    await _updateRemindersCollectionCounter(completeCount);
+
     return reminder;
   }
 
   @override
   Future<void> delete(String id) async {
     await remindersReference.doc(id).delete();
+
+    var completeCount = await _getRemindersCollectionLength();
+    completeCount--;
+
+    await _updateRemindersCollectionCounter(completeCount);
+  }
+
+  Future<int> _getRemindersCollectionLength() async {
+    var currentLengthSnapshot =
+        await countersReference.doc(_remindersDocumentsLength).get();
+    var counterDocument = currentLengthSnapshot.data() as Map<String, dynamic>;
+    return counterDocument[_length];
   }
 
   @override
@@ -76,11 +93,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     final reminders = snap.docs.asReminderList();
 
     if (request.page == 1) {
-      final length = await remindersReference.get();
-      //Temporary call the get method to have the total numbers in order to
-      //provide the collection length to the paginated list so that the
-      //pagination works, in future use a firebase function to get the count
-      remindersCollectionLength = length.size;
+      remindersCollectionLength = await _getRemindersCollectionLength();
     }
 
     return ReminderListResponse(
@@ -101,7 +114,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getIncompleteCount() async {
-    // await seed();
     var counterDocumentSnapshot =
         await countersReference.doc(_countersDocument).get();
     var counterDocument =
@@ -139,6 +151,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     // Set the counters values
     await _updateIncompleteCounter(100);
     await _updateCompleteCounter(0);
+    await _updateRemindersCollectionCounter(100);
   }
 
   @override
@@ -177,6 +190,12 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     await countersReference
         .doc(_countersDocument)
         .update({_complete: complete});
+  }
+
+  Future<void> _updateRemindersCollectionCounter(int collectionCount) async {
+    await countersReference
+        .doc(_remindersDocumentsLength)
+        .update({_length: collectionCount});
   }
 
   Query getFirebaseFilteredQuery(ReminderModelRequest? request) {
