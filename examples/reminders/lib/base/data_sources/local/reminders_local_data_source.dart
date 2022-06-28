@@ -99,14 +99,6 @@ class RemindersLocalDataSource implements RemindersDataSource {
     );
     return _identifiablePair;
   }
-
-  @override
-  Future<void> updateCountersInDataSource({
-    required int completeCount,
-    required int incompleteCount,
-  }) async {
-    await Future.delayed(const Duration(milliseconds: 2));
-  }
 }
 
 extension _ListReminderModelX on List<ReminderModel> {

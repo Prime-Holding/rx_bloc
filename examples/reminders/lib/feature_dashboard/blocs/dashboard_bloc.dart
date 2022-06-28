@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/models/counter/increment_operation.dart';
 import '../../base/models/reminder/reminder_model.dart';
+import '../../base/models/updated_counters.dart';
 import '../models/dashboard_model.dart';
 import '../services/dashboard_service.dart';
 
@@ -36,7 +37,7 @@ abstract class DashboardBlocStates {
 
 @RxBloc()
 class DashboardBloc extends $DashboardBloc {
-  DashboardBloc(this._dashboardService, CoordinatorBlocType coordinatorBloc) {
+  DashboardBloc(this._dashboardService, this._coordinatorBloc) {
     _$fetchDataEvent
         .startWith(false)
         .switchMap((silently) => _dashboardService
@@ -46,7 +47,7 @@ class DashboardBloc extends $DashboardBloc {
         .bind(_dashboardModelResult)
         .addTo(_compositeSubscription);
 
-    coordinatorBloc
+    _coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _dashboardModelResult
               .whereSuccess()
@@ -55,16 +56,26 @@ class DashboardBloc extends $DashboardBloc {
         )
         .map(managedListToDashboard)
         .mapResult(_dashboardService.sortedReminderList)
+        .doOnData((event) {
+          if (event is ResultSuccess<DashboardModel>) {
+            final updatedCounters = UpdatedCounters(
+              incomplete: event.data.incompleteCount,
+              complete: event.data.completeCount,
+            );
+            _coordinatorBloc.events.updateCounters(updatedCounters);
+          }
+        })
         .bind(_dashboardModelResult)
         .addTo(_compositeSubscription);
   }
 
   final DashboardService _dashboardService;
+  final CoordinatorBlocType _coordinatorBloc;
 
   static const _tagSilently = 'silently';
 
   Result<DashboardModel> managedListToDashboard(
-  ManagedListCounterOperation managedListCounterOperation,
+    ManagedListCounterOperation managedListCounterOperation,
   ) {
     final dashboard = _dashboardModelResult.value;
 
@@ -72,7 +83,8 @@ class DashboardBloc extends $DashboardBloc {
       return Result.success(
         _dashboardService.getDashboardModelFromManagedList(
           dashboard: dashboard.data,
-          managedList: managedListCounterOperation.managedList as ManagedList<ReminderModel>,
+          managedList: managedListCounterOperation.managedList
+              as ManagedList<ReminderModel>,
           counterOperation: managedListCounterOperation.counterOperation,
         ),
       );

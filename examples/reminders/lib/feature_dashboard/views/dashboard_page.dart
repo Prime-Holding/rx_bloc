@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_blocs/firebase_bloc.dart';
 import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
@@ -42,6 +43,10 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                RxBlocBuilder<FirebaseBlocType, void>(
+                  state: (bloc) => bloc.states.countersUpdated,
+                  builder: (context, data, _) => Container(),
+                ),
                 _buildErrorListener(),
                 _buildOnDeletedListener(),
                 _buildOnCreatedListener(),

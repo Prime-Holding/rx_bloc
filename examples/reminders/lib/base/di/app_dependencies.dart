@@ -7,7 +7,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -19,6 +18,7 @@ import 'package:provider/single_child_widget.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
+import '../common_blocs/firebase_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
@@ -32,10 +32,13 @@ import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
+import '../data_sources/remote/reminders_firebase_data_source.dart';
 import '../data_sources/remote/reminders_remote_data_source_factory.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/firebase_repository.dart';
 import '../repositories/push_notification_repository.dart';
 import '../repositories/reminders_repository.dart';
+import '../services/firebase_service.dart';
 import '../services/reminders_service.dart';
 
 class AppDependencies {
@@ -110,6 +113,9 @@ class AppDependencies {
         Provider<RemindersLocalDataSource>(
           create: (context) => RemindersLocalDataSource(),
         ),
+        Provider<RemindersFirebaseDataSource>(
+          create: (context) => RemindersFirebaseDataSource(),
+        ),
       ];
 
   List<Provider> get _repositories => [
@@ -128,6 +134,11 @@ class AppDependencies {
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
             dataSource: RemindersRemoteDataSourceFactory.fromConfig(config),
+          ),
+        ),
+        Provider<FirebaseRepository>(
+          create: (context) => FirebaseRepository(
+            dataSource: context.read(),
           ),
         ),
       ];
@@ -154,6 +165,11 @@ class AppDependencies {
             context.read(),
           ),
         ),
+        Provider<FirebaseService>(
+          create: (context) => FirebaseService(
+            context.read(),
+          ),
+        ),
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -171,6 +187,12 @@ class AppDependencies {
             logoutUseCase: context.read(),
             coordinatorBloc: context.read(),
             authRepository: context.read(),
+          ),
+        ),
+        RxBlocProvider<FirebaseBlocType>(
+          create: (context) => FirebaseBloc(
+            context.read(),
+            context.read(),
           ),
         ),
       ];

@@ -95,11 +95,6 @@ class DashboardService {
       incrementOperation: _incrementOperation,
     );
 
-    _remindersService.updateCountersInDataSource(
-      completeCount: completeCount,
-      incompleteCount: incompleteCount,
-    );
-
     return dashboard.copyWith(
       reminderList: managedList.list,
       completeCount: completeCount,

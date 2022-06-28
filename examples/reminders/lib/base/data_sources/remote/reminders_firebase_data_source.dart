@@ -123,8 +123,9 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   /// Generates a list of reminders, deletes the existing reminder documents in
-  /// the reminders collection and uploads the new collection
-  /// Call the seed when the list in Firebase is empty or should be refilled
+  /// the reminders collection and uploads the newly generated collection.
+  /// Call the seed() method when the list in Firebase is empty or should be
+  /// reset. The method can be called in the getCompleteCount() method.
   Future<void> seed() async {
     _data = List.generate(
       100,
@@ -223,7 +224,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return query;
   }
 
-  @override
   Future<void> updateCountersInDataSource({
     required int completeCount,
     required int incompleteCount,

@@ -13,6 +13,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../models/counter/increment_operation.dart';
 import '../models/reminder/reminder_model.dart';
+import '../models/updated_counters.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
 
@@ -28,6 +29,8 @@ abstract class CoordinatorEvents {
 
   void reminderUpdated(
       Result<IdentifiablePair<ReminderModel>> reminderPairResult);
+
+  void updateCounters(UpdatedCounters counters);
 }
 
 abstract class CoordinatorStates {
@@ -42,6 +45,9 @@ abstract class CoordinatorStates {
 
   @RxBlocIgnoreState()
   Stream<Result<ReminderModel>> get onReminderCreated;
+
+  @RxBlocIgnoreState()
+  Stream<UpdatedCounters> get onCountersUpdated;
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -62,6 +68,9 @@ class CoordinatorBloc extends $CoordinatorBloc {
   @override
   Stream<Result<IdentifiablePair<ReminderModel>>> get onReminderUpdated =>
       _$reminderUpdatedEvent;
+
+  @override
+  Stream<UpdatedCounters> get onCountersUpdated => _$updateCountersEvent;
 }
 
 extension CoordinatingTasksX on CoordinatorBlocType {
