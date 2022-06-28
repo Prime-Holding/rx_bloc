@@ -194,6 +194,7 @@ class AppDependencies {
             context.read(),
             context.read(),
           ),
+          lazy: false,
         ),
       ];
 
