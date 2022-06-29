@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1006655871501:android:1d163c506b93b9a4ad1344",
         "android_client_info": {
-          "package_name": "com.example.reminders"
+          "package_name": "com.example.reminders.dev"
         }
       },
       "oauth_client": [
