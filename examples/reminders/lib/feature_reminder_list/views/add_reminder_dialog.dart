@@ -67,8 +67,6 @@ class AddReminderDialogState extends State<AddReminderDialog> {
           TextButton(
             child: const Text('OK'),
             onPressed: () {
-              print('DUEDATE: ${dueDate.toString()}');
-
               context.read<ReminderManageBlocType>().events.create(
                     complete: false,
                     dueDate: dueDate,
