@@ -1,5 +1,5 @@
 ## [4.0.1] - June 29, 2022
-* Fixes issue with re-displaying RxFormFieldBuilder re-rendering where no value is returned when the last state of the field is an error.
+* Fixes issue with re-displaying RxFormFieldBuilder where no value is returned when the last state of the field is an error.
 
 ## [4.0.0] - September 24, 2021
 * Support Flutter `2.5`
