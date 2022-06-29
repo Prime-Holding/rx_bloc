@@ -189,13 +189,14 @@ class AppDependencies {
             authRepository: context.read(),
           ),
         ),
-        RxBlocProvider<FirebaseBlocType>(
-          create: (context) => FirebaseBloc(
-            context.read(),
-            context.read(),
+        if (config != EnvironmentConfig.dev)
+          RxBlocProvider<FirebaseBlocType>(
+            create: (context) => FirebaseBloc(
+              context.read(),
+              context.read(),
+            ),
+            lazy: false,
           ),
-          lazy: false,
-        ),
       ];
 
   List<Provider> get _interceptors => [

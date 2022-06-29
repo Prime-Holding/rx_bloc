@@ -62,6 +62,8 @@ class DashboardBloc extends $DashboardBloc {
               incomplete: event.data.incompleteCount,
               complete: event.data.completeCount,
             );
+            /// If the firebase data source is used, the UpdatedCounters should
+            /// be sent to the CoordinatorBloc
             _coordinatorBloc.events.updateCounters(updatedCounters);
           }
         })

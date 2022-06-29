@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rx_bloc_list/models.dart';
 
-import '../../models/reminder/reminder_list_reponse.dart';
+import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
+import '../../models/reminder/reminder_model_firebase_request_date.dart';
 import 'reminders_data_source.dart';
 
 class RemindersFirebaseDataSource implements RemindersDataSource {
@@ -34,8 +35,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     required DateTime dueDate,
     required bool complete,
   }) async {
-    final reminderModelRequestData = ReminderModelRequestData(
-      dueDate: dueDate,
+    final reminderModelRequestData = ReminderModelFirebaseRequestData(
+      dueDate: Timestamp.fromDate(dueDate),
       title: title,
       complete: complete,
     );
@@ -104,6 +105,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async {
+    // await seed();
     var counterDocumentSnapshot =
         await countersReference.doc(_countersDocument).get();
     var counterDocument =
@@ -164,7 +166,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
     await remindersReference.doc(updatedModel.id).update({
       _complete: updatedModel.complete,
-      _dueDate: updatedModel.dueDate,
+      _dueDate: Timestamp.fromDate(updatedModel.dueDate),
       _title: updatedModel.title,
     });
 
