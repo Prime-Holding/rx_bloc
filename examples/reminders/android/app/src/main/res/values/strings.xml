@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Reminders"</string>
+    <string name="facebook_app_id">744155433587108</string>
+    <string name="fb_login_protocol_scheme">fb744155433587108</string>
+    <string name="facebook_client_token">edce4076502e9b862145a66eea9355d8</string>
+</resources>
