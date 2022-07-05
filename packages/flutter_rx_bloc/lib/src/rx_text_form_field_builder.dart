@@ -228,10 +228,13 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     (_blocState as Stream<String>)
         .where((event) => event != controller.text)
         .listen(
-          _onBlocStateEvent,
-          onError: (exception) {},
-        )
-        .disposedBy(_compositeSubscription);
+      _onBlocStateEvent,
+      onError: (exception) {
+        if (exception is RxFieldException<String>) {
+          _onBlocStateEvent(exception.fieldValue);
+        }
+      },
+    ).disposedBy(_compositeSubscription);
   }
 
   void _onBlocStateEvent(String newValue) {
