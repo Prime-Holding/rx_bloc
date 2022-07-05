@@ -42,15 +42,16 @@ class DashboardService {
             .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
       );
 
-  Future<ManageOperation> getManageOperation(ReminderModel model) async {
+  Future<ManageOperation> getManageOperation(
+    IdentifiablePair<ReminderModel> model,
+  ) async {
     final dateRange = _getDateRange();
 
-    if (model.dueDate.isAfter(dateRange.from) &&
-        model.dueDate.isBefore(dateRange.to)) {
-      if (model.complete) {
-        return ManageOperation.remove;
-      }
-      return ManageOperation.merge;
+    if (model.updatedIdentifiable.dueDate.isAfter(dateRange.from) &&
+        model.updatedIdentifiable.dueDate.isBefore(dateRange.to)) {
+      return model.updatedIdentifiable.complete
+          ? ManageOperation.remove
+          : ManageOperation.merge;
     }
 
     return ManageOperation.remove;
@@ -66,35 +67,43 @@ class DashboardService {
     required ManagedList<ReminderModel> managedList,
     required CounterOperation counterOperation,
   }) {
-    final _oldIdentifiable = managedList.identifiablePair.oldIdentifiable as ReminderModel?;
-    final _updatedIdentifiable = managedList.identifiablePair.updatedIdentifiable as ReminderModel;
-    IncrementOperation? _incrementOperation;
-    if (_oldIdentifiable != null &&
-        _updatedIdentifiable.title == _oldIdentifiable.title &&
-        _updatedIdentifiable.dueDate == _oldIdentifiable.dueDate &&
-        _updatedIdentifiable.complete != _oldIdentifiable.complete) {
-      if (_updatedIdentifiable.complete) {
-        _incrementOperation =
-            IncrementOperation.decrementIncompleteIncrementComplete;
-      } else {
-        _incrementOperation =
-            IncrementOperation.incrementIncompleteDecrementComplete;
-      }
-    }
+    final incrementOperation = _getIncrementOperationFrom(
+      managedList: managedList,
+    );
 
     return dashboard.copyWith(
       reminderList: managedList.list,
       completeCount: dashboard.recalculateCompleteWith(
         counterOperation: counterOperation,
-        reminderModel: _updatedIdentifiable,
-        incrementOperation: _incrementOperation,
+        reminderModel: managedList.identifiablePair.updatedIdentifiable,
+        incrementOperation: incrementOperation,
       ),
       incompleteCount: dashboard.recalculateIncompleteWith(
         counterOperation: counterOperation,
-        reminderModel: _updatedIdentifiable,
-        incrementOperation: _incrementOperation,
+        reminderModel: managedList.identifiablePair.updatedIdentifiable,
+        incrementOperation: incrementOperation,
       ),
     );
+  }
+
+  IncrementOperation? _getIncrementOperationFrom({
+    required ManagedList<ReminderModel> managedList,
+  }) {
+    final _oldIdentifiable = managedList.identifiablePair.oldIdentifiable;
+
+    final _updatedIdentifiable =
+        managedList.identifiablePair.updatedIdentifiable;
+
+    if (_oldIdentifiable != null &&
+        _updatedIdentifiable.title == _oldIdentifiable.title &&
+        _updatedIdentifiable.dueDate == _oldIdentifiable.dueDate &&
+        _updatedIdentifiable.complete != _oldIdentifiable.complete) {
+      return _updatedIdentifiable.complete
+          ? IncrementOperation.decrementIncompleteIncrementComplete
+          : IncrementOperation.incrementIncompleteDecrementComplete;
+    }
+
+    return null;
   }
 }
 
