@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import '../../app_extensions.dart';
-import '../login_text.dart';
+import '../ui_components/login_text.dart';
 
 class FacebookLoginPage extends StatefulWidget {
   const FacebookLoginPage({Key? key}) : super(key: key);
@@ -13,9 +13,10 @@ class FacebookLoginPage extends StatefulWidget {
 }
 
 class _FacebookLoginPageState extends State<FacebookLoginPage> {
-  static const _accountExistsWithDifferentCredential = 'account-exists-with-different-credential';
+  static const _accountExistsWithDifferentCredential =
+      'account-exists-with-different-credential';
   static const _invalidCredential = 'invalid-credential';
-  static const _operationNotAllowedException= 'operation-not-allowed';
+  static const _operationNotAllowedException = 'operation-not-allowed';
   static const _userDisabled = 'user-disabled';
   static const _userNotFoundException = 'user-not-found';
 

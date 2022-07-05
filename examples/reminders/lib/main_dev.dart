@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'base/app/config/app_config.dart';
 import 'base/app/config/environment_config.dart';
 import 'base/app/reminders.dart';
 
@@ -19,5 +20,9 @@ void main() async {
   // enableFlutterDriverExtension();
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(Reminders(config: EnvironmentConfig.dev));
+  var configuredApp = AppConfig(
+    config: EnvironmentConfig.dev,
+    child: Reminders(config: EnvironmentConfig.dev),
+  );
+  runApp(configuredApp);
 }
