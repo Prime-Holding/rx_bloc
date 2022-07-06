@@ -1,5 +1,6 @@
-## [4.0.2] - July 05, 2022
+## [4.0.2] - July 06, 2022
 * Remove unused package imports
+* Stabilisation improvements
 
 ## [4.0.1] - June 29, 2022
 * Fixes issue with re-displaying RxFormFieldBuilder where no value is returned when the last state of the field is an error.
