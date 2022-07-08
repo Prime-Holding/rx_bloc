@@ -19,6 +19,9 @@ abstract class $FirebaseBloc extends RxBlocBase
     implements FirebaseBlocEvents, FirebaseBlocStates, FirebaseBlocType {
   final _compositeSubscription = CompositeSubscription();
 
+  /// Тhe [Subject] where events sink to by calling [logIn]
+  final _$logInEvent = PublishSubject<void>();
+
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
@@ -29,6 +32,12 @@ abstract class $FirebaseBloc extends RxBlocBase
   late final ConnectableStream<void> _countersUpdatedState =
       _mapToCountersUpdatedState();
 
+  /// The state of [loggedIn] implemented in [_mapToLoggedInState]
+  late final Stream<bool> _loggedInState = _mapToLoggedInState();
+
+  @override
+  void logIn() => _$logInEvent.add(null);
+
   @override
   Stream<bool> get isLoading => _isLoadingState;
 
@@ -38,11 +47,16 @@ abstract class $FirebaseBloc extends RxBlocBase
   @override
   ConnectableStream<void> get countersUpdated => _countersUpdatedState;
 
+  @override
+  Stream<bool> get loggedIn => _loggedInState;
+
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
   ConnectableStream<void> _mapToCountersUpdatedState();
+
+  Stream<bool> _mapToLoggedInState();
 
   @override
   FirebaseBlocEvents get events => this;
@@ -52,6 +66,7 @@ abstract class $FirebaseBloc extends RxBlocBase
 
   @override
   void dispose() {
+    _$logInEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

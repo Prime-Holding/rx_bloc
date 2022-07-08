@@ -13,4 +13,7 @@ class FirebaseService {
         completeCount: completeCount,
         incompleteCount: incompleteCount,
       );
+
+Future<bool> logIn() =>
+    _repository.logIn();
 }

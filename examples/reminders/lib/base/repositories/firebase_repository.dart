@@ -11,4 +11,7 @@ class FirebaseRepository{
     required int incompleteCount,
   }) =>_dataSource.updateCountersInDataSource(completeCount:completeCount,
       incompleteCount:incompleteCount);
+
+  Future<bool> logIn() =>
+      _dataSource.logIn();
 }

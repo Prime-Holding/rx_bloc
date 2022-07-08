@@ -24,7 +24,9 @@ class DashboardDependencies {
 
   late final List<Provider> _services = [
     Provider<DashboardService>(
-      create: (context) => DashboardService(context.read()),
+      create: (context) => DashboardService(
+        context.read(),
+      ),
     ),
   ];
 

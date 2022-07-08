@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_blocs/firebase_bloc.dart';
 import '../ui_components/login_text.dart';
 
 class FacebookLoginPage extends StatefulWidget {
@@ -23,13 +26,19 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
   Future<void> _loginWithFacebook() async {
     try {
       // Trigger the sign-in flow
-      final facebookLoginResult = await FacebookAuth.instance.login();
+      // final facebookLoginResult = await FacebookAuth.instance.login();
 
       // Create a credential from the access token
-      final facebookAuthCredential = FacebookAuthProvider.credential(
-          facebookLoginResult.accessToken!.token);
+      // final facebookAuthCredential = FacebookAuthProvider.credential(
+      //     facebookLoginResult.accessToken!.token);
 
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      // final data = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+      // print('${data.credential}');
+      // print('${data.user?.uid}');
+      // print('${data.credential}');
+      /// todo when I login with a user if his collection is empty, create a new
+      /// collection with 100 elements
       await context.router.replace(const NavigationRoute());
     } on FirebaseAuthException catch (e) {
       var content = '';
@@ -71,6 +80,8 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _loggedInListener();
+    // _loggedInBuilder();
     return Scaffold(
       body: Center(
         child: Column(
@@ -86,16 +97,76 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
                 context.router.replace(const NavigationRoute());
               },
             ),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () => context.read<FirebaseBlocType>().events.logIn(),
+            ),
+            MaterialButton(
+              color: Colors.amber,
+              onPressed: () => context.read<FirebaseBlocType>().events.logIn,
+            ),
+            ///UNCOMMENt
+            _buildLoggedInRxBlocBuilder(),
             _Button(
               text: context.l10n.logInWithFacebook,
               color: Colors.blue,
-              onPressed: () {
-                _loginWithFacebook();
-              },
+              onPressed: () => context.read<FirebaseBlocType>().events.logIn,
+              // onPressed: () {
+              ///todo is the logins state was successful got to navigationroute
+              // _loginWithFacebook();
+              // print('LoggedDDDDD');
+              // context.read<FirebaseBlocType>().events.logIn();
+              //
+              // },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  RxBlocBuilder<FirebaseBlocType, bool> _buildLoggedInRxBlocBuilder() {
+    return RxBlocBuilder<FirebaseBlocType, bool>(
+            state: (bloc) => bloc.states.loggedIn,
+            builder: (context, snap, _) {
+              print('LOGGEDBuilder');
+              if(snap.hasData && snap.data == true) {
+                context.router.replace(const NavigationRoute());
+                return const Text('LOGGED');
+              }
+              return const Text('NOT LOGGED');
+            },
+          );
+  }
+
+  Widget _loggedInBuilder() {
+    // RxBlocListener<FirebaseBlocType,bool>(
+    return RxBlocBuilder<FirebaseBlocType, bool>(
+      state: (bloc) => bloc.states.loggedIn,
+      // listener: (context, snapshot) {
+      builder: (context, snapshot, bloc) {
+        print('BUILDER');
+
+        // if(snapshot != null && snapshot == true) {
+        context.router.replace(const NavigationRoute());
+        // }
+        return Container();
+      },
+    );
+  }
+
+  void _loggedInListener() {
+    RxBlocListener<FirebaseBlocType, bool>(
+      // RxBlocBuilder<FirebaseBlocType,bool>(
+      state: (bloc) => bloc.states.loggedIn,
+      listener: (context, snapshot) {
+        print('LISTENER');
+        // builder: (context, snapshot, bloc) {
+        if (snapshot != null && snapshot == true) {
+          context.router.replace(const NavigationRoute());
+        }
+        // return Container();
+      },
     );
   }
 }
