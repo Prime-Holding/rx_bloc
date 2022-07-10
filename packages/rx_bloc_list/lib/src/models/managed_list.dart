@@ -30,7 +30,7 @@ class ManagedList<T extends Identifiable> {
   final ManageOperation operation;
 
   /// The object containing the managed object [updatedIdentifiable]
-  final IdentifiablePair identifiablePair;
+  final IdentifiablePair<T> identifiablePair;
 
   /// The managed list
   final List<T> list;

@@ -5,24 +5,16 @@ import '../../models.dart';
 
 /// The returned [ManageOperation] determines whether the [updatedIdentifiable]
 /// will be merged, removed or ignored from the list.
-typedef OperationCallback<E> = Future<ManageOperation> Function(
-  E updatedIdentifiable,
-);
+typedef OperationCallback<E extends Identifiable> = Future<ManageOperation>
+    Function(IdentifiablePair<E> identifiablePair);
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
   /// Get a list of unique [Identifiable.id]
   List<String> get ids => map((element) => element.id).toSet().toList();
 
   /// Whether the collection contains an element equal to [identifiable].
-  bool containsIdentifiable(Identifiable identifiable) {
-    try {
-      firstWhere((element) => element.id == identifiable.id);
-
-      return true;
-    } on StateError catch (_) {
-      return false;
-    }
-  }
+  bool containsIdentifiable(Identifiable identifiable) =>
+      firstWhereOrNull((element) => element.id == identifiable.id) != null;
 
   /// Return a new list with removed all occurrence of [identifiable] from this list.
   List<T> removedIdentifiable(Identifiable identifiable) {
@@ -108,33 +100,32 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
       _withLatestFromList(list).flatMap((tuple) async* {
         final identifiableInList = tuple.list
             .firstWhereOrNull((element) => element.id == tuple.item.id);
-        switch (await operationCallback(tuple.item)) {
+
+        final identifiablePair = IdentifiablePair(
+          updatedIdentifiable: tuple.item,
+          oldIdentifiable: identifiableInList,
+        );
+
+        switch (await operationCallback(identifiablePair)) {
           case ManageOperation.merge:
             yield ManagedList(
               tuple.list._mergeWithList([tuple.item]),
               operation: ManageOperation.merge,
-              identifiablePair: IdentifiablePair(
-                  updatedIdentifiable: tuple.item,
-                  oldIdentifiable: identifiableInList,
-              ),
+              identifiablePair: identifiablePair,
             );
             break;
           case ManageOperation.remove:
             yield ManagedList(
-              tuple.list.removeFromList(tuple.item),
+              tuple.list._removeFromList(tuple.item),
               operation: ManageOperation.remove,
-              identifiablePair: IdentifiablePair(
-                updatedIdentifiable: tuple.item,
-              ),
+              identifiablePair: identifiablePair,
             );
             break;
           case ManageOperation.ignore:
             yield ManagedList(
               tuple.list,
               operation: ManageOperation.ignore,
-              identifiablePair: IdentifiablePair(
-                updatedIdentifiable: tuple.item,
-              ),
+              identifiablePair: identifiablePair,
             );
             break;
         }
@@ -165,7 +156,7 @@ extension _ListX<E extends Identifiable> on List<E> {
     return mergeWith(list);
   }
 
-  List<E> removeFromList(E identifiable) {
+  List<E> _removeFromList(E identifiable) {
     final that = this;
 
     if (that is PaginatedList<E> && that.containsIdentifiable(identifiable)) {
@@ -222,7 +213,7 @@ extension ModelManageEventsPair<E extends Identifiable>
     required OperationCallback<E> operationCallback,
   }) =>
       _withLatestFromListPair(list).flatMap((tuple) async* {
-        switch (await operationCallback(tuple.pair.updatedIdentifiable)) {
+        switch (await operationCallback(tuple.pair)) {
           case ManageOperation.merge:
             yield ManagedList(
               tuple.list._mergeWithList([tuple.pair.updatedIdentifiable]),
@@ -232,7 +223,7 @@ extension ModelManageEventsPair<E extends Identifiable>
             break;
           case ManageOperation.remove:
             yield ManagedList(
-              tuple.list.removeFromList(tuple.pair.updatedIdentifiable),
+              tuple.list._removeFromList(tuple.pair.updatedIdentifiable),
               operation: ManageOperation.remove,
               identifiablePair: tuple.pair,
             );
