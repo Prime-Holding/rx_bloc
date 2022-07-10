@@ -40,7 +40,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   QueryDocumentSnapshot? lastFetchedRecord;
   static const _reminders = 'reminders';
   static const _counters = 'counters';
-  static const _countersDocument = 'countersDocument';
   static const _remindersLengths = 'remindersLengths';
   static const _complete = 'complete';
   static const _authorId = 'authorId';
@@ -57,38 +56,51 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     required DateTime dueDate,
     required bool complete,
   }) async {
-    final reminderModelRequestData = ReminderModelFirebaseRequestData(
-      dueDate: Timestamp.fromDate(dueDate),
-      title: title,
-      complete: complete,
-      authorId: loggedInUid,
-    );
-
-    final createdReminder =
-        await remindersReference.add(reminderModelRequestData.toJson());
-    final createdReminderId = createdReminder.id;
-    final reminder = ReminderModel(
-        id: createdReminderId,
+    var userId = await storage.read(key: _authorId);
+    if(userId != null) {
+      final reminderModelRequestData = ReminderModelFirebaseRequestData(
+        dueDate: Timestamp.fromDate(dueDate),
         title: title,
-        dueDate: dueDate,
         complete: complete,
-        authorId: loggedInUid);
+        authorId: userId,
+      );
 
-    var completeCount = await _getRemindersCollectionLength();
-    completeCount++;
-    await _updateRemindersCollectionCounter(completeCount);
+      final createdReminder =
+      await remindersReference.add(reminderModelRequestData.toJson());
+      final createdReminderId = createdReminder.id;
+      final reminder = ReminderModel(
+          id: createdReminderId,
+          title: title,
+          dueDate: dueDate,
+          complete: complete,
+          authorId: userId);
 
-    return reminder;
+      var remindersCollectionLength = await _getRemindersCollectionLength();
+      remindersCollectionLength++;
+
+      await _updateRemindersCollectionLengthCounter(remindersCollectionLength);
+
+      return reminder;
+    }else{
+      //todo change this id
+      var reminder =  ReminderModel(
+          id: 'NotLogged',
+          title: title,
+          dueDate: dueDate,
+          complete: complete,
+          );
+      return reminder;
+    }
   }
 
   @override
   Future<void> delete(String id) async {
     await remindersReference.doc(id).delete();
 
-    var completeCount = await _getRemindersCollectionLength();
-    completeCount--;
+    var remindersCollectionLength = await _getRemindersCollectionLength();
+    remindersCollectionLength--;
 
-    await _updateRemindersCollectionCounter(completeCount);
+    await _updateRemindersCollectionLengthCounter(remindersCollectionLength);
   }
 
   Future<int> _getRemindersCollectionLength() async {
@@ -171,9 +183,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     ///values
     var userId = await storage.read(key: _authorId);
     if(userId != null){
-      ///USER is logged
+      // The user is logged
       Query query = countersReference;
-          // print('loggedInUid:$loggedInUid');
           var querySnapshot =
               query.where('authorId', isEqualTo: userId).limit(1);
           final countersSnapshot = await querySnapshot.get();
@@ -246,7 +257,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     // Set the counters values
     await _updateIncompleteCounter(100);
     await _updateCompleteCounter(0);
-    await _updateRemindersCollectionCounter(100);
+    await _updateRemindersCollectionLengthCounter(100);
   }
 
   @override
@@ -279,13 +290,11 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<void> _createUserCountersCollection() async {
-    // final insertBatch = FirebaseFirestore.instance.batch();
      await countersReference.add({
       _authorId: loggedInUid,
       _incomplete: 100,
       _complete: 0,
     });
-     // print('AFTER_COUNTERSdocumentWrite');
   }
 
   Future<void> _createUserRemindersCollectionCounter() async{
@@ -293,7 +302,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       _authorId: loggedInUid,
       _length: 100,
     });
-    print('AFTER_RemindersLengthDocumentWrite');
+    // print('AFTER_RemindersLengthDocumentWrite');
   }
 
   Future<void> _updateIncompleteCounter(int incomplete) async {
@@ -323,7 +332,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     // todo if user is updated update for him, otherwise for the default user
     var userId = await storage.read(key: _authorId);
     if(userId != null){
-      ///USER is logged
+      // user is logged
       Query query = countersReference;
       var querySnapshot =
       query.where('authorId', isEqualTo: userId).limit(1);
@@ -340,10 +349,21 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     //     .update({_complete: complete});
   }
 
-  Future<void> _updateRemindersCollectionCounter(int collectionCount) async {
-    await countersReference
-        .doc(_remindersLengths)
-        .update({_length: collectionCount});
+  Future<void> _updateRemindersCollectionLengthCounter(int collectionCount) async {
+    var userId = await storage.read(key: _authorId);
+    if(userId != null){
+      ///USER is logged
+      Query query = remindersLengthsReference;
+      var querySnapshot =
+      query.where('authorId', isEqualTo: userId).limit(1);
+      final lengthSnapshot = await querySnapshot.get();
+      var lengthId = lengthSnapshot.docs.first.id;
+      await remindersLengthsReference.doc(lengthId).update({
+        // _incomplete: incomplete,
+        _length: collectionCount,
+      });
+    }
+
   }
 
   Query getFirebaseFilteredQuery(
@@ -356,7 +376,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     // }
     Query query = remindersReference;
 
-    /// TODO UNCOMMENT
+    /// TODO uncomment when the generated reminder collection is with length
+    /// 100
     // if (request?.filterByDueDateRange != null) {
     //   final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
     //       request!.filterByDueDateRange!.from.millisecondsSinceEpoch);
@@ -412,11 +433,11 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     ///todo check if there is a valid token saved in the secure storage
     //   var token = await storage.read(key: 'token');
     // if there is a reminder with authorId == the user id
-    var exists = remindersLength > 0;
-    print('Exists $exists');
+    // var exists = remindersLength > 0;
+    // print('Exists $exists');
     if (remindersLength == 0) {
-      print('User Has NO data ');
-      ///Generate a list of reminders and assign it to the user
+      // The user does not have any data
+      // Generate a list of reminders and assign it to the user
       await _generateAndInsertDataForTheUser();
     }
   }
