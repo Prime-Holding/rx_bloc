@@ -39,7 +39,7 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
       // print('${data.credential}');
       /// todo when I login with a user if his collection is empty, create a new
       /// collection with 100 elements
-      await context.router.replace(const NavigationRoute());
+      // await context.router.replace(const NavigationRoute());
     } on FirebaseAuthException catch (e) {
       var content = '';
       switch (e.code) {
@@ -59,7 +59,7 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
           content = context.l10n.userNotFound;
           break;
       }
-
+      //todo add a state loginFailed and show a dialog
       await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -79,96 +79,40 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _loggedInListener();
-    // _loggedInBuilder();
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LoginText(text: context.l10n.reminders),
-            const SizedBox(height: 5),
-            LoginText(text: context.l10n.logIn),
-            _Button(
-              text: context.l10n.logInAsAnonymous,
-              color: Colors.blueGrey,
-              onPressed: () {
-                context.router.replace(const NavigationRoute());
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () => context.read<FirebaseBlocType>().events.logIn(),
-            ),
-            MaterialButton(
-              color: Colors.amber,
-              onPressed: () => context.read<FirebaseBlocType>().events.logIn,
-            ),
-            ///UNCOMMENt
-            _buildLoggedInRxBlocBuilder(),
-            _Button(
-              text: context.l10n.logInWithFacebook,
-              color: Colors.blue,
-              onPressed: () => context.read<FirebaseBlocType>().events.logIn,
-              // onPressed: () {
-              ///todo is the logins state was successful got to navigationroute
-              // _loginWithFacebook();
-              // print('LoggedDDDDD');
-              // context.read<FirebaseBlocType>().events.logIn();
-              //
-              // },
-            ),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LoginText(text: context.l10n.reminders),
+              const SizedBox(height: 5),
+              LoginText(text: context.l10n.logIn),
+              _Button(
+                text: context.l10n.logInAsAnonymous,
+                color: Colors.blueGrey,
+                onPressed: () {
+                  context.router.replace(const NavigationRoute());
+                },
+              ),
+              RxBlocBuilder<FirebaseBlocType, bool>(
+                state: (bloc) => bloc.states.loggedIn,
+                builder: (context, snap, _) {
+                  print('LOGGEDBuilder ${snap.data}');
+                  if (snap.hasData && snap.data == true) {
+                    context.router.replace(const NavigationRoute());
+                  }
+                  return _Button(
+                    text: context.l10n.logInWithFacebook,
+                    color: Colors.blue,
+                    onPressed: () =>
+                        context.read<FirebaseBlocType>().events.logIn(),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
-
-  RxBlocBuilder<FirebaseBlocType, bool> _buildLoggedInRxBlocBuilder() {
-    return RxBlocBuilder<FirebaseBlocType, bool>(
-            state: (bloc) => bloc.states.loggedIn,
-            builder: (context, snap, _) {
-              print('LOGGEDBuilder');
-              if(snap.hasData && snap.data == true) {
-                context.router.replace(const NavigationRoute());
-                return const Text('LOGGED');
-              }
-              return const Text('NOT LOGGED');
-            },
-          );
-  }
-
-  Widget _loggedInBuilder() {
-    // RxBlocListener<FirebaseBlocType,bool>(
-    return RxBlocBuilder<FirebaseBlocType, bool>(
-      state: (bloc) => bloc.states.loggedIn,
-      // listener: (context, snapshot) {
-      builder: (context, snapshot, bloc) {
-        print('BUILDER');
-
-        // if(snapshot != null && snapshot == true) {
-        context.router.replace(const NavigationRoute());
-        // }
-        return Container();
-      },
-    );
-  }
-
-  void _loggedInListener() {
-    RxBlocListener<FirebaseBlocType, bool>(
-      // RxBlocBuilder<FirebaseBlocType,bool>(
-      state: (bloc) => bloc.states.loggedIn,
-      listener: (context, snapshot) {
-        print('LISTENER');
-        // builder: (context, snapshot, bloc) {
-        if (snapshot != null && snapshot == true) {
-          context.router.replace(const NavigationRoute());
-        }
-        // return Container();
-      },
-    );
-  }
+      );
 }
 
 class _Button extends StatelessWidget {
@@ -183,37 +127,38 @@ class _Button extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-      child: GestureDetector(
-        onTap: () {
-          onPressed();
-        },
-        child: Container(
-          height: 55,
-          decoration: BoxDecoration(
-              border: Border.all(color: color),
-              borderRadius: BorderRadius.circular(20)),
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 5,
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(text, style: TextStyle(color: color, fontSize: 18)),
-                    const SizedBox(width: 35),
-                  ],
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+        child: GestureDetector(
+          onTap: () {
+            onPressed();
+          },
+          child: Container(
+            height: 55,
+            decoration: BoxDecoration(
+                border: Border.all(color: color),
+                borderRadius: BorderRadius.circular(20)),
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 5,
                 ),
-              )
-            ],
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        text,
+                        style: TextStyle(color: color, fontSize: 18),
+                      ),
+                      const SizedBox(width: 35),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
