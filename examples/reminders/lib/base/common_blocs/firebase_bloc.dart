@@ -10,8 +10,7 @@ part 'firebase_bloc_extensions.dart';
 
 /// A contract class containing all events of the FirebaseBloC.
 abstract class FirebaseBlocEvents {
-  // @RxBlocEvent(type: RxBlocEventType.behaviour, seed: false)
-  void logIn();
+  void logIn({bool anonymous = false});
 }
 
 /// A contract class containing all states of the FirebaseBloC.
@@ -31,7 +30,6 @@ abstract class FirebaseBlocStates {
 class FirebaseBloc extends $FirebaseBloc {
   FirebaseBloc(this._service, this._coordinatorBloc) {
     countersUpdated.connect().disposedBy(_compositeSubscription);
-    // loggedIn.connect().disposedBy(_compositeSubscription);
   }
 
   final FirebaseService _service;
@@ -47,10 +45,6 @@ class FirebaseBloc extends $FirebaseBloc {
               .asStream())
           .publish();
 
-  // @override
-  // Stream<bool> _mapToLoggedInState() =>
-  //      _service.logIn().asStream().publish();
-
   @override
   Stream<String> _mapToErrorsState() => errorState.toMessage();
 
@@ -59,24 +53,17 @@ class FirebaseBloc extends $FirebaseBloc {
 
   @override
   Stream<bool> _mapToLoggedInState() => _$logInEvent
-      .switchMap((value) {
-        print('TEST');
-        var result = _service.logIn().asResultStream();
-        return result;
+      .switchMap((anonymousLogin) {
+        Stream<Result<bool>> result;
+        if (anonymousLogin) {
+          result = _service.logIn(anonymousLogin).asResultStream();
+          return result;
+        } else {
+          result = _service.logIn(anonymousLogin).asResultStream();
+          return result;
+        }
       })
       .setResultStateHandler(this)
       .whereSuccess()
-      // .mapTo(true)
-      .startWith(false)
-  .doOnData((event) {
-    print('END');
-  });
-// .mapTo(true)
-// .shareReplay(maxSize: 1);
-// _$logInEvent.doOnData((event) {
-//   print('loginEventDOOn');
-// }).switchMap((_) {
-//   print('loginEvent');
-//   return _service.logIn().asStream();
-// }).shareReplay(maxSize: 1);
+      .startWith(false);
 }

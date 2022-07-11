@@ -12,6 +12,6 @@ class FirebaseRepository{
   }) =>_dataSource.updateCountersInDataSource(completeCount:completeCount,
       incompleteCount:incompleteCount);
 
-  Future<bool> logIn() =>
-      _dataSource.logIn();
+  Future<bool> logIn(bool anonymous) =>
+      _dataSource.logIn(anonymous);
 }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:rx_bloc_list/models.dart';
 
 import '../../models/reminder/reminder_list_response.dart';
@@ -12,28 +12,20 @@ import 'reminders_data_source.dart';
 
 class RemindersFirebaseDataSource implements RemindersDataSource {
   RemindersFirebaseDataSource() {
-    // usersReference = fireStore.collection(_users);
-    print('RemindersFirebaseDataSource del');
     remindersReference = fireStore.collection(_reminders);
     countersReference = fireStore.collection(_counters);
     remindersLengthsReference = fireStore.collection(_remindersLengths);
-    // storage = const FlutterSecureStorage();
   }
 
   final fireStore = FirebaseFirestore.instance;
   late CollectionReference remindersReference;
+
   /// Stores the authorId and the complete and incomplete counters
   late CollectionReference countersReference;
+
   /// Stores the authorId and the length of the user's collection
   late CollectionReference remindersLengthsReference;
-///todo the 3 collections - counters and reminders,remindersLength
-  /// are properly created when new users are created.
-  /// and check how they will be working with the
-  /// id of the Identifiable in the app
-  // late CollectionReference usersReference;
   late String loggedInUid;
-
-  // late FlutterSecureStorage storage;
   static var storage = const FlutterSecureStorage();
 
   var remindersCollectionLength = 0;
@@ -43,12 +35,12 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   static const _remindersLengths = 'remindersLengths';
   static const _complete = 'complete';
   static const _authorId = 'authorId';
+  static const _anonymous = 'anonymous';
   static const _length = 'length';
   static const _incomplete = 'incomplete';
   static const _dueDate = 'dueDate';
   static const _title = 'title';
   late final List<ReminderModel> _data;
-  var _accessToken = '';
 
   @override
   Future<ReminderModel> create({
@@ -57,16 +49,16 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     required bool complete,
   }) async {
     var userId = await storage.read(key: _authorId);
-    if(userId != null) {
+    try {
       final reminderModelRequestData = ReminderModelFirebaseRequestData(
         dueDate: Timestamp.fromDate(dueDate),
         title: title,
         complete: complete,
-        authorId: userId,
+        authorId: userId!,
       );
 
       final createdReminder =
-      await remindersReference.add(reminderModelRequestData.toJson());
+          await remindersReference.add(reminderModelRequestData.toJson());
       final createdReminderId = createdReminder.id;
       final reminder = ReminderModel(
           id: createdReminderId,
@@ -81,15 +73,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       await _updateRemindersCollectionLengthCounter(remindersCollectionLength);
 
       return reminder;
-    }else{
-      //todo change this id
-      var reminder =  ReminderModel(
-          id: 'NotLogged',
-          title: title,
-          dueDate: dueDate,
-          complete: complete,
-          );
-      return reminder;
+    } on Exception catch (e) {
+      throw Exception('ReminderCreationException: $e');
     }
   }
 
@@ -105,31 +90,22 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   Future<int> _getRemindersCollectionLength() async {
     var userId = await storage.read(key: _authorId);
-    if(userId != null){
-      ///USER is logged
+    if (userId != null) {
       Query query = remindersLengthsReference;
-      var querySnapshot =
-      query.where('authorId', isEqualTo: userId).limit(1);
+      var querySnapshot = query.where(_authorId, isEqualTo: userId).limit(1);
       final remindersLengthSnapshot = await querySnapshot.get();
       var remindersLength = remindersLengthSnapshot.docs.first[_length];
       return remindersLength;
     }
-    /// todo fetch for not logged user
-
-    // var currentLengthSnapshot =
-    //     await countersReference.doc(_remindersLengths).get();
-    ///todo make a query to fetch with a where clause where the id == uid
-    // var counterDocument = currentLengthSnapshot.data() as Map<String, dynamic>;
-    // return counterDocument[_length];]
-    return 10;
+    return -1;
   }
 
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     // Get the userId from local storage
-    var userId  = await storage.read(key: _authorId);
+    var userId = await storage.read(key: _authorId);
     //  Generate a query
-    var querySnapshot =  getFirebaseFilteredQuery(request, userId);
+    var querySnapshot = getFirebaseFilteredQuery(request, userId);
 
     // Modify the query
     if (lastFetchedRecord != null && request?.page != 1) {
@@ -158,47 +134,29 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   @override
   Future<int> getCompleteCount() async {
     var userId = await storage.read(key: _authorId);
-    if(userId != null){
-      ///USER is logged
+    if (userId != null) {
       Query query = countersReference;
-      var querySnapshot =
-      query.where('authorId', isEqualTo: userId).limit(1);
+      var querySnapshot = query.where(_authorId, isEqualTo: userId).limit(1);
       final countersSnapshot = await querySnapshot.get();
       var counterIncompleteLength = countersSnapshot.docs.first[_complete];
       return counterIncompleteLength;
     }
-    /// todo fetch for not logged user
-    // var counterDocumentSnapshot =
-    //     await countersReference.doc(_countersDocument).get();
-    // var counterDocument =
-    //     counterDocumentSnapshot.data() as Map<String, dynamic>;
-    // var completeCount = counterDocument[_complete];
-    // return completeCount;
-    return -3;
+    return -1;
   }
 
   @override
   Future<int> getIncompleteCount() async {
-    ///if the user is logged in get his data if not get the default collection
-    ///values
     var userId = await storage.read(key: _authorId);
-    if(userId != null){
+    if (userId != null) {
       // The user is logged
       Query query = countersReference;
-          var querySnapshot =
-              query.where('authorId', isEqualTo: userId).limit(1);
-          final countersSnapshot = await querySnapshot.get();
-          var counterIncompleteLength = countersSnapshot.docs.first[_incomplete];
+      var querySnapshot = query.where(_authorId, isEqualTo: userId).limit(1);
+      final countersSnapshot = await querySnapshot.get();
+      var counterIncompleteLength = countersSnapshot.docs.first[_incomplete];
       return counterIncompleteLength;
     }
-    /// todo fetch for not logged user
-    // var counterDocumentSnapshot =
-    //     await countersReference.doc(_countersDocument).get();
-    // var counterDocument =
-    //     counterDocumentSnapshot.data() as Map<String, dynamic>;
-    // var incompleteCount = counterDocument[_incomplete];
-    // return incompleteCount;
-    return -5;
+
+    return -1;
   }
 
   Future<bool> _loginWithFacebook() async {
@@ -208,22 +166,14 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       // Create a credential from the access token
       final facebookAuthCredential = FacebookAuthProvider.credential(
           facebookLoginResult.accessToken!.token);
-      _accessToken = facebookLoginResult.accessToken!.token;
-      // save token in local storage
-      // await storage.write(key: 'token', value: _accessToken);
-      // to get token from local storage
-      // var value = await storage.read(key: _authorId);
-
       final data = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
       loggedInUid = data.user!.uid;
-      // save token in local storage
       await storage.write(key: _authorId, value: loggedInUid);
-      // print('loggedInUid $loggedInUid');
+
       return true;
-    } on FirebaseAuthException catch (e) {
-      print('ERROR LOGIN');
-      return false;
+    } on Exception catch (e) {
+      throw Exception('FacebookLoginException:  $e');
     }
   }
 
@@ -290,88 +240,92 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<void> _createUserCountersCollection() async {
-     await countersReference.add({
-      _authorId: loggedInUid,
-      _incomplete: 100,
-      _complete: 0,
-    });
+    // If user counter collection exits update it,
+    // otherwise add a new one
+    Query query = countersReference;
+    var querySnapshot = query.where(_authorId, isEqualTo: loggedInUid).limit(1);
+    final countersSnapshot = await querySnapshot.get();
+    var length = countersSnapshot.docs.length;
+    if (length > 0) {
+      // A logged in user reminders collection elements have been deleted
+      // and the counters document should be updated
+      var counterId = countersSnapshot.docs.first.id;
+      await countersReference.doc(counterId).update({
+        _authorId: loggedInUid,
+        _incomplete: 100,
+        _complete: 0,
+      });
+    } else {
+      await countersReference.add({
+        _authorId: loggedInUid,
+        _incomplete: 100,
+        _complete: 0,
+      });
+    }
   }
 
-  Future<void> _createUserRemindersCollectionCounter() async{
-     await remindersLengthsReference.add({
-      _authorId: loggedInUid,
-      _length: 100,
-    });
-    // print('AFTER_RemindersLengthDocumentWrite');
+  Future<void> _createUserRemindersCollectionCounter() async {
+    Query query = remindersLengthsReference;
+    var querySnapshot = query.where(_authorId, isEqualTo: loggedInUid).limit(1);
+    final remindersLengthsSnapshot = await querySnapshot.get();
+    var length = remindersLengthsSnapshot.docs.length;
+    if (length > 0) {
+      var remindersLengthId = remindersLengthsSnapshot.docs.first.id;
+      await remindersLengthsReference.doc(remindersLengthId).update({
+        _authorId: loggedInUid,
+        _length: 100,
+      });
+    } else {
+      await remindersLengthsReference.add({
+        _authorId: loggedInUid,
+        _length: 100,
+      });
+    }
   }
 
   Future<void> _updateIncompleteCounter(int incomplete) async {
-    // todo if user is updated update for him, otherwise for the default user
-
     var userId = await storage.read(key: _authorId);
-    if(userId != null){
-      ///USER is logged todo change this to updating
+    if (userId != null) {
       Query query = countersReference;
-      var querySnapshot =
-      query.where('authorId', isEqualTo: userId).limit(1);
+      var querySnapshot = query.where(_authorId, isEqualTo: userId).limit(1);
       final countersSnapshot = await querySnapshot.get();
       var counterId = countersSnapshot.docs.first.id;
       await countersReference.doc(counterId).update({
-        // _incomplete: incomplete,
         _incomplete: incomplete,
       });
     }
-
-    /// todo change this _countersDocument
-    // await countersReference
-    //     .doc(_countersDocument)
-    //     .update({_incomplete: incomplete});
   }
 
   Future<void> _updateCompleteCounter(int complete) async {
-    // todo if user is updated update for him, otherwise for the default user
     var userId = await storage.read(key: _authorId);
-    if(userId != null){
-      // user is logged
+    if (userId != null) {
+      // The user is logged
       Query query = countersReference;
-      var querySnapshot =
-      query.where('authorId', isEqualTo: userId).limit(1);
+      var querySnapshot = query.where(_authorId, isEqualTo: userId).limit(1);
       final countersSnapshot = await querySnapshot.get();
       var counterId = countersSnapshot.docs.first.id;
       await countersReference.doc(counterId).update({
-        // _incomplete: incomplete,
         _complete: complete,
       });
     }
-    // tod oadd option for unlogged
-    // await countersReference
-    //     .doc(_countersDocument)
-    //     .update({_complete: complete});
   }
 
-  Future<void> _updateRemindersCollectionLengthCounter(int collectionCount) async {
+  Future<void> _updateRemindersCollectionLengthCounter(
+      int collectionCount) async {
     var userId = await storage.read(key: _authorId);
-    if(userId != null){
-      ///USER is logged
+    if (userId != null) {
       Query query = remindersLengthsReference;
-      var querySnapshot =
-      query.where('authorId', isEqualTo: userId).limit(1);
+      var querySnapshot = query.where(_authorId, isEqualTo: userId).limit(1);
       final lengthSnapshot = await querySnapshot.get();
       var lengthId = lengthSnapshot.docs.first.id;
       await remindersLengthsReference.doc(lengthId).update({
-        // _incomplete: incomplete,
         _length: collectionCount,
       });
     }
-
   }
 
   Query getFirebaseFilteredQuery(
-      ReminderModelRequest? request, String? userId)  {
-    if (_accessToken != '') {
-      print('remindersReference initialized');
-    }
-
+      ReminderModelRequest? request, String? userId) {
     // remindersReference = usersReference.doc(loggedInUid).collection(_reminders);
     // }
     Query query = remindersReference;
@@ -394,7 +348,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     //   );
     // }
 
-    if(userId != null) {
+    if (userId != null) {
       query = query.where(_authorId, isEqualTo: userId);
     }
 
@@ -412,50 +366,44 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     await _updateIncompleteCounter(incompleteCount);
   }
 
-  Future<bool> logIn() async {
-    var result = await _loginWithFacebook();
-    //If the user logs in for the first time, create a document for him with
-    // generated collections of reminders and counters
-    await _createDefaultCollectionsForTheUser();
-    return result;
+  Future<bool> logIn(bool anonymous) async {
+    if (anonymous) {
+      loggedInUid = _anonymous;
+      await storage.write(key: _authorId, value: _anonymous);
+      await _createDefaultCollectionsForTheUser();
+      return true;
+    } else {
+      var result = await _loginWithFacebook();
+      // If the user logs in for the first time, create a document for him with
+      // generated collections of reminders and counters
+      await _createDefaultCollectionsForTheUser();
+      return result;
+    }
   }
 
   Future<void> _createDefaultCollectionsForTheUser() async {
-    //check if there a document with the id of the logged in user in the
-    //reminders collection
     Query query = remindersReference;
-    // print('loggedInUid:$loggedInUid');
-    var querySnapshot =
-        query.where('authorId', isEqualTo: loggedInUid).limit(1);
+    var querySnapshot = query.where(_authorId, isEqualTo: loggedInUid).limit(1);
     final snap = await querySnapshot.get();
     var remindersLength = snap.docs.length;
-//     var userDataSnapshot = await usersReference.doc(loggedInUid).get();
-    ///todo check if there is a valid token saved in the secure storage
-    //   var token = await storage.read(key: 'token');
-    // if there is a reminder with authorId == the user id
-    // var exists = remindersLength > 0;
-    // print('Exists $exists');
     if (remindersLength == 0) {
-      // The user does not have any data
-      // Generate a list of reminders and assign it to the user
       await _generateAndInsertDataForTheUser();
     }
   }
 
   Future<void> _generateAndInsertDataForTheUser() async {
-    ///todo change to 100
+    ///todo change the number to 100
     _data = List.generate(
-      5,
+      3,
       (index) => ReminderModel.withAuthorId(index, loggedInUid),
     );
 
     // Insert new data to the reminders collection
     final reminders = _data;
     for (var reminder in reminders) {
-       await remindersReference.add(reminder.toJson());
+      await remindersReference.add(reminder.toJson());
     }
 
-    // Set the counters values
     await _createUserCountersCollection();
     await _createUserRemindersCollectionCounter();
   }

@@ -14,6 +14,6 @@ class FirebaseService {
         incompleteCount: incompleteCount,
       );
 
-Future<bool> logIn() =>
-    _repository.logIn();
+Future<bool> logIn(bool anonymous) =>
+    _repository.logIn(anonymous);
 }

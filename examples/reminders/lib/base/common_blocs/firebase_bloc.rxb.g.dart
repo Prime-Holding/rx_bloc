@@ -20,7 +20,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [logIn]
-  final _$logInEvent = PublishSubject<void>();
+  final _$logInEvent = PublishSubject<bool>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -36,7 +36,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   late final Stream<bool> _loggedInState = _mapToLoggedInState();
 
   @override
-  void logIn() => _$logInEvent.add(null);
+  void logIn({bool anonymous = false}) => _$logInEvent.add(anonymous);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
