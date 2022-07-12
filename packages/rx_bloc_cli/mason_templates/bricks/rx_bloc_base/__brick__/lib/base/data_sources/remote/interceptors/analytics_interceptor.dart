@@ -1,7 +1,6 @@
 {{> licence.dart }}
 
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';{{#analytics}}
+import 'package:dio/dio.dart';{{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 
 /// Interceptors are a simple way to intercept and modify http requests globally

@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   auto_route: ^4.2.1
+  collection: ^1.16.0
   cupertino_icons: ^1.0.4
   dio: ^4.0.4{{#analytics}}
   firebase_analytics: ^9.1.12{{/analytics}}{{#uses_firebase}}
@@ -21,6 +22,7 @@ dependencies:
   flutter_rx_bloc: ^4.0.2
   flutter_secure_storage: ^5.0.2
   golden_toolkit: ^0.13.0
+  http: ^0.13.4 # This package is used for the local server (if not used, can be removed)
   intl: ^0.17.0
   json_annotation: ^4.6.0
   json_serializable: ^6.3.1
@@ -44,7 +46,6 @@ dev_dependencies:
   flutter_lints: any
   flutter_test:
     sdk: flutter
-  http: ^0.13.4 # This package is used for the local server (if not used, can be removed)
   mockito: ^5.0.16
   retrofit_generator: ^4.0.1
   rx_bloc_generator: ^5.1.1

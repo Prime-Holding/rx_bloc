@@ -20,8 +20,11 @@ import 'config/environment_config.dart';{{#push_notifications}}
 import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}}
 
 /// This widget is the root of your application.
-class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
-  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod, Key? key}) : super(key: key);
+class {{project_name.pascalCase()}} extends StatelessWidget {
+  {{project_name.pascalCase()}}({
+    this.config = EnvironmentConfig.prod,
+    Key? key,
+  }) : super(key: key);
 
   final EnvironmentConfig config;
   final _router = router.Router();
@@ -72,9 +75,9 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   }{{/push_notifications}}
 
   void _addInterceptors(){
-    final _interceptors = context.read<Dio>().interceptors;
+    final interceptors = context.read<Dio>().interceptors;
 
-    final _toAdd = [
+    final toAdd = [
       AuthInterceptor(context.read(), context.read(), context.read()),{{#analytics}}
       AnalyticsInterceptor(context.read()),{{/analytics}}
       LogInterceptor(),
@@ -82,10 +85,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     /// TODO: Add your own interceptors here
     ];
 
-    for (var _interceptor in _toAdd) {
+    for (var interceptor in toAdd) {
       final hasInterceptorOfSameType =
-          _interceptors.any((e) => e.runtimeType == _interceptor.runtimeType);
-      if (!hasInterceptorOfSameType) _interceptors.add(_interceptor);
+          interceptors.any((e) => e.runtimeType == interceptor.runtimeType);
+      if (!hasInterceptorOfSameType) interceptors.add(interceptor);
     }
   }
 
