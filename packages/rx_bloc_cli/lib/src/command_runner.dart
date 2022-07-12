@@ -3,7 +3,7 @@ import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 
 import 'commands/create_command.dart';
-import 'package_version.dart';
+import 'rx_bloc_cli_constants.dart';
 import 'rx_bloc_command_exception.dart';
 
 /// Command runner that executes RxBloc specific actions
