@@ -9,14 +9,34 @@
 import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';{{/push_notifications}}
+import 'package:flutter/material.dart';
 
-import '../../utils/helpers.dart';{{#push_notifications}}
+import '../../utils/helpers.dart';
+import '../config/environment_config.dart';{{#push_notifications}}
 import 'firebase_messaging_callbacks.dart';{{/push_notifications}}
 
+/// This is the main entry point of the app which performs any setups before
+/// running the app.
+Future<void> setupAndRunApp(
+  Widget Function(EnvironmentConfig) appBuilder, {
+  required EnvironmentConfig environment,
+}) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Configure global app tools before launching the app
+  await configureApp(environment);
+
+  // Build the widget
+  final appWidget = appBuilder(environment);
+
+  // Finally run the widget
+  runApp(appWidget);
+}
 
 /// Configures application tools and packages before running the app. Services
 /// such as Firebase or background handlers can be defined here.
-Future configureApp() async {
+Future configureApp(EnvironmentConfig envConfig) async {
+  _disableLogs(envConfig);
+
   {{#uses_firebase}}
   // TODO: Add Firebase credentials for used environments
   // That is for development, staging and production for Android, iOS and Web
@@ -45,3 +65,10 @@ Future<void> _setupNotifications() async {
   FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
 }
 {{/push_notifications}}
+
+void _disableLogs(EnvironmentConfig environment) {
+  // Disable logs for non-dev environments
+  if (environment == EnvironmentConfig.dev) return;
+
+  debugPrint = (String? message, {int? wrapWidth}) {};
+}

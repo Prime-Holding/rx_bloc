@@ -1,22 +1,19 @@
 {{> licence.dart }}
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../common_use_cases/fetch_access_token_use_case.dart';
 import '../../../common_use_cases/logout_use_case.dart';
 
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure
-/// authentication tokens, add logs of the requests,
-/// add custom headers and much more.
+/// authentication tokens, add logs of the requests, add custom headers and
+/// much more.
 /// Interceptors can perform a variety of implicit tasks, from authentication
-/// to logging, for every HTTP request/response. Without interception, we will
-/// have to implement these tasks explicitly for each HttpClient method call.
-/// The AuthInterceptor will inject a Token in headers.
-/// This will allow us to remain logged in on the server side or check
-/// if the token exists and allow further REST api calls.
-/// Here is an example of AuthInterceptor. You have to implement
-/// your own logic, regarding needs of your application.
+/// to logging, for every HTTP request/response that is intercepted.
+///
+/// You should implement one or more methods from the contract.
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(
     this._logoutUseCase,
@@ -40,6 +37,8 @@ class AuthInterceptor extends Interceptor {
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+    _printMetaDetails(err);
+
     if (err.response?.statusCode == 401) {
       final newToken =
           await _fetchAccessTokenUseCase.execute(forceFetchNewToken: true);
@@ -67,4 +66,19 @@ class AuthInterceptor extends Interceptor {
     }
     super.onError(err, handler);
   }
+
+  void _printErr(String msg) {
+    debugPrint(msg);
+  }
+
+  void _printMetaDetails(DioError err) {
+    final statusCodeStr =
+    err.response?.statusCode != null ? '[${err.response?.statusCode}]' : '';
+    final method = err.requestOptions.method;
+    final uri = err.requestOptions.uri;
+
+    final requestDetails = '$statusCodeStr [$method] $uri'.trim();
+    _printErr(requestDetails);
+  }
+
 }

@@ -77,6 +77,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     final _toAdd = [
       AuthInterceptor(context.read(), context.read(), context.read()),{{#analytics}}
       AnalyticsInterceptor(context.read()),{{/analytics}}
+      LogInterceptor(),
 
     /// TODO: Add your own interceptors here
     ];
@@ -92,7 +93,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   Widget build(BuildContext context) {
     // After the widget has been re-built (when using hot restart),
     // register any missing interceptors.
-    WidgetsBinding.instance?.addPostFrameCallback((_) => _addInterceptors());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _addInterceptors());
 
     return MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
