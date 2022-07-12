@@ -1476,7 +1476,26 @@ final rxBlocBaseBundle = MasonBundle.fromJson(<String, dynamic>{
       "type": "text"
     }
   ],
-  "hooks": [],
+  "hooks": [
+    {
+      "path": "post_gen.dart",
+      "data":
+          "aW1wb3J0ICdwYWNrYWdlOm1hc29uL21hc29uLmRhcnQnOwoKdm9pZCBydW4oSG9va0NvbnRleHQgY29udGV4dCkgewogIC8vIEFkZCB5b3VyIHBvc3QtZ2VuZXJhdGlvbiBjb2RlIGhlcmUKICAvLyAoQ29kZSBleGVjdXRlZCBpbW1lZGlhdGVseSBhZnRlciB0aGUgZ2VuZXJhdGlvbiBzdGVwKQp9Cg==",
+      "type": "text"
+    },
+    {
+      "path": "pre_gen.dart",
+      "data":
+          "aW1wb3J0ICdwYWNrYWdlOm1hc29uL21hc29uLmRhcnQnOwoKdm9pZCBydW4oSG9va0NvbnRleHQgY29udGV4dCkgewogIC8vIEFkZCB5b3VyIHByZS1nZW5lcmF0aW9uIGNvZGUgaGVyZQogIC8vIChDb2RlIGV4ZWN1dGVkIGltbWVkaWF0ZWx5IGJlZm9yZSB0aGUgZ2VuZXJhdGlvbiBzdGVwKQp9Cg==",
+      "type": "text"
+    },
+    {
+      "path": "pubspec.yaml",
+      "data":
+          "bmFtZTogcnhfYmxvY19iYXNlX2JyaWNrX2hvb2tzCgplbnZpcm9ubWVudDoKICBzZGs6ICI+PTIuMTIuMCA8My4wLjAiCgpkZXBlbmRlbmNpZXM6CiAgbWFzb246IGFueQ==",
+      "type": "text"
+    }
+  ],
   "name": "rx_bloc_base",
   "description": "Rx Bloc Core Flutter App",
   "version": "0.0.1+1",
