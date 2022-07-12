@@ -11,7 +11,7 @@ class ReminderModelFirebaseRequestData {
   final String title;
   final Timestamp dueDate;
   final bool complete;
-  final String authorId;
+  final String? authorId;
 
   Map<String, Object?> toJson() {
     return {

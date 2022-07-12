@@ -81,7 +81,7 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
             ),
       );
 
-  factory ReminderModel.withAuthorId(int index, String authorId) =>
+  factory ReminderModel.withAuthorId(int index, String? authorId) =>
       ReminderModel(
         id: index.toString(),
         title: 'Reminder $index',
@@ -117,6 +117,6 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
           title: json['title'] as String,
           dueDate: json['dueDate'].toDate(),
           complete: json['complete'] as bool,
-          authorId: json['authorId'] as String,
+          authorId: json['authorId'] as String?,
         );
 }
