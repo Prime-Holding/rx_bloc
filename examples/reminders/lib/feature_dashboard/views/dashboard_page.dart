@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../app_extensions.dart';
+import '../../base/app/config/app_config.dart';
+import '../../base/app/config/environment_config.dart';
 import '../../base/common_blocs/firebase_bloc.dart';
 import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
@@ -31,14 +33,16 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         top: false,
         child: Scaffold(
           appBar: AppBar(
-            actions: [
-              IconButton(
-                onPressed: () {
-                  context.read<FirebaseBlocType>().events.logOut();
-                },
-                icon: const Icon(Icons.logout),
-              ),
-            ],
+            actions: _isInProduction(context)
+                ? [
+                    IconButton(
+                      onPressed: () {
+                        context.read<FirebaseBlocType>().events.logOut();
+                      },
+                      icon: const Icon(Icons.logout),
+                    ),
+                  ]
+                : [],
           ),
           backgroundColor: context.designSystem.colors.backgroundListColor,
           body: RefreshIndicator(
@@ -52,15 +56,17 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                RxBlocListener<FirebaseBlocType, bool>(
-                  state: (bloc) => bloc.states.userLoggedOut,
-                  listener: (context, currentUser) {
-                    if (currentUser == true) {
-                      context.router.popUntilRouteWithName(FacebookLoginRoute.name);
-                      context.router.replace(const FacebookLoginRoute());
-                    }
-                  },
-                ),
+                if (_isInProduction(context))
+                  RxBlocListener<FirebaseBlocType, bool>(
+                    state: (bloc) => bloc.states.userLoggedOut,
+                    listener: (context, currentUser) {
+                      if (currentUser == true) {
+                        context.router
+                            .popUntilRouteWithName(FacebookLoginRoute.name);
+                        context.router.replace(const FacebookLoginRoute());
+                      }
+                    },
+                  ),
                 _buildErrorListener(),
                 _buildOnDeletedListener(),
                 _buildOnCreatedListener(),
@@ -119,6 +125,9 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           ),
         ),
       );
+
+  bool _isInProduction(BuildContext context) =>
+      AppConfig.of(context)?.config.environment == EnvironmentType.prod;
 
   Widget _buildOnDeletedListener() =>
       RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(

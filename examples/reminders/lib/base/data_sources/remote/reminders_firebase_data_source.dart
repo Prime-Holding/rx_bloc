@@ -46,6 +46,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   static const _incomplete = 'incomplete';
   static const _dueDate = 'dueDate';
   static const _title = 'title';
+  static const _loginFailed = 'The login failed';
   late final List<ReminderModel> _data;
 
   @override
@@ -159,14 +160,21 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   Future<bool> _loginWithFacebook() async {
     // Trigger the sign-in flow
     final facebookLoginResult = await _facebookLogin.login();
-    // Create a credential from the access token
-    final facebookAuthCredential =
-        FacebookAuthProvider.credential(facebookLoginResult.accessToken!.token);
-    _userCredential = await _auth.signInWithCredential(facebookAuthCredential);
-    _loggedInUid = _userCredential?.user!.uid;
-    await storage.write(key: _authorId, value: _loggedInUid);
+    if (facebookLoginResult.status == LoginStatus.success) {
+      // Create a credential from the access token
+      final facebookAuthCredential = FacebookAuthProvider.credential(
+          facebookLoginResult.accessToken!.token);
+      _userCredential =
+          await _auth.signInWithCredential(facebookAuthCredential);
+      _loggedInUid = _userCredential?.user!.uid;
+      await storage.write(key: _authorId, value: _loggedInUid);
 
-    return true;
+      return true;
+    } else if (facebookLoginResult.status == LoginStatus.failed) {
+      throw Exception(_loginFailed);
+    } else {
+      return false;
+    }
   }
 
   Future<void> logOut() async {
