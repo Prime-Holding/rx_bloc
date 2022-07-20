@@ -79,17 +79,17 @@ void main() {
   });
 
   group('ModelManageEvents', () {
-    test('mapCreatedWithLatestFrom addToListCondition:true', () async {
+    test('withLatestFromIdentifiableList addToListCondition:true', () async {
       await expectLater(
         Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([IdentifiableModel('1')]),
-          operationCallback: (updatedIdentifiable) async {
-            expect(updatedIdentifiable.id, '2');
+          operationCallback: (identifiablePair) async {
+            expect(identifiablePair.updatedIdentifiable.id, '2');
             return ManageOperation.merge;
           },
         ),
         emitsInOrder([
-          ManagedList(
+          ManagedList<IdentifiableModel>(
             [IdentifiableModel('1'), IdentifiableModel('2')],
             identifiablePair: IdentifiablePair(
               oldIdentifiable: null,
@@ -111,9 +111,9 @@ void main() {
             IdentifiableModel('1'),
             IdentifiableModel('2'),
           ]),
-          operationCallback: (updatedIdentifiable) async {
-            expect(updatedIdentifiable.id, '2');
-            expect(updatedIdentifiable.value, '2 updated');
+          operationCallback: (identifiablePair) async {
+            expect(identifiablePair.updatedIdentifiable.id, '2');
+            expect(identifiablePair.updatedIdentifiable.value, '2 updated');
             return ManageOperation.merge;
           },
         ),
@@ -141,19 +141,20 @@ void main() {
             IdentifiableModel('1', value: 'a'),
             IdentifiableModel('2', value: 'b'),
           ]),
-          operationCallback: (updatedIdentifiable) async {
-            if (updatedIdentifiable.id == '2') {
-              expect(updatedIdentifiable.value, 'b updated');
+          operationCallback: (identifiablePair) async {
+            if (identifiablePair.updatedIdentifiable.id == '2') {
+              expect(identifiablePair.updatedIdentifiable.value, 'b updated');
             }
 
             return ManageOperation.remove;
           },
         ),
         emitsInOrder([
-          ManagedList(
+          ManagedList<IdentifiableModel>(
             [IdentifiableModel('1', value: 'a')],
-            identifiablePair: IdentifiablePair(
-              updatedIdentifiable: IdentifiableModel('2'),
+            identifiablePair: IdentifiablePair<IdentifiableModel>(
+              updatedIdentifiable: IdentifiableModel('2', value: 'b'),
+              oldIdentifiable: IdentifiableModel('2'),
             ),
             operation: ManageOperation.remove,
           )
@@ -169,19 +170,18 @@ void main() {
             IdentifiableModel('1'),
             IdentifiableModel('2'),
           ]),
-          operationCallback: (
-            updatedIdentifiable,
-          ) async =>
+          operationCallback: (updatedIdentifiable) async =>
               ManageOperation.ignore,
         ),
         emitsInOrder([
-          ManagedList(
+          ManagedList<IdentifiableModel>(
             [
               IdentifiableModel('1'),
               IdentifiableModel('2'),
             ],
             identifiablePair: IdentifiablePair(
-              updatedIdentifiable: IdentifiableModel('2'),
+              updatedIdentifiable: IdentifiableModel('2', value: 'tt'),
+              oldIdentifiable: IdentifiableModel('2'),
             ),
             operation: ManageOperation.ignore,
           )
@@ -202,12 +202,13 @@ void main() {
               ManageOperation.remove,
         ),
         emitsInOrder([
-          ManagedList(
+          ManagedList<IdentifiableModel>(
             [
               IdentifiableModel('1'),
             ],
             identifiablePair: IdentifiablePair(
               updatedIdentifiable: IdentifiableModel('2'),
+              oldIdentifiable: IdentifiableModel('2'),
             ),
             operation: ManageOperation.remove,
           ),
@@ -232,7 +233,7 @@ void main() {
               ManageOperation.merge,
         ),
         emitsInOrder([
-          ManagedList(
+          ManagedList<IdentifiableModel>(
             PaginatedList(
               list: [IdentifiableModel('1'), IdentifiableModel('2')],
               pageSize: 1,
@@ -265,7 +266,7 @@ void main() {
         ),
         emitsInOrder(
           [
-            ManagedList(
+            ManagedList<IdentifiableModel>(
               PaginatedList(
                 list: [IdentifiableModel('1')],
                 pageSize: 2,
@@ -273,6 +274,7 @@ void main() {
               ),
               identifiablePair: IdentifiablePair(
                 updatedIdentifiable: IdentifiableModel('2'),
+                oldIdentifiable: IdentifiableModel('2'),
               ),
               operation: ManageOperation.remove,
             )
@@ -300,7 +302,7 @@ void main() {
         ),
         emitsInOrder(
           [
-            ManagedList(
+            ManagedList<IdentifiableModel>(
               [
                 IdentifiableModel('1'),
                 IdentifiableModel('2'),
@@ -333,7 +335,7 @@ void main() {
         ),
         emitsInOrder(
           [
-            ManagedList(
+            ManagedList<IdentifiableModel>(
               [
                 IdentifiableModel('1'),
               ],
@@ -365,7 +367,7 @@ void main() {
         ),
         emitsInOrder(
           [
-            ManagedList(
+            ManagedList<IdentifiableModel>(
               [
                 IdentifiableModel('1'),
                 IdentifiableModel('2'),

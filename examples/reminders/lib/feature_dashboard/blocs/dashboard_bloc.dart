@@ -77,7 +77,7 @@ class DashboardBloc extends $DashboardBloc {
   static const _tagSilently = 'silently';
 
   Result<DashboardModel> managedListToDashboard(
-    ManagedListCounterOperation managedListCounterOperation,
+    ManagedListCounterOperation<ReminderModel> managedListCounterOperation,
   ) {
     final dashboard = _dashboardModelResult.value;
 
@@ -85,8 +85,7 @@ class DashboardBloc extends $DashboardBloc {
       return Result.success(
         _dashboardService.getDashboardModelFromManagedList(
           dashboard: dashboard.data,
-          managedList: managedListCounterOperation.managedList
-              as ManagedList<ReminderModel>,
+          managedList: managedListCounterOperation.managedList,
           counterOperation: managedListCounterOperation.counterOperation,
         ),
       );
