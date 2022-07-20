@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../repositories/firebase_repository.dart';
 
 class FirebaseService {
@@ -14,6 +16,9 @@ class FirebaseService {
         incompleteCount: incompleteCount,
       );
 
-Future<bool> logIn(bool anonymous) =>
-    _repository.logIn(anonymous);
+  Future<bool> logIn(bool anonymous) => _repository.logIn(anonymous);
+
+  Future<void> logOut() => _repository.logOut();
+
+  Stream<User?> get currentUser => _repository.currentUser;
 }

@@ -49,15 +49,7 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
   Widget _buildFirebaseLogin() {
     var config = AppConfig.of(context)?.config;
     if (config?.environment == EnvironmentType.prod) {
-      return RxBlocBuilder<FirebaseBlocType, bool>(
-        state: (bloc) => bloc.states.loggedIn,
-        builder: (context, snap, _) {
-          if (snap.hasData && snap.data == true) {
-            context.router.replace(const NavigationRoute());
-          }
-          return _buildButtonsArea(context);
-        },
-      );
+      return _buildButtonsArea(context);
     } else {
       return LoginButton(
         text: context.l10n.logInAsAnonymous,
@@ -71,6 +63,14 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
 
   Widget _buildButtonsArea(BuildContext context) => Column(
         children: [
+          RxBlocListener<FirebaseBlocType, bool>(
+            state: (bloc) => bloc.states.loggedIn,
+            listener: (context, logIn) {
+              if (logIn == true) {
+                context.router.replace(const NavigationRoute());
+              }
+            },
+          ),
           _buildFirebaseLoginErrorListener(),
           LoginButton(
             text: context.l10n.logInAsAnonymous,

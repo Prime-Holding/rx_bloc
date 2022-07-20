@@ -28,6 +28,12 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   late String? _loggedInUid;
   static var storage = const FlutterSecureStorage();
 
+  final _auth = FirebaseAuth.instance;
+
+  Stream<User?> get currentUser => _auth.authStateChanges();
+  final _facebookLogin = FacebookAuth.instance;
+  late UserCredential? _userCredential;
+
   var remindersCollectionLength = 0;
   QueryDocumentSnapshot? lastFetchedRecord;
   static const _reminders = 'reminders';
@@ -151,20 +157,24 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<bool> _loginWithFacebook() async {
-    try {
-      // Trigger the sign-in flow
-      final facebookLoginResult = await FacebookAuth.instance.login();
-      // Create a credential from the access token
-      final facebookAuthCredential = FacebookAuthProvider.credential(
-          facebookLoginResult.accessToken!.token);
-      final data = await FirebaseAuth.instance
-          .signInWithCredential(facebookAuthCredential);
-      _loggedInUid = data.user!.uid;
-      await storage.write(key: _authorId, value: _loggedInUid);
-      return true;
-    } on Exception catch (e) {
-      throw Exception('FacebookLoginException:  $e');
-    }
+    // Trigger the sign-in flow
+    final facebookLoginResult = await _facebookLogin.login();
+    // Create a credential from the access token
+    final facebookAuthCredential =
+        FacebookAuthProvider.credential(facebookLoginResult.accessToken!.token);
+    _userCredential = await _auth.signInWithCredential(facebookAuthCredential);
+    _loggedInUid = _userCredential?.user!.uid;
+    await storage.write(key: _authorId, value: _loggedInUid);
+
+    return true;
+  }
+
+  Future<void> logOut() async {
+    await _facebookLogin.logOut();
+    await _auth.signOut();
+
+    _userCredential = null;
+    await storage.write(key: _authorId, value: null);
   }
 
   /// Generates a list of reminders, deletes the existing reminder documents in

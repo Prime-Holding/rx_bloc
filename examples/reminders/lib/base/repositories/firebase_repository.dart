@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../data_sources/remote/reminders_firebase_data_source.dart';
 
 class FirebaseRepository{
@@ -14,4 +16,9 @@ class FirebaseRepository{
 
   Future<bool> logIn(bool anonymous) =>
       _dataSource.logIn(anonymous);
+
+  Future<void> logOut() =>
+      _dataSource.logOut();
+
+  Stream<User?> get currentUser => _dataSource.currentUser;
 }
