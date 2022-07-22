@@ -7,6 +7,7 @@ This is a user application specification of the reminders sample app.
 
 <img src="assets/images/login_screen.png" width="350">
 
+
   - Shows two buttons. The first one to login as anonymous user and the second one to login with a facebook account.
   - User can tap on one of the buttons.
   - Tapping on the "Log in as anonymous" button loads the data for an anonymous user, without a user id.
