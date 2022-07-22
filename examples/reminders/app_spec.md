@@ -6,7 +6,7 @@ This is a user application specification of the reminders sample app.
 ### Login Page
 
 <img src="assets/images/login_screen.png" width="350">
-
+<br/><br/>
 
   - Shows two buttons. The first one to login as anonymous user and the second one to login with a facebook account.
   - User can tap on one of the buttons.
