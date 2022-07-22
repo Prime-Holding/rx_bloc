@@ -33,8 +33,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         top: false,
         child: Scaffold(
           appBar: AppBar(
-            actions: //[IconButton(onPressed: () {},icon: const Icon(Icons.logout),)]
-            _isInProduction(context)
+            actions: _isInProduction(context)
                 ? [
                     IconButton(
                       onPressed: () {

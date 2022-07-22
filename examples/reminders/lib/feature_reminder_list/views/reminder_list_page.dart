@@ -31,17 +31,16 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         top: false,
         child: Scaffold(
           appBar: AppBar(
-            actions: //[IconButton(onPressed: () {},icon: const Icon(Icons.logout),)]
-                _isInProduction(context)
-                    ? [
-                        IconButton(
-                          onPressed: () {
-                            context.read<FirebaseBlocType>().events.logOut();
-                          },
-                          icon: const Icon(Icons.logout),
-                        ),
-                      ]
-                    : [],
+            actions: _isInProduction(context)
+                ? [
+                    IconButton(
+                      onPressed: () {
+                        context.read<FirebaseBlocType>().events.logOut();
+                      },
+                      icon: const Icon(Icons.logout),
+                    ),
+                  ]
+                : [],
           ),
           body: Row(
             mainAxisAlignment: MainAxisAlignment.center,
