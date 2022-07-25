@@ -27,14 +27,12 @@ import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
-import '../data_sources/local/reminders_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
-import '../data_sources/remote/reminders_remote_data_source_factory.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/firebase_repository.dart';
 import '../repositories/push_notification_repository.dart';
@@ -69,16 +67,14 @@ class AppDependencies {
         ..._interceptors,
       ];
 
-  List<Provider> get _analytics => config == EnvironmentConfig.dev
-      ? []
-      : [
-          Provider<FirebaseAnalytics>(
-              create: (context) => FirebaseAnalytics.instance),
-          Provider<FirebaseAnalyticsObserver>(
-            create: (context) =>
-                FirebaseAnalyticsObserver(analytics: context.read()),
-          ),
-        ];
+  List<Provider> get _analytics => [
+        Provider<FirebaseAnalytics>(
+            create: (context) => FirebaseAnalytics.instance),
+        Provider<FirebaseAnalyticsObserver>(
+          create: (context) =>
+              FirebaseAnalyticsObserver(analytics: context.read()),
+        ),
+      ];
 
   List<Provider> get _httpClients => [
         Provider<Dio>(create: (context) => Dio()),
@@ -89,10 +85,9 @@ class AppDependencies {
             create: (context) => SharedPreferencesInstance()),
         Provider<FlutterSecureStorage>(
             create: (context) => const FlutterSecureStorage()),
-        if (config != EnvironmentConfig.dev)
-          Provider<FirebaseMessaging>(
-            create: (_) => FirebaseMessaging.instance,
-          ),
+        Provider<FirebaseMessaging>(
+          create: (_) => FirebaseMessaging.instance,
+        ),
       ];
 
   /// Use different data source regarding of if it is running in web ot not
@@ -110,9 +105,6 @@ class AppDependencies {
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(context.read(),
               baseUrl: config.baseApiUrl),
-        ),
-        Provider<RemindersLocalDataSource>(
-          create: (context) => RemindersLocalDataSource(),
         ),
         Provider<RemindersFirebaseDataSource>(
           create: (context) => RemindersFirebaseDataSource(),
@@ -134,7 +126,7 @@ class AppDependencies {
         ),
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            dataSource: RemindersRemoteDataSourceFactory.fromConfig(config),
+            dataSource: RemindersFirebaseDataSource(),
           ),
         ),
         Provider<FirebaseRepository>(
@@ -158,10 +150,9 @@ class AppDependencies {
         Provider<FetchAccessTokenUseCase>(
           create: (context) => FetchAccessTokenUseCase(context.read()),
         ),
-        if (config != EnvironmentConfig.dev)
-          Provider<FirebaseLogoutUseCase>(
-            create: (context) => FirebaseLogoutUseCase(context.read()),
-          )
+        Provider<FirebaseLogoutUseCase>(
+          create: (context) => FirebaseLogoutUseCase(context.read()),
+        )
       ];
 
   List<Provider> get _services => [
@@ -170,12 +161,11 @@ class AppDependencies {
             context.read(),
           ),
         ),
-        if (config != EnvironmentConfig.dev)
-          Provider<FirebaseService>(
-            create: (context) => FirebaseService(
-              context.read(),
-            ),
+        Provider<FirebaseService>(
+          create: (context) => FirebaseService(
+            context.read(),
           ),
+        ),
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -195,15 +185,14 @@ class AppDependencies {
             authRepository: context.read(),
           ),
         ),
-        if (config != EnvironmentConfig.dev)
-          RxBlocProvider<FirebaseBlocType>(
-            create: (context) => FirebaseBloc(
-              context.read(),
-              context.read(),
-              context.read(),
-            ),
-            lazy: false,
+        RxBlocProvider<FirebaseBlocType>(
+          create: (context) => FirebaseBloc(
+            context.read(),
+            context.read(),
+            context.read(),
           ),
+          lazy: false,
+        ),
       ];
 
   List<Provider> get _interceptors => [

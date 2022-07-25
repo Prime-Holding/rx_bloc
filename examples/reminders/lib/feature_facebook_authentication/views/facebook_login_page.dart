@@ -3,8 +3,6 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
-import '../../base/app/config/app_config.dart';
-import '../../base/app/config/environment_config.dart';
 import '../../base/common_blocs/firebase_bloc.dart';
 import '../ui_components/login_button.dart';
 import '../ui_components/login_text.dart';
@@ -26,40 +24,24 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
               LoginText(text: context.l10n.reminders),
               const SizedBox(height: 5),
               LoginText(text: context.l10n.logIn),
-              _buildFirebaseLogin(),
+              _buildButtonsArea(context),
             ],
           ),
         ),
       );
 
-  Widget _buildFirebaseLoginErrorListener() {
-    return RxBlocListener<FirebaseBlocType, String>(
-      state: (bloc) => bloc.states.errors,
-      listener: (context, errorMessage) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorMessage ?? ''),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildFirebaseLogin() {
-    var config = AppConfig.of(context)?.config;
-    if (config?.environment == EnvironmentType.prod) {
-      return _buildButtonsArea(context);
-    } else {
-      return LoginButton(
-        text: context.l10n.logInAsAnonymous,
-        color: Colors.blueGrey,
-        onPressed: () {
-          context.router.replace(const NavigationRoute());
+  Widget _buildFirebaseLoginErrorListener() =>
+      RxBlocListener<FirebaseBlocType, String>(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, errorMessage) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMessage ?? ''),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         },
       );
-    }
-  }
 
   Widget _buildButtonsArea(BuildContext context) => Column(
         children: [

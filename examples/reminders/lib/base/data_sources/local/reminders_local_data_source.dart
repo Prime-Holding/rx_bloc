@@ -4,6 +4,7 @@ import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 import '../remote/reminders_data_source.dart';
 
+// Currently this class is not used in the app
 class RemindersLocalDataSource implements RemindersDataSource {
   RemindersLocalDataSource({List<ReminderModel>? seed})
       : _data = seed ??
