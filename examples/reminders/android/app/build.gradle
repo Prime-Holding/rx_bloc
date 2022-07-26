@@ -73,16 +73,28 @@ android {
             dimension "default"
             applicationIdSuffix ""
             versionNameSuffix ""
+            resValue "string", "app_name", "Reminders"
+            resValue "string", "facebook_app_id", "744155433587108"
+            resValue "string", "fb_login_protocol_scheme", "fb744155433587108"
+            resValue "string", "facebook_client_token", "edce4076502e9b862145a66eea9355d8"
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stag"
             versionNameSuffix "-stag"
+            resValue "string", "app_name", "reminders-app-staging"
+            resValue "string", "facebook_app_id", "465175318378891"
+            resValue "string", "fb_login_protocol_scheme", "fb465175318378891"
+            resValue "string", "facebook_client_token", "64f850b2f15a870b2ea42010e2f4a9ad"
         }        
         development {
             dimension "default"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
+            resValue "string", "app_name", "reminders-app-dev"
+            resValue "string", "facebook_app_id", "1274496840026328"
+            resValue "string", "fb_login_protocol_scheme", "fb1274496840026328"
+            resValue "string", "facebook_client_token", "5a8baec46d0962c5b6d849a00620a4c1"
         }
     }
 

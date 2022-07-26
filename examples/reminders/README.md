@@ -6,6 +6,10 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 *Note:* The app contains features that request data from API endpoints hosted on a local server. For the app to function properly, make sure the local server is up and running. For more info, check out the [server topic](#server).
 
+## Reminders app specification
+
+For more information, see the [app's specification](app_spec.md).
+
 ## Project structure
 
 | Path | Contains |
