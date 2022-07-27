@@ -17,7 +17,13 @@ class _BuildController {
     _validate();
 
     final blocTypeClassName = '${rxBlocClass.displayName}Type';
-    final blocClassName = '\$${rxBlocClass.displayName}';
+    final blocClassGenericTypes =
+        rxBlocClass.typeParameters.map((final t) => t.displayName);
+    final blocClassGenericTypesString = blocClassGenericTypes.isNotEmpty
+        ? '<${blocClassGenericTypes.join(', ')}>'
+        : '';
+    final blocClassName =
+        '\$${rxBlocClass.displayName}$blocClassGenericTypesString';
     final eventClassName = eventClass!.displayName;
     final stateClassName = stateClass!.displayName;
     final blocFilePath = rxBlocClass.location?.components.first ?? '';
