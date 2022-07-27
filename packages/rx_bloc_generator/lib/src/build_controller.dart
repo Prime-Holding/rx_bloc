@@ -31,8 +31,7 @@ class _BuildController {
 
     <String>[
       /// .. part of '[rx_bloc_name]_bloc.dart'
-      // TODO(Diev): Use [Directive.partOf] instead once `part of` is supported
-      "part of '$mainBlocFileName';",
+      Directive.partOf(mainBlocFileName).toDartCodeString(),
 
       // abstract class [RxBlocName]BlocType
       _BlocTypeClass(

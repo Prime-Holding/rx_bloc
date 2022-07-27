@@ -1,3 +1,7 @@
+## [5.2.0] - July 27, 2022
+* Update dependencies
+* [BREAKING CHANGE] Update analyzer to ">=3.0.0 <=5.0.0"
+
 ## [5.1.1] - December 24, 2021
 * Update dependencies 
 
