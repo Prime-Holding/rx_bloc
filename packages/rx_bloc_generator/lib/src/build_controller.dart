@@ -27,7 +27,7 @@ class _BuildController {
             '';
 
     /// The output buffer containing all the generated code
-    final _output = StringBuffer();
+    final output = StringBuffer();
 
     <String>[
       /// .. part of '[rx_bloc_name]_bloc.dart'
@@ -66,9 +66,9 @@ class _BuildController {
           .map((MethodElement method) {
         return _EventArgumentsClass(method).build().toDartCodeString();
       }).toList()
-    ].forEach(_output.writeln);
+    ].forEach(output.writeln);
 
-    return _output.toString();
+    return output.toString();
   }
 
   /// Checks and logs if there is anything missed
