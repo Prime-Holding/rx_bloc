@@ -1,6 +1,7 @@
 ## [6.0.0] - July 28, 2022
 * Update dependencies
-* [BREAKING CHANGE] Update analyzer to ">=3.0.0 <=5.0.0"
+* _[BREAKING CHANGE]_ Update analyzer to `">=3.0.0 <=5.0.0"`
+* Add support for generic blocs (Thanks [jld3103](https://github.com/jld3103) for the contribution)
 
 ## [5.1.1] - December 24, 2021
 * Update dependencies 
