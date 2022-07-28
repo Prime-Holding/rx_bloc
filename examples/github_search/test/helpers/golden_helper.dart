@@ -1,5 +1,3 @@
-// ignore_for_file: directives_ordering
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
