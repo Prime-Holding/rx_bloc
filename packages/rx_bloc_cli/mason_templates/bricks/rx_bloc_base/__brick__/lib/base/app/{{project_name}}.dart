@@ -63,9 +63,11 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         await safeRun(
             () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
     }
-    await FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((message) => onInitialMessageOpened(context, message));
+
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (!mounted) return;
+    await onInitialMessageOpened(context, initialMessage);
+
     FirebaseMessaging.instance.onTokenRefresh
         .listen((token) => onFCMTokenRefresh(context, token));
     FirebaseMessaging.onMessage
