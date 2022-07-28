@@ -458,7 +458,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -534,15 +535,16 @@
 				DISPLAY_NAME = "reminders-app-dev";
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/development/development-debug.plist";
-				FACEBOOK_APP_ID = 1274496840026328;
-				FACEBOOK_CLIENT_TOKEN = 5a8baec46d0962c5b6d849a00620a4c1;
+				FACEBOOK_APP_ID = 1726327217729448;
+				FACEBOOK_CLIENT_TOKEN = e1cb2550d07d09b93fecaa010706ca9a;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders.dev;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -614,15 +616,16 @@
 				DISPLAY_NAME = "reminders-app-dev";
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/development/development-debug.plist";
-				FACEBOOK_APP_ID = 1274496840026328;
-				FACEBOOK_CLIENT_TOKEN = 5a8baec46d0962c5b6d849a00620a4c1;
+				FACEBOOK_APP_ID = 1726327217729448;
+				FACEBOOK_CLIENT_TOKEN = e1cb2550d07d09b93fecaa010706ca9a;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders.dev;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -695,15 +698,16 @@
 				DISPLAY_NAME = "reminders-app-dev";
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/development/development-release.plist";
-				FACEBOOK_APP_ID = 1274496840026328;
-				FACEBOOK_CLIENT_TOKEN = 5a8baec46d0962c5b6d849a00620a4c1;
+				FACEBOOK_APP_ID = 1726327217729448;
+				FACEBOOK_CLIENT_TOKEN = e1cb2550d07d09b93fecaa010706ca9a;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders.dev;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -779,15 +783,16 @@
 				DISPLAY_NAME = "reminders-app-staging";
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/staging/staging-debug.plist";
-				FACEBOOK_APP_ID = 465175318378891;
-				FACEBOOK_CLIENT_TOKEN = 64f850b2f15a870b2ea42010e2f4a9ad;
+				FACEBOOK_APP_ID = 1202479010572124;
+				FACEBOOK_CLIENT_TOKEN = 7200154801d65f0a6c58f93f28bc2da0;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders.stag;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc.stag;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -861,15 +866,16 @@
 				DISPLAY_NAME = "reminders-app-staging";
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/staging/staging-release.plist";
-				FACEBOOK_APP_ID = 465175318378891;
-				FACEBOOK_CLIENT_TOKEN = 64f850b2f15a870b2ea42010e2f4a9ad;
+				FACEBOOK_APP_ID = 1202479010572124;
+				FACEBOOK_CLIENT_TOKEN = 7200154801d65f0a6c58f93f28bc2da0;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders.stag;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc.stag;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -940,15 +946,16 @@
 				DISPLAY_NAME = "reminders-app-staging";
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/staging/staging-debug.plist";
-				FACEBOOK_APP_ID = 465175318378891;
-				FACEBOOK_CLIENT_TOKEN = 64f850b2f15a870b2ea42010e2f4a9ad;
+				FACEBOOK_APP_ID = 1202479010572124;
+				FACEBOOK_CLIENT_TOKEN = 7200154801d65f0a6c58f93f28bc2da0;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders.stag;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc.stag;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1024,15 +1031,16 @@
 				DISPLAY_NAME = Reminders;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/production/production-debug.plist";
-				FACEBOOK_APP_ID = 744155433587108;
-				FACEBOOK_CLIENT_TOKEN = edce4076502e9b862145a66eea9355d8;
+				FACEBOOK_APP_ID = 781246629736379;
+				FACEBOOK_CLIENT_TOKEN = e2ad7cdcb71d435286bad8b5323b4ec1;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1106,15 +1114,16 @@
 				DISPLAY_NAME = Reminders;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/production/production-release.plist";
-				FACEBOOK_APP_ID = 744155433587108;
-				FACEBOOK_CLIENT_TOKEN = edce4076502e9b862145a66eea9355d8;
+				FACEBOOK_APP_ID = 781246629736379;
+				FACEBOOK_CLIENT_TOKEN = e2ad7cdcb71d435286bad8b5323b4ec1;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1185,15 +1194,16 @@
 				DISPLAY_NAME = Reminders;
 				ENABLE_BITCODE = NO;
 				ENVIRONMENT_PLIST = "environments/production/production-debug.plist";
-				FACEBOOK_APP_ID = 744155433587108;
-				FACEBOOK_CLIENT_TOKEN = edce4076502e9b862145a66eea9355d8;
+				FACEBOOK_APP_ID = 781246629736379;
+				FACEBOOK_CLIENT_TOKEN = e2ad7cdcb71d435286bad8b5323b4ec1;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1329,7 +1339,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1357,7 +1368,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reminders;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.reminderspoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

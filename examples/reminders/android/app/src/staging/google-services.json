@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "1056541510858",
-    "project_id": "reminders-app-staging",
-    "storage_bucket": "reminders-app-staging.appspot.com"
+    "project_number": "495639736415",
+    "project_id": "reminders-app-staging-ee074",
+    "storage_bucket": "reminders-app-staging-ee074.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1056541510858:android:30cc5e9879ca0de82c7833",
+        "mobilesdk_app_id": "1:495639736415:android:3b63248bedf459e4f46bea",
         "android_client_info": {
-          "package_name": "com.example.reminders.stag"
+          "package_name": "com.primeholding.reminderspoc.stag"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1056541510858-5tbe949ldggqdb1eeq0tgkqprledabmd.apps.googleusercontent.com",
+          "client_id": "495639736415-gpokf84t1gr5q2g0mpk8d1epfalava6b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUUm6cjInBDV2eQ5QEhFxSMIhjhjibUco"
+          "current_key": "AIzaSyB3Gs-kVEET2QMqH-WMU43ol-TVluiTfew"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1056541510858-5tbe949ldggqdb1eeq0tgkqprledabmd.apps.googleusercontent.com",
+              "client_id": "495639736415-gpokf84t1gr5q2g0mpk8d1epfalava6b.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1056541510858-19j0al59ngdf8qcv4dfb2e0ujjshtdl2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.reminders.stag"
-              }
             }
           ]
         }

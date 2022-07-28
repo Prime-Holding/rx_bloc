@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1056541510858-19j0al59ngdf8qcv4dfb2e0ujjshtdl2.apps.googleusercontent.com</string>
+	<string>495639736415-vn2betpus91s1uroe1or9dj0utjupndv.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1056541510858-19j0al59ngdf8qcv4dfb2e0ujjshtdl2</string>
+	<string>com.googleusercontent.apps.495639736415-vn2betpus91s1uroe1or9dj0utjupndv</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCub5qrUdiHUhE5hKwvvF0zJ2nxOcFM5Mo</string>
+	<string>AIzaSyBlpTrBqfdgB8CGu64JWLU1s88Mjx9_KeM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1056541510858</string>
+	<string>495639736415</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.reminders.stag</string>
+	<string>com.primeholding.reminderspoc.stag</string>
 	<key>PROJECT_ID</key>
-	<string>reminders-app-staging</string>
+	<string>reminders-app-staging-ee074</string>
 	<key>STORAGE_BUCKET</key>
-	<string>reminders-app-staging.appspot.com</string>
+	<string>reminders-app-staging-ee074.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1056541510858:ios:36b611bab91188d62c7833</string>
+	<string>1:495639736415:ios:18188792b53e5f3ff46bea</string>
 </dict>
 </plist>
