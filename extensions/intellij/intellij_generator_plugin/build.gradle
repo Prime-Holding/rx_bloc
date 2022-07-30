@@ -5,7 +5,8 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '1.4.1'
+version '1.4.2'
+
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
@@ -40,7 +41,9 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
-        <li>v1.4.1 - Updated DI Dependencies to not be a singleton</li>
+        <li>v1.5.0 
+        <br /> - Added an action item in the Project Menu to allow boostrapping BloC Tests based on the available/missing folders & files - inside lib & test</li>
+        <br /> - Updated DI Dependencies to not be a singleton</li>
         <li>v1.4.0 
         <br /> - Introduce "New -> RxBloc List".  
         <br /> - Wrap With Quick Action Support (RxBlocBuilder, RxResultBuilder, RxPaginatedBuilder, RxBlocListener, RxFormFieldBuilder, RxTextFormFieldBuilder). 
