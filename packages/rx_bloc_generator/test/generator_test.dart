@@ -37,6 +37,14 @@ Future<void> main() async {
   testAnnotatedElements<RxBloc>(
     await initializeLibraryReaderForDirectory(
       'test/src',
+      'rx_bloc_test_generic_bloc.dart',
+    ),
+    const RxBlocGeneratorForAnnotation(),
+  );
+
+  testAnnotatedElements<RxBloc>(
+    await initializeLibraryReaderForDirectory(
+      'test/src',
       'rx_bloc_test_states_missing.dart',
     ),
     const RxBlocGeneratorForAnnotation(),

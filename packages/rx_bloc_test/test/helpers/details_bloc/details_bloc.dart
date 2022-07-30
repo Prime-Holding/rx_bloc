@@ -12,9 +12,13 @@ class DetailsRepository {
 
 abstract class DetailsBlocEvents {
   void fetch();
+
+  void setEmail(String email);
 }
 
 abstract class DetailsBlocStates {
+  Stream<String> get email;
+
   Stream<String> get details;
 
   @RxBlocIgnoreState()
@@ -42,4 +46,12 @@ class DetailsBloc extends $DetailsBloc {
 
   @override
   Stream<bool> get isLoading => loadingState;
+
+  @override
+  Stream<String> _mapToEmailState() => _$setEmailEvent
+      .startWith('')
+      // Enabled trailing for test purposes
+      .throttleTime(const Duration(seconds: 3), trailing: true)
+      .map((email) => email.trim())
+      .shareReplay(maxSize: 1);
 }
