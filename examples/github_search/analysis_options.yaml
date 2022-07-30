@@ -1,0 +1,24 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_relative_imports: true
+    always_declare_return_types: true
+    prefer_single_quotes: true
+    sort_child_properties_last: true
+    unawaited_futures: true
+    avoid_print: false
+    directives_ordering: true
+    sort_pub_dependencies: true
+    close_sinks: true
+    cancel_subscriptions: true
+    avoid_void_async: true
+    avoid_returning_null_for_future: true
+
+analyzer:
+  exclude:
+    - lib/base/routers/router.gr.dart
+    - lib/generated_plugin_registrant.dart
+    - lib/assets.dart
+    - '**/*.g.dart'
+    - '**/*.pp.dart'

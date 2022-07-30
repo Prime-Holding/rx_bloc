@@ -1,3 +1,18 @@
+## [6.0.0] - July 28, 2022
+* Update dependencies
+* _[BREAKING CHANGE]_ Update analyzer to `">=3.0.0 <=5.0.0"`
+* Add support for generic blocs (Thanks [jld3103](https://github.com/jld3103) for the contribution)
+
+## [5.1.1] - December 24, 2021
+* Update dependencies 
+
+## [5.1.0] - September 24, 2021
+* Support Flutter `2.5`
+* Update `rxdart` to use version `0.27.2`
+
+## [5.0.1] - September 22, 2021
+* Allow generating behaviour subject events without a seed
+
 ## [5.0.0] - May 21, 2021
 * Support Flutter `2.2`
 * Update `rxdart` to use version `0.27.0`

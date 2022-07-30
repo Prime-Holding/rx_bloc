@@ -125,7 +125,7 @@ class CounterBloc extends $CounterBloc {
     
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((Exception error) => error.toString());
+      errorState.map((error) => error.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
@@ -170,14 +170,24 @@ class HomePage extends StatelessWidget {
 }
 ```
 
+## Presentations
+[![HackConf][hack_conf_img]][hack_conf_link]  
+  
+## Video tutorials
+  
+- [Building feature-rich lists in Flutter](https://youtu.be/Nc8OLxYhQ0w) A feature-rich ListView implementation in Flutter that demonstrates how easy it is to build common functionalities such as `pull-to-refresh` and `infinite-scroll`.
+- [Building Github Search in Flutter](https://youtu.be/qhsSLY0wSwQ) Under ten minutes you will learn how a Github search can be built in Flutter.
 
-### Samples
+  
+## Samples
 
 - [Booking app][booking_app_sample_lnk] - A booking app that solves various tech challenges such as: Content lazy loading, Slick animations, Composite filters, Inter-feature communication, Complete error handling and more.
 - [Favorites Advanced][favourites_advanced_sample_lnk] - an advanced favorites app that showcase multiple software development challenges.
+- [Github search][github_search_example_line_ref] - a feature-rich list view including infinity-scroll and pull-to-refresh functionalities.
 - [Counter][counter_bloc_sample_lnk] - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
 - [Division][division_sample_lnk] - Division sample
 
+  
 
 ## Articles
 
@@ -196,6 +206,8 @@ class HomePage extends StatelessWidget {
 [code_style_lnk]: https://img.shields.io/badge/style-effective_dart-40c4ff.svg
 [license_lnk]: https://img.shields.io/badge/license-MIT-purple.svg
 [rx_bloc_slogan_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/slogan.png
+[hack_conf_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/hack_conf.png
+[hack_conf_link]: https://youtu.be/nVX4AzeuVu8  
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [flutter_rx_bloc_lnk]: https://pub.dev/packages/flutter_rx_bloc
 [rx_bloc_test_lnk]: https://pub.dev/packages/rx_bloc_test
@@ -204,6 +216,7 @@ class HomePage extends StatelessWidget {
 [rx_bloc_cli_lnk]: https://pub.dev/packages/rx_bloc_cli
 [single_responsibility_principle_lnk]: https://en.wikipedia.org/wiki/Single-responsibility_principle
 [counter_bloc_example_line_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.dart#L33
+[github_search_example_line_ref]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/github_search/lib/feature_github_repo_list
 [android_studio_rx_bloc_plugin_lnk]: https://plugins.jetbrains.com/plugin/16165-rxbloc?preview=true
 [android_studio_rx_bloc_plugin_preview_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/android_plugin.png
 [abstract_counter_bloc_ref]: https://github.com/Prime-Holding/rx_bloc/blob/a1854040f1d693af5304bce7a5c2fa68c5809ecf/examples/counter/lib/bloc/counter_bloc.rxb.g.dart#L20

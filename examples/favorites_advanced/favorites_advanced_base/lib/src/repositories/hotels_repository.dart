@@ -23,11 +23,13 @@ class HotelsRepository {
   final ConnectivityRepository _connectivityRepository;
 
   Future<List<Hotel>> getHotels({HotelSearchFilters? filters}) async {
-    await Future.delayed(_artificialDelay + Duration(milliseconds: 100));
+
 
     if (!(await _connectivityRepository.isConnected())) {
       throw Exception(_noInternetConnectionErrorString);
     }
+
+    await Future.delayed(_artificialDelay + Duration(milliseconds: 2000));
 
     final query = filters?.query ?? '';
     var copiedHotels = [..._hotels];

@@ -10,7 +10,7 @@ abstract class RxBlocGeneratorBase(private val name: String,
                                    withDefaultStates: Boolean,
                                    includeExtensions: Boolean,
                                    includeNullSafety: Boolean,
-                                   templateName: String): RxGeneratorBase(name, withDefaultStates, includeExtensions, includeNullSafety, templateName) {
+                                   templateName: String): RxGeneratorBase(name) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
     private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"

@@ -1,3 +1,38 @@
+## [3.3.1] - May 26, 2022
+- Add equality check [support](https://github.com/Prime-Holding/rx_bloc/pull/247) for maps with nested objects on the [Result](https://pub.dev/documentation/rx_bloc/latest/rx_bloc/Result-class.html) class, thanks to [pangievich](https://github.com/PankovSerge)
+
+## [3.3.0] - May 18, 2022
+- Added `Stream<T>` extensions: `mapToResult`, `withLatestFromResult`
+- Added `Stream<Result<T>>` extensions: `mapResult`, `asyncMapResult`
+- Added `Result<T>` extensions: `mapResult`, `asyncMapResult`
+
+## [3.2.1] - December 16, 2021
+* Added a [presentation](https://youtu.be/nVX4AzeuVu8) to the README file
+* Fixed memory leak caused by a not closed subscription in the LoadingBloc
+* Upgraded to rxdart ^0.27.3
+
+## [3.2.0] - September 24, 2021
+* Support Flutter `2.5`
+* Update `rxdart` to use version `0.27.2`
+
+## [3.1.2] - September 22, 2021
+* Allow the bind extension to be used with both Publish and Behaviour subjects
+
+## [3.1.1] - September 21, 2021
+* Added video tutorials and a github search sample to the `README.md`
+
+## [3.1.0] - July 09, 2021
+* Added an optional param `tag` to (Future/Stream).asResultStream(tag: 'someTag'). 
+  * This will help to distinguish the action that has been triggered a particular async call. Check the [flutter_rx_bloc example](https://pub.dev/packages/flutter_rx_bloc/example) for more details.
+* Added utility (extension) methods
+  * `Stream<ResultError<T>>`.`mapToException()`
+  * `Stream<ResultError<T>>`.`mapToErrorWithTag()`
+  * `Stream<Result<T>>`.`isLoadingWithTag()`
+* Added new states and methods to RxBlocBase
+    * `RxBlocBase`.`errorWithTagState` 
+    * `RxBlocBase`.`loadingWithTagState`
+    * `RxBlocBase`.`loadingForTagState('someTag')`
+
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`
 * Update `rxdart` to use version `0.27.0`

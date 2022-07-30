@@ -9,50 +9,70 @@ import 'package:collection/collection.dart';
 /// 3. Error
 abstract class Result<T> {
   /// The success event of a stream.
-  factory Result.success(T data) {
-    return ResultSuccess._(data);
+  factory Result.success(
+    T data, {
+    String tag = '',
+  }) {
+    return ResultSuccess._(data, tag: tag);
   }
 
   /// The loading state of the stream.
   ///
   /// Usually emitted before starting an async task such as API Request.
-  factory Result.loading() {
-    return ResultLoading._();
+  factory Result.loading({
+    String tag = '',
+  }) {
+    return ResultLoading._(tag: tag);
   }
 
   /// Error event of a stream.
-  factory Result.error(Exception error) {
-    return ResultError._(error);
+  factory Result.error(
+    Exception error, {
+    String tag = '',
+  }) {
+    return ResultError._(error, tag: tag);
   }
+
+  ///TODO: add public documentation
+  String get tag;
 }
 
 /// A generic Result class used for converting a future to a stream.
 ///
 /// Represents the loading state
 class ResultLoading<T> implements Result<T> {
-  ResultLoading._();
+  ResultLoading._({this.tag = ''});
 
   @override
   bool operator ==(dynamic other) {
-    return other is ResultLoading<T>;
+    return other is ResultLoading<T> && other.tag == tag;
   }
 
   @override
   int get hashCode => true.hashCode;
+
+  @override
+  String tag;
+
+  @override
+  String toString() => 'ResultLoading(tag: $tag)';
 }
 
 /// A generic Result class used for converting a future to a stream.
 ///
 /// Represents the success state
 class ResultSuccess<T> implements Result<T> {
-  ResultSuccess._(this.data);
+  ResultSuccess._(
+    this.data, {
+    this.tag = '',
+  });
 
   /// The data of the event
   final T data;
 
   @override
   bool operator ==(dynamic other) {
-    if (other is! ResultSuccess<T> || other.data == null) {
+    if (other is! ResultSuccess<T>) {
       return false;
     }
 
@@ -61,24 +81,39 @@ class ResultSuccess<T> implements Result<T> {
       final _otherData = other.data as List;
       final _data = data as List;
 
-      return const ListEquality().equals(_otherData, _data);
+      return other.tag == tag && const ListEquality().equals(_otherData, _data);
     }
 
-    return other.data == data;
+    // Compare map
+    if (other.data is Map && data is Map) {
+      final _otherData = other.data as Map;
+      final _data = data as Map;
+
+      return other.tag == tag &&
+          const DeepCollectionEquality().equals(_otherData, _data);
+    }
+
+    return other.tag == tag && other.data == data;
   }
 
   @override
-  String toString() => '$data';
+  String toString() => 'ResultSuccess(data: $data, tag: $tag)';
 
   @override
-  int get hashCode => T.hashCode;
+  int get hashCode => T.hashCode ^ tag.hashCode;
+
+  @override
+  String tag;
 }
 
 /// A generic Result class used for converting a future to a stream.
 ///
 /// Represents the error state
 class ResultError<T> implements Result<T> {
-  ResultError._(this.error);
+  ResultError._(
+    this.error, {
+    this.tag = '',
+  });
 
   /// The stream error
   final Exception error;
@@ -86,12 +121,16 @@ class ResultError<T> implements Result<T> {
   @override
   bool operator ==(dynamic other) {
     return other is ResultError<T> &&
+        other.tag == tag &&
         other.error.toString() == error.toString();
   }
 
   @override
-  String toString() => error.toString();
+  String toString() => 'ResultError(error: ${error.toString()}, tag: $tag)';
 
   @override
-  int get hashCode => error.hashCode;
+  int get hashCode => error.hashCode ^ tag.hashCode;
+
+  @override
+  String tag;
 }

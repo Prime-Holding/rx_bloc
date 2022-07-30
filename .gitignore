@@ -36,6 +36,7 @@
 /dev/integration_tests/**/Pods
 /packages/flutter/coverage/
 version
+.fvm/
 
 # packages file containing multi-root paths
 .packages.generated
@@ -106,3 +107,7 @@ coverage/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+
+# Generated examples
+packages/rx_bloc_cli/example/test_app

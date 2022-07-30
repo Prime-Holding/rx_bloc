@@ -13,7 +13,8 @@
 *.iml
 *.ipr
 *.iws
-.idea/
+.idea/*
+.idea/runConfigurations
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -29,6 +30,7 @@
 .pub-cache/
 .pub/
 build/
+.fvm/
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -76,4 +78,3 @@ build/
 
 # rx_bloc_cli related stuf
 example/test_app
-lib/src/templates/*.dart

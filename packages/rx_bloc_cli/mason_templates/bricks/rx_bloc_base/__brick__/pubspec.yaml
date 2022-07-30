@@ -7,49 +7,49 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  auto_route: ^2.2.0
-  cupertino_icons: ^1.0.2
-  dio: ^4.0.0{{#analytics}}
-  firebase_analytics: ^8.1.1{{/analytics}}{{#uses_firebase}}
-  firebase_core: ^1.2.1{{/uses_firebase}}{{#push_notifications}}
-  firebase_messaging: ^10.0.1{{/push_notifications}}
+  auto_route: ^3.2.0
+  cupertino_icons: ^1.0.4
+  dio: ^4.0.4{{#analytics}}
+  firebase_analytics: ^9.0.4{{/analytics}}{{#uses_firebase}}
+  firebase_core: ^1.10.4{{/uses_firebase}}{{#push_notifications}}
+  firebase_messaging: ^11.2.4{{/push_notifications}}
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^6.0.0
+  flutter_local_notifications: ^9.1.5
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^3.1.0
-  flutter_secure_storage: ^4.2.0
-  golden_toolkit: ^0.9.0
+  flutter_rx_bloc: ^4.0.0
+  flutter_secure_storage: ^5.0.2
+  golden_toolkit: ^0.12.0
   intl: ^0.17.0
-  json_annotation: ^4.0.1
-  json_serializable: ^4.1.2
-  provider: ^5.0.0
-  retrofit: ^2.0.0
-  rx_bloc: ^3.0.0
-  rxdart: ^0.27.0
-  shared_preferences: ^2.0.6
+  json_annotation: ^4.4.0
+  json_serializable: ^6.1.3
+  provider: ^6.0.1
+  retrofit: ^3.0.0
+  rx_bloc: ^3.2.0
+  rx_bloc_list: ^3.1.0
+  rxdart: ^0.27.3
+  shared_preferences: ^2.0.11
 
-  # Only for testing purposes
-  shelf: ^1.0.0
-  shelf_router: ^1.0.0
-  shelf_static: ^1.0.0
+  # Server related packages
+  shelf: ^1.2.0
+  shelf_router: ^1.1.2
+  shelf_static: ^1.1.0
 
 dev_dependencies:
-  auto_route_generator: ^2.1.0
-  build_runner: ^2.0.3
+  auto_route_generator: ^3.2.0
+  build_runner: ^2.1.7
   # flutter_driver:
   #   sdk: flutter
+  flutter_lints: any
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.8
-  retrofit_generator: ^2.0.0
-  rx_bloc_generator: ^5.0.0
-  rx_bloc_test: ^3.0.0
+  http: ^0.13.4 # This package is used for the local server (if not used, can be removed)
+  mockito: ^5.0.16
+  retrofit_generator: ^3.0.0
+  rx_bloc_generator: ^5.1.0
+  rx_bloc_test: any
   test: any
-
-  # Only for testing purposes (such as in the local server)
-  http: ^0.13.3
 
 flutter:
   uses-material-design: true
@@ -57,25 +57,14 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/fonts/
 
   fonts:
     - family: WorkSans
       fonts:
-        - asset: fonts/WorkSans/WorkSans-Light.ttf
+        - asset: assets/fonts/WorkSans/WorkSans-Light.ttf
           weight: 300
-        - asset: fonts/WorkSans/WorkSans-Regular.ttf
+        - asset: assets/fonts/WorkSans/WorkSans-Regular.ttf
           weight: 400
-        - asset: fonts/WorkSans/WorkSans-Medium.ttf
+        - asset: assets/fonts/WorkSans/WorkSans-Medium.ttf
           weight: 500
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-

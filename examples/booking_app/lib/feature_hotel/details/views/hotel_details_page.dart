@@ -1,16 +1,16 @@
-import 'package:booking_app/base/ui_components/favorite_message_listener.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:booking_app/feature_hotel/blocs/hotels_extra_details_bloc.dart';
-import 'package:booking_app/feature_hotel/blocs/hotel_manage_bloc.dart';
-import 'package:booking_app/feature_hotel/details/blocs/hotel_details_bloc.dart';
-import 'package:favorites_advanced_base/ui_components.dart';
 
-part 'hotel_details_providers.dart';
+import '../../../base/ui_components/favorite_message_listener.dart';
+import '../../blocs/hotel_manage_bloc.dart';
+import '../../blocs/hotels_extra_details_bloc.dart';
+import '../blocs/hotel_details_bloc.dart';
+
 part '../ui_components/hotel_details_app_bar.dart';
+part 'hotel_details_providers.dart';
 
 class HotelDetailsPage extends StatefulWidget {
   const HotelDetailsPage({
@@ -31,7 +31,7 @@ class HotelDetailsPage extends StatefulWidget {
   final Hotel _hotel;
 
   @override
-  _HotelDetailsPageState createState() => _HotelDetailsPageState();
+  State<HotelDetailsPage> createState() => _HotelDetailsPageState();
 }
 
 class _HotelDetailsPageState extends State<HotelDetailsPage> {

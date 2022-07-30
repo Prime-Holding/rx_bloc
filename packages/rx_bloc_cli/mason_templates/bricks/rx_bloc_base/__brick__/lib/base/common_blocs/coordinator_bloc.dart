@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'dart:async';
 
 import 'package:rx_bloc/rx_bloc.dart';

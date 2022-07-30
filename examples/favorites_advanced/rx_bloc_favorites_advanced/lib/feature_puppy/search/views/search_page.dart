@@ -3,14 +3,16 @@ import 'package:favorites_advanced_base/resources.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
+import '../../../base/flow_builders/puppy_flow.dart';
 import '../../blocs/puppies_extra_details_bloc.dart';
 import '../../blocs/puppy_manage_bloc.dart';
 import '../blocs/puppy_list_bloc.dart';
 
 class SearchPage extends StatelessWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => SafeArea(
         child:

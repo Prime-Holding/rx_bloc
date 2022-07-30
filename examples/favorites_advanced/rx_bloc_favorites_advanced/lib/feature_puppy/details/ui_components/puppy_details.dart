@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:favorites_advanced_base/core.dart';
-import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:favorites_advanced_base/resources.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/details/blocs/puppy_details_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/details/ui_components/puppy_details_app_bar.dart';
+
+import '../blocs/puppy_details_bloc.dart';
+import 'puppy_details_app_bar.dart';
 
 class PuppyDetails extends StatelessWidget {
   const PuppyDetails({

@@ -1,15 +1,9 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
-
-import 'dart:async';
+{{> licence.dart }}
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:{{project_name}}/base/models/count.dart';
 import 'package:{{project_name}}/base/repositories/counter_repository.dart';
@@ -93,7 +87,7 @@ void main() {
       expect: [contains('test error msg')],
     );
 
-    rxBlocTest<CounterBlocType, bool>(
+    rxBlocTest<CounterBlocType, LoadingWithTag>(
       'Loading state',
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
@@ -105,7 +99,13 @@ void main() {
         bloc.events.increment();
       },
       state: (bloc) => bloc.states.isLoading,
-      expect: [false, true, false],
+      expect: [
+        LoadingWithTag(loading: false),
+        LoadingWithTag(loading: true, tag: CounterBloc.tagReload),
+        LoadingWithTag(loading: false, tag: CounterBloc.tagReload),
+        LoadingWithTag(loading: true, tag: CounterBloc.tagIncrement),
+        LoadingWithTag(loading: false, tag: CounterBloc.tagIncrement),
+      ],
     );
   });
 }

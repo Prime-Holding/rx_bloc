@@ -85,7 +85,8 @@ class PaginatedList<E> extends ListBase<E> {
   /// Returns the number of items in a list. When loading a new page, the number
   /// of items is increased by one, which can be used to represent the bottom
   /// loading widget.
-  int get itemCount => isNextPageLoading ? list.length + 1 : list.length;
+  int get itemCount =>
+      hasNextPage && isNextPageLoading ? list.length + 1 : list.length;
 
   /// The number of loaded pages.
   int get pageNumber => list.isNotEmpty ? (length / pageSize).ceil() : 0;
@@ -143,6 +144,25 @@ class PaginatedList<E> extends ListBase<E> {
   }
 
   @override
+  bool operator ==(other) =>
+      other is PaginatedList<E> &&
+      other.pageSize == pageSize &&
+      other.error == error &&
+      other.totalCount == totalCount &&
+      other.isLoading == isLoading &&
+      other.list == list;
+
+  @override
+  int get hashCode =>
+      pageSize.hashCode ^
+      error.hashCode ^
+      totalCount.hashCode ^
+      isLoading.hashCode ^
+      _isInitialized.hashCode ^
+      list.hashCode;
+
+  @override
   String toString() =>
-      '{list: $list, _backupList: $_backupList, loading: $isLoading}';
+      '{pageSize: $pageSize, error: $error, totalCount: $totalCount, '
+      'isLoading: $isLoading, list: $list}';
 }

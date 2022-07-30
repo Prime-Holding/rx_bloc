@@ -9,9 +9,6 @@ class RxDependenciesGenerator(
     includeNullSafety: Boolean
 ) : RxDependenciesGeneratorBase(
     name,
-    withDefaultStates,
-    includeExtensions,
-    includeNullSafety,
     templateName = "dependencies"
 ) {
     override fun fileName() = "${snakeCase()}_dependencies.${fileExtension()}"

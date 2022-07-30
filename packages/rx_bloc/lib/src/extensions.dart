@@ -1,5 +1,15 @@
 part of 'bloc/rx_bloc_base.dart';
 
+/// ResultErrorStream utility extension methods.
+extension ResultErrorStream<T> on Stream<ResultError<T>> {
+  /// Map the ResultError to the the exception that holds
+  Stream<Exception> mapToException() => map((error) => error.error);
+
+  /// Map the ResultError to the the exception that holds
+  Stream<ErrorWithTag> mapToErrorWithTag() =>
+      map((error) => ErrorWithTag.fromResult(error));
+}
+
 /// ResultStream utility extension methods.
 extension ResultStream<T> on Stream<Result<T>> {
   /// Finds the [ResultSuccess] as unwraps the [ResultSuccess.data] from it.
@@ -19,6 +29,12 @@ extension ResultStream<T> on Stream<Result<T>> {
   /// Returns `true` if the [Result] is [ResultLoading],
   /// otherwise returns `false`
   Stream<bool> isLoading() => map((data) => data is ResultLoading);
+
+  /// Returns a container []
+  Stream<LoadingWithTag> isLoadingWithTag() => map((data) => LoadingWithTag(
+        loading: data is ResultLoading,
+        tag: data.tag,
+      ));
 }
 
 /// Result utility extension methods.
@@ -28,13 +44,17 @@ extension AsResultStream<T> on Stream<T> {
   /// As soon as the [Stream] is being subscribed it emits
   /// [ResultLoading] immediately,
   /// as afterwards emits either [ResultError] or [ResultSuccess]
-  Stream<Result<T>> asResultStream() => map((data) => Result<T>.success(data))
-      .onErrorReturnWith(
-        (error, stackTrace) => Result<T>.error(
-          error is Exception ? error : Exception(error.toString()),
-        ),
-      )
-      .startWith(Result<T>.loading());
+  Stream<Result<T>> asResultStream({
+    String tag = '',
+  }) =>
+      map((data) => Result<T>.success(data, tag: tag))
+          .onErrorReturnWith(
+            (error, stacktrace) => Result<T>.error(
+              error is Exception ? error : Exception(error.toString()),
+              tag: tag,
+            ),
+          )
+          .startWith(Result<T>.loading(tag: tag));
 }
 
 /// Future asResultStream utilities
@@ -44,7 +64,8 @@ extension FutureAsResultStream<T> on Future<T> {
   /// As soon as the [Stream] is being subscribed it emits
   /// [ResultLoading] immediately,
   /// as afterwards emits either [ResultError] or [ResultSuccess]
-  Stream<Result<T>> asResultStream() => asStream().asResultStream();
+  Stream<Result<T>> asResultStream({String tag = ''}) =>
+      asStream().asResultStream(tag: tag);
 }
 
 /// Stream loading and error handlers
@@ -61,8 +82,9 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
     bool shareReplay = true,
   }) =>
       doOnData(
-        (event) =>
-            bloc._loadingBloc.setLoading(isLoading: event is ResultLoading<T>),
+        (event) => bloc._loadingBloc.setResult(
+          result: event,
+        ),
       ).asSharedStream(shareReplay: shareReplay);
 
   /// Handle [ResultError] states from the stream.
@@ -78,7 +100,7 @@ extension HandleByRxBlocBase<T> on Stream<Result<T>> {
   }) =>
       doOnData((event) {
         if (event is ResultError<T>) {
-          bloc._resultStreamExceptionsSubject.sink.add(event.error);
+          bloc._resultStreamExceptionsSubject.sink.add(event);
         }
       }).asSharedStream(shareReplay: shareReplay);
 
@@ -109,8 +131,7 @@ extension Bind<T> on Stream<T> {
   /// Be aware that the binding is facilitating the subscribing, so the
   /// unsubscribing needs to be handled accordingly either by
   /// using [CompositeSubscription] or manually.
-  StreamSubscription<T> bind(BehaviorSubject<T> subject) =>
-      listen(subject.sink.add);
+  StreamSubscription<T> bind(Subject<T> subject) => listen(subject.sink.add);
 }
 
 /// Stream subscription disposer

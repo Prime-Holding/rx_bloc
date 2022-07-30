@@ -19,13 +19,17 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
 
         // If the data is still being fetched/loading, respond with isLoading as true
         if (result is ResultLoading<PaginatedList<T>>) {
-          if (subjectValue._backupList.isNotEmpty)
+          if (subjectValue._backupList.isNotEmpty) {
             return subjectValue.copyWith(
               isLoading: true,
               list: subjectValue._backupList,
             );
+          }
 
-          return subjectValue.copyWith(isLoading: true);
+          return subjectValue.copyWith(
+            isLoading: true,
+            isInitialized: false,
+          );
         }
 
         // If an error occurred, pass this error down and mark loading as false
@@ -64,7 +68,7 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
         }
 
         return subjectValue;
-      });
+      }).distinct();
 }
 
 /// PaginatedList stream extensions

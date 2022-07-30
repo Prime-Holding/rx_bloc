@@ -1,3 +1,18 @@
+## [4.0.2] - July 06, 2022
+* Remove unused package imports
+* Stabilisation improvements
+
+## [4.0.1] - June 29, 2022
+* Fixes issue with re-displaying RxFormFieldBuilder where no value is returned when the last state of the field is an error.
+
+## [4.0.0] - September 24, 2021
+* Support Flutter `2.5`
+* Updated `rxdart` to use version `0.27.2`
+* [BREAKING] Changed signature of [RxResultBuilder.buildError] to `Widget Function(BuildContext, Exception, B)`
+
+## [3.2.0] - July 09, 2021
+* Added widget `RxLoadingBuilder`
+
 ## [3.1.0] - June 01, 2021
 * Fix infinite feedback loop issue with RxTextFormFieldBuilder
 * Nullability improvements for RxTextFormFieldBuilder
@@ -6,7 +21,7 @@
 
 ## [3.0.0] - May 21, 2021
 * Support Flutter `2.2`
-* Update `rxdart` to use version `0.27.0`
+* Updated `rxdart` to use version `0.27.0`
 
 ## [2.0.0] - March 10, 2021
 * Migrated to Flutter `2.0` and Dart `2.12` (null-safety).

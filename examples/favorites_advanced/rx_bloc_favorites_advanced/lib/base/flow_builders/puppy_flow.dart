@@ -1,8 +1,9 @@
 import 'package:favorites_advanced_base/models.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/details/views/puppy_details_page.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/views/puppy_edit_page.dart';
+
+import '../../feature_puppy/details/views/puppy_details_page.dart';
+import '../../feature_puppy/edit/views/puppy_edit_page.dart';
 
 class PuppyFlowState {
   PuppyFlowState({

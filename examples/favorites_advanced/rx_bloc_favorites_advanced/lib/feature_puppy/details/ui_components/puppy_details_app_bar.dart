@@ -1,10 +1,11 @@
 import 'package:favorites_advanced_base/models.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:flow_builder/flow_builder.dart';
-import 'package:rx_bloc_favorites_advanced/base/flow_builders/puppy_flow.dart';
-import 'package:rx_bloc_favorites_advanced/base/ui_components/icon_with_shadow.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
+
+import '../../../base/flow_builders/puppy_flow.dart';
+import '../../../base/ui_components/icon_with_shadow.dart';
+import '../../blocs/puppy_manage_bloc.dart';
 
 class PuppyDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {

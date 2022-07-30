@@ -8,6 +8,8 @@ import '../../feature_home/blocs/navigation_bar_bloc.dart';
 import '../../feature_puppy/search/blocs/puppy_list_bloc.dart';
 
 class PuppiesAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const PuppiesAppBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       RxBlocBuilder<NavigationBarBlocType, NavigationItem?>(

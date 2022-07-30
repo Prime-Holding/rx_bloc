@@ -284,10 +284,10 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
                   });
                 },
                 child: Padding(
+                  padding: const EdgeInsets.all(16),
                   child: _isTextObscured
                       ? widget.decorationData.iconVisibility
                       : widget.decorationData.iconVisibilityOff,
-                  padding: const EdgeInsets.all(16),
                 ),
               )
             : null,

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:provider/provider.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/blocs/puppy_manage_bloc.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_app_bar.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/edit/ui_components/puppy_edit_form.dart';
-import 'package:rx_bloc_favorites_advanced/feature_puppy/validators/puppy_validator.dart';
+
+import '../../blocs/puppy_manage_bloc.dart';
+import '../../validators/puppy_validator.dart';
+import '../ui_components/puppy_edit_app_bar.dart';
+import '../ui_components/puppy_edit_form.dart';
 
 part 'puppy_edit_providers.dart';
 
@@ -27,7 +28,7 @@ class PuppyEditPage extends StatefulWidget {
   final Puppy? _puppy;
 
   @override
-  _PuppyEditPageState createState() => _PuppyEditPageState();
+  State<PuppyEditPage> createState() => _PuppyEditPageState();
 }
 
 class _PuppyEditPageState extends State<PuppyEditPage> {

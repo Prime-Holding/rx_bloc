@@ -6,13 +6,14 @@ class HotelSortPage extends StatefulWidget {
   const HotelSortPage({
     this.onApplyPressed,
     this.initialSelection = SortBy.none,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final Function(SortBy)? onApplyPressed;
   final SortBy initialSelection;
 
   @override
-  _HotelSortPageState createState() => _HotelSortPageState();
+  State<HotelSortPage> createState() => _HotelSortPageState();
 }
 
 class _HotelSortPageState extends State<HotelSortPage> {
@@ -86,10 +87,10 @@ class _HotelSortPageState extends State<HotelSortPage> {
           child: Chip(
             labelStyle: ChipTheme.of(context)
                 .labelStyle
-                .copyWith(color: selected == id ? Colors.white : Colors.black),
+                ?.copyWith(color: selected == id ? Colors.white : Colors.black),
             label: Text(name),
             backgroundColor:
-                selected == id ? Theme.of(context).accentColor : null,
+                selected == id ? Theme.of(context).colorScheme.secondary : null,
           ),
         ),
       );

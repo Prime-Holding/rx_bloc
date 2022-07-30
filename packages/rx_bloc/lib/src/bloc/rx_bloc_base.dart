@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../model/error_with_tag.dart';
+import '../model/loading_with_tag.dart';
 import '../model/result.dart';
 import 'loading_bloc.dart';
 
@@ -39,15 +41,31 @@ abstract class RxBlocBase {
   ///
   final LoadingBloc _loadingBloc = LoadingBloc();
 
-  /// The loading states of all handled result streams.
+  /// The loading states with tags of all handled result streams.
+  @protected
+  Stream<LoadingWithTag> get loadingWithTagState =>
+      _loadingBloc.states.isLoadingWithTag;
+
+  /// The loading states without tags of all handled result streams.
   @protected
   Stream<bool> get loadingState => _loadingBloc.states.isLoading;
 
+  /// The loading states with tags of all handled result streams.
+  @protected
+  Stream<bool> loadingForTagState(String tag) =>
+      _loadingBloc.states.isLoadingForTag(tag);
+
   /// The errors of all handled result streams.
   @protected
-  Stream<Exception> get errorState => _resultStreamExceptionsSubject;
+  Stream<Exception> get errorState =>
+      _resultStreamExceptionsSubject.mapToException();
 
-  final _resultStreamExceptionsSubject = BehaviorSubject<Exception>();
+  /// The errors of all handled result streams along with the tag
+  @protected
+  Stream<ErrorWithTag> get errorWithTagState =>
+      _resultStreamExceptionsSubject.mapToErrorWithTag();
+
+  final _resultStreamExceptionsSubject = BehaviorSubject<ResultError>();
 
   final _compositeSubscription = CompositeSubscription();
 

@@ -18,6 +18,14 @@ class Stub {
     list: [],
     pageSize: 10,
     totalCount: 0,
+    isLoading: false,
+  );
+
+  static final paginatedListEmptyLoading = PaginatedList<Hotel>(
+    list: [],
+    pageSize: 10,
+    totalCount: 0,
+    isLoading: true,
   );
 
   static final paginatedListHotelThree = PaginatedList<Hotel>(
@@ -42,6 +50,14 @@ class Stub {
     list: [Stub.hotel1],
     pageSize: 10,
     totalCount: 1,
+    isLoading: false,
+  );
+
+  static final paginatedListOneHotelLoading = PaginatedList<Hotel>(
+    list: [Stub.hotel1],
+    pageSize: 10,
+    totalCount: 1,
+    isLoading: true,
   );
 
   static final paginatedListTwoHotels = PaginatedList<Hotel>(
@@ -53,7 +69,7 @@ class Stub {
   static final paginatedListTreeHotels = PaginatedList<Hotel>(
     list: [Stub.hotel1, Stub.hotel2, Stub.hotel3],
     pageSize: 10,
-    totalCount: 2,
+    totalCount: 3,
   );
 
   static const one = 1;

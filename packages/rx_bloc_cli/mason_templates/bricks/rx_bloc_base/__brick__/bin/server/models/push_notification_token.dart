@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 class PushNotificationToken {
   PushNotificationToken(this.token);
 

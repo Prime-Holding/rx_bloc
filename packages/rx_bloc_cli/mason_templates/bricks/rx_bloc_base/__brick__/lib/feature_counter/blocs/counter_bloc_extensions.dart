@@ -1,9 +1,6 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
+
+// ignore_for_file: lines_longer_than_80_chars
 
 part of 'counter_bloc.dart';
 
@@ -15,14 +12,16 @@ part of 'counter_bloc.dart';
 extension _CounterExtension on CounterBloc {
   Stream<Result<Count>> get countState => Rx.merge<Result<Count>>([
         // On increment.
-        _$incrementEvent
-            .switchMap((_) => _repository.increment().asResultStream()),
+        _$incrementEvent.switchMap((_) => _repository
+            .increment()
+            .asResultStream(tag: CounterBloc.tagIncrement)),
         // On decrement.
-        _$decrementEvent
-            .switchMap((_) => _repository.decrement().asResultStream()),
+        _$decrementEvent.switchMap((_) => _repository
+            .decrement()
+            .asResultStream(tag: CounterBloc.tagDecrement)),
         // Get current value
-        _$reloadEvent
-            .startWith(null)
-            .switchMap((_) => _repository.getCurrent().asResultStream()),
+        _$reloadEvent.startWith(null).switchMap((_) => _repository
+            .getCurrent()
+            .asResultStream(tag: CounterBloc.tagReload)),
       ]);
 }

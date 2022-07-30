@@ -40,9 +40,8 @@ extension _EventMethodElement on MethodElement {
   String get eventArgumentsClassName => '_${name.capitalize()}EventArgs';
 
   /// Is the the [RxBlocEvent.seed] annotation is provided
-  bool get hasSeedAnnotation =>
-      _computedRxBlocEventAnnotation != null &&
-      _computedRxBlocEventAnnotation?.getField('seed') is DartObject;
+  bool get hasSeedAnnotation => RegExp(r'(?<=seed: ).*(?=\)|,)')
+      .hasMatch(_rxBlocEventAnnotation?.toSource() ?? '');
 
   /// Provides the stream generic type
   ///
@@ -50,8 +49,7 @@ extension _EventMethodElement on MethodElement {
   /// if `fetchNews(int param)` then -> PublishSubject<int>
   /// if `fetchNews(String param)` then -> PublishSubject<String>
   /// if `fetchNews(int p1, int p2)` then -> PublishSubject<_FetchNewsEventArgs>
-  List<Reference> get streamTypeArguments =>
-      !isBehavior ? [refer(publishSubjectGenericType)] : [];
+  List<Reference> get streamTypeArguments => [refer(publishSubjectGenericType)];
 
   /// Provides the BehaviorSubject.seeded arguments as [List] of [Expression]
   /// Throws an [_RxBlocGeneratorException] if a seed is provided but
@@ -62,7 +60,7 @@ extension _EventMethodElement on MethodElement {
           ' can not have a `seed` parameter.');
     }
 
-    return isBehavior ? [_seededArgument] : [];
+    return [_seededArgument];
   }
 
   /// Provides the BehaviorSubject.seeded arguments as an [Expression]
@@ -73,7 +71,7 @@ extension _EventMethodElement on MethodElement {
 
     if (seedArgumentsMatch.isEmpty) {
       throw _RxBlocGeneratorException(
-          'Event `$name` seed value is missing or it is null.');
+          'Event `$name` seed value is missing or is null.');
     }
 
     var seedArguments = seedArgumentsMatch.toString();
@@ -87,15 +85,11 @@ extension _EventMethodElement on MethodElement {
   /// Provides the stream type based on the [RxBlocEventType] annotation
   String get eventStreamType => isBehavior
       ? _BlocEventStreamTypes.behavior +
-          (hasSeedAnnotation ? '<$publishSubjectGenericType>.seeded' : '')
+          (hasSeedAnnotation ? '<$publishSubjectGenericType>' : '')
       : _BlocEventStreamTypes.publish;
 
   /// Provides the first annotation as [ElementAnnotation] if exists
-  ElementAnnotation? get _eventAnnotation =>
-      // TODO(Diev): Check if
-      metadata.isNotEmpty && metadata.first is ElementAnnotation
-          ? metadata.first
-          : null;
+  ElementAnnotation? get _eventAnnotation => metadata.firstOrNull;
 
   /// Provides the [RxBlocEvent] annotation as [DartObject] if exists
   DartObject? get _computedRxBlocEventAnnotation =>

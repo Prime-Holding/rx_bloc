@@ -1,12 +1,7 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:dio/dio.dart';{{#analytics}}
-import 'package:firebase_analytics/observer.dart';{{/analytics}}{{#push_notifications}}
+import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +21,7 @@ import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}
 
 /// This widget is the root of your application.
 class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
-  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod});
+  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod, Key? key}) : super(key: key);
 
   final EnvironmentConfig config;
   final _router = router.Router();
@@ -66,7 +61,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         await safeRun(
             () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
     }
-    FirebaseMessaging.instance
+    await FirebaseMessaging.instance
         .getInitialMessage()
         .then((message) => onInitialMessageOpened(context, message));
     FirebaseMessaging.instance.onTokenRefresh

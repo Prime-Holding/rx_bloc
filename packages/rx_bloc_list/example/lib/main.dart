@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_list/models.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 /// App entry
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RxBlocList Example',
       home: RxBlocProvider<UserBlocType>(
         create: (context) => UserBloc(repository: UserRepository()),
-        child: PaginatedListPage(),
+        child: const PaginatedListPage(),
       ),
     );
   }
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
 /// region Paginated List page
 
 class PaginatedListPage extends StatelessWidget {
+  const PaginatedListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
@@ -93,9 +96,7 @@ class YourErrorWidget extends StatelessWidget {
   final Exception error;
 
   @override
-  Widget build(BuildContext context) => Container(
-        child: Text(error.toString()),
-      );
+  Widget build(BuildContext context) => Text(error.toString());
 }
 
 /// App specific progress indicator
@@ -175,7 +176,7 @@ class UserBloc extends $UserBloc {
 
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((event) => event.toString());
+      errorState.map((error) => error.toString());
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
@@ -233,11 +234,12 @@ class UserRepository {
   Future<PaginatedList<User>> fetchPage(int page, int pageSize) async {
     await Future.delayed(const Duration(seconds: 2));
 
-    if (page > 10)
+    if (page > 10) {
       return PaginatedList(
         list: [],
         pageSize: pageSize,
       );
+    }
 
     return PaginatedList(
       list: List.generate(

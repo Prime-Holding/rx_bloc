@@ -1,12 +1,6 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 
@@ -18,7 +12,8 @@ class LoginForm extends StatefulWidget {
   const LoginForm({
     this.title = 'Enter your login credentials',
     this.onLoginSuccess,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final String title;
   final Function? onLoginSuccess;
@@ -40,7 +35,9 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void dispose() {
     // Since the focus nodes are long living object, they should be disposed.
-    _focusNodes.forEach((focusNode) => focusNode.dispose());
+    for (var focusNode in _focusNodes) {
+      focusNode.dispose();
+    }
     super.dispose();
   }
 

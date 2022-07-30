@@ -10,22 +10,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_rx_bloc: ^4.0.0
+  rx_bloc: ^3.2.0
   rx_bloc_list:
     path: ..
-  flutter_rx_bloc: ^3.0.0
-  rx_bloc: ^3.0.0
+
 
 dev_dependencies:
+  build_runner:
+  flutter_lints: ^1.0.4
   flutter_test:
     sdk: flutter
-  build_runner:
   rx_bloc_generator:
 
+
 dependency_overrides:
-  rx_bloc:
-    path: ../../rx_bloc
   flutter_rx_bloc:
     path: ../../flutter_rx_bloc
+  rx_bloc:
+    path: ../../rx_bloc
+
 
 flutter:
   uses-material-design: true

@@ -1,9 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -33,7 +28,7 @@ abstract class CounterBlocStates {
   ///
   /// It is true when the bloc is waiting for the repository to returns data
   /// or throws an Exception
-  Stream<bool> get isLoading;
+  Stream<LoadingWithTag> get isLoading;
 
   /// Error state of the bloc
   ///
@@ -57,11 +52,20 @@ class CounterBloc extends $CounterBloc {
 
   final CounterRepository _repository;
 
+  /// Increment action
+  static const tagIncrement = 'Increment';
+
+  /// Decrement action
+  static const tagDecrement = 'Decrement';
+
+  /// Reload action
+  static const tagReload = 'Reload';
+
   @override
   Stream<String> _mapToErrorsState() => errorState.mapFromDio().toMessage();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<LoadingWithTag> _mapToIsLoadingState() => loadingWithTagState;
 
   @override
   Stream<int> _mapToCountState() => countState

@@ -1,101 +1,156 @@
-import 'package:counter/counter_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'counter_bloc.rxb.g.dart';
-
 void main() {
-  runApp(MyApp());
+  runApp(const CounterApp());
 }
 
-// ignore: public_member_api_docs
-class MyApp extends StatelessWidget {
+///region UI Layer
+
+/// The app widget
+class CounterApp extends StatelessWidget {
+  const CounterApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter sample',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: RxBlocProvider<CounterBlocType>(
         create: (ctx) => CounterBloc(CounterRepository()),
-        child: const HomePage(),
+        child: const CounterPage(),
       ),
     );
   }
 }
 
-// ignore: public_member_api_docs
-class HomePage extends StatelessWidget {
-  // ignore: public_member_api_docs
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
+/// The page widget
+class CounterPage extends StatelessWidget {
+  /// Default constructor
+  const CounterPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Counter sample')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RxBlocListener<CounterBlocType, String>(
-              state: (bloc) => bloc.states.errors,
-              listener: (context, errorMessage) =>
-                  ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(errorMessage ?? 'Unknown error'),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              ),
-            ),
-            RxBlocBuilder<CounterBlocType, int>(
-              state: (bloc) => bloc.states.count,
-              builder: (context, snapshot, bloc) => snapshot.hasData
-                  ? Text(
-                      snapshot.data.toString(),
-                      style: Theme.of(context).textTheme.headline4,
-                    )
-                  : Container(),
-            ),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Counter sample')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildErrorListener(),
+              _buildCount(),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: _buildActionButtons(),
-    );
-  }
+        floatingActionButton: _buildActionButtons(),
+      );
 
-  Widget _buildActionButtons() => RxBlocBuilder<CounterBlocType, bool>(
+  Widget _buildCount() => RxBlocBuilder<CounterBlocType, int>(
+        state: (bloc) => bloc.states.count,
+        builder: (context, snapshot, bloc) => snapshot.hasData
+            ? Text(
+                snapshot.data.toString(),
+                style: Theme.of(context).textTheme.headline4,
+              )
+            : Container(),
+      );
+
+  Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, errorMessage) =>
+            ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage ?? 'Unknown error'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        ),
+      );
+
+  Widget _buildActionButtons() => RxLoadingBuilder<CounterBlocType>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => Row(
+        builder: (context, isLoading, tag, bloc) => Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (loadingState.isLoading)
-              const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: CircularProgressIndicator(),
-              ),
-            FloatingActionButton(
-              backgroundColor: loadingState.buttonColor,
-              onPressed: loadingState.isLoading ? null : bloc.events.increment,
+            ActionButton(
               tooltip: 'Increment',
-              child: const Icon(Icons.add),
+              iconData: Icons.add,
+              onPressed: bloc.events.increment,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagIncrement,
             ),
             const SizedBox(width: 16),
-            FloatingActionButton(
-              backgroundColor: loadingState.buttonColor,
-              onPressed: loadingState.isLoading ? null : bloc.events.decrement,
+            ActionButton(
               tooltip: 'Decrement',
-              child: const Icon(Icons.remove),
+              iconData: Icons.remove,
+              onPressed: bloc.events.decrement,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagDecrement,
             ),
           ],
         ),
       );
 }
+
+/// Increment/Decrement button
+class ActionButton extends StatelessWidget {
+  /// Default constructor
+  const ActionButton({
+    required this.iconData,
+    required this.onPressed,
+    this.disabled = false,
+    this.tooltip = '',
+    this.loading = false,
+    Key? key,
+  }) : super(key: key);
+
+  /// The button disable state, which removes the [onPress] and sets a color
+  final bool disabled;
+
+  /// Loading flag that shows a loading indicator
+  final bool loading;
+
+  /// Text that describes the action that will occur when the button is pressed.
+  final String tooltip;
+
+  /// The icon to display. The available icons are described in [Icons].
+  final IconData iconData;
+
+  /// The callback that is called when the button is tapped or
+  /// otherwise activated.
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    return FloatingActionButton(
+      backgroundColor: disabled ? Colors.blueGrey : Colors.blue,
+      onPressed: !disabled ? onPressed : null,
+      tooltip: tooltip,
+      child: Icon(iconData),
+    );
+  }
+}
+
+/// Utils
+extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {
+  /// The loading state extracted from the snapshot
+  bool get isLoading => hasData && data!;
+
+  /// The color based on the isLoading state
+  Color get buttonColor => isLoading ? Colors.blueGrey : Colors.blue;
+}
+
+///endregion
+
+///region Business Layer
 
 /// This BloC and its event and state contracts usually
 /// resides in counter_bloc.dart
@@ -119,7 +174,7 @@ abstract class CounterBlocStates {
   Stream<int> get count;
 
   /// Loading state
-  Stream<bool> get isLoading;
+  Stream<LoadingWithTag> get isLoading;
 
   /// Error messages
   Stream<String> get errors;
@@ -133,15 +188,21 @@ class CounterBloc extends $CounterBloc {
 
   final CounterRepository _repository;
 
+  /// Increment action
+  static const tagIncrement = 'Increment';
+
+  /// Decrement action
+  static const tagDecrement = 'Decrement';
+
   /// Map increment and decrement events to `count` state
   @override
   Stream<int> _mapToCountState() => Rx.merge<Result<int>>([
         // On increment.
-        _$incrementEvent
-            .flatMap((_) => _repository.increment().asResultStream()),
+        _$incrementEvent.switchMap(
+            (_) => _repository.increment().asResultStream(tag: tagIncrement)),
         // On decrement.
-        _$decrementEvent
-            .flatMap((_) => _repository.decrement().asResultStream()),
+        _$decrementEvent.switchMap(
+            (_) => _repository.decrement().asResultStream(tag: tagDecrement)),
       ])
           // This automatically handles the error and loading state.
           .setResultStateHandler(this)
@@ -152,18 +213,113 @@ class CounterBloc extends $CounterBloc {
 
   @override
   Stream<String> _mapToErrorsState() =>
-      errorState.map((Exception error) => error.toString());
+      errorState.map((error) => error.toString());
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<LoadingWithTag> _mapToIsLoadingState() => loadingWithTagState;
 }
 
-/// BLoc class end
+///endregion
 
-extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {
-  /// The loading state extracted from the snapshot
-  bool get isLoading => hasData && data!;
+///region Data Layer
 
-  /// The color based on the isLoading state
-  Color get buttonColor => isLoading ? Colors.blueGrey : Colors.blue;
+/// This will simulate a server with 100 milliseconds response time
+class CounterRepository {
+  int _counter = 0;
+
+  /// Increment the stored counter by one
+  Future<int> increment() async {
+    // Server response time.
+    await Future.delayed(const Duration(milliseconds: 800));
+    // Simulate an error from the server when the counter reached 2.
+    if (_counter == 2) {
+      throw Exception('Maximum number is reached!');
+    }
+
+    return ++_counter;
+  }
+
+  /// Decrement the stored counter by one
+  Future<int> decrement() async {
+    // Server response time.
+    await Future.delayed(const Duration(milliseconds: 800));
+    // Simulate an error from the server when the counter reached 2.
+    if (_counter <= 0) {
+      throw Exception('Minimum number is reached!');
+    }
+
+    return --_counter;
+  }
 }
+
+///endregion
+
+///region auto-generated code
+
+/// The code below will be automatically generated
+/// for you by `rx_bloc_generator`.
+///
+/// This generated class usually resides in [file-name].rxb.g.dart.
+/// Find more info at https://pub.dev/packages/rx_bloc_generator.
+
+/// ********************GENERATED CODE**************************************
+/// CounterBlocType class used for bloc event and state access from widgets
+abstract class CounterBlocType extends RxBlocTypeBase {
+  // ignore: public_member_api_docs
+  CounterBlocEvents get events;
+
+  // ignore: public_member_api_docs
+  CounterBlocStates get states;
+}
+
+/// $CounterBloc class - extended by the CounterBloc bloc
+abstract class $CounterBloc extends RxBlocBase
+    implements CounterBlocEvents, CounterBlocStates, CounterBlocType {
+  final _$decrementEvent = PublishSubject<void>();
+
+  @override
+  void decrement() => _$decrementEvent.add(null);
+
+  final _$incrementEvent = PublishSubject<void>();
+
+  @override
+  void increment() => _$incrementEvent.add(null);
+
+  late final Stream<int> _countState = _mapToCountState();
+
+  @override
+  Stream<int> get count => _countState;
+
+  Stream<int> _mapToCountState();
+
+  late final Stream<LoadingWithTag> _isLoadingState = _mapToIsLoadingState();
+
+  @override
+  Stream<LoadingWithTag> get isLoading => _isLoadingState;
+
+  Stream<LoadingWithTag> _mapToIsLoadingState();
+
+  late final Stream<String> _errorsState = _mapToErrorsState();
+
+  @override
+  Stream<String> get errors => _errorsState;
+
+  Stream<String> _mapToErrorsState();
+
+  @override
+  CounterBlocEvents get events => this;
+
+  @override
+  CounterBlocStates get states => this;
+
+  /// Dispose of all the opened streams when the bloc is closed.
+  @override
+  void dispose() {
+    _$incrementEvent.close();
+    super.dispose();
+  }
+}
+
+/// ********************GENERATED CODE END**************************************
+
+///endregion

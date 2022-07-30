@@ -3,8 +3,8 @@ import 'package:rx_bloc_list/models.dart';
 
 void main() {
   group('PaginatedList tests', () {
-    final listSize = 100;
-    final pageSize = 10;
+    const listSize = 100;
+    const pageSize = 10;
     final emptyListData = [];
     final notEmptyListData = [0, 1, 2, 3];
 
@@ -13,7 +13,8 @@ void main() {
 
       expect(
         list.toString(),
-        '{list: [0, 1, 2, 3], _backupList: [], loading: false}',
+        '{pageSize: 10, error: null, totalCount: null,'
+        ' isLoading: false, list: [0, 1, 2, 3]}',
       );
     });
 
@@ -149,6 +150,16 @@ void main() {
         list: List.generate(listSize, (index) => index),
         pageSize: pageSize,
         isLoading: false,
+      );
+      expect(list.itemCount, equals(listSize));
+    });
+
+    test('Item count when reach the last page', () {
+      final list = PaginatedList(
+        list: List.generate(listSize, (index) => index),
+        pageSize: pageSize,
+        isLoading: true,
+        totalCount: listSize,
       );
       expect(list.itemCount, equals(listSize));
     });

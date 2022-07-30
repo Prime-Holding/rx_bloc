@@ -1,4 +1,8 @@
+{{> licence.dart }}
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
@@ -11,15 +15,26 @@ void main() {
       [
         generateDeviceBuilder(
           scenario: Scenario(name: 'counter'),
-          widget: counterPageFactory(count: 2),
+          widget: counterPageFactory(count: 2, isLoggedIn: true),
         ),
         generateDeviceBuilder(
           scenario: Scenario(name: 'error'),
-          widget: counterPageFactory(count: 2, error: 'Test errors'),
+          widget: counterPageFactory(
+            count: 2,
+            error: 'Test errors',
+            isLoggedIn: false,
+          ),
         ),
         generateDeviceBuilder(
           scenario: Scenario(name: 'loading'),
-          widget: counterPageFactory(count: 2, isLoading: true),
+          widget: counterPageFactory(
+            count: 2,
+            isLoggedIn: false,
+            isLoading: LoadingWithTag(
+              loading: true,
+              tag: CounterBloc.tagIncrement,
+            ),
+          ),
         ),
       ],
     ),

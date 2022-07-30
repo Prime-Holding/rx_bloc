@@ -1,7 +1,8 @@
-// ignore: public_member_api_docs
-import 'package:example/bloc/counter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+
+import '../bloc/counter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   // ignore: public_member_api_docs
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
               listener: (context, errorMessage) =>
                   ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(errorMessage ?? ""),
+                  content: Text(errorMessage ?? ''),
                   behavior: SnackBarBehavior.floating,
                 ),
               ),
@@ -43,32 +44,71 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons() => RxBlocBuilder<CounterBlocType, bool>(
+  Widget _buildActionButtons() => RxLoadingBuilder<CounterBlocType>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => Row(
+        builder: (context, isLoading, tag, bloc) => Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (loadingState.isLoading)
-              const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: CircularProgressIndicator(),
-              ),
-            FloatingActionButton(
-              backgroundColor: loadingState.buttonColor,
-              onPressed: loadingState.isLoading ? null : bloc.events.increment,
+            ActionButton(
               tooltip: 'Increment',
-              child: const Icon(Icons.add),
+              iconData: Icons.add,
+              onPressed: bloc.events.increment,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagIncrement,
             ),
             const SizedBox(width: 16),
-            FloatingActionButton(
-              backgroundColor: loadingState.buttonColor,
-              onPressed: loadingState.isLoading ? null : bloc.events.decrement,
+            ActionButton(
               tooltip: 'Decrement',
-              child: const Icon(Icons.remove),
+              iconData: Icons.remove,
+              onPressed: bloc.events.decrement,
+              disabled: isLoading,
+              loading: isLoading && tag == CounterBloc.tagDecrement,
             ),
           ],
         ),
       );
+}
+
+class ActionButton extends StatelessWidget {
+  const ActionButton({
+    required this.iconData,
+    required this.onPressed,
+    this.disabled = false,
+    this.tooltip = '',
+    this.loading = false,
+    Key? key,
+  }) : super(key: key);
+
+  final bool disabled;
+  final bool loading;
+  final String tooltip;
+  final IconData iconData;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    return FloatingActionButton(
+      backgroundColor: disabled ? Colors.blueGrey : Colors.blue,
+      onPressed: !disabled ? onPressed : null,
+      tooltip: tooltip,
+      child: Icon(iconData),
+    );
+  }
+}
+
+extension AsyncSnapshotLoadingWithTag on AsyncSnapshot<LoadingWithTag> {
+  /// The loading state extracted from the snapshot
+  bool get isLoading => hasData && data!.loading;
+
+  /// The color based on the isLoading state
+  Color get buttonColor => isLoading ? Colors.blueGrey : Colors.blue;
 }
 
 extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {

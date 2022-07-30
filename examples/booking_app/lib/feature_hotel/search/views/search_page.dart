@@ -1,25 +1,25 @@
-import 'package:booking_app/base/ui_components/sorting_bar.dart';
-import 'package:booking_app/feature_hotel/details/views/hotel_details_page.dart';
-import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
-import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
-import 'package:booking_app/feature_hotel/search/ui_components/hotel_capacity_page.dart';
-import 'package:booking_app/feature_hotel/search/ui_components/hotel_sort_page.dart';
 import 'package:favorites_advanced_base/core.dart';
-import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
+import '../../../base/ui_components/sorting_bar.dart';
 import '../../blocs/hotel_manage_bloc.dart';
 import '../../blocs/hotels_extra_details_bloc.dart';
+import '../../details/views/hotel_details_page.dart';
 import '../blocs/hotel_list_bloc.dart';
+import '../models/capacity_filter_data.dart';
+import '../models/date_range_filter_data.dart';
+import '../ui_components/hotel_capacity_page.dart';
+import '../ui_components/hotel_sort_page.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
   @override
-  _SearchPageState createState() => _SearchPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {

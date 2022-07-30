@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:shelf/shelf.dart';
 
 import '../models/auth_token.dart';

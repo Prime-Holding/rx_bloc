@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../models/push_notification_token.dart';
 
 class PushTokenRepository {

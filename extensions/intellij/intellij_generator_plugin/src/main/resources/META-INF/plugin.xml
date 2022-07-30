@@ -24,6 +24,15 @@
     <depends>com.intellij.modules.java</depends>
 
     <actions>
+        <group id="com.primeholding.rxbloc_generator_plugin.action">
+            <action
+                    id="com.primeholding.rxbloc_generator_plugin.action_bootstrap_tests"
+                    class="com.primeholding.rxbloc_generator_plugin.action.BootstrapTestsAction"
+                    text="RxBloc Test"
+                    description="Generate Tests based on your BloCs"
+            />
+            <add-to-group anchor="after" group-id="ProjectViewPopupMenu" relative-to-action="AnalyzeMenu"/>
+        </group>
         <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocAction"
                 description="Generate a new RxBloc Class"
                 id="GenerateRxBlocId"
@@ -42,5 +51,41 @@
                     group-id="NewGroup"
                     anchor="first"/>
         </action>
+        <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateRxListBlocAction"
+            description="Generate a new RxListBloc"
+            id="GenerateRxListBlocId"
+            icon="/icons/rx_bloc.png"
+            text="RxBloc List">
+            <add-to-group
+                group-id="NewGroup"
+                anchor="first"/>
+        </action>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocListenerIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocResultBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocPaginatedBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithFormFieldBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithFormTextFieldBuilderIntentionAction</className>
+            <category>RxBloc</category>
+        </intentionAction>
+    </extensions>
 </idea-plugin>

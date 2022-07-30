@@ -8,8 +8,8 @@ extension _DivideNumbersEventArgsMappers on Stream<_DivideNumbersEventArgs> {
 }
 
 extension _ExceptionMappers on Stream<Exception> {
-  Stream<String> toMessage() => map((exception) {
-        String msg = exception.toString();
+  Stream<String> toMessage() => map((error) {
+        String msg = error.toString();
         if (msg.contains('Exception:')) msg = msg.replaceAll('Exception:', '');
         return msg.trim();
       });

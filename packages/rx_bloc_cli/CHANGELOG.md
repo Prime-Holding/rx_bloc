@@ -1,3 +1,19 @@
+## [1.1.3] - Jun 01, 2022
+* Bump Android compileSdkVersion to the current version (32)
+
+## [1.1.2] - December 23, 2021
+* Fixes to generated iOS project
+
+## [1.1.1] - October 19, 2021
+* Stability improvements
+
+## [1.1.0] - October 19, 2021
+* Upgrade dependencies of generated project to support `flutter 2.5`
+* Updated several inconsistencies in generated project readme file
+
+## [1.0.0] - July 09, 2021
+* Upgraded to `rx_bloc: 3.1.0` and `flutter_rx_bloc: 3.2.0`
+
 ## [0.0.5] - June 29, 2021
 * Update generated project, adding following features:
     - Http-client (Dio by default)

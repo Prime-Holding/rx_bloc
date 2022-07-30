@@ -38,7 +38,7 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
   ///
   /// If the [AsyncSnapshot] of the stream has an [Exception]
   /// this is called with that [Exception]
-  final Widget Function(BuildContext, String, B) buildError;
+  final Widget Function(BuildContext, Exception, B) buildError;
 
   /// Callback which is invoked when the [state] stream produces an event
   /// which is [ResultLoading]
@@ -64,7 +64,7 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
         if (result is ResultSuccess<T>) {
           return buildSuccess(buildContext, result.data, block);
         } else if (result is ResultError<T>) {
-          return buildError(buildContext, result.error.toString(), block);
+          return buildError(buildContext, result.error, block);
         } else {
           return buildLoading(context, block);
         }
