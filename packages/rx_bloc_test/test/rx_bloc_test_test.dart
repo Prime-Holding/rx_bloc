@@ -50,18 +50,43 @@ void main() {
     });
 
     rxBlocTest<DetailsBloc, String>(
-      'Empty test bloc',
+      'Email test bloc',
       build: () async => DetailsBloc(repo),
-      state: (bloc) => bloc.states.details,
-      expect: <String>['Success'],
+      state: (bloc) => bloc.states.email,
+      act: (bloc) async {
+        bloc.events.setEmail(' job');
+        bloc.events.setEmail(' job@prime');
+        bloc.events.setEmail(' job@prime.com ');
+      },
+      expect: <String>['', 'job@prime.com'],
     );
 
-    rxBlocTest<DetailsBloc, String>(
-      'Waiting for results',
-      build: () async => DetailsBloc(repo),
-      state: (bloc) => bloc.states.details,
-      act: (bloc) async => bloc.events.fetch(),
-      expect: <String>['Success', 'Success'],
+    rxBlocFakeAsyncTest<DetailsBloc, String>(
+      'Email fake async test bloc',
+      build: () => DetailsBloc(repo),
+      state: (bloc) => bloc.states.email,
+      act: (bloc, fakeAsync) {
+        bloc.events.setEmail(' job');
+        bloc.events.setEmail(' job@prime');
+        bloc.events.setEmail(' job@prime.com ');
+        fakeAsync.elapse(const Duration(seconds: 3));
+      },
+      expect: <String>['', 'job@prime.com'],
     );
-  });
+
+  rxBlocTest<DetailsBloc, String>(
+    'Empty test bloc',
+    build: () async => DetailsBloc(repo),
+    state: (bloc) => bloc.states.details,
+    expect: <String>['Success'],
+  );
+
+  rxBlocTest<DetailsBloc, String>(
+    'Waiting for results',
+    build: () async => DetailsBloc(repo),
+    state: (bloc) => bloc.states.details,
+    act: (bloc) async => bloc.events.fetch(),
+    expect: <String>['Success', 'Success'],
+  );
+});
 }
