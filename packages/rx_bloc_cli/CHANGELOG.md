@@ -1,3 +1,6 @@
+## [1.1.3] - Jun 01, 2022
+* Bump Android compileSdkVersion to the current version (32)
+
 ## [1.1.2] - December 23, 2021
 * Fixes to generated iOS project
 
