@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "",
-    "project_id": "",
-    "storage_bucket": ""
+    "project_number": "422301301950",
+    "project_id": "reminders-app-dev-22840",
+    "storage_bucket": "reminders-app-dev-22840.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "Make sure you add your own Firebase development config.",
+        "mobilesdk_app_id": "1:422301301950:android:b937ecb9894db8f68272ef",
         "android_client_info": {
-          "package_name": "com.example.reminders.dev"
+          "package_name": "com.primeholding.reminderspoc.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "",
+          "client_id": "422301301950-cn61ja0791aus5lqln7oercf846qak1c.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": ""
+          "current_key": "AIzaSyB2S8yJUFINSFDz33DfQLtzGE8vBD500JQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "",
+              "client_id": "422301301950-cn61ja0791aus5lqln7oercf846qak1c.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

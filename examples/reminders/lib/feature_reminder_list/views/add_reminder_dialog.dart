@@ -27,8 +27,7 @@ class AddReminderDialogState extends State<AddReminderDialog> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
+  Widget build(BuildContext context) => AlertDialog(
         title: const Text('Add Reminder'),
         content: Row(
           children: [
@@ -77,8 +76,8 @@ class AddReminderDialogState extends State<AddReminderDialog> {
               Navigator.of(context).pop();
             },
           )
-        ]);
-  }
+        ],
+      );
 
   @override
   void dispose() {

@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>replace_me</string>
+	<string>422301301950-488tn0sbt3qdk2tcn24snic1uv7rjrct.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>replace_me</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>replace_me</string>
+	<string>com.googleusercontent.apps.422301301950-488tn0sbt3qdk2tcn24snic1uv7rjrct</string>
 	<key>API_KEY</key>
-	<string>AAaaAaAAaa0aa0AA_aAAA0a0a0a0AaOaAaA0aAA</string>
+	<string>AIzaSyAKGMupaleQxmfTk6hQLnH6eHg18I_oYyE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>replace_me</string>
+	<string>422301301950</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.reminders</string>
+	<string>com.primeholding.reminderspoc.dev</string>
 	<key>PROJECT_ID</key>
-	<string>reminders</string>
+	<string>reminders-app-dev-22840</string>
 	<key>STORAGE_BUCKET</key>
-	<string>replace_me</string>
+	<string>reminders-app-dev-22840.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:0123456789012:ios:a00000000a0000a0000a0a</string>
-	<key>DATABASE_URL</key>
-	<string>replace_me</string>
+	<string>1:422301301950:ios:17da5733f75d046d8272ef</string>
 </dict>
 </plist>

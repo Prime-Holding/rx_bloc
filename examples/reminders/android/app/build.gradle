@@ -41,9 +41,10 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.reminders"
+        applicationId "com.primeholding.reminderspoc"
         minSdkVersion 21
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -72,16 +73,28 @@ android {
             dimension "default"
             applicationIdSuffix ""
             versionNameSuffix ""
+            resValue "string", "app_name", "Reminders"
+            resValue "string", "facebook_app_id", "781246629736379"
+            resValue "string", "fb_login_protocol_scheme", "fb781246629736379"
+            resValue "string", "facebook_client_token", "e2ad7cdcb71d435286bad8b5323b4ec1"
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stag"
             versionNameSuffix "-stag"
+            resValue "string", "app_name", "reminders-app-staging"
+            resValue "string", "facebook_app_id", "1202479010572124"
+            resValue "string", "fb_login_protocol_scheme", "fb1202479010572124"
+            resValue "string", "facebook_client_token", "7200154801d65f0a6c58f93f28bc2da0"
         }        
         development {
             dimension "default"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
+            resValue "string", "app_name", "reminders-app-dev"
+            resValue "string", "facebook_app_id", "1726327217729448"
+            resValue "string", "fb_login_protocol_scheme", "fb1726327217729448"
+            resValue "string", "facebook_client_token", "e1cb2550d07d09b93fecaa010706ca9a"
         }
     }
 
@@ -104,6 +117,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    implementation 'com.android.support:multidex:1.0.3'
 }
