@@ -17,7 +17,13 @@ class _BuildController {
     _validate();
 
     final blocTypeClassName = '${rxBlocClass.displayName}Type';
-    final blocClassName = '\$${rxBlocClass.displayName}';
+    final blocClassGenericTypes =
+        rxBlocClass.typeParameters.map((final t) => t.displayName);
+    final blocClassGenericTypesString = blocClassGenericTypes.isNotEmpty
+        ? '<${blocClassGenericTypes.join(', ')}>'
+        : '';
+    final blocClassName =
+        '\$${rxBlocClass.displayName}$blocClassGenericTypesString';
     final eventClassName = eventClass!.displayName;
     final stateClassName = stateClass!.displayName;
     final blocFilePath = rxBlocClass.location?.components.first ?? '';
@@ -27,12 +33,11 @@ class _BuildController {
             '';
 
     /// The output buffer containing all the generated code
-    final _output = StringBuffer();
+    final output = StringBuffer();
 
     <String>[
       /// .. part of '[rx_bloc_name]_bloc.dart'
-      // TODO(Diev): Use [Directive.partOf] instead once `part of` is supported
-      "part of '$mainBlocFileName';",
+      Directive.partOf(mainBlocFileName).toDartCodeString(),
 
       // abstract class [RxBlocName]BlocType
       _BlocTypeClass(
@@ -66,9 +71,9 @@ class _BuildController {
           .map((MethodElement method) {
         return _EventArgumentsClass(method).build().toDartCodeString();
       }).toList()
-    ].forEach(_output.writeln);
+    ].forEach(output.writeln);
 
-    return _output.toString();
+    return output.toString();
   }
 
   /// Checks and logs if there is anything missed

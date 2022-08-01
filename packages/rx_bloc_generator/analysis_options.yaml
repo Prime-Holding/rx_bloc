@@ -17,4 +17,5 @@ linter:
 
 analyzer:
   exclude:
+    - example/main.dart
     - lib/src/bloc/loading_bloc.rxb.g.dart
