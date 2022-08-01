@@ -169,7 +169,6 @@ class _AppReminderTileState extends State<AppReminderTile> {
           .events
           .update(widget.reminder.copyWith(
             dueDate: date,
-            // completeUpdated: false,
           ));
 
       widget.onDueDateChanged?.call(date);

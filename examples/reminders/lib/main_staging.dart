@@ -5,9 +5,9 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
+import 'base/app/config/app_config.dart';
 import 'base/app/config/environment_config.dart';
 import 'base/app/initialization/app_setup.dart';
 import 'base/app/reminders.dart';
@@ -24,5 +24,9 @@ void main() async {
   // Configure global app tools before launching the app
   await configureApp();
 
-  runApp(Reminders(config: EnvironmentConfig.staging));
+  var configuredApp = AppConfig(
+    config: EnvironmentConfig.staging,
+    child: Reminders(config: EnvironmentConfig.staging),
+  );
+  runApp(configuredApp);
 }

@@ -17,6 +17,7 @@ extension ReminderListBlocStreamExtensions on Stream<bool> {
               .getAll(ReminderModelRequest(
                 page: _paginatedList.value.pageNumber + 1,
                 pageSize: _paginatedList.value.pageSize,
+                sort: ReminderModelRequestSort.dueDateDesc,
               ))
               .asResultStream();
         },

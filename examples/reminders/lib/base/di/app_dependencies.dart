@@ -18,22 +18,26 @@ import 'package:provider/single_child_widget.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
+import '../common_blocs/firebase_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
+import '../common_use_cases/firebase_logout_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
-import '../data_sources/local/reminders_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
+import '../data_sources/remote/reminders_firebase_data_source.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/firebase_repository.dart';
 import '../repositories/push_notification_repository.dart';
 import '../repositories/reminders_repository.dart';
+import '../services/firebase_service.dart';
 import '../services/reminders_service.dart';
 
 class AppDependencies {
@@ -102,8 +106,8 @@ class AppDependencies {
           create: (context) => PushNotificationsDataSource(context.read(),
               baseUrl: config.baseApiUrl),
         ),
-        Provider<RemindersLocalDataSource>(
-          create: (context) => RemindersLocalDataSource(),
+        Provider<RemindersFirebaseDataSource>(
+          create: (context) => RemindersFirebaseDataSource(),
         ),
       ];
 
@@ -122,7 +126,12 @@ class AppDependencies {
         ),
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            context.read(),
+            dataSource: RemindersFirebaseDataSource(),
+          ),
+        ),
+        Provider<FirebaseRepository>(
+          create: (context) => FirebaseRepository(
+            dataSource: context.read(),
           ),
         ),
       ];
@@ -141,11 +150,19 @@ class AppDependencies {
         Provider<FetchAccessTokenUseCase>(
           create: (context) => FetchAccessTokenUseCase(context.read()),
         ),
+        Provider<FirebaseLogoutUseCase>(
+          create: (context) => FirebaseLogoutUseCase(context.read()),
+        )
       ];
 
   List<Provider> get _services => [
         Provider<RemindersService>(
           create: (context) => RemindersService(
+            context.read(),
+          ),
+        ),
+        Provider<FirebaseService>(
+          create: (context) => FirebaseService(
             context.read(),
           ),
         ),
@@ -167,6 +184,14 @@ class AppDependencies {
             coordinatorBloc: context.read(),
             authRepository: context.read(),
           ),
+        ),
+        RxBlocProvider<FirebaseBlocType>(
+          create: (context) => FirebaseBloc(
+            context.read(),
+            context.read(),
+            context.read(),
+          ),
+          lazy: false,
         ),
       ];
 

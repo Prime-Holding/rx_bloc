@@ -1,12 +1,13 @@
 import 'package:rx_bloc_list/models.dart';
 
-import '../data_sources/local/reminders_local_data_source.dart';
+import '../data_sources/remote/reminders_data_source.dart';
 import '../models/reminder/reminder_model.dart';
 
 class RemindersRepository {
-  RemindersRepository(this._dataSource);
+  RemindersRepository({required RemindersDataSource dataSource})
+      : _dataSource = dataSource;
 
-  final RemindersLocalDataSource _dataSource;
+  final RemindersDataSource _dataSource;
 
   Future<PaginatedList<ReminderModel>> getAll(
     ReminderModelRequest? request,

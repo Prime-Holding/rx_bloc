@@ -44,5 +44,14 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "reminders": "Reminders",
+    "logInAsAnonymous": "Log in as anonymous",
+    "logInWithFacebook": "Log in with facebook",
+    "logInWithFacebookFailed": "Log in with facebook failed",
+    "accountExistsWithDifferentSignInProvider": "This account exists with a different sign in provider",
+    "unknownError": "Unknown error has occurred",
+    "operationNotAllowed": "This operation is not allowed",
+    "userIsDisabled": "The user you tried to log into is disabled",
+    "userNotFound": "The user you tried to log into was not found"
 }

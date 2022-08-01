@@ -1,9 +1,11 @@
 import 'package:rx_bloc_list/models.dart';
 
-import '../../models/reminder/reminder_list_reponse.dart';
+import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
+import '../remote/reminders_data_source.dart';
 
-class RemindersLocalDataSource {
+// Currently this class is not used in the app
+class RemindersLocalDataSource implements RemindersDataSource {
   RemindersLocalDataSource({List<ReminderModel>? seed})
       : _data = seed ??
             List.generate(
@@ -13,16 +15,19 @@ class RemindersLocalDataSource {
 
   final List<ReminderModel> _data;
 
+  @override
   Future<int> getCompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return _data.where((element) => element.complete).length;
   }
 
+  @override
   Future<int> getIncompleteCount() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return _data.where((element) => !element.complete).length;
   }
 
+  @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     await Future.delayed(const Duration(milliseconds: 2000));
 
@@ -46,6 +51,7 @@ class RemindersLocalDataSource {
     );
   }
 
+  @override
   Future<ReminderModel> create({
     required String title,
     required DateTime dueDate,
@@ -66,12 +72,14 @@ class RemindersLocalDataSource {
     return reminder;
   }
 
+  @override
   Future<void> delete(String id) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
     _data.removeWhere((element) => element.id == id);
   }
 
+  @override
   Future<IdentifiablePair<ReminderModel>> update(
       ReminderModel updatedModel) async {
     await Future.delayed(const Duration(milliseconds: 200));

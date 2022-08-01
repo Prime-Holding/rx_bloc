@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -34,8 +33,8 @@ class Reminders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-        providers: AppDependencies.of(context,config).providers,
-        child: _MyMaterialApp(_router),
+        providers: AppDependencies.of(context, config).providers,
+        child: _MyMaterialApp(_router, config),
       );
 }
 
@@ -43,29 +42,31 @@ class Reminders extends StatelessWidget {
 /// accessible throughout the app (such as App-level dependencies, Firebase
 /// services, etc).
 class _MyMaterialApp extends StatefulWidget {
-  const _MyMaterialApp(this._router);
+  const _MyMaterialApp(this._router, this._config);
 
   final router.Router _router;
+  final EnvironmentConfig _config;
 
-@override
-__MyMaterialAppState createState() => __MyMaterialAppState();
+  @override
+  __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
-
   @override
-  void initState() { 
-    _configureFCM(); 
-    _addInterceptors();
+  void initState() {
+    if (widget._config != EnvironmentConfig.dev) {
+      _configureFCM();
+      _addInterceptors();
+    }
 
     super.initState();
   }
 
   Future<void> _configureFCM() async {
     /// Initialize the FCM callbacks
-    if (kIsWeb){
-        await safeRun(
-            () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
+    if (kIsWeb) {
+      await safeRun(
+          () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
     }
     await FirebaseMessaging.instance
         .getInitialMessage()
@@ -78,7 +79,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         .listen((message) => onMessageOpenedFromBackground(context, message));
   }
 
-  void _addInterceptors(){
+  void _addInterceptors() {
     context.read<Dio>().interceptors.addAll([
       AuthInterceptor(context.read(), context.read(), context.read()),
       AnalyticsInterceptor(context.read()),
@@ -99,9 +100,11 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         supportedLocales: AppLocalizations.supportedLocales,
         routeInformationParser: widget._router.defaultRouteParser(),
         routerDelegate: widget._router.delegate(
-          navigatorObservers: () => [
-            context.read<FirebaseAnalyticsObserver>(),
-          ],
+          navigatorObservers: () => widget._config != EnvironmentConfig.dev
+              ? [
+                  context.read<FirebaseAnalyticsObserver>(),
+                ]
+              : [],
         ),
         debugShowCheckedModeBanner: false,
       );
