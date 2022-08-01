@@ -48,7 +48,7 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.2.0
   retrofit_generator: ^4.0.3
-  rx_bloc_generator: ^5.1.1
+  rx_bloc_generator: ^6.0.0
   rx_bloc_test: any
   test: any
 

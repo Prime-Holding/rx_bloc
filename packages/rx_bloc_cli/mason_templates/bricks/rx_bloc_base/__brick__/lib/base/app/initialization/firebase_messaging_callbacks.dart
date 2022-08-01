@@ -16,7 +16,7 @@ import '../../utils/local_notifications.dart';
 /// Callback executed once the app receives a FCM message while in foreground
 Future<void> onForegroundMessage(
     BuildContext context, RemoteMessage message) async {
-  print('Foreground Message received!');
+  debugPrint('Foreground Message received!');
   final notification = message.notification;
 
   if (notification != null) {
@@ -34,8 +34,8 @@ Future<void> onForegroundMessage(
       );
     } else if (kIsWeb) {
       // TODO: Implement your own logic of presenting notifications on web
-      print('Web notification received: ');
-      print('$title : $body');
+      debugPrint('Web notification received: ');
+      debugPrint('$title : $body');
     }
   }
 }
@@ -47,14 +47,14 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
   //If using other Firebase services, make sure that the Firebase is initialized
   await Firebase.initializeApp();
 
-  print('Background Message received!');
+  debugPrint('Background Message received!');
 }
 
 /// Callback executed if the app has opened from a background state (and was
 /// not terminated).
 Future<void> onMessageOpenedFromBackground(
     BuildContext context, RemoteMessage message) async {
-  print('Message opened from background.');
+    debugPrint('Message opened from background.');
 }
 
 /// If the application has been opened from a terminated state via a remote
@@ -62,12 +62,12 @@ Future<void> onMessageOpenedFromBackground(
 /// be `null`.
 Future<void> onInitialMessageOpened(
     BuildContext context, RemoteMessage? message) async {
-  print('Initial message exists: ${message != null}');
+  debugPrint('Initial message exists: ${message != null}');
 }
 
 /// Callback triggered once a new FCM token is generated
 Future<void> onFCMTokenRefresh(BuildContext context, String token) async {
-  print('New FCM token: $token');
+  debugPrint('New FCM token: $token');
 }
 
 {{/push_notifications}}
