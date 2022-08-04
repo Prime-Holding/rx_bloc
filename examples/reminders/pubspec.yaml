@@ -28,6 +28,7 @@ dependencies:
   flutter_slidable: ^1.2.1
   flutter_sticky_header: ^0.6.0
   golden_toolkit: ^0.12.0
+  grouped_list: ^5.1.2
   intl: ^0.17.0
   json_annotation: ^4.4.0
   json_serializable: ^6.1.3

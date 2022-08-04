@@ -105,21 +105,25 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     // Get the userId from local storage
-    var userId = await storage.read(key: _authorId);
-    //  Generate a query
-    var querySnapshot = getFirebaseFilteredQuery(request, userId);
+      var userId = await storage.read(key: _authorId);
+      //  Generate a query
+      var querySnapshot = getFirebaseFilteredQuery(request, userId);
 
-    // Modify the query
-    if (lastFetchedRecord != null && request?.page != 1) {
-      querySnapshot = querySnapshot.startAfterDocument(lastFetchedRecord!);
-    }
-    querySnapshot = querySnapshot.limit(request!.pageSize);
+      // Modify the query
+      if (lastFetchedRecord != null && request?.page != 1) {
+        querySnapshot = querySnapshot.startAfterDocument(lastFetchedRecord!);
+      }
+      querySnapshot = querySnapshot.limit(request!.pageSize);
 
-    // Get the result of the query
-    final snap = await querySnapshot.get();
-    if (request.pageSize == 10) {
-      lastFetchedRecord = snap.docs.last;
-    }
+      // Get the result of the query
+      final snap = await querySnapshot.get();
+
+      if (request.pageSize == 10 && snap.docs.isNotEmpty) {
+        // print('LAST ${snap.docs.last.id}');
+        // print('LENGTH ${snap.docs.length}');
+
+        lastFetchedRecord = snap.docs.last;
+      }
 
     final reminders = snap.docs.asReminderList();
 

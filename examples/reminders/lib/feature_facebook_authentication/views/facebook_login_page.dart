@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_blocs/firebase_bloc.dart';
+import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../ui_components/login_button.dart';
 import '../ui_components/login_text.dart';
 
@@ -18,14 +19,17 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LoginText(text: context.l10n.reminders),
-              const SizedBox(height: 5),
-              LoginText(text: context.l10n.logIn),
-              _buildButtonsArea(context),
-            ],
+          child: SizedBox(
+            height: 300,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                LoginText(text: context.l10n.reminders),
+                const SizedBox(height: 5),
+                LoginText(text: context.l10n.logIn),
+                _buildButtonsArea(context),
+              ],
+            ),
           ),
         ),
       );
@@ -66,7 +70,20 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
             color: Colors.blue,
             onPressed: () =>
                 context.read<FirebaseBlocType>().events.logIn(anonymous: false),
-          )
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          RxBlocBuilder<FirebaseBlocType, bool>(
+            state: (bloc) => bloc.states.isLoading,
+            builder: (context, isLoading, bloc) {
+              if (isLoading.hasData && isLoading.data == true) {
+                return const AppProgressIndicator();
+              } else {
+                return Container();
+              }
+            },
+          ),
         ],
       );
 }

@@ -27,7 +27,7 @@ abstract class FirebaseBlocStates {
 
   ConnectableStream<void> get countersUpdated;
 
-  Stream<User?> get currentUserPrivate;
+  Stream<User?> get currentUserData;
 
   Stream<bool> get userLoggedOut;
 
@@ -61,7 +61,7 @@ class FirebaseBloc extends $FirebaseBloc {
   Stream<String> _mapToErrorsState() => errorState.toMessage();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool> _mapToIsLoadingState() => loadingState.asBroadcastStream();
 
   @override
   Stream<bool> _mapToLoggedInState() => _$logInEvent
@@ -79,11 +79,11 @@ class FirebaseBloc extends $FirebaseBloc {
       .onErrorReturn(false);
 
   @override
-  Stream<User?> _mapToCurrentUserPrivateState() => _service.currentUser;
+  Stream<User?> _mapToCurrentUserDataState() => _service.currentUser;
 
   @override
   Stream<bool> _mapToUserLoggedOutState() => Rx.merge([
-        currentUserPrivate.skip(1).map((event) {
+    currentUserData.skip(1).map((event) {
           if (event == null) {
             return true;
           } else {
