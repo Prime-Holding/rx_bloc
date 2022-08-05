@@ -31,16 +31,14 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         top: false,
         child: Scaffold(
           appBar: AppBar(
-            actions: _isInProduction(context)
-                ? [
-                    IconButton(
-                      onPressed: () {
-                        context.read<FirebaseBlocType>().events.logOut();
-                      },
-                      icon: const Icon(Icons.logout),
-                    ),
-                  ]
-                : [],
+            actions: [
+              IconButton(
+                onPressed: () {
+                  context.read<FirebaseBlocType>().events.logOut();
+                },
+                icon: const Icon(Icons.logout),
+              ),
+            ],
           ),
           body: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -75,8 +73,8 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         ),
       );
 
-  bool _isInProduction(BuildContext context) =>
-      AppConfig.of(context)?.config.environment == EnvironmentType.prod;
+  // bool _isInProduction(BuildContext context) =>
+  //     AppConfig.of(context)?.config.environment == EnvironmentType.prod;
 
   Widget _buildErrorListener() => RxBlocListener<ReminderListBlocType, String>(
         state: (bloc) => bloc.states.errors,

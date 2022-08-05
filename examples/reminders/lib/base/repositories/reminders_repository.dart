@@ -12,8 +12,10 @@ class RemindersRepository {
   Future<PaginatedList<ReminderModel>> getAll(
     ReminderModelRequest? request,
   ) async {
-    final response = await _dataSource.getAll(request);
+    // await Future.delayed(const Duration(milliseconds: 200));
 
+    final response = await _dataSource.getAll(request);
+// await Future.delayed(const Duration(milliseconds: 20));
     return PaginatedList(
       list: response.items,
       totalCount: response.totalCount,
