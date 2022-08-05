@@ -14,6 +14,13 @@ This is a user application specification of the reminders sample app.
   - Tapping on the "Log in with facebook" starts the facebook login process.
   - After a users taps on either of the buttons a circular loading indicator is displayed, while the next page is loading with the data from the web.
 
+### Login Page Loading
+
+<img src="assets/images/login_page_loading.png" width="350">
+<br/><br/>
+
+  - Shows a loading indicator, while the login process is being executed.
+
 ### Navigation Page
 
 <img src="assets/images/navigation_screen.png" width="350">
@@ -27,6 +34,7 @@ This is a user application specification of the reminders sample app.
   - User can see a counter of the incomplete reminders and a counter for the complete reminders.
   - Bellow the counters the user sees an "Overdue" list of only incomplete reminders.
   - When the page is loaded for the first time the length of the fetched list is up to 5 reminders, sorted by due date in descending order. The start date is 10 days subtracted from today and the end date is today.
+  - When a reminder id on the Dashboard page and is marked as complete, regardless from which page, it is removed from the Dashboard page.
 
 ### Pull To Refresh Dashboard List Page
 
@@ -37,9 +45,9 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/reminder_edit_options.png" width="350">
 <br/><br/>
 
-  - User can slide the reminder tile and see three options: Complete, Edit, Delete.
-  - User can tap on the Edit button, but this functionality is not implemented and nothing happens.
+  - User can slide the reminder tile and see 2 options: Complete/Incomplete, Delete.
   - User can slide back the reminder tile to hide the edit options, when doing this the reminder will not be updated.
+  - When a reminder is marked as completed, its color is changed to grey, so that the user knows, which reminders are completed.
 
 ### Reminder Completed
 
@@ -71,13 +79,14 @@ This is a user application specification of the reminders sample app.
   - User can tap on a date after today. When this happens, the reminder is removed from the dashboard list and displayed in the Reminders list page.
   - User can tap on a date, which is 10 days before today. When this happens, the reminder is removed from the dashboard list and displayed in the Reminders list page.
 
-### Reminder List Screen Today
+### Reminder List Screen Groups
 
-<img src="assets/images/reminder_list_today.png" width="350">
+<img src="assets/images/reminder_groups.png" width="350">
 <br/><br/>
 
   - When the page is loaded for the first time, a circular loading indicator is displayed in the middle of the screen.
   - When the page is loaded for the first time, the first 10 reminders in the reminders list are fetched. There is pagination on the list with a size of 10 of each page. The list is filtered by due date descending.
+  - There are 4 groups of reminders on the page according to their due date: 'Old', 'Today', 'This month', 'This year'. 'Old' has all reminders before today, 'Today' has all reminders from today, 'This month' has all reminders from tomorrow until the end of the current month and 'This year' has all reminders from the beginning of the next month until the end of the year.
 
 ### Pull To Refresh Reminder List Page
 
