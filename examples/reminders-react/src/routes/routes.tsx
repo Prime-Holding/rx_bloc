@@ -1,5 +1,6 @@
 import { RouteObject } from 'react-router';
 import LoginPage from '../features/authentication/pages/login-page/LoginPage';
+import { firebaseAuth } from '../api/firebase';
 
 export interface AppRoute extends RouteObject {
 	onlyAuth?: boolean;
@@ -14,7 +15,12 @@ const routes: AppRoute[] = [
 	{
 		path: '/',
 		onlyAuth: true,
-		element: <div />
+		// Temporary
+		element: (
+			<div>
+				<button onClick={() => firebaseAuth.signOut()}>Logout</button>
+			</div>
+		)
 	}
 ];
 

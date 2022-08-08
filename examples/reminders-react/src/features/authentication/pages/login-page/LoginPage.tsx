@@ -1,12 +1,18 @@
 import useAuth from '../../hooks/useAuth';
 import { Navigate } from 'react-router';
 import './loginPage.scss';
+import Loader from '../../../../ui-kit/loader/Loader';
+import FullscreenLoader from '../../../../ui-kit/fullscreen-loader/FullscreenLoader';
 
 const LoginPage = () => {
 	const auth = useAuth();
 
 	if (auth.state.isAuth) {
 		return <Navigate to="/" />;
+	}
+
+	if (auth.isInitialLoading) {
+		return <FullscreenLoader />;
 	}
 
 	return (
@@ -19,7 +25,12 @@ const LoginPage = () => {
 				<button className="login-anon" onClick={auth.signInAnonymously}>
 					Log in as anonymous
 				</button>
-				<button className="login-facebook">Log in in with facebook</button>
+				<button className="login-facebook" onClick={auth.signInWithFacebook}>
+					Log in in with facebook
+				</button>
+			</div>
+			<div className={'login-loader' + (auth.isLoading ? ' visible' : '')}>
+				<Loader />
 			</div>
 		</div>
 	);

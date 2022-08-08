@@ -1,23 +1,62 @@
-import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
+import {
+	createContext,
+	ReactNode,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState
+} from 'react';
 import AuthContextType from '../types/authContextType';
 import AuthStateType from '../types/authStateType';
+import signInWithFacebookAPI from '../api/signInWithFacebook';
+import { firebaseAuth } from '../../../api/firebase';
 
 export const AuthContext = createContext<AuthContextType>(
 	null as unknown as AuthContextType
 );
+
+const initialState = {
+	user: null,
+	isAuth: false,
+	isAnonymous: false
+};
 
 interface AuthProviderProps {
 	children: ReactNode;
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [state, setState] = useState<AuthStateType>({
-		user: null,
-		isAuth: false,
-		isAnonymous: false
-	});
+	// Initial loading for checking if user is already logged in with facebook
+	const [isInitialLoading, setIsInitialLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const [state, setState] = useState<AuthStateType>(initialState);
 
-	const signInWithFacebook = useCallback(() => {}, []);
+	useEffect(() => {
+		const unsubscribe = firebaseAuth.onIdTokenChanged((user) => {
+			setIsInitialLoading(false);
+			if (user) {
+				setState({
+					user: {
+						id: user.uid
+					},
+					isAuth: true,
+					isAnonymous: false
+				});
+			} else {
+				setState(initialState);
+			}
+		});
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+
+	const signInWithFacebook = useCallback(() => {
+		setIsLoading(true);
+		signInWithFacebookAPI().finally(() => {
+			setIsLoading(false);
+		});
+	}, []);
 
 	const signInAnonymously = useCallback(() => {
 		setState({
@@ -28,21 +67,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 	}, []);
 
 	const signOut = useCallback(() => {
-		setState({
-			user: null,
-			isAuth: false,
-			isAnonymous: false
-		});
+		firebaseAuth.signOut();
+		setState(initialState);
 	}, []);
 
 	const context = useMemo<AuthContextType>(
 		() => ({
+			isInitialLoading,
+			isLoading,
 			state,
 			signInWithFacebook,
 			signInAnonymously,
 			signOut
 		}),
-		[signInAnonymously, signInWithFacebook, signOut, state]
+		[isInitialLoading, isLoading, signInAnonymously, signInWithFacebook, signOut, state]
 	);
 
 	return <AuthContext.Provider value={context}>{children}</AuthContext.Provider>;
