@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../app_extensions.dart';
-import '../../base/app/config/app_config.dart';
-import '../../base/app/config/environment_config.dart';
 import '../../base/common_blocs/firebase_bloc.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
@@ -72,9 +70,6 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
           ),
         ),
       );
-
-  // bool _isInProduction(BuildContext context) =>
-  //     AppConfig.of(context)?.config.environment == EnvironmentType.prod;
 
   Widget _buildErrorListener() => RxBlocListener<ReminderListBlocType, String>(
         state: (bloc) => bloc.states.errors,

@@ -7,7 +7,7 @@ extension ReminderListBlocStreamExtensions on Stream<bool> {
     RemindersService _service,
     BehaviorSubject<PaginatedList<ReminderModel>> _paginatedList,
   ) =>
-      switchMap(
+      throttleTime(const Duration(milliseconds: 200)).switchMap(
         (reset) {
           if (reset) {
             _paginatedList.value.reset();

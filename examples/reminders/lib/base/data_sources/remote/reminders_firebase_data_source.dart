@@ -119,8 +119,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       final snap = await querySnapshot.get();
 
       if (request.pageSize == 10 && snap.docs.isNotEmpty) {
-        // print('LAST ${snap.docs.last.id}');
-        // print('LENGTH ${snap.docs.length}');
 
         lastFetchedRecord = snap.docs.last;
       }
@@ -130,7 +128,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     if (request.page == 1) {
       remindersCollectionLength = await _getRemindersCollectionLength();
     }
-
     return ReminderListResponse(
       items: reminders,
       totalCount: remindersCollectionLength,
