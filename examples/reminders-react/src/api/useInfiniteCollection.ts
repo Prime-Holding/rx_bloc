@@ -5,6 +5,7 @@ import {
 	query,
 	orderBy,
 	startAfter,
+	endAt,
 	limit,
 	QueryConstraint,
 	QuerySnapshot,
@@ -14,9 +15,17 @@ import { db } from './firebase';
 
 interface QueryEntry<T> {
 	index: number;
-	startAfter: T | undefined;
-	limit: number;
+	startAfter?: T;
+	endAt?: T;
+	limit?: number;
 	unsubscribe: Unsubscribe;
+}
+
+interface QueryConfig<T> {
+	index: number;
+	startAfter?: T;
+	endAt?: T;
+	limit?: number;
 }
 
 const useInfiniteCollection = <T extends { id: string }>(
@@ -36,7 +45,7 @@ const useInfiniteCollection = <T extends { id: string }>(
 		return queryData.at(-1)?.length != 0;
 	}, [queryData]);
 
-	const handleNextQueryData = useCallback((index: number, snapshot: QuerySnapshot) => {
+	const handleNextSnapshot = useCallback((index: number, snapshot: QuerySnapshot) => {
 		setQueryData((prev) => {
 			const data = [...prev];
 			data[index] = snapshot.docs.map((doc) => ({
@@ -45,27 +54,24 @@ const useInfiniteCollection = <T extends { id: string }>(
 			})) as T[];
 			return data;
 		});
+		const currentQuery = queries.current[index];
+		currentQuery.endAt = snapshot.docs.at(-1)?.data() as T;
 
 		// Check if some items were removed
 		const hasRemoved = snapshot.docChanges().some((change) => change.type == 'removed');
 
-		// If some items are removed, this means that every query after this one must be recreated
+		// If some items are removed, this means that the next query should be refreshed
 		if (hasRemoved) {
-			const toRemove = queries.current.slice(index + 1);
-			const totalRemovedItems = toRemove.reduce(
-				(prev, current) => prev + current.limit,
-				0
-			);
-			toRemove.forEach((query) => query.unsubscribe());
-			setQueryData((data) => [
-				...data.slice(0, index + 1), // Get data for queries after this one
-				data.slice(index + 1).reduce((prev, current) => [...prev, ...current], []) // Combine data for every query after this one into one
-			]);
-
-			queries.current = [
-				...queries.current.slice(0, index + 1),
-				createQuery(index + 1, totalRemovedItems, snapshot.docs.at(-1)?.data() as T)
-			];
+			const nextQuery = queries.current[index + 1];
+			if (nextQuery) {
+				nextQuery.unsubscribe();
+				// Replace the next query with a new query
+				queries.current[index + 1] = createQuery({
+					index: index + 1,
+					startAfter: snapshot.docs.at(-1)?.data() as T,
+					endAt: nextQuery.endAt
+				});
+			}
 		}
 
 		setIsLoading(false);
@@ -73,33 +79,35 @@ const useInfiniteCollection = <T extends { id: string }>(
 	}, []);
 
 	const createQuery = useCallback(
-		(index: number, limitCount: number, startAfterRef?: T) => {
+		(config: QueryConfig<T>): QueryEntry<T> => {
 			setIsLoading(true);
 
-			const queryConstraints = [
-				...(constraints ?? []),
-				orderBy(orderByKey, 'asc'),
-				limit(limitCount)
-			];
-			if (startAfterRef) {
-				queryConstraints.push(startAfter(startAfterRef[orderByKey]));
+			const queryConstraints = [...(constraints ?? []), orderBy(orderByKey, 'asc')];
+			if (config.limit) {
+				queryConstraints.push(limit(config.limit));
+			}
+			if (config.startAfter) {
+				queryConstraints.push(startAfter(config.startAfter[orderByKey]));
+			}
+			if (config.endAt) {
+				queryConstraints.push(endAt(config.endAt[orderByKey]));
 			}
 
 			const queryRef = query(collection(db, collectionName), ...queryConstraints);
 			const unsubscribe = onSnapshot(queryRef, {
 				next: (snapshot) => {
-					handleNextQueryData(index, snapshot);
+					handleNextSnapshot(config.index, snapshot);
 				}
 			});
 
 			return {
-				index,
+				index: config.index,
 				unsubscribe,
-				limit: limitCount,
-				startAfter: startAfterRef
+				limit: config.limit,
+				startAfter: config.startAfter
 			};
 		},
-		[collectionName, constraints, handleNextQueryData, orderByKey]
+		[collectionName, constraints, handleNextSnapshot, orderByKey]
 	);
 
 	const next = useCallback(
@@ -108,7 +116,11 @@ const useInfiniteCollection = <T extends { id: string }>(
 				return;
 			}
 			let lastItem: T | undefined = data.at(-1);
-			const queryEntry = createQuery(queries.current.length, count, lastItem);
+			const queryEntry = createQuery({
+				index: queries.current.length,
+				limit: count,
+				startAfter: lastItem
+			});
 			queries.current = [...queries.current, queryEntry];
 		},
 		[createQuery, data, hasMore, isLoading]
