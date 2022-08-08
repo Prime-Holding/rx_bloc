@@ -27,18 +27,17 @@ const useCollection = <T extends { id: string }>(
 		const unsubscribe = onSnapshot(queryRef, {
 			next: (snapshot) => {
 				setData(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as T[]);
+				setIsLoading(false);
 			},
 			error: (error) => {
 				setError(error);
-			},
-			complete: () => {
-				setIsLoading(false);
 			}
 		});
 		return () => {
 			unsubscribe();
 		};
-	}, [collectionName, constraints]);
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [collectionName]);
 
 	return useMemo(
 		() => ({

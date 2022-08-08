@@ -1,7 +1,7 @@
-import useCollection from '../../../api/useCollection';
 import { where } from 'firebase/firestore';
 import useAuth from '../../authentication/hooks/useAuth';
 import Reminder from '../types/reminderType';
+import useInfiniteCollection from '../../../api/useInfiniteCollection';
 
 const useGetMyReminders = () => {
 	const { state } = useAuth();
@@ -9,7 +9,7 @@ const useGetMyReminders = () => {
 		throw 'Must be logged in to get reminders';
 	}
 
-	return useCollection<Reminder>('reminders', [
+	return useInfiniteCollection<Reminder>('reminders', 'dueDate', [
 		where('authorId', '==', state.isAnonymous ? null : state.user?.id)
 	]);
 };

@@ -1,6 +1,7 @@
 {
 	"endOfLine": "auto",
 	"printWidth": 90,
+	"endOfLine": "auto",
 	"arrowParens": "always",
 	"useTabs": true,
 	"semi": true,
