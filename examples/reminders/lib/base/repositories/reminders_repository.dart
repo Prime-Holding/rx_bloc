@@ -15,7 +15,7 @@ class RemindersRepository {
     // await Future.delayed(const Duration(milliseconds: 200));
 
     final response = await _dataSource.getAll(request);
-// await Future.delayed(const Duration(milliseconds: 20));
+// await Future.delayed(const Duration(seconds: 3));
     return PaginatedList(
       list: response.items,
       totalCount: response.totalCount,

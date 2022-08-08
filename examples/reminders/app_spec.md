@@ -34,7 +34,7 @@ This is a user application specification of the reminders sample app.
   - User can see a counter of the incomplete reminders and a counter for the complete reminders.
   - Bellow the counters the user sees an "Overdue" list of only incomplete reminders.
   - When the page is loaded for the first time the length of the fetched list is up to 5 reminders, sorted by due date in descending order. The start date is 10 days subtracted from today and the end date is today.
-  - When a reminder id on the Dashboard page and is marked as complete, regardless from which page, it is removed from the Dashboard page.
+  - When a reminder is on the Dashboard page and it is marked as complete, regardless from which page, it is removed from the Dashboard page. Its color on the Reminders page is changed to grey.
 
 ### Pull To Refresh Dashboard List Page
 
@@ -61,7 +61,7 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/reminder_deleted.png" width="350">
 <br/><br/>
 
-  - User can tap on the Delete button. When this happens, the reminder is deleted from the list and from the data source. The incomplete counter on the dashboard page is decreased by one. A SnackBar is displayed with the name of the deleted Reminder.
+  - User can tap on the Delete button. When this happens, the reminder is deleted from the each of the lists it has been added to in the app. It is also deleted from the data source. The corresponding counter on the dashboard page is decreased by one. A SnackBar is displayed with the name of the deleted Reminder.
 
 ### Reminder Renamed
 
@@ -94,28 +94,23 @@ This is a user application specification of the reminders sample app.
 <br/><br/>
 
   - When the user pulls the list down, the first page of the list is reloaded on the screen.
+  
 
-### Reminder List Screen This month
+### Reminder List Next Page
 
-<img src="assets/images/reminder_list_this_month.png" width="350">
+<img src="assets/images/reminder_list_next_page.png" width="350">
 <br/><br/>
 
-  - When the Reminders list page is loaded a list called: "This month" is loaded, where 14 elements are fetched starting from the first date of the reminders list.
-
-### Reminder List Today Next Page
-
-<img src="assets/images/reminder_list_today_next_page.png" width="350">
-<br/><br/>
-
-  - When the user scrolls to the bottom the Reminder list page, the next page of reminders is loaded bellow the previous page of reminder in the Reminder's "Today" list.
+  - When the user scrolls to the bottom the Reminder list page, the next page of reminders is loaded bellow the previous page of reminders list.
 
 ### Reminder Incomplete
 
 <img src="assets/images/reminder_incomplete.png" width="350">
 <br/><br/>
 
-  - When a user slides a reminder after it has been marked as complete, the text in the button is changed to "Incomplete".
-  - When the user selects the "Incomplete" button, the reminder is marked as incomplete. On the dashboard page, the "Incomplete" counter is increased by one and the "Complete" counter is decreased by one.
+  - When a user slides a reminder after it has been marked as complete, the text in the button is changed to "Incomplete" and the reminder has been as "Incomplete".
+  - When the user selects the "Incomplete" button, the reminder is marked as incomplete. On the dashboard page, the "Incomplete" counter is increased by one and the "Complete" counter is decreased by one. The color is changed back to white.
+  - If the reminder date is within the last 10 days the reminder is added to the "Dashboard" page.
 
 ### Add Reminder 
 
@@ -132,4 +127,4 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/new_reminder_created_dashboard.png" width="350">
 <br/><br/>
 
-  - User can tap on the "OK" button. When doing this, the reminder is created and is appended to the reminder list, if the date of the reminder is within the last 10 days, it is added to the Dashboard page list also. A SnackBar is displayed with the name of the newly created Reminder. The reminder by default is incomplete. The incomplete counter on the Dashboard page is incremented by one.
+  - User can tap on the "OK" button. When doing this, the reminder is created and is added to the reminders list on the reminders list page to its corresponding date order. If the date of the reminder is within the last 10 days including today, it is added to the Dashboard page list also. A SnackBar is displayed with the name of the newly created Reminder. When it is created, the reminder by default is incomplete. The incomplete counter on the Dashboard page is incremented by one.
