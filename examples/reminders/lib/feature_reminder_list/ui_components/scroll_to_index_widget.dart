@@ -9,6 +9,8 @@ import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/models/reminder/reminder_model.dart';
 
+enum Group { overdue, today, thisMonth, thisYear }
+
 class ReminderListScrollView extends StatefulWidget {
   const ReminderListScrollView({
     required this.remindersList,
@@ -23,10 +25,12 @@ class ReminderListScrollView extends StatefulWidget {
   State<ReminderListScrollView> createState() => _ReminderListScrollViewState();
 }
 
-enum Group { old, today, thisMonth, thisYear }
-
 class _ReminderListScrollViewState extends State<ReminderListScrollView> {
   late final AutoScrollController _controller;
+  static const _overdue = 'Overdue';
+  static const _today = 'Today';
+  static const _thisMonth = 'This month';
+  static const _thisYear = 'This year';
 
   @override
   void initState() {
@@ -100,14 +104,14 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
 
   Widget _groupSeparatorBuilder(Group type) {
     var title = '';
-    if (type == Group.old) {
-      title = 'Old';
+    if (type == Group.overdue) {
+      title = _overdue;
     } else if (type == Group.today) {
-      title = 'Today';
+      title = _today;
     } else if (type == Group.thisMonth) {
-      title = 'This month';
+      title = _thisMonth;
     } else if (type == Group.thisYear) {
-      title = 'This year';
+      title = _thisYear;
     }
 
     return Container(
@@ -122,13 +126,13 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
   }
 
   Group _groupBy(ReminderModel element) {
-    var date = DateTime(
+    final date = DateTime(
       element.dueDate.year,
       element.dueDate.month,
       element.dueDate.day,
     );
-    var now = DateTime.now();
-    var today = DateTime(
+    final now = DateTime.now();
+    final today = DateTime(
       now.year,
       now.month,
       now.day,
@@ -138,9 +142,9 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
     var thisYearMonth = DateTime(now.year, now.month, now.day);
     var isThisMonth = date.month == now.month;
     var isAfterThisMonth = date.isAfter(thisYearMonth);
-    Group groupTitle = Group.old;
+    Group groupTitle = Group.overdue;
     if (isBeforeToday) {
-      groupTitle = Group.old;
+      groupTitle = Group.overdue;
     } else if (isToday) {
       groupTitle = Group.today;
     } else if (isThisMonth) {
