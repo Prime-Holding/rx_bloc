@@ -17,7 +17,9 @@ class ReminderListView extends StatelessWidget {
   Widget build(BuildContext context) => RxPaginatedBuilder<ReminderListBlocType,
           ReminderModel>.withRefreshIndicator(
         state: (bloc) => bloc.states.paginatedList,
-        onBottomScrolled: (bloc) => bloc.events.loadPage(),
+        onBottomScrolled: (bloc) {
+          print('TTTTTT');
+          return bloc.events.loadPage();},
         onRefresh: (bloc) async {
           bloc.events.loadPage(reset: true);
           return bloc.states.refreshDone;

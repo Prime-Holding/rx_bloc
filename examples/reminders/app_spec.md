@@ -86,7 +86,7 @@ This is a user application specification of the reminders sample app.
 
   - When the page is loaded for the first time, a circular loading indicator is displayed in the middle of the screen.
   - When the page is loaded for the first time, the first 10 reminders in the reminders list are fetched. There is pagination on the list with a size of 10 of each page. The list is filtered by due date descending.
-  - There are 4 groups of reminders on the page according to their due date: 'Old', 'Today', 'This month', 'This year'. 'Old' has all reminders before today, 'Today' has all reminders from today, 'This month' has all reminders from tomorrow until the end of the current month and 'This year' has all reminders from the beginning of the next month until the end of the year.
+  - There are 4 groups of reminders on the page according to their due date: 'Overdue', 'Today', 'This month', 'This year'. 'Overdue' has all reminders before today, 'Today' has all reminders from today, 'This month' has all reminders from tomorrow until the end of the current month and 'This year' has all reminders from the beginning of the next month until the end of the year.
 
 ### Pull To Refresh Reminder List Page
 
