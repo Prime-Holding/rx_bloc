@@ -1,0 +1,35 @@
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.checkbox {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  .checkmark {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    margin-bottom: 1px;
+  }
+
+  &.checked {
+    color: var(--success);
+    border-color: var(--success);
+    background-size: 1rem 1rem;
+
+    .checkmark {
+      opacity: 1;
+      animation: dash 0.5s linear forwards;
+    }
+  }
+}
