@@ -17,7 +17,7 @@ export const AuthContext = createContext<AuthContextType>(
 
 const initialState = {
 	user: null,
-	isAuth: false,
+	isAuthenticated: false,
 	isAnonymous: false
 };
 
@@ -39,7 +39,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 					user: {
 						id: user.uid
 					},
-					isAuth: true,
+					isAuthenticated: true,
 					isAnonymous: false
 				});
 			} else {
@@ -61,7 +61,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 	const signInAnonymously = useCallback(() => {
 		setState({
 			user: null,
-			isAuth: true,
+			isAuthenticated: true,
 			isAnonymous: true
 		});
 	}, []);

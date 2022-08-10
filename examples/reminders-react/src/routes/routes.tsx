@@ -3,7 +3,7 @@ import LoginPage from '../features/authentication/pages/login-page/LoginPage';
 import { firebaseAuth } from '../api/firebase';
 
 export interface AppRoute extends RouteObject {
-	onlyAuth?: boolean;
+	allowOnlyAuthenticated?: boolean;
 	children?: AppRoute[];
 }
 
@@ -14,7 +14,7 @@ const routes: AppRoute[] = [
 	},
 	{
 		path: '/',
-		onlyAuth: true,
+		allowOnlyAuthenticated: true,
 		// Temporary
 		element: (
 			<div>

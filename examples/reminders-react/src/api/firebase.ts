@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, FacebookAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyDfVKNr-Zjw160xR-HhU5CE1g0uguRs_a0',
-	authDomain: 'reminders-app-dev-22840.firebaseapp.com',
-	projectId: 'reminders-app-dev-22840',
-	storageBucket: 'reminders-app-dev-22840.appspot.com',
-	messagingSenderId: '422301301950',
-	appId: '1:422301301950:web:49a4d149a52d52608272ef',
-	measurementId: 'G-CLPM2G325B'
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIREBASE_APP_ID,
+	measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
