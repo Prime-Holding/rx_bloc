@@ -1,29 +1,157 @@
 import useGetMyReminders from '../../api/useGetMyReminders';
-import { useEffect } from 'react';
-import {
-	collection as getCollection,
-	onSnapshot,
-	query,
-	where
-} from 'firebase/firestore';
-import { db } from '../../../../api/firebase';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import Reminder from '../../components/reminder/Reminder';
+import './reminderList.scss';
+import FloatingActionButton from '../../../../ui-kit/floating-action-button/FloatingActionButton';
+import CreateReminderModal from '../../components/create-reminder-modal/CreateReminderModal';
+import useAddReminder from '../../api/useAddReminder';
+import Loader from '../../../../ui-kit/loader/Loader';
+import { AddIcon } from '../../../../ui-kit/icons/icons';
 
 const RemindersListPage = () => {
-	useEffect(() => {
-		const queryRef = query(getCollection(db, 'reminders'), where('authorId', '==', null));
-		const unsubscribe = onSnapshot(queryRef, {
-			next: (snapshot) => {
-				console.log(snapshot.docs.map((doc) => ({ ...doc.data() })));
-			},
-			error: (error) => {},
-			complete: () => {}
-		});
-		return () => {
-			unsubscribe();
+	const { data: rawReminders, isLoading, next } = useGetMyReminders();
+	const addReminder = useAddReminder();
+
+	const [isCreateOpen, setIsCreateOpen] = useState(false);
+
+	const reminders = useMemo(() => {
+		const startToday = new Date();
+		startToday.setHours(0, 0, 0, 0);
+
+		const endToday = new Date();
+		endToday.setHours(23, 59, 59, 999);
+
+		const endMonth = new Date(endToday);
+		endMonth.setMonth(endMonth.getMonth() + 1, 0);
+
+		const endYear = new Date(endToday);
+		endYear.setMonth(11, 31);
+
+		return {
+			overdue: rawReminders.filter((reminder) => {
+				const date = reminder.dueDate.toDate();
+				return date <= startToday;
+			}),
+			today: rawReminders.filter((reminder) => {
+				const date = reminder.dueDate.toDate();
+				return date >= startToday && date <= endToday;
+			}),
+			thisMonth: rawReminders.filter((reminder) => {
+				const date = reminder.dueDate.toDate();
+				return date > endToday && date <= endMonth;
+			}),
+			thisYear: rawReminders.filter((reminder) => {
+				const date = reminder.dueDate.toDate();
+				return date > endMonth && date <= endYear;
+			}),
+			future: rawReminders.filter((reminder) => {
+				const date = reminder.dueDate.toDate();
+				return date > endYear;
+			})
 		};
+	}, [rawReminders]);
+
+	// Initial loading of reminders
+	useEffect(() => {
+		next(30);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return <div>Reminders Pages</div>;
+	useEffect(() => {
+		const handler = () => {
+			const scrollTop = document.documentElement.scrollTop;
+			const scrollMax =
+				document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+			if (scrollTop > scrollMax - 200) {
+				next(25);
+			}
+		};
+		document.addEventListener('scroll', handler);
+		return () => {
+			document.removeEventListener('scroll', handler);
+		};
+	}, [next]);
+
+	const handleCreateReminder = useCallback(
+		(data: { date: string; title: string }) => {
+			addReminder.mutate({ title: data.title, dueDate: data.date, complete: false });
+			setIsCreateOpen(false);
+		},
+		[addReminder]
+	);
+
+	return (
+		<div className="reminder-list-page">
+			<FloatingActionButton icon={AddIcon} onClick={() => setIsCreateOpen(true)} />
+			<CreateReminderModal
+				isOpen={isCreateOpen}
+				onClose={() => setIsCreateOpen(false)}
+				onCreate={handleCreateReminder}
+			/>
+			<div className="sections">
+				{reminders.overdue.length > 0 && (
+					<div className="section">
+						<div className="section-title">Overdue</div>
+						<div className="section-items">
+							{reminders.overdue.map((reminder) => (
+								<Reminder key={reminder.id} reminder={reminder} />
+							))}
+						</div>
+					</div>
+				)}
+
+				{reminders.today.length > 0 && (
+					<div className="section">
+						<div className="section-title">Today</div>
+						<div className="section-items">
+							{reminders.today.map((reminder) => (
+								<Reminder key={reminder.id} reminder={reminder} />
+							))}
+						</div>
+					</div>
+				)}
+
+				{reminders.thisMonth.length > 0 && (
+					<div className="section">
+						<div className="section-title">This month</div>
+						<div className="section-items">
+							{reminders.thisMonth.map((reminder) => (
+								<Reminder key={reminder.id} reminder={reminder} />
+							))}
+						</div>
+					</div>
+				)}
+
+				{reminders.thisYear.length > 0 && (
+					<div className="section">
+						<div className="section-title">This year</div>
+						<div className="section-items">
+							{reminders.thisYear.map((reminder) => (
+								<Reminder key={reminder.id} reminder={reminder} />
+							))}
+						</div>
+					</div>
+				)}
+
+				{reminders.future.length > 0 && (
+					<div className="section">
+						<div className="section-title">Future</div>
+						<div className="section-items">
+							{reminders.future.map((reminder) => (
+								<Reminder key={reminder.id} reminder={reminder} />
+							))}
+						</div>
+					</div>
+				)}
+			</div>
+			{isLoading && (
+				<div className="loader-container">
+					<Loader />
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default RemindersListPage;

@@ -1,0 +1,18 @@
+.create-reminder-modal {
+  .modal-title {
+    margin: 0 0 1.5rem 0;
+  }
+  .inputs {
+    display: flex;
+    gap: 1rem;
+  }
+  .modal-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem -0.5rem -0.5rem;
+  }
+  .error {
+    color: var(--danger)
+  }
+}

@@ -1,0 +1,29 @@
+.reminder {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+
+  .date {
+    margin-left: auto;
+  }
+
+  .checkbox {
+    flex-shrink: 0;
+  }
+
+  .delete {
+    cursor: pointer;
+    margin-top: 3px;
+    margin-left: 0.5rem;
+    width: 20px;
+    color: var(--dark);
+    transition: color 0.2s;
+    flex-shrink: 0;
+
+    &:hover {
+      color: var(--danger-hover);
+    }
+  }
+}

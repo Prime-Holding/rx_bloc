@@ -1,0 +1,32 @@
+.reminder-list-page {
+  padding: 1rem;
+
+  .sections {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .section {
+      height: 100%;
+      width: 95%;
+      max-width: 450px;
+      .section-title {
+        background-color: var(--light);
+        position: sticky;
+        top: 0;
+        padding: 0.5rem 0;
+        font-size: 1.5rem;
+        font-weight: bold;
+        z-index: 1;
+      }
+
+      .section-items {
+      }
+    }
+  }
+
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+  }
+}
