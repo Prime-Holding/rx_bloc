@@ -5,7 +5,7 @@ import useInfiniteCollection from '../../../api/useInfiniteCollection';
 
 const useGetMyReminders = () => {
 	const { state } = useAuth();
-	if (!state.isAuth) {
+	if (!state.isAuthenticated) {
 		throw 'Must be logged in to get reminders';
 	}
 
