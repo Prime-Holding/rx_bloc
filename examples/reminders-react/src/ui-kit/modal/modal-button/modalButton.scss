@@ -1,0 +1,14 @@
+.modal-button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0.5rem;
+
+  &:hover {
+    opacity: 0.75;
+  }
+
+  &.align-right {
+    margin-left: auto;
+  }
+}
