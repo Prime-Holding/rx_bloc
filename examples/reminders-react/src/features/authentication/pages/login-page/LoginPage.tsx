@@ -2,7 +2,7 @@ import useAuth from '../../hooks/useAuth';
 import { Navigate } from 'react-router';
 import './loginPage.scss';
 import FullscreenLoader from '../../../../ui-kit/fullscreen-loader/FullscreenLoader';
-import { CircularProgress } from '@mui/material';
+import { ButtonBase, CircularProgress, Typography } from '@mui/material';
 
 const LoginPage = () => {
 	const auth = useAuth();
@@ -18,16 +18,32 @@ const LoginPage = () => {
 	return (
 		<div className="login-page">
 			<div className="headers">
-				<h1>Reminders</h1>
-				<h2>Log in</h2>
+				<Typography
+					component="h1"
+					variant="h4"
+					color="primary"
+					fontWeight="bold"
+					align="center"
+				>
+					Reminders
+				</Typography>
+				<Typography
+					component="h2"
+					variant="h6"
+					color="primary"
+					fontWeight="bold"
+					align="center"
+				>
+					Log in
+				</Typography>
 			</div>
 			<div className="buttons">
-				<button className="login-anon" onClick={auth.signInAnonymously}>
+				<ButtonBase className="login-anon" onClick={auth.signInAnonymously}>
 					Log in as anonymous
-				</button>
-				<button className="login-facebook" onClick={auth.signInWithFacebook}>
+				</ButtonBase>
+				<ButtonBase className="login-facebook" onClick={auth.signInWithFacebook}>
 					Log in in with facebook
-				</button>
+				</ButtonBase>
 			</div>
 			<div className={'login-loader' + (auth.isLoading ? ' visible' : '')}>
 				<CircularProgress />

@@ -5,12 +5,7 @@
   justify-content: center;
 
   .headers {
-    text-align: center;
-    color: var(--primary);
     margin-bottom: 1rem;
-    h1, h2 {
-      margin: 0.25rem;
-    }
   }
 
   .buttons {
@@ -24,7 +19,6 @@
       padding: 1rem 0.75rem 0.95rem;
       border-radius: 1rem;
       border: 1px solid;
-      background-color: transparent;
       font-size: 1rem;
       &:hover {
         cursor: pointer;
