@@ -204,6 +204,7 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
     super.initState();
     _bloc = widget.bloc ?? RxBlocProvider.of<B>(context);
     _subscribe();
+    widget.onWaiting?.call(context,widget.initialValue);
   }
 
   @override
@@ -230,22 +231,22 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
   }
 
   void _subscribe() {
-    if (_bloc != null && _subscription == null) {
-      _subscription = widget.state(_bloc!).listen(
-        (S state) {
-          if (widget.condition == null
-              ? true
-              : widget.condition!.call(_previousState, state)) {
-            widget.listener(context, state);
-          }
+    if (_bloc == null || _subscription != null) return;
 
-          _previousState = state;
-        },
-        onError: (Object err, StackTrace st) =>
-            widget.onError?.call(context, err, st),
-        onDone: () => widget.onComplete?.call(context),
-      );
-    }
+    _subscription = widget.state(_bloc!).listen(
+      (S state) {
+        if (widget.condition == null
+            ? true
+            : widget.condition!.call(_previousState, state)) {
+          widget.listener(context, state);
+        }
+
+        _previousState = state;
+      },
+      onError: (Object err, StackTrace st) =>
+          widget.onError?.call(context, err, st),
+      onDone: () => widget.onComplete?.call(context),
+    );
   }
 
   void _unsubscribe() {
