@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { doc, updateDoc, DocumentReference, UpdateData } from 'firebase/firestore';
+import { doc, DocumentReference, UpdateData, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 const useEditDocument = <T extends { id: string }>(collectionName: string) => {
