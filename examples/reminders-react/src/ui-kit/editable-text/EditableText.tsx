@@ -34,7 +34,7 @@ const EditableText = ({
 			const listener = (e: MouseEvent) => {
 				if (!e.target) return;
 				if (!containerRef.current?.contains(e.target as Node)) {
-					Promise.all([onChange(rawValue)]).then(() => {
+					Promise.all([onChange(rawValue)]).finally(() => {
 						setIsEditing(false);
 					});
 				}

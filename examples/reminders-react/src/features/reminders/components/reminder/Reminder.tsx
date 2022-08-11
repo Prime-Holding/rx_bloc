@@ -44,7 +44,7 @@ const Reminder = ({ reminder }: ReminderProps) => {
 
 	const handleDateChange = useCallback(
 		(date: string) => {
-			if (date.length == 0) return Promise.reject();
+			if (date.length == 0) return;
 			return editReminder.mutate(reminder.id, { dueDate: new Date(date) });
 		},
 		[editReminder, reminder.id]

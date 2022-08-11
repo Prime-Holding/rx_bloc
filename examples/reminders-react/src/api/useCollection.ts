@@ -8,11 +8,6 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 
-/**
- * Fetch a collection from the firestore
- * @param collectionName
- * @param constraints
- */
 const useCollection = <T extends { id: string }>(
 	collectionName: string,
 	constraints?: QueryConstraint[]
