@@ -7,10 +7,12 @@ import CreateReminderModal from '../../components/create-reminder-modal/CreateRe
 import useAddReminder from '../../api/useAddReminder';
 import Loader from '../../../../ui-kit/loader/Loader';
 import { AddIcon } from '../../../../ui-kit/icons/icons';
+import useSnackbar from '../../../../ui-kit/snackbar/useSnackbar';
 
 const RemindersListPage = () => {
-	const { data: rawReminders, isLoading, next } = useGetMyReminders();
+	const { data: rawReminders, isLoading, hasMore, next } = useGetMyReminders();
 	const addReminder = useAddReminder();
+	const snackbar = useSnackbar();
 
 	const [isCreateOpen, setIsCreateOpen] = useState(false);
 
@@ -75,10 +77,14 @@ const RemindersListPage = () => {
 
 	const handleCreateReminder = useCallback(
 		(data: { date: string; title: string }) => {
-			addReminder.mutate({ title: data.title, dueDate: data.date, complete: false });
+			addReminder
+				.mutate({ title: data.title, dueDate: data.date, complete: false })
+				.then(() => {
+					snackbar.push('info', `Snackbar with title "${data.title}" was created.`);
+				});
 			setIsCreateOpen(false);
 		},
-		[addReminder]
+		[addReminder, snackbar]
 	);
 
 	return (
@@ -90,6 +96,9 @@ const RemindersListPage = () => {
 				onCreate={handleCreateReminder}
 			/>
 			<div className="sections">
+				{!isLoading && !hasMore && rawReminders.length == 0 && (
+					<p>You have no reminders.</p>
+				)}
 				{reminders.overdue.length > 0 && (
 					<div className="section">
 						<div className="section-title">Overdue</div>

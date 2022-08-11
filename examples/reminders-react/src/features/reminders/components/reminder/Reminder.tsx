@@ -7,6 +7,7 @@ import Checkbox from '../../../../ui-kit/checkbox/Checkbox';
 import getDateForInput from '../../utils/getDateForInput';
 import useDeleteReminder from '../../api/useDeleteReminder';
 import { TrashIcon } from '../../../../ui-kit/icons/icons';
+import useSnackbar from '../../../../ui-kit/snackbar/useSnackbar';
 
 interface ReminderProps {
 	reminder: ReminderType;
@@ -15,6 +16,7 @@ interface ReminderProps {
 const Reminder = ({ reminder }: ReminderProps) => {
 	const editReminder = useEditReminder();
 	const deleteReminder = useDeleteReminder();
+	const snackbar = useSnackbar();
 
 	const dueDate = useMemo(() => {
 		return reminder.dueDate.toDate();
@@ -35,12 +37,14 @@ const Reminder = ({ reminder }: ReminderProps) => {
 		[editReminder, reminder.id]
 	);
 
-	const handleClickCheckbox = useCallback(() => {
+	const handleClickCheckbox = () => {
 		editReminder.mutate(reminder.id, { complete: !reminder.complete });
-	}, [editReminder, reminder.complete, reminder.id]);
+	};
 
 	const handleClickDelete = () => {
-		deleteReminder.mutate(reminder.id);
+		deleteReminder.mutate(reminder.id).then(() => {
+			snackbar.push('info', `Reminder with title "${reminder.title}" was deleted`);
+		});
 	};
 
 	return (
