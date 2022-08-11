@@ -3,11 +3,21 @@ import './reminder.scss';
 import EditableText from '../../../../ui-kit/editable-text/EditableText';
 import { useCallback, useMemo, useState } from 'react';
 import useEditReminder from '../../api/useEditReminder';
-import Checkbox from '../../../../ui-kit/checkbox/Checkbox';
 import getDateForInput from '../../utils/getDateForInput';
 import useDeleteReminder from '../../api/useDeleteReminder';
-import { TrashIcon } from '../../../../ui-kit/icons/icons';
-import useSnackbar from '../../../../ui-kit/snackbar/useSnackbar';
+import {
+	IconButton,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Menu,
+	MenuItem
+} from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/DeleteOutline';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { useSnackbar } from 'notistack';
 
 interface ReminderProps {
 	reminder: ReminderType;
@@ -16,7 +26,10 @@ interface ReminderProps {
 const Reminder = ({ reminder }: ReminderProps) => {
 	const editReminder = useEditReminder();
 	const deleteReminder = useDeleteReminder();
-	const snackbar = useSnackbar();
+	const { enqueueSnackbar } = useSnackbar();
+
+	const [menuAnchorEl, setMenuAnchorEl] = useState<Element | null>(null);
+	const isMenuOpen = !!menuAnchorEl;
 
 	const dueDate = useMemo(() => {
 		return reminder.dueDate.toDate();
@@ -37,19 +50,18 @@ const Reminder = ({ reminder }: ReminderProps) => {
 		[editReminder, reminder.id]
 	);
 
-	const handleClickCheckbox = () => {
+	const handleToggleComplete = () => {
 		editReminder.mutate(reminder.id, { complete: !reminder.complete });
 	};
 
 	const handleClickDelete = () => {
 		deleteReminder.mutate(reminder.id).then(() => {
-			snackbar.push('info', `Reminder with title "${reminder.title}" was deleted`);
+			enqueueSnackbar(`Reminder with title "${reminder.title}" was deleted`);
 		});
 	};
 
 	return (
-		<div className="reminder">
-			<Checkbox checked={reminder.complete} onClick={handleClickCheckbox} />
+		<ListItem className={`reminder ${reminder.complete ? 'complete' : ''}`}>
 			<EditableText
 				value={reminder.title}
 				onChange={handleTitleChange}
@@ -66,8 +78,33 @@ const Reminder = ({ reminder }: ReminderProps) => {
 			>
 				{dueDate.toLocaleDateString()}
 			</EditableText>
-			<TrashIcon onClick={handleClickDelete} className="delete" />
-		</div>
+			<IconButton onClick={(event) => setMenuAnchorEl(event.currentTarget)}>
+				<MoreVertIcon />
+			</IconButton>
+			<Menu
+				open={isMenuOpen}
+				anchorEl={menuAnchorEl}
+				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+				onClose={() => setMenuAnchorEl(null)}
+			>
+				<MenuItem onClick={handleToggleComplete}>
+					<ListItemIcon>
+						{!reminder.complete ? (
+							<CheckBoxOutlineBlankIcon />
+						) : (
+							<CheckBoxIcon color="success" />
+						)}
+					</ListItemIcon>
+					<ListItemText primary={reminder.complete ? 'Uncomplete' : 'Complete'} />
+				</MenuItem>
+				<MenuItem onClick={handleClickDelete}>
+					<ListItemIcon>
+						<DeleteIcon color="error" />
+					</ListItemIcon>
+					<ListItemText primary="Delete" />
+				</MenuItem>
+			</Menu>
+		</ListItem>
 	);
 };
 

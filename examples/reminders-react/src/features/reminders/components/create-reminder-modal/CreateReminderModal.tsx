@@ -1,10 +1,16 @@
-import Modal from '../../../../ui-kit/modal/Modal';
-import Input from '../../../../ui-kit/input/Input';
-import ModalButton from '../../../../ui-kit/modal/modal-button/ModalButton';
 import { useCallback, useEffect, useState } from 'react';
 import getDateForInput from '../../utils/getDateForInput';
-import './createReminderModal.scss';
-import InputGroup from '../../../../ui-kit/input-group/InputGroup';
+import {
+	Box,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	FormLabel,
+	Grid,
+	TextField
+} from '@mui/material';
 
 interface CreateReminderModalProps {
 	isOpen: boolean;
@@ -32,36 +38,42 @@ const CreateReminderModal = ({ isOpen, onClose, onCreate }: CreateReminderModalP
 	}, [date, onCreate, title]);
 
 	return (
-		<Modal className="create-reminder-modal" isOpen={isOpen} onClose={onClose}>
-			<h2 className="modal-title">Add Reminder</h2>
-			<div className="inputs">
-				<InputGroup>
-					<label htmlFor="title">Title:</label>
-					<Input
-						id="title"
-						maxLength={50}
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-						type="text"
-					/>
-				</InputGroup>
-				<InputGroup>
-					<label htmlFor="date">Date:</label>
-					<Input
-						id="date"
-						value={date}
-						onChange={(e) => setDate(e.target.value)}
-						type="date"
-					/>
-				</InputGroup>
-			</div>
-			{error && <p className="error">{error}</p>}
-			<div className="modal-buttons">
-				<ModalButton alignRight onClick={handleClickCreate}>
+		<Dialog className="create-reminder-modal" open={isOpen} onClose={onClose}>
+			<DialogTitle>Add Reminder</DialogTitle>
+			<DialogContent>
+				<Grid container spacing={1}>
+					<Grid item>
+						<TextField
+							value={title}
+							onChange={(e) => setTitle(e.target.value)}
+							variant="standard"
+							label="Title"
+						/>
+					</Grid>
+					<Grid item>
+						<TextField
+							value={date}
+							onChange={(e) => setDate(e.target.value)}
+							variant="standard"
+							label="Date"
+							type="date"
+						/>
+					</Grid>
+				</Grid>
+				{error && (
+					<Box mt={2}>
+						<FormLabel color="error" error>
+							{error}
+						</FormLabel>
+					</Box>
+				)}
+			</DialogContent>
+			<DialogActions>
+				<Button sx={{ marginLeft: 'auto' }} variant="text" onClick={handleClickCreate}>
 					OK
-				</ModalButton>
-			</div>
-		</Modal>
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 };
 

@@ -2,17 +2,16 @@ import useGetMyReminders from '../../api/useGetMyReminders';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Reminder from '../../components/reminder/Reminder';
 import './reminderList.scss';
-import FloatingActionButton from '../../../../ui-kit/floating-action-button/FloatingActionButton';
 import CreateReminderModal from '../../components/create-reminder-modal/CreateReminderModal';
 import useAddReminder from '../../api/useAddReminder';
-import Loader from '../../../../ui-kit/loader/Loader';
-import { AddIcon } from '../../../../ui-kit/icons/icons';
-import useSnackbar from '../../../../ui-kit/snackbar/useSnackbar';
+import { CircularProgress, Fab, List, ListSubheader, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { useSnackbar } from 'notistack';
 
 const RemindersListPage = () => {
 	const { data: rawReminders, isLoading, hasMore, next } = useGetMyReminders();
 	const addReminder = useAddReminder();
-	const snackbar = useSnackbar();
+	const { enqueueSnackbar } = useSnackbar();
 
 	const [isCreateOpen, setIsCreateOpen] = useState(false);
 
@@ -80,83 +79,79 @@ const RemindersListPage = () => {
 			addReminder
 				.mutate({ title: data.title, dueDate: data.date, complete: false })
 				.then(() => {
-					snackbar.push('info', `Snackbar with title "${data.title}" was created.`);
+					enqueueSnackbar(`Snackbar with title "${data.title}" was created.`);
 				});
 			setIsCreateOpen(false);
 		},
-		[addReminder, snackbar]
+		[addReminder, enqueueSnackbar]
 	);
 
 	return (
 		<div className="reminder-list-page">
-			<FloatingActionButton icon={AddIcon} onClick={() => setIsCreateOpen(true)} />
+			<Fab
+				className="create-reminder-button"
+				color="primary"
+				onClick={() => setIsCreateOpen(true)}
+			>
+				<AddIcon />
+			</Fab>
 			<CreateReminderModal
 				isOpen={isCreateOpen}
 				onClose={() => setIsCreateOpen(false)}
 				onCreate={handleCreateReminder}
 			/>
-			<div className="sections">
-				{!isLoading && !hasMore && rawReminders.length == 0 && (
-					<p>You have no reminders.</p>
-				)}
+			{!isLoading && !hasMore && rawReminders.length == 0 && (
+				<Typography align="center">You have no reminders.</Typography>
+			)}
+			<List className="reminder-list">
 				{reminders.overdue.length > 0 && (
-					<div className="section">
-						<div className="section-title">Overdue</div>
-						<div className="section-items">
-							{reminders.overdue.map((reminder) => (
-								<Reminder key={reminder.id} reminder={reminder} />
-							))}
-						</div>
-					</div>
+					<>
+						<ListSubheader>Overdue</ListSubheader>
+						{reminders.overdue.map((reminder) => (
+							<Reminder key={reminder.id} reminder={reminder} />
+						))}
+					</>
 				)}
 
 				{reminders.today.length > 0 && (
-					<div className="section">
-						<div className="section-title">Today</div>
-						<div className="section-items">
-							{reminders.today.map((reminder) => (
-								<Reminder key={reminder.id} reminder={reminder} />
-							))}
-						</div>
-					</div>
+					<>
+						<ListSubheader>Today</ListSubheader>
+						{reminders.today.map((reminder) => (
+							<Reminder key={reminder.id} reminder={reminder} />
+						))}
+					</>
 				)}
 
 				{reminders.thisMonth.length > 0 && (
-					<div className="section">
-						<div className="section-title">This month</div>
-						<div className="section-items">
-							{reminders.thisMonth.map((reminder) => (
-								<Reminder key={reminder.id} reminder={reminder} />
-							))}
-						</div>
-					</div>
+					<>
+						<ListSubheader>This month</ListSubheader>
+						{reminders.thisMonth.map((reminder) => (
+							<Reminder key={reminder.id} reminder={reminder} />
+						))}
+					</>
 				)}
 
 				{reminders.thisYear.length > 0 && (
-					<div className="section">
-						<div className="section-title">This year</div>
-						<div className="section-items">
-							{reminders.thisYear.map((reminder) => (
-								<Reminder key={reminder.id} reminder={reminder} />
-							))}
-						</div>
-					</div>
+					<>
+						<ListSubheader>This year</ListSubheader>
+						{reminders.thisYear.map((reminder) => (
+							<Reminder key={reminder.id} reminder={reminder} />
+						))}
+					</>
 				)}
 
 				{reminders.future.length > 0 && (
-					<div className="section">
-						<div className="section-title">Future</div>
-						<div className="section-items">
-							{reminders.future.map((reminder) => (
-								<Reminder key={reminder.id} reminder={reminder} />
-							))}
-						</div>
-					</div>
+					<>
+						<ListSubheader>Future</ListSubheader>
+						{reminders.future.map((reminder) => (
+							<Reminder key={reminder.id} reminder={reminder} />
+						))}
+					</>
 				)}
-			</div>
+			</List>
 			{isLoading && (
 				<div className="loader-container">
-					<Loader />
+					<CircularProgress />
 				</div>
 			)}
 		</div>

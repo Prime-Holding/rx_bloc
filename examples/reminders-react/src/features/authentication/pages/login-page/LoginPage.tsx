@@ -1,8 +1,8 @@
 import useAuth from '../../hooks/useAuth';
 import { Navigate } from 'react-router';
 import './loginPage.scss';
-import Loader from '../../../../ui-kit/loader/Loader';
 import FullscreenLoader from '../../../../ui-kit/fullscreen-loader/FullscreenLoader';
+import { CircularProgress } from '@mui/material';
 
 const LoginPage = () => {
 	const auth = useAuth();
@@ -30,7 +30,7 @@ const LoginPage = () => {
 				</button>
 			</div>
 			<div className={'login-loader' + (auth.isLoading ? ' visible' : '')}>
-				<Loader />
+				<CircularProgress />
 			</div>
 		</div>
 	);

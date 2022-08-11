@@ -1,7 +1,7 @@
 import { HTMLInputTypeAttribute, ReactNode, useEffect, useRef, useState } from 'react';
 import './editableText.scss';
-import Input from '../input/Input';
-import { EditIcon } from '../icons/icons';
+import { TextField } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface EditableTextProps {
 	value: string;
@@ -54,15 +54,15 @@ const EditableText = ({
 		>
 			{!isEditing && children}
 			{isEditing && (
-				<Input
+				<TextField
 					value={rawValue}
 					onChange={(e) => setRawValue(e.target.value)}
 					type={type}
-					maxLength={50}
 					autoFocus
+					variant="standard"
 				/>
 			)}
-			<EditIcon className="edit-icon" />
+			<EditIcon fontSize="small" className="edit-icon" />
 		</div>
 	);
 };
