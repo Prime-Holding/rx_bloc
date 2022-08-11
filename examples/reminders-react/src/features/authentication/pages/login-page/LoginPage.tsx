@@ -7,7 +7,7 @@ import FullscreenLoader from '../../../../ui-kit/fullscreen-loader/FullscreenLoa
 const LoginPage = () => {
 	const auth = useAuth();
 
-	if (auth.state.isAuthenticated) {
+	if (auth.state?.isAuthenticated) {
 		return <Navigate to="/" />;
 	}
 
