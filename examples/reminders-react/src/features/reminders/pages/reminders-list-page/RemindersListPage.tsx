@@ -25,9 +25,6 @@ const RemindersListPage = () => {
 		const endMonth = new Date(endToday);
 		endMonth.setMonth(endMonth.getMonth() + 1, 0);
 
-		const endYear = new Date(endToday);
-		endYear.setMonth(11, 31);
-
 		return {
 			overdue: rawReminders.filter((reminder) => {
 				const date = reminder.dueDate.toDate();
@@ -41,13 +38,9 @@ const RemindersListPage = () => {
 				const date = reminder.dueDate.toDate();
 				return date > endToday && date <= endMonth;
 			}),
-			thisYear: rawReminders.filter((reminder) => {
-				const date = reminder.dueDate.toDate();
-				return date > endMonth && date <= endYear;
-			}),
 			future: rawReminders.filter((reminder) => {
 				const date = reminder.dueDate.toDate();
-				return date > endYear;
+				return date > endMonth;
 			})
 		};
 	}, [rawReminders]);
@@ -127,15 +120,6 @@ const RemindersListPage = () => {
 					<>
 						<ListSubheader>This month</ListSubheader>
 						{reminders.thisMonth.map((reminder) => (
-							<Reminder key={reminder.id} reminder={reminder} />
-						))}
-					</>
-				)}
-
-				{reminders.thisYear.length > 0 && (
-					<>
-						<ListSubheader>This year</ListSubheader>
-						{reminders.thisYear.map((reminder) => (
 							<Reminder key={reminder.id} reminder={reminder} />
 						))}
 					</>
