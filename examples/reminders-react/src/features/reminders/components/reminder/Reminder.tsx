@@ -55,7 +55,7 @@ const Reminder = ({ reminder }: ReminderProps) => {
 	};
 
 	const handleClickDelete = () => {
-		deleteReminder.mutate(reminder.id).then(() => {
+		deleteReminder.mutate(reminder.id, reminder.complete).then(() => {
 			enqueueSnackbar(`Reminder with title "${reminder.title}" was deleted`);
 		});
 	};
