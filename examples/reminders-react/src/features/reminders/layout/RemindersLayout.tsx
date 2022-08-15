@@ -33,7 +33,7 @@ const RemindersLayout = () => {
 				</Tabs>
 			</AppBar>
 			<div>
-				{tab === 'dashboard' && <DashboardPage />}
+				{(tab === undefined || tab === 'dashboard') && <DashboardPage />}
 				{tab === 'reminders' && <RemindersListPage />}
 			</div>
 		</div>

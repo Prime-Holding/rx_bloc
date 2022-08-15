@@ -2,8 +2,6 @@ import useDeleteDocument from '../../../api/useDeleteDocument';
 import { useCallback, useMemo } from 'react';
 import useReminderCounters from './useReminderCounters';
 
-// TODO UPDATE COUNTERS
-
 const useDeleteReminder = () => {
 	const { updateCounters } = useReminderCounters();
 	const { mutate, ...other } = useDeleteDocument('reminders');

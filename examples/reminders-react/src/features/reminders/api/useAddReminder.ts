@@ -10,7 +10,6 @@ interface CreateReminderType {
 	complete: boolean;
 }
 
-// TODO UPDATE COUNTER
 const useAddReminder = () => {
 	const { updateCounters } = useReminderCounters();
 	const { state } = useAuth();

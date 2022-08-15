@@ -1,0 +1,31 @@
+.dashboard-page {
+  max-width: 450px;
+  width: 100%;
+  margin: 2rem auto;
+
+  .counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 0.5rem;
+    padding: 1rem 0.75rem;
+    background-color: var(--light-gray);
+    border-radius: 1rem;
+    svg {
+      position: absolute;
+      left: 0.75rem;
+    }
+  }
+
+  .reminders-list {
+    margin-top: 0.5rem;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 1rem;
+    background-color: var(--light-gray);
+    .reminder:last-of-type {
+      border: 0;
+    }
+  }
+}
