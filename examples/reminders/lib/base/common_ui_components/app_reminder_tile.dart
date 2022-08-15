@@ -50,13 +50,18 @@ class _AppReminderTileState extends State<AppReminderTile> {
 
     _titleFocusNode.addListener(
       () {
-        if (!_titleFocusNode.hasFocus) {
+        //print('text ${    _textEditingController.text} widget ${ widget.reminder.title}');
+        // print('Controller text: ${_textEditingController.text}');
+        // print('Controller value: ${_textEditingController.value}');
+        // print('Controller selection: ${_textEditingController.selection}');
+        // if(_textEditingController.){}
+        if (!_titleFocusNode.hasFocus ) {
+        // if (!_titleFocusNode.hasFocus && (_textEditingController.text != widget.reminder.title)) {
           context
               .read<ReminderManageBlocType>()
               .events
               .update(widget.reminder.copyWith(
                 title: _textEditingController.text,
-                // completeUpdated: false,
               ));
 
           widget.onTitleChanged?.call(_textEditingController.text);
