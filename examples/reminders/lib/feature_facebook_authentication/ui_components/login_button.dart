@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
-  final Color color;
-  final String text;
-  final VoidCallback onPressed;
+import '../../base/common_ui_components/app_progress_indicator.dart';
 
+class LoginButton extends StatelessWidget {
   const LoginButton({
     required this.color,
     required this.text,
     required this.onPressed,
+    this.loading = false,
     Key? key,
   }) : super(key: key);
+
+  final Color color;
+  final String text;
+  final VoidCallback onPressed;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -25,25 +29,23 @@ class LoginButton extends StatelessWidget {
                 border: Border.all(color: color),
                 borderRadius: BorderRadius.circular(20)),
             padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            child: loading
+                ? const AppProgressIndicator()
+                : Row(
                     children: [
-                      Text(
-                        text,
-                        style: TextStyle(color: color, fontSize: 18),
-                      ),
-                      const SizedBox(width: 35),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              text,
+                              style: TextStyle(color: color, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
           ),
         ),
       );
