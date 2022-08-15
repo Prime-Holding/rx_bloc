@@ -21,10 +21,10 @@ const useAddReminder = () => {
 				title: data.title,
 				dueDate: new Date(data.dueDate),
 				complete: data.complete,
-				authorId: state.isAnonymous ? null : state.user!.id
+				authorId: state.user.id
 			});
 		},
-		[addDocument, state.isAnonymous, state.user]
+		[addDocument, state.user]
 	);
 
 	return useMemo(

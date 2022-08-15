@@ -15,10 +15,12 @@ export const AuthContext = createContext<AuthContextType>(
 	null as unknown as AuthContextType
 );
 
-const initialState = {
-	user: null,
-	isAuthenticated: false,
-	isAnonymous: false
+const initialState: AuthStateType = {
+	user: {
+		id: null,
+		isAnonymous: true
+	},
+	isAuthenticated: false
 };
 
 interface AuthProviderProps {
@@ -37,10 +39,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 			if (user) {
 				setState({
 					user: {
-						id: user.uid
+						id: user.uid,
+						isAnonymous: false
 					},
-					isAuthenticated: true,
-					isAnonymous: false
+					isAuthenticated: true
 				});
 			} else {
 				setState(initialState);
@@ -60,9 +62,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const signInAnonymously = useCallback(() => {
 		setState({
-			user: null,
-			isAuthenticated: true,
-			isAnonymous: true
+			user: {
+				id: null,
+				isAnonymous: true
+			},
+			isAuthenticated: true
 		});
 	}, []);
 

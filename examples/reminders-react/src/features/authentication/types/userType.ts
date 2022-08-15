@@ -1,3 +1,11 @@
-export default interface User {
-	id: string;
-}
+type User =
+	| {
+			id: null;
+			isAnonymous: true;
+	  }
+	| {
+			id: string;
+			isAnonymous: false;
+	  };
+
+export default User;

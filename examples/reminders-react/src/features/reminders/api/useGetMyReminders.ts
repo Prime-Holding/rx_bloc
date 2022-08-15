@@ -10,7 +10,7 @@ const useGetMyReminders = () => {
 	}
 
 	return useInfiniteCollection<Reminder>('reminders', 'dueDate', [
-		where('authorId', '==', state.isAnonymous ? null : state.user?.id)
+		where('authorId', '==', state.user.id)
 	]);
 };
 
