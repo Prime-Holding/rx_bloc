@@ -1,10 +1,10 @@
 import useAuth from '../features/authentication/hooks/useAuth';
 import {
 	matchRoutes,
-	RouteMatch,
-	useLocation,
 	Navigate,
-	renderMatches
+	renderMatches,
+	RouteMatch,
+	useLocation
 } from 'react-router';
 import routes, { AppRoute } from './routes';
 

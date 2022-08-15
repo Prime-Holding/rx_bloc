@@ -1,6 +1,8 @@
 import { RouteObject } from 'react-router';
 import LoginPage from '../features/authentication/pages/login-page/LoginPage';
-import { firebaseAuth } from '../api/firebase';
+import DashboardPage from '../features/reminders/pages/dashboard-page/DashboardPage';
+import RemindersListPage from '../features/reminders/pages/reminders-list-page/RemindersListPage';
+import RemindersLayout from '../features/reminders/layout/RemindersLayout';
 
 export interface AppRoute extends RouteObject {
 	allowOnlyAuthenticated?: boolean;
@@ -15,12 +17,21 @@ const routes: AppRoute[] = [
 	{
 		path: '/',
 		allowOnlyAuthenticated: true,
-		// Temporary
-		element: (
-			<div>
-				<button onClick={() => firebaseAuth.signOut()}>Logout</button>
-			</div>
-		)
+		element: <RemindersLayout />,
+		children: [
+			{
+				index: true,
+				element: <DashboardPage />
+			},
+			{
+				path: 'dashboard',
+				element: <DashboardPage />
+			},
+			{
+				path: 'reminders',
+				element: <RemindersListPage />
+			}
+		]
 	}
 ];
 

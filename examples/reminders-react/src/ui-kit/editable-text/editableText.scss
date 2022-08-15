@@ -1,0 +1,33 @@
+.editable-text {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+
+  .edit-icon {
+    position: absolute;
+    left: calc(100% + 4px);
+    top: calc(50% - 5px);
+    width: 14px;
+    height: 14px;
+    display: none;
+  }
+
+  &.editing {
+    .edit-icon {
+      display: block !important;
+    }
+  }
+
+  &:hover {
+    .edit-icon {
+      display: block;
+    }
+  }
+
+  .input {
+    height: 1.2rem;
+    margin-top: 5px;
+  }
+}

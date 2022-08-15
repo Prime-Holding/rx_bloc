@@ -1,0 +1,16 @@
+.reminder {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  min-height: 2rem;
+
+  &.complete {
+    background-color: var(--reminder-complete);
+  }
+
+  .date {
+    margin-left: auto;
+  }
+
+}

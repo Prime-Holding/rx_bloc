@@ -1,10 +1,10 @@
-import Loader from '../loader/Loader';
 import './fullscreenLoader.scss';
+import { CircularProgress } from '@mui/material';
 
 const FullscreenLoader = () => {
 	return (
 		<div className="fullscreen-loader">
-			<Loader />
+			<CircularProgress />
 		</div>
 	);
 };
