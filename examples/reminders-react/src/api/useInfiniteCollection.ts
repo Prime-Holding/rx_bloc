@@ -10,8 +10,9 @@ import {
 	Unsubscribe
 } from 'firebase/firestore';
 import { db } from './firebase';
+import BaseDocumentType from './baseDocumentType';
 
-const useInfiniteCollection = <T extends { id: string }>(
+const useInfiniteCollection = <T extends BaseDocumentType>(
 	collectionName: string,
 	orderByKey: keyof T & string,
 	constraints?: QueryConstraint[]

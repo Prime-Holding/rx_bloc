@@ -72,7 +72,8 @@ const RemindersListPage = () => {
 		return () => {
 			document.removeEventListener('scroll', handler);
 		};
-	}, [next]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleCreateReminder = useCallback(
 		(data: { date: string; title: string }) => {

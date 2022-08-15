@@ -7,8 +7,9 @@ import {
 	QueryConstraint
 } from 'firebase/firestore';
 import { db } from './firebase';
+import BaseDocumentType from './baseDocumentType';
 
-const useCollection = <T extends { id: string }>(
+const useCollection = <T extends BaseDocumentType>(
 	collectionName: string,
 	constraints?: QueryConstraint[]
 ) => {
@@ -26,6 +27,7 @@ const useCollection = <T extends { id: string }>(
 			},
 			error: (error) => {
 				setError(error);
+				setIsLoading(false);
 			}
 		});
 		return () => {
