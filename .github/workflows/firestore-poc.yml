@@ -5,9 +5,9 @@ name: Firesore POC Deploy
 
 on:
   push:
-    branches: [ "reminders-react" ]
+    branches: [ "develop", "reminders-react" ]
   pull_request:
-    branches: [ "reminders-react" ]
+    branches: [ "develop", "reminders-react" ]
   workflow_dispatch:
 
 permissions:
