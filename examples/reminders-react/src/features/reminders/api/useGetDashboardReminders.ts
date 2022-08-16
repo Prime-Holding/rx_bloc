@@ -1,5 +1,5 @@
 import useCollection from '../../../api/useCollection';
-import { orderBy, where, limit } from 'firebase/firestore';
+import { limit, orderBy, where } from 'firebase/firestore';
 import useAuth from '../../authentication/hooks/useAuth';
 import Reminder from '../types/reminderType';
 

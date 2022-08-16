@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../authentication/hooks/useAuth';
 import { AppBar, IconButton, Tab, Tabs, Toolbar } from '@mui/material';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardPage from '../pages/dashboard-page/DashboardPage';
 import RemindersListPage from '../pages/reminders-list-page/RemindersListPage';
@@ -15,9 +14,6 @@ const RemindersLayout = () => {
 		<div>
 			<AppBar position="sticky">
 				<Toolbar variant="dense">
-					<IconButton color="inherit">
-						<RefreshIcon />
-					</IconButton>
 					<IconButton sx={{ marginLeft: 'auto' }} color="inherit" onClick={auth.signOut}>
 						<LogoutIcon />
 					</IconButton>

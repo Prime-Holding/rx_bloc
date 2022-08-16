@@ -36,8 +36,8 @@ const useReminderCounters = () => {
 	const [complete, setComplete] = useState<number | null>(null);
 	const [incomplete, setIncomplete] = useState<number | null>(null);
 
-	const [isLoadingCounters, setIsLoadingCounters] = useState(false);
-	const [isLoadingLength, setIsLoadingLength] = useState(false);
+	const [isLoadingCounters, setIsLoadingCounters] = useState(true);
+	const [isLoadingLength, setIsLoadingLength] = useState(true);
 
 	// If a counter or total object exists in database
 	const [countersRef, setCountersRef] = useState<DocumentReference<Counters> | null>(
@@ -56,6 +56,8 @@ const useReminderCounters = () => {
 	});
 
 	useEffect(() => {
+		setIsLoadingLength(true);
+		setIsLoadingCounters(true);
 		// Get complete/incomplete counter
 		const countersQuery = query(
 			collection(db, countersCollection) as CollectionReference<Counters>,
