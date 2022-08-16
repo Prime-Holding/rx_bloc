@@ -1,7 +1,12 @@
-## [4.1.0] - May 24, 2022
+## [5.0.0] - Aug 16, 2022
 * Support Flutter `3.0`
 * Updated `rxdart` to use version `0.27.3`
 * [BREAKING] Changed listener parameter type in RxBlocListener to match the type of the listened state
+* RxBlocListener has four new fields:
+  - `initialValue` - Sets the initial value used for the `onWaiting` field
+  - `onWaiting` - Callback triggered once before the stream starts emitting
+  - `onComplete` - Callback triggered once the stream is done emitting values
+  - `onError` - Callback triggered every time an error within the given stream occurs
 
 ## [4.0.0] - September 24, 2021
 * Support Flutter `2.5`
