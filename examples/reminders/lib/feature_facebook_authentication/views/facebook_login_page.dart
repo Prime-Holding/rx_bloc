@@ -18,14 +18,17 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LoginText(text: context.l10n.reminders),
-              const SizedBox(height: 5),
-              LoginText(text: context.l10n.logIn),
-              _buildButtonsArea(context),
-            ],
+          child: SizedBox(
+            height: 300,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                LoginText(text: context.l10n.reminders),
+                const SizedBox(height: 5),
+                LoginText(text: context.l10n.logIn),
+                _buildButtonsArea(context),
+              ],
+            ),
           ),
         ),
       );
@@ -43,30 +46,38 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
         },
       );
 
-  Widget _buildButtonsArea(BuildContext context) => Column(
-        children: [
-          RxBlocListener<FirebaseBlocType, bool>(
-            state: (bloc) => bloc.states.loggedIn,
-            listener: (context, logIn) {
-              if (logIn == true) {
-                context.router.replace(const NavigationRoute());
-              }
-            },
-          ),
-          _buildFirebaseLoginErrorListener(),
-          LoginButton(
-            text: context.l10n.logInAsAnonymous,
-            color: Colors.blueGrey,
-            onPressed: () {
-              context.read<FirebaseBlocType>().events.logIn(anonymous: true);
-            },
-          ),
-          LoginButton(
-            text: context.l10n.logInWithFacebook,
-            color: Colors.blue,
-            onPressed: () =>
-                context.read<FirebaseBlocType>().events.logIn(anonymous: false),
-          )
-        ],
+  Widget _buildButtonsArea(BuildContext context) =>
+      RxLoadingBuilder<FirebaseBlocType>(
+        state: (bloc) => bloc.states.isLoading,
+        builder: (context, isLoading, tag, bloc) => Column(
+          children: [
+            RxBlocListener<FirebaseBlocType, bool>(
+              state: (bloc) => bloc.states.loggedIn,
+              listener: (context, logIn) {
+                if (logIn == true) {
+                  context.router.replace(const NavigationRoute());
+                }
+              },
+            ),
+            _buildFirebaseLoginErrorListener(),
+            LoginButton(
+              text: context.l10n.logInAsAnonymous,
+              color: Colors.blueGrey,
+              onPressed: () {
+                context.read<FirebaseBlocType>().events.logIn(anonymous: true);
+              },
+              loading: isLoading && tag == FirebaseBloc.tagAnonymous,
+            ),
+            LoginButton(
+              text: context.l10n.logInWithFacebook,
+              color: Colors.blue,
+              onPressed: () => context
+                  .read<FirebaseBlocType>()
+                  .events
+                  .logIn(anonymous: false),
+              loading: isLoading && tag == FirebaseBloc.tagFacebook,
+            ),
+          ],
+        ),
       );
 }

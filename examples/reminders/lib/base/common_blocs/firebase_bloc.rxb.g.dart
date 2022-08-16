@@ -26,7 +26,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   final _$logOutEvent = PublishSubject<void>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
+  late final Stream<LoadingWithTag> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
@@ -35,10 +35,8 @@ abstract class $FirebaseBloc extends RxBlocBase
   late final ConnectableStream<void> _countersUpdatedState =
       _mapToCountersUpdatedState();
 
-  /// The state of [currentUserPrivate] implemented in
-  /// [_mapToCurrentUserPrivateState]
-  late final Stream<User?> _currentUserPrivateState =
-      _mapToCurrentUserPrivateState();
+  /// The state of [currentUserData] implemented in [_mapToCurrentUserDataState]
+  late final Stream<User?> _currentUserDataState = _mapToCurrentUserDataState();
 
   /// The state of [userLoggedOut] implemented in [_mapToUserLoggedOutState]
   late final Stream<bool> _userLoggedOutState = _mapToUserLoggedOutState();
@@ -57,7 +55,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   void logOut() => _$logOutEvent.add(null);
 
   @override
-  Stream<bool> get isLoading => _isLoadingState;
+  Stream<LoadingWithTag> get isLoading => _isLoadingState;
 
   @override
   Stream<String> get errors => _errorsState;
@@ -66,7 +64,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   ConnectableStream<void> get countersUpdated => _countersUpdatedState;
 
   @override
-  Stream<User?> get currentUserPrivate => _currentUserPrivateState;
+  Stream<User?> get currentUserData => _currentUserDataState;
 
   @override
   Stream<bool> get userLoggedOut => _userLoggedOutState;
@@ -77,13 +75,13 @@ abstract class $FirebaseBloc extends RxBlocBase
   @override
   Stream<bool> get loggedOut => _loggedOutState;
 
-  Stream<bool> _mapToIsLoadingState();
+  Stream<LoadingWithTag> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
   ConnectableStream<void> _mapToCountersUpdatedState();
 
-  Stream<User?> _mapToCurrentUserPrivateState();
+  Stream<User?> _mapToCurrentUserDataState();
 
   Stream<bool> _mapToUserLoggedOutState();
 

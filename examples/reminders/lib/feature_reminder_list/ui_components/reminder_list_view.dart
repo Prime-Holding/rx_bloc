@@ -6,18 +6,13 @@ import '../../base/models/reminder/reminder_model.dart';
 import '../blocs/reminder_list_bloc.dart';
 import 'scroll_to_index_widget.dart';
 
-class ReminderListView extends StatefulWidget {
+class ReminderListView extends StatelessWidget {
   const ReminderListView({
     this.createdReminderId,
     Key? key,
   }) : super(key: key);
   final String? createdReminderId;
 
-  @override
-  State<ReminderListView> createState() => _ReminderListViewState();
-}
-
-class _ReminderListViewState extends State<ReminderListView> {
   @override
   Widget build(BuildContext context) => RxPaginatedBuilder<ReminderListBlocType,
           ReminderModel>.withRefreshIndicator(
@@ -29,7 +24,7 @@ class _ReminderListViewState extends State<ReminderListView> {
         },
         buildSuccess: (context, list, bloc) => ReminderListScrollView(
           remindersList: list,
-          scrollToReminderId: widget.createdReminderId,
+          scrollToReminderId: createdReminderId,
         ),
         buildLoading: (context, list, bloc) => const AppProgressIndicator(),
         buildError: (context, list, bloc) => Container(),

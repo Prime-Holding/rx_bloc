@@ -1,5 +1,4 @@
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
@@ -62,8 +61,6 @@ class DashboardBloc extends $DashboardBloc {
               incomplete: event.data.incompleteCount,
               complete: event.data.completeCount,
             );
-            /// If the firebase data source is used, the UpdatedCounters should
-            /// be sent to the CoordinatorBloc
             _coordinatorBloc.events.updateCounters(updatedCounters);
           }
         })

@@ -20,14 +20,14 @@ abstract class FirebaseBlocEvents {
 /// A contract class containing all states of the FirebaseBloC.
 abstract class FirebaseBlocStates {
   /// The loading state
-  Stream<bool> get isLoading;
+  Stream<LoadingWithTag> get isLoading;
 
   /// The error state
   Stream<String> get errors;
 
   ConnectableStream<void> get countersUpdated;
 
-  Stream<User?> get currentUserPrivate;
+  Stream<User?> get currentUserData;
 
   Stream<bool> get userLoggedOut;
 
@@ -47,6 +47,9 @@ class FirebaseBloc extends $FirebaseBloc {
   final CoordinatorBlocType _coordinatorBloc;
   final FirebaseLogoutUseCase _firebaseLogoutUseCase;
 
+  static const tagAnonymous = 'anonymous';
+  static const tagFacebook = 'facebook';
+
   @override
   ConnectableStream<void> _mapToCountersUpdatedState() =>
       _coordinatorBloc.states.onCountersUpdated
@@ -61,12 +64,17 @@ class FirebaseBloc extends $FirebaseBloc {
   Stream<String> _mapToErrorsState() => errorState.toMessage();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<LoadingWithTag> _mapToIsLoadingState() =>
+      loadingWithTagState.asBroadcastStream();
 
   @override
   Stream<bool> _mapToLoggedInState() => _$logInEvent
-      .switchMap<Result<bool>>((logInEventArgs) =>
-          _service.logIn(logInEventArgs.anonymous).asResultStream())
+      .switchMap<Result<bool>>((logInEventArgs) => _service
+          .logIn(logInEventArgs.anonymous)
+          .asResultStream(
+              tag: logInEventArgs.anonymous
+                  ? FirebaseBloc.tagAnonymous
+                  : FirebaseBloc.tagFacebook))
       .setResultStateHandler(this)
       .whereSuccess()
       .asBroadcastStream();
@@ -79,11 +87,11 @@ class FirebaseBloc extends $FirebaseBloc {
       .onErrorReturn(false);
 
   @override
-  Stream<User?> _mapToCurrentUserPrivateState() => _service.currentUser;
+  Stream<User?> _mapToCurrentUserDataState() => _service.currentUser;
 
   @override
   Stream<bool> _mapToUserLoggedOutState() => Rx.merge([
-        currentUserPrivate.skip(1).map((event) {
+        currentUserData.skip(1).map((event) {
           if (event == null) {
             return true;
           } else {

@@ -28,6 +28,7 @@ dependencies:
   flutter_slidable: ^1.2.1
   flutter_sticky_header: ^0.6.0
   golden_toolkit: ^0.12.0
+  grouped_list: ^5.1.2
   intl: ^0.17.0
   json_annotation: ^4.4.0
   json_serializable: ^6.1.3
@@ -38,6 +39,7 @@ dependencies:
   rxdart: ^0.27.3
   scroll_to_index: ^3.0.1
   shared_preferences: ^2.0.11
+  sticky_and_expandable_list: ^1.1.0
   # Server related packages
   shelf: ^1.2.0
   shelf_router: ^1.1.2
