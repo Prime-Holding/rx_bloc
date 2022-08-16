@@ -3,15 +3,15 @@ import 'package:rx_bloc/rx_bloc.dart';
 
 import 'rx_bloc_provider.dart';
 
-/// [RxResultBuilder] handles building a widget in response
-/// to new [Result] states
+/// `RxResultBuilder` handles building a widget in response
+/// to new `Result` states
 ///
 /// See also:
-///   * [RxBlocBuilder], which handles building the widget in response
+///   * `RxBlocBuilder`, which handles building the widget in response
 ///     to new states
 ///
-///   * [StreamBuilder], which delegates to an [AsyncWidgetBuilder] to build
-///     itself based on a snapshot from interacting with a [Stream].
+///   * `StreamBuilder`, which delegates to an `AsyncWidgetBuilder` to build
+///     itself based on a snapshot from interacting with a `Stream`.
 class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
   /// The default constructor.
   const RxResultBuilder({
