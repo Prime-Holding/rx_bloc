@@ -46,15 +46,19 @@ class DashboardService {
     IdentifiablePair<ReminderModel> model,
   ) async {
     final dateRange = _getDateRange();
-/// TODO try to continue only if something was updated todo if nothing was update
-    if (model.updatedIdentifiable.dueDate.isAfter(dateRange.from) &&
-        model.updatedIdentifiable.dueDate.isBefore(dateRange.to)) {
+
+    if ((model.updatedIdentifiable.dueDate.isAfter(dateRange.from) &&
+        model.updatedIdentifiable.dueDate.isBefore(dateRange.to))) {
       return model.updatedIdentifiable.complete
           ? ManageOperation.remove
           : ManageOperation.merge;
     }
 
-    return ManageOperation.remove;
+    if (model.updatedIdentifiable.dueDate.isBefore(dateRange.from) ||
+        model.updatedIdentifiable.dueDate.isAfter(dateRange.to)) {
+      return ManageOperation.remove;
+    }
+    return ManageOperation.merge;
   }
 
   DueDateRange _getDateRange() => DueDateRange(

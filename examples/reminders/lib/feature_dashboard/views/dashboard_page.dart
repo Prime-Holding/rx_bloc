@@ -87,25 +87,22 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                           ),
                           sliver: SliverList(
                             delegate: SliverChildBuilderDelegate(
-                              (context, i) {
-                                //print('index $i reminder ${data.reminderList[i].title}');
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: context
-                                        .designSystem.colors.secondaryColor,
-                                    borderRadius:
-                                        _getRadius(i, data.reminderList.length),
-                                  ),
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  child: AppReminderTile(
-                                    reminder: data.reminderList[i],
-                                    isFirst: i == 0,
-                                    isLast: i == data.reminderList.length - 1,
-                                  ),
-                                );
-                              },
+                              (context, i) => Container(
+                                decoration: BoxDecoration(
+                                  color: context
+                                      .designSystem.colors.secondaryColor,
+                                  borderRadius:
+                                      _getRadius(i, data.reminderList.length),
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: AppReminderTile(
+                                  reminder: data.reminderList[i],
+                                  isFirst: i == 0,
+                                  isLast: i == data.reminderList.length - 1,
+                                ),
+                              ),
                               childCount: data.reminderList.length,
                             ),
                           ),
