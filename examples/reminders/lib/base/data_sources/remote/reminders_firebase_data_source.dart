@@ -264,13 +264,13 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       var counterId = countersSnapshot.docs.first.id;
       await countersReference.doc(counterId).update({
         _authorId: _loggedInUid,
-        _incomplete: 100,
+        _incomplete: 10,
         _complete: 0,
       });
     } else {
       await countersReference.add({
         _authorId: _loggedInUid,
-        _incomplete: 100,
+        _incomplete: 10,
         _complete: 0,
       });
     }
@@ -288,12 +288,12 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       var remindersLengthId = remindersLengthsSnapshot.docs.first.id;
       await remindersLengthsReference.doc(remindersLengthId).update({
         _authorId: _loggedInUid,
-        _length: 100,
+        _length: 10,
       });
     } else {
       await remindersLengthsReference.add({
         _authorId: _loggedInUid,
-        _length: 100,
+        _length: 10,
       });
     }
   }
@@ -340,27 +340,23 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   Query getFirebaseFilteredQuery(
       ReminderModelRequest? request, String? userId) {
-    // remindersReference = usersReference.doc(loggedInUid).collection(_reminders);
-    // }
     Query query = remindersReference;
 
-    /// TODO uncomment when the generated reminder collection is with length
-    /// 100
-    // if (request?.filterByDueDateRange != null) {
-    //   final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
-    //       request!.filterByDueDateRange!.from.millisecondsSinceEpoch);
-    //   final endAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
-    //       request.filterByDueDateRange!.to.millisecondsSinceEpoch);
-    //   query = query.where(
-    //     _dueDate,
-    //     isGreaterThanOrEqualTo: startAtTimestamp,
-    //   );
-    //
-    //   query = query.where(
-    //     _dueDate,
-    //     isLessThanOrEqualTo: endAtTimestamp,
-    //   );
-    // }
+    if (request?.filterByDueDateRange != null) {
+      final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+          request!.filterByDueDateRange!.from.millisecondsSinceEpoch);
+      final endAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
+          request.filterByDueDateRange!.to.millisecondsSinceEpoch);
+      query = query.where(
+        _dueDate,
+        isGreaterThanOrEqualTo: startAtTimestamp,
+      );
+
+      query = query.where(
+        _dueDate,
+        isLessThanOrEqualTo: endAtTimestamp,
+      );
+    }
 
     if (userId != null) {
       query = query.where(_authorId, isEqualTo: userId);
@@ -425,9 +421,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<void> _generateAndInsertDataForTheUser() async {
-    ///todo change the number to 100
     _data = List.generate(
-      3,
+      10,
       (index) => ReminderModel.withAuthorId(index, _loggedInUid),
     );
 
