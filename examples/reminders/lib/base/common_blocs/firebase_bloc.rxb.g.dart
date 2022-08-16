@@ -26,7 +26,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   final _$logOutEvent = PublishSubject<void>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
+  late final Stream<LoadingWithTag> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
@@ -55,7 +55,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   void logOut() => _$logOutEvent.add(null);
 
   @override
-  Stream<bool> get isLoading => _isLoadingState;
+  Stream<LoadingWithTag> get isLoading => _isLoadingState;
 
   @override
   Stream<String> get errors => _errorsState;
@@ -75,7 +75,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   @override
   Stream<bool> get loggedOut => _loggedOutState;
 
-  Stream<bool> _mapToIsLoadingState();
+  Stream<LoadingWithTag> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 

@@ -9,7 +9,7 @@ import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/models/reminder/reminder_model.dart';
 
-enum Group { overdue, today, thisMonth, thisYear }
+enum Group { overdue, today, thisMonth, inFuture }
 
 class ReminderListScrollView extends StatefulWidget {
   const ReminderListScrollView({
@@ -30,7 +30,7 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
   static const _overdue = 'Overdue';
   static const _today = 'Today';
   static const _thisMonth = 'This month';
-  static const _thisYear = 'This year';
+  static const _inFuture = 'In future';
 
   @override
   void initState() {
@@ -110,8 +110,8 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
       title = _today;
     } else if (type == Group.thisMonth) {
       title = _thisMonth;
-    } else if (type == Group.thisYear) {
-      title = _thisYear;
+    } else if (type == Group.inFuture) {
+      title = _inFuture;
     }
 
     return Container(
@@ -150,7 +150,7 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
     } else if (isThisMonth) {
       groupTitle = Group.thisMonth;
     } else if (isAfterThisMonth) {
-      groupTitle = Group.thisYear;
+      groupTitle = Group.inFuture;
     }
     return groupTitle;
   }
