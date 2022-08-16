@@ -10,4 +10,7 @@ class TestBloc implements RxBlocTypeBase {
 
   Stream<String> get multipleValueStream =>
       Stream.fromIterable(['one', 'two', 'three']);
+
+  Stream<String> get exceptionStream =>
+      Stream.fromIterable(['one']).map((_) => throw Exception());
 }
