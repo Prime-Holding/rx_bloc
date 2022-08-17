@@ -24,7 +24,7 @@
     <depends>com.intellij.modules.java</depends>
 
     <actions>
-        <group id="com.primeholding.rxbloc_generator_plugin.action">
+        <!-- <group id="com.primeholding.rxbloc_generator_plugin.action">
             <action
                     id="com.primeholding.rxbloc_generator_plugin.action_bootstrap_tests"
                     class="com.primeholding.rxbloc_generator_plugin.action.BootstrapTestsAction"
@@ -32,7 +32,7 @@
                     description="Generate Tests based on your BloCs"
             />
             <add-to-group anchor="after" group-id="ProjectViewPopupMenu" relative-to-action="AnalyzeMenu"/>
-        </group>
+        </group>-->
         <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocAction"
                 description="Generate a new RxBloc Class"
                 id="GenerateRxBlocId"
