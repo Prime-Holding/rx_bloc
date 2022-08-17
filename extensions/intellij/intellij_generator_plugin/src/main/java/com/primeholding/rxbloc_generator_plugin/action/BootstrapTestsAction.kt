@@ -5,8 +5,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.VfsTestUtil
-import com.primeholding.rxbloc_generator_plugin.parser.Bloc
-import com.primeholding.rxbloc_generator_plugin.parser.Utils
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
 import com.primeholding.rxbloc_generator_plugin.ui.ChooseBlocsDialog
 
 class BootstrapTestsAction : AnAction() {

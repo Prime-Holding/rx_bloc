@@ -3,7 +3,7 @@ package com.primeholding.rxbloc_generator_plugin.generator
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
 import com.fleshgrinder.extensions.kotlin.toUpperCamelCase
 import com.google.common.io.CharStreams
-import com.primeholding.rxbloc_generator_plugin.parser.Bloc
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
@@ -63,7 +63,7 @@ abstract class RxTestGeneratorBase(
 
     private fun generateBlocStatesWhenMock(): String {
         val sb = StringBuilder()
-        bloc.states.forEach {
+        bloc.stateVariableNames.forEach {
             sb.append("\n")
             sb.append("  when(blocMock.states.${it}).thenAnswer(\n")
             sb.append("    (_) => Stream.value(false),\n")

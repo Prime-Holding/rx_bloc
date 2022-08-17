@@ -7,6 +7,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
@@ -113,8 +114,10 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 for (VirtualFile file : children) {
                     if (file.isDirectory() && file.getName().equals(BLOCS_DIRECTORY)) {
 
+                        String blocFileName = vFile.getName().replace("page.dart", "bloc.dart");
+
                         for (VirtualFile blocFile : file.getChildren()) {
-                            if (blocFile.getName().endsWith("bloc.dart")) {
+                            if (blocFile.getName().equals(blocFileName)) {
                                 blocTypeDirectorySuggest = (getBlocTypeFromFile(blocFile.getName()));
                                 blocFromPath = Utils.Companion.extractBloc(blocFile);
                                 break;
@@ -130,22 +133,58 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         String stateTypeDirectorySuggest = "";
         String stateVariableNameSuggest = "";
 
-        if (blocFromPath != null && blocFromPath.getStateVariableNames().size() > 0) {
+        if (blocFromPath != null && blocFromPath.getStateVariableTypes().size() > 0) {
 
-            ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
-
-            boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
-            int chooseState = comboBox.getSelectedIndex();
-            if (isOK) {
-
-                blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
-                stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(chooseState);
-                stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(chooseState);
-            } else {
-                //Do nothing if canceled
-                return;
+            String filter = "";
+            switch (snippetType) {
+                case RxBlocBuilder:
+                case RxBlocListener:
+                case RxFormFieldBuilder:
+                    // no custom filtering
+                    break;
+                case RxResultBuilder:
+// Result builder - filter only states with result
+                    filter = "Result<";
+                    break;
+                case RxPaginatedBuilder:
+// Paginated List wrapping - Filter only paginated list
+                    filter = "PaginatedList<";
+                    break;
+                case RxTextFormFieldBuilder:
+// filter only string states from bloc
+                    filter = "String";
+                    break;
             }
-//            }
+            if (!filter.isEmpty()) {
+                for (int i = blocFromPath.getStateVariableTypes().size() - 1; i >= 0; i--) {
+
+                    if (!blocFromPath.getStateVariableTypes().get(i).startsWith(filter)) {
+                        blocFromPath.getStateVariableNames().remove(i);
+                        blocFromPath.getStateVariableTypes().remove(i);
+                    }
+                }
+            }
+
+            if (blocFromPath.getStateVariableNames().isEmpty()) {
+                Messages.showMessageDialog(psiFile.getProject(), "No elements found matching the desired state type", "No Elements", null);
+                return;
+            } else if (blocFromPath.getStateVariableNames().size() == 1) {
+                blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
+                stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(0);
+                stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(0);
+            } else {
+                ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
+                boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
+                int chooseState = comboBox.getSelectedIndex();
+                if (isOK) {
+                    blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
+                    stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(chooseState);
+                    stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(chooseState);
+                } else {
+                    //Do nothing if canceled
+                    return;
+                }
+            }
         }
 
         final String replaceWith = Snippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
@@ -188,7 +227,6 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 final int unformattedLineCount = document.getLineCount();
 
                 CodeStyleManager.getInstance(project).reformat(currentFile);
-                
                 final int formattedLineCount = document.getLineCount();
 
                 // file was incorrectly formatted, revert formatting

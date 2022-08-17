@@ -1,7 +1,7 @@
 package com.primeholding.rxbloc_generator_plugin.generator.components
 
-import com.primeholding.rxbloc_generator_plugin.parser.Bloc
 import com.primeholding.rxbloc_generator_plugin.generator.RxTestGeneratorBase
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
 
 class RxTestBlocGoldenGenerator(val name: String, projectName: String, bloc: Bloc) :
 RxTestGeneratorBase(name, templateName = "bloc_golden", projectName = projectName, bloc = bloc) {

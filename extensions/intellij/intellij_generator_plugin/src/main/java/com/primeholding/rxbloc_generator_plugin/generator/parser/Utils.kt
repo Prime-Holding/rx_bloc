@@ -21,10 +21,10 @@ class Utils {
                 stateText.lines().forEach { line ->
                     getValueBetween(line, "Stream<", "> get")?.let { stateVariableType ->
                         stateVariableTypes.add(stateVariableType)
-                    }
 
-                    getValueBetween(line, "> get ", ";")?.let { stateVariableName ->
-                        stateVariableNames.add(stateVariableName)
+                        getValueBetween(line, "> get ", ";")?.let { stateVariableName ->
+                            stateVariableNames.add(stateVariableName)
+                        }
                     }
                 }
             }
@@ -104,7 +104,7 @@ class Utils {
         }
 
 
-        private fun getValueBetween(text: String, from: String, to: String): String? {
+        fun getValueBetween(text: String, from: String, to: String): String? {
             val start = text.indexOf(from)
             if (start != -1) {
                 val toIndex = text.indexOf(to, start + from.length)
@@ -116,5 +116,21 @@ class Utils {
             return null
         }
 
+        fun unCheckExisting(libFolder: VirtualFile, selected: ArrayList<Bloc>) {
+            val parent = libFolder.parent
+            val testFolder = parent.findChild("test")
+            if (testFolder?.isDirectory == true) {
+                testFolder.children.forEach { libChild ->
+                    if (libChild.name.startsWith("feature_")) {
+                        selected.removeIf { x: Bloc ->
+                            x.fileName == libChild.name.replace("feature_", "") + "_bloc.dart"
+                        }
+                    }
+                }
+            }
+
+        }
     }
+
+
 }

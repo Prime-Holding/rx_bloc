@@ -3,7 +3,7 @@ package com.primeholding.rxbloc_generator_plugin.ui;
 import com.android.annotations.Nullable;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBList;
-import com.primeholding.rxbloc_generator_plugin.parser.Bloc;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +21,9 @@ public class ChooseBlocsDialog extends DialogWrapper {
     public ChooseBlocsDialog(List<Bloc> allBlocs, List<Bloc> initiallySelectedBlocs) {
         super(true);
         this.allBlocs = allBlocs;
-        this.initiallySelectedBlocs = initiallySelectedBlocs;
         this.allowedBlocs = new ArrayList<>(initiallySelectedBlocs);
+        this.initiallySelectedBlocs = initiallySelectedBlocs;
+        initiallySelectedBlocs.clear();
         setTitle("Select BloCs");
         setOKButtonText("Create");
         setModal(true);
@@ -77,7 +78,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
             setEnabled(allowedBlocs.contains(value));
             setBackground(list.getBackground());
             setForeground(list.getForeground());
-            setText(value.getFileName());
+            setText("feature_" + value.getFileName().replace("_bloc.dart", ""));
             return this;
         }
     }
