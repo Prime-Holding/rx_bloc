@@ -69,8 +69,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   RxBlocListener<DivisionBlocType, String>(
                     state: (bloc) => bloc.states.errors,
-                    listener: (ctx, state) {
-                      final error = state ?? '';
+                    listener: (ctx, error) {
                       if (error.isNotEmpty)
                         ScaffoldMessenger.of(ctx).showSnackBar(
                             SnackBar(content: Text("Error: $error")));
