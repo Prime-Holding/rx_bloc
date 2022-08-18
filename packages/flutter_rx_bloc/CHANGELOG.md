@@ -1,6 +1,5 @@
 ## [5.0.0] - Aug 18, 2022
 * Support Flutter `3.0`
-* Updated `rxdart` to use version `0.27.3`
 * [BREAKING] Changed listener parameter type in RxBlocListener to match the type of the listened state
 * RxBlocListener has four new fields:
   - `initialValue` - Sets the initial value used for the `onWaiting` field
