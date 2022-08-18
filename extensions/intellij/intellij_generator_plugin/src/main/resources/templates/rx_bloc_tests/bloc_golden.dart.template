@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-${repository_import_declarations}
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
 //import '../../Stubs.dart';
@@ -14,10 +13,16 @@ void main() {
       '${bloc_snake_case}_success',
       () => runGoldenTests([
             generateDeviceBuilder(
-                widget: ${bloc_field_case}Factory(), //paginatedList: Stubs.emptyList
-                scenario: Scenario(name: '${bloc_snake_case}_no_data')),
+                widget: ${bloc_field_case}Factory(), //example: Stubs.emptyList
+                scenario: Scenario(name: '${bloc_snake_case}_empty')),
             generateDeviceBuilder(
-                widget: ${bloc_field_case}Factory(), //paginatedList: Stubs.success
-                scenario: Scenario(name: '${bloc_snake_case}_success'))
+                widget: ${bloc_field_case}Factory(), //example:  Stubs.success
+                scenario: Scenario(name: '${bloc_snake_case}_success')),
+            generateDeviceBuilder(
+                widget: ${bloc_field_case}Factory(), //loading
+                scenario: Scenario(name: '${bloc_snake_case}_loading')),
+           generateDeviceBuilder(
+                 widget: ${bloc_field_case}Factory(),
+                 scenario: Scenario(name: '${bloc_snake_case}_error'))
           ]));
 }

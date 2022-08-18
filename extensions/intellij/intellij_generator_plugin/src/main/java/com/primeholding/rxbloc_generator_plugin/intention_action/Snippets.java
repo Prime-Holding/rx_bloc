@@ -1,7 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.intention_action;
 
 
-import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils;
 import org.jetbrains.annotations.NotNull;
 
 public class Snippets {
@@ -33,7 +32,7 @@ public class Snippets {
         return String.format("RxTextFormFieldBuilder<%1$s>( \n" +
                 " state: (bloc) => bloc.states.%2$s,\n" +
                 " showErrorState: (bloc) => bloc.states.showErrors,\n" +
-                "//TODO pick a specific event the field will to send data to\n"+
+                "//TODO pick a specific event the field will to send data to\n" +
                 " onChanged: (bloc, value) => bloc.events.specificEvent(value), // pick a specific event the field will to send data to\n" +
                 "   ///TODO: Use the controller from the fieldState\n" +
                 "   /// example: `controller: fieldState.controller`\n\n" +
@@ -79,7 +78,7 @@ public class Snippets {
     private static String blocListenerSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxBlocListener<%1$s, %2$s>(\n" +
-                "  state: (bloc) => bloc.states.%3$s\n" +
+                "  state: (bloc) => bloc.states.%3$s,\n" +
                 "  listener: (context, state) {\n" +
                 "    // do stuff here based on BlocA's state\n" +
                 "  }, \n" +
@@ -109,10 +108,10 @@ public class Snippets {
                 "            itemBuilder: (context, index) {\n" +
                 "               final item = list.getItem(index);\n\n" +
                 "               if (item == null) {\n" +
-                "               //TODO write your own progress indicator\n"+
+                "               //TODO write your own progress indicator\n" +
                 "                return const YourProgressIndicator();\n" +
                 "               }\n\n" +
-                "              //TODO write your own list item widget\n "+
+                "              //TODO write your own list item widget\n " +
                 "              return YourListTile(item: item);\n" +
                 "            },\n" +
                 "            itemCount: list.itemCount,\n" +
@@ -132,7 +131,7 @@ public class Snippets {
                 " buildLoading: (context, bloc) => \n" +
                 "   const CircularProgressIndicator(),\n" +
                 " buildError: (context, error, bloc) => \n" +
-                "   Text(error),\n" +
-                ")\n", blocTypeDirectorySuggest, Utils.Companion.getValueBetween(stateTypeDirectorySuggest, "<", ">"), stateVariableNameSuggest, widget);
+                "   Text(error.toString()),\n" +
+                ")\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest.substring("Result<".length(), stateTypeDirectorySuggest.length() - 1), stateVariableNameSuggest, widget);
     }
 }

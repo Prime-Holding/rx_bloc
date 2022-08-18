@@ -192,6 +192,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         // wrap the widget:
         WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith));
 
+        checkImports(document, project, stateTypeDirectorySuggest);
         // place cursors to specify types:
         final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
 
@@ -236,6 +237,43 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 }
             }
         });
+    }
+
+    private void checkImports(Document document, Project project, String stateTypeDirectorySuggest) {
+
+        boolean containsResult = stateTypeDirectorySuggest.contains("Result<");
+        boolean containsPaginatedList = stateTypeDirectorySuggest.contains("PaginatedList<");
+
+        boolean containsPaginatedListImport = document.getText().contains("package:rx_bloc_list/rx_bloc_list.dart");
+        boolean containsResultImport = document.getText().contains("package:rx_bloc/rx_bloc.dart");
+
+        if (containsResult && !containsResultImport) {
+            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc/rx_bloc.dart';\n"));
+        }
+        if (containsPaginatedList && !containsPaginatedListImport) {
+            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc_list/rx_bloc_list.dart';\n"));
+        }
+
+        switch (snippetType) {
+            case RxBlocListener:
+            case RxBlocBuilder:
+                if (!document.getText().contains("package:flutter_rx_bloc/flutter_rx_bloc.dart")) {
+                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';\n"));
+                }
+                break;
+            case RxResultBuilder:
+            case RxPaginatedBuilder:
+//handled globally
+                break;
+            case RxFormFieldBuilder:
+            case RxTextFormFieldBuilder:
+                if (!document.getText().contains("package:flutter_rx_bloc/rx_form.dart")) {
+                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/rx_form.dart';\n" +
+                            (containsResult && !containsResultImport ? "import 'package:rx_bloc/rx_bloc.dart';\n" : "")));
+                }
+                break;
+
+        }
     }
 
     private String getBlocTypeFromFile(String vFileName) {

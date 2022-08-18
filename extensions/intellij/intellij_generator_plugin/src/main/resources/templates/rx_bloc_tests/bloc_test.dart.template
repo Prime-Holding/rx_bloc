@@ -1,21 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-${repository_import_declarations}
 import 'package:${project_name}/feature_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import '${bloc_snake_case}_test.mocks.dart';
 
 //import '../../base/Stubs.dart';
 
-@GenerateMocks([
-${repository_class_list}
-])
+@GenerateMocks([])
 void main() {
-${declaration_of_repositories}
 
   setUp(() {
-  ${initialization_of_repositories}
   });
 
   group('test ${bloc_snake_case}', () {

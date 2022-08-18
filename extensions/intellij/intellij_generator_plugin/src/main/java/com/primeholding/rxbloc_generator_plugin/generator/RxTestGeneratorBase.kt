@@ -66,7 +66,7 @@ abstract class RxTestGeneratorBase(
         bloc.stateVariableNames.forEach {
             sb.append("\n")
             sb.append("  when(blocMock.states.${it}).thenAnswer(\n")
-            sb.append("    (_) => Stream.value(false),\n")
+            sb.append("    (_) => Stream.empty(),//TODO place mocked value\n")
             //the value could be derived from the state if it gets parsed, (or at least for the common data types).
             sb.append("  );\n")
         }
