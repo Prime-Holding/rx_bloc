@@ -28,6 +28,7 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => SafeArea(
         top: false,
         child: Scaffold(
+          backgroundColor: context.designSystem.colors.backgroundListColor,
           appBar: AppBar(
             actions: [
               IconButton(

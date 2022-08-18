@@ -82,7 +82,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                           header: const Padding(
                             padding: EdgeInsets.only(left: 12),
                             child: AppStickyHeader(
-                              text: 'Overdue',
+                              text: 'Incomplete overdue',
                             ),
                           ),
                           sliver: SliverList(

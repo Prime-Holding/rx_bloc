@@ -74,9 +74,12 @@ class _AppReminderTileState extends State<AppReminderTile> {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: widget.reminder.complete
-            ? context.designSystem.colors.inactiveButtonTextColor
-            : Colors.transparent,
+        decoration: BoxDecoration(
+          color: widget.reminder.complete
+              ? context.designSystem.colors.inactiveButtonTextColor
+              : context.designSystem.colors.secondaryColor,
+          borderRadius: _getRadius(),
+        ),
         child: Slidable(
             key: Key('Reminder${widget.reminder.id}'),
             startActionPane: _buildActionPane(context),
@@ -113,6 +116,24 @@ class _AppReminderTileState extends State<AppReminderTile> {
               ),
             )),
       );
+
+  BorderRadiusGeometry? _getRadius() {
+    if (widget.isFirst) {
+      return const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      );
+    }
+
+    if (widget.isLast) {
+      return const BorderRadius.only(
+        bottomRight: Radius.circular(20),
+        bottomLeft: Radius.circular(20),
+      );
+    }
+
+    return null;
+  }
 
   ActionPane _buildActionPane(BuildContext context) => ActionPane(
         extentRatio: 0.6,

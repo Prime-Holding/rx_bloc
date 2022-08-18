@@ -86,21 +86,21 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
         },
       );
 
-  Container _itemBuilder(int index, ReminderModel reminder) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
-      child: AutoScrollTag(
-        controller: _controller,
-        index: index,
-        key: ValueKey(index),
-        child: AppReminderTile(
-          reminder: reminder,
+  Widget _itemBuilder(int index, ReminderModel reminder) => Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 10,
         ),
-      ),
-    );
-  }
+        child: AutoScrollTag(
+          controller: _controller,
+          index: index,
+          key: ValueKey(index),
+          child: AppReminderTile(
+            reminder: reminder,
+            isFirst: index == 0,
+            isLast: index == widget.remindersList.totalCount! ,
+          ),
+        ),
+      );
 
   Widget _groupSeparatorBuilder(Group type) {
     var title = '';
@@ -115,9 +115,9 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
     }
 
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.only(left: 24, top: 16),
-      color: context.designSystem.colors.secondaryColor,
+      height: 45,
+      padding: const EdgeInsets.only(left: 24, top: 8.5,bottom: 8.5),
+      color: context.designSystem.colors.backgroundListColor,
       child: Text(
         title,
         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
