@@ -16,17 +16,15 @@ class FavoriteMessageListener extends StatelessWidget {
       RxBlocListener<HotelManageBlocType, String>(
         state: (bloc) => bloc.states.favoriteMessage,
         listener: (context, message) {
-          if (message != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                behavior: SnackBarBehavior.floating,
-                margin: overrideMargins
-                    ? const EdgeInsets.only(bottom: 70, left: 12, right: 12)
-                    : null,
-              ),
-            );
-          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+              behavior: SnackBarBehavior.floating,
+              margin: overrideMargins
+                  ? const EdgeInsets.only(bottom: 70, left: 12, right: 12)
+                  : null,
+            ),
+          );
         },
       );
 }
