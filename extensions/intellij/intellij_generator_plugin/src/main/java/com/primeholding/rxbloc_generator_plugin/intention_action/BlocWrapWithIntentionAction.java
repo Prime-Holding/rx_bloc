@@ -187,7 +187,13 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             }
         }
 
-        final String replaceWith = Snippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+        String replacement = null;
+        if (stateVariableNameSuggest.isEmpty()) {
+            replacement = Snippets.getSnippet(snippetType, selectedText);
+        } else {
+            replacement = SmartSnippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+        }
+        final String replaceWith = replacement;
 
         // wrap the widget:
         WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith));
