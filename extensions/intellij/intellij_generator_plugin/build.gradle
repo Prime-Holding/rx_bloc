@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '1.4.2'
+version '1.5.0'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -42,8 +42,18 @@ patchPluginXml {
     changeNotes """
      <ul>
         <li>v1.5.0 
-        <br /> - Added an action item in the Project Menu to allow boostrapping BloC Tests based on the available/missing folders & files - inside lib & test</li>
         <br /> - Updated DI Dependencies to not be a singleton</li>
+        <br /> - Added an improvement to the - Wrap With Quick Action Support - 
+        to analyze, filter and display a choose BloC states dialog - based on the file names and path - by the convension:
+         <br /> feature_xx
+         <br />   -- bloc / xx_bloc.dart  
+         <br />   -- di
+         <br />   -- views / xx_page.dart
+         <br /> Filters:
+         <br /> - RxResultBuilder - filters states with Result
+         <br /> - RxPaginatedBuilder - filters states with PaginatedList
+         <br /> - RxTextFormFieldBuilder - filters states that are string
+         
         <li>v1.4.0 
         <br /> - Introduce "New -> RxBloc List".  
         <br /> - Wrap With Quick Action Support (RxBlocBuilder, RxResultBuilder, RxPaginatedBuilder, RxBlocListener, RxFormFieldBuilder, RxTextFormFieldBuilder). 
