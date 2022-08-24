@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import '../../app_extensions.dart';
+import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
+import '../ui_components/simple_text_field.dart';
 
 class AddReminderDialog extends StatefulWidget {
   const AddReminderDialog({Key? key}) : super(key: key);
@@ -14,8 +18,6 @@ class AddReminderDialog extends StatefulWidget {
 class AddReminderDialogState extends State<AddReminderDialog> {
   late TextEditingController _textEditingController;
 
-  late final FocusNode _titleFocusNode = FocusNode();
-
   DateTime dueDate = DateTime.now();
 
   final _formatter = DateFormat.yMd();
@@ -26,27 +28,29 @@ class AddReminderDialogState extends State<AddReminderDialog> {
     super.initState();
   }
 
+  Widget _creationListener() =>
+      RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
+        state: (bloc) => bloc.states.onCreated,
+        listener: (context, onCreated) {
+          if (onCreated != null && onCreated is ResultSuccess) {
+            Navigator.of(context).pop();
+          }
+        },
+      );
+
   @override
   Widget build(BuildContext context) => AlertDialog(
         title: const Text('Add Reminder'),
         content: Row(
           children: [
+            _creationListener(),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(context.l10n.name),
-                  TextField(
-                    focusNode: _titleFocusNode,
-                    textInputAction: TextInputAction.done,
-                    controller: _textEditingController,
-                    minLines: 1,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                    ),
-                  ),
+                  _buildName(),
                 ],
               ),
             ),
@@ -67,16 +71,28 @@ class AddReminderDialogState extends State<AddReminderDialog> {
           TextButton(
             child: const Text('OK'),
             onPressed: () {
-              context.read<ReminderManageBlocType>().events.create(
-                    complete: false,
-                    dueDate: dueDate,
-                    title: _textEditingController.text,
-                    completeUpdated: false,
-                  );
-              Navigator.of(context).pop();
+              context.read<ReminderManageBlocType>().events
+                ..validate()
+                ..create(
+                  complete: false,
+                  dueDate: dueDate,
+                  completeUpdated: false,
+                );
+              // Navigator.of(context).pop();
             },
           )
         ],
+      );
+
+  Widget _buildName() => RxBlocBuilder<ReminderManageBlocType, String?>(
+        state: (bloc) => bloc.states.nameErrorMessage,
+        builder: (context, state, bloc) => SimpleTextField(
+          key: const ValueKey('name'),
+          onChanged: bloc.events.setName,
+          errorText: state.data,
+          text: bloc.states.name,
+          errorMaxLines: 2,
+        ),
       );
 
   @override

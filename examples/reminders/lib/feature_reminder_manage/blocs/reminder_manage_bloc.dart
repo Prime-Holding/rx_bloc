@@ -8,12 +8,17 @@ import '../../base/services/reminders_service.dart';
 
 part 'reminder_manage_bloc.rxb.g.dart';
 
+part 'reminder_manage_bloc_extensions.dart';
+
 /// A contract class containing all events of the ReminderManageBloC.
 abstract class ReminderManageBlocEvents {
   void update(ReminderModel reminder);
 
+  void setName(String title);
+
+  void validate();
+
   void create({
-    required String title,
     required DateTime dueDate,
     required bool complete,
     required bool completeUpdated,
@@ -34,14 +39,19 @@ abstract class ReminderManageBlocStates {
 
   ConnectableStream<Result<IdentifiablePair<ReminderModel>>> get onUpdated;
 
-  ConnectableStream<Result<ReminderModel>> get onCreated;
+  Stream<Result<ReminderModel>> get onCreated;
+
+  Stream<String> get name;
+
+  Stream<String?> get nameErrorMessage;
+
+  Stream<bool> get isNameValid;
 }
 
 @RxBloc()
 class ReminderManageBloc extends $ReminderManageBloc {
   ReminderManageBloc(this._service, this._coordinatorBloc) {
     onDeleted.connect().disposedBy(_compositeSubscription);
-    onCreated.connect().disposedBy(_compositeSubscription);
     onUpdated.connect().disposedBy(_compositeSubscription);
   }
 
@@ -57,18 +67,21 @@ class ReminderManageBloc extends $ReminderManageBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  ConnectableStream<Result<ReminderModel>> _mapToOnCreatedState() =>
-      _$createEvent
-          .switchMap((reminder) => _service
-              .create(
-                title: reminder.title,
-                dueDate: reminder.dueDate,
-                complete: reminder.complete,
-              )
-              .asResultStream())
-          .setResultStateHandler(this)
-          .doOnData(_coordinatorBloc.events.reminderCreated)
-          .publish();
+  Stream<Result<ReminderModel>> _mapToOnCreatedState() => _$createEvent
+      .validateReminderNameFieldWithLatestFrom(this)
+      .where((event) => event.isReminderNameValid)
+      .switchMap(
+        (createArgsAndIsNameValid) => _service
+            .create(
+              title: createArgsAndIsNameValid.name!,
+              dueDate: createArgsAndIsNameValid.createEventArgs!.dueDate,
+              complete: createArgsAndIsNameValid.createEventArgs!.complete,
+            )
+            .asResultStream(),
+      )
+      .setResultStateHandler(this)
+      .doOnData(_coordinatorBloc.events.reminderCreated)
+      .asBroadcastStream();
 
   @override
   ConnectableStream<Result<ReminderModel>> _mapToOnDeletedState() =>
@@ -84,10 +97,45 @@ class ReminderManageBloc extends $ReminderManageBloc {
 
   @override
   ConnectableStream<Result<IdentifiablePair<ReminderModel>>>
-  _mapToOnUpdatedState() =>
-      _$updateEvent
+      _mapToOnUpdatedState() => _$updateEvent
           .switchMap((reminder) => _service.update(reminder).asResultStream())
           .setResultStateHandler(this)
           .doOnData(_coordinatorBloc.events.reminderUpdated)
           .publish();
+
+  @override
+  Stream<String?> _mapToNameErrorMessageState() => _$validateEvent
+      .switchMap(
+        (_) => Rx.combineLatest<String, String>(
+          [name],
+          (values) {
+            return values[0];
+          },
+        ),
+      )
+      .map((event) => validateReminderName(event))
+      .shareReplay(maxSize: 1);
+
+  Stream<String> get _name => _$setNameEvent;
+
+  @override
+  Stream<bool> _mapToIsNameValidState() => nameErrorMessage
+          .map((errorMessage) => errorMessage == null)
+          .startWith(false)
+          .share();
+
+  @override
+  Stream<String> _mapToNameState() =>
+      _$setNameEvent
+          .startWith('')
+          .asBroadcastStream();
+}
+
+class _CreateArgsAndIsNameValid {
+  _CreateArgsAndIsNameValid(
+      this.createEventArgs, this.name, this.isReminderNameValid);
+
+  final _CreateEventArgs? createEventArgs;
+  final String? name;
+  final bool isReminderNameValid;
 }

@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +64,8 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => addDialog(context),
+            onPressed: () =>
+                addDialog(context, context.read<ReminderManageBlocType>()),
             tooltip: 'add',
             child: const Icon(Icons.add),
           ),
@@ -83,11 +83,12 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         ),
       );
 
-  Future<void> addDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return const AddReminderDialog();
-        });
+  Future<void> addDialog(
+      BuildContext context, ReminderManageBlocType bloc) async {
+    await showDialog(
+      context: context,
+      builder: (context) => const AddReminderDialog(),
+    );
+    context.read<ReminderManageBlocType>().events.setName('');
   }
 }

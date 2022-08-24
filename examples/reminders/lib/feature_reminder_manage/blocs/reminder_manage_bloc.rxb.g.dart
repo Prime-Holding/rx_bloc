@@ -25,6 +25,12 @@ abstract class $ReminderManageBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [update]
   final _$updateEvent = PublishSubject<ReminderModel>();
 
+  /// Тhe [Subject] where events sink to by calling [setName]
+  final _$setNameEvent = PublishSubject<String>();
+
+  /// Тhe [Subject] where events sink to by calling [validate]
+  final _$validateEvent = PublishSubject<void>();
+
   /// Тhe [Subject] where events sink to by calling [create]
   final _$createEvent = PublishSubject<_CreateEventArgs>();
 
@@ -46,20 +52,35 @@ abstract class $ReminderManageBloc extends RxBlocBase
       _onUpdatedState = _mapToOnUpdatedState();
 
   /// The state of [onCreated] implemented in [_mapToOnCreatedState]
-  late final ConnectableStream<Result<ReminderModel>> _onCreatedState =
+  late final Stream<Result<ReminderModel>> _onCreatedState =
       _mapToOnCreatedState();
+
+  /// The state of [name] implemented in [_mapToNameState]
+  late final Stream<String> _nameState = _mapToNameState();
+
+  /// The state of [nameErrorMessage] implemented in
+  /// [_mapToNameErrorMessageState]
+  late final Stream<String?> _nameErrorMessageState =
+      _mapToNameErrorMessageState();
+
+  /// The state of [isNameValid] implemented in [_mapToIsNameValidState]
+  late final Stream<bool> _isNameValidState = _mapToIsNameValidState();
 
   @override
   void update(ReminderModel reminder) => _$updateEvent.add(reminder);
 
   @override
+  void setName(String title) => _$setNameEvent.add(title);
+
+  @override
+  void validate() => _$validateEvent.add(null);
+
+  @override
   void create(
-          {required String title,
-          required DateTime dueDate,
+          {required DateTime dueDate,
           required bool complete,
           required bool completeUpdated}) =>
       _$createEvent.add(_CreateEventArgs(
-          title: title,
           dueDate: dueDate,
           complete: complete,
           completeUpdated: completeUpdated));
@@ -81,7 +102,16 @@ abstract class $ReminderManageBloc extends RxBlocBase
       _onUpdatedState;
 
   @override
-  ConnectableStream<Result<ReminderModel>> get onCreated => _onCreatedState;
+  Stream<Result<ReminderModel>> get onCreated => _onCreatedState;
+
+  @override
+  Stream<String> get name => _nameState;
+
+  @override
+  Stream<String?> get nameErrorMessage => _nameErrorMessageState;
+
+  @override
+  Stream<bool> get isNameValid => _isNameValidState;
 
   Stream<bool> _mapToIsLoadingState();
 
@@ -92,7 +122,13 @@ abstract class $ReminderManageBloc extends RxBlocBase
   ConnectableStream<Result<IdentifiablePair<ReminderModel>>>
       _mapToOnUpdatedState();
 
-  ConnectableStream<Result<ReminderModel>> _mapToOnCreatedState();
+  Stream<Result<ReminderModel>> _mapToOnCreatedState();
+
+  Stream<String> _mapToNameState();
+
+  Stream<String?> _mapToNameErrorMessageState();
+
+  Stream<bool> _mapToIsNameValidState();
 
   @override
   ReminderManageBlocEvents get events => this;
@@ -103,6 +139,8 @@ abstract class $ReminderManageBloc extends RxBlocBase
   @override
   void dispose() {
     _$updateEvent.close();
+    _$setNameEvent.close();
+    _$validateEvent.close();
     _$createEvent.close();
     _$deleteEvent.close();
     _compositeSubscription.dispose();
@@ -114,12 +152,9 @@ abstract class $ReminderManageBloc extends RxBlocBase
 /// [ReminderManageBlocEvents.create] event
 class _CreateEventArgs {
   const _CreateEventArgs(
-      {required this.title,
-      required this.dueDate,
+      {required this.dueDate,
       required this.complete,
       required this.completeUpdated});
-
-  final String title;
 
   final DateTime dueDate;
 
