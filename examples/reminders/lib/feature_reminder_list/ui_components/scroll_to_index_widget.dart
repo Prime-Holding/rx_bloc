@@ -97,7 +97,7 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
           child: AppReminderTile(
             reminder: reminder,
             isFirst: index == 0,
-            isLast: index == widget.remindersList.totalCount! ,
+            isLast: index == widget.remindersList.totalCount! - 1,
           ),
         ),
       );
