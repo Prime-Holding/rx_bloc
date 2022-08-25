@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
         body: RxBlocListener<PuppyManageBlocType, String>(
           state: (bloc) => bloc.states.error,
           listener: (ctx, state) => ScaffoldMessenger.of(ctx)
-              .showSnackBar(SnackBar(content: Text(state!))),
+              .showSnackBar(SnackBar(content: Text(state))),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [

@@ -8,7 +8,13 @@ import 'mocks/bloc.dart';
 import 'rx_bloc_listener_test.mocks.dart';
 
 class CallbackFunctions {
-  void onString(BuildContext context, String? value) {}
+  void onString(BuildContext context, String value) {}
+
+  void onWaiting(BuildContext context, String? value) {}
+
+  void onComplete(BuildContext context) {}
+
+  void onError(BuildContext context, Object error, StackTrace stackTrace) {}
 }
 
 @GenerateMocks([CallbackFunctions])
@@ -87,6 +93,68 @@ void main() {
       );
 
       verify(callbacks.onString(any, any)).called(1);
+    });
+
+    testWidgets(
+        'listener waiting callback is called without assigned initial value',
+        (tester) async {
+      final callbacks = MockCallbackFunctions();
+
+      await tester.pumpWidget(RxBlocListener<TestBloc, String>(
+        bloc: TestBloc(),
+        state: (bloc) => bloc.singleValueStream,
+        listener: callbacks.onString,
+        onWaiting: callbacks.onWaiting,
+      ));
+
+      verify(callbacks.onWaiting(any, null)).called(1);
+    });
+
+    testWidgets(
+        'listener waiting callback is called with assigned initial value',
+        (tester) async {
+      final callbacks = MockCallbackFunctions();
+      final initialValue = 'initial';
+
+      await tester.pumpWidget(RxBlocListener<TestBloc, String>(
+        bloc: TestBloc(),
+        state: (bloc) => bloc.singleValueStream,
+        listener: callbacks.onString,
+        onWaiting: callbacks.onWaiting,
+        initialValue: initialValue,
+      ));
+
+      verify(callbacks.onWaiting(any, initialValue)).called(1);
+    });
+
+    testWidgets(
+        'listener complete callback is called once stream is done emitting',
+        (tester) async {
+      final callbacks = MockCallbackFunctions();
+
+      await tester.pumpWidget(RxBlocListener<TestBloc, String>(
+        bloc: TestBloc(),
+        state: (bloc) => bloc.singleValueStream,
+        listener: callbacks.onString,
+        onComplete: callbacks.onComplete,
+      ));
+
+      verify(callbacks.onComplete(any)).called(1);
+    });
+
+    testWidgets('listener error callback is called when stream emits error',
+        (tester) async {
+      final callbacks = MockCallbackFunctions();
+
+      await tester.pumpWidget(RxBlocListener<TestBloc, String>(
+        bloc: TestBloc(),
+        state: (bloc) => bloc.exceptionStream,
+        listener: callbacks.onString,
+        onError: callbacks.onError,
+      ));
+
+      verify(callbacks.onError(any, any, any)).called(1);
+      verifyNever(callbacks.onString(any, any));
     });
   });
 }
