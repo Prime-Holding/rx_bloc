@@ -1,3 +1,6 @@
+## [5.0.1] - Aug 25, 2022
+* Fixes and improvements
+
 ## [5.0.0] - Aug 18, 2022
 * Support Flutter `3.0`
 * [BREAKING] Changed listener parameter type in RxBlocListener to match the type of the listened state
