@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
-
 import 'package:rx_bloc_list/models.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -62,12 +61,16 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
 
   @override
   Widget build(BuildContext context) => GroupedListView<ReminderModel, Group>(
+        sort: false,
         physics: const AlwaysScrollableScrollPhysics(),
         controller: _controller,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         useStickyGroupSeparators: true,
+        floatingHeader: false,
         elements: widget.remindersList.list,
         groupBy: _groupBy,
+        itemComparator: (ReminderModel value1, ReminderModel value2) =>
+            value1.dueDate.compareTo(value2.dueDate),
         groupComparator: (value1, value2) =>
             value1.index.compareTo(value2.index),
         groupSeparatorBuilder: _groupSeparatorBuilder,
@@ -116,7 +119,7 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
 
     return Container(
       height: 45,
-      padding: const EdgeInsets.only(left: 24, top: 8.5,bottom: 8.5),
+      padding: const EdgeInsets.only(left: 24, top: 8.5, bottom: 8.5),
       color: context.designSystem.colors.backgroundListColor,
       child: Text(
         title,

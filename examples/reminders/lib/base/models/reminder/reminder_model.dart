@@ -34,7 +34,7 @@ class ReminderModelRequestData {
     required this.title,
     required this.dueDate,
     required this.complete,
-     this.authorId,
+    this.authorId,
   });
 
   final String title;
