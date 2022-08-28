@@ -363,6 +363,10 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       query = query.where(_authorId, isNull: true);
     }
 
+    if(request?.complete != null){
+      query = query.where(_complete, isEqualTo: request?.complete);
+    }
+
     if (request?.sort == ReminderModelRequestSort.dueDateDesc) {
       query = query.orderBy(_dueDate, descending: false);
     }

@@ -21,6 +21,7 @@ class DashboardService {
           page: 1,
           pageSize: 5,
           filterByDueDateRange: _getDateRange(),
+          complete: false,
         ),
       )
     ]);

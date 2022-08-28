@@ -21,12 +21,16 @@ class ReminderModelRequest {
     this.sort,
     this.page = 0,
     this.pageSize = 50,
+    this.complete,
   });
 
   final DueDateRange? filterByDueDateRange;
   final ReminderModelRequestSort? sort;
   final int page;
   final int pageSize;
+
+  /// When fetching from the dashboard page, set complete to false
+  final bool? complete;
 }
 
 class ReminderModelRequestData {
