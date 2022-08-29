@@ -14,11 +14,16 @@ extension _ValidateReminderNameField<T> on Stream<_CreateEventArgs> {
       }).onErrorReturn(_CreateArgsAndIsNameValid(null, null, false));
 }
 
-extension _ReminderManageBloc on ReminderManageBloc {
-  String? validateReminderName(String name) {
-    if (name.trim().isEmpty) {
-      return 'A title must be specified.';
-    }
-    return null;
-  }
+extension _NameValidator on Stream<String> {
+  static const _nameValidation = 'A title must be specified';
+
+  Stream<String?> isNameEmpty() => map(
+        (name) {
+          if (name.isNotEmpty) {
+            return null;
+          } else {
+            return _nameValidation;
+          }
+        },
+      );
 }

@@ -26,7 +26,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
   final _$updateEvent = PublishSubject<ReminderModel>();
 
   /// Тhe [Subject] where events sink to by calling [setName]
-  final _$setNameEvent = PublishSubject<String>();
+  final _$setNameEvent = BehaviorSubject<String>.seeded('');
 
   /// Тhe [Subject] where events sink to by calling [validate]
   final _$validateEvent = PublishSubject<void>();

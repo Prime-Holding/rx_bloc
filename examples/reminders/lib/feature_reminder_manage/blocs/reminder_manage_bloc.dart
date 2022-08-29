@@ -14,6 +14,7 @@ part 'reminder_manage_bloc_extensions.dart';
 abstract class ReminderManageBlocEvents {
   void update(ReminderModel reminder);
 
+  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setName(String title);
 
   void validate();
@@ -106,29 +107,29 @@ class ReminderManageBloc extends $ReminderManageBloc {
   @override
   Stream<String?> _mapToNameErrorMessageState() => _$validateEvent
       .switchMap(
-        (_) => Rx.combineLatest<String, String>(
-          [name],
+        (_) => Rx.combineLatest<String?, String?>(
+          [_name.isNameEmpty()],
           (values) {
-            return values[0];
+            var error = values[0];
+            if (error != null) {
+              return error;
+            }
+            return null;
           },
         ),
       )
-      .map((event) => validateReminderName(event))
-      .shareReplay(maxSize: 1);
+      .share();
 
-  Stream<String> get _name => _$setNameEvent;
+  Stream<String> get _name => _$setNameEvent.share();
 
   @override
   Stream<bool> _mapToIsNameValidState() => nameErrorMessage
-          .map((errorMessage) => errorMessage == null)
-          .startWith(false)
-          .share();
+      .map((errorMessage) => errorMessage == null)
+      .startWith(false)
+      .share();
 
   @override
-  Stream<String> _mapToNameState() =>
-      _$setNameEvent
-          .startWith('')
-          .asBroadcastStream();
+  Stream<String> _mapToNameState() => _$setNameEvent.asBroadcastStream();
 }
 
 class _CreateArgsAndIsNameValid {
