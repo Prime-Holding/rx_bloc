@@ -132,17 +132,12 @@ class _AppReminderTileState extends State<AppReminderTile> {
       );
 
   BorderRadiusGeometry? _getRadius() {
-    if (widget.isFirst) {
-      return const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      );
-    }
-
-    if (widget.isLast) {
-      return const BorderRadius.only(
-        bottomRight: Radius.circular(20),
-        bottomLeft: Radius.circular(20),
+    if (widget.isFirst || widget.isLast) {
+      return BorderRadius.only(
+        topLeft: Radius.circular(widget.isFirst ? 20 : 0),
+        topRight: Radius.circular(widget.isFirst ? 20 : 0),
+        bottomRight: Radius.circular(widget.isLast ? 20 : 0),
+        bottomLeft: Radius.circular(widget.isLast ? 20 : 0),
       );
     }
 

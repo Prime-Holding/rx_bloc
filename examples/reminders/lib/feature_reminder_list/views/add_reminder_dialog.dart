@@ -76,9 +76,7 @@ class AddReminderDialogState extends State<AddReminderDialog> {
                 ..create(
                   complete: false,
                   dueDate: dueDate,
-                  completeUpdated: false,
                 );
-              // Navigator.of(context).pop();
             },
           )
         ],

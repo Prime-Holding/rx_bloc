@@ -88,12 +88,6 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
                           sliver: SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, i) => Container(
-                                decoration: BoxDecoration(
-                                  color: context
-                                      .designSystem.colors.secondaryColor,
-                                  borderRadius:
-                                      _getRadius(i, data.reminderList.length),
-                                ),
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: 16,
                                 ),
@@ -165,24 +159,6 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           ),
         ),
       );
-
-  BorderRadiusGeometry? _getRadius(int i, int length) {
-    if (i == 0) {
-      return const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      );
-    }
-
-    if (i == length - 1) {
-      return const BorderRadius.only(
-        bottomRight: Radius.circular(20),
-        bottomLeft: Radius.circular(20),
-      );
-    }
-
-    return null;
-  }
 }
 
 class DashboardStats extends StatelessWidget {

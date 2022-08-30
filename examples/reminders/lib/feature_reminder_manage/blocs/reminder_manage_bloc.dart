@@ -22,7 +22,6 @@ abstract class ReminderManageBlocEvents {
   void create({
     required DateTime dueDate,
     required bool complete,
-    required bool completeUpdated,
   });
 
   void delete(ReminderModel reminder);

@@ -99,11 +99,35 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
           key: ValueKey(index),
           child: AppReminderTile(
             reminder: reminder,
-            isFirst: index == 0,
-            isLast: index == widget.remindersList.totalCount! - 1,
+            isFirst: _firstInGroup(index, reminder),
+            isLast: _isLastInGroup(index, reminder),
           ),
         ),
       );
+
+  bool _firstInGroup(int index, ReminderModel reminder) {
+    if (index == 0) {
+      return true;
+    }
+    if (index < widget.remindersList.length) {
+      var prev = _groupBy(widget.remindersList[index > 0 ? index - 1 : 0]).name;
+      var currGroup = _groupBy(reminder).name;
+      return prev != currGroup;
+    }
+    return false;
+  }
+
+  bool _isLastInGroup(int index, ReminderModel reminder) {
+    if (index == widget.remindersList.length - 1) {
+      return true;
+    }
+    if (index + 1 < widget.remindersList.length) {
+      final prev = _groupBy(reminder).name;
+      final currGroup = _groupBy(widget.remindersList[index + 1]).name;
+      return prev != currGroup;
+    }
+    return false;
+  }
 
   Widget _groupSeparatorBuilder(Group type) {
     var title = '';
@@ -128,11 +152,11 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
     );
   }
 
-  Group _groupBy(ReminderModel element) {
+  Group _groupBy(ReminderModel reminder) {
     final date = DateTime(
-      element.dueDate.year,
-      element.dueDate.month,
-      element.dueDate.day,
+      reminder.dueDate.year,
+      reminder.dueDate.month,
+      reminder.dueDate.day,
     );
     final now = DateTime.now();
     final today = DateTime(
