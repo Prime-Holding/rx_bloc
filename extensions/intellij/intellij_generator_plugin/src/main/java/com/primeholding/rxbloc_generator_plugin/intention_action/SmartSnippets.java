@@ -120,7 +120,7 @@ public class SmartSnippets {
                 "              const YourProgressIndicator(),\n" +
                 "          buildError: (context, list, bloc) =>\n" +
                 "              YourErrorWidget(error: list.error!),// TODO write your own error widget\n" +
-                "        )\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                "        )\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest.substring("PaginatedList<".length(), stateTypeDirectorySuggest.length() - 1), stateVariableNameSuggest);
     }
 
     private static String blocResultBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
