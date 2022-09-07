@@ -185,39 +185,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     await storage.write(key: _authorId, value: null);
   }
 
-  /// Generates a list of reminders, deletes the existing reminder documents in
-  /// the reminders collection and uploads the newly generated collection.
-  /// Call the seed() method when the list in Firebase is empty or should be
-  /// reset. The method can be called in the getCompleteCount() method.
-  Future<void> seed() async {
-    _data = List.generate(
-      100,
-      (index) => ReminderModel.withAuthorId(index, _loggedInUid),
-    );
-
-    // Delete previous data from the reminders collection
-    final deleteBatch = FirebaseFirestore.instance.batch();
-    final deleteSnapshotReminders = await remindersReference.get();
-    for (var document in deleteSnapshotReminders.docs) {
-      deleteBatch.delete(document.reference);
-    }
-    await deleteBatch.commit();
-
-    // Insert new data to the reminders collection
-    final insertBatch = FirebaseFirestore.instance.batch();
-    final reminders = _data;
-    for (var reminder in reminders) {
-      final docRef = remindersReference.doc(reminder.id);
-      insertBatch.set(docRef, reminder.toJson());
-    }
-    await insertBatch.commit();
-
-    // Set the counters values
-    await _updateIncompleteCounter(100);
-    await _updateCompleteCounter(0);
-    await _updateRemindersCollectionLengthCounter(100);
-  }
-
   @override
   Future<IdentifiablePair<ReminderModel>> update(
       ReminderModel updatedModel) async {

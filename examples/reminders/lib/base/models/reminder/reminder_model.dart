@@ -85,20 +85,28 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
             ),
       );
 
-  factory ReminderModel.withAuthorId(int index, String? authorId) =>
-      ReminderModel(
-        id: index.toString(),
-        title: 'Reminder $index',
-        complete: false,
-        dueDate: DateTime.now()
-            .subtract(
-              const Duration(days: 100),
-            )
-            .add(
-              Duration(days: index),
-            ),
-        authorId: authorId,
-      );
+  factory ReminderModel.withAuthorId(int index, String? authorId) {
+    var now = DateTime.now();
+    var date = now
+        .subtract(Duration(
+          days: 10,
+          hours: now.hour,
+          minutes: now.minute,
+          seconds: now.second,
+          milliseconds: now.millisecond,
+          microseconds: now.microsecond,
+        ))
+        .add(
+          Duration(days: index),
+        );
+    return ReminderModel(
+      id: index.toString(),
+      title: 'Reminder $index',
+      complete: false,
+      dueDate: date,
+      authorId: authorId,
+    );
+  }
 
   ReminderModel copyWith({
     String? id,
