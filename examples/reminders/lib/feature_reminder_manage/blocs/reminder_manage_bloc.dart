@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,8 +20,6 @@ abstract class ReminderManageBlocEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setName(String title);
 
-  void validate();
-
   void create({
     required DateTime dueDate,
     required bool complete,
@@ -29,23 +30,17 @@ abstract class ReminderManageBlocEvents {
 
 /// A contract class containing all states of the ReminderManageBloC.
 abstract class ReminderManageBlocStates {
-  /// The loading state
-  Stream<bool> get isLoading;
-
-  /// The error state
-  Stream<String> get errors;
-
   ConnectableStream<Result<ReminderModel>> get onDeleted;
 
   ConnectableStream<Result<IdentifiablePair<ReminderModel>>> get onUpdated;
 
-  Stream<Result<ReminderModel>> get onCreated;
+  ConnectableStream<Result<ReminderModel>> get onCreated;
 
   Stream<String> get name;
 
-  Stream<String?> get nameErrorMessage;
+  Stream<bool> get showErrors;
 
-  Stream<bool> get isNameValid;
+  Stream<bool> get isFormValid;
 }
 
 @RxBloc()
@@ -53,35 +48,38 @@ class ReminderManageBloc extends $ReminderManageBloc {
   ReminderManageBloc(this._service, this._coordinatorBloc) {
     onDeleted.connect().disposedBy(_compositeSubscription);
     onUpdated.connect().disposedBy(_compositeSubscription);
+    onCreated.connect().disposedBy(_compositeSubscription);
   }
 
   final RemindersService _service;
   final CoordinatorBlocType _coordinatorBloc;
 
-  /// TODO: Implement error event-to-state logic
-  @override
-  Stream<String> _mapToErrorsState() =>
-      errorState.map((error) => error.toString());
+  static const _nameValidation = 'A title must be specified';
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<bool> _mapToShowErrorsState() => _$createEvent
+      .validateNameFieldWithLatestFrom(this)
+      .map((event) => !event.isReminderNameValid)
+      .startWith(false)
+      .shareReplay(maxSize: 1);
 
   @override
-  Stream<Result<ReminderModel>> _mapToOnCreatedState() => _$createEvent
-      .validateReminderNameFieldWithLatestFrom(this)
-      .where((event) => event.isReminderNameValid)
-      .switchMap(
-        (createArgsAndIsNameValid) => _service
-            .create(
-              title: createArgsAndIsNameValid.name!,
-              dueDate: createArgsAndIsNameValid.createEventArgs!.dueDate,
-              complete: createArgsAndIsNameValid.createEventArgs!.complete,
-            )
-            .asResultStream(),
-      )
-      .setResultStateHandler(this)
-      .doOnData(_coordinatorBloc.events.reminderCreated)
-      .asBroadcastStream();
+  ConnectableStream<Result<ReminderModel>> _mapToOnCreatedState() =>
+      _$createEvent
+          .validateNameFieldWithLatestFrom(this)
+          .where((event) => event.isReminderNameValid)
+          .switchMap(
+            (createArgsAndIsNameValid) => _service
+                .create(
+                  title: createArgsAndIsNameValid.name!,
+                  dueDate: createArgsAndIsNameValid.createEventArgs!.dueDate,
+                  complete: createArgsAndIsNameValid.createEventArgs!.complete,
+                )
+                .asResultStream(),
+          )
+          .setResultStateHandler(this)
+          .doOnData(_coordinatorBloc.events.reminderCreated)
+          .publish();
 
   @override
   ConnectableStream<Result<ReminderModel>> _mapToOnDeletedState() =>
@@ -104,31 +102,26 @@ class ReminderManageBloc extends $ReminderManageBloc {
           .publish();
 
   @override
-  Stream<String?> _mapToNameErrorMessageState() => _$validateEvent
-      .switchMap(
-        (_) => Rx.combineLatest<String?, String?>(
-          [_name.isNameEmpty()],
-          (values) {
-            var error = values[0];
-            if (error != null) {
-              return error;
-            }
-            return null;
-          },
-        ),
-      )
-      .share();
+  Stream<String> _mapToNameState() => _$setNameEvent.map(validateName);
 
-  Stream<String> get _name => _$setNameEvent.share();
+  String validateName(String name) {
+    if (name.trim().isEmpty) {
+      throw RxFieldException(
+        fieldValue: name,
+        error: _nameValidation,
+      );
+    }
+
+    return name;
+  }
 
   @override
-  Stream<bool> _mapToIsNameValidState() => nameErrorMessage
-      .map((errorMessage) => errorMessage == null)
-      .startWith(false)
-      .share();
-
-  @override
-  Stream<String> _mapToNameState() => _$setNameEvent.asBroadcastStream();
+  Stream<bool> _mapToIsFormValidState() => Rx.combineLatest<String, bool>(
+        [name],
+        (values) {
+          return true;
+        },
+      ).onErrorReturn(false).asBroadcastStream();
 }
 
 class _CreateArgsAndIsNameValid {

@@ -1,29 +1,16 @@
 part of 'reminder_manage_bloc.dart';
 
 extension _ValidateReminderNameField<T> on Stream<_CreateEventArgs> {
-  Stream<_CreateArgsAndIsNameValid> validateReminderNameFieldWithLatestFrom(
-    ReminderManageBloc bloc,
-  ) =>
-      withLatestFrom3(
-          bloc._name, bloc.states.isNameValid, bloc.states.nameErrorMessage,
-          (args, String name, bool isValid, String? error) {
-        if (isValid) {
-          return _CreateArgsAndIsNameValid(args, name, true);
-        }
-        return _CreateArgsAndIsNameValid(null, null, false);
-      }).onErrorReturn(_CreateArgsAndIsNameValid(null, null, false));
-}
-
-extension _NameValidator on Stream<String> {
-  static const _nameValidation = 'A title must be specified';
-
-  Stream<String?> isNameEmpty() => map(
-        (name) {
-          if (name.isNotEmpty) {
-            return null;
-          } else {
-            return _nameValidation;
+  Stream<_CreateArgsAndIsNameValid> validateNameFieldWithLatestFrom(
+          ReminderManageBloc bloc) =>
+      withLatestFrom2<String, bool, _CreateArgsAndIsNameValid>(
+        bloc.states.name,
+        bloc.states.isFormValid,
+        (args, name, isFormValid) {
+          if (isFormValid) {
+            return _CreateArgsAndIsNameValid(args, name.trim(), true);
           }
+          return _CreateArgsAndIsNameValid(null, null, false);
         },
-      );
+      ).onErrorReturn(_CreateArgsAndIsNameValid(null, null, false));
 }

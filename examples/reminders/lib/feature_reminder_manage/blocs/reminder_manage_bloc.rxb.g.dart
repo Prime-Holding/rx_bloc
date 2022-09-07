@@ -28,20 +28,11 @@ abstract class $ReminderManageBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [setName]
   final _$setNameEvent = BehaviorSubject<String>.seeded('');
 
-  /// Тhe [Subject] where events sink to by calling [validate]
-  final _$validateEvent = PublishSubject<void>();
-
   /// Тhe [Subject] where events sink to by calling [create]
   final _$createEvent = PublishSubject<_CreateEventArgs>();
 
   /// Тhe [Subject] where events sink to by calling [delete]
   final _$deleteEvent = PublishSubject<ReminderModel>();
-
-  /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
-
-  /// The state of [errors] implemented in [_mapToErrorsState]
-  late final Stream<String> _errorsState = _mapToErrorsState();
 
   /// The state of [onDeleted] implemented in [_mapToOnDeletedState]
   late final ConnectableStream<Result<ReminderModel>> _onDeletedState =
@@ -52,28 +43,23 @@ abstract class $ReminderManageBloc extends RxBlocBase
       _onUpdatedState = _mapToOnUpdatedState();
 
   /// The state of [onCreated] implemented in [_mapToOnCreatedState]
-  late final Stream<Result<ReminderModel>> _onCreatedState =
+  late final ConnectableStream<Result<ReminderModel>> _onCreatedState =
       _mapToOnCreatedState();
 
   /// The state of [name] implemented in [_mapToNameState]
   late final Stream<String> _nameState = _mapToNameState();
 
-  /// The state of [nameErrorMessage] implemented in
-  /// [_mapToNameErrorMessageState]
-  late final Stream<String?> _nameErrorMessageState =
-      _mapToNameErrorMessageState();
+  /// The state of [showErrors] implemented in [_mapToShowErrorsState]
+  late final Stream<bool> _showErrorsState = _mapToShowErrorsState();
 
-  /// The state of [isNameValid] implemented in [_mapToIsNameValidState]
-  late final Stream<bool> _isNameValidState = _mapToIsNameValidState();
+  /// The state of [isFormValid] implemented in [_mapToIsFormValidState]
+  late final Stream<bool> _isFormValidState = _mapToIsFormValidState();
 
   @override
   void update(ReminderModel reminder) => _$updateEvent.add(reminder);
 
   @override
   void setName(String title) => _$setNameEvent.add(title);
-
-  @override
-  void validate() => _$validateEvent.add(null);
 
   @override
   void create({required DateTime dueDate, required bool complete}) =>
@@ -83,12 +69,6 @@ abstract class $ReminderManageBloc extends RxBlocBase
   void delete(ReminderModel reminder) => _$deleteEvent.add(reminder);
 
   @override
-  Stream<bool> get isLoading => _isLoadingState;
-
-  @override
-  Stream<String> get errors => _errorsState;
-
-  @override
   ConnectableStream<Result<ReminderModel>> get onDeleted => _onDeletedState;
 
   @override
@@ -96,33 +76,29 @@ abstract class $ReminderManageBloc extends RxBlocBase
       _onUpdatedState;
 
   @override
-  Stream<Result<ReminderModel>> get onCreated => _onCreatedState;
+  ConnectableStream<Result<ReminderModel>> get onCreated => _onCreatedState;
 
   @override
   Stream<String> get name => _nameState;
 
   @override
-  Stream<String?> get nameErrorMessage => _nameErrorMessageState;
+  Stream<bool> get showErrors => _showErrorsState;
 
   @override
-  Stream<bool> get isNameValid => _isNameValidState;
-
-  Stream<bool> _mapToIsLoadingState();
-
-  Stream<String> _mapToErrorsState();
+  Stream<bool> get isFormValid => _isFormValidState;
 
   ConnectableStream<Result<ReminderModel>> _mapToOnDeletedState();
 
   ConnectableStream<Result<IdentifiablePair<ReminderModel>>>
       _mapToOnUpdatedState();
 
-  Stream<Result<ReminderModel>> _mapToOnCreatedState();
+  ConnectableStream<Result<ReminderModel>> _mapToOnCreatedState();
 
   Stream<String> _mapToNameState();
 
-  Stream<String?> _mapToNameErrorMessageState();
+  Stream<bool> _mapToShowErrorsState();
 
-  Stream<bool> _mapToIsNameValidState();
+  Stream<bool> _mapToIsFormValidState();
 
   @override
   ReminderManageBlocEvents get events => this;
@@ -134,7 +110,6 @@ abstract class $ReminderManageBloc extends RxBlocBase
   void dispose() {
     _$updateEvent.close();
     _$setNameEvent.close();
-    _$validateEvent.close();
     _$createEvent.close();
     _$deleteEvent.close();
     _compositeSubscription.dispose();
