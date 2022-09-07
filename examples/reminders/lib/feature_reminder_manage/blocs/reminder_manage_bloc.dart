@@ -58,8 +58,8 @@ class ReminderManageBloc extends $ReminderManageBloc {
 
   @override
   Stream<bool> _mapToShowErrorsState() => _$createEvent
-      .validateNameFieldWithLatestFrom(this)
-      .map((event) => !event.isReminderNameValid)
+      .isReminderNameValid(this)
+      .map((event) => !event)
       .startWith(false)
       .shareReplay(maxSize: 1);
 

@@ -1,6 +1,11 @@
 part of 'reminder_manage_bloc.dart';
 
 extension _ValidateReminderNameField<T> on Stream<_CreateEventArgs> {
+  Stream<bool> isReminderNameValid(ReminderManageBloc bloc) => switchMap(
+        (value) => Rx.combineLatest([bloc.name], (values) => true)
+            .onErrorReturn(false),
+      );
+
   Stream<_CreateArgsAndIsNameValid> validateNameFieldWithLatestFrom(
           ReminderManageBloc bloc) =>
       withLatestFrom2<String, bool, _CreateArgsAndIsNameValid>(
