@@ -41,7 +41,7 @@ public class SmartSnippets {
                 "   ///decoration\n" +
                 "   ///Example `decoration: fieldState.decoration.copyWithDecoration(InputStyles.textFieldDecoration)`\n" +
                 " builder: (fieldState) => %3$s," +
-                ")\n", blocTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                ")", blocTypeDirectorySuggest, stateVariableNameSuggest, widget);
     }
 
     @NotNull
@@ -72,7 +72,7 @@ public class SmartSnippets {
                 "           ),\n" +
                 "       ],\n" +
                 "      ),\n" +
-                "   )\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                "   )", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
     }
 
     private static String blocListenerSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
@@ -83,7 +83,7 @@ public class SmartSnippets {
                 "    // do stuff here based on BlocA's state\n" +
                 "  }, \n" +
                 "  child: %4$s,\n" +
-                ")\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                ")", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
     }
 
     private static String blocBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
@@ -92,7 +92,7 @@ public class SmartSnippets {
                 "  state: (bloc) => bloc.states.%3$s,\n" +
                 "  builder: (context, snapshot, bloc) =>\n" +
                 "    %4$s,\n" +
-                ")\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                ")", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
     }
 
     private static String blocPaginatedBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
@@ -120,7 +120,7 @@ public class SmartSnippets {
                 "              const YourProgressIndicator(),\n" +
                 "          buildError: (context, list, bloc) =>\n" +
                 "              YourErrorWidget(error: list.error!),// TODO write your own error widget\n" +
-                "        )\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest.substring("PaginatedList<".length(), stateTypeDirectorySuggest.length() - 1), stateVariableNameSuggest);
+                "        )", blocTypeDirectorySuggest, stateTypeDirectorySuggest.substring("PaginatedList<".length(), stateTypeDirectorySuggest.length() - 1), stateVariableNameSuggest);
     }
 
     private static String blocResultBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
@@ -132,6 +132,6 @@ public class SmartSnippets {
                 "   const CircularProgressIndicator(),\n" +
                 " buildError: (context, error, bloc) => \n" +
                 "   Text(error.toString()),\n" +
-                ")\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest.substring("Result<".length(), stateTypeDirectorySuggest.length() - 1), stateVariableNameSuggest, widget);
+                ")", blocTypeDirectorySuggest, stateTypeDirectorySuggest.substring("Result<".length(), stateTypeDirectorySuggest.length() - 1), stateVariableNameSuggest, widget);
     }
 }

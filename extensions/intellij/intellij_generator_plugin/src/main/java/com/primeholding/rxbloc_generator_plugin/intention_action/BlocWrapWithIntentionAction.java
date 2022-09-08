@@ -83,8 +83,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
      *                                     when manipulation of the psi tree fails.
      */
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
-        Runnable runnable = () -> invokeSnippetAction(project, editor, snippetType);
-        WriteCommandAction.runWriteCommandAction(project, runnable);
+        invokeSnippetAction(project, editor, snippetType);
     }
 
     protected void invokeSnippetAction(@NotNull Project project, Editor editor, SnippetType snippetType) {
@@ -99,7 +98,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             return;
         }
 
-        String blocTypeDirectorySuggest = null;
+        String blocTypeDirectorySuggest;
         Bloc blocFromPath = null;
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
 
@@ -118,7 +117,6 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
 
                         for (VirtualFile blocFile : file.getChildren()) {
                             if (blocFile.getName().equals(blocFileName)) {
-                                blocTypeDirectorySuggest = (getBlocTypeFromFile(blocFile.getName()));
                                 blocFromPath = Utils.Companion.extractBloc(blocFile);
                                 break;
                             }
@@ -130,8 +128,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             }
         }
         final String selectedText = document.getText(TextRange.create(offsetStart, offsetEnd));
-        String stateTypeDirectorySuggest = "";
-        String stateVariableNameSuggest = "";
+        String stateTypeDirectorySuggest;
+        String stateVariableNameSuggest;
 
         if (blocFromPath != null && blocFromPath.getStateVariableTypes().size() > 0) {
 
@@ -167,27 +165,34 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
 
             if (blocFromPath.getStateVariableNames().isEmpty()) {
                 Messages.showMessageDialog(psiFile.getProject(), "No elements found matching the desired state type", "No Elements", null);
-                return;
             } else if (blocFromPath.getStateVariableNames().size() == 1) {
                 blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
                 stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(0);
                 stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(0);
+
+                execute(stateVariableNameSuggest, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, document, project, editor, offsetStart, offsetEnd);
             } else {
                 ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
-                boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
-                int chooseState = comboBox.getSelectedIndex();
-                if (isOK) {
-                    blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
-                    stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(chooseState);
-                    stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(chooseState);
-                } else {
-                    //Do nothing if canceled
-                    return;
-                }
+
+                Bloc finalBlocFromPath = blocFromPath;
+                ApplicationManager.getApplication().invokeLater(() -> {
+                    boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
+                    int chooseState = comboBox.getSelectedIndex();
+                    if (isOK) {
+                        String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(finalBlocFromPath.getFileName());
+                        String stateVariableNameSuggestChosen = finalBlocFromPath.getStateVariableNames().get(chooseState);
+                        String stateTypeDirectorySuggestChosen = finalBlocFromPath.getStateVariableTypes().get(chooseState);
+
+                        execute(stateVariableNameSuggestChosen, selectedText, blocTypeDirectorySuggestChosen, stateTypeDirectorySuggestChosen, document, project, editor, offsetStart, offsetEnd);
+                    }
+                });
+
             }
         }
+    }
 
-        String replacement = null;
+    private void execute(String stateVariableNameSuggest, String selectedText, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, Document document, Project project, Editor editor, int offsetStart, int offsetEnd) {
+        String replacement;
         if (stateVariableNameSuggest.isEmpty()) {
             replacement = Snippets.getSnippet(snippetType, selectedText);
         } else {
@@ -237,7 +242,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 final int formattedLineCount = document.getLineCount();
 
                 // file was incorrectly formatted, revert formatting
-                if (formattedLineCount > unformattedLineCount + 5) {
+                if (formattedLineCount > unformattedLineCount + 15) {
                     document.setText(unformattedText);
                     PsiDocumentManager.getInstance(project).commitDocument(document);
                 }
