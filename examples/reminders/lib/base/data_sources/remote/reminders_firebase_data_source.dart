@@ -56,6 +56,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     required bool complete,
   }) async {
     var userId = await storage.read(key: _authorId);
+
     final reminderModelRequestData = ReminderModelFirebaseRequestData(
       dueDate: Timestamp.fromDate(dueDate),
       title: title,
@@ -330,7 +331,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       query = query.where(_authorId, isNull: true);
     }
 
-    if(request?.complete != null){
+    if (request?.complete != null) {
       query = query.where(_complete, isEqualTo: request?.complete);
     }
 

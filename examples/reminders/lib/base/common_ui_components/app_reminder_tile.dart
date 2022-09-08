@@ -163,7 +163,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
       );
 
   Future<void> _onDueDatePressed() async {
-    final date = await showDatePicker(
+    var date = await showDatePicker(
       context: context,
       initialDate: widget.reminder.dueDate,
       firstDate: DateTime.now().subtract(
@@ -173,7 +173,13 @@ class _AppReminderTileState extends State<AppReminderTile> {
         const Duration(days: 365),
       ),
     );
-
+    final now = DateTime.now();
+    date = date?.add(Duration(
+        hours: now.hour,
+        minutes: now.minute,
+        seconds: now.second,
+        milliseconds: now.millisecond,
+        microseconds: now.microsecond));
     if (date != null) {
       context
           .read<ReminderManageBlocType>()

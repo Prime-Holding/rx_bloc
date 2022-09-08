@@ -96,7 +96,7 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
         child: AutoScrollTag(
           controller: _controller,
           index: index,
-          key: ValueKey(index),
+          key: ValueKey(reminder.id),
           child: AppReminderTile(
             reminder: reminder,
             isFirst: _firstInGroup(index, reminder),

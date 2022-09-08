@@ -88,13 +88,8 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
   factory ReminderModel.withAuthorId(int index, String? authorId) {
     var now = DateTime.now();
     var date = now
-        .subtract(Duration(
+        .subtract(const Duration(
           days: 10,
-          hours: now.hour,
-          minutes: now.minute,
-          seconds: now.second,
-          milliseconds: now.millisecond,
-          microseconds: now.microsecond,
         ))
         .add(
           Duration(days: index),
