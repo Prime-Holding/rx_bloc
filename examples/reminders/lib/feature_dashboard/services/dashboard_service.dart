@@ -1,5 +1,5 @@
-import 'package:collection/collection.dart';
 import 'package:rx_bloc_list/models.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../base/models/counter/increment_operation.dart';
 import '../../base/models/reminder/reminder_model.dart';
@@ -11,43 +11,39 @@ class DashboardService {
 
   final RemindersService _remindersService;
 
+  Future<PaginatedList<ReminderModel>> getDashboardPaginated(
+      BehaviorSubject<PaginatedList<ReminderModel>> _paginatedList) async {
+    final request = ReminderModelRequest(
+      page: _paginatedList.value.pageNumber + 1,
+      pageSize: _paginatedList.value.pageSize,
+      sort: ReminderModelRequestSort.dueDateDesc,
+      filterByDueDateRange: _getDateRange(),
+      complete: false,
+    );
+
+    final list = await _remindersService.getAllDashboard(request);
+    return list;
+  }
+
   Future<DashboardModel> getDashboardModel() async {
     final data = await Future.wait([
       _remindersService.getCompleteCount(),
       _remindersService.getIncompleteCount(),
-      _remindersService.getAll(
-        ReminderModelRequest(
-          sort: ReminderModelRequestSort.dueDateDesc,
-          page: 1,
-          pageSize: 5,
-          filterByDueDateRange: _getDateRange(),
-          complete: false,
-        ),
-      )
     ]);
 
-    final completeCount = data[0] as int;
-    final incompleteCount = data[1] as int;
-    final overdueReminder = data[2] as List<ReminderModel>;
+    final completeCount = data[0];
+    final incompleteCount = data[1];
 
     return DashboardModel(
-      reminderList: overdueReminder,
       incompleteCount: incompleteCount,
       completeCount: completeCount,
     );
   }
 
-  DashboardModel sortedReminderList(DashboardModel dashboardModel) =>
-      dashboardModel.copyWith(
-        reminderList: dashboardModel.reminderList
-            .sorted((a, b) => a.dueDate.compareTo(b.dueDate)),
-      );
-
   Future<ManageOperation> getManageOperation(
     IdentifiablePair<ReminderModel> model,
   ) async {
     final dateRange = _getDateRange();
-
     if ((model.updatedIdentifiable.dueDate.isAfter(dateRange.from) &&
         model.updatedIdentifiable.dueDate.isBefore(dateRange.to))) {
       return model.updatedIdentifiable.complete
@@ -77,7 +73,6 @@ class DashboardService {
     );
 
     return dashboard.copyWith(
-      reminderList: managedList.list,
       completeCount: dashboard.recalculateCompleteWith(
         counterOperation: counterOperation,
         reminderModel: managedList.identifiablePair.updatedIdentifiable,

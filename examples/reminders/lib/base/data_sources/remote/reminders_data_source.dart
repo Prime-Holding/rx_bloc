@@ -10,6 +10,8 @@ abstract class RemindersDataSource {
 
   Future<ReminderListResponse> getAll(ReminderModelRequest? request);
 
+  Future<ReminderListResponse> getAllDashboard(ReminderModelRequest? request);
+
   Future<ReminderModel> create({
     required String title,
     required DateTime dueDate,

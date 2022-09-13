@@ -35,9 +35,11 @@ class Router extends _i5.RootStackRouter {
           child: _i5.WrappedRoute(child: const _i2.NavigationPage()));
     },
     DashboardRoute.name: (routeData) {
+      final args = routeData.argsAs<DashboardRouteArgs>(
+          orElse: () => const DashboardRouteArgs());
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i5.WrappedRoute(child: const _i3.DashboardPage()));
+          child: _i5.WrappedRoute(child: _i3.DashboardPage(key: args.key)));
     },
     ReminderListRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
@@ -80,10 +82,23 @@ class NavigationRoute extends _i5.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.DashboardPage]
-class DashboardRoute extends _i5.PageRouteInfo<void> {
-  const DashboardRoute() : super(DashboardRoute.name, path: 'dashboard-page');
+class DashboardRoute extends _i5.PageRouteInfo<DashboardRouteArgs> {
+  DashboardRoute({_i6.Key? key})
+      : super(DashboardRoute.name,
+            path: 'dashboard-page', args: DashboardRouteArgs(key: key));
 
   static const String name = 'DashboardRoute';
+}
+
+class DashboardRouteArgs {
+  const DashboardRouteArgs({this.key});
+
+  final _i6.Key? key;
+
+  @override
+  String toString() {
+    return 'DashboardRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

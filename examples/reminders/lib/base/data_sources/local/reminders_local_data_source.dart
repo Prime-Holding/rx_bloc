@@ -100,6 +100,11 @@ class RemindersLocalDataSource implements RemindersDataSource {
     );
     return _identifiablePair;
   }
+
+  @override
+  Future<ReminderListResponse> getAllDashboard(ReminderModelRequest? request) {
+    throw UnimplementedError();
+  }
 }
 
 extension _ListReminderModelX on List<ReminderModel> {

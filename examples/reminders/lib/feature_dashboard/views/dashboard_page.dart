@@ -7,18 +7,20 @@ import 'package:rx_bloc/rx_bloc.dart';
 import '../../app_extensions.dart';
 import '../../base/common_blocs/firebase_bloc.dart';
 import '../../base/common_ui_components/app_progress_indicator.dart';
-import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/common_ui_components/app_sticky_header.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../blocs/dashboard_bloc.dart';
 import '../di/dashboard_dependencies.dart';
 import '../models/dashboard_model.dart';
+import 'dashboard_paginated_list.dart';
 
 class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
-  const DashboardPage({
+  DashboardPage({
     Key? key,
   }) : super(key: key);
+
+  final _scrollController = ScrollController();
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
@@ -30,90 +32,71 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => SafeArea(
         top: false,
         child: Scaffold(
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                onPressed: () {
-                  context.read<FirebaseBlocType>().events.logOut();
-                },
-                icon: const Icon(Icons.logout),
-              ),
-            ],
-          ),
+          appBar: _buildAppBar(context),
           backgroundColor: context.designSystem.colors.backgroundListColor,
-          body: RefreshIndicator(
-            onRefresh: () async {
-              context
-                  .read<DashboardBlocType>()
-                  .events
-                  .fetchData(silently: true);
-              return context.read<DashboardBlocType>().states.refreshDone;
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RxBlocListener<FirebaseBlocType, bool>(
-                  state: (bloc) => bloc.states.userLoggedOut,
-                  listener: (context, currentUser) {
-                    if (currentUser == true) {
-                      context.router
-                          .popUntilRouteWithName(FacebookLoginRoute.name);
-                      context.router.replace(const FacebookLoginRoute());
-                    }
-                  },
-                ),
-                _buildErrorListener(),
-                _buildOnDeletedListener(),
-                _buildOnCreatedListener(),
-                Expanded(
-                  child: RxResultBuilder<DashboardBlocType, DashboardModel>(
-                    state: (bloc) => bloc.states.data,
-                    buildSuccess: (context, data, bloc) => CustomScrollView(
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: DashboardStats(
-                            completeCount: data.completeCount,
-                            incompleteCount: data.incompleteCount,
-                          ),
-                        ),
-                        SliverStickyHeader(
-                          header: const Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: AppStickyHeader(
-                              text: 'Incomplete overdue',
-                            ),
-                          ),
-                          sliver: SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, i) => Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: AppReminderTile(
-                                  reminder: data.reminderList[i],
-                                  isFirst: i == 0,
-                                  isLast: i == data.reminderList.length - 1,
-                                ),
-                              ),
-                              childCount: data.reminderList.length,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    buildLoading: (context, bloc) =>
-                        const AppProgressIndicator(),
-                    buildError: (context, error, bloc) =>
-                        Text(error.toString()),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // body: _buildBodyOld(context)
+          body: _buildBodyNew(context),
         ),
       );
+
+  Widget _buildBodyNew(BuildContext context) =>
+      RxResultBuilder<DashboardBlocType, DashboardModel>(
+        state: (bloc) => bloc.states.dashboardModel,
+        buildSuccess: (context, data, bloc) => NestedScrollView(
+            controller: _scrollController,
+            headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
+                  SliverToBoxAdapter(
+                    child: DashboardStats(
+                      completeCount: data.completeCount,
+                      incompleteCount: data.incompleteCount,
+                    ),
+                  ),
+                  SliverStickyHeader(
+                    header: const Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: AppStickyHeader(
+                        text: 'Incomplete overdue',
+                      ),
+                    ),
+                  )
+                ],
+            body: _buildDashboardCounters(context)),
+        buildLoading: (context, bloc) => const AppProgressIndicator(),
+        buildError: (context, error, bloc) => Text(error.toString()),
+        // )
+      );
+
+  Widget _buildDashboardCounters(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          RxBlocListener<FirebaseBlocType, bool>(
+            state: (bloc) => bloc.states.userLoggedOut,
+            listener: (context, currentUser) {
+              if (currentUser == true) {
+                context.router.popUntilRouteWithName(FacebookLoginRoute.name);
+                context.router.replace(const FacebookLoginRoute());
+              }
+            },
+          ),
+          _buildErrorListener(),
+          _buildOnDeletedListener(),
+          _buildOnCreatedListener(),
+          const Expanded(child: DashboardPaginatedList()),
+        ],
+      );
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      actions: [
+        IconButton(
+          onPressed: () {
+            context.read<FirebaseBlocType>().events.logOut();
+          },
+          icon: const Icon(Icons.logout),
+        ),
+      ],
+    );
+  }
 
   Widget _buildOnDeletedListener() =>
       RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(

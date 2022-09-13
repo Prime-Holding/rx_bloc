@@ -36,6 +36,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   var remindersCollectionLength = 0;
   QueryDocumentSnapshot? lastFetchedRecord;
+  QueryDocumentSnapshot? lastFetchedRecordDashboard;
   static const _reminders = 'reminders';
   static const _counters = 'counters';
   static const _remindersLengths = 'remindersLengths';
@@ -101,6 +102,34 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     final remindersLengthSnapshot = await querySnapshot.get();
     var remindersLength = remindersLengthSnapshot.docs.first[_length];
     return remindersLength;
+  }
+
+  @override
+  Future<ReminderListResponse> getAllDashboard(
+      ReminderModelRequest? request) async {
+    // Get the userId from local storage
+    var userId = await storage.read(key: _authorId);
+    //  Generate a query
+    var querySnapshot = getFirebaseFilteredQuery(request, userId);
+
+    // Modify the query
+    if (lastFetchedRecordDashboard != null && request?.page != 1) {
+      querySnapshot =
+          querySnapshot.startAfterDocument(lastFetchedRecordDashboard!);
+    }
+    querySnapshot = querySnapshot.limit(request!.pageSize);
+
+    // Get the result of the query
+    final snap = await querySnapshot.get();
+
+    if (request.pageSize == 10 && snap.docs.isNotEmpty) {
+      lastFetchedRecordDashboard = snap.docs.last;
+    }
+    final reminders = snap.docs.asReminderList();
+
+    return ReminderListResponse(
+      items: reminders,
+    );
   }
 
   @override
