@@ -78,7 +78,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
             setEnabled(allowedBlocs.contains(value));
             setBackground(list.getBackground());
             setForeground(list.getForeground());
-            setText("feature_" + value.getFileName().replace("_bloc.dart", ""));
+            setText((value.isLib() ? "lib" : "feature") + "_" + value.getFileName().replace("_bloc.dart", ""));
             return this;
         }
     }

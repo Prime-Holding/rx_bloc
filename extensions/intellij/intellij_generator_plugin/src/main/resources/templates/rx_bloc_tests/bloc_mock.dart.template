@@ -1,7 +1,7 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_list/models.dart';
-import 'package:${project_name}/feature_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
+import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
 
 import '${bloc_snake_case}_mock.mocks.dart';
 

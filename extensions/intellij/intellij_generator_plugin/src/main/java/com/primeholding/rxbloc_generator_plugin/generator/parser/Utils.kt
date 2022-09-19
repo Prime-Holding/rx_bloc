@@ -12,6 +12,7 @@ class Utils {
                 return null
             }
             val stateVariableNames: MutableList<String> = mutableListOf()
+            val stateIsConnectableStream: MutableList<Boolean> = mutableListOf()
             val stateVariableTypes: MutableList<String> = mutableListOf()
             val repos: MutableList<String> = mutableListOf()
             val services: MutableList<String> = mutableListOf()
@@ -21,6 +22,8 @@ class Utils {
                 stateText.lines().forEach { line ->
                     getValueBetween(line, "Stream<", "> get")?.let { stateVariableType ->
                         stateVariableTypes.add(stateVariableType)
+
+                        stateIsConnectableStream.add(line.contains("ConnectableStream"))
 
                         getValueBetween(line, "> get ", ";")?.let { stateVariableName ->
                             stateVariableNames.add(stateVariableName)
@@ -35,8 +38,10 @@ class Utils {
                 ),
                 stateVariableNames = stateVariableNames,
                 stateVariableTypes = stateVariableTypes,
+                stateIsConnectableStream = stateIsConnectableStream,
                 repos = repos,
-                services = services
+                services = services,
+                isLib = notNullBlocFile.parent.parent.name.contains("lib_")
             )
         }
 
@@ -82,6 +87,12 @@ class Utils {
                 it.services.addAll(services)
             }
 
+            list.sortWith(Comparator { bloc1, bloc2 ->
+                val file1 = (if(bloc1.isLib) "lib_" else "feature_") + bloc1.fileName
+                val file2 = (if(bloc2.isLib) "lib_" else "feature_") + bloc2.fileName
+
+                file1.compareTo(file2)
+            })
             return list
         }
 
@@ -104,7 +115,7 @@ class Utils {
         }
 
 
-        fun getValueBetween(text: String, from: String, to: String): String? {
+        private fun getValueBetween(text: String, from: String, to: String): String? {
             val start = text.indexOf(from)
             if (start != -1) {
                 val toIndex = text.indexOf(to, start + from.length)
@@ -121,9 +132,9 @@ class Utils {
             val testFolder = parent.findChild("test")
             if (testFolder?.isDirectory == true) {
                 testFolder.children.forEach { libChild ->
-                    if (libChild.name.startsWith("feature_")) {
+                    if (libChild.name.startsWith("feature_") || libChild.name.startsWith("lib_")) {
                         selected.removeIf { x: Bloc ->
-                            x.fileName == libChild.name.replace("feature_", "") + "_bloc.dart"
+                            x.fileName == libChild.name.replace("feature_", "") .replace("lib_", "") + "_bloc.dart"
                         }
                     }
                 }

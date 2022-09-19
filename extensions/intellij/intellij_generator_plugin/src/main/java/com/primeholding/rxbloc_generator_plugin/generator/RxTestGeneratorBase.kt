@@ -1,6 +1,7 @@
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
+import com.fleshgrinder.extensions.kotlin.toLowerSnakeCase
 import com.fleshgrinder.extensions.kotlin.toUpperCamelCase
 import com.google.common.io.CharStreams
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
@@ -29,6 +30,8 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_REPO_CLASS_LIST = "repository_class_list"
     private val TEMPLATE_REPO_IMPORT_DECLARATIONS = "repository_import_declarations"
     private val TEMPLATE_BLOC_STATES_WHEN_MOCK = "bloc_states_when"
+    private val TEMPLATE_TEST_RX_BLOC_STATE_GROUP = "test_rxbloc_state_group"
+    private val TEMPLATE_BLOC_FOLDER_PREFIX = "bloc_folder_prefix"
 
 
     private val templateString: String
@@ -47,7 +50,9 @@ abstract class RxTestGeneratorBase(
             TEMPLATE_DECLARATION_OF_REPOS to generateDeclarationOfRepos(),
             TEMPLATE_REPO_CLASS_LIST to generateRepoClassList(),
             TEMPLATE_REPO_IMPORT_DECLARATIONS to generateRepoImportDeclarations(),
-            TEMPLATE_BLOC_STATES_WHEN_MOCK to generateBlocStatesWhenMock()
+            TEMPLATE_BLOC_STATES_WHEN_MOCK to generateBlocStatesWhenMock(),
+            TEMPLATE_TEST_RX_BLOC_STATE_GROUP to generateBlocStatesGroup(),
+            TEMPLATE_BLOC_FOLDER_PREFIX to generateFolderPrefix()
         )
         try {
 
@@ -60,18 +65,52 @@ abstract class RxTestGeneratorBase(
     }
 
 
+    private fun generateBlocStatesGroup(): String {
+        val sb = StringBuilder()
+        bloc.stateVariableNames.forEachIndexed { index, it ->
+
+            sb.append("\n")
+            sb.append("  group('test ${bloc.fileName.toLowerSnakeCase()} state ${it}', () {\n")
+            sb.append("      rxBlocTest<${pascalCase()}BlocType, ${bloc.stateVariableTypes[index]}>('test ${bloc.fileName.toLowerSnakeCase()} state ${it}',\n")
+            sb.append("      build: () async {\n")
+            sb.append("      /*\n")
+            sb.append("       //Sample mock during a test case\n")
+            sb.append("       when(repositoryMock.fetchPage()).thenAnswer(\n")
+            sb.append("         (_) => Future.value(Stubs.emptyList),\n")
+            sb.append("       ); */\n")
+            sb.append("       return ${variableCase()}Bloc();\n")
+            sb.append("      },\n")
+            sb.append("      act: (bloc) async {},\n")
+            sb.append("      state: (bloc) => bloc.states.${it},\n")
+            sb.append("      expect: [false]);\n")
+            sb.append("  });        \n")
+
+        }
+        return sb.toString()
+    }
 
     private fun generateBlocStatesWhenMock(): String {
         val sb = StringBuilder()
-        bloc.stateVariableNames.forEach {
+        bloc.stateVariableNames.forEachIndexed { index, it ->
             sb.append("\n")
             sb.append("  when(blocMock.states.${it}).thenAnswer(\n")
-            sb.append("    (_) => Stream.empty(),//TODO place mocked value\n")
+
+            if (bloc.stateIsConnectableStream[index]) {
+                sb.append("    (_) => Stream<${bloc.stateVariableTypes[index]}>.empty().publish(),//TODO place mocked value\n")
+            } else {
+
+                sb.append("    (_) => Stream.empty(),//TODO place mocked value\n")
+            }
             //the value could be derived from the state if it gets parsed, (or at least for the common data types).
             sb.append("  );\n")
         }
         return sb.toString()
     }
+
+    private fun generateFolderPrefix(): String {
+        return if (bloc.isLib) "lib" else "feature"
+    }
+
     private fun generateRepoImportDeclarations(): String {
         val sb = StringBuilder()
         bloc.repos.forEach {

@@ -6,6 +6,8 @@ data class Bloc(
     val relativePath: String,
     val stateVariableNames: List<String>,
     val stateVariableTypes: List<String>,
+    val stateIsConnectableStream: List<Boolean>,
     val repos: MutableList<String>,
-    val services: MutableList<String>
+    val services: MutableList<String>,
+    val isLib: Boolean
 )

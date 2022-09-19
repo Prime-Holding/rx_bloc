@@ -37,8 +37,12 @@ class BootstrapTestsAction : AnAction() {
         runWriteAction {
             blocs.forEach { bloc ->
 
+                val prefix = (if (bloc.isLib) "lib" else "feature")
                 val featureFolder =
-                    testFolder.createChildDirectory(this, "feature_" + bloc.fileName.replace("_bloc.dart", ""))
+                    testFolder.createChildDirectory(
+                        this,
+                        prefix + "_" + bloc.fileName.replace("_bloc.dart", "")
+                    )
 
                 var folder = featureFolder.createChildDirectory(this, "factory")
                 var testFile: VirtualFile =
