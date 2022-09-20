@@ -7,7 +7,10 @@ part of 'auth_data_source.dart';
 // **************************************************************************
 
 class _AuthDataSource implements AuthDataSource {
-  _AuthDataSource(this._dio, {this.baseUrl}) {
+  _AuthDataSource(
+    this._dio, {
+    this.baseUrl,
+  }) {
     baseUrl ??= 'http://0.0.0.0:8080';
   }
 
@@ -22,12 +25,19 @@ class _AuthDataSource implements AuthDataSource {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(authData.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AuthTokenModel>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/api/authenticate',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AuthTokenModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/authenticate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AuthTokenModel.fromJson(_result.data!);
     return value;
   }
@@ -38,11 +48,18 @@ class _AuthDataSource implements AuthDataSource {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/api/logout',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/logout',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     return null;
   }
 

@@ -31,6 +31,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   final _auth = FirebaseAuth.instance;
 
   Stream<User?> get currentUser => _auth.authStateChanges();
+
   final _facebookLogin = FacebookAuth.instance;
   late UserCredential? _userCredential;
 
@@ -42,6 +43,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   static const _remindersLengths = 'remindersLengths';
   static const _complete = 'complete';
   static const _authorId = 'authorId';
+  static const _anonymous = 'anonymous';
 
   static const _length = 'length';
   static const _incomplete = 'incomplete';
@@ -50,13 +52,29 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   static const _loginFailed = 'The login failed';
   late final List<ReminderModel> _data;
 
+  Future<bool> isUserLoggedIn() async {
+    var user = await storage.read(key: _authorId);
+    if (user != null) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<String?> _getAuthorIdOrNull() async {
+    var user = await storage.read(key: _authorId);
+    if (user == _anonymous) {
+      return null;
+    }
+    return user;
+  }
+
   @override
   Future<ReminderModel> create({
     required String title,
     required DateTime dueDate,
     required bool complete,
   }) async {
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
 
     final reminderModelRequestData = ReminderModelFirebaseRequestData(
       dueDate: Timestamp.fromDate(dueDate),
@@ -94,7 +112,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<int> _getRemindersCollectionLength() async {
-    var userId = await storage.read(key: _authorId);
+    // var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
     Query query = remindersLengthsReference;
     Query<Object?>? querySnapshot;
     querySnapshot =
@@ -108,7 +127,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   Future<ReminderListResponse> getAllDashboard(
       ReminderModelRequest? request) async {
     // Get the userId from local storage
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
+
     //  Generate a query
     var querySnapshot = getFirebaseFilteredQuery(request, userId);
 
@@ -135,7 +155,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     // Get the userId from local storage
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
     //  Generate a query
     var querySnapshot = getFirebaseFilteredQuery(request, userId);
 
@@ -165,7 +185,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async {
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
     Query query = countersReference;
     Query<Object?>? querySnapshot;
     querySnapshot =
@@ -177,7 +197,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getIncompleteCount() async {
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
     Query query = countersReference;
     Query<Object?>? querySnapshot;
     querySnapshot =
@@ -248,7 +268,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     // If user counter collection exits update it,
     // otherwise add a new one
     Query query = countersReference;
-    var user = await storage.read(key: _authorId);
+    var user = await _getAuthorIdOrNull();
     Query<Object?>? querySnapshot;
     querySnapshot =
         _generateQuerySnapshotForLoggedInUser(user, querySnapshot, query);
@@ -274,7 +294,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   Future<void> _createUserRemindersCollectionCounter() async {
     Query query = remindersLengthsReference;
-    var user = await storage.read(key: _authorId);
+    var user = await _getAuthorIdOrNull();
     Query<Object?>? querySnapshot;
     querySnapshot =
         _generateQuerySnapshotForLoggedInUser(user, querySnapshot, query);
@@ -295,7 +315,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<void> _updateIncompleteCounter(int incomplete) async {
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
     Query query = countersReference;
     Query<Object?>? querySnapshot;
     querySnapshot =
@@ -308,7 +328,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<void> _updateCompleteCounter(int complete) async {
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
     Query query = countersReference;
     Query<Object?>? querySnapshot;
     querySnapshot =
@@ -322,7 +342,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   Future<void> _updateRemindersCollectionLengthCounter(
       int collectionCount) async {
-    var userId = await storage.read(key: _authorId);
+    var userId = await _getAuthorIdOrNull();
     Query query = remindersLengthsReference;
     Query<Object?>? querySnapshot;
     querySnapshot =
@@ -337,6 +357,10 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   Query getFirebaseFilteredQuery(
       ReminderModelRequest? request, String? userId) {
     Query query = remindersReference;
+
+    if (userId == _anonymous) {
+      userId = null;
+    }
 
     if (request?.filterByDueDateRange != null) {
       final startAtTimestamp = Timestamp.fromMillisecondsSinceEpoch(
@@ -380,7 +404,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   Future<bool> logIn(bool anonymous) async {
     if (anonymous) {
-      _loggedInUid = null;
+      _loggedInUid = _anonymous;
       await storage.write(key: _authorId, value: _loggedInUid);
       await _createDefaultCollectionsForTheUser();
       return true;
@@ -395,7 +419,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   Future<void> _createDefaultCollectionsForTheUser() async {
     Query query = remindersReference;
-    var user = await storage.read(key: _authorId);
+    var user = await _getAuthorIdOrNull();
     Query<Object?>? querySnapshot;
     querySnapshot =
         _generateQuerySnapshotForLoggedInUser(user, querySnapshot, query);

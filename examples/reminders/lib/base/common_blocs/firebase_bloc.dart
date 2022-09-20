@@ -14,6 +14,8 @@ part 'firebase_bloc_extensions.dart';
 abstract class FirebaseBlocEvents {
   void logIn({bool anonymous = false, bool setToFalse = false});
 
+  void checkIfUserIsLoggedIn();
+
   void logOut();
 }
 
@@ -28,6 +30,8 @@ abstract class FirebaseBlocStates {
   ConnectableStream<void> get countersUpdated;
 
   Stream<User?> get currentUserData;
+
+  Stream<bool> get isUserLoggedIn;
 
   Stream<bool> get userLoggedOut;
 
@@ -78,6 +82,10 @@ class FirebaseBloc extends $FirebaseBloc {
       .setResultStateHandler(this)
       .whereSuccess()
       .asBroadcastStream();
+
+  @override
+  Stream<bool> _mapToIsUserLoggedInState() => _$checkIfUserIsLoggedInEvent
+      .switchMap((value) => _service.isUserLoggedIn().asStream());
 
   @override
   Stream<bool> _mapToLoggedOutState() => _$logOutEvent
