@@ -8,7 +8,6 @@
 .buildlog/
 .history
 .svn/
-pubspec.lock
 
 # IntelliJ related
 *.iml
@@ -84,4 +83,3 @@ lib/env_variable.g.dart
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
