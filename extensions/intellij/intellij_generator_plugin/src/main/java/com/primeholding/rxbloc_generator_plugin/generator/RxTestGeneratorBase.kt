@@ -93,7 +93,7 @@ abstract class RxTestGeneratorBase(
         val sb = StringBuilder()
         bloc.stateVariableNames.forEachIndexed { index, it ->
             sb.append("\n")
-            sb.append("  when(blocMock.states.${it}).thenAnswer(\n")
+            sb.append("  when(statesMock.${it}).thenAnswer(\n")
 
             if (bloc.stateIsConnectableStream[index]) {
                 sb.append("    (_) => Stream<${bloc.stateVariableTypes[index]}>.empty().publish(),//TODO place mocked value\n")
