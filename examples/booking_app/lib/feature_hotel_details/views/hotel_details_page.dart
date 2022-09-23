@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../../base/common_blocs/hotel_manage_bloc.dart';
 import '../../../base/ui_components/favorite_message_listener.dart';
-import '../../blocs/hotel_manage_bloc.dart';
-import '../../blocs/hotels_extra_details_bloc.dart';
+import '../../base/common_blocs/hotels_extra_details_bloc.dart';
 import '../blocs/hotel_details_bloc.dart';
 
 part '../ui_components/hotel_details_app_bar.dart';

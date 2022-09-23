@@ -1,4 +1,4 @@
-part of 'hotel_list_bloc.dart';
+part of 'hotel_search_bloc.dart';
 
 // ignore_for_file: avoid_types_on_closure_parameters
 
@@ -88,7 +88,7 @@ extension _StringBehaviourSubjectExtensions on BehaviorSubject<String> {
       );
 }
 
-extension _HotelListEventsUtils on HotelListBloc {
+extension _HotelListEventsUtils on HotelSearchBloc {
   Stream<HotelSearchFilters> get _filters => Rx.combineLatest4(
       _$filterByQueryEvent.delayInput(),
       _$filterByDateRangeEvent.distinct(),

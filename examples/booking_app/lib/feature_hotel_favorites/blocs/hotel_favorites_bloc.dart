@@ -8,8 +8,8 @@ import 'package:rxdart/rxdart.dart';
 import '../../../base/common_blocs/coordinator_bloc.dart';
 import '../../../base/repositories/paginated_hotels_repository.dart';
 
-part 'favorite_hotels_bloc.rxb.g.dart';
-part 'favorite_hotels_bloc_extensions.dart';
+part 'hotel_favorites_bloc.rxb.g.dart';
+part 'hotel_favorites_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
 abstract class FavoriteHotelsEvents {

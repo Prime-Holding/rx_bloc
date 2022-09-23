@@ -4,7 +4,7 @@
 // Generator: RxBlocGeneratorForAnnotation
 // **************************************************************************
 
-part of 'favorite_hotels_bloc.dart';
+part of 'hotel_favorites_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}

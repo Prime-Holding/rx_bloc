@@ -1,4 +1,4 @@
-part of 'hotel_list_bloc.dart';
+part of 'hotel_search_bloc.dart';
 
 class _ReloadData with EquatableMixin {
   _ReloadData({

@@ -6,23 +6,24 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 import '../../../base/ui_components/sorting_bar.dart';
-import '../../blocs/hotel_manage_bloc.dart';
-import '../../blocs/hotels_extra_details_bloc.dart';
-import '../../details/views/hotel_details_page.dart';
-import '../blocs/hotel_list_bloc.dart';
+import '../../base/common_blocs/hotel_manage_bloc.dart';
+import '../../base/common_blocs/hotels_extra_details_bloc.dart';
+import '../../feature_hotel_details/views/hotel_details_page.dart';
+import '../blocs/hotel_search_bloc.dart';
 import '../models/capacity_filter_data.dart';
 import '../models/date_range_filter_data.dart';
 import '../ui_components/hotel_capacity_page.dart';
 import '../ui_components/hotel_sort_page.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class HotelSearchPage extends StatefulWidget {
+  const HotelSearchPage({Key? key}) : super(key: key);
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<HotelSearchPage> createState() => _HotelSearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
+class _HotelSearchPageState extends State<HotelSearchPage>
+    with TickerProviderStateMixin {
   late AnimationController animationController;
   final ScrollController _scrollController = ScrollController();
 
@@ -45,7 +46,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               delegate: SliverChildBuilderDelegate(
                 (context, index) => Column(
                   children: <Widget>[
-                    RxTextFormFieldBuilder<HotelListBlocType>(
+                    RxTextFormFieldBuilder<HotelSearchBlocType>(
                       state: (bloc) => bloc.states.queryFilter,
                       showErrorState: (_) => const Stream.empty(),
                       builder: (fieldState) => SearchBar(
@@ -86,7 +87,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           ],
           body: Container(
             color: HotelAppTheme.buildLightTheme().backgroundColor,
-            child: RxPaginatedBuilder<HotelListBlocType,
+            child: RxPaginatedBuilder<HotelSearchBlocType,
                 Hotel>.withRefreshIndicator(
               onBottomScrolled: (bloc) => bloc.events.reload(reset: false),
               onRefresh: (bloc) {
@@ -186,7 +187,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       );
 
   Widget _buildDateRangeFilter() => Expanded(
-        child: RxBlocBuilder<HotelListBlocType, DateRangeFilterData>(
+        child: RxBlocBuilder<HotelSearchBlocType, DateRangeFilterData>(
           state: (bloc) => bloc.states.dateRangeFilterData,
           builder: (context, dateRangeFilterDataState, bloc) {
             final dateRangeText = dateRangeFilterDataState.data?.text ?? 'None';
@@ -247,7 +248,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       );
 
   Widget _buildCapacityFilter() => Expanded(
-        child: RxBlocBuilder<HotelListBlocType, CapacityFilterData>(
+        child: RxBlocBuilder<HotelSearchBlocType, CapacityFilterData>(
           state: (bloc) => bloc.states.capacityFilterData,
           builder: (context, capacityFilterDataState, bloc) {
             final capacityData = capacityFilterDataState.data;

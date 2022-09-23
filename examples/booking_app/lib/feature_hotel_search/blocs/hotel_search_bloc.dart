@@ -14,11 +14,11 @@ import '../../../base/repositories/paginated_hotels_repository.dart';
 import '../models/capacity_filter_data.dart';
 import '../models/date_range_filter_data.dart';
 
-part 'hotel_list_bloc.rxb.g.dart';
-part 'hotel_list_bloc_extensions.dart';
-part 'hotel_list_bloc_models.dart';
+part 'hotel_search_bloc.rxb.g.dart';
+part 'hotel_search_bloc_extensions.dart';
+part 'hotel_search_bloc_models.dart';
 
-abstract class HotelListEvents {
+abstract class HotelSearchEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void filterByQuery(String query);
 
@@ -41,7 +41,7 @@ abstract class HotelListEvents {
   void reload({required bool reset, bool fullReset = false});
 }
 
-abstract class HotelListStates {
+abstract class HotelSearchStates {
   @RxBlocIgnoreState()
   Stream<PaginatedList<Hotel>> get hotels;
 
@@ -63,8 +63,8 @@ abstract class HotelListStates {
 }
 
 @RxBloc()
-class HotelListBloc extends $HotelListBloc {
-  HotelListBloc(
+class HotelSearchBloc extends $HotelSearchBloc {
+  HotelSearchBloc(
     PaginatedHotelsRepository repository,
     CoordinatorBlocType coordinatorBloc,
   ) {

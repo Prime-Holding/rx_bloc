@@ -1,4 +1,4 @@
-part of 'favorite_hotels_bloc.dart';
+part of 'hotel_favorites_bloc.dart';
 
 extension _ResultHotels on Stream<Result<List<Hotel>>> {
   /// Map the successfully fetched hotels to the length of the list.

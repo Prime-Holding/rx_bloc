@@ -1,8 +1,8 @@
 import 'package:booking_app/base/common_blocs/coordinator_bloc.dart';
 import 'package:booking_app/base/repositories/paginated_hotels_repository.dart';
-import 'package:booking_app/feature_hotel/search/blocs/hotel_list_bloc.dart';
-import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
-import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
+import 'package:booking_app/feature_hotel_search/blocs/hotel_search_bloc.dart';
+import 'package:booking_app/feature_hotel_search/models/capacity_filter_data.dart';
+import 'package:booking_app/feature_hotel_search/models/date_range_filter_data.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -43,7 +43,7 @@ void main() {
       when(coordinatorStatesMock.onHotelsUpdated)
           .thenAnswer((realInvocation) => const Stream.empty());
 
-      final bloc = HotelListBloc(repositoryMock, coordinatorMock);
+      final bloc = HotelSearchBloc(repositoryMock, coordinatorMock);
 
       expect(bloc.refreshDone, completion(null));
     });
@@ -54,12 +54,12 @@ void main() {
       when(coordinatorStatesMock.onHotelsUpdated)
           .thenAnswer((realInvocation) => const Stream.empty());
 
-      HotelListBloc(repositoryMock, coordinatorMock).dispose();
+      HotelSearchBloc(repositoryMock, coordinatorMock).dispose();
     });
   });
 
   group('HotelListBloc.hotelsFound state', () {
-    rxBlocTest<HotelListBloc, String>(
+    rxBlocTest<HotelSearchBloc, String>(
       // ignore: lines_longer_than_80_chars
       'no hotels, one hotel, two hotels',
       state: (bloc) => bloc.states.hotelsFound,
@@ -70,7 +70,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => const Stream.empty());
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async {
         bloc.events.reload(reset: false);
@@ -86,7 +86,7 @@ void main() {
   });
 
   group('HotelListBloc.hotels state', () {
-    rxBlocTest<HotelListBloc, PaginatedList<Hotel>>(
+    rxBlocTest<HotelSearchBloc, PaginatedList<Hotel>>(
       // ignore: lines_longer_than_80_chars
       'Two pages',
       state: (bloc) => bloc.states.hotels,
@@ -97,7 +97,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => const Stream.empty());
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async {
         bloc.events.reload(reset: false);
@@ -113,7 +113,7 @@ void main() {
       ],
     );
 
-    rxBlocTest<HotelListBloc, PaginatedList<Hotel>>(
+    rxBlocTest<HotelSearchBloc, PaginatedList<Hotel>>(
       // ignore: lines_longer_than_80_chars
       'All filters',
       state: (bloc) => bloc.states.hotels,
@@ -124,7 +124,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => const Stream.empty());
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async {
         await Future.delayed(const Duration(seconds: 1));
@@ -143,7 +143,7 @@ void main() {
   });
 
   group('HotelListBloc.dateRangeFilterData state', () {
-    rxBlocTest<HotelListBloc, DateRangeFilterData>(
+    rxBlocTest<HotelSearchBloc, DateRangeFilterData>(
       // ignore: lines_longer_than_80_chars
       'Empty and non-empty filter',
       state: (bloc) => bloc.states.dateRangeFilterData,
@@ -154,7 +154,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => const Stream.empty());
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async =>
           bloc.events.filterByDateRange(dateRange: Stub.dateRange),
@@ -166,7 +166,7 @@ void main() {
   });
 
   group('HotelListBloc.CapacityFilterData state', () {
-    rxBlocTest<HotelListBloc, CapacityFilterData>(
+    rxBlocTest<HotelSearchBloc, CapacityFilterData>(
       // ignore: lines_longer_than_80_chars
       'Two pages',
       state: (bloc) => bloc.states.capacityFilterData,
@@ -177,7 +177,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => const Stream.empty());
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async => bloc.events
           .filterByCapacity(roomCapacity: Stub.one, personCapacity: Stub.two),
@@ -189,7 +189,7 @@ void main() {
   });
 
   group('HotelListBloc.sortedBy', () {
-    rxBlocTest<HotelListBloc, SortBy>(
+    rxBlocTest<HotelSearchBloc, SortBy>(
       // ignore: lines_longer_than_80_chars
       'None, price ask',
       state: (bloc) => bloc.states.sortedBy,
@@ -200,7 +200,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => const Stream.empty());
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async => bloc.events.sortBy(sort: SortBy.priceAsc),
       expect: <SortBy>[
@@ -211,7 +211,7 @@ void main() {
   });
 
   group('HotelListBloc.queryFilter', () {
-    rxBlocTest<HotelListBloc, String>(
+    rxBlocTest<HotelSearchBloc, String>(
       // ignore: lines_longer_than_80_chars
       'None, price ask',
       state: (bloc) => bloc.states.queryFilter,
@@ -222,7 +222,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => const Stream.empty());
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async => bloc.events.filterByQuery(Stub.query),
       expect: <String>[
@@ -233,7 +233,7 @@ void main() {
   });
 
   group('HotelListBloc.update hotels by coordinator bloc', () {
-    rxBlocTest<HotelListBloc, PaginatedList<Hotel>>(
+    rxBlocTest<HotelSearchBloc, PaginatedList<Hotel>>(
       // ignore: lines_longer_than_80_chars
       'Merge hotels',
       state: (bloc) => bloc.states.hotels,
@@ -244,7 +244,7 @@ void main() {
         when(coordinatorStatesMock.onHotelsUpdated)
             .thenAnswer((realInvocation) => Stream.value([Stub.hotel3]));
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       expect: <PaginatedList<Hotel>>[
         Stub.paginatedListHotelThree,
@@ -253,7 +253,7 @@ void main() {
       ],
     );
 
-    rxBlocTest<HotelListBloc, PaginatedList<Hotel>>(
+    rxBlocTest<HotelSearchBloc, PaginatedList<Hotel>>(
       // ignore: lines_longer_than_80_chars
       'Favorited hotels',
       state: (bloc) => bloc.states.hotels,
@@ -268,7 +268,7 @@ void main() {
           ).asStream(),
         );
 
-        return HotelListBloc(repositoryMock, coordinatorMock);
+        return HotelSearchBloc(repositoryMock, coordinatorMock);
       },
       act: (bloc) async => Future.delayed(const Duration(milliseconds: 2)),
       expect: <PaginatedList<Hotel>>[
