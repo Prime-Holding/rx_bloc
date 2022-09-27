@@ -24,7 +24,7 @@ class DashboardPaginatedList extends StatelessWidget {
         buildError: (context, list, bloc) => Container(),
       );
 
-  Widget _buildSuccess(list) => ListView.builder(
+  Widget _buildSuccess(PaginatedList<ReminderModel> list) => ListView.builder(
         itemBuilder: (context, index) {
           ReminderModel? item = list.getItem(index);
           if (item == null) {

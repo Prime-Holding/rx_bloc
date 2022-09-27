@@ -17,25 +17,25 @@ extension ResultStreamExtensions on Stream<Result<DashboardModel>> {
 
 extension DashboardBlocStreamExtensions on Stream<bool> {
   Stream<Result<DashboardModel>> fetchDashboardData(
-    DashboardService _dashboardService,
+    DashboardService dashboardService,
   ) =>
       switchMap(
-        (_) => _dashboardService.getDashboardModel().asResultStream(),
+        (_) => dashboardService.getDashboardModel().asResultStream(),
       );
 
   /// Fetches appropriate data from the repository
   Stream<Result<PaginatedList<ReminderModel>>> fetchReminderModels(
-    DashboardService _service,
-    BehaviorSubject<PaginatedList<ReminderModel>> _paginatedList,
+    DashboardService service,
+    BehaviorSubject<PaginatedList<ReminderModel>> paginatedList,
   ) =>
       distinct().throttleTime(const Duration(milliseconds: 200)).switchMap(
         (reset) {
           if (reset) {
-            _paginatedList.value.reset();
+            paginatedList.value.reset();
           }
 
-          return _service
-              .getDashboardPaginated(_paginatedList)
+          return service
+              .getDashboardPaginated(paginatedList)
               .asResultStream();
         },
       );

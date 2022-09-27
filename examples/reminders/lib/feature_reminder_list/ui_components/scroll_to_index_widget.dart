@@ -41,11 +41,11 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
   void didUpdateWidget(covariant ReminderListScrollView oldWidget) {
     if (widget.scrollToReminderId != null &&
         oldWidget.scrollToReminderId != widget.scrollToReminderId) {
-      final _correctIndex = widget.remindersList
+      final correctIndex = widget.remindersList
           .indexWhere((element) => element.id == widget.scrollToReminderId);
 
       _controller.scrollToIndex(
-        _correctIndex,
+        correctIndex,
         duration: const Duration(milliseconds: 50),
         preferPosition: AutoScrollPosition.middle,
       );

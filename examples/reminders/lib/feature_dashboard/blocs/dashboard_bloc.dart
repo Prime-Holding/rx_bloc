@@ -17,7 +17,6 @@ part 'dashboard_bloc_extensions.dart';
 /// A contract class containing all events of the DashboardBloC.
 abstract class DashboardBlocEvents {
   /// TODO: Document the event
-  // void fetchDashboardData({required bool silently});
   void fetchDashboardData([bool silently = false]);
 
   void fetchDataPaginated({required bool silently});

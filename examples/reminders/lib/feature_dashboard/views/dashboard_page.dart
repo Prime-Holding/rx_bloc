@@ -34,9 +34,23 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         child: Scaffold(
           appBar: _buildAppBar(context),
           backgroundColor: context.designSystem.colors.backgroundListColor,
-          // body: _buildBodyOld(context)
-          body: _buildBodyNew(context),
+          body: Column(
+            children: [
+              _buildLogoutListener(),
+              Expanded(child: _buildBodyNew(context)),
+            ],
+          ),
         ),
+      );
+
+  Widget _buildLogoutListener() => RxBlocListener<FirebaseBlocType, bool>(
+        state: (bloc) => bloc.states.userLoggedOut,
+        listener: (context, currentUser) {
+          if (currentUser == true) {
+            context.router.popUntilRouteWithName(FacebookLoginRoute.name);
+            context.router.replace(const FacebookLoginRoute());
+          }
+        },
       );
 
   Widget _buildBodyNew(BuildContext context) =>
@@ -69,15 +83,6 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   Widget _buildDashboardCounters(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RxBlocListener<FirebaseBlocType, bool>(
-            state: (bloc) => bloc.states.userLoggedOut,
-            listener: (context, currentUser) {
-              if (currentUser == true) {
-                context.router.popUntilRouteWithName(FacebookLoginRoute.name);
-                context.router.replace(const FacebookLoginRoute());
-              }
-            },
-          ),
           _buildErrorListener(),
           _buildOnDeletedListener(),
           _buildOnCreatedListener(),
@@ -103,11 +108,11 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         state: (bloc) => bloc.states.onDeleted,
         listener: (context, onDeleted) {
           if (onDeleted is ResultSuccess && onDeleted != null) {
-            final _reminderTitleName =
+            final reminderTitleName =
                 (onDeleted as ResultSuccess<ReminderModel>).data.title;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(context.l10n.reminderDeleted(_reminderTitleName)),
+                content: Text(context.l10n.reminderDeleted(reminderTitleName)),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -120,11 +125,11 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         state: (bloc) => bloc.states.onCreated,
         listener: (context, onCreated) {
           if (onCreated is ResultSuccess && onCreated != null) {
-            final _reminderTitleName =
+            final reminderTitleName =
                 (onCreated as ResultSuccess<ReminderModel>).data.title;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(context.l10n.reminderCreated(_reminderTitleName)),
+                content: Text(context.l10n.reminderCreated(reminderTitleName)),
                 behavior: SnackBarBehavior.floating,
               ),
             );

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../common_use_cases/firebase_logout_use_case.dart';
 import '../services/firebase_service.dart';
 import 'coordinator_bloc.dart';
 
@@ -37,19 +36,21 @@ abstract class FirebaseBlocStates {
 
   Stream<bool> get loggedIn;
 
-  Stream<bool> get loggedOut;
+  ConnectableStream<bool> get loggedOut;
 }
 
 @RxBloc()
 class FirebaseBloc extends $FirebaseBloc {
   FirebaseBloc(
-      this._service, this._coordinatorBloc, this._firebaseLogoutUseCase) {
+    this._service,
+    this._coordinatorBloc,
+  ) {
     countersUpdated.connect().disposedBy(_compositeSubscription);
+    loggedOut.connect().disposedBy(_compositeSubscription);
   }
 
   final FirebaseService _service;
   final CoordinatorBlocType _coordinatorBloc;
-  final FirebaseLogoutUseCase _firebaseLogoutUseCase;
 
   static const tagAnonymous = 'anonymous';
   static const tagFacebook = 'facebook';
@@ -88,11 +89,13 @@ class FirebaseBloc extends $FirebaseBloc {
       .switchMap((value) => _service.isUserLoggedIn().asStream());
 
   @override
-  Stream<bool> _mapToLoggedOutState() => _$logOutEvent
-      .switchMap((value) => _firebaseLogoutUseCase.execute().asResultStream())
+  ConnectableStream<bool> _mapToLoggedOutState() => _$logOutEvent
+      .switchMap((value) => _service.logOut().asResultStream())
+      .setResultStateHandler(this)
       .whereSuccess()
       .map((event) => true)
-      .onErrorReturn(false);
+      .onErrorReturn(false)
+      .publish();
 
   @override
   Stream<User?> _mapToCurrentUserDataState() => _service.currentUser;

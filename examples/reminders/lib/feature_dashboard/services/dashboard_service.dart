@@ -12,10 +12,10 @@ class DashboardService {
   final RemindersService _remindersService;
 
   Future<PaginatedList<ReminderModel>> getDashboardPaginated(
-      BehaviorSubject<PaginatedList<ReminderModel>> _paginatedList) async {
+      BehaviorSubject<PaginatedList<ReminderModel>> paginatedList) async {
     final request = ReminderModelRequest(
-      page: _paginatedList.value.pageNumber + 1,
-      pageSize: _paginatedList.value.pageSize,
+      page: paginatedList.value.pageNumber + 1,
+      pageSize: paginatedList.value.pageSize,
       sort: ReminderModelRequestSort.dueDateDesc,
       filterByDueDateRange: _getDateRange(),
       complete: false,
@@ -89,16 +89,16 @@ class DashboardService {
   IncrementOperation? _getIncrementOperationFrom({
     required ManagedList<ReminderModel> managedList,
   }) {
-    final _oldIdentifiable = managedList.identifiablePair.oldIdentifiable;
+    final oldIdentifiable = managedList.identifiablePair.oldIdentifiable;
 
-    final _updatedIdentifiable =
+    final updatedIdentifiable =
         managedList.identifiablePair.updatedIdentifiable;
 
-    if (_oldIdentifiable != null &&
-        _updatedIdentifiable.title == _oldIdentifiable.title &&
-        _updatedIdentifiable.dueDate == _oldIdentifiable.dueDate &&
-        _updatedIdentifiable.complete != _oldIdentifiable.complete) {
-      return _updatedIdentifiable.complete
+    if (oldIdentifiable != null &&
+        updatedIdentifiable.title == oldIdentifiable.title &&
+        updatedIdentifiable.dueDate == oldIdentifiable.dueDate &&
+        updatedIdentifiable.complete != oldIdentifiable.complete) {
+      return updatedIdentifiable.complete
           ? IncrementOperation.decrementIncompleteIncrementComplete
           : IncrementOperation.incrementIncompleteDecrementComplete;
     }

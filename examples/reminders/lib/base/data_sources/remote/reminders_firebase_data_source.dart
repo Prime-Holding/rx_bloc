@@ -112,14 +112,19 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<int> _getRemindersCollectionLength() async {
-    // var userId = await storage.read(key: _authorId);
     var userId = await _getAuthorIdOrNull();
     Query query = remindersLengthsReference;
     Query<Object?>? querySnapshot;
     querySnapshot =
         _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
     final remindersLengthSnapshot = await querySnapshot.get();
-    var remindersLength = remindersLengthSnapshot.docs.first[_length];
+    int remindersLength;
+    if (remindersLengthSnapshot.docs.isNotEmpty) {
+      remindersLength = remindersLengthSnapshot.docs.first[_length];
+    } else {
+      throw Exception(
+          'The reminders length value was not fetched, try to log out and log in again');
+    }
     return remindersLength;
   }
 
@@ -191,7 +196,13 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     querySnapshot =
         _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
     final countersSnapshot = await querySnapshot.get();
-    var counterCompleteLength = countersSnapshot.docs.first[_complete];
+    int counterCompleteLength;
+    if (countersSnapshot.docs.isNotEmpty) {
+      counterCompleteLength = countersSnapshot.docs.first[_complete];
+    } else {
+      throw Exception(
+          'The complete value was not fetched, try to log out and log in again');
+    }
     return counterCompleteLength;
   }
 
@@ -203,7 +214,14 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     querySnapshot =
         _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
     final countersSnapshot = await querySnapshot.get();
-    var counterIncompleteLength = countersSnapshot.docs.first[_incomplete];
+
+    int counterIncompleteLength;
+    if (countersSnapshot.docs.isNotEmpty) {
+      counterIncompleteLength = countersSnapshot.docs.first[_incomplete];
+    } else {
+      throw Exception(
+          'The incomplete value was not fetched, try to log out and log in again');
+    }
     return counterIncompleteLength;
   }
 
@@ -228,11 +246,17 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   Future<void> logOut() async {
-    await _facebookLogin.logOut();
-    await _auth.signOut();
-
-    _userCredential = null;
-    await storage.write(key: _authorId, value: null);
+    try {
+      await Future.wait([
+        _facebookLogin.logOut(),
+        _auth.signOut(),
+        storage.write(key: _authorId, value: null)
+      ]);
+    } catch (e) {
+      rethrow;
+    } finally {
+      _userCredential = null;
+    }
   }
 
   @override

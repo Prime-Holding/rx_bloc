@@ -51,7 +51,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   late final Stream<bool> _loggedInState = _mapToLoggedInState();
 
   /// The state of [loggedOut] implemented in [_mapToLoggedOutState]
-  late final Stream<bool> _loggedOutState = _mapToLoggedOutState();
+  late final ConnectableStream<bool> _loggedOutState = _mapToLoggedOutState();
 
   @override
   void logIn({
@@ -91,7 +91,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   Stream<bool> get loggedIn => _loggedInState;
 
   @override
-  Stream<bool> get loggedOut => _loggedOutState;
+  ConnectableStream<bool> get loggedOut => _loggedOutState;
 
   Stream<LoadingWithTag> _mapToIsLoadingState();
 
@@ -107,7 +107,7 @@ abstract class $FirebaseBloc extends RxBlocBase
 
   Stream<bool> _mapToLoggedInState();
 
-  Stream<bool> _mapToLoggedOutState();
+  ConnectableStream<bool> _mapToLoggedOutState();
 
   @override
   FirebaseBlocEvents get events => this;
