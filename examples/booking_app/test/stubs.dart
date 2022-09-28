@@ -72,6 +72,13 @@ class Stub {
     totalCount: 3,
   );
 
+  static final paginatedListError = PaginatedList<Hotel>(
+    list: [],
+    error: Exception('No internet connection'),
+    pageSize: 10,
+    totalCount: 3,
+  );
+
   static const one = 1;
   static const two = 2;
 

@@ -2,8 +2,8 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'coordinator_bloc.dart';
 import '../repositories/paginated_hotels_repository.dart';
+import 'coordinator_bloc.dart';
 
 part 'hotels_extra_details_bloc.rxb.g.dart';
 part 'hotels_extra_details_bloc_extensions.dart';

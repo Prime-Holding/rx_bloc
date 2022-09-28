@@ -10,7 +10,7 @@ import 'package:rx_bloc_list/models.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:test/test.dart';
 
-import '../../../stubs.dart';
+import '../../stubs.dart';
 import 'hotel_list_bloc_test.mocks.dart';
 
 @GenerateMocks([
