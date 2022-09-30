@@ -1,3 +1,7 @@
+## [3.3.0] - September 30, 2022
+* Updated `flutter_rx_bloc` to use version `5.0.0`
+* Updated `rx_bloc` to use version `3.3.0`
+
 ## [3.2.0-dev.1] - May 18, 2022
 - Added `Identifiable` interface for handling inter-feature communication
 - Added `List<T extends Identifiable>` extensions: `ids`, `containsIdentifiable`, `removeIdentifiable`, `mergeWith`
