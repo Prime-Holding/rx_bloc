@@ -1,3 +1,15 @@
+## [5.0.1] - Aug 25, 2022
+* Fixes and improvements
+
+## [5.0.0] - Aug 18, 2022
+* Support Flutter `3.0`
+* [BREAKING] Changed listener parameter type in RxBlocListener to match the type of the listened state
+* RxBlocListener has four new fields:
+  - `initialValue` - Sets the initial value used for the `onWaiting` field
+  - `onWaiting` - Callback triggered once before the stream starts emitting
+  - `onComplete` - Callback triggered once the stream is done emitting values
+  - `onError` - Callback triggered every time an error within the given stream occurs
+
 ## [4.0.2] - July 06, 2022
 * Remove unused package imports
 * Stabilisation improvements
@@ -11,7 +23,7 @@
 * [BREAKING] Changed signature of [RxResultBuilder.buildError] to `Widget Function(BuildContext, Exception, B)`
 
 ## [3.2.0] - July 09, 2021
-* Added widget `RxLoadingBuilder`
+* Added `RxLoadingBuilder` widget
 
 ## [3.1.0] - June 01, 2021
 * Fix infinite feedback loop issue with RxTextFormFieldBuilder
