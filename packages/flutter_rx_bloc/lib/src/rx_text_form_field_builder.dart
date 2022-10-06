@@ -30,7 +30,7 @@ enum RxTextFormFieldCursorBehaviour {
 ///
 ///   - If the value [Stream] emits an error of type [RxFieldException]
 ///     the value from the exception is loaded into the controller,
-///     and the error string is loaded into the [decoration] which is later
+///     and the error string is loaded into the decoration which is later
 ///     provided to the [builder] function trough the field state
 ///
 ///   It requires a [showErrorState] callback, which returns a [Stream] of

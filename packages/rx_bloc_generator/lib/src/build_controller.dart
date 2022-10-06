@@ -115,7 +115,7 @@ class _BuildController {
     // Fields only - No methods should exist
     for (var method in stateClass!.methods) {
       throw _RxBlocGeneratorException(
-          'State ${method.name}should be defined using the get keyword.');
+          'State ${method.name} should be defined using the get keyword.');
     }
 
     for (var fieldElement in stateClass!.accessors) {
