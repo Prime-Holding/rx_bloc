@@ -11,8 +11,11 @@ environment:
 dependencies:
   args: ^2.3.1
   flutter_lints: ^2.0.1
-  mason: ^0.1.0-dev.31
+  mason: ^0.1.0-dev.33
   path: ^1.8.2
+
+dev_dependencies:
+  mason_cli: ^0.1.0-dev.35
 
 executables:
   rx_bloc_cli:
