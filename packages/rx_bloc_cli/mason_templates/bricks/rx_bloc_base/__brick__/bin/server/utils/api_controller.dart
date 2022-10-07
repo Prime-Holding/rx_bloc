@@ -67,14 +67,14 @@ class RouteGenerator {
   /// You can define an optional callback that accepts an object of type Request
   /// and returns a Response, which is triggered once a url was not found.
   shelf_router.Router generateRoutes({shelf.Handler? routeNotFoundHandler}) {
-    final _router = _buildRouter(routeNotFoundHandler);
-    final _wrapperRouter = WrappedRouter(_router, _responseBuilder);
+    final router = _buildRouter(routeNotFoundHandler);
+    final wrappedRouter = WrappedRouter(router, _responseBuilder);
 
     for (final controller in _controllers._controllers) {
-      controller.registerRequests(_wrapperRouter);
+      controller.registerRequests(wrappedRouter);
     }
 
-    return _router;
+    return router;
   }
 
   /// Builds a default router with an optional handler for the case when the
@@ -135,8 +135,8 @@ class WrappedRouter {
     String path,
     Function(shelf.Request) callback,
   ) {
-    final _callback = buildSafeHandler(callback, _responseBuilder);
-    _registerCallback(type, path, _callback);
+    final newCallback = buildSafeHandler(callback, _responseBuilder);
+    _registerCallback(type, path, newCallback);
   }
 
   /// Adds a new request to the router that contains a parameter as part of the
@@ -152,8 +152,8 @@ class WrappedRouter {
     String path,
     Function(shelf.Request, String) callback,
   ) {
-    final _callback = _buildSafeHandlerParam(callback, _responseBuilder);
-    _registerCallback(type, path, _callback);
+    final newCallback = _buildSafeHandlerParam(callback, _responseBuilder);
+    _registerCallback(type, path, newCallback);
   }
 
   /// Builds a wrapper around the callback with a parameter which helps easily
