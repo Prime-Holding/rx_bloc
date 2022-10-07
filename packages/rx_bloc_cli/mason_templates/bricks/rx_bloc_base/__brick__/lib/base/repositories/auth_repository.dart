@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
 
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/auth_data_source.dart';
@@ -48,7 +48,7 @@ class AuthRepository {
       // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
       return '';
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString(), name: runtimeType.toString());
       return null;
     }
   }

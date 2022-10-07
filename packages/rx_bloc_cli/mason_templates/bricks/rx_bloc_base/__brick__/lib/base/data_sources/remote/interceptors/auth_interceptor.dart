@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -37,7 +39,7 @@ class AuthInterceptor extends Interceptor {
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
-    _printMetaDetails(err);
+    _logMetaDetails(err);
 
     if (err.response?.statusCode == 401) {
       final newToken =
@@ -67,18 +69,17 @@ class AuthInterceptor extends Interceptor {
     super.onError(err, handler);
   }
 
-  void _printErr(String msg) {
-    debugPrint(msg);
-  }
-
-  void _printMetaDetails(DioError err) {
+  void _logMetaDetails(DioError err) {
     final statusCodeStr =
-    err.response?.statusCode != null ? '[${err.response?.statusCode}]' : '';
+      err.response?.statusCode != null ? '[${err.response?.statusCode}]' : '';
     final method = err.requestOptions.method;
     final uri = err.requestOptions.uri;
 
     final requestDetails = '$statusCodeStr [$method] $uri'.trim();
-    _printErr(requestDetails);
+    _logError(requestDetails);
   }
 
+  void _logError(String message) {
+    log(message, name: runtimeType.toString());
+  }
 }
