@@ -1,6 +1,7 @@
 package com.primeholding.rxbloc_generator_plugin.generator.parser
 
 import com.intellij.openapi.vfs.VirtualFile
+import com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithIntentionAction
 import java.io.File
 
 class Utils {
@@ -14,8 +15,10 @@ class Utils {
             val stateVariableNames: MutableList<String> = mutableListOf()
             val stateIsConnectableStream: MutableList<Boolean> = mutableListOf()
             val stateVariableTypes: MutableList<String> = mutableListOf()
-            val repos: MutableList<String> = mutableListOf()
             val services: MutableList<String> = mutableListOf()
+            val repos: MutableList<String> = mutableListOf()
+            val constructorFields: MutableMap<String, String> = mutableMapOf()
+            val constructorNamedFields: MutableMap<String, Boolean> = mutableMapOf()
 
             val text = File(notNullBlocFile.path).readText()
             getValueBetween(text, "States {", "}")?.let { stateText ->
@@ -31,6 +34,85 @@ class Utils {
                     }
                 }
             }
+            val blockName: String = BlocWrapWithIntentionAction.toCamelCase(
+                notNullBlocFile.name.replace("page.dart", "").replace(".dart", "")
+            )
+
+            fun parseRequiredFields(constructorFieldsText: String) {
+
+                val split = constructorFieldsText.split(",")
+                split.forEach {
+                    if (it.contains("this.")) {
+                        constructorFields[it.replace("this.", "").trim()] = ""
+                    } else {
+                        val definition = it.trim().split(" ")
+                        if (definition.size == 2)
+                            constructorFields[definition[1].trim()] = definition[0].trim()
+                    }
+                }
+            }
+
+            getValueBetween(text, "${blockName}(", ")")?.let { constructorFieldsText ->
+                println("constructor text $constructorFieldsText")
+                if (constructorFieldsText.contains("{")) {
+
+                    //contains named parameters
+                    val mandatoryFields = constructorFieldsText.substring(0, constructorFieldsText.indexOf("{"))
+                    parseRequiredFields(mandatoryFields)
+
+                    val namedFieldsText = getValueBetween(constructorFieldsText, "{", "}")
+
+                    namedFieldsText?.let { fieldsDef ->
+                        val namedFields = fieldsDef.split(",")
+                        namedFields.forEach { fieldDefWrap ->
+                            var fieldDefWrap1 = fieldDefWrap
+                            val isRequired = fieldDefWrap.contains("required ")
+                            var value = ""
+                            if (fieldDefWrap.contains("=")) {
+                                value = fieldDefWrap.substring(fieldDefWrap.indexOf("=") + 1).trim()
+                                fieldDefWrap1 = fieldDefWrap.substring(0, fieldDefWrap.indexOf("=")).trim()
+
+                            }
+
+                            val singleFieldDef = fieldDefWrap1.replace("required ", "").trim()
+                            if (singleFieldDef.contains("this.")) {
+                                constructorFields[singleFieldDef.replace("this.", "").trim()] = value
+                                constructorNamedFields[singleFieldDef.replace("this.", "").trim()] = isRequired
+                            } else {
+                                val definition = singleFieldDef.trim().split(" ")
+                                if (definition.size == 2) {
+                                    constructorFields[definition[1].trim()] = definition[0].trim()
+                                    constructorNamedFields[definition[1].trim()] = isRequired
+                                }
+                            }
+                        }
+                    }
+
+                } else {
+                    //contains only inline fields
+                    parseRequiredFields(constructorFieldsText)
+                }
+            }
+            val blocLines = text.split("\n")
+
+            val keysSet = ArrayList(constructorFields.keys)
+            blocLines.forEach { line ->
+                keysSet.forEach {
+                    if (line.contains(" $it") && line.contains("final ")) {
+
+                        getValueBetween(line, "final ", " ${it};")?.let { value ->
+                            constructorFields[it] = value
+                        }
+
+                    }
+                }
+            }
+            keysSet.forEach {
+                if (constructorFields[it]!!.isEmpty()) {
+                    constructorFields.remove(it)
+                }
+            }
+            println(constructorFields)
             return Bloc(
                 fileName = notNullBlocFile.name,
                 relativePath = notNullBlocFile.path.substring(
@@ -39,8 +121,11 @@ class Utils {
                 stateVariableNames = stateVariableNames,
                 stateVariableTypes = stateVariableTypes,
                 stateIsConnectableStream = stateIsConnectableStream,
+                constructorFieldNames = constructorFields.keys.toMutableList(),
+                constructorFieldTypes = constructorFields.values.toMutableList(),
                 repos = repos,
                 services = services,
+                constructorFieldNamedNames = constructorNamedFields,
                 isLib = notNullBlocFile.parent.parent.name.contains("lib_")
             )
         }
@@ -82,14 +167,10 @@ class Utils {
 
                 }
             }
-            list.forEach {
-                it.repos.addAll(repos)
-                it.services.addAll(services)
-            }
 
             list.sortWith(Comparator { bloc1, bloc2 ->
-                val file1 = (if(bloc1.isLib) "lib_" else "feature_") + bloc1.fileName
-                val file2 = (if(bloc2.isLib) "lib_" else "feature_") + bloc2.fileName
+                val file1 = (if (bloc1.isLib) "lib_" else "feature_") + bloc1.fileName
+                val file2 = (if (bloc2.isLib) "lib_" else "feature_") + bloc2.fileName
 
                 file1.compareTo(file2)
             })
@@ -134,7 +215,7 @@ class Utils {
                 testFolder.children.forEach { libChild ->
                     if (libChild.name.startsWith("feature_") || libChild.name.startsWith("lib_")) {
                         selected.removeIf { x: Bloc ->
-                            x.fileName == libChild.name.replace("feature_", "") .replace("lib_", "") + "_bloc.dart"
+                            x.fileName == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
                         }
                     }
                 }
