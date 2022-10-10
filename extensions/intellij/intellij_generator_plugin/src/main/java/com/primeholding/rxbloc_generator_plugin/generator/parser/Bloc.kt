@@ -9,5 +9,8 @@ data class Bloc(
     val stateIsConnectableStream: List<Boolean>,
     val repos: MutableList<String>,
     val services: MutableList<String>,
+    val constructorFieldNames: MutableList<String>,
+    val constructorFieldNamedNames: MutableMap<String, Boolean>,
+    val constructorFieldTypes: MutableList<String>,
     val isLib: Boolean
 )

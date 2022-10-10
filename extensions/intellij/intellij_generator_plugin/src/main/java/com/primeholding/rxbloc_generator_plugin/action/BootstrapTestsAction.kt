@@ -2,7 +2,8 @@ package com.primeholding.rxbloc_generator_plugin.action
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.application.runWriteAction
+import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
@@ -25,16 +26,16 @@ class BootstrapTestsAction : AnAction() {
 
                 val showAndGet = ChooseBlocsDialog(parsedLib, selected).showAndGet()
                 if (showAndGet) {
-                    writeItIntoTests(test, selected, it.name)
+                    writeItIntoTests(test, selected, it.name, e.project!!)
                 }
             }
 
         }
     }
 
-    private fun writeItIntoTests(testFolder: VirtualFile, blocs: List<Bloc>, projectName: String) {
+    private fun writeItIntoTests(testFolder: VirtualFile, blocs: List<Bloc>, projectName: String, project: Project) {
         val blocFileExt = "_bloc.dart"
-        runWriteAction {
+        WriteCommandAction.runWriteCommandAction(project) {
             blocs.forEach { bloc ->
 
                 val prefix = (if (bloc.isLib) "lib" else "feature")
@@ -56,7 +57,7 @@ class BootstrapTestsAction : AnAction() {
                 writeTestMock(testFile, bloc, projectName)
 
                 folder = featureFolder.createChildDirectory(this, "view")
-                testFile = folder.createChildData(this, bloc.fileName.replace(blocFileExt, "_golden.dart"))
+                testFile = folder.createChildData(this, bloc.fileName.replace(blocFileExt, "_golden_test.dart"))
 
                 writeGoldenTest(testFile, bloc, projectName)
 

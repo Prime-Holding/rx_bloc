@@ -2,27 +2,24 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
-//import '../../Stubs.dart';
 import '../factory/${bloc_snake_case}_factory.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 
 
 void main() {
-  group(
-      '${bloc_snake_case}_success',
-      () => runGoldenTests([
-            generateDeviceBuilder(
-                widget: ${bloc_field_case}Factory(), //example: Stubs.emptyList
-                scenario: Scenario(name: '${bloc_snake_case}_empty')),
-            generateDeviceBuilder(
-                widget: ${bloc_field_case}Factory(), //example:  Stubs.success
-                scenario: Scenario(name: '${bloc_snake_case}_success')),
-            generateDeviceBuilder(
-                widget: ${bloc_field_case}Factory(), //loading
-                scenario: Scenario(name: '${bloc_snake_case}_loading')),
-           generateDeviceBuilder(
-                 widget: ${bloc_field_case}Factory(),
-                 scenario: Scenario(name: '${bloc_snake_case}_error'))
-          ]));
+  runGoldenTests([
+    generateDeviceBuilder(
+        widget: ${bloc_field_case}Factory(), //example: Stubs.emptyList
+        scenario: Scenario(name: '${bloc_snake_case}_empty')),
+    generateDeviceBuilder(
+        widget: ${bloc_field_case}Factory(), //example:  Stubs.success
+        scenario: Scenario(name: '${bloc_snake_case}_success')),
+    generateDeviceBuilder(
+        widget: ${bloc_field_case}Factory(), //loading
+        scenario: Scenario(name: '${bloc_snake_case}_loading')),
+    generateDeviceBuilder(
+        widget: ${bloc_field_case}Factory(),
+        scenario: Scenario(name: '${bloc_snake_case}_error'))
+  ]);
 }

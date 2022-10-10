@@ -7,10 +7,14 @@ import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/views/$
 import '../mock/${bloc_snake_case}_mock.dart';
 
 /// Change the parameters according the the needs of the test
-Widget ${bloc_field_case}Factory({int mockedData = 0}) => Scaffold(
+Widget ${bloc_field_case}Factory({
+${states_as_optional_parameter}}) =>
+    Scaffold(
       body: MultiProvider(providers: [
         RxBlocProvider<${bloc_pascal_case}BlocType>.value(
-          value: ${bloc_field_case}MockFactory(variableElementInTests: false),
+          value: ${bloc_field_case}MockFactory(
+${states_as_passing_named_parameters}
+          ),
         ),
       ], child: const ${bloc_pascal_case}Page()),
     );

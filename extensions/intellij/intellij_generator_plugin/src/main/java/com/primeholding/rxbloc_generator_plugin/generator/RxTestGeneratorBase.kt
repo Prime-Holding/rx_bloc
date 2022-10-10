@@ -32,6 +32,14 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_BLOC_STATES_WHEN_MOCK = "bloc_states_when"
     private val TEMPLATE_TEST_RX_BLOC_STATE_GROUP = "test_rxbloc_state_group"
     private val TEMPLATE_BLOC_FOLDER_PREFIX = "bloc_folder_prefix"
+    private val TEMPLATE_STATES_AS_OPTIONAL_PARAMETER = "states_as_optional_parameter"
+    private val TEMPLATE_STATES_AS_PASSING_NAMED_PARAMETERS = "states_as_passing_named_parameters"
+
+
+    private val TEMPLATE_bloc_initialization_fields_list = "_bloc_initialization_fields_list"
+    private val TEMPLATE_late_bloc_initialization_fields = "late_bloc_initialization_fields"
+    private val TEMPLATE_bloc_initialization_fields_mocks = "bloc_initialization_fields_mocks"
+    private val TEMPLATE_initiate_bloc_initialization_fields_setUp = "initiate_bloc_initialization_fields"
 
 
     private val templateString: String
@@ -52,12 +60,24 @@ abstract class RxTestGeneratorBase(
             TEMPLATE_REPO_IMPORT_DECLARATIONS to generateRepoImportDeclarations(),
             TEMPLATE_BLOC_STATES_WHEN_MOCK to generateBlocStatesWhenMock(),
             TEMPLATE_TEST_RX_BLOC_STATE_GROUP to generateBlocStatesGroup(),
-            TEMPLATE_BLOC_FOLDER_PREFIX to generateFolderPrefix()
+            TEMPLATE_BLOC_FOLDER_PREFIX to generateFolderPrefix(),
+            TEMPLATE_STATES_AS_OPTIONAL_PARAMETER to generateStatesAsOptionalParameter(),
+            TEMPLATE_STATES_AS_PASSING_NAMED_PARAMETERS to generateStatesAsPassingNamedParameters(),
+
+            TEMPLATE_bloc_initialization_fields_list to generateBlocInitializationFields(),
+            TEMPLATE_late_bloc_initialization_fields to generateBlocFieldsLateDefinition(),
+            TEMPLATE_bloc_initialization_fields_mocks to generateBlocInitializationOfMocks(),
+            TEMPLATE_initiate_bloc_initialization_fields_setUp to generateBlocSetup()
+
+
         )
         try {
 
             val resource = "/templates/rx_bloc_tests/$templateName.dart.template"
             val resourceAsStream = RxTestGeneratorBase::class.java.getResourceAsStream(resource)
+            @Suppress("UnstableApiUsage", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+                "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+            )
             templateString = CharStreams.toString(InputStreamReader(resourceAsStream, Charsets.UTF_8))
         } catch (e: Exception) {
             throw RuntimeException(e)
@@ -73,16 +93,12 @@ abstract class RxTestGeneratorBase(
             sb.append("  group('test ${bloc.fileName.toLowerSnakeCase()} state ${it}', () {\n")
             sb.append("      rxBlocTest<${pascalCase()}BlocType, ${bloc.stateVariableTypes[index]}>('test ${bloc.fileName.toLowerSnakeCase()} state ${it}',\n")
             sb.append("      build: () async {\n")
-            sb.append("      /*\n")
-            sb.append("       //Sample mock during a test case\n")
-            sb.append("       when(repositoryMock.fetchPage()).thenAnswer(\n")
-            sb.append("         (_) => Future.value(Stubs.emptyList),\n")
-            sb.append("       ); */\n")
+            sb.append("          _defineWhen();\n")
             sb.append("       return ${variableCase()}Bloc();\n")
             sb.append("      },\n")
             sb.append("      act: (bloc) async {},\n")
             sb.append("      state: (bloc) => bloc.states.${it},\n")
-            sb.append("      expect: [false]);\n")
+            sb.append("      expect: []);\n")
             sb.append("  });        \n")
 
         }
@@ -95,11 +111,18 @@ abstract class RxTestGeneratorBase(
             sb.append("\n")
             sb.append("  when(statesMock.${it}).thenAnswer(\n")
 
-            if (bloc.stateIsConnectableStream[index]) {
-                sb.append("    (_) => Stream<${bloc.stateVariableTypes[index]}>.empty().publish(),//TODO place mocked value\n")
+            if (bloc.stateVariableTypes[index] == "void") {
+                if (bloc.stateIsConnectableStream[index]) {
+                    sb.append("    (_) => const Stream<${bloc.stateVariableTypes[index]}>.empty().publish(),\n")
+                } else {
+                    sb.append("    (_) =>  const Stream.empty(),\n")
+                }
             } else {
-
-                sb.append("    (_) => Stream.empty(),//TODO place mocked value\n")
+                if (bloc.stateIsConnectableStream[index]) {
+                    sb.append("    (_) => $it != null ? Stream.value(${it}).publish() : const Stream<${bloc.stateVariableTypes[index]}>.empty().publish(),\n")
+                } else {
+                    sb.append("    (_) => $it != null ? Stream.value(${it}) : const Stream.empty(),\n")
+                }
             }
             //the value could be derived from the state if it gets parsed, (or at least for the common data types).
             sb.append("  );\n")
@@ -109,6 +132,72 @@ abstract class RxTestGeneratorBase(
 
     private fun generateFolderPrefix(): String {
         return if (bloc.isLib) "lib" else "feature"
+    }
+
+    private fun generateBlocInitializationFields(): String {
+        val sb = StringBuilder()
+        bloc.constructorFieldNames.forEach {
+            if (!bloc.constructorFieldNamedNames.keys.contains(it))
+                sb.append("        $it,\n")
+        }
+        bloc.constructorFieldNamedNames.forEach {
+            sb.append("        ${it.key}: ${it.key},\n")
+        }
+
+        return sb.toString()
+    }
+
+    private fun generateBlocFieldsLateDefinition(): String {
+        val sb = StringBuilder()
+        bloc.constructorFieldNames.forEachIndexed { index, it ->
+            sb.append("  late ${bloc.constructorFieldTypes[index]} ${it};\n")
+        }
+        return sb.toString()
+    }
+
+    private fun isMockable(type: String): Boolean {
+        return !(listOf("int", "double", "String").contains(type))
+    }
+
+    private fun generateBlocInitializationOfMocks(): String {
+        val sb = StringBuilder()
+        bloc.constructorFieldTypes.forEach {
+            if (isMockable(it)) {
+                sb.append("        $it,\n")
+            }
+        }
+        return sb.toString()
+    }
+
+    private fun generateBlocSetup(): String {
+        val sb = StringBuilder()
+        bloc.constructorFieldNames.forEachIndexed { index, it ->
+
+            if (isMockable(bloc.constructorFieldTypes[index])) {
+                sb.append("    $it = Mock${bloc.constructorFieldTypes[index]}();\n")
+            }
+        }
+        return sb.toString()
+    }
+
+    private fun generateStatesAsPassingNamedParameters(): String {
+        val sb = StringBuilder()
+        bloc.stateVariableNames.forEachIndexed { index, it ->
+            if (bloc.stateVariableTypes[index] != "void") {
+                sb.append("            $it: $it,\n")
+            }
+        }
+        return sb.toString()
+    }
+
+    private fun generateStatesAsOptionalParameter(): String {
+        val sb = StringBuilder()
+        bloc.stateVariableNames.forEachIndexed { index, _ ->
+            if (bloc.stateVariableTypes[index] != "void") {
+                sb.append("  ${bloc.stateVariableTypes[index]}${if (bloc.stateVariableTypes[index].endsWith("?")) "" else "?"} ${bloc.stateVariableNames[index]},\n")
+            }
+        }
+        return sb.toString()
     }
 
     private fun generateRepoImportDeclarations(): String {
