@@ -34,29 +34,32 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Center(
-          child: SizedBox(
-            height: 200,
-            child: Column(
-              children: [
-                _checkIsUserLoggedIn(),
-                const Image(
-                  image: AssetImage(_logoPath),
-                ),
-              ],
+        body: RxBlocListener<FirebaseBlocType, bool>(
+          state: (bloc) => bloc.states.isUserLoggedIn,
+          listener: _navigateToADifferentRoute,
+          child: Center(
+            child: SizedBox(
+              height: 200,
+              child: Column(
+                children: const [
+                  Image(
+                    image: AssetImage(_logoPath),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       );
 
-  Widget _checkIsUserLoggedIn() => RxBlocListener<FirebaseBlocType, bool>(
-        state: (bloc) => bloc.states.isUserLoggedIn,
-        listener: (context, isUserLoggedIn) {
-          if (isUserLoggedIn == false) {
-            context.router.replace(const FacebookLoginRoute());
-          } else if (isUserLoggedIn == true) {
-            context.router.replace(const NavigationRoute());
-          }
-        },
-      );
+  void _navigateToADifferentRoute(
+    BuildContext context,
+    bool? isUserLoggedIn,
+  ) {
+    if (isUserLoggedIn == false) {
+      context.router.replace(const FacebookLoginRoute());
+    } else if (isUserLoggedIn == true) {
+      context.router.replace(const NavigationRoute());
+    }
+  }
 }
