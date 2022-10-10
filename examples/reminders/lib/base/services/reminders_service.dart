@@ -8,8 +8,11 @@ class RemindersService {
 
   final RemindersRepository _repository;
 
-  Future<PaginatedList<ReminderModel>> getAll(ReminderModelRequest? request) =>
+  Future<PaginatedList<ReminderModel>> getAll(ReminderModelRequest request) =>
       _repository.getAll(request);
+
+  Future<PaginatedList<ReminderModel>> getAllDashboard(ReminderModelRequest request) =>
+      _repository.getAllDashboard(request);
 
   Future<ReminderModel> create({
     required String title,

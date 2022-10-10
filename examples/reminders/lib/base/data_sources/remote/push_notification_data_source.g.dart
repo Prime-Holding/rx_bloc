@@ -7,7 +7,10 @@ part of 'push_notification_data_source.dart';
 // **************************************************************************
 
 class _PushNotificationsDataSource implements PushNotificationsDataSource {
-  _PushNotificationsDataSource(this._dio, {this.baseUrl}) {
+  _PushNotificationsDataSource(
+    this._dio, {
+    this.baseUrl,
+  }) {
     baseUrl ??= 'http://0.0.0.0:8080';
   }
 
@@ -22,11 +25,18 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(pushToken.toJson());
-    await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/api/user/push-notification-subscriptions',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/user/push-notification-subscriptions',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     return null;
   }
 
@@ -37,11 +47,18 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(pushToken.toJson());
-    await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'DELETE', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/api/user/push-notification-subscriptions',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/user/push-notification-subscriptions',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     return null;
   }
 
@@ -52,11 +69,18 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(message.toJson());
-    await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/api/send-push-message',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/send-push-message',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     return null;
   }
 

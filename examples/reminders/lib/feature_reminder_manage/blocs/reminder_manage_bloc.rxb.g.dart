@@ -25,17 +25,14 @@ abstract class $ReminderManageBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [update]
   final _$updateEvent = PublishSubject<ReminderModel>();
 
+  /// Тhe [Subject] where events sink to by calling [setName]
+  final _$setNameEvent = BehaviorSubject<String>.seeded('');
+
   /// Тhe [Subject] where events sink to by calling [create]
   final _$createEvent = PublishSubject<_CreateEventArgs>();
 
   /// Тhe [Subject] where events sink to by calling [delete]
   final _$deleteEvent = PublishSubject<ReminderModel>();
-
-  /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
-
-  /// The state of [errors] implemented in [_mapToErrorsState]
-  late final Stream<String> _errorsState = _mapToErrorsState();
 
   /// The state of [onDeleted] implemented in [_mapToOnDeletedState]
   late final ConnectableStream<Result<ReminderModel>> _onDeletedState =
@@ -49,29 +46,33 @@ abstract class $ReminderManageBloc extends RxBlocBase
   late final ConnectableStream<Result<ReminderModel>> _onCreatedState =
       _mapToOnCreatedState();
 
+  /// The state of [name] implemented in [_mapToNameState]
+  late final Stream<String> _nameState = _mapToNameState();
+
+  /// The state of [showErrors] implemented in [_mapToShowErrorsState]
+  late final Stream<bool> _showErrorsState = _mapToShowErrorsState();
+
+  /// The state of [isFormValid] implemented in [_mapToIsFormValidState]
+  late final Stream<bool> _isFormValidState = _mapToIsFormValidState();
+
   @override
   void update(ReminderModel reminder) => _$updateEvent.add(reminder);
 
   @override
-  void create(
-          {required String title,
-          required DateTime dueDate,
-          required bool complete,
-          required bool completeUpdated}) =>
+  void setName(String title) => _$setNameEvent.add(title);
+
+  @override
+  void create({
+    required DateTime dueDate,
+    required bool complete,
+  }) =>
       _$createEvent.add(_CreateEventArgs(
-          title: title,
-          dueDate: dueDate,
-          complete: complete,
-          completeUpdated: completeUpdated));
+        dueDate: dueDate,
+        complete: complete,
+      ));
 
   @override
   void delete(ReminderModel reminder) => _$deleteEvent.add(reminder);
-
-  @override
-  Stream<bool> get isLoading => _isLoadingState;
-
-  @override
-  Stream<String> get errors => _errorsState;
 
   @override
   ConnectableStream<Result<ReminderModel>> get onDeleted => _onDeletedState;
@@ -83,9 +84,14 @@ abstract class $ReminderManageBloc extends RxBlocBase
   @override
   ConnectableStream<Result<ReminderModel>> get onCreated => _onCreatedState;
 
-  Stream<bool> _mapToIsLoadingState();
+  @override
+  Stream<String> get name => _nameState;
 
-  Stream<String> _mapToErrorsState();
+  @override
+  Stream<bool> get showErrors => _showErrorsState;
+
+  @override
+  Stream<bool> get isFormValid => _isFormValidState;
 
   ConnectableStream<Result<ReminderModel>> _mapToOnDeletedState();
 
@@ -93,6 +99,12 @@ abstract class $ReminderManageBloc extends RxBlocBase
       _mapToOnUpdatedState();
 
   ConnectableStream<Result<ReminderModel>> _mapToOnCreatedState();
+
+  Stream<String> _mapToNameState();
+
+  Stream<bool> _mapToShowErrorsState();
+
+  Stream<bool> _mapToIsFormValidState();
 
   @override
   ReminderManageBlocEvents get events => this;
@@ -103,6 +115,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
   @override
   void dispose() {
     _$updateEvent.close();
+    _$setNameEvent.close();
     _$createEvent.close();
     _$deleteEvent.close();
     _compositeSubscription.dispose();
@@ -113,17 +126,12 @@ abstract class $ReminderManageBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [ReminderManageBlocEvents.create] event
 class _CreateEventArgs {
-  const _CreateEventArgs(
-      {required this.title,
-      required this.dueDate,
-      required this.complete,
-      required this.completeUpdated});
-
-  final String title;
+  const _CreateEventArgs({
+    required this.dueDate,
+    required this.complete,
+  });
 
   final DateTime dueDate;
 
   final bool complete;
-
-  final bool completeUpdated;
 }

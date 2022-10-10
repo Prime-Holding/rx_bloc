@@ -19,8 +19,11 @@ abstract class $DashboardBloc extends RxBlocBase
     implements DashboardBlocEvents, DashboardBlocStates, DashboardBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [fetchData]
-  final _$fetchDataEvent = PublishSubject<bool>();
+  /// Тhe [Subject] where events sink to by calling [fetchDashboardData]
+  final _$fetchDashboardDataEvent = PublishSubject<bool>();
+
+  /// Тhe [Subject] where events sink to by calling [fetchDataPaginated]
+  final _$fetchDataPaginatedEvent = PublishSubject<bool>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -28,11 +31,21 @@ abstract class $DashboardBloc extends RxBlocBase
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [data] implemented in [_mapToDataState]
-  late final Stream<Result<DashboardModel>> _dataState = _mapToDataState();
+  /// The state of [dashboardModel] implemented in [_mapToDashboardModelState]
+  late final Stream<Result<DashboardModel>> _dashboardModelState =
+      _mapToDashboardModelState();
+
+  /// The state of [reminderModels] implemented in [_mapToReminderModelsState]
+  late final Stream<PaginatedList<ReminderModel>> _reminderModelsState =
+      _mapToReminderModelsState();
 
   @override
-  void fetchData({required bool silently}) => _$fetchDataEvent.add(silently);
+  void fetchDashboardData([bool silently = false]) =>
+      _$fetchDashboardDataEvent.add(silently);
+
+  @override
+  void fetchDataPaginated({required bool silently}) =>
+      _$fetchDataPaginatedEvent.add(silently);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -41,13 +54,19 @@ abstract class $DashboardBloc extends RxBlocBase
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<Result<DashboardModel>> get data => _dataState;
+  Stream<Result<DashboardModel>> get dashboardModel => _dashboardModelState;
+
+  @override
+  Stream<PaginatedList<ReminderModel>> get reminderModels =>
+      _reminderModelsState;
 
   Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
-  Stream<Result<DashboardModel>> _mapToDataState();
+  Stream<Result<DashboardModel>> _mapToDashboardModelState();
+
+  Stream<PaginatedList<ReminderModel>> _mapToReminderModelsState();
 
   @override
   DashboardBlocEvents get events => this;
@@ -57,7 +76,8 @@ abstract class $DashboardBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$fetchDataEvent.close();
+    _$fetchDashboardDataEvent.close();
+    _$fetchDataPaginatedEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
-
 import 'package:rx_bloc_list/models.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -42,11 +41,11 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
   void didUpdateWidget(covariant ReminderListScrollView oldWidget) {
     if (widget.scrollToReminderId != null &&
         oldWidget.scrollToReminderId != widget.scrollToReminderId) {
-      final _correctIndex = widget.remindersList
+      final correctIndex = widget.remindersList
           .indexWhere((element) => element.id == widget.scrollToReminderId);
 
       _controller.scrollToIndex(
-        _correctIndex,
+        correctIndex,
         duration: const Duration(milliseconds: 50),
         preferPosition: AutoScrollPosition.middle,
       );
@@ -62,12 +61,16 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
 
   @override
   Widget build(BuildContext context) => GroupedListView<ReminderModel, Group>(
+        sort: false,
         physics: const AlwaysScrollableScrollPhysics(),
         controller: _controller,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         useStickyGroupSeparators: true,
+        floatingHeader: false,
         elements: widget.remindersList.list,
         groupBy: _groupBy,
+        itemComparator: (ReminderModel value1, ReminderModel value2) =>
+            value1.dueDate.compareTo(value2.dueDate),
         groupComparator: (value1, value2) =>
             value1.index.compareTo(value2.index),
         groupSeparatorBuilder: _groupSeparatorBuilder,
@@ -86,20 +89,44 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
         },
       );
 
-  Container _itemBuilder(int index, ReminderModel reminder) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
-      child: AutoScrollTag(
-        controller: _controller,
-        index: index,
-        key: ValueKey(index),
-        child: AppReminderTile(
-          reminder: reminder,
+  Widget _itemBuilder(int index, ReminderModel reminder) => Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 10,
         ),
-      ),
-    );
+        child: AutoScrollTag(
+          controller: _controller,
+          index: index,
+          key: ValueKey(reminder.id),
+          child: AppReminderTile(
+            reminder: reminder,
+            isFirst: _firstInGroup(index, reminder),
+            isLast: _isLastInGroup(index, reminder),
+          ),
+        ),
+      );
+
+  bool _firstInGroup(int index, ReminderModel reminder) {
+    if (index == 0) {
+      return true;
+    }
+    if (index < widget.remindersList.length) {
+      var prev = _groupBy(widget.remindersList[index > 0 ? index - 1 : 0]).name;
+      var currGroup = _groupBy(reminder).name;
+      return prev != currGroup;
+    }
+    return false;
+  }
+
+  bool _isLastInGroup(int index, ReminderModel reminder) {
+    if (index == widget.remindersList.length - 1) {
+      return true;
+    }
+    if (index + 1 < widget.remindersList.length) {
+      final prev = _groupBy(reminder).name;
+      final currGroup = _groupBy(widget.remindersList[index + 1]).name;
+      return prev != currGroup;
+    }
+    return false;
   }
 
   Widget _groupSeparatorBuilder(Group type) {
@@ -115,9 +142,9 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
     }
 
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.only(left: 24, top: 16),
-      color: context.designSystem.colors.secondaryColor,
+      height: 45,
+      padding: const EdgeInsets.only(left: 24, top: 8.5, bottom: 8.5),
+      color: context.designSystem.colors.backgroundListColor,
       child: Text(
         title,
         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
@@ -125,11 +152,11 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
     );
   }
 
-  Group _groupBy(ReminderModel element) {
+  Group _groupBy(ReminderModel reminder) {
     final date = DateTime(
-      element.dueDate.year,
-      element.dueDate.month,
-      element.dueDate.day,
+      reminder.dueDate.year,
+      reminder.dueDate.month,
+      reminder.dueDate.day,
     );
     final now = DateTime.now();
     final today = DateTime(

@@ -86,19 +86,24 @@ class RemindersLocalDataSource implements RemindersDataSource {
 
     final index = _data.indexWhere((element) => element.id == updatedModel.id);
     final oldReminder = _data[index];
-    var _model = _data[index].copyWith(
+    var model = _data[index].copyWith(
       title: updatedModel.title,
       dueDate: updatedModel.dueDate,
       complete: updatedModel.complete,
     );
 
-    _data[index] = _model;
+    _data[index] = model;
 
-    var _identifiablePair = IdentifiablePair<ReminderModel>(
-      updatedIdentifiable: _model,
+    var identifiablePair = IdentifiablePair<ReminderModel>(
+      updatedIdentifiable: model,
       oldIdentifiable: oldReminder,
     );
-    return _identifiablePair;
+    return identifiablePair;
+  }
+
+  @override
+  Future<ReminderListResponse> getAllDashboard(ReminderModelRequest? request) {
+    throw UnimplementedError();
   }
 }
 

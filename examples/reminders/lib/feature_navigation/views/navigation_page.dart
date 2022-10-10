@@ -17,9 +17,9 @@ class NavigationPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => AutoTabsScaffold(
-        routes: const [
+        routes:  [
           DashboardRoute(),
-          ReminderListRoute(),
+          const ReminderListRoute(),
         ],
         builder: (context, widget, animation) => widget,
         bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(

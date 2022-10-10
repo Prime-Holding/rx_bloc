@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +27,7 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => SafeArea(
         top: false,
         child: Scaffold(
+          backgroundColor: context.designSystem.colors.backgroundListColor,
           appBar: AppBar(
             actions: [
               IconButton(
@@ -49,12 +49,12 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
                   builder: (context, onCreated, bloc) {
                     if (onCreated.data != null &&
                         onCreated.data! is ResultSuccess) {
-                      final _createdReminderId =
+                      final createdReminderId =
                           (onCreated.data as ResultSuccess<ReminderModel>)
                               .data
                               .id;
                       return ReminderListView(
-                        createdReminderId: _createdReminderId,
+                        createdReminderId: createdReminderId,
                       );
                     }
                     return const ReminderListView();
@@ -64,7 +64,8 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => addDialog(context),
+            onPressed: () =>
+                addDialog(context, context.read<ReminderManageBlocType>()),
             tooltip: 'add',
             child: const Icon(Icons.add),
           ),
@@ -82,11 +83,12 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         ),
       );
 
-  Future<void> addDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return const AddReminderDialog();
-        });
+  Future<void> addDialog(
+      BuildContext context, ReminderManageBlocType bloc) async {
+    await showDialog(
+      context: context,
+      builder: (context) => const AddReminderDialog(),
+    );
+    context.read<ReminderManageBlocType>().events.setName('');
   }
 }

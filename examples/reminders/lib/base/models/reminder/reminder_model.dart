@@ -21,12 +21,16 @@ class ReminderModelRequest {
     this.sort,
     this.page = 0,
     this.pageSize = 50,
+    this.complete,
   });
 
   final DueDateRange? filterByDueDateRange;
   final ReminderModelRequestSort? sort;
   final int page;
   final int pageSize;
+
+  /// When fetching from the dashboard page, set complete to false
+  final bool? complete;
 }
 
 class ReminderModelRequestData {
@@ -34,7 +38,7 @@ class ReminderModelRequestData {
     required this.title,
     required this.dueDate,
     required this.complete,
-     this.authorId,
+    this.authorId,
   });
 
   final String title;
@@ -81,20 +85,23 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
             ),
       );
 
-  factory ReminderModel.withAuthorId(int index, String? authorId) =>
-      ReminderModel(
-        id: index.toString(),
-        title: 'Reminder $index',
-        complete: false,
-        dueDate: DateTime.now()
-            .subtract(
-              const Duration(days: 100),
-            )
-            .add(
-              Duration(days: index),
-            ),
-        authorId: authorId,
-      );
+  factory ReminderModel.withAuthorId(int index, String? authorId) {
+    var now = DateTime.now();
+    var date = now
+        .subtract(const Duration(
+          days: 10,
+        ))
+        .add(
+          Duration(days: index),
+        );
+    return ReminderModel(
+      id: index.toString(),
+      title: 'Reminder $index',
+      complete: false,
+      dueDate: date,
+      authorId: authorId,
+    );
+  }
 
   ReminderModel copyWith({
     String? id,

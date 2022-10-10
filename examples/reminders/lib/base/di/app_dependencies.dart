@@ -21,7 +21,6 @@ import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
-import '../common_use_cases/firebase_logout_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
@@ -150,9 +149,6 @@ class AppDependencies {
         Provider<FetchAccessTokenUseCase>(
           create: (context) => FetchAccessTokenUseCase(context.read()),
         ),
-        Provider<FirebaseLogoutUseCase>(
-          create: (context) => FirebaseLogoutUseCase(context.read()),
-        )
       ];
 
   List<Provider> get _services => [
@@ -187,7 +183,6 @@ class AppDependencies {
         ),
         RxBlocProvider<FirebaseBlocType>(
           create: (context) => FirebaseBloc(
-            context.read(),
             context.read(),
             context.read(),
           ),

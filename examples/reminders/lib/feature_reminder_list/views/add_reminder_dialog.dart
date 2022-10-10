@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rx_bloc/rx_bloc.dart';
 import '../../app_extensions.dart';
+import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
 class AddReminderDialog extends StatefulWidget {
@@ -14,8 +18,6 @@ class AddReminderDialog extends StatefulWidget {
 class AddReminderDialogState extends State<AddReminderDialog> {
   late TextEditingController _textEditingController;
 
-  late final FocusNode _titleFocusNode = FocusNode();
-
   DateTime dueDate = DateTime.now();
 
   final _formatter = DateFormat.yMd();
@@ -26,27 +28,49 @@ class AddReminderDialogState extends State<AddReminderDialog> {
     super.initState();
   }
 
+  InputDecoration _buildTextFieldDecoration(BuildContext context) =>
+      InputDecoration(
+        errorStyle: TextStyle(
+          color: context.designSystem.colors.inputDecorationErrorLabelColor,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          fontSize: 12,
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: context.designSystem.colors.inputDecorationErrorLabelColor,
+          ),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: context.designSystem.colors.inputDecorationErrorLabelColor,
+          ),
+        ),
+      );
+
+  Widget _creationListener() =>
+      RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
+        state: (bloc) => bloc.states.onCreated,
+        listener: (context, onCreated) {
+          if (onCreated != null && onCreated is ResultSuccess) {
+            Navigator.of(context).pop();
+          }
+        },
+      );
+
   @override
   Widget build(BuildContext context) => AlertDialog(
         title: const Text('Add Reminder'),
         content: Row(
           children: [
+            _creationListener(),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(context.l10n.name),
-                  TextField(
-                    focusNode: _titleFocusNode,
-                    textInputAction: TextInputAction.done,
-                    controller: _textEditingController,
-                    minLines: 1,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                    ),
-                  ),
+                  _buildNameField(),
                 ],
               ),
             ),
@@ -70,20 +94,26 @@ class AddReminderDialogState extends State<AddReminderDialog> {
               context.read<ReminderManageBlocType>().events.create(
                     complete: false,
                     dueDate: dueDate,
-                    title: _textEditingController.text,
-                    completeUpdated: false,
                   );
-              Navigator.of(context).pop();
             },
-          )
+          ),
         ],
       );
 
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
-  }
+  Widget _buildNameField() => RxTextFormFieldBuilder<ReminderManageBlocType>(
+        state: (bloc) => bloc.states.name,
+        showErrorState: (bloc) => bloc.states.showErrors,
+        onChanged: (bloc, value) => bloc.events.setName(value),
+        builder: (fieldState) => TextFormField(
+          key: const ValueKey('ReminderNameInputField'),
+          cursorColor: const Color(0xff333333),
+          maxLines: 1,
+          textInputAction: TextInputAction.next,
+          controller: fieldState.controller,
+          decoration: fieldState.decoration
+              .copyWithDecoration(_buildTextFieldDecoration(context)),
+        ),
+      );
 
   Future<void> _onDueDatePressed() async {
     final date = await showDatePicker(
@@ -102,5 +132,11 @@ class AddReminderDialogState extends State<AddReminderDialog> {
         dueDate = date;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 }

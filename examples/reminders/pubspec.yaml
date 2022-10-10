@@ -1,7 +1,7 @@
 name: reminders
 description: A new Flutter project.
 homepage: https://example.com
-version: 1.0.0+7
+version: 1.0.0+10
 
 environment:
   sdk: ">=2.12.0 <=3.0.0"
@@ -17,7 +17,6 @@ dependencies:
   firebase_database: ^9.0.15
   firebase_messaging: ^11.4.1
   flutter_facebook_auth: ^4.3.4+2
-  flutter_facebook_login: ^3.0.0
   flutter:
     sdk: flutter
   flutter_local_notifications: ^9.1.5
