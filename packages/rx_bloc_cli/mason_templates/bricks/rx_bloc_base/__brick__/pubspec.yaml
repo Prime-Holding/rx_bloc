@@ -7,7 +7,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  auto_route: ^4.2.1
+  auto_route: ^5.0.1
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
   dio: ^4.0.6{{#analytics}}
@@ -27,7 +27,7 @@ dependencies:
   json_annotation: ^4.6.0
   json_serializable: ^6.3.1
   provider: ^6.0.3
-  retrofit: ^3.0.1+1
+  retrofit: ^3.3.0
   rx_bloc: ^3.3.1
   rx_bloc_list: ^3.1.0
   rxdart: ^0.27.3
@@ -39,15 +39,15 @@ dependencies:
   shelf_static: ^1.1.1
 
 dev_dependencies:
-  auto_route_generator: ^4.2.0
-  build_runner: ^2.1.7
+  auto_route_generator: ^5.0.2
+  build_runner: ^2.3.0
   # flutter_driver:
   #   sdk: flutter
   flutter_lints: any
   flutter_test:
     sdk: flutter
   mockito: ^5.2.0
-  retrofit_generator: ^4.0.3
+  retrofit_generator: ^4.2.0
   rx_bloc_generator: ^6.0.0
   rx_bloc_test: any
   test: any
