@@ -1,7 +1,5 @@
 {{> licence.dart }}
 
-import 'dart:developer';
-
 import 'package:dio/dio.dart'; {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -25,6 +23,7 @@ import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
+import '../data_sources/remote/interceptors/log_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
@@ -156,21 +155,7 @@ class AppDependencies {
           create: (context) => AnalyticsInterceptor(context.read()),
         ),
         Provider<LogInterceptor>(
-          create: (context) => LogInterceptor(
-            request: false,
-            requestHeader: false,
-            requestBody: false,
-            responseHeader: false,
-            responseBody: false,
-            error: true,
-            logPrint: (object) {
-              log(
-                object.toString(),
-                time: DateTime.now(),
-                name: 'HTTP',
-              );
-            },
-          ),
+          create: (context) => createDioEventLogInterceptor(),
         ),
       ];
 }
