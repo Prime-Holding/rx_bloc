@@ -3,7 +3,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_use_cases/fetch_access_token_use_case.dart';
 import '../../../common_use_cases/logout_use_case.dart';
@@ -20,12 +20,12 @@ class AuthInterceptor extends Interceptor {
   AuthInterceptor(
     this._logoutUseCase,
     this._fetchAccessTokenUseCase,
-    this._httpClient,
+    this._locator,
   );
 
   final LogoutUseCase _logoutUseCase;
   final FetchAccessTokenUseCase _fetchAccessTokenUseCase;
-  final Dio _httpClient;
+  final Locator _locator;
 
   @override
   Future<void> onRequest(
@@ -39,31 +39,47 @@ class AuthInterceptor extends Interceptor {
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
-    _logMetaDetails(err);
-
     if (err.response?.statusCode == 401) {
+      _logMetaDetails(err);
       final newToken =
           await _fetchAccessTokenUseCase.execute(forceFetchNewToken: true);
       if (newToken == null) {
         await _logoutUseCase.execute();
       } else {
-        _httpClient.options
-          ..headers['Authorization'] = 'Bearer $newToken'
-          ..baseUrl = err.requestOptions.baseUrl
-          ..method = err.requestOptions.method
-          ..queryParameters = err.requestOptions.queryParameters
-          ..extra = err.requestOptions.extra
-          ..responseType = err.requestOptions.responseType
-          ..connectTimeout = err.requestOptions.connectTimeout
-          ..receiveTimeout = err.requestOptions.receiveTimeout;
-        handler.resolve(await _httpClient.request(
-          err.requestOptions.path,
-          cancelToken: err.requestOptions.cancelToken,
-          data: err.requestOptions.data,
-          queryParameters: err.requestOptions.queryParameters,
-          onReceiveProgress: err.requestOptions.onReceiveProgress,
-          onSendProgress: err.requestOptions.onSendProgress,
-        ));
+        final client = _locator<Dio>();
+        final response = err.response;
+
+        if (response != null) {
+          final updatedHeaders = Map.of(response.requestOptions.headers);
+          updatedHeaders['Authorization'] = 'Bearer $newToken';
+
+          handler.resolve(await client.request(
+            err.requestOptions.path,
+            cancelToken: err.requestOptions.cancelToken,
+            data: err.requestOptions.data,
+            onReceiveProgress: err.requestOptions.onReceiveProgress,
+            onSendProgress: err.requestOptions.onSendProgress,
+            options: Options(
+              method: response.requestOptions.method,
+              sendTimeout: response.requestOptions.sendTimeout,
+              receiveTimeout: response.requestOptions.receiveTimeout,
+              extra: response.requestOptions.extra,
+              headers: updatedHeaders,
+              responseType: response.requestOptions.responseType,
+              contentType: response.requestOptions.contentType,
+              validateStatus: response.requestOptions.validateStatus,
+              receiveDataWhenStatusError:
+                  response.requestOptions.receiveDataWhenStatusError,
+              followRedirects: response.requestOptions.followRedirects,
+              maxRedirects: response.requestOptions.maxRedirects,
+              requestEncoder: response.requestOptions.requestEncoder,
+              responseDecoder: response.requestOptions.responseDecoder,
+              listFormat: response.requestOptions.listFormat,
+            ),
+            queryParameters: err.requestOptions.queryParameters,
+          ));
+          return;
+        }
       }
     }
     super.onError(err, handler);

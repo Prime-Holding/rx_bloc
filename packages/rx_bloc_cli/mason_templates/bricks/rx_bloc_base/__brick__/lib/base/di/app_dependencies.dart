@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'dart:developer';
+
 import 'package:dio/dio.dart'; {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -62,7 +64,12 @@ class AppDependencies {
       ];
 
   List<Provider> get _httpClients => [
-        Provider<Dio>(create: (context) => Dio()),
+        Provider<Dio>(
+          create: (context) {
+            final dio = Dio()..options.baseUrl = config.baseApiUrl;
+            return dio;
+          },
+        ),
       ];
 
   List<SingleChildWidget> get _dataStorages => [
@@ -142,11 +149,28 @@ class AppDependencies {
           create: (context) => AuthInterceptor(
             context.read(),
             context.read(),
-            context.read(),
+            context.read,
           ),
         ),
         Provider<AnalyticsInterceptor>(
           create: (context) => AnalyticsInterceptor(context.read()),
+        ),
+        Provider<LogInterceptor>(
+          create: (context) => LogInterceptor(
+            request: false,
+            requestHeader: false,
+            requestBody: false,
+            responseHeader: false,
+            responseBody: false,
+            error: true,
+            logPrint: (object) {
+              log(
+                object.toString(),
+                time: DateTime.now(),
+                name: 'HTTP',
+              );
+            },
+          ),
         ),
       ];
 }

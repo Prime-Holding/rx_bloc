@@ -53,6 +53,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   @override
   void initState() { {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
+    _addInterceptors();
 
     super.initState();
   }{{#push_notifications}}
@@ -76,30 +77,16 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         .listen((message) => onMessageOpenedFromBackground(context, message));
   }{{/push_notifications}}
 
-  void _addInterceptors(){
-    final interceptors = context.read<Dio>().interceptors;
-
-    final toAdd = [
-      AuthInterceptor(context.read(), context.read(), context.read()),{{#analytics}}
-      AnalyticsInterceptor(context.read()),{{/analytics}}
-      LogInterceptor(),
-
-    /// TODO: Add your own interceptors here
-    ];
-
-    for (var interceptor in toAdd) {
-      final hasInterceptorOfSameType =
-          interceptors.any((e) => e.runtimeType == interceptor.runtimeType);
-      if (!hasInterceptorOfSameType) interceptors.add(interceptor);
-    }
+  void _addInterceptors() {
+    context.read<Dio>().interceptors.addAll([
+      context.read<AuthInterceptor>(),{{#analytics}}
+      context.read<AnalyticsInterceptor>(),{{/analytics}}
+      context.read<LogInterceptor>(),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    // After the widget has been re-built (when using hot restart),
-    // register any missing interceptors.
-    WidgetsBinding.instance.addPostFrameCallback((_) => _addInterceptors());
-
     return MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
         theme: DesignSystem.fromBrightness(Brightness.light).theme,
