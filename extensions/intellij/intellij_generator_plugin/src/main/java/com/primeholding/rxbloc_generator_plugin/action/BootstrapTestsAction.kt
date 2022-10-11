@@ -24,16 +24,23 @@ class BootstrapTestsAction : AnAction() {
                 val selected = ArrayList(parsedLib)
                 Utils.unCheckExisting(lib, selected) //TODO change this as it uses side effect of pass by reference
 
-                val showAndGet = ChooseBlocsDialog(parsedLib, selected).showAndGet()
+                val dialog = ChooseBlocsDialog(parsedLib, selected)
+                val showAndGet = dialog.showAndGet()
                 if (showAndGet) {
-                    writeItIntoTests(test, selected, it.name, e.project!!)
+                    writeItIntoTests(test, selected, it.name, e.project!!, dialog.includeDiMocks())
                 }
             }
 
         }
     }
 
-    private fun writeItIntoTests(testFolder: VirtualFile, blocs: List<Bloc>, projectName: String, project: Project) {
+    private fun writeItIntoTests(
+        testFolder: VirtualFile,
+        blocs: List<Bloc>,
+        projectName: String,
+        project: Project,
+        includeDiMocks: Boolean
+    ) {
         val blocFileExt = "_bloc.dart"
         WriteCommandAction.runWriteCommandAction(project) {
             blocs.forEach { bloc ->
@@ -64,15 +71,18 @@ class BootstrapTestsAction : AnAction() {
                 val blocsFolder = featureFolder.createChildDirectory(this, "blocs")
                 testFile = blocsFolder.createChildData(this, bloc.fileName.replace(blocFileExt, "_test.dart"))
 
-                writeBlockTest(testFile, bloc, projectName)
+                writeBlockTest(testFile, bloc, projectName, includeDiMocks)
             }
         }
     }
 
 
-    private fun writeBlockTest(testFile: VirtualFile, bloc: Bloc, projectName: String) {
+    private fun writeBlockTest(testFile: VirtualFile, bloc: Bloc, projectName: String, includeDiMocks: Boolean) {
         val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocGenerator(
-            name = bloc.fileName.replace(".dart", ""), projectName = projectName, bloc = bloc
+            name = bloc.fileName.replace(".dart", ""),
+            projectName = projectName,
+            bloc = bloc,
+            includeDiMocks = includeDiMocks
         )
         VfsTestUtil.overwriteTestData(testFile.path, test.generate())
     }

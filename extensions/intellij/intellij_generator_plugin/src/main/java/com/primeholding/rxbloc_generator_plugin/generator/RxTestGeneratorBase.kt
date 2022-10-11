@@ -13,7 +13,8 @@ abstract class RxTestGeneratorBase(
     name: String,
     private val projectName: String,
     templateName: String,
-    private val bloc: Bloc
+    private val bloc: Bloc,
+    includeDiMocks: Boolean = true
 ) : RxGeneratorBase(name) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
@@ -42,10 +43,12 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_initiate_bloc_initialization_fields_setUp = "initiate_bloc_initialization_fields"
 
 
+    private val includeDiMocksFlag: Boolean
     private val templateString: String
     private val templateValues: MutableMap<String, String>
 
     init {
+        includeDiMocksFlag = includeDiMocks
         templateValues = mutableMapOf(
             TEMPLATE_BLOC_PASCAL_CASE to pascalCase(),
             TEMPLATE_BLOC_DOLLAR_PASCAL_CASE to dollarPascalCase(),
@@ -75,7 +78,8 @@ abstract class RxTestGeneratorBase(
 
             val resource = "/templates/rx_bloc_tests/$templateName.dart.template"
             val resourceAsStream = RxTestGeneratorBase::class.java.getResourceAsStream(resource)
-            @Suppress("UnstableApiUsage", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+            @Suppress(
+                "UnstableApiUsage", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
                 "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
             )
             templateString = CharStreams.toString(InputStreamReader(resourceAsStream, Charsets.UTF_8))
@@ -136,21 +140,30 @@ abstract class RxTestGeneratorBase(
 
     private fun generateBlocInitializationFields(): String {
         val sb = StringBuilder()
-        bloc.constructorFieldNames.forEach {
-            if (!bloc.constructorFieldNamedNames.keys.contains(it))
-                sb.append("        $it,\n")
-        }
-        bloc.constructorFieldNamedNames.forEach {
-            sb.append("        ${it.key}: ${it.key},\n")
-        }
 
+        if (includeDiMocksFlag) {
+            bloc.constructorFieldNames.forEach {
+                if (!bloc.constructorFieldNamedNames.keys.contains(it))
+                    sb.append("        $it,\n")
+            }
+            bloc.constructorFieldNamedNames.forEach {
+                sb.append("        ${it.key}: ${it.key},\n")
+            }
+        } else {
+            sb.append("//TODO\n")
+        }
         return sb.toString()
     }
 
     private fun generateBlocFieldsLateDefinition(): String {
         val sb = StringBuilder()
-        bloc.constructorFieldNames.forEachIndexed { index, it ->
-            sb.append("  late ${bloc.constructorFieldTypes[index]} ${it};\n")
+
+        if (includeDiMocksFlag) {
+            bloc.constructorFieldNames.forEachIndexed { index, it ->
+                sb.append("  late ${bloc.constructorFieldTypes[index]} ${it};\n")
+            }
+        } else {
+            sb.append("//TODO\n")
         }
         return sb.toString()
     }
@@ -161,21 +174,31 @@ abstract class RxTestGeneratorBase(
 
     private fun generateBlocInitializationOfMocks(): String {
         val sb = StringBuilder()
-        bloc.constructorFieldTypes.forEach {
-            if (isMockable(it)) {
-                sb.append("        $it,\n")
+        if (includeDiMocksFlag) {
+            sb.append("@GenerateMocks([\n")
+            bloc.constructorFieldTypes.forEach {
+                if (isMockable(it)) {
+                    sb.append("        $it,\n")
+                }
             }
+            sb.append("])\n")
+        } else {
+            sb.append("//TODO @GeneratedMocks([])\n")
         }
         return sb.toString()
     }
 
     private fun generateBlocSetup(): String {
         val sb = StringBuilder()
-        bloc.constructorFieldNames.forEachIndexed { index, it ->
+        if (includeDiMocksFlag) {
+            bloc.constructorFieldNames.forEachIndexed { index, it ->
 
-            if (isMockable(bloc.constructorFieldTypes[index])) {
-                sb.append("    $it = Mock${bloc.constructorFieldTypes[index]}();\n")
+                if (isMockable(bloc.constructorFieldTypes[index])) {
+                    sb.append("    $it = Mock${bloc.constructorFieldTypes[index]}();\n")
+                }
             }
+        } else {
+            sb.append("//TODO\n")
         }
         return sb.toString()
     }

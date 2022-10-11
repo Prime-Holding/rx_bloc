@@ -6,13 +6,9 @@ import 'package:rx_bloc_test/rx_bloc_test.dart';
 import '${bloc_snake_case}_test.mocks.dart';
 import 'package:rxdart/rxdart.dart';
 
-
-@GenerateMocks([
 ${bloc_initialization_fields_mocks}
-])
 void main() {
 ${late_bloc_initialization_fields}
-
   void _defineWhen(/*value*/) {
      /*
             //Sample mock during a test case
@@ -22,7 +18,6 @@ ${late_bloc_initialization_fields}
 
   ${bloc_pascal_case}Bloc ${bloc_field_case}Bloc() => ${bloc_pascal_case}Bloc(
 ${_bloc_initialization_fields_list});
-
   setUp(() {
   ${initiate_bloc_initialization_fields}
   });

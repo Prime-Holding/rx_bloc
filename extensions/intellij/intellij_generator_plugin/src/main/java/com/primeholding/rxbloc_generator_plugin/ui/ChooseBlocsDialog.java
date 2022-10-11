@@ -2,6 +2,7 @@ package com.primeholding.rxbloc_generator_plugin.ui;
 
 import com.android.annotations.Nullable;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBList;
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
 
@@ -17,6 +18,8 @@ public class ChooseBlocsDialog extends DialogWrapper {
     private final List<Bloc> allBlocs;
     private final List<Bloc> allowedBlocs;
     private final List<Bloc> initiallySelectedBlocs;
+    JBCheckBox includeBlocDi = new JBCheckBox("Generate DI/Mocks from BloC constructor", true);
+
 
     public ChooseBlocsDialog(List<Bloc> allBlocs, List<Bloc> initiallySelectedBlocs) {
         super(true);
@@ -67,7 +70,13 @@ public class ChooseBlocsDialog extends DialogWrapper {
 
         );
         dialogPanel.add(new JScrollPane(list), BorderLayout.CENTER);
+        dialogPanel.add(includeBlocDi, BorderLayout.SOUTH);
+
         return dialogPanel;
+    }
+
+    public boolean includeDiMocks() {
+        return includeBlocDi.isSelected();
     }
 
     class CheckListRenderer extends JCheckBox implements ListCellRenderer<Bloc> {
