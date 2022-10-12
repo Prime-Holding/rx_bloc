@@ -55,8 +55,8 @@ class AuthenticationController extends ApiController {
         BadRequestException('The password cannot be empty.'),
       );
     }
-    final _token = _issueNewToken(refreshToken);
-    return responseBuilder.buildOK(data: _token.toJson());
+    final token = _issueNewToken(refreshToken);
+    return responseBuilder.buildOK(data: token.toJson());
   }
 
   Response _logoutHandler(Request request) {
@@ -88,9 +88,9 @@ class AuthenticationController extends ApiController {
 
   AuthToken _issueNewToken(String? refreshToken) {
     if (refreshToken != null) {
-      final _tkn = _authTokenRepository.getTokenViaRefreshToken(refreshToken);
-      if (_tkn == null) throw BadRequestException('Invalid refresh token!');
-      _authTokenRepository.removeToken(_tkn.token);
+      final token = _authTokenRepository.getTokenViaRefreshToken(refreshToken);
+      if (token == null) throw BadRequestException('Invalid refresh token!');
+      _authTokenRepository.removeToken(token.token);
     }
 
     return _authTokenRepository.issueNewToken();
