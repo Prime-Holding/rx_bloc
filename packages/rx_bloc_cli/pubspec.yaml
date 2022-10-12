@@ -15,7 +15,7 @@ dependencies:
   path: ^1.8.2
 
 dev_dependencies:
-  mason_cli: ^0.1.0-dev.35
+  mason_cli: ^0.1.0-dev.36
 
 executables:
   rx_bloc_cli:
