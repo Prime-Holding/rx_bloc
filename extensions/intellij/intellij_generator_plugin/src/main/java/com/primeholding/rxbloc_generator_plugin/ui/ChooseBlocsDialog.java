@@ -36,7 +36,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        JPanel dialogPanel = new JPanel(new BorderLayout());
+        JPanel dialogPanel = new JPanel(new BorderLayout(0, 5));
 
         JBList<Bloc> list = new JBList<>(allBlocs.toArray(new Bloc[0]));
         list.setCellRenderer(new CheckListRenderer());
@@ -71,6 +71,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
         );
         dialogPanel.add(new JScrollPane(list), BorderLayout.CENTER);
         dialogPanel.add(includeBlocDi, BorderLayout.SOUTH);
+        dialogPanel.add(new JLabel("Bootstrap code for Unit & Golden tests will be created under the folder(s) test/feature_{selected_feature}" ), BorderLayout.NORTH);
 
         return dialogPanel;
     }
