@@ -88,17 +88,17 @@ class _LoginFormState extends State<LoginForm> {
   Widget _buildLogoutListener() => RxBlocListener<LoginBlocType, bool>(
         state: (bloc) => bloc.states.loggedIn,
         listener: (_, success) {
-          if (success ?? false) widget.onLoginSuccess?.call();
+          if (success) widget.onLoginSuccess?.call();
         },
       );
 
   Widget _buildErrorListener() => RxBlocListener<LoginBlocType, String>(
         state: (bloc) => bloc.states.errors,
         listener: (context, error) {
-          if (error?.isEmpty ?? true) return;
+          if (error.isEmpty) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(error!),
+              content: Text(error),
               behavior: SnackBarBehavior.floating,
             ),
           );
