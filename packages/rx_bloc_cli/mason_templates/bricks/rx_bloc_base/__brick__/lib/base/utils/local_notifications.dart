@@ -54,7 +54,7 @@ Future<void> showLocalNotification({
         icon: icon ?? 'app_icon', // To use your own custom icon for foreground
         // notifications, replace the png file in `android/src/main/res/drawable`
       ),
-      iOS: const IOSNotificationDetails(
+      iOS: const DarwinNotificationDetails(
         presentAlert: true,
         presentBadge: true,
         presentSound: true,
