@@ -19,7 +19,7 @@ class LoginForm extends StatefulWidget {
   final Function? onLoginSuccess;
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {

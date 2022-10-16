@@ -81,10 +81,10 @@ class PushNotificationsController extends ApiController {
     final title = params['title'];
     final message = params['message'];
 
-    final _delayParam = params['delay'];
-    final delay = _delayParam != null && (_delayParam is int)
-        ? _delayParam
-        : int.parse(_delayParam ?? '0');
+    final delayParam = params['delay'];
+    final delay = delayParam != null && (delayParam is int)
+        ? delayParam
+        : int.parse(delayParam ?? '0');
 
     throwIfEmpty(
       message,

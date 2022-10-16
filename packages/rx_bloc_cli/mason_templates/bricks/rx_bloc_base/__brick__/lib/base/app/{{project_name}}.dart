@@ -20,8 +20,11 @@ import 'config/environment_config.dart';{{#push_notifications}}
 import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}}
 
 /// This widget is the root of your application.
-class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
-  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod, Key? key}) : super(key: key);
+class {{project_name.pascalCase()}} extends StatelessWidget {
+  {{project_name.pascalCase()}}({
+    this.config = EnvironmentConfig.prod,
+    Key? key,
+  }) : super(key: key);
 
   final EnvironmentConfig config;
   final _router = router.Router();
@@ -61,9 +64,11 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         await safeRun(
             () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
     }
-    await FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((message) => onInitialMessageOpened(context, message));
+
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (!mounted) return;
+    await onInitialMessageOpened(context, initialMessage);
+
     FirebaseMessaging.instance.onTokenRefresh
         .listen((token) => onFCMTokenRefresh(context, token));
     FirebaseMessaging.onMessage
@@ -72,17 +77,17 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         .listen((message) => onMessageOpenedFromBackground(context, message));
   }{{/push_notifications}}
 
-  void _addInterceptors(){
+  void _addInterceptors() {
     context.read<Dio>().interceptors.addAll([
-      AuthInterceptor(context.read(), context.read(), context.read()),{{#analytics}}
-      AnalyticsInterceptor(context.read()),{{/analytics}}
-
-      /// TODO: Add your own interceptors here
+      context.read<AuthInterceptor>(),{{#analytics}}
+      context.read<AnalyticsInterceptor>(),{{/analytics}}
+      context.read<LogInterceptor>(),
     ]);
   }
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
         theme: DesignSystem.fromBrightness(Brightness.light).theme,
         darkTheme: DesignSystem.fromBrightness(Brightness.dark).theme,
@@ -99,4 +104,5 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         {{/analytics}}),
         debugShowCheckedModeBanner: false,
       );
+  }
 }
