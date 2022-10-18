@@ -90,12 +90,12 @@ class AppDependencies {
         Provider<AuthDataSource>(
           create: (context) => AuthDataSource(
             context.read(),
-            baseUrl: config.baseApiUrl,
           ),
         ),
         Provider<PushNotificationsDataSource>(
-          create: (context) => PushNotificationsDataSource(context.read(),
-              baseUrl: config.baseApiUrl),
+          create: (context) => PushNotificationsDataSource(
+            context.read(),
+          ),
         ),
       ];
 
