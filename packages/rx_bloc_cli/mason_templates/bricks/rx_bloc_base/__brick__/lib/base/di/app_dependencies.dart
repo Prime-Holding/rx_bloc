@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'dart:io';
+
 import 'package:dio/dio.dart'; {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -65,7 +67,10 @@ class AppDependencies {
   List<Provider> get _httpClients => [
         Provider<Dio>(
           create: (context) {
-            final dio = Dio()..options.baseUrl = config.baseApiUrl;
+            final dio = Dio()
+              ..options.baseUrl = Platform.isIOS
+                  ? config.iosSimulatorBaseApiUrl
+                  : config.androidEmulatorBaseApiUrl;
             return dio;
           },
         ),
