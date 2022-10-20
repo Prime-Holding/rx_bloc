@@ -30,6 +30,7 @@ class AddReminderDialogState extends State<AddReminderDialog> {
 
   InputDecoration _buildTextFieldDecoration(BuildContext context) =>
       InputDecoration(
+        errorMaxLines: 2,
         errorStyle: TextStyle(
           color: context.designSystem.colors.inputDecorationErrorLabelColor,
           fontWeight: FontWeight.w400,
