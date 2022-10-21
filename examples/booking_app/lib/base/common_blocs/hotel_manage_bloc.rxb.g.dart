@@ -23,9 +23,14 @@ abstract class $HotelManageBloc extends RxBlocBase
   final _$markAsFavoriteEvent = PublishSubject<_MarkAsFavoriteEventArgs>();
 
   @override
-  void markAsFavorite({required Hotel hotel, required bool isFavorite}) =>
-      _$markAsFavoriteEvent
-          .add(_MarkAsFavoriteEventArgs(hotel: hotel, isFavorite: isFavorite));
+  void markAsFavorite({
+    required Hotel hotel,
+    required bool isFavorite,
+  }) =>
+      _$markAsFavoriteEvent.add(_MarkAsFavoriteEventArgs(
+        hotel: hotel,
+        isFavorite: isFavorite,
+      ));
 
   @override
   HotelManageEvents get events => this;
@@ -44,8 +49,10 @@ abstract class $HotelManageBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [HotelManageEvents.markAsFavorite] event
 class _MarkAsFavoriteEventArgs {
-  const _MarkAsFavoriteEventArgs(
-      {required this.hotel, required this.isFavorite});
+  const _MarkAsFavoriteEventArgs({
+    required this.hotel,
+    required this.isFavorite,
+  });
 
   final Hotel hotel;
 

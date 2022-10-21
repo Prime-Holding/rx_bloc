@@ -58,16 +58,27 @@ abstract class $HotelSearchBloc extends RxBlocBase
       _$filterByDateRangeEvent.add(dateRange);
 
   @override
-  void filterByCapacity({int roomCapacity = 0, int personCapacity = 0}) =>
+  void filterByCapacity({
+    int roomCapacity = 0,
+    int personCapacity = 0,
+  }) =>
       _$filterByCapacityEvent.add(_FilterByCapacityEventArgs(
-          roomCapacity: roomCapacity, personCapacity: personCapacity));
+        roomCapacity: roomCapacity,
+        personCapacity: personCapacity,
+      ));
 
   @override
   void sortBy({SortBy sort = SortBy.none}) => _$sortByEvent.add(sort);
 
   @override
-  void reload({required bool reset, bool fullReset = false}) =>
-      _$reloadEvent.add(_ReloadEventArgs(reset: reset, fullReset: fullReset));
+  void reload({
+    required bool reset,
+    bool fullReset = false,
+  }) =>
+      _$reloadEvent.add(_ReloadEventArgs(
+        reset: reset,
+        fullReset: fullReset,
+      ));
 
   @override
   Stream<DateRangeFilterData> get dateRangeFilterData =>
@@ -106,8 +117,10 @@ abstract class $HotelSearchBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [HotelSearchEvents.filterByCapacity] event
 class _FilterByCapacityEventArgs {
-  const _FilterByCapacityEventArgs(
-      {this.roomCapacity = 0, this.personCapacity = 0});
+  const _FilterByCapacityEventArgs({
+    this.roomCapacity = 0,
+    this.personCapacity = 0,
+  });
 
   final int roomCapacity;
 
@@ -117,7 +130,10 @@ class _FilterByCapacityEventArgs {
 /// Helps providing the arguments in the [Subject.add] for
 /// [HotelSearchEvents.reload] event
 class _ReloadEventArgs {
-  const _ReloadEventArgs({required this.reset, this.fullReset = false});
+  const _ReloadEventArgs({
+    required this.reset,
+    this.fullReset = false,
+  });
 
   final bool reset;
 
