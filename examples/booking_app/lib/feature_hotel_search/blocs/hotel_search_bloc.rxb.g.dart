@@ -9,14 +9,17 @@ part of 'hotel_search_bloc.dart';
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class HotelSearchBlocType extends RxBlocTypeBase {
-  HotelSearchEvents get events;
-  HotelSearchStates get states;
+  HotelSearchBlocEvents get events;
+  HotelSearchBlocStates get states;
 }
 
 /// [$HotelSearchBloc] extended by the [HotelSearchBloc]
 /// {@nodoc}
 abstract class $HotelSearchBloc extends RxBlocBase
-    implements HotelSearchEvents, HotelSearchStates, HotelSearchBlocType {
+    implements
+        HotelSearchBlocEvents,
+        HotelSearchBlocStates,
+        HotelSearchBlocType {
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [filterByQuery]
@@ -97,10 +100,10 @@ abstract class $HotelSearchBloc extends RxBlocBase
   Stream<SortBy> _mapToSortedByState();
 
   @override
-  HotelSearchEvents get events => this;
+  HotelSearchBlocEvents get events => this;
 
   @override
-  HotelSearchStates get states => this;
+  HotelSearchBlocStates get states => this;
 
   @override
   void dispose() {
@@ -115,7 +118,7 @@ abstract class $HotelSearchBloc extends RxBlocBase
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [HotelSearchEvents.filterByCapacity] event
+/// [HotelSearchBlocEvents.filterByCapacity] event
 class _FilterByCapacityEventArgs {
   const _FilterByCapacityEventArgs({
     this.roomCapacity = 0,
@@ -128,7 +131,7 @@ class _FilterByCapacityEventArgs {
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [HotelSearchEvents.reload] event
+/// [HotelSearchBlocEvents.reload] event
 class _ReloadEventArgs {
   const _ReloadEventArgs({
     required this.reset,

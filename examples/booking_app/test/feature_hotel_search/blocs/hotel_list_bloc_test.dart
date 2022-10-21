@@ -16,19 +16,19 @@ import 'hotel_list_bloc_test.mocks.dart';
 @GenerateMocks([
   PaginatedHotelsRepository,
   CoordinatorBlocType,
-  CoordinatorEvents,
-  CoordinatorStates,
+  CoordinatorBlocEvents,
+  CoordinatorBlocStates,
 ])
 void main() {
   late MockPaginatedHotelsRepository repositoryMock;
   late MockCoordinatorBlocType coordinatorMock;
-  late MockCoordinatorStates coordinatorStatesMock;
-  late MockCoordinatorEvents coordinatorEventsMock;
+  late MockCoordinatorBlocStates coordinatorStatesMock;
+  late MockCoordinatorBlocEvents coordinatorEventsMock;
 
   setUp(() {
     coordinatorMock = MockCoordinatorBlocType();
-    coordinatorStatesMock = MockCoordinatorStates();
-    coordinatorEventsMock = MockCoordinatorEvents();
+    coordinatorStatesMock = MockCoordinatorBlocStates();
+    coordinatorEventsMock = MockCoordinatorBlocEvents();
 
     when(coordinatorMock.states).thenReturn(coordinatorStatesMock);
     when(coordinatorMock.events).thenReturn(coordinatorEventsMock);

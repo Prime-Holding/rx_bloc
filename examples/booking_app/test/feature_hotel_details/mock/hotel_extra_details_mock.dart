@@ -1,14 +1,17 @@
 import 'package:booking_app/base/common_blocs/hotels_extra_details_bloc.dart';
+import 'package:favorites_advanced_base/models.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'hotels_extra_details_mock.mocks.dart';
+import 'hotel_extra_details_mock.mocks.dart';
 
 @GenerateMocks([
-  HotelsExtraDetailsBlocStates,
+  HotelsExtraDetailsBlocType,
   HotelsExtraDetailsBlocEvents,
-  HotelsExtraDetailsBlocType
+  HotelsExtraDetailsBlocStates,
 ])
-HotelsExtraDetailsBlocType hotelsExtraDetailsMockFactory() {
+HotelsExtraDetailsBlocType hotelDetailsMockFactory({
+  required Hotel hotel,
+}) {
   final blocMock = MockHotelsExtraDetailsBlocType();
   final eventsMock = MockHotelsExtraDetailsBlocEvents();
   final statesMock = MockHotelsExtraDetailsBlocStates();

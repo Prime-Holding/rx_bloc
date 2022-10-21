@@ -12,16 +12,3 @@ extension _WhereHotelUpdated on Stream<List<Hotel>> {
         ),
       ).whereType<Hotel>();
 }
-
-extension _ExtractHotelProperties on Stream<Hotel> {
-  Stream<String> mapToTitle() => map((hotel) => hotel.title);
-
-  Stream<String> mapToSubTitle() => map((hotel) => hotel.subTitle);
-
-  Stream<String> mapToImagePath() => map((hotel) => hotel.imagePath);
-
-  Stream<String> mapToRating() =>
-      map((hotel) => hotel.displayRating.toString());
-
-  Stream<bool> mapToIsFavorite() => map((hotel) => hotel.isFavorite);
-}

@@ -9,16 +9,16 @@ part of 'hotel_favorites_bloc.dart';
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class FavoriteHotelsBlocType extends RxBlocTypeBase {
-  FavoriteHotelsEvents get events;
-  FavoriteHotelsStates get states;
+  FavoriteHotelsBlocEvents get events;
+  FavoriteHotelsBlocStates get states;
 }
 
 /// [$FavoriteHotelsBloc] extended by the [FavoriteHotelsBloc]
 /// {@nodoc}
 abstract class $FavoriteHotelsBloc extends RxBlocBase
     implements
-        FavoriteHotelsEvents,
-        FavoriteHotelsStates,
+        FavoriteHotelsBlocEvents,
+        FavoriteHotelsBlocStates,
         FavoriteHotelsBlocType {
   final _compositeSubscription = CompositeSubscription();
 
@@ -38,10 +38,10 @@ abstract class $FavoriteHotelsBloc extends RxBlocBase
   Stream<int> _mapToCountState();
 
   @override
-  FavoriteHotelsEvents get events => this;
+  FavoriteHotelsBlocEvents get events => this;
 
   @override
-  FavoriteHotelsStates get states => this;
+  FavoriteHotelsBlocStates get states => this;
 
   @override
   void dispose() {

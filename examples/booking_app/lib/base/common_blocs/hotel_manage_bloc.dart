@@ -9,11 +9,11 @@ part 'hotel_manage_bloc.rxb.g.dart';
 part 'hotel_manage_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
-abstract class HotelManageEvents {
+abstract class HotelManageBlocEvents {
   void markAsFavorite({required Hotel hotel, required bool isFavorite});
 }
 
-abstract class HotelManageStates {
+abstract class HotelManageBlocStates {
   @RxBlocIgnoreState()
   Stream<bool> get isLoading;
 

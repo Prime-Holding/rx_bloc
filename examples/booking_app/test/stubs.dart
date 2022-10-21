@@ -9,6 +9,16 @@ class Stub {
   static final navigation = NavigationStub();
 
   static final hotel1 = HotelsRepository.hotelsDB.first;
+
+  static final hotel1Loaded = hotel1.copyWith(
+    displayDescription: hotel1.description,
+    displayDist: hotel1.dist,
+    displayFeatures: hotel1.features,
+    displayRating: hotel1.rating,
+    displayReviews: hotel1.reviews,
+    displaySubtitle: hotel1.subTitle,
+  );
+
   static final hotel1Favorited =
       HotelsRepository.hotelsDB.first.copyWith(isFavorite: true);
   static final hotel2 = HotelsRepository.hotelsDB[1];

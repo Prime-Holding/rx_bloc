@@ -18,7 +18,7 @@ part 'hotel_search_bloc.rxb.g.dart';
 part 'hotel_search_bloc_extensions.dart';
 part 'hotel_search_bloc_models.dart';
 
-abstract class HotelSearchEvents {
+abstract class HotelSearchBlocEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void filterByQuery(String query);
 
@@ -41,7 +41,7 @@ abstract class HotelSearchEvents {
   void reload({required bool reset, bool fullReset = false});
 }
 
-abstract class HotelSearchStates {
+abstract class HotelSearchBlocStates {
   @RxBlocIgnoreState()
   Stream<PaginatedList<Hotel>> get hotels;
 

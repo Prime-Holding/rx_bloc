@@ -8,7 +8,11 @@ import 'package:rx_bloc_list/models.dart';
 
 import 'hotel_search_mock.mocks.dart';
 
-@GenerateMocks([HotelSearchStates, HotelSearchEvents, HotelSearchBlocType])
+@GenerateMocks([
+  HotelSearchBlocStates,
+  HotelSearchBlocEvents,
+  HotelSearchBlocType,
+])
 HotelSearchBlocType hotelSearchMockFactory({
   PaginatedList<Hotel>? hotels,
   String? hotelsFound,
@@ -18,8 +22,8 @@ HotelSearchBlocType hotelSearchMockFactory({
   SortBy? sortedBy,
 }) {
   final blocMock = MockHotelSearchBlocType();
-  final eventsMock = MockHotelSearchEvents();
-  final statesMock = MockHotelSearchStates();
+  final eventsMock = MockHotelSearchBlocEvents();
+  final statesMock = MockHotelSearchBlocStates();
 
   when(blocMock.events).thenReturn(eventsMock);
   when(blocMock.states).thenReturn(statesMock);

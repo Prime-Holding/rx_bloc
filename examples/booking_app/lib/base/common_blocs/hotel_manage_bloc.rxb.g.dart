@@ -9,14 +9,17 @@ part of 'hotel_manage_bloc.dart';
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class HotelManageBlocType extends RxBlocTypeBase {
-  HotelManageEvents get events;
-  HotelManageStates get states;
+  HotelManageBlocEvents get events;
+  HotelManageBlocStates get states;
 }
 
 /// [$HotelManageBloc] extended by the [HotelManageBloc]
 /// {@nodoc}
 abstract class $HotelManageBloc extends RxBlocBase
-    implements HotelManageEvents, HotelManageStates, HotelManageBlocType {
+    implements
+        HotelManageBlocEvents,
+        HotelManageBlocStates,
+        HotelManageBlocType {
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [markAsFavorite]
@@ -33,10 +36,10 @@ abstract class $HotelManageBloc extends RxBlocBase
       ));
 
   @override
-  HotelManageEvents get events => this;
+  HotelManageBlocEvents get events => this;
 
   @override
-  HotelManageStates get states => this;
+  HotelManageBlocStates get states => this;
 
   @override
   void dispose() {
@@ -47,7 +50,7 @@ abstract class $HotelManageBloc extends RxBlocBase
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [HotelManageEvents.markAsFavorite] event
+/// [HotelManageBlocEvents.markAsFavorite] event
 class _MarkAsFavoriteEventArgs {
   const _MarkAsFavoriteEventArgs({
     required this.hotel,

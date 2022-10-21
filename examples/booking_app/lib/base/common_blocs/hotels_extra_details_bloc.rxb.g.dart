@@ -9,16 +9,16 @@ part of 'hotels_extra_details_bloc.dart';
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class HotelsExtraDetailsBlocType extends RxBlocTypeBase {
-  HotelsExtraDetailsEvents get events;
-  HotelsExtraDetailsStates get states;
+  HotelsExtraDetailsBlocEvents get events;
+  HotelsExtraDetailsBlocStates get states;
 }
 
 /// [$HotelsExtraDetailsBloc] extended by the [HotelsExtraDetailsBloc]
 /// {@nodoc}
 abstract class $HotelsExtraDetailsBloc extends RxBlocBase
     implements
-        HotelsExtraDetailsEvents,
-        HotelsExtraDetailsStates,
+        HotelsExtraDetailsBlocEvents,
+        HotelsExtraDetailsBlocStates,
         HotelsExtraDetailsBlocType {
   final _compositeSubscription = CompositeSubscription();
 
@@ -37,10 +37,10 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
       ));
 
   @override
-  HotelsExtraDetailsEvents get events => this;
+  HotelsExtraDetailsBlocEvents get events => this;
 
   @override
-  HotelsExtraDetailsStates get states => this;
+  HotelsExtraDetailsBlocStates get states => this;
 
   @override
   void dispose() {
@@ -51,7 +51,7 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [HotelsExtraDetailsEvents.fetchExtraDetails] event
+/// [HotelsExtraDetailsBlocEvents.fetchExtraDetails] event
 class _FetchExtraDetailsEventArgs {
   const _FetchExtraDetailsEventArgs(
     this.hotel, {

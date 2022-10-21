@@ -9,11 +9,11 @@ part 'hotels_extra_details_bloc.rxb.g.dart';
 part 'hotels_extra_details_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
-abstract class HotelsExtraDetailsEvents {
+abstract class HotelsExtraDetailsBlocEvents {
   void fetchExtraDetails(Hotel hotel, {bool allProps = false});
 }
 
-abstract class HotelsExtraDetailsStates {}
+abstract class HotelsExtraDetailsBlocStates {}
 
 @RxBloc()
 class HotelsExtraDetailsBloc extends $HotelsExtraDetailsBloc {
