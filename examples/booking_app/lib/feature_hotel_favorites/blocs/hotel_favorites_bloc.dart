@@ -12,12 +12,12 @@ part 'hotel_favorites_bloc.rxb.g.dart';
 part 'hotel_favorites_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
-abstract class FavoriteHotelsBlocEvents {
+abstract class HotelFavoritesBlocEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: false)
   void reloadFavoriteHotels({required bool silently});
 }
 
-abstract class FavoriteHotelsBlocStates {
+abstract class HotelFavoritesBlocStates {
   @RxBlocIgnoreState()
   Stream<Result<List<Hotel>>> get favoriteHotels;
 
@@ -25,8 +25,8 @@ abstract class FavoriteHotelsBlocStates {
 }
 
 @RxBloc()
-class FavoriteHotelsBloc extends $FavoriteHotelsBloc {
-  FavoriteHotelsBloc(
+class HotelFavoritesBloc extends $HotelFavoritesBloc {
+  HotelFavoritesBloc(
     PaginatedHotelsRepository repository,
     CoordinatorBlocType coordinatorBloc,
   ) {

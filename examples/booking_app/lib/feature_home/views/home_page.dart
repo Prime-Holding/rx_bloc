@@ -92,14 +92,14 @@ class HomePage extends StatelessWidget {
       case NavigationItemType.search:
         return const HotelSearchPage();
       case NavigationItemType.favorites:
-        return const FavoritesPage();
+        return const HotelFavoritesPage();
     }
   }
 }
 
 extension NavigationItemToWitget on NavigationItem {
   Widget? asWidget() => type == NavigationItemType.favorites
-      ? RxBlocBuilder<FavoriteHotelsBlocType, int>(
+      ? RxBlocBuilder<HotelFavoritesBlocType, int>(
           state: (bloc) => bloc.states.count,
           builder: (ctx, snapshot, bloc) =>
               snapshot.hasData && snapshot.data! <= 0

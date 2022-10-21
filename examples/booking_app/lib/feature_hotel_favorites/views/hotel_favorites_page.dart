@@ -9,8 +9,8 @@ import '../../feature_hotel_details/views/hotel_details_page.dart';
 import '../../feature_hotel_search/ui_components/hotel_animated_list_view.dart';
 import '../blocs/hotel_favorites_bloc.dart';
 
-class FavoritesPage extends StatelessWidget {
-  const FavoritesPage({Key? key}) : super(key: key);
+class HotelFavoritesPage extends StatelessWidget {
+  const HotelFavoritesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -18,7 +18,7 @@ class FavoritesPage extends StatelessWidget {
         children: [
           Expanded(
             child: HotelAnimatedListView(
-              hotelList: RxBlocProvider.of<FavoriteHotelsBlocType>(context)
+              hotelList: RxBlocProvider.of<HotelFavoritesBlocType>(context)
                   .states
                   .favoriteHotels
                   .whereSuccess(),
@@ -27,11 +27,11 @@ class FavoritesPage extends StatelessWidget {
               ),
             ),
           ),
-          RxResultBuilder<FavoriteHotelsBlocType, List<Hotel>>(
+          RxResultBuilder<HotelFavoritesBlocType, List<Hotel>>(
             state: (bloc) => bloc.states.favoriteHotels,
             buildLoading: (ctx, bloc) => LoadingWidget(),
             buildError: (ctx, error, bloc) => ErrorRetryWidget(
-              onReloadTap: () => RxBlocProvider.of<FavoriteHotelsBlocType>(ctx)
+              onReloadTap: () => RxBlocProvider.of<HotelFavoritesBlocType>(ctx)
                   .events
                   .reloadFavoriteHotels(silently: false),
             ),
