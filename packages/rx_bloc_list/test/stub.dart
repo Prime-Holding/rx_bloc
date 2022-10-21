@@ -49,7 +49,7 @@ class Stub {
   }
 }
 
-class IdentifiableModel implements Identifiable {
+class IdentifiableModel extends Identifiable {
   @override
   final String id;
 
