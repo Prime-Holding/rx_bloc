@@ -23,26 +23,15 @@ enum ManageOperation {
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
   /// Get a list of unique [Identifiable.id]
-  List<String> get ids => map((element) => element.id).toSet().toList();
+  List<Object> get ids => map((element) => element.id).toSet().toList();
 
   /// Whether the collection contains an element equal to [identifiable].
-  bool containsIdentifiable(Identifiable identifiable) {
-    try {
-      firstWhere((element) => element.id == identifiable.id);
-
-      return true;
-    } on StateError catch (_) {
-      return false;
-    }
-  }
+  bool containsIdentifiable(Identifiable identifiable) =>
+      any((element) => element.isEqualToIdentifiable(identifiable));
 
   /// Return a new list with removed all occurrence of [identifiable] from this list.
-  List<T> removedIdentifiable(Identifiable identifiable) {
-    final list = [...this];
-    list.removeWhere((element) => element.id == identifiable.id);
-
-    return list;
-  }
+  List<T> removedIdentifiable(Identifiable identifiable) =>
+      where((element) => !element.isEqualToIdentifiable(identifiable)).toList();
 
   /// Return a new list with the given [list] merged into the current list.
   ///
@@ -70,14 +59,12 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
     T entity, {
     required addIfNotExist,
   }) {
-    final index = indexWhere((element) => element.id == entity.id);
+    final index =
+        indexWhere((element) => element.isEqualToIdentifiable(entity));
 
-    if (index >= 0 && index < length) {
+    if (index != -1) {
       this[index] = entity;
-      return this;
-    }
-
-    if (addIfNotExist) {
+    } else if (addIfNotExist) {
       add(entity);
     }
 
@@ -118,8 +105,8 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
     required OperationCallback<E> operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
-        final identifiableInList = tuple.list
-            .firstWhereOrNull((element) => element.id == tuple.item.id);
+        final identifiableInList = tuple.list.firstWhereOrNull(
+            (element) => element.isEqualToIdentifiable(tuple.item));
 
         switch (await operationCallback(tuple.item, identifiableInList)) {
           case ManageOperation.merge:
