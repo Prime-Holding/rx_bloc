@@ -83,7 +83,8 @@ void main() {
       await expectLater(
         Stream.value(IdentifiableModel('2')).withLatestFromIdentifiableList(
           Stream.value([IdentifiableModel('1')]),
-          operationCallback: (identifiablePair) async {
+          operationCallback:  (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async {
             expect(identifiablePair.updatedIdentifiable.id, '2');
             return ManageOperation.merge;
           },
@@ -111,7 +112,8 @@ void main() {
             IdentifiableModel('1'),
             IdentifiableModel('2'),
           ]),
-          operationCallback: (identifiablePair) async {
+          operationCallback:  (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async {
             expect(identifiablePair.updatedIdentifiable.id, '2');
             expect(identifiablePair.updatedIdentifiable.value, '2 updated');
             return ManageOperation.merge;
@@ -141,7 +143,8 @@ void main() {
             IdentifiableModel('1', value: 'a'),
             IdentifiableModel('2', value: 'b'),
           ]),
-          operationCallback: (identifiablePair) async {
+          operationCallback: (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async {
             if (identifiablePair.updatedIdentifiable.id == '2') {
               expect(identifiablePair.updatedIdentifiable.value, 'b updated');
             }
@@ -170,7 +173,8 @@ void main() {
             IdentifiableModel('1'),
             IdentifiableModel('2'),
           ]),
-          operationCallback: (updatedIdentifiable) async =>
+          operationCallback:  (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async =>
               ManageOperation.ignore,
         ),
         emitsInOrder([
@@ -198,7 +202,8 @@ void main() {
               IdentifiableModel('2'),
             ],
           ),
-          operationCallback: (updatedIdentifiable) async =>
+          operationCallback:  (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async =>
               ManageOperation.remove,
         ),
         emitsInOrder([
@@ -229,7 +234,8 @@ void main() {
               totalCount: 10,
             ),
           ),
-          operationCallback: (updatedIdentifiable) async =>
+          operationCallback: (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list])async =>
               ManageOperation.merge,
         ),
         emitsInOrder([
@@ -261,7 +267,8 @@ void main() {
               totalCount: 10,
             ),
           ),
-          operationCallback: (updatedIdentifiable) async =>
+          operationCallback:  (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async =>
               ManageOperation.remove,
         ),
         emitsInOrder(
@@ -297,7 +304,8 @@ void main() {
               IdentifiableModel('1'),
             ],
           ),
-          operationCallback: (updatedIdentifiable) async =>
+          operationCallback:  (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async =>
               ManageOperation.merge,
         ),
         emitsInOrder(
@@ -330,7 +338,8 @@ void main() {
               IdentifiableModel('2'),
             ],
           ),
-          operationCallback: (updatedIdentifiable) async =>
+          operationCallback: (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async =>
               ManageOperation.remove,
         ),
         emitsInOrder(
@@ -362,7 +371,8 @@ void main() {
               IdentifiableModel('2'),
             ],
           ),
-          operationCallback: (updatedIdentifiable) async =>
+          operationCallback:  (IdentifiablePair<IdentifiableModel> identifiablePair,
+              [List<IdentifiableModel>? list]) async =>
               ManageOperation.ignore,
         ),
         emitsInOrder(

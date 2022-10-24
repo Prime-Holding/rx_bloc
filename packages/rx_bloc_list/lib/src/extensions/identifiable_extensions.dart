@@ -6,7 +6,7 @@ import '../../models.dart';
 /// The returned [ManageOperation] determines whether the [updatedIdentifiable]
 /// will be merged, removed or ignored from the list.
 typedef OperationCallback<E extends Identifiable> = Future<ManageOperation>
-    Function(IdentifiablePair<E> identifiablePair);
+    Function(IdentifiablePair<E> identifiablePair, [List<E>? list]);
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
   /// Get a list of unique [Identifiable.id]
@@ -106,7 +106,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
           oldIdentifiable: identifiableInList,
         );
 
-        switch (await operationCallback(identifiablePair)) {
+        switch (await operationCallback(identifiablePair, tuple.list)) {
           case ManageOperation.merge:
             yield ManagedList(
               tuple.list._mergeWithList([tuple.item]),
