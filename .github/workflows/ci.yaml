@@ -49,12 +49,12 @@ jobs:
           fi
       - name: Remove unnecessary files
         working-directory: ${{ matrix.folder }}
-        run: flutter pub run clean_coverage clean --exclusions '**/home**.dart','**/navigation_bar**.dart','**/hotel**.dart','**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
-          min_coverage: 89
+          min_coverage: 50
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2.1.0
         with:
