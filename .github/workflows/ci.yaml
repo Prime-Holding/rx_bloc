@@ -27,7 +27,7 @@ jobs:
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
           ]
       fail-fast: false
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.5.3
@@ -69,7 +69,7 @@ jobs:
             "packages/rx_bloc_generator",
           ]
       fail-fast: false
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.5.3
@@ -107,7 +107,7 @@ jobs:
 
   build:
     needs: [examples, packages]
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: noop
         run: echo 'noop'
