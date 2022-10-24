@@ -15,7 +15,6 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
-import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../theme/design_system.dart';
@@ -81,7 +80,6 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   void _addInterceptors() {
     context.read<Dio>().interceptors.addAll([
-      AuthInterceptor(context.read(), context.read(), context.read()),
       AnalyticsInterceptor(context.read()),
 
       /// TODO: Add your own interceptors here
