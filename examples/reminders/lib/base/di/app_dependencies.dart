@@ -7,7 +7,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -67,9 +66,6 @@ class AppDependencies {
   List<SingleChildWidget> get _dataStorages => [
         Provider<FlutterSecureStorage>(
             create: (context) => const FlutterSecureStorage()),
-        Provider<FirebaseMessaging>(
-          create: (_) => FirebaseMessaging.instance,
-        ),
       ];
 
   /// Use different data source regarding of if it is running in web ot not
