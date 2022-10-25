@@ -143,3 +143,10 @@ jobs:
         uses: codecov/codecov-action@v2.1.0
         with:
           directory: ${{ matrix.folder }}/coverage
+          
+  build:
+    needs: [examples, packages, flutter_packages]
+    runs-on: ubuntu-latest
+    steps:
+      - name: noop
+        run: echo 'noop'
