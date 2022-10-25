@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '1.5.0'
+version '2.0.0'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -41,6 +41,13 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
+        <li>v2.0.0 
+        <br /> - Added Boostrap Test Generator in the project menu that outputs
+        <br /> - bootstraped unit test for the bloc 
+        <br /> - factory of the page associated with the bloc
+        <br /> - code for mocking the bloc states
+        <br /> - template for creating golden tests with the most common use cases - empty result, error, loading, success</li>
+        
         <li>v1.5.0 
         <br /> - Updated DI Dependencies to not be a singleton</li>
         <br /> - Added an improvement to the - Wrap With Quick Action Support - 
