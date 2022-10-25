@@ -98,7 +98,7 @@ jobs:
         uses: codecov/codecov-action@v2.1.0
         with:
           directory: ${{ matrix.folder }}/coverage
-  dart_packages:
+  packages:
     strategy:
       matrix:
         folder:
