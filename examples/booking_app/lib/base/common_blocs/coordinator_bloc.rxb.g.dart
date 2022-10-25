@@ -9,14 +9,17 @@ part of 'coordinator_bloc.dart';
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class CoordinatorBlocType extends RxBlocTypeBase {
-  CoordinatorEvents get events;
-  CoordinatorStates get states;
+  CoordinatorBlocEvents get events;
+  CoordinatorBlocStates get states;
 }
 
 /// [$CoordinatorBloc] extended by the [CoordinatorBloc]
 /// {@nodoc}
 abstract class $CoordinatorBloc extends RxBlocBase
-    implements CoordinatorEvents, CoordinatorStates, CoordinatorBlocType {
+    implements
+        CoordinatorBlocEvents,
+        CoordinatorBlocStates,
+        CoordinatorBlocType {
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [hotelUpdated]
@@ -43,10 +46,10 @@ abstract class $CoordinatorBloc extends RxBlocBase
   Stream<List<Hotel>> _mapToOnHotelsUpdatedState();
 
   @override
-  CoordinatorEvents get events => this;
+  CoordinatorBlocEvents get events => this;
 
   @override
-  CoordinatorStates get states => this;
+  CoordinatorBlocStates get states => this;
 
   @override
   void dispose() {
