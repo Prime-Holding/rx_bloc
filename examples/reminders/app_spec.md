@@ -32,7 +32,7 @@ This is a user application specification of the reminders sample app.
 ### Dashboard Page
 
   - User can see a counter of the incomplete reminders and a counter for the complete reminders.
-  - Bellow the counters the user sees an "Overdue" list of only incomplete reminders.
+  - Bellow the counters the user sees an "Incomplete overdue" list of only incomplete reminders.
   - When the page is loaded for the first time the length of the fetched list is up to 5 reminders, sorted by due date in descending order. The start date is 10 days subtracted from today and the end date is today.
   - When a reminder is on the Dashboard page and it is marked as complete, regardless from which page, it is removed from the Dashboard page. Its radio button on the Reminders page is changed to selected.
 
@@ -45,20 +45,19 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/reminder_edit_options.png" width="350">
 <br/><br/>
 
-  - User can slide the reminder tile and see 2 options: Complete/Incomplete, Delete.
-  - User can slide back the reminder tile to hide the edit options, when doing this the reminder will not be updated.
+  - User can slide the reminder tile and see 1 option: Delete.
+  - User can slide back the reminder tile to hide the edit option, when doing this the reminder will not be updated.
   - When a reminder is marked as completed, its radio button is changed to selected, so that the user knows, which reminders are completed.
 
 ### Reminder Completed
 
 <img src="assets/images/reminder_completed.png" width="350">
 <br/><br/>
-
-  - User can tap on the Complete button. When this happens, the reminder is removed from the Dashboard list page and moved to the Reminders list page. The reminder is marked as completed. The complete counter is increased by 1 and the incomplete counter on the Dashboard page is decreased by one.
-
 <img src="assets/images/reminder_completed_reminder_page.png" width="350">
 <br/><br/>
 
+  - User can tap on the Complete button. When this happens, the reminder is removed from the Dashboard list page and moved to the Reminders list page. The reminder is marked as completed. The complete counter is increased by 1 and the incomplete counter on the Dashboard page is decreased by one.
+  
 ### Reminder Deleted
 
 <img src="assets/images/reminder_deleted.png" width="350">
