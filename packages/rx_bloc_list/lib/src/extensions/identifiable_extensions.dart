@@ -159,13 +159,15 @@ extension _ListX<E extends Identifiable> on List<E> {
   List<E> _removeFromList(E identifiable) {
     final that = this;
 
-    if (that is PaginatedList<E> && that.containsIdentifiable(identifiable)) {
+    if (that is PaginatedList<E>) {
       final totalCount = that.totalCount;
-
-      return that.copyWith(
-        list: that.removedIdentifiable(identifiable),
-        totalCount: totalCount == null ? null : totalCount - 1,
-      );
+      if(that.containsIdentifiable(identifiable)){
+        return that.copyWith(
+          list: that.removedIdentifiable(identifiable),
+          totalCount: totalCount == null ? null : totalCount - 1,
+        );
+      }
+      return that;
     }
 
     return removedIdentifiable(identifiable);
