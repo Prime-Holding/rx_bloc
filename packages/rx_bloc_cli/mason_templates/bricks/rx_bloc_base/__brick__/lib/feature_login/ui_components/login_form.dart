@@ -49,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             Text(
               widget.title,
-              style: context.designSystem.typography.bodyText2,
+              style: context.designSystem.typography.h3Reg14,
               textAlign: TextAlign.center,
             ),
             Column(
@@ -138,14 +138,5 @@ class _LoginFormState extends State<LoginForm> {
     InputDecoration decoration,
     String label,
   ) =>
-      decoration.copyWith(
-        labelText: label,
-        labelStyle: decoration.labelStyle?.copyWith(
-          color: context.designSystem.colors.inputDecorationLabelColor
-              .withOpacity(0.5),
-        ),
-        errorStyle: decoration.labelStyle?.copyWith(
-          color: context.designSystem.colors.inputDecorationErrorLabelColor,
-        ),
-      );
+      decoration.copyWith(labelText: label);
 }
