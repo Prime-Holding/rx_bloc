@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
-import '../../feature_hotel/blocs/hotel_manage_bloc.dart';
+import '../common_blocs/hotel_manage_bloc.dart';
 
 class FavoriteMessageListener extends StatelessWidget {
   const FavoriteMessageListener({

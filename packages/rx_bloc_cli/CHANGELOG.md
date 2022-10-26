@@ -1,3 +1,8 @@
+## [1.2.0] August 01, 2022
+* Support flutter 3
+* Fixes to generated project not properly building or displaying errors on hot restart
+* Update dependencies of generated project to latest versions
+
 ## [1.1.3] - Jun 01, 2022
 * Bump Android compileSdkVersion to the current version (32)
 

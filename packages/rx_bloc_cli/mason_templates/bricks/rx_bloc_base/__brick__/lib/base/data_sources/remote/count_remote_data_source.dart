@@ -9,17 +9,17 @@ part 'count_remote_data_source.g.dart';
 
 /// Used as a contractor for remote data source.
 /// To make it work, should provide a real API and rerun build_runner
-@RestApi(baseUrl: 'http://0.0.0.0:8080/api')
+@RestApi()
 abstract class CountRemoteDataSource {
   factory CountRemoteDataSource(Dio dio, {String baseUrl}) =
       _CountRemoteDataSource;
 
-  @GET('/count')
+  @GET('/api/count')
   Future<Count> getCurrent();
 
-  @POST('/count/increment')
+  @POST('/api/count/increment')
   Future<Count> increment();
 
-  @POST('/count/decrement')
+  @POST('/api/count/decrement')
   Future<Count> decrement();
 }

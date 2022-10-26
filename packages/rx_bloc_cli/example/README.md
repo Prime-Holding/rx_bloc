@@ -24,7 +24,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/base/di/` | Global dependencies, available in the whole app|
 | `lib/base/extensions/` | Global [extension methods][extension_methods_lnk] |
 | `lib/base/models/` | Data models used in the project |
-| `lib/base/repositories/` | Repositories used to fetch and persist models.
+| `lib/base/repositories/` | Repositories used to fetch and persist models. |
 | `lib/base/routers/` | All [routers][autoroute_usage_lnk] are placed here. The main [router][autoroute_usage_lnk] of the app is `lib/base/routers/router.dart`. |
 | `lib/base/routers/guards/` | The routers' [guards][autoroute_usage_lnk] of the app are placed here. |
 | `lib/base/theme/` | The custom theme of the app |

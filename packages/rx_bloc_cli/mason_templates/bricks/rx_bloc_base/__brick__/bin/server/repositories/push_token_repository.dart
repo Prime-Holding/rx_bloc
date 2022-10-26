@@ -6,14 +6,13 @@ class PushTokenRepository {
   final Map<String, PushNotificationToken> _pushTokens = {};
 
   void addPushToken(String token) {
-    final _token = PushNotificationToken(token);
-
-    _pushTokens[token] = _token;
+    final newToken = PushNotificationToken(token);
+    _pushTokens[token] = newToken;
   }
 
   bool removePushToken(String token) {
-    final _token = _pushTokens[token];
-    if (_token == null) return false;
+    final existingToken = _pushTokens[token];
+    if (existingToken == null) return false;
     _pushTokens.remove(token);
     return true;
   }
