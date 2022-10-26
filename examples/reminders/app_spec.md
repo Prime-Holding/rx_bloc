@@ -34,7 +34,7 @@ This is a user application specification of the reminders sample app.
   - User can see a counter of the incomplete reminders and a counter for the complete reminders.
   - Bellow the counters the user sees an "Overdue" list of only incomplete reminders.
   - When the page is loaded for the first time the length of the fetched list is up to 5 reminders, sorted by due date in descending order. The start date is 10 days subtracted from today and the end date is today.
-  - When a reminder is on the Dashboard page and it is marked as complete, regardless from which page, it is removed from the Dashboard page. Its color on the Reminders page is changed to grey.
+  - When a reminder is on the Dashboard page and it is marked as complete, regardless from which page, it is removed from the Dashboard page. Its radio button on the Reminders page is changed to selected.
 
 ### Pull To Refresh Dashboard List Page
 
@@ -47,7 +47,7 @@ This is a user application specification of the reminders sample app.
 
   - User can slide the reminder tile and see 2 options: Complete/Incomplete, Delete.
   - User can slide back the reminder tile to hide the edit options, when doing this the reminder will not be updated.
-  - When a reminder is marked as completed, its color is changed to grey, so that the user knows, which reminders are completed.
+  - When a reminder is marked as completed, its radio button is changed to selected, so that the user knows, which reminders are completed.
 
 ### Reminder Completed
 
@@ -55,6 +55,9 @@ This is a user application specification of the reminders sample app.
 <br/><br/>
 
   - User can tap on the Complete button. When this happens, the reminder is removed from the Dashboard list page and moved to the Reminders list page. The reminder is marked as completed. The complete counter is increased by 1 and the incomplete counter on the Dashboard page is decreased by one.
+
+<img src="assets/images/reminder_completed_reminder_page.png" width="350">
+<br/><br/>
 
 ### Reminder Deleted
 
@@ -108,8 +111,8 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/reminder_incomplete.png" width="350">
 <br/><br/>
 
-  - When a user slides a reminder after it has been marked as complete, the text in the button is changed to "Incomplete" and the reminder has been as "Incomplete".
-  - When the user selects the "Incomplete" button, the reminder is marked as incomplete. On the dashboard page, the "Incomplete" counter is increased by one and the "Complete" counter is decreased by one. The color is changed back to white.
+  - When a user deselects a reminder after it has been marked as complete, the radio button gets deselected and the reminder has been set as "Incomplete".
+  - On the dashboard page, the "Incomplete" counter is increased by one and the "Complete" counter is decreased by one.
   - If the reminder date is within the last 10 days the reminder is added to the "Dashboard" page.
 
 ### Add Reminder 
