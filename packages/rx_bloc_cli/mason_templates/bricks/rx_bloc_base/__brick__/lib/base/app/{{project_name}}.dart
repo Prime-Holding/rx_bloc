@@ -14,6 +14,7 @@ import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../theme/design_system.dart';
+import '../theme/{{project_name}}_theme.dart';
 import '../utils/helpers.dart';
 import 'config/app_constants.dart';
 import 'config/environment_config.dart';{{#push_notifications}}
@@ -88,21 +89,21 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
-        theme: DesignSystem.fromBrightness(Brightness.light).theme,
-        darkTheme: DesignSystem.fromBrightness(Brightness.dark).theme,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
+      title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
+      theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
+      darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      routeInformationParser: widget._router.defaultRouteParser(),
+      routerDelegate: widget._router.delegate({{#analytics}}
+        navigatorObservers: () => [
+          context.read<FirebaseAnalyticsObserver>(),
         ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        routeInformationParser: widget._router.defaultRouteParser(),
-        routerDelegate: widget._router.delegate({{#analytics}}
-          navigatorObservers: () => [
-            context.read<FirebaseAnalyticsObserver>(),
-          ],
-        {{/analytics}}),
-        debugShowCheckedModeBanner: false,
-      );
+      {{/analytics}}),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }

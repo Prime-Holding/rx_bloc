@@ -2,6 +2,8 @@
 * Support flutter 3
 * Fixes to generated project not properly building or displaying errors on hot restart
 * Update dependencies of generated project to latest versions
+* Update the design system to work as a theme extension
+* Add Next Steps section to the generated project README file
 
 ## [1.1.3] - Jun 01, 2022
 * Bump Android compileSdkVersion to the current version (32)

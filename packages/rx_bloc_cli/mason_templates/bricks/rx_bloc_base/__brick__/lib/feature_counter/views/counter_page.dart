@@ -62,11 +62,11 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
       snapshot.hasData
           ? Text(
               snapshot.data!.toString(),
-              style: context.designSystem.typography.headline2,
+              style: context.designSystem.typography.counterText,
             )
           : Text(
                 snapshot.connectionState.toString(),
-                style: context.designSystem.typography.bodyText1,
+                style: context.designSystem.typography.h2Med16,
             );
 
   Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
@@ -87,24 +87,16 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ActionButton(
-              icon: Icon(
-                context.designSystem.icons.plusSign,
-                color: context.designSystem.colors.iconColor,
-              ),
+              icon: Icon(context.designSystem.icons.plusSign),
               tooltip: context.l10n.increment,
-              onPressed: bloc.events.increment,
-              disabled: isLoading,
+              onPressed: isLoading ? null : bloc.events.increment,
               loading: isLoading && tag == CounterBloc.tagIncrement,
             ),
             const SizedBox(width: 16),
             ActionButton(
-              icon: Icon(
-                context.designSystem.icons.minusSign,
-                color: context.designSystem.colors.iconColor,
-              ),
+              icon: Icon(context.designSystem.icons.minusSign),
               tooltip: context.l10n.decrement,
-              onPressed: bloc.events.decrement,
-              disabled: isLoading,
+              onPressed: isLoading ? null : bloc.events.decrement,
               loading: isLoading && tag == CounterBloc.tagDecrement,
             ),
           ],
