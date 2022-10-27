@@ -223,7 +223,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
     _controllerValueStream
         .distinct()
         .listen((event) => widget.onChanged(bloc, event))
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
 
     (_blocState as Stream<String>)
         .where((event) => event != controller.text)
@@ -231,7 +231,7 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
           _onBlocStateEvent,
           onError: (exception) {},
         )
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   void _onBlocStateEvent(String newValue) {
