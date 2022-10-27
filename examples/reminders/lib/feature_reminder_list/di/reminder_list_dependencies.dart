@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../blocs/reminder_list_bloc.dart';
+import '../services/reminder_list_service.dart';
 
 class ReminderListDependencies {
   ReminderListDependencies._(this.context);
@@ -18,14 +19,23 @@ class ReminderListDependencies {
 
   late List<SingleChildWidget> providers = [
     ..._repositories,
+    ..._services,
     ..._blocs,
   ];
 
   late final List<Provider> _repositories = [];
 
+  late final List<Provider> _services = [
+    Provider<ReminderListService>(
+      create: (context) => ReminderListService(
+      ),
+    ),
+  ];
+
   late final List<RxBlocProvider> _blocs = [
     RxBlocProvider<ReminderListBlocType>(
       create: (context) => ReminderListBloc(
+        context.read(),
         context.read(),
         context.read(),
       ),
