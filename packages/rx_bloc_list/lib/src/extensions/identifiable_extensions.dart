@@ -1,30 +1,13 @@
-import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../models.dart';
 
-/// The returned [ManageOperation] determines whether the [updatedIdentifiable] will be merged, removed or ignored from the list.
-/// The [identifiableInList] represents an object from the list with the same id as the [updatedIdentifiable].
-typedef OperationCallback<E> = Future<ManageOperation> Function(
-  E updatedIdentifiable,
-  E? identifiableInList,
-);
-
-enum ManageOperation {
-  /// Merge the given object to the list
-  merge,
-
-  /// Remove the given object from the list
-  remove,
-
-  /// Neither merge or remove the given object from the list
-  ignore,
-}
+/// The returned [ManageOperation] determines whether the [updatedIdentifiable]
+/// will be merged, removed or ignored from the list.
+typedef OperationCallback<E extends Identifiable> = Future<ManageOperation>
+    Function(E updatedIdentifiable, List<E> list);
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
-  /// Get a list of unique [Identifiable.id]
-  List<Object> get ids => map((element) => element.id).toSet().toList();
-
   /// Whether the collection contains an element equal to [identifiable].
   bool containsIdentifiable(Identifiable identifiable) =>
       any((element) => element.isEqualToIdentifiable(identifiable));
@@ -81,7 +64,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.remove,
+  ///     operationCallback: (updatedIdentifiable, list) async => ManageOperation.remove,
   /// )
   /// ```
   ///
@@ -89,7 +72,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.merge,
+  ///     operationCallback: (updatedIdentifiable, list) async => ManageOperation.merge,
   /// )
   /// ```
   ///
@@ -97,26 +80,35 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
   /// ```
   /// objectStream.withLatestFromIdentifiableList(
   ///     listStream,
-  ///     operationCallback: (updatedIdentifiable, identifiableInList) async => ManageOperation.ignore,
+  ///     operationCallback: (updatedIdentifiable, list) async => ManageOperation.ignore,
   /// )
   /// ```
-  Stream<List<E>> withLatestFromIdentifiableList(
+  Stream<ManagedList<E>> withLatestFromIdentifiableList(
     Stream<List<E>> list, {
     required OperationCallback<E> operationCallback,
   }) =>
       _withLatestFromList(list).flatMap((tuple) async* {
-        final identifiableInList = tuple.list.firstWhereOrNull(
-            (element) => element.isEqualToIdentifiable(tuple.item));
-
-        switch (await operationCallback(tuple.item, identifiableInList)) {
+        switch (await operationCallback(tuple.item, tuple.list)) {
           case ManageOperation.merge:
-            yield tuple.list._mergeWithList([tuple.item]);
+            yield ManagedList(
+              tuple.list._mergeWithList([tuple.item]),
+              operation: ManageOperation.merge,
+              identifiable: tuple.item,
+            );
             break;
           case ManageOperation.remove:
-            yield tuple.list._removeFromList(tuple.item);
+            yield ManagedList(
+              tuple.list._removeFromList(tuple.item),
+              operation: ManageOperation.remove,
+              identifiable: tuple.item,
+            );
             break;
           case ManageOperation.ignore:
-            yield tuple.list;
+            yield ManagedList(
+              tuple.list,
+              operation: ManageOperation.ignore,
+              identifiable: tuple.item,
+            );
             break;
         }
       });
@@ -127,6 +119,10 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
         (identifiable, lastUpdatedList) =>
             _Tuple(identifiable, lastUpdatedList),
       );
+}
+
+extension ManagedListStreamX<E extends Identifiable> on Stream<ManagedList<E>> {
+  Stream<List<E>> mapToList() => map((managedList) => managedList.list);
 }
 
 extension _ListX<E extends Identifiable> on List<E> {
@@ -145,13 +141,15 @@ extension _ListX<E extends Identifiable> on List<E> {
   List<E> _removeFromList(E identifiable) {
     final that = this;
 
-    if (that is PaginatedList<E> && that.containsIdentifiable(identifiable)) {
+    if (that is PaginatedList<E>) {
       final totalCount = that.totalCount;
-
-      return that.copyWith(
-        list: that.removedIdentifiable(identifiable),
-        totalCount: totalCount == null ? null : totalCount - 1,
-      );
+      if (that.containsIdentifiable(identifiable)) {
+        return that.copyWith(
+          list: that.removedIdentifiable(identifiable),
+          totalCount: totalCount == null ? null : totalCount - 1,
+        );
+      }
+      return that;
     }
 
     return removedIdentifiable(identifiable);

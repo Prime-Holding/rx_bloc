@@ -1,11 +1,13 @@
-## [3.2.0-dev.2] - October 7, 2022
-* Updated `flutter_rx_bloc` to use version `5.0.0`
-* Updated `rx_bloc` to use version `3.3.0`
+## [3.2.0-dev.2] June 7, 2022
+- Added `IdentifiablePair<E extends Identifiable>` class
+- Added `Stream<IdentifiablePair<E extends Identifiable>>` extensions: `withLatestFromIdentifiablePairList`
+- Removed parameter `identifiableInList` from `operationCallback` in `Stream<T extends Identifiable>` extension: `withLatestFromIdentifiableList`
 
-## [3.2.0-dev.1] - May 18, 2022
+## [3.2.0-dev.1] January 30, 2022
 - Added `Identifiable` interface for handling inter-feature communication
 - Added `List<T extends Identifiable>` extensions: `ids`, `containsIdentifiable`, `removeIdentifiable`, `mergeWith`
-- Added `Stream<T extends Identifiable>` extensions: `withLatestFromIdentifiableList`
+- Added `Stream<T extends Identifiable>` extensions: `mapCreatedWithLatestFrom`, `mapUpdatedWithLatestFrom`, `mapDeletedWithLatestFrom`, `withLatestFromIdentifiableList`
+- Added `ManagedList<T>` class
 
 ## [3.1.0] - September 24, 2021
 * Support Flutter `2.5`
