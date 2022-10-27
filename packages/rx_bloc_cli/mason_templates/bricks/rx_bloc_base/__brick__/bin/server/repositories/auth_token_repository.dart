@@ -22,10 +22,10 @@ class AuthTokenRepository {
 
   /// Removes an auth token with the specified access token
   bool removeToken(String token) {
-    final _token = _tokens[token];
-    if (_token == null) return false;
+    final existingToken = _tokens[token];
+    if (existingToken == null) return false;
 
-    final refreshToken = _token.refreshToken;
+    final refreshToken = existingToken.refreshToken;
     _tokens.remove(token);
     _refreshTokens.remove(refreshToken);
 

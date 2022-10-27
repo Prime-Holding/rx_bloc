@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'dart:developer';
+
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/auth_data_source.dart';
 import '../models/auth_token_model.dart';
@@ -44,8 +46,9 @@ class AuthRepository {
     try {
       // TODO: Try to fetch new access token using refreshToken and save it
       // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
+      return '';
     } catch (e) {
-      print(e.toString());
+      log(e.toString(), name: runtimeType.toString());
       return null;
     }
   }

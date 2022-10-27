@@ -11,12 +11,12 @@ extension _UserAccountBlocExtensions on LoginBloc {
 }
 
 extension _VoidStreamExtensions on Stream<void> {
-  Stream<_LoginCredentials> validateCredentials(LoginBloc _bloc) =>
-      switchMap((value) => _bloc._validateAllFields())
+  Stream<_LoginCredentials> validateCredentials(LoginBloc bloc) =>
+      switchMap((value) => bloc._validateAllFields())
           .where((isValid) => isValid)
           .withLatestFrom2(
-              _bloc.states.username,
-              _bloc.states.password,
+              bloc.states.username,
+              bloc.states.password,
               (_, String username, String password) =>
                   _LoginCredentials(username, password))
           .distinct((previousCredentials, currentCredentials) =>

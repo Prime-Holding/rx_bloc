@@ -9,11 +9,11 @@ part 'navigation_bar_bloc.rxb.g.dart';
 part 'navigation_bar_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
-abstract class NavigationBarEvents {
+abstract class NavigationBarBlocEvents {
   void selectPage(NavigationItemType item);
 }
 
-abstract class NavigationBarStates {
+abstract class NavigationBarBlocStates {
   @RxBlocIgnoreState()
   Stream<List<NavigationItem>> get items;
 
