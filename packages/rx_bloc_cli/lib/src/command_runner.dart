@@ -1,17 +1,17 @@
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
-import 'package:io/io.dart';
 import 'package:mason/mason.dart';
 
 import 'commands/create_command.dart';
-import 'package_version.dart';
+import 'rx_bloc_cli_constants.dart';
 import 'rx_bloc_command_exception.dart';
 
 /// Command runner that executes RxBloc specific actions
 class RxBlocCommandRunner extends CommandRunner<int> {
   /// RxBloc Command Runner containing all currently supported commands
-  RxBlocCommandRunner({Logger? logger})
-      : _logger = logger ?? Logger(),
+  RxBlocCommandRunner({
+    Logger? logger,
+  })  : _logger = logger ?? Logger(),
         super('rx_bloc_cli', 'Rx Bloc Command Line Interface') {
     argParser.addFlag(
       'version',
@@ -50,10 +50,15 @@ class RxBlocCommandRunner extends CommandRunner<int> {
 
   @override
   Future<int?> runCommand(ArgResults topLevelResults) async {
+    int? retCode = ExitCode.unavailable.code;
+
     if (topLevelResults['version'] == true) {
-      _logger.info('package version: $packageVersion');
-      return ExitCode.success.code;
+      _logger.info('package version: $rxBlocCliPackageVersion');
+      retCode = ExitCode.success.code;
+    } else {
+      retCode = await super.runCommand(topLevelResults);
     }
-    return super.runCommand(topLevelResults);
+
+    return retCode;
   }
 }

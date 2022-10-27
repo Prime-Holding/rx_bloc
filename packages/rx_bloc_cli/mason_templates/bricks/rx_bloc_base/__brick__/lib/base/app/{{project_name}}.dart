@@ -14,14 +14,18 @@ import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../theme/design_system.dart';
+import '../theme/{{project_name}}_theme.dart';
 import '../utils/helpers.dart';
 import 'config/app_constants.dart';
 import 'config/environment_config.dart';{{#push_notifications}}
 import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}}
 
 /// This widget is the root of your application.
-class {{#pascalCase}}{{project_name}}{{/pascalCase}} extends StatelessWidget {
-  {{#pascalCase}}{{project_name}}{{/pascalCase}}({this.config = EnvironmentConfig.prod, Key? key}) : super(key: key);
+class {{project_name.pascalCase()}} extends StatelessWidget {
+  {{project_name.pascalCase()}}({
+    this.config = const EnvironmentConfig.production(),
+    Key? key,
+  }) : super(key: key);
 
   final EnvironmentConfig config;
   final _router = router.Router();
@@ -61,9 +65,11 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         await safeRun(
             () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
     }
-    await FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((message) => onInitialMessageOpened(context, message));
+
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (!mounted) return;
+    await onInitialMessageOpened(context, initialMessage);
+
     FirebaseMessaging.instance.onTokenRefresh
         .listen((token) => onFCMTokenRefresh(context, token));
     FirebaseMessaging.onMessage
@@ -72,31 +78,32 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         .listen((message) => onMessageOpenedFromBackground(context, message));
   }{{/push_notifications}}
 
-  void _addInterceptors(){
+  void _addInterceptors() {
     context.read<Dio>().interceptors.addAll([
-      AuthInterceptor(context.read(), context.read(), context.read()),{{#analytics}}
-      AnalyticsInterceptor(context.read()),{{/analytics}}
-
-      /// TODO: Add your own interceptors here
+      context.read<AuthInterceptor>(),{{#analytics}}
+      context.read<AnalyticsInterceptor>(),{{/analytics}}
+      context.read<LogInterceptor>(),
     ]);
   }
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
-        theme: DesignSystem.fromBrightness(Brightness.light).theme,
-        darkTheme: DesignSystem.fromBrightness(Brightness.dark).theme,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
+      theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
+      darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      routeInformationParser: widget._router.defaultRouteParser(),
+      routerDelegate: widget._router.delegate({{#analytics}}
+        navigatorObservers: () => [
+          context.read<FirebaseAnalyticsObserver>(),
         ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        routeInformationParser: widget._router.defaultRouteParser(),
-        routerDelegate: widget._router.delegate({{#analytics}}
-          navigatorObservers: () => [
-            context.read<FirebaseAnalyticsObserver>(),
-          ],
-        {{/analytics}}),
-        debugShowCheckedModeBanner: false,
-      );
+      {{/analytics}}),
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }

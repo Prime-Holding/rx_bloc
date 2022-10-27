@@ -6,14 +6,13 @@ import 'package:rxdart/rxdart.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
 
-// ignore: one_member_abstracts
-abstract class CoordinatorEvents {
+abstract class CoordinatorBlocEvents {
   void hotelUpdated(Hotel hotel);
 
   void hotelsWithExtraDetailsFetched(List<Hotel> hotels);
 }
 
-abstract class CoordinatorStates {
+abstract class CoordinatorBlocStates {
   @RxBlocIgnoreState()
   Stream<Hotel> get onHotelUpdated;
 

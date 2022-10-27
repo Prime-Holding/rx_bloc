@@ -8,7 +8,7 @@ import '../../models/request_models/authenticate_user_request_model.dart';
 
 part 'auth_data_source.g.dart';
 
-@RestApi(baseUrl: 'http://0.0.0.0:8080')
+@RestApi()
 abstract class AuthDataSource {
   factory AuthDataSource(Dio dio, {String baseUrl}) = _AuthDataSource;
 

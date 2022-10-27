@@ -64,7 +64,10 @@ class ProfileAvatar extends StatelessWidget {
             context.read<UserAccountBlocType>().events.logout();
           }
         },
-        child: Icon(context.designSystem.icons.avatar),
+        child: Icon(
+          context.designSystem.icons.avatar,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
       );
 
   /// endregion

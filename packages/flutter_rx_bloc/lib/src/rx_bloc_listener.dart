@@ -204,7 +204,7 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
     super.initState();
     _bloc = widget.bloc ?? RxBlocProvider.of<B>(context);
     _subscribe();
-    widget.onWaiting?.call(context,widget.initialValue);
+    widget.onWaiting?.call(context, widget.initialValue);
   }
 
   @override

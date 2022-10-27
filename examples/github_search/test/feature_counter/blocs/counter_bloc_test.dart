@@ -5,16 +5,14 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
+import 'package:github_search/base/models/count.dart';
+import 'package:github_search/base/repositories/counter_repository.dart';
+import 'package:github_search/feature_counter/blocs/counter_bloc.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
-import 'package:github_search/base/models/count.dart';
-import 'package:github_search/base/repositories/counter_repository.dart';
-import 'package:github_search/feature_counter/blocs/counter_bloc.dart';
 
 import 'counter_bloc_test.mocks.dart';
 
