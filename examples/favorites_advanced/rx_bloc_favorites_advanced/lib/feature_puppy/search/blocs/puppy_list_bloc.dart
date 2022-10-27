@@ -49,11 +49,11 @@ class PuppyListBloc extends $PuppyListBloc {
         .setResultStateHandler(this)
         .mergeWithPaginatedList(_puppies)
         .bind(_puppies)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
 
     coordinatorBloc.states.onPuppiesUpdated
         .updatePuppies(_puppies)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   @override
