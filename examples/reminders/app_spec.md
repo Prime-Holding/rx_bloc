@@ -10,8 +10,8 @@ This is a user application specification of the reminders sample app.
 
   - Shows two buttons. The first one to login as anonymous user and the second one to login with a facebook account.
   - User can tap on one of the buttons.
-  - Tapping on the "Log in as anonymous" button loads the data for an anonymous user, without a user id.
-  - Tapping on the "Log in with facebook" starts the facebook login process.
+  - Tapping on the 'Log in as anonymous' button loads the data for an anonymous user, without a user id.
+  - Tapping on the 'Log in with facebook' starts the facebook login process.
   - After a users taps on either of the buttons a circular loading indicator is displayed, while the next page is loading with the data from the web.
 
 ### Login Page Loading
@@ -31,10 +31,10 @@ This is a user application specification of the reminders sample app.
 
 ### Dashboard Page
 
-  - User can see a counter of the incomplete reminders and a counter for the complete reminders.
-  - Bellow the counters the user sees an "Incomplete overdue" list of only incomplete reminders.
-  - When the page is loaded for the first time the length of the fetched list is up to 5 reminders, sorted by due date in descending order. The start date is 10 days subtracted from today and the end date is today.
-  - When a reminder is on the Dashboard page and it is marked as complete, regardless from which page, it is removed from the Dashboard page. Its radio button on the Reminders page is changed to selected.
+  - User can see a counter of the 'Incomplete' reminders and a counter for the 'Complete' reminders.
+  - Bellow the counters the user sees an 'Incomplete overdue' list of only 'Incomplete' reminders.
+  - When the page is loaded for the first time the length of the fetched list is up to 10 reminders, sorted by due date in descending order. The start date is 10 days subtracted from today and the end date is today.
+  - When a reminder is on the Dashboard page and it is marked as 'Complete', regardless from which page, it is removed from the Dashboard page. Its radio button on the Reminders page is changed to selected.
 
 ### Pull To Refresh Dashboard List Page
 
@@ -45,32 +45,32 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/reminder_edit_options.png" width="350">
 <br/><br/>
 
-  - User can slide the reminder tile and see 1 option: Delete.
-  - User can slide back the reminder tile to hide the edit option, when doing this the reminder will not be updated.
-  - When a reminder is marked as completed, its radio button is changed to selected, so that the user knows, which reminders are completed.
+  - User can slide the reminder tile and see 1 option: 'Delete'.
+  - User can slide back the reminder tile to hide the 'Delete' option, when doing this the reminder will not be updated nor deleted.
+  - When a reminder is marked as 'Complete', its radio button is changed to selected, so that the user knows, which reminders are 'Complete'.
 
 ### Reminder Completed
 
 <img src="assets/images/reminder_completed.png" width="350">
 <br/><br/>
-<img src="assets/images/reminder_completed_reminder_page.png" width="350">
+<img src="assets/images/reminder_completed_reminders_page.png" width="350">
 <br/><br/>
 
-  - User can tap on the Complete button. When this happens, the reminder is removed from the Dashboard list page and moved to the Reminders list page. The reminder is marked as completed. The complete counter is increased by 1 and the incomplete counter on the Dashboard page is decreased by one.
+  - User can tap on the 'Complete' button. When this happens, the reminder is removed from the Dashboard list page and moved to the Reminders list page. The reminder is marked as 'Completed'. The 'Complete' counter is increased by 1 and the 'Incomplete' counter on the Dashboard page is decreased by one.
   
 ### Reminder Deleted
 
 <img src="assets/images/reminder_deleted.png" width="350">
 <br/><br/>
 
-  - User can tap on the Delete button. When this happens, the reminder is deleted from the each of the lists it has been added to in the app. It is also deleted from the data source. The corresponding counter on the dashboard page is decreased by one. A SnackBar is displayed with the name of the deleted Reminder.
+  - User can tap on the Delete button. When this happens, the reminder is deleted from each of the lists it has been added to in the app. It is also deleted from the data source. The corresponding counter on the dashboard page is decreased by one. A SnackBar is displayed with the name of the deleted Reminder.
 
 ### Reminder Renamed
 
 <img src="assets/images/reminder_renamed.png" width="350">
 <br/><br/>
 
-  - User can tap on the reminder name and directly start rewriting its name.
+  - User can tap on the reminder name and directly start rewriting its name. When he taps on a different reminder, the name is saved.
 
 ### Reminder Change Date
 
@@ -110,16 +110,16 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/reminder_incomplete.png" width="350">
 <br/><br/>
 
-  - When a user deselects a reminder after it has been marked as complete, the radio button gets deselected and the reminder has been set as "Incomplete".
-  - On the dashboard page, the "Incomplete" counter is increased by one and the "Complete" counter is decreased by one.
-  - If the reminder date is within the last 10 days the reminder is added to the "Dashboard" page.
+  - When a user deselects a reminder after it has been marked as 'Complete', the radio button gets deselected and the reminder has been set as 'Incomplete'.
+  - On the dashboard page, the 'Incomplete' counter is increased by one and the 'Complete' counter is decreased by one.
+  - If the reminder date is within the last 10 days the reminder is added to the 'Dashboard' page.
 
 ### Add Reminder 
 
 <img src="assets/images/add_reminder.png" width="350">
 <br/><br/>
 
-  - User can tap on the "+" button. When doing this, a new dialog window is displayed, where the user can enter the name of the newly created reminder and select the date. The same date picker window is displayed, as the one displayed when editing the date of an existing reminder. The default date is preselected to today.
+  - User can tap on the '+' button. When doing this, a new dialog window is displayed, where the user can enter the name of the newly created reminder and select the date. The same date picker window is displayed, as the one displayed when editing the date of an existing reminder. The default date is preselected to today.
   - User can tap outside of the window, when doing this the window will close without creating a new reminder.
 
 ### New Reminder Created
@@ -129,4 +129,4 @@ This is a user application specification of the reminders sample app.
 <img src="assets/images/new_reminder_created_dashboard.png" width="350">
 <br/><br/>
 
-  - User can tap on the "OK" button. When doing this, the reminder is created and is added to the reminders list on the reminders list page to its corresponding date order. If the date of the reminder is within the last 10 days including today, it is added to the Dashboard page list also. A SnackBar is displayed with the name of the newly created Reminder. When it is created, the reminder by default is incomplete. The incomplete counter on the Dashboard page is incremented by one.
+  - User can tap on the 'OK' button. When doing this, the reminder is created and is added to the reminders list on the reminders list page to its corresponding date order. If the date of the reminder is within the last 10 days including today, it is added to the Dashboard page list also. A SnackBar is displayed with the name of the newly created Reminder. When it is created, the reminder by default is 'Incomplete'. The 'Incomplete' counter on the Dashboard page is incremented by one.
