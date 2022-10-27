@@ -5,18 +5,6 @@ import 'stub.dart';
 
 void main() {
   group('ListIdentifiableUtils', () {
-    test('ListIdentifiableUtils.ids', () {
-      expect(
-        [
-          IdentifiableModel('1'),
-          IdentifiableModel('1'),
-          IdentifiableModel('2'),
-          IdentifiableModel('3'),
-        ].ids,
-        ['1', '2', '3'],
-      );
-    });
-
     test('ListIdentifiableUtils containIdentifiable', () {
       expect(
         [

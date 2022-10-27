@@ -9,9 +9,6 @@ typedef OperationCallback<E extends Identifiable> = Future<ManageOperation>
     Function(IdentifiablePair<E> identifiablePair, [List<E>? list]);
 
 extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
-  /// Get a list of unique [Identifiable.id]
-  List<Object> get ids => map((element) => element.id).toSet().toList();
-
   /// Whether the collection contains an element equal to [identifiable].
   bool containsIdentifiable(Identifiable identifiable) =>
       any((element) => element.isEqualToIdentifiable(identifiable));

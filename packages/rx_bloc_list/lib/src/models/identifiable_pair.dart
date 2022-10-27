@@ -24,9 +24,16 @@ class IdentifiablePair<E extends Identifiable> {
       identical(this, other) ||
       other is IdentifiablePair &&
           runtimeType == other.runtimeType &&
-          updatedIdentifiable.id == other.updatedIdentifiable.id &&
-          oldIdentifiable?.id == other.oldIdentifiable?.id;
+          updatedIdentifiable
+              .isEqualToIdentifiable(other.updatedIdentifiable) &&
+          oldIdentifiable.isEqualToNullableIdentifiable(other.oldIdentifiable);
 
   @override
   int get hashCode => updatedIdentifiable.hashCode ^ oldIdentifiable.hashCode;
+}
+
+extension _NullableIdentifiable on Identifiable? {
+  bool isEqualToNullableIdentifiable(Identifiable? other) =>
+      (this == null && other == null) ||
+      (this != null && other != null && this!.isEqualToIdentifiable(other));
 }
