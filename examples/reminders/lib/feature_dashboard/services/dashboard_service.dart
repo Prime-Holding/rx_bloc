@@ -41,18 +41,19 @@ class DashboardService {
   }
 
   Future<ManageOperation> getManageOperation(
-    IdentifiablePair<ReminderModel> model, [List<ReminderModel>? _]
+    Identifiable model, [List<ReminderModel>? _]
   ) async {
     final dateRange = _getDateRange();
-    if ((model.updatedIdentifiable.dueDate.isAfter(dateRange.from) &&
-        model.updatedIdentifiable.dueDate.isBefore(dateRange.to))) {
-      return model.updatedIdentifiable.complete
+    final reminder = model as ReminderModel;
+    if ((reminder.dueDate.isAfter(dateRange.from) &&
+        reminder.dueDate.isBefore(dateRange.to))) {
+      return reminder.complete
           ? ManageOperation.remove
           : ManageOperation.merge;
     }
 
-    if (model.updatedIdentifiable.dueDate.isBefore(dateRange.from) ||
-        model.updatedIdentifiable.dueDate.isAfter(dateRange.to)) {
+    if (reminder.dueDate.isBefore(dateRange.from) ||
+        reminder.dueDate.isAfter(dateRange.to)) {
       return ManageOperation.remove;
     }
     return ManageOperation.merge;
@@ -75,12 +76,12 @@ class DashboardService {
     return dashboard.copyWith(
       completeCount: dashboard.recalculateCompleteWith(
         counterOperation: counterOperation,
-        reminderModel: managedList.identifiablePair.updatedIdentifiable,
+        reminderModel: managedList.identifiable,
         incrementOperation: incrementOperation,
       ),
       incompleteCount: dashboard.recalculateIncompleteWith(
         counterOperation: counterOperation,
-        reminderModel: managedList.identifiablePair.updatedIdentifiable,
+        reminderModel: managedList.identifiable,
         incrementOperation: incrementOperation,
       ),
     );
@@ -89,13 +90,19 @@ class DashboardService {
   IncrementOperation? _getIncrementOperationFrom({
     required ManagedList<ReminderModel> managedList,
   }) {
-    final oldIdentifiable = managedList.identifiablePair.oldIdentifiable;
-
+    managedList.list;
+    ///TODO get the old from somewhere
+    managedList.identifiable;
+    // final oldIdentifiable = managedList.identifiablePair.oldIdentifiable;
+    ///TODO check if this makes sense
+    // final oldIdentifiable = managedList.list.firstWhere((element) =>
+    // managedList.identifiable.isEqualToIdentifiable(element) == element);
+final oldIdentifiable = managedList.identifiable;
     final updatedIdentifiable =
-        managedList.identifiablePair.updatedIdentifiable;
+        managedList.identifiable;
 
-    if (oldIdentifiable != null &&
-        updatedIdentifiable.title == oldIdentifiable.title &&
+    print('Updated | Old $oldIdentifiable');
+    if (updatedIdentifiable.title == oldIdentifiable.title &&
         updatedIdentifiable.dueDate == oldIdentifiable.dueDate &&
         updatedIdentifiable.complete != oldIdentifiable.complete) {
       return updatedIdentifiable.complete

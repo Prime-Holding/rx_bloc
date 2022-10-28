@@ -59,7 +59,7 @@ class ReminderListBloc extends $ReminderListBloc {
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          operationCallback: (IdentifiablePair<ReminderModel> reminder,
+          operationCallback: (Identifiable reminder,
                   [List<ReminderModel>? list]) async =>
               ManageOperation.merge,
         )
