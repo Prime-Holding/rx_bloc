@@ -107,7 +107,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
       RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
         state: (bloc) => bloc.states.onDeleted,
         listener: (context, onDeleted) {
-          if (onDeleted is ResultSuccess && onDeleted != null) {
+          if (onDeleted is ResultSuccess) {
             final reminderTitleName =
                 (onDeleted as ResultSuccess<ReminderModel>).data.title;
             ScaffoldMessenger.of(context).showSnackBar(
@@ -124,7 +124,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
       RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
         state: (bloc) => bloc.states.onCreated,
         listener: (context, onCreated) {
-          if (onCreated is ResultSuccess && onCreated != null) {
+          if (onCreated is ResultSuccess) {
             final reminderTitleName =
                 (onCreated as ResultSuccess<ReminderModel>).data.title;
             ScaffoldMessenger.of(context).showSnackBar(
@@ -142,7 +142,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         listener: (context, errorMessage) =>
             ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage ?? ''),
+            content: Text(errorMessage ),
             behavior: SnackBarBehavior.floating,
           ),
         ),

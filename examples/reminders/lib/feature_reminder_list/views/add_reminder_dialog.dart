@@ -53,7 +53,7 @@ class AddReminderDialogState extends State<AddReminderDialog> {
       RxBlocListener<ReminderManageBlocType, Result<ReminderModel>>(
         state: (bloc) => bloc.states.onCreated,
         listener: (context, onCreated) {
-          if (onCreated != null && onCreated is ResultSuccess) {
+          if (onCreated is ResultSuccess) {
             Navigator.of(context).pop();
           }
         },

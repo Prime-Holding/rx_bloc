@@ -27,8 +27,7 @@ abstract class CoordinatorEvents {
 
   void reminderCreated(Result<ReminderModel> reminderResult);
 
-  void reminderUpdated(
-      Result<IdentifiablePair<ReminderModel>> reminderPairResult);
+  void reminderUpdated(Result<ReminderModel> reminderResult);
 
   void updateCounters(UpdatedCounters counters);
 }
@@ -41,7 +40,7 @@ abstract class CoordinatorStates {
   Stream<Result<ReminderModel>> get onReminderDeleted;
 
   @RxBlocIgnoreState()
-  Stream<Result<IdentifiablePair<ReminderModel>>> get onReminderUpdated;
+  Stream<Result<ReminderModel>> get onReminderUpdated;
 
   @RxBlocIgnoreState()
   Stream<Result<ReminderModel>> get onReminderCreated;
@@ -66,8 +65,7 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<Result<ReminderModel>> get onReminderDeleted => _$reminderDeletedEvent;
 
   @override
-  Stream<Result<IdentifiablePair<ReminderModel>>> get onReminderUpdated =>
-      _$reminderUpdatedEvent;
+  Stream<Result<ReminderModel>> get onReminderUpdated => _$reminderUpdatedEvent;
 
   @override
   Stream<UpdatedCounters> get onCountersUpdated => _$updateCountersEvent;
@@ -85,8 +83,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   Stream<ManagedListCounterOperation<ReminderModel>>
       mapReminderManageEventsWithLatestFromCreate(
     Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(
-            IdentifiablePair<ReminderModel> model,
+    required Future<ManageOperation> Function(Identifiable model,
             [List<ReminderModel>? list])
         operationCallback,
   }) =>
@@ -115,17 +112,20 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   Stream<ManagedListCounterOperation<ReminderModel>>
       mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(
-            IdentifiablePair<ReminderModel> model,
+    required Future<ManageOperation> Function(Identifiable model,
             [List<ReminderModel>? list])
         operationCallback,
+    // required Future<ManageOperation> Function(
+    //     Identifiable model,
+    //     [List<ReminderModel>? list])
+    // operationCallback,
   }) =>
           Rx.merge([
             states.onReminderDeleted
                 .whereSuccess()
                 .withLatestFromIdentifiableList(
                   reminderList,
-                  operationCallback: (IdentifiablePair<ReminderModel> reminder,
+                  operationCallback: (Identifiable reminder,
                           [List<ReminderModel>? list]) async =>
                       ManageOperation.remove,
                 )
@@ -135,7 +135,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
                         counterOperation: CounterOperation.delete)),
             states.onReminderUpdated
                 .whereSuccess()
-                .withLatestFromIdentifiablePairList(
+                .withLatestFromIdentifiableList(
                   reminderList,
                   operationCallback: operationCallback,
                 )

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:rx_bloc_list/models.dart';
+// import 'package:rx_bloc_list/models.dart';
 
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
@@ -260,7 +260,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 
   @override
-  Future<IdentifiablePair<ReminderModel>> update(
+  Future<ReminderModel> update(
       ReminderModel updatedModel) async {
     // Fetch the reminder model before its updating for comparison
     var oldReminderSnapshot =
@@ -282,10 +282,12 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       complete: oldReminder[_complete],
       authorId: oldReminder[_authorId],
     );
-    return IdentifiablePair(
-      updatedIdentifiable: updatedModel,
-      oldIdentifiable: oldReminderModel,
-    );
+    //TODO Can return ReminderPair
+    // return IdentifiablePair(
+    //   updatedIdentifiable: updatedModel,
+    //   oldIdentifiable: oldReminderModel,
+    // );
+    return oldReminderModel;
   }
 
   Future<void> _createUserCountersCollection() async {
