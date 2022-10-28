@@ -17,35 +17,32 @@ enum ManageOperation {
   ignore,
 }
 
-/// A class containing the list along with the managed [Identifiable] object:
-/// [updatedIdentifiable], which is part of [identifiablePair].
+/// A class containing the list along with the managed [Identifiable] object.
 class ManagedList<T extends Identifiable> {
   ManagedList(
     this.list, {
-    required this.identifiablePair,
+    required this.identifiable,
     required this.operation,
   });
 
-  /// The managed operation of the [updatedIdentifiable] object
+  /// The managed operation of the [identifiable] object
   final ManageOperation operation;
 
-  /// The object containing the managed object [updatedIdentifiable]
-  final IdentifiablePair<T> identifiablePair;
+  /// The managed object
+  final T identifiable;
 
   /// The managed list
   final List<T> list;
 
   @override
-  bool operator ==(other) {
-    if (other is ManagedList<T>) {
-      return const ListEquality().equals(other.list, list) &&
+  bool operator ==(other) =>
+      identical(this, other) ||
+      other is ManagedList<T> &&
+          const ListEquality().equals(other.list, list) &&
           operation == other.operation &&
-          identifiablePair == other.identifiablePair;
-    }
-    return false;
-  }
+          identifiable == other.identifiable;
 
   @override
   int get hashCode =>
-      list.hashCode ^ operation.hashCode ^ identifiablePair.hashCode;
+      list.hashCode ^ operation.hashCode ^ identifiable.hashCode;
 }

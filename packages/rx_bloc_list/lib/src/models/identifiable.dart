@@ -1,3 +1,3 @@
 abstract class Identifiable {
-  String get id;
+  bool isEqualToIdentifiable(Identifiable other);
 }
