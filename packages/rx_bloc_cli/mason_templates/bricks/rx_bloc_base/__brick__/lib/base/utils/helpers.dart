@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +10,7 @@ Future safeRun(Function action) async {
   try {
     await action();
   } catch (e) {
-    debugPrint('Safe Error: $e');
+    log('Safe Error: $e');
   }
 }
 

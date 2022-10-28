@@ -1,3 +1,5 @@
+// ignore_for_file: comment_references
+
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
@@ -10,14 +12,14 @@ import 'rx_bloc_provider.dart';
 /// function which takes the `BuildContext`
 /// along with the [bloc] [state]
 /// and is responsible for executing in response to [state] changes.
-typedef RxBlocWidgetListener<S> = void Function(BuildContext context, S? state);
+typedef RxBlocWidgetListener<S> = void Function(BuildContext context, S state);
 
 /// Signature for the [condition] function which takes the previous [state]
 /// and the current [state]
 /// and is responsible for returning a [bool] which determines whether or not
 /// to call [RxBlocWidgetListener]
 /// of [RxBlocListener] with the current [state].
-typedef RxBlocListenerCondition<S> = bool Function(S? previous, S? current);
+typedef RxBlocListenerCondition<S> = bool Function(S? previous, S current);
 
 /// {@template RxBlocListener}
 /// Takes a [RxBlocWidgetListener] and an optional [bloc]
@@ -76,6 +78,14 @@ typedef RxBlocListenerCondition<S> = bool Function(S? previous, S? current);
 ///   }
 /// )
 /// ```
+///
+/// If an error occurs within the provided listened state, an optional [onError]
+/// callback will be triggered. In such case, the [listener] callback won't be
+/// executed.
+/// The [onError] function must be able to be called with either one positional
+/// argument, or with two positional arguments where the seconds is always a
+/// [StackTrace].
+///
 /// {@endtemplate}
 class RxBlocListener<B extends RxBlocTypeBase, S>
     extends RxBlocListenerBase<B, S> {
@@ -86,6 +96,10 @@ class RxBlocListener<B extends RxBlocTypeBase, S>
     required Stream<S> Function(B) state,
     B? bloc,
     RxBlocListenerCondition<S>? condition,
+    Function(BuildContext, S?)? onWaiting,
+    void Function(BuildContext, Object, StackTrace)? onError,
+    Function(BuildContext)? onComplete,
+    S? initialValue,
     Widget child = const SizedBox(),
   }) : super(
           key: key,
@@ -94,6 +108,10 @@ class RxBlocListener<B extends RxBlocTypeBase, S>
           bloc: bloc,
           condition: condition,
           state: state,
+          initialValue: initialValue,
+          onWaiting: onWaiting,
+          onError: onError,
+          onComplete: onComplete,
         );
 }
 
@@ -114,6 +132,10 @@ abstract class RxBlocListenerBase<B extends RxBlocTypeBase, S>
     this.bloc,
     this.child,
     this.condition,
+    this.initialValue,
+    this.onError,
+    this.onComplete,
+    this.onWaiting,
   }) : super(key: key, child: child);
 
   /// The widget which will be rendered as a descendant
@@ -141,7 +163,29 @@ abstract class RxBlocListenerBase<B extends RxBlocTypeBase, S>
   /// it will default to `true`.
   final RxBlocListenerCondition<S>? condition;
 
+  /// Stream representing the state which will be listened to for changes
   final Stream<S> Function(B) state;
+
+  /// Callback triggered once any error happens on the listened stream.
+  ///
+  /// The onError argument may be null, in which case further error events
+  /// are considered unhandled, and will be reported to
+  /// Zone.handleUncaughtError.
+  ///
+  /// The provided function is called for all error events from the stream
+  /// subscription.
+  final void Function(BuildContext, Object, StackTrace)? onError;
+
+  /// Callback executed once the listened state stops emitting values.
+  final Function(BuildContext)? onComplete;
+
+  /// Callback triggered once the widget has subscribed to the stream but the
+  /// stream hasn't emitted any values yet. If [initialValue] has been specified
+  /// it will be available as the second argument of the callback.
+  final Function(BuildContext, S?)? onWaiting;
+
+  /// Initial value used in the [onWaiting] callback.
+  final S? initialValue;
 
   @override
   SingleChildState<RxBlocListenerBase<B, S>> createState() =>
@@ -151,7 +195,7 @@ abstract class RxBlocListenerBase<B extends RxBlocTypeBase, S>
 class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
     extends SingleChildState<RxBlocListenerBase<B, S>> {
   // ignore: cancel_subscriptions
-  StreamSubscription<S?>? _subscription;
+  StreamSubscription<S>? _subscription;
   S? _previousState;
   B? _bloc;
 
@@ -160,6 +204,7 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
     super.initState();
     _bloc = widget.bloc ?? RxBlocProvider.of<B>(context);
     _subscribe();
+    widget.onWaiting?.call(context, widget.initialValue);
   }
 
   @override
@@ -186,8 +231,10 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
   }
 
   void _subscribe() {
-    if (_bloc != null && _subscription == null) {
-      _subscription = widget.state(_bloc!).listen((S? state) {
+    if (_bloc == null || _subscription != null) return;
+
+    _subscription = widget.state(_bloc!).listen(
+      (S state) {
         if (widget.condition == null
             ? true
             : widget.condition!.call(_previousState, state)) {
@@ -195,8 +242,11 @@ class _RxBlocListenerBaseState<B extends RxBlocTypeBase, S>
         }
 
         _previousState = state;
-      });
-    }
+      },
+      onError: (Object err, StackTrace st) =>
+          widget.onError?.call(context, err, st),
+      onDone: () => widget.onComplete?.call(context),
+    );
   }
 
   void _unsubscribe() {

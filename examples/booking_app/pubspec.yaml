@@ -19,6 +19,7 @@ environment:
 dependencies:
   animated_stream_list:
   appbar_textfield: ^1.0.1+1
+  auto_route: any
   badges: ^1.1.4
   collection: ^1.15.0-nullsafety.4
   cupertino_icons: ^1.0.0
@@ -37,9 +38,11 @@ dependencies:
   rxdart: ^0.27.0
 
 dev_dependencies:
+  auto_route_generator: any
   build_runner: ^2.0.0
   clean_coverage: ^0.0.3
   flutter_lints: any
+  golden_toolkit: ^0.13.0
   mockito: ^5.0.0
   quiver: ^3.0.0
   rx_bloc_generator:

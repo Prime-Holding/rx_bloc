@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
+
 import '../theme/design_system.dart';
 
 class ActionButton extends StatelessWidget {
@@ -8,14 +9,10 @@ class ActionButton extends StatelessWidget {
   const ActionButton({
     required this.icon,
     required this.onPressed,
-    this.disabled = false,
     this.tooltip = '',
     this.loading = false,
     Key? key,
   }) : super(key: key);
-
-  /// The button disable state, which removes the [onPress] and sets a color
-  final bool disabled;
 
   /// Loading flag that shows a loading indicator
   final bool loading;
@@ -28,7 +25,7 @@ class ActionButton extends StatelessWidget {
 
   /// The callback that is called when the button is tapped or
   /// otherwise activated.
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +37,10 @@ class ActionButton extends StatelessWidget {
     }
 
     return FloatingActionButton(
-      backgroundColor: disabled
+      backgroundColor: onPressed == null
           ? context.designSystem.colors.inactiveButtonColor
           : context.designSystem.colors.activeButtonColor,
-      onPressed: !disabled ? onPressed : null,
+      onPressed: onPressed,
       tooltip: tooltip,
       child: icon,
     );

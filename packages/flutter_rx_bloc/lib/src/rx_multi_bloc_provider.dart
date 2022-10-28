@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'rx_bloc_provider.dart';
 
 /// {@template rxmultiblocprovider}
-/// Merges multiple [BlocProvider] widgets into one widget tree.
+/// Merges multiple BlocProvider widgets into one widget tree.
 ///
 /// [RxMultiBlocProvider] improves the readability and eliminates the need
 /// to nest multiple [RxBlocProvider]s.
@@ -65,7 +65,7 @@ class RxMultiBlocProvider extends StatelessWidget {
   /// of [child].
   final List<RxBlocProvider> providers;
 
-  /// The widget and its descendants which will have access to every [bloc]
+  /// The widget and its descendants which will have access to every bloc
   /// provided by [providers].
   /// [child] will be a direct descendent of
   /// the last [RxBlocProvider] in [providers].

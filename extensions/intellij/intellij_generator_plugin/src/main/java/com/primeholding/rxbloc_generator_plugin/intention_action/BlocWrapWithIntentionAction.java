@@ -6,16 +6,23 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils;
+import com.primeholding.rxbloc_generator_plugin.ui.ChooseDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentionAction implements IntentionAction {
+
+    final static String BLOCS_DIRECTORY = "blocs";
     final SnippetType snippetType;
     PsiElement callExpressionElement;
 
@@ -41,8 +48,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
      *
      * <p>Note: this method must do its checks quickly and return.</p>
      *
-     * @param project a reference to the Project object being edited.
-     * @param editor  a reference to the object editing the project source
+     * @param project    a reference to the Project object being edited.
+     * @param editor     a reference to the object editing the project source
      * @param psiElement a reference to the PSI element currently under the caret
      * @return {@code true} if the caret is in a literal string element, so this functionality should be added to the
      * intention menu or {@code false} for all other types of caret positions
@@ -62,11 +69,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         }
 
         callExpressionElement = WrapHelper.callExpressionFinder(psiElement);
-        if (callExpressionElement == null) {
-            return false;
-        }
-
-        return true;
+        return callExpressionElement != null;
     }
 
     /**
@@ -78,8 +81,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
      * @throws IncorrectOperationException Thrown by underlying (Psi model) write action context
      *                                     when manipulation of the psi tree fails.
      */
-    public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element)
-            throws IncorrectOperationException {
+    public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
         Runnable runnable = () -> invokeSnippetAction(project, editor, snippetType);
         WriteCommandAction.runWriteCommandAction(project, runnable);
     }
@@ -96,14 +98,60 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             return;
         }
 
+        String blocTypeDirectorySuggest = null;
+        Bloc blocFromPath = null;
+        PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
+
+        if (psiFile != null) {
+            VirtualFile vFile = psiFile.getOriginalFile().getVirtualFile();
+            VirtualFile viewsDir = vFile.getParent();//by convention this should be called 'views' or "ui" or "ui_components".
+
+            if (viewsDir.isDirectory()) {
+                VirtualFile feature_dir = viewsDir.getParent();
+
+                VirtualFile[] children = feature_dir.getChildren();
+                for (VirtualFile file : children) {
+                    if (file.isDirectory() && file.getName().equals(BLOCS_DIRECTORY)) {
+
+                        for (VirtualFile blocFile : file.getChildren()) {
+                            if (blocFile.getName().endsWith("bloc.dart")) {
+                                blocTypeDirectorySuggest = (getBlocTypeFromFile(blocFile.getName()));
+                                blocFromPath = Utils.Companion.extractBloc(blocFile);
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
         final String selectedText = document.getText(TextRange.create(offsetStart, offsetEnd));
-        final String replaceWith = Snippets.getSnippet(snippetType, selectedText);
+        String stateTypeDirectorySuggest = "";
+        String stateVariableNameSuggest = "";
+
+        if (blocFromPath != null && blocFromPath.getStateVariableNames().size() > 0) {
+
+            ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
+
+            boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
+            int chooseState = comboBox.getSelectedIndex();
+            if (isOK) {
+
+                blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
+                stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(chooseState);
+                stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(chooseState);
+            } else {
+                //Do nothing if canceled
+                return;
+            }
+//            }
+        }
+
+        final String replaceWith = Snippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
 
         // wrap the widget:
-        WriteCommandAction.runWriteCommandAction(project, () -> {
-                    document.replaceString(offsetStart, offsetEnd, replaceWith);
-                }
-        );
+        WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith));
 
         // place cursors to specify types:
         final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
@@ -140,17 +188,23 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 final int unformattedLineCount = document.getLineCount();
 
                 CodeStyleManager.getInstance(project).reformat(currentFile);
-
+                
                 final int formattedLineCount = document.getLineCount();
 
                 // file was incorrectly formatted, revert formatting
-                if (formattedLineCount > unformattedLineCount + 3) {
+                if (formattedLineCount > unformattedLineCount + 5) {
                     document.setText(unformattedText);
                     PsiDocumentManager.getInstance(project).commitDocument(document);
                 }
             }
         });
     }
+
+    private String getBlocTypeFromFile(String vFileName) {
+        String s = vFileName.replace("page.dart", "").replace(".dart", "");
+        return toCamelCase(s) + "Type";
+    }
+
 
     /**
      * Indicates this intention action expects the Psi framework to provide the write action context for any changes.
@@ -165,4 +219,35 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
     private PsiFile getCurrentFile(Project project, Editor editor) {
         return PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
     }
+
+    public static String fixSpaceTwoDotsSwash(String init) {
+        return init.replaceAll(" ", "_").replaceAll("-", "_").replaceAll(":", "_");
+    }
+
+    public static String toCamelCase(String init) {
+        if (init == null) return null;
+
+        init = fixSpaceTwoDotsSwash(init);
+        StringBuilder ret = new StringBuilder(init.length());
+
+        for (final String word : init.split(" ")) {
+            if (!word.isEmpty()) {
+                ret.append(word.substring(0, 1).toUpperCase());
+                ret.append(word.substring(1).toLowerCase());
+            }
+            if (!(ret.length() == init.length())) ret.append(" ");
+        }
+
+        String[] split = ret.toString().split("_");
+        ret = new StringBuilder();
+        for (String string : split) {
+            if (!string.isEmpty()) {
+                ret.append(string.substring(0, 1).toUpperCase());
+                ret.append(string.substring(1).toLowerCase());
+            }
+        }
+
+        return ret.toString();
+    }
+
 }

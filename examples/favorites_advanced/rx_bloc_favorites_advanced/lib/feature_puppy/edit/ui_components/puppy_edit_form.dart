@@ -30,8 +30,8 @@ class PuppyEditForm extends StatelessWidget {
               children: [
                 RxBlocListener<PuppyManageBlocType, bool>(
                   state: (bloc) => bloc.states.updateComplete,
-                  listener: (context, result) {
-                    if (result!) {
+                  listener: (context, updateComplete) {
+                    if (updateComplete) {
                       context.flow<PuppyFlowState>().complete();
                     }
                   },
@@ -39,10 +39,8 @@ class PuppyEditForm extends StatelessWidget {
                 RxBlocListener<PuppyManageBlocType, String>(
                   state: (bloc) => bloc.states.error,
                   listener: (context, error) {
-                    if (error != null) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(error)));
-                    }
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(error)));
                   },
                 ),
                 RxBlocBuilder<PuppyManageBlocType, String>(
