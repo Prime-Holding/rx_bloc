@@ -1,6 +1,7 @@
+import 'package:github_search/base/common_blocs/user_account_bloc.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:github_search/base/common_blocs/user_account_bloc.dart';
+
 import 'user_account_bloc_mock.mocks.dart';
 
 @GenerateMocks([

@@ -1,0 +1,23 @@
+import 'package:flutter_test/flutter_test.dart';
+
+${repository_import_declarations}
+import '../../helpers/golden_helper.dart';
+import '../../helpers/models/scenario.dart';
+//import '../../Stubs.dart';
+import '../factory/${bloc_snake_case}_factory.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_list/models.dart';
+
+
+void main() {
+  group(
+      '${bloc_snake_case}_success',
+      () => runGoldenTests([
+            generateDeviceBuilder(
+                widget: ${bloc_field_case}Factory(), //paginatedList: Stubs.emptyList
+                scenario: Scenario(name: '${bloc_snake_case}_no_data')),
+            generateDeviceBuilder(
+                widget: ${bloc_field_case}Factory(), //paginatedList: Stubs.success
+                scenario: Scenario(name: '${bloc_snake_case}_success'))
+          ]));
+}

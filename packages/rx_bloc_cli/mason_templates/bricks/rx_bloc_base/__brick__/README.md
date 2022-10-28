@@ -24,7 +24,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/base/di/` | Global dependencies, available in the whole app|
 | `lib/base/extensions/` | Global [extension methods][extension_methods_lnk] |
 | `lib/base/models/` | Data models used in the project |
-| `lib/base/repositories/` | Repositories used to fetch and persist models.
+| `lib/base/repositories/` | Repositories used to fetch and persist models. |
 | `lib/base/routers/` | All [routers][autoroute_usage_lnk] are placed here. The main [router][autoroute_usage_lnk] of the app is `lib/base/routers/router.dart`. |
 | `lib/base/routers/guards/` | The routers' [guards][autoroute_usage_lnk] of the app are placed here. |
 | `lib/base/theme/` | The custom theme of the app |
@@ -91,7 +91,7 @@ To use its benefits you should define a data model in `lib/base/models/`, using 
 
 ### Design system
 
-A [design system][design_system_lnk] is a centralized place where you can define your apps design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
+A [design system][design_system_lnk] is a centralized place where you can define your app`s design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
 
 To access the design system from your app, you have to import it from the following location`lib/app/base/theme/design_system.dart'`. After that, you can access different parts of the design system by using the BuildContext (for example: `context.designSystem.typography.headline1` or `context.designSystem.icons.someIcon`).
 
@@ -114,8 +114,6 @@ In order for the goldens to be generated, we have provided VS Code and IDEA run 
 Your app comes with a small preconfigured local server (written in Dart) that you can use for testing purposes or even expand it. It is built using [shelf][shelf_lnk], [shelf_router][shelf_router_lnk] and [shelf_static][shelf_static_lnk]. The server comes with several out-of-the-box APIs that work with the generated app.
 
 In order to run the server locally, make sure to run `bin/start_server.sh`. The server should be running on `http://0.0.0.0:8080`, if not configured otherwise.
-
-When running the app on the Android emulator, in order to access your running local server, make sure you execute the following command: `adb reverse tcp:8080 tcp:8080`.
 
 Some of the important paths are:
 
@@ -141,6 +139,11 @@ In order to make the notifications work on your target platform, make sure you f
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
+
+### Next Steps
+
+* Define the branching strategy that the project is going to be using.
+* Define application-wide loading state representation. It could be a progress bar, spinner, skeleton animation or a custom widget.
 
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-

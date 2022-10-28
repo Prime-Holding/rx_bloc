@@ -22,8 +22,8 @@ abstract class CounterBlocEvents {
 abstract class CounterBlocStates {
   /// The count of the Counter
   ///
-  /// It can be controlled by executing [CounterBlocEvents.increment] and
-  /// [CounterBlocEvents.decrement]
+  /// It can be controlled by executing `CounterBlocEvents.increment` and
+  /// `CounterBlocEvents.decrement`
   ///
   Stream<Result<int>> get count;
 

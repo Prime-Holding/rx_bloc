@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/common_blocs/hotel_manage_bloc.dart';
+import '../../base/common_blocs/hotels_extra_details_bloc.dart';
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/favorite_message_listener.dart';
 import '../../base/ui_components/hotels_app_bar.dart';
-import '../../feature_hotel/blocs/hotel_manage_bloc.dart';
-import '../../feature_hotel/blocs/hotels_extra_details_bloc.dart';
-import '../../feature_hotel/favorites/blocs/favorite_hotels_bloc.dart';
-import '../../feature_hotel/favorites/views/favorites_page.dart';
-import '../../feature_hotel/search/views/search_page.dart';
+import '../../feature_hotel_favorites/blocs/hotel_favorites_bloc.dart';
+import '../../feature_hotel_favorites/views/hotel_favorites_page.dart';
+import '../../feature_hotel_search/views/hotel_search_page.dart';
 import '../blocs/navigation_bar_bloc.dart';
 
 part 'home_providers.dart';
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
               child: RxBlocListener<HotelManageBlocType, String>(
                 state: (bloc) => bloc.states.error,
                 listener: (ctx, state) => ScaffoldMessenger.of(ctx)
-                    .showSnackBar(SnackBar(content: Text(state!))),
+                    .showSnackBar(SnackBar(content: Text(state))),
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
@@ -90,16 +90,16 @@ class HomePage extends StatelessWidget {
 
     switch (type.data!.type) {
       case NavigationItemType.search:
-        return const SearchPage();
+        return const HotelSearchPage();
       case NavigationItemType.favorites:
-        return const FavoritesPage();
+        return const HotelFavoritesPage();
     }
   }
 }
 
 extension NavigationItemToWitget on NavigationItem {
   Widget? asWidget() => type == NavigationItemType.favorites
-      ? RxBlocBuilder<FavoriteHotelsBlocType, int>(
+      ? RxBlocBuilder<HotelFavoritesBlocType, int>(
           state: (bloc) => bloc.states.count,
           builder: (ctx, snapshot, bloc) =>
               snapshot.hasData && snapshot.data! <= 0

@@ -55,7 +55,7 @@ class LoadingBloc extends $LoadingBloc {
   LoadingBloc() {
     _$setLoadingEvent
         .bindToLoadingCounts(_loadingCounts)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final _loadingCounts = BehaviorSubject.seeded({

@@ -69,7 +69,7 @@ class PuppyManageBloc extends $PuppyManageBloc {
         //notify the coordinator bloc that the puppy has been changed
         .doOnData((puppy) => coordinatorBloc.events.puppyUpdated(puppy))
         .bind(_lastUpdatedPuppy)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final Puppy? _puppy;

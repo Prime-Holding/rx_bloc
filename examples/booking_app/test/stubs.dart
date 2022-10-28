@@ -1,5 +1,5 @@
-import 'package:booking_app/feature_hotel/search/models/capacity_filter_data.dart';
-import 'package:booking_app/feature_hotel/search/models/date_range_filter_data.dart';
+import 'package:booking_app/feature_hotel_search/models/capacity_filter_data.dart';
+import 'package:booking_app/feature_hotel_search/models/date_range_filter_data.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,16 @@ class Stub {
   static final navigation = NavigationStub();
 
   static final hotel1 = HotelsRepository.hotelsDB.first;
+
+  static final hotel1Loaded = hotel1.copyWith(
+    displayDescription: hotel1.description,
+    displayDist: hotel1.dist,
+    displayFeatures: hotel1.features,
+    displayRating: hotel1.rating,
+    displayReviews: hotel1.reviews,
+    displaySubtitle: hotel1.subTitle,
+  );
+
   static final hotel1Favorited =
       HotelsRepository.hotelsDB.first.copyWith(isFavorite: true);
   static final hotel2 = HotelsRepository.hotelsDB[1];
@@ -68,6 +78,13 @@ class Stub {
 
   static final paginatedListTreeHotels = PaginatedList<Hotel>(
     list: [Stub.hotel1, Stub.hotel2, Stub.hotel3],
+    pageSize: 10,
+    totalCount: 3,
+  );
+
+  static final paginatedListError = PaginatedList<Hotel>(
+    list: [],
+    error: Exception('No internet connection'),
     pageSize: 10,
     totalCount: 3,
   );

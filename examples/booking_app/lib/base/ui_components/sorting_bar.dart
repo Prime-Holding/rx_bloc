@@ -2,14 +2,14 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
-import '../../feature_hotel/search/blocs/hotel_list_bloc.dart';
+import '../../feature_hotel_search/blocs/hotel_search_bloc.dart';
 
 class SortingBar extends SliverPersistentHeaderDelegate {
   SortingBar({
     this.onPressed,
   });
 
-  final Function(HotelListBlocType, SortBy)? onPressed;
+  final Function(HotelSearchBlocType, SortBy)? onPressed;
 
   @override
   double get maxExtent => 52;
@@ -52,7 +52,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: RxBlocBuilder<HotelListBlocType, String>(
+                      child: RxBlocBuilder<HotelSearchBlocType, String>(
                         state: (bloc) => bloc.states.hotelsFound,
                         builder: (context, snapshot, bloc) => Text(
                           snapshot.data ?? '',
@@ -64,7 +64,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
-                  RxBlocBuilder<HotelListBlocType, SortBy>(
+                  RxBlocBuilder<HotelSearchBlocType, SortBy>(
                     state: (bloc) => bloc.states.sortedBy,
                     builder: (context, sortByState, bloc) => FocusButton(
                       onPressed: () {

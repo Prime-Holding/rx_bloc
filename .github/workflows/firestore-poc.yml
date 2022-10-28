@@ -1,0 +1,62 @@
+name: Firesore POC Deploy
+
+on:
+  push:
+    branches: [ "reminders-react" ]
+  pull_request:
+    branches: [ "reminders-react" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './examples/reminders-react/package-lock.json'
+
+    - run: npm ci
+      working-directory: './examples/reminders-react/'
+
+    - run: npm run build
+      working-directory: './examples/reminders-react/'
+
+    - name: Upload build artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: './examples/reminders-react/build'
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

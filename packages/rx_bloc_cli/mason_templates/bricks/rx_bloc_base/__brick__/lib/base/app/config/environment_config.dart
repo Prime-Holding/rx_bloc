@@ -1,34 +1,30 @@
 {{> licence.dart }}
 
-enum EnvironmentType { dev, staging, prod }
+enum EnvironmentType { development, staging, production }
 
-/// Environment configuration that enables you to get define and reuse
+/// Environment configuration that enables you to define and read
 /// environment specific properties (such as API endpoints, server secrets, ...)
 class EnvironmentConfig {
-  const EnvironmentConfig._({
-    required this.baseApiUrl,
-    this.environment = EnvironmentType.dev,
-  });
-
-  final EnvironmentType environment;
-  final String baseApiUrl;
-
   /// region Environments
 
-  static const EnvironmentConfig dev = EnvironmentConfig._(
-    environment: EnvironmentType.dev,
-    baseApiUrl: 'http://0.0.0.0:8080',
-  );
+  const EnvironmentConfig.development()
+      : environment = EnvironmentType.development,
+        androidEmulatorBaseApiUrl = 'http://10.0.2.2:8080',
+        iosSimulatorBaseApiUrl = 'http://0.0.0.0:8080';
 
-  static const EnvironmentConfig staging = EnvironmentConfig._(
-    environment: EnvironmentType.staging,
-    baseApiUrl: 'http://0.0.0.0:8080',
-  );
+  const EnvironmentConfig.staging()
+      : environment = EnvironmentType.staging,
+        androidEmulatorBaseApiUrl = 'http://10.0.2.2:8080',
+        iosSimulatorBaseApiUrl = 'http://0.0.0.0:8080';
 
-  static const EnvironmentConfig prod = EnvironmentConfig._(
-    environment: EnvironmentType.prod,
-    baseApiUrl: 'http://0.0.0.0:8080',
-  );
+  const EnvironmentConfig.production()
+      : environment = EnvironmentType.production,
+        androidEmulatorBaseApiUrl = 'http://10.0.2.2:8080',
+        iosSimulatorBaseApiUrl = 'http://0.0.0.0:8080';
 
   ///endregion
+
+  final EnvironmentType environment;
+  final String androidEmulatorBaseApiUrl;
+  final String iosSimulatorBaseApiUrl;
 }
