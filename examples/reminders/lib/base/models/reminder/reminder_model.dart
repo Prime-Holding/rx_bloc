@@ -69,7 +69,6 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
             complete: complete,
             authorId: authorId);
 
-  // @override
   final String id;
 
   factory ReminderModel.fromIndex(int index) => ReminderModel(

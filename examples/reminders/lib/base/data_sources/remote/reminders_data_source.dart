@@ -1,5 +1,3 @@
-// import 'package:rx_bloc_list/models.dart';
-
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 

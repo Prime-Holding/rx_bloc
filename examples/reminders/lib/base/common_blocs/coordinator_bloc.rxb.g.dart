@@ -48,8 +48,7 @@ abstract class $CoordinatorBloc extends RxBlocBase
       _$reminderCreatedEvent.add(reminderResult);
 
   @override
-  void reminderUpdated(
-          Result<ReminderPair> reminderPairResult) =>
+  void reminderUpdated(Result<ReminderPair> reminderPairResult) =>
       _$reminderUpdatedEvent.add(reminderPairResult);
 
   @override

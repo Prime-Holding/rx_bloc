@@ -76,40 +76,19 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   /// and emits the result as a new event.
   ///
   /// Supported events:
-  /// - reminder create [CoordinatorStates.onReminderCreated]
-  ///
-  /// Based on the result of the callback [onCreateOperation] the newly create task
-  ///  will/will not be merged into the value of the provided [subject].
-  // Stream<ManagedListCounterOperation<ReminderModel>>
-  // mapReminderManageEventsWithLatestFromCreate(
-  //     Stream<List<ReminderModel>> reminderList, {
-  //       required Future<ManageOperation> Function(Identifiable model,
-  //           [List<ReminderModel>? list])
-  //       operationCallback,
-  //     }) =>
-  // states.onReminderCreated
-  //     .whereSuccess()
-  //     .withLatestFromIdentifiableList(
-  //   reminderList,
-  //   operationCallback: operationCallback,
-  // )
-  //     .map((managedList) =>
-  //     ManagedListCounterOperation<ReminderModel>(
-  //         managedList: managedList,
-  //         counterOperation: CounterOperation.create));
-
-  /// Merge the following events with the value of the given [subject]
-  /// and emits the result as a new event.
-  ///
-  /// Supported events:
   /// - reminder update [CoordinatorStates.onReminderUpdated]
   /// - reminder delete [CoordinatorStates.onReminderDeleted]
-  ///
-  /// Based on the result of the callback [onDeleteOperation] the deleted task
-  ///  will be deleted from the value of the provided [subject].
+  /// - reminder create [CoordinatorStates.onReminderCreated]
   ///
   /// Based on the result of the callback [onUpdateOperation] the updated task
-  ///  will/will not be removed from value of the provided [subject].
+  /// will/will not be removed from value of the provided [subject].
+  ///
+  /// Based on the result of the callback [onDeleteOperation] the deleted task
+  /// will be deleted from the value of the provided [subject].
+  ///
+  /// Based on the result of the callback [onCreateOperation] the newly create task
+  /// will/will not be merged into the value of the provided [subject].
+
   Stream<ManagedListCounterOperation<ReminderModel>>
       mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
