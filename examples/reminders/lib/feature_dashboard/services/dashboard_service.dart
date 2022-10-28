@@ -40,16 +40,13 @@ class DashboardService {
     );
   }
 
-  Future<ManageOperation> getManageOperation(
-    Identifiable model, [List<ReminderModel>? _]
-  ) async {
+  Future<ManageOperation> getManageOperation(Identifiable model,
+      [List<ReminderModel>? _]) async {
     final dateRange = _getDateRange();
     final reminder = model as ReminderModel;
     if ((reminder.dueDate.isAfter(dateRange.from) &&
         reminder.dueDate.isBefore(dateRange.to))) {
-      return reminder.complete
-          ? ManageOperation.remove
-          : ManageOperation.merge;
+      return reminder.complete ? ManageOperation.remove : ManageOperation.merge;
     }
 
     if (reminder.dueDate.isBefore(dateRange.from) ||
@@ -68,9 +65,11 @@ class DashboardService {
     required DashboardModel dashboard,
     required ManagedList<ReminderModel> managedList,
     required CounterOperation counterOperation,
+    ReminderModel? oldReminder,
   }) {
     final incrementOperation = _getIncrementOperationFrom(
       managedList: managedList,
+      oldReminder: oldReminder,
     );
 
     return dashboard.copyWith(
@@ -89,22 +88,13 @@ class DashboardService {
 
   IncrementOperation? _getIncrementOperationFrom({
     required ManagedList<ReminderModel> managedList,
+    ReminderModel? oldReminder,
   }) {
-    managedList.list;
-    ///TODO get the old from somewhere
-    managedList.identifiable;
-    // final oldIdentifiable = managedList.identifiablePair.oldIdentifiable;
-    ///TODO check if this makes sense
-    // final oldIdentifiable = managedList.list.firstWhere((element) =>
-    // managedList.identifiable.isEqualToIdentifiable(element) == element);
-final oldIdentifiable = managedList.identifiable;
-    final updatedIdentifiable =
-        managedList.identifiable;
+    final updatedIdentifiable = managedList.identifiable;
 
-    print('Updated | Old $oldIdentifiable');
-    if (updatedIdentifiable.title == oldIdentifiable.title &&
-        updatedIdentifiable.dueDate == oldIdentifiable.dueDate &&
-        updatedIdentifiable.complete != oldIdentifiable.complete) {
+    if (updatedIdentifiable.title == oldReminder?.title &&
+        updatedIdentifiable.dueDate == oldReminder?.dueDate &&
+        updatedIdentifiable.complete != oldReminder?.complete) {
       return updatedIdentifiable.complete
           ? IncrementOperation.decrementIncompleteIncrementComplete
           : IncrementOperation.incrementIncompleteDecrementComplete;

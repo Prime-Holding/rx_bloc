@@ -27,7 +27,7 @@ abstract class CoordinatorEvents {
 
   void reminderCreated(Result<ReminderModel> reminderResult);
 
-  void reminderUpdated(Result<ReminderModel> reminderResult);
+  void reminderUpdated(Result<ReminderPair> reminderPairResult);
 
   void updateCounters(UpdatedCounters counters);
 }
@@ -40,7 +40,7 @@ abstract class CoordinatorStates {
   Stream<Result<ReminderModel>> get onReminderDeleted;
 
   @RxBlocIgnoreState()
-  Stream<Result<ReminderModel>> get onReminderUpdated;
+  Stream<Result<ReminderPair>> get onReminderUpdated;
 
   @RxBlocIgnoreState()
   Stream<Result<ReminderModel>> get onReminderCreated;
@@ -65,7 +65,7 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<Result<ReminderModel>> get onReminderDeleted => _$reminderDeletedEvent;
 
   @override
-  Stream<Result<ReminderModel>> get onReminderUpdated => _$reminderUpdatedEvent;
+  Stream<Result<ReminderPair>> get onReminderUpdated => _$reminderUpdatedEvent;
 
   @override
   Stream<UpdatedCounters> get onCountersUpdated => _$updateCountersEvent;
@@ -80,22 +80,23 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   ///
   /// Based on the result of the callback [onCreateOperation] the newly create task
   ///  will/will not be merged into the value of the provided [subject].
-  Stream<ManagedListCounterOperation<ReminderModel>>
-      mapReminderManageEventsWithLatestFromCreate(
-    Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(Identifiable model,
-            [List<ReminderModel>? list])
-        operationCallback,
-  }) =>
-          states.onReminderCreated
-              .whereSuccess()
-              .withLatestFromIdentifiableList(
-                reminderList,
-                operationCallback: operationCallback,
-              )
-              .map((managedList) => ManagedListCounterOperation<ReminderModel>(
-                  managedList: managedList,
-                  counterOperation: CounterOperation.create));
+  // Stream<ManagedListCounterOperation<ReminderModel>>
+  // mapReminderManageEventsWithLatestFromCreate(
+  //     Stream<List<ReminderModel>> reminderList, {
+  //       required Future<ManageOperation> Function(Identifiable model,
+  //           [List<ReminderModel>? list])
+  //       operationCallback,
+  //     }) =>
+  // states.onReminderCreated
+  //     .whereSuccess()
+  //     .withLatestFromIdentifiableList(
+  //   reminderList,
+  //   operationCallback: operationCallback,
+  // )
+  //     .map((managedList) =>
+  //     ManagedListCounterOperation<ReminderModel>(
+  //         managedList: managedList,
+  //         counterOperation: CounterOperation.create));
 
   /// Merge the following events with the value of the given [subject]
   /// and emits the result as a new event.
@@ -115,12 +116,18 @@ extension CoordinatingTasksX on CoordinatorBlocType {
     required Future<ManageOperation> Function(Identifiable model,
             [List<ReminderModel>? list])
         operationCallback,
-    // required Future<ManageOperation> Function(
-    //     Identifiable model,
-    //     [List<ReminderModel>? list])
-    // operationCallback,
   }) =>
           Rx.merge([
+            states.onReminderCreated
+                .whereSuccess()
+                .withLatestFromIdentifiableList(
+                  reminderList,
+                  operationCallback: operationCallback,
+                )
+                .map((managedList) =>
+                    ManagedListCounterOperation<ReminderModel>(
+                        managedList: managedList,
+                        counterOperation: CounterOperation.create)),
             states.onReminderDeleted
                 .whereSuccess()
                 .withLatestFromIdentifiableList(
@@ -133,15 +140,28 @@ extension CoordinatingTasksX on CoordinatorBlocType {
                     ManagedListCounterOperation<ReminderModel>(
                         managedList: managedList,
                         counterOperation: CounterOperation.delete)),
-            states.onReminderUpdated
-                .whereSuccess()
-                .withLatestFromIdentifiableList(
-                  reminderList,
-                  operationCallback: operationCallback,
-                )
-                .map((managedList) =>
-                    ManagedListCounterOperation<ReminderModel>(
-                        managedList: managedList,
-                        counterOperation: CounterOperation.update)),
+            states.onReminderUpdated.whereSuccess().switchMap((event) {
+              var stream =
+                  Stream.value(event.updated).withLatestFromIdentifiableList(
+                reminderList,
+                operationCallback: operationCallback,
+              );
+              return stream.map((streamEvent) => ManagedListWrapper(
+                  managedList: streamEvent, oldReminder: event.old));
+            }).switchMap((managedListWrapper) async* {
+              yield ManagedListCounterOperation<ReminderModel>(
+                  managedList: managedListWrapper.managedList
+                      as ManagedList<ReminderModel>,
+                  oldReminder: managedListWrapper.oldReminder,
+                  counterOperation: CounterOperation.update);
+            }),
           ]);
+}
+
+class ManagedListWrapper {
+  ManagedListWrapper({required this.managedList, required this.oldReminder});
+
+  ManagedList managedList;
+
+  ReminderModel oldReminder;
 }

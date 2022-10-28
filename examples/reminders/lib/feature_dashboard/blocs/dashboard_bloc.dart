@@ -108,6 +108,7 @@ class DashboardBloc extends $DashboardBloc {
         _dashboardService.getDashboardModelFromManagedList(
           dashboard: dashboard.data,
           managedList: managedListCounterOperation.managedList,
+          oldReminder: managedListCounterOperation.oldReminder,
           counterOperation: managedListCounterOperation.counterOperation,
         ),
       );

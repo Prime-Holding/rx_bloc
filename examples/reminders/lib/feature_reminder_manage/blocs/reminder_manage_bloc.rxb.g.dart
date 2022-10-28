@@ -39,7 +39,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
       _mapToOnDeletedState();
 
   /// The state of [onUpdated] implemented in [_mapToOnUpdatedState]
-  late final ConnectableStream<Result<ReminderModel>>
+  late final ConnectableStream<Result<ReminderPair>>
       _onUpdatedState = _mapToOnUpdatedState();
 
   /// The state of [onCreated] implemented in [_mapToOnCreatedState]
@@ -78,7 +78,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
   ConnectableStream<Result<ReminderModel>> get onDeleted => _onDeletedState;
 
   @override
-  ConnectableStream<Result<ReminderModel>> get onUpdated =>
+  ConnectableStream<Result<ReminderPair>> get onUpdated =>
       _onUpdatedState;
 
   @override
@@ -95,7 +95,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
 
   ConnectableStream<Result<ReminderModel>> _mapToOnDeletedState();
 
-  ConnectableStream<Result<ReminderModel>>
+  ConnectableStream<Result<ReminderPair>>
       _mapToOnUpdatedState();
 
   ConnectableStream<Result<ReminderModel>> _mapToOnCreatedState();

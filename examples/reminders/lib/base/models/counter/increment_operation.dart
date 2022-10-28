@@ -1,5 +1,7 @@
 import 'package:rx_bloc_list/models.dart';
 
+import '../reminder/reminder_model.dart';
+
 enum IncrementOperation {
   /// The operation, which increments the incomplete counter and decrements
   /// the complete counter
@@ -28,8 +30,10 @@ class ManagedListCounterOperation<E extends Identifiable>{
   ManagedListCounterOperation({
     required this.managedList,
     required this.counterOperation,
+    this.oldReminder,
   });
 
   final ManagedList<E> managedList;
   final CounterOperation counterOperation;
+  final ReminderModel? oldReminder;
 }

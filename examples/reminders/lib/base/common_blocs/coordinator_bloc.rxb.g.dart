@@ -30,7 +30,7 @@ abstract class $CoordinatorBloc extends RxBlocBase
   final _$reminderCreatedEvent = PublishSubject<Result<ReminderModel>>();
 
   /// Тhe [Subject] where events sink to by calling [reminderUpdated]
-  final _$reminderUpdatedEvent = PublishSubject<Result<ReminderModel>>();
+  final _$reminderUpdatedEvent = PublishSubject<Result<ReminderPair>>();
 
   /// Тhe [Subject] where events sink to by calling [updateCounters]
   final _$updateCountersEvent = PublishSubject<UpdatedCounters>();
@@ -49,7 +49,7 @@ abstract class $CoordinatorBloc extends RxBlocBase
 
   @override
   void reminderUpdated(
-          Result<ReminderModel> reminderPairResult) =>
+          Result<ReminderPair> reminderPairResult) =>
       _$reminderUpdatedEvent.add(reminderPairResult);
 
   @override

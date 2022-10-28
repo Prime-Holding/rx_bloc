@@ -20,5 +20,5 @@ abstract class RemindersDataSource {
 
   Future<void> delete(String id);
 
-  Future<ReminderModel> update(ReminderModel updatedModel);
+  Future<ReminderPair> update(ReminderModel updatedModel);
 }

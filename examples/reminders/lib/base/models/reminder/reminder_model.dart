@@ -130,7 +130,15 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
   @override
   bool isEqualToIdentifiable(Identifiable other) =>
       identical(this, other) ||
-          other is ReminderModel &&
-              runtimeType == other.runtimeType &&
-              id == other.id;
+      other is ReminderModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+}
+
+class ReminderPair {
+  ReminderPair({required this.updated, required this.old});
+
+  final ReminderModel updated;
+
+  final ReminderModel old;
 }
