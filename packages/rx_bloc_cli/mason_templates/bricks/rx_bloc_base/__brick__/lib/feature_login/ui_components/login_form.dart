@@ -19,7 +19,7 @@ class LoginForm extends StatefulWidget {
   final Function? onLoginSuccess;
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
@@ -49,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             Text(
               widget.title,
-              style: context.designSystem.typography.bodyText2,
+              style: context.designSystem.typography.h3Reg14,
               textAlign: TextAlign.center,
             ),
             Column(
@@ -88,17 +88,17 @@ class _LoginFormState extends State<LoginForm> {
   Widget _buildLogoutListener() => RxBlocListener<LoginBlocType, bool>(
         state: (bloc) => bloc.states.loggedIn,
         listener: (_, success) {
-          if (success ?? false) widget.onLoginSuccess?.call();
+          if (success) widget.onLoginSuccess?.call();
         },
       );
 
   Widget _buildErrorListener() => RxBlocListener<LoginBlocType, String>(
         state: (bloc) => bloc.states.errors,
         listener: (context, error) {
-          if (error?.isEmpty ?? true) return;
+          if (error.isEmpty) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(error!),
+              content: Text(error),
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -138,14 +138,5 @@ class _LoginFormState extends State<LoginForm> {
     InputDecoration decoration,
     String label,
   ) =>
-      decoration.copyWith(
-        labelText: label,
-        labelStyle: decoration.labelStyle?.copyWith(
-          color: context.designSystem.colors.inputDecorationLabelColor
-              .withOpacity(0.5),
-        ),
-        errorStyle: decoration.labelStyle?.copyWith(
-          color: context.designSystem.colors.inputDecorationErrorLabelColor,
-        ),
-      );
+      decoration.copyWith(labelText: label);
 }

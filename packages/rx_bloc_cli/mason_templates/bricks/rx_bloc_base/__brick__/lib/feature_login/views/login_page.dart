@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
                     border: Border.all(
-                      color: context.designSystem.colors.reverseBackgroundColor,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                   child: LoginForm(

@@ -23,7 +23,47 @@ jobs:
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
+          ]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          channel: "stable"
+      - run: dart --version
+      - run: flutter --version 
+      - name: Install Dependencies
+        working-directory: ${{ matrix.folder }}
+        run: flutter pub get
+      - name: Analyze
+        working-directory: ${{ matrix.folder }}
+        run: flutter analyze lib
+      - name: Run tests
+        working-directory: ${{ matrix.folder }}
+        run: |
+          if [ -d "test" ]; then
+            flutter test --coverage --exclude-tags=not-tests
+          fi
+      - name: Remove unnecessary files
+        working-directory: ${{ matrix.folder }}
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+        with:
+          path: "${{ matrix.folder }}/coverage/lcov.info"
+          min_coverage: 50
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          directory: ${{ matrix.folder }}/coverage
+  flutter_packages:
+    strategy:
+      matrix:
+        folder:
+          [
             "packages/rx_bloc_list",
+            "packages/flutter_rx_bloc",
           ]
       fail-fast: false
     runs-on: ubuntu-latest
@@ -100,12 +140,12 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2.1.0
         with:
           directory: ${{ matrix.folder }}/coverage
-
+          
   build:
-    needs: [examples, packages]
+    needs: [examples, packages, flutter_packages]
     runs-on: ubuntu-latest
     steps:
       - name: noop

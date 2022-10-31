@@ -2,18 +2,21 @@
 
 import 'package:flutter/material.dart';
 
-class DesignSystemIcon {
-  IconData get arrowBack => Icons.arrow_back;
+@immutable
+class DesignSystemIcons {
+  const DesignSystemIcons();
 
-  IconData get plusSign => Icons.add;
+  final arrowBack = Icons.arrow_back;
 
-  IconData get minusSign => Icons.remove;
+  final plusSign = Icons.add;
 
-  IconData get reload => Icons.update;
+  final minusSign = Icons.remove;
 
-  IconData get info => Icons.info;
+  final reload = Icons.update;
 
-  IconData get login => Icons.login;
+  final info = Icons.info;
 
-  IconData get avatar => Icons.person;
+  final login = Icons.login;
+
+  final avatar = Icons.person;
 }

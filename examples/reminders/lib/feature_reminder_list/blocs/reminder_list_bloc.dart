@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
+import '../services/reminder_list_service.dart';
 
 part 'reminder_list_bloc.rxb.g.dart';
 
@@ -39,6 +40,7 @@ abstract class ReminderListBlocStates {
 class ReminderListBloc extends $ReminderListBloc {
   /// ReminderListBloc default constructor
   ReminderListBloc(
+    ReminderListService reminderListService,
     RemindersService service,
     CoordinatorBlocType coordinatorBloc,
   ) {
@@ -57,7 +59,26 @@ class ReminderListBloc extends $ReminderListBloc {
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          operationCallback: (model) async => ManageOperation.merge,
+          operationCallback: (IdentifiablePair<ReminderModel> reminder,
+                  [List<ReminderModel>? list]) async =>
+              ManageOperation.merge,
+        )
+        .map((event) => event.managedList.list)
+        .cast<PaginatedList<ReminderModel>>()
+        .map(
+          (list) => list.copyWith(
+            list: list.list.sorted(
+              (a, b) => a.dueDate.compareTo(b.dueDate),
+            ),
+          ),
+        )
+        .bind(_paginatedList)
+        .addTo(_compositeSubscription);
+
+    coordinatorBloc
+        .mapReminderManageEventsWithLatestFromCreate(
+          _paginatedList,
+          operationCallback: reminderListService.getManageOperation,
         )
         .map((event) => event.managedList.list)
         .cast<PaginatedList<ReminderModel>>()

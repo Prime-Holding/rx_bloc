@@ -140,6 +140,7 @@ extension DisposedBy<T> on StreamSubscription<T> {
   ///
   /// Once [compositeSubscription] is being disposed all added subscriptions
   /// will be disposed automatically
+  @Deprecated('Use [addTo] provided by the rxdart library')
   StreamSubscription<T> disposedBy(
           CompositeSubscription compositeSubscription) =>
       compositeSubscription.add(this);

@@ -1,3 +1,6 @@
+// ignore_for_file: comment_references
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
@@ -62,7 +65,7 @@ class CounterPage extends StatelessWidget {
         listener: (context, errorMessage) =>
             ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage ?? 'Unknown error'),
+            content: Text(errorMessage),
             behavior: SnackBarBehavior.floating,
           ),
         ),
@@ -265,10 +268,8 @@ class CounterRepository {
 /// ********************GENERATED CODE**************************************
 /// CounterBlocType class used for bloc event and state access from widgets
 abstract class CounterBlocType extends RxBlocTypeBase {
-  // ignore: public_member_api_docs
   CounterBlocEvents get events;
 
-  // ignore: public_member_api_docs
   CounterBlocStates get states;
 }
 
