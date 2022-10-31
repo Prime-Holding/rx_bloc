@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
@@ -32,7 +31,7 @@ abstract class ReminderManageBlocEvents {
 abstract class ReminderManageBlocStates {
   ConnectableStream<Result<ReminderModel>> get onDeleted;
 
-  ConnectableStream<Result<IdentifiablePair<ReminderModel>>> get onUpdated;
+  ConnectableStream<Result<ReminderPair>> get onUpdated;
 
   ConnectableStream<Result<ReminderModel>> get onCreated;
 
@@ -46,9 +45,9 @@ abstract class ReminderManageBlocStates {
 @RxBloc()
 class ReminderManageBloc extends $ReminderManageBloc {
   ReminderManageBloc(this._service, this._coordinatorBloc) {
-    onDeleted.connect().disposedBy(_compositeSubscription);
-    onUpdated.connect().disposedBy(_compositeSubscription);
-    onCreated.connect().disposedBy(_compositeSubscription);
+    onDeleted.connect().addTo(_compositeSubscription);
+    onUpdated.connect().addTo(_compositeSubscription);
+    onCreated.connect().addTo(_compositeSubscription);
   }
 
   final RemindersService _service;
@@ -94,8 +93,8 @@ class ReminderManageBloc extends $ReminderManageBloc {
           .publish();
 
   @override
-  ConnectableStream<Result<IdentifiablePair<ReminderModel>>>
-      _mapToOnUpdatedState() => _$updateEvent
+  ConnectableStream<Result<ReminderPair>> _mapToOnUpdatedState() =>
+      _$updateEvent
           .switchMap((reminder) => _service.update(reminder).asResultStream())
           .setResultStateHandler(this)
           .doOnData(_coordinatorBloc.events.reminderUpdated)

@@ -10,6 +10,7 @@ part of 'coordinator_bloc.dart';
 /// {@nodoc}
 abstract class CoordinatorBlocType extends RxBlocTypeBase {
   CoordinatorEvents get events;
+
   CoordinatorStates get states;
 }
 
@@ -29,8 +30,7 @@ abstract class $CoordinatorBloc extends RxBlocBase
   final _$reminderCreatedEvent = PublishSubject<Result<ReminderModel>>();
 
   /// Тhe [Subject] where events sink to by calling [reminderUpdated]
-  final _$reminderUpdatedEvent =
-      PublishSubject<Result<IdentifiablePair<ReminderModel>>>();
+  final _$reminderUpdatedEvent = PublishSubject<Result<ReminderPair>>();
 
   /// Тhe [Subject] where events sink to by calling [updateCounters]
   final _$updateCountersEvent = PublishSubject<UpdatedCounters>();
@@ -48,8 +48,7 @@ abstract class $CoordinatorBloc extends RxBlocBase
       _$reminderCreatedEvent.add(reminderResult);
 
   @override
-  void reminderUpdated(
-          Result<IdentifiablePair<ReminderModel>> reminderPairResult) =>
+  void reminderUpdated(Result<ReminderPair> reminderPairResult) =>
       _$reminderUpdatedEvent.add(reminderPairResult);
 
   @override

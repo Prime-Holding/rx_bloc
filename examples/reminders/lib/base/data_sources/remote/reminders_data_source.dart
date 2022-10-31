@@ -1,5 +1,3 @@
-import 'package:rx_bloc_list/models.dart';
-
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 
@@ -20,5 +18,5 @@ abstract class RemindersDataSource {
 
   Future<void> delete(String id);
 
-  Future<IdentifiablePair<ReminderModel>> update(ReminderModel updatedModel);
+  Future<ReminderPair> update(ReminderModel updatedModel);
 }
