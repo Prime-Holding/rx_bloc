@@ -45,8 +45,8 @@ class FirebaseBloc extends $FirebaseBloc {
     this._service,
     this._coordinatorBloc,
   ) {
-    countersUpdated.connect().disposedBy(_compositeSubscription);
-    loggedOut.connect().disposedBy(_compositeSubscription);
+    countersUpdated.connect().addTo(_compositeSubscription);
+    loggedOut.connect().addTo(_compositeSubscription);
   }
 
   final FirebaseService _service;

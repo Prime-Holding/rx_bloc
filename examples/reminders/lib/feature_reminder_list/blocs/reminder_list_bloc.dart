@@ -54,13 +54,13 @@ class ReminderListBloc extends $ReminderListBloc {
         .mergeWithPaginatedList(_paginatedList)
         .bind(_paginatedList)
         // Make sure we dispose the subscription
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
 
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          operationCallback: (IdentifiablePair<ReminderModel> reminder,
-                  [List<ReminderModel>? list]) async =>
+          operationCallback: (Identifiable reminder,
+                  List<ReminderModel> list) async =>
               ManageOperation.merge,
         )
         .map((event) => event.managedList.list)
@@ -76,7 +76,7 @@ class ReminderListBloc extends $ReminderListBloc {
         .addTo(_compositeSubscription);
 
     coordinatorBloc
-        .mapReminderManageEventsWithLatestFromCreate(
+        .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
           operationCallback: reminderListService.getManageOperation,
         )

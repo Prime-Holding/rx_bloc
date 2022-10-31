@@ -69,7 +69,6 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
             complete: complete,
             authorId: authorId);
 
-  @override
   final String id;
 
   factory ReminderModel.fromIndex(int index) => ReminderModel(
@@ -126,4 +125,19 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
           complete: json['complete'] as bool,
           authorId: json['authorId'] as String?,
         );
+
+  @override
+  bool isEqualToIdentifiable(Identifiable other) =>
+      identical(this, other) ||
+      other is ReminderModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+}
+
+class ReminderPair {
+  ReminderPair({required this.updated, required this.old});
+
+  final ReminderModel updated;
+
+  final ReminderModel old;
 }

@@ -40,19 +40,17 @@ class DashboardService {
     );
   }
 
-  Future<ManageOperation> getManageOperation(
-    IdentifiablePair<ReminderModel> model, [List<ReminderModel>? _]
-  ) async {
+  Future<ManageOperation> getManageOperation(Identifiable model,
+      List<ReminderModel> _) async {
     final dateRange = _getDateRange();
-    if ((model.updatedIdentifiable.dueDate.isAfter(dateRange.from) &&
-        model.updatedIdentifiable.dueDate.isBefore(dateRange.to))) {
-      return model.updatedIdentifiable.complete
-          ? ManageOperation.remove
-          : ManageOperation.merge;
+    final reminder = model as ReminderModel;
+    if ((reminder.dueDate.isAfter(dateRange.from) &&
+        reminder.dueDate.isBefore(dateRange.to))) {
+      return reminder.complete ? ManageOperation.remove : ManageOperation.merge;
     }
 
-    if (model.updatedIdentifiable.dueDate.isBefore(dateRange.from) ||
-        model.updatedIdentifiable.dueDate.isAfter(dateRange.to)) {
+    if (reminder.dueDate.isBefore(dateRange.from) ||
+        reminder.dueDate.isAfter(dateRange.to)) {
       return ManageOperation.remove;
     }
     return ManageOperation.merge;
@@ -67,20 +65,22 @@ class DashboardService {
     required DashboardModel dashboard,
     required ManagedList<ReminderModel> managedList,
     required CounterOperation counterOperation,
+    ReminderModel? oldReminder,
   }) {
     final incrementOperation = _getIncrementOperationFrom(
       managedList: managedList,
+      oldReminder: oldReminder,
     );
 
     return dashboard.copyWith(
       completeCount: dashboard.recalculateCompleteWith(
         counterOperation: counterOperation,
-        reminderModel: managedList.identifiablePair.updatedIdentifiable,
+        reminderModel: managedList.identifiable,
         incrementOperation: incrementOperation,
       ),
       incompleteCount: dashboard.recalculateIncompleteWith(
         counterOperation: counterOperation,
-        reminderModel: managedList.identifiablePair.updatedIdentifiable,
+        reminderModel: managedList.identifiable,
         incrementOperation: incrementOperation,
       ),
     );
@@ -88,16 +88,13 @@ class DashboardService {
 
   IncrementOperation? _getIncrementOperationFrom({
     required ManagedList<ReminderModel> managedList,
+    ReminderModel? oldReminder,
   }) {
-    final oldIdentifiable = managedList.identifiablePair.oldIdentifiable;
+    final updatedIdentifiable = managedList.identifiable;
 
-    final updatedIdentifiable =
-        managedList.identifiablePair.updatedIdentifiable;
-
-    if (oldIdentifiable != null &&
-        updatedIdentifiable.title == oldIdentifiable.title &&
-        updatedIdentifiable.dueDate == oldIdentifiable.dueDate &&
-        updatedIdentifiable.complete != oldIdentifiable.complete) {
+    if (updatedIdentifiable.title == oldReminder?.title &&
+        updatedIdentifiable.dueDate == oldReminder?.dueDate &&
+        updatedIdentifiable.complete != oldReminder?.complete) {
       return updatedIdentifiable.complete
           ? IncrementOperation.decrementIncompleteIncrementComplete
           : IncrementOperation.incrementIncompleteDecrementComplete;
