@@ -6,12 +6,10 @@ class ReminderListService {
   ReminderListService();
 
   Future<ManageOperation> getManageOperation(
-      Identifiable createdModel,
-      [List<ReminderModel>? list]) async {
-    final lastElementDueDate = list?[list.length - 1].dueDate;
+      Identifiable createdModel, List<ReminderModel> list) async {
+    final lastElementDueDate = list[list.length - 1].dueDate;
     var createdReminderDate = createdModel as ReminderModel;
-     // createdReminderDate = createdModel.dueDate;
-    if (lastElementDueDate!.isAtSameMomentAs(createdReminderDate.dueDate) ||
+    if (lastElementDueDate.isAtSameMomentAs(createdReminderDate.dueDate) ||
         lastElementDueDate.isAfter(createdReminderDate.dueDate)) {
       return ManageOperation.merge;
     }

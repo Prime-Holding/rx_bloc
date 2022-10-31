@@ -41,7 +41,7 @@ class DashboardService {
   }
 
   Future<ManageOperation> getManageOperation(Identifiable model,
-      [List<ReminderModel>? _]) async {
+      List<ReminderModel> _) async {
     final dateRange = _getDateRange();
     final reminder = model as ReminderModel;
     if ((reminder.dueDate.isAfter(dateRange.from) &&

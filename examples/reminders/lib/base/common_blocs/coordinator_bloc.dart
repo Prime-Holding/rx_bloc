@@ -93,7 +93,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
       mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
     required Future<ManageOperation> Function(Identifiable model,
-            [List<ReminderModel>? list])
+            List<ReminderModel> list)
         operationCallback,
   }) =>
           Rx.merge([
@@ -112,7 +112,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
                 .withLatestFromIdentifiableList(
                   reminderList,
                   operationCallback: (Identifiable reminder,
-                          [List<ReminderModel>? list]) async =>
+                          List<ReminderModel> list) async =>
                       ManageOperation.remove,
                 )
                 .map((managedList) =>
