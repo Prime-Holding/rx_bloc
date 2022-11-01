@@ -157,7 +157,7 @@ class UserBloc extends $UserBloc {
         .mergeWithPaginatedList(_paginatedList)
         .bind(_paginatedList)
         // Make sure we dispose the subscription
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   /// Internal paginated list stream
