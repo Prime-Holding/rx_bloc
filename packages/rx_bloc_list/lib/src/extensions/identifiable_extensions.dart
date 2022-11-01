@@ -56,7 +56,7 @@ extension ListIdentifiableUtils<T extends Identifiable> on List<T> {
 }
 
 extension ModelManageEvents<E extends Identifiable> on Stream<E> {
-  /// Merge or remove the value of the stream from the latest [list] value.
+  /// Merge, remove or ignore the value of the stream from the latest [list] value.
   /// The result, based on the [operationCallback], will be emitted as a new value.
   ///
   /// Examples:
