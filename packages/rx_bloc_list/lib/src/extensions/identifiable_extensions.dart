@@ -122,6 +122,7 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
 }
 
 extension ManagedListStreamX<E extends Identifiable> on Stream<ManagedList<E>> {
+  /// Unwrap the list from ManagedList stream.
   Stream<List<E>> mapToList() => map((managedList) => managedList.list);
 }
 
