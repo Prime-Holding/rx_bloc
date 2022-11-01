@@ -11,7 +11,7 @@ class FacebookLoginPage extends StatefulWidget {
   const FacebookLoginPage({Key? key}) : super(key: key);
 
   @override
-  _FacebookLoginPageState createState() => _FacebookLoginPageState();
+  State<FacebookLoginPage> createState() => _FacebookLoginPageState();
 }
 
 class _FacebookLoginPageState extends State<FacebookLoginPage> {
@@ -39,7 +39,7 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
         listener: (context, errorMessage) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(errorMessage ?? ''),
+              content: Text(errorMessage ),
               behavior: SnackBarBehavior.floating,
             ),
           );

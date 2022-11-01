@@ -8,8 +8,11 @@ class RemindersService {
 
   final RemindersRepository _repository;
 
-  Future<PaginatedList<ReminderModel>> getAll(ReminderModelRequest? request) =>
+  Future<PaginatedList<ReminderModel>> getAll(ReminderModelRequest request) =>
       _repository.getAll(request);
+
+  Future<PaginatedList<ReminderModel>> getAllDashboard(ReminderModelRequest request) =>
+      _repository.getAllDashboard(request);
 
   Future<ReminderModel> create({
     required String title,
@@ -24,7 +27,7 @@ class RemindersService {
 
   Future<void> delete(String id) => _repository.delete(id);
 
-  Future<IdentifiablePair<ReminderModel>> update(ReminderModel model) =>
+  Future<ReminderPair> update(ReminderModel model) =>
       _repository.update(model);
 
   Future<int> getCompleteCount() => _repository.getCompleteCount();

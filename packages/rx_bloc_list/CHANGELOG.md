@@ -1,4 +1,6 @@
 ## [3.2.0-dev.2] June 7, 2022
+* Updated `flutter_rx_bloc` to use version `5.0.0`
+* Updated `rx_bloc` to use version `3.3.0`
 - Added `IdentifiablePair<E extends Identifiable>` class
 - Added `Stream<IdentifiablePair<E extends Identifiable>>` extensions: `withLatestFromIdentifiablePairList`
 - Removed parameter `identifiableInList` from `operationCallback` in `Stream<T extends Identifiable>` extension: `withLatestFromIdentifiableList`

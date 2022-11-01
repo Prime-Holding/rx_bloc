@@ -1,8 +1,8 @@
 part of 'home_page.dart';
 
 List<RxBlocProvider> _getProviders() => [
-      RxBlocProvider<FavoriteHotelsBlocType>(
-        create: (context) => FavoriteHotelsBloc(
+      RxBlocProvider<HotelFavoritesBlocType>(
+        create: (context) => HotelFavoritesBloc(
           Provider.of(context, listen: false),
           Provider.of(context, listen: false),
         ),

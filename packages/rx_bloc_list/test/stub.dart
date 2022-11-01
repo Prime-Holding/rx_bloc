@@ -50,7 +50,6 @@ class Stub {
 }
 
 class IdentifiableModel implements Identifiable {
-  @override
   final String id;
 
   final String value;
@@ -71,4 +70,11 @@ class IdentifiableModel implements Identifiable {
 
   @override
   int get hashCode => id.hashCode ^ value.hashCode;
+
+  @override
+  bool isEqualToIdentifiable(Identifiable other) =>
+      identical(this, other) ||
+      other is IdentifiableModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 }

@@ -84,14 +84,13 @@ extension PaginatedListStreamExtensions<T> on Stream<PaginatedList<T>> {
 /// PaginatedList snapshot extensions
 extension PaginatedListSnapshotExt<T> on AsyncSnapshot<PaginatedList<T>> {
   /// Is this the initial loading of the snapshot data
-  bool get isInitialLoading => !hasData || (hasData && data!.isInitialLoading);
+  bool get isInitialLoading => !hasData || data!.isInitialLoading;
 
   /// Is the next page loading
-  bool get isNextPageLoading =>
-      !hasData || (hasData && data!.isNextPageLoading);
+  bool get isNextPageLoading => !hasData || data!.isNextPageLoading;
 
   /// Is the data loading
-  bool get isLoading => !hasData || (hasData && data!.isLoading);
+  bool get isLoading => !hasData || data!.isLoading;
 
   /// Is the [data] an [error]
   bool get hasPageError => hasData && data!.error != null;

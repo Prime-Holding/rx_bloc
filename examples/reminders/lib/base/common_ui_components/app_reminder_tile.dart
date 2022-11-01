@@ -47,7 +47,6 @@ class _AppReminderTileState extends State<AppReminderTile> {
   @override
   void initState() {
     _textEditingController = TextEditingController(text: widget.reminder.title);
-
     _titleFocusNode.addListener(
       () {
         if (!_titleFocusNode.hasFocus) {
@@ -74,9 +73,10 @@ class _AppReminderTileState extends State<AppReminderTile> {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: widget.reminder.complete
-            ? context.designSystem.colors.inactiveButtonTextColor
-            : Colors.transparent,
+        decoration: BoxDecoration(
+          color: context.designSystem.colors.secondaryColor,
+          borderRadius: _getRadius(),
+        ),
         child: Slidable(
             key: Key('Reminder${widget.reminder.id}'),
             startActionPane: _buildActionPane(context),
@@ -88,6 +88,23 @@ class _AppReminderTileState extends State<AppReminderTile> {
                   if (widget.isFirst) const SizedBox(height: 8),
                   Row(
                     children: [
+                      IconButton(
+                        icon: widget.reminder.complete
+                            ? Icon(Icons.radio_button_checked,
+                                color: Colors.blue.shade700)
+                            : const Icon(Icons.radio_button_off,
+                                color: Colors.grey),
+                        onPressed: () {
+                          context.read<ReminderManageBlocType>().events.update(
+                                widget.reminder.copyWith(
+                                  complete: !widget.reminder.complete,
+                                ),
+                              );
+                        },
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
                       Expanded(
                         child: TextField(
                           focusNode: _titleFocusNode,
@@ -114,27 +131,23 @@ class _AppReminderTileState extends State<AppReminderTile> {
             )),
       );
 
+  BorderRadiusGeometry? _getRadius() {
+    if (widget.isFirst || widget.isLast) {
+      return BorderRadius.only(
+        topLeft: Radius.circular(widget.isFirst ? 20 : 0),
+        topRight: Radius.circular(widget.isFirst ? 20 : 0),
+        bottomRight: Radius.circular(widget.isLast ? 20 : 0),
+        bottomLeft: Radius.circular(widget.isLast ? 20 : 0),
+      );
+    }
+
+    return null;
+  }
+
   ActionPane _buildActionPane(BuildContext context) => ActionPane(
-        extentRatio: 0.6,
+        extentRatio: 0.3,
         motion: const ScrollMotion(),
         children: [
-          SlidableAction(
-            onPressed: (context) =>
-                context.read<ReminderManageBlocType>().events.update(
-                      widget.reminder.copyWith(
-                        complete: !widget.reminder.complete,
-                        // completeUpdated: true,
-                      ),
-                    ),
-            backgroundColor: widget.reminder.complete
-                ? context.designSystem.colors.actionButtonCompleteColor
-                : context.designSystem.colors.actionButtonInCompleteColor,
-            foregroundColor: context.designSystem.colors.canvasColor,
-            icon: Icons.check_box_outlined,
-            label: widget.reminder.complete
-                ? context.l10n.incomplete
-                : context.l10n.complete,
-          ),
           SlidableAction(
             onPressed: (context) => context
                 .read<ReminderManageBlocType>()
@@ -150,7 +163,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
       );
 
   Future<void> _onDueDatePressed() async {
-    final date = await showDatePicker(
+    var date = await showDatePicker(
       context: context,
       initialDate: widget.reminder.dueDate,
       firstDate: DateTime.now().subtract(
@@ -160,7 +173,13 @@ class _AppReminderTileState extends State<AppReminderTile> {
         const Duration(days: 365),
       ),
     );
-
+    final now = DateTime.now();
+    date = date?.add(Duration(
+        hours: now.hour,
+        minutes: now.minute,
+        seconds: now.second,
+        milliseconds: now.millisecond,
+        microseconds: now.microsecond));
     if (date != null) {
       context
           .read<ReminderManageBlocType>()

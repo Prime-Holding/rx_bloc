@@ -5,11 +5,13 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+// ignore_for_file: directives_ordering
+
 import 'package:flutter/material.dart';
 
-import 'base/app/initialization/app_setup.dart';
 import 'base/app/config/environment_config.dart';
 import 'base/app/github_search.dart';
+import 'base/app/initialization/app_setup.dart';
 
 // ignore_for_file: avoid_void_async
 

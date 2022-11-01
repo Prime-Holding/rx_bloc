@@ -21,4 +21,6 @@ class FirebaseService {
   Future<void> logOut() => _repository.logOut();
 
   Stream<User?> get currentUser => _repository.currentUser;
+
+  Future<bool> isUserLoggedIn() => _repository.isUserLoggedIn();
 }

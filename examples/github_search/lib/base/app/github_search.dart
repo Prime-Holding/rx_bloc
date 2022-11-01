@@ -26,7 +26,10 @@ import 'initialization/firebase_messaging_callbacks.dart';
 
 /// This widget is the root of your application.
 class GithubSearch extends StatelessWidget {
-  GithubSearch({this.config = EnvironmentConfig.prod});
+  GithubSearch({
+    this.config = EnvironmentConfig.prod,
+    Key? key,
+  }) : super(key: key);
 
   final EnvironmentConfig config;
   final _router = router.Router();
@@ -54,7 +57,6 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   @override
   void initState() {
     _configureFCM();
-    _addInterceptors();
 
     super.initState();
   }
@@ -65,7 +67,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       await safeRun(
           () => FirebaseMessaging.instance.getToken(vapidKey: webVapidKey));
     }
-    FirebaseMessaging.instance
+    await FirebaseMessaging.instance
         .getInitialMessage()
         .then((message) => onInitialMessageOpened(context, message));
     FirebaseMessaging.instance.onTokenRefresh
@@ -74,15 +76,6 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         .listen((message) => onForegroundMessage(context, message));
     FirebaseMessaging.onMessageOpenedApp
         .listen((message) => onMessageOpenedFromBackground(context, message));
-  }
-
-  void _addInterceptors() {
-    // context.read<Dio>().interceptors.addAll([
-    //   AuthInterceptor(context.read(), context.read(), context.read()),
-    //   AnalyticsInterceptor(context.read()),
-    //
-    //   /// TODO: Add your own interceptors here
-    // ]);
   }
 
   @override

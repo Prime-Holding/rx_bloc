@@ -84,7 +84,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                     RxBlocListener<NotificationsBlocType, bool>(
                       state: (bloc) => bloc.states.permissionsAuthorized,
                       listener: (context, authorized) async {
-                        if (authorized ?? false) return;
+                        if (authorized) return;
 
                         // If not authorized, show a dialog popup
                         await showAdaptiveDialog(
