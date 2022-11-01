@@ -109,7 +109,7 @@ Along with the required parameters of the default implementation, *RxPaginatedBu
 
 If you want to have inter-feature communication in your application, you can use the *withLatestFromIdentifiableList()* extension method. It merges, removes or ignores the value of the stream from the latest `list` value. The result, based on the `operationCallback`, will be emitted as a new value([ManagedList](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/models/managed_list.dart)). With the help of the CoordinatorBloc our two features can communicate with each other and have different or the same elements from the same list collection. In the bellow example, for every operation we have, a state in the `CoordinatorBloc` is updated and an `operationCallback` is executed.
 
-[CoordinatorBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/base/common_blocs/coordinator_bloc.dart) using `withLatestFromIdentifiableList` in CoordinatorBloc:
+Using `withLatestFromIdentifiableList` in [CoordinatorBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/base/common_blocs/coordinator_bloc.dart):
 ```dart
  mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
@@ -135,14 +135,14 @@ If you want to have inter-feature communication in your application, you can use
         ),
     ]);
 ```
-[DashboardBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/feature_dashboard/blocs/dashboard_bloc.dart) coordinator bloc dependency in DashboardBloc:
+CoordinatorBloc dependency in [DashboardBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/feature_dashboard/blocs/dashboard_bloc.dart):
 ```dart
 _coordinatorBloc.mapReminderManageEventsWithLatestFrom(
   _dashboardModelPaginated,
   operationCallback: _dashboardService.getManageOperation,
 )
 ```
-[ReminderListBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/feature_reminder_list/blocs/reminder_list_bloc.dart) coordinator bloc dependency in ReminderListBloc:
+CoordinatorBloc dependency in [ReminderListBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/feature_reminder_list/blocs/reminder_list_bloc.dart):
 ```dart
 _coordinatorBloc.mapReminderManageEventsWithLatestFrom(
     _paginatedList,
