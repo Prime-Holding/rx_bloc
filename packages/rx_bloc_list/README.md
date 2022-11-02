@@ -127,6 +127,7 @@ states.onReminderCreated.whereSuccess()
         return ManageOperation.ignore;
       },
     )
+    .bind(reminderList)
 ```
 
 The method [withLatestFromIdentifiableList()](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/extensions/identifiable_extensions.dart) accepts two parameters. The `list` parameter should be of type `Stream<List<E>>`, where `E extends Identifiable`. The model implementing [Identifiable](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/models/identifiable.dart), should provide implementation for the *bool isEqualToIdentifiable(Identifiable other)* method, so that the identifiable extension method knows how to distinguish between the models in the list.
