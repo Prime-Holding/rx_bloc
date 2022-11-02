@@ -9,6 +9,7 @@ The *[rx_bloc_list](https://pub.dev/packages/rx_bloc_list)* package facilitates 
 - [Setup](#setup)
 - [Additional parameters](#additional-params)
 - [RxPaginatedBuilder.withRefreshIndicator](#withRefreshIndicator)
+- [withLatestFromIdentifiableList()](#withLatestFromIdentifiableList)
 - [Articles](#articles)
 
 <div id="usage"/>
@@ -105,63 +106,33 @@ There may be cases where you have a reference to the BLoC that is used by the Rx
 Sometimes, you may want to have a working pagination and pull-to-refresh without spending too much time on it. Using the *RxPaginatedBuilder.withRefreshIndicator* gives you access to a [Refresh Indicator](https://api.flutter.dev/flutter/material/RefreshIndicator-class.html "Refresh Indicator") straight out of the box.
 
 Along with the required parameters of the default implementation, *RxPaginatedBuilder.withRefreshIndicator* gets rid of the `wrapperBuilder` but introduces a new required parameter `onRefresh`. The `onRefresh` callback is triggered once a pull-to-refresh has been performed. The callback, containing the BLoC as a parameter, should return a future, which once complete will make the refresh indicator disappear.
+
+<div id="withLatestFromIdentifiableList" />
+
 ### withLatestFromIdentifiableList()
 
-If you want to have inter-feature communication in your application, you can use the *withLatestFromIdentifiableList()* extension method. It merges, removes or ignores the value of the stream from the latest `list` value. The result, based on the `operationCallback`, will be emitted as a new value([ManagedList](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/models/managed_list.dart)). With the help of the CoordinatorBloc our two features can communicate with each other and have different or the same elements from the same list collection. In the bellow example, for every operation we have, a state in the `CoordinatorBloc` is updated and an `operationCallback` is executed.
+If you want to keep the list of items inside your bloc up to date based on a stream of updated items, you can use the *withLatestFromIdentifiableList()* extension method. It merges, removes or ignores the value of the stream from the latest `list` value. The result, based on the `operationCallback`, will be emitted as a new value([ManagedList](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/models/managed_list.dart)). With the help of the CoordinatorBloc our two features can communicate with each other and have different or the same elements from the same list collection. In the bellow example, for every operation we have, a state in the `CoordinatorBloc` is updated and an `operationCallback` is executed.
 
-Using `withLatestFromIdentifiableList` in [CoordinatorBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/base/common_blocs/coordinator_bloc.dart):
 ```dart
- mapReminderManageEventsWithLatestFrom(
-    Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(Identifiable model,
-            List<ReminderModel> list)
-        operationCallback,
-    }) =>
-    Rx.merge([
-        states.onReminderCreated.whereSuccess()
-            .withLatestFromIdentifiableList(
-          reminderList,
-          operationCallback: operationCallback,
-        ),
-        states.onReminderDeleted.whereSuccess()
-            .withLatestFromIdentifiableList(
-        reminderList,
-        operationCallback: operationCallback,
-        ),
-        states.onReminderUpdated.whereSuccess()
-            .withLatestFromIdentifiableList(
-        reminderList,
-        operationCallback: operationCallback,
-        ),
-    ]);
-```
-CoordinatorBloc dependency in [DashboardBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/feature_dashboard/blocs/dashboard_bloc.dart):
-```dart
-_coordinatorBloc.mapReminderManageEventsWithLatestFrom(
-  _dashboardModelPaginated,
-  operationCallback: _dashboardService.getManageOperation,
-)
-```
-CoordinatorBloc dependency in [ReminderListBloc](https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/reminders/lib/feature_reminder_list/blocs/reminder_list_bloc.dart):
-```dart
-_coordinatorBloc.mapReminderManageEventsWithLatestFrom(
-    _paginatedList,
-    operationCallback: reminderListService.getManageOperation,
-)
+states.onReminderCreated.whereSuccess()
+    .withLatestFromIdentifiableList(
+      reminderList,
+      operationCallback: (ReminderModel createdModel, List<ReminderModel> list) async {
+        if (list.isNotEmpty) {
+          final lastElementDueDate = list.last.dueDate;
+          if (lastElementDueDate.compareTo(createdModel.dueDate) > 0) {
+            return ManageOperation.merge;
+          }
+        }
+        return ManageOperation.ignore;
+      },
+    )
 ```
 
 The method [withLatestFromIdentifiableList()](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/extensions/identifiable_extensions.dart) accepts two parameters. The `list` parameter should be of type `Stream<List<E>>`, where `E extends Identifiable`. The model implementing [Identifiable](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/models/identifiable.dart), should provide implementation for the *bool isEqualToIdentifiable(Identifiable other)* method, so that the identifiable extension method knows how to distinguish between the models in the list.
-The `operationCallback` parameter should be a function, which receives as first parameter the `Identifiable` model and as second the `list`. The returned value from the function is a [ManageOperation](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/models/managed_list.dart), for example:
-```dart
-Future<ManageOperation> getManageOperation(
-    Identifiable createdModel, List<ReminderModel> list) async {
-  final lastElementDueDate = list[list.length - 1].dueDate;
-  if (lastElementDueDate.isAtSameMomentAs(createdModel.dueDate)) {
-    return ManageOperation.merge;
-  }
-  return ManageOperation.ignore;
-}
-```
+The `operationCallback` parameter should be a function, which receives as first parameter the `Identifiable` model and as second the `list`. The returned value from the function is a [ManageOperation](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_list/lib/src/models/managed_list.dart).
+
+For more complex/production ready example please look at [the Reminders example app](https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/reminders/).
 
 ## Video tutorials
 - [Building feature-rich lists in Flutter](https://youtu.be/Nc8OLxYhQ0w) A feature-rich ListView implementation in Flutter that demonstrates how easy it is to build common functionalities such as `pull-to-refresh` and `infinite-scroll`.
