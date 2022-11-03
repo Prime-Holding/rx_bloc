@@ -45,4 +45,8 @@ class ManagedList<T extends Identifiable> {
   @override
   int get hashCode =>
       list.hashCode ^ operation.hashCode ^ identifiable.hashCode;
+
+  @override
+  String toString() =>
+      '{list: $list, identifiable: $identifiable, operation: $operation}';
 }

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rx_bloc_list/models.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'stub.dart';
 
@@ -84,6 +87,78 @@ void main() {
             identifiable: IdentifiableModel('2'),
             operation: ManageOperation.merge,
           )
+        ]),
+      );
+    });
+
+    test('withLatestFromIdentifiableList check update order', () async {
+      final listSubject = BehaviorSubject.seeded(
+          [IdentifiableModel('1'), IdentifiableModel('2')]);
+      final mapStream = Stream.fromIterable([
+        IdentifiableModel('2', value: '1'),
+        IdentifiableModel('2', value: '2'),
+        IdentifiableModel('2', value: '15'),
+        IdentifiableModel('2', value: '5'),
+        IdentifiableModel('2', value: '4'),
+      ]).withLatestFromIdentifiableList(
+        listSubject,
+        operationCallback: (IdentifiableModel updatedIdentifiable,
+            List<IdentifiableModel> list) async {
+          if (updatedIdentifiable.value.startsWith('1')) {
+            return Future.delayed(
+              const Duration(milliseconds: 200),
+              () => ManageOperation.merge,
+            );
+          }
+          final index = list.indexWhere(
+              (element) => element.isEqualToIdentifiable(updatedIdentifiable));
+          if (index != -1 &&
+              (int.tryParse(list[index].value) ?? 0) <
+                  (int.tryParse(updatedIdentifiable.value) ?? 0)) {
+            return ManageOperation.merge;
+          }
+          return ManageOperation.ignore;
+        },
+      ).shareReplay(maxSize: 1);
+      mapStream.mapToList().listen((list) => listSubject.add(list));
+      unawaited(expectLater(
+          mapStream,
+          emitsInOrder([
+            ManagedList(
+              [IdentifiableModel('1'), IdentifiableModel('2', value: '1')],
+              identifiable: IdentifiableModel('2', value: '1'),
+              operation: ManageOperation.merge,
+            ),
+            ManagedList(
+              [IdentifiableModel('1'), IdentifiableModel('2', value: '2')],
+              identifiable: IdentifiableModel('2', value: '2'),
+              operation: ManageOperation.merge,
+            ),
+            ManagedList(
+              [IdentifiableModel('1'), IdentifiableModel('2', value: '15')],
+              identifiable: IdentifiableModel('2', value: '15'),
+              operation: ManageOperation.merge,
+            ),
+            ManagedList(
+              [IdentifiableModel('1'), IdentifiableModel('2', value: '15')],
+              identifiable: IdentifiableModel('2', value: '5'),
+              operation: ManageOperation.ignore,
+            ),
+            ManagedList(
+              [IdentifiableModel('1'), IdentifiableModel('2', value: '15')],
+              identifiable: IdentifiableModel('2', value: '4'),
+              operation: ManageOperation.ignore,
+            ),
+          ])));
+      await expectLater(
+        listSubject,
+        emitsInOrder([
+          [IdentifiableModel('1'), IdentifiableModel('2')],
+          [IdentifiableModel('1'), IdentifiableModel('2', value: '1')],
+          [IdentifiableModel('1'), IdentifiableModel('2', value: '2')],
+          [IdentifiableModel('1'), IdentifiableModel('2', value: '15')],
+          [IdentifiableModel('1'), IdentifiableModel('2', value: '15')],
+          [IdentifiableModel('1'), IdentifiableModel('2', value: '15')],
         ]),
       );
     });
