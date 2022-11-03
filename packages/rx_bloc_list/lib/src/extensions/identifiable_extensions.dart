@@ -87,29 +87,26 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
     Stream<List<E>> list, {
     required OperationCallback<E> operationCallback,
   }) =>
-      _withLatestFromList(list).flatMap((tuple) async* {
+      _withLatestFromList(list).asyncMap((tuple) async {
         switch (await operationCallback(tuple.item, tuple.list)) {
           case ManageOperation.merge:
-            yield ManagedList(
+            return ManagedList(
               tuple.list._mergeWithList([tuple.item]),
               operation: ManageOperation.merge,
               identifiable: tuple.item,
             );
-            break;
           case ManageOperation.remove:
-            yield ManagedList(
+            return ManagedList(
               tuple.list._removeFromList(tuple.item),
               operation: ManageOperation.remove,
               identifiable: tuple.item,
             );
-            break;
           case ManageOperation.ignore:
-            yield ManagedList(
+            return ManagedList(
               tuple.list,
               operation: ManageOperation.ignore,
               identifiable: tuple.item,
             );
-            break;
         }
       });
 

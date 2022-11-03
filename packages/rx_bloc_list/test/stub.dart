@@ -57,7 +57,7 @@ class IdentifiableModel implements Identifiable {
   IdentifiableModel(this.id, {String? value}) : value = value ?? '';
 
   @override
-  String toString() => '$id, $value';
+  String toString() => '{$id, $value}';
 
   @override
   bool operator ==(Object other) {
