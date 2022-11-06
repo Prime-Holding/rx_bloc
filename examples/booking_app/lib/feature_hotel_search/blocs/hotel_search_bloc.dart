@@ -81,11 +81,11 @@ class HotelSearchBloc extends $HotelSearchBloc {
         .fetchHotels(repository, _hotels)
         .mergeWithPaginatedList(_hotels)
         .bind(_hotels)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
 
     coordinatorBloc.states.onHotelsUpdated
         .updateHotels(_hotels)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   // MARK: - Subjects

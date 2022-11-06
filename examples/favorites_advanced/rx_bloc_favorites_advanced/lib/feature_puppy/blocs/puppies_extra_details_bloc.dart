@@ -28,7 +28,7 @@ class PuppiesExtraDetailsBloc extends $PuppiesExtraDetailsBloc {
         // Bind the result (List<Puppies>) to the local state
         .bind(_lastFetchedPuppies)
         // Always make sure your subscriptions are disposed of!
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final _lastFetchedPuppies = BehaviorSubject<List<Puppy>>.seeded([]);
