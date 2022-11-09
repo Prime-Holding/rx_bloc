@@ -44,8 +44,9 @@ pubspec.lock
 /build/
 .fvm/
 
-# Web related
+# Generated code
 lib/generated_plugin_registrant.dart
+lib/assets.dart
 
 # Symbolication related
 app.*.symbols
@@ -101,5 +102,4 @@ lib/env_variable.g.dart
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 ''';

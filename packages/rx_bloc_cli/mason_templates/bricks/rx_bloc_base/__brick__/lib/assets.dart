@@ -1,0 +1,938 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+
+class I18n {
+  final I18nLookup _lookup;
+
+  I18n(this._lookup)
+      : featureCounter = I18nFeatureCounter(_lookup.createFeatureCounterLookup()),
+        featureLogin = I18nFeatureLogin(_lookup.createFeatureLoginLookup()),
+        featureNotifications = I18nFeatureNotifications(_lookup.createFeatureNotificationsLookup());
+
+  static Locale? _locale;
+
+  static Locale? get currentLocale => _locale;
+
+  /// add custom locale lookup which will be called first
+  static I18nLookup? customLookup;
+
+  static const I18nDelegate delegate = I18nDelegate();
+
+  static I18n of(BuildContext context) => Localizations.of<I18n>(context, I18n)!;
+
+  static List<Locale> get supportedLocales {
+    return const <Locale>[
+      Locale("en"),
+      Locale("es")
+    ];
+  }
+
+  final I18nFeatureCounter featureCounter;
+
+  final I18nFeatureLogin featureLogin;
+
+  final I18nFeatureNotifications featureNotifications;
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Reload"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Reload"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get reload {
+    return customLookup?.reload ?? _lookup.reload;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"OK"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"OK"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get ok {
+    return customLookup?.ok ?? _lookup.ok;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Close"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Close"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get close {
+    return customLookup?.close ?? _lookup.close;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Reset password"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Reset password"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get resetPassword {
+    return customLookup?.resetPassword ?? _lookup.resetPassword;
+  }
+
+  String? getString(String key, [Map<String, String>? placeholders]) {
+    switch (key) {
+      case I18nKeys.reload:
+        return reload;
+      case I18nKeys.ok:
+        return ok;
+      case I18nKeys.close:
+        return close;
+      case I18nKeys.resetPassword:
+        return resetPassword;
+    }
+    return null;
+  }
+}
+
+class I18nFeatureCounter {
+  I18nFeatureCounter(this._lookup);
+
+  final I18nFeatureCounterLookup _lookup;
+
+  /// add custom locale lookup which will be called first
+  static I18nFeatureCounterLookup? customLookup;
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Counter"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Counter"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get counterAppBarTitle {
+    return customLookup?.counterAppBarTitle ?? _lookup.counterAppBarTitle;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Counter sample"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Counter sample"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get counterPageTitle {
+    return customLookup?.counterPageTitle ?? _lookup.counterPageTitle;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Increment"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Increment"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get increment {
+    return customLookup?.increment ?? _lookup.increment;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Decrement"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Decrement"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get decrement {
+    return customLookup?.decrement ?? _lookup.decrement;
+  }
+
+  String? getString(String key, [Map<String, String>? placeholders]) {
+    switch (key) {
+      case I18nFeatureCounterKeys.counterAppBarTitle:
+        return counterAppBarTitle;
+      case I18nFeatureCounterKeys.counterPageTitle:
+        return counterPageTitle;
+      case I18nFeatureCounterKeys.increment:
+        return increment;
+      case I18nFeatureCounterKeys.decrement:
+        return decrement;
+    }
+    return null;
+  }
+}
+
+class I18nFeatureLogin {
+  I18nFeatureLogin(this._lookup);
+
+  final I18nFeatureLoginLookup _lookup;
+
+  /// add custom locale lookup which will be called first
+  static I18nFeatureLoginLookup? customLookup;
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Login sample"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Login sample"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get loginPageTitle {
+    return customLookup?.loginPageTitle ?? _lookup.loginPageTitle;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Log in"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Log in"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get logIn {
+    return customLookup?.logIn ?? _lookup.logIn;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Log out"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Log out"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get logOut {
+    return customLookup?.logOut ?? _lookup.logOut;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Profile"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Profile"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get profile {
+    return customLookup?.profile ?? _lookup.profile;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Notifications"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Notifications"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notifications {
+    return customLookup?.notifications ?? _lookup.notifications;
+  }
+
+  String? getString(String key, [Map<String, String>? placeholders]) {
+    switch (key) {
+      case I18nFeatureLoginKeys.loginPageTitle:
+        return loginPageTitle;
+      case I18nFeatureLoginKeys.logIn:
+        return logIn;
+      case I18nFeatureLoginKeys.logOut:
+        return logOut;
+      case I18nFeatureLoginKeys.profile:
+        return profile;
+      case I18nFeatureLoginKeys.notifications:
+        return notifications;
+    }
+    return null;
+  }
+}
+
+class I18nFeatureNotifications {
+  I18nFeatureNotifications(this._lookup);
+
+  final I18nFeatureNotificationsLookup _lookup;
+
+  /// add custom locale lookup which will be called first
+  static I18nFeatureNotificationsLookup? customLookup;
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Notification sample"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Notification sample"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notificationPageTitle {
+    return customLookup?.notificationPageTitle ?? _lookup.notificationPageTitle;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notificationsPermissionsDenied {
+    return customLookup?.notificationsPermissionsDenied ?? _lookup.notificationsPermissionsDenied;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Request notification permissions"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Request notification permissions"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notificationPermissionRequestText {
+    return customLookup?.notificationPermissionRequestText ?? _lookup.notificationPermissionRequestText;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Show notification"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Show notification"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notificationShowText {
+    return customLookup?.notificationShowText ?? _lookup.notificationShowText;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Show notification after 5 seconds"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Show notification after 5 seconds"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notificationShowDelayedText {
+    return customLookup?.notificationShowDelayedText ?? _lookup.notificationShowDelayedText;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"In order to receive push notifications on your device, you need first to grant access to them. This applies for iOS and Web, as the permissions on Android are granted upfront."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"In order to receive push notifications on your device, you need first to grant access to them. This applies for iOS and Web, as the permissions on Android are granted upfront."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notificationsPageDescription {
+    return customLookup?.notificationsPageDescription ?? _lookup.notificationsPageDescription;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notificationsPageConfig {
+    return customLookup?.notificationsPageConfig ?? _lookup.notificationsPageConfig;
+  }
+
+  String? getString(String key, [Map<String, String>? placeholders]) {
+    switch (key) {
+      case I18nFeatureNotificationsKeys.notificationPageTitle:
+        return notificationPageTitle;
+      case I18nFeatureNotificationsKeys.notificationsPermissionsDenied:
+        return notificationsPermissionsDenied;
+      case I18nFeatureNotificationsKeys.notificationPermissionRequestText:
+        return notificationPermissionRequestText;
+      case I18nFeatureNotificationsKeys.notificationShowText:
+        return notificationShowText;
+      case I18nFeatureNotificationsKeys.notificationShowDelayedText:
+        return notificationShowDelayedText;
+      case I18nFeatureNotificationsKeys.notificationsPageDescription:
+        return notificationsPageDescription;
+      case I18nFeatureNotificationsKeys.notificationsPageConfig:
+        return notificationsPageConfig;
+    }
+    return null;
+  }
+}
+
+class I18nKeys {
+  static const String reload = "reload";
+  static const String ok = "ok";
+  static const String close = "close";
+  static const String resetPassword = "resetPassword";
+}
+
+class I18nFeatureCounterKeys {
+  static const String counterAppBarTitle = "counterAppBarTitle";
+  static const String counterPageTitle = "counterPageTitle";
+  static const String increment = "increment";
+  static const String decrement = "decrement";
+}
+
+class I18nFeatureLoginKeys {
+  static const String loginPageTitle = "loginPageTitle";
+  static const String logIn = "logIn";
+  static const String logOut = "logOut";
+  static const String profile = "profile";
+  static const String notifications = "notifications";
+}
+
+class I18nFeatureNotificationsKeys {
+  static const String notificationPageTitle = "notificationPageTitle";
+  static const String notificationsPermissionsDenied = "notificationsPermissionsDenied";
+  static const String notificationPermissionRequestText = "notificationPermissionRequestText";
+  static const String notificationShowText = "notificationShowText";
+  static const String notificationShowDelayedText = "notificationShowDelayedText";
+  static const String notificationsPageDescription = "notificationsPageDescription";
+  static const String notificationsPageConfig = "notificationsPageConfig";
+}
+
+class I18nLookup {
+  String getString(String key, [Map<String, String>? placeholders]) {
+    throw UnimplementedError("I18nLookup.getString");
+  }
+
+  String get reload {
+    return getString(I18nKeys.reload);
+  }
+
+  String get ok {
+    return getString(I18nKeys.ok);
+  }
+
+  String get close {
+    return getString(I18nKeys.close);
+  }
+
+  String get resetPassword {
+    return getString(I18nKeys.resetPassword);
+  }
+
+  I18nFeatureCounterLookup createFeatureCounterLookup() => I18nFeatureCounterLookup();
+
+  I18nFeatureLoginLookup createFeatureLoginLookup() => I18nFeatureLoginLookup();
+
+  I18nFeatureNotificationsLookup createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup();
+}
+
+class I18nFeatureCounterLookup {
+  String getString(String key, [Map<String, String>? placeholders]) {
+    throw UnimplementedError("I18nFeatureCounterLookup.getString");
+  }
+
+  String get counterAppBarTitle {
+    return getString(I18nFeatureCounterKeys.counterAppBarTitle);
+  }
+
+  String get counterPageTitle {
+    return getString(I18nFeatureCounterKeys.counterPageTitle);
+  }
+
+  String get increment {
+    return getString(I18nFeatureCounterKeys.increment);
+  }
+
+  String get decrement {
+    return getString(I18nFeatureCounterKeys.decrement);
+  }
+}
+
+class I18nFeatureLoginLookup {
+  String getString(String key, [Map<String, String>? placeholders]) {
+    throw UnimplementedError("I18nFeatureLoginLookup.getString");
+  }
+
+  String get loginPageTitle {
+    return getString(I18nFeatureLoginKeys.loginPageTitle);
+  }
+
+  String get logIn {
+    return getString(I18nFeatureLoginKeys.logIn);
+  }
+
+  String get logOut {
+    return getString(I18nFeatureLoginKeys.logOut);
+  }
+
+  String get profile {
+    return getString(I18nFeatureLoginKeys.profile);
+  }
+
+  String get notifications {
+    return getString(I18nFeatureLoginKeys.notifications);
+  }
+}
+
+class I18nFeatureNotificationsLookup {
+  String getString(String key, [Map<String, String>? placeholders]) {
+    throw UnimplementedError("I18nFeatureNotificationsLookup.getString");
+  }
+
+  String get notificationPageTitle {
+    return getString(I18nFeatureNotificationsKeys.notificationPageTitle);
+  }
+
+  String get notificationsPermissionsDenied {
+    return getString(I18nFeatureNotificationsKeys.notificationsPermissionsDenied);
+  }
+
+  String get notificationPermissionRequestText {
+    return getString(I18nFeatureNotificationsKeys.notificationPermissionRequestText);
+  }
+
+  String get notificationShowText {
+    return getString(I18nFeatureNotificationsKeys.notificationShowText);
+  }
+
+  String get notificationShowDelayedText {
+    return getString(I18nFeatureNotificationsKeys.notificationShowDelayedText);
+  }
+
+  String get notificationsPageDescription {
+    return getString(I18nFeatureNotificationsKeys.notificationsPageDescription);
+  }
+
+  String get notificationsPageConfig {
+    return getString(I18nFeatureNotificationsKeys.notificationsPageConfig);
+  }
+}
+
+class I18nLookup_es extends I18nLookup_en {
+  @override
+  String get reload {
+    return "Reload";
+  }
+
+  @override
+  String get ok {
+    return "OK";
+  }
+
+  @override
+  String get close {
+    return "Close";
+  }
+
+  @override
+  String get resetPassword {
+    return "Reset password";
+  }
+
+  @override
+  I18nFeatureCounterLookup_es createFeatureCounterLookup() => I18nFeatureCounterLookup_es();
+
+  @override
+  I18nFeatureLoginLookup_es createFeatureLoginLookup() => I18nFeatureLoginLookup_es();
+
+  @override
+  I18nFeatureNotificationsLookup_es createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup_es();
+}
+
+class I18nLookup_en extends I18nLookup {
+  @override
+  String get reload {
+    return "Reload";
+  }
+
+  @override
+  String get ok {
+    return "OK";
+  }
+
+  @override
+  String get close {
+    return "Close";
+  }
+
+  @override
+  String get resetPassword {
+    return "Reset password";
+  }
+
+  @override
+  I18nFeatureCounterLookup_en createFeatureCounterLookup() => I18nFeatureCounterLookup_en();
+
+  @override
+  I18nFeatureLoginLookup_en createFeatureLoginLookup() => I18nFeatureLoginLookup_en();
+
+  @override
+  I18nFeatureNotificationsLookup_en createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup_en();
+}
+
+class I18nFeatureCounterLookup_es extends I18nFeatureCounterLookup_en {
+  @override
+  String get counterAppBarTitle {
+    return "Counter";
+  }
+
+  @override
+  String get counterPageTitle {
+    return "Counter sample";
+  }
+
+  @override
+  String get increment {
+    return "Increment";
+  }
+
+  @override
+  String get decrement {
+    return "Decrement";
+  }
+}
+
+class I18nFeatureCounterLookup_en extends I18nFeatureCounterLookup {
+  @override
+  String get counterAppBarTitle {
+    return "Counter";
+  }
+
+  @override
+  String get counterPageTitle {
+    return "Counter sample";
+  }
+
+  @override
+  String get increment {
+    return "Increment";
+  }
+
+  @override
+  String get decrement {
+    return "Decrement";
+  }
+}
+
+class I18nFeatureLoginLookup_es extends I18nFeatureLoginLookup_en {
+  @override
+  String get loginPageTitle {
+    return "Login sample";
+  }
+
+  @override
+  String get logIn {
+    return "Log in";
+  }
+
+  @override
+  String get logOut {
+    return "Log out";
+  }
+
+  @override
+  String get profile {
+    return "Profile";
+  }
+
+  @override
+  String get notifications {
+    return "Notifications";
+  }
+}
+
+class I18nFeatureLoginLookup_en extends I18nFeatureLoginLookup {
+  @override
+  String get loginPageTitle {
+    return "Login sample";
+  }
+
+  @override
+  String get logIn {
+    return "Log in";
+  }
+
+  @override
+  String get logOut {
+    return "Log out";
+  }
+
+  @override
+  String get profile {
+    return "Profile";
+  }
+
+  @override
+  String get notifications {
+    return "Notifications";
+  }
+}
+
+class I18nFeatureNotificationsLookup_es extends I18nFeatureNotificationsLookup_en {
+  @override
+  String get notificationPageTitle {
+    return "Notification sample";
+  }
+
+  @override
+  String get notificationsPermissionsDenied {
+    return "Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings.";
+  }
+
+  @override
+  String get notificationPermissionRequestText {
+    return "Request notification permissions";
+  }
+
+  @override
+  String get notificationShowText {
+    return "Show notification";
+  }
+
+  @override
+  String get notificationShowDelayedText {
+    return "Show notification after 5 seconds";
+  }
+
+  @override
+  String get notificationsPageDescription {
+    return "In order to receive push notifications on your device, you need first to grant access to them. This applies for iOS and Web, as the permissions on Android are granted upfront.";
+  }
+
+  @override
+  String get notificationsPageConfig {
+    return "When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated.";
+  }
+}
+
+class I18nFeatureNotificationsLookup_en extends I18nFeatureNotificationsLookup {
+  @override
+  String get notificationPageTitle {
+    return "Notification sample";
+  }
+
+  @override
+  String get notificationsPermissionsDenied {
+    return "Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings.";
+  }
+
+  @override
+  String get notificationPermissionRequestText {
+    return "Request notification permissions";
+  }
+
+  @override
+  String get notificationShowText {
+    return "Show notification";
+  }
+
+  @override
+  String get notificationShowDelayedText {
+    return "Show notification after 5 seconds";
+  }
+
+  @override
+  String get notificationsPageDescription {
+    return "In order to receive push notifications on your device, you need first to grant access to them. This applies for iOS and Web, as the permissions on Android are granted upfront.";
+  }
+
+  @override
+  String get notificationsPageConfig {
+    return "When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated.";
+  }
+}
+
+class I18nDelegate extends LocalizationsDelegate<I18n> {
+  const I18nDelegate();
+
+  @override
+  Future<I18n> load(Locale locale) {
+    I18n._locale = locale;
+    return SynchronousFuture<I18n>(I18n(_findLookUpFromLocale(locale)));
+  }
+
+  @override
+  bool isSupported(Locale locale) => true;
+
+  @override
+  bool shouldReload(I18nDelegate old) => false;
+
+  I18nLookup _findLookUpFromLocale(Locale locale) {
+    switch (locale.languageCode) {
+        case "es":
+          return I18nLookup_es();
+        case "en":
+          return I18nLookup_en();
+    }
+    return I18nLookup_en();
+  }
+}
+
+class Fonts {
+  static const String workSans = "WorkSans";
+}
+
+class Assets {
+  /// ![](file:///Users/kostadin.damyanov/projects/rxbloc_cli_updates/packages/rx_bloc_cli/example/test_app/assets/images/.git_keep)
+  static const String gitKeep = "assets/images/.git_keep";
+}
+
