@@ -7,14 +7,13 @@ class WrapHelper {
         @JvmStatic
         fun callExpressionFinder(psiElement: PsiElement): PsiElement? {
             var psiElementFinder: PsiElement? = psiElement.parent
-
             for (i in 1..10) {
                 if (psiElementFinder == null) {
                     return null
                 }
 
-                if (psiElementFinder.toString() == "CALL_EXPRESSION") {
-                    if (psiElementFinder.text.startsWith(psiElement.text)) {
+                if (psiElementFinder.toString() == "CALL_EXPRESSION" || psiElementFinder.toString() == "NEW_EXPRESSION") {
+                    if (psiElementFinder.text.replace("const ", "").startsWith(psiElement.text)) {
                         return psiElementFinder
                     }
                     return null
