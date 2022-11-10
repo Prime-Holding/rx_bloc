@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:${project_name}/feature_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
-import 'package:${project_name}/feature_${bloc_snake_case}/views/${bloc_snake_case}_page.dart';
+import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
+import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/views/${bloc_snake_case}_page.dart';
 
 import '../mock/${bloc_snake_case}_mock.dart';
 
 /// Change the parameters according the the needs of the test
-Widget ${bloc_field_case}Factory({int mockedData = 0}) => Scaffold(
+Widget ${bloc_field_case}Factory({
+${states_as_optional_parameter}}) =>
+    Scaffold(
       body: MultiProvider(providers: [
         RxBlocProvider<${bloc_pascal_case}BlocType>.value(
-          value: ${bloc_field_case}MockFactory(variableElementInTests: false),
+          value: ${bloc_field_case}MockFactory(
+${states_as_passing_named_parameters}
+          ),
         ),
       ], child: const ${bloc_pascal_case}Page()),
     );

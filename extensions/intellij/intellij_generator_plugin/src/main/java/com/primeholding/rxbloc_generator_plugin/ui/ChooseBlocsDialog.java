@@ -2,8 +2,9 @@ package com.primeholding.rxbloc_generator_plugin.ui;
 
 import com.android.annotations.Nullable;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBList;
-import com.primeholding.rxbloc_generator_plugin.parser.Bloc;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,12 +18,15 @@ public class ChooseBlocsDialog extends DialogWrapper {
     private final List<Bloc> allBlocs;
     private final List<Bloc> allowedBlocs;
     private final List<Bloc> initiallySelectedBlocs;
+    JBCheckBox includeBlocDi = new JBCheckBox("Generate DI/Mocks from BloC constructor", true);
+
 
     public ChooseBlocsDialog(List<Bloc> allBlocs, List<Bloc> initiallySelectedBlocs) {
         super(true);
         this.allBlocs = allBlocs;
-        this.initiallySelectedBlocs = initiallySelectedBlocs;
         this.allowedBlocs = new ArrayList<>(initiallySelectedBlocs);
+        this.initiallySelectedBlocs = initiallySelectedBlocs;
+        initiallySelectedBlocs.clear();
         setTitle("Select BloCs");
         setOKButtonText("Create");
         setModal(true);
@@ -32,7 +36,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        JPanel dialogPanel = new JPanel(new BorderLayout());
+        JPanel dialogPanel = new JPanel(new BorderLayout(0, 5));
 
         JBList<Bloc> list = new JBList<>(allBlocs.toArray(new Bloc[0]));
         list.setCellRenderer(new CheckListRenderer());
@@ -66,7 +70,14 @@ public class ChooseBlocsDialog extends DialogWrapper {
 
         );
         dialogPanel.add(new JScrollPane(list), BorderLayout.CENTER);
+        dialogPanel.add(includeBlocDi, BorderLayout.SOUTH);
+        dialogPanel.add(new JLabel("Bootstrap code for Unit & Golden tests will be created under the folder(s) test/feature_{selected_feature}" ), BorderLayout.NORTH);
+
         return dialogPanel;
+    }
+
+    public boolean includeDiMocks() {
+        return includeBlocDi.isSelected();
     }
 
     class CheckListRenderer extends JCheckBox implements ListCellRenderer<Bloc> {
@@ -77,7 +88,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
             setEnabled(allowedBlocs.contains(value));
             setBackground(list.getBackground());
             setForeground(list.getForeground());
-            setText(value.getFileName());
+            setText((value.isLib() ? "lib" : "feature") + "_" + value.getFileName().replace("_bloc.dart", ""));
             return this;
         }
     }

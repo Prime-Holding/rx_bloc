@@ -7,6 +7,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
@@ -82,8 +83,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
      *                                     when manipulation of the psi tree fails.
      */
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
-        Runnable runnable = () -> invokeSnippetAction(project, editor, snippetType);
-        WriteCommandAction.runWriteCommandAction(project, runnable);
+        invokeSnippetAction(project, editor, snippetType);
     }
 
     protected void invokeSnippetAction(@NotNull Project project, Editor editor, SnippetType snippetType) {
@@ -98,7 +98,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             return;
         }
 
-        String blocTypeDirectorySuggest = null;
+        String blocTypeDirectorySuggest;
         Bloc blocFromPath = null;
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
 
@@ -113,9 +113,10 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 for (VirtualFile file : children) {
                     if (file.isDirectory() && file.getName().equals(BLOCS_DIRECTORY)) {
 
+                        String blocFileName = vFile.getName().replace("page.dart", "bloc.dart");
+
                         for (VirtualFile blocFile : file.getChildren()) {
-                            if (blocFile.getName().endsWith("bloc.dart")) {
-                                blocTypeDirectorySuggest = (getBlocTypeFromFile(blocFile.getName()));
+                            if (blocFile.getName().equals(blocFileName)) {
                                 blocFromPath = Utils.Companion.extractBloc(blocFile);
                                 break;
                             }
@@ -127,32 +128,82 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             }
         }
         final String selectedText = document.getText(TextRange.create(offsetStart, offsetEnd));
-        String stateTypeDirectorySuggest = "";
-        String stateVariableNameSuggest = "";
+        String stateTypeDirectorySuggest;
+        String stateVariableNameSuggest;
 
-        if (blocFromPath != null && blocFromPath.getStateVariableNames().size() > 0) {
+        if (blocFromPath != null && blocFromPath.getStateVariableTypes().size() > 0) {
 
-            ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
-
-            boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
-            int chooseState = comboBox.getSelectedIndex();
-            if (isOK) {
-
-                blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
-                stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(chooseState);
-                stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(chooseState);
-            } else {
-                //Do nothing if canceled
-                return;
+            String filter = "";
+            switch (snippetType) {
+                case RxBlocBuilder:
+                case RxBlocListener:
+                case RxFormFieldBuilder:
+                    // no custom filtering
+                    break;
+                case RxResultBuilder:
+// Result builder - filter only states with result
+                    filter = "Result<";
+                    break;
+                case RxPaginatedBuilder:
+// Paginated List wrapping - Filter only paginated list
+                    filter = "PaginatedList<";
+                    break;
+                case RxTextFormFieldBuilder:
+// filter only string states from bloc
+                    filter = "String";
+                    break;
             }
-//            }
-        }
+            if (!filter.isEmpty()) {
+                for (int i = blocFromPath.getStateVariableTypes().size() - 1; i >= 0; i--) {
 
-        final String replaceWith = Snippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                    if (!blocFromPath.getStateVariableTypes().get(i).startsWith(filter)) {
+                        blocFromPath.getStateVariableNames().remove(i);
+                        blocFromPath.getStateVariableTypes().remove(i);
+                    }
+                }
+            }
+
+            if (blocFromPath.getStateVariableNames().isEmpty()) {
+                Messages.showMessageDialog(psiFile.getProject(), "No elements found matching the desired state type", "No Elements", null);
+            } else if (blocFromPath.getStateVariableNames().size() == 1) {
+                blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
+                stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(0);
+                stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(0);
+
+                execute(stateVariableNameSuggest, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, document, project, editor, offsetStart, offsetEnd);
+            } else {
+                ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
+
+                Bloc finalBlocFromPath = blocFromPath;
+                ApplicationManager.getApplication().invokeLater(() -> {
+                    boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
+                    int chooseState = comboBox.getSelectedIndex();
+                    if (isOK) {
+                        String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(finalBlocFromPath.getFileName());
+                        String stateVariableNameSuggestChosen = finalBlocFromPath.getStateVariableNames().get(chooseState);
+                        String stateTypeDirectorySuggestChosen = finalBlocFromPath.getStateVariableTypes().get(chooseState);
+
+                        execute(stateVariableNameSuggestChosen, selectedText, blocTypeDirectorySuggestChosen, stateTypeDirectorySuggestChosen, document, project, editor, offsetStart, offsetEnd);
+                    }
+                });
+
+            }
+        }
+    }
+
+    private void execute(String stateVariableNameSuggest, String selectedText, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, Document document, Project project, Editor editor, int offsetStart, int offsetEnd) {
+        String replacement;
+        if (stateVariableNameSuggest.isEmpty()) {
+            replacement = Snippets.getSnippet(snippetType, selectedText);
+        } else {
+            replacement = SmartSnippets.getSnippet(snippetType, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+        }
+        final String replaceWith = replacement;
 
         // wrap the widget:
         WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith));
 
+        checkImports(document, project, stateTypeDirectorySuggest);
         // place cursors to specify types:
         final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
 
@@ -188,16 +239,52 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 final int unformattedLineCount = document.getLineCount();
 
                 CodeStyleManager.getInstance(project).reformat(currentFile);
-                
                 final int formattedLineCount = document.getLineCount();
 
                 // file was incorrectly formatted, revert formatting
-                if (formattedLineCount > unformattedLineCount + 5) {
+                if (formattedLineCount > unformattedLineCount + 15) {
                     document.setText(unformattedText);
                     PsiDocumentManager.getInstance(project).commitDocument(document);
                 }
             }
         });
+    }
+
+    private void checkImports(Document document, Project project, String stateTypeDirectorySuggest) {
+
+        boolean containsResult = stateTypeDirectorySuggest.contains("Result<");
+        boolean containsPaginatedList = stateTypeDirectorySuggest.contains("PaginatedList<");
+
+        boolean containsPaginatedListImport = document.getText().contains("package:rx_bloc_list/rx_bloc_list.dart");
+        boolean containsResultImport = document.getText().contains("package:rx_bloc/rx_bloc.dart");
+
+        if (containsResult && !containsResultImport) {
+            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc/rx_bloc.dart';\n"));
+        }
+        if (containsPaginatedList && !containsPaginatedListImport) {
+            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc_list/rx_bloc_list.dart';\n"));
+        }
+
+        switch (snippetType) {
+            case RxBlocListener:
+            case RxBlocBuilder:
+                if (!document.getText().contains("package:flutter_rx_bloc/flutter_rx_bloc.dart")) {
+                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';\n"));
+                }
+                break;
+            case RxResultBuilder:
+            case RxPaginatedBuilder:
+//handled globally
+                break;
+            case RxFormFieldBuilder:
+            case RxTextFormFieldBuilder:
+                if (!document.getText().contains("package:flutter_rx_bloc/rx_form.dart")) {
+                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/rx_form.dart';\n" +
+                            (containsResult && !containsResultImport ? "import 'package:rx_bloc/rx_bloc.dart';\n" : "")));
+                }
+                break;
+
+        }
     }
 
     private String getBlocTypeFromFile(String vFileName) {

@@ -1,36 +1,33 @@
 package com.primeholding.rxbloc_generator_plugin.intention_action;
 
 
-import org.jetbrains.annotations.NotNull;
-
 public class Snippets {
     public static final String BLOC_SNIPPET_KEY = "BlocType";
-//    public static final String STATE_TYPE_SNIPPET_KEY = "StateType";
-//    public static final String STATE_SNIPPET_KEY = "someState";
+    public static final String STATE_TYPE_SNIPPET_KEY = "StateType";
+    public static final String STATE_SNIPPET_KEY = "someState";
 
-    static String getSnippet(SnippetType snippetType, String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
+    static String getSnippet(SnippetType snippetType, String widget) {
         switch (snippetType) {
             case RxBlocBuilder:
-                return blocBuilderSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                return blocBuilderSnippet(widget);
             case RxPaginatedBuilder:
-                return blocPaginatedBuilderSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                return blocPaginatedBuilderSnippet(widget);
             case RxResultBuilder:
-                return blocResultBuilderSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                return blocResultBuilderSnippet(widget);
             case RxBlocListener:
-                return blocListenerSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                return blocListenerSnippet(widget);
             case RxFormFieldBuilder:
-                return formFieldSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                return formFieldSnippet(widget);
             case RxTextFormFieldBuilder:
-                return formTextFieldSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                return formTextFieldSnippet(widget);
         }
 
-        return blocBuilderSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+        return blocBuilderSnippet(widget);
     }
 
-    private static String formTextFieldSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
-        blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
+    private static String formTextFieldSnippet(String widget) {
         return String.format("RxTextFormFieldBuilder<%1$s>( \n" +
-                        " state: (bloc) => bloc.states.%2$s\n" +
+                        " state: (bloc) => bloc.states.%2$s, // pick a specific state you want to listen for\n" +
                         " showErrorState: (bloc) => bloc.states.showErrors,\n" +
                         " onChanged: (bloc, value) => bloc.events.specificEvent(value), // pick a specific event the field will to send data to\n" +
                         "   ///TODO: Use the controller from the fieldState\n" +
@@ -40,21 +37,12 @@ public class Snippets {
                         "   ///decoration\n" +
                         "   ///Example `decoration: fieldState.decoration.copyWithDecoration(InputStyles.textFieldDecoration)`\n" +
                         " builder: (fieldState) => %3$s," +
-                ")\n", blocTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                ")\n", BLOC_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 
-    @NotNull
-    private static String getBlocTypeDirectorySuggest(String blocTypeDirectorySuggest) {
-        if(blocTypeDirectorySuggest == null) {
-            blocTypeDirectorySuggest = BLOC_SNIPPET_KEY;
-        }
-        return blocTypeDirectorySuggest;
-    }
-
-    private static String formFieldSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
-        blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
+    private static String formFieldSnippet(String widget) {
         return String.format("RxFormFieldBuilder<%1$s, %2$s>(\n" +
-                "     state: (bloc) => bloc.states.%3$s,\n" +
+                "     state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                 "     showErrorState: (bloc) => bloc.states.showErrors,\n" +
                 "     builder: (fieldState) => Column(\n" +
                 "       children: [\n" +
@@ -71,33 +59,30 @@ public class Snippets {
                 "           ),\n" +
                 "       ],\n" +
                 "      ),\n" +
-                "   )\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                "   )\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 
-    private static String blocListenerSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
-        blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
+    private static String blocListenerSnippet(String widget) {
         return String.format("RxBlocListener<%1$s, %2$s>(\n" +
-                "  state: (bloc) => bloc.states.%3$s\n" +
+                "  state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                 "  listener: (context, state) {\n" +
                 "    // do stuff here based on BlocA's state\n" +
                 "  }, \n" +
                 "  child: %4$s,\n" +
-                ")\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                ")\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 
-    private static String blocBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
-        blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
+    private static String blocBuilderSnippet(String widget) {
         return String.format("RxBlocBuilder<%1$s, %2$s>(\n" +
-                "  state: (bloc) => bloc.states.%3$s,\n"+
+                "  state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n"+
                 "  builder: (context, snapshot, bloc) =>\n" +
                 "    %4$s,\n" +
-                ")\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                ")\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 
-    private static String blocPaginatedBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
-        blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
+    private static String blocPaginatedBuilderSnippet(String widget) {
         return String.format("RxPaginatedBuilder<%1$s, %2$s>.withRefreshIndicator(\n" +
-                        "          state: (bloc) => bloc.states.%3$s,\n" +
+                        "          state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                         "          onBottomScrolled: (bloc) => bloc.events.loadPage(),\n" +
                         "          onRefresh: (bloc) async {\n" +
                         "            bloc.events.loadPage(reset: true);\n" +
@@ -117,18 +102,17 @@ public class Snippets {
                         "              const YourProgressIndicator(),\n" +
                         "          buildError: (context, list, bloc) =>\n" +
                         "              YourErrorWidget(error: list.error!),\n" +
-                        "        )\n", blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                        "        )\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 
-    private static String blocResultBuilderSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
-        blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
+    private static String blocResultBuilderSnippet(String widget) {
         return String.format("RxResultBuilder<%1$s, %2$s>(\n" +
-                " state: (bloc) => bloc.states.%3$s,\n" +
+                " state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                 " buildSuccess: (context, data, bloc) => %4$s,\n" +
                 " buildLoading: (context, bloc) => \n" +
                 "   const CircularProgressIndicator(),\n" +
                 " buildError: (context, error, bloc) => \n" +
                 "   Text(error),\n" +
-                ")\n", blocTypeDirectorySuggest,  stateTypeDirectorySuggest, stateVariableNameSuggest, widget);
+                ")\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 }
