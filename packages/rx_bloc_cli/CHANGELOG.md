@@ -1,4 +1,4 @@
-## [1.2.0] August 01, 2022
+## [1.2.0] October 27, 2022
 * Support flutter 3
 * Fixes to generated project not properly building or displaying errors on hot restart
 * Update dependencies of generated project to latest versions

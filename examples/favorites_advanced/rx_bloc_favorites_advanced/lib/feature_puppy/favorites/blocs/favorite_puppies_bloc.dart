@@ -33,11 +33,11 @@ class FavoritePuppiesBloc extends $FavoritePuppiesBloc {
     _$reloadFavoritePuppiesEvent
         .fetchPuppies(repository)
         .bind(_favoritePuppies)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
 
     coordinatorBloc.states.onPuppiesUpdated
         .updateFavoritePuppies(_favoritePuppies)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   // MARK: - Subjects

@@ -37,7 +37,7 @@ class HotelManageBloc extends $HotelManageBloc {
         //notify the coordinator bloc that the hotel has been changed
         .doOnData((hotel) => coordinatorBloc.events.hotelUpdated(hotel))
         .bind(_lastUpdatedHotel)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final _lastUpdatedHotel = BehaviorSubject<Hotel>();

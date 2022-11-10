@@ -26,7 +26,7 @@ abstract class NavigationBarBlocStates {
 @RxBloc()
 class NavigationBarBloc extends $NavigationBarBloc {
   NavigationBarBloc() {
-    _$selectPageEvent.updateItems(_items).disposedBy(_compositeSubscription);
+    _$selectPageEvent.updateItems(_items).addTo(_compositeSubscription);
   }
 
   final _items = BehaviorSubject<List<NavigationItem>>.seeded([

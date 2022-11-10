@@ -28,7 +28,7 @@ class HotelsExtraDetailsBloc extends $HotelsExtraDetailsBloc {
         // Bind the result (List<Hotels>) to the local state
         .bind(_lastFetchedHotels)
         // Always make sure your subscriptions are disposed of!
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final _lastFetchedHotels = BehaviorSubject<List<Hotel>>.seeded([]);

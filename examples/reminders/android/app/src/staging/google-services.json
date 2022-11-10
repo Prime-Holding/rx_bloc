@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "495639736415",
+    "project_id": "reminders-app-staging-ee074",
+    "storage_bucket": "reminders-app-staging-ee074.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495639736415:android:3b63248bedf459e4f46bea",
+        "android_client_info": {
+          "package_name": "com.primeholding.reminderspoc.stag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495639736415-gpokf84t1gr5q2g0mpk8d1epfalava6b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3Gs-kVEET2QMqH-WMU43ol-TVluiTfew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495639736415-gpokf84t1gr5q2g0mpk8d1epfalava6b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
