@@ -9,7 +9,7 @@ class ${feature_pascal_case}Dependencies {
   ${feature_pascal_case}Dependencies._(this.context);
 
   factory ${feature_pascal_case}Dependencies.from(BuildContext context) =>
-    = ${feature_pascal_case}Dependencies._(context);
+      ${feature_pascal_case}Dependencies._(context);
 
   final BuildContext context;
 
