@@ -1,4 +1,8 @@
-## [1.2.0] October 27, 2022
+## [1.3.0] - TBD
+* Add utility script to exclude files from LCOV coverage reports
+* Import r_flutter and use it for localisation
+
+## [1.2.0] - October 27, 2022
 * Support flutter 3
 * Fixes to generated project not properly building or displaying errors on hot restart
 * Update dependencies of generated project to latest versions
