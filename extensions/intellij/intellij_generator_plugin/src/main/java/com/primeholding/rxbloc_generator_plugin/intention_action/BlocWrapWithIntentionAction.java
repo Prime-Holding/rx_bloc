@@ -201,37 +201,39 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         final String replaceWith = replacement;
 
         // wrap the widget:
-        WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith));
+        WriteCommandAction.runWriteCommandAction(project, () -> {
+            document.replaceString(offsetStart, offsetEnd, replaceWith);
 
-        checkImports(document, project, stateTypeDirectorySuggest);
-        // place cursors to specify types:
-        final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
+            checkImports(document, stateTypeDirectorySuggest);
 
-        final CaretModel caretModel = editor.getCaretModel();
-        caretModel.removeSecondaryCarets();
 
-        for (String snippet : snippetArr) {
-            if (!replaceWith.contains(snippet)) {
-                continue;
+            // place cursors to specify types:
+            final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
+
+            final CaretModel caretModel = editor.getCaretModel();
+            caretModel.removeSecondaryCarets();
+
+            for (String snippet : snippetArr) {
+                if (!replaceWith.contains(snippet)) {
+                    continue;
+                }
+
+                final int caretOffset = offsetStart + replaceWith.indexOf(snippet);
+                final VisualPosition visualPos = editor.offsetToVisualPosition(caretOffset);
+                caretModel.addCaret(visualPos);
+
+                // select snippet prefix keys:
+                final Caret currentCaret = caretModel.getCurrentCaret();
+                currentCaret.setSelection(caretOffset, caretOffset);
             }
 
-            final int caretOffset = offsetStart + replaceWith.indexOf(snippet);
-            final VisualPosition visualPos = editor.offsetToVisualPosition(caretOffset);
-            caretModel.addCaret(visualPos);
+            final Caret initialCaret = caretModel.getAllCarets().get(0);
+            if (!initialCaret.hasSelection()) {
+                // initial position from where was triggered the intention action
+                caretModel.removeCaret(initialCaret);
+            }
 
-            // select snippet prefix keys:
-            final Caret currentCaret = caretModel.getCurrentCaret();
-            currentCaret.setSelection(caretOffset, caretOffset);
-        }
-
-        final Caret initialCaret = caretModel.getAllCarets().get(0);
-        if (!initialCaret.hasSelection()) {
-            // initial position from where was triggered the intention action
-            caretModel.removeCaret(initialCaret);
-        }
-
-        // reformat file:
-        ApplicationManager.getApplication().runWriteAction(() -> {
+            // reformat file:
             PsiDocumentManager.getInstance(project).commitDocument(document);
             final PsiFile currentFile = getCurrentFile(project, editor);
             if (currentFile != null) {
@@ -250,7 +252,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         });
     }
 
-    private void checkImports(Document document, Project project, String stateTypeDirectorySuggest) {
+    private void checkImports(Document document, String stateTypeDirectorySuggest) {
 
         boolean containsResult = stateTypeDirectorySuggest.contains("Result<");
         boolean containsPaginatedList = stateTypeDirectorySuggest.contains("PaginatedList<");
@@ -259,17 +261,17 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         boolean containsResultImport = document.getText().contains("package:rx_bloc/rx_bloc.dart");
 
         if (containsResult && !containsResultImport) {
-            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc/rx_bloc.dart';\n"));
+            document.insertString(0, "import 'package:rx_bloc/rx_bloc.dart';\n");
         }
         if (containsPaginatedList && !containsPaginatedListImport) {
-            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc_list/rx_bloc_list.dart';\n"));
+            document.insertString(0, "import 'package:rx_bloc_list/rx_bloc_list.dart';\n");
         }
 
         switch (snippetType) {
             case RxBlocListener:
             case RxBlocBuilder:
                 if (!document.getText().contains("package:flutter_rx_bloc/flutter_rx_bloc.dart")) {
-                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';\n"));
+                    document.insertString(0, "import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';\n");
                 }
                 break;
             case RxResultBuilder:
@@ -279,8 +281,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             case RxFormFieldBuilder:
             case RxTextFormFieldBuilder:
                 if (!document.getText().contains("package:flutter_rx_bloc/rx_form.dart")) {
-                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/rx_form.dart';\n" +
-                            (containsResult && !containsResultImport ? "import 'package:rx_bloc/rx_bloc.dart';\n" : "")));
+                    document.insertString(0, "import 'package:flutter_rx_bloc/rx_form.dart';\n" +
+                            (containsResult && !containsResultImport ? "import 'package:rx_bloc/rx_bloc.dart';\n" : ""));
                 }
                 break;
 
