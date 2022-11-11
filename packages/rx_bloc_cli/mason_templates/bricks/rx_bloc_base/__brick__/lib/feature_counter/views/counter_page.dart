@@ -45,7 +45,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
-        title: Text(context.l10n.counterPageTitle),
+        title: Text(context.l10n.featureCounter.counterPageTitle),
         actions: [
           RxLoadingBuilder<CounterBlocType>(
             state: (bloc) => bloc.states.isLoading,
@@ -88,14 +88,14 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
           children: [
             ActionButton(
               icon: Icon(context.designSystem.icons.plusSign),
-              tooltip: context.l10n.increment,
+              tooltip: context.l10n.featureCounter.increment,
               onPressed: isLoading ? null : bloc.events.increment,
               loading: isLoading && tag == CounterBloc.tagIncrement,
             ),
             const SizedBox(width: 16),
             ActionButton(
               icon: Icon(context.designSystem.icons.minusSign),
-              tooltip: context.l10n.decrement,
+              tooltip: context.l10n.featureCounter.decrement,
               onPressed: isLoading ? null : bloc.events.decrement,
               loading: isLoading && tag == CounterBloc.tagDecrement,
             ),
