@@ -1,0 +1,9 @@
+{
+  "@@locale": "es",
+  "accessDenied": "You don't have access to this resource.",
+  "network": "A network error occurred.",
+  "noConnection": "It looks like your device is not connected to the internet. Please check your settings.",
+  "notFound": "Resource not found.",
+  "server": "An error occurred and the request could not be processed. Please try again later.",
+  "unknown": "Oops, something went wrong. Please try again."
+}

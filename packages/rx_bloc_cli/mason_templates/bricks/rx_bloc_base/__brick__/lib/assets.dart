@@ -5,7 +5,8 @@ class I18n {
   final I18nLookup _lookup;
 
   I18n(this._lookup)
-      : featureCounter = I18nFeatureCounter(_lookup.createFeatureCounterLookup()),
+      : error = I18nError(_lookup.createErrorLookup()),
+        featureCounter = I18nFeatureCounter(_lookup.createFeatureCounterLookup()),
         featureLogin = I18nFeatureLogin(_lookup.createFeatureLoginLookup()),
         featureNotifications = I18nFeatureNotifications(_lookup.createFeatureNotificationsLookup());
 
@@ -26,6 +27,8 @@ class I18n {
       Locale("es")
     ];
   }
+
+  final I18nError error;
 
   final I18nFeatureCounter featureCounter;
 
@@ -123,6 +126,153 @@ class I18n {
         return close;
       case I18nKeys.resetPassword:
         return resetPassword;
+    }
+    return null;
+  }
+}
+
+class I18nError {
+  I18nError(this._lookup);
+
+  final I18nErrorLookup _lookup;
+
+  /// add custom locale lookup which will be called first
+  static I18nErrorLookup? customLookup;
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"You don\'t have access to this resource."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"You don\'t have access to this resource."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get accessDenied {
+    return customLookup?.accessDenied ?? _lookup.accessDenied;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"A network error occurred."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"A network error occurred."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get network {
+    return customLookup?.network ?? _lookup.network;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"It looks like your device is not connected to the internet. Please check your settings."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"It looks like your device is not connected to the internet. Please check your settings."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get noConnection {
+    return customLookup?.noConnection ?? _lookup.noConnection;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Resource not found."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Resource not found."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get notFound {
+    return customLookup?.notFound ?? _lookup.notFound;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"An error occurred and the request could not be processed. Please try again later."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"An error occurred and the request could not be processed. Please try again later."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get server {
+    return customLookup?.server ?? _lookup.server;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Oops, something went wrong. Please try again."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Oops, something went wrong. Please try again."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get unknown {
+    return customLookup?.unknown ?? _lookup.unknown;
+  }
+
+  String? getString(String key, [Map<String, String>? placeholders]) {
+    switch (key) {
+      case I18nErrorKeys.accessDenied:
+        return accessDenied;
+      case I18nErrorKeys.network:
+        return network;
+      case I18nErrorKeys.noConnection:
+        return noConnection;
+      case I18nErrorKeys.notFound:
+        return notFound;
+      case I18nErrorKeys.server:
+        return server;
+      case I18nErrorKeys.unknown:
+        return unknown;
     }
     return null;
   }
@@ -532,6 +682,15 @@ class I18nKeys {
   static const String resetPassword = "resetPassword";
 }
 
+class I18nErrorKeys {
+  static const String accessDenied = "accessDenied";
+  static const String network = "network";
+  static const String noConnection = "noConnection";
+  static const String notFound = "notFound";
+  static const String server = "server";
+  static const String unknown = "unknown";
+}
+
 class I18nFeatureCounterKeys {
   static const String counterAppBarTitle = "counterAppBarTitle";
   static const String counterPageTitle = "counterPageTitle";
@@ -578,11 +737,43 @@ class I18nLookup {
     return getString(I18nKeys.resetPassword);
   }
 
+  I18nErrorLookup createErrorLookup() => I18nErrorLookup();
+
   I18nFeatureCounterLookup createFeatureCounterLookup() => I18nFeatureCounterLookup();
 
   I18nFeatureLoginLookup createFeatureLoginLookup() => I18nFeatureLoginLookup();
 
   I18nFeatureNotificationsLookup createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup();
+}
+
+class I18nErrorLookup {
+  String getString(String key, [Map<String, String>? placeholders]) {
+    throw UnimplementedError("I18nErrorLookup.getString");
+  }
+
+  String get accessDenied {
+    return getString(I18nErrorKeys.accessDenied);
+  }
+
+  String get network {
+    return getString(I18nErrorKeys.network);
+  }
+
+  String get noConnection {
+    return getString(I18nErrorKeys.noConnection);
+  }
+
+  String get notFound {
+    return getString(I18nErrorKeys.notFound);
+  }
+
+  String get server {
+    return getString(I18nErrorKeys.server);
+  }
+
+  String get unknown {
+    return getString(I18nErrorKeys.unknown);
+  }
 }
 
 class I18nFeatureCounterLookup {
@@ -689,6 +880,9 @@ class I18nLookup_es extends I18nLookup_en {
   }
 
   @override
+  I18nErrorLookup_es createErrorLookup() => I18nErrorLookup_es();
+
+  @override
   I18nFeatureCounterLookup_es createFeatureCounterLookup() => I18nFeatureCounterLookup_es();
 
   @override
@@ -720,6 +914,9 @@ class I18nLookup_en extends I18nLookup {
   }
 
   @override
+  I18nErrorLookup_en createErrorLookup() => I18nErrorLookup_en();
+
+  @override
   I18nFeatureCounterLookup_en createFeatureCounterLookup() => I18nFeatureCounterLookup_en();
 
   @override
@@ -727,6 +924,70 @@ class I18nLookup_en extends I18nLookup {
 
   @override
   I18nFeatureNotificationsLookup_en createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup_en();
+}
+
+class I18nErrorLookup_es extends I18nErrorLookup_en {
+  @override
+  String get accessDenied {
+    return "You don\'t have access to this resource.";
+  }
+
+  @override
+  String get network {
+    return "A network error occurred.";
+  }
+
+  @override
+  String get noConnection {
+    return "It looks like your device is not connected to the internet. Please check your settings.";
+  }
+
+  @override
+  String get notFound {
+    return "Resource not found.";
+  }
+
+  @override
+  String get server {
+    return "An error occurred and the request could not be processed. Please try again later.";
+  }
+
+  @override
+  String get unknown {
+    return "Oops, something went wrong. Please try again.";
+  }
+}
+
+class I18nErrorLookup_en extends I18nErrorLookup {
+  @override
+  String get accessDenied {
+    return "You don\'t have access to this resource.";
+  }
+
+  @override
+  String get network {
+    return "A network error occurred.";
+  }
+
+  @override
+  String get noConnection {
+    return "It looks like your device is not connected to the internet. Please check your settings.";
+  }
+
+  @override
+  String get notFound {
+    return "Resource not found.";
+  }
+
+  @override
+  String get server {
+    return "An error occurred and the request could not be processed. Please try again later.";
+  }
+
+  @override
+  String get unknown {
+    return "Oops, something went wrong. Please try again.";
+  }
 }
 
 class I18nFeatureCounterLookup_es extends I18nFeatureCounterLookup_en {

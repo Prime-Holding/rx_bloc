@@ -5,12 +5,18 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../models/error/error_model.dart';
+
 part 'coordinator_bloc.rxb.g.dart';
 part 'coordinator_bloc_extensions.dart';
 
-// ignore: one_member_abstracts
 abstract class CoordinatorEvents {
   void authenticated({required bool isAuthenticated});
+
+  void errorLogged({
+    required ErrorModel error,
+    String? stackTrace,
+  });
 }
 
 abstract class CoordinatorStates {

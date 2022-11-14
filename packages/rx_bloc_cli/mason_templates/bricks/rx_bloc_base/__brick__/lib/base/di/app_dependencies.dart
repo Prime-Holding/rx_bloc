@@ -15,6 +15,7 @@ import 'package:provider/single_child_widget.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
+import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
@@ -47,6 +48,8 @@ class AppDependencies {
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
         ..._analytics,
+        ..._environment,
+        ..._mappers,
         ..._httpClients,
         ..._dataStorages,
         ..._dataSources,
@@ -61,6 +64,16 @@ class AppDependencies {
         Provider<FirebaseAnalyticsObserver>(
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
+        ),
+      ];
+
+  List<Provider> get _environment => [
+        Provider<EnvironmentConfig>.value(value: config),
+      ];
+
+  List<Provider> get _mappers => [
+        Provider<ErrorMapper>(
+          create: (context) => ErrorMapper(context.read),
         ),
       ];
 
@@ -107,12 +120,14 @@ class AppDependencies {
   List<Provider> get _repositories => [
         Provider<AuthRepository>(
           create: (context) => AuthRepository(
-            authDataSource: context.read(),
-            authTokenDataSource: context.read(),
+            context.read(),
+            context.read(),
+            context.read(),
           ),
         ),
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
+            context.read(),
             context.read(),
             context.read(),
           ),
