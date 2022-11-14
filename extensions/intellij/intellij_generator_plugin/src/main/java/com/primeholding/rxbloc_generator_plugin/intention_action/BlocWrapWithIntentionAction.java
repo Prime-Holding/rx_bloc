@@ -206,7 +206,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             } else {
                 //    choose from both blocs & states
                 List<String> listBlocs = new ArrayList<>();
-                blocsFromPath.forEach(bloc -> listBlocs.add(bloc.getFileName()));
+                blocsFromPath.forEach(bloc -> listBlocs.add(toCamelCase(bloc.getFileName().replace(".dart", ""))));
 
 
                 ComboBox<String> comboBoxBloc = new ComboBox<>(listBlocs.toArray(new String[0]));
