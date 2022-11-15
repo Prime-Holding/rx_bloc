@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
         builder: (context, loadingState, bloc) => PrimaryButton(
           isLoading: loadingState.hasData ? loadingState.data! : false,
           onPressed: bloc.events.login,
-          child: Text(context.l10n.logIn),
+          child: Text(context.l10n.featureLogin.logIn),
         ),
       );
 
