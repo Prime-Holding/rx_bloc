@@ -7,15 +7,6 @@ class FirebaseService {
 
   final FirebaseRepository _repository;
 
-  Future<void> updateCountersInDataSource({
-    required int completeCount,
-    required int incompleteCount,
-  }) =>
-      _repository.updateCountersInDataSource(
-        completeCount: completeCount,
-        incompleteCount: incompleteCount,
-      );
-
   Future<bool> logIn(bool anonymous) => _repository.logIn(anonymous);
 
   Future<void> logOut() => _repository.logOut();

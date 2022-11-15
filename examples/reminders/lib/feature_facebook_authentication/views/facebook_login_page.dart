@@ -8,7 +8,7 @@ import '../ui_components/login_button.dart';
 import '../ui_components/login_text.dart';
 
 class FacebookLoginPage extends StatefulWidget {
-  const FacebookLoginPage({Key? key}) : super(key: key);
+  const FacebookLoginPage({super.key});
 
   @override
   State<FacebookLoginPage> createState() => _FacebookLoginPageState();
@@ -39,7 +39,7 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
         listener: (context, errorMessage) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(errorMessage ),
+              content: Text(errorMessage),
               behavior: SnackBarBehavior.floating,
             ),
           );

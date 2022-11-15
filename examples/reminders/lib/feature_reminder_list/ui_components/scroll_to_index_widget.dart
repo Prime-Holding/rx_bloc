@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:provider/provider.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -7,6 +8,7 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/models/reminder/reminder_model.dart';
+import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
 enum Group { overdue, today, thisMonth, inFuture }
 
@@ -14,8 +16,8 @@ class ReminderListScrollView extends StatefulWidget {
   const ReminderListScrollView({
     required this.remindersList,
     this.scrollToReminderId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final PaginatedList<ReminderModel> remindersList;
   final String? scrollToReminderId;
@@ -102,6 +104,26 @@ class _ReminderListScrollViewState extends State<ReminderListScrollView> {
             reminder: reminder,
             isFirst: _firstInGroup(index, reminder),
             isLast: _isLastInGroup(index, reminder),
+            onDueDateChanged: (date) => context
+                .read<ReminderManageBlocType>()
+                .events
+                .update(reminder.copyWith(
+                  dueDate: date,
+                )),
+            onTitleChanged: (title) => context
+                .read<ReminderManageBlocType>()
+                .events
+                .update(reminder.copyWith(
+                  title: title,
+                )),
+            onCompleteChanged: (complete) => context
+                .read<ReminderManageBlocType>()
+                .events
+                .update(reminder.copyWith(
+                  complete: complete,
+                )),
+            onDeletePressed: () =>
+                context.read<ReminderManageBlocType>().events.delete(reminder),
           ),
         ),
       );

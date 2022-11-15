@@ -42,7 +42,7 @@ class Router extends _i6.RootStackRouter {
     NavigationRoute.name: (routeData) {
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i3.NavigationPage(),
+        child: _i6.WrappedRoute(child: const _i3.NavigationPage()),
       );
     },
     DashboardRoute.name: (routeData) {
@@ -50,13 +50,13 @@ class Router extends _i6.RootStackRouter {
           orElse: () => const DashboardRouteArgs());
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i4.DashboardPage(key: args.key),
+        child: _i6.WrappedRoute(child: _i4.DashboardPage(key: args.key)),
       );
     },
     ReminderListRoute.name: (routeData) {
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i5.ReminderListPage(),
+        child: _i6.WrappedRoute(child: const _i5.ReminderListPage()),
       );
     },
   };

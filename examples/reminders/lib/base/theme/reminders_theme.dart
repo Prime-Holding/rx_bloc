@@ -85,7 +85,7 @@ class RemindersTheme {
         style: OutlinedButton.styleFrom(
           backgroundColor: designSystem.colors.primaryColor,
           textStyle: designSystem.typography.outlinedButtonText,
-          primary: designSystem.colors.outlinedButtonTextColor,
+          foregroundColor: designSystem.colors.outlinedButtonTextColor,
           side: BorderSide(
             width: 2,
             color: designSystem.colors.primaryVariant,
@@ -99,7 +99,7 @@ class RemindersTheme {
         style: OutlinedButton.styleFrom(
           backgroundColor: designSystem.colors.secondaryColor,
           textStyle: designSystem.typography.textButtonText,
-          primary: designSystem.colors.textButtonTextColor,
+          foregroundColor: designSystem.colors.textButtonTextColor,
         ),
       );
 }

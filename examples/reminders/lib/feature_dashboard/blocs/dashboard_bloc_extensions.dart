@@ -8,7 +8,7 @@ extension _ToError on Stream<Exception> {
   Stream<String> toMessage() => map((errorState) => errorState.toString());
 }
 
-extension ResultStreamExtensions on Stream<Result<DashboardModel>> {
+extension ResultStreamExtensions on Stream<Result<DashboardCountersModel>> {
   Future<void> waitToLoad() async {
     await firstWhere((resultModel) => resultModel is ResultLoading);
     await firstWhere((resultModel) => resultModel is! ResultLoading);
@@ -16,7 +16,7 @@ extension ResultStreamExtensions on Stream<Result<DashboardModel>> {
 }
 
 extension DashboardBlocStreamExtensions on Stream<bool> {
-  Stream<Result<DashboardModel>> fetchDashboardData(
+  Stream<Result<DashboardCountersModel>> fetchDashboardData(
     DashboardService dashboardService,
   ) =>
       switchMap(
@@ -34,9 +34,7 @@ extension DashboardBlocStreamExtensions on Stream<bool> {
             paginatedList.value.reset();
           }
 
-          return service
-              .getDashboardPaginated(paginatedList)
-              .asResultStream();
+          return service.getDashboardPaginated(paginatedList).asResultStream();
         },
       );
 }

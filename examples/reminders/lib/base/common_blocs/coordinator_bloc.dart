@@ -92,9 +92,7 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   Stream<ManagedListCounterOperation<ReminderModel>>
       mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
-    required Future<ManageOperation> Function(Identifiable model,
-            List<ReminderModel> list)
-        operationCallback,
+    required OperationCallback<ReminderModel> operationCallback,
   }) =>
           Rx.merge([
             states.onReminderCreated
@@ -103,44 +101,37 @@ extension CoordinatingTasksX on CoordinatorBlocType {
                   reminderList,
                   operationCallback: operationCallback,
                 )
-                .map((managedList) =>
-                    ManagedListCounterOperation<ReminderModel>(
-                        managedList: managedList,
-                        counterOperation: CounterOperation.create)),
+                .map(
+                  (managedList) => ManagedListCounterOperation<ReminderModel>(
+                      managedList: managedList,
+                      counterOperation: CounterOperation.create),
+                ),
             states.onReminderDeleted
                 .whereSuccess()
                 .withLatestFromIdentifiableList(
                   reminderList,
-                  operationCallback: (Identifiable reminder,
-                          List<ReminderModel> list) async =>
-                      ManageOperation.remove,
+                  operationCallback:
+                      (Identifiable reminder, List<ReminderModel> list) async =>
+                          ManageOperation.remove,
                 )
-                .map((managedList) =>
+                .map(
+                  (managedList) => ManagedListCounterOperation<ReminderModel>(
+                      managedList: managedList,
+                      counterOperation: CounterOperation.delete),
+                ),
+            states.onReminderUpdated.whereSuccess().switchMap(
+              (event) {
+                var stream =
+                    Stream.value(event.updated).withLatestFromIdentifiableList(
+                  reminderList,
+                  operationCallback: operationCallback,
+                );
+                return stream.map((managedList) =>
                     ManagedListCounterOperation<ReminderModel>(
                         managedList: managedList,
-                        counterOperation: CounterOperation.delete)),
-            states.onReminderUpdated.whereSuccess().switchMap((event) {
-              var stream =
-                  Stream.value(event.updated).withLatestFromIdentifiableList(
-                reminderList,
-                operationCallback: operationCallback,
-              );
-              return stream.map((streamEvent) => ManagedListWrapper(
-                  managedList: streamEvent, oldReminder: event.old));
-            }).switchMap((managedListWrapper) async* {
-              yield ManagedListCounterOperation<ReminderModel>(
-                  managedList: managedListWrapper.managedList
-                      as ManagedList<ReminderModel>,
-                  oldReminder: managedListWrapper.oldReminder,
-                  counterOperation: CounterOperation.update);
-            }),
+                        oldReminder: event.old,
+                        counterOperation: CounterOperation.update));
+              },
+            ),
           ]);
-}
-
-class ManagedListWrapper {
-  ManagedListWrapper({required this.managedList, required this.oldReminder});
-
-  ManagedList managedList;
-
-  ReminderModel oldReminder;
 }

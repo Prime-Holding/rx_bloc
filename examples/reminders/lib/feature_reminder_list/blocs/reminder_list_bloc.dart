@@ -59,26 +59,9 @@ class ReminderListBloc extends $ReminderListBloc {
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          operationCallback: (Identifiable reminder,
-                  List<ReminderModel> list) async =>
-              ManageOperation.merge,
-        )
-        .map((event) => event.managedList.list)
-        .cast<PaginatedList<ReminderModel>>()
-        .map(
-          (list) => list.copyWith(
-            list: list.list.sorted(
-              (a, b) => a.dueDate.compareTo(b.dueDate),
-            ),
-          ),
-        )
-        .bind(_paginatedList)
-        .addTo(_compositeSubscription);
-
-    coordinatorBloc
-        .mapReminderManageEventsWithLatestFrom(
-          _paginatedList,
-          operationCallback: reminderListService.getManageOperation,
+          operationCallback:
+              (Identifiable reminder, List<ReminderModel> list) async =>
+                  ManageOperation.merge,
         )
         .map((event) => event.managedList.list)
         .cast<PaginatedList<ReminderModel>>()

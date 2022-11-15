@@ -25,7 +25,7 @@ class DashboardService {
     return list;
   }
 
-  Future<DashboardModel> getDashboardModel() async {
+  Future<DashboardCountersModel> getDashboardModel() async {
     final data = await Future.wait([
       _remindersService.getCompleteCount(),
       _remindersService.getIncompleteCount(),
@@ -34,14 +34,14 @@ class DashboardService {
     final completeCount = data[0];
     final incompleteCount = data[1];
 
-    return DashboardModel(
+    return DashboardCountersModel(
       incompleteCount: incompleteCount,
       completeCount: completeCount,
     );
   }
 
-  Future<ManageOperation> getManageOperation(Identifiable model,
-      List<ReminderModel> _) async {
+  Future<ManageOperation> getManageOperation(
+      Identifiable model, List<ReminderModel> _) async {
     final dateRange = _getDateRange();
     final reminder = model as ReminderModel;
     if ((reminder.dueDate.isAfter(dateRange.from) &&
@@ -61,8 +61,8 @@ class DashboardService {
         from: DateTime.now().subtract(const Duration(days: 10)),
       );
 
-  DashboardModel getDashboardModelFromManagedList({
-    required DashboardModel dashboard,
+  DashboardCountersModel getDashboardModelFromManagedList({
+    required DashboardCountersModel dashboard,
     required ManagedList<ReminderModel> managedList,
     required CounterOperation counterOperation,
     ReminderModel? oldReminder,
@@ -104,7 +104,7 @@ class DashboardService {
   }
 }
 
-extension _DashboardModelX on DashboardModel {
+extension _DashboardModelX on DashboardCountersModel {
   int recalculateIncompleteWith({
     required CounterOperation counterOperation,
     required ReminderModel reminderModel,

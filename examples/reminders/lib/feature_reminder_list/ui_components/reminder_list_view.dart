@@ -9,8 +9,9 @@ import 'scroll_to_index_widget.dart';
 class ReminderListView extends StatelessWidget {
   const ReminderListView({
     this.createdReminderId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
   final String? createdReminderId;
 
   @override

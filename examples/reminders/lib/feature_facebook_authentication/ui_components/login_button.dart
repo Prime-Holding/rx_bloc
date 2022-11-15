@@ -8,8 +8,8 @@ class LoginButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.loading = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Color color;
   final String text;

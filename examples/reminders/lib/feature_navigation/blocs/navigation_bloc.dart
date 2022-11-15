@@ -5,42 +5,35 @@ part 'navigation_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the NavigationBloC.
 abstract class NavigationBlocEvents {
-  /// TODO: Document the event
-  void fetchData();
+  void openTab(int index);
 }
 
 /// A contract class containing all states of the NavigationBloC.
 abstract class NavigationBlocStates {
-  /// The loading state
-  Stream<bool> get isLoading;
-
   /// The error state
   Stream<String> get errors;
 
-  /// TODO: Document the state
-  Stream<Result<String>> get data;
+  /// The tap to be presented
+  Stream<int> get tabIndex;
 }
 
 @RxBloc()
 class NavigationBloc extends $NavigationBloc {
   @override
-  Stream<Result<String>> _mapToDataState() => _$fetchDataEvent
-      .startWith(null)
-      .throttleTime(const Duration(milliseconds: 200))
-      .switchMap((value) async* {
-        ///TODO: Replace the code below with a repository invocation
-        yield Result<String>.loading();
-        await Future.delayed(const Duration(seconds: 1));
-        yield Result<String>.success('Some specific async state');
+  Stream<int> _mapToTabIndexState() => _$openTabEvent
+      .map<Result<int>>((newIndex) {
+        /// TODO: Add a real navigation permission check
+        final now = DateTime.now();
+        if (now.minute % 4 == 0) {
+          return Result.error(
+              Exception('It isn\'t the right time for changes!'));
+        }
+        return Result.success(newIndex);
       })
       .setResultStateHandler(this)
-      .shareReplay(maxSize: 1);
-
-  /// TODO: Implement error event-to-state logic
-  @override
-  Stream<String> _mapToErrorsState() =>
-      errorState.map((error) => error.toString());
+      .whereSuccess();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<String> _mapToErrorsState() => errorState
+      .map((error) => error.toString().replaceFirst('Exception: ', ''));
 }

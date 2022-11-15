@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+
 import '../../app_extensions.dart';
-import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../models/reminder/reminder_model.dart';
 import 'app_divider.dart';
 
@@ -12,14 +11,18 @@ class AppReminderTile extends StatefulWidget {
     required this.reminder,
     this.onTitleChanged,
     this.onDueDateChanged,
+    this.onCompleteChanged,
+    this.onDeletePressed,
     this.isFirst = false,
     this.isLast = false,
     Key? key,
   }) : super(key: key);
 
   final ReminderModel reminder;
-  final Function(String)? onTitleChanged;
-  final Function(DateTime)? onDueDateChanged;
+  final ValueChanged<String>? onTitleChanged;
+  final ValueChanged<DateTime>? onDueDateChanged;
+  final ValueChanged<bool>? onCompleteChanged;
+  final VoidCallback? onDeletePressed;
   final bool isFirst;
   final bool isLast;
 
@@ -50,12 +53,6 @@ class _AppReminderTileState extends State<AppReminderTile> {
     _titleFocusNode.addListener(
       () {
         if (!_titleFocusNode.hasFocus) {
-          context.read<ReminderManageBlocType>().events.update(
-                widget.reminder.copyWith(
-                  title: _textEditingController.text,
-                ),
-              );
-
           widget.onTitleChanged?.call(_textEditingController.text);
         }
       },
@@ -94,13 +91,8 @@ class _AppReminderTileState extends State<AppReminderTile> {
                                 color: Colors.blue.shade700)
                             : const Icon(Icons.radio_button_off,
                                 color: Colors.grey),
-                        onPressed: () {
-                          context.read<ReminderManageBlocType>().events.update(
-                                widget.reminder.copyWith(
-                                  complete: !widget.reminder.complete,
-                                ),
-                              );
-                        },
+                        onPressed: () => widget.onCompleteChanged
+                            ?.call(!widget.reminder.complete),
                       ),
                       const SizedBox(
                         width: 20,
@@ -149,10 +141,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) => context
-                .read<ReminderManageBlocType>()
-                .events
-                .delete(widget.reminder),
+            onPressed: (context) => widget.onDeletePressed?.call(),
             backgroundColor:
                 context.designSystem.colors.inputDecorationErrorLabelColor,
             foregroundColor: context.designSystem.colors.canvasColor,
@@ -180,14 +169,7 @@ class _AppReminderTileState extends State<AppReminderTile> {
         seconds: now.second,
         milliseconds: now.millisecond,
         microseconds: now.microsecond));
-    if (date != null) {
-      context
-          .read<ReminderManageBlocType>()
-          .events
-          .update(widget.reminder.copyWith(
-            dueDate: date,
-          ));
-
+    if (date != null && mounted) {
       widget.onDueDateChanged?.call(date);
     }
   }

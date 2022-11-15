@@ -4,12 +4,13 @@ import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+
 import '../../app_extensions.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
 class AddReminderDialog extends StatefulWidget {
-  const AddReminderDialog({Key? key}) : super(key: key);
+  const AddReminderDialog({super.key});
 
   @override
   State<StatefulWidget> createState() => AddReminderDialogState();
