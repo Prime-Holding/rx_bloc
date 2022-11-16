@@ -20,26 +20,26 @@ abstract class $NavigationBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [openTab]
-  final _$openTabEvent = PublishSubject<int>();
+  final _$openTabEvent = PublishSubject<NavigationTabs>();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [tabIndex] implemented in [_mapToTabIndexState]
-  late final Stream<int> _tabIndexState = _mapToTabIndexState();
+  /// The state of [tab] implemented in [_mapToTabState]
+  late final Stream<NavigationTabs> _tabState = _mapToTabState();
 
   @override
-  void openTab(int index) => _$openTabEvent.add(index);
+  void openTab(NavigationTabs tab) => _$openTabEvent.add(tab);
 
   @override
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<int> get tabIndex => _tabIndexState;
+  Stream<NavigationTabs> get tab => _tabState;
 
   Stream<String> _mapToErrorsState();
 
-  Stream<int> _mapToTabIndexState();
+  Stream<NavigationTabs> _mapToTabState();
 
   @override
   NavigationBlocEvents get events => this;

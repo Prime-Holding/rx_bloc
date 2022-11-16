@@ -20,14 +20,15 @@ class NavigationPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   @override
-  Widget build(BuildContext context) => RxBlocListener<NavigationBlocType, int>(
-        state: (bloc) => bloc.states.tabIndex,
-        listener: (context, index) {
-          switch (index) {
-            case 0:
+  Widget build(BuildContext context) =>
+      RxBlocListener<NavigationBlocType, NavigationTabs>(
+        state: (bloc) => bloc.states.tab,
+        listener: (context, tab) {
+          switch (tab) {
+            case NavigationTabs.dashboard:
               context.router.navigate(DashboardRoute());
               break;
-            case 1:
+            case NavigationTabs.reminders:
               context.router.navigate(const ReminderListRoute());
               break;
           }
@@ -49,8 +50,10 @@ class NavigationPage extends StatelessWidget implements AutoRouteWrapper {
             bottomNavigationBuilder: (context, tabsRouter) =>
                 BottomNavigationBar(
               currentIndex: tabsRouter.activeIndex,
-              onTap: (index) =>
-                  context.read<NavigationBlocType>().events.openTab(index),
+              onTap: (index) => context
+                  .read<NavigationBlocType>()
+                  .events
+                  .openTab(_tabFromIndex(index)),
               items: const [
                 BottomNavigationBarItem(
                   label: 'Dashboard',
@@ -65,4 +68,15 @@ class NavigationPage extends StatelessWidget implements AutoRouteWrapper {
           ),
         ),
       );
+
+  NavigationTabs _tabFromIndex(int index) {
+    switch (index) {
+      case 0:
+        return NavigationTabs.dashboard;
+      case 1:
+        return NavigationTabs.reminders;
+      default:
+        throw UnimplementedError('Unhandled tab index: $index');
+    }
+  }
 }

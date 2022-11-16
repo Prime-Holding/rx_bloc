@@ -3,9 +3,14 @@ import 'package:rxdart/rxdart.dart';
 
 part 'navigation_bloc.rxb.g.dart';
 
+enum NavigationTabs {
+  dashboard,
+  reminders,
+}
+
 /// A contract class containing all events of the NavigationBloC.
 abstract class NavigationBlocEvents {
-  void openTab(int index);
+  void openTab(NavigationTabs tab);
 }
 
 /// A contract class containing all states of the NavigationBloC.
@@ -14,21 +19,21 @@ abstract class NavigationBlocStates {
   Stream<String> get errors;
 
   /// The tap to be presented
-  Stream<int> get tabIndex;
+  Stream<NavigationTabs> get tab;
 }
 
 @RxBloc()
 class NavigationBloc extends $NavigationBloc {
   @override
-  Stream<int> _mapToTabIndexState() => _$openTabEvent
-      .map<Result<int>>((newIndex) {
+  Stream<NavigationTabs> _mapToTabState() => _$openTabEvent
+      .map<Result<NavigationTabs>>((tab) {
         /// TODO: Add a real navigation permission check
         final now = DateTime.now();
         if (now.minute % 4 == 0) {
           return Result.error(
               Exception('It isn\'t the right time for changes!'));
         }
-        return Result.success(newIndex);
+        return Result.success(tab);
       })
       .setResultStateHandler(this)
       .whereSuccess();
