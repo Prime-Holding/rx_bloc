@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:{{project_name}}/base/models/count.dart';
+import 'package:{{project_name}}/base/models/error/error_model.dart';
 import 'package:{{project_name}}/base/repositories/counter_repository.dart';
 import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 
@@ -70,12 +71,12 @@ void main() {
       expect: [0, 1, 0],
     );
 
-    rxBlocTest<CounterBlocType, String>(
+    rxBlocTest<CounterBlocType, ErrorModel>(
       'Error handling',
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer(
-          (_) async => Future.error('test error msg'),
+          (_) async => Future.error(ErrorNoConnectionModel()),
         );
         return CounterBloc(repository: repo);
       },
@@ -84,7 +85,7 @@ void main() {
         bloc.events.increment();
       },
       state: (bloc) => bloc.states.errors,
-      expect: [contains('test error msg')],
+      expect: [isA<ErrorNoConnectionModel>()],
     );
 
     rxBlocTest<CounterBlocType, LoadingWithTag>(

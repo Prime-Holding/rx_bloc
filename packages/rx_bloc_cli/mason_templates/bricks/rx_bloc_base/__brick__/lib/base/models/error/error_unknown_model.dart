@@ -1,13 +1,13 @@
 part of 'error_model.dart';
 
-class ErrorUnknown extends ErrorModel {
-  ErrorUnknown({
+class ErrorUnknownModel extends ErrorModel {
+  ErrorUnknownModel({
     this.error,
     this.exception,
   });
 
-  factory ErrorUnknown.fromString(String data) =>
-      ErrorUnknown(exception: Exception(data));
+  factory ErrorUnknownModel.fromString(String data) =>
+      ErrorUnknownModel(exception: Exception(data));
 
   final Error? error;
   final Exception? exception;

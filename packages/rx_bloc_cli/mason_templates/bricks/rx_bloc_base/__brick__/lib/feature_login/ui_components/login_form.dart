@@ -6,6 +6,8 @@ import 'package:flutter_rx_bloc/rx_form.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
+import '../../base/extensions/error_model_translations.dart';
+import '../../base/models/error/error_model.dart';
 import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
@@ -92,13 +94,12 @@ class _LoginFormState extends State<LoginForm> {
         },
       );
 
-  Widget _buildErrorListener() => RxBlocListener<LoginBlocType, String>(
+  Widget _buildErrorListener() => RxBlocListener<LoginBlocType, ErrorModel>(
         state: (bloc) => bloc.states.errors,
         listener: (context, error) {
-          if (error.isEmpty) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(error),
+              content: Text(error.translate(context)),
               behavior: SnackBarBehavior.floating,
             ),
           );

@@ -6,7 +6,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/common_use_cases/login_use_case.dart';
-import '../../base/extensions/stream_extensions.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/error/error_model.dart';
 import '../../base/utils/validators/validators.dart';
 
 part 'login_bloc.rxb.g.dart';
@@ -41,7 +42,7 @@ abstract class LoginBlocStates {
   Stream<bool> get isLoading;
 
   /// The error state
-  Stream<String> get errors;
+  Stream<ErrorModel> get errors;
 }
 
 @RxBloc()
@@ -80,7 +81,7 @@ class LoginBloc extends $LoginBloc {
       .share();
 
   @override
-  Stream<String> _mapToErrorsState() => errorState.mapFromDio().toMessage();
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

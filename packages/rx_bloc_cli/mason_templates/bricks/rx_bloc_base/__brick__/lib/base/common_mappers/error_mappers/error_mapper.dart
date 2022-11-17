@@ -2,16 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 import '../../common_blocs/coordinator_bloc.dart';
-// import '../extensions/error_model_extensions.dart';
 import '../../models/error/error_model.dart';
 
 part 'dio_error_mapper.dart';
-part 'platform_error_mapper.dart';
-part 'state_error_mapper.dart';
 
 typedef Callback<E> = Future<E> Function();
 typedef SyncCallback<E> = E Function();
@@ -30,9 +25,9 @@ abstract class ErrorMapperInterface {
 }
 
 class ErrorMapper implements ErrorMapperInterface {
-  ErrorMapper(this._locator);
+  ErrorMapper(this._coordinator);
 
-  final Locator _locator;
+  final CoordinatorBlocType _coordinator;
 
   /// Map the potential Future exceptions to Business Models such as:
   /// - ErrorNetworkModel
@@ -50,6 +45,17 @@ class ErrorMapper implements ErrorMapperInterface {
           stackTrace: s,
         );
       }
+
+      // Error objects are thrown in the case of a program failure.
+      // An `Error` object represents a program failure that the programmer
+      // should have avoided.
+      // These are not errors that a caller should expect or catch -
+      // if they occur, the program is erroneous, and terminating the program
+      // may be the safest response.
+      if (e is Error) {
+        rethrow;
+      }
+
       throw _mapToBusinessModel(e);
     }
   }
@@ -68,6 +74,11 @@ class ErrorMapper implements ErrorMapperInterface {
             stackTrace: stackTrace,
           );
         }
+
+        if (error is Error) {
+          throw error;
+        }
+
         throw _mapToBusinessModel(error);
       });
 
@@ -87,17 +98,27 @@ class ErrorMapper implements ErrorMapperInterface {
           stackTrace: s,
         );
       }
+
+      // Error objects are thrown in the case of a program failure.
+      // An `Error` object represents a program failure that the programmer
+      // should have avoided.
+      // These are not errors that a caller should expect or catch -
+      // if they occur, the program is erroneous, and terminating the program
+      // may be the safest response.
+      if (e is Error) {
+        rethrow;
+      }
+
       throw _mapToBusinessModel(e);
     }
   }
 
   @override
   void logError({required Object errorObj, StackTrace? stackTrace}) {
-    final coordinator = _locator<CoordinatorBlocType>();
     if (errorObj is ErrorModel) {
       log('Business Error', error: errorObj, stackTrace: stackTrace);
 
-      coordinator.events.errorLogged(
+      _coordinator.events.errorLogged(
         error: errorObj,
         stackTrace: stackTrace?.toString() ?? '',
       );
@@ -105,44 +126,23 @@ class ErrorMapper implements ErrorMapperInterface {
 
     if (errorObj is Exception) {
       log('Exception', error: errorObj, stackTrace: stackTrace);
-      coordinator.events.errorLogged(
+      _coordinator.events.errorLogged(
         error: _mapExceptionToBusinessError(errorObj),
         stackTrace: stackTrace?.toString() ?? '',
       );
     }
-
-    if (errorObj is Error) {
-      log('Error', error: errorObj, stackTrace: errorObj.stackTrace);
-      coordinator.events.errorLogged(
-        error: _mapErrorToBusinessError(errorObj),
-        stackTrace: stackTrace?.toString() ?? '',
-      );
-    }
   }
 
-  Object _mapToBusinessModel(Object obj) {
-    if (obj is ErrorModel) {
-      return obj;
+  Object _mapToBusinessModel(Object object) {
+    if (object is ErrorModel) {
+      return object;
     }
 
-    if (obj is Exception) {
-      return _mapExceptionToBusinessError(obj);
+    if (object is Exception) {
+      return _mapExceptionToBusinessError(object);
     }
 
-    if (obj is Error) {
-      return _mapErrorToBusinessError(obj);
-    }
-
-    return obj;
-  }
-
-  /// Map the passed [error] to a Business Error.
-  ErrorModel _mapErrorToBusinessError(Error error) {
-    if (error is StateError) {
-      return error.asErrorModel();
-    }
-
-    return ErrorUnknown(error: error);
+    return object;
   }
 
   /// Map the passed [exception] to a Business Error.
@@ -151,10 +151,8 @@ class ErrorMapper implements ErrorMapperInterface {
       return exception.asErrorModel();
     }
 
-    if (exception is PlatformException) {
-      return exception.asErrorModel();
-    }
+    // Use custom error mappers here.
 
-    return ErrorUnknown(exception: exception);
+    return ErrorUnknownModel(exception: exception);
   }
 }

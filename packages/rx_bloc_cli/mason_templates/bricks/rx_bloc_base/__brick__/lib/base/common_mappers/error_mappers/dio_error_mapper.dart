@@ -25,7 +25,13 @@ extension _DioErrorMapper on DioError {
     }
 
     if (type == DioErrorType.other && error is SocketException) {
-      return ErrorNoConnectionModel();
+      final errorCode = (error as SocketException).osError?.errorCode;
+      if (errorCode == 101) {
+        return ErrorNoConnectionModel();
+      }
+      if (errorCode == 111) {
+        return ErrorConnectionRefused();
+      }
     }
 
     return ErrorNetworkModel();

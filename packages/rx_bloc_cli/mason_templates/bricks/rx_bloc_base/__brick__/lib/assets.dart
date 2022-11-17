@@ -207,6 +207,26 @@ class I18nError {
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">en</td>
+  ///     <td>"Unable to connect to server. Connection refused."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Unable to connect to server. Connection refused."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get connectionRefused {
+    return customLookup?.connectionRefused ?? _lookup.connectionRefused;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
   ///     <td>"Resource not found."</td>
   ///   </tr>
   ///   <tr>
@@ -267,6 +287,8 @@ class I18nError {
         return network;
       case I18nErrorKeys.noConnection:
         return noConnection;
+      case I18nErrorKeys.connectionRefused:
+        return connectionRefused;
       case I18nErrorKeys.notFound:
         return notFound;
       case I18nErrorKeys.server:
@@ -686,6 +708,7 @@ class I18nErrorKeys {
   static const String accessDenied = "accessDenied";
   static const String network = "network";
   static const String noConnection = "noConnection";
+  static const String connectionRefused = "connectionRefused";
   static const String notFound = "notFound";
   static const String server = "server";
   static const String unknown = "unknown";
@@ -761,6 +784,10 @@ class I18nErrorLookup {
 
   String get noConnection {
     return getString(I18nErrorKeys.noConnection);
+  }
+
+  String get connectionRefused {
+    return getString(I18nErrorKeys.connectionRefused);
   }
 
   String get notFound {
@@ -943,6 +970,11 @@ class I18nErrorLookup_es extends I18nErrorLookup_en {
   }
 
   @override
+  String get connectionRefused {
+    return "Unable to connect to server. Connection refused.";
+  }
+
+  @override
   String get notFound {
     return "Resource not found.";
   }
@@ -972,6 +1004,11 @@ class I18nErrorLookup_en extends I18nErrorLookup {
   @override
   String get noConnection {
     return "It looks like your device is not connected to the internet. Please check your settings.";
+  }
+
+  @override
+  String get connectionRefused {
+    return "Unable to connect to server. Connection refused.";
   }
 
   @override

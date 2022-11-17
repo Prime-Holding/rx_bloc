@@ -9,6 +9,8 @@ extension ErrorModelX on ErrorModel {
   String translate(BuildContext context) {
     if (this is ErrorAccessDeniedModel) {
       return context.l10n.error.accessDenied;
+    } else if (this is ErrorConnectionRefused) {
+      return context.l10n.error.connectionRefused;
     } else if (this is ErrorGenericModel) {
       return (this as ErrorGenericModel).translate(context);
     } else if (this is ErrorNetworkModel) {
@@ -20,8 +22,8 @@ extension ErrorModelX on ErrorModel {
           context.l10n.error.notFound;
     } else if (this is ErrorServerModel) {
       return context.l10n.error.server;
-    } else if (this is ErrorUnknown) {
-      return (this as ErrorUnknown).translate(context);
+    } else if (this is ErrorUnknownModel) {
+      return (this as ErrorUnknownModel).translate(context);
     }
     return context.l10n.error.unknown;
   }
@@ -30,4 +32,10 @@ extension ErrorModelX on ErrorModel {
 extension ErrorGenericModelX on ErrorGenericModel {
   String translate(BuildContext context) =>
       context.l10n.error.getString(translationKey)!;
+}
+
+extension ErrorUnknownX on ErrorUnknownModel {
+  String translate(BuildContext context) {
+    return context.l10n.error.unknown;
+  }
 }

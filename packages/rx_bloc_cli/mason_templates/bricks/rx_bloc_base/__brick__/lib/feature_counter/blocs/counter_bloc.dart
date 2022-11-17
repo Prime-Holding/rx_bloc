@@ -3,8 +3,9 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/extensions/stream_extensions.dart';
+import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/count.dart';
+import '../../base/models/error/error_model.dart';
 import '../../base/repositories/counter_repository.dart';
 
 part 'counter_bloc.rxb.g.dart';
@@ -33,7 +34,7 @@ abstract class CounterBlocStates {
   /// Error state of the bloc
   ///
   /// Emits an error message, when the repository throws an Exception
-  Stream<String> get errors;
+  Stream<ErrorModel> get errors;
 
   /// The count of the Counter
   ///
@@ -62,7 +63,7 @@ class CounterBloc extends $CounterBloc {
   static const tagReload = 'Reload';
 
   @override
-  Stream<String> _mapToErrorsState() => errorState.mapFromDio().toMessage();
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
   Stream<LoadingWithTag> _mapToIsLoadingState() => loadingWithTagState;

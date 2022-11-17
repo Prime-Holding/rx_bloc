@@ -47,6 +47,7 @@ class AppDependencies {
 
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
+        ..._coordinator,
         ..._analytics,
         ..._environment,
         ..._mappers,
@@ -57,6 +58,12 @@ class AppDependencies {
         ..._useCases,
         ..._blocs,
         ..._interceptors,
+      ];
+
+  List<SingleChildWidget> get _coordinator => [
+        RxBlocProvider<CoordinatorBlocType>(
+          create: (context) => CoordinatorBloc(),
+        ),
       ];
 
   List<Provider> get _analytics => [
@@ -73,7 +80,7 @@ class AppDependencies {
 
   List<Provider> get _mappers => [
         Provider<ErrorMapper>(
-          create: (context) => ErrorMapper(context.read),
+          create: (context) => ErrorMapper(context.read()),
         ),
       ];
 
@@ -151,9 +158,6 @@ class AppDependencies {
       ];
 
   List<SingleChildWidget> get _blocs => [
-        RxBlocProvider<CoordinatorBlocType>(
-          create: (context) => CoordinatorBloc(),
-        ),
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
             logoutUseCase: context.read(),
