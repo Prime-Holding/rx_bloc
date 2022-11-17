@@ -4,6 +4,7 @@ import 'package:rx_bloc_list/models.dart';
 import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import '${bloc_snake_case}_mock.mocks.dart';
+${imports_from_bloc_states}
 
 @GenerateMocks([${bloc_pascal_case}BlocStates, ${bloc_pascal_case}BlocEvents, ${bloc_pascal_case}BlocType])
 ${bloc_pascal_case}BlocType ${bloc_field_case}MockFactory({

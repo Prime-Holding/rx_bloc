@@ -49,27 +49,27 @@ class BootstrapTestsAction : AnAction() {
                 val featureFolder =
                     testFolder.createChildDirectory(
                         this,
-                        prefix + "_" + bloc.fileName.replace("_bloc.dart", "")
+                        prefix + "_" + bloc.file.name.replace("_bloc.dart", "")
                     )
 
                 var folder = featureFolder.createChildDirectory(this, "factory")
                 var testFile: VirtualFile =
-                    folder.createChildData(this, bloc.fileName.replace(blocFileExt, "_factory.dart"))
+                    folder.createChildData(this, bloc.file.name.replace(blocFileExt, "_factory.dart"))
 
                 writeTestFactory(testFile, bloc, projectName)
 
                 folder = featureFolder.createChildDirectory(this, "mock")
-                testFile = folder.createChildData(this, bloc.fileName.replace(blocFileExt, "_mock.dart"))
+                testFile = folder.createChildData(this, bloc.file.name.replace(blocFileExt, "_mock.dart"))
 
                 writeTestMock(testFile, bloc, projectName)
 
                 folder = featureFolder.createChildDirectory(this, "view")
-                testFile = folder.createChildData(this, bloc.fileName.replace(blocFileExt, "_golden_test.dart"))
+                testFile = folder.createChildData(this, bloc.file.name.replace(blocFileExt, "_golden_test.dart"))
 
                 writeGoldenTest(testFile, bloc, projectName)
 
                 val blocsFolder = featureFolder.createChildDirectory(this, "blocs")
-                testFile = blocsFolder.createChildData(this, bloc.fileName.replace(blocFileExt, "_test.dart"))
+                testFile = blocsFolder.createChildData(this, bloc.file.name.replace(blocFileExt, "_test.dart"))
 
                 writeBlockTest(testFile, bloc, projectName, includeDiMocks)
             }
@@ -79,7 +79,7 @@ class BootstrapTestsAction : AnAction() {
 
     private fun writeBlockTest(testFile: VirtualFile, bloc: Bloc, projectName: String, includeDiMocks: Boolean) {
         val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocGenerator(
-            name = bloc.fileName.replace(".dart", ""),
+            name = bloc.file.name.replace(".dart", ""),
             projectName = projectName,
             bloc = bloc,
             includeDiMocks = includeDiMocks
@@ -89,21 +89,21 @@ class BootstrapTestsAction : AnAction() {
 
     private fun writeGoldenTest(testFile: VirtualFile, bloc: Bloc, projectName: String) {
         val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocGoldenGenerator(
-            name = bloc.fileName.replace(".dart", ""), projectName = projectName, bloc = bloc
+            name = bloc.file.name.replace(".dart", ""), projectName = projectName, bloc = bloc
         )
         VfsTestUtil.overwriteTestData(testFile.path, test.generate())
     }
 
     private fun writeTestMock(testFile: VirtualFile, bloc: Bloc, projectName: String) {
         val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocMockGenerator(
-            name = bloc.fileName.replace(".dart", ""), projectName = projectName, bloc = bloc
+            name = bloc.file.name.replace(".dart", ""), projectName = projectName, bloc = bloc
         )
         VfsTestUtil.overwriteTestData(testFile.path, test.generate())
     }
 
     private fun writeTestFactory(testFile: VirtualFile, bloc: Bloc, projectName: String) {
         val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocFactoryGenerator(
-            name = bloc.fileName.replace(".dart", ""), projectName = projectName, bloc = bloc
+            name = bloc.file.name.replace(".dart", ""), projectName = projectName, bloc = bloc
         )
         VfsTestUtil.overwriteTestData(testFile.path, test.generate())
     }
