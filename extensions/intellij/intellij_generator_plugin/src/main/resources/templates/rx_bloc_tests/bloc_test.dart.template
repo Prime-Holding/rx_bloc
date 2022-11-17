@@ -4,7 +4,8 @@ import 'package:mockito/mockito.dart';
 import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import '${bloc_snake_case}_test.mocks.dart';
-import 'package:rxdart/rxdart.dart';
+${imports_from_bloc_constructor}
+${imports_from_bloc_states}
 
 ${bloc_initialization_fields_mocks}
 void main() {
