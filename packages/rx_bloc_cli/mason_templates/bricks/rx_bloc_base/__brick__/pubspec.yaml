@@ -11,9 +11,9 @@ dependencies:
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
   dio: ^4.0.6{{#analytics}}
-  firebase_analytics: ^9.3.0{{/analytics}}{{#uses_firebase}}
-  firebase_core: ^1.24.0{{/uses_firebase}}{{#push_notifications}}
-  firebase_messaging: ^13.1.0{{/push_notifications}}
+  firebase_analytics: ^10.0.6{{/analytics}}{{#uses_firebase}}
+  firebase_core: ^2.3.0{{/uses_firebase}}{{#push_notifications}}
+  firebase_messaging: ^14.1.1{{/push_notifications}}
   flutter:
     sdk: flutter
   flutter_local_notifications: ^12.0.2
