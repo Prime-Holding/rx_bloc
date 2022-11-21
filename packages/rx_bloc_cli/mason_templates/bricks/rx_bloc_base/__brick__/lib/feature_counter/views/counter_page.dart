@@ -34,11 +34,18 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ..._buildErrorListeners(),
               RxBlocBuilder<CounterBlocType, int>(
                 state: (bloc) => bloc.states.count,
                 builder: (context, countState, bloc) =>
                     _buildCount(context, countState),
+              ),
+              RxBlocListener<CounterBlocType, ErrorModel>(
+                state: (bloc) => bloc.states.errors,
+                listener: _onError,
+              ),
+              RxBlocListener<UserAccountBlocType, ErrorModel>(
+                state: (bloc) => bloc.states.errors,
+                listener: _onError,
               ),
             ],
           ),
@@ -71,17 +78,6 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
                 style: context.designSystem.typography.h2Med16,
             );
 
-  List<Widget> _buildErrorListeners() => [
-        RxBlocListener<CounterBlocType, ErrorModel>(
-          state: (bloc) => bloc.states.errors,
-          listener: _showError,
-        ),
-        RxBlocListener<UserAccountBlocType, ErrorModel>(
-          state: (bloc) => bloc.states.errors,
-          listener: _showError,
-        ),
-      ];
-
   Widget _buildActionButtons(BuildContext context) =>
       RxLoadingBuilder<CounterBlocType>(
         state: (bloc) => bloc.states.isLoading,
@@ -105,7 +101,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
         ),
       );
 
-  void _showError(BuildContext context, ErrorModel errorModel) =>
+  void _onError(BuildContext context, ErrorModel errorModel) =>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(errorModel.translate(context)),
