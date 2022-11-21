@@ -1,39 +1,20 @@
-import 'package:rx_bloc_list/models.dart';
-
-import '../reminder/reminder_model.dart';
-
-enum IncrementOperation {
-  /// The operation, which increments the incomplete counter and decrements
-  /// the complete counter
-  incrementIncompleteDecrementComplete,
-
-  /// The operation, which decrements the incomplete counter and increments
-  /// the complete counter
-  decrementIncompleteIncrementComplete,
-}
-
 /// This operation should be in the reminders list
 enum CounterOperation {
   /// The operation, which just increments the incomplete counter
   create,
 
-  /// The operation, which decrements the incomplete or complete counter
-  delete,
+  /// The operation, which decrements the incomplete counter
+  deleteIncomplete,
 
-  /// The operation, which decrements incomplete and increments complete or
-  /// increments incomplete and decrements complete or
-  /// does not change counter
-  update,
-}
+  /// The operation, which decrements the complete counter
+  deleteComplete,
 
-class ManagedListCounterOperation<E extends Identifiable>{
-  ManagedListCounterOperation({
-    required this.managedList,
-    required this.counterOperation,
-    this.oldReminder,
-  });
+  /// The operation, which decrements incomplete and increments complete counter
+  setComplete,
 
-  final ManagedList<E> managedList;
-  final CounterOperation counterOperation;
-  final ReminderModel? oldReminder;
+  /// The operation, which increments incomplete and decrements complete counter
+  unsetComplete,
+
+  /// The operation, which does not change counters
+  none
 }

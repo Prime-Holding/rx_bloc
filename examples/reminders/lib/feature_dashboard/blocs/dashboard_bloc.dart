@@ -11,7 +11,6 @@ import '../models/dashboard_model.dart';
 import '../services/dashboard_service.dart';
 
 part 'dashboard_bloc.rxb.g.dart';
-
 part 'dashboard_bloc_extensions.dart';
 
 /// A contract class containing all events of the DashboardBloC.
@@ -56,15 +55,25 @@ class DashboardBloc extends $DashboardBloc {
         .bind(_reminderModelsPaginated)
         .addTo(_compositeSubscription);
 
-    final managedOperationStream = _coordinatorBloc
+    _coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _reminderModelsPaginated,
           operationCallback: _dashboardService.getManageOperation,
         )
-        .shareReplay(maxSize: 1);
+        .map((event) => event.list as PaginatedList<ReminderModel>)
+        .map(
+          (list) => list.copyWith(
+            list: list.list.sorted(
+              (a, b) => a.dueDate.compareTo(b.dueDate),
+            ),
+          ),
+        )
+        .bind(_reminderModelsPaginated)
+        .addTo(_compositeSubscription);
 
-    managedOperationStream
-        .map(managedListToDashboard)
+    _coordinatorBloc
+        .mapReminderManagedEventsToCounterOperation()
+        .map(counterOperationToDashboardCounters)
         .doOnData((event) {
           if (event is ResultSuccess<DashboardCountersModel>) {
             final updatedCounters = UpdatedCounters(
@@ -76,19 +85,6 @@ class DashboardBloc extends $DashboardBloc {
         })
         .bind(_dashboardCountersResult)
         .addTo(_compositeSubscription);
-
-    managedOperationStream
-        .map((event) => event.managedList.list)
-        .cast<PaginatedList<ReminderModel>>()
-        .map(
-          (list) => list.copyWith(
-            list: list.list.sorted(
-              (a, b) => a.dueDate.compareTo(b.dueDate),
-            ),
-          ),
-        )
-        .bind(_reminderModelsPaginated)
-        .addTo(_compositeSubscription);
   }
 
   final DashboardService _dashboardService;
@@ -96,18 +92,16 @@ class DashboardBloc extends $DashboardBloc {
 
   static const _tagSilently = 'silently';
 
-  Result<DashboardCountersModel> managedListToDashboard(
-    ManagedListCounterOperation<ReminderModel> managedListCounterOperation,
+  Result<DashboardCountersModel> counterOperationToDashboardCounters(
+    CounterOperation operation,
   ) {
     final dashboard = _dashboardCountersResult.value;
 
     if (dashboard is ResultSuccess<DashboardCountersModel>) {
       return Result.success(
-        _dashboardService.getDashboardModelFromManagedList(
-          dashboard: dashboard.data,
-          managedList: managedListCounterOperation.managedList,
-          oldReminder: managedListCounterOperation.oldReminder,
-          counterOperation: managedListCounterOperation.counterOperation,
+        _dashboardService.getCountersModelFromCounterOperation(
+          dashboardCounters: dashboard.data,
+          counterOperation: operation,
         ),
       );
     }

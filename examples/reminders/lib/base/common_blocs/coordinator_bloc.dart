@@ -16,7 +16,6 @@ import '../models/reminder/reminder_model.dart';
 import '../models/updated_counters.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
-
 part 'coordinator_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
@@ -71,7 +70,7 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<UpdatedCounters> get onCountersUpdated => _$updateCountersEvent;
 }
 
-extension CoordinatingTasksX on CoordinatorBlocType {
+extension CoordinatingReminderLists on CoordinatorBlocType {
   /// Merge the following events with the value of the given [subject]
   /// and emits the result as a new event.
   ///
@@ -89,49 +88,44 @@ extension CoordinatingTasksX on CoordinatorBlocType {
   /// Based on the result of the callback [onCreateOperation] the newly create task
   /// will/will not be merged into the value of the provided [subject].
 
-  Stream<ManagedListCounterOperation<ReminderModel>>
-      mapReminderManageEventsWithLatestFrom(
+  Stream<ManagedList<ReminderModel>> mapReminderManageEventsWithLatestFrom(
     Stream<List<ReminderModel>> reminderList, {
     required OperationCallback<ReminderModel> operationCallback,
   }) =>
-          Rx.merge([
-            states.onReminderCreated
-                .whereSuccess()
-                .withLatestFromIdentifiableList(
-                  reminderList,
-                  operationCallback: operationCallback,
-                )
-                .map(
-                  (managedList) => ManagedListCounterOperation<ReminderModel>(
-                      managedList: managedList,
-                      counterOperation: CounterOperation.create),
-                ),
-            states.onReminderDeleted
-                .whereSuccess()
-                .withLatestFromIdentifiableList(
-                  reminderList,
-                  operationCallback:
-                      (Identifiable reminder, List<ReminderModel> list) async =>
-                          ManageOperation.remove,
-                )
-                .map(
-                  (managedList) => ManagedListCounterOperation<ReminderModel>(
-                      managedList: managedList,
-                      counterOperation: CounterOperation.delete),
-                ),
-            states.onReminderUpdated.whereSuccess().switchMap(
-              (event) {
-                var stream =
-                    Stream.value(event.updated).withLatestFromIdentifiableList(
-                  reminderList,
-                  operationCallback: operationCallback,
-                );
-                return stream.map((managedList) =>
-                    ManagedListCounterOperation<ReminderModel>(
-                        managedList: managedList,
-                        oldReminder: event.old,
-                        counterOperation: CounterOperation.update));
-              },
+      Rx.merge([
+        states.onReminderCreated.whereSuccess().withLatestFromIdentifiableList(
+              reminderList,
+              operationCallback: operationCallback,
             ),
-          ]);
+        states.onReminderDeleted.whereSuccess().withLatestFromIdentifiableList(
+              reminderList,
+              operationCallback:
+                  (Identifiable reminder, List<ReminderModel> list) async =>
+                      ManageOperation.remove,
+            ),
+        states.onReminderUpdated
+            .whereSuccess()
+            .map((pair) => pair.updated)
+            .withLatestFromIdentifiableList(reminderList,
+                operationCallback: operationCallback),
+      ]);
+}
+
+extension CoordinatingCountersChanges on CoordinatorBlocType {
+  Stream<CounterOperation> mapReminderManagedEventsToCounterOperation() =>
+      Rx.merge([
+        states.onReminderCreated.whereSuccess().mapTo(CounterOperation.create),
+        states.onReminderDeleted.whereSuccess().map((reminder) =>
+            reminder.complete
+                ? CounterOperation.deleteComplete
+                : CounterOperation.deleteIncomplete),
+        states.onReminderUpdated.whereSuccess().map((pair) {
+          if (pair.updated.complete != pair.old.complete) {
+            return pair.updated.complete
+                ? CounterOperation.setComplete
+                : CounterOperation.unsetComplete;
+          }
+          return CounterOperation.none;
+        }),
+      ]);
 }
