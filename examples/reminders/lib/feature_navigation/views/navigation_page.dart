@@ -1,5 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -33,38 +31,28 @@ class NavigationPage extends StatelessWidget implements AutoRouteWrapper {
               break;
           }
         },
-        child: RxBlocListener<NavigationBlocType, String>(
-          state: (bloc) => bloc.states.errors,
-          listener: (context, error) {
-            showOkAlertDialog(
-              context: context,
-              message: error,
-            );
-          },
-          child: AutoTabsScaffold(
-            routes: [
-              DashboardRoute(),
-              const ReminderListRoute(),
+        child: AutoTabsScaffold(
+          routes: [
+            DashboardRoute(),
+            const ReminderListRoute(),
+          ],
+          builder: (context, widget, animation) => widget,
+          bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
+            currentIndex: tabsRouter.activeIndex,
+            onTap: (index) => context
+                .read<NavigationBlocType>()
+                .events
+                .openTab(_tabFromIndex(index)),
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Dashboard',
+                icon: Icon(Icons.dashboard),
+              ),
+              BottomNavigationBarItem(
+                label: 'Reminders',
+                icon: Icon(Icons.list),
+              ),
             ],
-            builder: (context, widget, animation) => widget,
-            bottomNavigationBuilder: (context, tabsRouter) =>
-                BottomNavigationBar(
-              currentIndex: tabsRouter.activeIndex,
-              onTap: (index) => context
-                  .read<NavigationBlocType>()
-                  .events
-                  .openTab(_tabFromIndex(index)),
-              items: const [
-                BottomNavigationBarItem(
-                  label: 'Dashboard',
-                  icon: Icon(Icons.dashboard),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Reminders',
-                  icon: Icon(Icons.list),
-                ),
-              ],
-            ),
           ),
         ),
       );

@@ -7,7 +7,6 @@ environment:
   sdk: ">=2.18.0 <=3.0.0"
 
 dependencies:
-  adaptive_dialog: ^1.8.0+1
   auto_route: ^5.0.2
   cloud_firestore: ^4.0.4
   collection: ^1.16.0

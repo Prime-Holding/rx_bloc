@@ -28,11 +28,6 @@ class NavigationBloc extends $NavigationBloc {
   Stream<NavigationTabs> _mapToTabState() => _$openTabEvent
       .map<Result<NavigationTabs>>((tab) {
         /// TODO: Add a real navigation permission check
-        final now = DateTime.now();
-        if (now.minute % 4 == 0) {
-          return Result.error(
-              Exception('It isn\'t the right time for changes!'));
-        }
         return Result.success(tab);
       })
       .setResultStateHandler(this)
