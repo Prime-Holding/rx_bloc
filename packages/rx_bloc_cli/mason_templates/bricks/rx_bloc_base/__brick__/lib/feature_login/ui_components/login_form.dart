@@ -7,7 +7,7 @@ import 'package:flutter_rx_bloc/rx_form.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_translations.dart';
-import '../../base/models/error/error_model.dart';
+import '../../base/models/errors/error_model.dart';
 import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {

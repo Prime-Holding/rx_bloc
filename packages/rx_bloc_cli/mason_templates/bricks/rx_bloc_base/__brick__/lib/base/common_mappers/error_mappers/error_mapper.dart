@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 import '../../common_blocs/coordinator_bloc.dart';
-import '../../models/error/error_model.dart';
+import '../../models/errors/error_model.dart';
 
 part 'dio_error_mapper.dart';
 

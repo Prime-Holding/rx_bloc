@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../common_use_cases/logout_use_case.dart';
 import '../extensions/error_model_extensions.dart';
-import '../models/error/error_model.dart';
+import '../models/errors/error_model.dart';
 import '../repositories/auth_repository.dart';
 import 'coordinator_bloc.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../app_extensions.dart';
-import '../models/error/error_model.dart';
+import '../models/errors/error_model.dart';
 
 extension ErrorModelL10n on ErrorModel {
   /// Translate the business error to a user friendly message

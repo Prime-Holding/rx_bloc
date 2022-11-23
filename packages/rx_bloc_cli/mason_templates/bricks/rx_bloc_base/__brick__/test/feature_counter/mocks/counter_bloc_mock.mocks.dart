@@ -7,7 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:rx_bloc/rx_bloc.dart' as _i4;
-import 'package:test_app/base/models/error/error_model.dart' as _i5;
+import 'package:test_app/base/models/errors/error_model.dart' as _i5;
 import 'package:test_app/feature_counter/blocs/counter_bloc.dart' as _i2;
 
 // ignore_for_file: type=lint

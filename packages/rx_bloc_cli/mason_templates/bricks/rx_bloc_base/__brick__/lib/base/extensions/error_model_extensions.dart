@@ -1,4 +1,4 @@
-import '../models/error/error_model.dart';
+import '../models/errors/error_model.dart';
 
 extension ExceptionToErrorModel on Exception {
   ErrorModel asErrorModel() => this is ErrorModel

@@ -1,7 +1,7 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:{{project_name}}/base/common_blocs/user_account_bloc.dart';
-import 'package:{{project_name}}/base/models/error/error_model.dart';
+import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'user_account_bloc_mock.mocks.dart';
 
 @GenerateMocks([
