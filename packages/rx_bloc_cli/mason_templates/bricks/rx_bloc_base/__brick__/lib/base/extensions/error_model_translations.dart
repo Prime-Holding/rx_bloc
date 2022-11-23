@@ -16,8 +16,12 @@ extension ErrorModelL10n on ErrorModel {
       return (this as ErrorNotFoundModel).translate(context);
     }
 
-    if (this is ErrorRequiredFieldModel) {
-      return (this as ErrorRequiredFieldModel).translate(context);
+    if (this is ErrorFieldModel) {
+      return (this as ErrorFieldModel).translate(context);
+    }
+
+    if (this is ErrorFieldRequiredModel) {
+      return (this as ErrorFieldRequiredModel).translate(context);
     }
 
     return context.l10n.error.unknown;
@@ -29,8 +33,13 @@ extension ErrorNotFoundL10n on ErrorNotFoundModel {
       message ?? context.l10n.error.notFound;
 }
 
-extension ErrorRequiredFieldModelL10n on ErrorRequiredFieldModel {
+extension ErrorFieldRequiredModelL10n on ErrorFieldRequiredModel {
   String translate(BuildContext context) => context.l10n.error.requiredField(
         context.l10n.field.getString(fieldKey)!,
       );
+}
+
+extension ErrorFieldModelL10n on ErrorFieldModel {
+  String translate(BuildContext context) =>
+      context.l10n.error.getString(fieldKey)!;
 }
