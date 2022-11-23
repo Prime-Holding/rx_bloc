@@ -8,7 +8,8 @@ class I18n {
       : error = I18nError(_lookup.createErrorLookup()),
         featureCounter = I18nFeatureCounter(_lookup.createFeatureCounterLookup()),
         featureLogin = I18nFeatureLogin(_lookup.createFeatureLoginLookup()),
-        featureNotifications = I18nFeatureNotifications(_lookup.createFeatureNotificationsLookup());
+        featureNotifications = I18nFeatureNotifications(_lookup.createFeatureNotificationsLookup()),
+        field = I18nField(_lookup.createFieldLookup());
 
   static Locale? _locale;
 
@@ -35,6 +36,8 @@ class I18n {
   final I18nFeatureLogin featureLogin;
 
   final I18nFeatureNotifications featureNotifications;
+
+  final I18nField field;
 
   ///
   /// <table style="width:100%">
@@ -279,6 +282,26 @@ class I18nError {
     return customLookup?.unknown ?? _lookup.unknown;
   }
 
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"{fieldName} should not be empty"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"{fieldName} should not be empty"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String requiredField(String fieldName) {
+    return customLookup?.requiredField(fieldName) ?? _lookup.requiredField(fieldName);
+  }
+
   String? getString(String key, [Map<String, String>? placeholders]) {
     switch (key) {
       case I18nErrorKeys.accessDenied:
@@ -295,6 +318,8 @@ class I18nError {
         return server;
       case I18nErrorKeys.unknown:
         return unknown;
+      case I18nErrorKeys.requiredField:
+        return requiredField(placeholders?["fieldName"] ?? "");
     }
     return null;
   }
@@ -697,6 +722,43 @@ class I18nFeatureNotifications {
   }
 }
 
+class I18nField {
+  I18nField(this._lookup);
+
+  final I18nFieldLookup _lookup;
+
+  /// add custom locale lookup which will be called first
+  static I18nFieldLookup? customLookup;
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Email"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Email"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get email {
+    return customLookup?.email ?? _lookup.email;
+  }
+
+  String? getString(String key, [Map<String, String>? placeholders]) {
+    switch (key) {
+      case I18nFieldKeys.email:
+        return email;
+    }
+    return null;
+  }
+}
+
 class I18nKeys {
   static const String reload = "reload";
   static const String ok = "ok";
@@ -712,6 +774,7 @@ class I18nErrorKeys {
   static const String notFound = "notFound";
   static const String server = "server";
   static const String unknown = "unknown";
+  static const String requiredField = "requiredField";
 }
 
 class I18nFeatureCounterKeys {
@@ -737,6 +800,10 @@ class I18nFeatureNotificationsKeys {
   static const String notificationShowDelayedText = "notificationShowDelayedText";
   static const String notificationsPageDescription = "notificationsPageDescription";
   static const String notificationsPageConfig = "notificationsPageConfig";
+}
+
+class I18nFieldKeys {
+  static const String email = "email";
 }
 
 class I18nLookup {
@@ -767,6 +834,8 @@ class I18nLookup {
   I18nFeatureLoginLookup createFeatureLoginLookup() => I18nFeatureLoginLookup();
 
   I18nFeatureNotificationsLookup createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup();
+
+  I18nFieldLookup createFieldLookup() => I18nFieldLookup();
 }
 
 class I18nErrorLookup {
@@ -800,6 +869,10 @@ class I18nErrorLookup {
 
   String get unknown {
     return getString(I18nErrorKeys.unknown);
+  }
+
+  String requiredField(String fieldName) {
+    return getString(I18nErrorKeys.requiredField, {"fieldName": fieldName});
   }
 }
 
@@ -885,6 +958,16 @@ class I18nFeatureNotificationsLookup {
   }
 }
 
+class I18nFieldLookup {
+  String getString(String key, [Map<String, String>? placeholders]) {
+    throw UnimplementedError("I18nFieldLookup.getString");
+  }
+
+  String get email {
+    return getString(I18nFieldKeys.email);
+  }
+}
+
 class I18nLookup_es extends I18nLookup_en {
   @override
   String get reload {
@@ -917,6 +1000,9 @@ class I18nLookup_es extends I18nLookup_en {
 
   @override
   I18nFeatureNotificationsLookup_es createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup_es();
+
+  @override
+  I18nFieldLookup_es createFieldLookup() => I18nFieldLookup_es();
 }
 
 class I18nLookup_en extends I18nLookup {
@@ -951,6 +1037,9 @@ class I18nLookup_en extends I18nLookup {
 
   @override
   I18nFeatureNotificationsLookup_en createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup_en();
+
+  @override
+  I18nFieldLookup_en createFieldLookup() => I18nFieldLookup_en();
 }
 
 class I18nErrorLookup_es extends I18nErrorLookup_en {
@@ -988,6 +1077,11 @@ class I18nErrorLookup_es extends I18nErrorLookup_en {
   String get unknown {
     return "Oops, something went wrong. Please try again.";
   }
+
+  @override
+  String requiredField(String fieldName) {
+    return "${fieldName} should not be empty";
+  }
 }
 
 class I18nErrorLookup_en extends I18nErrorLookup {
@@ -1024,6 +1118,11 @@ class I18nErrorLookup_en extends I18nErrorLookup {
   @override
   String get unknown {
     return "Oops, something went wrong. Please try again.";
+  }
+
+  @override
+  String requiredField(String fieldName) {
+    return "${fieldName} should not be empty";
   }
 }
 
@@ -1196,6 +1295,20 @@ class I18nFeatureNotificationsLookup_en extends I18nFeatureNotificationsLookup {
   @override
   String get notificationsPageConfig {
     return "When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated.";
+  }
+}
+
+class I18nFieldLookup_es extends I18nFieldLookup_en {
+  @override
+  String get email {
+    return "Email";
+  }
+}
+
+class I18nFieldLookup_en extends I18nFieldLookup {
+  @override
+  String get email {
+    return "Email";
   }
 }
 
