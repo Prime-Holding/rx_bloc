@@ -6,13 +6,13 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../common_use_cases/logout_use_case.dart';
+import '../extensions/error_model_extensions.dart';
+import '../models/errors/error_model.dart';
 import '../repositories/auth_repository.dart';
 import 'coordinator_bloc.dart';
 
 part 'user_account_bloc.rxb.g.dart';
 part 'user_account_bloc_extensions.dart';
-
-// ignore_for_file: avoid_types_on_closure_parameters
 
 abstract class UserAccountBlocEvents {
   void logout();
@@ -26,7 +26,7 @@ abstract class UserAccountBlocStates {
   Stream<bool> get isLoading;
 
   /// The error state
-  Stream<String> get errors;
+  Stream<ErrorModel> get errors;
 }
 
 @RxBloc()
@@ -42,8 +42,8 @@ class UserAccountBloc extends $UserAccountBloc {
         .logoutUser(_logoutUseCase)
         .setResultStateHandler(this)
         .emitLoggedOutToCoordinator(_coordinatorBloc)
-        .listen((_) {})
-        .disposedBy(_compositeSubscription);
+        .listen(null)
+        .addTo(_compositeSubscription);
   }
 
   final LogoutUseCase _logoutUseCase;
@@ -57,8 +57,7 @@ class UserAccountBloc extends $UserAccountBloc {
       ]).shareReplay(maxSize: 1);
 
   @override
-  Stream<String> _mapToErrorsState() =>
-      errorState.map((error) => error.toString());
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
