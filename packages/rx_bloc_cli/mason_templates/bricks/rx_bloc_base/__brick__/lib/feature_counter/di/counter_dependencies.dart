@@ -37,7 +37,10 @@ class CounterDependencies {
 
   List<Provider> get _repositories => [
         Provider<CounterRepository>(
-          create: (context) => CounterRepository(context.read()),
+          create: (context) => CounterRepository(
+            context.read(),
+            context.read(),
+          ),
         ),
       ];
 

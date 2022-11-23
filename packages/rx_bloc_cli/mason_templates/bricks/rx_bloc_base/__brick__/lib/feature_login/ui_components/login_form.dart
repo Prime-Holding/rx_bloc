@@ -6,6 +6,8 @@ import 'package:flutter_rx_bloc/rx_form.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
+import '../../base/extensions/error_model_translations.dart';
+import '../../base/models/errors/error_model.dart';
 import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
@@ -68,8 +70,14 @@ class _LoginFormState extends State<LoginForm> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: _buildLogInButton(),
                 ),
-                _buildErrorListener(),
-                _buildLogoutListener(),
+                RxBlocListener<LoginBlocType, ErrorModel>(
+                  state: (bloc) => bloc.states.errors,
+                  listener: _onError,
+                ),
+                RxBlocListener<LoginBlocType, bool>(
+                  state: (bloc) => bloc.states.loggedIn,
+                  listener: _onLogout,
+                ),
               ],
             ),
           ],
@@ -83,26 +91,6 @@ class _LoginFormState extends State<LoginForm> {
           onPressed: bloc.events.login,
           child: Text(context.l10n.featureLogin.logIn),
         ),
-      );
-
-  Widget _buildLogoutListener() => RxBlocListener<LoginBlocType, bool>(
-        state: (bloc) => bloc.states.loggedIn,
-        listener: (_, success) {
-          if (success) widget.onLoginSuccess?.call();
-        },
-      );
-
-  Widget _buildErrorListener() => RxBlocListener<LoginBlocType, String>(
-        state: (bloc) => bloc.states.errors,
-        listener: (context, error) {
-          if (error.isEmpty) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(error),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        },
       );
 
   Widget _buildFieldEmail() => RxTextFormFieldBuilder<LoginBlocType>(
@@ -139,4 +127,17 @@ class _LoginFormState extends State<LoginForm> {
     String label,
   ) =>
       decoration.copyWith(labelText: label);
+
+  void _onError(BuildContext context, ErrorModel error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(error.translate(context)),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  void _onLogout(BuildContext _, bool success) {
+    if (success) widget.onLoginSuccess?.call();
+  }
 }

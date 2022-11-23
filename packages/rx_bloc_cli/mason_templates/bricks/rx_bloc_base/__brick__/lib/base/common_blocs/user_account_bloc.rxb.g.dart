@@ -32,7 +32,7 @@ abstract class $UserAccountBloc extends RxBlocBase
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
-  late final Stream<String> _errorsState = _mapToErrorsState();
+  late final Stream<ErrorModel> _errorsState = _mapToErrorsState();
 
   @override
   void logout() => _$logoutEvent.add(null);
@@ -44,13 +44,13 @@ abstract class $UserAccountBloc extends RxBlocBase
   Stream<bool> get isLoading => _isLoadingState;
 
   @override
-  Stream<String> get errors => _errorsState;
+  Stream<ErrorModel> get errors => _errorsState;
 
   Stream<bool> _mapToLoggedInState();
 
   Stream<bool> _mapToIsLoadingState();
 
-  Stream<String> _mapToErrorsState();
+  Stream<ErrorModel> _mapToErrorsState();
 
   @override
   UserAccountBlocEvents get events => this;
