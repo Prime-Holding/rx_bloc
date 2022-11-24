@@ -6,6 +6,7 @@ import 'package:flutter_rx_bloc/rx_form.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
+import '../../base/extensions/error_model_field_translations.dart';
 import '../../base/extensions/error_model_translations.dart';
 import '../../base/models/errors/error_model.dart';
 import '../blocs/login_bloc.dart';
@@ -56,9 +57,9 @@ class _LoginFormState extends State<LoginForm> {
             ),
             Column(
               children: [
-                _buildFieldEmail(),
+                _buildFieldEmail(context),
                 const SizedBox(height: 10),
-                _buildFieldPassword(),
+                _buildFieldPassword(context),
               ],
             ),
             Column(
@@ -93,8 +94,8 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  Widget _buildFieldEmail() => RxTextFormFieldBuilder<LoginBlocType>(
-        state: (bloc) => bloc.states.username,
+  Widget _buildFieldEmail(BuildContext context) => RxTextFormFieldBuilder<LoginBlocType>(
+        state: (bloc) => bloc.states.username.translate(context),
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setUsername(value),
         builder: (fieldState) => TextFormField(
@@ -107,8 +108,8 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  Widget _buildFieldPassword() => RxTextFormFieldBuilder<LoginBlocType>(
-        state: (bloc) => bloc.states.password,
+  Widget _buildFieldPassword(BuildContext context) => RxTextFormFieldBuilder<LoginBlocType>(
+        state: (bloc) => bloc.states.password.translate(context),
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setPassword(value),
         obscureText: true,
