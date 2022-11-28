@@ -10,13 +10,13 @@ class LoginFieldValidators {
 
   String validateEmail(String email) {
     if (email.isEmpty) {
-      throw ErrorFieldRequiredModel(
+      throw FieldRequiredErrorModel(
         fieldKey: I18nFieldKeys.email,
         fieldValue: email,
       );
     }
     if (!_emailRexExp.hasMatch(email)) {
-      throw ErrorFieldModel(
+      throw FieldErrorModel(
         fieldKey: I18nErrorKeys.invalidEmail,
         fieldValue: email,
       );
@@ -26,13 +26,13 @@ class LoginFieldValidators {
 
   String validatePassword(String password) {
     if (password.isEmpty) {
-      throw ErrorFieldRequiredModel(
+      throw FieldRequiredErrorModel(
         fieldKey: I18nFieldKeys.password,
         fieldValue: password,
       );
     }
     if (password.length < 6 || password.length > 64) {
-      throw ErrorFieldModel(
+      throw FieldErrorModel(
         fieldKey: I18nErrorKeys.passwordLength,
         fieldValue: password,
       );

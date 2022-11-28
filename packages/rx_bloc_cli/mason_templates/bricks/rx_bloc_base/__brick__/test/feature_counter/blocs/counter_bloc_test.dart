@@ -76,7 +76,7 @@ void main() {
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer(
-          (_) async => Future.error(ErrorNoConnectionModel()),
+          (_) async => Future.error(NoConnectionErrorModel()),
         );
         return CounterBloc(repository: repo);
       },
@@ -85,7 +85,7 @@ void main() {
         bloc.events.increment();
       },
       state: (bloc) => bloc.states.errors,
-      expect: [isA<ErrorNoConnectionModel>()],
+      expect: [isA<NoConnectionErrorModel>()],
     );
 
     rxBlocTest<CounterBlocType, LoadingWithTag>(
