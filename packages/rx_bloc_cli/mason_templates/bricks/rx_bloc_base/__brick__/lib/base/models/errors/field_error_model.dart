@@ -1,7 +1,7 @@
 part of 'error_model.dart';
 
-class ErrorFieldRequiredModel<T> extends ErrorModel {
-  ErrorFieldRequiredModel({
+class FieldErrorModel<T> extends ErrorModel {
+  FieldErrorModel({
     required this.fieldKey,
     required this.fieldValue,
   });
@@ -12,6 +12,5 @@ class ErrorFieldRequiredModel<T> extends ErrorModel {
   final T fieldValue;
 
   @override
-  String toString() =>
-      'ErrorFieldRequiredModel. Key: $fieldKey. Value: $fieldValue.';
+  String toString() => 'FieldError. Key: $fieldKey. Value: $fieldValue.';
 }

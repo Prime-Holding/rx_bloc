@@ -9,14 +9,14 @@ extension ErrorModelFieldL10n<T> on Stream<T> {
   /// based on the error field type
   Stream<T> translate(BuildContext context) {
     return handleError((error) {
-      if (error is ErrorFieldModel) {
+      if (error is FieldErrorModel) {
         throw RxFieldException<T>(
           error: error.translate(context),
           fieldValue: error.fieldValue,
         );
       }
 
-      if (error is ErrorFieldRequiredModel) {
+      if (error is FieldRequiredErrorModel) {
         throw RxFieldException<T>(
           error: error.translate(context),
           fieldValue: error.fieldValue,

@@ -153,6 +153,6 @@ class ErrorMapper implements ErrorMapperInterface {
 
     // Use custom error mappers here.
 
-    return ErrorUnknownModel(exception: exception);
+    return UnknownErrorModel(exception: exception);
   }
 }
