@@ -256,7 +256,7 @@ abstract class RxTestGeneratorBase(
             val featureFolder = bloc.file.parent.parent.name
             lines.forEach { line ->
                 bloc.stateVariableTypes.forEach {
-                    val snake = it.toLowerSnakeCase()
+                    val snake = it.trim().replace("?", "").toLowerSnakeCase()
                     if (line.contains("import '") && line.contains("$snake.dart")) {
                         sb.appendln(
                             line.replace("../..", "package:$appFolder")
