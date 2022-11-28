@@ -112,7 +112,7 @@ class Utils {
                 }
             }
             return Bloc(
-                fileName = notNullBlocFile.name,
+                file = notNullBlocFile,
                 relativePath = notNullBlocFile.path.substring(
                     notNullBlocFile.path.indexOf("lib") + 3
                 ),
@@ -235,7 +235,7 @@ class Utils {
                 testFolder.children.forEach { libChild ->
                     if (libChild.name.startsWith("feature_") || libChild.name.startsWith("lib_")) {
                         selected.removeIf { x: Bloc ->
-                            x.fileName == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
+                            x.file.name == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
                         }
                     }
                 }
