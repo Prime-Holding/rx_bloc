@@ -7,7 +7,6 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
@@ -20,6 +19,11 @@ import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils;
 import com.primeholding.rxbloc_generator_plugin.ui.ChooseDialog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentionAction implements IntentionAction {
 
@@ -99,7 +103,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         }
 
         String blocTypeDirectorySuggest;
-        Bloc blocFromPath = null;
+        List<Bloc> blocsFromPath = new ArrayList<>();
+        Bloc tempBlocFromPath;
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
 
         if (psiFile != null) {
@@ -112,17 +117,14 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 VirtualFile[] children = feature_dir.getChildren();
                 for (VirtualFile file : children) {
                     if (file.isDirectory() && file.getName().equals(BLOCS_DIRECTORY)) {
-
-                        String blocFileName = vFile.getName().replace("page.dart", "bloc.dart");
-
                         for (VirtualFile blocFile : file.getChildren()) {
-                            if (blocFile.getName().equals(blocFileName)) {
-                                blocFromPath = Utils.Companion.extractBloc(blocFile);
-                                break;
+                            if (blocFile.getName().endsWith(".dart")) {
+                                tempBlocFromPath = Utils.Companion.extractBloc(blocFile);
+                                if (tempBlocFromPath != null) {
+                                    blocsFromPath.add(tempBlocFromPath);
+                                }
                             }
                         }
-
-                        break;
                     }
                 }
             }
@@ -131,8 +133,9 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         String stateTypeDirectorySuggest;
         String stateVariableNameSuggest;
 
-        if (blocFromPath != null && blocFromPath.getStateVariableTypes().size() > 0) {
-
+        if (blocsFromPath.isEmpty()) {
+            execute("", selectedText, "", "", document, project, editor, offsetStart, offsetEnd);
+        } else {
             String filter = "";
             switch (snippetType) {
                 case RxBlocBuilder:
@@ -154,44 +157,93 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                     break;
             }
             if (!filter.isEmpty()) {
-                for (int i = blocFromPath.getStateVariableTypes().size() - 1; i >= 0; i--) {
+                String finalFilter = filter;
+                blocsFromPath.forEach(blocFromPath -> {
+                    for (int i = blocFromPath.getStateVariableTypes().size() - 1; i >= 0; i--) {
 
-                    if (!blocFromPath.getStateVariableTypes().get(i).startsWith(filter)) {
-                        blocFromPath.getStateVariableNames().remove(i);
-                        blocFromPath.getStateVariableTypes().remove(i);
+                        if (!blocFromPath.getStateVariableTypes().get(i).startsWith(finalFilter)) {
+                            blocFromPath.getStateVariableNames().remove(i);
+                            blocFromPath.getStateVariableTypes().remove(i);
+                        }
                     }
+                });
+            }
+            for (int i = blocsFromPath.size() - 1; i >= 0; i--) {
+                if (blocsFromPath.get(i).getStateVariableNames().isEmpty()) {
+                    blocsFromPath.remove(i);
                 }
             }
 
-            if (blocFromPath.getStateVariableNames().isEmpty()) {
-                Messages.showMessageDialog(psiFile.getProject(), "No elements found matching the desired state type", "No Elements", null);
-            } else if (blocFromPath.getStateVariableNames().size() == 1) {
-                blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
-                stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(0);
-                stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(0);
+            if (blocsFromPath.isEmpty()) {
+                execute("", selectedText, "", "", document, project, editor, offsetStart, offsetEnd);
+            } else if (blocsFromPath.size() == 1) {
+                Bloc blocFromPath = blocsFromPath.get(0);
+                if (blocFromPath.getStateVariableNames().size() == 1) {
 
-                execute(stateVariableNameSuggest, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, document, project, editor, offsetStart, offsetEnd);
+                    blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
+                    stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(0);
+                    stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(0);
+
+                    execute(stateVariableNameSuggest, selectedText, blocTypeDirectorySuggest, stateTypeDirectorySuggest, document, project, editor, offsetStart, offsetEnd);
+                } else {
+                    // choose from states
+                    ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
+                    JPanel content = new JPanel();
+                    content.add(comboBox);
+
+                    ApplicationManager.getApplication().invokeLater(() -> {
+                        boolean isOK = new ChooseDialog(content, "BloC State").showAndGet();
+                        int chooseState = comboBox.getSelectedIndex();
+                        if (isOK) {
+                            String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(blocFromPath.getFileName());
+                            String stateVariableNameSuggestChosen = blocFromPath.getStateVariableNames().get(chooseState);
+                            String stateTypeDirectorySuggestChosen = blocFromPath.getStateVariableTypes().get(chooseState);
+
+                            execute(stateVariableNameSuggestChosen, selectedText, blocTypeDirectorySuggestChosen, stateTypeDirectorySuggestChosen, document, project, editor, offsetStart, offsetEnd);
+                        }
+                    });
+                }
             } else {
-                ComboBox<String> comboBox = new ComboBox<>(blocFromPath.getStateVariableNames().toArray(new String[0]));
+                //    choose from both blocs & states
+                List<String> listBlocs = new ArrayList<>();
+                blocsFromPath.forEach(bloc -> listBlocs.add(toCamelCase(bloc.getFileName().replace(".dart", ""))));
 
-                Bloc finalBlocFromPath = blocFromPath;
+
+                ComboBox<String> comboBoxBloc = new ComboBox<>(listBlocs.toArray(new String[0]));
+                ComboBox<String> comboBoxState = new ComboBox<>(blocsFromPath.get(0).getStateVariableNames().toArray(new String[0]));
+
+                comboBoxBloc.addItemListener(e -> {
+                    int index = listBlocs.indexOf(e.getItem().toString());
+                    if (index != -1) {
+                        comboBoxState.setModel(new DefaultComboBoxModel<>(blocsFromPath.get(index).getStateVariableNames().toArray(new String[0])));
+                    }
+                });
+
+                JPanel content = new JPanel();
+                content.setLayout(new GridLayout(2, 1));
+                content.add(comboBoxBloc);
+                content.add(comboBoxState);
+
                 ApplicationManager.getApplication().invokeLater(() -> {
-                    boolean isOK = new ChooseDialog<>(comboBox, "BloC State").showAndGet();
-                    int chooseState = comboBox.getSelectedIndex();
+                    boolean isOK = new ChooseDialog(content, "BloC State").showAndGet();
                     if (isOK) {
+                        int chosenStateIndex = comboBoxState.getSelectedIndex();
+                        int chosenBlocIndex = comboBoxBloc.getSelectedIndex();
+                        Bloc finalBlocFromPath = blocsFromPath.get(chosenBlocIndex);
+
                         String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(finalBlocFromPath.getFileName());
-                        String stateVariableNameSuggestChosen = finalBlocFromPath.getStateVariableNames().get(chooseState);
-                        String stateTypeDirectorySuggestChosen = finalBlocFromPath.getStateVariableTypes().get(chooseState);
+                        String stateVariableNameSuggestChosen = finalBlocFromPath.getStateVariableNames().get(chosenStateIndex);
+                        String stateTypeDirectorySuggestChosen = finalBlocFromPath.getStateVariableTypes().get(chosenStateIndex);
 
                         execute(stateVariableNameSuggestChosen, selectedText, blocTypeDirectorySuggestChosen, stateTypeDirectorySuggestChosen, document, project, editor, offsetStart, offsetEnd);
                     }
                 });
-
             }
         }
     }
 
-    private void execute(String stateVariableNameSuggest, String selectedText, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, Document document, Project project, Editor editor, int offsetStart, int offsetEnd) {
+    private void execute(String stateVariableNameSuggest, String selectedText, String blocTypeDirectorySuggest,
+                         String stateTypeDirectorySuggest, Document document, Project project, Editor editor, int offsetStart, int offsetEnd) {
         String replacement;
         if (stateVariableNameSuggest.isEmpty()) {
             replacement = Snippets.getSnippet(snippetType, selectedText);
@@ -201,37 +253,39 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         final String replaceWith = replacement;
 
         // wrap the widget:
-        WriteCommandAction.runWriteCommandAction(project, () -> document.replaceString(offsetStart, offsetEnd, replaceWith));
+        WriteCommandAction.runWriteCommandAction(project, () -> {
+            document.replaceString(offsetStart, offsetEnd, replaceWith);
 
-        checkImports(document, project, stateTypeDirectorySuggest);
-        // place cursors to specify types:
-        final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
+            checkImports(document, stateTypeDirectorySuggest);
 
-        final CaretModel caretModel = editor.getCaretModel();
-        caretModel.removeSecondaryCarets();
 
-        for (String snippet : snippetArr) {
-            if (!replaceWith.contains(snippet)) {
-                continue;
+            // place cursors to specify types:
+            final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY};
+
+            final CaretModel caretModel = editor.getCaretModel();
+            caretModel.removeSecondaryCarets();
+
+            for (String snippet : snippetArr) {
+                if (!replaceWith.contains(snippet)) {
+                    continue;
+                }
+
+                final int caretOffset = offsetStart + replaceWith.indexOf(snippet);
+                final VisualPosition visualPos = editor.offsetToVisualPosition(caretOffset);
+                caretModel.addCaret(visualPos);
+
+                // select snippet prefix keys:
+                final Caret currentCaret = caretModel.getCurrentCaret();
+                currentCaret.setSelection(caretOffset, caretOffset);
             }
 
-            final int caretOffset = offsetStart + replaceWith.indexOf(snippet);
-            final VisualPosition visualPos = editor.offsetToVisualPosition(caretOffset);
-            caretModel.addCaret(visualPos);
+            final Caret initialCaret = caretModel.getAllCarets().get(0);
+            if (!initialCaret.hasSelection()) {
+                // initial position from where was triggered the intention action
+                caretModel.removeCaret(initialCaret);
+            }
 
-            // select snippet prefix keys:
-            final Caret currentCaret = caretModel.getCurrentCaret();
-            currentCaret.setSelection(caretOffset, caretOffset);
-        }
-
-        final Caret initialCaret = caretModel.getAllCarets().get(0);
-        if (!initialCaret.hasSelection()) {
-            // initial position from where was triggered the intention action
-            caretModel.removeCaret(initialCaret);
-        }
-
-        // reformat file:
-        ApplicationManager.getApplication().runWriteAction(() -> {
+            // reformat file:
             PsiDocumentManager.getInstance(project).commitDocument(document);
             final PsiFile currentFile = getCurrentFile(project, editor);
             if (currentFile != null) {
@@ -250,7 +304,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         });
     }
 
-    private void checkImports(Document document, Project project, String stateTypeDirectorySuggest) {
+    private void checkImports(Document document, String stateTypeDirectorySuggest) {
 
         boolean containsResult = stateTypeDirectorySuggest.contains("Result<");
         boolean containsPaginatedList = stateTypeDirectorySuggest.contains("PaginatedList<");
@@ -259,17 +313,17 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         boolean containsResultImport = document.getText().contains("package:rx_bloc/rx_bloc.dart");
 
         if (containsResult && !containsResultImport) {
-            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc/rx_bloc.dart';\n"));
+            document.insertString(0, "import 'package:rx_bloc/rx_bloc.dart';\n");
         }
         if (containsPaginatedList && !containsPaginatedListImport) {
-            WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:rx_bloc_list/rx_bloc_list.dart';\n"));
+            document.insertString(0, "import 'package:rx_bloc_list/rx_bloc_list.dart';\n");
         }
 
         switch (snippetType) {
             case RxBlocListener:
             case RxBlocBuilder:
                 if (!document.getText().contains("package:flutter_rx_bloc/flutter_rx_bloc.dart")) {
-                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';\n"));
+                    document.insertString(0, "import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';\n");
                 }
                 break;
             case RxResultBuilder:
@@ -279,8 +333,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             case RxFormFieldBuilder:
             case RxTextFormFieldBuilder:
                 if (!document.getText().contains("package:flutter_rx_bloc/rx_form.dart")) {
-                    WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(0, "import 'package:flutter_rx_bloc/rx_form.dart';\n" +
-                            (containsResult && !containsResultImport ? "import 'package:rx_bloc/rx_bloc.dart';\n" : "")));
+                    document.insertString(0, "import 'package:flutter_rx_bloc/rx_form.dart';\n" +
+                            (containsResult && !containsResultImport ? "import 'package:rx_bloc/rx_bloc.dart';\n" : ""));
                 }
                 break;
 

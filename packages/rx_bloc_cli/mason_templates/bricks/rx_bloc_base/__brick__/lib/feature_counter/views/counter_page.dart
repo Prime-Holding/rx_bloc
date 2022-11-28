@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/action_button.dart';
 import '../../base/common_ui_components/update_button.dart';
+import '../../base/extensions/error_model_translations.dart';
+import '../../base/models/errors/error_model.dart';
 import '../../base/theme/design_system.dart';
 import '../../feature_login/ui_components/profile_avatar.dart';
 import '../../l10n/l10n.dart';
@@ -14,7 +17,6 @@ import '../blocs/counter_bloc.dart';
 import '../di/counter_dependencies.dart';
 
 class CounterPage extends StatelessWidget implements AutoRouteWrapper {
-  // ignore: public_member_api_docs
   const CounterPage({
     Key? key,
   }) : super(key: key);
@@ -32,11 +34,18 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildErrorListener(),
               RxBlocBuilder<CounterBlocType, int>(
                 state: (bloc) => bloc.states.count,
                 builder: (context, countState, bloc) =>
                     _buildCount(context, countState),
+              ),
+              RxBlocListener<CounterBlocType, ErrorModel>(
+                state: (bloc) => bloc.states.errors,
+                listener: _onError,
+              ),
+              RxBlocListener<UserAccountBlocType, ErrorModel>(
+                state: (bloc) => bloc.states.errors,
+                listener: _onError,
               ),
             ],
           ),
@@ -45,7 +54,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
-        title: Text(context.l10n.counterPageTitle),
+        title: Text(context.l10n.featureCounter.counterPageTitle),
         actions: [
           RxLoadingBuilder<CounterBlocType>(
             state: (bloc) => bloc.states.isLoading,
@@ -69,17 +78,6 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
                 style: context.designSystem.typography.h2Med16,
             );
 
-  Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
-        state: (bloc) => bloc.states.errors,
-        listener: (context, errorMessage) =>
-            ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorMessage),
-            behavior: SnackBarBehavior.floating,
-          ),
-        ),
-      );
-
   Widget _buildActionButtons(BuildContext context) =>
       RxLoadingBuilder<CounterBlocType>(
         state: (bloc) => bloc.states.isLoading,
@@ -88,18 +86,26 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
           children: [
             ActionButton(
               icon: Icon(context.designSystem.icons.plusSign),
-              tooltip: context.l10n.increment,
+              tooltip: context.l10n.featureCounter.increment,
               onPressed: isLoading ? null : bloc.events.increment,
               loading: isLoading && tag == CounterBloc.tagIncrement,
             ),
             const SizedBox(width: 16),
             ActionButton(
               icon: Icon(context.designSystem.icons.minusSign),
-              tooltip: context.l10n.decrement,
+              tooltip: context.l10n.featureCounter.decrement,
               onPressed: isLoading ? null : bloc.events.decrement,
               loading: isLoading && tag == CounterBloc.tagDecrement,
             ),
           ],
+        ),
+      );
+
+  void _onError(BuildContext context, ErrorModel errorModel) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorModel.translate(context)),
+          behavior: SnackBarBehavior.floating,
         ),
       );
 }

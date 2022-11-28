@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text(context.l10n.loginPageTitle)),
+        appBar: AppBar(title: Text(context.l10n.featureLogin.loginPageTitle)),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

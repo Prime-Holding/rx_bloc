@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
 import 'package:{{project_name}}/base/common_blocs/user_account_bloc.dart';
+import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 import 'package:{{project_name}}/feature_counter/views/counter_page.dart';
 
@@ -16,7 +17,7 @@ import '../../mocks/counter_bloc_mock.dart';
 /// a mocked bloc depending on the values being tested
 Widget counterPageFactory({
   required bool isLoggedIn,
-  String? error,
+  ErrorModel? error,
   int? count,
   LoadingWithTag? isLoading,
 }) =>

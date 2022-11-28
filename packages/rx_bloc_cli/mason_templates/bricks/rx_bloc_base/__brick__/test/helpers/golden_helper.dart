@@ -89,10 +89,10 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
       tester,
       builder,
       localizations: const [
-        AppLocalizations.delegate,
+        I18n.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
-      localeOverrides: AppLocalizations.supportedLocales,
+      localeOverrides: I18n.supportedLocales,
       theme: theme == Themes.light
           ? {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light())
           : {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
