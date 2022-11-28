@@ -44,7 +44,7 @@ abstract class $LoginBloc extends RxBlocBase
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
-  late final Stream<String> _errorsState = _mapToErrorsState();
+  late final Stream<ErrorModel> _errorsState = _mapToErrorsState();
 
   @override
   void setUsername(String username) => _$setUsernameEvent.add(username);
@@ -71,7 +71,7 @@ abstract class $LoginBloc extends RxBlocBase
   Stream<bool> get isLoading => _isLoadingState;
 
   @override
-  Stream<String> get errors => _errorsState;
+  Stream<ErrorModel> get errors => _errorsState;
 
   Stream<String> _mapToUsernameState();
 
@@ -83,7 +83,7 @@ abstract class $LoginBloc extends RxBlocBase
 
   Stream<bool> _mapToIsLoadingState();
 
-  Stream<String> _mapToErrorsState();
+  Stream<ErrorModel> _mapToErrorsState();
 
   @override
   LoginBlocEvents get events => this;

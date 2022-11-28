@@ -1,0 +1,13 @@
+{
+  "@@locale": "es",
+  "accessDenied": "You don't have access to this resource.",
+  "network": "A network error occurred.",
+  "noConnection": "It looks like your device is not connected to the internet. Please check your settings.",
+  "connectionRefused": "Unable to connect to server. Connection refused.",
+  "notFound": "Resource not found.",
+  "server": "An error occurred and the request could not be processed. Please try again later.",
+  "unknown": "Oops, something went wrong. Please try again.",
+  "requiredField": "{fieldName} should not be empty",
+  "invalidEmail": "Please enter a valid email",
+  "passwordLength": "Password should be at least 6 characters long"
+}
