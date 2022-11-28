@@ -114,7 +114,7 @@ class Utils {
             }
             println(constructorFields)
             return Bloc(
-                fileName = notNullBlocFile.name,
+                file = notNullBlocFile,
                 relativePath = notNullBlocFile.path.substring(
                     notNullBlocFile.path.indexOf("lib") + 3
                 ),
@@ -169,8 +169,8 @@ class Utils {
             }
 
             list.sortWith(Comparator { bloc1, bloc2 ->
-                val file1 = (if (bloc1.isLib) "lib_" else "feature_") + bloc1.fileName
-                val file2 = (if (bloc2.isLib) "lib_" else "feature_") + bloc2.fileName
+                val file1 = (if (bloc1.isLib) "lib_" else "feature_") + bloc1.file.name
+                val file2 = (if (bloc2.isLib) "lib_" else "feature_") + bloc2.file.name
 
                 file1.compareTo(file2)
             })
@@ -215,7 +215,7 @@ class Utils {
                 testFolder.children.forEach { libChild ->
                     if (libChild.name.startsWith("feature_") || libChild.name.startsWith("lib_")) {
                         selected.removeIf { x: Bloc ->
-                            x.fileName == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
+                            x.file.name == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
                         }
                     }
                 }
