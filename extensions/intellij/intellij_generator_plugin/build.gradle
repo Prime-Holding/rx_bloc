@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '2.0.0'
+version '2.1.0'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -41,6 +41,11 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
+       <li>v2.1.0 
+        <br /> - Allow scanning lib\\src folder for features and libs
+               - improved imports in the generated tests
+               - fix auto-wrap freeze
+       </li>
         <li>v2.0.0 
         <br /> - Added Boostrap Test Generator in the project menu that outputs
         <br /> - bootstraped unit test for the bloc 
