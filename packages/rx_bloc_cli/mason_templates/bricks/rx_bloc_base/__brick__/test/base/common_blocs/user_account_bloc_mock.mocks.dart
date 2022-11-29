@@ -7,7 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:test_app/base/common_blocs/user_account_bloc.dart' as _i2;
-import 'package:test_app/base/models/error/error_model.dart' as _i4;
+import 'package:test_app/base/models/errors/error_model.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
