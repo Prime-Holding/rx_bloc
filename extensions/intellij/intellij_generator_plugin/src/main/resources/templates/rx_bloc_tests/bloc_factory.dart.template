@@ -3,8 +3,8 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
 import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/views/${bloc_snake_case}_page.dart';
-
 import '../mock/${bloc_snake_case}_mock.dart';
+${imports_from_bloc_states}
 
 /// Change the parameters according the the needs of the test
 Widget ${bloc_field_case}Factory({

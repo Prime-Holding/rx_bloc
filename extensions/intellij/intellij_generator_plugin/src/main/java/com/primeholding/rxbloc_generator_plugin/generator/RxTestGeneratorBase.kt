@@ -4,8 +4,10 @@ import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
 import com.fleshgrinder.extensions.kotlin.toLowerSnakeCase
 import com.fleshgrinder.extensions.kotlin.toUpperCamelCase
 import com.google.common.io.CharStreams
+import com.intellij.openapi.vfs.VirtualFile
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
 import org.apache.commons.lang.text.StrSubstitutor
+import java.io.File
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
@@ -30,6 +32,8 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_DECLARATION_OF_REPOS = "declaration_of_repositories"
     private val TEMPLATE_REPO_CLASS_LIST = "repository_class_list"
     private val TEMPLATE_REPO_IMPORT_DECLARATIONS = "repository_import_declarations"
+    private val TEMPLATE_BLOC_CONSTRUCTOR_IMPORTS = "imports_from_bloc_constructor"
+    private val TEMPLATE_BLOC_STATE_IMPORTS = "imports_from_bloc_states"
     private val TEMPLATE_BLOC_STATES_WHEN_MOCK = "bloc_states_when"
     private val TEMPLATE_TEST_RX_BLOC_STATE_GROUP = "test_rxbloc_state_group"
     private val TEMPLATE_BLOC_FOLDER_PREFIX = "bloc_folder_prefix"
@@ -61,6 +65,9 @@ abstract class RxTestGeneratorBase(
             TEMPLATE_DECLARATION_OF_REPOS to generateDeclarationOfRepos(),
             TEMPLATE_REPO_CLASS_LIST to generateRepoClassList(),
             TEMPLATE_REPO_IMPORT_DECLARATIONS to generateRepoImportDeclarations(),
+            TEMPLATE_BLOC_CONSTRUCTOR_IMPORTS to generateBlocConstructorImports(),
+            TEMPLATE_BLOC_STATE_IMPORTS to generateBlocStateImports(),
+
             TEMPLATE_BLOC_STATES_WHEN_MOCK to generateBlocStatesWhenMock(),
             TEMPLATE_TEST_RX_BLOC_STATE_GROUP to generateBlocStatesGroup(),
             TEMPLATE_BLOC_FOLDER_PREFIX to generateFolderPrefix(),
@@ -94,8 +101,8 @@ abstract class RxTestGeneratorBase(
         bloc.stateVariableNames.forEachIndexed { index, it ->
 
             sb.append("\n")
-            sb.append("  group('test ${bloc.fileName.toLowerSnakeCase()} state ${it}', () {\n")
-            sb.append("      rxBlocTest<${pascalCase()}BlocType, ${bloc.stateVariableTypes[index]}>('test ${bloc.fileName.toLowerSnakeCase()} state ${it}',\n")
+            sb.append("  group('test ${bloc.file.name.toLowerSnakeCase()} state ${it}', () {\n")
+            sb.append("      rxBlocTest<${pascalCase()}BlocType, ${bloc.stateVariableTypes[index]}>('test ${bloc.file.name.toLowerSnakeCase()} state ${it}',\n")
             sb.append("      build: () async {\n")
             sb.append("          _defineWhen();\n")
             sb.append("       return ${variableCase()}Bloc();\n")
@@ -221,6 +228,108 @@ abstract class RxTestGeneratorBase(
             }
         }
         return sb.toString()
+    }
+
+
+    private fun generateBlocStateImports(): String {
+        val sb = StringBuilder()
+        var resultAdded = false
+        var paginatedListAdded = false
+
+        bloc.stateVariableTypes.forEach {
+            if (it.contains("Result<") && !resultAdded) {
+                resultAdded = true
+                sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
+            }
+            if (it.contains("PaginatedList<") && !paginatedListAdded) {
+                paginatedListAdded = true
+                sb.appendln("import 'package:rx_bloc_list/models.dart';")
+            }
+        }
+
+
+        val lines = File(bloc.file.path).readText().lines()
+        val libFolder = findLibFolder(bloc.file)
+
+        if (libFolder != null) {
+            val appFolder = libFolder.parent.name
+            val featureFolder = bloc.file.parent.parent.name
+            lines.forEach { line ->
+                bloc.stateVariableTypes.forEach {
+                    val snake = it.trim().replace("?", "").toLowerSnakeCase()
+                    if (line.contains("import '") && line.contains("$snake.dart")) {
+                        sb.appendln(
+                            line.replace("../..", "package:$appFolder")
+                                .replace("..", "package:$appFolder/$featureFolder")
+                        )
+                    }
+                }
+            }
+        }
+        return sb.toString()
+    }
+
+    private fun generateBlocConstructorImports(): String {
+        val sb = StringBuilder()
+
+        val lines = File(bloc.file.path).readText().lines()
+
+        val libFolder = findLibFolder(bloc.file)
+
+        if (libFolder != null) {
+            val appFolder = libFolder.parent.name
+            val featureFolder = bloc.file.parent.parent.name
+            lines.forEach { line ->
+                bloc.constructorFieldTypes.forEach {
+                    val snake = it.toLowerSnakeCase()
+                    if (line.contains("import '")) {
+
+                        if (line.contains("$snake.dart")) {
+                            sb.appendln(
+                                line.replace("../..", "package:$appFolder")
+                                    .replace("..", "package:$appFolder/$featureFolder")
+                            )
+                        }
+
+                        if (snake.endsWith("bloc_type") && line.contains(
+                                "${
+                                    snake.replace(
+                                        "bloc_type",
+                                        "bloc"
+                                    )
+                                }.dart"
+                            )
+                        ) {
+                            sb.appendln(
+                                line.replace("../..", "package:$appFolder")
+                                    .replace("..", "package:$appFolder/$featureFolder")
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        var resultAdded = false
+        var paginatedListAdded = false
+
+        bloc.constructorFieldTypes.forEach {
+            if (it.contains("Result<") && !resultAdded) {
+                resultAdded = true
+                sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
+            }
+            if (it.contains("PaginatedList<") && !paginatedListAdded) {
+                paginatedListAdded = true
+                sb.appendln("import 'package:rx_bloc_list/models.dart';")
+            }
+        }
+        return sb.toString()
+    }
+
+    private fun findLibFolder(file: VirtualFile): VirtualFile? {
+        if (file.name == "lib") {
+            return file
+        }
+        return findLibFolder(file.parent)
     }
 
     private fun generateRepoImportDeclarations(): String {

@@ -71,7 +71,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
         );
         dialogPanel.add(new JScrollPane(list), BorderLayout.CENTER);
         dialogPanel.add(includeBlocDi, BorderLayout.SOUTH);
-        dialogPanel.add(new JLabel("Bootstrap code for Unit & Golden tests will be created under the folder(s) test/feature_{selected_feature}" ), BorderLayout.NORTH);
+        dialogPanel.add(new JLabel("Bootstrap code for Unit & Golden tests will be created under the folder(s) test/feature_{selected_feature}"), BorderLayout.NORTH);
 
         return dialogPanel;
     }
@@ -88,7 +88,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
             setEnabled(allowedBlocs.contains(value));
             setBackground(list.getBackground());
             setForeground(list.getForeground());
-            setText((value.isLib() ? "lib" : "feature") + "_" + value.getFileName().replace("_bloc.dart", ""));
+            setText((value.isLib() ? "lib" : "feature") + "_" + value.getFile().getName().replace("_bloc.dart", ""));
             return this;
         }
     }

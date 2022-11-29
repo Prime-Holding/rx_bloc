@@ -93,10 +93,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
       darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
       localizationsDelegates: const [
-        AppLocalizations.delegate,
+        I18n.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
-      supportedLocales: AppLocalizations.supportedLocales,
+      supportedLocales: I18n.supportedLocales,
       routeInformationParser: widget._router.defaultRouteParser(),
       routerDelegate: widget._router.delegate({{#analytics}}
         navigatorObservers: () => [

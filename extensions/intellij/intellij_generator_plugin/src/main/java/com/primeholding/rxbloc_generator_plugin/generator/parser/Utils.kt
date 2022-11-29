@@ -53,7 +53,6 @@ class Utils {
             }
 
             getValueBetween(text, "${blockName}(", ")")?.let { constructorFieldsText ->
-                println("constructor text $constructorFieldsText")
                 if (constructorFieldsText.contains("{")) {
 
                     //contains named parameters
@@ -112,9 +111,8 @@ class Utils {
                     constructorFields.remove(it)
                 }
             }
-            println(constructorFields)
             return Bloc(
-                fileName = notNullBlocFile.name,
+                file = notNullBlocFile,
                 relativePath = notNullBlocFile.path.substring(
                     notNullBlocFile.path.indexOf("lib") + 3
                 ),
@@ -132,13 +130,39 @@ class Utils {
 
         fun analyzeLib(libFolder: VirtualFile): List<Bloc> {
             val list = ArrayList<Bloc>()
-            var bloc: Bloc?
 
             val repos: MutableList<String> = mutableListOf()
             val services: MutableList<String> = mutableListOf()
 
             val allowedPrefixes = listOf("feature_", "lib_")
 
+            scanFolder(libFolder, allowedPrefixes, list, repos, services)
+            libFolder.findChild("src").let {
+
+                it?.let {
+                    if (it.isDirectory) {
+                        scanFolder(it, allowedPrefixes, list, repos, services)
+                    }
+                }
+            }
+
+            list.sortWith(Comparator { bloc1, bloc2 ->
+                val file1 = (if (bloc1.isLib) "lib_" else "feature_") + bloc1.file.name
+                val file2 = (if (bloc2.isLib) "lib_" else "feature_") + bloc2.file.name
+
+                file1.compareTo(file2)
+            })
+            return list
+        }
+
+        private fun scanFolder(
+            libFolder: VirtualFile,
+            allowedPrefixes: List<String>,
+            list: ArrayList<Bloc>,
+            repos: MutableList<String>,
+            services: MutableList<String>
+        ) {
+            var bloc: Bloc?
             libFolder.children.forEach { libChild ->
                 if (libChild.isDirectory && startsWithAnyOf(libChild.name, allowedPrefixes)) {
                     libChild.findChild("blocs")?.let { blocFolder ->
@@ -167,21 +191,17 @@ class Utils {
 
                 }
             }
-
-            list.sortWith(Comparator { bloc1, bloc2 ->
-                val file1 = (if (bloc1.isLib) "lib_" else "feature_") + bloc1.fileName
-                val file2 = (if (bloc2.isLib) "lib_" else "feature_") + bloc2.fileName
-
-                file1.compareTo(file2)
-            })
-            return list
+            list.forEach {
+                it.repos.addAll(repos)
+                it.services.addAll(services)
+            }
         }
 
         private fun replaceAllPrefixes(name: String, allowedPrefixes: List<String>): String {
 
             var temp = name
             allowedPrefixes.forEach {
-                temp = temp.replace(it, "")
+                temp = temp.replaceFirst(it, "")
             }
             return temp
         }
@@ -215,7 +235,7 @@ class Utils {
                 testFolder.children.forEach { libChild ->
                     if (libChild.name.startsWith("feature_") || libChild.name.startsWith("lib_")) {
                         selected.removeIf { x: Bloc ->
-                            x.fileName == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
+                            x.file.name == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
                         }
                     }
                 }
