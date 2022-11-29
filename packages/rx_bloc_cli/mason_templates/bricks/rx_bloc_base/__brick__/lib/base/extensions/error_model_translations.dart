@@ -35,7 +35,7 @@ extension ErrorNotFoundL10n on NotFoundErrorModel {
 
 extension ErrorFieldModelL10n on FieldErrorModel {
   String translate(BuildContext context) =>
-      context.l10n.error.getString(fieldKey)!;
+      context.l10n.error.getString(errorKey)!;
 }
 
 extension ErrorFieldRequiredModelL10n on FieldRequiredErrorModel {

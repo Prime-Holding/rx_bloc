@@ -17,7 +17,7 @@ class LoginFieldValidators {
     }
     if (!_emailRexExp.hasMatch(email)) {
       throw FieldErrorModel(
-        fieldKey: I18nErrorKeys.invalidEmail,
+        errorKey: I18nErrorKeys.invalidEmail,
         fieldValue: email,
       );
     }
@@ -33,7 +33,7 @@ class LoginFieldValidators {
     }
     if (password.length < 6 || password.length > 64) {
       throw FieldErrorModel(
-        fieldKey: I18nErrorKeys.passwordLength,
+        errorKey: I18nErrorKeys.passwordLength,
         fieldValue: password,
       );
     }
