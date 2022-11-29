@@ -6,9 +6,11 @@ class I18n {
 
   I18n(this._lookup)
       : error = I18nError(_lookup.createErrorLookup()),
-        featureCounter = I18nFeatureCounter(_lookup.createFeatureCounterLookup()),
+        featureCounter =
+            I18nFeatureCounter(_lookup.createFeatureCounterLookup()),
         featureLogin = I18nFeatureLogin(_lookup.createFeatureLoginLookup()),
-        featureNotifications = I18nFeatureNotifications(_lookup.createFeatureNotificationsLookup()),
+        featureNotifications = I18nFeatureNotifications(
+            _lookup.createFeatureNotificationsLookup()),
         field = I18nField(_lookup.createFieldLookup());
 
   static Locale? _locale;
@@ -20,13 +22,11 @@ class I18n {
 
   static const I18nDelegate delegate = I18nDelegate();
 
-  static I18n of(BuildContext context) => Localizations.of<I18n>(context, I18n)!;
+  static I18n of(BuildContext context) =>
+      Localizations.of<I18n>(context, I18n)!;
 
   static List<Locale> get supportedLocales {
-    return const <Locale>[
-      Locale("en"),
-      Locale("es")
-    ];
+    return const <Locale>[Locale("en"), Locale("es")];
   }
 
   final I18nError error;
@@ -299,7 +299,48 @@ class I18nError {
   ///  </table>
   ///
   String requiredField(String fieldName) {
-    return customLookup?.requiredField(fieldName) ?? _lookup.requiredField(fieldName);
+    return customLookup?.requiredField(fieldName) ??
+        _lookup.requiredField(fieldName);
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Please enter a valid email"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Please enter a valid email"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get invalidEmail {
+    return customLookup?.invalidEmail ?? _lookup.invalidEmail;
+  }
+
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Password should be at least 6 characters long"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Password should be at least 6 characters long"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get passwordLength {
+    return customLookup?.passwordLength ?? _lookup.passwordLength;
   }
 
   String? getString(String key, [Map<String, String>? placeholders]) {
@@ -320,6 +361,10 @@ class I18nError {
         return unknown;
       case I18nErrorKeys.requiredField:
         return requiredField(placeholders?["fieldName"] ?? "");
+      case I18nErrorKeys.invalidEmail:
+        return invalidEmail;
+      case I18nErrorKeys.passwordLength:
+        return passwordLength;
     }
     return null;
   }
@@ -598,7 +643,8 @@ class I18nFeatureNotifications {
   ///  </table>
   ///
   String get notificationsPermissionsDenied {
-    return customLookup?.notificationsPermissionsDenied ?? _lookup.notificationsPermissionsDenied;
+    return customLookup?.notificationsPermissionsDenied ??
+        _lookup.notificationsPermissionsDenied;
   }
 
   ///
@@ -618,7 +664,8 @@ class I18nFeatureNotifications {
   ///  </table>
   ///
   String get notificationPermissionRequestText {
-    return customLookup?.notificationPermissionRequestText ?? _lookup.notificationPermissionRequestText;
+    return customLookup?.notificationPermissionRequestText ??
+        _lookup.notificationPermissionRequestText;
   }
 
   ///
@@ -658,7 +705,8 @@ class I18nFeatureNotifications {
   ///  </table>
   ///
   String get notificationShowDelayedText {
-    return customLookup?.notificationShowDelayedText ?? _lookup.notificationShowDelayedText;
+    return customLookup?.notificationShowDelayedText ??
+        _lookup.notificationShowDelayedText;
   }
 
   ///
@@ -678,7 +726,8 @@ class I18nFeatureNotifications {
   ///  </table>
   ///
   String get notificationsPageDescription {
-    return customLookup?.notificationsPageDescription ?? _lookup.notificationsPageDescription;
+    return customLookup?.notificationsPageDescription ??
+        _lookup.notificationsPageDescription;
   }
 
   ///
@@ -698,7 +747,8 @@ class I18nFeatureNotifications {
   ///  </table>
   ///
   String get notificationsPageConfig {
-    return customLookup?.notificationsPageConfig ?? _lookup.notificationsPageConfig;
+    return customLookup?.notificationsPageConfig ??
+        _lookup.notificationsPageConfig;
   }
 
   String? getString(String key, [Map<String, String>? placeholders]) {
@@ -750,10 +800,32 @@ class I18nField {
     return customLookup?.email ?? _lookup.email;
   }
 
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Password"</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Password"</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get password {
+    return customLookup?.password ?? _lookup.password;
+  }
+
   String? getString(String key, [Map<String, String>? placeholders]) {
     switch (key) {
       case I18nFieldKeys.email:
         return email;
+      case I18nFieldKeys.password:
+        return password;
     }
     return null;
   }
@@ -775,6 +847,8 @@ class I18nErrorKeys {
   static const String server = "server";
   static const String unknown = "unknown";
   static const String requiredField = "requiredField";
+  static const String invalidEmail = "invalidEmail";
+  static const String passwordLength = "passwordLength";
 }
 
 class I18nFeatureCounterKeys {
@@ -794,16 +868,21 @@ class I18nFeatureLoginKeys {
 
 class I18nFeatureNotificationsKeys {
   static const String notificationPageTitle = "notificationPageTitle";
-  static const String notificationsPermissionsDenied = "notificationsPermissionsDenied";
-  static const String notificationPermissionRequestText = "notificationPermissionRequestText";
+  static const String notificationsPermissionsDenied =
+      "notificationsPermissionsDenied";
+  static const String notificationPermissionRequestText =
+      "notificationPermissionRequestText";
   static const String notificationShowText = "notificationShowText";
-  static const String notificationShowDelayedText = "notificationShowDelayedText";
-  static const String notificationsPageDescription = "notificationsPageDescription";
+  static const String notificationShowDelayedText =
+      "notificationShowDelayedText";
+  static const String notificationsPageDescription =
+      "notificationsPageDescription";
   static const String notificationsPageConfig = "notificationsPageConfig";
 }
 
 class I18nFieldKeys {
   static const String email = "email";
+  static const String password = "password";
 }
 
 class I18nLookup {
@@ -829,11 +908,13 @@ class I18nLookup {
 
   I18nErrorLookup createErrorLookup() => I18nErrorLookup();
 
-  I18nFeatureCounterLookup createFeatureCounterLookup() => I18nFeatureCounterLookup();
+  I18nFeatureCounterLookup createFeatureCounterLookup() =>
+      I18nFeatureCounterLookup();
 
   I18nFeatureLoginLookup createFeatureLoginLookup() => I18nFeatureLoginLookup();
 
-  I18nFeatureNotificationsLookup createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup();
+  I18nFeatureNotificationsLookup createFeatureNotificationsLookup() =>
+      I18nFeatureNotificationsLookup();
 
   I18nFieldLookup createFieldLookup() => I18nFieldLookup();
 }
@@ -873,6 +954,14 @@ class I18nErrorLookup {
 
   String requiredField(String fieldName) {
     return getString(I18nErrorKeys.requiredField, {"fieldName": fieldName});
+  }
+
+  String get invalidEmail {
+    return getString(I18nErrorKeys.invalidEmail);
+  }
+
+  String get passwordLength {
+    return getString(I18nErrorKeys.passwordLength);
   }
 }
 
@@ -934,11 +1023,13 @@ class I18nFeatureNotificationsLookup {
   }
 
   String get notificationsPermissionsDenied {
-    return getString(I18nFeatureNotificationsKeys.notificationsPermissionsDenied);
+    return getString(
+        I18nFeatureNotificationsKeys.notificationsPermissionsDenied);
   }
 
   String get notificationPermissionRequestText {
-    return getString(I18nFeatureNotificationsKeys.notificationPermissionRequestText);
+    return getString(
+        I18nFeatureNotificationsKeys.notificationPermissionRequestText);
   }
 
   String get notificationShowText {
@@ -965,6 +1056,10 @@ class I18nFieldLookup {
 
   String get email {
     return getString(I18nFieldKeys.email);
+  }
+
+  String get password {
+    return getString(I18nFieldKeys.password);
   }
 }
 
@@ -993,13 +1088,16 @@ class I18nLookup_es extends I18nLookup_en {
   I18nErrorLookup_es createErrorLookup() => I18nErrorLookup_es();
 
   @override
-  I18nFeatureCounterLookup_es createFeatureCounterLookup() => I18nFeatureCounterLookup_es();
+  I18nFeatureCounterLookup_es createFeatureCounterLookup() =>
+      I18nFeatureCounterLookup_es();
 
   @override
-  I18nFeatureLoginLookup_es createFeatureLoginLookup() => I18nFeatureLoginLookup_es();
+  I18nFeatureLoginLookup_es createFeatureLoginLookup() =>
+      I18nFeatureLoginLookup_es();
 
   @override
-  I18nFeatureNotificationsLookup_es createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup_es();
+  I18nFeatureNotificationsLookup_es createFeatureNotificationsLookup() =>
+      I18nFeatureNotificationsLookup_es();
 
   @override
   I18nFieldLookup_es createFieldLookup() => I18nFieldLookup_es();
@@ -1030,13 +1128,16 @@ class I18nLookup_en extends I18nLookup {
   I18nErrorLookup_en createErrorLookup() => I18nErrorLookup_en();
 
   @override
-  I18nFeatureCounterLookup_en createFeatureCounterLookup() => I18nFeatureCounterLookup_en();
+  I18nFeatureCounterLookup_en createFeatureCounterLookup() =>
+      I18nFeatureCounterLookup_en();
 
   @override
-  I18nFeatureLoginLookup_en createFeatureLoginLookup() => I18nFeatureLoginLookup_en();
+  I18nFeatureLoginLookup_en createFeatureLoginLookup() =>
+      I18nFeatureLoginLookup_en();
 
   @override
-  I18nFeatureNotificationsLookup_en createFeatureNotificationsLookup() => I18nFeatureNotificationsLookup_en();
+  I18nFeatureNotificationsLookup_en createFeatureNotificationsLookup() =>
+      I18nFeatureNotificationsLookup_en();
 
   @override
   I18nFieldLookup_en createFieldLookup() => I18nFieldLookup_en();
@@ -1082,6 +1183,16 @@ class I18nErrorLookup_es extends I18nErrorLookup_en {
   String requiredField(String fieldName) {
     return "${fieldName} should not be empty";
   }
+
+  @override
+  String get invalidEmail {
+    return "Please enter a valid email";
+  }
+
+  @override
+  String get passwordLength {
+    return "Password should be at least 6 characters long";
+  }
 }
 
 class I18nErrorLookup_en extends I18nErrorLookup {
@@ -1123,6 +1234,16 @@ class I18nErrorLookup_en extends I18nErrorLookup {
   @override
   String requiredField(String fieldName) {
     return "${fieldName} should not be empty";
+  }
+
+  @override
+  String get invalidEmail {
+    return "Please enter a valid email";
+  }
+
+  @override
+  String get passwordLength {
+    return "Password should be at least 6 characters long";
   }
 }
 
@@ -1224,7 +1345,8 @@ class I18nFeatureLoginLookup_en extends I18nFeatureLoginLookup {
   }
 }
 
-class I18nFeatureNotificationsLookup_es extends I18nFeatureNotificationsLookup_en {
+class I18nFeatureNotificationsLookup_es
+    extends I18nFeatureNotificationsLookup_en {
   @override
   String get notificationPageTitle {
     return "Notification sample";
@@ -1303,12 +1425,22 @@ class I18nFieldLookup_es extends I18nFieldLookup_en {
   String get email {
     return "Email";
   }
+
+  @override
+  String get password {
+    return "Password";
+  }
 }
 
 class I18nFieldLookup_en extends I18nFieldLookup {
   @override
   String get email {
     return "Email";
+  }
+
+  @override
+  String get password {
+    return "Password";
   }
 }
 
@@ -1329,10 +1461,10 @@ class I18nDelegate extends LocalizationsDelegate<I18n> {
 
   I18nLookup _findLookUpFromLocale(Locale locale) {
     switch (locale.languageCode) {
-        case "es":
-          return I18nLookup_es();
-        case "en":
-          return I18nLookup_en();
+      case "es":
+        return I18nLookup_es();
+      case "en":
+        return I18nLookup_en();
     }
     return I18nLookup_en();
   }
@@ -1343,7 +1475,6 @@ class Fonts {
 }
 
 class Assets {
-  /// ![](file:///Users/kostadin.damyanov/projects/rxbloc_cli_updates/packages/rx_bloc_cli/example/test_app/assets/images/.git_keep)
+  /// ![](file:///Users/georgistanev/Projects/rx_bloc/packages/rx_bloc_cli/example/test_app/assets/images/.git_keep)
   static const String gitKeep = "assets/images/.git_keep";
 }
-

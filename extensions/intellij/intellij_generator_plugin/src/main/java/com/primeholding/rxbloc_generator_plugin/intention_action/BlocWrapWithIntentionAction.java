@@ -180,7 +180,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                 Bloc blocFromPath = blocsFromPath.get(0);
                 if (blocFromPath.getStateVariableNames().size() == 1) {
 
-                    blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFileName());
+                    blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFile().getName());
                     stateVariableNameSuggest = blocFromPath.getStateVariableNames().get(0);
                     stateTypeDirectorySuggest = blocFromPath.getStateVariableTypes().get(0);
 
@@ -195,7 +195,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                         boolean isOK = new ChooseDialog(content, "BloC State").showAndGet();
                         int chooseState = comboBox.getSelectedIndex();
                         if (isOK) {
-                            String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(blocFromPath.getFileName());
+                            String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(blocFromPath.getFile().getName());
                             String stateVariableNameSuggestChosen = blocFromPath.getStateVariableNames().get(chooseState);
                             String stateTypeDirectorySuggestChosen = blocFromPath.getStateVariableTypes().get(chooseState);
 
@@ -206,7 +206,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             } else {
                 //    choose from both blocs & states
                 List<String> listBlocs = new ArrayList<>();
-                blocsFromPath.forEach(bloc -> listBlocs.add(toCamelCase(bloc.getFileName().replace(".dart", ""))));
+                blocsFromPath.forEach(bloc -> listBlocs.add(toCamelCase(bloc.getFile().getName().replace(".dart", ""))));
 
 
                 ComboBox<String> comboBoxBloc = new ComboBox<>(listBlocs.toArray(new String[0]));
@@ -231,7 +231,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                         int chosenBlocIndex = comboBoxBloc.getSelectedIndex();
                         Bloc finalBlocFromPath = blocsFromPath.get(chosenBlocIndex);
 
-                        String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(finalBlocFromPath.getFileName());
+                        String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(finalBlocFromPath.getFile().getName());
                         String stateVariableNameSuggestChosen = finalBlocFromPath.getStateVariableNames().get(chosenStateIndex);
                         String stateTypeDirectorySuggestChosen = finalBlocFromPath.getStateVariableTypes().get(chosenStateIndex);
 

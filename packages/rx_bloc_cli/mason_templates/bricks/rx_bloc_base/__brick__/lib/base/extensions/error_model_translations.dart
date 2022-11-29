@@ -12,24 +12,33 @@ extension ErrorModelL10n on ErrorModel {
           .getString((this as L10nErrorKeyProvider).l10nErrorKey)!;
     }
 
-    if (this is ErrorNotFoundModel) {
-      return (this as ErrorNotFoundModel).translate(context);
+    if (this is NotFoundErrorModel) {
+      return (this as NotFoundErrorModel).translate(context);
     }
 
-    if (this is ErrorRequiredFieldModel) {
-      return (this as ErrorRequiredFieldModel).translate(context);
+    if (this is FieldErrorModel) {
+      return (this as FieldErrorModel).translate(context);
+    }
+
+    if (this is FieldRequiredErrorModel) {
+      return (this as FieldRequiredErrorModel).translate(context);
     }
 
     return context.l10n.error.unknown;
   }
 }
 
-extension ErrorNotFoundL10n on ErrorNotFoundModel {
+extension ErrorNotFoundL10n on NotFoundErrorModel {
   String translate(BuildContext context) =>
       message ?? context.l10n.error.notFound;
 }
 
-extension ErrorRequiredFieldModelL10n on ErrorRequiredFieldModel {
+extension ErrorFieldModelL10n on FieldErrorModel {
+  String translate(BuildContext context) =>
+      context.l10n.error.getString(fieldKey)!;
+}
+
+extension ErrorFieldRequiredModelL10n on FieldRequiredErrorModel {
   String translate(BuildContext context) => context.l10n.error.requiredField(
         context.l10n.field.getString(fieldKey)!,
       );
