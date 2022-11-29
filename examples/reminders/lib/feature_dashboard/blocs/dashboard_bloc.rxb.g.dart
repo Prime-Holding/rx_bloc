@@ -31,9 +31,10 @@ abstract class $DashboardBloc extends RxBlocBase
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [dashboardModel] implemented in [_mapToDashboardModelState]
-  late final Stream<Result<DashboardModel>> _dashboardModelState =
-      _mapToDashboardModelState();
+  /// The state of [dashboardCounters] implemented in
+  /// [_mapToDashboardCountersState]
+  late final Stream<Result<DashboardCountersModel>> _dashboardCountersState =
+      _mapToDashboardCountersState();
 
   /// The state of [reminderModels] implemented in [_mapToReminderModelsState]
   late final Stream<PaginatedList<ReminderModel>> _reminderModelsState =
@@ -54,7 +55,8 @@ abstract class $DashboardBloc extends RxBlocBase
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<Result<DashboardModel>> get dashboardModel => _dashboardModelState;
+  Stream<Result<DashboardCountersModel>> get dashboardCounters =>
+      _dashboardCountersState;
 
   @override
   Stream<PaginatedList<ReminderModel>> get reminderModels =>
@@ -64,7 +66,7 @@ abstract class $DashboardBloc extends RxBlocBase
 
   Stream<String> _mapToErrorsState();
 
-  Stream<Result<DashboardModel>> _mapToDashboardModelState();
+  Stream<Result<DashboardCountersModel>> _mapToDashboardCountersState();
 
   Stream<PaginatedList<ReminderModel>> _mapToReminderModelsState();
 

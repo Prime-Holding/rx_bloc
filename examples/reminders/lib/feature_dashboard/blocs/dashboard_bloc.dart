@@ -11,12 +11,10 @@ import '../models/dashboard_model.dart';
 import '../services/dashboard_service.dart';
 
 part 'dashboard_bloc.rxb.g.dart';
-
 part 'dashboard_bloc_extensions.dart';
 
 /// A contract class containing all events of the DashboardBloC.
 abstract class DashboardBlocEvents {
-  /// TODO: Document the event
   void fetchDashboardData([bool silently = false]);
 
   void fetchDataPaginated({required bool silently});
@@ -30,7 +28,7 @@ abstract class DashboardBlocStates {
   /// The error state
   Stream<String> get errors;
 
-  Stream<Result<DashboardModel>> get dashboardModel;
+  Stream<Result<DashboardCountersModel>> get dashboardCounters;
 
   Stream<PaginatedList<ReminderModel>> get reminderModels;
 
@@ -46,42 +44,23 @@ class DashboardBloc extends $DashboardBloc {
         .startWith(false)
         .fetchDashboardData(_dashboardService)
         .setResultStateHandler(this)
-        .bind(_dashboardModelResult)
+        .bind(_dashboardCountersResult)
         .addTo(_compositeSubscription);
 
     _$fetchDataPaginatedEvent
         .startWith(false)
-        .fetchReminderModels(_dashboardService, _dashboardModelPaginated)
+        .fetchReminderModels(_dashboardService, _reminderModelsPaginated)
         .setResultStateHandler(this)
-        .mergeWithPaginatedList(_dashboardModelPaginated)
-        .bind(_dashboardModelPaginated)
+        .mergeWithPaginatedList(_reminderModelsPaginated)
+        .bind(_reminderModelsPaginated)
         .addTo(_compositeSubscription);
 
     _coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
-          _dashboardModelPaginated.map((dashboardList) => dashboardList),
+          _reminderModelsPaginated,
           operationCallback: _dashboardService.getManageOperation,
         )
-        .map(managedListToDashboard)
-        .doOnData((event) {
-          if (event is ResultSuccess<DashboardModel>) {
-            final updatedCounters = UpdatedCounters(
-              incomplete: event.data.incompleteCount,
-              complete: event.data.completeCount,
-            );
-            _coordinatorBloc.events.updateCounters(updatedCounters);
-          }
-        })
-        .bind(_dashboardModelResult)
-        .addTo(_compositeSubscription);
-
-    _coordinatorBloc
-        .mapReminderManageEventsWithLatestFrom(
-          _dashboardModelPaginated.map((dashboardList) => dashboardList),
-          operationCallback: _dashboardService.getManageOperation,
-        )
-        .map((event) => event.managedList.list)
-        .cast<PaginatedList<ReminderModel>>()
+        .map((event) => event.list as PaginatedList<ReminderModel>)
         .map(
           (list) => list.copyWith(
             list: list.list.sorted(
@@ -89,7 +68,22 @@ class DashboardBloc extends $DashboardBloc {
             ),
           ),
         )
-        .bind(_dashboardModelPaginated)
+        .bind(_reminderModelsPaginated)
+        .addTo(_compositeSubscription);
+
+    _coordinatorBloc
+        .mapReminderManagedEventsToCounterOperation()
+        .map(counterOperationToDashboardCounters)
+        .doOnData((event) {
+          if (event is ResultSuccess<DashboardCountersModel>) {
+            final updatedCounters = UpdatedCounters(
+              incomplete: event.data.incompleteCount,
+              complete: event.data.completeCount,
+            );
+            _coordinatorBloc.events.updateCounters(updatedCounters);
+          }
+        })
+        .bind(_dashboardCountersResult)
         .addTo(_compositeSubscription);
   }
 
@@ -98,18 +92,16 @@ class DashboardBloc extends $DashboardBloc {
 
   static const _tagSilently = 'silently';
 
-  Result<DashboardModel> managedListToDashboard(
-    ManagedListCounterOperation<ReminderModel> managedListCounterOperation,
+  Result<DashboardCountersModel> counterOperationToDashboardCounters(
+    CounterOperation operation,
   ) {
-    final dashboard = _dashboardModelResult.value;
+    final dashboard = _dashboardCountersResult.value;
 
-    if (dashboard is ResultSuccess<DashboardModel>) {
+    if (dashboard is ResultSuccess<DashboardCountersModel>) {
       return Result.success(
-        _dashboardService.getDashboardModelFromManagedList(
-          dashboard: dashboard.data,
-          managedList: managedListCounterOperation.managedList,
-          oldReminder: managedListCounterOperation.oldReminder,
-          counterOperation: managedListCounterOperation.counterOperation,
+        _dashboardService.getCountersModelFromCounterOperation(
+          dashboardCounters: dashboard.data,
+          counterOperation: operation,
         ),
       );
     }
@@ -119,14 +111,14 @@ class DashboardBloc extends $DashboardBloc {
 
   @override
   Stream<PaginatedList<ReminderModel>> _mapToReminderModelsState() =>
-      _dashboardModelPaginated;
+      _reminderModelsPaginated;
 
   @override
-  Stream<Result<DashboardModel>> _mapToDashboardModelState() =>
-      _dashboardModelResult.where((resultModel) =>
+  Stream<Result<DashboardCountersModel>> _mapToDashboardCountersState() =>
+      _dashboardCountersResult.where((resultModel) =>
           !(resultModel is ResultLoading && resultModel.tag == _tagSilently));
 
-  final _dashboardModelPaginated =
+  final _reminderModelsPaginated =
       BehaviorSubject<PaginatedList<ReminderModel>>.seeded(
     PaginatedList<ReminderModel>(
       list: [],
@@ -134,11 +126,11 @@ class DashboardBloc extends $DashboardBloc {
     ),
   );
 
-  final _dashboardModelResult =
-      BehaviorSubject<Result<DashboardModel>>.seeded(Result.loading());
+  final _dashboardCountersResult =
+      BehaviorSubject<Result<DashboardCountersModel>>.seeded(Result.loading());
 
   @override
-  Future<void> get refreshDone => _dashboardModelPaginated.waitToLoad();
+  Future<void> get refreshDone => _reminderModelsPaginated.waitToLoad();
 
   @override
   Stream<String> _mapToErrorsState() => errorState.toMessage();
@@ -148,8 +140,8 @@ class DashboardBloc extends $DashboardBloc {
 
   @override
   void dispose() {
-    _dashboardModelResult.close();
-    _dashboardModelPaginated.close();
+    _dashboardCountersResult.close();
+    _reminderModelsPaginated.close();
     super.dispose();
   }
 }

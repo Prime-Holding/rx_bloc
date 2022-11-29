@@ -19,35 +19,27 @@ abstract class $NavigationBloc extends RxBlocBase
     implements NavigationBlocEvents, NavigationBlocStates, NavigationBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [fetchData]
-  final _$fetchDataEvent = PublishSubject<void>();
-
-  /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
+  /// Тhe [Subject] where events sink to by calling [openTab]
+  final _$openTabEvent = PublishSubject<NavigationTabs>();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [data] implemented in [_mapToDataState]
-  late final Stream<Result<String>> _dataState = _mapToDataState();
+  /// The state of [tab] implemented in [_mapToTabState]
+  late final Stream<NavigationTabs> _tabState = _mapToTabState();
 
   @override
-  void fetchData() => _$fetchDataEvent.add(null);
-
-  @override
-  Stream<bool> get isLoading => _isLoadingState;
+  void openTab(NavigationTabs tab) => _$openTabEvent.add(tab);
 
   @override
   Stream<String> get errors => _errorsState;
 
   @override
-  Stream<Result<String>> get data => _dataState;
-
-  Stream<bool> _mapToIsLoadingState();
+  Stream<NavigationTabs> get tab => _tabState;
 
   Stream<String> _mapToErrorsState();
 
-  Stream<Result<String>> _mapToDataState();
+  Stream<NavigationTabs> _mapToTabState();
 
   @override
   NavigationBlocEvents get events => this;
@@ -57,7 +49,7 @@ abstract class $NavigationBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$fetchDataEvent.close();
+    _$openTabEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

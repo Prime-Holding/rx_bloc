@@ -8,13 +8,6 @@ class FirebaseRepository {
 
   final RemindersFirebaseDataSource _dataSource;
 
-  Future<void> updateCountersInDataSource({
-    required int completeCount,
-    required int incompleteCount,
-  }) =>
-      _dataSource.updateCountersInDataSource(
-          completeCount: completeCount, incompleteCount: incompleteCount);
-
   Future<bool> logIn(bool anonymous) => _dataSource.logIn(anonymous);
 
   Future<void> logOut() => _dataSource.logOut();

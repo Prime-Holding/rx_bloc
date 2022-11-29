@@ -17,8 +17,8 @@ import 'dashboard_paginated_list.dart';
 
 class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
   DashboardPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final _scrollController = ScrollController();
 
@@ -54,8 +54,8 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
       );
 
   Widget _buildBodyNew(BuildContext context) =>
-      RxResultBuilder<DashboardBlocType, DashboardModel>(
-        state: (bloc) => bloc.states.dashboardModel,
+      RxResultBuilder<DashboardBlocType, DashboardCountersModel>(
+        state: (bloc) => bloc.states.dashboardCounters,
         buildSuccess: (context, data, bloc) => NestedScrollView(
             controller: _scrollController,
             headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
@@ -142,7 +142,7 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
         listener: (context, errorMessage) =>
             ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage ),
+            content: Text(errorMessage),
             behavior: SnackBarBehavior.floating,
           ),
         ),
