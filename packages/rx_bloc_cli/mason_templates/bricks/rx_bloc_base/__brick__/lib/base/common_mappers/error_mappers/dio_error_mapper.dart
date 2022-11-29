@@ -7,16 +7,16 @@ extension _DioErrorMapper on DioError {
         try {
           // TODO: create error model from response
         } catch (e) {
-          return ErrorServerModel();
+          return ServerErrorModel();
         }
       }
 
       if (response!.statusCode == 403) {
-        return ErrorAccessDeniedModel();
+        return AccessDeniedErrorModel();
       }
 
       if (response!.statusCode == 404) {
-        return ErrorNotFoundModel(
+        return NotFoundErrorModel(
           message: response!.data is Map<String, dynamic>
               ? response!.data['message']
               : null,
@@ -27,13 +27,13 @@ extension _DioErrorMapper on DioError {
     if (type == DioErrorType.other && error is SocketException) {
       final errorCode = (error as SocketException).osError?.errorCode;
       if (errorCode == 101) {
-        return ErrorNoConnectionModel();
+        return NoConnectionErrorModel();
       }
       if (errorCode == 111) {
-        return ErrorConnectionRefused();
+        return ConnectionRefusedErrorModel();
       }
     }
 
-    return ErrorNetworkModel();
+    return NetworkErrorModel();
   }
 }

@@ -22,7 +22,7 @@ void main() {
           scenario: Scenario(name: 'error'),
           widget: counterPageFactory(
             count: 2,
-            error: ErrorNetworkModel(),
+            error: NetworkErrorModel(),
             isLoggedIn: false,
           ),
         ),

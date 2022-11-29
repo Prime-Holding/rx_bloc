@@ -1,4 +1,4 @@
-## [1.3.0] - TBD
+## [1.3.0] - November 29, 2022
 * Add utility script to exclude files from LCOV coverage reports
 * Import r_flutter and use it for localisation
 * Implement error mapping

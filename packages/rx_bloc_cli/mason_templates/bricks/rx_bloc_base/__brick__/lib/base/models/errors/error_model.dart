@@ -1,15 +1,15 @@
 import '../../../assets.dart' show I18nErrorKeys;
 
-part 'error_access_denied_model.dart';
-part 'error_connection_refused.dart';
-part 'error_generic_model.dart';
-part 'error_network_model.dart';
-part 'error_no_connection_model.dart';
-part 'error_not_found_model.dart';
-part 'error_field_required_model.dart';
-part 'error_server_model.dart';
-part 'error_unknown_model.dart';
-part 'error_field_model.dart';
+part 'access_denied_error_model.dart';
+part 'connection_refused_error_model.dart';
+part 'field_error_model.dart';
+part 'field_required_error_model.dart';
+part 'generic_error_model.dart';
+part 'network_error_model.dart';
+part 'no_connection_error_model.dart';
+part 'not_found_error_model.dart';
+part 'server_error_model.dart';
+part 'unknown_error_model.dart';
 
 class ErrorModel implements Exception {}
 
