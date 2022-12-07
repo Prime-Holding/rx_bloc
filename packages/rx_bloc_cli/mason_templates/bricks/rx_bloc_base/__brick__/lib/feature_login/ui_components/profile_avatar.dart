@@ -34,17 +34,17 @@ class ProfileAvatar extends StatelessWidget {
 
   Widget _buildLoginButton(BuildContext context) => IconButton(
         icon: Icon(context.designSystem.icons.login),
-        tooltip: context.l10n.logIn,
+        tooltip: context.l10n.featureLogin.logIn,
         onPressed: () => context.router.push(const LoginRoute()),
       );
 
   Widget _buildLoggedInAvatar(BuildContext context) => PopupBuilder<String>(
-        tooltip: context.l10n.profile,
+        tooltip: context.l10n.featureLogin.profile,
         items: [
           PopupMenuItem<String>(
             value: _notificationKey,
             child: Text(
-              context.l10n.notifications,
+              context.l10n.featureLogin.notifications,
               style: context.designSystem.typography.fadedButtonText,
             ),
           ),
@@ -52,7 +52,7 @@ class ProfileAvatar extends StatelessWidget {
           PopupMenuItem<String>(
             value: _logoutKey,
             child: Text(
-              context.l10n.logOut,
+              context.l10n.featureLogin.logOut,
               style: context.designSystem.typography.fadedButtonText,
             ),
           ),
@@ -64,7 +64,10 @@ class ProfileAvatar extends StatelessWidget {
             context.read<UserAccountBlocType>().events.logout();
           }
         },
-        child: Icon(context.designSystem.icons.avatar),
+        child: Icon(
+          context.designSystem.icons.avatar,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
       );
 
   /// endregion

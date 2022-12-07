@@ -1,0 +1,79 @@
+name: reminders
+description: A new Flutter project.
+homepage: https://example.com
+version: 1.0.0+10
+
+environment:
+  sdk: ">=2.18.0 <=3.0.0"
+
+dependencies:
+  auto_route: ^5.0.2
+  cloud_firestore: ^4.0.4
+  collection: ^1.16.0
+  cupertino_icons: ^1.0.4
+  dio: ^4.0.4
+  firebase_analytics: ^10.0.4
+  firebase_auth: ^4.1.1
+  firebase_core: ^2.1.1
+  # firebase_database: ^9.0.15
+  flutter:
+    sdk: flutter
+  flutter_facebook_auth: ^5.0.6
+  flutter_localizations:
+    sdk: flutter
+  flutter_rx_bloc: ^4.0.0
+  flutter_secure_storage: ^6.0.0
+  flutter_slidable: ^2.0.0
+  flutter_sticky_header: ^0.6.0
+  golden_toolkit: ^0.13.0
+  grouped_list: ^5.1.2
+  intl: ^0.17.0
+  provider: ^6.0.1
+  rx_bloc: ^3.2.0
+  rx_bloc_list: ^3.1.0
+  rxdart: ^0.27.3
+  scroll_to_index: ^3.0.1
+  shared_preferences: ^2.0.11
+
+dev_dependencies:
+  auto_route_generator: ^5.0.2
+  build_runner: ^2.1.7
+  # flutter_driver:
+  #   sdk: flutter
+  flutter_lints: any
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.0.16
+  rx_bloc_generator: ^5.1.0
+  rx_bloc_test: any
+  test: any
+
+dependency_overrides:
+  flutter_rx_bloc:
+    path: ../../packages/flutter_rx_bloc
+  rx_bloc:
+    path: ../../packages/rx_bloc
+  rx_bloc_generator:
+    path: ../../packages/rx_bloc_generator
+  rx_bloc_list:
+    path: ../../packages/rx_bloc_list
+  rx_bloc_test:
+    path: ../../packages/rx_bloc_test
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans/WorkSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/WorkSans/WorkSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/WorkSans/WorkSans-Medium.ttf
+          weight: 500

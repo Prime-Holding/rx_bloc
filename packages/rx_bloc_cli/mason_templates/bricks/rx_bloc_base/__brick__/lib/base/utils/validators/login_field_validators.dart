@@ -10,15 +10,15 @@ class LoginFieldValidators {
 
   String validateEmail(String email) {
     if (email.isEmpty) {
-      throw RxFieldException(
+      throw FieldRequiredErrorModel(
+        fieldKey: I18nFieldKeys.email,
         fieldValue: email,
-        error: 'Email is required',
       );
     }
     if (!_emailRexExp.hasMatch(email)) {
-      throw RxFieldException(
+      throw FieldErrorModel(
+        errorKey: I18nErrorKeys.invalidEmail,
         fieldValue: email,
-        error: 'Please enter a valid email',
       );
     }
     return email;
@@ -26,15 +26,15 @@ class LoginFieldValidators {
 
   String validatePassword(String password) {
     if (password.isEmpty) {
-      throw RxFieldException(
+      throw FieldRequiredErrorModel(
+        fieldKey: I18nFieldKeys.password,
         fieldValue: password,
-        error: 'Password is required',
       );
     }
     if (password.length < 6 || password.length > 64) {
-      throw RxFieldException(
+      throw FieldErrorModel(
+        errorKey: I18nErrorKeys.passwordLength,
         fieldValue: password,
-        error: 'Password should be at least 6 characters long',
       );
     }
 

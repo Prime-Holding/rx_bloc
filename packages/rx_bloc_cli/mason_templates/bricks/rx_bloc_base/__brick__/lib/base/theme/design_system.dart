@@ -6,48 +6,57 @@ import 'design_system/design_system_colors.dart';
 import 'design_system/design_system_icons.dart';
 import 'design_system/design_system_images.dart';
 import 'design_system/design_system_typography.dart';
-import '{{project_name}}_theme.dart';
 
-class DesignSystem {
-  DesignSystem({
+@immutable
+class DesignSystem extends ThemeExtension<DesignSystem> {
+  const DesignSystem({
     required this.colors,
     required this.icons,
     required this.typography,
     required this.images,
   });
 
-  factory DesignSystem.fromBrightness(Brightness brightness) =>
-      DesignSystem._(brightness);
+  DesignSystem.light()
+      : colors = const DesignSystemColors.light(),
+        icons = const DesignSystemIcons(),
+        images = const DesignSystemImages(),
+        typography =
+            DesignSystemTypography.withColor(const DesignSystemColors.light());
 
-  factory DesignSystem._(Brightness brightness) {
-    final designSystemColors = DesignSystemColors(brightness: brightness);
-    final designSystemTypography =
-        DesignSystemTypography.withColor(designSystemColors);
-    final designSystemIcons = DesignSystemIcon();
-    final designSystemImages = DesignSystemImages();
-
-    return DesignSystem(
-      colors: designSystemColors,
-      typography: designSystemTypography,
-      icons: designSystemIcons,
-      images: designSystemImages,
-    );
-  }
-
-  static DesignSystem of<T>(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    return DesignSystem._(brightness);
-  }
+  DesignSystem.dark()
+      : colors = const DesignSystemColors.dark(),
+        icons = const DesignSystemIcons(),
+        images = const DesignSystemImages(),
+        typography =
+            DesignSystemTypography.withColor(const DesignSystemColors.dark());
 
   final DesignSystemColors colors;
-  final DesignSystemIcon icons;
+  final DesignSystemIcons icons;
   final DesignSystemTypography typography;
   final DesignSystemImages images;
 
-  ThemeData get theme => {{#pascalCase}}{{project_name}}{{/pascalCase}}Theme.buildTheme(this);
+  @override
+  ThemeExtension<DesignSystem> copyWith({
+    DesignSystemColors? colors,
+    DesignSystemIcons? icons,
+    DesignSystemTypography? typography,
+    DesignSystemImages? images,
+  }) =>
+      DesignSystem(
+        colors: colors ?? this.colors,
+        icons: icons ?? this.icons,
+        typography: typography ?? this.typography,
+        images: images ?? this.images,
+      );
+
+  @override
+  ThemeExtension<DesignSystem> lerp(
+          ThemeExtension<DesignSystem>? other, double t) =>
+      t < 1.0 ? this : (other ?? this);
 }
 
 /// Extension to enable quick access of design system via a build context
-extension BuildContextExtension on BuildContext {
-  DesignSystem get designSystem => DesignSystem.of(this);
+extension DesignSystemContextExtension on BuildContext {
+  /// Returns a reference to the [DesignSystem] theme extension of the current [Theme]
+  DesignSystem get designSystem => Theme.of(this).extension<DesignSystem>()!;
 }

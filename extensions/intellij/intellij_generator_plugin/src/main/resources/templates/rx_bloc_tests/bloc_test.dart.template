@@ -1,37 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-${repository_import_declarations}
-import 'package:${project_name}/feature_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
+import 'package:${project_name}/${bloc_folder_prefix}_${bloc_snake_case}/blocs/${bloc_snake_case}_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import '${bloc_snake_case}_test.mocks.dart';
+${imports_from_bloc_constructor}
+${imports_from_bloc_states}
 
-//import '../../base/Stubs.dart';
-
-@GenerateMocks([
-${repository_class_list}
-])
+${bloc_initialization_fields_mocks}
 void main() {
-${declaration_of_repositories}
+${late_bloc_initialization_fields}
+  void _defineWhen(/*value*/) {
+     /*
+            //Sample mock during a test case
+            when(repository.fetchPage()).thenAnswer((_) async => value);
+      */
+  }
 
+  ${bloc_pascal_case}Bloc ${bloc_field_case}Bloc() => ${bloc_pascal_case}Bloc(
+${_bloc_initialization_fields_list});
   setUp(() {
-  ${initialization_of_repositories}
+  ${initiate_bloc_initialization_fields}
   });
 
-  group('test ${bloc_snake_case}', () {
-    rxBlocTest<${bloc_pascal_case}BlocType, bool>('test ${bloc_snake_case}',
-        build: () async {
-          /*
-           //Sample mock during a test case
-           when(repositoryMock.fetchPage()).thenAnswer(
-            (_) => Future.value(Stubs.emptyList),
-          ); */
-          return ${bloc_field_case}Bloc();
-        },
-        act: (bloc) async {},
-        state: (bloc) => bloc.states.isLoading,
-        expect: [false]);
-  });
+    ${test_rxbloc_state_group}
 }
-
-${bloc_pascal_case}Bloc ${bloc_field_case}Bloc() => ${bloc_pascal_case}Bloc();//application/bloc specific parameters

@@ -6,7 +6,7 @@ import 'package:source_gen_test/annotations.dart';
 import 'package:test/test.dart';
 
 @ShouldGenerate('/**\n'
-    'State noMethodsshould be defined using the get keyword.\n'
+    'State noMethods should be defined using the get keyword.\n'
     '*/\n'
     '')
 @RxBloc()

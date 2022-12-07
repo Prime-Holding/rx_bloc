@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
-import 'package:flutter_rx_bloc/rx_form.dart';
+import '../../../assets.dart';
+import '../../models/errors/error_model.dart';
 
 part 'login_field_validators.dart';
 

@@ -7,13 +7,21 @@ import '../rx_form.dart';
 
 part 'rx_text_form_field_builder.dart';
 
+/// Type used as a contract for defining the RxFormFieldBuilder state
 typedef RxFormFieldState<B extends RxBlocTypeBase, T> = Stream<T> Function(B);
 
+/// Contract type used for defining a RxFormFieldBuilder state which toggles the
+/// visibility of errors
 typedef RxFormFieldShowError<B extends RxBlocTypeBase> = Stream<bool> Function(
     B);
 
+/// Contract defining the callback which is triggered once a change in the
+/// RxFormFieldBuilder happens
 typedef RxFormFieldOnChanged<B extends RxBlocTypeBase, T> = void Function(B, T);
 
+/// Contract defining a builder function which will be triggered once a change
+/// in the RxFormFieldBuilder state is detected returning a new widget as
+/// a result
 typedef RxFormFieldBuilderFunction<B extends RxBlocTypeBase, T>
     = Widget Function(
         RxFormFieldBuilderState<B, T, RxFormFieldBuilder<B, T>> fieldState);

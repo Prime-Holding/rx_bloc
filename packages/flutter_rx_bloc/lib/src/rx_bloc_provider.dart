@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
-/// Used as a DI widget where an instance of a [bloc] can be provided
+/// Used as a DI widget where an instance of a `bloc` can be provided
 /// to multiple widgets within a subtree.
-/// Takes a [ValueBuilder] that is responsible for creating the [bloc]
-/// and a [child] which will have access to the [bloc]
+/// Takes a `ValueBuilder` that is responsible for creating the `bloc`
+/// and a [child] which will have access to the `bloc`
 /// via `RxBlocProvider.of(context)`.
 ///
-/// Automatically handles disposing of the [bloc] when used with [create]
-/// and lazily creates the [bloc] if [lazy] is not explicitly set to `false`.
+/// Automatically handles disposing of the `bloc` when used with `create`
+/// and lazily creates the `bloc` if [lazy] is not explicitly set to `false`.
 ///
 /// ```dart
 /// RxBlocProvider(
@@ -20,17 +20,17 @@ import 'package:rx_bloc/rx_bloc.dart';
 /// ```
 class RxBlocProvider<T extends RxBlocTypeBase>
     extends SingleChildStatelessWidget {
-  /// Takes a [bloc] and a [child] which will have access to the [bloc]
+  /// Takes a `bloc` and a `child` which will have access to the `bloc`
   /// via `RxBlocProvider.of(context)`.
-  /// When `RxBlocProvider.value` is used, the [bloc] will not be
+  /// When `RxBlocProvider.value` is used, the `bloc` will not be
   /// automatically disposed.
   /// As a result, `RxBlocProvider.value` should mainly be used for
-  /// providing existing [bloc]s
+  /// providing existing `bloc`s
   /// to new routes.
   ///
-  /// A new [bloc] should not be created in `RxBlocProvider.value`.
-  /// [bloc]s should always be created using the default constructor
-  /// within [create].
+  /// A new `bloc` should not be created in `RxBlocProvider.value`.
+  /// `bloc`s should always be created using the default constructor
+  /// within `create`.
   ///
   /// ```dart
   /// RxBlocProvider.value(
@@ -73,10 +73,10 @@ class RxBlocProvider<T extends RxBlocTypeBase>
           lazy: lazy,
         );
 
-  /// [child] and its descendants which will have access to the [bloc].
+  /// [child] and its descendants which will have access to the `bloc`.
   final Widget? child;
 
-  /// Whether or not the [bloc] being provided should be lazily created.
+  /// Whether or not the `bloc` being provided should be lazily created.
   /// Defaults to `true`.
   final bool? lazy;
 
@@ -84,9 +84,9 @@ class RxBlocProvider<T extends RxBlocTypeBase>
 
   final Create<T> _create;
 
-  /// Method that allows widgets to access a [bloc] instance as
+  /// Method that allows widgets to access a `bloc` instance as
   /// long as their `BuildContext`
-  /// contains a [RxBlocProvider] instance.
+  /// contains a `RxBlocProvider` instance.
   ///
   /// If we want to access an instance of `BlocA` which was
   /// provided higher up in the widget tree

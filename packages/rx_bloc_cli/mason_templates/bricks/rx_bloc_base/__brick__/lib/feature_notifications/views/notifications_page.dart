@@ -24,7 +24,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(
-            context.l10n.notificationPageTitle,
+            context.l10n.featureNotifications.notificationPageTitle,
           ),
           actions: [
             Padding(
@@ -56,7 +56,8 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                   children: [
                     _buildButton(
                       context,
-                      context.l10n.notificationPermissionRequestText,
+                      context.l10n.featureNotifications
+                          .notificationPermissionRequestText,
                       () => context
                           .read<NotificationsBlocType>()
                           .events
@@ -64,7 +65,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                     ),
                     _buildButton(
                       context,
-                      context.l10n.notificationShowText,
+                      context.l10n.featureNotifications.notificationShowText,
                       () => context
                           .read<NotificationsBlocType>()
                           .events
@@ -72,7 +73,8 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                     ),
                     _buildButton(
                       context,
-                      context.l10n.notificationShowDelayedText,
+                      context.l10n.featureNotifications
+                          .notificationShowDelayedText,
                       () => context
                           .read<NotificationsBlocType>()
                           .events
@@ -84,14 +86,15 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                     RxBlocListener<NotificationsBlocType, bool>(
                       state: (bloc) => bloc.states.permissionsAuthorized,
                       listener: (context, authorized) async {
-                        if (authorized ?? false) return;
+                        if (authorized) return;
 
                         // If not authorized, show a dialog popup
                         await showAdaptiveDialog(
                           context: context,
                           builder: (context) => AlertDialog(
                             content: Text(
-                              context.l10n.notificationsPermissionsDenied,
+                              context.l10n.featureNotifications
+                                  .notificationsPermissionsDenied,
                               textAlign: TextAlign.center,
                             ),
                             actions: <Widget>[
@@ -154,7 +157,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                context.l10n.notificationsPageDescription,
+                context.l10n.featureNotifications.notificationsPageDescription,
                 textAlign: TextAlign.center,
               ),
               const Divider(
@@ -164,7 +167,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                 endIndent: 120,
               ),
               Text(
-                context.l10n.notificationsPageConfig,
+                context.l10n.featureNotifications.notificationsPageConfig,
                 textAlign: TextAlign.center,
               ),
               Padding(

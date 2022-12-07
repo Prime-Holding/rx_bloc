@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
 import 'package:{{project_name}}/base/theme/design_system.dart';
+import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
 import 'package:{{project_name}}/l10n/l10n.dart';
 
 import 'models/labeled_device_builder.dart';
@@ -88,13 +89,13 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
       tester,
       builder,
       localizations: const [
-        AppLocalizations.delegate,
+        I18n.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
-      localeOverrides: AppLocalizations.supportedLocales,
+      localeOverrides: I18n.supportedLocales,
       theme: theme == Themes.light
-          ? DesignSystem.fromBrightness(Brightness.light).theme
-          : DesignSystem.fromBrightness(Brightness.dark).theme,
+          ? {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light())
+          : {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
     );
 
 /// Wraps a [DeviceBuilder] in a [materialAppWrapper] using any of the

@@ -1,0 +1,8 @@
+{
+  "@@locale": "es",
+  "loginPageTitle": "Login sample",
+  "logIn" : "Log in",
+  "logOut" : "Log out",
+  "profile" : "Profile",
+  "notifications" : "Notifications"
+}

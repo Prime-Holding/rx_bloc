@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 
+@immutable
 class DesignSystemImages {
-  final imagePath = 'assets/images';
+  const DesignSystemImages();
 
-  AssetImage get testImage => AssetImage('$imagePath/testImage.png');
+  static const imagePath = 'assets/images';
+
+  final testImage = const AssetImage('$imagePath/testImage.png');
 }

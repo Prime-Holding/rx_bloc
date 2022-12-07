@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
-import 'package:io/ansi.dart';
-import 'package:io/io.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 
@@ -108,10 +106,10 @@ class CreateCommand extends Command<int> {
     final orgName = _organizationName.substring(orgSeparatorIndex + 1);
 
     _logger.info('');
-    final generateDone = _logger.progress('Bootstrapping');
+    final fileGenerationProgress = _logger.progress('Bootstrapping');
     final generator = await _generator(_bundle);
-    var fileCount = await generator.generate(
-      DirectoryGeneratorTarget(outputDirectory, _logger),
+    var generatedFiles = await generator.generate(
+      DirectoryGeneratorTarget(outputDirectory),
       vars: {
         'project_name': projectName,
         'domain_name': orgDomain,
@@ -125,9 +123,11 @@ class CreateCommand extends Command<int> {
 
     // Manually create gitignore
     GitIgnoreCreator.generate(_outputDirectory.path);
-    fileCount++;
 
-    generateDone('Bootstrapping done');
+    final fileCount = generatedFiles.length + 1;
+
+    fileGenerationProgress.complete('Bootstrapping done');
+
     await _writeOutputLog(fileCount);
   }
 
@@ -234,9 +234,8 @@ class CreateCommand extends Command<int> {
 
   /// Writes an output log with the status of the file generation
   Future<void> _writeOutputLog(int fileCount) async {
-    final filesGeneratedStr = fileCount == 0
-        ? 'No files generated.'
-        : 'Generated $fileCount file(s):';
+    final filesGeneratedStr =
+        fileCount == 0 ? 'No files generated.' : 'Generated $fileCount file(s)';
 
     _logger
       ..info('${lightGreen.wrap('✓')} $filesGeneratedStr')

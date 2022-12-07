@@ -9,11 +9,11 @@ part 'navigation_bar_bloc.rxb.g.dart';
 part 'navigation_bar_bloc_extensions.dart';
 
 // ignore: one_member_abstracts
-abstract class NavigationBarEvents {
+abstract class NavigationBarBlocEvents {
   void selectPage(NavigationItemType item);
 }
 
-abstract class NavigationBarStates {
+abstract class NavigationBarBlocStates {
   @RxBlocIgnoreState()
   Stream<List<NavigationItem>> get items;
 
@@ -26,7 +26,7 @@ abstract class NavigationBarStates {
 @RxBloc()
 class NavigationBarBloc extends $NavigationBarBloc {
   NavigationBarBloc() {
-    _$selectPageEvent.updateItems(_items).disposedBy(_compositeSubscription);
+    _$selectPageEvent.updateItems(_items).addTo(_compositeSubscription);
   }
 
   final _items = BehaviorSubject<List<NavigationItem>>.seeded([

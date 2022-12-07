@@ -1,10 +1,11 @@
 {{> licence.dart }}
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../assets.dart';
+
+export  '../assets.dart' show I18n;
 
 extension AppLocalizationsX on BuildContext {
-  AppLocalizations get l10n => AppLocalizations.of(this)!;
+  I18n get l10n => I18n.of(this);
 }

@@ -6,13 +6,13 @@ part of 'authenticate_user_request_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthUserRequestModel _$AuthUserRequestModelFromJson(Map<String, dynamic> json) {
-  return AuthUserRequestModel(
-    username: json['username'] as String?,
-    password: json['password'] as String?,
-    refreshToken: json['refreshToken'] as String?,
-  );
-}
+AuthUserRequestModel _$AuthUserRequestModelFromJson(
+        Map<String, dynamic> json) =>
+    AuthUserRequestModel(
+      username: json['username'] as String?,
+      password: json['password'] as String?,
+      refreshToken: json['refreshToken'] as String?,
+    );
 
 Map<String, dynamic> _$AuthUserRequestModelToJson(
         AuthUserRequestModel instance) =>

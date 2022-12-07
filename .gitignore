@@ -65,6 +65,7 @@ unlinked_spec.ds
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 *.jks
+app/upload-keystore.jks
 
 # iOS/XCode related
 **/ios/**/*.mode1v3

@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text(context.l10n.loginPageTitle)),
+        appBar: AppBar(title: Text(context.l10n.featureLogin.loginPageTitle)),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
                     border: Border.all(
-                      color: context.designSystem.colors.reverseBackgroundColor,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                   child: LoginForm(

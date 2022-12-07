@@ -9,14 +9,17 @@ part of 'navigation_bar_bloc.dart';
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
 abstract class NavigationBarBlocType extends RxBlocTypeBase {
-  NavigationBarEvents get events;
-  NavigationBarStates get states;
+  NavigationBarBlocEvents get events;
+  NavigationBarBlocStates get states;
 }
 
 /// [$NavigationBarBloc] extended by the [NavigationBarBloc]
 /// {@nodoc}
 abstract class $NavigationBarBloc extends RxBlocBase
-    implements NavigationBarEvents, NavigationBarStates, NavigationBarBlocType {
+    implements
+        NavigationBarBlocEvents,
+        NavigationBarBlocStates,
+        NavigationBarBlocType {
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [selectPage]
@@ -34,10 +37,10 @@ abstract class $NavigationBarBloc extends RxBlocBase
   Stream<String> _mapToTitleState();
 
   @override
-  NavigationBarEvents get events => this;
+  NavigationBarBlocEvents get events => this;
 
   @override
-  NavigationBarStates get states => this;
+  NavigationBarBlocStates get states => this;
 
   @override
   void dispose() {

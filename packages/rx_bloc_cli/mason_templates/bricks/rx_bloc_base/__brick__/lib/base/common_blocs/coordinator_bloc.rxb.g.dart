@@ -22,9 +22,22 @@ abstract class $CoordinatorBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [authenticated]
   final _$authenticatedEvent = PublishSubject<bool>();
 
+  /// Тhe [Subject] where events sink to by calling [errorLogged]
+  final _$errorLoggedEvent = PublishSubject<_ErrorLoggedEventArgs>();
+
   @override
   void authenticated({required bool isAuthenticated}) =>
       _$authenticatedEvent.add(isAuthenticated);
+
+  @override
+  void errorLogged({
+    required ErrorModel error,
+    String? stackTrace,
+  }) =>
+      _$errorLoggedEvent.add(_ErrorLoggedEventArgs(
+        error: error,
+        stackTrace: stackTrace,
+      ));
 
   @override
   CoordinatorEvents get events => this;
@@ -35,7 +48,21 @@ abstract class $CoordinatorBloc extends RxBlocBase
   @override
   void dispose() {
     _$authenticatedEvent.close();
+    _$errorLoggedEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [CoordinatorEvents.errorLogged] event
+class _ErrorLoggedEventArgs {
+  const _ErrorLoggedEventArgs({
+    required this.error,
+    this.stackTrace,
+  });
+
+  final ErrorModel error;
+
+  final String? stackTrace;
 }
