@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:dio/dio.dart'; {{#analytics}}
+import 'package:dio/dio.dart';{{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -23,8 +23,8 @@ import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/remote/auth_data_source.dart';
-import '../data_sources/remote/interceptors/analytics_interceptor.dart';
+import '../data_sources/remote/auth_data_source.dart';{{#analytics}}
+import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/interceptors/log_interceptor.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
@@ -47,8 +47,8 @@ class AppDependencies {
 
   /// List of all providers used throughout the app
   List<SingleChildWidget> get providers => [
-        ..._coordinator,
-        ..._analytics,
+        ..._coordinator,{{#analytics}}
+        ..._analytics,{{/analytics}}
         ..._environment,
         ..._mappers,
         ..._httpClients,
@@ -66,6 +66,7 @@ class AppDependencies {
         ),
       ];
 
+  {{#analytics}}
   List<Provider> get _analytics => [
         Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics.instance),
         Provider<FirebaseAnalyticsObserver>(
@@ -73,6 +74,7 @@ class AppDependencies {
               FirebaseAnalyticsObserver(analytics: context.read()),
         ),
       ];
+  {{/analytics}}
 
   List<Provider> get _environment => [
         Provider<EnvironmentConfig>.value(value: config),
@@ -174,10 +176,10 @@ class AppDependencies {
             context.read(),
             context.read,
           ),
-        ),
+        ),{{#analytics}}
         Provider<AnalyticsInterceptor>(
           create: (context) => AnalyticsInterceptor(context.read()),
-        ),
+        ),{{/analytics}}
         Provider<LogInterceptor>(
           create: (context) => createDioEventLogInterceptor(),
         ),
