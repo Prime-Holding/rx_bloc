@@ -1,3 +1,10 @@
+## [1.4.0] - TBD
+* Make the project name parameter a mandatory one
+* Rename the 'org' parameter to 'organization'
+* Rename the 'include-analytics' parameter to 'enable-analytics'
+* Turn the 'enable-analytics' parameter off by default
+* Remove the unused 'http client' parameter
+
 ## [1.3.0] - November 29, 2022
 * Add utility script to exclude files from LCOV coverage reports
 * Import r_flutter and use it for localisation
