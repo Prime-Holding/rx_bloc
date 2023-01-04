@@ -2,7 +2,7 @@
 
 import '../repositories/auth_repository.dart';
 
-/// Returns access token, if is saved, by default.
+/// Returns access token from local storage or remote API.
 class FetchAccessTokenUseCase {
   FetchAccessTokenUseCase(
     this._authRepository,
@@ -10,7 +10,9 @@ class FetchAccessTokenUseCase {
 
   final AuthRepository _authRepository;
 
-  /// If you want to get refresh token, you should set forceFetchNewToken to true
+  /// Returns the access token obtained from local storage.
+  /// If `forceFetchNewToken` is set to `true` then a new token is
+  /// fetched from the server.
   Future<String?> execute({bool forceFetchNewToken = false}) async {
     if (!forceFetchNewToken) {
       final token = await _authRepository.getToken();

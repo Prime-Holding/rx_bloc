@@ -1,8 +1,7 @@
 {{> licence.dart }}
 
 import 'dart:io';
-
-import 'package:dio/dio.dart';{{#analytics}}
+{{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -23,10 +22,9 @@ import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/remote/auth_data_source.dart';{{#analytics}}
-import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
-import '../data_sources/remote/interceptors/auth_interceptor.dart';
-import '../data_sources/remote/interceptors/log_interceptor.dart';
+import '../data_sources/remote/auth_data_source.dart';
+import '../data_sources/remote/http_clients/api_http_client.dart';
+import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
@@ -57,7 +55,6 @@ class AppDependencies {
         ..._repositories,
         ..._useCases,
         ..._blocs,
-        ..._interceptors,
       ];
 
   List<SingleChildWidget> get _coordinator => [
@@ -87,13 +84,20 @@ class AppDependencies {
       ];
 
   List<Provider> get _httpClients => [
-        Provider<Dio>(
+        Provider<PlainHttpClient>(
           create: (context) {
-            final dio = Dio()
+            final client = PlainHttpClient();
+            // Configure baseUrl if needed.
+            return client;
+          },
+        ),
+        Provider<ApiHttpClient>(
+          create: (context) {
+            final client = ApiHttpClient()
               ..options.baseUrl = Platform.isIOS
-                  ? config.iosSimulatorBaseApiUrl
-                  : config.androidEmulatorBaseApiUrl;
-            return dio;
+                ? config.iosSimulatorBaseApiUrl
+                : config.androidEmulatorBaseApiUrl;
+            return client;
           },
         ),
       ];
@@ -108,20 +112,20 @@ class AppDependencies {
         ),
       ];
 
-  /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
+        // Use different data source depending on the platform.
         Provider<AuthTokenDataSource>(
             create: (context) => kIsWeb
                 ? AuthTokenSharedDataSource(context.read())
                 : AuthTokenSecureDataSource(context.read())),
         Provider<AuthDataSource>(
           create: (context) => AuthDataSource(
-            context.read(),
+            context.read<PlainHttpClient>(),
           ),
         ),
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(
-            context.read(),
+            context.read<ApiHttpClient>(),
           ),
         ),
       ];
@@ -166,22 +170,6 @@ class AppDependencies {
             coordinatorBloc: context.read(),
             authRepository: context.read(),
           ),
-        ),
-      ];
-
-  List<Provider> get _interceptors => [
-        Provider<AuthInterceptor>(
-          create: (context) => AuthInterceptor(
-            context.read(),
-            context.read(),
-            context.read,
-          ),
-        ),{{#analytics}}
-        Provider<AnalyticsInterceptor>(
-          create: (context) => AnalyticsInterceptor(context.read()),
-        ),{{/analytics}}
-        Provider<LogInterceptor>(
-          create: (context) => createDioEventLogInterceptor(),
         ),
       ];
 }
