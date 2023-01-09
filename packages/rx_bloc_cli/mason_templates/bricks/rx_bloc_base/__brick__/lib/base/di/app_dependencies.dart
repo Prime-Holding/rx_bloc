@@ -15,9 +15,11 @@ import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
+import '../common_use_cases/check_access_token_expiration_use_case.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
+import '../common_use_cases/refresh_access_token_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
@@ -158,8 +160,14 @@ class AppDependencies {
                   context.read(),
                   context.read(),
                 )),
+        Provider<CheckAccessTokenExpirationUseCase>(
+          create: (context) => CheckAccessTokenExpirationUseCase(),
+        ),
         Provider<FetchAccessTokenUseCase>(
           create: (context) => FetchAccessTokenUseCase(context.read()),
+        ),
+        Provider<RefreshAccessTokenUseCase>(
+          create: (context) => RefreshAccessTokenUseCase(context.read()),
         ),
       ];
 

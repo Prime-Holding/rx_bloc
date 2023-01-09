@@ -89,6 +89,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
             context.read(),
             context.read(),
             context.read(),
+            context.read(),
+            context.read(),
           ),{{#analytics}}
           AnalyticsInterceptor(context.read()),{{/analytics}}
         );
