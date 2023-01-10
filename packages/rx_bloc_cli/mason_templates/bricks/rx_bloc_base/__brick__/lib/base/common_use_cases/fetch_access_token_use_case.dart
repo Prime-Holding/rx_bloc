@@ -8,7 +8,6 @@ class FetchAccessTokenUseCase {
 
   /// Returns the access token obtained from local storage.
   Future<String?> execute() async {
-    final token = await _authRepository.getToken();
-    return token;
+    return _authRepository.getToken();
   }
 }

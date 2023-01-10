@@ -29,22 +29,21 @@ class AuthInterceptor extends QueuedInterceptor {
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final accessToken = await _fetchAccessTokenUseCase.execute();
+    var accessToken = await _fetchAccessTokenUseCase.execute();
 
-    // NOTE: Here you can check if the current token is expired or about to
-    // expire. In this case fetch a new token using `await` which will block
-    // the request queue until the token has been refreshed.
+    // Check if the current token is expired or about to expire. In this case
+    // fetch a new token using `await` which will block the request queue until
+    // the token has been refreshed.
     if (accessToken != null &&
         _checkAccessTokenExpirationUseCase.execute(accessToken)) {
-      // try {
-      //   // get new token using
-      //   // _log('Access token expired. Fetching a new one.');
-      //   // accessToken = await _refreshAccessTokenUseCase.execute();
-      // } on DioError catch (error) {
-      //   return handler.reject(error);
-      // } catch (error) {
-      //   return handler.reject(DioError(requestOptions: options));
-      // }
+      try {
+        _log('Access token expired. Fetching a new one.');
+        accessToken = await _refreshAccessTokenUseCase.execute();
+      } on DioError catch (error) {
+        return handler.reject(error);
+      } catch (error) {
+        return handler.reject(DioError(requestOptions: options));
+      }
     }
 
     if (accessToken != null) {
