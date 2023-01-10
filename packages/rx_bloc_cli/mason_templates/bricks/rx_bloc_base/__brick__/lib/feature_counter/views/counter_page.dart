@@ -1,6 +1,5 @@
 {{> licence.dart }}
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -16,16 +15,15 @@ import '../../l10n/l10n.dart';
 import '../blocs/counter_bloc.dart';
 import '../di/counter_dependencies.dart';
 
-class CounterPage extends StatelessWidget implements AutoRouteWrapper {
+class CounterPage extends StatelessWidget {
   const CounterPage({
     Key? key,
   }) : super(key: key);
 
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: CounterDependencies.of(context).providers,
-        child: this,
-      );
+  static Widget withDependencies(BuildContext context) => MultiProvider(
+      providers: CounterDependencies.of(context).providers,
+      child: const CounterPage(),
+    );
 
   @override
   Widget build(BuildContext context) => Scaffold(

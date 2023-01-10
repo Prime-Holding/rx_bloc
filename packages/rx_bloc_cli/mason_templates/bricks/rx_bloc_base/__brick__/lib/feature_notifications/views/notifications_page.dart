@@ -11,14 +11,13 @@ import '../../base/utils/helpers.dart';
 import '../blocs/notifications_bloc.dart';
 import '../di/notifications_dependencies.dart';
 
-class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
+class NotificationsPage extends StatelessWidget {
   const NotificationsPage({Key? key}) : super(key: key);
 
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: NotificationsDependencies.of(context).providers,
-        child: this,
-      );
+  static Widget withDependencies(BuildContext context) => MultiProvider(
+      providers: NotificationsDependencies.of(context).providers,
+      child: const NotificationsPage(),
+    );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -100,7 +99,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                             actions: <Widget>[
                               Center(
                                 child: TextButton(
-                                  onPressed: () => context.router.pop(),
+                                  onPressed: () => context.pop(),
                                   child: Text(
                                     context.l10n.ok,
                                     style: context.designSystem.typography
@@ -173,7 +172,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: TextButton(
-                  onPressed: () => context.router.pop(),
+                  onPressed: () => context.pop(),
                   child: Text(context.l10n.close),
                 ),
               ),

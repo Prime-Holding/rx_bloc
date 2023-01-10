@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../app_extensions.dart';
 import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/popup_builder.dart';
+import '../../base/routers/router.dart';
 
 // ignore_for_file: avoid_field_initializers_in_const_classes
 
@@ -35,7 +36,7 @@ class ProfileAvatar extends StatelessWidget {
   Widget _buildLoginButton(BuildContext context) => IconButton(
         icon: Icon(context.designSystem.icons.login),
         tooltip: context.l10n.featureLogin.logIn,
-        onPressed: () => context.router.push(const LoginRoute()),
+        onPressed: () => const LoginRoute().push(context),
       );
 
   Widget _buildLoggedInAvatar(BuildContext context) => PopupBuilder<String>(
@@ -59,7 +60,7 @@ class ProfileAvatar extends StatelessWidget {
         ],
         onSelected: (selected) {
           if (selected == _notificationKey) {
-            context.router.push(const NotificationsRoute());
+            const NotificationsRoute().go(context);
           } else if (selected == _logoutKey) {
             context.read<UserAccountBlocType>().events.logout();
           }

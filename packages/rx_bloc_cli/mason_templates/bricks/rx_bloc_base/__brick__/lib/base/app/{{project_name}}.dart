@@ -6,13 +6,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notification
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../di/app_dependencies.dart';
-import '../routers/router.gr.dart' as router;
+import '../routers/router.dart';
 import '../theme/design_system.dart';
 import '../theme/{{project_name}}_theme.dart';
 import '../utils/helpers.dart';
@@ -28,7 +29,7 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
   }) : super(key: key);
 
   final EnvironmentConfig config;
-  final _router = router.Router();
+  final _router = GoRouter(routes: $appRoutes);
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -43,7 +44,7 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
 class _MyMaterialApp extends StatefulWidget {
   const _MyMaterialApp(this._router);
 
-  final router.Router _router;
+  final GoRouter _router;
 
 @override
 __MyMaterialAppState createState() => __MyMaterialAppState();
@@ -97,8 +98,9 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: I18n.supportedLocales,
-      routeInformationParser: widget._router.defaultRouteParser(),
-      routerDelegate: widget._router.delegate({{#analytics}}
+      routerConfig: widget._router,
+      routeInformationParser: widget._router.routeInformationParser,
+      routerDelegate: widget._router.routerDelegate({{#analytics}}
         navigatorObservers: () => [
           context.read<FirebaseAnalyticsObserver>(),
         ],

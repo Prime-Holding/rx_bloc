@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/routers/router.dart';
 import '../di/login_dependencies.dart';
 import '../ui_components/login_form.dart';
 
-class LoginPage extends StatelessWidget implements AutoRouteWrapper {
+class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: LoginDependencies.of(context).providers,
-        child: this,
-      );
+  static Widget withDependencies(BuildContext context) => MultiProvider(
+      providers: LoginDependencies.of(context).providers,
+      child: const LoginPage(),
+    );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -34,9 +34,7 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
                     ),
                   ),
                   child: LoginForm(
-                    onLoginSuccess: () {
-                      context.router.replace(const NotificationsRoute());
-                    },
+                    onLoginSuccess: () => const CounterRoute().go(context),
                   ),
                 ),
               ),
