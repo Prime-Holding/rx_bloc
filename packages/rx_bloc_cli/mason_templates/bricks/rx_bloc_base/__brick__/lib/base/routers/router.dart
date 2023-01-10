@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../feature_counter/views/counter_page.dart';
-import '../../feature_login/views/login_page.dart';
-import '../../feature_notifications/views/notifications_page.dart';
+import '../../feature_counter/di/counter_page_with_dependencies.dart';
+import '../../feature_login/di/login_page_with_dependencies.dart';
+import '../../feature_notifications/di/notifications_page_with_dependencies.dart';
 
 part 'router.g.dart';
 
@@ -23,7 +23,7 @@ class CounterRoute extends GoRouteData {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
   MaterialPage(
     key: state.pageKey,
-    child: CounterPage.withDependencies(context),
+    child: const CounterPageWithDependencies(),
   );
 }
 
@@ -35,7 +35,7 @@ class NotificationsRoute extends GoRouteData {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
     MaterialPage(
       key: state.pageKey,
-      child: NotificationsPage.withDependencies(context),
+      child: const NotificationsPageWithDependencies(),
     );
 }
 
@@ -48,6 +48,6 @@ class LoginRoute extends GoRouteData {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
     MaterialPage(
       key: state.pageKey,
-      child: LoginPage.withDependencies(context),
+      child: const LoginPageWithDependencies(),
     );
 }

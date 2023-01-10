@@ -3,23 +3,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 
 import '../blocs/login_bloc.dart';
+import '../views/login_page.dart';
 
-class LoginDependencies {
-  LoginDependencies._(this.context);
+class LoginPageWithDependencies extends StatelessWidget {
+  const LoginPageWithDependencies({Key? key}) : super(key: key);
 
-  factory LoginDependencies.of(BuildContext context) =>
-      _instance != null ? _instance! : _instance = LoginDependencies._(context);
-
-  static LoginDependencies? _instance;
-
-  final BuildContext context;
-
-  List<SingleChildWidget> get providers => [
-        ..._blocs,
-      ];
+  @override
+  Widget build(BuildContext context) => MultiProvider(
+        providers: [
+          ..._blocs,
+        ],
+      child: const LoginPage(),
+    );
 
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<LoginBlocType>(

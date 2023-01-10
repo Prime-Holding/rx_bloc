@@ -1,20 +1,13 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/routers/router.dart';
-import '../di/login_dependencies.dart';
 import '../ui_components/login_form.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
-
-  static Widget withDependencies(BuildContext context) => MultiProvider(
-      providers: LoginDependencies.of(context).providers,
-      child: const LoginPage(),
-    );
 
   @override
   Widget build(BuildContext context) => Scaffold(

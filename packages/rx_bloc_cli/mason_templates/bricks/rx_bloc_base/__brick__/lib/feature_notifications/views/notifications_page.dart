@@ -9,15 +9,9 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/utils/helpers.dart';
 import '../blocs/notifications_bloc.dart';
-import '../di/notifications_dependencies.dart';
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({Key? key}) : super(key: key);
-
-  static Widget withDependencies(BuildContext context) => MultiProvider(
-      providers: NotificationsDependencies.of(context).providers,
-      child: const NotificationsPage(),
-    );
 
   @override
   Widget build(BuildContext context) => Scaffold(

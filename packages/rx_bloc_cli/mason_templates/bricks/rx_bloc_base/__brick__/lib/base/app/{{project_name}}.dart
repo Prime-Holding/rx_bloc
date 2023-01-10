@@ -99,12 +99,6 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       ],
       supportedLocales: I18n.supportedLocales,
       routerConfig: widget._router,
-      routeInformationParser: widget._router.routeInformationParser,
-      routerDelegate: widget._router.routerDelegate({{#analytics}}
-        navigatorObservers: () => [
-          context.read<FirebaseAnalyticsObserver>(),
-        ],
-      {{/analytics}}),
       debugShowCheckedModeBanner: false,
     );
   }

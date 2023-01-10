@@ -3,28 +3,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 
 import '../../base/data_sources/remote/count_remote_data_source.dart';
 import '../../base/repositories/counter_repository.dart';
 import '../blocs/counter_bloc.dart';
+import '../views/counter_page.dart';
 
-class CounterDependencies {
-  CounterDependencies._(this.context);
+class CounterPageWithDependencies extends StatelessWidget {
+  const CounterPageWithDependencies({Key? key}) : super(key: key);
 
-  factory CounterDependencies.of(BuildContext context) => _instance != null
-      ? _instance!
-      : _instance = CounterDependencies._(context);
-
-  static CounterDependencies? _instance;
-
-  final BuildContext context;
-
-  List<SingleChildWidget> get providers => [
+  @override
+  Widget build(BuildContext context) => MultiProvider(
+      providers: [
         ..._dataSources,
         ..._repositories,
         ..._blocs,
-      ];
+      ],
+      child: const CounterPage(),
+    );
 
   /// For your project you should provide a real api in
   /// lib\base\data_sources\domain\counter\count_remote_data_source.dart
