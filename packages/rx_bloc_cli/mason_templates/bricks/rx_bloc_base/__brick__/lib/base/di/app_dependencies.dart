@@ -27,6 +27,7 @@ import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
+import '../data_sources/remote/refresh_token_data_source.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
@@ -120,6 +121,11 @@ class AppDependencies {
             context.read<ApiHttpClient>(),
           ),
         ),
+        Provider<RefreshTokenDataSource>(
+          create: (context) => RefreshTokenDataSource(
+            context.read<PlainHttpClient>(),
+          ),
+        ),
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(
             context.read<ApiHttpClient>(),
@@ -130,6 +136,7 @@ class AppDependencies {
   List<Provider> get _repositories => [
         Provider<AuthRepository>(
           create: (context) => AuthRepository(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),
