@@ -1,8 +1,6 @@
 {{> licence.dart }}
 
-import 'dart:io';
-
-import 'package:dio/dio.dart';{{#analytics}}
+{{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -16,18 +14,20 @@ import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
+import '../common_use_cases/check_access_token_expiration_use_case.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
+import '../common_use_cases/refresh_access_token_use_case.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/remote/auth_data_source.dart';{{#analytics}}
-import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
-import '../data_sources/remote/interceptors/auth_interceptor.dart';
-import '../data_sources/remote/interceptors/log_interceptor.dart';
+import '../data_sources/remote/auth_data_source.dart';
+import '../data_sources/remote/http_clients/api_http_client.dart';
+import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
+import '../data_sources/remote/refresh_token_data_source.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
@@ -57,7 +57,6 @@ class AppDependencies {
         ..._repositories,
         ..._useCases,
         ..._blocs,
-        ..._interceptors,
       ];
 
   List<SingleChildWidget> get _coordinator => [
@@ -87,13 +86,16 @@ class AppDependencies {
       ];
 
   List<Provider> get _httpClients => [
-        Provider<Dio>(
+        Provider<PlainHttpClient>(
           create: (context) {
-            final dio = Dio()
-              ..options.baseUrl = Platform.isIOS
-                  ? config.iosSimulatorBaseApiUrl
-                  : config.androidEmulatorBaseApiUrl;
-            return dio;
+            return PlainHttpClient();
+          },
+        ),
+        Provider<ApiHttpClient>(
+          create: (context) {
+            final client = ApiHttpClient()
+              ..options.baseUrl = config.baseUrl;
+            return client;
           },
         ),
       ];
@@ -108,20 +110,25 @@ class AppDependencies {
         ),
       ];
 
-  /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
+        // Use different data source depending on the platform.
         Provider<AuthTokenDataSource>(
             create: (context) => kIsWeb
                 ? AuthTokenSharedDataSource(context.read())
                 : AuthTokenSecureDataSource(context.read())),
         Provider<AuthDataSource>(
           create: (context) => AuthDataSource(
-            context.read(),
+            context.read<ApiHttpClient>(),
+          ),
+        ),
+        Provider<RefreshTokenDataSource>(
+          create: (context) => RefreshTokenDataSource(
+            context.read<PlainHttpClient>(),
           ),
         ),
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(
-            context.read(),
+            context.read<ApiHttpClient>(),
           ),
         ),
       ];
@@ -129,6 +136,7 @@ class AppDependencies {
   List<Provider> get _repositories => [
         Provider<AuthRepository>(
           create: (context) => AuthRepository(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),
@@ -154,8 +162,14 @@ class AppDependencies {
                   context.read(),
                   context.read(),
                 )),
+        Provider<CheckAccessTokenExpirationUseCase>(
+          create: (context) => CheckAccessTokenExpirationUseCase(),
+        ),
         Provider<FetchAccessTokenUseCase>(
           create: (context) => FetchAccessTokenUseCase(context.read()),
+        ),
+        Provider<RefreshAccessTokenUseCase>(
+          create: (context) => RefreshAccessTokenUseCase(context.read()),
         ),
       ];
 
@@ -166,22 +180,6 @@ class AppDependencies {
             coordinatorBloc: context.read(),
             authRepository: context.read(),
           ),
-        ),
-      ];
-
-  List<Provider> get _interceptors => [
-        Provider<AuthInterceptor>(
-          create: (context) => AuthInterceptor(
-            context.read(),
-            context.read(),
-            context.read,
-          ),
-        ),{{#analytics}}
-        Provider<AnalyticsInterceptor>(
-          create: (context) => AnalyticsInterceptor(context.read()),
-        ),{{/analytics}}
-        Provider<LogInterceptor>(
-          create: (context) => createDioEventLogInterceptor(),
         ),
       ];
 }

@@ -3,6 +3,7 @@
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/auth_data_source.dart';
+import '../data_sources/remote/refresh_token_data_source.dart';
 import '../models/auth_token_model.dart';
 import '../models/request_models/authenticate_user_request_model.dart';
 
@@ -11,11 +12,13 @@ class AuthRepository {
     this._errorMapper,
     this._authTokenDataSource,
     this._authDataSource,
+    this._refreshTokenDataSource,
   );
 
   final ErrorMapper _errorMapper;
   final AuthTokenDataSource _authTokenDataSource;
   final AuthDataSource _authDataSource;
+  final RefreshTokenDataSource _refreshTokenDataSource;
 
   /// Get token string if there is one saved
   Future<String?> getToken() =>
@@ -42,13 +45,16 @@ class AuthRepository {
   Future<void> clearAuthData() =>
       _errorMapper.execute(() => _authTokenDataSource.clear());
 
-  /// Fetch new access token
+  /// Fetch a new access token using the current refresh token
   Future<String?> fetchNewToken() => _errorMapper.execute(() async {
-        // ignore: unused_local_variable
         final refreshToken = await getRefreshToken();
-        // TODO: Try to fetch new access token using refreshToken and save it
+        if (refreshToken == null) {
+          throw StateError('Refresh token not found');
+        }
+
+        // TODO: Try to fetch new access token using refreshToken
         // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
-        return '';
+        return (await _refreshTokenDataSource.refresh(refreshToken)).token;
       });
 
   Future<AuthTokenModel> authenticate(

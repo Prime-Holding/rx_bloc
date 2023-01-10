@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../base/data_sources/remote/count_remote_data_source.dart';
+import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/repositories/counter_repository.dart';
 import '../blocs/counter_bloc.dart';
 
@@ -31,7 +32,8 @@ class CounterDependencies {
   /// and data models in lib\base\models and rerun build_runner.
   List<Provider> get _dataSources => [
         Provider<CountRemoteDataSource>(
-          create: (context) => CountRemoteDataSource(context.read()),
+          create: (context) =>
+              CountRemoteDataSource(context.read<ApiHttpClient>()),
         ),
       ];
 

@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'dart:io';
+
 enum EnvironmentType { development, staging, production }
 
 /// Environment configuration that enables you to define and read
@@ -27,4 +29,7 @@ class EnvironmentConfig {
   final EnvironmentType environment;
   final String androidEmulatorBaseApiUrl;
   final String iosSimulatorBaseApiUrl;
+
+  String get baseUrl =>
+      Platform.isIOS ? iosSimulatorBaseApiUrl : androidEmulatorBaseApiUrl;
 }
