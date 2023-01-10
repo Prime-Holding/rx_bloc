@@ -4,6 +4,7 @@
 * Rename the 'include-analytics' parameter to 'enable-analytics'
 * Turn the 'enable-analytics' parameter off by default
 * Remove the unused 'http client' parameter
+* Replace the auto_route with go_router
 
 ## [1.3.0] - November 29, 2022
 * Add utility script to exclude files from LCOV coverage reports
