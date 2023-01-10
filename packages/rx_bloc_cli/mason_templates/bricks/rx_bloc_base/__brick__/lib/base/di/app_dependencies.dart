@@ -1,6 +1,5 @@
 {{> licence.dart }}
 
-import 'dart:io';
 {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -88,17 +87,13 @@ class AppDependencies {
   List<Provider> get _httpClients => [
         Provider<PlainHttpClient>(
           create: (context) {
-            final client = PlainHttpClient();
-            // Configure baseUrl if needed.
-            return client;
+            return PlainHttpClient();
           },
         ),
         Provider<ApiHttpClient>(
           create: (context) {
             final client = ApiHttpClient()
-              ..options.baseUrl = Platform.isIOS
-                ? config.iosSimulatorBaseApiUrl
-                : config.androidEmulatorBaseApiUrl;
+              ..options.baseUrl = config.baseUrl;
             return client;
           },
         ),
@@ -122,7 +117,7 @@ class AppDependencies {
                 : AuthTokenSecureDataSource(context.read())),
         Provider<AuthDataSource>(
           create: (context) => AuthDataSource(
-            context.read<PlainHttpClient>(),
+            context.read<ApiHttpClient>(),
           ),
         ),
         Provider<PushNotificationsDataSource>(
