@@ -24,10 +24,10 @@ extension _VoidStreamExtensions on Stream<void> {
 }
 
 extension _LoginCredentialsStreamExtensions on Stream<_LoginCredentials> {
-  Stream<Result<bool>> loginUser(LoginUseCase useCase) =>
+  Stream<Result<bool>> loginUser(UserAccountService service) =>
       throttleTime(const Duration(seconds: 1)).switchMap(
-        (args) => useCase
-            .execute(username: args.username, password: args.password)
+        (args) => service
+            .login(username: args.username, password: args.password)
             .asResultStream(),
       );
 }
