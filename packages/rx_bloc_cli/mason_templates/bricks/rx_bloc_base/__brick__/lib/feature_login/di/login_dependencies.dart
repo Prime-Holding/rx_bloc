@@ -24,8 +24,8 @@ class LoginDependencies {
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<LoginBlocType>(
           create: (context) => LoginBloc(
-            loginUseCase: context.read(),
-            coordinatorBloc: context.read(),
+            context.read(),
+            context.read(),
           ),
         ),
       ];

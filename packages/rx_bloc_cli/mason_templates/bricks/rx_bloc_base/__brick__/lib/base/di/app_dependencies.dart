@@ -14,11 +14,8 @@ import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../common_use_cases/check_access_token_expiration_use_case.dart';
-import '../common_use_cases/fetch_access_token_use_case.dart';
-import '../common_use_cases/login_use_case.dart';
-import '../common_use_cases/logout_use_case.dart';
-import '../common_use_cases/refresh_access_token_use_case.dart';
+import '../common_services/access_token_service.dart';
+import '../common_services/user_account_service.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
@@ -55,7 +52,7 @@ class AppDependencies {
         ..._dataStorages,
         ..._dataSources,
         ..._repositories,
-        ..._useCases,
+        ..._services,
         ..._blocs,
       ];
 
@@ -151,34 +148,26 @@ class AppDependencies {
         ),
       ];
 
-  List<Provider> get _useCases => [
-        Provider<LoginUseCase>(
-            create: (context) => LoginUseCase(
-                  context.read(),
-                  context.read(),
-                )),
-        Provider<LogoutUseCase>(
-            create: (context) => LogoutUseCase(
-                  context.read(),
-                  context.read(),
-                )),
-        Provider<CheckAccessTokenExpirationUseCase>(
-          create: (context) => CheckAccessTokenExpirationUseCase(),
+  List<Provider> get _services => [
+        Provider<UserAccountService>(
+          create: (context) => UserAccountService(
+            context.read(),
+            context.read(),
+          ),
         ),
-        Provider<FetchAccessTokenUseCase>(
-          create: (context) => FetchAccessTokenUseCase(context.read()),
-        ),
-        Provider<RefreshAccessTokenUseCase>(
-          create: (context) => RefreshAccessTokenUseCase(context.read()),
+        Provider<AccessTokenService>(
+          create: (context) => AccessTokenService(
+            context.read(),
+          ),
         ),
       ];
 
   List<SingleChildWidget> get _blocs => [
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
-            logoutUseCase: context.read(),
-            coordinatorBloc: context.read(),
-            authRepository: context.read(),
+            context.read(),
+            context.read(),
+            context.read(),
           ),
         ),
       ];

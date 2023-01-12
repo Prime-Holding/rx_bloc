@@ -5,7 +5,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
-import '../../base/common_use_cases/login_use_case.dart';
+import '../../base/common_services/user_account_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/utils/validators/validators.dart';
@@ -47,16 +47,16 @@ abstract class LoginBlocStates {
 
 @RxBloc()
 class LoginBloc extends $LoginBloc {
-  LoginBloc({
-    required LoginUseCase loginUseCase,
-    required CoordinatorBlocType coordinatorBloc,
+  LoginBloc(
+    UserAccountService userAccountService,
+    CoordinatorBlocType coordinatorBloc, {
     LoginFieldValidators fieldValidators = const LoginFieldValidators(),
-  })  : _loginUseCase = loginUseCase,
+  })  : _userAccountService = userAccountService,
         _fieldValidators = fieldValidators,
         _coordinatorBloc = coordinatorBloc;
 
   final LoginFieldValidators _fieldValidators;
-  final LoginUseCase _loginUseCase;
+  final UserAccountService _userAccountService;
   final CoordinatorBlocType _coordinatorBloc;
 
   @override
@@ -74,7 +74,7 @@ class LoginBloc extends $LoginBloc {
   @override
   Stream<bool> _mapToLoggedInState() => _$loginEvent
       .validateCredentials(this)
-      .loginUser(_loginUseCase)
+      .loginUser(_userAccountService)
       .setResultStateHandler(this)
       .emitLoggedInToCoordinator(_coordinatorBloc)
       .startWith(false)
