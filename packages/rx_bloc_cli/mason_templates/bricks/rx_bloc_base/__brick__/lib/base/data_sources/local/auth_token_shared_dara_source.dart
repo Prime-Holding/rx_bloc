@@ -31,7 +31,10 @@ class AuthTokenSharedDataSource implements AuthTokenDataSource {
   Future<bool> saveRefreshToken(String newRefreshToken) =>
       _storage.setString(DataSourceKeys.refreshToken, newRefreshToken);
 
-  /// Delete all saved data
+  /// Delete only the auth-related data keys
   @override
-  Future<bool> clear() async => _storage.clear();
+  Future<void> clear() async => Future.wait([
+        _storage.remove(DataSourceKeys.token),
+        _storage.remove(DataSourceKeys.refreshToken),
+      ]);
 }

@@ -31,7 +31,10 @@ class AuthTokenSecureDataSource implements AuthTokenDataSource {
   Future<void> saveRefreshToken(String newRefreshToken) =>
       _storage.write(key: DataSourceKeys.refreshToken, value: newRefreshToken);
 
-  /// Delete all saved data
+  /// Delete only the auth-related data keys
   @override
-  Future<void> clear() => _storage.deleteAll();
+  Future<void> clear() => Future.wait([
+        _storage.delete(key: DataSourceKeys.token),
+        _storage.delete(key: DataSourceKeys.refreshToken),
+      ]);
 }
