@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../app/config/app_constants.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
@@ -34,7 +36,7 @@ class UserAccountService {
         await _pushSubscriptionRepository.subscribe(pushToken);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
 
     return true;
@@ -49,7 +51,7 @@ class UserAccountService {
         await _pushSubscriptionRepository.unsubscribe(pushToken);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
 
     // Perform user logout
