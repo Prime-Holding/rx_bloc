@@ -15,7 +15,7 @@ abstract class AuthTokenDataSource {
   /// Persist new refresh token
   Future<void> saveRefreshToken(String newRefreshToken);
 
-  /// Delete all saved data
+  /// Delete all auth token data
   Future<void> clear();
 }
 

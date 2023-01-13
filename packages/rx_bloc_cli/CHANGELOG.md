@@ -6,6 +6,7 @@
 * Remove the unused 'http-client' parameter
 * Rebase the authentication interceptor on `QueuedInterceptor` and extract auxiliary use cases
 * Convert use cases to services
+* Update the local auth token data sources to not clear ALL preference data
 
 ## [1.3.0] - November 29, 2022
 * Add utility script to exclude files from LCOV coverage reports
