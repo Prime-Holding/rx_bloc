@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
 import '../../models/auth_token_model.dart';
+import '../../models/request_models/authenticate_user_request_model.dart';
 
 part 'refresh_token_data_source.g.dart';
 
@@ -15,6 +16,6 @@ abstract class RefreshTokenDataSource {
   factory RefreshTokenDataSource(Dio dio, {String baseUrl}) =
       _RefreshTokenDataSource;
 
-  @POST('/api/refresh')
-  Future<AuthTokenModel> refresh(@Body() String refreshToken);
+  @POST('/api/authenticate')
+  Future<AuthTokenModel> refresh(@Body() AuthUserRequestModel refreshToken);
 }

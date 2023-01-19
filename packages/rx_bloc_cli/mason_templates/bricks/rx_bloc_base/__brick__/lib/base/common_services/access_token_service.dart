@@ -14,13 +14,12 @@ class AccessTokenService {
 
   /// Fetches a new access token from the remote API, stores it locally
   /// and then returns it.
-  Future<String?> refreshAccessToken() async {
+  Future<String> refreshAccessToken() async {
     final newToken = await _authRepository.fetchNewToken();
-    if (newToken != null) {
-      await _authRepository.saveToken(newToken);
-    }
+    await _authRepository.saveToken(newToken.token);
+    await _authRepository.saveRefreshToken(newToken.refreshToken);
 
-    return newToken;
+    return newToken.token;
   }
 
   /// Returns `true` if the given access token is expired.
