@@ -89,6 +89,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               tooltip: context.l10n.featureCounter.increment,
               onPressed: isLoading ? null : bloc.events.increment,
               loading: isLoading && tag == CounterBloc.tagIncrement,
+              heroTag: 'increment',
             ),
             const SizedBox(width: 16),
             ActionButton(
@@ -96,6 +97,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               tooltip: context.l10n.featureCounter.decrement,
               onPressed: isLoading ? null : bloc.events.decrement,
               loading: isLoading && tag == CounterBloc.tagDecrement,
+              heroTag: 'decrement',
             ),
           ],
         ),
