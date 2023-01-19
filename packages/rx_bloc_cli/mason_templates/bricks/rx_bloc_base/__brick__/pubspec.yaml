@@ -23,6 +23,7 @@ dependencies:
   flutter_secure_storage: ^6.0.6
   golden_toolkit: ^0.13.0
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
+  jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.7.0
   jwt_decoder: ^2.0.1
   provider: ^6.0.3

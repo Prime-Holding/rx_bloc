@@ -46,15 +46,16 @@ class AuthRepository {
       _errorMapper.execute(() => _authTokenDataSource.clear());
 
   /// Fetch a new access token using the current refresh token
-  Future<String?> fetchNewToken() => _errorMapper.execute(() async {
+  Future<AuthTokenModel> fetchNewToken() => _errorMapper.execute(() async {
         final refreshToken = await getRefreshToken();
         if (refreshToken == null) {
           throw StateError('Refresh token not found');
         }
 
-        // TODO: Try to fetch new access token using refreshToken
-        // https://flutteragency.com/refresh-token-using-interceptor-in-dio/
-        return (await _refreshTokenDataSource.refresh(refreshToken)).token;
+        // Fetch a new access token using refreshToken
+        return _refreshTokenDataSource.refresh(
+          AuthUserRequestModel(refreshToken: refreshToken),
+        );
       });
 
   Future<AuthTokenModel> authenticate(

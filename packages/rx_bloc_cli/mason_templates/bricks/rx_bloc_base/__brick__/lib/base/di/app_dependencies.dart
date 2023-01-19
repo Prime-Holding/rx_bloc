@@ -121,6 +121,7 @@ class AppDependencies {
         Provider<RefreshTokenDataSource>(
           create: (context) => RefreshTokenDataSource(
             context.read<PlainHttpClient>(),
+            baseUrl: config.baseUrl,
           ),
         ),
         Provider<PushNotificationsDataSource>(
