@@ -28,13 +28,20 @@ Future<void> setupAndRunApp(
 }
 
 /// Configures application tools and packages before running the app. Services
-/// such as Firebase or background handlers can be defined here.
+/// such as Firebase or background handlers can be configured here.
 Future configureApp(EnvironmentConfig envConfig) async {
-  {{#uses_firebase}}
-  // TODO: Add Firebase credentials for used environments
-  // That is for development, staging and production for Android, iOS and Web
-  await safeRun(() => Firebase.initializeApp());{{/uses_firebase}}{{#push_notifications}}
-  await _setupNotifications();{{/push_notifications}}
+  // TODO: Use flutterfire_cli to create the firebase_options.dart file
+  //  containing the actual configuration values.
+  //  https://firebase.google.com/docs/flutter/setup
+  await safeRun(() => Firebase.initializeApp(
+        options: const FirebaseOptions(
+          apiKey: 'apiKey',
+          appId: 'appId',
+          messagingSenderId: 'messagingSenderId',
+          projectId: 'projectId',
+        ),
+      ));
+  await _setupNotifications();
 
   // TODO: Add your own code that is going to be run before the actual app
 }

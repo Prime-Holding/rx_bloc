@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: LoginDependencies.of(context).providers,
+        providers: LoginDependencies.from(context).providers,
         child: this,
       );
 

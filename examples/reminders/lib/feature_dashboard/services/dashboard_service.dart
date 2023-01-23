@@ -25,7 +25,7 @@ class DashboardService {
     return list;
   }
 
-  Future<DashboardModel> getDashboardModel() async {
+  Future<DashboardCountersModel> getDashboardModel() async {
     final data = await Future.wait([
       _remindersService.getCompleteCount(),
       _remindersService.getIncompleteCount(),
@@ -34,14 +34,14 @@ class DashboardService {
     final completeCount = data[0];
     final incompleteCount = data[1];
 
-    return DashboardModel(
+    return DashboardCountersModel(
       incompleteCount: incompleteCount,
       completeCount: completeCount,
     );
   }
 
-  Future<ManageOperation> getManageOperation(Identifiable model,
-      List<ReminderModel> _) async {
+  Future<ManageOperation> getManageOperation(
+      Identifiable model, List<ReminderModel> _) async {
     final dateRange = _getDateRange();
     final reminder = model as ReminderModel;
     if ((reminder.dueDate.isAfter(dateRange.from) &&
@@ -61,90 +61,54 @@ class DashboardService {
         from: DateTime.now().subtract(const Duration(days: 10)),
       );
 
-  DashboardModel getDashboardModelFromManagedList({
-    required DashboardModel dashboard,
-    required ManagedList<ReminderModel> managedList,
+  DashboardCountersModel getCountersModelFromCounterOperation({
+    required DashboardCountersModel dashboardCounters,
     required CounterOperation counterOperation,
-    ReminderModel? oldReminder,
   }) {
-    final incrementOperation = _getIncrementOperationFrom(
-      managedList: managedList,
-      oldReminder: oldReminder,
+    return dashboardCounters.copyWith(
+      completeCount: dashboardCounters
+          .recalculateCompleteWithCounterOperation(counterOperation),
+      incompleteCount: dashboardCounters
+          .recalculateIncompleteWithCounterOperation(counterOperation),
     );
-
-    return dashboard.copyWith(
-      completeCount: dashboard.recalculateCompleteWith(
-        counterOperation: counterOperation,
-        reminderModel: managedList.identifiable,
-        incrementOperation: incrementOperation,
-      ),
-      incompleteCount: dashboard.recalculateIncompleteWith(
-        counterOperation: counterOperation,
-        reminderModel: managedList.identifiable,
-        incrementOperation: incrementOperation,
-      ),
-    );
-  }
-
-  IncrementOperation? _getIncrementOperationFrom({
-    required ManagedList<ReminderModel> managedList,
-    ReminderModel? oldReminder,
-  }) {
-    final updatedIdentifiable = managedList.identifiable;
-
-    if (updatedIdentifiable.title == oldReminder?.title &&
-        updatedIdentifiable.dueDate == oldReminder?.dueDate &&
-        updatedIdentifiable.complete != oldReminder?.complete) {
-      return updatedIdentifiable.complete
-          ? IncrementOperation.decrementIncompleteIncrementComplete
-          : IncrementOperation.incrementIncompleteDecrementComplete;
-    }
-
-    return null;
   }
 }
 
-extension _DashboardModelX on DashboardModel {
-  int recalculateIncompleteWith({
-    required CounterOperation counterOperation,
-    required ReminderModel reminderModel,
-    IncrementOperation? incrementOperation,
-  }) {
+extension _DashboardModelX on DashboardCountersModel {
+  int recalculateIncompleteWithCounterOperation(
+    CounterOperation counterOperation,
+  ) {
     switch (counterOperation) {
       case CounterOperation.create:
         return incompleteCount + 1;
-      case CounterOperation.delete:
-        return reminderModel.complete ? incompleteCount : incompleteCount - 1;
-      case CounterOperation.update:
-        if (incrementOperation ==
-            IncrementOperation.incrementIncompleteDecrementComplete) {
-          return incompleteCount + 1;
-        } else if (incrementOperation ==
-            IncrementOperation.decrementIncompleteIncrementComplete) {
-          return incompleteCount - 1;
-        }
+      case CounterOperation.deleteIncomplete:
+        return incompleteCount - 1;
+      case CounterOperation.deleteComplete:
+        return incompleteCount;
+      case CounterOperation.setComplete:
+        return incompleteCount - 1;
+      case CounterOperation.unsetComplete:
+        return incompleteCount + 1;
+      case CounterOperation.none:
         return incompleteCount;
     }
   }
 
-  int recalculateCompleteWith({
-    required CounterOperation counterOperation,
-    required ReminderModel reminderModel,
-    IncrementOperation? incrementOperation,
-  }) {
+  int recalculateCompleteWithCounterOperation(
+    CounterOperation counterOperation,
+  ) {
     switch (counterOperation) {
       case CounterOperation.create:
         return completeCount;
-      case CounterOperation.delete:
-        return reminderModel.complete ? completeCount - 1 : completeCount;
-      case CounterOperation.update:
-        if (incrementOperation ==
-            IncrementOperation.decrementIncompleteIncrementComplete) {
-          return completeCount + 1;
-        } else if (incrementOperation ==
-            IncrementOperation.incrementIncompleteDecrementComplete) {
-          return completeCount - 1;
-        }
+      case CounterOperation.deleteIncomplete:
+        return completeCount;
+      case CounterOperation.deleteComplete:
+        return completeCount - 1;
+      case CounterOperation.setComplete:
+        return completeCount + 1;
+      case CounterOperation.unsetComplete:
+        return completeCount - 1;
+      case CounterOperation.none:
         return completeCount;
     }
   }

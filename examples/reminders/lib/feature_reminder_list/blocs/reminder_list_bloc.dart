@@ -9,7 +9,6 @@ import '../../base/services/reminders_service.dart';
 import '../services/reminder_list_service.dart';
 
 part 'reminder_list_bloc.rxb.g.dart';
-
 part 'reminder_list_bloc_extensions.dart';
 
 /// A contract class containing all events of the ReminderBloC.
@@ -59,29 +58,11 @@ class ReminderListBloc extends $ReminderListBloc {
     coordinatorBloc
         .mapReminderManageEventsWithLatestFrom(
           _paginatedList,
-          operationCallback: (Identifiable reminder,
-                  List<ReminderModel> list) async =>
-              ManageOperation.merge,
+          operationCallback:
+              (Identifiable reminder, List<ReminderModel> list) async =>
+                  ManageOperation.merge,
         )
-        .map((event) => event.managedList.list)
-        .cast<PaginatedList<ReminderModel>>()
-        .map(
-          (list) => list.copyWith(
-            list: list.list.sorted(
-              (a, b) => a.dueDate.compareTo(b.dueDate),
-            ),
-          ),
-        )
-        .bind(_paginatedList)
-        .addTo(_compositeSubscription);
-
-    coordinatorBloc
-        .mapReminderManageEventsWithLatestFrom(
-          _paginatedList,
-          operationCallback: reminderListService.getManageOperation,
-        )
-        .map((event) => event.managedList.list)
-        .cast<PaginatedList<ReminderModel>>()
+        .map((event) => event.list as PaginatedList<ReminderModel>)
         .map(
           (list) => list.copyWith(
             list: list.list.sorted(

@@ -16,7 +16,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: NotificationsDependencies.of(context).providers,
+        providers: NotificationsDependencies.from(context).providers,
         child: this,
       );
 

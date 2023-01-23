@@ -11,6 +11,7 @@ class ActionButton extends StatelessWidget {
     required this.onPressed,
     this.tooltip = '',
     this.loading = false,
+    this.heroTag,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +23,8 @@ class ActionButton extends StatelessWidget {
 
   /// The icon to display. The available icons are described in [Icons].
   final Icon icon;
+
+  final Object? heroTag;
 
   /// The callback that is called when the button is tapped or
   /// otherwise activated.
@@ -42,6 +45,7 @@ class ActionButton extends StatelessWidget {
           : context.designSystem.colors.activeButtonColor,
       onPressed: onPressed,
       tooltip: tooltip,
+      heroTag: heroTag,
       child: icon,
     );
   }

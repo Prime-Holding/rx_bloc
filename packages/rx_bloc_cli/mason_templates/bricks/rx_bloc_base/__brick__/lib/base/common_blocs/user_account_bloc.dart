@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../common_use_cases/logout_use_case.dart';
+import '../common_services/user_account_service.dart';
 import '../extensions/error_model_extensions.dart';
 import '../models/errors/error_model.dart';
 import '../repositories/auth_repository.dart';
@@ -31,22 +31,22 @@ abstract class UserAccountBlocStates {
 
 @RxBloc()
 class UserAccountBloc extends $UserAccountBloc {
-  UserAccountBloc({
-    required LogoutUseCase logoutUseCase,
-    required CoordinatorBlocType coordinatorBloc,
-    required AuthRepository authRepository,
-  })  : _logoutUseCase = logoutUseCase,
+  UserAccountBloc(
+    UserAccountService userAccountService,
+    CoordinatorBlocType coordinatorBloc,
+    AuthRepository authRepository,
+  )   : _userAccountService = userAccountService,
         _coordinatorBloc = coordinatorBloc,
         _authRepository = authRepository {
     _$logoutEvent
-        .logoutUser(_logoutUseCase)
+        .logoutUser(_userAccountService)
         .setResultStateHandler(this)
         .emitLoggedOutToCoordinator(_coordinatorBloc)
         .listen(null)
         .addTo(_compositeSubscription);
   }
 
-  final LogoutUseCase _logoutUseCase;
+  final UserAccountService _userAccountService;
   final CoordinatorBlocType _coordinatorBloc;
   final AuthRepository _authRepository;
 

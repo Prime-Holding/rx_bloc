@@ -10,7 +10,6 @@ part of 'coordinator_bloc.dart';
 /// {@nodoc}
 abstract class CoordinatorBlocType extends RxBlocTypeBase {
   CoordinatorEvents get events;
-
   CoordinatorStates get states;
 }
 

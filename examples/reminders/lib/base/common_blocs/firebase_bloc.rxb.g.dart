@@ -34,10 +34,6 @@ abstract class $FirebaseBloc extends RxBlocBase
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<String> _errorsState = _mapToErrorsState();
 
-  /// The state of [countersUpdated] implemented in [_mapToCountersUpdatedState]
-  late final ConnectableStream<void> _countersUpdatedState =
-      _mapToCountersUpdatedState();
-
   /// The state of [currentUserData] implemented in [_mapToCurrentUserDataState]
   late final Stream<User?> _currentUserDataState = _mapToCurrentUserDataState();
 
@@ -76,9 +72,6 @@ abstract class $FirebaseBloc extends RxBlocBase
   Stream<String> get errors => _errorsState;
 
   @override
-  ConnectableStream<void> get countersUpdated => _countersUpdatedState;
-
-  @override
   Stream<User?> get currentUserData => _currentUserDataState;
 
   @override
@@ -96,8 +89,6 @@ abstract class $FirebaseBloc extends RxBlocBase
   Stream<LoadingWithTag> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
-
-  ConnectableStream<void> _mapToCountersUpdatedState();
 
   Stream<User?> _mapToCurrentUserDataState();
 

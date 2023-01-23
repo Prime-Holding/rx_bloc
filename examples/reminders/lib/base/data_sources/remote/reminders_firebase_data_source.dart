@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 import '../../models/reminder/reminder_model_firebase_request_date.dart';
@@ -10,8 +11,6 @@ import 'reminders_data_source.dart';
 class RemindersFirebaseDataSource implements RemindersDataSource {
   RemindersFirebaseDataSource() {
     _remindersReference = _fireStore.collection(_reminders);
-    _countersReference = _fireStore.collection(_counters);
-    _remindersLengthsReference = _fireStore.collection(_remindersLengths);
   }
 
   final _fireStore = FirebaseFirestore.instance;
@@ -23,11 +22,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   /// Stores the list of reminders
   late CollectionReference _remindersReference;
 
-  /// Stores the authorId and the complete and incomplete counters
-  late CollectionReference _countersReference;
-
-  /// Stores the authorId and the length of the user's collection
-  late CollectionReference _remindersLengthsReference;
   late String? _loggedInUid;
 
   Stream<User?> get currentUser => _auth.authStateChanges();
@@ -36,21 +30,11 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   QueryDocumentSnapshot? _lastFetchedRecord;
   QueryDocumentSnapshot? _lastFetchedRecordDashboard;
   static const _storage = FlutterSecureStorage();
-  static const _reminderCollectionError =
-      'The reminders length value was not fetched, try to log out and log in again';
-  static const _completeValueNotFetchedError =
-      'The complete value was not fetched, try to log out and log in again';
-  static const _incompleteValueNotFetchedError =
-      'The incomplete value was not fetched, try to log out and log in again';
 
   static const _reminders = 'reminders';
-  static const _counters = 'counters';
-  static const _remindersLengths = 'remindersLengths';
   static const _complete = 'complete';
   static const _authorId = 'authorId';
   static const _anonymous = 'anonymous';
-  static const _length = 'length';
-  static const _incomplete = 'incomplete';
   static const _dueDate = 'dueDate';
   static const _title = 'title';
   static const _loginFailed = 'The login failed';
@@ -96,45 +80,26 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
         complete: complete,
         authorId: userId);
 
-    var remindersCollectionLength = await _getRemindersCollectionLength();
-    remindersCollectionLength++;
-
-    await _updateRemindersCollectionLengthCounter(remindersCollectionLength);
-
     return reminder;
   }
 
   @override
   Future<void> delete(String id) async {
     await _remindersReference.doc(id).delete();
-
-    var remindersCollectionLength = await _getRemindersCollectionLength();
-    remindersCollectionLength--;
-
-    await _updateRemindersCollectionLengthCounter(remindersCollectionLength);
   }
 
   Future<int> _getRemindersCollectionLength() async {
     var userId = await _getAuthorIdOrNull();
-    Query query = _remindersLengthsReference;
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
-    final remindersLengthSnapshot = await querySnapshot.get();
-    int remindersLength;
-    if (remindersLengthSnapshot.docs.isNotEmpty) {
-      remindersLength = remindersLengthSnapshot.docs.first[_length];
-    } else {
-      throw Exception(_reminderCollectionError);
-    }
-    return remindersLength;
+    Query query = getFirebaseFilteredQuery(null, userId);
+    final snapshot = await query.count().get();
+    return snapshot.count;
   }
 
   @override
   Future<ReminderListResponse> getAllDashboard(
       ReminderModelRequest? request) async {
     // Get the userId from local storage
-    var userId = await _getAuthorIdOrNull();
+    final userId = await _getAuthorIdOrNull();
 
     //  Generate a query
     var querySnapshot = getFirebaseFilteredQuery(request, userId);
@@ -192,37 +157,20 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async {
-    var userId = await _getAuthorIdOrNull();
-    Query query = _countersReference;
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
-    final countersSnapshot = await querySnapshot.get();
-    int counterCompleteLength;
-    if (countersSnapshot.docs.isNotEmpty) {
-      counterCompleteLength = countersSnapshot.docs.first[_complete];
-    } else {
-      throw Exception(_completeValueNotFetchedError);
-    }
-    return counterCompleteLength;
+    final userId = await _getAuthorIdOrNull();
+    final request = ReminderModelRequest(complete: true);
+    var query = getFirebaseFilteredQuery(request, userId);
+    final snapshot = await query.count().get();
+    return snapshot.count;
   }
 
   @override
   Future<int> getIncompleteCount() async {
-    var userId = await _getAuthorIdOrNull();
-    Query query = _countersReference;
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
-    final countersSnapshot = await querySnapshot.get();
-
-    int counterIncompleteLength;
-    if (countersSnapshot.docs.isNotEmpty) {
-      counterIncompleteLength = countersSnapshot.docs.first[_incomplete];
-    } else {
-      throw Exception(_incompleteValueNotFetchedError);
-    }
-    return counterIncompleteLength;
+    final userId = await _getAuthorIdOrNull();
+    final request = ReminderModelRequest(complete: false);
+    var query = getFirebaseFilteredQuery(request, userId);
+    final snapshot = await query.count().get();
+    return snapshot.count;
   }
 
   Future<bool> _loginWithFacebook() async {
@@ -285,96 +233,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return ReminderPair(updated: updatedModel, old: oldReminderModel);
   }
 
-  Future<void> _createUserCountersCollection() async {
-    // If user counter collection exits update it,
-    // otherwise add a new one
-    Query query = _countersReference;
-    var user = await _getAuthorIdOrNull();
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(user, querySnapshot, query);
-    final countersSnapshot = await querySnapshot.get();
-    var length = countersSnapshot.docs.length;
-    if (length > 0) {
-      // A logged in user reminders collection elements have been deleted
-      // and the counters document should be updated
-      var counterId = countersSnapshot.docs.first.id;
-      await _countersReference.doc(counterId).update({
-        _authorId: _loggedInUid,
-        _incomplete: 10,
-        _complete: 0,
-      });
-    } else {
-      await _countersReference.add({
-        _authorId: _loggedInUid,
-        _incomplete: 10,
-        _complete: 0,
-      });
-    }
-  }
-
-  Future<void> _createUserRemindersCollectionCounter() async {
-    Query query = _remindersLengthsReference;
-    var user = await _getAuthorIdOrNull();
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(user, querySnapshot, query);
-    final remindersLengthsSnapshot = await querySnapshot.get();
-    var length = remindersLengthsSnapshot.docs.length;
-    if (length > 0) {
-      var remindersLengthId = remindersLengthsSnapshot.docs.first.id;
-      await _remindersLengthsReference.doc(remindersLengthId).update({
-        _authorId: _loggedInUid,
-        _length: 10,
-      });
-    } else {
-      await _remindersLengthsReference.add({
-        _authorId: _loggedInUid,
-        _length: 10,
-      });
-    }
-  }
-
-  Future<void> _updateIncompleteCounter(int incomplete) async {
-    var userId = await _getAuthorIdOrNull();
-    Query query = _countersReference;
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
-    final countersSnapshot = await querySnapshot.get();
-    var counterId = countersSnapshot.docs.first.id;
-    await _countersReference.doc(counterId).update({
-      _incomplete: incomplete,
-    });
-  }
-
-  Future<void> _updateCompleteCounter(int complete) async {
-    var userId = await _getAuthorIdOrNull();
-    Query query = _countersReference;
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
-    final countersSnapshot = await querySnapshot.get();
-    var counterId = countersSnapshot.docs.first.id;
-    await _countersReference.doc(counterId).update({
-      _complete: complete,
-    });
-  }
-
-  Future<void> _updateRemindersCollectionLengthCounter(
-      int collectionCount) async {
-    var userId = await _getAuthorIdOrNull();
-    Query query = _remindersLengthsReference;
-    Query<Object?>? querySnapshot;
-    querySnapshot =
-        _generateQuerySnapshotForLoggedInUser(userId, querySnapshot, query);
-    final lengthSnapshot = await querySnapshot.get();
-    var lengthId = lengthSnapshot.docs.first.id;
-    await _remindersLengthsReference.doc(lengthId).update({
-      _length: collectionCount,
-    });
-  }
-
   Query getFirebaseFilteredQuery(
       ReminderModelRequest? request, String? userId) {
     Query query = _remindersReference;
@@ -413,14 +271,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
       query = query.orderBy(_dueDate, descending: false);
     }
     return query;
-  }
-
-  Future<void> updateCountersInDataSource({
-    required int completeCount,
-    required int incompleteCount,
-  }) async {
-    await _updateCompleteCounter(completeCount);
-    await _updateIncompleteCounter(incompleteCount);
   }
 
   Future<bool> logIn(bool anonymous) async {
@@ -476,9 +326,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     for (var reminder in reminders) {
       await _remindersReference.add(reminder.toJson());
     }
-
-    await _createUserCountersCollection();
-    await _createUserRemindersCollectionCounter();
   }
 }
 

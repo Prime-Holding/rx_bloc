@@ -13,9 +13,7 @@ import '../ui_components/reminder_list_view.dart';
 import 'add_reminder_dialog.dart';
 
 class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
-  const ReminderListPage({
-    Key? key,
-  }) : super(key: key);
+  const ReminderListPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
@@ -77,7 +75,7 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
         listener: (context, errorMessage) =>
             ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage ),
+            content: Text(errorMessage),
             behavior: SnackBarBehavior.floating,
           ),
         ),

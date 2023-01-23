@@ -114,7 +114,6 @@ class AppDependencies {
         RxBlocProvider<FirebaseBlocType>(
           create: (context) => FirebaseBloc(
             context.read(),
-            context.read(),
           ),
           lazy: false,
         ),

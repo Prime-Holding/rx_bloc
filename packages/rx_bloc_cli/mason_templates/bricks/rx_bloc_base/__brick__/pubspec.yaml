@@ -4,7 +4,7 @@ homepage: https://{{organization_name}}.{{domain_name}}
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   auto_route: ^5.0.1
@@ -16,14 +16,16 @@ dependencies:
   firebase_messaging: ^14.1.1{{/push_notifications}}
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^12.0.2
+  flutter_local_notifications: ^13.0.0
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^5.0.1
-  flutter_secure_storage: ^6.0.6
-  golden_toolkit: ^0.13.0
+  flutter_secure_storage: ^7.0.1
+  golden_toolkit: ^0.14.0
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
+  jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.7.0
+  jwt_decoder: ^2.0.1
   provider: ^6.0.3
   retrofit: ^3.3.0
   rx_bloc: ^3.3.1

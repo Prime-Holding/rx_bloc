@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
-import 'package:dio/dio.dart';{{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
+import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 /// Interceptors are a simple way to intercept and modify http requests globally
 /// before they are sent to the server. That allows us to configure
@@ -10,14 +10,14 @@ import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 /// Interceptors can perform a variety of implicit tasks, from authentication
 /// to logging, for every HTTP request/response that is intercepted.
 ///
-/// You should implement one or more methods from the contract.
+/// You should implement one or more methods from the interface.
 class AnalyticsInterceptor extends Interceptor {
-  AnalyticsInterceptor( {{#analytics}}this.observer{{/analytics}} );
-  {{#analytics}}
-  final FirebaseAnalyticsObserver observer;{{/analytics}}
+  AnalyticsInterceptor(this.observer);
+
+  final FirebaseAnalyticsObserver observer;
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) { {{#analytics}}
+  void onError(DioError err, ErrorInterceptorHandler handler) {
     final hasResponse = err.response != null;
     observer.analytics.logEvent(name: 'RequestError', parameters: {
       'errorType': err.type,
@@ -29,7 +29,7 @@ class AnalyticsInterceptor extends Interceptor {
       'responseStatusCode': err.response!.statusCode,
       if (hasResponse && err.response!.data != null)
       'responseData': err.response!.data,
-    }); {{/analytics}}
+    });
     super.onError(err, handler);
   }
 }

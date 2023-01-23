@@ -1,5 +1,5 @@
-class DashboardModel {
-  DashboardModel({
+class DashboardCountersModel {
+  DashboardCountersModel({
     required this.incompleteCount,
     required this.completeCount,
   });
@@ -7,11 +7,11 @@ class DashboardModel {
   final int incompleteCount;
   final int completeCount;
 
-  DashboardModel copyWith({
+  DashboardCountersModel copyWith({
     int? incompleteCount,
     int? completeCount,
   }) =>
-      DashboardModel(
+      DashboardCountersModel(
         incompleteCount: incompleteCount ?? this.incompleteCount,
         completeCount: completeCount ?? this.completeCount,
       );
