@@ -94,7 +94,8 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  Widget _buildFieldEmail(BuildContext context) => RxTextFormFieldBuilder<LoginBlocType>(
+  Widget _buildFieldEmail(BuildContext context) =>
+      RxTextFormFieldBuilder<LoginBlocType>(
         state: (bloc) => bloc.states.username.translate(context),
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setUsername(value),
@@ -108,7 +109,8 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  Widget _buildFieldPassword(BuildContext context) => RxTextFormFieldBuilder<LoginBlocType>(
+  Widget _buildFieldPassword(BuildContext context) =>
+      RxTextFormFieldBuilder<LoginBlocType>(
         state: (bloc) => bloc.states.password.translate(context),
         showErrorState: (bloc) => bloc.states.showErrors,
         onChanged: (bloc, value) => bloc.events.setPassword(value),
