@@ -3,7 +3,6 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/repositories/push_notification_repository.dart';
 import '../services/notifications_service.dart';
 
 part 'notifications_bloc.rxb.g.dart';
