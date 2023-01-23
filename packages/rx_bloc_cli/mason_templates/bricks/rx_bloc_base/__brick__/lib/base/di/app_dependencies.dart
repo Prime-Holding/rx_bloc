@@ -21,11 +21,13 @@ import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/auth_data_source.dart';
+import '../data_sources/remote/count_remote_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../data_sources/remote/refresh_token_data_source.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/counter_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
 class AppDependencies {
@@ -90,8 +92,7 @@ class AppDependencies {
         ),
         Provider<ApiHttpClient>(
           create: (context) {
-            final client = ApiHttpClient()
-              ..options.baseUrl = config.baseUrl;
+            final client = ApiHttpClient()..options.baseUrl = config.baseUrl;
             return client;
           },
         ),
@@ -129,6 +130,11 @@ class AppDependencies {
             context.read<ApiHttpClient>(),
           ),
         ),
+        Provider<CountRemoteDataSource>(
+          create: (context) => CountRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
       ];
 
   List<Provider> get _repositories => [
@@ -143,6 +149,12 @@ class AppDependencies {
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
             context.read(),
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<CounterRepository>(
+          create: (context) => CounterRepository(
             context.read(),
             context.read(),
           ),

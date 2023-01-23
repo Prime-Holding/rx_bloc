@@ -23,7 +23,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: CounterDependencies.of(context).providers,
+        providers: CounterDependencies.from(context).providers,
         child: this,
       );
 
@@ -74,8 +74,8 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               style: context.designSystem.typography.counterText,
             )
           : Text(
-                snapshot.connectionState.toString(),
-                style: context.designSystem.typography.h2Med16,
+              snapshot.connectionState.toString(),
+              style: context.designSystem.typography.h2Med16,
             );
 
   Widget _buildActionButtons(BuildContext context) =>
