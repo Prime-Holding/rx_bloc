@@ -85,9 +85,11 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 ### Http client
 
-Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with APIs and support Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
+Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with remote APIs and use interceptors, global configuration, form fata, request cancellation, file downloading, timeout etc.
 
 To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class (for example: `lib/feature_counter/di/counter_dependencies.dart` ) specify which data source you are going to use in every repository.
+
+JWT-based authentication and token management is supported out of the box.
 
 <div id="designSystem"/>
 

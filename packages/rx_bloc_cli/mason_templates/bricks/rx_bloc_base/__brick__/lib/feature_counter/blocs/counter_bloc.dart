@@ -6,10 +6,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/count.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../base/repositories/counter_repository.dart';
+import '../services/counter_service.dart';
 
 part 'counter_bloc.rxb.g.dart';
-part 'counter_bloc_extensions.dart';
 
 /// A contract class containing all events.
 abstract class CounterBlocEvents {
@@ -48,10 +47,9 @@ abstract class CounterBlocStates {
 @RxBloc()
 class CounterBloc extends $CounterBloc {
   /// Bloc constructor
-  CounterBloc({required CounterRepository repository})
-      : _repository = repository;
+  CounterBloc(this._service);
 
-  final CounterRepository _repository;
+  final CounterService _service;
 
   /// Increment action
   static const tagIncrement = 'Increment';
@@ -69,9 +67,19 @@ class CounterBloc extends $CounterBloc {
   Stream<LoadingWithTag> _mapToIsLoadingState() => loadingWithTagState;
 
   @override
-  Stream<int> _mapToCountState() => countState
-      .setResultStateHandler(this)
-      .whereSuccess()
-      .map((event) => event.value)
-      .shareReplay(maxSize: 1);
+  Stream<int> _mapToCountState() => Rx.merge<Result<Count>>([
+        // On increment.
+        _$incrementEvent.switchMap(
+            (_) => _service.increment().asResultStream(tag: tagIncrement)),
+        // On decrement.
+        _$decrementEvent.switchMap(
+            (_) => _service.decrement().asResultStream(tag: tagDecrement)),
+        // Get current value
+        _$reloadEvent.startWith(null).switchMap(
+            (_) => _service.getCurrent().asResultStream(tag: tagReload)),
+      ])
+          .setResultStateHandler(this)
+          .whereSuccess()
+          .map((event) => event.value)
+          .shareReplay(maxSize: 1);
 }

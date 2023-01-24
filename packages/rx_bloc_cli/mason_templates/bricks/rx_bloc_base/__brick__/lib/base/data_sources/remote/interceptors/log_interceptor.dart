@@ -4,20 +4,21 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-LogInterceptor createDioEventLogInterceptor() => LogInterceptor(
+LogInterceptor createDioEventLogInterceptor(String clientName) =>
+    LogInterceptor(
       request: false,
       requestHeader: false,
       requestBody: false,
       responseHeader: false,
       responseBody: false,
       error: true,
-      logPrint: _logDioEvent,
+      logPrint: (object) => _logDioEvent(object, clientName),
     );
 
-void _logDioEvent(object) {
+void _logDioEvent(Object object, String clientName) {
   log(
     object.toString(),
     time: DateTime.now(),
-    name: 'HTTP',
+    name: clientName,
   );
 }

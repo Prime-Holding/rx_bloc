@@ -3,10 +3,9 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/repositories/push_notification_repository.dart';
+import '../services/notifications_service.dart';
 
 part 'notifications_bloc.rxb.g.dart';
-part 'notifications_bloc_extensions.dart';
 
 /// A contract class containing all events of the NotificationsBloC.
 abstract class NotificationsBlocEvents {
@@ -25,16 +24,24 @@ abstract class NotificationsBlocStates {
 
 @RxBloc()
 class NotificationsBloc extends $NotificationsBloc {
-  NotificationsBloc(PushNotificationRepository notificationsRepo)
-      : _notificationsRepo = notificationsRepo;
+  NotificationsBloc(this._service);
 
-  final PushNotificationRepository _notificationsRepo;
+  final NotificationService _service;
 
   @override
   Stream<bool> _mapToPermissionsAuthorizedState() => Rx.merge([
-        _$sendMessageEvent.sendMessage(_notificationsRepo),
-        _$requestNotificationPermissionsEvent.requestPermissions(
-          _notificationsRepo,
+        _$sendMessageEvent.switchMap(
+          (args) => _service
+              .sendPushMessage(
+                message: args.message,
+                title: args.title,
+                delay: args.delay,
+              )
+              .then((_) => true)
+              .asResultStream(),
+        ),
+        _$requestNotificationPermissionsEvent.switchMap(
+          (_) => _service.requestNotificationPermissions().asResultStream(),
         ),
       ]).setResultStateHandler(this).whereSuccess();
 }

@@ -1,20 +1,32 @@
 {{> licence.dart }}
 
+import 'package:jaguar_jwt/jaguar_jwt.dart';
+
+import '../config.dart';
 import '../utils/utilities.dart';
 
 class AuthToken {
   AuthToken._(
       this.token,
       this.refreshToken,
-      this.validUntil,
       );
 
   /// Generates a new auth token that's valid for one hour
-  factory AuthToken.generateNew() => AuthToken._(
-    generateRandomString(),
-    generateRandomString(),
-    DateTime.now().add(const Duration(hours: 1)),
-  );
+  factory AuthToken.generateNew() {
+    final claimSet = JwtClaim(
+      issuer: jwtIssuer,
+      audience: jwtAudiences,
+      maxAge: const Duration(hours: 1),
+    );
+
+    final authToken = issueJwtHS256(claimSet, jwtSigningKey);
+    final refreshToken = generateRandomString();
+
+    return AuthToken._(
+      authToken,
+      refreshToken,
+    );
+  }
 
   /// The value of the access token
   final String token;
@@ -22,14 +34,25 @@ class AuthToken {
   /// The value of the refresh token
   final String refreshToken;
 
-  /// The date until the access token is valid
-  final DateTime validUntil;
+  bool get isValid {
+    try {
+      // Decode the token and verify the signature
+      final decodedClaimSet = verifyJwtHS256Signature(token, jwtSigningKey);
 
-  bool get isValid => DateTime.now().compareTo(validUntil) < 0;
+      // Validate the issuer, audience and expiration
+      decodedClaimSet.validate(
+        issuer: jwtIssuer,
+        audience: jwtAudiences.first,
+      );
+    } on JwtException {
+      return false;
+    }
+
+    return true;
+  }
 
   Map<String, Object?> toJson() => {
     'token': token,
     'refreshToken': refreshToken,
-    'expires': validUntil.millisecondsSinceEpoch,
   };
 }

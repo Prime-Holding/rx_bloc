@@ -1,10 +1,16 @@
-## [1.4.0] - TBD
+## [1.5.0] - TBD
+* Replace the auto_route with go_router
+
+## [1.4.0] - January 23, 2023
 * Make the project name parameter a mandatory one
 * Rename the 'org' parameter to 'organization'
 * Rename the 'include-analytics' parameter to 'enable-analytics'
 * Turn the 'enable-analytics' parameter off by default
-* Remove the unused 'http client' parameter
-* Replace the auto_route with go_router
+* Remove the unused 'http-client' parameter
+* Rebase the authentication interceptor on `QueuedInterceptor` and extract auxiliary use cases
+* Convert use cases to services
+* Update the local auth token data sources to not clear ALL preference data
+* Updated to Dart 2.18 and newer dependencies
 
 ## [1.3.0] - November 29, 2022
 * Add utility script to exclude files from LCOV coverage reports

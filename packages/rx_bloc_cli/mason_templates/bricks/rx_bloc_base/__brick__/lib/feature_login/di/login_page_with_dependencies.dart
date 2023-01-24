@@ -6,6 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../blocs/login_bloc.dart';
 import '../views/login_page.dart';
+import '../services/login_validator_service.dart';
+
+class LoginDependencies {
+  LoginDependencies._(this.context);
 
 class LoginPageWithDependencies extends StatelessWidget {
   const LoginPageWithDependencies({Key? key}) : super(key: key);
@@ -13,16 +17,24 @@ class LoginPageWithDependencies extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
+        ..._services,
           ..._blocs,
         ],
       child: const LoginPage(),
     );
 
+  List<SingleChildWidget> get _services => [
+        Provider<LoginValidatorService>(
+          create: (context) => const LoginValidatorService(),
+        ),
+      ];
+
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<LoginBlocType>(
           create: (context) => LoginBloc(
-            loginUseCase: context.read(),
-            coordinatorBloc: context.read(),
+            context.read(),
+            context.read(),
+            context.read(),
           ),
         ),
       ];

@@ -15,5 +15,7 @@ class SharedPreferencesInstance {
   Future<bool> setString(String key, String value) async =>
       (await _instance).setString(key, value);
 
+  Future<bool> remove(String key) async => (await _instance).remove(key);
+
   Future<bool> clear() async => (await _instance).clear();
 }

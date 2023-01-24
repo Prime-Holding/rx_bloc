@@ -9,6 +9,7 @@ import 'package:{{project_name}}/base/models/count.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/base/repositories/counter_repository.dart';
 import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
+import 'package:{{project_name}}/feature_counter/services/counter_service.dart';
 
 import 'counter_bloc_test.mocks.dart';
 
@@ -25,7 +26,7 @@ void main() {
       'Initial state',
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        return CounterBloc(repository: repo);
+        return CounterBloc(CounterService(repo));
       },
       state: (bloc) => bloc.states.count,
       expect: [0],
@@ -36,7 +37,7 @@ void main() {
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
-        return CounterBloc(repository: repo);
+        return CounterBloc(CounterService(repo));
       },
       act: (bloc) async => bloc.events.increment(),
       state: (bloc) => bloc.states.count,
@@ -48,7 +49,7 @@ void main() {
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.decrement()).thenAnswer((_) async => Count(-1));
-        return CounterBloc(repository: repo);
+        return CounterBloc(CounterService(repo));
       },
       act: (bloc) async => bloc.events.decrement(),
       state: (bloc) => bloc.states.count,
@@ -61,7 +62,7 @@ void main() {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
         when(repo.decrement()).thenAnswer((_) async => Count(0));
-        return CounterBloc(repository: repo);
+        return CounterBloc(CounterService(repo));
       },
       act: (bloc) async {
         bloc.events.increment();
@@ -78,7 +79,7 @@ void main() {
         when(repo.increment()).thenAnswer(
           (_) async => Future.error(NoConnectionErrorModel()),
         );
-        return CounterBloc(repository: repo);
+        return CounterBloc(CounterService(repo));
       },
       act: (bloc) async {
         bloc.states.count.listen((event) {});
@@ -93,7 +94,7 @@ void main() {
       build: () async {
         when(repo.getCurrent()).thenAnswer((_) async => Count(0));
         when(repo.increment()).thenAnswer((_) async => Count(1));
-        return CounterBloc(repository: repo);
+        return CounterBloc(CounterService(repo));
       },
       act: (bloc) async {
         bloc.states.count.listen((event) {});

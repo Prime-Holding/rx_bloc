@@ -1,8 +1,6 @@
 {{> licence.dart }}
 
-import 'dart:io';
-
-import 'package:dio/dio.dart';{{#analytics}}
+{{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -19,21 +17,22 @@ import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_services/permissions_service.dart';
-import '../common_use_cases/fetch_access_token_use_case.dart';
-import '../common_use_cases/login_use_case.dart';
-import '../common_use_cases/logout_use_case.dart';
+import '../common_services/access_token_service.dart';
+import '../common_services/user_account_service.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
 import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/remote/auth_data_source.dart';{{#analytics}}
-import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
-import '../data_sources/remote/interceptors/auth_interceptor.dart';
-import '../data_sources/remote/interceptors/log_interceptor.dart';
+import '../data_sources/remote/auth_data_source.dart';
+import '../data_sources/remote/count_remote_data_source.dart';
+import '../data_sources/remote/http_clients/api_http_client.dart';
+import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/permissions_remote_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
+import '../data_sources/remote/refresh_token_data_source.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/permissions_repository.dart';
+import '../repositories/counter_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
@@ -61,7 +60,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ..._services,
         ..._useCases,
         ..._blocs,
-        ..._interceptors,
       ],
       child: child,
     );
@@ -93,13 +91,15 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _httpClients => [
-        Provider<Dio>(
+        Provider<PlainHttpClient>(
           create: (context) {
-            final dio = Dio()
-              ..options.baseUrl = Platform.isIOS
-                  ? config.iosSimulatorBaseApiUrl
-                  : config.androidEmulatorBaseApiUrl;
-            return dio;
+            return PlainHttpClient();
+          },
+        ),
+        Provider<ApiHttpClient>(
+          create: (context) {
+            final client = ApiHttpClient()..options.baseUrl = config.baseUrl;
+            return client;
           },
         ),
       ];
@@ -114,20 +114,31 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
-  /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
+        // Use different data source depending on the platform.
         Provider<AuthTokenDataSource>(
             create: (context) => kIsWeb
                 ? AuthTokenSharedDataSource(context.read())
                 : AuthTokenSecureDataSource(context.read())),
         Provider<AuthDataSource>(
           create: (context) => AuthDataSource(
-            context.read(),
+            context.read<ApiHttpClient>(),
+          ),
+        ),
+        Provider<RefreshTokenDataSource>(
+          create: (context) => RefreshTokenDataSource(
+            context.read<PlainHttpClient>(),
+            baseUrl: config.baseUrl,
           ),
         ),
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(
-            context.read(),
+            context.read<ApiHttpClient>(),
+          ),
+        ),
+        Provider<CountRemoteDataSource>(
+          create: (context) => CountRemoteDataSource(
+            context.read<ApiHttpClient>(),
           ),
         ),
         Provider<PermissionsRemoteDataSource>(
@@ -143,11 +154,18 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
             context.read(),
+            context.read(),
           ),
         ),
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
             context.read(),
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<CounterRepository>(
+          create: (context) => CounterRepository(
             context.read(),
             context.read(),
           ),
@@ -161,6 +179,22 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _services => [
+        Provider<UserAccountService>(
+          create: (context) => UserAccountService(
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<AccessTokenService>(
+          create: (context) => AccessTokenService(
+            context.read(),
+          ),
+        Provider<PermissionsRepository>(
+          create: (context) => PermissionsRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),
         Provider<PermissionsService>(
           create: (context) => PermissionsService(
             context.read(),
@@ -169,19 +203,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _useCases => [
-        Provider<LoginUseCase>(
-            create: (context) => LoginUseCase(
-                  context.read(),
-                  context.read(),
-                )),
-        Provider<LogoutUseCase>(
-            create: (context) => LogoutUseCase(
-                  context.read(),
-                  context.read(),
-                )),
-        Provider<FetchAccessTokenUseCase>(
-          create: (context) => FetchAccessTokenUseCase(context.read()),
-        ),
         Provider<CheckPermissionRouteUseCase>(
           create: (context) => CheckPermissionRouteUseCase(
             context.read(),
@@ -192,26 +213,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   List<SingleChildWidget> get _blocs => [
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
-            logoutUseCase: context.read(),
-            coordinatorBloc: context.read(),
-            authRepository: context.read(),
-          ),
-        ),
-      ];
-
-  List<Provider> get _interceptors => [
-        Provider<AuthInterceptor>(
-          create: (context) => AuthInterceptor(
             context.read(),
             context.read(),
-            context.read,
+            context.read(),
           ),
-        ),{{#analytics}}
-        Provider<AnalyticsInterceptor>(
-          create: (context) => AnalyticsInterceptor(context.read()),
-        ),{{/analytics}}
-        Provider<LogInterceptor>(
-          create: (context) => createDioEventLogInterceptor(),
         ),
       ];
 }

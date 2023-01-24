@@ -1,6 +1,5 @@
 {{> licence.dart }}
-
-import 'package:dio/dio.dart';{{#analytics}}
+{{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
@@ -10,6 +9,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
+import '../data_sources/remote/http_clients/api_http_client.dart';
+import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../../lib_navigation/blocs/navigation_bloc.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
@@ -54,7 +55,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   @override
   void initState() { {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
-    _addInterceptors();
+    _configureInterceptors();
 
     goRouter = AppRouter(context).router;
 
@@ -80,12 +81,19 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         .listen((message) => onMessageOpenedFromBackground(context, message));
   }{{/push_notifications}}
 
-  void _addInterceptors() {
-    context.read<Dio>().interceptors.addAll([
-      context.read<AuthInterceptor>(),{{#analytics}}
-      context.read<AnalyticsInterceptor>(),{{/analytics}}
-      context.read<LogInterceptor>(),
-    ]);
+  void _configureInterceptors() {
+    context.read<PlainHttpClient>().configureInterceptors({{#analytics}}
+          AnalyticsInterceptor(context.read()),{{/analytics}}
+    );
+
+    context.read<ApiHttpClient>().configureInterceptors(
+          AuthInterceptor(
+            context.read(),
+            context.read(),
+            context.read(),
+          ),{{#analytics}}
+          AnalyticsInterceptor(context.read()),{{/analytics}}
+        );
   }
 
   @override

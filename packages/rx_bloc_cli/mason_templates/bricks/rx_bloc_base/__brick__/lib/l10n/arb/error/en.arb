@@ -9,5 +9,6 @@
   "unknown": "Oops, something went wrong. Please try again.",
   "requiredField": "{fieldName} should not be empty",
   "invalidEmail": "Please enter a valid email",
-  "passwordLength": "Password should be at least 6 characters long"
+  "passwordLength": "Password should be at least 6 characters long",
+  "wrongEmailOrPassword": "Wrong email or password"
 }
