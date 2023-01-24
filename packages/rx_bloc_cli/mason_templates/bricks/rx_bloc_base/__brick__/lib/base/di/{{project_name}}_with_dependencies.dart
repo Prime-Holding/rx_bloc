@@ -10,14 +10,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../../lib_navigation/blocs/navigation_bloc.dart';
 import '../../lib_navigation/use_cases/check_permission_route_use_case.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../common_services/permissions_service.dart';
 import '../common_services/access_token_service.dart';
+import '../common_services/permissions_service.dart';
 import '../common_services/user_account_service.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/local/auth_token_secure_data_source.dart';
@@ -31,8 +30,9 @@ import '../data_sources/remote/permissions_remote_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../data_sources/remote/refresh_token_data_source.dart';
 import '../repositories/auth_repository.dart';
-import '../repositories/permissions_repository.dart';
 import '../repositories/counter_repository.dart';
+import '../repositories/permissions_repository.dart';
+import '../repositories/permissions_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
@@ -143,7 +143,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
         Provider<PermissionsRemoteDataSource>(
           create: (context) => PermissionsRemoteDataSource(
-            context.read(),
+            context.read<ApiHttpClient>(),
           ),
         ),
       ];
@@ -187,11 +187,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
         Provider<AccessTokenService>(
           create: (context) => AccessTokenService(
-            context.read(),
-          ),
-        Provider<PermissionsRepository>(
-          create: (context) => PermissionsRepository(
-            context.read(),
             context.read(),
           ),
         ),

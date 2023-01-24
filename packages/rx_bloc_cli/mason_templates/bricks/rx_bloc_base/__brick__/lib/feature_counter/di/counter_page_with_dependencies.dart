@@ -5,11 +5,8 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../blocs/counter_bloc.dart';
-import '../views/counter_page.dart';
 import '../services/counter_service.dart';
-
-class CounterDependencies {
-  CounterDependencies._(this.context);
+import '../views/counter_page.dart';
 
 class CounterPageWithDependencies extends StatelessWidget {
   const CounterPageWithDependencies({Key? key}) : super(key: key);
