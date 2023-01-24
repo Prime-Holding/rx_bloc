@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
-import '../../base/routers/router.dart';
 import '../ui_components/login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -26,9 +25,7 @@ class LoginPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
-                  child: LoginForm(
-                    onLoginSuccess: () => const CounterRoute().go(context),
-                  ),
+                  child: const LoginForm(),
                 ),
               ),
             ],

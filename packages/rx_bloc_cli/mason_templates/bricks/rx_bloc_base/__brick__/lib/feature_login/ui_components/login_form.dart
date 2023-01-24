@@ -5,6 +5,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_error_model_widget.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
 import '../../base/extensions/error_model_translations.dart';
@@ -14,12 +15,10 @@ import '../blocs/login_bloc.dart';
 class LoginForm extends StatefulWidget {
   const LoginForm({
     this.title = 'Enter your login credentials',
-    this.onLoginSuccess,
     Key? key,
   }) : super(key: key);
 
   final String title;
-  final Function? onLoginSuccess;
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -71,13 +70,9 @@ class _LoginFormState extends State<LoginForm> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: _buildLogInButton(),
                 ),
-                RxBlocListener<LoginBlocType, ErrorModel>(
-                  state: (bloc) => bloc.states.errors,
-                  listener: _onError,
-                ),
-                RxBlocListener<LoginBlocType, bool>(
-                  state: (bloc) => bloc.states.loggedIn,
-                  listener: _onLogout,
+                AppErrorModelWidget<LoginBlocType>(
+                  errorState: (bloc) => bloc.states.errors,
+                  isListeningForNavigationErrors: false,
                 ),
               ],
             ),
@@ -136,9 +131,5 @@ class _LoginFormState extends State<LoginForm> {
         behavior: SnackBarBehavior.floating,
       ),
     );
-  }
-
-  void _onLogout(BuildContext _, bool success) {
-    if (success) widget.onLoginSuccess?.call();
   }
 }

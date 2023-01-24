@@ -33,7 +33,7 @@ abstract class LoginBlocStates {
   Stream<String> get password;
 
   /// State indicating whether the user is logged in successfully
-  Stream<bool> get loggedIn;
+  ConnectableStream<bool> get loggedIn;
 
   /// The state indicating whether we show errors to the user
   Stream<bool> get showErrors;
@@ -53,7 +53,9 @@ class LoginBloc extends $LoginBloc {
     LoginFieldValidators fieldValidators = const LoginFieldValidators(),
   })  : _loginUseCase = loginUseCase,
         _fieldValidators = fieldValidators,
-        _coordinatorBloc = coordinatorBloc;
+        _coordinatorBloc = coordinatorBloc {
+    loggedIn.connect().addTo(_compositeSubscription);
+  }
 
   final LoginFieldValidators _fieldValidators;
   final LoginUseCase _loginUseCase;
@@ -72,13 +74,13 @@ class LoginBloc extends $LoginBloc {
       ]).startWith('').shareReplay(maxSize: 1);
 
   @override
-  Stream<bool> _mapToLoggedInState() => _$loginEvent
+  ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
       .validateCredentials(this)
       .loginUser(_loginUseCase)
       .setResultStateHandler(this)
       .emitLoggedInToCoordinator(_coordinatorBloc)
       .startWith(false)
-      .share();
+      .publish();
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

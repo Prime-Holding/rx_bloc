@@ -12,10 +12,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../lib_navigation/blocs/navigation_bloc.dart';
+import '../../lib_navigation/use_cases/check_permission_route_use_case.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
+import '../common_services/permissions_service.dart';
 import '../common_use_cases/fetch_access_token_use_case.dart';
 import '../common_use_cases/login_use_case.dart';
 import '../common_use_cases/logout_use_case.dart';
@@ -27,26 +30,26 @@ import '../data_sources/remote/auth_data_source.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../data_sources/remote/interceptors/log_interceptor.dart';
+import '../data_sources/remote/permissions_remote_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/permissions_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
-class AppDependencies {
-  AppDependencies._(this.context, this.config);
+class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
+  const {{project_name.pascalCase()}}WithDependencies({
+      required this.config,
+      required this.child,
+      Key? key,
+    }) : super(key: key);
 
-  factory AppDependencies.of(
-          BuildContext context, EnvironmentConfig envConfig) =>
-      _instance != null
-          ? _instance!
-          : _instance = AppDependencies._(context, envConfig);
-
-  static AppDependencies? _instance;
-
-  final BuildContext context;
   final EnvironmentConfig config;
+  final Widget child;
 
-  /// List of all providers used throughout the app
-  List<SingleChildWidget> get providers => [
+  @override
+  Widget build(BuildContext context) => MultiProvider(
+    /// List of all providers used throughout the app
+    providers: [
         ..._coordinator,{{#analytics}}
         ..._analytics,{{/analytics}}
         ..._environment,
@@ -55,10 +58,13 @@ class AppDependencies {
         ..._dataStorages,
         ..._dataSources,
         ..._repositories,
+        ..._services,
         ..._useCases,
         ..._blocs,
         ..._interceptors,
-      ];
+      ],
+      child: child,
+    );
 
   List<SingleChildWidget> get _coordinator => [
         RxBlocProvider<CoordinatorBlocType>(
@@ -124,6 +130,11 @@ class AppDependencies {
             context.read(),
           ),
         ),
+        Provider<PermissionsRemoteDataSource>(
+          create: (context) => PermissionsRemoteDataSource(
+            context.read(),
+          ),
+        ),
       ];
 
   List<Provider> get _repositories => [
@@ -138,6 +149,20 @@ class AppDependencies {
           create: (context) => PushNotificationRepository(
             context.read(),
             context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<PermissionsRepository>(
+          create: (context) => PermissionsRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),
+      ];
+
+  List<Provider> get _services => [
+        Provider<PermissionsService>(
+          create: (context) => PermissionsService(
             context.read(),
           ),
         ),
@@ -156,6 +181,11 @@ class AppDependencies {
                 )),
         Provider<FetchAccessTokenUseCase>(
           create: (context) => FetchAccessTokenUseCase(context.read()),
+        ),
+        Provider<CheckPermissionRouteUseCase>(
+          create: (context) => CheckPermissionRouteUseCase(
+            context.read(),
+          ),
         ),
       ];
 
