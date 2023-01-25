@@ -1,3 +1,6 @@
+## [1.4.1] - January 25, 2023
+* Unit and golden test related fixes
+
 ## [1.4.0] - January 23, 2023
 * Make the project name parameter a mandatory one
 * Rename the 'org' parameter to 'organization'
