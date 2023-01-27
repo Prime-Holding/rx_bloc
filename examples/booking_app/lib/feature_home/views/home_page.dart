@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
@@ -64,24 +64,28 @@ class HomePage extends StatelessWidget {
 
   RxBlocBuilder<NavigationBarBlocType, List<NavigationItem>> _buildNavBar() =>
       RxBlocBuilder<NavigationBarBlocType, List<NavigationItem>>(
-          state: (bloc) => bloc.states.items,
-          builder: (context, snapshot, bloc) =>
-              snapshot.build((navItems) => CurvedNavigationBar(
-                    index: navItems.toCurrentIndex(),
-                    color: Colors.blueAccent,
-                    backgroundColor: Colors.transparent,
-                    items: navItems
-                        .map((item) => Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: item.asWidget(),
-                            ))
-                        .toList(),
-                    onTap: (index) => bloc.events.selectPage(
-                      index == 0
-                          ? NavigationItemType.search
-                          : NavigationItemType.favorites,
-                    ),
-                  )));
+        state: (bloc) => bloc.states.items,
+        builder: (context, snapshot, bloc) => snapshot.build(
+          (navItems) => CurvedNavigationBar(
+            index: navItems.toCurrentIndex(),
+            color: Colors.blueAccent,
+            backgroundColor: Colors.transparent,
+            items: navItems
+                .map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: item.asWidget(),
+                  ),
+                )
+                .toList(),
+            onTap: (index) => bloc.events.selectPage(
+              index == 0
+                  ? NavigationItemType.search
+                  : NavigationItemType.favorites,
+            ),
+          ),
+        ),
+      );
 
   Widget asPage(AsyncSnapshot<NavigationItem?> type) {
     if (!type.hasData) {
@@ -104,15 +108,17 @@ extension NavigationItemToWitget on NavigationItem {
           builder: (ctx, snapshot, bloc) =>
               snapshot.hasData && snapshot.data! <= 0
                   ? type.asIcon()!
-                  : Badge(
+                  : badges.Badge(
                       padding: const EdgeInsets.all(3),
-                      badgeContent: snapshot.build((count) => Text(
-                            count.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          )),
+                      badgeContent: snapshot.build(
+                        (count) => Text(
+                          count.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                       badgeColor: Colors.transparent,
                       elevation: 0,
                       child: type.asIcon(),
