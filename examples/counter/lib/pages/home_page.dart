@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
               builder: (context, snapshot, bloc) => snapshot.hasData
                   ? Text(
                       snapshot.data.toString(),
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     )
                   : Container(),
             ),
