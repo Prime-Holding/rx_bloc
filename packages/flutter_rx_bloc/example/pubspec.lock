@@ -164,7 +164,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "5.0.1"
+    version: "5.0.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -272,7 +272,7 @@ packages:
       path: "../../rx_bloc"
       relative: true
     source: path
-    version: "3.3.1"
+    version: "4.0.0"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
