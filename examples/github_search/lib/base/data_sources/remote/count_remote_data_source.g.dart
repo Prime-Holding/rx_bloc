@@ -6,8 +6,13 @@ part of 'count_remote_data_source.dart';
 // RetrofitGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+
 class _CountRemoteDataSource implements CountRemoteDataSource {
-  _CountRemoteDataSource(this._dio, {this.baseUrl}) {
+  _CountRemoteDataSource(
+    this._dio, {
+    this.baseUrl,
+  }) {
     baseUrl ??= 'http://0.0.0.0:8080/api';
   }
 
@@ -19,13 +24,21 @@ class _CountRemoteDataSource implements CountRemoteDataSource {
   Future<Count> getCurrent() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Count>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/count',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Count>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/count',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Count.fromJson(_result.data!);
     return value;
   }
@@ -34,13 +47,21 @@ class _CountRemoteDataSource implements CountRemoteDataSource {
   Future<Count> increment() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Count>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/count/increment',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Count>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/count/increment',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Count.fromJson(_result.data!);
     return value;
   }
@@ -49,13 +70,21 @@ class _CountRemoteDataSource implements CountRemoteDataSource {
   Future<Count> decrement() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Count>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/count/decrement',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Count>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/count/decrement',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Count.fromJson(_result.data!);
     return value;
   }

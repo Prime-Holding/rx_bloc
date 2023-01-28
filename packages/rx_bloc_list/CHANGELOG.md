@@ -1,3 +1,6 @@
+## [3.2.1] January 28, 2022
+* Update the example project
+
 ## [3.2.0] November 1, 2022
 * Updated `flutter_rx_bloc` to use version `5.0.0`
 * Updated `rx_bloc` to use version `3.3.0`

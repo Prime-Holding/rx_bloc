@@ -6,7 +6,6 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 
@@ -16,18 +15,19 @@ import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
+    Key? key,
     this.title = 'Enter your login credentials',
     this.onLoginSuccess,
-  });
+  }) : super(key: key);
 
   final String title;
   final Function? onLoginSuccess;
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  LoginFormState createState() => LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class LoginFormState extends State<LoginForm> {
   final _emailFocusNode = FocusNode(debugLabel: 'emailFocus');
   final _passwordFocusNode = FocusNode(debugLabel: 'passwordFocus');
 
@@ -40,7 +40,9 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void dispose() {
     // Since the focus nodes are long living object, they should be disposed.
-    _focusNodes.forEach((focusNode) => focusNode.dispose());
+    for (var focusNode in _focusNodes) {
+      focusNode.dispose();
+    }
     super.dispose();
   }
 
@@ -90,18 +92,17 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget _buildLogoutListener() => RxBlocListener<LoginBlocType, bool>(
         state: (bloc) => bloc.states.loggedIn,
-        listener: (_, success) {
-          if (success ?? false) widget.onLoginSuccess?.call();
-        },
+        condition: (_, success) => success,
+        listener: (_, success) => widget.onLoginSuccess?.call(),
       );
 
   Widget _buildErrorListener() => RxBlocListener<LoginBlocType, String>(
         state: (bloc) => bloc.states.errors,
+        condition: (_, error) => error.isNotEmpty,
         listener: (context, error) {
-          if (error?.isEmpty ?? true) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(error!),
+              content: Text(error),
               behavior: SnackBarBehavior.floating,
             ),
           );

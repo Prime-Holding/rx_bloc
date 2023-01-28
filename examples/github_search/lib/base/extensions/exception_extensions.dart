@@ -21,12 +21,12 @@ String _extractMessageFromDio(DioError error) {
     final errors = error.response?.data['errors'];
 
     if (errors is List) {
-      errors.forEach((resourceError) {
+      for (var resourceError in errors) {
         if (resourceError is Map<String, dynamic>) {
           message +=
               'The ${resourceError['resource']} field is ${resourceError['code']}. ';
         }
-      });
+      }
     }
 
     return message;

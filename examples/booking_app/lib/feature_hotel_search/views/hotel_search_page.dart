@@ -38,6 +38,12 @@ class _HotelSearchPageState extends State<HotelSearchPage>
   }
 
   @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => SafeArea(
         child: NestedScrollView(
           controller: _scrollController,

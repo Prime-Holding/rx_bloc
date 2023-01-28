@@ -6,9 +6,9 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:auto_route/auto_route.dart';
-import 'package:github_search/feature_github_repo_list/views/github_repo_list_page.dart';
 
 import '../../feature_counter/views/counter_page.dart';
+import '../../feature_github_repo_list/views/github_repo_list_page.dart';
 import '../../feature_login/views/login_page.dart';
 import '../../feature_notifications/views/notifications_page.dart';
 

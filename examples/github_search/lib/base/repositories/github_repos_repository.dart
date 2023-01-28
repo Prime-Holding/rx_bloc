@@ -1,6 +1,7 @@
-import 'package:github_search/base/data_sources/remote/github_repos_data_source.dart';
-import 'package:github_search/base/models/github_repo.dart';
 import 'package:rx_bloc_list/models.dart';
+
+import '../data_sources/remote/github_repos_data_source.dart';
+import '../models/github_repo.dart';
 
 class GithubReposRepository {
   GithubReposRepository(GithubReposDataSource dataSource)

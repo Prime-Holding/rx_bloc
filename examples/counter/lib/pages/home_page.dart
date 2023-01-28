@@ -5,66 +5,60 @@ import 'package:rx_bloc/rx_bloc.dart';
 import '../bloc/counter_bloc.dart';
 
 class HomePage extends StatelessWidget {
-  // ignore: public_member_api_docs
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Counter sample')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RxBlocListener<CounterBlocType, String>(
-              state: (bloc) => bloc.states.errors,
-              listener: (context, errorMessage) =>
-                  ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(errorMessage),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              ),
-            ),
-            RxBlocBuilder<CounterBlocType, int>(
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Counter sample')),
+        body: Center(
+          child: RxBlocListener<CounterBlocType, String>(
+            state: (bloc) => bloc.states.errors,
+            listener: _showError,
+            child: RxBlocBuilder<CounterBlocType, int>(
               state: (bloc) => bloc.states.count,
-              builder: (context, snapshot, bloc) => snapshot.hasData
-                  ? Text(
-                      snapshot.data.toString(),
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    )
-                  : Container(),
+              builder: (context, snapshot, bloc) =>
+                  _buildCount(snapshot, context),
             ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: _buildActionButtons(),
-    );
-  }
+        floatingActionButton: RxLoadingBuilder<CounterBlocType>(
+          state: (bloc) => bloc.states.isLoading,
+          builder: (context, isLoading, tag, bloc) => Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ActionButton(
+                tooltip: 'Increment',
+                iconData: Icons.add,
+                onPressed: bloc.events.increment,
+                disabled: isLoading,
+                loading: isLoading && tag == CounterBloc.tagIncrement,
+              ),
+              const SizedBox(width: 16),
+              ActionButton(
+                tooltip: 'Decrement',
+                iconData: Icons.remove,
+                onPressed: bloc.events.decrement,
+                disabled: isLoading,
+                loading: isLoading && tag == CounterBloc.tagDecrement,
+              ),
+            ],
+          ),
+        ),
+      );
 
-  Widget _buildActionButtons() => RxLoadingBuilder<CounterBlocType>(
-        state: (bloc) => bloc.states.isLoading,
-        builder: (context, isLoading, tag, bloc) => Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ActionButton(
-              tooltip: 'Increment',
-              iconData: Icons.add,
-              onPressed: bloc.events.increment,
-              disabled: isLoading,
-              loading: isLoading && tag == CounterBloc.tagIncrement,
-            ),
-            const SizedBox(width: 16),
-            ActionButton(
-              tooltip: 'Decrement',
-              iconData: Icons.remove,
-              onPressed: bloc.events.decrement,
-              disabled: isLoading,
-              loading: isLoading && tag == CounterBloc.tagDecrement,
-            ),
-          ],
+  Widget _buildCount(AsyncSnapshot<int> snapshot, BuildContext context) =>
+      snapshot.hasData
+          ? Text(
+              snapshot.data.toString(),
+              style: Theme.of(context).textTheme.headlineMedium,
+            )
+          : Container();
+
+  void _showError(BuildContext context, String errorMessage) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          behavior: SnackBarBehavior.floating,
         ),
       );
 }

@@ -88,18 +88,15 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                     ),
                     RxBlocListener<NotificationsBlocType, bool>(
                       state: (bloc) => bloc.states.permissionsAuthorized,
+                      condition: (_, authorized) => !authorized,
                       listener: (context, authorized) async {
-                        if (authorized ?? false) return;
-
                         // If not authorized, show a dialog popup
                         await showAdaptiveDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            content: Container(
-                              child: Text(
-                                context.l10n.notificationsPermissionsDenied,
-                                textAlign: TextAlign.center,
-                              ),
+                            content: Text(
+                              context.l10n.notificationsPermissionsDenied,
+                              textAlign: TextAlign.center,
                             ),
                             actions: <Widget>[
                               Center(
@@ -133,7 +130,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
     Function()? onPressed,
   ]) =>
       Center(
-        child: Container(
+        child: SizedBox(
           height: 60,
           width: MediaQuery.of(context).size.width,
           child: Padding(
