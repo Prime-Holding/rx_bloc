@@ -1,5 +1,4 @@
 import 'package:badges/badges.dart' as badges;
-import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
@@ -104,7 +103,7 @@ extension NavigationItemToWitget on NavigationItem {
               snapshot.hasData && snapshot.data! <= 0
                   ? type.asIcon()!
                   : badges.Badge(
-                      badgeStyle: const BadgeStyle(
+                      badgeStyle: const badges.BadgeStyle(
                         padding: EdgeInsets.all(5),
                         badgeColor: Colors.white,
                         elevation: 0,
