@@ -1,5 +1,6 @@
-## [6.0.2] - January 27, 2023
+## [6.0.1] - January 27, 2023
 * Drop upper version requirement for the analyzer dependency
+* Update `rx_bloc` to use version `4.0.0`
 
 ## [6.0.0] - July 28, 2022
 * Update dependencies

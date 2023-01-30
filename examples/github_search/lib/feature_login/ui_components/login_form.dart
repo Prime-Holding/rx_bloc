@@ -40,7 +40,7 @@ class LoginFormState extends State<LoginForm> {
   @override
   void dispose() {
     // Since the focus nodes are long living object, they should be disposed.
-    for (var focusNode in _focusNodes) {
+    for (final focusNode in _focusNodes) {
       focusNode.dispose();
     }
     super.dispose();

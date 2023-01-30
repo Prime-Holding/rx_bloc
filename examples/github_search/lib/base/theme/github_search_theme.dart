@@ -43,10 +43,11 @@ class GithubSearchTheme {
         color: designSystemColor.primaryVariant,
       ),
       iconTheme: _buildIconTheme(base.iconTheme, designSystemColor),
-      colorScheme: colorScheme
-          .copyWith(error: designSystemColor.errorColor)
-          .copyWith(background: designSystemColor.backgroundColor)
-          .copyWith(secondary: designSystemColor.accentColor),
+      colorScheme: colorScheme.copyWith(
+        error: designSystemColor.errorColor,
+        background: designSystemColor.backgroundColor,
+        secondary: designSystemColor.accentColor,
+      ),
     );
   }
 
