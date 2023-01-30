@@ -1,5 +1,6 @@
-import 'package:github_search/base/models/github_repo.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../github_repo.dart';
 
 part 'github_repos_reponse.g.dart';
 

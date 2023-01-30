@@ -39,9 +39,16 @@ abstract class $NotificationsBloc extends RxBlocBase
       _$requestNotificationPermissionsEvent.add(null);
 
   @override
-  void sendMessage(String message, {String? title, int? delay}) =>
-      _$sendMessageEvent
-          .add(_SendMessageEventArgs(message, title: title, delay: delay));
+  void sendMessage(
+    String message, {
+    String? title,
+    int? delay,
+  }) =>
+      _$sendMessageEvent.add(_SendMessageEventArgs(
+        message,
+        title: title,
+        delay: delay,
+      ));
 
   @override
   Stream<bool> get permissionsAuthorized => _permissionsAuthorizedState;
@@ -66,7 +73,11 @@ abstract class $NotificationsBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [NotificationsBlocEvents.sendMessage] event
 class _SendMessageEventArgs {
-  const _SendMessageEventArgs(this.message, {this.title, this.delay});
+  const _SendMessageEventArgs(
+    this.message, {
+    this.title,
+    this.delay,
+  });
 
   final String message;
 
