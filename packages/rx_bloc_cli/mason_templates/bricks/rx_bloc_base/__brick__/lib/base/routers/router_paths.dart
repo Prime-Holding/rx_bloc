@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import 'router_permission_names.dart';
+import 'permission_names.dart';
 
 abstract class RouterPaths {
   static const String splash = '/splash';
@@ -14,21 +14,21 @@ abstract class RouterPaths {
   static String pathToRouteName(String path) {
     switch (path) {
       case splash:
-        return RouterPermissionNames.splashPage;
+        return PermissionNames.splashPage;
       case counter:
-        return RouterPermissionNames.counterPage;
+        return PermissionNames.counterPage;
       case notifications:
-        return RouterPermissionNames.notificationsPage;
+        return PermissionNames.notificationsPage;
       case login:
-        return RouterPermissionNames.loginPage;
+        return PermissionNames.loginPage;
       case enterMessage:
-        return RouterPermissionNames.enterMessagePage;
+        return PermissionNames.enterMessagePage;
       case items:
-        return RouterPermissionNames.itemsPage;
+        return PermissionNames.itemsPage;
       case itemDetails:
-        return RouterPermissionNames.itemDetailsPage;
+        return PermissionNames.itemDetailsPage;
       default:
-        return RouterPermissionNames.counterPage;
+        return PermissionNames.counterPage;
     }
   }
 }

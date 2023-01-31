@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-abstract class RouterPermissionNames {
+abstract class PermissionNames {
   static const String splashPage = 'SplashRoute';
   static const String counterPage = 'CounterRoute';
   static const String notificationsPage = 'NotificationsRoute';

@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
-import '../../models/permissions_model.dart';
+import '../../models/permission_list_model.dart';
 
 part 'permissions_remote_data_source.g.dart';
 
@@ -13,5 +13,5 @@ abstract class PermissionsRemoteDataSource {
       _PermissionsRemoteDataSource;
 
   @GET('/api/permissions')
-  Future<PermissionsModel> getPermissions();
+  Future<PermissionListModel> getPermissions();
 }

@@ -1,14 +1,14 @@
 {{> licence.dart }}
 
 import '../models/errors/error_model.dart';
-import '../models/permissions_model.dart';
+import '../models/permission_list_model.dart';
 import '../repositories/permissions_repository.dart';
 
 class PermissionsService {
   PermissionsService(this._permissionsRepository);
 
   final PermissionsRepository _permissionsRepository;
-  PermissionsModel? _permissionList;
+  PermissionListModel? _permissionList;
 
   Future<void> checkPermission(String key) async {
     if (await hasPermission(key)) {
@@ -27,7 +27,7 @@ class PermissionsService {
     return _permissionList?.item[key] ?? true;
   }
 
-  Future<PermissionsModel> getPermissions({bool force = false}) async {
+  Future<PermissionListModel> getPermissions({bool force = false}) async {
     if (_permissionList == null || force) {
       _permissionList = await _permissionsRepository.getPermissions();
     }

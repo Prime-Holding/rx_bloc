@@ -16,8 +16,8 @@ import '../common_services/permissions_service.dart';
 import '../models/errors/error_model.dart';
 import '../models/item_model.dart';
 import 'go_router_refresh_stream.dart';
+import 'permission_names.dart';
 import 'router_paths.dart';
-import 'router_permission_names.dart';
 
 part 'router.g.dart';
 
@@ -96,7 +96,7 @@ class SplashRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RouterPermissionNames.splashPage;
+  String get permissionName => PermissionNames.splashPage;
 
   @override
   String get routeLocation => location;
@@ -125,7 +125,7 @@ class CounterRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RouterPermissionNames.counterPage;
+  String get permissionName => PermissionNames.counterPage;
 
   @override
   String get routeLocation => location;
@@ -143,7 +143,7 @@ class NotificationsRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RouterPermissionNames.notificationsPage;
+  String get permissionName => PermissionNames.notificationsPage;
 
   @override
   String get routeLocation => location;
@@ -161,7 +161,7 @@ class LoginRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RouterPermissionNames.loginPage;
+  String get permissionName => PermissionNames.loginPage;
 
   @override
   String get routeLocation => location;
@@ -179,7 +179,7 @@ class EnterMessageRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RouterPermissionNames.enterMessagePage;
+  String get permissionName => PermissionNames.enterMessagePage;
 
   @override
   String get routeLocation => location;
@@ -197,7 +197,7 @@ class ItemsRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RouterPermissionNames.itemsPage;
+  String get permissionName => PermissionNames.itemsPage;
 
   @override
   String get routeLocation => location;
@@ -225,7 +225,7 @@ class ItemDetailsRoute extends GoRouteData implements RouteData {
   }
 
   @override
-  String get permissionName => RouterPermissionNames.itemDetailsPage;
+  String get permissionName => PermissionNames.itemDetailsPage;
 
   @override
   String get routeLocation => location;

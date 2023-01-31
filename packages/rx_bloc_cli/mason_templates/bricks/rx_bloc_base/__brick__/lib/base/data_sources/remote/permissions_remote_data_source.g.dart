@@ -19,13 +19,13 @@ class _PermissionsRemoteDataSource implements PermissionsRemoteDataSource {
   String? baseUrl;
 
   @override
-  Future<PermissionsModel> getPermissions() async {
+  Future<PermissionListModel> getPermissions() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<PermissionsModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PermissionListModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -37,7 +37,7 @@ class _PermissionsRemoteDataSource implements PermissionsRemoteDataSource {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = PermissionsModel.fromJson(_result.data!);
+    final value = PermissionListModel.fromJson(_result.data!);
     return value;
   }
 
