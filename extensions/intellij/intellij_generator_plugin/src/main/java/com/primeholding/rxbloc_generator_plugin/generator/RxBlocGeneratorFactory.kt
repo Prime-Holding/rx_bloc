@@ -14,30 +14,28 @@ object RxBlocGeneratorFactory {
         val bloc = com.primeholding.rxbloc_generator_plugin.generator.components.RxBlocGenerator(
             name,
             withDefaultStates,
-            includeExtensions,
-            includeNullSafety)
+            includeExtensions
+        )
 
         val generatedBloc = if(includeNullSafety) {
             RxGeneratedNullSafetyBlocGenerator(
                 name,
                 withDefaultStates,
-                includeExtensions,
-                includeNullSafety
+                includeExtensions
             )
         } else {
             RxGeneratedBlocGenerator(
                 name,
                 withDefaultStates,
-                includeExtensions,
-                includeNullSafety
+                includeExtensions
             )
         }
 
         if(includeExtensions) {
-            val blocExtensions = RxBlocExtensionGenerator(name,
+            val blocExtensions = RxBlocExtensionGenerator(
+                name,
                 withDefaultStates,
-                includeExtensions,
-                includeNullSafety
+                true
             )
             return listOf(bloc, generatedBloc, blocExtensions)
         }

@@ -5,14 +5,12 @@ import com.primeholding.rxbloc_generator_plugin.generator.RxPageGeneratorBase
 class RxPageGenerator(
     name: String,
     withDefaultStates: Boolean,
-    includeExtensions: Boolean,
-    includeNullSafety: Boolean
+    includeAutoRoute: Boolean
 ) : RxPageGeneratorBase(
     name,
     withDefaultStates,
-    includeExtensions,
-    includeNullSafety,
-    templateName = "page"
+    includeAutoRoute,
+    templateName = "${if (includeAutoRoute) "" else "no_autoroute_"}page"
 ) {
     override fun fileName() = "${snakeCase()}_page.${fileExtension()}"
     override fun contextDirectoryName(): String = "views"

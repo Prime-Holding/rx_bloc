@@ -5,13 +5,11 @@ import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
 class RxBlocExtensionGenerator(
     blocName: String,
     withDefaultStates: Boolean,
-    includeExtensions: Boolean,
-    includeNullSafety: Boolean
+    includeExtensions: Boolean
 ) : RxBlocGeneratorBase(
     blocName,
     withDefaultStates,
     includeExtensions,
-    includeNullSafety,
     templateName = "rx_bloc_extensions"
 ) {
 

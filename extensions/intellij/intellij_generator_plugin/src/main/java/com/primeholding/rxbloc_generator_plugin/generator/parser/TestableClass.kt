@@ -3,7 +3,7 @@ package com.primeholding.rxbloc_generator_plugin.generator.parser
 import com.intellij.openapi.vfs.VirtualFile
 
 ///path - relative to the lib folder + list of items that the bloc uses.
-data class Bloc(
+data class TestableClass(
     val file: VirtualFile,
     val relativePath: String,
     val stateVariableNames: List<String>,

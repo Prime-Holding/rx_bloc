@@ -1,20 +1,14 @@
 package com.primeholding.rxbloc_generator_plugin.action
 
-import com.intellij.lang.java.JavaLanguage
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
-import com.intellij.openapi.fileChooser.FileChooser
+import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFileFactory
-import com.intellij.psi.impl.file.PsiDirectoryFactory
-import com.intellij.psi.impl.file.PsiDirectoryImpl
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocFeatureGeneratorFactory
-import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
-import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorFactory
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 
 
@@ -31,13 +25,16 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         blocName: String?,
         shouldUseEquatable: Boolean,
         includeExtensions: Boolean,
-        includeNullSafety: Boolean) {
+        includeNullSafety: Boolean,
+        includeAutoRoute: Boolean
+    ) {
         blocName?.let { name ->
             val generators = RxBlocFeatureGeneratorFactory.getBlocGenerators(
                 name,
                 shouldUseEquatable,
                 includeExtensions,
-                includeNullSafety
+                includeNullSafety,
+                includeAutoRoute
             )
             generate(generators)
         }
@@ -51,7 +48,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
     }
 
-    protected fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
+    private fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         val view = LangDataKeys.IDE_VIEW.getData(dataContext)
         val directory = view?.orChooseDirectory
@@ -80,17 +77,21 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
             return
         }
 
+        println("createSourceFile")
+        println(fileName)
         val psiFile = PsiFileFactory.getInstance(project)
-            .createFileFromText(fileName, JavaLanguage.INSTANCE, generator.generate())
+            .createFileFromText(fileName, PlainTextLanguage.INSTANCE, generator.generate())
+        println(psiFile)
 
-
-        directory.add(psiFile)
+        if (psiFile != null) {
+            directory.add(psiFile)
+        }
     }
 
-    private fun createDir(baseDirectory: PsiDirectory, name: String ): PsiDirectory {
+    private fun createDir(baseDirectory: PsiDirectory, name: String): PsiDirectory {
         var featureDirectory = baseDirectory.findSubdirectory(name)
 
-        if(featureDirectory == null) {
+        if (featureDirectory == null) {
             featureDirectory = baseDirectory.createSubdirectory(name)
         }
 

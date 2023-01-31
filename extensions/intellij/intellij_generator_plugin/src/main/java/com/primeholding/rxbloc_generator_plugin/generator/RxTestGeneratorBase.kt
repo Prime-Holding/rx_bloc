@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
@@ -5,7 +7,8 @@ import com.fleshgrinder.extensions.kotlin.toLowerSnakeCase
 import com.fleshgrinder.extensions.kotlin.toUpperCamelCase
 import com.google.common.io.CharStreams
 import com.intellij.openapi.vfs.VirtualFile
-import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
+import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.File
 import java.io.InputStreamReader
@@ -15,7 +18,7 @@ abstract class RxTestGeneratorBase(
     name: String,
     private val projectName: String,
     templateName: String,
-    private val bloc: Bloc,
+    private val bloc: TestableClass,
     includeDiMocks: Boolean = true
 ) : RxGeneratorBase(name) {
 
@@ -26,7 +29,7 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_PROJECT_NAME = "project_name"
 
     private val TEMPLATE_BLOC_INITIALIZATION_PARAMETERS = "bloc_parameters_initialization_with_repos"
-    private val TEMPLATE_PASS_AS_PAREMETERS_REPOS = "pass_as_parameters_repositories"
+    private val TEMPLATE_PASS_AS_PARAMETERS_REPOS = "pass_as_parameters_repositories"
     private val TEMPLATE_REPO_INITIALIZATION = "initialization_of_repositories"
 
     private val TEMPLATE_DECLARATION_OF_REPOS = "declaration_of_repositories"
@@ -61,20 +64,27 @@ abstract class RxTestGeneratorBase(
             TEMPLATE_PROJECT_NAME to projectName,
             TEMPLATE_BLOC_INITIALIZATION_PARAMETERS to generateBlocInitializationParameters(),
             TEMPLATE_REPO_INITIALIZATION to generateRepoInitialization(),
-            TEMPLATE_PASS_AS_PAREMETERS_REPOS to generatePassAsParameters(),
+            TEMPLATE_PASS_AS_PARAMETERS_REPOS to generatePassAsParameters(),
             TEMPLATE_DECLARATION_OF_REPOS to generateDeclarationOfRepos(),
             TEMPLATE_REPO_CLASS_LIST to generateRepoClassList(),
             TEMPLATE_REPO_IMPORT_DECLARATIONS to generateRepoImportDeclarations(),
-            TEMPLATE_BLOC_CONSTRUCTOR_IMPORTS to generateBlocConstructorImports(),
+            TEMPLATE_BLOC_CONSTRUCTOR_IMPORTS to generateBlocConstructorImports(bloc.file, bloc.constructorFieldTypes),
             TEMPLATE_BLOC_STATE_IMPORTS to generateBlocStateImports(),
 
             TEMPLATE_BLOC_STATES_WHEN_MOCK to generateBlocStatesWhenMock(),
             TEMPLATE_TEST_RX_BLOC_STATE_GROUP to generateBlocStatesGroup(),
             TEMPLATE_BLOC_FOLDER_PREFIX to generateFolderPrefix(),
-            TEMPLATE_STATES_AS_OPTIONAL_PARAMETER to generateStatesAsOptionalParameter(),
+            TEMPLATE_STATES_AS_OPTIONAL_PARAMETER to generateStatesAsOptionalParameter(
+                bloc.stateVariableNames,
+                bloc.stateVariableTypes
+            ),
             TEMPLATE_STATES_AS_PASSING_NAMED_PARAMETERS to generateStatesAsPassingNamedParameters(),
 
-            TEMPLATE_bloc_initialization_fields_list to generateBlocInitializationFields(),
+            TEMPLATE_bloc_initialization_fields_list to generateBlocInitializationFields(
+                includeDiMocksFlag,
+                bloc.constructorFieldNames,
+                bloc.constructorFieldNamedNames
+            ),
             TEMPLATE_late_bloc_initialization_fields to generateBlocFieldsLateDefinition(),
             TEMPLATE_bloc_initialization_fields_mocks to generateBlocInitializationOfMocks(),
             TEMPLATE_initiate_bloc_initialization_fields_setUp to generateBlocSetup()
@@ -145,23 +155,6 @@ abstract class RxTestGeneratorBase(
         return if (bloc.isLib) "lib" else "feature"
     }
 
-    private fun generateBlocInitializationFields(): String {
-        val sb = StringBuilder()
-
-        if (includeDiMocksFlag) {
-            bloc.constructorFieldNames.forEach {
-                if (!bloc.constructorFieldNamedNames.keys.contains(it))
-                    sb.append("        $it,\n")
-            }
-            bloc.constructorFieldNamedNames.forEach {
-                sb.append("        ${it.key}: ${it.key},\n")
-            }
-        } else {
-            sb.append("//TODO\n")
-        }
-        return sb.toString()
-    }
-
     private fun generateBlocFieldsLateDefinition(): String {
         val sb = StringBuilder()
 
@@ -220,16 +213,6 @@ abstract class RxTestGeneratorBase(
         return sb.toString()
     }
 
-    private fun generateStatesAsOptionalParameter(): String {
-        val sb = StringBuilder()
-        bloc.stateVariableNames.forEachIndexed { index, _ ->
-            if (bloc.stateVariableTypes[index] != "void") {
-                sb.append("  ${bloc.stateVariableTypes[index]}${if (bloc.stateVariableTypes[index].endsWith("?")) "" else "?"} ${bloc.stateVariableNames[index]},\n")
-            }
-        }
-        return sb.toString()
-    }
-
 
     private fun generateBlocStateImports(): String {
         val sb = StringBuilder()
@@ -252,15 +235,13 @@ abstract class RxTestGeneratorBase(
         val libFolder = findLibFolder(bloc.file)
 
         if (libFolder != null) {
-            val appFolder = libFolder.parent.name
             val featureFolder = bloc.file.parent.parent.name
             lines.forEach { line ->
                 bloc.stateVariableTypes.forEach {
                     val snake = it.trim().replace("?", "").toLowerSnakeCase()
                     if (line.contains("import '") && line.contains("$snake.dart")) {
                         sb.appendln(
-                            line.replace("../..", "package:$appFolder")
-                                .replace("..", "package:$appFolder/$featureFolder")
+                            Utils.fixRelativeImports(line,  libFolder, featureFolder, bloc.file)
                         )
                     }
                 }
@@ -269,18 +250,17 @@ abstract class RxTestGeneratorBase(
         return sb.toString()
     }
 
-    private fun generateBlocConstructorImports(): String {
+    private fun generateBlocConstructorImports(file: VirtualFile, constructorFieldTypes: MutableList<String>): String {
         val sb = StringBuilder()
 
-        val lines = File(bloc.file.path).readText().lines()
-
-        val libFolder = findLibFolder(bloc.file)
+        val lines = File(file.path).readText().lines()
+        val libFolder = findLibFolder(file)
 
         if (libFolder != null) {
             val appFolder = libFolder.parent.name
-            val featureFolder = bloc.file.parent.parent.name
+            val featureFolder = file.parent.parent.name
             lines.forEach { line ->
-                bloc.constructorFieldTypes.forEach {
+                constructorFieldTypes.forEach {
                     val snake = it.toLowerSnakeCase()
                     if (line.contains("import '")) {
 
@@ -389,4 +369,40 @@ abstract class RxTestGeneratorBase(
     }
 
     private fun dollarPascalCase(): String = "$" + pascalCase()
+
+    companion object {
+        fun generateStatesAsOptionalParameter(
+            stateVariableNames: List<String>,
+            stateVariableTypes: List<String>
+        ): String {
+            val sb = StringBuilder()
+            stateVariableNames.forEachIndexed { index, _ ->
+                if (stateVariableTypes[index] != "void") {
+                    sb.append("  ${stateVariableTypes[index]}${if (stateVariableTypes[index].endsWith("?")) "" else "?"} ${stateVariableNames[index]},\n")
+                }
+            }
+            return sb.toString()
+        }
+
+        fun generateBlocInitializationFields(
+            includeDiMocksFlag: Boolean,
+            constructorFieldNames: List<String>,
+            constructorFieldNamedNames: MutableMap<String, Boolean>
+        ): String {
+            val sb = StringBuilder()
+
+            if (includeDiMocksFlag) {
+                constructorFieldNames.forEach {
+                    if (!constructorFieldNamedNames.keys.contains(it))
+                        sb.append("        $it,\n")
+                }
+                constructorFieldNamedNames.forEach {
+                    sb.append("        ${it.key}: ${it.key},\n")
+                }
+            } else {
+                sb.append("//TODO\n")
+            }
+            return sb.toString()
+        }
+    }
 }

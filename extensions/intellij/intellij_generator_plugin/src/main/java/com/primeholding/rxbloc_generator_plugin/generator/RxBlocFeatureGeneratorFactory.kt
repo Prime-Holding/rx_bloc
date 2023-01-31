@@ -5,22 +5,22 @@ object RxBlocFeatureGeneratorFactory {
         name: String,
         withDefaultStates: Boolean,
         includeExtensions: Boolean,
-        includeNullSafety: Boolean
+        includeNullSafety: Boolean,
+        includeAutoRoute: Boolean
     ): List<RxGeneratorBase> {
 
         val blocClasses = RxBlocGeneratorFactory.getBlocGenerators(name, withDefaultStates, includeExtensions, includeNullSafety)
 
         val dependencies = com.primeholding.rxbloc_generator_plugin.generator.components.RxDependenciesGenerator(
             name,
-            withDefaultStates,
-            includeExtensions,
-            includeNullSafety)
+            includeAutoRoute
+        )
 
         val page = com.primeholding.rxbloc_generator_plugin.generator.components.RxPageGenerator(
             name,
             withDefaultStates,
-            includeExtensions,
-            includeNullSafety)
+            includeAutoRoute
+        )
 
 
         return blocClasses + listOf(dependencies, page)

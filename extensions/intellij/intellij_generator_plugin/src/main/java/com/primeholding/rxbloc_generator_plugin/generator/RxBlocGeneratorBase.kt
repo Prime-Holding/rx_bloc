@@ -1,16 +1,18 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
-import com.fleshgrinder.extensions.kotlin.*
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
-abstract class RxBlocGeneratorBase(private val name: String,
-                                   withDefaultStates: Boolean,
-                                   includeExtensions: Boolean,
-                                   includeNullSafety: Boolean,
-                                   templateName: String): RxGeneratorBase(name) {
+abstract class RxBlocGeneratorBase(
+    name: String,
+    withDefaultStates: Boolean,
+    includeExtensions: Boolean,
+    templateName: String
+): RxGeneratorBase(name) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
     private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"
@@ -46,8 +48,8 @@ abstract class RxBlocGeneratorBase(private val name: String,
     }
 
     override fun generate(): String {
-        val substitutor = StrSubstitutor(templateValues)
-        return substitutor.replace(templateString)
+        val substitute = StrSubstitutor(templateValues)
+        return substitute.replace(templateString)
     }
 
     private fun dollarPascalCase(): String = "$" + pascalCase()

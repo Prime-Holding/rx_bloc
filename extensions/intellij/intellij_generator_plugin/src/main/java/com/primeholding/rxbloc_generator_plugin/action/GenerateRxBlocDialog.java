@@ -13,6 +13,19 @@ public class GenerateRxBlocDialog extends DialogWrapper {
     private JPanel contentPanel;
     private JCheckBox includeExtensions;
     private JCheckBox includeNullSafety;
+    private JCheckBox includeAutoRoute;
+    @SuppressWarnings("unused")
+    private JLabel includeAutoRouteLabel;
+
+    public GenerateRxBlocDialog(final Listener listener, boolean hideAutoRoute) {
+        super(null);
+        this.listener = listener;
+        init();
+        if (hideAutoRoute) {
+            includeAutoRoute.setVisible(false);
+            includeAutoRouteLabel.setVisible(false);
+        }
+    }
 
     public GenerateRxBlocDialog(final Listener listener) {
         super(null);
@@ -33,7 +46,8 @@ public class GenerateRxBlocDialog extends DialogWrapper {
                 blocNameTextField.getText(),
                 withDefaultStates.isSelected(),
                 includeExtensions.isSelected(),
-                includeNullSafety.isSelected()
+                includeNullSafety.isSelected(),
+                includeAutoRoute.isSelected()
         );
     }
 
@@ -48,7 +62,8 @@ public class GenerateRxBlocDialog extends DialogWrapper {
                 String blocName,
                 boolean shouldUseEquatable,
                 boolean includeExtensions,
-                boolean includeNullSafety
+                boolean includeNullSafety,
+                boolean includeAutoRoute
         );
     }
 }

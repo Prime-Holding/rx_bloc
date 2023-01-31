@@ -4,7 +4,6 @@ import com.intellij.openapi.ui.DialogWrapper;
 
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;

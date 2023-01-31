@@ -4,13 +4,13 @@ import com.primeholding.rxbloc_generator_plugin.generator.RxDependenciesGenerato
 
 class RxDependenciesGenerator(
     name: String,
-    withDefaultStates: Boolean,
-    includeExtensions: Boolean,
-    includeNullSafety: Boolean
+    includeAutoRoute: Boolean
 ) : RxDependenciesGeneratorBase(
     name,
-    templateName = "dependencies"
+    includeAutoRoute = includeAutoRoute
 ) {
-    override fun fileName() = "${snakeCase()}_dependencies.${fileExtension()}"
+    override fun fileName() =
+        "${snakeCase()}_${if (includeAutoRouteFlag) "" else "page_with_"}dependencies.${fileExtension()}"
+
     override fun contextDirectoryName(): String = "di"
 }

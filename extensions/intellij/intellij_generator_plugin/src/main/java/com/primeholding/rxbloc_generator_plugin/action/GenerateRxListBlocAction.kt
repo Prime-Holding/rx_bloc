@@ -1,11 +1,9 @@
 package com.primeholding.rxbloc_generator_plugin.action
 
-import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorFactory
-import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
-import com.intellij.lang.java.JavaLanguage
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
@@ -21,7 +19,8 @@ class GenerateRxListBlocAction : AnAction(), GenerateRxListBlocDialog.Listener {
     }
 
     override fun onGenerateBlocClicked(
-        blocName: String?) {
+        blocName: String?
+    ) {
         blocName?.let { name ->
             val generators = RxListBlocGeneratorFactory.getBlocGenerators(
                 name
@@ -63,7 +62,7 @@ class GenerateRxListBlocAction : AnAction(), GenerateRxListBlocDialog.Listener {
             return
         }
         val psiFile = PsiFileFactory.getInstance(project)
-            .createFileFromText(fileName, JavaLanguage.INSTANCE, generator.generate())
+            .createFileFromText(fileName, PlainTextLanguage.INSTANCE, generator.generate())
         directory.add(psiFile)
     }
 }

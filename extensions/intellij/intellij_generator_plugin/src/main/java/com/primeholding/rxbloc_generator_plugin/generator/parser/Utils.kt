@@ -1,5 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.generator.parser
 
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithIntentionAction
 import java.io.File
@@ -7,7 +8,103 @@ import java.io.File
 class Utils {
 
     companion object {
-        fun extractBloc(notNullBlocFile: VirtualFile): Bloc? {
+
+        fun getConstructorFields(
+            text: String,
+            className: String,
+            constructorFields: MutableMap<String, String>,
+            constructorNamedFields: MutableMap<String, Boolean>
+        ) {
+            getValueBetween(text, "${className}(", ")")?.let { constructorFieldsText ->
+                analyzeConstructor(constructorFieldsText, constructorFields, constructorNamedFields)
+            }
+
+
+            val blocLines = text.split("\n")
+
+            val keysSet = ArrayList(constructorFields.keys)
+            blocLines.forEach { line ->
+                keysSet.forEach {
+                    if (line.contains(" $it") && line.contains("final ")) {
+
+                        getValueBetween(line, "final ", " ${it};")?.let { value ->
+                            constructorFields[it] = value
+                        }
+
+                    }
+                }
+            }
+        }
+
+        private fun analyzeConstructor(
+            constructorFieldsText: String,
+            constructorFields: MutableMap<String, String>,
+            constructorNamedFields: MutableMap<String, Boolean>
+        ) {
+
+            fun parseRequiredFields(constructorFieldsText: String) {
+
+                val split = constructorFieldsText.split(",")
+                split.forEach {
+                    if (it.contains("this.")) {
+                        constructorFields[it.replace("this.", "").trim()] = ""
+                    } else {
+                        val definition = it.trim().split(" ")
+                        if (definition.size == 2) constructorFields[definition[1].trim()] = definition[0].trim()
+                    }
+                }
+            }
+
+            if (constructorFieldsText.contains("{")) {
+
+                //contains named parameters
+                val mandatoryFields = constructorFieldsText.substring(0, constructorFieldsText.indexOf("{"))
+                parseRequiredFields(mandatoryFields)
+
+                val namedFieldsText = getValueBetween(constructorFieldsText, "{", "}")
+
+                namedFieldsText?.let { fieldsDef ->
+                    val namedFields = fieldsDef.split(",")
+                    namedFields.forEach { fieldDefWrap ->
+                        var fieldDefWrap1 = fieldDefWrap
+                        val isRequired = fieldDefWrap.contains("required ")
+                        var value = ""
+                        if (fieldDefWrap.contains("=")) {
+                            value = fieldDefWrap.substring(fieldDefWrap.indexOf("=") + 1).trim()
+                            fieldDefWrap1 = fieldDefWrap.substring(0, fieldDefWrap.indexOf("=")).trim()
+
+                        }
+
+                        val singleFieldDef = fieldDefWrap1.replace("required ", "").trim()
+                        if (singleFieldDef.contains("this.")) {
+                            constructorFields[singleFieldDef.replace("this.", "").trim()] = value
+                            constructorNamedFields[singleFieldDef.replace("this.", "").trim()] = isRequired
+                        } else {
+                            val definition = singleFieldDef.trim().split(" ")
+                            if (definition.size == 2) {
+                                constructorFields[definition[1].trim()] = definition[0].trim()
+                                constructorNamedFields[definition[1].trim()] = isRequired
+                            }
+                        }
+                    }
+                }
+
+            } else {
+                //contains only inline fields
+                parseRequiredFields(constructorFieldsText)
+            }
+        }
+
+        private fun removeNonFinalOrEmptyFields(constructorFields: MutableMap<String, String>) {
+            val keysSet = ArrayList(constructorFields.keys)
+            keysSet.forEach {
+                if (constructorFields[it]!!.isEmpty()) {
+                    constructorFields.remove(it)
+                }
+            }
+        }
+
+        fun extractBloc(notNullBlocFile: VirtualFile): TestableClass? {
 
             if (!notNullBlocFile.exists() || notNullBlocFile.isDirectory) {
                 return null
@@ -37,81 +134,10 @@ class Utils {
             val blockName: String = BlocWrapWithIntentionAction.toCamelCase(
                 notNullBlocFile.name.replace("page.dart", "").replace(".dart", "")
             )
+            getConstructorFields(text, blockName, constructorFields, constructorNamedFields)
+            removeNonFinalOrEmptyFields(constructorFields)
 
-            fun parseRequiredFields(constructorFieldsText: String) {
-
-                val split = constructorFieldsText.split(",")
-                split.forEach {
-                    if (it.contains("this.")) {
-                        constructorFields[it.replace("this.", "").trim()] = ""
-                    } else {
-                        val definition = it.trim().split(" ")
-                        if (definition.size == 2)
-                            constructorFields[definition[1].trim()] = definition[0].trim()
-                    }
-                }
-            }
-
-            getValueBetween(text, "${blockName}(", ")")?.let { constructorFieldsText ->
-                if (constructorFieldsText.contains("{")) {
-
-                    //contains named parameters
-                    val mandatoryFields = constructorFieldsText.substring(0, constructorFieldsText.indexOf("{"))
-                    parseRequiredFields(mandatoryFields)
-
-                    val namedFieldsText = getValueBetween(constructorFieldsText, "{", "}")
-
-                    namedFieldsText?.let { fieldsDef ->
-                        val namedFields = fieldsDef.split(",")
-                        namedFields.forEach { fieldDefWrap ->
-                            var fieldDefWrap1 = fieldDefWrap
-                            val isRequired = fieldDefWrap.contains("required ")
-                            var value = ""
-                            if (fieldDefWrap.contains("=")) {
-                                value = fieldDefWrap.substring(fieldDefWrap.indexOf("=") + 1).trim()
-                                fieldDefWrap1 = fieldDefWrap.substring(0, fieldDefWrap.indexOf("=")).trim()
-
-                            }
-
-                            val singleFieldDef = fieldDefWrap1.replace("required ", "").trim()
-                            if (singleFieldDef.contains("this.")) {
-                                constructorFields[singleFieldDef.replace("this.", "").trim()] = value
-                                constructorNamedFields[singleFieldDef.replace("this.", "").trim()] = isRequired
-                            } else {
-                                val definition = singleFieldDef.trim().split(" ")
-                                if (definition.size == 2) {
-                                    constructorFields[definition[1].trim()] = definition[0].trim()
-                                    constructorNamedFields[definition[1].trim()] = isRequired
-                                }
-                            }
-                        }
-                    }
-
-                } else {
-                    //contains only inline fields
-                    parseRequiredFields(constructorFieldsText)
-                }
-            }
-            val blocLines = text.split("\n")
-
-            val keysSet = ArrayList(constructorFields.keys)
-            blocLines.forEach { line ->
-                keysSet.forEach {
-                    if (line.contains(" $it") && line.contains("final ")) {
-
-                        getValueBetween(line, "final ", " ${it};")?.let { value ->
-                            constructorFields[it] = value
-                        }
-
-                    }
-                }
-            }
-            keysSet.forEach {
-                if (constructorFields[it]!!.isEmpty()) {
-                    constructorFields.remove(it)
-                }
-            }
-            return Bloc(
+            return TestableClass(
                 file = notNullBlocFile,
                 relativePath = notNullBlocFile.path.substring(
                     notNullBlocFile.path.indexOf("lib") + 3
@@ -128,8 +154,8 @@ class Utils {
             )
         }
 
-        fun analyzeLib(libFolder: VirtualFile): List<Bloc> {
-            val list = ArrayList<Bloc>()
+        fun analyzeLib(libFolder: VirtualFile): List<TestableClass> {
+            val list = ArrayList<TestableClass>()
 
             val repos: MutableList<String> = mutableListOf()
             val services: MutableList<String> = mutableListOf()
@@ -158,18 +184,16 @@ class Utils {
         private fun scanFolder(
             libFolder: VirtualFile,
             allowedPrefixes: List<String>,
-            list: ArrayList<Bloc>,
+            list: ArrayList<TestableClass>,
             repos: MutableList<String>,
             services: MutableList<String>
         ) {
-            var bloc: Bloc?
+            var bloc: TestableClass?
             libFolder.children.forEach { libChild ->
                 if (libChild.isDirectory && startsWithAnyOf(libChild.name, allowedPrefixes)) {
                     libChild.findChild("blocs")?.let { blocFolder ->
-                        val blocFile =
-                            blocFolder.findChild(replaceAllPrefixes(libChild.name, allowedPrefixes) + "_bloc.dart")
-                        blocFile?.let { notNullBlocFile ->
-                            bloc = extractBloc(notNullBlocFile)
+                        bloc = analyzeFolderForBloc(blocFolder, libChild, allowedPrefixes)
+                        if (bloc != null) {
                             bloc?.let { list.add(it) }
                         }
                     }
@@ -195,6 +219,16 @@ class Utils {
                 it.repos.addAll(repos)
                 it.services.addAll(services)
             }
+        }
+
+        fun analyzeFolderForBloc(
+            blocFolder: VirtualFile, libChild: VirtualFile, allowedPrefixes: List<String>
+        ): TestableClass? {
+            val blocFile = blocFolder.findChild(replaceAllPrefixes(libChild.name, allowedPrefixes) + "_bloc.dart")
+            blocFile?.let { notNullBlocFile ->
+                return extractBloc(notNullBlocFile)
+            }
+            return null
         }
 
         private fun replaceAllPrefixes(name: String, allowedPrefixes: List<String>): String {
@@ -228,13 +262,13 @@ class Utils {
             return null
         }
 
-        fun unCheckExisting(libFolder: VirtualFile, selected: ArrayList<Bloc>) {
+        fun unCheckExisting(libFolder: VirtualFile, selected: ArrayList<TestableClass>) {
             val parent = libFolder.parent
             val testFolder = parent.findChild("test")
             if (testFolder?.isDirectory == true) {
                 testFolder.children.forEach { libChild ->
                     if (libChild.name.startsWith("feature_") || libChild.name.startsWith("lib_")) {
-                        selected.removeIf { x: Bloc ->
+                        selected.removeIf { x: TestableClass ->
                             x.file.name == libChild.name.replace("feature_", "").replace("lib_", "") + "_bloc.dart"
                         }
                     }
@@ -242,6 +276,87 @@ class Utils {
             }
 
         }
+
+        fun getMethods(text: String, className: String): List<ClassMethod> {
+            val result = mutableListOf<ClassMethod>()
+
+            val indexOf = text.lastIndexOf(className)
+            if (indexOf == -1) {
+                //something is fishy, no class name is found in the file.
+            } else {
+                val indexOf1 = text.indexOf("\n", indexOf)
+                if (indexOf1 > 0) {
+                    //This is taken as expected - for all methods to be after the constructor
+                    val substringLines = text.substring(indexOf1 + 1).split("\n")
+
+                    substringLines.forEach { line ->
+                        if (line.startsWith("  ") && !line.startsWith("    ")
+                            && line.contains("(")
+                        ) {
+                            val open = line.indexOf("(")
+                            val name = line.substring((line.substring(0, open)).lastIndexOf(" "), open).trim()
+                            if (!name.startsWith("_")) {
+                                result.add(
+                                    ClassMethod(
+                                        name = name,
+                                        constructorFieldNamedNames = mutableMapOf(),
+                                        constructorFieldNames = mutableListOf(),
+                                        constructorFieldTypes = mutableListOf(),
+                                        returnedType = ""
+                                    )
+                                )
+                            }
+
+                        }
+                    }
+                }
+            }
+            return result
+        }
+
+        fun getClassName(file: VirtualFile): String {
+            val text = File(file.path).readText().split("\n")
+            val start = "class "
+            text.forEach { line ->
+                if (line.startsWith(start)) {
+
+                    var end = line.indexOf(" ", start.length)
+                    if (end == -1) {
+                        end = line.length
+                    }
+                    return line.substring(start.length, end).trim()
+                }
+            }
+            return file.name
+        }
+
+        fun fixRelativeImports(
+            importLine: String,
+            appFolder: VirtualFile,
+            featureFolder: String,
+            file: VirtualFile
+        ): String {
+            var result = ""
+            if (importLine.contains("..")) {
+
+                result = importLine.replace("../..", "package:$appFolder")
+                if (featureFolder.isEmpty())
+                    result = result.replace("..", "package:$appFolder/$featureFolder")
+
+            } else {
+
+                if (!result.startsWith("import 'package:")) {
+                    return "import 'package:${file.path.replace(appFolder.path, "")}';".replace("\\", "/")
+                }
+
+            }
+            return result
+        }
+
+        fun baseDir(basePath: String): VirtualFile {
+            return VfsUtil.findFileByIoFile(File(basePath), false)!!
+        }
+
     }
 
 
