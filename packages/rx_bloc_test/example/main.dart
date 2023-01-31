@@ -25,7 +25,9 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
       act: (bloc) async {
-        bloc..decrease()..decrease();
+        bloc
+          ..decrease()
+          ..decrease();
       },
       skip: 2,
       expect: <int>[-2],

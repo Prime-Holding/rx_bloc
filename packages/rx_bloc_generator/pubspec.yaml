@@ -9,7 +9,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  analyzer: ">=3.0.0"
+  analyzer: ">=3.0.0 <=5.4.0"
   build: ^2.3.0
   code_builder: ^4.3.0
   collection: ^1.16.0
@@ -26,6 +26,6 @@ dev_dependencies:
   source_gen_test: any
   test: ^1.21.4
 
-dependency_overrides:
-  rx_bloc:
-    path: ../rx_bloc
+#dependency_overrides:
+#  rx_bloc:
+#    path: ../rx_bloc

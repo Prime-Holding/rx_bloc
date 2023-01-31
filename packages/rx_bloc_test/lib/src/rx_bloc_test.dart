@@ -89,14 +89,14 @@ void rxBlocTest<B extends RxBlocTypeBase, StateOutputType>(
 ///
 @isTest
 void rxBlocFakeAsyncTest<B extends RxBlocTypeBase, StateOutputType>(
-    String message, {
-      required B Function() build,
-      required Stream<StateOutputType> Function(B) state,
-      required Iterable expect,
-      void Function(B, FakeAsync fakeAsync)? act,
-      Duration? wait,
-      int skip = 0,
-    }) =>
+  String message, {
+  required B Function() build,
+  required Stream<StateOutputType> Function(B) state,
+  required Iterable expect,
+  void Function(B, FakeAsync fakeAsync)? act,
+  Duration? wait,
+  int skip = 0,
+}) =>
     tester.test(message, () {
       fakeAsync((async) {
         final bloc = build();
