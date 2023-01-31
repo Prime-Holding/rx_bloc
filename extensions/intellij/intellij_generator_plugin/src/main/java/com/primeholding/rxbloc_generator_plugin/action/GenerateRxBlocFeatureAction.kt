@@ -76,9 +76,6 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
             document?.insertString(document.textLength, "\n" + generator.generate())
             return
         }
-
-        println("createSourceFile")
-        println(fileName)
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText(fileName, PlainTextLanguage.INSTANCE, generator.generate())
         println(psiFile)
