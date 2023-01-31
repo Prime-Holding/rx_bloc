@@ -11,7 +11,6 @@ import 'design_system.dart';
 import 'design_system/design_system_colors.dart';
 
 class GithubSearchTheme {
-
   static ThemeData buildTheme(DesignSystem designSystem) {
     final designSystemColor = designSystem.colors;
     final lightModeOn = designSystemColor.brightness == Brightness.light;
@@ -23,16 +22,12 @@ class GithubSearchTheme {
     );
     final base = lightModeOn ? ThemeData.light() : ThemeData.dark();
     return base.copyWith(
-      colorScheme: colorScheme,
       primaryColor: designSystemColor.primaryColor,
       indicatorColor: designSystemColor.indicatorColor,
       splashColor: designSystemColor.splashColor,
       splashFactory: InkRipple.splashFactory,
-      accentColor: designSystemColor.accentColor,
       canvasColor: designSystemColor.canvasColor,
-      backgroundColor: designSystemColor.backgroundColor,
       scaffoldBackgroundColor: designSystemColor.scaffoldBackgroundColor,
-      errorColor: designSystemColor.errorColor,
       buttonTheme: ButtonThemeData(
         colorScheme: colorScheme,
         textTheme: ButtonTextTheme.primary,
@@ -43,13 +38,16 @@ class GithubSearchTheme {
           _buildOutlinedButtonTheme(base.outlinedButtonTheme, designSystem),
       textTheme: _buildDesignTextTheme(base.textTheme, designSystemColor),
       primaryTextTheme:
-      _buildDesignTextTheme(base.primaryTextTheme, designSystemColor),
-      accentTextTheme:
-      _buildDesignTextTheme(base.accentTextTheme, designSystemColor),
+          _buildDesignTextTheme(base.primaryTextTheme, designSystemColor),
       appBarTheme: AppBarTheme(
         color: designSystemColor.primaryVariant,
       ),
       iconTheme: _buildIconTheme(base.iconTheme, designSystemColor),
+      colorScheme: colorScheme.copyWith(
+        error: designSystemColor.errorColor,
+        background: designSystemColor.backgroundColor,
+        secondary: designSystemColor.accentColor,
+      ),
     );
   }
 
@@ -57,37 +55,37 @@ class GithubSearchTheme {
       TextTheme base, DesignSystemColors designSystemColor) {
     const fontName = 'WorkSans';
     return base.copyWith(
-      headline1: base.headline1!.copyWith(fontFamily: fontName),
-      headline2: base.headline2!.copyWith(fontFamily: fontName),
-      headline3: base.headline3!.copyWith(fontFamily: fontName),
-      headline4: base.headline4!.copyWith(fontFamily: fontName),
-      headline5: base.headline5!.copyWith(fontFamily: fontName),
-      headline6: base.headline6!.copyWith(fontFamily: fontName),
-      button: base.button!.copyWith(fontFamily: fontName),
-      caption: base.caption!.copyWith(fontFamily: fontName),
-      bodyText1: base.bodyText1!.copyWith(
-      fontFamily: fontName, color: designSystemColor.bodyTextColor1),
-      bodyText2: base.bodyText2!.copyWith(
-      fontFamily: fontName, color: designSystemColor.bodyTextColor2),
-      subtitle1: base.subtitle1!.copyWith(fontFamily: fontName),
-      subtitle2: base.subtitle2!.copyWith(fontFamily: fontName),
-      overline: base.overline!.copyWith(fontFamily: fontName),
+      displayLarge: base.displayLarge!.copyWith(fontFamily: fontName),
+      displayMedium: base.displayMedium!.copyWith(fontFamily: fontName),
+      displaySmall: base.displaySmall!.copyWith(fontFamily: fontName),
+      headlineMedium: base.headlineMedium!.copyWith(fontFamily: fontName),
+      headlineSmall: base.headlineSmall!.copyWith(fontFamily: fontName),
+      titleLarge: base.titleLarge!.copyWith(fontFamily: fontName),
+      labelLarge: base.labelLarge!.copyWith(fontFamily: fontName),
+      bodySmall: base.bodySmall!.copyWith(fontFamily: fontName),
+      bodyLarge: base.bodyLarge!.copyWith(
+          fontFamily: fontName, color: designSystemColor.bodyTextColor1),
+      bodyMedium: base.bodyMedium!.copyWith(
+          fontFamily: fontName, color: designSystemColor.bodyTextColor2),
+      titleMedium: base.titleMedium!.copyWith(fontFamily: fontName),
+      titleSmall: base.titleSmall!.copyWith(fontFamily: fontName),
+      labelSmall: base.labelSmall!.copyWith(fontFamily: fontName),
     );
   }
 
   static IconThemeData _buildIconTheme(
           IconThemeData base, DesignSystemColors designSystemColors) =>
-        base.copyWith(
-          color: designSystemColors.iconColor,
-        );
+      base.copyWith(
+        color: designSystemColors.iconColor,
+      );
 
   static OutlinedButtonThemeData _buildOutlinedButtonTheme(
           OutlinedButtonThemeData data, DesignSystem designSystem) =>
       OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
+          foregroundColor: designSystem.colors.outlinedButtonTextColor,
           backgroundColor: designSystem.colors.primaryColor,
           textStyle: designSystem.typography.outlinedButtonText,
-          primary: designSystem.colors.outlinedButtonTextColor,
           side: BorderSide(
             width: 2,
             color: designSystem.colors.primaryVariant,
@@ -99,10 +97,9 @@ class GithubSearchTheme {
           TextButtonThemeData data, DesignSystem designSystem) =>
       TextButtonThemeData(
         style: OutlinedButton.styleFrom(
+          foregroundColor: designSystem.colors.outlinedButtonTextColor,
           backgroundColor: designSystem.colors.primaryColor,
           textStyle: designSystem.typography.outlinedButtonText,
-          primary: designSystem.colors.outlinedButtonTextColor,
-      ),
-  );
-
+        ),
+      );
 }

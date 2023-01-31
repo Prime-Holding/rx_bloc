@@ -1,5 +1,8 @@
-## [1.5.0] - TBD
+## [2.0.0] - TBD
 * Replace the auto_route with go_router
+
+## [1.4.1] - January 25, 2023
+* Unit and golden test related fixes
 
 ## [1.4.0] - January 23, 2023
 * Make the project name parameter a mandatory one

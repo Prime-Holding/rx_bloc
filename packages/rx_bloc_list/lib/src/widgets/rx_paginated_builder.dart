@@ -222,11 +222,11 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
   final B? bloc;
 
   @override
-  _RxPaginatedBuilderState<B, T> createState() =>
-      _RxPaginatedBuilderState<B, T>();
+  RxPaginatedBuilderState<B, T> createState() =>
+      RxPaginatedBuilderState<B, T>();
 }
 
-class _RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
+class RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
     extends State<RxPaginatedBuilder<B, T>> {
   bool _isScrolled = false;
 

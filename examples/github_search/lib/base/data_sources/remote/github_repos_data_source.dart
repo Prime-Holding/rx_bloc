@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:github_search/base/models/response_models/github_repos_reponse.dart';
 import 'package:retrofit/retrofit.dart';
+
+import '../../models/response_models/github_repos_reponse.dart';
 
 part 'github_repos_data_source.g.dart';
 

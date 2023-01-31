@@ -5,8 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:auto_route/auto_route.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

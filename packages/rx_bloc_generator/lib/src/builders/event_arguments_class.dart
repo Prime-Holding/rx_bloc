@@ -17,7 +17,7 @@ class _EventArgumentsClass implements _BuilderContract {
         (b) => b
           ..docs.addAll([
             '/// Helps providing the arguments in the [Subject.add] for',
-            '/// [${method.enclosingElement3.name ?? ''}.${method.name}] event'
+            '/// [${method.enclosingElement.name ?? ''}.${method.name}] event'
           ])
           ..name = '_${method.name.capitalize()}EventArgs'
           ..constructors.add(

@@ -18,16 +18,14 @@ class CounterApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Counter sample',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: RxBlocProvider<CounterBlocType>(
-        create: (ctx) => CounterBloc(CounterRepository()),
-        child: const CounterPage(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Counter sample',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: RxBlocProvider<CounterBlocType>(
+          create: (ctx) => CounterBloc(CounterRepository()),
+          child: const CounterPage(),
+        ),
+      );
 }
 
 /// The page widget
@@ -39,59 +37,57 @@ class CounterPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: const Text('Counter sample')),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildErrorListener(),
-              _buildCount(),
+          child: RxBlocListener<CounterBlocType, String>(
+            state: (bloc) => bloc.states.errors,
+            listener: _showError,
+            child: RxBlocBuilder<CounterBlocType, int>(
+              state: (bloc) => bloc.states.count,
+              builder: (context, snapshot, bloc) =>
+                  _buildCount(snapshot, context),
+            ),
+          ),
+        ),
+        floatingActionButton: RxLoadingBuilder<CounterBlocType>(
+          state: (bloc) => bloc.states.isLoading,
+          builder: (context, isLoading, tag, bloc) => Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ActionButton(
+                tooltip: 'Increment',
+                iconData: Icons.add,
+                onPressed: bloc.events.increment,
+                disabled: isLoading,
+                loading: isLoading && tag == CounterBloc.tagIncrement,
+              ),
+              const SizedBox(width: 16),
+              ActionButton(
+                tooltip: 'Decrement',
+                iconData: Icons.remove,
+                onPressed: bloc.events.decrement,
+                disabled: isLoading,
+                loading: isLoading && tag == CounterBloc.tagDecrement,
+              ),
             ],
           ),
         ),
-        floatingActionButton: _buildActionButtons(),
       );
 
-  Widget _buildCount() => RxBlocBuilder<CounterBlocType, int>(
-        state: (bloc) => bloc.states.count,
-        builder: (context, snapshot, bloc) => snapshot.hasData
-            ? Text(
-                snapshot.data.toString(),
-                style: Theme.of(context).textTheme.headline4,
-              )
-            : Container(),
-      );
+  StatelessWidget _buildCount(
+    AsyncSnapshot<int> snapshot,
+    BuildContext context,
+  ) =>
+      snapshot.hasData
+          ? Text(
+              snapshot.data.toString(),
+              style: Theme.of(context).textTheme.headline4,
+            )
+          : Container();
 
-  Widget _buildErrorListener() => RxBlocListener<CounterBlocType, String>(
-        state: (bloc) => bloc.states.errors,
-        listener: (context, errorMessage) =>
-            ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorMessage),
-            behavior: SnackBarBehavior.floating,
-          ),
-        ),
-      );
-
-  Widget _buildActionButtons() => RxLoadingBuilder<CounterBlocType>(
-        state: (bloc) => bloc.states.isLoading,
-        builder: (context, isLoading, tag, bloc) => Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ActionButton(
-              tooltip: 'Increment',
-              iconData: Icons.add,
-              onPressed: bloc.events.increment,
-              disabled: isLoading,
-              loading: isLoading && tag == CounterBloc.tagIncrement,
-            ),
-            const SizedBox(width: 16),
-            ActionButton(
-              tooltip: 'Decrement',
-              iconData: Icons.remove,
-              onPressed: bloc.events.decrement,
-              disabled: isLoading,
-              loading: isLoading && tag == CounterBloc.tagDecrement,
-            ),
-          ],
+  void _showError(BuildContext context, String errorMessage) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          behavior: SnackBarBehavior.floating,
         ),
       );
 }

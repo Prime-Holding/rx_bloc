@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
@@ -42,8 +42,37 @@ class HomePage extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
-                    _buildBody(),
-                    _buildNavBar(),
+                    RxBlocBuilder<NavigationBarBlocType, NavigationItem?>(
+                      key: const ValueKey(Keys.hotelHomePage),
+                      state: (bloc) => bloc.states.selectedItem,
+                      builder: (ctx, snapshot, bloc) => AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: asPage(snapshot),
+                      ),
+                    ),
+                    RxBlocBuilder<NavigationBarBlocType, List<NavigationItem>>(
+                      state: (bloc) => bloc.states.items,
+                      builder: (context, snapshot, bloc) => snapshot.build(
+                        (navItems) => CurvedNavigationBar(
+                          index: navItems.toCurrentIndex(),
+                          color: Colors.blueAccent,
+                          backgroundColor: Colors.transparent,
+                          items: navItems
+                              .map(
+                                (item) => Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: item.asWidget(),
+                                ),
+                              )
+                              .toList(),
+                          onTap: (index) => bloc.events.selectPage(
+                            index == 0
+                                ? NavigationItemType.search
+                                : NavigationItemType.favorites,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -51,37 +80,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       );
-
-  RxBlocBuilder<NavigationBarBlocType, NavigationItem?> _buildBody() =>
-      RxBlocBuilder<NavigationBarBlocType, NavigationItem?>(
-        key: const ValueKey(Keys.hotelHomePage),
-        state: (bloc) => bloc.states.selectedItem,
-        builder: (ctx, snapshot, bloc) => AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          child: asPage(snapshot),
-        ),
-      );
-
-  RxBlocBuilder<NavigationBarBlocType, List<NavigationItem>> _buildNavBar() =>
-      RxBlocBuilder<NavigationBarBlocType, List<NavigationItem>>(
-          state: (bloc) => bloc.states.items,
-          builder: (context, snapshot, bloc) =>
-              snapshot.build((navItems) => CurvedNavigationBar(
-                    index: navItems.toCurrentIndex(),
-                    color: Colors.blueAccent,
-                    backgroundColor: Colors.transparent,
-                    items: navItems
-                        .map((item) => Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: item.asWidget(),
-                            ))
-                        .toList(),
-                    onTap: (index) => bloc.events.selectPage(
-                      index == 0
-                          ? NavigationItemType.search
-                          : NavigationItemType.favorites,
-                    ),
-                  )));
 
   Widget asPage(AsyncSnapshot<NavigationItem?> type) {
     if (!type.hasData) {
@@ -104,17 +102,21 @@ extension NavigationItemToWitget on NavigationItem {
           builder: (ctx, snapshot, bloc) =>
               snapshot.hasData && snapshot.data! <= 0
                   ? type.asIcon()!
-                  : Badge(
-                      padding: const EdgeInsets.all(3),
-                      badgeContent: snapshot.build((count) => Text(
-                            count.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          )),
-                      badgeColor: Colors.transparent,
-                      elevation: 0,
+                  : badges.Badge(
+                      badgeStyle: const badges.BadgeStyle(
+                        padding: EdgeInsets.all(5),
+                        badgeColor: Colors.white,
+                        elevation: 0,
+                      ),
+                      badgeContent: snapshot.build(
+                        (count) => Text(
+                          count.toString(),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                       child: type.asIcon(),
                     ),
         )

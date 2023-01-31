@@ -24,11 +24,12 @@ dependencies:
   cupertino_icons: ^1.0.0
   curved_navigation_bar: ^1.0.1
   favorites_advanced_base:
+    path: ../favorites_advanced_base
   flow_builder: ^0.0.6
   flutter:
     sdk: flutter
   flutter_rx_bloc:
-  image_picker: ^0.7.0
+  image_picker: ^0.8.6
   provider: ^6.0.1
   rx_bloc:
   rx_bloc_list:

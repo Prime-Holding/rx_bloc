@@ -50,7 +50,7 @@ class CounterBloc extends $CounterBloc {
         .setResultStateHandler(this)
         .doOnData(print)
         .bind(_countSubject)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final _countSubject = BehaviorSubject<Result<int>>();
