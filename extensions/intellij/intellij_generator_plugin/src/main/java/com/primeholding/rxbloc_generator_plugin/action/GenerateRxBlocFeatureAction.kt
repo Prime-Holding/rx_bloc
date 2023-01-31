@@ -5,6 +5,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFileFactory
@@ -52,6 +53,22 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         val view = LangDataKeys.IDE_VIEW.getData(dataContext)
         val directory = view?.orChooseDirectory
+
+        if (mainSourceGenerators.isNotEmpty()) {
+            val featureDirectory = directory?.findSubdirectory(mainSourceGenerators[0].featureDirectoryName())
+
+            if (featureDirectory != null) {
+                Messages.showMessageDialog(
+                    "Feature ${
+                        mainSourceGenerators[0].featureDirectoryName().replaceFirst("feature_", "")
+                    } Already Exists!",
+                    "Duplicate Feature",
+                    null
+                )
+                return
+            }
+        }
+
         ApplicationManager.getApplication().runWriteAction {
             CommandProcessor.getInstance().executeCommand(
                 project,
@@ -78,7 +95,6 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText(fileName, PlainTextLanguage.INSTANCE, generator.generate())
-        println(psiFile)
 
         if (psiFile != null) {
             directory.add(psiFile)
