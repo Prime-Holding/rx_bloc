@@ -38,6 +38,12 @@ class _HotelSearchPageState extends State<HotelSearchPage>
   }
 
   @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => SafeArea(
         child: NestedScrollView(
           controller: _scrollController,
@@ -86,7 +92,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
             ),
           ],
           body: Container(
-            color: HotelAppTheme.buildLightTheme().backgroundColor,
+            color: HotelAppTheme.buildLightTheme().colorScheme.background,
             child: RxPaginatedBuilder<HotelSearchBlocType,
                 Hotel>.withRefreshIndicator(
               onBottomScrolled: (bloc) => bloc.events.reload(reset: false),

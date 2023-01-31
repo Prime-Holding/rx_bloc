@@ -52,6 +52,8 @@ class AuthRepository {
       print(e.toString());
       return null;
     }
+
+    return refreshToken;
   }
 
   Future<AuthTokenModel> authenticate(

@@ -20,14 +20,14 @@ Future main() async {
   // https://cloud.google.com/run/docs/reference/container-contract#port
   final port = int.parse(Platform.environment['PORT'] ?? '8080');
 
-  final _routeGenerator = await _registerControllers();
+  final routeGenerator = await _registerControllers();
 
   // See https://pub.dev/documentation/shelf/latest/shelf/Cascade-class.html
   final cascade = Cascade()
       // First, serve files from the 'public' directory
       .add(_staticHandler)
       // If a corresponding file is not found, send requests to a `Router`
-      .add(_routeGenerator.generateRoutes());
+      .add(routeGenerator.generateRoutes());
 
   // See https://pub.dev/documentation/shelf/latest/shelf/Pipeline-class.html
   final pipeline = const Pipeline()
@@ -62,12 +62,9 @@ Future<RouteGenerator> _registerControllers() async {
   return generator;
 }
 
-Middleware _delayMiddleware({
-  void Function(String message, bool isError)? logger,
-}) =>
-    (innerHandler) => (request) => Future.delayed(
-          const Duration(
-            milliseconds: 300,
-          ),
-          () => innerHandler(request),
-        );
+Middleware _delayMiddleware() => (innerHandler) => (request) => Future.delayed(
+      const Duration(
+        milliseconds: 300,
+      ),
+      () => innerHandler(request),
+    );

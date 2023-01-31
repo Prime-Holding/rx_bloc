@@ -13,7 +13,7 @@ extension _StringExtensions on String {
   String capitalize() => '${this[0].toUpperCase()}${substring(1)}';
 
   /// Converts string to red string when printed in terminal
-  String toRedString() => '\x1B[31m${this}\x1B[0m';
+  String toRedString() => '\x1B[31m$this\x1B[0m';
 }
 
 /// It is the main [DartFormatter]

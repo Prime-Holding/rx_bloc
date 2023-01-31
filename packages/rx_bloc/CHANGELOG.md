@@ -1,5 +1,6 @@
-## [x.x.x] - TBD
-- Marked the `disposedBy` extension method for `StreamSubscription` as deprecated
+## [4.0.0] - January 28, 2023 
+* **Breaking changes**
+- Removed `disposedBy` extension method for the `StreamSubscription` extension. Use the `addTo` method provided by the rxdart library instead.
 
 ## [3.3.1] - May 26, 2022
 - Add equality check [support](https://github.com/Prime-Holding/rx_bloc/pull/247) for maps with nested objects on the [Result](https://pub.dev/documentation/rx_bloc/latest/rx_bloc/Result-class.html) class, thanks to [pangievich](https://github.com/PankovSerge)

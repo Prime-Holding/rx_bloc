@@ -21,7 +21,7 @@ dependencies:
   flutter_facebook_auth: ^5.0.6
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^4.0.0
+  flutter_rx_bloc:
   flutter_secure_storage: ^6.0.0
   flutter_slidable: ^2.0.0
   flutter_sticky_header: ^0.6.0
@@ -29,7 +29,7 @@ dependencies:
   grouped_list: ^5.1.2
   intl: ^0.17.0
   provider: ^6.0.1
-  rx_bloc: ^3.2.0
+  rx_bloc:
   rx_bloc_list: ^3.1.0
   rxdart: ^0.27.3
   scroll_to_index: ^3.0.1

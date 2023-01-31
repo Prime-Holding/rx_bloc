@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:dio/dio.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -14,8 +13,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
-import '../data_sources/remote/interceptors/analytics_interceptor.dart';
-import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../di/app_dependencies.dart';
 import '../routers/router.gr.dart' as router;
 import '../theme/design_system.dart';

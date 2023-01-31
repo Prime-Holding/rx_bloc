@@ -47,7 +47,7 @@ PuppiesExtraDetailsBloc(...) {
         // Bind the result (List<Puppies>) to the local state
         .bind(_lastFetchedPuppies)
         // Always make sure your subscriptions are disposed of!
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 ....
 }
@@ -169,7 +169,7 @@ class FavoritePuppiesBloc extends $FavoritePuppiesBloc {
   FavoritePuppiesBloc(...) {
     coordinatorBloc.states.onPuppiesUpdated
         .updateFavoritePuppies(_favoritePuppies)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
   @override
   Stream<int> _mapToCountState() => _favoritePuppies.mapToCount();
@@ -192,7 +192,7 @@ class FavoritePuppiesBloc extends $FavoritePuppiesBloc {
 
     coordinatorBloc.states.onPuppiesUpdated
         .updateFavoritePuppies(_favoritePuppies)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final _favoritePuppies =
@@ -209,7 +209,7 @@ class PuppyListBloc extends $PuppyListBloc {
   PuppyListBloc(...) {
     coordinatorBloc.states.onPuppiesUpdated
         .updatePuppies(_puppies)
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   final _puppies = BehaviorSubject.seeded(

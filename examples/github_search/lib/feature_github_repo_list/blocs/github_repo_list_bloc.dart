@@ -1,9 +1,10 @@
-import 'package:github_search/base/models/github_repo.dart';
-import 'package:github_search/base/repositories/github_repos_repository.dart';
-import 'package:github_search/feature_github_repo_list/models/github_repo_paginated_search.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../base/models/github_repo.dart';
+import '../../base/repositories/github_repos_repository.dart';
+import '../models/github_repo_paginated_search.dart';
 
 part 'github_repo_list_bloc.rxb.g.dart';
 part 'github_repo_list_bloc_extensions.dart';
@@ -58,7 +59,7 @@ class GithubRepoListBloc extends $GithubRepoListBloc {
         .mergeWithPaginatedList(_paginatedList)
         .bind(_paginatedList)
         // Make sure we dispose the subscription
-        .disposedBy(_compositeSubscription);
+        .addTo(_compositeSubscription);
   }
 
   /// Internal paginated list stream

@@ -1,10 +1,10 @@
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
 import '../app/blocs/counter_bloc.dart';
 import '../app/repositories/counter_repository.dart';
+import '../utils/rx_bloc_test.dart';
 
 class BlocImpl extends RxBlocBase implements RxBlocTypeBase {}
 
