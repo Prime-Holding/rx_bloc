@@ -38,6 +38,17 @@ class CounterPage extends StatelessWidget {
                 errorState: (bloc) => bloc.states.errors,
                 isListeningForNavigationErrors: false,
               ),
+              RxBlocListener<CounterBlocType, String>(
+                state: (bloc) => bloc.states.message,
+                condition: (old, nee) => (old != nee && nee.isNotEmpty),
+                listener: (context, message) =>
+                    ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

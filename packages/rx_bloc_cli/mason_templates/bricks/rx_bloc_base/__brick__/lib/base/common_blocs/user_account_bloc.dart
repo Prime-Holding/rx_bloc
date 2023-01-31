@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../common_services/permissions_service.dart';
 import '../common_services/user_account_service.dart';
 import '../extensions/error_model_extensions.dart';
 import '../models/errors/error_model.dart';
@@ -32,14 +33,19 @@ abstract class UserAccountBlocStates {
 @RxBloc()
 class UserAccountBloc extends $UserAccountBloc {
   UserAccountBloc(
-    UserAccountService userAccountService,
-    CoordinatorBlocType coordinatorBloc,
-    AuthRepository authRepository,
-  )   : _userAccountService = userAccountService,
+      UserAccountService userAccountService,
+      CoordinatorBlocType coordinatorBloc,
+      AuthRepository authRepository,
+      PermissionsService permissionsService,
+      )   : _userAccountService = userAccountService,
         _coordinatorBloc = coordinatorBloc,
-        _authRepository = authRepository {
+        _authRepository = authRepository,
+        _permissionsService = permissionsService {
     _$logoutEvent
-        .logoutUser(_userAccountService)
+        .logoutUser(
+      _userAccountService,
+      _permissionsService,
+    )
         .setResultStateHandler(this)
         .emitLoggedOutToCoordinator(_coordinatorBloc)
         .listen(null)
@@ -49,12 +55,13 @@ class UserAccountBloc extends $UserAccountBloc {
   final UserAccountService _userAccountService;
   final CoordinatorBlocType _coordinatorBloc;
   final AuthRepository _authRepository;
+  final PermissionsService _permissionsService;
 
   @override
   Stream<bool> _mapToLoggedInState() => Rx.merge([
-        _coordinatorBloc.states.isAuthenticated,
-        _authRepository.isAuthenticated().asStream(),
-      ]).shareReplay(maxSize: 1);
+    _coordinatorBloc.states.isAuthenticated,
+    _authRepository.isAuthenticated().asStream(),
+  ]).shareReplay(maxSize: 1);
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

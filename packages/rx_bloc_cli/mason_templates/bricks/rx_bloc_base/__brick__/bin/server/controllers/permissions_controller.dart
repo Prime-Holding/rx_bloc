@@ -1,6 +1,9 @@
+{{> licence.dart }}
+
 import 'package:shelf/shelf.dart';
 
 import '../utils/api_controller.dart';
+import 'authentication_controller.dart';
 
 class PermissionsController extends ApiController {
   @override
@@ -13,12 +16,32 @@ class PermissionsController extends ApiController {
   }
 
   Response permissionsHandler(Request request) {
+    try {
+      controllers
+          .getController<AuthenticationController>()
+          ?.isAuthenticated(request);
+    } catch (exception) {
+      return responseBuilder.buildOK(data: {
+        'item': {
+          'SplashRoute': true,
+          'CounterRouter': true,
+          'NotificationsRoute': false,
+          'LoginRoute': true,
+          'EnterMessageRoute': false,
+          'ItemsRoute': false,
+          'ItemDetailsRoute': false,
+        }
+      });
+    }
     return responseBuilder.buildOK(data: {
       'item': {
+        'SplashRoute': true,
         'CounterRouter': true,
         'NotificationsRoute': true,
-        'LoginRoute': true,
-        'SecuredPageRoute': false,
+        'LoginRoute': false,
+        'EnterMessageRoute': true,
+        'ItemsRoute': true,
+        'ItemDetailsRoute': true,
       }
     });
   }

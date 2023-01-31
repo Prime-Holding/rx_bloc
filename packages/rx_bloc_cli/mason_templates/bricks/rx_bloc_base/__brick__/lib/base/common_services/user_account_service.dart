@@ -50,12 +50,11 @@ class UserAccountService {
       if (pushToken != null) {
         await _pushSubscriptionRepository.unsubscribe(pushToken);
       }
+      // Perform user logout
+      await _authRepository.logout();
     } catch (e) {
       log(e.toString());
     }
-
-    // Perform user logout
-    await _authRepository.logout();
 
     // Clear locally stored auth data
     await _authRepository.clearAuthData();

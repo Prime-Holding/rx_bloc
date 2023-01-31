@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../repositories/auth_repository.dart';

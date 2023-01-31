@@ -15,7 +15,7 @@ class LoginPageWithDependencies extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
-        ..._services,
+          ..._services,
           ..._blocs,
         ],
       child: const LoginPage(),
@@ -30,6 +30,7 @@ class LoginPageWithDependencies extends StatelessWidget {
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<LoginBlocType>(
           create: (context) => LoginBloc(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),

@@ -10,12 +10,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../../lib_navigation/use_cases/check_permission_route_use_case.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_services/access_token_service.dart';
+import '../common_services/item_service.dart';
 import '../common_services/permissions_service.dart';
 import '../common_services/user_account_service.dart';
 import '../data_sources/local/auth_token_data_source.dart';
@@ -26,12 +26,13 @@ import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/count_remote_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
+import '../data_sources/remote/items_remote_data_source.dart';
 import '../data_sources/remote/permissions_remote_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../data_sources/remote/refresh_token_data_source.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/counter_repository.dart';
-import '../repositories/permissions_repository.dart';
+import '../repositories/item_repository.dart';
 import '../repositories/permissions_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
@@ -58,7 +59,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ..._dataSources,
         ..._repositories,
         ..._services,
-        ..._useCases,
         ..._blocs,
       ],
       child: child,
@@ -146,6 +146,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ApiHttpClient>(),
           ),
         ),
+        Provider<ItemsRemoteDataSource>(
+          create: (context) => ItemsRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
       ];
 
   List<Provider> get _repositories => [
@@ -176,6 +181,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
+        Provider<ItemRepository>(
+          create: (context) => ItemRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),
       ];
 
   List<Provider> get _services => [
@@ -195,11 +206,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-      ];
-
-  List<Provider> get _useCases => [
-        Provider<CheckPermissionRouteUseCase>(
-          create: (context) => CheckPermissionRouteUseCase(
+        Provider<ItemService>(
+          create: (context) => ItemService(
             context.read(),
           ),
         ),
@@ -208,6 +216,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   List<SingleChildWidget> get _blocs => [
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),

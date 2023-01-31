@@ -3,5 +3,8 @@
     "reload": "Reload",
     "ok" : "OK",
     "close" : "Close",
-    "resetPassword" : "Reset password"
+    "resetPassword" : "Reset password",
+    "pageWithResult" : "Page with result",
+    "deepLinkFlowMenu" : "Deep link flow",
+    "tryAgain" : "Try again"
 }

@@ -23,6 +23,10 @@ class PermissionsService {
     return permissions.item[key] ?? true;
   }
 
+  bool hasPermissionSync(String key) {
+    return _permissionList?.item[key] ?? true;
+  }
+
   Future<PermissionsModel> getPermissions({bool force = false}) async {
     if (_permissionList == null || force) {
       _permissionList = await _permissionsRepository.getPermissions();
@@ -32,6 +36,6 @@ class PermissionsService {
   }
 
   Future<void> load() async {
-    await getPermissions();
+    await getPermissions(force: true);
   }
 }

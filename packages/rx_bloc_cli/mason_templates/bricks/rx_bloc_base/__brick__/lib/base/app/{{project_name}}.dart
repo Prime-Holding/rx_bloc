@@ -99,9 +99,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   @override
   Widget build(BuildContext context) => Provider<NavigationBlocType>(
       create: (context) => NavigationBloc(
-        coordinatorBloc: context.read(),
         router: goRouter,
-        routePermissions: context.read(),
+        permissionsService: context.read(),
       ),
       child: MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',

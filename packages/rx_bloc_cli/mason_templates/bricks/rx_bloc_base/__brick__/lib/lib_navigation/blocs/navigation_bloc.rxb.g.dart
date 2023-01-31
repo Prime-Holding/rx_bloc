@@ -13,41 +13,54 @@ abstract class NavigationBlocType extends RxBlocTypeBase {
   NavigationBlocStates get states;
 }
 
-/// [$Navigation] extended by the [NavigationBloc]
+/// [$NavigationBloc] extended by the [NavigationBloc]
 /// {@nodoc}
 abstract class $NavigationBloc extends RxBlocBase
     implements NavigationBlocEvents, NavigationBlocStates, NavigationBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [fetchData]
-  final _$fetchDataEvent = PublishSubject<void>();
+  /// Тhe [Subject] where events sink to by calling [goTo]
+  final _$goToEvent = PublishSubject<_GoToEventArgs>();
 
-  /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
+  /// Тhe [Subject] where events sink to by calling [pushTo]
+  final _$pushToEvent = PublishSubject<_PushToEventArgs>();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
-  late final Stream<String> _errorsState = _mapToErrorsState();
+  late final Stream<ErrorModel> _errorsState = _mapToErrorsState();
 
-  /// The state of [data] implemented in [_mapToDataState]
-  late final Stream<Result<String>> _dataState = _mapToDataState();
-
-  @override
-  Stream<bool> get isLoading => _isLoadingState;
+  /// The state of [navigationPath] implemented in [_mapToNavigationPathState]
+  late final ConnectableStream<void> _navigationPathState =
+      _mapToNavigationPathState();
 
   @override
-  Stream<String> get errors => _errorsState;
+  void goTo(
+    RouteData route, {
+    Object? extra,
+  }) =>
+      _$goToEvent.add(_GoToEventArgs(
+        route,
+        extra: extra,
+      ));
 
   @override
-  Stream<Result<String>> get data => _dataState;
-
-  Stream<bool> _mapToIsLoadingState();
-
-  Stream<String> _mapToErrorsState();
-
-  Stream<Result<String>> _mapToDataState();
+  void pushTo(
+    RouteData route, {
+    Object? extra,
+  }) =>
+      _$pushToEvent.add(_PushToEventArgs(
+        route,
+        extra: extra,
+      ));
 
   @override
-  void fetchData() => _$fetchDataEvent.add(null);
+  Stream<ErrorModel> get errors => _errorsState;
+
+  @override
+  ConnectableStream<void> get navigationPath => _navigationPathState;
+
+  Stream<ErrorModel> _mapToErrorsState();
+
+  ConnectableStream<void> _mapToNavigationPathState();
 
   @override
   NavigationBlocEvents get events => this;
@@ -57,7 +70,35 @@ abstract class $NavigationBloc extends RxBlocBase
 
   @override
   void dispose() {
+    _$goToEvent.close();
+    _$pushToEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [NavigationBlocEvents.goTo] event
+class _GoToEventArgs {
+  const _GoToEventArgs(
+    this.route, {
+    this.extra,
+  });
+
+  final RouteData route;
+
+  final Object? extra;
+}
+
+/// Helps providing the arguments in the [Subject.add] for
+/// [NavigationBlocEvents.pushTo] event
+class _PushToEventArgs {
+  const _PushToEventArgs(
+    this.route, {
+    this.extra,
+  });
+
+  final RouteData route;
+
+  final Object? extra;
 }
