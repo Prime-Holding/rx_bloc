@@ -8,8 +8,6 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
-import '../../base/extensions/error_model_translations.dart';
-import '../../base/models/errors/error_model.dart';
 import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
@@ -126,12 +124,4 @@ class _LoginFormState extends State<LoginForm> {
   ) =>
       decoration.copyWith(labelText: label);
 
-  void _onError(BuildContext context, ErrorModel error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(error.translate(context)),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
 }

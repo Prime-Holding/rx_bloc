@@ -14,7 +14,11 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: RxBlocBuilder<SplashBlocType, ErrorModel>(
+    body: _buildSplashPageContent(context),
+  );
+
+  RxBlocBuilder<SplashBlocType, ErrorModel> _buildSplashPageContent(BuildContext context) {
+    return RxBlocBuilder<SplashBlocType, ErrorModel>(
       state: (bloc) => bloc.states.errors,
       builder: (state, snapshot, bloc) =>
       snapshot.hasData && snapshot.data != null
@@ -31,6 +35,6 @@ class SplashPage extends StatelessWidget {
         ),
       )
           : const SizedBox(),
-    ),
-  );
+    );
+  }
 }

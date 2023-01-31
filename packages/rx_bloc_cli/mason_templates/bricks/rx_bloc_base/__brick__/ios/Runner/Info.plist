@@ -58,10 +58,10 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>primeholdingtestapp.com</string>
+        <string>{{project_name}}.{{organization_name}}.{{domain_name}}</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>primescheme</string>
+        <string>{{organization_name}}scheme</string>
         </array>
         </dict>
     </array>

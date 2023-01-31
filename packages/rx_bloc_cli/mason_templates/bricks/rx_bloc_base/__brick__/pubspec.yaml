@@ -18,7 +18,7 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^5.0.1
+  flutter_rx_bloc: ^5.0.2
   flutter_secure_storage: ^7.0.1
   go_router: 6.0.1
   golden_toolkit: ^0.14.0
@@ -29,7 +29,7 @@ dependencies:
   provider: ^6.0.3
   retrofit: ^3.3.0
   rx_bloc: ^4.0.0
-  rx_bloc_list: ^3.2.0-dev.2
+  rx_bloc_list: ^3.2.1
   rxdart: ^0.27.5
   shared_preferences: ^2.0.15
 
@@ -50,7 +50,7 @@ dev_dependencies:
   mockito: 5.3.0
   r_flutter: 0.9.0
   retrofit_generator: ^4.2.0
-  rx_bloc_generator: ^6.0.0
+  rx_bloc_generator: ^6.0.1
   rx_bloc_test: any
   test: any
 

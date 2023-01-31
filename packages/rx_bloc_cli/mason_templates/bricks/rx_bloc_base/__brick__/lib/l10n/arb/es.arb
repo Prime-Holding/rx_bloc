@@ -6,5 +6,6 @@
     "resetPassword" : "Reset password",
     "pageWithResult" : "Page with result",
     "deepLinkFlowMenu" : "Deep link flow",
-    "tryAgain" : "Try again"
+    "tryAgain" : "Try again",
+    "confirm" : "Confirm"
 }

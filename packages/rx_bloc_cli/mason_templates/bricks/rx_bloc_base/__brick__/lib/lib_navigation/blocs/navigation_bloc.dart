@@ -47,9 +47,7 @@ class NavigationBloc extends $NavigationBloc {
   ConnectableStream<void> _mapToNavigationPathState() => Rx.merge([
     _$goToEvent
         .throttleTime(const Duration(seconds: 1))
-
-    ///TODO: change it to switchMap or ....
-        .flatMap(
+        .switchMap(
           (routeData) => _permissionsService
           .checkPermission(routeData.route.permissionName)
           .then((_) => routeData)
@@ -61,7 +59,7 @@ class NavigationBloc extends $NavigationBloc {
         _router.go(args.route.routeLocation, extra: args.extra)),
     _$pushToEvent
         .throttleTime(const Duration(seconds: 1))
-        .flatMap(
+        .switchMap(
           (routeData) => _permissionsService
           .checkPermission(routeData.route.permissionName)
           .then((_) => routeData)

@@ -17,7 +17,6 @@ linter:
 
 analyzer:
   exclude:
-    - lib/base/routers/router.g.dart
     - lib/generated_plugin_registrant.dart
     - lib/assets.dart
     - '**/*.g.dart'

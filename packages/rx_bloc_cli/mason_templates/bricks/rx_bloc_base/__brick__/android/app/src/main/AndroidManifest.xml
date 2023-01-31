@@ -29,7 +29,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="primeholdingtestapp.com" />
+                <data android:scheme="http" android:host="{{project_name}}.{{organization_name}}.{{domain_name}}" />
                 <data android:scheme="https" />
             </intent-filter>
             <!-- /Deep links -->
