@@ -35,7 +35,9 @@ void main() {
       build: () async => CounterBloc(),
       state: (bloc) => bloc.count,
       act: (bloc) async {
-        bloc..decrease()..decrease();
+        bloc
+          ..decrease()
+          ..decrease();
       },
       skip: 2,
       expect: <int>[-2],
@@ -74,19 +76,19 @@ void main() {
       expect: <String>['', 'job@prime.com'],
     );
 
-  rxBlocTest<DetailsBloc, String>(
-    'Empty test bloc',
-    build: () async => DetailsBloc(repo),
-    state: (bloc) => bloc.states.details,
-    expect: <String>['Success'],
-  );
+    rxBlocTest<DetailsBloc, String>(
+      'Empty test bloc',
+      build: () async => DetailsBloc(repo),
+      state: (bloc) => bloc.states.details,
+      expect: <String>['Success'],
+    );
 
-  rxBlocTest<DetailsBloc, String>(
-    'Waiting for results',
-    build: () async => DetailsBloc(repo),
-    state: (bloc) => bloc.states.details,
-    act: (bloc) async => bloc.events.fetch(),
-    expect: <String>['Success', 'Success'],
-  );
-});
+    rxBlocTest<DetailsBloc, String>(
+      'Waiting for results',
+      build: () async => DetailsBloc(repo),
+      state: (bloc) => bloc.states.details,
+      act: (bloc) async => bloc.events.fetch(),
+      expect: <String>['Success', 'Success'],
+    );
+  });
 }
