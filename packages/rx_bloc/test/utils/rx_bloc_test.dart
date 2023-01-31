@@ -1,8 +1,11 @@
+@Tags(['not-tests'])
+
 import 'dart:async';
 
 import 'package:meta/meta.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:test/test.dart' as tester;
+import 'package:test/test.dart';
 
 @isTest
 void rxBlocTest<B extends RxBlocTypeBase, StateOutputType>(
