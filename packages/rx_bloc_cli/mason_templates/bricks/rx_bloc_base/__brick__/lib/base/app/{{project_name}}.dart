@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
 import '../../lib_navigation/blocs/navigation_bloc.dart';
+import '../common_blocs/coordinator_bloc.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
@@ -57,7 +58,9 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
 
-    goRouter = AppRouter(context).router;
+    goRouter = AppRouter(
+      context.read<CoordinatorBlocType>(),
+    ).router;
 
     super.initState();
   }{{#push_notifications}}
