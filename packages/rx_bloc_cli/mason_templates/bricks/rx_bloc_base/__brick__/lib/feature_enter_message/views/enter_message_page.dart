@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
-import '../../l10n/l10n.dart';
 import '../blocs/enter_message_bloc.dart';
 
 class EnterMessagePage extends StatelessWidget {
@@ -25,14 +25,14 @@ class EnterMessagePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          width: 300,
+          width: context.designSystem.spacing.xxxxl300,
           child: Column(
             children: [
               RxTextFormFieldBuilder<EnterMessageBlocType>(
                 state: (bloc) => bloc.states.message,
                 showErrorState: (_) => const Stream.empty(),
                 builder: (fieldState) => SizedBox(
-                  width: 300,
+                  width: context.designSystem.spacing.xxxxl300,
                   child: TextFormField(
                     controller: fieldState.controller,
                     decoration: fieldState.decoration.copyWith(
@@ -43,7 +43,7 @@ class EnterMessagePage extends StatelessWidget {
                 ),
                 onChanged: (bloc, value) => bloc.events.setMessage(value),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: context.designSystem.spacing.xs1),
               RxBlocBuilder<EnterMessageBlocType, String>(
                 state: (bloc) => bloc.states.message,
                 builder: (context, snapshot, bloc) => PrimaryButton(

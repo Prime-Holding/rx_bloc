@@ -85,7 +85,7 @@ class CounterPage extends StatelessWidget {
               loading: isLoading && tag == CounterBloc.tagIncrement,
               heroTag: 'increment',
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: context.designSystem.spacing.m),
             ActionButton(
               icon: Icon(context.designSystem.icons.minusSign),
               tooltip: context.l10n.featureCounter.decrement,

@@ -43,7 +43,9 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(
+          context.designSystem.spacing.m,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -55,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             Column(
               children: [
                 _buildFieldEmail(context),
-                const SizedBox(height: 10),
+                SizedBox(height: context.designSystem.spacing.xs1),
                 _buildFieldPassword(context),
               ],
             ),
@@ -63,9 +65,11 @@ class _LoginFormState extends State<LoginForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Divider(indent: 5, endIndent: 5),
-                const SizedBox(height: 10),
+                SizedBox(height: context.designSystem.spacing.xs1),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: context.designSystem.spacing.l,
+                    ),
                   child: _buildLogInButton(),
                 ),
                 AppErrorModelWidget<LoginBlocType>(

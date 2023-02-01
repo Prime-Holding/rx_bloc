@@ -21,7 +21,9 @@ class NotificationsPage extends StatelessWidget {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 12),
+              padding: EdgeInsets.only(
+                  right: context.designSystem.spacing.s,
+                ),
               child: IconButton(
                 onPressed: () => showAdaptiveDialog(
                   context: context,
@@ -42,7 +44,9 @@ class NotificationsPage extends StatelessWidget {
             ),
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(
+                    vertical: context.designSystem.spacing.xs1,
+                  ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -126,7 +130,10 @@ class NotificationsPage extends StatelessWidget {
           height: 60,
           width: MediaQuery.of(context).size.width,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+            padding: EdgeInsets.symmetric(
+              vertical: context.designSystem.spacing.xs1,
+              horizontal: context.designSystem.spacing.xl0,
+            ),
             child: PrimaryButton(
               onPressed: () => onPressed?.call(),
               child: Text(
@@ -140,12 +147,16 @@ class NotificationsPage extends StatelessWidget {
 
   Widget _buildInfoCard(BuildContext context) => Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(
+              context.designSystem.spacing.xs1,
+            ),
         ),
         elevation: 8,
         child: Container(
           width: MediaQuery.of(context).size.width / (kIsWeb ? 3 : 1),
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(
+            context.designSystem.spacing.s,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -164,7 +175,9 @@ class NotificationsPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(
+                  top: context.designSystem.spacing.l,
+                ),
                 child: TextButton(
                   onPressed: () => context.pop(),
                   child: Text(context.l10n.close),

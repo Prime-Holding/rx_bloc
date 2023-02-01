@@ -17,10 +17,12 @@ class LoginPage extends StatelessWidget {
             children: [
               Center(
                 child: Container(
-                  width: 300,
-                  height: 300,
+                  width: context.designSystem.spacing.xxxxl300,
+                  height: context.designSystem.spacing.xxxxl300,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
+                    borderRadius: BorderRadius.circular(
+                        context.designSystem.spacing.xsss,
+                      ),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),

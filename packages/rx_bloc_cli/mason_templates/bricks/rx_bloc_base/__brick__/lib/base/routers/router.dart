@@ -19,6 +19,7 @@ import 'go_router_refresh_stream.dart';
 import 'permission_names.dart';
 import 'router_paths.dart';
 
+part 'flows/splash_flow.dart';
 part 'router.g.dart';
 
 class AppRouter {
@@ -81,25 +82,6 @@ class AppRouter {
 abstract class RouteData {
   String get permissionName;
   String get routeLocation;
-}
-
-@TypedGoRoute<SplashRoute>(path: '/splash')
-@immutable
-class SplashRoute extends GoRouteData implements RouteData {
-  const SplashRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-      MaterialPage(
-        key: state.pageKey,
-        child: const SplashPageWithDependencies(),
-      );
-
-  @override
-  String get permissionName => PermissionNames.splashPage;
-
-  @override
-  String get routeLocation => location;
 }
 
 @TypedGoRoute<CounterRoute>(
@@ -210,19 +192,14 @@ class ItemDetailsRoute extends GoRouteData implements RouteData {
   final String id;
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    ItemModel? item;
-    if (state.extra != null && state.extra is ItemModel) {
-      item = (state.extra as ItemModel);
-    }
-    return MaterialPage(
-      key: state.pageKey,
-      child: ItemDetailsWithDependencies(
-        itemId: id,
-        item: item,
-      ),
-    );
-  }
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: ItemDetailsWithDependencies(
+          itemId: id,
+          item: state.extra as ItemModel?,
+        ),
+      );
 
   @override
   String get permissionName => PermissionNames.itemDetailsPage;

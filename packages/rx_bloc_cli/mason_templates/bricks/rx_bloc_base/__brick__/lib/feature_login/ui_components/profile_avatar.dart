@@ -31,7 +31,9 @@ class ProfileAvatar extends StatelessWidget {
       RxBlocBuilder<UserAccountBlocType, bool>(
         state: (bloc) => bloc.states.loggedIn,
         builder: (context, loggedInState, bloc) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(
+              horizontal: context.designSystem.spacing.s,
+            ),
           child: (loggedInState.hasData && loggedInState.data!)
               ? _buildLoggedInAvatar(context)
               : _buildLoginButton(context),
@@ -55,7 +57,7 @@ class ProfileAvatar extends StatelessWidget {
           style: context.designSystem.typography.fadedButtonText,
         ),
       ),
-      const PopupMenuDivider(height: 2),
+      PopupMenuDivider(height: context.designSystem.spacing.xxxs),
       PopupMenuItem<String>(
         value: _deepLinkFlow,
         child: Text(
@@ -63,7 +65,7 @@ class ProfileAvatar extends StatelessWidget {
           style: context.designSystem.typography.fadedButtonText,
         ),
       ),
-      const PopupMenuDivider(height: 2),
+      PopupMenuDivider(height: context.designSystem.spacing.xxxs),
       PopupMenuItem<String>(
         value: _pageWithResultKey,
         child: Text(
@@ -71,7 +73,7 @@ class ProfileAvatar extends StatelessWidget {
           style: context.designSystem.typography.fadedButtonText,
         ),
       ),
-      const PopupMenuDivider(height: 2),
+      PopupMenuDivider(height: context.designSystem.spacing.xxxs),
       PopupMenuItem<String>(
         value: _logoutKey,
         child: Text(

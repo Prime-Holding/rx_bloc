@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../app_extensions.dart';
 import '../../base/models/item_model.dart';
 
 class ListItemWidget extends StatelessWidget {
@@ -17,10 +18,14 @@ class ListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Material(
     child: InkWell(
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          context.designSystem.spacing.xs,
+        ),
+      ),
       onTap: onTap,
       child: Ink(
-        height: 40,
+        height: context.designSystem.spacing.xxxl,
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: Border.all(color: Colors.black)),

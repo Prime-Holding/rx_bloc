@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_translations.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/item_model.dart';
-import '../../l10n/l10n.dart';
 import '../blocs/item_details_bloc.dart';
 
 class ItemDetailsPage extends StatelessWidget {
@@ -49,9 +49,7 @@ class ItemDetailsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text((error as NetworkErrorModel).translate(context)),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: context.designSystem.spacing.l),
                   PrimaryButton(
                     onPressed: () => bloc.events.getItemDetails(itemId),
                     child: Text(context.l10n.tryAgain),
