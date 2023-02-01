@@ -5,6 +5,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.psi.*
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 import com.primeholding.rxbloc_generator_plugin.generator.RxListBlocGeneratorFactory
@@ -37,10 +38,26 @@ class GenerateRxListBlocAction : AnAction(), GenerateRxListBlocDialog.Listener {
         }
     }
 
-    protected fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
+    private fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         val view = LangDataKeys.IDE_VIEW.getData(dataContext)
         val directory = view?.orChooseDirectory
+
+        mainSourceGenerators.forEach {
+            val existingPsiFile = directory?.findFile(it.fileName())
+            if(existingPsiFile != null) {
+
+                Messages.showMessageDialog(
+                    "RxBloc List ${
+                        it.fileName()
+                    } Already Exists!",
+                    "Duplicate RxBloc List",
+                    null
+                )
+                return
+            }
+        }
+
         ApplicationManager.getApplication().runWriteAction {
             CommandProcessor.getInstance().executeCommand(
                 project,

@@ -20,16 +20,16 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
 
     override fun onGenerateBlocClicked(
         blocName: String?,
-        shouldUseEquatable: Boolean,
-        includeExtensions: Boolean,
-        includeNullSafety: Boolean,
-        includeAutoRoute: Boolean) {
+        withDefaultStates: Boolean,
+        includeLocalService: Boolean,
+        includeAutoRoute: Boolean
+    ) {
         blocName?.let { name ->
             val generators = RxBlocGeneratorFactory.getBlocGenerators(
                 name,
-                shouldUseEquatable,
-                includeExtensions,
-                includeNullSafety
+                withDefaultStates,
+                includeLocalService,
+                includeAutoRoute
             )
             generate(generators)
         }

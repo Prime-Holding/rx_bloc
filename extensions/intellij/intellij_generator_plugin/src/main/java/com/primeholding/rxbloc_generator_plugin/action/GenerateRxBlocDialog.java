@@ -11,8 +11,7 @@ public class GenerateRxBlocDialog extends DialogWrapper {
     private JTextField blocNameTextField;
     private JCheckBox withDefaultStates;
     private JPanel contentPanel;
-    private JCheckBox includeExtensions;
-    private JCheckBox includeNullSafety;
+    private JCheckBox includeLocalService;
     private JCheckBox includeAutoRoute;
     @SuppressWarnings("unused")
     private JLabel includeAutoRouteLabel;
@@ -45,8 +44,7 @@ public class GenerateRxBlocDialog extends DialogWrapper {
         this.listener.onGenerateBlocClicked(
                 blocNameTextField.getText(),
                 withDefaultStates.isSelected(),
-                includeExtensions.isSelected(),
-                includeNullSafety.isSelected(),
+                includeLocalService.isSelected(),
                 includeAutoRoute.isSelected()
         );
     }
@@ -60,9 +58,8 @@ public class GenerateRxBlocDialog extends DialogWrapper {
     public interface Listener {
         void onGenerateBlocClicked(
                 String blocName,
-                boolean shouldUseEquatable,
-                boolean includeExtensions,
-                boolean includeNullSafety,
+                boolean withDefaultStates,
+                boolean includeLocalService,
                 boolean includeAutoRoute
         );
     }

@@ -18,6 +18,7 @@ public class GenerateRxListBlocDialog extends DialogWrapper {
         super(null);
         this.listener = listener;
         init();
+        setTitle("Create RxBloc List");
     }
 
     @Nullable

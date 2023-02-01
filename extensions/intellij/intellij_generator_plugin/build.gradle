@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '2.1.1'
+version '3.0.0'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -41,11 +41,13 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
-     <li>v2.1.1 
+     <li>v3.0.0 
         <br /> - detecting user selected folder/item so the bootstrap (RxBloc Tests) menu item is optionally visible. 
         <br /> - skip the feature/lib selection - when features are selected and directly generate tests,
         <br /> - improve a little bit more the imports in the tests
         <br /> - checkbox for feature to use auto_route or dependency as StatelessWidget
+        <br /> - remove null safety checkbox
+        <br /> - replace extensions with service
     </li>
        <li>v2.1.0 
         <br /> - Allow scanning lib\\src folder for features and libs

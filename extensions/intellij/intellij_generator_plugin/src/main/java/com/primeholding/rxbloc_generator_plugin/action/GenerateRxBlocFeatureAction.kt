@@ -11,6 +11,7 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFileFactory
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocFeatureGeneratorFactory
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
+import com.primeholding.rxbloc_generator_plugin.generator.components.RxPageGenerator
 
 
 class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
@@ -24,17 +25,15 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
 
     override fun onGenerateBlocClicked(
         blocName: String?,
-        shouldUseEquatable: Boolean,
-        includeExtensions: Boolean,
-        includeNullSafety: Boolean,
+        withDefaultStates: Boolean,
+        includeLocalService: Boolean,
         includeAutoRoute: Boolean
     ) {
         blocName?.let { name ->
             val generators = RxBlocFeatureGeneratorFactory.getBlocGenerators(
                 name,
-                shouldUseEquatable,
-                includeExtensions,
-                includeNullSafety,
+                withDefaultStates,
+                includeLocalService,
                 includeAutoRoute
             )
             generate(generators)
@@ -76,7 +75,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
                     mainSourceGenerators.forEach {
                         val featureDirectory = createDir(directory!!, it.featureDirectoryName())
                         val featureBlocDirectory = createDir(featureDirectory, it.contextDirectoryName())
-                        createSourceFile(project!!, it, featureBlocDirectory)
+                        createSourceFile(project!!, it, featureBlocDirectory, it is RxPageGenerator)
                     }
                 },
                 "Generate a new RxBloc Feature",
@@ -85,7 +84,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
     }
 
-    private fun createSourceFile(project: Project, generator: RxGeneratorBase, directory: PsiDirectory) {
+    private fun createSourceFile(project: Project, generator: RxGeneratorBase, directory: PsiDirectory, open: Boolean) {
         val fileName = generator.fileName()
         val existingPsiFile = directory.findFile(fileName)
         if (existingPsiFile != null) {
@@ -98,6 +97,11 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
 
         if (psiFile != null) {
             directory.add(psiFile)
+        }
+        @Suppress("ControlFlowWithEmptyBody")
+        if (open) {
+//            FileEditorManager.getInstance(project)
+//                .openFile(psiFile.virtualFile, false) // TODO research how to open it in non plain text editor
         }
     }
 
