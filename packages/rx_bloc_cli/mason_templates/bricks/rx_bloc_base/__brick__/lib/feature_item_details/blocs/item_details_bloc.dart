@@ -12,7 +12,11 @@ part 'item_details_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the ItemDetailsBloC.
 abstract class ItemDetailsBlocEvents {
-  void getItemDetails(String itemId);
+  @RxBlocEvent(type: RxBlocEventType.behaviour)
+  void fetchItemDetailsById(String itemId);
+
+  @RxBlocEvent(type: RxBlocEventType.behaviour)
+  void showItemDetails(ItemModel item);
 }
 
 /// A contract class containing all states of the ItemDetailsBloC.
@@ -29,26 +33,24 @@ abstract class ItemDetailsBlocStates {
 @RxBloc()
 class ItemDetailsBloc extends $ItemDetailsBloc {
   ItemDetailsBloc(
-      this._itemService, {
-        required String itemId,
-        ItemModel? item,
-      }) : _itemSubject = BehaviorSubject<Result<ItemModel>>.seeded(
-      item != null ? Result.success(item) : Result.loading()) {
-    initItemData(itemId);
+    this._itemService, {
+    required String itemId,
+    ItemModel? item,
+  }) {
+    initItemDetailsData(
+      itemId: itemId,
+      item: item,
+    );
   }
 
   final ItemService _itemService;
 
-  final BehaviorSubject<Result<ItemModel>> _itemSubject;
-
-  void initItemData(String itemId) {
-    _$getItemDetailsEvent
-        .startWith('')
-        .where((_) => _itemSubject.value is! ResultSuccess)
-        .switchMap(
-            (value) => _itemService.fetchItemById(id: itemId).asResultStream())
-        .bind(_itemSubject)
-        .addTo(_compositeSubscription);
+  void initItemDetailsData({required String itemId, ItemModel? item}) {
+    if (item != null) {
+      showItemDetails(item);
+    } else {
+      fetchItemDetailsById(itemId);
+    }
   }
 
   @override
@@ -58,11 +60,13 @@ class ItemDetailsBloc extends $ItemDetailsBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  Stream<Result<ItemModel>> _mapToItemState() => _itemSubject;
-
-  @override
-  void dispose() {
-    _itemSubject.close();
-    super.dispose();
-  }
+  Stream<Result<ItemModel>> _mapToItemState() => Rx.merge([
+        _$fetchItemDetailsByIdEvent
+            .switchMap((itemId) =>
+                _itemService.fetchItemById(id: itemId).asResultStream())
+            .shareReplay(maxSize: 1),
+        _$showItemDetailsEvent
+            .mapToResult((item) => item)
+            .shareReplay(maxSize: 1),
+      ]);
 }

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
+import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/item_model.dart';
 import '../../base/routers/router.dart';
@@ -37,10 +38,18 @@ class ItemsListPage extends StatelessWidget {
             ),
             child: RxResultBuilder<ItemsListBlocType, List<ItemModel>>(
               state: (bloc) => bloc.states.itemsList,
-              buildError: (ctx, error, bloc) => Center(
-                child: Text(
-                  error.asErrorModel.toString(),
-                ),
+              buildError: (ctx, error, bloc) => Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    error.asErrorModel.toString(),
+                  ),
+                  SizedBox(height: context.designSystem.spacing.l),
+                  PrimaryButton(
+                    onPressed: () => bloc.events.fetchItemsList(),
+                    child: Text(context.l10n.tryAgain),
+                  ),
+                ],
               ),
               buildLoading: (ctx, bloc) => const Center(
                 child: CircularProgressIndicator(),

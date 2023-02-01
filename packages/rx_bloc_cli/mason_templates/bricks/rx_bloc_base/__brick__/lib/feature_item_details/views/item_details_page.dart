@@ -40,9 +40,16 @@ class ItemDetailsPage extends StatelessWidget {
               buildSuccess: (ctx, itemData, bloc) => Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Id: ${itemData.id}'),
-                  Text('Name: ${itemData.name}'),
-                  Text('Description: ${itemData.description}'),
+                  Text(
+                    context.l10n.itemIdResult(itemData.id),
+                  ),
+                  Text(
+                    context.l10n.itemNameResult(itemData.name),
+                  ),
+                  Text(
+                    context.l10n
+                        .itemDescriptionResult(itemData.description),
+                  ),
                 ],
               ),
               buildError: (context, error, bloc) => Column(
@@ -51,7 +58,8 @@ class ItemDetailsPage extends StatelessWidget {
                   Text((error as NetworkErrorModel).translate(context)),
                   SizedBox(height: context.designSystem.spacing.l),
                   PrimaryButton(
-                    onPressed: () => bloc.events.getItemDetails(itemId),
+                    onPressed: () =>
+                        bloc.events.fetchItemDetailsById(itemId),
                     child: Text(context.l10n.tryAgain),
                   ),
                 ],

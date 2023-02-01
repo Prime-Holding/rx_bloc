@@ -7,5 +7,8 @@
     "pageWithResult" : "Page with result",
     "deepLinkFlowMenu" : "Deep link flow",
     "tryAgain" : "Try again",
-    "confirm" : "Confirm"
+    "confirm" : "Confirm",
+    "itemIdResult" : "Id: {id}",
+    "itemNameResult" : "Name: {name}",
+    "itemDescriptionResult" : "Description: {description}"
 }

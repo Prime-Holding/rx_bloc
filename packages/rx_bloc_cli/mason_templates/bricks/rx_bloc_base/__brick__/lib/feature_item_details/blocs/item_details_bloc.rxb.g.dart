@@ -22,8 +22,11 @@ abstract class $ItemDetailsBloc extends RxBlocBase
         ItemDetailsBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [getItemDetails]
-  final _$getItemDetailsEvent = PublishSubject<String>();
+  /// Тhe [Subject] where events sink to by calling [fetchItemDetailsById]
+  final _$fetchItemDetailsByIdEvent = BehaviorSubject<String>();
+
+  /// Тhe [Subject] where events sink to by calling [showItemDetails]
+  final _$showItemDetailsEvent = BehaviorSubject<ItemModel>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -35,7 +38,11 @@ abstract class $ItemDetailsBloc extends RxBlocBase
   late final Stream<Result<ItemModel>> _itemState = _mapToItemState();
 
   @override
-  void getItemDetails(String itemId) => _$getItemDetailsEvent.add(itemId);
+  void fetchItemDetailsById(String itemId) =>
+      _$fetchItemDetailsByIdEvent.add(itemId);
+
+  @override
+  void showItemDetails(ItemModel item) => _$showItemDetailsEvent.add(item);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -60,7 +67,8 @@ abstract class $ItemDetailsBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$getItemDetailsEvent.close();
+    _$fetchItemDetailsByIdEvent.close();
+    _$showItemDetailsEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

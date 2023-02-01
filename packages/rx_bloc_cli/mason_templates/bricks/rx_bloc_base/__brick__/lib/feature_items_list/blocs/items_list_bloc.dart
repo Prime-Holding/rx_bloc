@@ -12,7 +12,8 @@ part 'items_list_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the ItemsListBloC.
 abstract class ItemsListBlocEvents {
-  void getItemsList();
+  @RxBlocEvent(type: RxBlocEventType.behaviour)
+  void fetchItemsList();
 }
 
 /// A contract class containing all states of the ItemsListBloC.
@@ -28,16 +29,11 @@ abstract class ItemsListBlocStates {
 
 @RxBloc()
 class ItemsListBloc extends $ItemsListBloc {
-  ItemsListBloc(ItemService itemService) {
-    _$getItemsListEvent
-        .startWith(null)
-        .switchMap((_) => itemService.fetchItems().asResultStream())
-        .bind(_itemsListSubject)
-        .addTo(_compositeSubscription);
+  ItemsListBloc(this._itemService) {
+    fetchItemsList();
   }
 
-  final _itemsListSubject =
-  BehaviorSubject<Result<List<ItemModel>>>.seeded(Result.loading());
+  final ItemService _itemService;
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
@@ -46,11 +42,8 @@ class ItemsListBloc extends $ItemsListBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  Stream<Result<List<ItemModel>>> _mapToItemsListState() => _itemsListSubject;
-
-  @override
-  void dispose() {
-    _itemsListSubject.close();
-    super.dispose();
-  }
+  Stream<Result<List<ItemModel>>> _mapToItemsListState() =>
+      _$fetchItemsListEvent
+          .switchMap((_) => _itemService.fetchItems().asResultStream())
+          .shareReplay(maxSize: 1);
 }

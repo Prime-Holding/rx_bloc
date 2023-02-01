@@ -27,7 +27,11 @@ class ListItemWidget extends StatelessWidget {
       child: Ink(
         height: context.designSystem.spacing.xxxl,
         decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                context.designSystem.spacing.xs,
+              ),
+            ),
             border: Border.all(color: Colors.black)),
         child: Center(
           child: Text(item.name),

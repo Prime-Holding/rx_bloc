@@ -23,12 +23,13 @@ part 'flows/splash_flow.dart';
 part 'router.g.dart';
 
 class AppRouter {
-  AppRouter(this._context) {
+  AppRouter(this._coordinatorBloc) {
     refreshListener = GoRouterRefreshStream(
-        _context.read<CoordinatorBlocType>().states.isAuthenticated);
+      _coordinatorBloc.states.isAuthenticated,
+    );
   }
 
-  final BuildContext _context;
+  final CoordinatorBlocType _coordinatorBloc;
   late GoRouterRefreshStream refreshListener;
 
   GoRouter get router => _goRouter;
@@ -63,7 +64,7 @@ class AppRouter {
       return null;
     },
     refreshListenable: GoRouterRefreshStream(
-      _context.read<CoordinatorBlocType>().states.isAuthenticated,
+      _coordinatorBloc.states.isAuthenticated,
     ),
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,

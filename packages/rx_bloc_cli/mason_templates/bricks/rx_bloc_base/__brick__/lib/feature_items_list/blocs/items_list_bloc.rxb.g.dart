@@ -19,8 +19,8 @@ abstract class $ItemsListBloc extends RxBlocBase
     implements ItemsListBlocEvents, ItemsListBlocStates, ItemsListBlocType {
   final _compositeSubscription = CompositeSubscription();
 
-  /// Тhe [Subject] where events sink to by calling [getItemsList]
-  final _$getItemsListEvent = PublishSubject<void>();
+  /// Тhe [Subject] where events sink to by calling [fetchItemsList]
+  final _$fetchItemsListEvent = BehaviorSubject<void>();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -33,7 +33,7 @@ abstract class $ItemsListBloc extends RxBlocBase
       _mapToItemsListState();
 
   @override
-  void getItemsList() => _$getItemsListEvent.add(null);
+  void fetchItemsList() => _$fetchItemsListEvent.add(null);
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -58,7 +58,7 @@ abstract class $ItemsListBloc extends RxBlocBase
 
   @override
   void dispose() {
-    _$getItemsListEvent.close();
+    _$fetchItemsListEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }
