@@ -193,16 +193,16 @@ class UserBloc extends $UserBloc {
 extension UserBlocStreamExtensions on Stream<bool> {
   /// Fetches appropriate data from the repository
   Stream<Result<PaginatedList<User>>> fetchData(
-    UserRepository _repository,
-    BehaviorSubject<PaginatedList<User>> _paginatedList,
+    UserRepository repository,
+    BehaviorSubject<PaginatedList<User>> paginatedList,
   ) =>
       switchMap(
         (reset) {
-          if (reset) _paginatedList.value.reset();
-          return _repository
+          if (reset) paginatedList.value.reset();
+          return repository
               .fetchPage(
-                _paginatedList.value.pageNumber + 1,
-                _paginatedList.value.pageSize,
+                paginatedList.value.pageNumber + 1,
+                paginatedList.value.pageSize,
               )
               .asResultStream();
         },

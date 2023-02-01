@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:github_search/base/models/github_repo.dart';
+import '../../base/models/github_repo.dart';
 
 class RepoCardWidget extends StatelessWidget {
   const RepoCardWidget({

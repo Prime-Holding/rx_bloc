@@ -6,25 +6,28 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../blocs/notifications_bloc.dart';
+import '../services/notifications_service.dart';
 
 class NotificationsDependencies {
   NotificationsDependencies._(this.context);
 
-  factory NotificationsDependencies.of(BuildContext context) =>
-      _instance != null
-          ? _instance!
-          : _instance = NotificationsDependencies._(context);
-
-  static NotificationsDependencies? _instance;
+  factory NotificationsDependencies.from(BuildContext context) =>
+      NotificationsDependencies._(context);
 
   final BuildContext context;
 
   late List<SingleChildWidget> providers = [
-    ..._repositories,
+    ..._services,
     ..._blocs,
   ];
 
-  late final List<Provider> _repositories = [];
+  late final List<Provider> _services = [
+    Provider<NotificationService>(
+      create: (context) => NotificationService(
+        context.read(),
+      ),
+    )
+  ];
 
   late final List<RxBlocProvider> _blocs = [
     RxBlocProvider<NotificationsBlocType>(

@@ -65,17 +65,17 @@ class ResponseBuilder {
     Map<String, Object>? headers,
     Map<String, Object>? data,
   ]) {
-    final _body = <String, Object>{
+    final body = <String, Object>{
       if (request != null) 'url': request.requestedUri.toString(),
       _kStatus: getStatusMessage(statusCode),
       'error': errorMessage,
     };
     // Add additional data, if provided
-    if (data != null) _body.addAll(data);
+    if (data != null) body.addAll(data);
 
     return Response(
       statusCode,
-      body: const JsonEncoder.withIndent(' ').convert(_body),
+      body: const JsonEncoder.withIndent(' ').convert(body),
       headers: headers ??
           _buildFromDefaultHeader({'content-type': 'application/problem+json'}),
     );
@@ -91,14 +91,14 @@ class ResponseBuilder {
     assert(statusCode >= 200 && statusCode < 300,
         '$statusCode is not a valid success response code.');
 
-    final _body = <String, dynamic>{
+    final body = <String, dynamic>{
       if (includeStatusMessage) _kStatus: getStatusMessage(statusCode),
     };
     // Add additional data, if provided
-    if (data != null) _body.addAll(data);
+    if (data != null) body.addAll(data);
 
     return Response.ok(
-      const JsonEncoder.withIndent(' ').convert(_body),
+      const JsonEncoder.withIndent(' ').convert(body),
       headers: headers ??
           _buildFromDefaultHeader({'content-type': 'application/json'}),
     );

@@ -10,6 +10,7 @@
 //
 // ignore_for_file: type=lint
 
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:flutter/material.dart' as _i6;
 
@@ -26,42 +27,61 @@ class Router extends _i5.RootStackRouter {
   final Map<String, _i5.PageFactory> pagesMap = {
     CounterRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i5.WrappedRoute(child: const _i1.CounterPage()));
+        routeData: routeData,
+        child: _i5.WrappedRoute(child: const _i1.CounterPage()),
+      );
     },
     LoginRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i5.WrappedRoute(child: const _i2.LoginPage()));
+        routeData: routeData,
+        child: _i5.WrappedRoute(child: const _i2.LoginPage()),
+      );
     },
     NotificationsRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i5.WrappedRoute(child: const _i3.NotificationsPage()));
+        routeData: routeData,
+        child: _i5.WrappedRoute(child: const _i3.NotificationsPage()),
+      );
     },
     GithubRepoListRoute.name: (routeData) {
       final args = routeData.argsAs<GithubRepoListRouteArgs>(
           orElse: () => const GithubRepoListRouteArgs());
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child:
-              _i5.WrappedRoute(child: _i4.GithubRepoListPage(key: args.key)));
-    }
+        routeData: routeData,
+        child: _i5.WrappedRoute(child: _i4.GithubRepoListPage(key: args.key)),
+      );
+    },
   };
 
   @override
   List<_i5.RouteConfig> get routes => [
-        _i5.RouteConfig(CounterRoute.name, path: '/counter-page'),
-        _i5.RouteConfig(LoginRoute.name, path: '/login-page'),
-        _i5.RouteConfig(NotificationsRoute.name, path: '/notifications-page'),
-        _i5.RouteConfig(GithubRepoListRoute.name, path: '/')
+        _i5.RouteConfig(
+          CounterRoute.name,
+          path: '/counter-page',
+        ),
+        _i5.RouteConfig(
+          LoginRoute.name,
+          path: '/login-page',
+        ),
+        _i5.RouteConfig(
+          NotificationsRoute.name,
+          path: '/notifications-page',
+        ),
+        _i5.RouteConfig(
+          GithubRepoListRoute.name,
+          path: '/',
+        ),
       ];
 }
 
 /// generated route for
 /// [_i1.CounterPage]
 class CounterRoute extends _i5.PageRouteInfo<void> {
-  const CounterRoute() : super(CounterRoute.name, path: '/counter-page');
+  const CounterRoute()
+      : super(
+          CounterRoute.name,
+          path: '/counter-page',
+        );
 
   static const String name = 'CounterRoute';
 }
@@ -69,7 +89,11 @@ class CounterRoute extends _i5.PageRouteInfo<void> {
 /// generated route for
 /// [_i2.LoginPage]
 class LoginRoute extends _i5.PageRouteInfo<void> {
-  const LoginRoute() : super(LoginRoute.name, path: '/login-page');
+  const LoginRoute()
+      : super(
+          LoginRoute.name,
+          path: '/login-page',
+        );
 
   static const String name = 'LoginRoute';
 }
@@ -78,7 +102,10 @@ class LoginRoute extends _i5.PageRouteInfo<void> {
 /// [_i3.NotificationsPage]
 class NotificationsRoute extends _i5.PageRouteInfo<void> {
   const NotificationsRoute()
-      : super(NotificationsRoute.name, path: '/notifications-page');
+      : super(
+          NotificationsRoute.name,
+          path: '/notifications-page',
+        );
 
   static const String name = 'NotificationsRoute';
 }
@@ -87,8 +114,11 @@ class NotificationsRoute extends _i5.PageRouteInfo<void> {
 /// [_i4.GithubRepoListPage]
 class GithubRepoListRoute extends _i5.PageRouteInfo<GithubRepoListRouteArgs> {
   GithubRepoListRoute({_i6.Key? key})
-      : super(GithubRepoListRoute.name,
-            path: '/', args: GithubRepoListRouteArgs(key: key));
+      : super(
+          GithubRepoListRoute.name,
+          path: '/',
+          args: GithubRepoListRouteArgs(key: key),
+        );
 
   static const String name = 'GithubRepoListRoute';
 }

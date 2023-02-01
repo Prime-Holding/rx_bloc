@@ -10,4 +10,3 @@ vars:
   - uses_firebase
   - analytics
   - push_notifications
-  - http-client

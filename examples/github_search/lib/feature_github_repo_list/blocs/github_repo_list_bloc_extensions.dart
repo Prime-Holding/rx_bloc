@@ -32,17 +32,17 @@ extension GithubRepoListBlocStreamExtensions
     on Stream<GithubRepoPaginatedSearch> {
   /// Fetches appropriate data from the repository
   Stream<Result<PaginatedList<GithubRepo>>> fetchData(
-    GithubReposRepository _repository,
-    BehaviorSubject<PaginatedList<GithubRepo>> _paginatedList,
+    GithubReposRepository repository,
+    BehaviorSubject<PaginatedList<GithubRepo>> paginatedList,
   ) =>
       throttleTime(const Duration(milliseconds: 600)).switchMap(
         (search) {
-          if (search.reset) _paginatedList.value.reset(hard: search.hardReset);
-          return _repository
+          if (search.reset) paginatedList.value.reset(hard: search.hardReset);
+          return repository
               .search(
                 query: search.query,
-                page: _paginatedList.value.pageNumber + 1,
-                pageSize: _paginatedList.value.pageSize,
+                page: paginatedList.value.pageNumber + 1,
+                pageSize: paginatedList.value.pageSize,
               )
               .asResultStream();
         },

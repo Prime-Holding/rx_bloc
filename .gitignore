@@ -1,6 +1,5 @@
 # Miscellaneous
 *.class
-*.lock
 *.log
 *.pyc
 *.swp
@@ -9,6 +8,13 @@
 .buildlog/
 .history
 .svn/
+packages/rx_bloc/pubspec.lock
+packages/rx_bloc_list/pubspec.lock
+packages/flutter_rx_bloc/pubspec.lock
+packages/rx_bloc_cli/pubspec.lock
+packages/rx_bloc_generator/pubspec.lock
+packages/rx_bloc_test/pubspec.lock
+
 
 # IntelliJ related
 *.iml
@@ -54,6 +60,7 @@ flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
+
 
 # Android related
 **/android/**/gradle-wrapper.jar

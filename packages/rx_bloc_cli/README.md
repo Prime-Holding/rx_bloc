@@ -18,12 +18,11 @@ $ dart pub global activate rx_bloc_cli
 
 Create a new project at the given directory with lots of already set-up features out of the box. Customize your project with the following properties:
 
-|  parameter |defaults to | description |
-| ------------ | :------------: | :------------: |
-|  `--project-name`  | Name of directory where the project resides  | The project name for this new Flutter project. This must be a valid dart package name. |
-|  `--org` | `com.example` | The organisation name |
-|  `--include-analytics` |`true` | Enables Firebase analytics for the project |
-|  `--http-client` |`dio` | Use Http client configuration for the project |
+|  parameter |                 defaults to                 | description |
+| ---------- |:-------------------------------------------:| :------------: |
+|  `--project-name` | Name of directory where the project resides | The project name for this new Flutter project. This must be a valid dart package name. |
+|  `--organisation` |                `com.example`                | The organisation name |
+|  `--enable-analytics` |                   `false`                   | Enables Firebase analytics for the project |
 
 ### What's Included? 📦
 

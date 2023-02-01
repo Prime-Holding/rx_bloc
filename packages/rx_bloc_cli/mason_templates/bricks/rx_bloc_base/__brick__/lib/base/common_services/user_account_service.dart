@@ -1,11 +1,11 @@
-{{> licence.dart }}
+import 'dart:developer';
 
 import '../app/config/app_constants.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
-class LoginUseCase {
-  LoginUseCase(
+class UserAccountService {
+  UserAccountService(
     this._authRepository,
     this._pushSubscriptionRepository,
   );
@@ -13,7 +13,7 @@ class LoginUseCase {
   final AuthRepository _authRepository;
   final PushNotificationRepository _pushSubscriptionRepository;
 
-  Future<bool> execute({
+  Future<bool> login({
     required String username,
     required String password,
   }) async {
@@ -36,8 +36,29 @@ class LoginUseCase {
         await _pushSubscriptionRepository.subscribe(pushToken);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
+
+    return true;
+  }
+
+  Future<bool> logout() async {
+    // Unsubscribe user push token
+    try {
+      final pushToken =
+          await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
+      if (pushToken != null) {
+        await _pushSubscriptionRepository.unsubscribe(pushToken);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Perform user logout
+    await _authRepository.logout();
+
+    // Clear locally stored auth data
+    await _authRepository.clearAuthData();
 
     return true;
   }

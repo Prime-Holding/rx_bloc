@@ -39,8 +39,14 @@ abstract class $GithubRepoListBloc extends RxBlocBase
       _mapToPaginatedListState();
 
   @override
-  void loadPage({bool reset = false, bool hardReset = false}) => _$loadPageEvent
-      .add(_LoadPageEventArgs(reset: reset, hardReset: hardReset));
+  void loadPage({
+    bool reset = false,
+    bool hardReset = false,
+  }) =>
+      _$loadPageEvent.add(_LoadPageEventArgs(
+        reset: reset,
+        hardReset: hardReset,
+      ));
 
   @override
   void filterByQuery(String query) => _$filterByQueryEvent.add(query);
@@ -78,7 +84,10 @@ abstract class $GithubRepoListBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [GithubRepoListBlocEvents.loadPage] event
 class _LoadPageEventArgs {
-  const _LoadPageEventArgs({this.reset = false, this.hardReset = false});
+  const _LoadPageEventArgs({
+    this.reset = false,
+    this.hardReset = false,
+  });
 
   final bool reset;
 

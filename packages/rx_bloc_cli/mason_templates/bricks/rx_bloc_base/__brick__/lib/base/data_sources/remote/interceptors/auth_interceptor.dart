@@ -1,101 +1,105 @@
 {{> licence.dart }}
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:provider/provider.dart';
 
-import '../../../common_use_cases/fetch_access_token_use_case.dart';
-import '../../../common_use_cases/logout_use_case.dart';
+import '../../../common_services/access_token_service.dart';
+import '../../../common_services/user_account_service.dart';
+import '../http_clients/api_http_client.dart';
 
-/// Interceptors are a simple way to intercept and modify http requests globally
-/// before they are sent to the server. That allows us to configure
-/// authentication tokens, add logs of the requests, add custom headers and
-/// much more.
-/// Interceptors can perform a variety of implicit tasks, from authentication
-/// to logging, for every HTTP request/response that is intercepted.
-///
-/// You should implement one or more methods from the contract.
-class AuthInterceptor extends Interceptor {
+class AuthInterceptor extends QueuedInterceptor {
   AuthInterceptor(
-    this._logoutUseCase,
-    this._fetchAccessTokenUseCase,
-    this._locator,
+    this._apiHttpClient,
+    this._accessTokenService,
+    this._userAccountService,
   );
 
-  final LogoutUseCase _logoutUseCase;
-  final FetchAccessTokenUseCase _fetchAccessTokenUseCase;
-  final Locator _locator;
+  final ApiHttpClient _apiHttpClient;
+  final AccessTokenService _accessTokenService;
+  final UserAccountService _userAccountService;
 
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final accessToken = await _fetchAccessTokenUseCase.execute();
-    if (accessToken != null) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
+    var accessToken = await _accessTokenService.getAccessToken();
+
+    // Check if the current token is expired or about to expire. In this case
+    // fetch a new token using `await` which will block the request queue until
+    // the token has been refreshed.
+    if (accessToken != null && _accessTokenService.isExpired(accessToken)) {
+      try {
+        _log('Access token expired. Fetching a new one.');
+        accessToken = await _accessTokenService.refreshAccessToken();
+      } on DioError catch (error) {
+        return handler.reject(error);
+      } catch (error) {
+        return handler.reject(DioError(requestOptions: options));
+      }
     }
+
+    if (accessToken != null) {
+      final headers = Map.of(options.headers);
+      headers['Authorization'] = 'Bearer $accessToken';
+      final updatedOptions = options.copyWith(headers: headers);
+      return handler.next(updatedOptions);
+    }
+
     super.onRequest(options, handler);
   }
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+    final currentAccessToken = await _accessTokenService.getAccessToken();
+
+    // Assuming status code 401 stands for token expired.
     if (err.response?.statusCode == 401) {
-      _logMetaDetails(err);
-      final newToken =
-          await _fetchAccessTokenUseCase.execute(forceFetchNewToken: true);
-      if (newToken == null) {
-        await _logoutUseCase.execute();
-      } else {
-        final client = _locator<Dio>();
-        final response = err.response;
+      var options = err.response!.requestOptions;
 
-        if (response != null) {
-          final updatedHeaders = Map.of(response.requestOptions.headers);
-          updatedHeaders['Authorization'] = 'Bearer $newToken';
-
-          handler.resolve(await client.request(
-            err.requestOptions.path,
-            cancelToken: err.requestOptions.cancelToken,
-            data: err.requestOptions.data,
-            onReceiveProgress: err.requestOptions.onReceiveProgress,
-            onSendProgress: err.requestOptions.onSendProgress,
-            options: Options(
-              method: response.requestOptions.method,
-              sendTimeout: response.requestOptions.sendTimeout,
-              receiveTimeout: response.requestOptions.receiveTimeout,
-              extra: response.requestOptions.extra,
-              headers: updatedHeaders,
-              responseType: response.requestOptions.responseType,
-              contentType: response.requestOptions.contentType,
-              validateStatus: response.requestOptions.validateStatus,
-              receiveDataWhenStatusError:
-                  response.requestOptions.receiveDataWhenStatusError,
-              followRedirects: response.requestOptions.followRedirects,
-              maxRedirects: response.requestOptions.maxRedirects,
-              requestEncoder: response.requestOptions.requestEncoder,
-              responseDecoder: response.requestOptions.responseDecoder,
-              listFormat: response.requestOptions.listFormat,
-            ),
-            queryParameters: err.requestOptions.queryParameters,
-          ));
-          return;
-        }
+      // If the token has been updated, repeat the request.
+      if (options.headers['Authorization'] != 'Bearer $currentAccessToken') {
+        // Schedule a new microtask and immediately exit the
+        // interceptor to unblock the queue.
+        _log('The access token has been updated. Retry the request.');
+        unawaited(_apiHttpClient.fetch(options).then(
+              (r) => handler.resolve(r),
+              onError: (e) => handler.reject(e),
+            ));
+        return;
       }
+
+      String? newToken;
+
+      try {
+        _log('Fetching a new access token.');
+        newToken = await _accessTokenService.refreshAccessToken();
+      } on DioError catch (error) {
+        handler.reject(error);
+      } catch (error) {
+        handler.reject(DioError(requestOptions: options));
+      }
+
+      if (newToken == null) {
+        _log('Could not fetch new access token. Logging out.');
+        unawaited(_userAccountService.logout());
+        return;
+      }
+
+      // Schedule a new microtask and immediately exit the
+      // interceptor to unblock the queue.
+      _log('Retrying the request with the new access token.');
+      unawaited(_apiHttpClient.fetch(options).then(
+            (r) => handler.resolve(r),
+            onError: (e) => handler.reject(e),
+          ));
+      return;
     }
+
     super.onError(err, handler);
   }
 
-  void _logMetaDetails(DioError err) {
-    final statusCodeStr =
-      err.response?.statusCode != null ? '[${err.response?.statusCode}]' : '';
-    final method = err.requestOptions.method;
-    final uri = err.requestOptions.uri;
-
-    final requestDetails = '$statusCodeStr [$method] $uri'.trim();
-    _logError(requestDetails);
-  }
-
-  void _logError(String message) {
+  void _log(String message) {
     log(message, name: runtimeType.toString());
   }
 }

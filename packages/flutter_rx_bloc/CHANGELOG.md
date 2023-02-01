@@ -1,3 +1,6 @@
+## [5.0.2] - January 28, 2023
+* Updated rx_bloc dependencies
+
 ## [5.0.1] - Aug 25, 2022
 * Fixes and improvements
 

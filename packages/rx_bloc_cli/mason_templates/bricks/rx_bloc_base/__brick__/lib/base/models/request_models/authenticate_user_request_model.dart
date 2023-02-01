@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'authenticate_user_request_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class AuthUserRequestModel {
   AuthUserRequestModel({this.username, this.password, this.refreshToken});
 

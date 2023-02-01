@@ -13,7 +13,7 @@ dependencies:
   skeleton_text:
   visibility_detector: ^0.3.3
   connectivity: ^3.0.2
-  image_picker: ^0.7.0
+  image_picker: ^0.8.6
   collection: ^1.15.0-nullsafety.4
   font_awesome_flutter: ^9.0.0
   intl: ^0.17.0

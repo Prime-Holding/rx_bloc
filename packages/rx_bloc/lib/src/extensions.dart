@@ -133,15 +133,3 @@ extension Bind<T> on Stream<T> {
   /// using [CompositeSubscription] or manually.
   StreamSubscription<T> bind(Subject<T> subject) => listen(subject.sink.add);
 }
-
-/// Stream subscription disposer
-extension DisposedBy<T> on StreamSubscription<T> {
-  /// Add the stream to [compositeSubscription].
-  ///
-  /// Once [compositeSubscription] is being disposed all added subscriptions
-  /// will be disposed automatically
-  @Deprecated('Use [addTo] provided by the rxdart library')
-  StreamSubscription<T> disposedBy(
-          CompositeSubscription compositeSubscription) =>
-      compositeSubscription.add(this);
-}

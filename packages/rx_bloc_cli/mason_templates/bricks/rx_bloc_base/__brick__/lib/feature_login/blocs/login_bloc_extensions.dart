@@ -11,31 +11,22 @@ extension _UserAccountBlocExtensions on LoginBloc {
 }
 
 extension _VoidStreamExtensions on Stream<void> {
-  Stream<_LoginCredentials> validateCredentials(LoginBloc bloc) =>
+  Stream<CredentialsModel> validateCredentials(LoginBloc bloc) =>
       switchMap((value) => bloc._validateAllFields())
           .where((isValid) => isValid)
           .withLatestFrom2(
               bloc.states.username,
               bloc.states.password,
               (_, String username, String password) =>
-                  _LoginCredentials(username, password))
+                  CredentialsModel(username, password))
           .distinct((previousCredentials, currentCredentials) =>
               currentCredentials.equals(previousCredentials));
 }
 
-extension _LoginCredentialsStreamExtensions on Stream<_LoginCredentials> {
-  Stream<Result<bool>> loginUser(LoginUseCase useCase) =>
-      throttleTime(const Duration(seconds: 1)).switchMap(
-        (args) => useCase
-            .execute(username: args.username, password: args.password)
-            .asResultStream(),
-      );
-}
-
 extension _FieldStreamExtensions on Stream<Exception> {
   Stream<String> mapToFieldException(BehaviorSubject<String> password) => map(
-        (event) => throw RxFieldException(
-          error: 'Wrong email or password',
+        (event) => throw FieldErrorModel(
+          errorKey: I18nErrorKeys.passwordLength,
           fieldValue: password.value,
         ),
       );
