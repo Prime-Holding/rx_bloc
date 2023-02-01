@@ -9,7 +9,6 @@ import '../common_services/permissions_service.dart';
 import '../common_services/user_account_service.dart';
 import '../extensions/error_model_extensions.dart';
 import '../models/errors/error_model.dart';
-import '../repositories/auth_repository.dart';
 import 'coordinator_bloc.dart';
 
 part 'user_account_bloc.rxb.g.dart';
@@ -35,11 +34,9 @@ class UserAccountBloc extends $UserAccountBloc {
   UserAccountBloc(
       UserAccountService userAccountService,
       CoordinatorBlocType coordinatorBloc,
-      AuthRepository authRepository,
       PermissionsService permissionsService,
       )   : _userAccountService = userAccountService,
         _coordinatorBloc = coordinatorBloc,
-        _authRepository = authRepository,
         _permissionsService = permissionsService {
     _$logoutEvent
         .logoutUser(
@@ -54,14 +51,11 @@ class UserAccountBloc extends $UserAccountBloc {
 
   final UserAccountService _userAccountService;
   final CoordinatorBlocType _coordinatorBloc;
-  final AuthRepository _authRepository;
   final PermissionsService _permissionsService;
 
   @override
-  Stream<bool> _mapToLoggedInState() => Rx.merge([
-    _coordinatorBloc.states.isAuthenticated,
-    _authRepository.isAuthenticated().asStream(),
-  ]).shareReplay(maxSize: 1);
+  Stream<bool> _mapToLoggedInState() =>
+    _coordinatorBloc.states.isAuthenticated.shareReplay(maxSize: 1);
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

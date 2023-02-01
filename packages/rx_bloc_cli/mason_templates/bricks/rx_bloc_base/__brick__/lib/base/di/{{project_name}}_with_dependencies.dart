@@ -219,7 +219,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
             context.read(),
-            context.read(),
           ),
         ),
       ];
