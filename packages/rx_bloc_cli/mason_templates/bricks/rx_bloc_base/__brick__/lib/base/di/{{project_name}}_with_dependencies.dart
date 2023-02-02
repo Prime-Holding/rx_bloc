@@ -15,6 +15,7 @@ import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_services/access_token_service.dart';
+import '../common_services/auth_service.dart';
 import '../common_services/item_service.dart';
 import '../common_services/permissions_service.dart';
 import '../common_services/user_account_service.dart';
@@ -190,6 +191,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _services => [
+        Provider<AuthService>(
+          create: (context) => AuthService(
+            context.read(),
+          ),
+        ),
         Provider<UserAccountService>(
           create: (context) => UserAccountService(
             context.read(),
@@ -216,6 +222,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   List<SingleChildWidget> get _blocs => [
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),
