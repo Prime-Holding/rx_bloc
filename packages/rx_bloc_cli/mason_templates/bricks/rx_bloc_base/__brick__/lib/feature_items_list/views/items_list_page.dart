@@ -5,10 +5,9 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_error_card_component.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
-import '../../base/common_ui_components/primary_button.dart';
-import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/item_model.dart';
 import '../../base/routers/router.dart';
 import '../../lib_navigation/blocs/navigation_bloc.dart';
@@ -27,6 +26,7 @@ class ItemsListPage extends StatelessWidget {
       title: context.l10n.deepLinkFlow.itemsListPageTitle,
     ),
     body: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppErrorModelWidget<ItemsListBlocType>(
           errorState: (bloc) => bloc.states.errors,
@@ -38,18 +38,9 @@ class ItemsListPage extends StatelessWidget {
             ),
             child: RxResultBuilder<ItemsListBlocType, List<ItemModel>>(
               state: (bloc) => bloc.states.itemsList,
-              buildError: (ctx, error, bloc) => Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    error.asErrorModel.toString(),
-                  ),
-                  SizedBox(height: context.designSystem.spacing.l),
-                  PrimaryButton(
-                    onPressed: () => bloc.events.fetchItemsList(),
-                    child: Text(context.l10n.tryAgain),
-                  ),
-                ],
+              buildError: (ctx, error, bloc) => AppErrorCardComponent(
+                error: error,
+                onTabRetry: () => bloc.events.fetchItemsList(),
               ),
               buildLoading: (ctx, bloc) => const Center(
                 child: CircularProgressIndicator(),
