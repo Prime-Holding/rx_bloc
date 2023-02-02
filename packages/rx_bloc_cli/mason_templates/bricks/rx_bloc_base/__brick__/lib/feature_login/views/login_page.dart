@@ -3,14 +3,19 @@
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../ui_components/login_form.dart';
+
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text(context.l10n.featureLogin.loginPageTitle)),
+        appBar: customAppBar(
+          context,
+          title: context.l10n.featureLogin.loginPageTitle,
+        ),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

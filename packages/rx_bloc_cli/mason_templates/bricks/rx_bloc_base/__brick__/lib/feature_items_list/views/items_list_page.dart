@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/item_model.dart';
@@ -21,10 +22,9 @@ class ItemsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(
-        context.l10n.deepLinkFlow.itemsListPageTitle,
-      ),
+    appBar: customAppBar(
+      context,
+      title: context.l10n.deepLinkFlow.itemsListPageTitle,
     ),
     body: Column(
       children: [

@@ -63,10 +63,8 @@ class ItemDetailsBloc extends $ItemDetailsBloc {
   Stream<Result<ItemModel>> _mapToItemState() => Rx.merge([
         _$fetchItemDetailsByIdEvent
             .switchMap((itemId) =>
-                _itemService.fetchItemById(id: itemId).asResultStream())
-            .shareReplay(maxSize: 1),
+                _itemService.fetchItemById(id: itemId).asResultStream()),
         _$showItemDetailsEvent
-            .mapToResult((item) => item)
-            .shareReplay(maxSize: 1),
-      ]);
+            .mapToResult((item) => item),
+      ]).shareReplay(maxSize: 1);
 }

@@ -6,6 +6,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/action_button.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/update_button.dart';
 import '../../base/theme/design_system.dart';
 import '../../feature_login/ui_components/profile_avatar.dart';
@@ -19,7 +20,20 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: _buildAppBar(context),
+    appBar: customAppBar(
+      context,
+      title: context.l10n.featureCounter.counterPageTitle,
+      actions: [
+        RxLoadingBuilder<CounterBlocType>(
+          state: (bloc) => bloc.states.isLoading,
+          builder: (context, isLoading, tag, bloc) => UpdateButton(
+          isActive: !isLoading,
+          onPressed: () => bloc.events.reload(),
+          ),
+        ),
+        const ProfileAvatar(),
+      ],
+    ),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -38,27 +52,14 @@ class CounterPage extends StatelessWidget {
           ),
           RxBlocListener<CounterBlocType, String>(
             state: (bloc) => bloc.states.message,
-            condition: (old, nee) => (old != nee && nee.isNotEmpty),
+            condition: (old, current) =>
+                (old != current && current.isNotEmpty),
             listener: _onMessageReceived,
           ),
         ],
       ),
     ),
     floatingActionButton: _buildActionButtons(context),
-  );
-
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-    title: Text(context.l10n.featureCounter.counterPageTitle),
-    actions: [
-      RxLoadingBuilder<CounterBlocType>(
-        state: (bloc) => bloc.states.isLoading,
-        builder: (context, isLoading, tag, bloc) => UpdateButton(
-          isActive: !isLoading,
-          onPressed: () => bloc.events.reload(),
-        ),
-      ),
-      const ProfileAvatar(),
-    ],
   );
 
   Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>

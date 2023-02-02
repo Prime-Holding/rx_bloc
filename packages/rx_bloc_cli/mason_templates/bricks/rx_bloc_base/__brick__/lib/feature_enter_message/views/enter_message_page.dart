@@ -5,6 +5,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../blocs/enter_message_bloc.dart';
 
@@ -15,10 +16,9 @@ class EnterMessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(
-        context.l10n.pageWithResult,
-      ),
+    appBar: customAppBar(
+      context,
+      title: context.l10n.pageWithResult,
     ),
     body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

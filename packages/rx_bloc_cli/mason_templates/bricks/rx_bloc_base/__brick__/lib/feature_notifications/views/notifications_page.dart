@@ -6,6 +6,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/utils/helpers.dart';
 import '../blocs/notifications_bloc.dart';
@@ -15,10 +16,9 @@ class NotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(
-            context.l10n.featureNotifications.notificationPageTitle,
-          ),
+        appBar: customAppBar(
+          context,
+          title: context.l10n.featureNotifications.notificationPageTitle,
           actions: [
             Padding(
               padding: EdgeInsets.only(
