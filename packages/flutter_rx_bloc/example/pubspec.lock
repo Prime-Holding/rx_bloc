@@ -279,7 +279,7 @@ packages:
       path: "../../rx_bloc_generator"
       relative: true
     source: path
-    version: "6.0.2"
+    version: "6.0.1"
   rxdart:
     dependency: "direct main"
     description:

@@ -1,6 +1,9 @@
-## [3.3.1] - January 29, 2023
+## [3.3.3] - January 29, 2023
 * Upgraded dependencies:
 * `rx_bloc` *4.0.0*
+
+## [3.3.1] - July 30, 2022
+* Stability improvements
 
 ## [3.3.0] - June 1, 2022
 * Added `rxBlocFakeAsyncTest`
