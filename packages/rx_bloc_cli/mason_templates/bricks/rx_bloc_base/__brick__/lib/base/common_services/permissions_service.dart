@@ -18,9 +18,24 @@ class PermissionsService {
     AccessDeniedErrorModel();
   }
 
-  Future<bool> hasPermission(String key) async {
-    final permissions = await getPermissions();
-    return permissions.item[key] ?? true;
+  /// Check whether the user has permission to a particular [key].
+  ///
+  /// If [graceful] is `true`, the function will return `true`,
+  /// if the permission list can not be fetched from the remote data source.
+  ///
+  /// In case the give [key] is not presented in the fetched permission list,
+  /// the function will return `true`
+  Future<bool> hasPermission(String key, {graceful = false}) async {
+    try {
+      final permissions = await getPermissions();
+      return permissions.item[key] ?? true;
+    } catch (_) {
+      if (graceful == false) {
+        rethrow;
+      }
+
+      return true;
+    }
   }
 
   bool hasPermissionSync(String key) {
