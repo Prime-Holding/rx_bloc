@@ -47,11 +47,13 @@ class AppRouter {
       }
 
       final pathInfo =
-      router.routeInformationParser.matcher.findMatch(state.location);
+        router.routeInformationParser.matcher.findMatch(state.location);
 
       final routeName = RouterPaths.pathToRouteName(pathInfo.fullpath);
-      final hasPermissions =
-      await context.read<PermissionsService>().hasPermission(routeName);
+
+      final hasPermissions = await context
+        .read<PermissionsService>()
+        .hasPermission(routeName, graceful: true);
 
       if (!refreshListener.isLoggedIn && !hasPermissions) {
         return '${const LoginRoute().location}?from=${state.location}';
