@@ -7,51 +7,65 @@ import '../theme/design_system.dart';
 class AppLoadingIndicator extends StatelessWidget {
   const AppLoadingIndicator({
     this.alignment = Alignment.center,
-    this.padding = const EdgeInsets.symmetric(vertical: 16),
-    this.size = const Size(68, 68),
-    this.strokeWidth = 3,
+    this.padding,
+    this.size,
+    this.strokeWidth,
     this.color,
     Key? key,
   }) : super(key: key);
 
+  final Alignment? alignment;
+  final EdgeInsets? padding;
+  final Size? size;
+  final double? strokeWidth;
+  final Color? color;
+
   factory AppLoadingIndicator.innerCircleValue(BuildContext context) =>
-      const AppLoadingIndicator(
+      AppLoadingIndicator(
         padding: EdgeInsets.zero,
-        size: Size(20, 20),
+        size: Size(
+          context.designSystem.spacing.l,
+          context.designSystem.spacing.l,
+        ),
         strokeWidth: 1.5,
       );
 
-  factory AppLoadingIndicator.textButtonValue({Color? color}) =>
+  factory AppLoadingIndicator.textButtonValue(BuildContext context,
+      {Color? color}) =>
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
-        size: const Size(20, 20),
+        size: Size(
+          context.designSystem.spacing.l,
+          context.designSystem.spacing.l,
+        ),
         strokeWidth: 2,
         color: color,
       );
 
-  factory AppLoadingIndicator.taskValue({required Color color}) =>
+  factory AppLoadingIndicator.taskValue(BuildContext context,
+      {required Color color}) =>
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
         strokeWidth: 2,
-        size: const Size(32, 32),
+        size: Size(
+          context.designSystem.spacing.xxl,
+          context.designSystem.spacing.xxl,
+        ),
         color: color,
       );
-
-  final Alignment alignment;
-  final EdgeInsets padding;
-  final Size size;
-  final double strokeWidth;
-  final Color? color;
 
   @override
   Widget build(BuildContext context) => Container(
-    alignment: alignment,
-    padding: padding,
-    width: size.width,
-    height: size.height,
+    alignment: alignment ?? Alignment.center,
+    padding: padding ??
+        EdgeInsets.symmetric(
+          vertical: context.designSystem.spacing.m,
+        ),
+    width: size?.width ?? context.designSystem.spacing.xxxxl2,
+    height: size?.height ?? context.designSystem.spacing.xxxxl2,
     child: CircularProgressIndicator(
       color: color ?? context.designSystem.colors.primaryColor,
-      strokeWidth: strokeWidth,
+      strokeWidth: strokeWidth ?? context.designSystem.spacing.xsss,
     ),
   );
 }

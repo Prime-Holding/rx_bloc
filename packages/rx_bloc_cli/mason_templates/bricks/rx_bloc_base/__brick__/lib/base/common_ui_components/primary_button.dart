@@ -30,8 +30,8 @@ class PrimaryButton extends StatelessWidget {
           width: loadingIndicatorSize,
           height: loadingIndicatorSize,
           child: AppLoadingIndicator.textButtonValue(
-            color:
-                context.designSystem.colors.progressIndicatorBackgroundColor,
+            context,
+            color: context.designSystem.colors.progressIndicatorBackgroundColor,
           ),
         )
       : child ?? const SizedBox();

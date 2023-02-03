@@ -13,7 +13,7 @@ class SplashRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.splash.pathName;
+  String get permissionName => RoutePathsModel.splash.permissionName;
 
   @override
   String get routeLocation => location;

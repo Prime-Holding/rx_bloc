@@ -66,10 +66,9 @@ class AppRouter {
     }
 
     final pathInfo =
-      router.routeInformationParser.matcher.findMatch(state.location);
+    router.routeInformationParser.matcher.findMatch(state.location);
 
-    final routeName =
-      RoutePathsModel.getRouteNameByFullPath(pathInfo.fullpath);
+    final routeName = RoutePathsModel.getRouteNameByFullPath(pathInfo.fullpath);
 
     final hasPermissions = await context
         .read<PermissionsService>()
@@ -118,7 +117,7 @@ class CounterRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.counter.routeName;
+  String get permissionName => RoutePathsModel.counter.permissionName;
 
   @override
   String get routeLocation => location;
@@ -136,7 +135,7 @@ class NotificationsRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.notifications.routeName;
+  String get permissionName => RoutePathsModel.notifications.permissionName;
 
   @override
   String get routeLocation => location;
@@ -154,7 +153,7 @@ class LoginRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.login.routeName;
+  String get permissionName => RoutePathsModel.login.permissionName;
 
   @override
   String get routeLocation => location;
@@ -172,48 +171,7 @@ class EnterMessageRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.enterMessage.routeName;
-
-  @override
-  String get routeLocation => location;
-}
-
-@immutable
-class ItemsRoute extends GoRouteData implements RouteData {
-  const ItemsRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-      MaterialPage(
-        key: state.pageKey,
-        child: const ItemsListWithDependencies(),
-      );
-
-  @override
-  String get permissionName => RoutePathsModel.items.routeName;
-
-  @override
-  String get routeLocation => location;
-}
-
-@immutable
-class ItemDetailsRoute extends GoRouteData implements RouteData {
-  const ItemDetailsRoute(this.id);
-
-  final String id;
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-      MaterialPage(
-        key: state.pageKey,
-        child: ItemDetailsWithDependencies(
-          itemId: id,
-          item: state.extra as ItemModel?,
-        ),
-      );
-
-  @override
-  String get permissionName => RoutePathsModel.itemDetails.routeName;
+  String get permissionName => RoutePathsModel.enterMessage.permissionName;
 
   @override
   String get routeLocation => location;

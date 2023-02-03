@@ -14,47 +14,47 @@ enum RoutePathsModel {
   splash(
     pathName: RouterPaths.splash,
     fullPath: '/splash',
-    routeName: 'SplashRoute',
+    permissionName: 'SplashRoute',
   ),
   counter(
     pathName: RouterPaths.counter,
     fullPath: '/',
-    routeName: 'CounterRoute',
+    permissionName: 'CounterRoute',
   ),
   notifications(
     pathName: RouterPaths.notifications,
     fullPath: '/notifications',
-    routeName: 'NotificationRoute',
+    permissionName: 'NotificationRoute',
   ),
   login(
     pathName: RouterPaths.login,
     fullPath: '/login',
-    routeName: 'LoginRoute',
+    permissionName: 'LoginRoute',
   ),
   enterMessage(
     pathName: RouterPaths.enterMessage,
     fullPath: '/enterMessage',
-    routeName: 'EnterMessageRoute',
+    permissionName: 'EnterMessageRoute',
   ),
   items(
     pathName: RouterPaths.items,
     fullPath: '/items',
-    routeName: 'ItemsRoute',
+    permissionName: 'ItemsRoute',
   ),
   itemDetails(
     pathName: RouterPaths.itemDetails,
     fullPath: '/items/:id',
-    routeName: 'ItemDetailsRoute',
+    permissionName: 'ItemDetailsRoute',
   );
 
   final String pathName;
   final String fullPath;
-  final String routeName;
+  final String permissionName;
 
   const RoutePathsModel({
     required this.pathName,
     required this.fullPath,
-    required this.routeName,
+    required this.permissionName,
   });
 
   static final Map<String, String> nameByPath = {};
@@ -62,7 +62,7 @@ enum RoutePathsModel {
   static String? getRouteNameByFullPath(String path) {
     if (nameByPath.isEmpty) {
       for (RoutePathsModel paths in RoutePathsModel.values) {
-        nameByPath[paths.fullPath] = paths.routeName;
+        nameByPath[paths.fullPath] = paths.permissionName;
       }
     }
     return nameByPath[path];
