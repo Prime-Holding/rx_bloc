@@ -46,8 +46,8 @@ patchPluginXml {
         <br /> - skip the feature/lib selection - when features are selected and directly generate tests,
         <br /> - improve a little bit more the imports in the tests
         <br /> - checkbox for feature to use auto_route or dependency as StatelessWidget
+        <br /> - replace extensions with service when checkbox is on
         <br /> - remove null safety checkbox
-        <br /> - replace extensions with service
     </li>
        <li>v2.1.0 
         <br /> - Allow scanning lib\\src folder for features and libs

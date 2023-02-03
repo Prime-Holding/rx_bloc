@@ -6,6 +6,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.psi.*
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 
@@ -47,6 +48,22 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         val view = LangDataKeys.IDE_VIEW.getData(dataContext)
         val directory = view?.orChooseDirectory
+
+        if (mainSourceGenerators.isNotEmpty()) {
+
+            val file = directory?.findFile(mainSourceGenerators[0].fileName())
+            if (file != null) {
+                Messages.showMessageDialog(
+                    "BloC ${
+                        mainSourceGenerators[0].fileName()
+                    } Already Exists!",
+                    "Duplicate BloC",
+                    null
+                )
+            }
+        }
+
+
         ApplicationManager.getApplication().runWriteAction {
             CommandProcessor.getInstance().executeCommand(
                 project,

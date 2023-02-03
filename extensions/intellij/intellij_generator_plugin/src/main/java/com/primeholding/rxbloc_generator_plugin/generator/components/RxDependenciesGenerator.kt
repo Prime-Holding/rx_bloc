@@ -12,7 +12,7 @@ class RxDependenciesGenerator(
     includeLocalService = includeLocalService
 ) {
     override fun fileName() =
-        "${snakeCase()}_${if (includeAutoRouteFlag) "" else "page_with_"}dependencies.${fileExtension()}"
+        "${snakeCase()}_${if (includeAutoRouteFlag) "" else "with_"}dependencies.${fileExtension()}"
 
     override fun contextDirectoryName(): String = "di"
 }

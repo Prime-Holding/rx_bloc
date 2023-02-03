@@ -3,10 +3,11 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../blocs/${feature_snake_case}_bloc.dart';
+// import '../services/${feature_snake_case}_service.dart';
 import '../views/${feature_snake_case}_page.dart';
 
-class ${feature_pascal_case}PageWithDependencies extends StatelessWidget {
-  const ${feature_pascal_case}PageWithDependencies({Key? key}) : super(key: key);
+class ${feature_pascal_case}WithDependencies extends StatelessWidget {
+  const ${feature_pascal_case}WithDependencies({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -20,13 +21,15 @@ class ${feature_pascal_case}PageWithDependencies extends StatelessWidget {
   List<Provider> get _services => [
         // Provider<${feature_pascal_case}Service>(
         //  create: (context) => ${feature_pascal_case}Service(
-        //    context.read(),
+        //    //context.read(),
         //  ),
         // ),
       ];
   List<RxBlocProvider> get _blocs => [
     RxBlocProvider<${feature_pascal_case}BlocType>(
-      create: (context) => ${feature_pascal_case}Bloc(),
+      create: (context) => ${feature_pascal_case}Bloc(
+        // context.read()
+      ),
     ),
   ];
 }
