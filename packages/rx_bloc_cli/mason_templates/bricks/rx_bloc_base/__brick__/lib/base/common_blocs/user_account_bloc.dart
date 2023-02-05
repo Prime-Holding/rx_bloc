@@ -1,4 +1,4 @@
-// {{> licence.dart }}
+{{> licence.dart }}
 
 import 'dart:async';
 
