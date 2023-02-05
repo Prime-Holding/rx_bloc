@@ -12,7 +12,7 @@ class ItemsRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.items.permissionName;
+  String get permissionName => RouteModel.items.permissionName;
 
   @override
   String get routeLocation => location;
@@ -35,7 +35,7 @@ class ItemDetailsRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.itemDetails.permissionName;
+  String get permissionName => RouteModel.itemDetails.permissionName;
 
   @override
   String get routeLocation => location;

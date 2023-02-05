@@ -4,19 +4,19 @@
 // Generator: RxBlocGeneratorForAnnotation
 // **************************************************************************
 
-part of 'navigation_bloc.dart';
+part of 'router_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
 /// {@nodoc}
-abstract class NavigationBlocType extends RxBlocTypeBase {
-  NavigationBlocEvents get events;
-  NavigationBlocStates get states;
+abstract class RouterBlocType extends RxBlocTypeBase {
+  RouterBlocEvents get events;
+  RouterBlocStates get states;
 }
 
-/// [$NavigationBloc] extended by the [NavigationBloc]
+/// [$RouterBloc] extended by the [RouterBloc]
 /// {@nodoc}
-abstract class $NavigationBloc extends RxBlocBase
-    implements NavigationBlocEvents, NavigationBlocStates, NavigationBlocType {
+abstract class $RouterBloc extends RxBlocBase
+    implements RouterBlocEvents, RouterBlocStates, RouterBlocType {
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [goTo]
@@ -63,10 +63,10 @@ abstract class $NavigationBloc extends RxBlocBase
   ConnectableStream<void> _mapToNavigationPathState();
 
   @override
-  NavigationBlocEvents get events => this;
+  RouterBlocEvents get events => this;
 
   @override
-  NavigationBlocStates get states => this;
+  RouterBlocStates get states => this;
 
   @override
   void dispose() {
@@ -78,7 +78,7 @@ abstract class $NavigationBloc extends RxBlocBase
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [NavigationBlocEvents.goTo] event
+/// [RouterBlocEvents.goTo] event
 class _GoToEventArgs {
   const _GoToEventArgs(
     this.route, {
@@ -91,7 +91,7 @@ class _GoToEventArgs {
 }
 
 /// Helps providing the arguments in the [Subject.add] for
-/// [NavigationBlocEvents.pushTo] event
+/// [RouterBlocEvents.pushTo] event
 class _PushToEventArgs {
   const _PushToEventArgs(
     this.route, {

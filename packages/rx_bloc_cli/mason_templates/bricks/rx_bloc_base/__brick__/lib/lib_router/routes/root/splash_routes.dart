@@ -1,6 +1,6 @@
-part of '../router.dart';
+part of '../../router.dart';
 
-@TypedGoRoute<SplashRoute>(path: RouterPaths.splash)
+@TypedGoRoute<SplashRoute>(path: RoutePath.splash)
 @immutable
 class SplashRoute extends GoRouteData implements RouteData {
   const SplashRoute();
@@ -13,7 +13,7 @@ class SplashRoute extends GoRouteData implements RouteData {
       );
 
   @override
-  String get permissionName => RoutePathsModel.splash.permissionName;
+  String get permissionName => RouteModel.splash.permissionName;
 
   @override
   String get routeLocation => location;

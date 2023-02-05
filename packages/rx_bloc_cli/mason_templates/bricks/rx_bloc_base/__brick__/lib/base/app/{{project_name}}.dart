@@ -9,14 +9,14 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
-import '../../lib_navigation/blocs/navigation_bloc.dart';
+import '../../lib_router/blocs/router_bloc.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../data_sources/remote/interceptors/auth_interceptor.dart';
 import '../di/{{project_name}}_with_dependencies.dart';
-import '../routers/router.dart';
+import '../../lib_router/router.dart';
 import '../theme/design_system.dart';
 import '../theme/{{project_name}}_theme.dart';
 import '../utils/helpers.dart';
@@ -100,8 +100,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   }
 
   @override
-  Widget build(BuildContext context) => Provider<NavigationBlocType>(
-      create: (context) => NavigationBloc(
+  Widget build(BuildContext context) => Provider<RouterBlocType>(
+      create: (context) => RouterBloc(
         router: goRouter,
         permissionsService: context.read(),
       ),

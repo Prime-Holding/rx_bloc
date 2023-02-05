@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
-import '../../lib_navigation/blocs/navigation_bloc.dart';
+import '../../lib_router/blocs/router_bloc.dart';
 import '../extensions/error_model_translations.dart';
 import '../models/errors/error_model.dart';
 
@@ -30,7 +30,7 @@ class AppErrorModelWidget<BlocType extends RxBlocTypeBase>
           listener: _onError,
         ),
         if (isListeningForNavigationErrors)
-        RxBlocListener<NavigationBlocType, ErrorModel>(
+        RxBlocListener<RouterBlocType, ErrorModel>(
           state: (bloc) => bloc.states.errors,
           listener: (context, state) => _onError(context, state),
         ),

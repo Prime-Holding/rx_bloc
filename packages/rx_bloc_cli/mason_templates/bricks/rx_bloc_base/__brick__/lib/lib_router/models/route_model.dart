@@ -1,48 +1,48 @@
 {{> licence.dart }}
 
-class RouterPaths {
-  static const String splash = '/splash';
-  static const String counter = '/';
-  static const String notifications = 'notifications';
-  static const String login = 'login';
-  static const String enterMessage = 'enterMessage';
-  static const String items = 'items';
-  static const String itemDetails = ':id';
+class RoutePath {
+  static const splash = 'splash';
+  static const counter = '/';
+  static const notifications = 'notifications';
+  static const login = 'login';
+  static const enterMessage = 'enterMessage';
+  static const items = 'items';
+  static const itemDetails = ':id';
 }
 
-enum RoutePathsModel {
+enum RouteModel {
   splash(
-    pathName: RouterPaths.splash,
+    pathName: RoutePath.splash,
     fullPath: '/splash',
     permissionName: 'SplashRoute',
   ),
   counter(
-    pathName: RouterPaths.counter,
+    pathName: RoutePath.counter,
     fullPath: '/',
     permissionName: 'CounterRoute',
   ),
   notifications(
-    pathName: RouterPaths.notifications,
+    pathName: RoutePath.notifications,
     fullPath: '/notifications',
     permissionName: 'NotificationRoute',
   ),
   login(
-    pathName: RouterPaths.login,
+    pathName: RoutePath.login,
     fullPath: '/login',
     permissionName: 'LoginRoute',
   ),
   enterMessage(
-    pathName: RouterPaths.enterMessage,
+    pathName: RoutePath.enterMessage,
     fullPath: '/enterMessage',
     permissionName: 'EnterMessageRoute',
   ),
   items(
-    pathName: RouterPaths.items,
+    pathName: RoutePath.items,
     fullPath: '/items',
     permissionName: 'ItemsRoute',
   ),
   itemDetails(
-    pathName: RouterPaths.itemDetails,
+    pathName: RoutePath.itemDetails,
     fullPath: '/items/:id',
     permissionName: 'ItemDetailsRoute',
   );
@@ -51,7 +51,7 @@ enum RoutePathsModel {
   final String fullPath;
   final String permissionName;
 
-  const RoutePathsModel({
+  const RouteModel({
     required this.pathName,
     required this.fullPath,
     required this.permissionName,
@@ -61,7 +61,7 @@ enum RoutePathsModel {
 
   static String? getRouteNameByFullPath(String path) {
     if (nameByPath.isEmpty) {
-      for (RoutePathsModel paths in RoutePathsModel.values) {
+      for (RouteModel paths in RouteModel.values) {
         nameByPath[paths.fullPath] = paths.permissionName;
       }
     }

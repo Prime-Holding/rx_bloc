@@ -7,10 +7,10 @@ import 'package:provider/provider.dart';
 import '../../app_extensions.dart';
 import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/popup_builder.dart';
-import '../../base/routers/router.dart';
+import '../../lib_router/router.dart';
 import '../../feature_counter/blocs/counter_bloc.dart';
 import '../../feature_enter_message/di/enter_message_with_dependencies.dart';
-import '../../lib_navigation/blocs/navigation_bloc.dart';
+import '../../lib_router/blocs/router_bloc.dart';
 
 // ignore_for_file: avoid_field_initializers_in_const_classes
 
@@ -44,7 +44,7 @@ class ProfileAvatar extends StatelessWidget {
     icon: Icon(context.designSystem.icons.login),
     tooltip: context.l10n.featureLogin.logIn,
     onPressed: () =>
-        context.read<NavigationBlocType>().events.goTo(const LoginRoute()),
+        context.read<RouterBlocType>().events.goTo(const LoginRoute()),
   );
 
   Widget _buildLoggedInAvatar(BuildContext context) => PopupBuilder<String>(
@@ -85,7 +85,7 @@ class ProfileAvatar extends StatelessWidget {
     onSelected: (selected) async {
       if (selected == _notificationKey) {
         context
-            .read<NavigationBlocType>()
+            .read<RouterBlocType>()
             .events
             .goTo(const NotificationsRoute());
       } else if (selected == _logoutKey) {
@@ -105,7 +105,7 @@ class ProfileAvatar extends StatelessWidget {
           context.read<CounterBlocType>().events.setMessage(response);
         }
       } else if (selected == _deepLinkFlow) {
-        context.read<NavigationBlocType>().events.goTo(const ItemsRoute());
+        context.read<RouterBlocType>().events.goTo(const ItemsRoute());
       }
     },
     child: Icon(
