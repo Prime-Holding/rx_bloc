@@ -200,6 +200,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => UserAccountService(
             context.read(),
             context.read(),
+            context.read(),
           ),
         ),
         Provider<AccessTokenService>(
@@ -222,7 +223,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   List<SingleChildWidget> get _blocs => [
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
-            context.read(),
             context.read(),
             context.read(),
             context.read(),

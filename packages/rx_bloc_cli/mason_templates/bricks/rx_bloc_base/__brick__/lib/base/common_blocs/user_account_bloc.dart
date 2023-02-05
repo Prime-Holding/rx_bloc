@@ -1,4 +1,4 @@
-{{> licence.dart }}
+// {{> licence.dart }}
 
 import 'dart:async';
 
@@ -6,14 +6,12 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../common_services/auth_service.dart';
-import '../common_services/permissions_service.dart';
 import '../common_services/user_account_service.dart';
 import '../extensions/error_model_extensions.dart';
 import '../models/errors/error_model.dart';
 import 'coordinator_bloc.dart';
 
 part 'user_account_bloc.rxb.g.dart';
-part 'user_account_bloc_extensions.dart';
 
 abstract class UserAccountBlocEvents {
   void logout();
@@ -33,19 +31,15 @@ abstract class UserAccountBlocStates {
 @RxBloc()
 class UserAccountBloc extends $UserAccountBloc {
   UserAccountBloc(
-      UserAccountService userAccountService,
-      CoordinatorBlocType coordinatorBloc,
-      PermissionsService permissionsService,
-      AuthService authService,
-      )   : _userAccountService = userAccountService,
+    UserAccountService userAccountService,
+    CoordinatorBlocType coordinatorBloc,
+    AuthService authService,
+  )   : _userAccountService = userAccountService,
         _coordinatorBloc = coordinatorBloc,
-        _permissionsService = permissionsService,
         _authService = authService {
     _$logoutEvent
-        .logoutUser(
-      _userAccountService,
-      _permissionsService,
-    )
+        .throttleTime(const Duration(seconds: 1))
+        .exhaustMap((value) => _userAccountService.logout().asResultStream())
         .setResultStateHandler(this)
         .emitLoggedOutToCoordinator(_coordinatorBloc)
         .listen(null)
@@ -54,14 +48,13 @@ class UserAccountBloc extends $UserAccountBloc {
 
   final UserAccountService _userAccountService;
   final CoordinatorBlocType _coordinatorBloc;
-  final PermissionsService _permissionsService;
   final AuthService _authService;
 
   @override
   Stream<bool> _mapToLoggedInState() => Rx.merge([
-    _coordinatorBloc.states.isAuthenticated,
-    _authService.isAuthenticated().asStream(),
-  ]).shareReplay(maxSize: 1);
+        _coordinatorBloc.states.isAuthenticated,
+        _authService.isAuthenticated().asStream(),
+      ]).shareReplay(maxSize: 1);
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

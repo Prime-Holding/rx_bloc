@@ -3,15 +3,18 @@ import 'dart:developer';
 import '../app/config/app_constants.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/push_notification_repository.dart';
+import 'permissions_service.dart';
 
 class UserAccountService {
   UserAccountService(
     this._authRepository,
     this._pushSubscriptionRepository,
+    this._permissionsService,
   );
 
   final AuthRepository _authRepository;
   final PushNotificationRepository _pushSubscriptionRepository;
+  final PermissionsService _permissionsService;
 
   Future<bool> login({
     required String username,
@@ -35,6 +38,8 @@ class UserAccountService {
       if (pushToken != null) {
         await _pushSubscriptionRepository.subscribe(pushToken);
       }
+
+      await _permissionsService.load();
     } catch (e) {
       log(e.toString());
     }
@@ -52,6 +57,9 @@ class UserAccountService {
       }
       // Perform user logout
       await _authRepository.logout();
+
+      // Reload user permissions
+      await _permissionsService.load();
     } catch (e) {
       log(e.toString());
     }
