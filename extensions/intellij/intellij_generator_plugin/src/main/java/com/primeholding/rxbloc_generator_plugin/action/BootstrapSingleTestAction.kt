@@ -8,6 +8,7 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.VfsTestUtil
@@ -131,11 +132,24 @@ class BootstrapSingleTestAction : AnAction() {
     private fun createFile(file: VirtualFile?, suffix: String, value: String): VirtualFile? {
 
         if (file?.path?.contains(projectLibFolder()) == true) {
-            val replace =
+            val destinationFile =
                 file.path.replace(projectLibFolder(), projectTestFolder())
                     .replace(".dart", suffix)
-            VfsTestUtil.overwriteTestData(replace, value)
-            return VfsUtil.findFileByIoFile(File(replace), true)
+
+            if (File(destinationFile).exists()) {
+                Messages.showMessageDialog(
+                    "File ${
+                        file.name
+                    } Already Exists!",
+                    "Duplicate File",
+                    null
+                )
+
+                return null
+            }
+
+            VfsTestUtil.overwriteTestData(destinationFile, value)
+            return VfsUtil.findFileByIoFile(File(destinationFile), true)
         }
         return null
     }
@@ -189,7 +203,14 @@ class BootstrapSingleTestAction : AnAction() {
             val sub = file.path.replace("${it.basePath!!}/lib", "")
             sb.append("import 'package:${it.name}${sub}';\n")
 
-            sb.append(generateImportsFromFileAndClasses(text, constructorFields.values, Utils.baseDir(it.basePath!!), file))
+            sb.append(
+                generateImportsFromFileAndClasses(
+                    text,
+                    constructorFields.values,
+                    Utils.baseDir(it.basePath!!),
+                    file
+                )
+            )
         }
 
 
@@ -246,8 +267,8 @@ class BootstrapSingleTestAction : AnAction() {
 
             values.forEach {
 
-                if(it.contains("<") && it.contains(">")) {
-                    val innerType = it.substring(it.indexOf("<")+1, it.indexOf("<"))
+                if (it.contains("<") && it.contains(">")) {
+                    val innerType = it.substring(it.indexOf("<") + 1, it.indexOf("<"))
                     if (line.contains("${innerType.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
                         sb.append(Utils.fixRelativeImports(line, rootDir, "", file)).append("\n")
                     }
@@ -288,9 +309,22 @@ class BootstrapSingleTestAction : AnAction() {
         val nullableBloc = Utils.extractBloc(file)
         nullableBloc?.let { bloc ->
 
+            val newFilePath =
+                file.path.replace(project.basePath!!, "").replace("/lib/", "/test/").replace(".dart", "_test.dart")
+            if (File(newFilePath).exists()) {
+                Messages.showMessageDialog(
+                    "BloC ${
+                        bloc.file.name
+                    } Already Exists!",
+                    "Duplicate BloC",
+                    null
+                )
+
+                return
+            }
             val newFile = VfsTestUtil.createFile(
                 Utils.baseDir(project.basePath!!),
-                file.path.replace(project.basePath!!, "").replace("/lib/", "/test/").replace(".dart", "_test.dart")
+                newFilePath
             )
             BootstrapTestsAction.writeBlockTest(
                 newFile,
@@ -305,7 +339,23 @@ class BootstrapSingleTestAction : AnAction() {
     private fun generateGoldenTest(file: VirtualFile, project: Project) {
         val constructorFields: MutableMap<String, String> = mutableMapOf()
         val constructorNamedFields: MutableMap<String, Boolean> = mutableMapOf()
-        val text = File(file.path).readText()
+        val goldenFile = File(file.path)
+
+        if (goldenFile.exists()) {
+
+            Messages.showMessageDialog(
+                "Golden Test ${
+                    goldenFile.name
+                } Already Exists!",
+                "Duplicate Golden Test",
+                null
+            )
+
+            return
+        }
+
+
+        val text = goldenFile.readText()
 
         Utils.getConstructorFields(
             text,

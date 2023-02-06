@@ -60,6 +60,7 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
                     "Duplicate BloC",
                     null
                 )
+                return
             }
         }
 

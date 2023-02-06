@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.DataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass
@@ -80,6 +81,7 @@ class BootstrapTestsAction : AnAction() {
             var isShowDialog = false
             val files = e.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
 
+
             val potentialBlocFolders = mutableListOf<VirtualFile>()
 
             val numberFiles = files!!.size
@@ -124,6 +126,14 @@ class BootstrapTestsAction : AnAction() {
                     Utils.analyzeFolderForBloc(file.findChild("blocs")!!, file, allowedPrefixes)?.let { list.add(it) }
 
                 }
+                if (list.isEmpty()) {
+                    Messages.showMessageDialog(
+                        "No BloCs Found in the selected direcoty that follow naming convention",
+                        "No Blocs",
+                        null
+                    )
+                    return
+                }
                 writeItIntoTests(test, list, trueBaseDir.name, e.project!!, true)//potentially choose the flag
             }
         }
@@ -139,12 +149,26 @@ class BootstrapTestsAction : AnAction() {
         val blocFileExt = "_bloc.dart"
         WriteCommandAction.runWriteCommandAction(project) {
             blocs.forEach { bloc ->
-
                 val prefix = (if (bloc.isLib) "lib" else "feature")
+                val featureTestFolder = prefix + "_" + bloc.file.name.replace("_bloc.dart", "")
+
+                val oldFile = testFolder.findFileByRelativePath(featureTestFolder)
+
+                if (oldFile != null && oldFile.exists()) {
+                    Messages.showMessageDialog(
+                        "Test Folder ${
+                            oldFile.name
+                        } Already Exists!",
+                        "Duplicate Test",
+                        null
+                    )
+
+                    return@runWriteCommandAction
+                }
                 val featureFolder =
                     testFolder.createChildDirectory(
                         this,
-                        prefix + "_" + bloc.file.name.replace("_bloc.dart", "")
+                        featureTestFolder
                     )
 
                 var folder = featureFolder.createChildDirectory(this, "factory")
