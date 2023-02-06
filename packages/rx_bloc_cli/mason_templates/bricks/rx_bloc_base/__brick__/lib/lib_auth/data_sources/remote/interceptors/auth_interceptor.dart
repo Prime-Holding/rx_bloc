@@ -25,16 +25,20 @@ class AuthInterceptor extends QueuedInterceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     var accessToken = await _accessTokenService.getAccessToken();
 
-    // Check if the current token is expired or about to expire. In this case
-    // fetch a new token using `await` which will block the request queue until
-    // the token has been refreshed.
+// Check if the current token is expired or about to expire. In this case
+// fetch a new token using `await` which will block the request queue until
+// the token has been refreshed.
     if (accessToken != null && _accessTokenService.isExpired(accessToken)) {
       try {
         _log('Access token expired. Fetching a new one.');
         accessToken = await _accessTokenService.refreshAccessToken();
       } on DioError catch (error) {
+        _log('Could not fetch new access token. Logging out.');
+        unawaited(_userAccountService.logout());
         return handler.reject(error);
       } catch (error) {
+        _log('Could not fetch new access token. Logging out.');
+        unawaited(_userAccountService.logout());
         return handler.reject(DioError(requestOptions: options));
       }
     }
@@ -53,14 +57,14 @@ class AuthInterceptor extends QueuedInterceptor {
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     final currentAccessToken = await _accessTokenService.getAccessToken();
 
-    // Assuming status code 401 stands for token expired.
+// Assuming status code 401 stands for token expired.
     if (err.response?.statusCode == 401) {
       var options = err.response!.requestOptions;
 
-      // If the token has been updated, repeat the request.
+// If the token has been updated, repeat the request.
       if (options.headers['Authorization'] != 'Bearer $currentAccessToken') {
-        // Schedule a new microtask and immediately exit the
-        // interceptor to unblock the queue.
+// Schedule a new microtask and immediately exit the
+// interceptor to unblock the queue.
         _log('The access token has been updated. Retry the request.');
         unawaited(_apiHttpClient.fetch(options).then(
               (r) => handler.resolve(r),
@@ -86,8 +90,8 @@ class AuthInterceptor extends QueuedInterceptor {
         return;
       }
 
-      // Schedule a new microtask and immediately exit the
-      // interceptor to unblock the queue.
+// Schedule a new microtask and immediately exit the
+// interceptor to unblock the queue.
       _log('Retrying the request with the new access token.');
       unawaited(_apiHttpClient.fetch(options).then(
             (r) => handler.resolve(r),

@@ -10,9 +10,9 @@ part of 'refresh_token_data_source.dart';
 
 class _RefreshTokenDataSource implements RefreshTokenDataSource {
   _RefreshTokenDataSource(
-      this._dio, {
-        this.baseUrl,
-      });
+    this._dio, {
+    this.baseUrl,
+  });
 
   final Dio _dio;
 
@@ -31,13 +31,13 @@ class _RefreshTokenDataSource implements RefreshTokenDataSource {
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-      _dio.options,
-      '/api/authenticate',
-      queryParameters: queryParameters,
-      data: _data,
-    )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .compose(
+              _dio.options,
+              '/api/auth/refresh-token',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AuthTokenModel.fromJson(_result.data!);
     return value;
   }
