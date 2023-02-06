@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';
-import '../base/common_services/permissions_service.dart';
 import '../base/models/errors/error_model.dart';
 import '../base/models/item_model.dart';
 import '../feature_counter/di/counter_page_with_dependencies.dart';
@@ -17,6 +16,7 @@ import '../feature_items_list/di/items_list_with_dependencies.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
+import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_model.dart';
 import 'views/error_page.dart';
 

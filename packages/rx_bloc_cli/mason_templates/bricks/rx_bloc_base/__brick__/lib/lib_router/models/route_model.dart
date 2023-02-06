@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
 class RoutePath {
-  static const splash = 'splash';
+  static const splash = '/splash';
   static const counter = '/';
   static const notifications = 'notifications';
   static const login = 'login';

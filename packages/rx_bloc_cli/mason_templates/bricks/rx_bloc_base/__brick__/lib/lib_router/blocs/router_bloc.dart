@@ -4,9 +4,9 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_services/permissions_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
+import '../../lib_permissions/services/permissions_service.dart';
 import '../router.dart';
 
 part 'router_bloc.rxb.g.dart';

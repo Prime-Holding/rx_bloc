@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
-import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/action_button.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
@@ -11,6 +10,7 @@ import '../../base/common_ui_components/update_button.dart';
 import '../../base/theme/design_system.dart';
 import '../../feature_login/ui_components/profile_avatar.dart';
 import '../../l10n/l10n.dart';
+import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../blocs/counter_bloc.dart';
 
 class CounterPage extends StatelessWidget {

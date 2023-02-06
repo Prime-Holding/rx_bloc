@@ -5,9 +5,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-import '../../../common_services/access_token_service.dart';
-import '../../../common_services/user_account_service.dart';
-import '../http_clients/api_http_client.dart';
+import '../../../../base/data_sources/remote/http_clients/api_http_client.dart';
+import '../../../services/access_token_service.dart';
+import '../../../services/user_account_service.dart';
 
 class AuthInterceptor extends QueuedInterceptor {
   AuthInterceptor(

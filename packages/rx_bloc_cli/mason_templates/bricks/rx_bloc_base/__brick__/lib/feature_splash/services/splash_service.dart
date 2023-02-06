@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../../base/common_services/permissions_service.dart';
+import '../../lib_permissions/services/permissions_service.dart';
 
 class SplashService {
   SplashService(this.permissionsService);

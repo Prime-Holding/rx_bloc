@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import '../app/config/app_constants.dart';
+import '../../base/app/config/app_constants.dart';
+import '../../lib_permissions/services/permissions_service.dart';
+import '../../base/repositories/push_notification_repository.dart';
 import '../repositories/auth_repository.dart';
-import '../repositories/push_notification_repository.dart';
-import 'permissions_service.dart';
 
 class UserAccountService {
   UserAccountService(
@@ -38,7 +38,12 @@ class UserAccountService {
       if (pushToken != null) {
         await _pushSubscriptionRepository.subscribe(pushToken);
       }
+    } catch (e) {
+      log(e.toString());
+    }
 
+    // Load permissions
+    try {
       await _permissionsService.load();
     } catch (e) {
       log(e.toString());
@@ -55,10 +60,19 @@ class UserAccountService {
       if (pushToken != null) {
         await _pushSubscriptionRepository.unsubscribe(pushToken);
       }
-      // Perform user logout
-      await _authRepository.logout();
+    } catch (e) {
+      log(e.toString());
+    }
 
-      // Reload user permissions
+    // Perform user logout
+    try {
+      await _authRepository.logout();
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Reload user permissions
+    try {
       await _permissionsService.load();
     } catch (e) {
       log(e.toString());

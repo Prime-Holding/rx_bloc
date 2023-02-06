@@ -5,12 +5,12 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/popup_builder.dart';
-import '../../lib_router/router.dart';
 import '../../feature_counter/blocs/counter_bloc.dart';
 import '../../feature_enter_message/di/enter_message_with_dependencies.dart';
+import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
 
 // ignore_for_file: avoid_field_initializers_in_const_classes
 

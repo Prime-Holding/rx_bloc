@@ -5,11 +5,11 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../common_services/auth_service.dart';
-import '../common_services/user_account_service.dart';
-import '../extensions/error_model_extensions.dart';
-import '../models/errors/error_model.dart';
-import 'coordinator_bloc.dart';
+import '../services/auth_service.dart';
+import '../services/user_account_service.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/errors/error_model.dart';
+import '../../base/common_blocs/coordinator_bloc.dart';
 
 part 'user_account_bloc.rxb.g.dart';
 

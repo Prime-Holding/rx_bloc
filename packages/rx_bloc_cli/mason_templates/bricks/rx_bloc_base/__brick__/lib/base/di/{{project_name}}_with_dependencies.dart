@@ -10,31 +10,31 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../lib_auth/blocs/user_account_bloc.dart';
+import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
+import '../../lib_auth/data_sources/local/auth_token_secure_data_source.dart';
+import '../../lib_auth/data_sources/local/auth_token_shared_dara_source.dart';
+import '../../lib_auth/data_sources/remote/auth_data_source.dart';
+import '../../lib_auth/data_sources/remote/refresh_token_data_source.dart';
+import '../../lib_auth/repositories/auth_repository.dart';
+import '../../lib_auth/services/access_token_service.dart';
+import '../../lib_auth/services/auth_service.dart';
+import '../../lib_auth/services/user_account_service.dart';
+import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
+import '../../lib_permissions/repositories/permissions_repository.dart';
+import '../../lib_permissions/services/permissions_service.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
-import '../common_blocs/user_account_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../common_services/access_token_service.dart';
-import '../common_services/auth_service.dart';
 import '../common_services/item_service.dart';
-import '../common_services/permissions_service.dart';
-import '../common_services/user_account_service.dart';
-import '../data_sources/local/auth_token_data_source.dart';
-import '../data_sources/local/auth_token_secure_data_source.dart';
-import '../data_sources/local/auth_token_shared_dara_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/count_remote_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/items_remote_data_source.dart';
-import '../data_sources/remote/permissions_remote_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
-import '../data_sources/remote/refresh_token_data_source.dart';
-import '../repositories/auth_repository.dart';
 import '../repositories/counter_repository.dart';
 import '../repositories/item_repository.dart';
-import '../repositories/permissions_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
@@ -196,6 +196,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
+        Provider<PermissionsService>(
+          create: (context) => PermissionsService(
+            context.read(),
+          ),
+        ),
         Provider<UserAccountService>(
           create: (context) => UserAccountService(
             context.read(),
@@ -208,11 +213,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        Provider<PermissionsService>(
-          create: (context) => PermissionsService(
-            context.read(),
-          ),
-        ),
+
         Provider<ItemService>(
           create: (context) => ItemService(
             context.read(),
