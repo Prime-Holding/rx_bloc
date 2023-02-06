@@ -42,9 +42,7 @@ class AppRouter {
     initialLocation: const SplashRoute().location,
     routes: $appRoutes,
     redirect: _pageRedirections,
-    refreshListenable: _GoRouterRefreshStream(
-      _coordinatorBloc.states.isAuthenticated,
-    ),
+    refreshListenable: _refreshListener,
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,
       child: const ErrorPage(),
