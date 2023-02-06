@@ -1,17 +1,20 @@
 import 'dart:developer';
 
-import '../app/config/app_constants.dart';
+import '../../base/app/config/app_constants.dart';
+import '../../lib_permissions/services/permissions_service.dart';
+import '../../base/repositories/push_notification_repository.dart';
 import '../repositories/auth_repository.dart';
-import '../repositories/push_notification_repository.dart';
 
 class UserAccountService {
   UserAccountService(
     this._authRepository,
     this._pushSubscriptionRepository,
+    this._permissionsService,
   );
 
   final AuthRepository _authRepository;
   final PushNotificationRepository _pushSubscriptionRepository;
+  final PermissionsService _permissionsService;
 
   Future<bool> login({
     required String username,
@@ -39,6 +42,13 @@ class UserAccountService {
       log(e.toString());
     }
 
+    // Load permissions
+    try {
+      await _permissionsService.load();
+    } catch (e) {
+      log(e.toString());
+    }
+
     return true;
   }
 
@@ -50,8 +60,20 @@ class UserAccountService {
       if (pushToken != null) {
         await _pushSubscriptionRepository.unsubscribe(pushToken);
       }
-      // Perform user logout
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Perform user logout
+    try {
       await _authRepository.logout();
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // Reload user permissions
+    try {
+      await _permissionsService.load();
     } catch (e) {
       log(e.toString());
     }

@@ -5,8 +5,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../base/routers/router.dart';
-import '../../lib_navigation/blocs/navigation_bloc.dart';
+import '../../lib_router/router.dart';
+import '../../lib_router/blocs/router_bloc.dart';
 import '../services/splash_service.dart';
 
 part 'splash_bloc.rxb.g.dart';
@@ -27,7 +27,7 @@ abstract class SplashBlocStates {
 
 @RxBloc()
 class SplashBloc extends $SplashBloc {
-  SplashBloc(NavigationBlocType navigationBloc, SplashService splashService)
+  SplashBloc(RouterBlocType navigationBloc, SplashService splashService)
       : _navigationBloc = navigationBloc,
         _splashService = splashService {
     _$initializeAppEvent
@@ -40,7 +40,7 @@ class SplashBloc extends $SplashBloc {
         .addTo(_compositeSubscription);
   }
 
-  final NavigationBlocType _navigationBloc;
+  final RouterBlocType _navigationBloc;
   final SplashService _splashService;
 
   Future<void> initializeAppAndNavigate() async {

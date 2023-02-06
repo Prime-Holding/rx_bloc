@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../common_mappers/error_mappers/error_mapper.dart';
+import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/local/auth_token_data_source.dart';
 import '../data_sources/remote/auth_data_source.dart';
 import '../data_sources/remote/refresh_token_data_source.dart';

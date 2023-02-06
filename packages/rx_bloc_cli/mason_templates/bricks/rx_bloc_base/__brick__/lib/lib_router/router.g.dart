@@ -7,26 +7,9 @@ part of 'router.dart';
 // **************************************************************************
 
 List<GoRoute> get $appRoutes => [
-      $splashRoute,
       $counterRoute,
+      $splashRoute,
     ];
-
-GoRoute get $splashRoute => GoRouteData.$route(
-      path: '/splash',
-      factory: $SplashRouteExtension._fromState,
-    );
-
-extension $SplashRouteExtension on SplashRoute {
-  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
-
-  String get location => GoRouteData.$location(
-        '/splash',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
-}
 
 GoRoute get $counterRoute => GoRouteData.$route(
       path: '/',
@@ -126,6 +109,23 @@ extension $ItemDetailsRouteExtension on ItemDetailsRoute {
 
   String get location => GoRouteData.$location(
         '/items/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+}
+
+GoRoute get $splashRoute => GoRouteData.$route(
+      path: '/splash',
+      factory: $SplashRouteExtension._fromState,
+    );
+
+extension $SplashRouteExtension on SplashRoute {
+  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
+
+  String get location => GoRouteData.$location(
+        '/splash',
       );
 
   void go(BuildContext context) => context.go(location, extra: this);

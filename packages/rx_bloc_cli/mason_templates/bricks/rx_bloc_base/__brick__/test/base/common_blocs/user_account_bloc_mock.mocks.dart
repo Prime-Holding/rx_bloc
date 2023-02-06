@@ -5,10 +5,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:{{project_name}}/base/common_blocs/user_account_bloc.dart'
-    as _i2;
-import 'package:{{project_name}}/base/models/errors/error_model.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:{{project_name}}/base/models/errors/error_model.dart' as _i4;
+import 'package:{{project_name}}/lib_auth/blocs/user_account_bloc.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values

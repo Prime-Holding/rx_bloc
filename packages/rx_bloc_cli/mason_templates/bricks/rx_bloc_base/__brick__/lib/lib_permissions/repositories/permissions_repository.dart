@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../common_mappers/error_mappers/error_mapper.dart';
+import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/remote/permissions_remote_data_source.dart';
 import '../models/permission_list_model.dart';
 

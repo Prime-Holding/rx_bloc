@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../local/shared_preferences_instance.dart';
+import '../../../base/data_sources/local/shared_preferences_instance.dart';
 
 import 'auth_token_data_source.dart';
 

@@ -9,8 +9,8 @@ import '../../base/common_ui_components/app_error_card_component.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/item_model.dart';
-import '../../base/routers/router.dart';
-import '../../lib_navigation/blocs/navigation_bloc.dart';
+import '../../lib_router/router.dart';
+import '../../lib_router/blocs/router_bloc.dart';
 import '../blocs/items_list_bloc.dart';
 import '../ui_components/list_item_widget.dart';
 
@@ -54,7 +54,7 @@ class ItemsListPage extends StatelessWidget {
                     ListItemWidget(
                       item: items[index],
                       onTap: () =>
-                          context.read<NavigationBlocType>().events.pushTo(
+                          context.read<RouterBlocType>().events.pushTo(
                             ItemDetailsRoute(items[index].id),
                             extra: items[index],
                           ),

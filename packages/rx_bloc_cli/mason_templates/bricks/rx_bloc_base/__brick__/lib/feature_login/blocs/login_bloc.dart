@@ -5,10 +5,10 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../assets.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
-import '../../base/common_services/permissions_service.dart';
-import '../../base/common_services/user_account_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
+import '../../lib_auth/services/user_account_service.dart';
+import '../../lib_permissions/services/permissions_service.dart';
 import '../models/credentials_model.dart';
 import '../services/login_validator_service.dart';
 

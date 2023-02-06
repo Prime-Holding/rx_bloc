@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../models/errors/error_model.dart';
+import '../../base/models/errors/error_model.dart';
 import '../models/permission_list_model.dart';
 import '../repositories/permissions_repository.dart';
 
