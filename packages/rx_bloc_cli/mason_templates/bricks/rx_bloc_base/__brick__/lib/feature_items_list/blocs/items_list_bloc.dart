@@ -45,5 +45,6 @@ class ItemsListBloc extends $ItemsListBloc {
   Stream<Result<List<ItemModel>>> _mapToItemsListState() =>
       _$fetchItemsListEvent
           .switchMap((_) => _itemService.fetchItems().asResultStream())
+          .setResultStateHandler(this)
           .shareReplay(maxSize: 1);
 }

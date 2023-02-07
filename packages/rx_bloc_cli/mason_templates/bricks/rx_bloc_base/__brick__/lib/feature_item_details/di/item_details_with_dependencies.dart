@@ -30,6 +30,7 @@ class ItemDetailsWithDependencies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
+    key: UniqueKey(),
     providers: [
       ..._blocs,
     ],

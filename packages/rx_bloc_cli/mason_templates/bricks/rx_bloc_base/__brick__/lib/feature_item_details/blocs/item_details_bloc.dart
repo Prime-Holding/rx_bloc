@@ -66,5 +66,5 @@ class ItemDetailsBloc extends $ItemDetailsBloc {
                 _itemService.fetchItemById(id: itemId).asResultStream()),
         _$showItemDetailsEvent
             .mapToResult((item) => item),
-      ]).shareReplay(maxSize: 1);
+      ]).setResultStateHandler(this).shareReplay(maxSize: 1);
 }

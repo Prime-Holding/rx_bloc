@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import '../../base/app/config/app_constants.dart';
-import '../../lib_permissions/services/permissions_service.dart';
 import '../../base/repositories/push_notification_repository.dart';
+import '../../lib_permissions/services/permissions_service.dart';
 import '../repositories/auth_repository.dart';
 
 class UserAccountService {

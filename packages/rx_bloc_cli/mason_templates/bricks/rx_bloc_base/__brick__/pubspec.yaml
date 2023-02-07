@@ -20,7 +20,7 @@ dependencies:
     sdk: flutter
   flutter_rx_bloc: ^5.0.2
   flutter_secure_storage: ^7.0.1
-  go_router: 6.0.3
+  go_router: 6.0.4
   golden_toolkit: ^0.14.0
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)

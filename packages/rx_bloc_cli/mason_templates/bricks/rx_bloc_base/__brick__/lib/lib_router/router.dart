@@ -16,6 +16,7 @@ import '../feature_items_list/di/items_list_with_dependencies.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
+import '../feature_splash/services/splash_service.dart';
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_model.dart';
 import 'views/error_page.dart';
@@ -61,21 +62,30 @@ class AppRouter {
       return const CounterRoute().location;
     }
 
+    if (state.subloc != const SplashRoute().location) {
+      final isInitialized = context.read<SplashService>().isAppInitialized();
+      if (!isInitialized) {
+        return '${const SplashRoute().location}?from=${state.location}';
+      }
+    }
+
     final pathInfo =
         router.routeInformationParser.matcher.findMatch(state.location);
 
     final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullpath);
 
-    final hasPermissions = await context
-        .read<PermissionsService>()
-        .hasPermission(routeName!, graceful: true);
+    final hasPermissions = routeName != null
+        ? await context
+            .read<PermissionsService>()
+            .hasPermission(routeName, graceful: true)
+        : true;
 
     if (!_refreshListener.isLoggedIn && !hasPermissions) {
       return '${const LoginRoute().location}?from=${state.location}';
     }
 
     if (!hasPermissions) {
-      throw AccessDeniedErrorModel();
+      return const NotificationsRoute().location;
     }
 
     return null;

@@ -43,15 +43,15 @@ class AppLoadingIndicator extends StatelessWidget {
       );
 
   factory AppLoadingIndicator.taskValue(BuildContext context,
-      {required Color color}) =>
+      {Color? color}) =>
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
-        strokeWidth: 2,
+        strokeWidth: 4,
         size: Size(
           context.designSystem.spacing.xxl,
           context.designSystem.spacing.xxl,
         ),
-        color: color,
+        color: color ?? context.designSystem.colors.primaryColor,
       );
 
   @override

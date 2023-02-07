@@ -27,9 +27,14 @@ abstract class SplashBlocStates {
 
 @RxBloc()
 class SplashBloc extends $SplashBloc {
-  SplashBloc(RouterBlocType navigationBloc, SplashService splashService)
+  SplashBloc(
+    RouterBlocType navigationBloc,
+    SplashService splashService, {
+    String? location,
+  })
       : _navigationBloc = navigationBloc,
-        _splashService = splashService {
+        _splashService = splashService,
+        _location = location {
     _$initializeAppEvent
         .throttleTime(const Duration(seconds: 1))
         .startWith(null)
@@ -42,11 +47,16 @@ class SplashBloc extends $SplashBloc {
 
   final RouterBlocType _navigationBloc;
   final SplashService _splashService;
+  final String? _location;
 
   Future<void> initializeAppAndNavigate() async {
     await _splashService.initializeApp();
 
-    _navigationBloc.events.goTo(const CounterRoute());
+    if (_location != null) {
+      _navigationBloc.events.goToLocation(_location!);
+    } else {
+      _navigationBloc.events.goTo(const CounterRoute());
+    }
   }
 
   @override

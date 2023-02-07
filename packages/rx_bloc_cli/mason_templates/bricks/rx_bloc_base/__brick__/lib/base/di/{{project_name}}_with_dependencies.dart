@@ -10,6 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../feature_splash/services/splash_service.dart';
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
 import '../../lib_auth/data_sources/local/auth_token_secure_data_source.dart';
@@ -213,7 +214,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-
+        Provider<SplashService>(
+          create: (context) => SplashService(
+            context.read(),
+          ),
+        ),
         Provider<ItemService>(
           create: (context) => ItemService(
             context.read(),

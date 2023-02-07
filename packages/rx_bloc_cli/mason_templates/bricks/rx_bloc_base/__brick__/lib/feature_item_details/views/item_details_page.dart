@@ -6,6 +6,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_card_component.dart';
 import '../../base/common_ui_components/app_error_model_widget.dart';
+import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/item_model.dart';
 import '../blocs/item_details_bloc.dart';
@@ -55,7 +56,7 @@ class ItemDetailsPage extends StatelessWidget {
                 onTabRetry: () => bloc.events.fetchItemDetailsById(itemId),
               ),
               buildLoading: (context, bloc) =>
-              const CircularProgressIndicator(),
+                  AppLoadingIndicator.taskValue(context),
             ),
           ),
         )

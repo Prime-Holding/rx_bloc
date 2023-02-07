@@ -6,8 +6,14 @@ class SplashService {
   SplashService(this.permissionsService);
 
   final PermissionsService permissionsService;
+  bool _appInitialized = false;
 
   Future<void> initializeApp() async {
     await permissionsService.load();
+    _appInitialized = true;
+  }
+
+  bool isAppInitialized() {
+    return _appInitialized;
   }
 }

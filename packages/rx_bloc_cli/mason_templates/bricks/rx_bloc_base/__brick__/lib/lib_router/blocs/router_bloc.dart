@@ -15,6 +15,8 @@ part 'router_bloc.rxb.g.dart';
 abstract class RouterBlocEvents {
   void goTo(RouteData route, {Object? extra});
 
+  void goToLocation(String location);
+
   void pushTo(RouteData route, {Object? extra});
 }
 
@@ -50,7 +52,8 @@ class RouterBloc extends $RouterBloc {
             .switchMap((routeData) => _go(routeData).asResultStream()),
         _$pushToEvent
             .throttleTime(const Duration(seconds: 1))
-            .switchMap((routeData) => _push(routeData).asResultStream())
+            .switchMap((routeData) => _push(routeData).asResultStream()),
+        _$goToLocationEvent.doOnData(_router.go).asResultStream(),
       ]).setErrorStateHandler(this).whereSuccess().publish();
 
   Future<void> _go(_GoToEventArgs routeData) async {

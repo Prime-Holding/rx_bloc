@@ -22,6 +22,9 @@ abstract class $RouterBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [goTo]
   final _$goToEvent = PublishSubject<_GoToEventArgs>();
 
+  /// Тhe [Subject] where events sink to by calling [goToLocation]
+  final _$goToLocationEvent = PublishSubject<String>();
+
   /// Тhe [Subject] where events sink to by calling [pushTo]
   final _$pushToEvent = PublishSubject<_PushToEventArgs>();
 
@@ -41,6 +44,9 @@ abstract class $RouterBloc extends RxBlocBase
         route,
         extra: extra,
       ));
+
+  @override
+  void goToLocation(String location) => _$goToLocationEvent.add(location);
 
   @override
   void pushTo(
@@ -71,6 +77,7 @@ abstract class $RouterBloc extends RxBlocBase
   @override
   void dispose() {
     _$goToEvent.close();
+    _$goToLocationEvent.close();
     _$pushToEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
