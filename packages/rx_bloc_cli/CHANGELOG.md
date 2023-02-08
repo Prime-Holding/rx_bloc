@@ -1,5 +1,12 @@
 ## [2.0.0] - TBD
-* Replace the auto_route with go_router
+* `auto_route` and `auto_route_generator` were replaced by `go_router` and `go_router_builder`
+* The navigation goes through the business layer using the `refreshListenable` and `redirect` properties of the `GoRouter`
+* `Splash` screen initializing the application was implemented
+* Deep-link navigation was implemented
+* Add `spacing` as part of the `designSystem`
+* ACL implementation added covering in-app navigation as well as an external (deep-link) navigation
+* Related features are organized as flows
+* `Authentication`, `Permissions` and `Navigation` are organized as libraries
 
 ## [1.4.1] - January 25, 2023
 * Unit and golden test related fixes

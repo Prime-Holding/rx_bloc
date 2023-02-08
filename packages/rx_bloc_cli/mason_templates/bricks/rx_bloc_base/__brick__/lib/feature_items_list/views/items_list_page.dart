@@ -5,8 +5,8 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/app_error_card_component.dart';
-import '../../base/common_ui_components/app_error_model_widget.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/app_error_widget.dart';
 import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/item_model.dart';
@@ -29,7 +29,7 @@ class ItemsListPage extends StatelessWidget {
     body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AppErrorModelWidget<ItemsListBlocType>(
+        AppErrorModalWidget<ItemsListBlocType>(
           errorState: (bloc) => bloc.states.errors,
         ),
         Expanded(
@@ -39,7 +39,7 @@ class ItemsListPage extends StatelessWidget {
             ),
             child: RxResultBuilder<ItemsListBlocType, List<ItemModel>>(
               state: (bloc) => bloc.states.itemsList,
-              buildError: (ctx, error, bloc) => AppErrorCardComponent(
+              buildError: (ctx, error, bloc) => AppErrorWidget(
                 error: error,
                 onTabRetry: () => bloc.events.fetchItemsList(),
               ),

@@ -2,24 +2,24 @@
 
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-import '../repositories/auth_repository.dart';
+import 'auth_service.dart';
 
 class AccessTokenService {
-  AccessTokenService(this._authRepository);
+  AccessTokenService(this._authService);
 
-  final AuthRepository _authRepository;
+  final AuthService _authService;
 
   /// Returns the access token obtained from local storage.
   Future<String?> getAccessToken() async {
-    return _authRepository.getToken();
+    return _authService.getToken();
   }
 
   /// Fetches a new access token from the remote API, stores it locally
   /// and then returns it.
   Future<String> refreshAccessToken() async {
-    final newToken = await _authRepository.fetchNewToken();
-    await _authRepository.saveToken(newToken.token);
-    await _authRepository.saveRefreshToken(newToken.refreshToken);
+    final newToken = await _authService.fetchNewToken();
+    await _authService.saveToken(newToken.token);
+    await _authService.saveRefreshToken(newToken.refreshToken);
 
     return newToken.token;
   }

@@ -20,7 +20,7 @@ class SplashPageWithDependencies extends StatelessWidget {
       create: (context) => SplashBloc(
         context.read(),
         context.read(),
-        location: redirectToLocation,
+        redirectLocation: redirectToLocation,
       ),
     ),
   ];

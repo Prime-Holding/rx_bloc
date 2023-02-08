@@ -1,18 +1,18 @@
 part of '../../router.dart';
 
 @TypedGoRoute<CounterRoute>(
-  path: RoutePath.counter,
+  path: RoutesPath.counter,
   routes: <TypedGoRoute<GoRouteData>>[
     TypedGoRoute<NotificationsRoute>(
-      path: RoutePath.notifications,
+      path: RoutesPath.notifications,
     ),
-    TypedGoRoute<LoginRoute>(path: RoutePath.login),
-    TypedGoRoute<EnterMessageRoute>(path: RoutePath.enterMessage),
+    TypedGoRoute<LoginRoute>(path: RoutesPath.login),
+    TypedGoRoute<EnterMessageRoute>(path: RoutesPath.enterMessage),
     TypedGoRoute<ItemsRoute>(
-      path: RoutePath.items,
+      path: RoutesPath.items,
       routes: <TypedGoRoute<GoRouteData>>[
         TypedGoRoute<ItemDetailsRoute>(
-          path: RoutePath.itemDetails,
+          path: RoutesPath.itemDetails,
         ),
       ],
     ),

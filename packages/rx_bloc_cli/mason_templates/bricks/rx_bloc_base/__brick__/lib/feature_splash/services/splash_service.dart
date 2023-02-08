@@ -13,7 +13,5 @@ class SplashService {
     _appInitialized = true;
   }
 
-  bool isAppInitialized() {
-    return _appInitialized;
-  }
+  bool get isAppInitialized => _appInitialized;
 }

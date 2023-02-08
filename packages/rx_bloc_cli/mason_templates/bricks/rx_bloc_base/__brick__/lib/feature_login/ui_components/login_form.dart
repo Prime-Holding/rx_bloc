@@ -5,7 +5,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/app_error_model_widget.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
 import '../blocs/login_bloc.dart';
@@ -72,7 +72,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   child: _buildLogInButton(),
                 ),
-                AppErrorModelWidget<LoginBlocType>(
+                AppErrorModalWidget<LoginBlocType>(
                   errorState: (bloc) => bloc.states.errors,
                   isListeningForNavigationErrors: false,
                 ),

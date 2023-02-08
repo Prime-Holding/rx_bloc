@@ -9,7 +9,8 @@ environment:
 dependencies:
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
-  dio: ^4.0.6{{#analytics}}
+  dio: ^4.0.6
+  equatable: ^2.0.5{{#analytics}}
   firebase_analytics: ^10.0.6{{/analytics}}{{#uses_firebase}}
   firebase_core: ^2.3.0{{/uses_firebase}}{{#push_notifications}}
   firebase_messaging: ^14.1.1{{/push_notifications}}
@@ -20,7 +21,7 @@ dependencies:
     sdk: flutter
   flutter_rx_bloc: ^5.0.2
   flutter_secure_storage: ^7.0.1
-  go_router: 6.0.4
+  go_router: ^6.0.4
   golden_toolkit: ^0.14.0
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)

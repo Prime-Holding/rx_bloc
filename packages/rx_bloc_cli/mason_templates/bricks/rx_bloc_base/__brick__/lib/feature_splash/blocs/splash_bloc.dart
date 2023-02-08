@@ -5,8 +5,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../lib_router/router.dart';
 import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
 import '../services/splash_service.dart';
 
 part 'splash_bloc.rxb.g.dart';
@@ -30,11 +30,11 @@ class SplashBloc extends $SplashBloc {
   SplashBloc(
     RouterBlocType navigationBloc,
     SplashService splashService, {
-    String? location,
+    String? redirectLocation,
   })
       : _navigationBloc = navigationBloc,
         _splashService = splashService,
-        _location = location {
+        _redirectLocation = redirectLocation {
     _$initializeAppEvent
         .throttleTime(const Duration(seconds: 1))
         .startWith(null)
@@ -47,13 +47,13 @@ class SplashBloc extends $SplashBloc {
 
   final RouterBlocType _navigationBloc;
   final SplashService _splashService;
-  final String? _location;
+  final String? _redirectLocation;
 
   Future<void> initializeAppAndNavigate() async {
     await _splashService.initializeApp();
 
-    if (_location != null) {
-      _navigationBloc.events.goToLocation(_location!);
+    if (_redirectLocation != null) {
+      _navigationBloc.events.goToLocation(_redirectLocation!);
     } else {
       _navigationBloc.events.goTo(const CounterRoute());
     }

@@ -11,9 +11,9 @@ import '../models/errors/error_model.dart';
 typedef ErrorStateCallback<BlocType extends RxBlocTypeBase> = Stream<ErrorModel>
     Function(BlocType bloc);
 
-class AppErrorModelWidget<BlocType extends RxBlocTypeBase>
+class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
     extends StatelessWidget {
-  const AppErrorModelWidget({
+  const AppErrorModalWidget({
     required this.errorState,
     this.isListeningForNavigationErrors = true,
     Key? key,

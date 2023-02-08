@@ -1,6 +1,6 @@
 part of '../../router.dart';
 
-@TypedGoRoute<SplashRoute>(path: RoutePath.splash)
+@TypedGoRoute<SplashRoute>(path: RoutesPath.splash)
 @immutable
 class SplashRoute extends GoRouteData implements RouteData {
   const SplashRoute();

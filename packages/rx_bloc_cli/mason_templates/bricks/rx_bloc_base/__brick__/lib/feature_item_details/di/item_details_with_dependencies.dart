@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -30,10 +31,31 @@ class ItemDetailsWithDependencies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-    key: UniqueKey(),
+    key: ValueKey(
+      _BlocValueKey(
+        itemId: itemId,
+        item: item,
+        blocName: 'ItemDetailsBloc',
+      ),
+    ),
     providers: [
       ..._blocs,
     ],
     child: ItemDetailsPage(itemId: itemId,),
   );
+}
+
+class _BlocValueKey with EquatableMixin {
+  _BlocValueKey({
+    required this.itemId,
+    this.item,
+    this.blocName,
+  });
+
+  final ItemModel? item;
+  final String itemId;
+  final String? blocName;
+
+  @override
+  List<Object?> get props => [item, itemId, blocName];
 }

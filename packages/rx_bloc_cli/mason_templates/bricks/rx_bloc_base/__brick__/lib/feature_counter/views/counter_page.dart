@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
 import '../../base/common_ui_components/action_button.dart';
-import '../../base/common_ui_components/app_error_model_widget.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/update_button.dart';
 import '../../base/theme/design_system.dart';
@@ -43,10 +43,10 @@ class CounterPage extends StatelessWidget {
             builder: (context, countState, bloc) =>
                 _buildCount(context, countState),
           ),
-          AppErrorModelWidget<CounterBlocType>(
+          AppErrorModalWidget<CounterBlocType>(
             errorState: (bloc) => bloc.states.errors,
           ),
-          AppErrorModelWidget<UserAccountBlocType>(
+          AppErrorModalWidget<UserAccountBlocType>(
             errorState: (bloc) => bloc.states.errors,
             isListeningForNavigationErrors: false,
           ),

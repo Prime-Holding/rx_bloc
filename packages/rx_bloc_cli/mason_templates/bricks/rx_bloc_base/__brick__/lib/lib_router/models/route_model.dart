@@ -1,50 +1,43 @@
 {{> licence.dart }}
 
-class RoutePath {
-  static const splash = '/splash';
-  static const counter = '/';
-  static const notifications = 'notifications';
-  static const login = 'login';
-  static const enterMessage = 'enterMessage';
-  static const items = 'items';
-  static const itemDetails = ':id';
-}
+import '../../lib_permissions/models/routes_permission.dart';
+import 'routes_path.dart';
 
 enum RouteModel {
   splash(
-    pathName: RoutePath.splash,
+    pathName: RoutesPath.splash,
     fullPath: '/splash',
-    permissionName: 'SplashRoute',
+    permissionName: RoutesPermission.splash,
   ),
   counter(
-    pathName: RoutePath.counter,
+    pathName: RoutesPath.counter,
     fullPath: '/',
-    permissionName: 'CounterRoute',
+    permissionName: RoutesPermission.counter,
   ),
   notifications(
-    pathName: RoutePath.notifications,
+    pathName: RoutesPath.notifications,
     fullPath: '/notifications',
-    permissionName: 'NotificationRoute',
+    permissionName: RoutesPermission.notifications,
   ),
   login(
-    pathName: RoutePath.login,
+    pathName: RoutesPath.login,
     fullPath: '/login',
-    permissionName: 'LoginRoute',
+    permissionName: RoutesPermission.login,
   ),
   enterMessage(
-    pathName: RoutePath.enterMessage,
+    pathName: RoutesPath.enterMessage,
     fullPath: '/enterMessage',
-    permissionName: 'EnterMessageRoute',
+    permissionName: RoutesPermission.enterMessage,
   ),
   items(
-    pathName: RoutePath.items,
+    pathName: RoutesPath.items,
     fullPath: '/items',
-    permissionName: 'ItemsRoute',
+    permissionName: RoutesPermission.items,
   ),
   itemDetails(
-    pathName: RoutePath.itemDetails,
+    pathName: RoutesPath.itemDetails,
     fullPath: '/items/:id',
-    permissionName: 'ItemDetailsRoute',
+    permissionName: RoutesPermission.itemDetails,
   );
 
   final String pathName;

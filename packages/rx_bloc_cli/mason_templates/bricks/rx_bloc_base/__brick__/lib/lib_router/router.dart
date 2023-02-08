@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';
-import '../base/models/errors/error_model.dart';
 import '../base/models/item_model.dart';
 import '../feature_counter/di/counter_page_with_dependencies.dart';
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';
@@ -19,6 +18,7 @@ import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_model.dart';
+import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart';
@@ -63,8 +63,7 @@ class AppRouter {
     }
 
     if (state.subloc != const SplashRoute().location) {
-      final isInitialized = context.read<SplashService>().isAppInitialized();
-      if (!isInitialized) {
+      if (!context.read<SplashService>().isAppInitialized) {
         return '${const SplashRoute().location}?from=${state.location}';
       }
     }

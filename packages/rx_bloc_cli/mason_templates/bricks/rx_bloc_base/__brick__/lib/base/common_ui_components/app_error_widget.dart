@@ -7,8 +7,8 @@ import '../extensions/error_model_translations.dart';
 import '../models/errors/error_model.dart';
 import 'primary_button.dart';
 
-class AppErrorCardComponent extends StatelessWidget {
-  const AppErrorCardComponent({
+class AppErrorWidget extends StatelessWidget {
+  const AppErrorWidget({
     required this.error,
     required this.onTabRetry,
     Key? key,
