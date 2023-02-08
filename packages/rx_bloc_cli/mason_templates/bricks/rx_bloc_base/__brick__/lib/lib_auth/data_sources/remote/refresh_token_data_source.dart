@@ -16,6 +16,6 @@ abstract class RefreshTokenDataSource {
   factory RefreshTokenDataSource(Dio dio, {String baseUrl}) =
       _RefreshTokenDataSource;
 
-  @POST('/api/authenticate')
+  @POST('/api/auth/refresh-token')
   Future<AuthTokenModel> refresh(@Body() AuthUserRequestModel refreshToken);
 }
