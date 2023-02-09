@@ -270,11 +270,11 @@ class BootstrapSingleTestAction : AnAction() {
                 if (it.contains("<") && it.contains(">")) {
                     val innerType = it.substring(it.indexOf("<") + 1, it.indexOf("<"))
                     if (line.contains("${innerType.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
-                        sb.append(Utils.fixRelativeImports(line, rootDir, "", file)).append("\n")
+                        sb.append(Utils.fixRelativeImports(line, rootDir,  file)).append("\n")
                     }
                 } else {
                     if (line.contains("${it.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
-                        sb.append(Utils.fixRelativeImports(line, rootDir, "", file)).append("\n")
+                        sb.append(Utils.fixRelativeImports(line, rootDir, file)).append("\n")
                     }
                 }
             }

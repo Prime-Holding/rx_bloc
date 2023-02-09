@@ -39,6 +39,8 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_BLOC_STATE_IMPORTS = "imports_from_bloc_states"
     private val TEMPLATE_BLOC_STATES_WHEN_MOCK = "bloc_states_when"
     private val TEMPLATE_TEST_RX_BLOC_STATE_GROUP = "test_rxbloc_state_group"
+    private val TEMPLATE_IMPORT_BLOC_FILE = "import_bloc_file"
+    private val TEMPLATE_IMPORT_BLOC_PAGE_FILE = "import_bloc_page_file"
     private val TEMPLATE_BLOC_FOLDER_PREFIX = "bloc_folder_prefix"
     private val TEMPLATE_STATES_AS_OPTIONAL_PARAMETER = "states_as_optional_parameter"
     private val TEMPLATE_STATES_AS_PASSING_NAMED_PARAMETERS = "states_as_passing_named_parameters"
@@ -70,7 +72,8 @@ abstract class RxTestGeneratorBase(
             TEMPLATE_REPO_IMPORT_DECLARATIONS to generateRepoImportDeclarations(),
             TEMPLATE_BLOC_CONSTRUCTOR_IMPORTS to generateBlocConstructorImports(bloc.file, bloc.constructorFieldTypes),
             TEMPLATE_BLOC_STATE_IMPORTS to generateBlocStateImports(),
-
+            TEMPLATE_IMPORT_BLOC_FILE to generateImportBlocFile(),
+            TEMPLATE_IMPORT_BLOC_PAGE_FILE to generateImportBlocPageFile(),
             TEMPLATE_BLOC_STATES_WHEN_MOCK to generateBlocStatesWhenMock(),
             TEMPLATE_TEST_RX_BLOC_STATE_GROUP to generateBlocStatesGroup(),
             TEMPLATE_BLOC_FOLDER_PREFIX to generateFolderPrefix(),
@@ -105,6 +108,27 @@ abstract class RxTestGeneratorBase(
         }
     }
 
+
+    private fun generateImportBlocFile(): String {
+        val indexOfLibInThePath = bloc.file.path.lastIndexOf("${projectName}${File.separator}lib")
+        if (indexOfLibInThePath == -1) {
+            return ""
+        }
+        val rootPathToLib =
+            bloc.file.path.substring(0, indexOfLibInThePath + "${projectName}${File.separator}lib".length)
+        return "import 'package:${projectName}${
+            bloc.file.path.replace(
+                rootPathToLib,
+                ""
+            )
+        }';".replace("\\", "/")
+    }
+
+    private fun generateImportBlocPageFile(): String =
+        generateImportBlocFile().replace(
+            "blocs/${bloc.file.name}",
+            "views/${bloc.file.name.replace("_bloc.dart", "_page.dart")}"
+        )
 
     private fun generateBlocStatesGroup(): String {
         val sb = StringBuilder()
@@ -213,38 +237,67 @@ abstract class RxTestGeneratorBase(
         return sb.toString()
     }
 
-
-    private fun generateBlocStateImports(): String {
+    private fun searchInSubTypes(lines: List<String>, type: String, libFolder: VirtualFile): String {
         val sb = StringBuilder()
-        var resultAdded = false
-        var paginatedListAdded = false
+        val indexOfOpen = type.indexOf("<")
+        if (indexOfOpen != -1) {
+            val indexOfClose = type.indexOf(">", indexOfOpen)
 
-        bloc.stateVariableTypes.forEach {
-            if (it.contains("Result<") && !resultAdded) {
-                resultAdded = true
-                sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
-            }
-            if (it.contains("PaginatedList<") && !paginatedListAdded) {
-                paginatedListAdded = true
-                sb.appendln("import 'package:rx_bloc_list/models.dart';")
+            if (indexOfClose != -1) {
+                var subType = type.substring(indexOfOpen + 1, indexOfClose)
+
+                if (subType.contains("<")) {
+                    sb.append(searchInSubTypes(lines, subType, libFolder))
+                    subType = subType.substring(0, subType.indexOf("<"))
+                    appendImportIfFound(sb, libFolder, subType, lines)
+                } else {
+                    appendImportIfFound(sb, libFolder, subType, lines)
+                }
             }
         }
 
+        return sb.toString()
+    }
 
+    private fun appendImportIfFound(
+        sb: StringBuilder,
+        libFolder: VirtualFile,
+        needle: String,
+        lines: List<String>
+    ) {
+        val snake = needle.trim().replace("?", "").toLowerSnakeCase()
+        lines.forEach { line ->
+            if (line.contains("import '") && line.contains("$snake.dart")) {
+                sb.appendln(
+                    Utils.fixRelativeImports(line, libFolder, bloc.file)
+                )
+            }
+        }
+    }
+
+    private fun generateBlocStateImports(): String {
         val lines = File(bloc.file.path).readText().lines()
         val libFolder = findLibFolder(bloc.file)
-
+        val sb = StringBuilder()
         if (libFolder != null) {
-            val featureFolder = bloc.file.parent.parent.name
-            lines.forEach { line ->
-                bloc.stateVariableTypes.forEach {
-                    val snake = it.trim().replace("?", "").toLowerSnakeCase()
-                    if (line.contains("import '") && line.contains("$snake.dart")) {
-                        sb.appendln(
-                            Utils.fixRelativeImports(line,  libFolder, featureFolder, bloc.file)
-                        )
-                    }
+
+            var resultAdded = false
+            var paginatedListAdded = false
+
+            bloc.stateVariableTypes.forEach {
+                if (it.contains("Result<") && !resultAdded) {
+                    resultAdded = true
+                    sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
                 }
+                if (it.contains("PaginatedList<") && !paginatedListAdded) {
+                    paginatedListAdded = true
+                    sb.appendln("import 'package:rx_bloc_list/models.dart';")
+                }
+                sb.append(searchInSubTypes(lines, it, libFolder.parent))
+            }
+
+            bloc.stateVariableTypes.forEach {
+                appendImportIfFound(sb, libFolder.parent, it, lines)
             }
         }
         return sb.toString()
@@ -257,18 +310,13 @@ abstract class RxTestGeneratorBase(
         val libFolder = findLibFolder(file)
 
         if (libFolder != null) {
-            val appFolder = libFolder.parent.name
-            val featureFolder = file.parent.parent.name
             lines.forEach { line ->
                 constructorFieldTypes.forEach {
                     val snake = it.toLowerSnakeCase()
                     if (line.contains("import '")) {
 
                         if (line.contains("$snake.dart")) {
-                            sb.appendln(
-                                line.replace("../..", "package:$appFolder")
-                                    .replace("..", "package:$appFolder/$featureFolder")
-                            )
+                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
                         }
 
                         if (snake.endsWith("bloc_type") && line.contains(
@@ -280,10 +328,7 @@ abstract class RxTestGeneratorBase(
                                 }.dart"
                             )
                         ) {
-                            sb.appendln(
-                                line.replace("../..", "package:$appFolder")
-                                    .replace("..", "package:$appFolder/$featureFolder")
-                            )
+                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
                         }
                     }
                 }

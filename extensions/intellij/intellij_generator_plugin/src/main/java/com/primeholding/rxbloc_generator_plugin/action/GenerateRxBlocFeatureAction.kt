@@ -3,13 +3,10 @@ package com.primeholding.rxbloc_generator_plugin.action
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
-import com.intellij.openapi.fileTypes.PlainTextLanguage
-import com.intellij.openapi.project.Project
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.ui.Messages
-import com.intellij.psi.PsiDirectory
-import com.intellij.psi.PsiDocumentManager
-import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiFileFactory
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocFeatureGeneratorFactory
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 import com.primeholding.rxbloc_generator_plugin.generator.components.RxPageGenerator
@@ -18,8 +15,10 @@ import com.primeholding.rxbloc_generator_plugin.generator.components.RxPageGener
 class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
 
     private lateinit var dataContext: DataContext
+    private lateinit var event: AnActionEvent
 
     override fun actionPerformed(e: AnActionEvent) {
+        event = e
         val dialog = GenerateRxBlocDialog(this)
         dialog.show()
     }
@@ -45,17 +44,25 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         e.dataContext.let {
             this.dataContext = it
             val presentation = e.presentation
-            presentation.isEnabled = true
+
+
+            val files = e.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+            val isVisible = files != null && files.size == 1 && files[0].isDirectory
+
+            presentation.isEnabled = isVisible
+            presentation.isVisible = isVisible
         }
     }
 
     private fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
-        val view = LangDataKeys.IDE_VIEW.getData(dataContext)
-        val directory = view?.orChooseDirectory
+        //contextually selected folders
+        val files = event.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
 
-        if (mainSourceGenerators.isNotEmpty()) {
-            val featureDirectory = directory?.findSubdirectory(mainSourceGenerators[0].featureDirectoryName())
+
+
+        if (mainSourceGenerators.isNotEmpty() && files != null && files.size == 1 && files[0].isDirectory) {
+            val featureDirectory = files[0]?.findChild(mainSourceGenerators[0].featureDirectoryName())
 
             if (featureDirectory != null) {
                 Messages.showMessageDialog(
@@ -69,19 +76,19 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
             }
         }
 
-        var file: PsiFile? = null
+        var file: VirtualFile? = null
 
         ApplicationManager.getApplication().runWriteAction {
             CommandProcessor.getInstance().executeCommand(
                 project,
                 {
                     mainSourceGenerators.forEach {
-                        val featureDirectory = createDir(directory!!, it.featureDirectoryName())
+                        val featureDirectory = createDir(files!![0], it.featureDirectoryName())
                         val featureBlocDirectory = createDir(featureDirectory, it.contextDirectoryName())
                         if (it is RxPageGenerator) {
-                            file = createSourceFile(project!!, it, featureBlocDirectory)
+                            file = createSourceFile(it, featureBlocDirectory)
                         } else {
-                            createSourceFile(project!!, it, featureBlocDirectory)
+                            createSourceFile(it, featureBlocDirectory)
                         }
                     }
                 },
@@ -90,35 +97,30 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
             )
         }
         if (file != null && project != null) {
-            file!!.virtualFile
             //TODO this does not open it properly
-//            FileEditorManager.getInstance(project)
-//                .openFile(file!!.virtualFile, true)
+            FileEditorManager.getInstance(project)
+                .openFile(file!!, true)
         }
     }
 
-    private fun createSourceFile(project: Project, generator: RxGeneratorBase, directory: PsiDirectory): PsiFile? {
+    private fun createSourceFile(generator: RxGeneratorBase, directory: VirtualFile): VirtualFile? {
         val fileName = generator.fileName()
-        val existingPsiFile = directory.findFile(fileName)
+        val existingPsiFile = directory.findChild(fileName)
         if (existingPsiFile != null) {
-            val document = PsiDocumentManager.getInstance(project).getDocument(existingPsiFile)
-            document?.insertString(document.textLength, "\n" + generator.generate())
             return null
         }
-        val psiFile = PsiFileFactory.getInstance(project)
-            .createFileFromText(fileName, PlainTextLanguage.INSTANCE, generator.generate())
 
-        if (psiFile != null) {
-            directory.add(psiFile)
-        }
-        return psiFile
+        val file = directory.createChildData(this, fileName)
+        VfsTestUtil.overwriteTestData(file.path, generator.generate())
+
+        return file
     }
 
-    private fun createDir(baseDirectory: PsiDirectory, name: String): PsiDirectory {
-        var featureDirectory = baseDirectory.findSubdirectory(name)
+    private fun createDir(baseDirectory: VirtualFile, name: String): VirtualFile {
+        var featureDirectory = baseDirectory.findChild(name)
 
         if (featureDirectory == null) {
-            featureDirectory = baseDirectory.createSubdirectory(name)
+            featureDirectory = baseDirectory.createChildDirectory(this, name)
         }
 
         return featureDirectory

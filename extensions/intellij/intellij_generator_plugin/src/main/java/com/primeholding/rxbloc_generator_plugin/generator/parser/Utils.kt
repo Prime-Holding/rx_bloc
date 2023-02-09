@@ -333,22 +333,40 @@ class Utils {
         fun fixRelativeImports(
             importLine: String,
             appFolder: VirtualFile,
-            featureFolder: String,
             file: VirtualFile
         ): String {
             var result = ""
             if (importLine.contains("..")) {
 
-                result = importLine.replace("../..", "package:$appFolder")
-                if (featureFolder.isEmpty())
-                    result = result.replace("..", "package:$appFolder/$featureFolder")
-
-            } else {
-
-                if (!result.startsWith("import 'package:")) {
-                    return "import 'package:${file.path.replace(appFolder.path, "")}';".replace("\\", "/")
+                val testPath = file.parent.path.replace("${appFolder.path}${File.separator}lib${File.separator}", "")
+                    .replace("\\", "/").split("/")
+                val countDots = importLine.split("..").size - 1
+                var theMiddlePath = ""
+                for (i in countDots until testPath.size) {
+                    theMiddlePath += "${testPath[i - countDots]}/"
                 }
 
+                result = "import 'package:${appFolder.name}/${theMiddlePath}${
+                    importLine.substring(
+                        importLine.lastIndexOf("../") + 3, importLine.lastIndexOf('\'')
+                    )
+                }';"
+            } else {
+                if (!importLine.startsWith("import 'package:")) {
+                    val indexStart = importLine.indexOf('\'')
+                    if (indexStart != -1) {
+                        val indexEnd = importLine.indexOf('\'', indexStart + 1)
+
+                        if (indexEnd != -1) {
+                            result = "import 'package:${appFolder.name}/${
+                                file.path.replace(
+                                    "${appFolder.path}${File.separator}lib${File.separator}",
+                                    ""
+                                ).replace(file.name, importLine.substring(indexStart + 1, indexEnd))
+                            }';".replace("\\", "/")
+                        }
+                    }
+                }
             }
             return result
         }
