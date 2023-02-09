@@ -22,7 +22,7 @@ abstract class SplashBlocStates {
   Stream<bool> get isLoading;
 
   /// The error state
-  Stream<ErrorModel> get errors;
+  Stream<ErrorModel?> get errors;
 }
 
 @RxBloc()
@@ -60,7 +60,10 @@ class SplashBloc extends $SplashBloc {
   }
 
   @override
-  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+  Stream<ErrorModel?> _mapToErrorsState() => Rx.merge([
+    errorState.mapToErrorModel(),
+    loadingState.where((loading) => loading).map((_) => null),
+  ]).share();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

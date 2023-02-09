@@ -34,7 +34,7 @@ class SplashPage extends StatelessWidget {
           )
               : const SizedBox(),
         ),
-        RxBlocBuilder<SplashBlocType, ErrorModel>(
+        RxBlocBuilder<SplashBlocType, ErrorModel?>(
           state: (bloc) => bloc.states.errors,
           builder: (state, snapshot, bloc) =>
           snapshot.hasData && snapshot.data != null
