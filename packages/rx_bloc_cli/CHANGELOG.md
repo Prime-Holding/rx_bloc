@@ -5,8 +5,7 @@
 * Deep-link navigation was implemented
 * Add `spacing` as part of the `designSystem`
 * ACL implementation added covering in-app navigation as well as an external (deep-link) navigation
-* Related features are organized as flows
-* `Authentication`, `Permissions` and `Navigation` are organized as libraries
+* `Authentication`, `Permissions` and `Routing` are organized as libraries
 
 ## [1.4.1] - January 25, 2023
 * Unit and golden test related fixes
