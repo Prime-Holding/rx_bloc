@@ -1,0 +1,14 @@
+{
+    "@@locale": "es",
+    "reload": "Reload",
+    "ok" : "OK",
+    "close" : "Close",
+    "resetPassword" : "Reset password",
+    "pageWithResult" : "Page with result",
+    "deepLinkFlowMenu" : "Deep link flow",
+    "tryAgain" : "Try again",
+    "confirm" : "Confirm",
+    "itemIdResult" : "Id: {id}",
+    "itemNameResult" : "Name: {name}",
+    "itemDescriptionResult" : "Description: {description}"
+}

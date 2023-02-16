@@ -1,4 +1,4 @@
-# Test App
+# Booking App
 
 ## Getting started
 
