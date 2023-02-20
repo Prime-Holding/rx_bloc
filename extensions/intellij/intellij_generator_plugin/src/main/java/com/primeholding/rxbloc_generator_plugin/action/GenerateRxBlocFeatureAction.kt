@@ -1,5 +1,7 @@
 package com.primeholding.rxbloc_generator_plugin.action
 
+import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
+import com.fleshgrinder.extensions.kotlin.toUpperCamelCase
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
@@ -10,6 +12,7 @@ import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocFeatureGeneratorFactory
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 import com.primeholding.rxbloc_generator_plugin.generator.components.RxPageGenerator
+import java.io.File
 
 
 class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
@@ -36,7 +39,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
                 includeLocalService,
                 includeAutoRoute
             )
-            generate(generators)
+            generate(generators, includeAutoRoute, name)
         }
     }
 
@@ -54,7 +57,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
     }
 
-    private fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
+    private fun generate(mainSourceGenerators: List<RxGeneratorBase>, includeAutoRoute: Boolean, name: String) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         //contextually selected folders
         val files = event.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
@@ -91,15 +94,124 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
                             createSourceFile(it, featureBlocDirectory)
                         }
                     }
+                    if (!includeAutoRoute) {
+                        goRouteAdditions(name)
+                    }
                 },
                 "Generate a new RxBloc Feature",
                 null
             )
         }
         if (file != null && project != null) {
-            //TODO this does not open it properly
             FileEditorManager.getInstance(project)
                 .openFile(file!!, true)
+        }
+    }
+
+    private fun goRouteAdditions(name: String) {
+        println("goRouteAdditions $name")
+
+        val featureCamelCase = name.toUpperCamelCase()
+        val featureFieldCase = name.toLowerCamelCase()
+
+        println("featureCamelCase $featureCamelCase")
+        println("featureFieldCase $featureFieldCase")
+        val newRoute = """
+
+//TODO move it the desired place in the routing tree
+@immutable
+class ${featureCamelCase}Route extends GoRouteData implements RouteData {
+  const ${featureCamelCase}Route();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const ${featureCamelCase}PageWithDependencies(),
+      );
+
+  @override
+  String get permissionName => RouteModel.${featureFieldCase}.permissionName;
+
+  @override
+  String get routeLocation => location;
+  //TODO execute rebuild and remove this todo - when location is found
+}
+        
+"""
+        event.project?.let {
+            println("project it $it")
+            var filePath =
+                "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}router.dart"
+            var file = File(filePath)
+
+            println("router it $file")
+            if (file.exists()) {
+                val text = file.readText()
+                VfsTestUtil.overwriteTestData(filePath, "${text}${newRoute}")
+
+                println("text $text")
+            }
+            filePath =
+                "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}routes_path.dart"
+            file = File(filePath)
+            println("routes_path it $file")
+            if (file.exists()) {
+                val text = File(file.path).readText()
+                    .replace(
+                        "RoutesPath {",
+                        "RoutesPath {\n  static const $featureFieldCase = '/$featureFieldCase';// TODO fix full path of the route according to your needs"
+                    )
+                VfsTestUtil.overwriteTestData(file.path, text)
+
+
+                println("text $text")
+            }
+            filePath =
+             "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}route_model.dart"
+            file = File(filePath)
+            println("route_model it $file")
+            if (file.exists()) {
+                val text = File(file.path).readText()
+                    .replace(
+                        "RouteModel {", """RouteModel {
+  $featureFieldCase(
+    pathName: RoutesPath.$featureFieldCase,
+    fullPath: '/$featureFieldCase',
+    permissionName: RoutesPermission.$featureFieldCase,
+  ),
+"""
+                    )
+                VfsTestUtil.overwriteTestData(file.path, text)
+
+
+                println("text $text")
+            }
+
+            filePath =
+               "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}routes_permission.dart"
+            file = File(filePath)
+            if (file.exists()) {
+                val text = File(file.path).readText().replace(
+                    "RoutesPermission {",
+                    "RoutesPermission {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
+                )
+                VfsTestUtil.overwriteTestData(file.path, text)
+
+                println("text $text")
+            }
+
+            filePath =
+              "${it.basePath}${File.separator}bin${File.separator}server${File.separator}controllers${File.separator}permissions_controller.dart"
+            file = File(filePath)
+            if (file.exists()) {
+                val text = File(file.path).readText()
+                    .replace("'item': {", "'item': {\n          '${featureCamelCase}Route': true,")
+                VfsTestUtil.overwriteTestData(file.path, text)
+
+
+                println("text $text")
+            }
         }
     }
 
