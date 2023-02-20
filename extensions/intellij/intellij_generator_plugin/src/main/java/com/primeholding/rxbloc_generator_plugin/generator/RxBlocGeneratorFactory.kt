@@ -2,15 +2,13 @@ package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.primeholding.rxbloc_generator_plugin.generator.components.RxBlocExtensionGenerator
 import com.primeholding.rxbloc_generator_plugin.generator.components.RxBlocWithServiceGenerator
-import com.primeholding.rxbloc_generator_plugin.generator.components.RxGeneratedBlocGenerator
 import com.primeholding.rxbloc_generator_plugin.generator.components.RxGeneratedNullSafetyBlocGenerator
 
 object RxBlocGeneratorFactory {
     fun getBlocGenerators(
         name: String,
         withDefaultStates: Boolean,
-        includeLocalService: Boolean,
-        includeNullSafety: Boolean
+        includeLocalService: Boolean
     ): List<RxGeneratorBase> {
         val bloc = com.primeholding.rxbloc_generator_plugin.generator.components.RxBlocGenerator(
             name,
@@ -18,19 +16,12 @@ object RxBlocGeneratorFactory {
             includeLocalService
         )
 
-        val generatedBloc = if (includeNullSafety) {
+        val generatedBloc =
             RxGeneratedNullSafetyBlocGenerator(
                 name,
                 withDefaultStates,
                 includeLocalService
             )
-        } else {
-            RxGeneratedBlocGenerator(
-                name,
-                withDefaultStates,
-                includeLocalService
-            )
-        }
 
         return if (includeLocalService) {
             val blocExtensions = RxBlocWithServiceGenerator(

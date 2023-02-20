@@ -3,6 +3,7 @@
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
@@ -10,14 +11,14 @@ import java.lang.RuntimeException
 abstract class RxPageGeneratorBase(
     name: String,
     withDefaultStates: Boolean,
-    includeAutoRoute: Boolean,
+    routingIntegration: GenerateRxBlocDialog.RoutingIntegration,
     templateName: String
 ) : RxGeneratorBase(name) {
 
     private val TEMPLATE_FEATURE_PASCAL_CASE = "feature_pascal_case"
     private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"
 
-    private val includeAutoRouteFlag: Boolean
+    private val includeAutoRouteFlag: GenerateRxBlocDialog.RoutingIntegration
     private val templateString: String
     private val templateValues: MutableMap<String, String> = mutableMapOf(
         TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
@@ -25,7 +26,7 @@ abstract class RxPageGeneratorBase(
     )
 
     init {
-        includeAutoRouteFlag = includeAutoRoute
+        includeAutoRouteFlag = routingIntegration
         try {
             val templateFolder = StringBuilder()
 

@@ -23,14 +23,13 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
         blocName: String?,
         withDefaultStates: Boolean,
         includeLocalService: Boolean,
-        includeAutoRoute: Boolean
+        routingIntegration: GenerateRxBlocDialog.RoutingIntegration
     ) {
         blocName?.let { name ->
             val generators = RxBlocGeneratorFactory.getBlocGenerators(
                 name,
                 withDefaultStates,
-                includeLocalService,
-                includeAutoRoute
+                includeLocalService
             )
             generate(generators)
         }

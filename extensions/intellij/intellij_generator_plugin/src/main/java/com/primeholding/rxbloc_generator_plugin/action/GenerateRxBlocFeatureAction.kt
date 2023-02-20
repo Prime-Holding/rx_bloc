@@ -1,6 +1,7 @@
 package com.primeholding.rxbloc_generator_plugin.action
 
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
+import com.fleshgrinder.extensions.kotlin.toLowerSnakeCase
 import com.fleshgrinder.extensions.kotlin.toUpperCamelCase
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
@@ -9,6 +10,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.VfsTestUtil
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog.RoutingIntegration
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocFeatureGeneratorFactory
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 import com.primeholding.rxbloc_generator_plugin.generator.components.RxPageGenerator
@@ -30,16 +32,16 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         blocName: String?,
         withDefaultStates: Boolean,
         includeLocalService: Boolean,
-        includeAutoRoute: Boolean
+        routingIntegration: RoutingIntegration
     ) {
         blocName?.let { name ->
             val generators = RxBlocFeatureGeneratorFactory.getBlocGenerators(
                 name,
                 withDefaultStates,
                 includeLocalService,
-                includeAutoRoute
+                routingIntegration
             )
-            generate(generators, includeAutoRoute, name)
+            generate(generators, routingIntegration, name)
         }
     }
 
@@ -57,7 +59,11 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
     }
 
-    private fun generate(mainSourceGenerators: List<RxGeneratorBase>, includeAutoRoute: Boolean, name: String) {
+    private fun generate(
+        mainSourceGenerators: List<RxGeneratorBase>,
+        routingIntegration: RoutingIntegration,
+        name: String
+    ) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         //contextually selected folders
         val files = event.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
@@ -94,7 +100,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
                             createSourceFile(it, featureBlocDirectory)
                         }
                     }
-                    if (!includeAutoRoute) {
+                    if (routingIntegration == RoutingIntegration.GoRouter) {
                         goRouteAdditions(name)
                     }
                 },
@@ -109,16 +115,11 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
     }
 
     private fun goRouteAdditions(name: String) {
-        println("goRouteAdditions $name")
-
         val featureCamelCase = name.toUpperCamelCase()
         val featureFieldCase = name.toLowerCamelCase()
-
-        println("featureCamelCase $featureCamelCase")
-        println("featureFieldCase $featureFieldCase")
         val newRoute = """
 
-//TODO move it the desired place in the routing tree
+//TODO move it the desired place in the routing tree Or make it as root route: @TypedGoRoute<${featureCamelCase}Route>(path: path) and run Build Runner - Build
 @immutable
 class ${featureCamelCase}Route extends GoRouteData implements RouteData {
   const ${featureCamelCase}Route();
@@ -140,22 +141,21 @@ class ${featureCamelCase}Route extends GoRouteData implements RouteData {
         
 """
         event.project?.let {
-            println("project it $it")
             var filePath =
                 "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}router.dart"
             var file = File(filePath)
 
-            println("router it $file")
             if (file.exists()) {
-                val text = file.readText()
+                val text = file.readText().replace(
+                    "import 'models/route_model.dart';",
+                    "import 'models/route_model.dart';\nimport '../feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';"
+                )
                 VfsTestUtil.overwriteTestData(filePath, "${text}${newRoute}")
 
-                println("text $text")
             }
             filePath =
                 "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}routes_path.dart"
             file = File(filePath)
-            println("routes_path it $file")
             if (file.exists()) {
                 val text = File(file.path).readText()
                     .replace(
@@ -165,12 +165,10 @@ class ${featureCamelCase}Route extends GoRouteData implements RouteData {
                 VfsTestUtil.overwriteTestData(file.path, text)
 
 
-                println("text $text")
             }
             filePath =
-             "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}route_model.dart"
+                "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}route_model.dart"
             file = File(filePath)
-            println("route_model it $file")
             if (file.exists()) {
                 val text = File(file.path).readText()
                     .replace(
@@ -183,13 +181,10 @@ class ${featureCamelCase}Route extends GoRouteData implements RouteData {
 """
                     )
                 VfsTestUtil.overwriteTestData(file.path, text)
-
-
-                println("text $text")
             }
 
             filePath =
-               "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}routes_permission.dart"
+                "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}routes_permission.dart"
             file = File(filePath)
             if (file.exists()) {
                 val text = File(file.path).readText().replace(
@@ -197,20 +192,15 @@ class ${featureCamelCase}Route extends GoRouteData implements RouteData {
                     "RoutesPermission {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
                 )
                 VfsTestUtil.overwriteTestData(file.path, text)
-
-                println("text $text")
             }
 
             filePath =
-              "${it.basePath}${File.separator}bin${File.separator}server${File.separator}controllers${File.separator}permissions_controller.dart"
+                "${it.basePath}${File.separator}bin${File.separator}server${File.separator}controllers${File.separator}permissions_controller.dart"
             file = File(filePath)
             if (file.exists()) {
                 val text = File(file.path).readText()
                     .replace("'item': {", "'item': {\n          '${featureCamelCase}Route': true,")
                 VfsTestUtil.overwriteTestData(file.path, text)
-
-
-                println("text $text")
             }
         }
     }

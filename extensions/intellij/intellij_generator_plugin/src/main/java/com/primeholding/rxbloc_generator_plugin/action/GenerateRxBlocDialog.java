@@ -12,18 +12,21 @@ public class GenerateRxBlocDialog extends DialogWrapper {
     private JCheckBox withDefaultStates;
     private JPanel contentPanel;
     private JCheckBox includeLocalService;
-    private JCheckBox includeAutoRoute;
     @SuppressWarnings("unused")
-    private JLabel includeAutoRouteLabel;
+    private JLabel routingIntegration;
+    private JComboBox<String> routingIntegrationSelection;
 
     public GenerateRxBlocDialog(final Listener listener, boolean hideAutoRoute) {
         super(null);
         this.listener = listener;
-        init();
         if (hideAutoRoute) {
-            includeAutoRoute.setVisible(false);
-            includeAutoRouteLabel.setVisible(false);
+            routingIntegration.setVisible(false);
+            routingIntegrationSelection.setVisible(false);
+            routingIntegrationSelection.setSelectedIndex(RoutingIntegration.None.ordinal());
+        } else {
+            routingIntegrationSelection.setSelectedIndex(RoutingIntegration.GoRouter.ordinal());
         }
+        init();
     }
 
     public GenerateRxBlocDialog(final Listener listener) {
@@ -45,7 +48,7 @@ public class GenerateRxBlocDialog extends DialogWrapper {
                 blocNameTextField.getText(),
                 withDefaultStates.isSelected(),
                 includeLocalService.isSelected(),
-                includeAutoRoute.isSelected()
+                RoutingIntegration.values()[routingIntegrationSelection.getSelectedIndex()]
         );
     }
 
@@ -55,12 +58,16 @@ public class GenerateRxBlocDialog extends DialogWrapper {
         return blocNameTextField;
     }
 
+    public enum RoutingIntegration {
+        GoRouter, AutoRoute, None
+    }
+
     public interface Listener {
         void onGenerateBlocClicked(
                 String blocName,
                 boolean withDefaultStates,
                 boolean includeLocalService,
-                boolean includeAutoRoute
+                RoutingIntegration selectedRoutingIntegration
         );
     }
 }

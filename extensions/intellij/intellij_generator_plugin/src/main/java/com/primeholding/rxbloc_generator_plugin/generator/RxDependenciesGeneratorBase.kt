@@ -3,13 +3,14 @@
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog.RoutingIntegration
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
 abstract class RxDependenciesGeneratorBase(
     name: String,
-    includeAutoRoute: Boolean,
+    routingIntegration: RoutingIntegration,
     includeLocalService: Boolean
 ) : RxGeneratorBase(name) {
 
@@ -17,7 +18,7 @@ abstract class RxDependenciesGeneratorBase(
     private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"
 
     private val templateString: String
-    protected val includeAutoRouteFlag: Boolean
+    protected val routingIntegrationFlag: RoutingIntegration
     private val includeLocalServiceFlag: Boolean
     private val templateValues: MutableMap<String, String> = mutableMapOf(
         TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
@@ -25,11 +26,12 @@ abstract class RxDependenciesGeneratorBase(
     )
 
     init {
-        this.includeAutoRouteFlag = includeAutoRoute
+        this.routingIntegrationFlag = routingIntegration
         this.includeLocalServiceFlag = includeLocalService
 
         try {
-            val resource = "/templates/di/${if (includeAutoRouteFlag) "" else "with_"}dependencies.dart.template"
+            val resource =
+                "/templates/di/${if (routingIntegration == RoutingIntegration.AutoRoute) "" else "with_"}dependencies.dart.template"
 
             val resourceAsStream = RxDependenciesGeneratorBase::class.java.getResourceAsStream(resource)
             templateString = CharStreams.toString(InputStreamReader(resourceAsStream, Charsets.UTF_8))
