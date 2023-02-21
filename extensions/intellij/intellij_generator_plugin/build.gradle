@@ -43,10 +43,11 @@ patchPluginXml {
      <ul>
      <li>v3.0.0 
         <br /> - detecting user selected folder/item so the bootstrap (RxBloc Tests) menu item is optionally visible. 
-        <br /> - skip the feature/lib selection - when features are selected and directly generate tests,
+        <br /> - skip the feature/lib selection - when features are selected and directly generate tests
         <br /> - improve a little bit more the imports in the tests
-        <br /> - checkbox for feature to use auto_route or dependency as StatelessWidget
-        <br /> - replace extensions with service when checkbox is on
+        <br />
+        <br /> - added in create feature dialog - a combo box for choosing Routing Solution (Go Route, Auto Route, or None) 
+        <br /> - replace extensions with service when checkbox is On
         <br /> - remove null safety checkbox
     </li>
        <li>v2.1.0 

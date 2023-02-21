@@ -145,23 +145,18 @@ class ${featureCamelCase}Route extends GoRouteData implements RouteData {
             var filePath =
                 "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}routes${File.separator}routes.dart"
             var file = File(filePath)
+            var partRoutes = ""
 
             if (file.exists()) {
-                val text = file.readText().replace(
-                    "import '../models/route_model.dart';",
-                    "import '../models/route_model.dart';\nimport '../../feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';"
-                )
+                val text = file.readText()
                 VfsTestUtil.overwriteTestData(filePath, "${text}${newRoute}")
             } else {
+                partRoutes = "part 'routes/routes.dart';"
                 VfsTestUtil.overwriteTestData(
                     filePath,
                     """
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+part of '../router.dart';
 
-import '../../feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';
-import '../models/route_model.dart';
-import '../router.dart';
 $newRoute""".trimIndent()
                 )
 
@@ -171,6 +166,17 @@ $newRoute""".trimIndent()
                 }
 
             }
+            val routerPath = "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}router.dart"
+            val router = File(routerPath)
+            if(router.exists()) {
+                val text = router.readText(). replace(
+                    "import 'models/routes_path.dart';",
+                    "import 'models/routes_path.dart';\nimport '../feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';"
+                ).replace("part 'router.g.dart';", "part 'router.g.dart';\n${partRoutes}")
+                VfsTestUtil.overwriteTestData(routerPath, text)
+            }
+
+
         filePath =
             "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}routes_path.dart"
         file = File(filePath)
