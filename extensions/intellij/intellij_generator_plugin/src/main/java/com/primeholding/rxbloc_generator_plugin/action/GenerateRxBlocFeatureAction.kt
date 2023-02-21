@@ -8,6 +8,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog.RoutingIntegration
@@ -142,89 +143,104 @@ class ${featureCamelCase}Route extends GoRouteData implements RouteData {
 """
         event.project?.let {
             var filePath =
-                "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}router.dart"
+                "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}routes${File.separator}routes.dart"
             var file = File(filePath)
 
             if (file.exists()) {
                 val text = file.readText().replace(
-                    "import 'models/route_model.dart';",
-                    "import 'models/route_model.dart';\nimport '../feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';"
+                    "import '../models/route_model.dart';",
+                    "import '../models/route_model.dart';\nimport '../../feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';"
                 )
                 VfsTestUtil.overwriteTestData(filePath, "${text}${newRoute}")
+            } else {
+                VfsTestUtil.overwriteTestData(
+                    filePath,
+                    """
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';
+import '../models/route_model.dart';
+import '../router.dart';
+$newRoute""".trimIndent()
+                )
+
+                VfsUtil.findFileByIoFile(file, true)?.let { virtualFile ->
+                    FileEditorManager.getInstance(it)
+                        .openFile(virtualFile, true)
+                }
 
             }
-            filePath =
-                "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}routes_path.dart"
-            file = File(filePath)
-            if (file.exists()) {
-                val text = File(file.path).readText()
-                    .replace(
-                        "RoutesPath {",
-                        "RoutesPath {\n  static const $featureFieldCase = '/$featureFieldCase';// TODO fix full path of the route according to your needs"
-                    )
-                VfsTestUtil.overwriteTestData(file.path, text)
-
-
-            }
-            filePath =
-                "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}route_model.dart"
-            file = File(filePath)
-            if (file.exists()) {
-                val text = File(file.path).readText()
-                    .replace(
-                        "RouteModel {", """RouteModel {
+        filePath =
+            "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}routes_path.dart"
+        file = File(filePath)
+        if (file.exists()) {
+            val text = File(file.path).readText()
+                .replace(
+                    "RoutesPath {",
+                    "RoutesPath {\n  static const $featureFieldCase = '/$featureFieldCase';// TODO fix full path of the route according to your needs"
+                )
+            VfsTestUtil.overwriteTestData(file.path, text)
+        }
+        filePath =
+            "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}route_model.dart"
+        file = File(filePath)
+        if (file.exists()) {
+            val text = File(file.path).readText()
+                .replace(
+                    "RouteModel {", """RouteModel {
   $featureFieldCase(
     pathName: RoutesPath.$featureFieldCase,
     fullPath: '/$featureFieldCase',
     permissionName: RoutesPermission.$featureFieldCase,
   ),
 """
-                    )
-                VfsTestUtil.overwriteTestData(file.path, text)
-            }
-
-            filePath =
-                "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}routes_permission.dart"
-            file = File(filePath)
-            if (file.exists()) {
-                val text = File(file.path).readText().replace(
-                    "RoutesPermission {",
-                    "RoutesPermission {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
                 )
-                VfsTestUtil.overwriteTestData(file.path, text)
-            }
-
-            filePath =
-                "${it.basePath}${File.separator}bin${File.separator}server${File.separator}controllers${File.separator}permissions_controller.dart"
-            file = File(filePath)
-            if (file.exists()) {
-                val text = File(file.path).readText()
-                    .replace("'item': {", "'item': {\n          '${featureCamelCase}Route': true,")
-                VfsTestUtil.overwriteTestData(file.path, text)
-            }
-        }
-    }
-
-    private fun createSourceFile(generator: RxGeneratorBase, directory: VirtualFile): VirtualFile? {
-        val fileName = generator.fileName()
-        val existingPsiFile = directory.findChild(fileName)
-        if (existingPsiFile != null) {
-            return null
+            VfsTestUtil.overwriteTestData(file.path, text)
         }
 
-        val file = directory.createChildData(this, fileName)
-        VfsTestUtil.overwriteTestData(file.path, generator.generate())
-
-        return file
-    }
-
-    private fun createDir(baseDirectory: VirtualFile, name: String): VirtualFile {
-        var featureDirectory = baseDirectory.findChild(name)
-
-        if (featureDirectory == null) {
-            featureDirectory = baseDirectory.createChildDirectory(this, name)
+        filePath =
+            "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}routes_permission.dart"
+        file = File(filePath)
+        if (file.exists()) {
+            val text = File(file.path).readText().replace(
+                "RoutesPermission {",
+                "RoutesPermission {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
+            )
+            VfsTestUtil.overwriteTestData(file.path, text)
         }
 
-        return featureDirectory
+        filePath =
+            "${it.basePath}${File.separator}bin${File.separator}server${File.separator}controllers${File.separator}permissions_controller.dart"
+        file = File(filePath)
+        if (file.exists()) {
+            val text = File(file.path).readText()
+                .replace("'item': {", "'item': {\n          '${featureCamelCase}Route': true,")
+            VfsTestUtil.overwriteTestData(file.path, text)
+        }
     }
+}
+
+private fun createSourceFile(generator: RxGeneratorBase, directory: VirtualFile): VirtualFile? {
+    val fileName = generator.fileName()
+    val existingPsiFile = directory.findChild(fileName)
+    if (existingPsiFile != null) {
+        return null
+    }
+
+    val file = directory.createChildData(this, fileName)
+    VfsTestUtil.overwriteTestData(file.path, generator.generate())
+
+    return file
+}
+
+private fun createDir(baseDirectory: VirtualFile, name: String): VirtualFile {
+    var featureDirectory = baseDirectory.findChild(name)
+
+    if (featureDirectory == null) {
+        featureDirectory = baseDirectory.createChildDirectory(this, name)
+    }
+
+    return featureDirectory
+}
 }
