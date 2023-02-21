@@ -15,8 +15,7 @@ import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart';
-part 'routes/hotel_details_routes.dart';
-part 'routes/root/home_routes.dart';
+part 'routes/routes.dart';
 
 class AppRouter {
   AppRouter();
