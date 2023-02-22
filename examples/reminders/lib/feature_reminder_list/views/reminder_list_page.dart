@@ -8,18 +8,11 @@ import '../../base/common_blocs/firebase_bloc.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../blocs/reminder_list_bloc.dart';
-import '../di/reminder_list_dependencies.dart';
 import '../ui_components/reminder_list_view.dart';
 import 'add_reminder_dialog.dart';
 
-class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
+class ReminderListPage extends StatelessWidget {
   const ReminderListPage({super.key});
-
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: ReminderListDependencies.of(context).providers,
-        child: this,
-      );
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -87,6 +80,8 @@ class ReminderListPage extends StatelessWidget implements AutoRouteWrapper {
       context: context,
       builder: (context) => const AddReminderDialog(),
     );
-    context.read<ReminderManageBlocType>().events.setName('');
+    if (context.mounted) {
+      context.read<ReminderManageBlocType>().events.setName('');
+    }
   }
 }
