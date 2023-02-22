@@ -9,7 +9,10 @@ class FirebaseService {
 
   Future<bool> logIn(bool anonymous) => _repository.logIn(anonymous);
 
-  Future<void> logOut() => _repository.logOut();
+  Future<bool> logOut() async {
+    await _repository.logOut();
+    return true;
+  }
 
   Stream<User?> get currentUser => _repository.currentUser;
 
