@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-
+import '../../base/extensions/error_model_field_translations.dart';
+import '../../base/models/errors/error_model.dart';
 import '../blocs/${feature_snake_case}_bloc.dart';
 
 class ${feature_pascal_case}Page extends StatelessWidget {
@@ -22,8 +23,8 @@ class ${feature_pascal_case}Page extends StatelessWidget {
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-             RxBlocListener<${feature_pascal_case}BlocType, String>(
-              state: (bloc) => bloc.states.errors,
+             RxBlocListener<${feature_pascal_case}BlocType, ErrorModel>(
+              state: (bloc) => bloc.states.errors.translate(context),
               listener: (context, error) => _onError,
             ),
             Center(

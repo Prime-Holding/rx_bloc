@@ -30,8 +30,16 @@ abstract class RxDependenciesGeneratorBase(
         this.includeLocalServiceFlag = includeLocalService
 
         try {
+            var prefix = ""
+            if (routingIntegration == RoutingIntegration.AutoRoute) {
+                if (includeLocalService) {
+                    prefix = "autoroute_with_service_"
+                }
+            } else {
+                prefix = "with_"
+            }
             val resource =
-                "/templates/di/${if (routingIntegration == RoutingIntegration.AutoRoute) "" else "with_"}dependencies.dart.template"
+                "/templates/di/${prefix}dependencies.dart.template"
 
             val resourceAsStream = RxDependenciesGeneratorBase::class.java.getResourceAsStream(resource)
             templateString = CharStreams.toString(InputStreamReader(resourceAsStream, Charsets.UTF_8))

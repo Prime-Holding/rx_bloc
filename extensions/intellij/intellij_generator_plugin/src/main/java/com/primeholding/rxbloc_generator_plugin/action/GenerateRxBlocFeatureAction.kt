@@ -36,6 +36,17 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         routingIntegration: RoutingIntegration
     ) {
         blocName?.let { name ->
+
+            if(name.isEmpty()) {
+                Messages.showMessageDialog(
+                    "Provide Feature Name",
+                    "Empty Name",
+                    null
+                )
+                return
+            }
+
+
             val generators = RxBlocFeatureGeneratorFactory.getBlocGenerators(
                 name,
                 withDefaultStates,
@@ -184,7 +195,7 @@ $newRoute""".trimIndent()
             val text = File(file.path).readText()
                 .replace(
                     "RoutesPath {",
-                    "RoutesPath {\n  static const $featureFieldCase = '/$featureFieldCase';// TODO fix full path of the route according to your needs"
+                    "RoutesPath {\n  static const $featureFieldCase = '$featureFieldCase';// TODO fix path of the route according to your needs. FYI if it starts with / is for root routes"
                 )
             VfsTestUtil.overwriteTestData(file.path, text)
         }
@@ -197,7 +208,7 @@ $newRoute""".trimIndent()
                     "RouteModel {", """RouteModel {
   $featureFieldCase(
     pathName: RoutesPath.$featureFieldCase,
-    fullPath: '/$featureFieldCase',
+    fullPath: '$featureFieldCase',//TODO fix path
     permissionName: RoutesPermission.$featureFieldCase,
   ),
 """
