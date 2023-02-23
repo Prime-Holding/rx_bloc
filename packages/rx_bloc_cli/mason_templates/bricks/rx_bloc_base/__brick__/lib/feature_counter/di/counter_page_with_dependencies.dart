@@ -13,12 +13,12 @@ class CounterPageWithDependencies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-      providers: [
-        ..._services,
-        ..._blocs,
-      ],
-      child: const CounterPage(),
-    );
+        providers: [
+          ..._services,
+          ..._blocs,
+        ],
+        child: const CounterPage(),
+      );
 
   List<Provider> get _services => [
         Provider<CounterService>(

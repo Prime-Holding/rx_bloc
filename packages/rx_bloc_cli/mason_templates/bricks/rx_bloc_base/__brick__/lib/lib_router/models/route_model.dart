@@ -4,6 +4,11 @@ import '../../lib_permissions/models/routes_permission.dart';
 import 'routes_path.dart';
 
 enum RouteModel {
+  profile(
+    pathName: RoutesPath.profile,
+    fullPath: '/profile',
+    permissionName: RoutesPermission.profile,
+  ),
   splash(
     pathName: RoutesPath.splash,
     fullPath: '/splash',
@@ -11,7 +16,7 @@ enum RouteModel {
   ),
   counter(
     pathName: RoutesPath.counter,
-    fullPath: '/',
+    fullPath: '/counter',
     permissionName: RoutesPermission.counter,
   ),
   notifications(

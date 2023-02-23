@@ -13,8 +13,8 @@ class ApiHttpClient with DioMixin implements Dio {
   }
 
   final logInterceptor = createDioEventLogInterceptor('ApiHttpClient');
-  late final AuthInterceptor authInterceptor;{{#analytics}}
-  late final AnalyticsInterceptor analyticsInterceptor;{{/analytics}}
+  late AuthInterceptor authInterceptor;{{#analytics}}
+  late AnalyticsInterceptor analyticsInterceptor;{{/analytics}}
 
   void configureInterceptors(
       AuthInterceptor authInterceptor,{{#analytics}}

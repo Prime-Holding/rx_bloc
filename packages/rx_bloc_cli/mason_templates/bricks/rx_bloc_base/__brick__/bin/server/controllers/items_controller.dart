@@ -50,11 +50,11 @@ class ItemsController extends ApiController {
 
   Response itemByIdHandler(Request request) {
     final result =
-      _items.firstWhereOrNull((item) => item.id == request.params['id']);
+        _items.firstWhereOrNull((item) => item.id == request.params['id']);
     if (result == null) {
-      responseBuilder
-          .buildErrorResponse(ResponseException(404, 'Item not found.'));
+      throw NotFoundException(
+          'Item with id: ${request.params['id']} is not found.');
     }
-    return responseBuilder.buildOK(data: result!.toJson());
+    return responseBuilder.buildOK(data: result.toJson());
   }
 }

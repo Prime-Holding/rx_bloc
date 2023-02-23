@@ -35,7 +35,9 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (loading) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.symmetric(
+          horizontal: context.designSystem.spacing.xs1,
+        ),
         child: AppLoadingIndicator.innerCircleValue(context),
       );
     }

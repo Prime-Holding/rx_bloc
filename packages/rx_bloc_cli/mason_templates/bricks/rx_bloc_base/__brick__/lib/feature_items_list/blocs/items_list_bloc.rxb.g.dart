@@ -22,8 +22,11 @@ abstract class $ItemsListBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling [fetchItemsList]
   final _$fetchItemsListEvent = BehaviorSubject<void>();
 
+  /// Тhe [Subject] where events sink to by calling [setMessage]
+  final _$setMessageEvent = PublishSubject<String>();
+
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
+  late final Stream<LoadingWithTag> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<ErrorModel> _errorsState = _mapToErrorsState();
@@ -32,11 +35,17 @@ abstract class $ItemsListBloc extends RxBlocBase
   late final Stream<Result<List<ItemModel>>> _itemsListState =
       _mapToItemsListState();
 
+  /// The state of [message] implemented in [_mapToMessageState]
+  late final Stream<String> _messageState = _mapToMessageState();
+
   @override
   void fetchItemsList() => _$fetchItemsListEvent.add(null);
 
   @override
-  Stream<bool> get isLoading => _isLoadingState;
+  void setMessage(String message) => _$setMessageEvent.add(message);
+
+  @override
+  Stream<LoadingWithTag> get isLoading => _isLoadingState;
 
   @override
   Stream<ErrorModel> get errors => _errorsState;
@@ -44,11 +53,16 @@ abstract class $ItemsListBloc extends RxBlocBase
   @override
   Stream<Result<List<ItemModel>>> get itemsList => _itemsListState;
 
-  Stream<bool> _mapToIsLoadingState();
+  @override
+  Stream<String> get message => _messageState;
+
+  Stream<LoadingWithTag> _mapToIsLoadingState();
 
   Stream<ErrorModel> _mapToErrorsState();
 
   Stream<Result<List<ItemModel>>> _mapToItemsListState();
+
+  Stream<String> _mapToMessageState();
 
   @override
   ItemsListBlocEvents get events => this;
@@ -59,6 +73,7 @@ abstract class $ItemsListBloc extends RxBlocBase
   @override
   void dispose() {
     _$fetchItemsListEvent.close();
+    _$setMessageEvent.close();
     _compositeSubscription.dispose();
     super.dispose();
   }

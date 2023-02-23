@@ -16,45 +16,76 @@ class EnterMessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: customAppBar(
-      context,
-      title: context.l10n.pageWithResult,
-    ),
-    body: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: context.designSystem.spacing.xxxxl300,
-          child: Column(
-            children: [
-              RxTextFormFieldBuilder<EnterMessageBlocType>(
-                state: (bloc) => bloc.states.message,
-                showErrorState: (_) => const Stream.empty(),
-                builder: (fieldState) => SizedBox(
-                  width: context.designSystem.spacing.xxxxl300,
-                  child: TextFormField(
-                    controller: fieldState.controller,
-                    decoration: fieldState.decoration.copyWith(
-                      labelText: context
-                          .l10n.featureEnterMessage.fieldMessageLabel,
+        appBar: customAppBar(
+          context,
+          title: context.l10n.pageWithResult,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: context.designSystem.spacing.xl,
+                horizontal: context.designSystem.spacing.xl0,
+              ),
+              child: Container(
+                padding: EdgeInsets.all(
+                  context.designSystem.spacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: context.designSystem.colors.black,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      context.designSystem.spacing.xs,
                     ),
                   ),
                 ),
-                onChanged: (bloc, value) => bloc.events.setMessage(value),
-              ),
-              SizedBox(height: context.designSystem.spacing.xs1),
-              RxBlocBuilder<EnterMessageBlocType, String>(
-                state: (bloc) => bloc.states.message,
-                builder: (context, snapshot, bloc) => PrimaryButton(
-                  onPressed: () => Navigator.of(context).pop(snapshot.data),
-                  child: Text(context.l10n.confirm),
+                child: Text(
+                  context.l10n.featureEnterMessage.pageDescription,
+                  style: context.designSystem.typography.h3Med14,
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: SizedBox(
+                width: context.designSystem.spacing.xxxxl300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RxTextFormFieldBuilder<EnterMessageBlocType>(
+                      state: (bloc) => bloc.states.message,
+                      showErrorState: (_) => const Stream.empty(),
+                      builder: (fieldState) => SizedBox(
+                        width: context.designSystem.spacing.xxxxl300,
+                        child: TextFormField(
+                          controller: fieldState.controller,
+                          decoration: fieldState.decoration.copyWith(
+                            labelText: context
+                                .l10n.featureEnterMessage.fieldMessageLabel,
+                            hintText: context
+                                .l10n.featureEnterMessage.fieldHintMessage,
+                          ),
+                        ),
+                      ),
+                      onChanged: (bloc, value) => bloc.events.setMessage(value),
+                    ),
+                    SizedBox(height: context.designSystem.spacing.xs1),
+                    RxBlocBuilder<EnterMessageBlocType, String>(
+                      state: (bloc) => bloc.states.message,
+                      builder: (context, snapshot, bloc) => PrimaryButton(
+                        onPressed: () =>
+                            Navigator.of(context).pop(snapshot.data),
+                        child: Text(context.l10n.confirm),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 }

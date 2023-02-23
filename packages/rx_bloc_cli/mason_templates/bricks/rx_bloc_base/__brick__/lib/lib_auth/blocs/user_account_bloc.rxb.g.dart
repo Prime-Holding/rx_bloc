@@ -26,7 +26,7 @@ abstract class $UserAccountBloc extends RxBlocBase
   final _$logoutEvent = PublishSubject<void>();
 
   /// The state of [loggedIn] implemented in [_mapToLoggedInState]
-  late final Stream<bool> _loggedInState = _mapToLoggedInState();
+  late final ConnectableStream<bool> _loggedInState = _mapToLoggedInState();
 
   /// The state of [isLoading] implemented in [_mapToIsLoadingState]
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
@@ -38,7 +38,7 @@ abstract class $UserAccountBloc extends RxBlocBase
   void logout() => _$logoutEvent.add(null);
 
   @override
-  Stream<bool> get loggedIn => _loggedInState;
+  ConnectableStream<bool> get loggedIn => _loggedInState;
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
@@ -46,7 +46,7 @@ abstract class $UserAccountBloc extends RxBlocBase
   @override
   Stream<ErrorModel> get errors => _errorsState;
 
-  Stream<bool> _mapToLoggedInState();
+  ConnectableStream<bool> _mapToLoggedInState();
 
   Stream<bool> _mapToIsLoadingState();
 

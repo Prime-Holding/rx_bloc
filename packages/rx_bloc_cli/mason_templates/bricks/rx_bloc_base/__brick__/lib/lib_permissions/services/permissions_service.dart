@@ -15,7 +15,7 @@ class PermissionsService {
       return;
     }
 
-    AccessDeniedErrorModel();
+    throw AccessDeniedErrorModel();
   }
 
   /// Check whether the user has permission to a particular [key].

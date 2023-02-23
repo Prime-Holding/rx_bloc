@@ -1,8 +1,9 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-
+import 'package:rxdart/rxdart.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/lib_auth/blocs/user_account_bloc.dart';
+
 import 'user_account_bloc_mock.mocks.dart';
 
 @GenerateMocks([
@@ -23,7 +24,7 @@ UserAccountBlocType userAccountBlocMockFactory({
   when(userAccountBloc.states).thenReturn(statesMock);
 
   when(statesMock.loggedIn).thenAnswer(
-    (_) => Stream.value(loggedIn),
+    (_) => Stream.value(loggedIn).publishReplay(maxSize: 1),
   );
 
   when(statesMock.errors).thenAnswer(

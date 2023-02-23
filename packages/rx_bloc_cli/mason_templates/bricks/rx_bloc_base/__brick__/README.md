@@ -1,5 +1,22 @@
 # {{#titleCase}}{{project_name}}{{/titleCase}}
 
+# Table of contents
+
+1. [Getting Started](#getting-started)
+2. [Project structure](#project-structure)
+3. [Feature structure](#feature-structure)
+4. [Architecture](#architecture)
+5. [Navigation](#navigation)
+    * [Deep linking](#deep-linking)
+6. [Localization](#localization)
+7. [Analytics](#analytics)
+8. [Http client](#http-client)
+9. [Design system](#design-system)
+10. [Golden tests](#golden-tests)
+11. [Server](#server)
+12. [Push notifications](#push-notifications)
+13. [Next Steps](#next-steps)
+
 ## Getting started
 
 Before you start working on your app, make sure you familiarize yourself with the structure of the generated project and the essentials that are included with it.
@@ -13,8 +30,9 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/base/` | Common code used on more than one **feature** in the project. |
 | `lib/base/app/` | The root of the application and Environment configuration. |
 | `lib/base/common_blocs/` | Global [BLoCs][rx_bloc_info_lnk]|
+| `lib/base/common_mappers/` | All global data mappers are placed here |
+| `lib/base/common_services/` | Global Services |
 | `lib/base/common_ui_components/` | Reusable widgets (buttons, controls etc) |
-| `lib/base/common_use_cases/` | Global UseCases |
 | `lib/base/data_sources/` | All data sources are placed here. |
 | `lib/base/data_sources/domain/` | Data sources,  relating to a specific domain |
 | `lib/base/data_sources/domain/counter/` | Data sources,  relating to the counter domain |
@@ -25,16 +43,31 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/base/extensions/` | Global [extension methods][extension_methods_lnk] |
 | `lib/base/models/` | Data models used in the project |
 | `lib/base/repositories/` | Repositories used to fetch and persist models. |
-| `lib/base/routers/` | All [routers][autoroute_usage_lnk] are placed here. The main [router][autoroute_usage_lnk] of the app is `lib/base/routers/router.dart`. |
-| `lib/base/routers/guards/` | The routers' [guards][autoroute_usage_lnk] of the app are placed here. |
 | `lib/base/theme/` | The custom theme of the app |
 | `lib/base/utils/` | Global utils |
 | `lib/feature_X/` | Feature related classes |
 | `lib/feature_X/blocs` | Feature related [BLoCs][rx_bloc_info_lnk] |
 | `lib/feature_X/di` | Feature related dependencies |
-| `lib/feature_X/use_cases/` | Feature related UseCases |
+| `lib/feature_X/services/` | Feature related Services |
 | `lib/feature_X/ui_components/` | Feature related custom widgets |
 | `lib/feature_X/views/` | Feature related pages and forms |
+| `lib/lib_auth/` | Everything the application needs to use authentication is located here. |
+| `lib/lib_auth/blocs` | Authentication specific Blocs |
+| `lib/lib_auth/data_source` | Authentication specific Data sources |
+| `lib/lib_auth/models` | Authentication specific Models |
+| `lib/lib_auth/repositories` | Authentication specific Repositories |
+| `lib/lib_auth/services` | Authentication specific Services |
+| `lib/lib_permissions/` | Everything the application needs to use permissions is located here. |
+| `lib/lib_permissions/data_sources` | Permission related Data sources |
+| `lib/lib_permissions/models` | Permission related Models |
+| `lib/lib_permissions/repositories` | Permission related Repositories |
+| `lib/lib_permissions/services` | Permission related Services |
+| `lib/lib_router/` | All [router][gorouter_lnk] related classes are placed here. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
+| `lib/lib_router/blocs` | Router related Blocs |
+| `lib/lib_router/models` | Router related Models |
+| `lib/lib_router/routes/root` | Declarations of all root level pages are located here.  |
+| `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
+| `lib/lib_router/views` | Router specific views are located here ( as custom error page ) |
 | `lib/main.dart` | The main file of the app. If there are more that one main file, each of them is related to separate flavor of the app. |
 
 ## Feature structure
@@ -48,15 +81,33 @@ The logic of each page should be placed into its own [BLoC][rx_bloc_lnk]. This i
 
 <div id="navigation"/>
 
-### Navigation
+## Navigation
 
-Navigation throughout the app is handled by [Auto Route][autoroute_lnk].
+Navigation throughout the app is handled by [GoRouter][gorouter_lnk].
 
-After describing your pages inside the `lib/base/routers/router.dart` file and running the shell script `bin/build_runner_build.sh`(or `bin/build_runner_watch.sh`), you can access the generated routes by using the `context.navigator` widget.
+After describing your pages inside the `lib/lib_router/routes/` or `lib/lib_router/routes/root` folders one of the following shell scripts `bin/build_runner_build.sh`(or `bin/build_runner_watch.sh`) should be run.
+The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc`
+you can access the generated routes by using the `context.navigator` widget.
+
+### Deep linking
+
+Your app is already configured to use deep links. Although you may still want to do some adjustments.
+
+`iOS`
+The configuration file can be found at `ios/Runner/Info.plist`
+Under the `CFBundleURLTypes` key there are two things you may want to change:
+1. `CFBundleURLName` unique URL used to distinguish your app from others that use the same scheme. The URL we build contains your `project name`, `organization name` and `domain name` you provided when setting up the project.
+2. `CFBundleURLSchemes` the scheme name is your `organisation name` followed by `scheme`.
+
+`Android`
+The configuration file can be found at `android/app/src/main/AndroidManifest.xml`
+There is a metadata tag `flutter_deeplinking_enabled` inside `<activity>` tag with the `.MainActivity` name. You may want to change the host name which again contains your `project name`, `organization name` and `domain name` you provided when the project was set up.
+
+See [Deep linking][deep_linking_lnk] documentation at flutter.dev for more information.
 
 <div id="locatization"/>
 
-### Localization
+## Localization
 
 Your app supports [localization][localization_lnk] out of the box.
 
@@ -68,7 +119,7 @@ Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In 
 
 <div id="analytics"/>
 
-### Analytics
+## Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
 
@@ -83,7 +134,7 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 <div id="httpClient"/>
 
-### Http client
+## Http client
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with remote APIs and use interceptors, global configuration, form fata, request cancellation, file downloading, timeout etc.
 
@@ -93,7 +144,7 @@ JWT-based authentication and token management is supported out of the box.
 
 <div id="designSystem"/>
 
-### Design system
+## Design system
 
 A [design system][design_system_lnk] is a centralized place where you can define your app`s design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
 
@@ -101,7 +152,7 @@ To access the design system from your app, you have to import it from the follow
 
 <div id="goldenTests"/>
 
-### Golden tests
+## Golden tests
 
 A [golden test][golden_test_lnk] lets you generate golden master images of a widget or screen, and compare against them so you know your design is always pixel-perfect and there have been no subtle or breaking changes in UI between builds. To make this easier, we employ the use of the [golden_toolkit][golden_toolkit_lnk] package.
 
@@ -113,7 +164,7 @@ In order for the goldens to be generated, we have provided VS Code and IDEA run 
 
 <div id="server"/>
 
-### Server
+## Server
 
 Your app comes with a small preconfigured local server (written in Dart) that you can use for testing purposes or even expand it. It is built using [shelf][shelf_lnk], [shelf_router][shelf_router_lnk] and [shelf_static][shelf_static_lnk]. The server comes with several out-of-the-box APIs that work with the generated app.
 
@@ -134,7 +185,7 @@ Some of the important paths are:
 
 <div id="pushNotifications"/>
 
-### Push notifications
+## Push notifications
 
 [Firebase Cloud Messaging (FCM)][fcm_lnk] allows your integrating push notifications in your very own app. You can receive notifications while the app is in the foreground, background or even terminated. It even allows for event callbacks customizations, such when the app is opened via a notification from a specific state. All customizable callbacks can be found inside `lib/base/app/initialization/firebase_messaging_callbacks.dart`.
 
@@ -144,7 +195,7 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
-### Next Steps
+## Next Steps
 
 * Define the branching strategy that the project is going to be using.
 * Define application-wide loading state representation. It could be a progress bar, spinner, skeleton animation or a custom widget.
@@ -152,8 +203,8 @@ In order to make the notifications work on your target platform, make sure you f
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
 [extension_methods_lnk]: https://dart.dev/guides/language/extension-methods
-[autoroute_lnk]: https://pub.dev/packages/auto_route
-[autoroute_usage_lnk]: https://pub.dev/packages/auto_route#setup-and-usage
+[gorouter_lnk]: https://pub.dev/packages/go_router
+[gorouter_usage_lnk]: https://pub.dev/packages/go_router#documentation
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [firebase_configs_lnk]: https://support.google.com/firebase/answer/7015592
@@ -170,3 +221,5 @@ In order to make the notifications work on your target platform, make sure you f
 [shelf_lnk]: https://pub.dev/packages/shelf
 [shelf_router_lnk]: https://pub.dev/packages/shelf_router
 [shelf_static_lnk]: https://pub.dev/packages/shelf_static
+[deep_linking_lnk]: https://docs.flutter.dev/development/ui/navigation/deep-linking
+[gorouter_deep_linking_lnk]: https://pub.dev/documentation/go_router/latest/topics/Deep%20linking-topic.html

@@ -22,6 +22,7 @@ class DesignSystemSpacing {
   final double xl1 = 26;
   final double xxl = 32;
   final double xxl1 = 35;
+  final double xxl2 = 36;
   final double xxxl = 40;
   final double xxxxl = 48;
   final double xxxxl11 = 50;

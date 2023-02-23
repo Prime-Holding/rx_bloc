@@ -14,17 +14,21 @@ part 'items_list_bloc.rxb.g.dart';
 abstract class ItemsListBlocEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour)
   void fetchItemsList();
+
+  void setMessage(String message);
 }
 
 /// A contract class containing all states of the ItemsListBloC.
 abstract class ItemsListBlocStates {
   /// The loading state
-  Stream<bool> get isLoading;
+  Stream<LoadingWithTag> get isLoading;
 
   /// The error state
   Stream<ErrorModel> get errors;
 
   Stream<Result<List<ItemModel>>> get itemsList;
+
+  Stream<String> get message;
 }
 
 @RxBloc()
@@ -39,7 +43,7 @@ class ItemsListBloc extends $ItemsListBloc {
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  Stream<LoadingWithTag> _mapToIsLoadingState() => loadingWithTagState;
 
   @override
   Stream<Result<List<ItemModel>>> _mapToItemsListState() =>
@@ -47,4 +51,7 @@ class ItemsListBloc extends $ItemsListBloc {
           .switchMap((_) => _itemService.fetchItems().asResultStream())
           .setResultStateHandler(this)
           .shareReplay(maxSize: 1);
+
+  @override
+  Stream<String> _mapToMessageState() => _$setMessageEvent.share();
 }

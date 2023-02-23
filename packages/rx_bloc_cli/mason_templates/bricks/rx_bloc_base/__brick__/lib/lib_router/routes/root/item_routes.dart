@@ -1,5 +1,16 @@
-part of '../router.dart';
+part of '../../router.dart';
 
+@TypedGoRoute<ItemsRoute>(
+  path: RoutesPath.items,
+  routes: <TypedGoRoute<GoRouteData>>[
+    TypedGoRoute<ItemDetailsRoute>(
+      path: RoutesPath.itemDetails,
+    ),
+    TypedGoRoute<EnterMessageRoute>(
+      path: RoutesPath.enterMessage,
+    ),
+  ],
+)
 @immutable
 class ItemsRoute extends GoRouteData implements RouteData {
   const ItemsRoute();

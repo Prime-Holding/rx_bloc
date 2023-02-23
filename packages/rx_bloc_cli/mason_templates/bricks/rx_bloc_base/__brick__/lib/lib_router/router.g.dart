@@ -7,63 +7,17 @@ part of 'router.dart';
 // **************************************************************************
 
 List<GoRoute> get $appRoutes => [
+      $loginRoute,
       $counterRoute,
+      $itemsRoute,
+      $profileRoute,
       $splashRoute,
     ];
 
-GoRoute get $counterRoute => GoRouteData.$route(
-      path: '/',
-      factory: $CounterRouteExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: 'notifications',
-          factory: $NotificationsRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'login',
-          factory: $LoginRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'enterMessage',
-          factory: $EnterMessageRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'items',
-          factory: $ItemsRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: ':id',
-              factory: $ItemDetailsRouteExtension._fromState,
-            ),
-          ],
-        ),
-      ],
+GoRoute get $loginRoute => GoRouteData.$route(
+      path: '/login',
+      factory: $LoginRouteExtension._fromState,
     );
-
-extension $CounterRouteExtension on CounterRoute {
-  static CounterRoute _fromState(GoRouterState state) => const CounterRoute();
-
-  String get location => GoRouteData.$location(
-        '/',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
-}
-
-extension $NotificationsRouteExtension on NotificationsRoute {
-  static NotificationsRoute _fromState(GoRouterState state) =>
-      const NotificationsRoute();
-
-  String get location => GoRouteData.$location(
-        '/notifications',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
-}
 
 extension $LoginRouteExtension on LoginRoute {
   static LoginRoute _fromState(GoRouterState state) => const LoginRoute();
@@ -75,20 +29,45 @@ extension $LoginRouteExtension on LoginRoute {
   void go(BuildContext context) => context.go(location, extra: this);
 
   void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
 }
 
-extension $EnterMessageRouteExtension on EnterMessageRoute {
-  static EnterMessageRoute _fromState(GoRouterState state) =>
-      const EnterMessageRoute();
+GoRoute get $counterRoute => GoRouteData.$route(
+      path: '/counter',
+      factory: $CounterRouteExtension._fromState,
+    );
+
+extension $CounterRouteExtension on CounterRoute {
+  static CounterRoute _fromState(GoRouterState state) => const CounterRoute();
 
   String get location => GoRouteData.$location(
-        '/enterMessage',
+        '/counter',
       );
 
   void go(BuildContext context) => context.go(location, extra: this);
 
   void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
 }
+
+GoRoute get $itemsRoute => GoRouteData.$route(
+      path: '/items',
+      factory: $ItemsRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: ':id',
+          factory: $ItemDetailsRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'enterMessage',
+          factory: $EnterMessageRouteExtension._fromState,
+        ),
+      ],
+    );
 
 extension $ItemsRouteExtension on ItemsRoute {
   static ItemsRoute _fromState(GoRouterState state) => const ItemsRoute();
@@ -100,6 +79,9 @@ extension $ItemsRouteExtension on ItemsRoute {
   void go(BuildContext context) => context.go(location, extra: this);
 
   void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
 }
 
 extension $ItemDetailsRouteExtension on ItemDetailsRoute {
@@ -114,6 +96,67 @@ extension $ItemDetailsRouteExtension on ItemDetailsRoute {
   void go(BuildContext context) => context.go(location, extra: this);
 
   void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
+}
+
+extension $EnterMessageRouteExtension on EnterMessageRoute {
+  static EnterMessageRoute _fromState(GoRouterState state) =>
+      const EnterMessageRoute();
+
+  String get location => GoRouteData.$location(
+        '/items/enterMessage',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
+}
+
+GoRoute get $profileRoute => GoRouteData.$route(
+      path: '/profile',
+      factory: $ProfileRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'notifications',
+          factory: $NotificationsRouteExtension._fromState,
+        ),
+      ],
+    );
+
+extension $ProfileRouteExtension on ProfileRoute {
+  static ProfileRoute _fromState(GoRouterState state) => const ProfileRoute();
+
+  String get location => GoRouteData.$location(
+        '/profile',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
+}
+
+extension $NotificationsRouteExtension on NotificationsRoute {
+  static NotificationsRoute _fromState(GoRouterState state) =>
+      const NotificationsRoute();
+
+  String get location => GoRouteData.$location(
+        '/profile/notifications',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
 }
 
 GoRoute get $splashRoute => GoRouteData.$route(
@@ -131,4 +174,7 @@ extension $SplashRouteExtension on SplashRoute {
   void go(BuildContext context) => context.go(location, extra: this);
 
   void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
 }

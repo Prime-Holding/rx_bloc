@@ -16,20 +16,21 @@ class SplashPageWithDependencies extends StatelessWidget {
   final String? redirectToLocation;
 
   List<RxBlocProvider> get _blocs => [
-    RxBlocProvider<SplashBlocType>(
-      create: (context) => SplashBloc(
-        context.read(),
-        context.read(),
-        redirectLocation: redirectToLocation,
-      ),
-    ),
-  ];
+        RxBlocProvider<SplashBlocType>(
+          create: (context) => SplashBloc(
+            context.read(),
+            context.read(),
+            context.read(),
+            redirectLocation: redirectToLocation,
+          ),
+        ),
+      ];
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-    providers: [
-      ..._blocs,
-    ],
-    child: const SplashPage(),
-  );
+        providers: [
+          ..._blocs,
+        ],
+        child: const SplashPage(),
+      );
 }

@@ -1,4 +1,7 @@
+{{> licence.dart }}
+
 class RoutesPermission {
+  static const profile = 'ProfileRoute';
   static const splash = 'SplashRoute';
   static const counter = 'CounterRoute';
   static const notifications = 'NotificationRoute';

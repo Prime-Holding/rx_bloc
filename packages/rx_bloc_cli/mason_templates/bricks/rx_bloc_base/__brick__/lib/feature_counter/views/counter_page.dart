@@ -8,7 +8,6 @@ import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/update_button.dart';
 import '../../base/theme/design_system.dart';
-import '../../feature_login/ui_components/profile_avatar.dart';
 import '../../l10n/l10n.dart';
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../blocs/counter_bloc.dart';
@@ -20,58 +19,51 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: customAppBar(
-      context,
-      title: context.l10n.featureCounter.counterPageTitle,
-      actions: [
-        RxLoadingBuilder<CounterBlocType>(
-          state: (bloc) => bloc.states.isLoading,
-          builder: (context, isLoading, tag, bloc) => UpdateButton(
-          isActive: !isLoading,
-          onPressed: () => bloc.events.reload(),
+        appBar: customAppBar(
+          context,
+          title: context.l10n.featureCounter.counterPageTitle,
+          actions: [
+            RxLoadingBuilder<CounterBlocType>(
+              state: (bloc) => bloc.states.isLoading,
+              builder: (context, isLoading, tag, bloc) => UpdateButton(
+                isActive: !isLoading,
+                onPressed: () => bloc.events.reload(),
+              ),
+            ),
+          ],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RxBlocBuilder<CounterBlocType, int>(
+                state: (bloc) => bloc.states.count,
+                builder: (context, countState, bloc) =>
+                    _buildCount(context, countState),
+              ),
+              AppErrorModalWidget<CounterBlocType>(
+                errorState: (bloc) => bloc.states.errors,
+              ),
+              AppErrorModalWidget<UserAccountBlocType>(
+                errorState: (bloc) => bloc.states.errors,
+                isListeningForNavigationErrors: false,
+              ),
+            ],
           ),
         ),
-        const ProfileAvatar(),
-      ],
-    ),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          RxBlocBuilder<CounterBlocType, int>(
-            state: (bloc) => bloc.states.count,
-            builder: (context, countState, bloc) =>
-                _buildCount(context, countState),
-          ),
-          AppErrorModalWidget<CounterBlocType>(
-            errorState: (bloc) => bloc.states.errors,
-          ),
-          AppErrorModalWidget<UserAccountBlocType>(
-            errorState: (bloc) => bloc.states.errors,
-            isListeningForNavigationErrors: false,
-          ),
-          RxBlocListener<CounterBlocType, String>(
-            state: (bloc) => bloc.states.message,
-            condition: (old, current) =>
-                (old != current && current.isNotEmpty),
-            listener: _onMessageReceived,
-          ),
-        ],
-      ),
-    ),
-    floatingActionButton: _buildActionButtons(context),
-  );
+        floatingActionButton: _buildActionButtons(context),
+      );
 
   Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>
       snapshot.hasData
           ? Text(
-        snapshot.data!.toString(),
-        style: context.designSystem.typography.counterText,
-      )
+              snapshot.data!.toString(),
+              style: context.designSystem.typography.counterText,
+            )
           : Text(
-        snapshot.connectionState.toString(),
-        style: context.designSystem.typography.h2Med16,
-      );
+              snapshot.connectionState.toString(),
+              style: context.designSystem.typography.h2Med16,
+            );
 
   Widget _buildActionButtons(BuildContext context) =>
       RxLoadingBuilder<CounterBlocType>(
@@ -95,17 +87,6 @@ class CounterPage extends StatelessWidget {
               heroTag: 'decrement',
             ),
           ],
-        ),
-      );
-
-  void _onMessageReceived(
-      BuildContext context,
-      String message,
-      ) =>
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          behavior: SnackBarBehavior.floating,
         ),
       );
 }

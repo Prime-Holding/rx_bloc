@@ -3,12 +3,17 @@
     "reload": "Reload",
     "ok" : "OK",
     "close" : "Close",
+    "errorState" : "Error occurred",
+    "loadingState" : "Loading...",
     "resetPassword" : "Reset password",
-    "pageWithResult" : "Page with result",
+    "pageWithResult" : "Enter message",
     "deepLinkFlowMenu" : "Deep link flow",
     "tryAgain" : "Try again",
     "confirm" : "Confirm",
     "itemIdResult" : "Id: {id}",
     "itemNameResult" : "Name: {name}",
-    "itemDescriptionResult" : "Description: {description}"
+    "itemDescriptionResult" : "Description: {description}",
+    "navCounter" : "Counter",
+    "navItems" : "Items",
+    "navProfile" : "Profile"
 }

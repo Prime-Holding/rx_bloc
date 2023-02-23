@@ -13,7 +13,7 @@ class PlainHttpClient with DioMixin implements Dio {
   }
 
   final logInterceptor = createDioEventLogInterceptor('PlainHttpClient');{{#analytics}}
-  late final AnalyticsInterceptor analyticsInterceptor;{{/analytics}}
+  late AnalyticsInterceptor analyticsInterceptor;{{/analytics}}
 
   void configureInterceptors({{#analytics}}
       AnalyticsInterceptor analyticsInterceptor,{{/analytics}}

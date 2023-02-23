@@ -17,9 +17,13 @@ extension _DioErrorMapper on DioError {
 
       if (response!.statusCode == 404) {
         return NotFoundErrorModel(
-          message: response!.data is Map<String, dynamic>
-              ? response!.data['message']
-              : null,
+          message: response!.mapToString(),
+        );
+      }
+
+      if (response!.statusCode == 422) {
+        return ErrorServerGenericModel(
+          message: response!.mapToString(),
         );
       }
     }

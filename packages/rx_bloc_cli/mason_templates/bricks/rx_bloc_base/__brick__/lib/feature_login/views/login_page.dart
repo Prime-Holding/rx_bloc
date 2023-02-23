@@ -6,7 +6,6 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../ui_components/login_form.dart';
 
-
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -26,8 +25,8 @@ class LoginPage extends StatelessWidget {
                   height: context.designSystem.spacing.xxxxl300,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                        context.designSystem.spacing.xsss,
-                      ),
+                      context.designSystem.spacing.xsss,
+                    ),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),

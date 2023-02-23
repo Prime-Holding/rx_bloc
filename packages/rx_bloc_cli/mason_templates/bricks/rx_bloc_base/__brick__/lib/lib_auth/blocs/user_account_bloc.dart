@@ -19,7 +19,7 @@ abstract class UserAccountBlocEvents {
 
 abstract class UserAccountBlocStates {
   /// State indicating whether the user is logged in successfully
-  Stream<bool> get loggedIn;
+  ConnectableStream<bool> get loggedIn;
 
   /// The loading state
   Stream<bool> get isLoading;
@@ -37,6 +37,8 @@ class UserAccountBloc extends $UserAccountBloc {
   )   : _userAccountService = userAccountService,
         _coordinatorBloc = coordinatorBloc,
         _authService = authService {
+    loggedIn.connect().addTo(_compositeSubscription);
+
     _$logoutEvent
         .throttleTime(const Duration(seconds: 1))
         .exhaustMap((value) => _userAccountService.logout().asResultStream())
@@ -51,10 +53,10 @@ class UserAccountBloc extends $UserAccountBloc {
   final AuthService _authService;
 
   @override
-  Stream<bool> _mapToLoggedInState() => Rx.merge([
+  ConnectableStream<bool> _mapToLoggedInState() => Rx.merge([
         _coordinatorBloc.states.isAuthenticated,
         _authService.isAuthenticated().asStream(),
-      ]).shareReplay(maxSize: 1);
+      ]).publishReplay(maxSize: 1);
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

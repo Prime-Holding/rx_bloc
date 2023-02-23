@@ -20,8 +20,6 @@ abstract class CounterBlocEvents {
 
   /// Get the current count
   void reload();
-
-  void setMessage(String message);
 }
 
 /// A contract class containing all states for our multi state BloC.
@@ -43,8 +41,6 @@ abstract class CounterBlocStates {
   /// [CounterBlocEvents.decrement]
   ///
   Stream<int> get count;
-
-  Stream<String> get message;
 }
 
 /// A BloC responsible for count calculations
@@ -86,7 +82,4 @@ class CounterBloc extends $CounterBloc {
           .whereSuccess()
           .map((event) => event.value)
           .shareReplay(maxSize: 1);
-
-  @override
-  Stream<String> _mapToMessageState() => _$setMessageEvent.share();
 }

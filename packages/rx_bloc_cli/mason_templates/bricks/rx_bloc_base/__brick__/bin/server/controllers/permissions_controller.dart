@@ -23,6 +23,7 @@ class PermissionsController extends ApiController {
     } catch (exception) {
       return responseBuilder.buildOK(data: {
         'item': {
+          'ProfileRoute': false,
           'SplashRoute': true,
           'CounterRouter': true,
           'NotificationsRoute': false,
@@ -35,6 +36,7 @@ class PermissionsController extends ApiController {
     }
     return responseBuilder.buildOK(data: {
       'item': {
+        'ProfileRoute': true,
         'SplashRoute': true,
         'CounterRouter': true,
         'NotificationsRoute': true,

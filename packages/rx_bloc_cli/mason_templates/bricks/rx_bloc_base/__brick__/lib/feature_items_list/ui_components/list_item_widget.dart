@@ -17,26 +17,26 @@ class ListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    child: InkWell(
-      borderRadius: BorderRadius.all(
-        Radius.circular(
-          context.designSystem.spacing.xs,
-        ),
-      ),
-      onTap: onTap,
-      child: Ink(
-        height: context.designSystem.spacing.xxxl,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                context.designSystem.spacing.xs,
-              ),
+        child: InkWell(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              context.designSystem.spacing.xs,
             ),
-            border: Border.all(color: Colors.black)),
-        child: Center(
-          child: Text(item.name),
+          ),
+          onTap: onTap,
+          child: Ink(
+            height: context.designSystem.spacing.xxxl,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    context.designSystem.spacing.xs,
+                  ),
+                ),
+                border: Border.all(color: Colors.black)),
+            child: Center(
+              child: Text(item.name),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

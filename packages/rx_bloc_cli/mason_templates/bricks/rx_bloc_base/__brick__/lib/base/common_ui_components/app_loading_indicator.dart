@@ -24,14 +24,14 @@ class AppLoadingIndicator extends StatelessWidget {
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
         size: Size(
-          context.designSystem.spacing.l,
-          context.designSystem.spacing.l,
+          context.designSystem.spacing.xxl2,
+          context.designSystem.spacing.xxl2,
         ),
-        strokeWidth: 1.5,
+        strokeWidth: 4,
       );
 
   factory AppLoadingIndicator.textButtonValue(BuildContext context,
-      {Color? color}) =>
+          {Color? color}) =>
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
         size: Size(
@@ -42,8 +42,7 @@ class AppLoadingIndicator extends StatelessWidget {
         color: color,
       );
 
-  factory AppLoadingIndicator.taskValue(BuildContext context,
-      {Color? color}) =>
+  factory AppLoadingIndicator.taskValue(BuildContext context, {Color? color}) =>
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
         strokeWidth: 4,
@@ -56,16 +55,16 @@ class AppLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    alignment: alignment ?? Alignment.center,
-    padding: padding ??
-        EdgeInsets.symmetric(
-          vertical: context.designSystem.spacing.m,
+        alignment: alignment ?? Alignment.center,
+        padding: padding ??
+            EdgeInsets.symmetric(
+              vertical: context.designSystem.spacing.m,
+            ),
+        width: size?.width ?? context.designSystem.spacing.xxxxl2,
+        height: size?.height ?? context.designSystem.spacing.xxxxl2,
+        child: CircularProgressIndicator(
+          color: color ?? context.designSystem.colors.primaryColor,
+          strokeWidth: strokeWidth ?? context.designSystem.spacing.xsss,
         ),
-    width: size?.width ?? context.designSystem.spacing.xxxxl2,
-    height: size?.height ?? context.designSystem.spacing.xxxxl2,
-    child: CircularProgressIndicator(
-      color: color ?? context.designSystem.colors.primaryColor,
-      strokeWidth: strokeWidth ?? context.designSystem.spacing.xsss,
-    ),
-  );
+      );
 }
