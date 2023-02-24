@@ -4,11 +4,11 @@
 
 1. [Getting Started](#getting-started)
 2. [Project structure](#project-structure)
-3. [Adding a new feature](#feature)
+3. [Adding a new feature](#adding-a-new-feature)
 4. [Architecture](#architecture)
-5. [Navigation](#navigation)
+5. [Routing](#routing)
    * [Deep linking](#deep-linking)
-   * [Access Controll List](#access-controll-list)
+   * [Access Control List](#access-control-list)
 6. [Localization](#localization)
 7. [Analytics](#analytics)
 8. [Http client](#http-client)
@@ -53,13 +53,11 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/feature_X/services/` | Feature related Services |
 | `lib/feature_X/ui_components/` | Feature related custom widgets |
 | `lib/feature_X/views/` | Feature related pages and forms |
-| `lib/lib_auth/` | The Oath2 (JWT) based authentication and token management library |
+| `lib/lib_auth/` | The OAuth2 (JWT) based authentication and token management library |
 | `lib/lib_permissions/` | The ACL based library that handles all the in-app routes and custom actions as well. |
 | `lib/lib_router/` | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
 | `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
 
-
-<div id="feature"/>
 
 ## Adding a new feature
 
@@ -69,18 +67,16 @@ You can manually create new features as described above, but to speed up the pro
 ## [Architecture][architecture_overview]
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
-<div id="navigation"/>
+## Routing
 
-## Navigation
-
-Navigation throughout the app is handled by [GoRouter][gorouter_lnk].
+The routing throughout the app is handled by [GoRouter][gorouter_lnk].
 
 
-You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically does all steps instead of you, or to manualy add your route to the `lib/lib_router/routes/routes.dart`. Once the route is added one of the following shell scripts `bin/build_runner_build.sh`(or `bin/build_runner_watch.sh`) need to be executed.
+You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically does all steps instead of you, or to manualy add your route to the `lib/lib_router/routes/routes.dart`. Once the route is added one of the following shell scripts `bin/build_runner_build.sh`(or `bin/build_runner_watch.sh`) needs to be executed.
 
 
-The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc`
-you can access the generated routes by using the `context.navigator` widget as follows
+The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc` so that every route can be protected if needed.
+You can [push][go_router_push] or [go][go_router_go] as follows
 
 ```
 context.read<RouterBlocType>().events.pushTo(MyNewRoute())
@@ -163,8 +159,6 @@ If there are new keys added to the main translation file they can be propagated 
 
 Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey` or `context.l10n.featureName.someTranslationKey`.
 
-<div id="analytics"/>
-
 ## Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
@@ -178,8 +172,6 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 *Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.stag` is appended to the package name when using `staging` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
 
-<div id="httpClient"/>
-
 ## Http client
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with remote APIs and use interceptors, global configuration, form fata, request cancellation, file downloading, timeout etc.
@@ -187,8 +179,6 @@ Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][ret
 To use its benefits you should define a data model in `lib/base/models/`, using [json_annotation][json_annotation_lnk] and [json_serializable][json_serializable_lnk]. Define your remote data source in folder `lib/base/data_sources/remote/` with methods and real Url, using [retrofit][retrofit_lnk]. In your dependencies class (for example: `lib/feature_counter/di/counter_dependencies.dart` ) specify which data source you are going to use in every repository.
 
 JWT-based authentication and token management is supported out of the box.
-
-<div id="designSystem"/>
 
 ## Design system
 
@@ -228,8 +218,6 @@ Some of the important paths are:
 | `bin/server/repositories/` | Repositories that are used by the controllers reside here |
 
 *Note:* When creating a new controller, make sure you also register it inside the `_registerControllers()` method in `start_server.dart`.
-
-<div id="pushNotifications"/>
 
 ## Push notifications
 
@@ -271,3 +259,5 @@ In order to make the notifications work on your target platform, make sure you f
 [gorouter_deep_linking_lnk]: https://pub.dev/documentation/go_router/latest/topics/Deep%20linking-topic.html
 [architecture_overview]: https://www.youtube.com/watch?v=nVX4AzeuVu8&
 [intellij_plugin]: https://plugins.jetbrains.com/plugin/16165-rxbloc
+[go_router_push]: https://pub.dev/documentation/go_router/latest/go_router/GoRouter/push.html
+[go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
