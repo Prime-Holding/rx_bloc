@@ -77,9 +77,14 @@ The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc
 You can [push][go_router_push] or [go][go_router_go] as follows
 
 ```
-context.read<RouterBlocType>().events.pushTo(MyNewRoute())
+context.read<RouterBlocType>().events.push(MyNewRoute())
 ```
 
+or
+
+```
+context.read<RouterBlocType>().events.go(MyNewRoute())
+```
 ### Deep linking
 
 Your app is already configured to use deep links. Although you may still want to do some adjustments.
