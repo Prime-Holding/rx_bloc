@@ -1,5 +1,3 @@
-# {{#titleCase}}{{project_name}}{{/titleCase}}
-
 # Table of contents
 
 1. [Getting Started](#getting-started)
