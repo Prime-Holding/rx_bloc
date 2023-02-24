@@ -7,30 +7,28 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';
-import '../base/models/item_model.dart';
+import '../base/models/deep_link_model.dart';
 import '../feature_counter/di/counter_page_with_dependencies.dart';
+import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
+import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';
 import '../feature_home/views/home_page.dart';
-import '../feature_item_details/di/item_details_with_dependencies.dart';
-import '../feature_items_list/di/items_list_with_dependencies.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';
 import '../lib_permissions/services/permissions_service.dart';
+import 'models/route_data_model.dart';
 import 'models/route_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart';
-part 'routes/enter_message_routes.dart';
-part 'routes/notification_routes.dart';
 part 'routes/onboarding_routes.dart';
-part 'routes/root/counter_routes.dart';
-part 'routes/root/item_routes.dart';
-part 'routes/root/profile_routes.dart';
-part 'routes/root/splash_routes.dart';
+part 'routes/profile_routes.dart';
+part 'routes/routes.dart';
+part 'routes/showcase_routes.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
@@ -68,7 +66,7 @@ class AppRouter {
                 ),
             routes: [
               $counterRoute,
-              $itemsRoute,
+              $deepLinksRoute,
               $profileRoute,
             ]),
       ];
@@ -132,9 +130,4 @@ class _GoRouterRefreshStream extends ChangeNotifier {
     _subscription.cancel();
     super.dispose();
   }
-}
-
-abstract class RouteData {
-  String get permissionName;
-  String get routeLocation;
 }

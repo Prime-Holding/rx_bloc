@@ -13,8 +13,7 @@ class I18n {
             _lookup.createFeatureNotificationsLookup()),
         featureEnterMessage =
             I18nFeatureEnterMessage(_lookup.createFeatureEnterMessageLookup()),
-        field = I18nField(_lookup.createFieldLookup()),
-        itemsFlow = I18nItemsFlow(_lookup.createItemsFlowLookup());
+        field = I18nField(_lookup.createFieldLookup());
 
   static Locale? _locale;
 
@@ -43,8 +42,6 @@ class I18n {
   final I18nFeatureEnterMessage featureEnterMessage;
 
   final I18nField field;
-
-  final I18nItemsFlow itemsFlow;
 
   ///
   /// <table style="width:100%">
@@ -202,8 +199,8 @@ class I18n {
   ///   </tr>
   ///  </table>
   ///
-  String get deepLinkFlowMenu {
-    return customLookup?.deepLinkFlowMenu ?? _lookup.deepLinkFlowMenu;
+  String get deepLinkFlowPageTitle {
+    return customLookup?.deepLinkFlowPageTitle ?? _lookup.deepLinkFlowPageTitle;
   }
 
   ///
@@ -254,57 +251,16 @@ class I18n {
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">en</td>
-  ///     <td>"Id: {id}"</td>
+  ///     <td>"Submit"</td>
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">es</td>
-  ///     <td>"Id: {id}"</td>
+  ///     <td>"Submit"</td>
   ///   </tr>
   ///  </table>
   ///
-  String itemIdResult(String id) {
-    return customLookup?.itemIdResult(id) ?? _lookup.itemIdResult(id);
-  }
-
-  ///
-  /// <table style="width:100%">
-  ///   <tr>
-  ///     <th>Locale</th>
-  ///     <th>Translation</th>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">en</td>
-  ///     <td>"Name: {name}"</td>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">es</td>
-  ///     <td>"Name: {name}"</td>
-  ///   </tr>
-  ///  </table>
-  ///
-  String itemNameResult(String name) {
-    return customLookup?.itemNameResult(name) ?? _lookup.itemNameResult(name);
-  }
-
-  ///
-  /// <table style="width:100%">
-  ///   <tr>
-  ///     <th>Locale</th>
-  ///     <th>Translation</th>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">en</td>
-  ///     <td>"Description: {description}"</td>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">es</td>
-  ///     <td>"Description: {description}"</td>
-  ///   </tr>
-  ///  </table>
-  ///
-  String itemDescriptionResult(String description) {
-    return customLookup?.itemDescriptionResult(description) ??
-        _lookup.itemDescriptionResult(description);
+  String get submit {
+    return customLookup?.submit ?? _lookup.submit;
   }
 
   ///
@@ -335,16 +291,16 @@ class I18n {
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">en</td>
-  ///     <td>"Items"</td>
+  ///     <td>"Links"</td>
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">es</td>
-  ///     <td>"Items"</td>
+  ///     <td>"Links"</td>
   ///   </tr>
   ///  </table>
   ///
-  String get navItems {
-    return customLookup?.navItems ?? _lookup.navItems;
+  String get navLinks {
+    return customLookup?.navLinks ?? _lookup.navLinks;
   }
 
   ///
@@ -383,22 +339,18 @@ class I18n {
         return resetPassword;
       case I18nKeys.pageWithResult:
         return pageWithResult;
-      case I18nKeys.deepLinkFlowMenu:
-        return deepLinkFlowMenu;
+      case I18nKeys.deepLinkFlowPageTitle:
+        return deepLinkFlowPageTitle;
       case I18nKeys.tryAgain:
         return tryAgain;
       case I18nKeys.confirm:
         return confirm;
-      case I18nKeys.itemIdResult:
-        return itemIdResult(placeholders?["id"] ?? "");
-      case I18nKeys.itemNameResult:
-        return itemNameResult(placeholders?["name"] ?? "");
-      case I18nKeys.itemDescriptionResult:
-        return itemDescriptionResult(placeholders?["description"] ?? "");
+      case I18nKeys.submit:
+        return submit;
       case I18nKeys.navCounter:
         return navCounter;
-      case I18nKeys.navItems:
-        return navItems;
+      case I18nKeys.navLinks:
+        return navLinks;
       case I18nKeys.navProfile:
         return navProfile;
     }
@@ -1082,11 +1034,11 @@ class I18nFeatureEnterMessage {
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">en</td>
-  ///     <td>"message"</td>
+  ///     <td>"Message"</td>
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">es</td>
-  ///     <td>"message"</td>
+  ///     <td>"Message"</td>
   ///   </tr>
   ///  </table>
   ///
@@ -1122,11 +1074,11 @@ class I18nFeatureEnterMessage {
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">en</td>
-  ///     <td>"The purpose of this page is to showcase how to return data to the parent page and process it."</td>
+  ///     <td>"The purpose of this page is to showcase how to return data to the parent page and process it. Enter your message and press the submit button."</td>
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">es</td>
-  ///     <td>"The purpose of this page is to showcase how to return data to the parent page and process it."</td>
+  ///     <td>"The purpose of this page is to showcase how to return data to the parent page and process it. Enter your message and press the submit button."</td>
   ///   </tr>
   ///  </table>
   ///
@@ -1206,65 +1158,6 @@ class I18nField {
   }
 }
 
-class I18nItemsFlow {
-  I18nItemsFlow(this._lookup);
-
-  final I18nItemsFlowLookup _lookup;
-
-  /// add custom locale lookup which will be called first
-  static I18nItemsFlowLookup? customLookup;
-
-  ///
-  /// <table style="width:100%">
-  ///   <tr>
-  ///     <th>Locale</th>
-  ///     <th>Translation</th>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">en</td>
-  ///     <td>"Items list"</td>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">es</td>
-  ///     <td>"Items list"</td>
-  ///   </tr>
-  ///  </table>
-  ///
-  String get itemsListPageTitle {
-    return customLookup?.itemsListPageTitle ?? _lookup.itemsListPageTitle;
-  }
-
-  ///
-  /// <table style="width:100%">
-  ///   <tr>
-  ///     <th>Locale</th>
-  ///     <th>Translation</th>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">en</td>
-  ///     <td>"Item details"</td>
-  ///   </tr>
-  ///   <tr>
-  ///     <td style="width:60px;">es</td>
-  ///     <td>"Item details"</td>
-  ///   </tr>
-  ///  </table>
-  ///
-  String get itemDetailsPageTitle {
-    return customLookup?.itemDetailsPageTitle ?? _lookup.itemDetailsPageTitle;
-  }
-
-  String? getString(String key, [Map<String, String>? placeholders]) {
-    switch (key) {
-      case I18nItemsFlowKeys.itemsListPageTitle:
-        return itemsListPageTitle;
-      case I18nItemsFlowKeys.itemDetailsPageTitle:
-        return itemDetailsPageTitle;
-    }
-    return null;
-  }
-}
-
 class I18nKeys {
   static const String reload = "reload";
   static const String ok = "ok";
@@ -1273,14 +1166,12 @@ class I18nKeys {
   static const String loadingState = "loadingState";
   static const String resetPassword = "resetPassword";
   static const String pageWithResult = "pageWithResult";
-  static const String deepLinkFlowMenu = "deepLinkFlowMenu";
+  static const String deepLinkFlowPageTitle = "deepLinkFlowPageTitle";
   static const String tryAgain = "tryAgain";
   static const String confirm = "confirm";
-  static const String itemIdResult = "itemIdResult";
-  static const String itemNameResult = "itemNameResult";
-  static const String itemDescriptionResult = "itemDescriptionResult";
+  static const String submit = "submit";
   static const String navCounter = "navCounter";
-  static const String navItems = "navItems";
+  static const String navLinks = "navLinks";
   static const String navProfile = "navProfile";
 }
 
@@ -1338,11 +1229,6 @@ class I18nFieldKeys {
   static const String password = "password";
 }
 
-class I18nItemsFlowKeys {
-  static const String itemsListPageTitle = "itemsListPageTitle";
-  static const String itemDetailsPageTitle = "itemDetailsPageTitle";
-}
-
 class I18nLookup {
   String getString(String key, [Map<String, String>? placeholders]) {
     throw UnimplementedError("I18nLookup.getString");
@@ -1376,8 +1262,8 @@ class I18nLookup {
     return getString(I18nKeys.pageWithResult);
   }
 
-  String get deepLinkFlowMenu {
-    return getString(I18nKeys.deepLinkFlowMenu);
+  String get deepLinkFlowPageTitle {
+    return getString(I18nKeys.deepLinkFlowPageTitle);
   }
 
   String get tryAgain {
@@ -1388,25 +1274,16 @@ class I18nLookup {
     return getString(I18nKeys.confirm);
   }
 
-  String itemIdResult(String id) {
-    return getString(I18nKeys.itemIdResult, {"id": id});
-  }
-
-  String itemNameResult(String name) {
-    return getString(I18nKeys.itemNameResult, {"name": name});
-  }
-
-  String itemDescriptionResult(String description) {
-    return getString(
-        I18nKeys.itemDescriptionResult, {"description": description});
+  String get submit {
+    return getString(I18nKeys.submit);
   }
 
   String get navCounter {
     return getString(I18nKeys.navCounter);
   }
 
-  String get navItems {
-    return getString(I18nKeys.navItems);
+  String get navLinks {
+    return getString(I18nKeys.navLinks);
   }
 
   String get navProfile {
@@ -1427,8 +1304,6 @@ class I18nLookup {
       I18nFeatureEnterMessageLookup();
 
   I18nFieldLookup createFieldLookup() => I18nFieldLookup();
-
-  I18nItemsFlowLookup createItemsFlowLookup() => I18nItemsFlowLookup();
 }
 
 class I18nErrorLookup {
@@ -1597,20 +1472,6 @@ class I18nFieldLookup {
   }
 }
 
-class I18nItemsFlowLookup {
-  String getString(String key, [Map<String, String>? placeholders]) {
-    throw UnimplementedError("I18nItemsFlowLookup.getString");
-  }
-
-  String get itemsListPageTitle {
-    return getString(I18nItemsFlowKeys.itemsListPageTitle);
-  }
-
-  String get itemDetailsPageTitle {
-    return getString(I18nItemsFlowKeys.itemDetailsPageTitle);
-  }
-}
-
 class I18nLookup_es extends I18nLookup_en {
   @override
   String get reload {
@@ -1648,7 +1509,7 @@ class I18nLookup_es extends I18nLookup_en {
   }
 
   @override
-  String get deepLinkFlowMenu {
+  String get deepLinkFlowPageTitle {
     return "Deep link flow";
   }
 
@@ -1663,18 +1524,8 @@ class I18nLookup_es extends I18nLookup_en {
   }
 
   @override
-  String itemIdResult(String id) {
-    return "Id: ${id}";
-  }
-
-  @override
-  String itemNameResult(String name) {
-    return "Name: ${name}";
-  }
-
-  @override
-  String itemDescriptionResult(String description) {
-    return "Description: ${description}";
+  String get submit {
+    return "Submit";
   }
 
   @override
@@ -1683,8 +1534,8 @@ class I18nLookup_es extends I18nLookup_en {
   }
 
   @override
-  String get navItems {
-    return "Items";
+  String get navLinks {
+    return "Links";
   }
 
   @override
@@ -1713,9 +1564,6 @@ class I18nLookup_es extends I18nLookup_en {
 
   @override
   I18nFieldLookup_es createFieldLookup() => I18nFieldLookup_es();
-
-  @override
-  I18nItemsFlowLookup_es createItemsFlowLookup() => I18nItemsFlowLookup_es();
 }
 
 class I18nLookup_en extends I18nLookup {
@@ -1755,7 +1603,7 @@ class I18nLookup_en extends I18nLookup {
   }
 
   @override
-  String get deepLinkFlowMenu {
+  String get deepLinkFlowPageTitle {
     return "Deep link flow";
   }
 
@@ -1770,18 +1618,8 @@ class I18nLookup_en extends I18nLookup {
   }
 
   @override
-  String itemIdResult(String id) {
-    return "Id: ${id}";
-  }
-
-  @override
-  String itemNameResult(String name) {
-    return "Name: ${name}";
-  }
-
-  @override
-  String itemDescriptionResult(String description) {
-    return "Description: ${description}";
+  String get submit {
+    return "Submit";
   }
 
   @override
@@ -1790,8 +1628,8 @@ class I18nLookup_en extends I18nLookup {
   }
 
   @override
-  String get navItems {
-    return "Items";
+  String get navLinks {
+    return "Links";
   }
 
   @override
@@ -1820,9 +1658,6 @@ class I18nLookup_en extends I18nLookup {
 
   @override
   I18nFieldLookup_en createFieldLookup() => I18nFieldLookup_en();
-
-  @override
-  I18nItemsFlowLookup_en createItemsFlowLookup() => I18nItemsFlowLookup_en();
 }
 
 class I18nErrorLookup_es extends I18nErrorLookup_en {
@@ -2116,7 +1951,7 @@ class I18nFeatureEnterMessageLookup_es
     extends I18nFeatureEnterMessageLookup_en {
   @override
   String get fieldMessageLabel {
-    return "message";
+    return "Message";
   }
 
   @override
@@ -2126,14 +1961,14 @@ class I18nFeatureEnterMessageLookup_es
 
   @override
   String get pageDescription {
-    return "The purpose of this page is to showcase how to return data to the parent page and process it.";
+    return "The purpose of this page is to showcase how to return data to the parent page and process it. Enter your message and press the submit button.";
   }
 }
 
 class I18nFeatureEnterMessageLookup_en extends I18nFeatureEnterMessageLookup {
   @override
   String get fieldMessageLabel {
-    return "message";
+    return "Message";
   }
 
   @override
@@ -2143,7 +1978,7 @@ class I18nFeatureEnterMessageLookup_en extends I18nFeatureEnterMessageLookup {
 
   @override
   String get pageDescription {
-    return "The purpose of this page is to showcase how to return data to the parent page and process it.";
+    return "The purpose of this page is to showcase how to return data to the parent page and process it. Enter your message and press the submit button.";
   }
 }
 
@@ -2168,30 +2003,6 @@ class I18nFieldLookup_en extends I18nFieldLookup {
   @override
   String get password {
     return "Password";
-  }
-}
-
-class I18nItemsFlowLookup_es extends I18nItemsFlowLookup_en {
-  @override
-  String get itemsListPageTitle {
-    return "Items list";
-  }
-
-  @override
-  String get itemDetailsPageTitle {
-    return "Item details";
-  }
-}
-
-class I18nItemsFlowLookup_en extends I18nItemsFlowLookup {
-  @override
-  String get itemsListPageTitle {
-    return "Items list";
-  }
-
-  @override
-  String get itemDetailsPageTitle {
-    return "Item details";
   }
 }
 
@@ -2226,6 +2037,6 @@ class Fonts {
 }
 
 class Assets {
-  /// ![](file:///Users/pavel.georgiev/Projects/demo_app/assets/images/.git_keep)
+  /// ![](file:///Users/pavel.georgiev/Projects/rx_bloc/packages/rx_bloc_cli/example/test_app/assets/images/.git_keep)
   static const String gitKeep = "assets/images/.git_keep";
 }

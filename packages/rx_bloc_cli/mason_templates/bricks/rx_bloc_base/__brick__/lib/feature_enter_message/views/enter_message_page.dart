@@ -78,7 +78,7 @@ class EnterMessagePage extends StatelessWidget {
                       builder: (context, snapshot, bloc) => PrimaryButton(
                         onPressed: () =>
                             Navigator.of(context).pop(snapshot.data),
-                        child: Text(context.l10n.confirm),
+                        child: Text(context.l10n.submit),
                       ),
                     ),
                   ],

@@ -59,8 +59,8 @@ class SplashBloc extends $SplashBloc {
       _navigationBloc.events.goToLocation(_redirectLocation!);
     } else {
       await _authService.isAuthenticated()
-          ? _navigationBloc.events.goTo(const CounterRoute())
-          : _navigationBloc.events.goTo(const LoginRoute());
+          ? _navigationBloc.events.go(const CounterRoute())
+          : _navigationBloc.events.go(const LoginRoute());
     }
   }
 

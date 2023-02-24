@@ -1,48 +1,48 @@
 {{> licence.dart }}
 
-import '../../lib_permissions/models/routes_permission.dart';
+import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
 enum RouteModel {
   profile(
     pathName: RoutesPath.profile,
     fullPath: '/profile',
-    permissionName: RoutesPermission.profile,
+    permissionName: RoutePermissions.profile,
   ),
   splash(
     pathName: RoutesPath.splash,
     fullPath: '/splash',
-    permissionName: RoutesPermission.splash,
+    permissionName: RoutePermissions.splash,
   ),
   counter(
     pathName: RoutesPath.counter,
     fullPath: '/counter',
-    permissionName: RoutesPermission.counter,
+    permissionName: RoutePermissions.counter,
   ),
   notifications(
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',
-    permissionName: RoutesPermission.notifications,
+    permissionName: RoutePermissions.notifications,
   ),
   login(
     pathName: RoutesPath.login,
     fullPath: '/login',
-    permissionName: RoutesPermission.login,
+    permissionName: RoutePermissions.login,
   ),
   enterMessage(
     pathName: RoutesPath.enterMessage,
     fullPath: '/enterMessage',
-    permissionName: RoutesPermission.enterMessage,
+    permissionName: RoutePermissions.enterMessage,
   ),
-  items(
-    pathName: RoutesPath.items,
-    fullPath: '/items',
-    permissionName: RoutesPermission.items,
+  deepLinks(
+    pathName: RoutesPath.deepLinks,
+    fullPath: '/deepLinks',
+    permissionName: RoutePermissions.deepLinks,
   ),
-  itemDetails(
-    pathName: RoutesPath.itemDetails,
-    fullPath: '/items/:id',
-    permissionName: RoutesPermission.itemDetails,
+  deepLinkDetails(
+    pathName: RoutesPath.deepLinkDetails,
+    fullPath: '/deepLinks/:id',
+    permissionName: RoutePermissions.deepLinkDetails,
   );
 
   final String pathName;

@@ -12,7 +12,7 @@ import 'package:shelf_static/shelf_static.dart' as shelf_static;
 
 import 'controllers/authentication_controller.dart';
 import 'controllers/count_controller.dart';
-import 'controllers/items_controller.dart';
+import 'controllers/deep_links_controller.dart';
 import 'controllers/permissions_controller.dart';
 import 'controllers/push_notifications_controller.dart';
 import 'utils/api_controller.dart';
@@ -59,7 +59,7 @@ Future<RouteGenerator> _registerControllers() async {
     ..addController(AuthenticationController())
     ..addController(PushNotificationsController())
     ..addController(PermissionsController())
-    ..addController(ItemsController());
+    ..addController(DeepLinksController());
 
   /// TODO: Add your controllers here
 

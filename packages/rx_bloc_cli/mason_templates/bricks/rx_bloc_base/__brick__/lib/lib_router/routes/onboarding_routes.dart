@@ -2,7 +2,7 @@ part of '../router.dart';
 
 @TypedGoRoute<LoginRoute>(path: RoutesPath.login)
 @immutable
-class LoginRoute extends GoRouteData implements RouteData {
+class LoginRoute extends GoRouteData implements RouteDataModel {
   const LoginRoute();
 
   @override

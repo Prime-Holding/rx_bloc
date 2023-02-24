@@ -1,14 +1,13 @@
-{{> licence.dart }}
+// {{> licence.dart }}
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/models/routes_path.dart';
 import '../../lib_router/router.dart';
-import '../extensions/navigation_item_type_model_extentions.dart';
-import '../models/navigation_item_type_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -19,46 +18,68 @@ class HomePage extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: child,
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _toCurrentIndex(context),
-          onTap: (index) =>
-              context.read<RouterBlocType>().events.goTo(_tabFromIndex(index)),
-          items: NavigationItemTypeModel.values
-              .map(
-                (item) => BottomNavigationBarItem(
-                  label: item.getTitle(context),
-                  icon: item.getIcon(context),
-                ),
-              )
-              .toList(),
-        ),
-      );
-
-  int _toCurrentIndex(BuildContext context) {
+  Widget build(BuildContext context) {
+    final list = navItemsList(context);
     GoRouter router = GoRouter.of(context);
-    final routePath =
-        router.routeInformationParser.matcher.findMatch(router.location);
-    if (routePath.fullpath.startsWith(RoutesPath.items)) {
-      return 1;
-    }
-    if (routePath.fullpath.startsWith(RoutesPath.profile)) {
-      return 2;
-    }
-    return 0;
+    return Scaffold(
+      body: child,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _getCurrentIndex(list, router),
+        onTap: (index) =>
+            context.read<RouterBlocType>().events.go(list[index].route),
+        items: list
+            .map(
+              (item) => BottomNavigationBarItem(
+                label: item.title,
+                icon: item.icon,
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 
-  RouteData _tabFromIndex(int index) {
-    switch (index) {
-      case 0:
-        return const CounterRoute();
-      case 1:
-        return const ItemsRoute();
-      case 2:
-        return const ProfileRoute();
-      default:
-        throw UnimplementedError('Unhandled tab index: $index');
-    }
+  int _getCurrentIndex(List<NavMenuItem> list, GoRouter router) {
+    int index = list.indexWhere((item) {
+      final routePath =
+          router.routeInformationParser.matcher.findMatch(router.location);
+      return routePath.fullpath.startsWith(item.routePath);
+    });
+    return index.isNegative ? 0 : index;
   }
+
+  List<NavMenuItem> navItemsList(BuildContext context) => [
+        NavMenuItem(
+          title: context.l10n.navCounter,
+          icon: context.designSystem.icons.calculateIcon,
+          route: const CounterRoute(),
+          routePath: RoutesPath.counter,
+        ),
+        NavMenuItem(
+          title: context.l10n.navLinks,
+          icon: context.designSystem.icons.linkIcon,
+          route: const DeepLinksRoute(),
+          routePath: RoutesPath.deepLinks,
+        ),
+        NavMenuItem(
+          title: context.l10n.navProfile,
+          icon: context.designSystem.icons.accountIcon,
+          route: const ProfileRoute(),
+          routePath: RoutesPath.profile,
+        ),
+      ];
+}
+
+class NavMenuItem {
+  NavMenuItem({
+    required this.title,
+    required this.icon,
+    required this.route,
+    required this.routePath,
+  });
+
+  final String title;
+  final Icon icon;
+  final RouteDataModel route;
+  final String routePath;
 }

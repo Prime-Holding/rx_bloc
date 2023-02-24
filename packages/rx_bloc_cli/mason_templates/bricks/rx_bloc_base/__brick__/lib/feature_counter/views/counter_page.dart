@@ -21,7 +21,6 @@ class CounterPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: customAppBar(
           context,
-          title: context.l10n.featureCounter.counterPageTitle,
           actions: [
             RxLoadingBuilder<CounterBlocType>(
               state: (bloc) => bloc.states.isLoading,

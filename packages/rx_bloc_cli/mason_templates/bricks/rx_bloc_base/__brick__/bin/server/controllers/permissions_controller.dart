@@ -22,29 +22,25 @@ class PermissionsController extends ApiController {
           ?.isAuthenticated(request);
     } catch (exception) {
       return responseBuilder.buildOK(data: {
-        'item': {
-          'ProfileRoute': false,
-          'SplashRoute': true,
-          'CounterRouter': true,
-          'NotificationsRoute': false,
-          'LoginRoute': true,
-          'EnterMessageRoute': false,
-          'ItemsRoute': false,
-          'ItemDetailsRoute': false,
-        }
+        'ProfileRoute': false,
+        'SplashRoute': true,
+        'CounterRouter': false,
+        'NotificationsRoute': false,
+        'LoginRoute': true,
+        'EnterMessageRoute': false,
+        'DeepLinksRoute': false,
+        'DeepLinkDetailsRoute': false,
       });
     }
     return responseBuilder.buildOK(data: {
-      'item': {
-        'ProfileRoute': true,
-        'SplashRoute': true,
-        'CounterRouter': true,
-        'NotificationsRoute': true,
-        'LoginRoute': false,
-        'EnterMessageRoute': true,
-        'ItemsRoute': true,
-        'ItemDetailsRoute': true,
-      }
+      'ProfileRoute': true,
+      'SplashRoute': true,
+      'CounterRouter': true,
+      'NotificationsRoute': true,
+      'LoginRoute': false,
+      'EnterMessageRoute': true,
+      'DeepLinksRoute': true,
+      'DeepLinkDetailsRoute': true,
     });
   }
 }

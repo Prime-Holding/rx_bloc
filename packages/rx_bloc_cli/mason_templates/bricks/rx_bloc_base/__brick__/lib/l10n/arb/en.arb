@@ -7,13 +7,11 @@
     "loadingState" : "Loading...",
     "resetPassword" : "Reset password",
     "pageWithResult" : "Enter message",
-    "deepLinkFlowMenu" : "Deep link flow",
+    "deepLinkFlowPageTitle" : "Deep link flow",
     "tryAgain" : "Try again",
     "confirm" : "Confirm",
-    "itemIdResult" : "Id: {id}",
-    "itemNameResult" : "Name: {name}",
-    "itemDescriptionResult" : "Description: {description}",
+    "submit" : "Submit",
     "navCounter" : "Counter",
-    "navItems" : "Items",
+    "navLinks" : "Links",
     "navProfile" : "Profile"
 }

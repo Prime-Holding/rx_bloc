@@ -8,10 +8,10 @@ part of 'router.dart';
 
 List<GoRoute> get $appRoutes => [
       $loginRoute,
-      $counterRoute,
-      $itemsRoute,
       $profileRoute,
       $splashRoute,
+      $counterRoute,
+      $deepLinksRoute,
     ];
 
 GoRoute get $loginRoute => GoRouteData.$route(
@@ -24,89 +24,6 @@ extension $LoginRouteExtension on LoginRoute {
 
   String get location => GoRouteData.$location(
         '/login',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: this);
-}
-
-GoRoute get $counterRoute => GoRouteData.$route(
-      path: '/counter',
-      factory: $CounterRouteExtension._fromState,
-    );
-
-extension $CounterRouteExtension on CounterRoute {
-  static CounterRoute _fromState(GoRouterState state) => const CounterRoute();
-
-  String get location => GoRouteData.$location(
-        '/counter',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: this);
-}
-
-GoRoute get $itemsRoute => GoRouteData.$route(
-      path: '/items',
-      factory: $ItemsRouteExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: ':id',
-          factory: $ItemDetailsRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'enterMessage',
-          factory: $EnterMessageRouteExtension._fromState,
-        ),
-      ],
-    );
-
-extension $ItemsRouteExtension on ItemsRoute {
-  static ItemsRoute _fromState(GoRouterState state) => const ItemsRoute();
-
-  String get location => GoRouteData.$location(
-        '/items',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: this);
-}
-
-extension $ItemDetailsRouteExtension on ItemDetailsRoute {
-  static ItemDetailsRoute _fromState(GoRouterState state) => ItemDetailsRoute(
-        state.params['id']!,
-      );
-
-  String get location => GoRouteData.$location(
-        '/items/${Uri.encodeComponent(id)}',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: this);
-}
-
-extension $EnterMessageRouteExtension on EnterMessageRoute {
-  static EnterMessageRoute _fromState(GoRouterState state) =>
-      const EnterMessageRoute();
-
-  String get location => GoRouteData.$location(
-        '/items/enterMessage',
       );
 
   void go(BuildContext context) => context.go(location, extra: this);
@@ -169,6 +86,91 @@ extension $SplashRouteExtension on SplashRoute {
 
   String get location => GoRouteData.$location(
         '/splash',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
+}
+
+GoRoute get $counterRoute => GoRouteData.$route(
+      path: '/counter',
+      factory: $CounterRouteExtension._fromState,
+    );
+
+extension $CounterRouteExtension on CounterRoute {
+  static CounterRoute _fromState(GoRouterState state) => const CounterRoute();
+
+  String get location => GoRouteData.$location(
+        '/counter',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
+}
+
+GoRoute get $deepLinksRoute => GoRouteData.$route(
+      path: '/deepLinks',
+      factory: $DeepLinksRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: ':id',
+          factory: $DeepLinkDetailsRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'enterMessage',
+          factory: $EnterMessageRouteExtension._fromState,
+        ),
+      ],
+    );
+
+extension $DeepLinksRouteExtension on DeepLinksRoute {
+  static DeepLinksRoute _fromState(GoRouterState state) =>
+      const DeepLinksRoute();
+
+  String get location => GoRouteData.$location(
+        '/deepLinks',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
+}
+
+extension $DeepLinkDetailsRouteExtension on DeepLinkDetailsRoute {
+  static DeepLinkDetailsRoute _fromState(GoRouterState state) =>
+      DeepLinkDetailsRoute(
+        state.params['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/deepLinks/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: this);
+
+  void push(BuildContext context) => context.push(location, extra: this);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: this);
+}
+
+extension $EnterMessageRouteExtension on EnterMessageRoute {
+  static EnterMessageRoute _fromState(GoRouterState state) =>
+      const EnterMessageRoute();
+
+  String get location => GoRouteData.$location(
+        '/deepLinks/enterMessage',
       );
 
   void go(BuildContext context) => context.go(location, extra: this);

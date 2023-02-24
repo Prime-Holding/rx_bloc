@@ -27,15 +27,15 @@ import '../../lib_permissions/services/permissions_service.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../common_services/item_service.dart';
+import '../common_services/deep_link_service.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/remote/count_remote_data_source.dart';
+import '../data_sources/remote/deep_link_remote_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/items_remote_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/counter_repository.dart';
-import '../repositories/item_repository.dart';
+import '../repositories/deep_link_repository.dart';
 import '../repositories/push_notification_repository.dart';
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
@@ -148,8 +148,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ApiHttpClient>(),
           ),
         ),
-        Provider<ItemsRemoteDataSource>(
-          create: (context) => ItemsRemoteDataSource(
+        Provider<DeepLinkRemoteDataSource>(
+          create: (context) => DeepLinkRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
         ),
@@ -183,8 +183,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        Provider<ItemRepository>(
-          create: (context) => ItemRepository(
+        Provider<DeepLinkRepository>(
+          create: (context) => DeepLinkRepository(
             context.read(),
             context.read(),
           ),
@@ -219,8 +219,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        Provider<ItemService>(
-          create: (context) => ItemService(
+        Provider<DeepLinkService>(
+          create: (context) => DeepLinkService(
             context.read(),
           ),
         ),

@@ -7,6 +7,6 @@ class RoutesPath {
   static const notifications = 'notifications';
   static const login = '/login';
   static const enterMessage = 'enterMessage';
-  static const items = '/items';
-  static const itemDetails = ':id';
+  static const deepLinks = '/deepLinks';
+  static const deepLinkDetails = ':id';
 }

@@ -40,7 +40,7 @@ class ProfilePage extends StatelessWidget {
                 onPressed: () => context
                     .read<RouterBlocType>()
                     .events
-                    .pushTo(const NotificationsRoute()),
+                    .push(const NotificationsRoute()),
               ),
             ),
           ],

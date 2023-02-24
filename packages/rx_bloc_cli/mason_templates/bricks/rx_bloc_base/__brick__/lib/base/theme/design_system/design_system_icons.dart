@@ -30,5 +30,7 @@ class DesignSystemIcons {
 
   final Icon logoutIcon = _getIcon(Icons.logout);
 
+  final Icon linkIcon = _getIcon(Icons.link);
+
   static Icon _getIcon(IconData iconData) => Icon(iconData);
 }

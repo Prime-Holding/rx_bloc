@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "fieldMessageLabel" : "message",
+    "fieldMessageLabel" : "Message",
     "fieldHintMessage" : "Enter your message",
-    "pageDescription" : "The purpose of this page is to showcase how to return data to the parent page and process it."
+    "pageDescription" : "The purpose of this page is to showcase how to return data to the parent page and process it. Enter your message and press the submit button."
 }
