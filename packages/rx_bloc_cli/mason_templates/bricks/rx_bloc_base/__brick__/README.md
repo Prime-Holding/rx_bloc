@@ -106,13 +106,19 @@ Example:
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>test_app.yourcompany.com</string>
+        <string>{{project_name}}.{{organization_name}}.{{domain_name}}</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>yourcompanyscheme</string>
+        <string>{{organization_name}}scheme</string>
         </array>
         </dict>
     </array>
+```
+
+You can test the deep-links on iOS simulator by executing the following command
+
+```
+xcrun simctl openurl booted {{organization_name}}scheme://{{project_name}}.{{organization_name}}.{{domain_name}}/deepLinks/1
 ```
 
 `Android`

@@ -106,13 +106,19 @@ Example:
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>test_app.yourcompany.com</string>
+        <string>test_app.primeholding.com</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>yourcompanyscheme</string>
+        <string>primeholdingscheme</string>
         </array>
         </dict>
     </array>
+```
+
+You can test the deep-links on iOS simulator by executing the following command
+
+```
+xcrun simctl openurl booted primeholdingscheme://test_app.primeholding.com/deepLinks/1
 ```
 
 `Android`
