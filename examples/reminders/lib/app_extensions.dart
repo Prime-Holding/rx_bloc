@@ -5,10 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
-export 'package:auto_route/auto_route.dart';
-
-export 'base/routers/router.gr.dart';
 export 'base/theme/design_system.dart';
 export 'l10n/l10n.dart';
 

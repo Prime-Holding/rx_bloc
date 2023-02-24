@@ -11,22 +11,15 @@ import '../../base/common_ui_components/app_sticky_header.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../blocs/dashboard_bloc.dart';
-import '../di/dashboard_dependencies.dart';
 import '../models/dashboard_model.dart';
 import 'dashboard_paginated_list.dart';
 
-class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
+class DashboardPage extends StatelessWidget {
   DashboardPage({
     super.key,
   });
 
   final _scrollController = ScrollController();
-
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: DashboardDependencies.of(context).providers,
-        child: this,
-      );
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -36,21 +29,10 @@ class DashboardPage extends StatelessWidget implements AutoRouteWrapper {
           backgroundColor: context.designSystem.colors.backgroundListColor,
           body: Column(
             children: [
-              _buildLogoutListener(),
               Expanded(child: _buildBodyNew(context)),
             ],
           ),
         ),
-      );
-
-  Widget _buildLogoutListener() => RxBlocListener<FirebaseBlocType, bool>(
-        state: (bloc) => bloc.states.userLoggedOut,
-        listener: (context, currentUser) {
-          if (currentUser == true) {
-            context.router.popUntilRouteWithName(FacebookLoginRoute.name);
-            context.router.replace(const FacebookLoginRoute());
-          }
-        },
       );
 
   Widget _buildBodyNew(BuildContext context) =>

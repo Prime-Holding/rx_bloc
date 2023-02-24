@@ -51,14 +51,6 @@ class _FacebookLoginPageState extends State<FacebookLoginPage> {
         state: (bloc) => bloc.states.isLoading,
         builder: (context, isLoading, tag, bloc) => Column(
           children: [
-            RxBlocListener<FirebaseBlocType, bool>(
-              state: (bloc) => bloc.states.loggedIn,
-              listener: (context, logIn) {
-                if (logIn == true) {
-                  context.router.replace(const NavigationRoute());
-                }
-              },
-            ),
             _buildFirebaseLoginErrorListener(),
             LoginButton(
               text: context.l10n.logInAsAnonymous,
