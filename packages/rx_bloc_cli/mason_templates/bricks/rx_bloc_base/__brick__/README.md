@@ -117,8 +117,19 @@ Example:
 
 You can test the deep-links on iOS simulator by executing the following command
 
+Production
 ```
 xcrun simctl openurl booted {{organization_name}}scheme://{{project_name}}.{{organization_name}}.{{domain_name}}/deepLinks/1
+```
+
+Staging
+```
+xcrun simctl openurl booted {{organization_name}}stagscheme://{{project_name}}stag.{{organization_name}}.{{domain_name}}/deepLinks/1
+```
+
+Development
+```
+xcrun simctl openurl booted {{organization_name}}devscheme://{{project_name}}dev.{{organization_name}}.{{domain_name}}/deepLinks/1
 ```
 
 `Android`
