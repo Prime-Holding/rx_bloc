@@ -133,7 +133,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
 
 //TODO move it the desired place in the routing tree Or make it as root route: @TypedGoRoute<${featureCamelCase}Route>(path: path) and run Build Runner - Build
 @immutable
-class ${featureCamelCase}Route extends GoRouteData implements RouteData {
+class ${featureCamelCase}Route extends GoRouteData implements RouteDataModel {
   const ${featureCamelCase}Route();
 
   @override
@@ -209,7 +209,7 @@ $newRoute""".trimIndent()
   $featureFieldCase(
     pathName: RoutesPath.$featureFieldCase,
     fullPath: '$featureFieldCase',//TODO fix path
-    permissionName: RoutesPermission.$featureFieldCase,
+    permissionName: RoutePermissions.$featureFieldCase,
   ),
 """
                 )
@@ -217,12 +217,12 @@ $newRoute""".trimIndent()
         }
 
         filePath =
-            "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}routes_permission.dart"
+            "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}route_permissions.dart"
         file = File(filePath)
         if (file.exists()) {
             val text = File(file.path).readText().replace(
-                "RoutesPermission {",
-                "RoutesPermission {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
+                "RoutePermissions {",
+                "RoutePermissions {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
             )
             VfsTestUtil.overwriteTestData(file.path, text)
         }
@@ -232,7 +232,7 @@ $newRoute""".trimIndent()
         file = File(filePath)
         if (file.exists()) {
             val text = File(file.path).readText()
-                .replace("'item': {", "'item': {\n          '${featureCamelCase}Route': true,")
+                .replace("data: {", "data: {\n         '${featureCamelCase}Route': true,")
             VfsTestUtil.overwriteTestData(file.path, text)
         }
     }
@@ -247,7 +247,7 @@ private fun createSourceFile(generator: RxGeneratorBase, directory: VirtualFile)
 
     val file = directory.createChildData(this, fileName)
     VfsTestUtil.overwriteTestData(file.path, generator.generate())
-
+//        .replace("../../", "../../${subdirectory.split("/").map { "../" }}")
     return file
 }
 
