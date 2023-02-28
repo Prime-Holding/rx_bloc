@@ -1,35 +1,36 @@
 {{> licence.dart }}
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:provider/provider.dart';
 
-import '../../base/common_blocs/user_account_bloc.dart';
 import '../../base/common_ui_components/action_button.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/update_button.dart';
-import '../../base/extensions/error_model_translations.dart';
-import '../../base/models/errors/error_model.dart';
 import '../../base/theme/design_system.dart';
-import '../../feature_login/ui_components/profile_avatar.dart';
 import '../../l10n/l10n.dart';
+import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../blocs/counter_bloc.dart';
-import '../di/counter_dependencies.dart';
 
-class CounterPage extends StatelessWidget implements AutoRouteWrapper {
+class CounterPage extends StatelessWidget {
   const CounterPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: CounterDependencies.from(context).providers,
-        child: this,
-      );
-
-  @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppBar(context),
+        appBar: customAppBar(
+          context,
+          actions: [
+            RxLoadingBuilder<CounterBlocType>(
+              state: (bloc) => bloc.states.isLoading,
+              builder: (context, isLoading, tag, bloc) => UpdateButton(
+                isActive: !isLoading,
+                onPressed: () => bloc.events.reload(),
+              ),
+            ),
+          ],
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -39,32 +40,17 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
                 builder: (context, countState, bloc) =>
                     _buildCount(context, countState),
               ),
-              RxBlocListener<CounterBlocType, ErrorModel>(
-                state: (bloc) => bloc.states.errors,
-                listener: _onError,
+              AppErrorModalWidget<CounterBlocType>(
+                errorState: (bloc) => bloc.states.errors,
               ),
-              RxBlocListener<UserAccountBlocType, ErrorModel>(
-                state: (bloc) => bloc.states.errors,
-                listener: _onError,
+              AppErrorModalWidget<UserAccountBlocType>(
+                errorState: (bloc) => bloc.states.errors,
+                isListeningForNavigationErrors: false,
               ),
             ],
           ),
         ),
         floatingActionButton: _buildActionButtons(context),
-      );
-
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-        title: Text(context.l10n.featureCounter.counterPageTitle),
-        actions: [
-          RxLoadingBuilder<CounterBlocType>(
-            state: (bloc) => bloc.states.isLoading,
-            builder: (context, isLoading, tag, bloc) => UpdateButton(
-              isActive: !isLoading,
-              onPressed: () => bloc.events.reload(),
-            ),
-          ),
-          const ProfileAvatar(),
-        ],
       );
 
   Widget _buildCount(BuildContext context, AsyncSnapshot<int> snapshot) =>
@@ -91,7 +77,7 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               loading: isLoading && tag == CounterBloc.tagIncrement,
               heroTag: 'increment',
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: context.designSystem.spacing.m),
             ActionButton(
               icon: Icon(context.designSystem.icons.minusSign),
               tooltip: context.l10n.featureCounter.decrement,
@@ -100,14 +86,6 @@ class CounterPage extends StatelessWidget implements AutoRouteWrapper {
               heroTag: 'decrement',
             ),
           ],
-        ),
-      );
-
-  void _onError(BuildContext context, ErrorModel errorModel) =>
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorModel.translate(context)),
-          behavior: SnackBarBehavior.floating,
         ),
       );
 }

@@ -7,10 +7,10 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
-  auto_route: ^5.0.1
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
-  dio: ^4.0.6{{#analytics}}
+  dio: ^4.0.6
+  equatable: ^2.0.5{{#analytics}}
   firebase_analytics: ^10.0.6{{/analytics}}{{#uses_firebase}}
   firebase_core: ^2.3.0{{/uses_firebase}}{{#push_notifications}}
   firebase_messaging: ^14.1.1{{/push_notifications}}
@@ -19,8 +19,9 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^5.0.1
+  flutter_rx_bloc: ^5.0.2
   flutter_secure_storage: ^7.0.1
+  go_router: ^6.2.0
   golden_toolkit: ^0.14.0
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
@@ -29,7 +30,7 @@ dependencies:
   provider: ^6.0.3
   retrofit: ^3.3.0
   rx_bloc: ^4.0.0
-  rx_bloc_list: ^3.2.0-dev.2
+  rx_bloc_list: ^3.2.1
   rxdart: ^0.27.5
   shared_preferences: ^2.0.15
 
@@ -39,18 +40,18 @@ dependencies:
   shelf_static: ^1.1.1
 
 dev_dependencies:
-  auto_route_generator: ^5.0.2
   build_runner: ^2.3.0
   # flutter_driver:
   #   sdk: flutter
   flutter_lints: any
   flutter_test:
     sdk: flutter
+  go_router_builder: ^1.1.2
   json_serializable: ^6.5.1
   mockito: ^5.3.2
   r_flutter: 0.9.0
   retrofit_generator: ^4.2.0
-  rx_bloc_generator: ^6.0.0
+  rx_bloc_generator: ^6.0.1
   rx_bloc_test: any
   test: any
 
@@ -76,4 +77,5 @@ r_flutter:
     - name: feature_counter
     - name: feature_login
     - name: feature_notifications
+    - name: feature_enter_message
     - name: field

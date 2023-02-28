@@ -35,7 +35,7 @@ abstract class $LoginBloc extends RxBlocBase
   late final Stream<String> _passwordState = _mapToPasswordState();
 
   /// The state of [loggedIn] implemented in [_mapToLoggedInState]
-  late final Stream<bool> _loggedInState = _mapToLoggedInState();
+  late final ConnectableStream<bool> _loggedInState = _mapToLoggedInState();
 
   /// The state of [showErrors] implemented in [_mapToShowErrorsState]
   late final Stream<bool> _showErrorsState = _mapToShowErrorsState();
@@ -62,7 +62,7 @@ abstract class $LoginBloc extends RxBlocBase
   Stream<String> get password => _passwordState;
 
   @override
-  Stream<bool> get loggedIn => _loggedInState;
+  ConnectableStream<bool> get loggedIn => _loggedInState;
 
   @override
   Stream<bool> get showErrors => _showErrorsState;
@@ -77,7 +77,7 @@ abstract class $LoginBloc extends RxBlocBase
 
   Stream<String> _mapToPasswordState();
 
-  Stream<bool> _mapToLoggedInState();
+  ConnectableStream<bool> _mapToLoggedInState();
 
   Stream<bool> _mapToShowErrorsState();
 

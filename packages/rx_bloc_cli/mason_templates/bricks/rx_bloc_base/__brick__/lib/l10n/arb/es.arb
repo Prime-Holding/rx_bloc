@@ -3,5 +3,15 @@
     "reload": "Reload",
     "ok" : "OK",
     "close" : "Close",
-    "resetPassword" : "Reset password"
+    "errorState" : "Error occurred",
+    "loadingState" : "Loading...",
+    "resetPassword" : "Reset password",
+    "pageWithResult" : "Enter message",
+    "deepLinkFlowPageTitle" : "Deep link flow",
+    "tryAgain" : "Try again",
+    "confirm" : "Confirm",
+    "submit" : "Submit",
+    "navCounter" : "Counter",
+    "navLinks" : "Links",
+    "navProfile" : "Profile"
 }

@@ -24,6 +24,10 @@ extension ErrorModelL10n on ErrorModel {
       return (this as FieldRequiredErrorModel).translate(context);
     }
 
+    if (this is ErrorServerGenericModel) {
+      return (this as ErrorServerGenericModel).translate(context);
+    }
+
     return context.l10n.error.unknown;
   }
 }
@@ -42,4 +46,9 @@ extension ErrorFieldRequiredModelL10n on FieldRequiredErrorModel {
   String translate(BuildContext context) => context.l10n.error.requiredField(
         context.l10n.field.getString(fieldKey)!,
       );
+}
+
+extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
+  String translate(BuildContext context) =>
+      message ?? context.l10n.error.server;
 }

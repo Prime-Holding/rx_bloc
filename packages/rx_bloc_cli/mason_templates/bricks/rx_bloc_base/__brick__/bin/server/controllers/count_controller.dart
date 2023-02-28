@@ -3,6 +3,7 @@
 import 'package:shelf/shelf.dart';
 
 import '../utils/api_controller.dart';
+import '../utils/server_exceptions.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -43,7 +44,7 @@ class CountController extends ApiController {
 
   void _increment() {
     if (_count >= 5) {
-      throw Exception('You have reached the maximum count');
+      throw UnprocessableEntityException('You have reached the maximum count');
     }
 
     ++_count;
@@ -51,7 +52,7 @@ class CountController extends ApiController {
 
   void _decrement() {
     if (_count <= 0) {
-      throw Exception('You have reached the minimum count');
+      throw UnprocessableEntityException('You have reached the minimum count');
     }
 
     --_count;

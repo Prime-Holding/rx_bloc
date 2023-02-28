@@ -253,7 +253,6 @@ class CreateCommand extends Command<int> {
   }
 
   /// endregion
-
 }
 
 class _CreateCommandArguments {

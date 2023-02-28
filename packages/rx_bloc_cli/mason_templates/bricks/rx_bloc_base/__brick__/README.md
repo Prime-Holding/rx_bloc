@@ -1,4 +1,20 @@
-# {{#titleCase}}{{project_name}}{{/titleCase}}
+# Table of contents
+
+1. [Getting Started](#getting-started)
+2. [Project structure](#project-structure)
+3. [Adding a new feature](#adding-a-new-feature)
+4. [Architecture](#architecture)
+5. [Routing](#routing)
+   * [Deep linking](#deep-linking)
+   * [Access Control List](#access-control-list)
+6. [Localization](#localization)
+7. [Analytics](#analytics)
+8. [Http client](#http-client)
+9. [Design system](#design-system)
+10. [Golden tests](#golden-tests)
+11. [Server](#server)
+12. [Push notifications](#push-notifications)
+13. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -10,53 +26,150 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 | Path | Contains |
 | ------------ | ------------ |
+| `lib/main.dart` | The production flavour of the app. |
+| `lib/main_dev.dart` | The development flavour of the app. |
+| `lib/main_staging.dart` | The staging flavour of the app. |
 | `lib/base/` | Common code used on more than one **feature** in the project. |
 | `lib/base/app/` | The root of the application and Environment configuration. |
-| `lib/base/common_blocs/` | Global [BLoCs][rx_bloc_info_lnk]|
-| `lib/base/common_ui_components/` | Reusable widgets (buttons, controls etc) |
-| `lib/base/common_use_cases/` | Global UseCases |
-| `lib/base/data_sources/` | All data sources are placed here. |
-| `lib/base/data_sources/domain/` | Data sources,  relating to a specific domain |
-| `lib/base/data_sources/domain/counter/` | Data sources,  relating to the counter domain |
-| `lib/base/data_sources/local/` | Local data sources, such as shared preferences, secured storage etc. |
-| `lib/base/data_sources/remote/` | External data sources like APIs. Here is placed all [retrofit][retrofit_lnk] code. |
+| `lib/base/common_blocs/` | Generally available [BLoCs][rx_bloc_info_lnk]|
+| `lib/base/common_mappers/` | Generally available Mappers|
+| `lib/base/common_services/` | Generally available Services |
+| `lib/base/common_ui_components/` | Generally available Reusable widgets (buttons, controls etc) |
+| `lib/base/data_sources/local/` | Generally available local data sources, such as shared preferences, secured storage etc. |
+| `lib/base/data_sources/remote/` | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code. |
 | `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls. |
-| `lib/base/di/` | Global dependencies, available in the whole app|
-| `lib/base/extensions/` | Global [extension methods][extension_methods_lnk] |
-| `lib/base/models/` | Data models used in the project |
-| `lib/base/repositories/` | Repositories used to fetch and persist models. |
-| `lib/base/routers/` | All [routers][autoroute_usage_lnk] are placed here. The main [router][autoroute_usage_lnk] of the app is `lib/base/routers/router.dart`. |
-| `lib/base/routers/guards/` | The routers' [guards][autoroute_usage_lnk] of the app are placed here. |
+| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients |
+| `lib/base/di/` | Application dependencies, available in the whole app|
+| `lib/base/extensions/` | Generally available [extension methods][extension_methods_lnk] |
+| `lib/base/models/` | The business models used in the application |
+| `lib/base/repositories/` | Generally available repositories used to fetch and persist models |
 | `lib/base/theme/` | The custom theme of the app |
-| `lib/base/utils/` | Global utils |
+| `lib/base/utils/` | Generally available utils |
 | `lib/feature_X/` | Feature related classes |
 | `lib/feature_X/blocs` | Feature related [BLoCs][rx_bloc_info_lnk] |
 | `lib/feature_X/di` | Feature related dependencies |
-| `lib/feature_X/use_cases/` | Feature related UseCases |
+| `lib/feature_X/services/` | Feature related Services |
 | `lib/feature_X/ui_components/` | Feature related custom widgets |
 | `lib/feature_X/views/` | Feature related pages and forms |
-| `lib/main.dart` | The main file of the app. If there are more that one main file, each of them is related to separate flavor of the app. |
+| `lib/lib_auth/` | The OAuth2 (JWT) based authentication and token management library |
+| `lib/lib_permissions/` | The ACL based library that handles all the in-app routes and custom actions as well. |
+| `lib/lib_router/` | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
+| `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
 
-## Feature structure
 
-Each feature represents a separate flow in the app. They can be composed of one or more pages (screens) placed inside the features `views` directory. **Every page (screen) should be implemented as a Stateless Widget.**
+## Adding a new feature
 
-The logic of each page should be placed into its own [BLoC][rx_bloc_lnk]. This is desired especially if the page has to be a **Stateful Widget**. The BLoC is placed inside the `blocs` directory. In order for the BLoC to be more readable, its implementation details can be offloaded to its own extensions file ( `[bloc_name]_extensions.dart`, placed inside the same directory) or one or more usecases.
+You can manually create new features as described above, but to speed up the product development you can use the [IntelliJ RxBloC Plugin][intellij_plugin], which not just creates the feature structure but also integrates it to the prefered routing solution (auto_route, [go_router][gorouter_lnk] or none)
 
-## Architecture
+
+## [Architecture][architecture_overview]
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
-<div id="navigation"/>
+## Routing
 
-### Navigation
+The routing throughout the app is handled by [GoRouter][gorouter_lnk].
 
-Navigation throughout the app is handled by [Auto Route][autoroute_lnk].
 
-After describing your pages inside the `lib/base/routers/router.dart` file and running the shell script `bin/build_runner_build.sh`(or `bin/build_runner_watch.sh`), you can access the generated routes by using the `context.navigator` widget.
+You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically does all steps instead of you, or to manualy add your route to the `lib/lib_router/routes/routes.dart`. Once the route is added one of the following shell scripts `bin/build_runner_build.sh`(or `bin/build_runner_watch.sh`) needs to be executed.
 
-<div id="locatization"/>
 
-### Localization
+The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc` so that every route can be protected if needed.
+You can [push][go_router_push] or [go][go_router_go] as follows
+
+```
+context.read<RouterBlocType>().events.push(MyNewRoute())
+```
+
+or
+
+```
+context.read<RouterBlocType>().events.go(MyNewRoute())
+```
+### Deep linking
+
+Your app is already configured to use deep links. Although you may still want to do some adjustments.
+
+`iOS`
+The configuration file can be found at `ios/Runner/Info.plist`
+Under the `CFBundleURLTypes` key there are two things you may want to change:
+1. `CFBundleURLName` unique URL used to distinguish your app from others that use the same scheme. The URL we build contains your `project name`, `organization name` and `domain name` you provided when setting up the project.
+2. `CFBundleURLSchemes` the scheme name is your `organisation name` followed by `scheme`.
+
+Example:
+
+```
+    <key>FlutterDeepLinkingEnabled</key>
+    <true/>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>{{project_name}}.{{organization_name}}.{{domain_name}}</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>{{organization_name}}scheme</string>
+        </array>
+        </dict>
+    </array>
+```
+
+You can test the deep-links on iOS simulator by executing the following command
+
+Production
+```
+xcrun simctl openurl booted {{organization_name}}scheme://{{project_name}}.{{organization_name}}.{{domain_name}}/deepLinks/1
+```
+
+Staging
+```
+xcrun simctl openurl booted {{organization_name}}stagscheme://{{project_name}}stag.{{organization_name}}.{{domain_name}}/deepLinks/1
+```
+
+Development
+```
+xcrun simctl openurl booted {{organization_name}}devscheme://{{project_name}}dev.{{organization_name}}.{{domain_name}}/deepLinks/1
+```
+
+`Android`
+The configuration file can be found at `android/app/src/main/AndroidManifest.xml`
+There is a metadata tag `flutter_deeplinking_enabled` inside `<activity>` tag with the `.MainActivity` name. You may want to change the host name which again contains your `project name`, `organization name` and `domain name` you provided when the project was set up.
+
+See [Deep linking][deep_linking_lnk] documentation at flutter.dev for more information.
+
+### Access Control List
+
+Your app supports ACL out of the box, which means that the access to every page can be controlled remotely by the corresponding API endpoint `/api/permissions`
+
+Expected API Response structure/data for anonymous users.
+
+**Note**: The anonymous users have access to the splash and login route, but not to the **profile** route.
+```
+{
+    'SplashRoute': true,
+    'LoginRoute': true,
+    'ProfileRoute': false,
+    ...
+}
+```
+
+Expected structure/data for authenticated users.
+
+**Note**: The authenticated users have access to the splash and profile route, but not to the **login** route.
+```
+{
+    'SplashRoute': true,
+    'LoginRoute': false,
+    'ProfileRoute': true,
+    ...
+}
+```
+
+
+You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically does all steps instead of you, or to manualy add the permission for your route to the `lib/lib_permissions/models/route_permissions.dart`.
+
+## Localization
 
 Your app supports [localization][localization_lnk] out of the box.
 
@@ -66,9 +179,7 @@ If there are new keys added to the main translation file they can be propagated 
 
 Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey` or `context.l10n.featureName.someTranslationKey`.
 
-<div id="analytics"/>
-
-### Analytics
+## Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
 
@@ -81,9 +192,7 @@ Every flavor represents a separate Firebase project that will be used for app tr
 
 *Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.stag` is appended to the package name when using `staging` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
 
-<div id="httpClient"/>
-
-### Http client
+## Http client
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with remote APIs and use interceptors, global configuration, form fata, request cancellation, file downloading, timeout etc.
 
@@ -91,9 +200,7 @@ To use its benefits you should define a data model in `lib/base/models/`, using 
 
 JWT-based authentication and token management is supported out of the box.
 
-<div id="designSystem"/>
-
-### Design system
+## Design system
 
 A [design system][design_system_lnk] is a centralized place where you can define your app`s design.  This includes typography, colors, icons, images and other assets. It also defines the light and dark themes of your app. By using a design system we ensure that a design change in one place is reflected across the whole app.
 
@@ -101,7 +208,7 @@ To access the design system from your app, you have to import it from the follow
 
 <div id="goldenTests"/>
 
-### Golden tests
+## Golden tests
 
 A [golden test][golden_test_lnk] lets you generate golden master images of a widget or screen, and compare against them so you know your design is always pixel-perfect and there have been no subtle or breaking changes in UI between builds. To make this easier, we employ the use of the [golden_toolkit][golden_toolkit_lnk] package.
 
@@ -113,7 +220,7 @@ In order for the goldens to be generated, we have provided VS Code and IDEA run 
 
 <div id="server"/>
 
-### Server
+## Server
 
 Your app comes with a small preconfigured local server (written in Dart) that you can use for testing purposes or even expand it. It is built using [shelf][shelf_lnk], [shelf_router][shelf_router_lnk] and [shelf_static][shelf_static_lnk]. The server comes with several out-of-the-box APIs that work with the generated app.
 
@@ -132,9 +239,7 @@ Some of the important paths are:
 
 *Note:* When creating a new controller, make sure you also register it inside the `_registerControllers()` method in `start_server.dart`.
 
-<div id="pushNotifications"/>
-
-### Push notifications
+## Push notifications
 
 [Firebase Cloud Messaging (FCM)][fcm_lnk] allows your integrating push notifications in your very own app. You can receive notifications while the app is in the foreground, background or even terminated. It even allows for event callbacks customizations, such when the app is opened via a notification from a specific state. All customizable callbacks can be found inside `lib/base/app/initialization/firebase_messaging_callbacks.dart`.
 
@@ -144,7 +249,7 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
-### Next Steps
+## Next Steps
 
 * Define the branching strategy that the project is going to be using.
 * Define application-wide loading state representation. It could be a progress bar, spinner, skeleton animation or a custom widget.
@@ -152,8 +257,8 @@ In order to make the notifications work on your target platform, make sure you f
 [rx_bloc_lnk]: https://pub.dev/packages/rx_bloc
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
 [extension_methods_lnk]: https://dart.dev/guides/language/extension-methods
-[autoroute_lnk]: https://pub.dev/packages/auto_route
-[autoroute_usage_lnk]: https://pub.dev/packages/auto_route#setup-and-usage
+[gorouter_lnk]: https://pub.dev/packages/go_router
+[gorouter_usage_lnk]: https://pub.dev/packages/go_router#documentation
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [firebase_configs_lnk]: https://support.google.com/firebase/answer/7015592
@@ -170,3 +275,9 @@ In order to make the notifications work on your target platform, make sure you f
 [shelf_lnk]: https://pub.dev/packages/shelf
 [shelf_router_lnk]: https://pub.dev/packages/shelf_router
 [shelf_static_lnk]: https://pub.dev/packages/shelf_static
+[deep_linking_lnk]: https://docs.flutter.dev/development/ui/navigation/deep-linking
+[gorouter_deep_linking_lnk]: https://pub.dev/documentation/go_router/latest/topics/Deep%20linking-topic.html
+[architecture_overview]: https://www.youtube.com/watch?v=nVX4AzeuVu8&
+[intellij_plugin]: https://plugins.jetbrains.com/plugin/16165-rxbloc
+[go_router_push]: https://pub.dev/documentation/go_router/latest/go_router/GoRouter/push.html
+[go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html

@@ -5,21 +5,18 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
-import '../../base/extensions/error_model_translations.dart';
-import '../../base/models/errors/error_model.dart';
 import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
     this.title = 'Enter your login credentials',
-    this.onLoginSuccess,
     Key? key,
   }) : super(key: key);
 
   final String title;
-  final Function? onLoginSuccess;
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -46,7 +43,9 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(
+          context.designSystem.spacing.m,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -58,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             Column(
               children: [
                 _buildFieldEmail(context),
-                const SizedBox(height: 10),
+                SizedBox(height: context.designSystem.spacing.xs1),
                 _buildFieldPassword(context),
               ],
             ),
@@ -66,18 +65,16 @@ class _LoginFormState extends State<LoginForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Divider(indent: 5, endIndent: 5),
-                const SizedBox(height: 10),
+                SizedBox(height: context.designSystem.spacing.xs1),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: context.designSystem.spacing.l,
+                    ),
                   child: _buildLogInButton(),
                 ),
-                RxBlocListener<LoginBlocType, ErrorModel>(
-                  state: (bloc) => bloc.states.errors,
-                  listener: _onError,
-                ),
-                RxBlocListener<LoginBlocType, bool>(
-                  state: (bloc) => bloc.states.loggedIn,
-                  listener: _onLogout,
+                AppErrorModalWidget<LoginBlocType>(
+                  errorState: (bloc) => bloc.states.errors,
+                  isListeningForNavigationErrors: false,
                 ),
               ],
             ),
@@ -131,16 +128,4 @@ class _LoginFormState extends State<LoginForm> {
   ) =>
       decoration.copyWith(labelText: label);
 
-  void _onError(BuildContext context, ErrorModel error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(error.translate(context)),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
-  void _onLogout(BuildContext _, bool success) {
-    if (success) widget.onLoginSuccess?.call();
-  }
 }
