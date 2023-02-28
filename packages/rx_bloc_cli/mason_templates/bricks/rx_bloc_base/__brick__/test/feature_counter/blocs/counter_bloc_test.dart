@@ -104,8 +104,8 @@ void main() {
       expect: [
         LoadingWithTag(loading: false),
         LoadingWithTag(loading: true, tag: CounterBloc.tagReload),
-        LoadingWithTag(loading: false, tag: CounterBloc.tagReload),
         LoadingWithTag(loading: true, tag: CounterBloc.tagIncrement),
+        LoadingWithTag(loading: false, tag: CounterBloc.tagReload),
         LoadingWithTag(loading: false, tag: CounterBloc.tagIncrement),
       ],
     );
