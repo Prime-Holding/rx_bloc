@@ -1,8 +1,7 @@
 {{> licence.dart }}
 
-export 'package:auto_route/auto_route.dart';
+export 'package:go_router/go_router.dart';
 
-export 'base/routers/router.gr.dart';
 export 'base/theme/design_system.dart';
 export 'l10n/l10n.dart';
 

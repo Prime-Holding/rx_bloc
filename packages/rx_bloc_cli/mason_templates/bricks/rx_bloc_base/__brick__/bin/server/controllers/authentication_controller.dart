@@ -17,6 +17,12 @@ class AuthenticationController extends ApiController {
   void registerRequests(WrappedRouter router) {
     router.addRequest(
       RequestType.POST,
+      '/api/auth/refresh-token',
+      _refreshTokenHandler,
+    );
+
+    router.addRequest(
+      RequestType.POST,
       '/api/authenticate',
       _authenticationHandler,
     );
@@ -41,21 +47,27 @@ class AuthenticationController extends ApiController {
     return true;
   }
 
-  Future<Response> _authenticationHandler(Request request) async {
+  Future<Response> _refreshTokenHandler(Request request) async {
     final params = await request.bodyFromFormData();
     final refreshToken = params['refreshToken'];
 
-    if (refreshToken == null || refreshToken.isEmpty) {
-      throwIfEmpty(
-        params['username'],
-        BadRequestException('The username cannot be empty.'),
-      );
-      throwIfEmpty(
-        params['password'],
-        BadRequestException('The password cannot be empty.'),
-      );
-    }
     final token = _issueNewToken(refreshToken);
+    return responseBuilder.buildOK(data: token.toJson());
+  }
+
+  Future<Response> _authenticationHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
+    throwIfEmpty(
+      params['username'],
+      BadRequestException('The username cannot be empty.'),
+    );
+    throwIfEmpty(
+      params['password'],
+      BadRequestException('The password cannot be empty.'),
+    );
+
+    final token = _issueNewToken(null);
     return responseBuilder.buildOK(data: token.toJson());
   }
 
@@ -70,8 +82,8 @@ class AuthenticationController extends ApiController {
 
   String _getAccessTokenFromAuthHeader(Map<String, String> headers) {
     try {
-      // Usually the auth header looks like 'Bearer token', but if the format
-      // is not respected, it may throw errors
+// Usually the auth header looks like 'Bearer token', but if the format
+// is not respected, it may throw errors
       return headers[_authHeader]?.split(' ')[1] ?? '';
     } catch (e) {
       return '';

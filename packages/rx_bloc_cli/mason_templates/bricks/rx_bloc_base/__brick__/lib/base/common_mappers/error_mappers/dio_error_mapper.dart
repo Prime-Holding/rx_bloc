@@ -17,9 +17,13 @@ extension _DioErrorMapper on DioError {
 
       if (response!.statusCode == 404) {
         return NotFoundErrorModel(
-          message: response!.data is Map<String, dynamic>
-              ? response!.data['message']
-              : null,
+          message: response!.mapToString(),
+        );
+      }
+
+      if (response!.statusCode == 422) {
+        return ErrorServerGenericModel(
+          message: response!.mapToString(),
         );
       }
     }
@@ -29,7 +33,7 @@ extension _DioErrorMapper on DioError {
       if (errorCode == 101) {
         return NoConnectionErrorModel();
       }
-      if (errorCode == 111) {
+      if (errorCode == 111 || errorCode == 61) {
         return ConnectionRefusedErrorModel();
       }
     }

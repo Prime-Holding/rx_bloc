@@ -6,29 +6,24 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/primary_button.dart';
 import '../../base/utils/helpers.dart';
 import '../blocs/notifications_bloc.dart';
-import '../di/notifications_dependencies.dart';
 
-class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
+class NotificationsPage extends StatelessWidget {
   const NotificationsPage({Key? key}) : super(key: key);
 
   @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: NotificationsDependencies.from(context).providers,
-        child: this,
-      );
-
-  @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(
-            context.l10n.featureNotifications.notificationPageTitle,
-          ),
+        appBar: customAppBar(
+          context,
+          title: context.l10n.featureNotifications.notificationPageTitle,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 12),
+              padding: EdgeInsets.only(
+                  right: context.designSystem.spacing.s,
+                ),
               child: IconButton(
                 onPressed: () => showAdaptiveDialog(
                   context: context,
@@ -49,7 +44,9 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
             ),
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(
+                    vertical: context.designSystem.spacing.xs1,
+                  ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -100,7 +97,7 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                             actions: <Widget>[
                               Center(
                                 child: TextButton(
-                                  onPressed: () => context.router.pop(),
+                                  onPressed: () => context.pop(),
                                   child: Text(
                                     context.l10n.ok,
                                     style: context.designSystem.typography
@@ -133,7 +130,10 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
           height: 60,
           width: MediaQuery.of(context).size.width,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+            padding: EdgeInsets.symmetric(
+              vertical: context.designSystem.spacing.xs1,
+              horizontal: context.designSystem.spacing.xl0,
+            ),
             child: PrimaryButton(
               onPressed: () => onPressed?.call(),
               child: Text(
@@ -147,12 +147,16 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
 
   Widget _buildInfoCard(BuildContext context) => Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(
+              context.designSystem.spacing.xs1,
+            ),
         ),
         elevation: 8,
         child: Container(
           width: MediaQuery.of(context).size.width / (kIsWeb ? 3 : 1),
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(
+            context.designSystem.spacing.s,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -171,9 +175,11 @@ class NotificationsPage extends StatelessWidget implements AutoRouteWrapper {
                 textAlign: TextAlign.center,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(
+                  top: context.designSystem.spacing.l,
+                ),
                 child: TextButton(
-                  onPressed: () => context.router.pop(),
+                  onPressed: () => context.pop(),
                   child: Text(context.l10n.close),
                 ),
               ),
