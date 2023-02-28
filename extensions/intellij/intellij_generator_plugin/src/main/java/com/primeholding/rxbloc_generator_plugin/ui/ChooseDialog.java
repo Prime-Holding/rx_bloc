@@ -1,7 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.ui;
 
 import com.android.annotations.Nullable;
-import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 
 import javax.swing.*;

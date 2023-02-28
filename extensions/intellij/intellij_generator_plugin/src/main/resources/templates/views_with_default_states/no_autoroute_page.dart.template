@@ -1,23 +1,14 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-
 import '../../base/extensions/error_model_field_translations.dart';
 import '../../base/models/errors/error_model.dart';
 import '../blocs/${feature_snake_case}_bloc.dart';
-import '../di/${feature_snake_case}_dependencies.dart';
 
-class ${feature_pascal_case}Page extends StatelessWidget implements AutoRouteWrapper {
+class ${feature_pascal_case}Page extends StatelessWidget {
   const ${feature_pascal_case}Page({
     Key? key,
   }) : super(key: key);
-
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: ${feature_pascal_case}Dependencies.from(context).providers,
-        child: this,
-      );
 
   @override
   Widget build(BuildContext context) => Scaffold(

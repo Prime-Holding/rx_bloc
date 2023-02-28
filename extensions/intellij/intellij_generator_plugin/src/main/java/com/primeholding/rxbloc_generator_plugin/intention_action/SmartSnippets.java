@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class SmartSnippets {
     public static final String BLOC_SNIPPET_KEY = "BlocType";
-//    public static final String STATE_TYPE_SNIPPET_KEY = "StateType";
-//    public static final String STATE_SNIPPET_KEY = "someState";
 
     static String getSnippet(SnippetType snippetType, String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         switch (snippetType) {
@@ -21,13 +19,13 @@ public class SmartSnippets {
             case RxFormFieldBuilder:
                 return formFieldSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
             case RxTextFormFieldBuilder:
-                return formTextFieldSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
+                return formTextFieldSnippet(widget, blocTypeDirectorySuggest, stateVariableNameSuggest);
         }
 
         return blocBuilderSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);
     }
 
-    private static String formTextFieldSnippet(String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
+    private static String formTextFieldSnippet(String widget, String blocTypeDirectorySuggest, String stateVariableNameSuggest) {
         blocTypeDirectorySuggest = getBlocTypeDirectorySuggest(blocTypeDirectorySuggest);
         return String.format("RxTextFormFieldBuilder<%1$s>( \n" +
                 " state: (bloc) => bloc.states.%2$s,\n" +

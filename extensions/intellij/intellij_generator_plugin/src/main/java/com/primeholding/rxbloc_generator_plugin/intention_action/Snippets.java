@@ -1,6 +1,8 @@
 package com.primeholding.rxbloc_generator_plugin.intention_action;
 
 
+import static java.lang.String.format;
+
 public class Snippets {
     public static final String BLOC_SNIPPET_KEY = "BlocType";
     public static final String STATE_TYPE_SNIPPET_KEY = "StateType";
@@ -11,7 +13,7 @@ public class Snippets {
             case RxBlocBuilder:
                 return blocBuilderSnippet(widget);
             case RxPaginatedBuilder:
-                return blocPaginatedBuilderSnippet(widget);
+                return blocPaginatedBuilderSnippet();
             case RxResultBuilder:
                 return blocResultBuilderSnippet(widget);
             case RxBlocListener:
@@ -26,7 +28,7 @@ public class Snippets {
     }
 
     private static String formTextFieldSnippet(String widget) {
-        return String.format("RxTextFormFieldBuilder<%1$s>( \n" +
+        return format("RxTextFormFieldBuilder<%1$s>( \n" +
                         " state: (bloc) => bloc.states.%2$s, // pick a specific state you want to listen for\n" +
                         " showErrorState: (bloc) => bloc.states.showErrors,\n" +
                         " onChanged: (bloc, value) => bloc.events.specificEvent(value), // pick a specific event the field will to send data to\n" +
@@ -41,7 +43,7 @@ public class Snippets {
     }
 
     private static String formFieldSnippet(String widget) {
-        return String.format("RxFormFieldBuilder<%1$s, %2$s>(\n" +
+        return format("RxFormFieldBuilder<%1$s, %2$s>(\n" +
                 "     state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                 "     showErrorState: (bloc) => bloc.states.showErrors,\n" +
                 "     builder: (fieldState) => Column(\n" +
@@ -63,7 +65,7 @@ public class Snippets {
     }
 
     private static String blocListenerSnippet(String widget) {
-        return String.format("RxBlocListener<%1$s, %2$s>(\n" +
+        return format("RxBlocListener<%1$s, %2$s>(\n" +
                 "  state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                 "  listener: (context, state) {\n" +
                 "    // do stuff here based on BlocA's state\n" +
@@ -73,15 +75,15 @@ public class Snippets {
     }
 
     private static String blocBuilderSnippet(String widget) {
-        return String.format("RxBlocBuilder<%1$s, %2$s>(\n" +
+        return format("RxBlocBuilder<%1$s, %2$s>(\n" +
                 "  state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n"+
                 "  builder: (context, snapshot, bloc) =>\n" +
                 "    %4$s,\n" +
                 ")\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 
-    private static String blocPaginatedBuilderSnippet(String widget) {
-        return String.format("RxPaginatedBuilder<%1$s, %2$s>.withRefreshIndicator(\n" +
+    private static String blocPaginatedBuilderSnippet() {
+        return format("RxPaginatedBuilder<%1$s, %2$s>.withRefreshIndicator(\n" +
                         "          state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                         "          onBottomScrolled: (bloc) => bloc.events.loadPage(),\n" +
                         "          onRefresh: (bloc) async {\n" +
@@ -102,11 +104,11 @@ public class Snippets {
                         "              const YourProgressIndicator(),\n" +
                         "          buildError: (context, list, bloc) =>\n" +
                         "              YourErrorWidget(error: list.error!),\n" +
-                        "        )\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
+                        "        )\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY);
     }
 
     private static String blocResultBuilderSnippet(String widget) {
-        return String.format("RxResultBuilder<%1$s, %2$s>(\n" +
+        return format("RxResultBuilder<%1$s, %2$s>(\n" +
                 " state: (bloc) => bloc.states.%3$s, // pick a specific state you want to listen for\n" +
                 " buildSuccess: (context, data, bloc) => %4$s,\n" +
                 " buildLoading: (context, bloc) => \n" +

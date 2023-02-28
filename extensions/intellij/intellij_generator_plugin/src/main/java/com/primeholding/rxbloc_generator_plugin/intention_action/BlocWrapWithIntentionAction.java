@@ -14,7 +14,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
-import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass;
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils;
 import com.primeholding.rxbloc_generator_plugin.ui.ChooseDialog;
 import org.jetbrains.annotations.NotNull;
@@ -103,8 +103,8 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
         }
 
         String blocTypeDirectorySuggest;
-        List<Bloc> blocsFromPath = new ArrayList<>();
-        Bloc tempBlocFromPath;
+        List<TestableClass> blocsFromPath = new ArrayList<>();
+        TestableClass tempBlocFromPath;
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
 
         if (psiFile != null) {
@@ -177,7 +177,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
             if (blocsFromPath.isEmpty()) {
                 execute("", selectedText, "", "", document, project, editor, offsetStart, offsetEnd);
             } else if (blocsFromPath.size() == 1) {
-                Bloc blocFromPath = blocsFromPath.get(0);
+                TestableClass blocFromPath = blocsFromPath.get(0);
                 if (blocFromPath.getStateVariableNames().size() == 1) {
 
                     blocTypeDirectorySuggest = getBlocTypeFromFile(blocFromPath.getFile().getName());
@@ -229,7 +229,7 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
                     if (isOK) {
                         int chosenStateIndex = comboBoxState.getSelectedIndex();
                         int chosenBlocIndex = comboBoxBloc.getSelectedIndex();
-                        Bloc finalBlocFromPath = blocsFromPath.get(chosenBlocIndex);
+                        TestableClass finalBlocFromPath = blocsFromPath.get(chosenBlocIndex);
 
                         String blocTypeDirectorySuggestChosen = getBlocTypeFromFile(finalBlocFromPath.getFile().getName());
                         String stateVariableNameSuggestChosen = finalBlocFromPath.getStateVariableNames().get(chosenStateIndex);

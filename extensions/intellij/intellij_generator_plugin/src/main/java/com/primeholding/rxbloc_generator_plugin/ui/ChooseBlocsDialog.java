@@ -4,7 +4,7 @@ import com.android.annotations.Nullable;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBList;
-import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc;
+import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,13 +15,13 @@ import java.util.List;
 
 public class ChooseBlocsDialog extends DialogWrapper {
 
-    private final List<Bloc> allBlocs;
-    private final List<Bloc> allowedBlocs;
-    private final List<Bloc> initiallySelectedBlocs;
+    private final List<TestableClass> allBlocs;
+    private final List<TestableClass> allowedBlocs;
+    private final List<TestableClass> initiallySelectedBlocs;
     JBCheckBox includeBlocDi = new JBCheckBox("Generate DI/Mocks from BloC constructor", true);
 
 
-    public ChooseBlocsDialog(List<Bloc> allBlocs, List<Bloc> initiallySelectedBlocs) {
+    public ChooseBlocsDialog(List<TestableClass> allBlocs, List<TestableClass> initiallySelectedBlocs) {
         super(true);
         this.allBlocs = allBlocs;
         this.allowedBlocs = new ArrayList<>(initiallySelectedBlocs);
@@ -38,7 +38,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
     protected JComponent createCenterPanel() {
         JPanel dialogPanel = new JPanel(new BorderLayout(0, 5));
 
-        JBList<Bloc> list = new JBList<>(allBlocs.toArray(new Bloc[0]));
+        JBList<TestableClass> list = new JBList<>(allBlocs.toArray(new TestableClass[0]));
         list.setCellRenderer(new CheckListRenderer());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -47,7 +47,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
                                   public void mousePressed(MouseEvent e) {
                                       int index = list.locationToIndex(e.getPoint());
                                       if (index != -1) {
-                                          Bloc value = allBlocs.get(index);
+                                          TestableClass value = allBlocs.get(index);
                                           if (allowedBlocs.contains(value)) {
                                               boolean newValue = initiallySelectedBlocs.contains(value);
                                               if (newValue) {
@@ -80,8 +80,8 @@ public class ChooseBlocsDialog extends DialogWrapper {
         return includeBlocDi.isSelected();
     }
 
-    class CheckListRenderer extends JCheckBox implements ListCellRenderer<Bloc> {
-        public Component getListCellRendererComponent(JList list, Bloc value,
+    class CheckListRenderer extends JCheckBox implements ListCellRenderer<TestableClass> {
+        public Component getListCellRendererComponent(JList list, TestableClass value,
                                                       int index, boolean isSelected, boolean hasFocus) {
             setSelected(initiallySelectedBlocs.contains(value));
             setFont(list.getFont());

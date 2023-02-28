@@ -1,0 +1,9 @@
+class ${bloc_pascal_case}Service {
+  //Add repository dependencies as needed
+  ${bloc_pascal_case}Service();
+
+  Future<String> fetchData() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return 'Some specific async state from ${bloc_pascal_case}Service';
+  }
+}
