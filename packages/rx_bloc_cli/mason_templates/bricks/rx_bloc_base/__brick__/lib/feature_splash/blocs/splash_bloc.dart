@@ -26,6 +26,8 @@ abstract class SplashBlocStates {
 
   /// The state which group and handle all the error streams executed in the
   /// BloC.
+  ///
+  /// The state is `null` when `isLoading` state is `true`
   Stream<ErrorModel?> get errors;
 }
 

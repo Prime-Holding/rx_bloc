@@ -36,6 +36,10 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].
+///
+/// `AppRouter` depends on [CoordinatorBloc] so the user can be redirected to
+/// specific page if the `isAuthenticated` state changes (It can be used with
+/// some other global state change as well).
 class AppRouter {
   AppRouter(this._coordinatorBloc);
 
