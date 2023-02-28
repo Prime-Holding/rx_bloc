@@ -1,5 +1,6 @@
 import 'package:booking_app/feature_hotel_search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel_search/models/date_range_filter_data.dart';
+import 'package:booking_app/lib_router/router.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/repositories.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +116,27 @@ class Stub {
 
   static const query = 'Dubai';
   static const emptyQuery = '';
+
+  static const homePageRoute = HomeRoutes(NavigationItemType.search);
+
+  static const searchNavItemType = NavigationItemType.search;
+  static const favoritesNavItemType = NavigationItemType.favorites;
+
+  static const navBarSelectedItem = NavigationItem(
+    type: searchNavItemType,
+    isSelected: true,
+  );
+
+  static const navBarItemsList = [
+    NavigationItem(
+      type: favoritesNavItemType,
+      isSelected: true,
+    ),
+    NavigationItem(
+      type: searchNavItemType,
+      isSelected: false,
+    ),
+  ];
 }
 
 class NavigationStub {

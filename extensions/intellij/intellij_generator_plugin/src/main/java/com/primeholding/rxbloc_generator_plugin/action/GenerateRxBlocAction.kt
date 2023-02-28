@@ -1,12 +1,12 @@
 package com.primeholding.rxbloc_generator_plugin.action
 
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorFactory
-import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
-import com.intellij.lang.java.JavaLanguage
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.psi.*
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
 
@@ -15,21 +15,21 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
     private lateinit var dataContext: DataContext
 
     override fun actionPerformed(e: AnActionEvent) {
-        val dialog = GenerateRxBlocDialog(this)
+        val dialog = GenerateRxBlocDialog(this, true)
         dialog.show()
     }
 
     override fun onGenerateBlocClicked(
         blocName: String?,
-        shouldUseEquatable: Boolean,
-        includeExtensions: Boolean,
-        includeNullSafety: Boolean) {
+        withDefaultStates: Boolean,
+        includeLocalService: Boolean,
+        routingIntegration: GenerateRxBlocDialog.RoutingIntegration
+    ) {
         blocName?.let { name ->
             val generators = RxBlocGeneratorFactory.getBlocGenerators(
                 name,
-                shouldUseEquatable,
-                includeExtensions,
-                includeNullSafety
+                withDefaultStates,
+                includeLocalService
             )
             generate(generators)
         }
@@ -43,10 +43,27 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
         }
     }
 
-    protected fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
+    private fun generate(mainSourceGenerators: List<RxGeneratorBase>) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         val view = LangDataKeys.IDE_VIEW.getData(dataContext)
         val directory = view?.orChooseDirectory
+
+        if (mainSourceGenerators.isNotEmpty()) {
+
+            val file = directory?.findFile(mainSourceGenerators[0].fileName())
+            if (file != null) {
+                Messages.showMessageDialog(
+                    "BloC ${
+                        mainSourceGenerators[0].fileName()
+                    } Already Exists!",
+                    "Duplicate BloC",
+                    null
+                )
+                return
+            }
+        }
+
+
         ApplicationManager.getApplication().runWriteAction {
             CommandProcessor.getInstance().executeCommand(
                 project,
@@ -68,7 +85,7 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
             return
         }
         val psiFile = PsiFileFactory.getInstance(project)
-            .createFileFromText(fileName, JavaLanguage.INSTANCE, generator.generate())
+            .createFileFromText(fileName, PlainTextLanguage.INSTANCE, generator.generate())
         directory.add(psiFile)
     }
 }

@@ -1,27 +1,46 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
-import com.fleshgrinder.extensions.kotlin.*
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog.RoutingIntegration
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
-abstract class RxDependenciesGeneratorBase(private val name: String,
-                                           templateName: String): RxGeneratorBase(name) {
+abstract class RxDependenciesGeneratorBase(
+    name: String,
+    routingIntegration: RoutingIntegration,
+    includeLocalService: Boolean
+) : RxGeneratorBase(name) {
 
     private val TEMPLATE_FEATURE_PASCAL_CASE = "feature_pascal_case"
     private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"
 
     private val templateString: String
-    private val templateValues: MutableMap<String, String>
+    protected val routingIntegrationFlag: RoutingIntegration
+    private val includeLocalServiceFlag: Boolean
+    private val templateValues: MutableMap<String, String> = mutableMapOf(
+        TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
+        TEMPLATE_FEATURE_SNAKE_CASE to snakeCase()
+    )
 
     init {
-        templateValues = mutableMapOf(
-            TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
-            TEMPLATE_FEATURE_SNAKE_CASE to snakeCase()
-        )
+        this.routingIntegrationFlag = routingIntegration
+        this.includeLocalServiceFlag = includeLocalService
+
         try {
-            val resource = "/templates/di/dependencies.dart.template"
+            var prefix = ""
+            if (routingIntegration == RoutingIntegration.AutoRoute) {
+                if (includeLocalService) {
+                    prefix = "autoroute_with_service_"
+                }
+            } else {
+                prefix = "with_"
+            }
+            val resource =
+                "/templates/di/${prefix}dependencies.dart.template"
+
             val resourceAsStream = RxDependenciesGeneratorBase::class.java.getResourceAsStream(resource)
             templateString = CharStreams.toString(InputStreamReader(resourceAsStream, Charsets.UTF_8))
         } catch (e: Exception) {
@@ -30,7 +49,11 @@ abstract class RxDependenciesGeneratorBase(private val name: String,
     }
 
     override fun generate(): String {
-        val substitutor = StrSubstitutor(templateValues)
-        return substitutor.replace(templateString)
+        val substitute = StrSubstitutor(templateValues)
+        var result = substitute.replace(templateString)
+        if (includeLocalServiceFlag) {
+            result = result.replace("// ", "")
+        }
+        return result
     }
 }

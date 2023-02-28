@@ -1,13 +1,15 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
-import com.fleshgrinder.extensions.kotlin.*
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
-abstract class RxListBlocGeneratorBase(private val name: String,
-                                       templateName: String): RxGeneratorBase(name) {
+abstract class RxListBlocGeneratorBase(
+    name: String,
+    templateName: String): RxGeneratorBase(name) {
 
     private val TEMPLATE_BLOC_DOLLAR_PASCAL_CASE = "bloc_dollar_pascal_case"
     private val TEMPLATE_BLOC_PASCAL_CASE = "bloc_pascal_case"

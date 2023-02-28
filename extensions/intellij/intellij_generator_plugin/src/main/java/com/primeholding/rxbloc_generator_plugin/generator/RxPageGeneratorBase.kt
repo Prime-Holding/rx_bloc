@@ -1,32 +1,36 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
-import com.fleshgrinder.extensions.kotlin.*
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
-abstract class RxPageGeneratorBase(private val name: String,
-                                   withDefaultStates: Boolean,
-                                   includeExtensions: Boolean,
-                                   includeNullSafety: Boolean,
-                                   templateName: String): RxGeneratorBase(name) {
+abstract class RxPageGeneratorBase(
+    name: String,
+    withDefaultStates: Boolean,
+    routingIntegration: GenerateRxBlocDialog.RoutingIntegration,
+    templateName: String
+) : RxGeneratorBase(name) {
 
     private val TEMPLATE_FEATURE_PASCAL_CASE = "feature_pascal_case"
     private val TEMPLATE_FEATURE_SNAKE_CASE = "feature_snake_case"
 
+    private val includeAutoRouteFlag: GenerateRxBlocDialog.RoutingIntegration
     private val templateString: String
-    private val templateValues: MutableMap<String, String>
+    private val templateValues: MutableMap<String, String> = mutableMapOf(
+        TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
+        TEMPLATE_FEATURE_SNAKE_CASE to snakeCase()
+    )
 
     init {
-        templateValues = mutableMapOf(
-            TEMPLATE_FEATURE_PASCAL_CASE to pascalCase(),
-            TEMPLATE_FEATURE_SNAKE_CASE to snakeCase()
-        )
+        includeAutoRouteFlag = routingIntegration
         try {
             val templateFolder = StringBuilder()
 
-            if(withDefaultStates) {
+            if (withDefaultStates) {
                 templateFolder.append("views_with_default_states")
             } else {
                 templateFolder.append("views")

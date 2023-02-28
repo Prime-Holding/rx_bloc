@@ -60,6 +60,9 @@ class PaginatedHotelsRepository implements HotelsRepository {
         ids,
         allProps: allProps,
       );
+
+  @override
+  Future<Hotel> hotelById(String hotelId) => _repository.hotelById(hotelId);
 }
 
 extension _HotelList on List<Hotel> {
