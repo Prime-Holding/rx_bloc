@@ -3,11 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:{{project_name}}/base/models/errors/error_model.dart' as _i4;
-import 'package:{{project_name}}/lib_auth/blocs/user_account_bloc.dart' as _i2;
+import 'package:rxdart/rxdart.dart' as _i2;
+import 'package:{{project_name}}/base/models/errors/error_model.dart' as _i5;
+import 'package:{{project_name}}/lib_auth/blocs/user_account_bloc.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -20,9 +21,9 @@ import 'package:{{project_name}}/lib_auth/blocs/user_account_bloc.dart' as _i2;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeUserAccountBlocEvents_0 extends _i1.SmartFake
-    implements _i2.UserAccountBlocEvents {
-  _FakeUserAccountBlocEvents_0(
+class _FakeConnectableStream_0<T> extends _i1.SmartFake
+    implements _i2.ConnectableStream<T> {
+  _FakeConnectableStream_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -31,9 +32,20 @@ class _FakeUserAccountBlocEvents_0 extends _i1.SmartFake
         );
 }
 
-class _FakeUserAccountBlocStates_1 extends _i1.SmartFake
-    implements _i2.UserAccountBlocStates {
-  _FakeUserAccountBlocStates_1(
+class _FakeUserAccountBlocEvents_1 extends _i1.SmartFake
+    implements _i3.UserAccountBlocEvents {
+  _FakeUserAccountBlocEvents_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeUserAccountBlocStates_2 extends _i1.SmartFake
+    implements _i3.UserAccountBlocStates {
+  _FakeUserAccountBlocStates_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -46,7 +58,7 @@ class _FakeUserAccountBlocStates_1 extends _i1.SmartFake
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUserAccountBlocEvents extends _i1.Mock
-    implements _i2.UserAccountBlocEvents {
+    implements _i3.UserAccountBlocEvents {
   MockUserAccountBlocEvents() {
     _i1.throwOnMissingStub(this);
   }
@@ -65,53 +77,56 @@ class MockUserAccountBlocEvents extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUserAccountBlocStates extends _i1.Mock
-    implements _i2.UserAccountBlocStates {
+    implements _i3.UserAccountBlocStates {
   MockUserAccountBlocStates() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Stream<bool> get loggedIn => (super.noSuchMethod(
+  _i2.ConnectableStream<bool> get loggedIn => (super.noSuchMethod(
         Invocation.getter(#loggedIn),
-        returnValue: _i3.Stream<bool>.empty(),
-      ) as _i3.Stream<bool>);
+        returnValue: _FakeConnectableStream_0<bool>(
+          this,
+          Invocation.getter(#loggedIn),
+        ),
+      ) as _i2.ConnectableStream<bool>);
   @override
-  _i3.Stream<bool> get isLoading => (super.noSuchMethod(
+  _i4.Stream<bool> get isLoading => (super.noSuchMethod(
         Invocation.getter(#isLoading),
-        returnValue: _i3.Stream<bool>.empty(),
-      ) as _i3.Stream<bool>);
+        returnValue: _i4.Stream<bool>.empty(),
+      ) as _i4.Stream<bool>);
   @override
-  _i3.Stream<_i4.ErrorModel> get errors => (super.noSuchMethod(
+  _i4.Stream<_i5.ErrorModel> get errors => (super.noSuchMethod(
         Invocation.getter(#errors),
-        returnValue: _i3.Stream<_i4.ErrorModel>.empty(),
-      ) as _i3.Stream<_i4.ErrorModel>);
+        returnValue: _i4.Stream<_i5.ErrorModel>.empty(),
+      ) as _i4.Stream<_i5.ErrorModel>);
 }
 
 /// A class which mocks [UserAccountBlocType].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUserAccountBlocType extends _i1.Mock
-    implements _i2.UserAccountBlocType {
+    implements _i3.UserAccountBlocType {
   MockUserAccountBlocType() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.UserAccountBlocEvents get events => (super.noSuchMethod(
+  _i3.UserAccountBlocEvents get events => (super.noSuchMethod(
         Invocation.getter(#events),
-        returnValue: _FakeUserAccountBlocEvents_0(
+        returnValue: _FakeUserAccountBlocEvents_1(
           this,
           Invocation.getter(#events),
         ),
-      ) as _i2.UserAccountBlocEvents);
+      ) as _i3.UserAccountBlocEvents);
   @override
-  _i2.UserAccountBlocStates get states => (super.noSuchMethod(
+  _i3.UserAccountBlocStates get states => (super.noSuchMethod(
         Invocation.getter(#states),
-        returnValue: _FakeUserAccountBlocStates_1(
+        returnValue: _FakeUserAccountBlocStates_2(
           this,
           Invocation.getter(#states),
         ),
-      ) as _i2.UserAccountBlocStates);
+      ) as _i3.UserAccountBlocStates);
   @override
   void dispose() => super.noSuchMethod(
         Invocation.method(
