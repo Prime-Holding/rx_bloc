@@ -49,12 +49,14 @@ class HomePage extends StatelessWidget {
   }
 
   List<NavMenuItem> navItemsList(BuildContext context) => [
+        {{#feature_counter}}
         NavMenuItem(
           title: context.l10n.navCounter,
           icon: context.designSystem.icons.calculateIcon,
           route: const CounterRoute(),
           routePath: RoutesPath.counter,
         ),
+        {{/feature_counter}}
         NavMenuItem(
           title: context.l10n.navLinks,
           icon: context.designSystem.icons.linkIcon,
