@@ -1,16 +1,16 @@
 import 'package:booking_app/lib_router/blocs/router_bloc.dart';
+import 'package:booking_app/lib_router/router.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mockito/annotations.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 
 import '../../stubs.dart';
 
 @GenerateMocks([
-  GoRouter,
+  AppRouter,
 ])
 void main() {
-  RouterBloc routerBloc() => RouterBloc(router: GoRouter(routes: []));
+  RouterBloc routerBloc() => RouterBloc(router: AppRouter().router);
 
   group('test router_bloc state navigationPath', () {
     rxBlocTest(
