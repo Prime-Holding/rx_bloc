@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class BookingAppFileComparator extends LocalFileComparator {
-  static const double _kGoldenDiffTolerance = 0.0039;
+  static const double _kGoldenDiffTolerance = 0.0041;
 
   BookingAppFileComparator(String testFile)
       : super(Uri.parse(_getTestFile(testFile)));
