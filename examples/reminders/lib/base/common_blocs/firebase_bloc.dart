@@ -3,9 +3,9 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../services/firebase_service.dart';
+import 'coordinator_bloc.dart';
 
 part 'firebase_bloc.rxb.g.dart';
-
 part 'firebase_bloc_extensions.dart';
 
 /// A contract class containing all events of the FirebaseBloC.
@@ -31,7 +31,7 @@ abstract class FirebaseBlocStates {
 
   Stream<bool> get userLoggedOut;
 
-  Stream<bool> get loggedIn;
+  ConnectableStream<bool> get loggedIn;
 
   ConnectableStream<bool> get loggedOut;
 }
@@ -40,11 +40,14 @@ abstract class FirebaseBlocStates {
 class FirebaseBloc extends $FirebaseBloc {
   FirebaseBloc(
     this._service,
+    this._coordinatorBloc,
   ) {
+    loggedIn.connect().addTo(_compositeSubscription);
     loggedOut.connect().addTo(_compositeSubscription);
   }
 
   final FirebaseService _service;
+  final CoordinatorBlocType _coordinatorBloc;
 
   static const tagAnonymous = 'anonymous';
   static const tagFacebook = 'facebook';
@@ -57,7 +60,7 @@ class FirebaseBloc extends $FirebaseBloc {
       loadingWithTagState.asBroadcastStream();
 
   @override
-  Stream<bool> _mapToLoggedInState() => _$logInEvent
+  ConnectableStream<bool> _mapToLoggedInState() => _$logInEvent
       .switchMap<Result<bool>>((logInEventArgs) => _service
           .logIn(logInEventArgs.anonymous)
           .asResultStream(
@@ -65,20 +68,20 @@ class FirebaseBloc extends $FirebaseBloc {
                   ? FirebaseBloc.tagAnonymous
                   : FirebaseBloc.tagFacebook))
       .setResultStateHandler(this)
-      .whereSuccess()
-      .asBroadcastStream();
+      .emitLoggedInToCoordinator(_coordinatorBloc)
+      .publishReplay(maxSize: 1);
 
   @override
-  Stream<bool> _mapToIsUserLoggedInState() => _$checkIfUserIsLoggedInEvent
-      .switchMap((value) => _service.isUserLoggedIn().asStream());
+  Stream<bool> _mapToIsUserLoggedInState() => Rx.merge([
+        _service.isUserLoggedIn().asStream(),
+        _coordinatorBloc.states.isAuthenticated,
+      ]).shareReplay(maxSize: 1);
 
   @override
   ConnectableStream<bool> _mapToLoggedOutState() => _$logOutEvent
       .switchMap((value) => _service.logOut().asResultStream())
       .setResultStateHandler(this)
-      .whereSuccess()
-      .map((event) => true)
-      .onErrorReturn(false)
+      .emitLoggedOutToCoordinator(_coordinatorBloc)
       .publish();
 
   @override
