@@ -44,7 +44,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   late final Stream<bool> _userLoggedOutState = _mapToUserLoggedOutState();
 
   /// The state of [loggedIn] implemented in [_mapToLoggedInState]
-  late final Stream<bool> _loggedInState = _mapToLoggedInState();
+  late final ConnectableStream<bool> _loggedInState = _mapToLoggedInState();
 
   /// The state of [loggedOut] implemented in [_mapToLoggedOutState]
   late final ConnectableStream<bool> _loggedOutState = _mapToLoggedOutState();
@@ -81,7 +81,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   Stream<bool> get userLoggedOut => _userLoggedOutState;
 
   @override
-  Stream<bool> get loggedIn => _loggedInState;
+  ConnectableStream<bool> get loggedIn => _loggedInState;
 
   @override
   ConnectableStream<bool> get loggedOut => _loggedOutState;
@@ -96,7 +96,7 @@ abstract class $FirebaseBloc extends RxBlocBase
 
   Stream<bool> _mapToUserLoggedOutState();
 
-  Stream<bool> _mapToLoggedInState();
+  ConnectableStream<bool> _mapToLoggedInState();
 
   ConnectableStream<bool> _mapToLoggedOutState();
 

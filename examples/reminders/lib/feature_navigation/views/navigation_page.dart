@@ -1,68 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../app_extensions.dart';
-import '../blocs/navigation_bloc.dart';
-import '../di/navigation_dependencies.dart';
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/models/routes_path.dart';
+import '../../lib_router/router.dart';
 
-class NavigationPage extends StatelessWidget implements AutoRouteWrapper {
+class NavigationPage extends StatelessWidget {
   const NavigationPage({
+    required this.child,
     super.key,
   });
 
-  @override
-  Widget wrappedRoute(BuildContext context) => MultiProvider(
-        providers: NavigationDependencies.of(context).providers,
-        child: this,
-      );
+  final Widget child;
 
   @override
-  Widget build(BuildContext context) =>
-      RxBlocListener<NavigationBlocType, NavigationTabs>(
-        state: (bloc) => bloc.states.tab,
-        listener: (context, tab) {
-          switch (tab) {
-            case NavigationTabs.dashboard:
-              context.router.navigate(DashboardRoute());
-              break;
-            case NavigationTabs.reminders:
-              context.router.navigate(const ReminderListRoute());
-              break;
-          }
-        },
-        child: AutoTabsScaffold(
-          routes: [
-            DashboardRoute(),
-            const ReminderListRoute(),
+  Widget build(BuildContext context) => Scaffold(
+        body: child,
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _toCurrentIndex(context),
+          onTap: (index) =>
+              context.read<RouterBlocType>().events.goTo(_tabFromIndex(index)),
+          items: const [
+            BottomNavigationBarItem(
+              label: 'Dashboard',
+              icon: Icon(Icons.dashboard),
+            ),
+            BottomNavigationBarItem(
+              label: 'Reminders',
+              icon: Icon(Icons.list),
+            ),
           ],
-          builder: (context, widget, animation) => widget,
-          bottomNavigationBuilder: (context, tabsRouter) => BottomNavigationBar(
-            currentIndex: tabsRouter.activeIndex,
-            onTap: (index) => context
-                .read<NavigationBlocType>()
-                .events
-                .openTab(_tabFromIndex(index)),
-            items: const [
-              BottomNavigationBarItem(
-                label: 'Dashboard',
-                icon: Icon(Icons.dashboard),
-              ),
-              BottomNavigationBarItem(
-                label: 'Reminders',
-                icon: Icon(Icons.list),
-              ),
-            ],
-          ),
         ),
       );
 
-  NavigationTabs _tabFromIndex(int index) {
+  int _toCurrentIndex(BuildContext context) {
+    GoRouter router = GoRouter.of(context);
+    final routePath =
+        router.routeInformationParser.matcher.findMatch(router.location);
+    if (routePath.fullpath.startsWith(RoutesPath.reminders)) {
+      return 1;
+    }
+    return 0;
+  }
+
+  RouteData _tabFromIndex(int index) {
     switch (index) {
       case 0:
-        return NavigationTabs.dashboard;
+        return const DashboardRoute();
       case 1:
-        return NavigationTabs.reminders;
+        return const RemindersRoute();
       default:
         throw UnimplementedError('Unhandled tab index: $index');
     }
