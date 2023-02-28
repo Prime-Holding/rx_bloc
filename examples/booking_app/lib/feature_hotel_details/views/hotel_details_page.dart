@@ -2,48 +2,17 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../../../base/common_blocs/hotel_manage_bloc.dart';
 import '../../../base/ui_components/favorite_message_listener.dart';
-import '../../base/common_blocs/hotels_extra_details_bloc.dart';
 import '../blocs/hotel_details_bloc.dart';
 
 part '../ui_components/hotel_details_app_bar.dart';
-part 'hotel_details_providers.dart';
 
-class HotelDetailsPage extends StatefulWidget {
+class HotelDetailsPage extends StatelessWidget {
   const HotelDetailsPage({
-    required Hotel hotel,
     Key? key,
-  })  : _hotel = hotel,
-        super(key: key);
-
-  static PageRoute route({required Hotel hotel}) => MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (context) => RxMultiBlocProvider(
-          providers: _getProviders(hotel),
-          child: HotelDetailsPage(hotel: hotel),
-        ),
-        // fullscreenDialog: true,
-      );
-
-  final Hotel _hotel;
-
-  @override
-  State<HotelDetailsPage> createState() => _HotelDetailsPageState();
-}
-
-class _HotelDetailsPageState extends State<HotelDetailsPage> {
-  @override
-  void initState() {
-    context
-        .read<HotelsExtraDetailsBlocType>()
-        .events
-        .fetchExtraDetails(widget._hotel, allProps: true);
-
-    super.initState();
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -58,7 +27,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                 child: RxBlocBuilder<HotelDetailsBlocType, Hotel>(
                   state: (bloc) => bloc.states.hotel,
                   builder: (context, snapshot, bloc) => snapshot.hasData
-                      ? _buildPage(bloc, snapshot.data!)
+                      ? _buildPage(context, bloc, snapshot.data!)
                       : Container(),
                 ),
               ),
@@ -67,7 +36,12 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
         ),
       );
 
-  Widget _buildPage(HotelDetailsBlocType bloc, Hotel hotel) => CustomScrollView(
+  Widget _buildPage(
+    BuildContext context,
+    HotelDetailsBlocType bloc,
+    Hotel hotel,
+  ) =>
+      CustomScrollView(
         slivers: [
           SliverAppBar(
             floating: true,

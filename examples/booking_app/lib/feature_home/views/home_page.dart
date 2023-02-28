@@ -5,10 +5,8 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../../base/common_blocs/hotel_manage_bloc.dart';
-import '../../base/common_blocs/hotels_extra_details_bloc.dart';
 import '../../base/extensions/async_snapshot.dart';
 import '../../base/ui_components/favorite_message_listener.dart';
 import '../../base/ui_components/hotels_app_bar.dart';
@@ -17,15 +15,8 @@ import '../../feature_hotel_favorites/views/hotel_favorites_page.dart';
 import '../../feature_hotel_search/views/hotel_search_page.dart';
 import '../blocs/navigation_bar_bloc.dart';
 
-part 'home_providers.dart';
-
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-
-  static Widget page() => RxMultiBlocProvider(
-        providers: _getProviders(),
-        child: const HomePage(),
-      );
 
   @override
   Widget build(BuildContext context) => Scaffold(

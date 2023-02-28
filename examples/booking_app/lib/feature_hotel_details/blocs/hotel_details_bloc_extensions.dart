@@ -1,14 +1,14 @@
 part of 'hotel_details_bloc.dart';
 
 extension _OnHotelUpdated on CoordinatorBlocType {
-  Stream<Hotel> onHotelUpdated(Hotel hotel) =>
-      states.onHotelsUpdated.whereHotel(hotel);
+  Stream<Hotel> onHotelUpdated(String hotelId) =>
+      states.onHotelsUpdated.whereHotel(hotelId);
 }
 
 extension _WhereHotelUpdated on Stream<List<Hotel>> {
-  Stream<Hotel> whereHotel(Hotel hotel) => map<Hotel?>(
+  Stream<Hotel> whereHotel(String hotelId) => map<Hotel?>(
         (hotels) => hotels.firstWhereOrNull(
-          (item) => item.id == hotel.id,
+          (item) => item.id == hotelId,
         ),
       ).whereType<Hotel>();
 }

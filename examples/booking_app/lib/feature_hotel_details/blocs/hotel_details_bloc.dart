@@ -4,6 +4,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/common_blocs/hotels_extra_details_bloc.dart';
+import '../../base/services/hotels_service.dart';
 
 part 'hotel_details_bloc.rxb.g.dart';
 part 'hotel_details_bloc_extensions.dart';
@@ -17,19 +19,36 @@ abstract class HotelDetailsBlocStates {
 @RxBloc()
 class HotelDetailsBloc extends $HotelDetailsBloc {
   HotelDetailsBloc(
-    CoordinatorBlocType coordinatorBloc, {
-    required Hotel hotel,
+    CoordinatorBlocType coordinatorBloc,
+    HotelsExtraDetailsBlocType hotelsExtraDetailsBlocType,
+    HotelsService hotelsService, {
+    required String hotelId,
+    Hotel? hotel,
   })  : _hotel = hotel,
-        _coordinatorBlocType = coordinatorBloc;
+        _hotelId = hotelId,
+        _coordinatorBlocType = coordinatorBloc,
+        _hotelsExtraDetailsBlocType = hotelsExtraDetailsBlocType,
+        _hotelsService = hotelsService;
 
-  final Hotel _hotel;
+  final Hotel? _hotel;
+  final String _hotelId;
 
   final CoordinatorBlocType _coordinatorBlocType;
+  final HotelsExtraDetailsBlocType _hotelsExtraDetailsBlocType;
+  final HotelsService _hotelsService;
 
   //get the latest updated version of the hotel
   @override
-  Stream<Hotel> _mapToHotelState() => _coordinatorBlocType
-      .onHotelUpdated(_hotel)
-      .startWith(_hotel)
-      .shareReplay(maxSize: 1);
+  Stream<Hotel> _mapToHotelState() => Rx.merge([
+        _getHotelIfNeeded().asStream().doOnData(
+              (hotel) => _hotelsExtraDetailsBlocType.events.fetchExtraDetails(
+                hotel,
+                allProps: true,
+              ),
+            ),
+        _coordinatorBlocType.onHotelUpdated(_hotelId),
+      ]).shareReplay(maxSize: 1);
+
+  Future<Hotel> _getHotelIfNeeded() async =>
+      _hotel != null ? _hotel! : await _hotelsService.hotelById(_hotelId);
 }

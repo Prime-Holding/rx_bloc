@@ -2,13 +2,15 @@ import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
 import '../../../base/ui_components/sorting_bar.dart';
 import '../../base/common_blocs/hotel_manage_bloc.dart';
 import '../../base/common_blocs/hotels_extra_details_bloc.dart';
-import '../../feature_hotel_details/views/hotel_details_page.dart';
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
 import '../blocs/hotel_search_bloc.dart';
 import '../models/capacity_filter_data.dart';
 import '../models/date_range_filter_data.dart';
@@ -158,9 +160,14 @@ class _HotelSearchPageState extends State<HotelSearchPage>
       animation: animation,
       child: HotelListItem(
         hotel: item,
-        onCardPressed: (index) => Navigator.of(context).push(
-          HotelDetailsPage.route(hotel: item),
-        ),
+        onCardPressed: (hotel) {
+          context.read<RouterBlocType>().events.pushTo(
+              HotelDetailsRoutes(
+                NavigationItemType.search,
+                hotel.id,
+              ),
+              extra: hotel);
+        },
         onFavorite: (index, isFavorite) =>
             RxBlocProvider.of<HotelManageBlocType>(context)
                 .events

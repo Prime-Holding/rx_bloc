@@ -183,6 +183,20 @@ class MockPaginatedHotelsRepository extends _i1.Mock
         ),
         returnValue: _i6.Future<List<_i3.Hotel>>.value(<_i3.Hotel>[]),
       ) as _i6.Future<List<_i3.Hotel>>);
+  @override
+  _i6.Future<_i3.Hotel> hotelById(String? hotelId) => (super.noSuchMethod(
+        Invocation.method(
+          #hotelById,
+          [hotelId],
+        ),
+        returnValue: _i6.Future<_i3.Hotel>.value(_FakeHotel_1(
+          this,
+          Invocation.method(
+            #hotelById,
+            [hotelId],
+          ),
+        )),
+      ) as _i6.Future<_i3.Hotel>);
 }
 
 /// A class which mocks [CoordinatorBlocType].
