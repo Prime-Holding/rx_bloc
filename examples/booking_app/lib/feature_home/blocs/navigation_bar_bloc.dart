@@ -25,14 +25,18 @@ abstract class NavigationBarBlocStates {
 
 @RxBloc()
 class NavigationBarBloc extends $NavigationBarBloc {
-  NavigationBarBloc() {
+  NavigationBarBloc(NavigationItemType navigationType)
+      : _items = BehaviorSubject<List<NavigationItem>>.seeded(
+            NavigationItemType.values
+                .map((type) => NavigationItem(
+                      type: type,
+                      isSelected: type == navigationType,
+                    ))
+                .toList()) {
     _$selectPageEvent.updateItems(_items).addTo(_compositeSubscription);
   }
 
-  final _items = BehaviorSubject<List<NavigationItem>>.seeded([
-    const NavigationItem(type: NavigationItemType.search, isSelected: true),
-    const NavigationItem(type: NavigationItemType.favorites, isSelected: false),
-  ]);
+  final BehaviorSubject<List<NavigationItem>> _items;
 
   @override
   Stream<List<NavigationItem>> get items => _items;

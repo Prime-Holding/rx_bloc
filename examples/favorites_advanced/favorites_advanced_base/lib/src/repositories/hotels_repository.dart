@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:favorites_advanced_base/core.dart';
 import 'package:favorites_advanced_base/src/models/hotel_search_filters.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,9 @@ class HotelsRepository {
 
   final _noInternetConnectionErrorString =
       'No internet connection. Please check your settings.';
+
+  final _hotelNotFoundErrorString =
+      'Hotel not found.';
 
   /// Simulate delays of the API http requests
   final _artificialDelay = Duration(milliseconds: 300);
@@ -56,6 +60,18 @@ class HotelsRepository {
         .where(
             (hotel) => hotel.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
+  }
+
+  Future<Hotel> hotelById(String hotelId) async {
+    await Future.delayed(_artificialDelay);
+    
+    final hotel = _hotels.firstWhereOrNull((hotel) => hotel.id == hotelId);
+
+    if(hotel == null) {
+      throw Exception(_hotelNotFoundErrorString);
+    }
+
+    return hotel;
   }
 
   Future<List<Hotel>> getFavoriteHotels() async {

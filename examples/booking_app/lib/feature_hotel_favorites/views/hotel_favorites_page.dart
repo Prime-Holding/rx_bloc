@@ -6,8 +6,9 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
-import '../../feature_hotel_details/views/hotel_details_page.dart';
 import '../../feature_hotel_search/ui_components/hotel_animated_list_view.dart';
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
 import '../blocs/hotel_favorites_bloc.dart';
 
 class HotelFavoritesPage extends StatelessWidget {
@@ -24,9 +25,13 @@ class HotelFavoritesPage extends StatelessWidget {
                   .states
                   .favoriteHotels
                   .whereSuccess(),
-              onHotelPressed: (hotel) => Navigator.of(context).push(
-                HotelDetailsPage.route(hotel: hotel),
-              ),
+              onHotelPressed: (hotel) =>
+                  context.read<RouterBlocType>().events.pushTo(
+                      HotelDetailsRoutes(
+                        NavigationItemType.favorites,
+                        hotel.id,
+                      ),
+                      extra: hotel),
             ),
           ),
           RxResultBuilder<HotelFavoritesBlocType, List<Hotel>>(
