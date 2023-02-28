@@ -247,7 +247,6 @@ private fun createSourceFile(generator: RxGeneratorBase, directory: VirtualFile)
 
     val file = directory.createChildData(this, fileName)
     VfsTestUtil.overwriteTestData(file.path, generator.generate())
-//        .replace("../../", "../../${subdirectory.split("/").map { "../" }}")
     return file
 }
 
