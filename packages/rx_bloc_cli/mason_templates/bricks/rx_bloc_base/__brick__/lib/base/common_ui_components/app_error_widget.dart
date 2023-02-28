@@ -19,14 +19,17 @@ class AppErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text((error as ErrorModel).translate(context)),
-      SizedBox(height: context.designSystem.spacing.l),
-      PrimaryButton(
-        onPressed: onTabRetry,
-        child: Text(context.l10n.tryAgain),
-      ),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            (error as ErrorModel).translate(context),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: context.designSystem.spacing.l),
+          PrimaryButton(
+            onPressed: onTabRetry,
+            child: Text(context.l10n.tryAgain),
+          ),
+        ],
+      );
 }

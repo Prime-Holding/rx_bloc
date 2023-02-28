@@ -33,7 +33,7 @@ extension _DioErrorMapper on DioError {
       if (errorCode == 101) {
         return NoConnectionErrorModel();
       }
-      if (errorCode == 111) {
+      if (errorCode == 111 || errorCode == 61) {
         return ConnectionRefusedErrorModel();
       }
     }

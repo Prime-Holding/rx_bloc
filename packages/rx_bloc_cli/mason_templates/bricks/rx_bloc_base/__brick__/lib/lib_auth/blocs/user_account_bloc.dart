@@ -14,11 +14,12 @@ import '../services/user_account_service.dart';
 part 'user_account_bloc.rxb.g.dart';
 
 abstract class UserAccountBlocEvents {
+  /// The event is called on user logout.
   void logout();
 }
 
 abstract class UserAccountBlocStates {
-  /// State indicating whether the user is logged in successfully
+  /// The state is updated when the user authentication state is changed.
   ConnectableStream<bool> get loggedIn;
 
   /// The loading state

@@ -31,7 +31,9 @@ class LoginPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
-                  child: const LoginForm(),
+                  child: LoginForm(
+                    title: context.l10n.featureLogin.loginCredentialsHint,
+                  ),
                 ),
               ),
             ],

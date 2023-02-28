@@ -34,6 +34,8 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
 
+/// A wrapper class implementing all the navigation logic and providing
+/// [GoRouter] instance through its getter method [AppRouter.router].
 class AppRouter {
   AppRouter(this._coordinatorBloc);
 
@@ -52,7 +54,7 @@ class AppRouter {
     refreshListenable: _refreshListener,
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,
-      child: const ErrorPage(),
+      child: ErrorPage(error: state.error),
     ),
   );
 
@@ -71,6 +73,7 @@ class AppRouter {
             ]),
       ];
 
+  /// This method contains all redirection logic.
   FutureOr<String?> _pageRedirections(
     BuildContext context,
     GoRouterState state,

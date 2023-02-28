@@ -1,4 +1,4 @@
-{{> licence.dart }}
+// {{> licence.dart }}
 
 import '../../base/models/errors/error_model.dart';
 import '../repositories/permissions_repository.dart';
@@ -7,8 +7,11 @@ class PermissionsService {
   PermissionsService(this._permissionsRepository);
 
   final PermissionsRepository _permissionsRepository;
-Map<String, bool> _permissionList = {};
+  Map<String, bool> _permissionList = {};
 
+  /// Checks whether the user has permission to a particular [key].
+  ///
+  /// Throws an [AccessDeniedErrorModel] if the user don't have permission.
   Future<void> checkPermission(String key) async {
     if (await hasPermission(key)) {
       return;
@@ -17,10 +20,10 @@ Map<String, bool> _permissionList = {};
     throw AccessDeniedErrorModel();
   }
 
-  /// Check whether the user has permission to a particular [key].
+  /// Checks whether the user has permission to a particular [key].
   ///
   /// If [graceful] is `true`, the function will return `true`,
-  /// if the permission list can not be fetched from the remote data source.
+  /// if the permission list cannot be fetched from the remote data source.
   ///
   /// In case the give [key] is not presented in the fetched permission list,
   /// the function will return `true`
@@ -37,11 +40,17 @@ Map<String, bool> _permissionList = {};
     }
   }
 
+  /// Checks whether the user has permission to a particular [key].
   bool hasPermissionSync(String key) {
-return (_permissionList.containsKey(key) ? _permissionList[key]! : true);
+    return (_permissionList.containsKey(key) ? _permissionList[key]! : true);
   }
 
-  Future<Map<String,bool>> getPermissions({bool force = false}) async {
+  /// Returns a map of the permissions
+  ///
+  /// If [force] is `true`, the permission list is fetched from the remote data
+  /// source, otherwise it will try to return it from the cache if the cache is
+  /// not empty.
+  Future<Map<String, bool>> getPermissions({bool force = false}) async {
     if (_permissionList.isEmpty || force) {
       _permissionList = await _permissionsRepository.getPermissions();
     }
@@ -49,6 +58,8 @@ return (_permissionList.containsKey(key) ? _permissionList[key]! : true);
     return _permissionList;
   }
 
+  /// It loads the permissions list from the remote data source
+  /// and it renews the cache.
   Future<void> load() async {
     await getPermissions(force: true);
   }

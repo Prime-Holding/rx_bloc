@@ -16,6 +16,10 @@ class UserAccountService {
   final PushNotificationRepository _pushSubscriptionRepository;
   final PermissionsService _permissionsService;
 
+  /// Checks the user credentials passed in [username] and [password].
+  ///
+  /// After successful login saves the auth `token` and `refresh token` to
+  /// persistent storage and loads the user permissions.
   Future<bool> login({
     required String username,
     required String password,
@@ -52,6 +56,9 @@ class UserAccountService {
     return true;
   }
 
+  /// This method logs out the user and delete all stored auth token data.
+  ///
+  /// After logging out the user it reloads all permissions.
   Future<bool> logout() async {
     // Unsubscribe user push token
     try {

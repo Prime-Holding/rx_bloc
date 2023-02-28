@@ -39,9 +39,14 @@ class SplashPage extends StatelessWidget {
               builder: (state, snapshot, bloc) =>
                   snapshot.hasData && snapshot.data != null
                       ? Expanded(
-                          child: AppErrorWidget(
-                            error: snapshot.data!,
-                            onTabRetry: () => bloc.events.initializeApp(),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: context.designSystem.spacing.l,
+                            ),
+                            child: AppErrorWidget(
+                              error: snapshot.data!,
+                              onTabRetry: () => bloc.events.initializeApp(),
+                            ),
                           ),
                         )
                       : const SizedBox(),

@@ -434,11 +434,11 @@ class I18nError {
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">en</td>
-  ///     <td>"Unable to connect to server. Connection refused."</td>
+  ///     <td>"Unable to connect to server. Connection refused. Check if the local server is up and running then try again."</td>
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">es</td>
-  ///     <td>"Unable to connect to server. Connection refused."</td>
+  ///     <td>"Unable to connect to server. Connection refused. Check if the local server is up and running then try again."</td>
   ///   </tr>
   ///  </table>
   ///
@@ -827,6 +827,26 @@ class I18nFeatureLogin {
     return customLookup?.notifications ?? _lookup.notifications;
   }
 
+  ///
+  /// <table style="width:100%">
+  ///   <tr>
+  ///     <th>Locale</th>
+  ///     <th>Translation</th>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">en</td>
+  ///     <td>"Enter your login credentials: \n A valid email address. \n At least 6 characters password."</td>
+  ///   </tr>
+  ///   <tr>
+  ///     <td style="width:60px;">es</td>
+  ///     <td>"Enter your login credentials: \n A valid email address. \n At least 6 characters password."</td>
+  ///   </tr>
+  ///  </table>
+  ///
+  String get loginCredentialsHint {
+    return customLookup?.loginCredentialsHint ?? _lookup.loginCredentialsHint;
+  }
+
   String? getString(String key, [Map<String, String>? placeholders]) {
     switch (key) {
       case I18nFeatureLoginKeys.loginPageTitle:
@@ -839,6 +859,8 @@ class I18nFeatureLogin {
         return profile;
       case I18nFeatureLoginKeys.notifications:
         return notifications;
+      case I18nFeatureLoginKeys.loginCredentialsHint:
+        return loginCredentialsHint;
     }
     return null;
   }
@@ -1202,6 +1224,7 @@ class I18nFeatureLoginKeys {
   static const String logOut = "logOut";
   static const String profile = "profile";
   static const String notifications = "notifications";
+  static const String loginCredentialsHint = "loginCredentialsHint";
 }
 
 class I18nFeatureNotificationsKeys {
@@ -1401,6 +1424,10 @@ class I18nFeatureLoginLookup {
 
   String get notifications {
     return getString(I18nFeatureLoginKeys.notifications);
+  }
+
+  String get loginCredentialsHint {
+    return getString(I18nFeatureLoginKeys.loginCredentialsHint);
   }
 }
 
@@ -1678,7 +1705,7 @@ class I18nErrorLookup_es extends I18nErrorLookup_en {
 
   @override
   String get connectionRefused {
-    return "Unable to connect to server. Connection refused.";
+    return "Unable to connect to server. Connection refused. Check if the local server is up and running then try again.";
   }
 
   @override
@@ -1735,7 +1762,7 @@ class I18nErrorLookup_en extends I18nErrorLookup {
 
   @override
   String get connectionRefused {
-    return "Unable to connect to server. Connection refused.";
+    return "Unable to connect to server. Connection refused. Check if the local server is up and running then try again.";
   }
 
   @override
@@ -1843,6 +1870,11 @@ class I18nFeatureLoginLookup_es extends I18nFeatureLoginLookup_en {
   String get notifications {
     return "Notifications";
   }
+
+  @override
+  String get loginCredentialsHint {
+    return "Enter your login credentials: \n A valid email address. \n At least 6 characters password.";
+  }
 }
 
 class I18nFeatureLoginLookup_en extends I18nFeatureLoginLookup {
@@ -1869,6 +1901,11 @@ class I18nFeatureLoginLookup_en extends I18nFeatureLoginLookup {
   @override
   String get notifications {
     return "Notifications";
+  }
+
+  @override
+  String get loginCredentialsHint {
+    return "Enter your login credentials: \n A valid email address. \n At least 6 characters password.";
   }
 }
 

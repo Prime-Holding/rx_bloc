@@ -14,15 +14,18 @@ part 'splash_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the SplashBloC.
 abstract class SplashBlocEvents {
+  /// The event is called when the app is initialized.
   void initializeApp();
 }
 
 /// A contract class containing all states of the SplashBloC.
 abstract class SplashBlocStates {
-  /// The loading state
+  /// The state which group and handle all the loading streams executed in the
+  /// BloC.
   Stream<bool> get isLoading;
 
-  /// The error state
+  /// The state which group and handle all the error streams executed in the
+  /// BloC.
   Stream<ErrorModel?> get errors;
 }
 

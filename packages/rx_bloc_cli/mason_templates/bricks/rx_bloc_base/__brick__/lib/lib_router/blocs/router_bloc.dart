@@ -13,21 +13,38 @@ part 'router_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the NavigationBloC.
 abstract class RouterBlocEvents {
-  ///TODO: add documentation
+  /// Uses [GoRouter.go()] to navigates to given location with an optional
+  /// [extra] object which can be passed as part of the navigation.
+  ///
+  /// See also:
+  /// * [goToLocation] which navigates to given location.
+  /// * [push] which pushes the location onto the page stack.
   void go(RouteDataModel route, {Object? extra});
 
+  /// Navigates to given location.
+  ///
+  /// See also:
+  /// * [go] which navigates to the location.
+  /// * [push] which pushes the location onto the page stack.
   void goToLocation(String location);
 
+  /// Uses [GoRouter.push()] to push the given location onto the page stack with
+  /// an optional [extra] object which can be passed as part of the navigation.
+  ///
+  /// See also:
+  /// * [go] which navigates to the location.
+  /// * [goToLocation] which navigates to given location.
   void push(RouteDataModel route, {Object? extra});
 }
 
 /// A contract class containing all states of the NavigationBloC.
 abstract class RouterBlocStates {
-  /// The error state
-  ///TODO: add documentation
+
+  /// The main state responsible for handling errors.
   Stream<ErrorModel> get errors;
 
-  ///TODO: add documentation
+  /// The state is updated when one of the navigation methods: [go], [push] or
+  /// [goToLocation] are called.
   ConnectableStream<void> get navigationPath;
 }
 
