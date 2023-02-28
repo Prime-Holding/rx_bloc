@@ -30,6 +30,6 @@ Widget hotelDetailsFactory({
             ),
           ),
         ],
-        child: HotelDetailsPage(hotel: hotel),
+        child: const HotelDetailsPage(),
       ),
     );
