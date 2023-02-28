@@ -118,6 +118,25 @@ class Stub {
   static const emptyQuery = '';
 
   static const homePageRoute = HomeRoutes(NavigationItemType.search);
+
+  static const searchNavItemType = NavigationItemType.search;
+  static const favoritesNavItemType = NavigationItemType.favorites;
+
+  static const navBarSelectedItem = NavigationItem(
+    type: searchNavItemType,
+    isSelected: true,
+  );
+
+  static const navBarItemsList = [
+    NavigationItem(
+      type: favoritesNavItemType,
+      isSelected: true,
+    ),
+    NavigationItem(
+      type: searchNavItemType,
+      isSelected: false,
+    ),
+  ];
 }
 
 class NavigationStub {
