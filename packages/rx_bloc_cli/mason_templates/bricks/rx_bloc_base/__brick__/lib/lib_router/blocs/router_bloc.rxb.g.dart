@@ -29,7 +29,7 @@ abstract class $RouterBloc extends RxBlocBase
   final _$pushEvent = PublishSubject<_PushEventArgs>();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
-  late final Stream<ErrorModel> _errorsState = _mapToErrorsState();
+  late final ConnectableStream<ErrorModel> _errorsState = _mapToErrorsState();
 
   /// The state of [navigationPath] implemented in [_mapToNavigationPathState]
   late final ConnectableStream<void> _navigationPathState =
@@ -59,12 +59,12 @@ abstract class $RouterBloc extends RxBlocBase
       ));
 
   @override
-  Stream<ErrorModel> get errors => _errorsState;
+  ConnectableStream<ErrorModel> get errors => _errorsState;
 
   @override
   ConnectableStream<void> get navigationPath => _navigationPathState;
 
-  Stream<ErrorModel> _mapToErrorsState();
+  ConnectableStream<ErrorModel> _mapToErrorsState();
 
   ConnectableStream<void> _mapToNavigationPathState();
 
