@@ -5,12 +5,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 part of 'coordinator_bloc.dart';
 
 extension CoordinatorBinderExtensions on Stream<Result<bool>> {
   Stream<bool> emitLoggedInToCoordinator(CoordinatorBlocType coordinator) =>
-      whereSuccess().where((hasLoggedOut) => hasLoggedOut).doOnData(
+      whereSuccess().where((hasLoggedIn) => hasLoggedIn).doOnData(
             (hasLoggedIn) => coordinator.events.authenticated(
               isAuthenticated: hasLoggedIn,
             ),
