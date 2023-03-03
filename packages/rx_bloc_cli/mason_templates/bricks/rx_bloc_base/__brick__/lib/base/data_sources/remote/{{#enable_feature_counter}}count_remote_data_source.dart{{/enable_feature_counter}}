@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../models/count.dart';
+import '../../../feature_counter/models/count.dart';
 
 part 'count_remote_data_source.g.dart';
 

@@ -24,7 +24,9 @@ class PermissionsController extends ApiController {
       return responseBuilder.buildOK(data: {
         'ProfileRoute': false,
         'SplashRoute': true,
+        {{#enable_feature_counter}}
         'CounterRouter': false,
+        {{/enable_feature_counter}}
         'NotificationsRoute': false,
         'LoginRoute': true,
         'EnterMessageRoute': false,
@@ -35,7 +37,9 @@ class PermissionsController extends ApiController {
     return responseBuilder.buildOK(data: {
       'ProfileRoute': true,
       'SplashRoute': true,
+      {{#enable_feature_counter}}
       'CounterRouter': true,
+      {{/enable_feature_counter}}
       'NotificationsRoute': true,
       'LoginRoute': false,
       'EnterMessageRoute': true,

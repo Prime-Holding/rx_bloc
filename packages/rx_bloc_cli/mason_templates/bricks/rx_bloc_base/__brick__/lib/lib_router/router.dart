@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';
 import '../base/models/deep_link_model.dart';
+{{#enable_feature_counter}}
 import '../feature_counter/di/counter_page_with_dependencies.dart';
+{{/enable_feature_counter}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';
@@ -71,7 +73,9 @@ class AppRouter {
                   child: child,
                 ),
             routes: [
+              {{#enable_feature_counter}}
               $counterRoute,
+              {{/enable_feature_counter}}
               $deepLinksRoute,
               $profileRoute,
             ]),
@@ -87,9 +91,13 @@ class AppRouter {
     }
     if (_refreshListener.isLoggedIn &&
         state.subloc == const LoginRoute().location) {
+      {{#enable_feature_counter}}
       return const CounterRoute().location;
+      {{/enable_feature_counter}}
+      {{^enable_feature_counter}}
+        return const SplashRoute().location;
+      {{/enable_feature_counter}}
     }
-
     if (state.subloc != const SplashRoute().location) {
       if (!context.read<SplashService>().isAppInitialized) {
         return '${const SplashRoute().location}?from=${state.location}';
@@ -111,8 +119,14 @@ class AppRouter {
       return '${const LoginRoute().location}?from=${state.location}';
     }
 
+    
     if (!hasPermissions) {
+      {{#enable_feature_counter}}
       return const CounterRoute().location;
+      {{/enable_feature_counter}}
+      {{^enable_feature_counter}}
+       return const SplashRoute().location;
+      {{/enable_feature_counter}}
     }
 
     return null;
