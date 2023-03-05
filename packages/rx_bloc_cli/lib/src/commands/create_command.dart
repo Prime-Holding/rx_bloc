@@ -34,6 +34,11 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'com.example',
       )
       ..addOption(
+        _counterString,
+        help: 'The counter showcase feature',
+        defaultsTo: 'false',
+      )
+      ..addOption(
         _analyticsString,
         help: 'Enables Firebase analytics for the project',
         allowed: ['true', 'false'],
@@ -72,12 +77,63 @@ class CreateCommand extends Command<int> {
   @override
   Future<int> run() async {
     await _generateViaMasonBundle();
+    await _postGen();
     return ExitCode.success.code;
   }
 
   /// endregion
 
   /// region Code generation
+
+  Future<void> _postGen() async {
+    final arguments = _validateAndParseArguments(argResults!);
+    var progress = _logger.progress('dart pub get');
+
+    final dartGet = await Process.run(
+      'dart',
+      ['pub', 'get'],
+      workingDirectory: arguments.outputDirectory.path,
+    );
+
+    _progressFinish(dartGet, progress);
+
+    progress = _logger.progress(
+      'dart run build_runner build --delete-conflicting-outputs',
+    );
+
+    final buildRunner = await Process.run(
+      'dart',
+      [
+        'run',
+        'build_runner',
+        'build',
+        '--delete-conflicting-outputs',
+      ],
+      workingDirectory: arguments.outputDirectory.path,
+    );
+
+    _progressFinish(buildRunner, progress);
+
+    progress = _logger.progress(
+      'dart format .',
+    );
+
+    final format = await Process.run(
+      'dart',
+      ['format', '.'],
+      workingDirectory: arguments.outputDirectory.path,
+    );
+
+    _progressFinish(format, progress);
+  }
+
+  void _progressFinish(ProcessResult result, Progress progress) {
+    if (result.stderr.toString().trim().isNotEmpty) {
+      progress.fail(result.stderr.toString());
+    } else {
+      progress.complete();
+    }
+  }
 
   Future<void> _generateViaMasonBundle() async {
     final arguments = _validateAndParseArguments(argResults!);
@@ -250,6 +306,7 @@ class CreateCommand extends Command<int> {
 
     _usingLog('Firebase Analytics', arguments.enableAnalytics);
     _usingLog('Firebase Push Notifications', true);
+    _usingLog('Feature Counter', arguments.enableCounterFeature);
   }
 
   /// Shows a delayed log with a success symbol in front of it
