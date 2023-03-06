@@ -4,6 +4,11 @@ import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
 enum RouteModel {
+  dashboard(
+    pathName: RoutesPath.dashboard,
+    fullPath: '/dashboard',
+    permissionName: RoutePermissions.dashboard,
+  ),
   profile(
     pathName: RoutesPath.profile,
     fullPath: '/profile',

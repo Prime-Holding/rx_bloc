@@ -22,6 +22,7 @@ class PermissionsController extends ApiController {
           ?.isAuthenticated(request);
     } catch (exception) {
       return responseBuilder.buildOK(data: {
+        'DashboardRoute': false,
         'ProfileRoute': false,
         'SplashRoute': true,
         {{#enable_feature_counter}}
@@ -35,6 +36,7 @@ class PermissionsController extends ApiController {
       });
     }
     return responseBuilder.buildOK(data: {
+      'DashboardRoute': true,
       'ProfileRoute': true,
       'SplashRoute': true,
       {{#enable_feature_counter}}
