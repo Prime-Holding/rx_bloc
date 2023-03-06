@@ -7,11 +7,12 @@ part of 'authenticate_user_request_model.dart';
 // **************************************************************************
 
 AuthUserRequestModel _$AuthUserRequestModelFromJson(
-    Map<String, dynamic> json) =>
+        Map<String, dynamic> json) =>
     AuthUserRequestModel(
       username: json['username'] as String?,
       password: json['password'] as String?,
       refreshToken: json['refreshToken'] as String?,
+      token: json['token'] as String?,
     );
 
 Map<String, dynamic> _$AuthUserRequestModelToJson(
@@ -27,5 +28,6 @@ Map<String, dynamic> _$AuthUserRequestModelToJson(
   writeNotNull('username', instance.username);
   writeNotNull('password', instance.password);
   writeNotNull('refreshToken', instance.refreshToken);
+  writeNotNull('token', instance.token);
   return val;
 }

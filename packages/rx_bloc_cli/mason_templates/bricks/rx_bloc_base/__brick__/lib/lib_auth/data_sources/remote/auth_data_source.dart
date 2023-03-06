@@ -17,4 +17,7 @@ abstract class AuthDataSource {
 
   @POST('/api/logout')
   Future<void> logout();
+
+  @POST('/api/auth/validate-token')
+  Future<void> validateToken(@Body() AuthUserRequestModel token);
 }

@@ -14,7 +14,16 @@ class AuthService {
   /// Checks if the user is authenticated.
   Future<bool> isAuthenticated() async {
     final token = await getToken();
-    return token != null;
+    if (token == null) {
+      return false;
+    }
+
+    try {
+      await _authRepository.validateAccessToken(token);
+    } catch (exception) {
+      return false;
+    }
+    return true;
   }
 
   /// Saves the token passed as [newToken] into persist storage.
@@ -48,7 +57,7 @@ class AuthService {
   /// Checks the user credentials passed in [email], [password] and returns
   /// auth token.
   Future<AuthTokenModel> authenticate(
-      {String? email, String? password, String? refreshToken}) =>
+          {String? email, String? password, String? refreshToken}) =>
       _authRepository.authenticate(
         email: email,
         password: password,

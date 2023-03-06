@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: child,
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: _getCurrentIndex(list, router),
         onTap: (index) =>
             context.read<RouterBlocType>().events.go(list[index].route),

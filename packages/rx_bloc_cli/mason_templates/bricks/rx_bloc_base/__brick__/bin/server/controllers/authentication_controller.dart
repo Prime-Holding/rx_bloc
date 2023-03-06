@@ -31,6 +31,11 @@ class AuthenticationController extends ApiController {
       '/api/logout',
       _logoutHandler,
     );
+    router.addRequest(
+      RequestType.POST,
+      '/api/auth/validate-token',
+      _validateTokenHandler,
+    );
   }
 
   bool isAuthenticated(Request request) {
@@ -106,5 +111,20 @@ class AuthenticationController extends ApiController {
     }
 
     return _authTokenRepository.issueNewToken();
+  }
+
+  Future<Response> _validateTokenHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
+    throwIfEmpty(
+      params['token'],
+      BadRequestException('The token cannot be empty.'),
+    );
+
+    if (!_validateAccessToken(params['token'])) {
+      throw UnauthorizedException('The token is invalid!');
+    }
+
+    return responseBuilder.buildOK();
   }
 }

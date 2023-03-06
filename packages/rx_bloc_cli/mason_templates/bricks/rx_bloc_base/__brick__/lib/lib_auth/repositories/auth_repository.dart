@@ -9,11 +9,11 @@ import '../models/request_models/authenticate_user_request_model.dart';
 
 class AuthRepository {
   AuthRepository(
-      this._errorMapper,
-      this._authTokenDataSource,
-      this._authDataSource,
-      this._refreshTokenDataSource,
-      );
+    this._errorMapper,
+    this._authTokenDataSource,
+    this._authDataSource,
+    this._refreshTokenDataSource,
+  );
 
   final ErrorMapper _errorMapper;
   final AuthTokenDataSource _authTokenDataSource;
@@ -43,13 +43,13 @@ class AuthRepository {
   /// Fetch a new access token using the current refresh token
   Future<AuthTokenModel> fetchNewToken(String refreshToken) =>
       _errorMapper.execute(() => _refreshTokenDataSource.refresh(
-        AuthUserRequestModel(refreshToken: refreshToken),
-      ));
+            AuthUserRequestModel(refreshToken: refreshToken),
+          ));
 
   Future<AuthTokenModel> authenticate(
-      {String? email, String? password, String? refreshToken}) =>
+          {String? email, String? password, String? refreshToken}) =>
       _errorMapper.execute(
-            () => _authDataSource.authenticate(
+        () => _authDataSource.authenticate(
           AuthUserRequestModel(
             username: email,
             password: password,
@@ -59,4 +59,10 @@ class AuthRepository {
       );
 
   Future<void> logout() => _errorMapper.execute(() => _authDataSource.logout());
+
+  Future<void> validateAccessToken(String token) => _errorMapper.execute(
+        () => _authDataSource.validateToken(
+          AuthUserRequestModel(token: token),
+        ),
+      );
 }
