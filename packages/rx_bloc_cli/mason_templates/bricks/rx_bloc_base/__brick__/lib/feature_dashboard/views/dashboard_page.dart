@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import '../../app_extensions.dart';
 import '../../base/extensions/error_model_field_translations.dart';
 import '../../base/models/errors/error_model.dart';
 import '../blocs/dashboard_bloc.dart';
@@ -15,7 +16,7 @@ class DashboardPage extends StatelessWidget {
         appBar: AppBar(
           actions: [
             IconButton(
-              icon: const Icon(Icons.refresh),
+              icon: Icon(context.designSystem.icons.reload),
               onPressed: context.read<DashboardBlocType>().events.fetchData,
             ),
           ],
