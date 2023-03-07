@@ -4,8 +4,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/count.dart';
 import '../../base/models/errors/error_model.dart';
-import '../models/count.dart';
 import '../services/counter_service.dart';
 
 part 'counter_bloc.rxb.g.dart';

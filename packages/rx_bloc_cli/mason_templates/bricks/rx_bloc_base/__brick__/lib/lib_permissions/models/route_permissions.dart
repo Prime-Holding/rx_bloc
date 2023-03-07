@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 class RoutePermissions {
+  static const dashboard = 'DashboardRoute';
   static const profile = 'ProfileRoute';
   static const splash = 'SplashRoute';
   {{#enable_feature_counter}}

@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 class RoutesPath {
+  static const dashboard = '/dashboard';
   static const profile = '/profile';
   static const splash = '/splash';
   {{#enable_feature_counter}}

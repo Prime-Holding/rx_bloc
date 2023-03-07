@@ -64,13 +64,7 @@ class SplashBloc extends $SplashBloc {
       _navigationBloc.events.goToLocation(_redirectLocation!);
     } else {
       await _authService.isAuthenticated()
-          ? 
-          {{#enable_feature_counter}}
-          _navigationBloc.events.go(const CounterRoute())
-          {{/enable_feature_counter}}
-          {{^enable_feature_counter}}
-           _navigationBloc.events.go(const SplashRoute())
-          {{/enable_feature_counter}}
+          ? _navigationBloc.events.go(const DashboardRoute())
           : _navigationBloc.events.go(const LoginRoute());
     }
   }

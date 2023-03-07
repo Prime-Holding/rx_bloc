@@ -32,5 +32,7 @@ class DesignSystemIcons {
 
   final Icon linkIcon = _getIcon(Icons.link);
 
+  final Icon dashboard = _getIcon(Icons.dashboard);
+
   static Icon _getIcon(IconData iconData) => Icon(iconData);
 }
