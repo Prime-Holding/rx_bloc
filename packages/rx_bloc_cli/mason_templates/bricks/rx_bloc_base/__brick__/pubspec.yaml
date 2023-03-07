@@ -74,7 +74,9 @@ r_flutter:
   intl: lib/l10n/arb/en.arb
   intl_features:
     - name: error
+    {{#enable_feature_counter}}
     - name: feature_counter
+    {{/enable_feature_counter}}
     - name: feature_login
     - name: feature_notifications
     - name: feature_enter_message

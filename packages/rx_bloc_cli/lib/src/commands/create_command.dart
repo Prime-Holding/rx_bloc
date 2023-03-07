@@ -46,6 +46,7 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _organisationString = 'organisation';
   final _analyticsString = 'enable-analytics';
+  final _counterString = 'enable-feature-counter';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -97,6 +98,10 @@ class CreateCommand extends Command<int> {
           'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart');
     }
 
+    if (!arguments.enableCounterFeature) {
+      _bundle.files.removeWhere((file) => file.path == 'lib/feature_counter');
+    }
+
     _logger.info('');
     final fileGenerationProgress = _logger.progress('Bootstrapping');
     final generator = await _generator(_bundle);
@@ -109,6 +114,7 @@ class CreateCommand extends Command<int> {
         'uses_firebase': usesFirebase,
         'analytics': arguments.enableAnalytics,
         'push_notifications': true,
+        'enable_feature_counter': arguments.enableCounterFeature,
       },
     );
 
@@ -132,6 +138,7 @@ class CreateCommand extends Command<int> {
       organisation: _parseOrganisation(arguments),
       enableAnalytics: _parseEnableAnalytics(arguments),
       outputDirectory: _parseOutputDirectory(arguments),
+      enableCounterFeature: _parseEnableCounter(arguments),
     );
   }
 
@@ -154,6 +161,12 @@ class CreateCommand extends Command<int> {
     final rest = arguments.rest;
     _validateOutputDirectoryArg(rest);
     return Directory(rest.first);
+  }
+
+  /// Returns whether the project will be created with counter feature
+  bool _parseEnableCounter(ArgResults arguments) {
+    final counterEnabled = arguments[_counterString];
+    return counterEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will use analytics or not
@@ -261,10 +274,12 @@ class _CreateCommandArguments {
     required this.organisation,
     required this.enableAnalytics,
     required this.outputDirectory,
+    required this.enableCounterFeature,
   });
 
   final String projectName;
   final String organisation;
   final bool enableAnalytics;
   final Directory outputDirectory;
+  final bool enableCounterFeature;
 }

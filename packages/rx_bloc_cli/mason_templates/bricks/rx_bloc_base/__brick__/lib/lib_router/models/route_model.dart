@@ -14,11 +14,13 @@ enum RouteModel {
     fullPath: '/splash',
     permissionName: RoutePermissions.splash,
   ),
+  {{#enable_feature_counter}}
   counter(
     pathName: RoutesPath.counter,
     fullPath: '/counter',
     permissionName: RoutePermissions.counter,
   ),
+  {{/enable_feature_counter}}
   notifications(
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',
