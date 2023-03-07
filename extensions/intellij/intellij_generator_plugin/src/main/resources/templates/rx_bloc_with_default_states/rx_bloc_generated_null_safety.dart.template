@@ -26,7 +26,7 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
   late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
-  late final Stream<String> _errorsState = _mapToErrorsState();
+  late final Stream<ErrorModel> _errorsState = _mapToErrorsState();
 
   /// The state of [data] implemented in [_mapToDataState]
   late final Stream<Result<String>> _dataState = _mapToDataState();
@@ -35,14 +35,14 @@ abstract class ${bloc_dollar_pascal_case}Bloc extends RxBlocBase
   Stream<bool> get isLoading => _isLoadingState;
 
   @override
-  Stream<String> get errors => _errorsState;
+  Stream<ErrorModel> get errors => _errorsState;
 
   @override
   Stream<Result<String>> get data => _dataState;
 
   Stream<bool> _mapToIsLoadingState();
 
-  Stream<String> _mapToErrorsState();
+  Stream<ErrorModel> _mapToErrorsState();
 
   Stream<Result<String>> _mapToDataState();
 

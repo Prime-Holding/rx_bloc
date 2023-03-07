@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
@@ -5,7 +7,8 @@ import com.fleshgrinder.extensions.kotlin.toLowerSnakeCase
 import com.fleshgrinder.extensions.kotlin.toUpperCamelCase
 import com.google.common.io.CharStreams
 import com.intellij.openapi.vfs.VirtualFile
-import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
+import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass
+import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
 import org.apache.commons.lang.text.StrSubstitutor
 import java.io.File
 import java.io.InputStreamReader
@@ -15,7 +18,7 @@ abstract class RxTestGeneratorBase(
     name: String,
     private val projectName: String,
     templateName: String,
-    private val bloc: Bloc,
+    private val bloc: TestableClass,
     includeDiMocks: Boolean = true
 ) : RxGeneratorBase(name) {
 
@@ -26,7 +29,7 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_PROJECT_NAME = "project_name"
 
     private val TEMPLATE_BLOC_INITIALIZATION_PARAMETERS = "bloc_parameters_initialization_with_repos"
-    private val TEMPLATE_PASS_AS_PAREMETERS_REPOS = "pass_as_parameters_repositories"
+    private val TEMPLATE_PASS_AS_PARAMETERS_REPOS = "pass_as_parameters_repositories"
     private val TEMPLATE_REPO_INITIALIZATION = "initialization_of_repositories"
 
     private val TEMPLATE_DECLARATION_OF_REPOS = "declaration_of_repositories"
@@ -36,6 +39,8 @@ abstract class RxTestGeneratorBase(
     private val TEMPLATE_BLOC_STATE_IMPORTS = "imports_from_bloc_states"
     private val TEMPLATE_BLOC_STATES_WHEN_MOCK = "bloc_states_when"
     private val TEMPLATE_TEST_RX_BLOC_STATE_GROUP = "test_rxbloc_state_group"
+    private val TEMPLATE_IMPORT_BLOC_FILE = "import_bloc_file"
+    private val TEMPLATE_IMPORT_BLOC_PAGE_FILE = "import_bloc_page_file"
     private val TEMPLATE_BLOC_FOLDER_PREFIX = "bloc_folder_prefix"
     private val TEMPLATE_STATES_AS_OPTIONAL_PARAMETER = "states_as_optional_parameter"
     private val TEMPLATE_STATES_AS_PASSING_NAMED_PARAMETERS = "states_as_passing_named_parameters"
@@ -61,20 +66,28 @@ abstract class RxTestGeneratorBase(
             TEMPLATE_PROJECT_NAME to projectName,
             TEMPLATE_BLOC_INITIALIZATION_PARAMETERS to generateBlocInitializationParameters(),
             TEMPLATE_REPO_INITIALIZATION to generateRepoInitialization(),
-            TEMPLATE_PASS_AS_PAREMETERS_REPOS to generatePassAsParameters(),
+            TEMPLATE_PASS_AS_PARAMETERS_REPOS to generatePassAsParameters(),
             TEMPLATE_DECLARATION_OF_REPOS to generateDeclarationOfRepos(),
             TEMPLATE_REPO_CLASS_LIST to generateRepoClassList(),
             TEMPLATE_REPO_IMPORT_DECLARATIONS to generateRepoImportDeclarations(),
-            TEMPLATE_BLOC_CONSTRUCTOR_IMPORTS to generateBlocConstructorImports(),
+            TEMPLATE_BLOC_CONSTRUCTOR_IMPORTS to generateBlocConstructorImports(bloc.file, bloc.constructorFieldTypes),
             TEMPLATE_BLOC_STATE_IMPORTS to generateBlocStateImports(),
-
+            TEMPLATE_IMPORT_BLOC_FILE to generateImportBlocFile(),
+            TEMPLATE_IMPORT_BLOC_PAGE_FILE to generateImportBlocPageFile(),
             TEMPLATE_BLOC_STATES_WHEN_MOCK to generateBlocStatesWhenMock(),
             TEMPLATE_TEST_RX_BLOC_STATE_GROUP to generateBlocStatesGroup(),
             TEMPLATE_BLOC_FOLDER_PREFIX to generateFolderPrefix(),
-            TEMPLATE_STATES_AS_OPTIONAL_PARAMETER to generateStatesAsOptionalParameter(),
+            TEMPLATE_STATES_AS_OPTIONAL_PARAMETER to generateStatesAsOptionalParameter(
+                bloc.stateVariableNames,
+                bloc.stateVariableTypes
+            ),
             TEMPLATE_STATES_AS_PASSING_NAMED_PARAMETERS to generateStatesAsPassingNamedParameters(),
 
-            TEMPLATE_bloc_initialization_fields_list to generateBlocInitializationFields(),
+            TEMPLATE_bloc_initialization_fields_list to generateBlocInitializationFields(
+                includeDiMocksFlag,
+                bloc.constructorFieldNames,
+                bloc.constructorFieldNamedNames
+            ),
             TEMPLATE_late_bloc_initialization_fields to generateBlocFieldsLateDefinition(),
             TEMPLATE_bloc_initialization_fields_mocks to generateBlocInitializationOfMocks(),
             TEMPLATE_initiate_bloc_initialization_fields_setUp to generateBlocSetup()
@@ -95,6 +108,27 @@ abstract class RxTestGeneratorBase(
         }
     }
 
+
+    private fun generateImportBlocFile(): String {
+        val indexOfLibInThePath = bloc.file.path.lastIndexOf("${projectName}${File.separator}lib")
+        if (indexOfLibInThePath == -1) {
+            return ""
+        }
+        val rootPathToLib =
+            bloc.file.path.substring(0, indexOfLibInThePath + "${projectName}${File.separator}lib".length)
+        return "import 'package:${projectName}${
+            bloc.file.path.replace(
+                rootPathToLib,
+                ""
+            )
+        }';".replace("\\", "/")
+    }
+
+    private fun generateImportBlocPageFile(): String =
+        generateImportBlocFile().replace(
+            "blocs/${bloc.file.name}",
+            "views/${bloc.file.name.replace("_bloc.dart", "_page.dart")}"
+        )
 
     private fun generateBlocStatesGroup(): String {
         val sb = StringBuilder()
@@ -143,23 +177,6 @@ abstract class RxTestGeneratorBase(
 
     private fun generateFolderPrefix(): String {
         return if (bloc.isLib) "lib" else "feature"
-    }
-
-    private fun generateBlocInitializationFields(): String {
-        val sb = StringBuilder()
-
-        if (includeDiMocksFlag) {
-            bloc.constructorFieldNames.forEach {
-                if (!bloc.constructorFieldNamedNames.keys.contains(it))
-                    sb.append("        $it,\n")
-            }
-            bloc.constructorFieldNamedNames.forEach {
-                sb.append("        ${it.key}: ${it.key},\n")
-            }
-        } else {
-            sb.append("//TODO\n")
-        }
-        return sb.toString()
     }
 
     private fun generateBlocFieldsLateDefinition(): String {
@@ -220,75 +237,86 @@ abstract class RxTestGeneratorBase(
         return sb.toString()
     }
 
-    private fun generateStatesAsOptionalParameter(): String {
+    private fun searchInSubTypes(lines: List<String>, type: String, libFolder: VirtualFile): String {
         val sb = StringBuilder()
-        bloc.stateVariableNames.forEachIndexed { index, _ ->
-            if (bloc.stateVariableTypes[index] != "void") {
-                sb.append("  ${bloc.stateVariableTypes[index]}${if (bloc.stateVariableTypes[index].endsWith("?")) "" else "?"} ${bloc.stateVariableNames[index]},\n")
-            }
-        }
-        return sb.toString()
-    }
+        val indexOfOpen = type.indexOf("<")
+        if (indexOfOpen != -1) {
+            val indexOfClose = type.indexOf(">", indexOfOpen)
 
+            if (indexOfClose != -1) {
+                var subType = type.substring(indexOfOpen + 1, indexOfClose)
 
-    private fun generateBlocStateImports(): String {
-        val sb = StringBuilder()
-        var resultAdded = false
-        var paginatedListAdded = false
-
-        bloc.stateVariableTypes.forEach {
-            if (it.contains("Result<") && !resultAdded) {
-                resultAdded = true
-                sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
-            }
-            if (it.contains("PaginatedList<") && !paginatedListAdded) {
-                paginatedListAdded = true
-                sb.appendln("import 'package:rx_bloc_list/models.dart';")
-            }
-        }
-
-
-        val lines = File(bloc.file.path).readText().lines()
-        val libFolder = findLibFolder(bloc.file)
-
-        if (libFolder != null) {
-            val appFolder = libFolder.parent.name
-            val featureFolder = bloc.file.parent.parent.name
-            lines.forEach { line ->
-                bloc.stateVariableTypes.forEach {
-                    val snake = it.trim().replace("?", "").toLowerSnakeCase()
-                    if (line.contains("import '") && line.contains("$snake.dart")) {
-                        sb.appendln(
-                            line.replace("../..", "package:$appFolder")
-                                .replace("..", "package:$appFolder/$featureFolder")
-                        )
-                    }
+                if (subType.contains("<")) {
+                    sb.append(searchInSubTypes(lines, subType, libFolder))
+                    subType = subType.substring(0, subType.indexOf("<"))
+                    appendImportIfFound(sb, libFolder, subType, lines)
+                } else {
+                    appendImportIfFound(sb, libFolder, subType, lines)
                 }
             }
         }
+
         return sb.toString()
     }
 
-    private fun generateBlocConstructorImports(): String {
+    private fun appendImportIfFound(
+        sb: StringBuilder,
+        libFolder: VirtualFile,
+        needle: String,
+        lines: List<String>
+    ) {
+        val snake = needle.trim().replace("?", "").toLowerSnakeCase()
+        lines.forEach { line ->
+            if (line.contains("import '") && line.contains("$snake.dart")) {
+                sb.appendln(
+                    Utils.fixRelativeImports(line, libFolder, bloc.file)
+                )
+            }
+        }
+    }
+
+    private fun generateBlocStateImports(): String {
+        val lines = File(bloc.file.path).readText().lines()
+        val libFolder = findLibFolder(bloc.file)
+        val sb = StringBuilder()
+        if (libFolder != null) {
+
+            var resultAdded = false
+            var paginatedListAdded = false
+
+            bloc.stateVariableTypes.forEach {
+                if (it.contains("Result<") && !resultAdded) {
+                    resultAdded = true
+                    sb.appendln("import 'package:rx_bloc/rx_bloc.dart';")
+                }
+                if (it.contains("PaginatedList<") && !paginatedListAdded) {
+                    paginatedListAdded = true
+                    sb.appendln("import 'package:rx_bloc_list/models.dart';")
+                }
+                sb.append(searchInSubTypes(lines, it, libFolder.parent))
+            }
+
+            bloc.stateVariableTypes.forEach {
+                appendImportIfFound(sb, libFolder.parent, it, lines)
+            }
+        }
+        return sb.toString()
+    }
+
+    private fun generateBlocConstructorImports(file: VirtualFile, constructorFieldTypes: MutableList<String>): String {
         val sb = StringBuilder()
 
-        val lines = File(bloc.file.path).readText().lines()
-
-        val libFolder = findLibFolder(bloc.file)
+        val lines = File(file.path).readText().lines()
+        val libFolder = findLibFolder(file)
 
         if (libFolder != null) {
-            val appFolder = libFolder.parent.name
-            val featureFolder = bloc.file.parent.parent.name
             lines.forEach { line ->
-                bloc.constructorFieldTypes.forEach {
+                constructorFieldTypes.forEach {
                     val snake = it.toLowerSnakeCase()
                     if (line.contains("import '")) {
 
                         if (line.contains("$snake.dart")) {
-                            sb.appendln(
-                                line.replace("../..", "package:$appFolder")
-                                    .replace("..", "package:$appFolder/$featureFolder")
-                            )
+                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
                         }
 
                         if (snake.endsWith("bloc_type") && line.contains(
@@ -300,10 +328,7 @@ abstract class RxTestGeneratorBase(
                                 }.dart"
                             )
                         ) {
-                            sb.appendln(
-                                line.replace("../..", "package:$appFolder")
-                                    .replace("..", "package:$appFolder/$featureFolder")
-                            )
+                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
                         }
                     }
                 }
@@ -389,4 +414,40 @@ abstract class RxTestGeneratorBase(
     }
 
     private fun dollarPascalCase(): String = "$" + pascalCase()
+
+    companion object {
+        fun generateStatesAsOptionalParameter(
+            stateVariableNames: List<String>,
+            stateVariableTypes: List<String>
+        ): String {
+            val sb = StringBuilder()
+            stateVariableNames.forEachIndexed { index, _ ->
+                if (stateVariableTypes[index] != "void") {
+                    sb.append("  ${stateVariableTypes[index]}${if (stateVariableTypes[index].endsWith("?")) "" else "?"} ${stateVariableNames[index]},\n")
+                }
+            }
+            return sb.toString()
+        }
+
+        fun generateBlocInitializationFields(
+            includeDiMocksFlag: Boolean,
+            constructorFieldNames: List<String>,
+            constructorFieldNamedNames: MutableMap<String, Boolean>
+        ): String {
+            val sb = StringBuilder()
+
+            if (includeDiMocksFlag) {
+                constructorFieldNames.forEach {
+                    if (!constructorFieldNamedNames.keys.contains(it))
+                        sb.append("        $it,\n")
+                }
+                constructorFieldNamedNames.forEach {
+                    sb.append("        ${it.key}: ${it.key},\n")
+                }
+            } else {
+                sb.append("//TODO\n")
+            }
+            return sb.toString()
+        }
+    }
 }

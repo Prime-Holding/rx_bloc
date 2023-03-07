@@ -1,9 +1,9 @@
 package com.primeholding.rxbloc_generator_plugin.generator.components
 
 import com.primeholding.rxbloc_generator_plugin.generator.RxTestGeneratorBase
-import com.primeholding.rxbloc_generator_plugin.generator.parser.Bloc
+import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass
 
-class RxTestBlocGenerator(name: String, projectName: String, bloc: Bloc, includeDiMocks: Boolean) :
+class RxTestBlocGenerator(name: String, projectName: String, bloc: TestableClass, includeDiMocks: Boolean) :
     RxTestGeneratorBase(
         name,
         templateName = "bloc_test",

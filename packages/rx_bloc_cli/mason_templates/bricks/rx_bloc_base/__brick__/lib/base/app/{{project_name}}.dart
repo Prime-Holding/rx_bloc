@@ -5,15 +5,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notification
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
+import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
+import '../common_blocs/coordinator_bloc.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
-import '../data_sources/remote/interceptors/auth_interceptor.dart';
-import '../di/app_dependencies.dart';
-import '../routers/router.gr.dart' as router;
+import '../di/{{project_name}}_with_dependencies.dart';
 import '../theme/design_system.dart';
 import '../theme/{{project_name}}_theme.dart';
 import '../utils/helpers.dart';
@@ -23,18 +26,17 @@ import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}
 
 /// This widget is the root of your application.
 class {{project_name.pascalCase()}} extends StatelessWidget {
-  {{project_name.pascalCase()}}({
+  const {{project_name.pascalCase()}}({
     this.config = const EnvironmentConfig.production(),
     Key? key,
   }) : super(key: key);
 
   final EnvironmentConfig config;
-  final _router = router.Router();
 
   @override
-  Widget build(BuildContext context) => MultiProvider(
-        providers: AppDependencies.of(context,config).providers,
-        child: _MyMaterialApp(_router),
+  Widget build(BuildContext context) => {{project_name.pascalCase()}}WithDependencies(
+        config: config,
+        child: const _MyMaterialApp(),
       );
 }
 
@@ -42,20 +44,23 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
 /// accessible throughout the app (such as App-level dependencies, Firebase
 /// services, etc).
 class _MyMaterialApp extends StatefulWidget {
-  const _MyMaterialApp(this._router);
-
-  final router.Router _router;
+  const _MyMaterialApp();
 
 @override
 __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
+  late GoRouter goRouter;
 
   @override
   void initState() { {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
+
+    goRouter = AppRouter(
+      context.read<CoordinatorBlocType>(),
+    ).router;
 
     super.initState();
   }{{#push_notifications}}
@@ -95,23 +100,22 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
-      theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
-      darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
-      localizationsDelegates: const [
-        I18n.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
-      supportedLocales: I18n.supportedLocales,
-      routeInformationParser: widget._router.defaultRouteParser(),
-      routerDelegate: widget._router.delegate({{#analytics}}
-        navigatorObservers: () => [
-          context.read<FirebaseAnalyticsObserver>(),
+  Widget build(BuildContext context) => Provider<RouterBlocType>(
+      create: (context) => RouterBloc(
+        router: goRouter,
+        permissionsService: context.read(),
+      ),
+      child: MaterialApp.router(
+        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
+        theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
+        darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
+        localizationsDelegates: const [
+          I18n.delegate,
+          GlobalMaterialLocalizations.delegate,
         ],
-      {{/analytics}}),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+        supportedLocales: I18n.supportedLocales,
+        routerConfig: goRouter,
+        debugShowCheckedModeBanner: false,
+      ),
+  );
 }

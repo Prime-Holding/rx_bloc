@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '2.1.0'
+version '3.0.0'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -13,8 +13,8 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'idea'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
 
 intellij {
     version '2017.3'
@@ -41,10 +41,19 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
+     <li>v3.0.0 
+        <br /> - detecting user selected folder/item so the bootstrap (RxBloc Tests) menu item is optionally visible. 
+        <br /> - skip the feature/lib selection - when features are selected and directly generate tests
+        <br /> - improve a little bit more the imports in the tests
+        <br />
+        <br /> - added in create feature dialog - a combo box for choosing Routing Solution (Go Route, Auto Route, or None) 
+        <br /> - replace extensions with service when checkbox is On
+        <br /> - remove null safety checkbox
+    </li>
        <li>v2.1.0 
         <br /> - Allow scanning lib\\src folder for features and libs
-               - improved imports in the generated tests
-               - fix auto-wrap freeze
+        <br /> - improved imports in the generated tests
+        <br /> - fix auto-wrap freeze
        </li>
         <li>v2.0.0 
         <br /> - Added Boostrap Test Generator in the project menu that outputs

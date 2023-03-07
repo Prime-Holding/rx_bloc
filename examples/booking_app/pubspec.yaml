@@ -14,12 +14,11 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   animated_stream_list:
   appbar_textfield: ^1.0.1+1
-  auto_route: any
   badges: ^1.1.4
   collection: ^1.15.0-nullsafety.4
   cupertino_icons: ^1.0.0
@@ -30,6 +29,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_rx_bloc:
+  go_router: ^6.0.9
   image_picker: ^0.8.6
   intl: ^0.17.0
   provider: ^6.0.0
@@ -39,16 +39,19 @@ dependencies:
   rxdart: ^0.27.0
 
 dev_dependencies:
-  auto_route_generator: any
   build_runner: ^2.0.0
   clean_coverage: ^0.0.3
   flutter_lints: any
+  flutter_test:
+    sdk: flutter
+  go_router_builder: ^1.1.0
   golden_toolkit: ^0.14.0
   mockito: ^5.0.0
   quiver: ^3.0.0
   rx_bloc_generator:
   rx_bloc_test: ^3.2.0
   test: any
+
 
 
 dependency_overrides:

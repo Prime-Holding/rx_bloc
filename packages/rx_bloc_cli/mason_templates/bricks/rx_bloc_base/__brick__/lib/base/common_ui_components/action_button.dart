@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/design_system.dart';
+import 'app_loading_indicator.dart';
 
 class ActionButton extends StatelessWidget {
   /// Default constructor
@@ -33,9 +34,11 @@ class ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: CircularProgressIndicator(),
+      return Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: context.designSystem.spacing.xs1,
+        ),
+        child: AppLoadingIndicator.innerCircleValue(context),
       );
     }
 

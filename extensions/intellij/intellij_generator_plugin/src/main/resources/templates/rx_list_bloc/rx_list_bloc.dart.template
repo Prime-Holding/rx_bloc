@@ -1,7 +1,8 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
-
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/models/errors/error_model.dart';
 part '${bloc_snake_case}_list_bloc.rxb.g.dart';
 part '${bloc_snake_case}_list_bloc_extensions.dart';
 
@@ -18,7 +19,7 @@ abstract class ${bloc_pascal_case}ListBlocStates {
   Stream<bool> get isLoading;
 
   /// The error state
-  Stream<String> get errors;
+  Stream<ErrorModel> get errors;
 
   /// The paginated list data
   Stream<PaginatedList<${bloc_pascal_case}>> get paginatedList;
@@ -61,8 +62,7 @@ class ${bloc_pascal_case}ListBloc extends ${bloc_dollar_pascal_case}ListBloc {
   Stream<PaginatedList<${bloc_pascal_case}>> _mapToPaginatedListState() => _paginatedList;
 
   @override
-  Stream<String> _mapToErrorsState() =>
-      errorState.map((event) => event.toString());
+  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 @immutable
 class DesignSystemIcons {
-  const DesignSystemIcons();
+  DesignSystemIcons();
 
   final arrowBack = Icons.arrow_back;
 
@@ -19,4 +19,18 @@ class DesignSystemIcons {
   final login = Icons.login;
 
   final avatar = Icons.person;
+
+  final message = Icons.message;
+
+  final Icon calculateIcon = _getIcon(Icons.calculate);
+
+  final Icon listIcon = _getIcon(Icons.list);
+
+  final Icon accountIcon = _getIcon(Icons.account_box);
+
+  final Icon logoutIcon = _getIcon(Icons.logout);
+
+  final Icon linkIcon = _getIcon(Icons.link);
+
+  static Icon _getIcon(IconData iconData) => Icon(iconData);
 }
