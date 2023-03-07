@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import '../models/count.dart';
+import '../../base/models/count.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/remote/count_remote_data_source.dart';
 

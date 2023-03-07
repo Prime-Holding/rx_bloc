@@ -1,8 +1,7 @@
 {{> licence.dart }}
 
+import '../../base/models/count.dart';
 import '../../base/repositories/counter_repository.dart';
-import '../models/count.dart';
-
 class CounterService {
   CounterService(this._repository);
 
