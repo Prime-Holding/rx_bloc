@@ -70,14 +70,14 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       child: child,
     );
 
-  List<SingleChildWidget> get  _coordinator => [
+  List<SingleChildWidget> get _coordinator => [
         RxBlocProvider<CoordinatorBlocType>(
           create: (context) => CoordinatorBloc(),
         ),
       ];
 
   {{#analytics}}
-  List<Provider> get  _analytics => [
+  List<Provider> get _analytics => [
         Provider<FirebaseAnalytics>(create: (context) => FirebaseAnalytics.instance),
         Provider<FirebaseAnalyticsObserver>(
           create: (context) =>
@@ -90,13 +90,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         Provider<EnvironmentConfig>.value(value: config),
       ];
 
-  List<Provider> get  _mappers => [
+  List<Provider> get _mappers => [
         Provider<ErrorMapper>(
           create: (context) => ErrorMapper(context.read()),
         ),
       ];
 
-  List<Provider> get  _httpClients => [
+  List<Provider> get _httpClients => [
         Provider<PlainHttpClient>(
           create: (context) {
             return PlainHttpClient();
@@ -110,7 +110,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
-  List<SingleChildWidget> get  _dataStorages => [
+  List<SingleChildWidget> get _dataStorages => [
         Provider<SharedPreferencesInstance>(
             create: (context) => SharedPreferencesInstance()),
         Provider<FlutterSecureStorage>(
@@ -120,7 +120,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
-  List<Provider> get  _dataSources => [
+  List<Provider> get _dataSources => [
         // Use different data source depending on the platform.
         Provider<AuthTokenDataSource>(
             create: (context) => kIsWeb
@@ -161,7 +161,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
-  List<Provider> get  _repositories => [
+  List<Provider> get _repositories => [
         Provider<AuthRepository>(
           create: (context) => AuthRepository(
             context.read(),
@@ -199,7 +199,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
-  List<Provider> get  _services => [
+  List<Provider> get _services => [
         Provider<AuthService>(
           create: (context) => AuthService(
             context.read(),
@@ -234,7 +234,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
-  List<SingleChildWidget> get  _blocs => [
+  List<SingleChildWidget> get _blocs => [
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
             context.read(),
