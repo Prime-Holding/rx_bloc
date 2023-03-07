@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
   }
 
   int _getCurrentIndex(List<NavMenuItem> list, GoRouter router) {
-    int index = list.indexWhere((item) {
+    var index = list.indexWhere((item) {
       final routePath =
           router.routeInformationParser.matcher.findMatch(router.location);
       return routePath.fullpath.startsWith(item.routePath);
@@ -50,11 +50,19 @@ class HomePage extends StatelessWidget {
 
   List<NavMenuItem> navItemsList(BuildContext context) => [
         NavMenuItem(
+          title: context.l10n.dashboard,
+          icon: context.designSystem.icons.dashboard,
+          route: const DashboardRoute(),
+          routePath: RoutesPath.dashboard,
+        ),
+        {{#enable_feature_counter}}
+        NavMenuItem(
           title: context.l10n.navCounter,
           icon: context.designSystem.icons.calculateIcon,
           route: const CounterRoute(),
           routePath: RoutesPath.counter,
         ),
+        {{/enable_feature_counter}}
         NavMenuItem(
           title: context.l10n.navLinks,
           icon: context.designSystem.icons.linkIcon,

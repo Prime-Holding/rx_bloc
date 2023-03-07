@@ -10,3 +10,4 @@ vars:
   - uses_firebase
   - analytics
   - push_notifications
+  - enable_feature_counter

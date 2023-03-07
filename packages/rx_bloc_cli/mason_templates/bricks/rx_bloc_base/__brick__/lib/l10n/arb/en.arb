@@ -1,6 +1,7 @@
 {
     "@@locale": "en",
     "reload": "Reload",
+    "dashboard": "Dashboard",
     "ok" : "OK",
     "close" : "Close",
     "errorState" : "Error occurred",
