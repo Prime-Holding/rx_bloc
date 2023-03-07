@@ -36,10 +36,10 @@
       </component>
       <component id="75e06" class="javax.swing.JLabel">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Include extensions"/>
+          <text value="Include Feature Service"/>
         </properties>
       </component>
       <component id="7d19b" class="javax.swing.JCheckBox" binding="withDefaultStates">
@@ -51,29 +51,33 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="617e7" class="javax.swing.JCheckBox" binding="includeExtensions">
-        <constraints>
-          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value=""/>
-        </properties>
-      </component>
-      <component id="11869" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Include null safety"/>
-        </properties>
-      </component>
-      <component id="f6e32" class="javax.swing.JCheckBox" binding="includeNullSafety">
+      <component id="617e7" class="javax.swing.JCheckBox" binding="includeLocalService">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <selected value="true"/>
           <text value=""/>
+        </properties>
+      </component>
+      <component id="26b48" class="javax.swing.JLabel" binding="routingIntegration">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Routing Integration"/>
+        </properties>
+      </component>
+      <component id="f56c" class="javax.swing.JComboBox" binding="routingIntegrationSelection">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="Go Router"/>
+            <item value="Auto Route"/>
+            <item value="None"/>
+          </model>
         </properties>
       </component>
     </children>

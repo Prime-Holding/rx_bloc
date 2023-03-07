@@ -22,7 +22,6 @@ class LoginPage extends StatelessWidget {
               Center(
                 child: Container(
                   width: context.designSystem.spacing.xxxxl300,
-                  height: context.designSystem.spacing.xxxxl300,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
                       context.designSystem.spacing.xsss,

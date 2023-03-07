@@ -1,27 +1,29 @@
 package com.primeholding.rxbloc_generator_plugin.generator
 
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog.RoutingIntegration
+
 object RxBlocFeatureGeneratorFactory {
     fun getBlocGenerators(
         name: String,
         withDefaultStates: Boolean,
-        includeExtensions: Boolean,
-        includeNullSafety: Boolean
+        includeLocalService: Boolean,
+        routingIntegration: RoutingIntegration
     ): List<RxGeneratorBase> {
 
-        val blocClasses = RxBlocGeneratorFactory.getBlocGenerators(name, withDefaultStates, includeExtensions, includeNullSafety)
+        val blocClasses =
+            RxBlocGeneratorFactory.getBlocGenerators(name, withDefaultStates, includeLocalService)
 
         val dependencies = com.primeholding.rxbloc_generator_plugin.generator.components.RxDependenciesGenerator(
             name,
-            withDefaultStates,
-            includeExtensions,
-            includeNullSafety)
+            routingIntegration,
+            includeLocalService
+        )
 
         val page = com.primeholding.rxbloc_generator_plugin.generator.components.RxPageGenerator(
             name,
             withDefaultStates,
-            includeExtensions,
-            includeNullSafety)
-
+            routingIntegration
+        )
 
         return blocClasses + listOf(dependencies, page)
     }

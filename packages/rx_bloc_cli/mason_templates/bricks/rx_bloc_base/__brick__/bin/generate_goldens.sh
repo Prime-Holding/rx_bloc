@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-flutter test --update-goldens --name=Golden
+flutter test --update-goldens
