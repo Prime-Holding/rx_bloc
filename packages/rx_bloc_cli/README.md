@@ -23,6 +23,7 @@ Create a new project at the given directory with lots of already set-up features
 |  `--project-name` | Name of directory where the project resides | The project name for this new Flutter project. This must be a valid dart package name. |
 |  `--organisation` |                `com.example`                | The organisation name |
 |  `--enable-analytics` |                   `false`                   | Enables Firebase analytics for the project |
+|  `--enable-feature-counter` |                   `false`                   | Enables Counter feature for the project |
 
 ### What's Included? 📦
 

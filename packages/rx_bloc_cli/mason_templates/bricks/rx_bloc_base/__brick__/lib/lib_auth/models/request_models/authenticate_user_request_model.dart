@@ -6,7 +6,11 @@ part 'authenticate_user_request_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class AuthUserRequestModel {
-  AuthUserRequestModel({this.username, this.password, this.refreshToken});
+  AuthUserRequestModel({
+    this.username,
+    this.password,
+    this.refreshToken,
+  });
 
   final String? username;
   final String? password;

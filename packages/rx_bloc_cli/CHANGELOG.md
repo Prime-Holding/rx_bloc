@@ -1,4 +1,9 @@
-## [2.0.0] - TBD
+## [2.1.0] - March 08, 2023
+* Adding parameter `enable-feature-counter` for enabling the counter page example as part of the project
+* Adding `Dashboard` feature as initial page after user login
+* Bug fixing
+
+## [2.0.0] - February 28, 2023
 * `auto_route` and `auto_route_generator` were replaced by `go_router` and `go_router_builder`
 * The navigation goes through the business layer using the `refreshListenable` and `redirect` properties of the `GoRouter`
 * `Splash` screen initializing the application was implemented

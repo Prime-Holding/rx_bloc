@@ -10,7 +10,7 @@ import '../utils/server_exceptions.dart';
 // ignore_for_file: cascade_invocations
 
 class AuthenticationController extends ApiController {
-  static const _authHeader = 'Authorization';
+  static const authHeader = 'Authorization';
   final _authTokenRepository = AuthTokenRepository();
 
   @override
@@ -35,7 +35,7 @@ class AuthenticationController extends ApiController {
 
   bool isAuthenticated(Request request) {
     final headers = request.headers;
-    if (!headers.containsKey(_authHeader)) {
+    if (!headers.containsKey(authHeader)) {
       throw UnauthorizedException('User not authorized!');
     }
 
@@ -71,7 +71,8 @@ class AuthenticationController extends ApiController {
     return responseBuilder.buildOK(data: token.toJson());
   }
 
-  Response _logoutHandler(Request request) {
+  Future<Response> _logoutHandler(Request request) async {
+    await Future.delayed(const Duration(seconds: 1));
     isAuthenticated(request);
 
     final accessToken = _getAccessTokenFromAuthHeader(request.headers);
@@ -84,7 +85,7 @@ class AuthenticationController extends ApiController {
     try {
 // Usually the auth header looks like 'Bearer token', but if the format
 // is not respected, it may throw errors
-      return headers[_authHeader]?.split(' ')[1] ?? '';
+      return headers[authHeader]?.split(' ')[1] ?? '';
     } catch (e) {
       return '';
     }
