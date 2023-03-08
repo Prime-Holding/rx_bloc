@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
         ),
         {{#enable_feature_counter}}
         NavMenuItem(
-          title: context.l10n.navCounter,
+          title: context.l10n.featureCounter.navCounter,
           icon: context.designSystem.icons.calculateIcon,
           route: const CounterRoute(),
           routePath: RoutesPath.counter,
