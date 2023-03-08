@@ -10,13 +10,11 @@ class AuthUserRequestModel {
     this.username,
     this.password,
     this.refreshToken,
-    this.token,
   });
 
   final String? username;
   final String? password;
   final String? refreshToken;
-  final String? token;
 
   factory AuthUserRequestModel.fromJson(Map<String, dynamic> json) =>
       _$AuthUserRequestModelFromJson(json);

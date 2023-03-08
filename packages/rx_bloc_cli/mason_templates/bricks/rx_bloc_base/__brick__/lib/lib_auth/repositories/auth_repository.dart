@@ -59,10 +59,4 @@ class AuthRepository {
       );
 
   Future<void> logout() => _errorMapper.execute(() => _authDataSource.logout());
-
-  Future<void> validateAccessToken(String token) => _errorMapper.execute(
-        () => _authDataSource.validateToken(
-          AuthUserRequestModel(token: token),
-        ),
-      );
 }

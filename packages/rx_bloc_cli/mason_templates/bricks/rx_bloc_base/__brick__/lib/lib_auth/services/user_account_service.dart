@@ -78,15 +78,15 @@ class UserAccountService {
       log(e.toString());
     }
 
+    // Clear locally stored auth data
+    await _authRepository.clearAuthData();
+
     // Reload user permissions
     try {
       await _permissionsService.load();
     } catch (e) {
       log(e.toString());
     }
-
-    // Clear locally stored auth data
-    await _authRepository.clearAuthData();
 
     return true;
   }

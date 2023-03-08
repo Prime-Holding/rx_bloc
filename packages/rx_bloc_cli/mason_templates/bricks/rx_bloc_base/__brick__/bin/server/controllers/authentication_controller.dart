@@ -10,7 +10,7 @@ import '../utils/server_exceptions.dart';
 // ignore_for_file: cascade_invocations
 
 class AuthenticationController extends ApiController {
-  static const _authHeader = 'Authorization';
+  static const authHeader = 'Authorization';
   final _authTokenRepository = AuthTokenRepository();
 
   @override
@@ -31,16 +31,11 @@ class AuthenticationController extends ApiController {
       '/api/logout',
       _logoutHandler,
     );
-    router.addRequest(
-      RequestType.POST,
-      '/api/auth/validate-token',
-      _validateTokenHandler,
-    );
   }
 
   bool isAuthenticated(Request request) {
     final headers = request.headers;
-    if (!headers.containsKey(_authHeader)) {
+    if (!headers.containsKey(authHeader)) {
       throw UnauthorizedException('User not authorized!');
     }
 
@@ -89,7 +84,7 @@ class AuthenticationController extends ApiController {
     try {
 // Usually the auth header looks like 'Bearer token', but if the format
 // is not respected, it may throw errors
-      return headers[_authHeader]?.split(' ')[1] ?? '';
+      return headers[authHeader]?.split(' ')[1] ?? '';
     } catch (e) {
       return '';
     }
@@ -111,20 +106,5 @@ class AuthenticationController extends ApiController {
     }
 
     return _authTokenRepository.issueNewToken();
-  }
-
-  Future<Response> _validateTokenHandler(Request request) async {
-    final params = await request.bodyFromFormData();
-
-    throwIfEmpty(
-      params['token'],
-      BadRequestException('The token cannot be empty.'),
-    );
-
-    if (!_validateAccessToken(params['token'])) {
-      throw UnauthorizedException('The token is invalid!');
-    }
-
-    return responseBuilder.buildOK();
   }
 }
