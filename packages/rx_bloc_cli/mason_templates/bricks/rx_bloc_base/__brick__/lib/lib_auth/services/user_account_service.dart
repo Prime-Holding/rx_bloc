@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import '../../assets.dart';
 import '../../base/app/config/app_constants.dart';
+import '../../base/models/errors/error_model.dart';
 import '../../base/repositories/push_notification_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
 import '../repositories/auth_repository.dart';
@@ -20,11 +22,13 @@ class UserAccountService {
   ///
   /// After successful login saves the auth `token` and `refresh token` to
   /// persistent storage and loads the user permissions.
-  Future<bool> login({
+  Future<void> login({
     required String username,
     required String password,
   }) async {
-    if (username.isEmpty || password.isEmpty) return false;
+    if (username.isEmpty || password.isEmpty) {
+      throw GenericErrorModel(I18nErrorKeys.wrongEmailOrPassword);
+    }
 
     final authToken = await _authRepository.authenticate(
       email: username,
@@ -52,14 +56,12 @@ class UserAccountService {
     } catch (e) {
       log(e.toString());
     }
-
-    return true;
   }
 
   /// This method logs out the user and delete all stored auth token data.
   ///
   /// After logging out the user it reloads all permissions.
-  Future<bool> logout() async {
+  Future<void> logout() async {
     // Unsubscribe user push token
     try {
       final pushToken =
@@ -87,7 +89,5 @@ class UserAccountService {
     } catch (e) {
       log(e.toString());
     }
-
-    return true;
   }
 }

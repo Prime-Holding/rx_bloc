@@ -71,7 +71,8 @@ class AuthenticationController extends ApiController {
     return responseBuilder.buildOK(data: token.toJson());
   }
 
-  Response _logoutHandler(Request request) {
+  Future<Response> _logoutHandler(Request request) async {
+    await Future.delayed(const Duration(seconds: 1));
     isAuthenticated(request);
 
     final accessToken = _getAccessTokenFromAuthHeader(request.headers);

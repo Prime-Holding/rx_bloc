@@ -45,7 +45,7 @@ class PermissionsController extends ApiController {
       'CounterRouter': true,
       {{/enable_feature_counter}}
       'NotificationsRoute': true,
-      'LoginRoute': false,
+      'LoginRoute': true,
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
       'DeepLinkDetailsRoute': true,
