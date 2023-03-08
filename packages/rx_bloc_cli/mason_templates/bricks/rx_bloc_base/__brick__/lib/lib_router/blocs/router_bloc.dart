@@ -39,9 +39,8 @@ abstract class RouterBlocEvents {
 
 /// A contract class containing all states of the NavigationBloC.
 abstract class RouterBlocStates {
-
   /// The main state responsible for handling errors.
-  Stream<ErrorModel> get errors;
+  ConnectableStream<ErrorModel> get errors;
 
   /// The state is updated when one of the navigation methods: [go], [push] or
   /// [goToLocation] are called.
@@ -55,6 +54,7 @@ class RouterBloc extends $RouterBloc {
     required PermissionsService permissionsService,
   })  : _router = router,
         _permissionsService = permissionsService {
+    errors.connect().addTo(_compositeSubscription);
     navigationPath.connect().addTo(_compositeSubscription);
   }
 
@@ -62,8 +62,8 @@ class RouterBloc extends $RouterBloc {
   final GoRouter _router;
 
   @override
-  Stream<ErrorModel> _mapToErrorsState() =>
-      errorState.mapToErrorModel().share();
+  ConnectableStream<ErrorModel> _mapToErrorsState() =>
+      errorState.mapToErrorModel().publish();
 
   @override
   ConnectableStream<void> _mapToNavigationPathState() => Rx.merge([

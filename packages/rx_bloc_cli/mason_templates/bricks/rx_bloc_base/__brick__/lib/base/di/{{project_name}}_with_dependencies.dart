@@ -24,6 +24,8 @@ import '../../lib_auth/services/user_account_service.dart';
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
+import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
@@ -56,7 +58,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
     /// List of all providers used throughout the app
     providers: [
-        ..._coordinator,{{#analytics}}
+        ..._coordinator,
+        _appRouter,{{#analytics}}
         ..._analytics,{{/analytics}}
         ..._environment,
         ..._mappers,
@@ -75,6 +78,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => CoordinatorBloc(),
         ),
       ];
+
+  SingleChildWidget get _appRouter => Provider<AppRouter>(
+        create: (context) => AppRouter(context.read()),
+      );
 
   {{#analytics}}
   List<Provider> get _analytics => [
@@ -235,8 +242,15 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       ];
 
   List<SingleChildWidget> get _blocs => [
+        Provider<RouterBlocType>(
+          create: (context) => RouterBloc(
+            router: context.read<AppRouter>().router,
+            permissionsService: context.read(),
+          ),
+        ),
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),

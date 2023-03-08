@@ -50,11 +50,11 @@ abstract class LoginBlocStates {
 @RxBloc()
 class LoginBloc extends $LoginBloc {
   LoginBloc(
-      this._coordinatorBloc,
-      this._userAccountService,
-      this._validatorService,
-      this._permissionsService,
-      ) {
+    this._coordinatorBloc,
+    this._userAccountService,
+    this._validatorService,
+    this._permissionsService,
+  ) {
     loggedIn.connect().addTo(_compositeSubscription);
   }
 
@@ -71,9 +71,9 @@ class LoginBloc extends $LoginBloc {
 
   @override
   Stream<String> _mapToPasswordState() => Rx.merge([
-    _$setPasswordEvent.map(_validatorService.validatePassword),
-    errorState.mapToFieldException(_$setPasswordEvent),
-  ]).startWith('').shareReplay(maxSize: 1);
+        _$setPasswordEvent.map(_validatorService.validatePassword),
+        errorState.mapToFieldException(_$setPasswordEvent),
+      ]).startWith('').shareReplay(maxSize: 1);
 
   @override
   ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
@@ -81,17 +81,19 @@ class LoginBloc extends $LoginBloc {
       .throttleTime(const Duration(seconds: 1))
       .exhaustMap(
         (args) => _checkUserCredentialsAndGetPermission(args).asResultStream(),
-  )
+      )
       .setResultStateHandler(this)
-      .emitLoggedInToCoordinator(_coordinatorBloc)
+      .whereSuccess()
+      .emitAuthenticatedToCoordinator(_coordinatorBloc)
       .startWith(false)
       .publish();
 
   Future<bool> _checkUserCredentialsAndGetPermission(
-      CredentialsModel credentials,
-      ) async {
-    final response = await _userAccountService.login(
-        username: credentials.username, password: credentials.password);
+    CredentialsModel credentials,
+  ) async {
+    final response = await _userAccountService
+        .login(username: credentials.username, password: credentials.password)
+        .then((value) => true);
 
     await _permissionsService.load();
 
