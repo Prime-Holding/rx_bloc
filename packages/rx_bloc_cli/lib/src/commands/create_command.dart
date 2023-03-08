@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/templates/feature_counter_bundle.dart';
 
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
@@ -52,6 +53,7 @@ class CreateCommand extends Command<int> {
   final _organisationString = 'organisation';
   final _analyticsString = 'enable-analytics';
   final _counterString = 'enable-feature-counter';
+  final _counterBundle = featureCounterBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -153,9 +155,9 @@ class CreateCommand extends Command<int> {
           file.path ==
           'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart');
     }
-
-    if (!arguments.enableCounterFeature) {
-      _bundle.files.removeWhere((file) => file.path == 'lib/feature_counter');
+    // Add counter brick to _bundle when needed
+    if (arguments.enableCounterFeature) {
+      _bundle.files.addAll(_counterBundle.files);
     }
 
     _logger.info('');
