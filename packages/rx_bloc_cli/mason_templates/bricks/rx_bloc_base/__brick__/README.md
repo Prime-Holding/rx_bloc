@@ -144,11 +144,10 @@ Your app supports ACL out of the box, which means that the access to every page 
 
 Expected API Response structure/data for anonymous users.
 
-**Note**: The anonymous users have access to the splash and login route, but not to the **profile** route.
+**Note**: The anonymous users have access to the splash route, but not to the **profile** route.
 ```
 {
     'SplashRoute': true,
-    'LoginRoute': true,
     'ProfileRoute': false,
     ...
 }
@@ -156,11 +155,10 @@ Expected API Response structure/data for anonymous users.
 
 Expected structure/data for authenticated users.
 
-**Note**: The authenticated users have access to the splash and profile route, but not to the **login** route.
+**Note**: The authenticated users have access to the splash and profile route.
 ```
 {
     'SplashRoute': true,
-    'LoginRoute': false,
     'ProfileRoute': true,
     ...
 }

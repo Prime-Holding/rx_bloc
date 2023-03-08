@@ -2,7 +2,6 @@
 
 import '../../base/models/count.dart';
 import '../../base/repositories/counter_repository.dart';
-
 class CounterService {
   CounterService(this._repository);
 

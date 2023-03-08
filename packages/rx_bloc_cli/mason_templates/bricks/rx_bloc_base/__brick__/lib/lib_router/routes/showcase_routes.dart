@@ -1,5 +1,6 @@
 part of '../router.dart';
 
+{{#enable_feature_counter}}
 @TypedGoRoute<CounterRoute>(path: RoutesPath.counter)
 @immutable
 class CounterRoute extends GoRouteData implements RouteDataModel {
@@ -18,6 +19,7 @@ class CounterRoute extends GoRouteData implements RouteDataModel {
   @override
   String get routeLocation => location;
 }
+{{/enable_feature_counter}}
 
 @TypedGoRoute<DeepLinksRoute>(
   path: RoutesPath.deepLinks,

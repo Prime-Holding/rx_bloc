@@ -4,6 +4,11 @@ import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
 enum RouteModel {
+  dashboard(
+    pathName: RoutesPath.dashboard,
+    fullPath: '/dashboard',
+    permissionName: RoutePermissions.dashboard,
+  ),
   profile(
     pathName: RoutesPath.profile,
     fullPath: '/profile',
@@ -14,11 +19,13 @@ enum RouteModel {
     fullPath: '/splash',
     permissionName: RoutePermissions.splash,
   ),
+  {{#enable_feature_counter}}
   counter(
     pathName: RoutesPath.counter,
     fullPath: '/counter',
     permissionName: RoutePermissions.counter,
   ),
+  {{/enable_feature_counter}}
   notifications(
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',

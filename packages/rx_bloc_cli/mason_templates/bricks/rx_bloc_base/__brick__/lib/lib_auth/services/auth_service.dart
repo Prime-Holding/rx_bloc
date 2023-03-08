@@ -48,7 +48,7 @@ class AuthService {
   /// Checks the user credentials passed in [email], [password] and returns
   /// auth token.
   Future<AuthTokenModel> authenticate(
-      {String? email, String? password, String? refreshToken}) =>
+          {String? email, String? password, String? refreshToken}) =>
       _authRepository.authenticate(
         email: email,
         password: password,

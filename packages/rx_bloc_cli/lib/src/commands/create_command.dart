@@ -34,6 +34,11 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'com.example',
       )
       ..addOption(
+        _counterString,
+        help: 'The counter showcase feature',
+        defaultsTo: 'false',
+      )
+      ..addOption(
         _analyticsString,
         help: 'Enables Firebase analytics for the project',
         allowed: ['true', 'false'],
@@ -46,6 +51,7 @@ class CreateCommand extends Command<int> {
   final _projectNameString = 'project-name';
   final _organisationString = 'organisation';
   final _analyticsString = 'enable-analytics';
+  final _counterString = 'enable-feature-counter';
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -71,12 +77,63 @@ class CreateCommand extends Command<int> {
   @override
   Future<int> run() async {
     await _generateViaMasonBundle();
+    await _postGen();
     return ExitCode.success.code;
   }
 
   /// endregion
 
   /// region Code generation
+
+  Future<void> _postGen() async {
+    final arguments = _validateAndParseArguments(argResults!);
+    var progress = _logger.progress('dart pub get');
+
+    final dartGet = await Process.run(
+      'dart',
+      ['pub', 'get'],
+      workingDirectory: arguments.outputDirectory.path,
+    );
+
+    _progressFinish(dartGet, progress);
+
+    progress = _logger.progress(
+      'dart run build_runner build --delete-conflicting-outputs',
+    );
+
+    final buildRunner = await Process.run(
+      'dart',
+      [
+        'run',
+        'build_runner',
+        'build',
+        '--delete-conflicting-outputs',
+      ],
+      workingDirectory: arguments.outputDirectory.path,
+    );
+
+    _progressFinish(buildRunner, progress);
+
+    progress = _logger.progress(
+      'dart format .',
+    );
+
+    final format = await Process.run(
+      'dart',
+      ['format', '.'],
+      workingDirectory: arguments.outputDirectory.path,
+    );
+
+    _progressFinish(format, progress);
+  }
+
+  void _progressFinish(ProcessResult result, Progress progress) {
+    if (result.stderr.toString().trim().isNotEmpty) {
+      progress.fail(result.stderr.toString());
+    } else {
+      progress.complete();
+    }
+  }
 
   Future<void> _generateViaMasonBundle() async {
     final arguments = _validateAndParseArguments(argResults!);
@@ -97,6 +154,10 @@ class CreateCommand extends Command<int> {
           'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart');
     }
 
+    if (!arguments.enableCounterFeature) {
+      _bundle.files.removeWhere((file) => file.path == 'lib/feature_counter');
+    }
+
     _logger.info('');
     final fileGenerationProgress = _logger.progress('Bootstrapping');
     final generator = await _generator(_bundle);
@@ -109,6 +170,7 @@ class CreateCommand extends Command<int> {
         'uses_firebase': usesFirebase,
         'analytics': arguments.enableAnalytics,
         'push_notifications': true,
+        'enable_feature_counter': arguments.enableCounterFeature,
       },
     );
 
@@ -132,6 +194,7 @@ class CreateCommand extends Command<int> {
       organisation: _parseOrganisation(arguments),
       enableAnalytics: _parseEnableAnalytics(arguments),
       outputDirectory: _parseOutputDirectory(arguments),
+      enableCounterFeature: _parseEnableCounter(arguments),
     );
   }
 
@@ -154,6 +217,12 @@ class CreateCommand extends Command<int> {
     final rest = arguments.rest;
     _validateOutputDirectoryArg(rest);
     return Directory(rest.first);
+  }
+
+  /// Returns whether the project will be created with counter feature
+  bool _parseEnableCounter(ArgResults arguments) {
+    final counterEnabled = arguments[_counterString];
+    return counterEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will use analytics or not
@@ -237,6 +306,7 @@ class CreateCommand extends Command<int> {
 
     _usingLog('Firebase Analytics', arguments.enableAnalytics);
     _usingLog('Firebase Push Notifications', true);
+    _usingLog('Feature Counter', arguments.enableCounterFeature);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -261,10 +331,12 @@ class _CreateCommandArguments {
     required this.organisation,
     required this.enableAnalytics,
     required this.outputDirectory,
+    required this.enableCounterFeature,
   });
 
   final String projectName;
   final String organisation;
   final bool enableAnalytics;
   final Directory outputDirectory;
+  final bool enableCounterFeature;
 }

@@ -16,15 +16,15 @@ class PermissionsController extends ApiController {
   }
 
   Response permissionsHandler(Request request) {
-    try {
-      controllers
-          .getController<AuthenticationController>()
-          ?.isAuthenticated(request);
-    } catch (exception) {
+    final headers = request.headers;
+    if (!headers.containsKey(AuthenticationController.authHeader)) {
       return responseBuilder.buildOK(data: {
+        'DashboardRoute': false,
         'ProfileRoute': false,
         'SplashRoute': true,
+        {{#enable_feature_counter}}
         'CounterRouter': false,
+        {{/enable_feature_counter}}
         'NotificationsRoute': false,
         'LoginRoute': true,
         'EnterMessageRoute': false,
@@ -32,12 +32,20 @@ class PermissionsController extends ApiController {
         'DeepLinkDetailsRoute': false,
       });
     }
+
+    controllers
+        .getController<AuthenticationController>()
+        ?.isAuthenticated(request);
+
     return responseBuilder.buildOK(data: {
+      'DashboardRoute': true,
       'ProfileRoute': true,
       'SplashRoute': true,
+      {{#enable_feature_counter}}
       'CounterRouter': true,
+      {{/enable_feature_counter}}
       'NotificationsRoute': true,
-      'LoginRoute': false,
+      'LoginRoute': true,
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
       'DeepLinkDetailsRoute': true,

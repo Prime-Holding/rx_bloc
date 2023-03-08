@@ -2,9 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-
 import '../../models/count.dart';
-
 part 'count_remote_data_source.g.dart';
 
 /// Used as a contractor for remote data source.

@@ -20,3 +20,22 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
   @override
   String get routeLocation => location;
 }
+
+@TypedGoRoute<DashboardRoute>(path: RoutesPath.dashboard)
+@immutable
+class DashboardRoute extends GoRouteData implements RouteDataModel {
+  const DashboardRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const DashboardPageWithDependencies(),
+      );
+
+  @override
+  String get permissionName => RouteModel.dashboard.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
