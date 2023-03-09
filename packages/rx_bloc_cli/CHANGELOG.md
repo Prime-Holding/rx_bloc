@@ -1,3 +1,6 @@
+## [2.2.0] - TBD
+* Update documentation
+
 ## [2.1.0] - March 08, 2023
 * Adding parameter `enable-feature-counter` for enabling the counter page example as part of the project
 * Adding `Dashboard` feature as initial page after user login
