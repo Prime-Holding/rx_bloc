@@ -50,10 +50,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	{{#enable_feature_deeplinks}}
 	<key>FlutterDeepLinkingEnabled</key>
     <true/>
-	{{/enable_feature_deeplinks}}
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
