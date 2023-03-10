@@ -352,8 +352,8 @@ class CreateCommand extends Command<int> {
 
     _usingLog('Firebase Analytics', arguments.enableAnalytics);
     _usingLog('Firebase Push Notifications', true);
-    _usingLog('Feature Deep links', arguments.enableDeeplinkFeature);
     _usingLog('Feature Counter Showcase', arguments.enableCounterFeature);
+    _usingLog('Feature Deep links Showcase', arguments.enableDeeplinkFeature);
     _usingLog(
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,

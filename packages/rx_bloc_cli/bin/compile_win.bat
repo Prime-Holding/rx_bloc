@@ -12,10 +12,10 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & del feature_widget_toolkit_bundle.dart ^
 & dart pub global activate -s path . --overwrite ^
 & del  -rf example/test_app ^
-& rx_bloc_cli create^
---organisation com.primeholding^
+& rx_bloc_cli create ^
+--organisation com.primeholding ^
 --project-name test_app ^
---enable-feature-counter false^
---enable-feature-deeplinks false^
---enable-feature-widget-toolkit true^
+--enable-feature-counter true ^
+--enable-feature-deeplinks true ^
+--enable-feature-widget-toolkit true ^
 example/test_app & cd example/test_app
