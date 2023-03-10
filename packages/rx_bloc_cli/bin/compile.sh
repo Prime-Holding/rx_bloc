@@ -10,6 +10,6 @@ dart run rx_bloc_cli create \
   --project-name=test_app \
   --organisation=com.primeholding \
   --enable-feature-counter=true \
-  --enable-feature-widget-toolkit=false \
+  --enable-feature-widget-toolkit=true \
   example/test_app
 cp example/test_app/README.md example/
