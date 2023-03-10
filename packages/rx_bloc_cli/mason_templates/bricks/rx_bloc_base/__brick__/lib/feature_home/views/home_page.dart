@@ -72,12 +72,14 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.widgetToolkit,
         ),
         {{/enable_feature_widget_toolkit}}
+        {{#enable_feature_deeplinks}}
         NavMenuItem(
-          title: context.l10n.navLinks,
+          title: context.l10n.featureDeepLink.navLinks,
           icon: context.designSystem.icons.linkIcon,
           route: const DeepLinksRoute(),
           routePath: RoutesPath.deepLinks,
         ),
+        {{/enable_feature_deeplinks}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,
