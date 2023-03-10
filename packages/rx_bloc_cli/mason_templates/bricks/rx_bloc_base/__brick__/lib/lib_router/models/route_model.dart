@@ -36,6 +36,7 @@ enum RouteModel {
     fullPath: '/login',
     permissionName: RoutePermissions.login,
   ),
+  {{#enable_feature_deeplinks}}
   enterMessage(
     pathName: RoutesPath.enterMessage,
     fullPath: '/enterMessage',
@@ -50,7 +51,9 @@ enum RouteModel {
     pathName: RoutesPath.deepLinkDetails,
     fullPath: '/deepLinks/:id',
     permissionName: RoutePermissions.deepLinkDetails,
-  );
+  )
+  {{/enable_feature_deeplinks}}
+  ;
 
   final String pathName;
   final String fullPath;

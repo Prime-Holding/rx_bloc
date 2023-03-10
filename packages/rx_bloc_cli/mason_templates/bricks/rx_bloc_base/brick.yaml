@@ -11,3 +11,4 @@ vars:
   - analytics
   - push_notifications
   - enable_feature_counter
+  - enable_feature_deeplinks

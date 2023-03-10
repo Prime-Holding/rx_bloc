@@ -23,6 +23,7 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            {{#enable_feature_deeplinks}}
             <!-- Deep links -->
             <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
             <intent-filter android:autoVerify="true">
@@ -33,6 +34,7 @@
                 <data android:scheme="https" />
             </intent-filter>
             <!-- /Deep links -->
+            {{/enable_feature_deeplinks}}
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

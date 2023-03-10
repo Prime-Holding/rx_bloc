@@ -7,14 +7,18 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';
+{{#enable_feature_deeplinks}}
 import '../base/models/deep_link_model.dart';
+{{/enable_feature_deeplinks}}
 {{#enable_feature_counter}}
 import '../feature_counter/di/counter_page_with_dependencies.dart';
 {{/enable_feature_counter}}
 import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';
+{{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';
+{{/enable_feature_deeplinks}}
 import '../feature_home/views/home_page.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';
@@ -31,7 +35,9 @@ part 'router.g.dart';
 part 'routes/onboarding_routes.dart';
 part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
+{{#enable_feature_deeplinks}}
 part 'routes/showcase_routes.dart';
+{{/enable_feature_deeplinks}}
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
@@ -78,7 +84,9 @@ class AppRouter {
               {{#enable_feature_counter}}
               $counterRoute,
               {{/enable_feature_counter}}
+              {{#enable_feature_deeplinks}}
               $deepLinksRoute,
+              {{/enable_feature_deeplinks}}
               $profileRoute,
             ]),
       ];
