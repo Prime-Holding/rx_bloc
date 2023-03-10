@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:widget_toolkit/item_picker.dart';
 
 import '../models/data_model.dart';

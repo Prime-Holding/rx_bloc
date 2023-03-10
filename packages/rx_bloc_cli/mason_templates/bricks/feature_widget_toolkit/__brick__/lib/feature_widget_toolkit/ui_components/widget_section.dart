@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 
 class WidgetSection extends StatelessWidget {

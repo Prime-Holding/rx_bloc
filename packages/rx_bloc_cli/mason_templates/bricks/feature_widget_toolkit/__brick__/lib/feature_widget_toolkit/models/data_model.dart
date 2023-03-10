@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:equatable/equatable.dart';
 import 'package:widget_toolkit/models.dart';
 

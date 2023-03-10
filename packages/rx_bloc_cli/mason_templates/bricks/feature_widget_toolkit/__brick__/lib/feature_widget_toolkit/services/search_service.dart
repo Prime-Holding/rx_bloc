@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:widget_toolkit/edit_address.dart';
 import 'package:widget_toolkit/search_picker.dart';
 

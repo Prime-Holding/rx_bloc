@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 
 import 'common_components_page.dart';

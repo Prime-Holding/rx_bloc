@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:widget_toolkit/language_picker.dart';

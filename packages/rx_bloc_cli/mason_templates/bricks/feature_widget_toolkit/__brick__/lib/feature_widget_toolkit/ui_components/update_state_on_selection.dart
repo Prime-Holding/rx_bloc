@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 
 class UpdateStateOnSelection<T> extends StatefulWidget {

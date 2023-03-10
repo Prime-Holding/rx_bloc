@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:widget_toolkit/text_field_dialog.dart';
 
 import '../../assets.dart';

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 import 'package:widget_toolkit/edit_address.dart';
 import 'package:widget_toolkit/item_picker.dart';

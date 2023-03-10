@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/widgets.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 

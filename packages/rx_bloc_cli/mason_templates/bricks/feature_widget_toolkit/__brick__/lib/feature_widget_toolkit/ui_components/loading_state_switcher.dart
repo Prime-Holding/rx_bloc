@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/widgets.dart';
 
 class LoadingStateSwitcher extends StatefulWidget {
