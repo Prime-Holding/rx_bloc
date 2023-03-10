@@ -244,8 +244,8 @@ class CreateCommand extends Command<int> {
 
   /// Returns whether the project will be created with widget toolkit feature
   bool _parseEnableWidgetToolkit(ArgResults arguments) {
-    final counterEnabled = arguments[_widgetToolkitString];
-    return counterEnabled.toLowerCase() == 'true';
+    final widgetToolkitEnabled = arguments[_widgetToolkitString];
+    return widgetToolkitEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will use analytics or not
@@ -330,8 +330,10 @@ class CreateCommand extends Command<int> {
     _usingLog('Firebase Analytics', arguments.enableAnalytics);
     _usingLog('Firebase Push Notifications', true);
     _usingLog('Feature Counter Showcase', arguments.enableCounterFeature);
-    _usingLog('Firebase Widget Toolkit Showcase',
-        arguments.enableWidgetToolkitFeature);
+    _usingLog(
+      'Feature Widget Toolkit Showcase',
+      arguments.enableWidgetToolkitFeature,
+    );
   }
 
   /// Shows a delayed log with a success symbol in front of it
