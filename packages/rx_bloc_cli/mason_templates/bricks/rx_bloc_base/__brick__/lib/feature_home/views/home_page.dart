@@ -64,6 +64,14 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.counter,
         ),
         {{/enable_feature_counter}}
+        {{#enable_feature_widget_toolkit}}
+        NavMenuItem(
+          title: context.l10n.featureWidgetToolkit.navWidgetToolkit,
+          icon: context.designSystem.icons.widgetIcon,
+          route: const WidgetToolkitRoute(),
+          routePath: RoutesPath.widgetToolkit,
+        ),
+        {{/enable_feature_widget_toolkit}}
         NavMenuItem(
           title: context.l10n.navLinks,
           icon: context.designSystem.icons.linkIcon,
