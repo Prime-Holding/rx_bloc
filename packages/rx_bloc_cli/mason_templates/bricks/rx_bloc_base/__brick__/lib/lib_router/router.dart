@@ -14,6 +14,9 @@ import '../base/models/deep_link_model.dart';
 import '../feature_counter/di/counter_page_with_dependencies.dart';
 {{/enable_feature_counter}}
 import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';
+{{#enable_feature_widget_toolkit}}
+import '../feature_widget_toolkit/views/widget_toolkit_page.dart';
+{{/enable_feature_widget_toolkit}}
 {{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
@@ -85,6 +88,9 @@ class AppRouter {
               {{#enable_feature_deeplinks}}
               $deepLinksRoute,
               {{/enable_feature_deeplinks}}
+              {{#enable_feature_widget_toolkit}}
+              $widgetToolkitRoute,
+              {{/enable_feature_widget_toolkit}}
               $profileRoute,
             ]),
       ];

@@ -4,6 +4,7 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_counter_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
 
 import '../templates/feature_deeplink_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
@@ -41,6 +42,11 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
+        _widgetToolkitString,
+        help: 'The widget toolkit showcase feature',
+        defaultsTo: 'false',
+      )
+      ..addOption(
         _deepLinkString,
         help: 'The deeplink showcase feature',
         defaultsTo: 'false',
@@ -60,10 +66,12 @@ class CreateCommand extends Command<int> {
   final _analyticsString = 'enable-analytics';
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
+  final _widgetToolkitString = 'enable-feature-widget-toolkit';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
   final _deepLinkBundle = featureDeeplinkBundle;
+  final _widgetToolkitBundle = featureWidgetToolkitBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -170,6 +178,12 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_counterBundle.files);
     }
 
+    // Add widget toolkit brick to _bundle when needed
+    if (arguments.enableWidgetToolkitFeature) {
+      _bundle.files.addAll(_widgetToolkitBundle.files);
+    }
+
+    // Add deep link brick to _bundle when needed
     if (arguments.enableDeeplinkFeature) {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
@@ -188,6 +202,7 @@ class CreateCommand extends Command<int> {
         'push_notifications': true,
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
+        'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
       },
     );
 
@@ -213,6 +228,7 @@ class CreateCommand extends Command<int> {
       outputDirectory: _parseOutputDirectory(arguments),
       enableCounterFeature: _parseEnableCounter(arguments),
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
+      enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
     );
   }
 
@@ -241,6 +257,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableCounter(ArgResults arguments) {
     final counterEnabled = arguments[_counterString];
     return counterEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with widget toolkit feature
+  bool _parseEnableWidgetToolkit(ArgResults arguments) {
+    final widgetToolkitEnabled = arguments[_widgetToolkitString];
+    return widgetToolkitEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will use analytics or not
@@ -330,8 +352,12 @@ class CreateCommand extends Command<int> {
 
     _usingLog('Firebase Analytics', arguments.enableAnalytics);
     _usingLog('Firebase Push Notifications', true);
-    _usingLog('Feature Counter', arguments.enableCounterFeature);
     _usingLog('Feature Deep links', arguments.enableDeeplinkFeature);
+    _usingLog('Feature Counter Showcase', arguments.enableCounterFeature);
+    _usingLog(
+      'Feature Widget Toolkit Showcase',
+      arguments.enableWidgetToolkitFeature,
+    );
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -358,6 +384,7 @@ class _CreateCommandArguments {
     required this.outputDirectory,
     required this.enableCounterFeature,
     required this.enableDeeplinkFeature,
+    required this.enableWidgetToolkitFeature,
   });
 
   final String projectName;
@@ -366,4 +393,5 @@ class _CreateCommandArguments {
   final Directory outputDirectory;
   final bool enableCounterFeature;
   final bool enableDeeplinkFeature;
+  final bool enableWidgetToolkitFeature;
 }

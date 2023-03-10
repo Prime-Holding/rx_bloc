@@ -33,6 +33,7 @@ dependencies:
   rx_bloc_list: ^3.2.1
   rxdart: ^0.27.5
   shared_preferences: ^2.0.15
+  widget_toolkit: ^0.0.1-dev5
 
   # Server related packages
   shelf: ^1.4.0
@@ -77,6 +78,9 @@ r_flutter:
     {{#enable_feature_counter}}
     - name: feature_counter
     {{/enable_feature_counter}}
+    {{#enable_feature_widget_toolkit}}
+    - name: feature_widget_toolkit
+    {{/enable_feature_widget_toolkit}}
     - name: feature_login
     - name: feature_notifications
     {{#enable_feature_deeplinks}}
