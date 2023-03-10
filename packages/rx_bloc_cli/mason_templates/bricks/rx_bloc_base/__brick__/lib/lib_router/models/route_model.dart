@@ -26,6 +26,13 @@ enum RouteModel {
     permissionName: RoutePermissions.counter,
   ),
   {{/enable_feature_counter}}
+  {{#enable_feature_widget_toolkit}}
+  widgetToolkit(
+    pathName: RoutesPath.widgetToolkit,
+    fullPath: '/widget-toolkit',
+    permissionName: RoutePermissions.widgetToolkit,
+  ),
+  {{/enable_feature_widget_toolkit}}
   notifications(
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',

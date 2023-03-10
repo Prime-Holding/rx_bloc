@@ -4,6 +4,7 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_counter_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
 
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
@@ -40,6 +41,11 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
+        _widgetToolkitString,
+        help: 'The widget toolkit showcase feature',
+        defaultsTo: 'false',
+      )
+      ..addOption(
         _analyticsString,
         help: 'Enables Firebase analytics for the project',
         allowed: ['true', 'false'],
@@ -53,7 +59,9 @@ class CreateCommand extends Command<int> {
   final _organisationString = 'organisation';
   final _analyticsString = 'enable-analytics';
   final _counterString = 'enable-feature-counter';
+  final _widgetToolkitString = 'enable-feature-widget-toolkit';
   final _counterBundle = featureCounterBundle;
+  final _widgetToolkitBundle = featureWidgetToolkitBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -160,6 +168,11 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_counterBundle.files);
     }
 
+    // Add widget toolkit brick to _bundle when needed
+    if (arguments.enableWidgetToolkitFeature) {
+      _bundle.files.addAll(_widgetToolkitBundle.files);
+    }
+
     _logger.info('');
     final fileGenerationProgress = _logger.progress('Bootstrapping');
     final generator = await _generator(_bundle);
@@ -173,6 +186,7 @@ class CreateCommand extends Command<int> {
         'analytics': arguments.enableAnalytics,
         'push_notifications': true,
         'enable_feature_counter': arguments.enableCounterFeature,
+        'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
       },
     );
 
@@ -197,6 +211,7 @@ class CreateCommand extends Command<int> {
       enableAnalytics: _parseEnableAnalytics(arguments),
       outputDirectory: _parseOutputDirectory(arguments),
       enableCounterFeature: _parseEnableCounter(arguments),
+      enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
     );
   }
 
@@ -224,6 +239,12 @@ class CreateCommand extends Command<int> {
   /// Returns whether the project will be created with counter feature
   bool _parseEnableCounter(ArgResults arguments) {
     final counterEnabled = arguments[_counterString];
+    return counterEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with widget toolkit feature
+  bool _parseEnableWidgetToolkit(ArgResults arguments) {
+    final counterEnabled = arguments[_widgetToolkitString];
     return counterEnabled.toLowerCase() == 'true';
   }
 
@@ -308,7 +329,9 @@ class CreateCommand extends Command<int> {
 
     _usingLog('Firebase Analytics', arguments.enableAnalytics);
     _usingLog('Firebase Push Notifications', true);
-    _usingLog('Feature Counter', arguments.enableCounterFeature);
+    _usingLog('Feature Counter Showcase', arguments.enableCounterFeature);
+    _usingLog('Firebase Widget Toolkit Showcase',
+        arguments.enableWidgetToolkitFeature);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -334,6 +357,7 @@ class _CreateCommandArguments {
     required this.enableAnalytics,
     required this.outputDirectory,
     required this.enableCounterFeature,
+    required this.enableWidgetToolkitFeature,
   });
 
   final String projectName;
@@ -341,4 +365,5 @@ class _CreateCommandArguments {
   final bool enableAnalytics;
   final Directory outputDirectory;
   final bool enableCounterFeature;
+  final bool enableWidgetToolkitFeature;
 }
