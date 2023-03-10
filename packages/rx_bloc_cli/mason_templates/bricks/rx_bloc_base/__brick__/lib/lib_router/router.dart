@@ -35,9 +35,7 @@ part 'router.g.dart';
 part 'routes/onboarding_routes.dart';
 part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
-{{#enable_feature_deeplinks}}
 part 'routes/showcase_routes.dart';
-{{/enable_feature_deeplinks}}
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
