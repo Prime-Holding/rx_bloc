@@ -10,5 +10,6 @@ dart run rx_bloc_cli create \
   --project-name=test_app \
   --organisation=com.primeholding \
   --enable-feature-counter=false \
+  --enable-feature-deeplinks=false\
   example/test_app
 cp example/test_app/README.md example/
