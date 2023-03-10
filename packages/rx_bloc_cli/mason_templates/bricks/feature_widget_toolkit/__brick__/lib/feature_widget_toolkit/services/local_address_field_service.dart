@@ -13,11 +13,8 @@ class LocalAddressFieldService extends TextFieldValidator<String> {
   Future<String> validateOnSubmit(String text) async {
     await Future.delayed(const Duration(seconds: 1));
     if (text.length >= maxLengthRequired) {
-      await Future.delayed(const Duration(seconds: 1));
       throw FieldErrorModel<String>(
-        ///TODO: Add the proper key
-        ///// error: 'Please enter at max $maxLengthRequired symbols',
-        errorKey: I18nErrorKeys.passwordLength,
+        errorKey: I18nFeatureWidgetToolkitKeys.tooLong,
         fieldValue: text,
       );
     }
@@ -28,9 +25,7 @@ class LocalAddressFieldService extends TextFieldValidator<String> {
   void validateOnType(String text) {
     if (text.length < minLengthRequired) {
       throw FieldErrorModel<String>(
-        // error: 'Please enter at least $minLengthRequired symbols',
-        ///TODO: Add the proper key
-        errorKey: I18nErrorKeys.passwordLength,
+        errorKey: I18nFeatureWidgetToolkitKeys.tooShort,
         fieldValue: text,
       );
     }

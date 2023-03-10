@@ -1,4 +1,6 @@
 {
   "@@locale": "en",
-  "navWidgetToolkit": "Widgets"
+  "navWidgetToolkit": "Widgets",
+  "tooLong": "The entered text is too long",
+  "tooShort": "The entered text is too short"
 }
