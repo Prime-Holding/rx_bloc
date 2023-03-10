@@ -21,6 +21,8 @@ class CounterRoute extends GoRouteData implements RouteDataModel {
 }
 {{/enable_feature_counter}}
 
+
+{{#enable_feature_deeplinks}}
 @TypedGoRoute<DeepLinksRoute>(
   path: RoutesPath.deepLinks,
   routes: <TypedGoRoute<GoRouteData>>[
@@ -90,3 +92,4 @@ class EnterMessageRoute extends GoRouteData implements RouteDataModel {
   @override
   String get routeLocation => location;
 }
+{{/enable_feature_deeplinks}}
