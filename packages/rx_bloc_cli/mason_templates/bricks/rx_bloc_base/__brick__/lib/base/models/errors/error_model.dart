@@ -1,7 +1,10 @@
+{{> licence.dart }}
+
 import '../../../assets.dart' show I18nErrorKeys;
 
 part 'access_denied_error_model.dart';
 part 'connection_refused_error_model.dart';
+part 'error_form_field_model.dart';
 part 'error_server_generic_model.dart';
 part 'field_error_model.dart';
 part 'field_required_error_model.dart';

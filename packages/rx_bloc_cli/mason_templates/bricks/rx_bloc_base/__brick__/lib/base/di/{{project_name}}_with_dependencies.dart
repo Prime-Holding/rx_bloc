@@ -28,27 +28,17 @@ import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
-import '../common_mappers/error_mappers/error_mapper.dart';
-{{#enable_feature_deeplinks}}
-import '../common_services/deep_link_service.dart';
-{{/enable_feature_deeplinks}}
-import '../data_sources/local/shared_preferences_instance.dart';
-{{#enable_feature_counter}}
-import '../data_sources/remote/count_remote_data_source.dart';
-{{/enable_feature_counter}}
-{{#enable_feature_deeplinks}}
-import '../data_sources/remote/deep_link_remote_data_source.dart';
-{{/enable_feature_deeplinks}}
+import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
+import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
+import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';
-{{#enable_feature_deeplinks}}
-import '../repositories/deep_link_repository.dart';
-{{/enable_feature_deeplinks}}
+import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_counter}}
+import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';
-{{#enable_feature_counter}}
-import '../repositories/{{#enable_feature_counter}}counter_repository.dart{{/enable_feature_counter}}';
-{{/enable_feature_counter}}
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   const {{project_name.pascalCase()}}WithDependencies({

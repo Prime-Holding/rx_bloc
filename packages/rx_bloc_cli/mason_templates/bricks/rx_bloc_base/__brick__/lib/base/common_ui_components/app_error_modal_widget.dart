@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
-import '../../lib_router/blocs/router_bloc.dart';
+import '../../app_extensions.dart';
 import '../extensions/error_model_translations.dart';
 import '../models/errors/error_model.dart';
 
@@ -15,34 +16,28 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
     extends StatelessWidget {
   const AppErrorModalWidget({
     required this.errorState,
-    this.isListeningForNavigationErrors = true,
     Key? key,
   }) : super(key: key);
 
   final ErrorStateCallback<BlocType> errorState;
-  final bool isListeningForNavigationErrors;
 
   @override
-  Widget build(BuildContext context) => Column(
-      children: [
-        RxBlocListener<BlocType, ErrorModel>(
-          state: (bloc) => errorState(bloc),
-          listener: _onError,
+  Widget build(BuildContext context) => RxBlocListener<BlocType, ErrorModel>(
+        state: (bloc) => errorState(bloc),
+        listener: (context, error) => showBlurredBottomSheet(
+          context: context,
+          builder: (BuildContext context) => Padding(
+            padding: EdgeInsets.fromLTRB(
+              context.designSystem.spacing.l,
+              context.designSystem.spacing.l,
+              context.designSystem.spacing.l,
+              0,
+            ),
+            child: MessagePanelWidget(
+              message: error.translate(context),
+              messageState: MessagePanelState.neutral,
+            ),
+          ),
         ),
-        if (isListeningForNavigationErrors)
-        RxBlocListener<RouterBlocType, ErrorModel>(
-          state: (bloc) => bloc.states.errors,
-          listener: (context, state) => _onError(context, state),
-        ),
-      ],
-  );
-
-  void _onError(BuildContext context, ErrorModel errorModel) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorModel.translate(context)),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
+      );
 }

@@ -1,11 +1,11 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
+import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
 import '../extensions/error_model_translations.dart';
 import '../models/errors/error_model.dart';
-import 'primary_button.dart';
 
 class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({
@@ -26,9 +26,12 @@ class AppErrorWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: context.designSystem.spacing.l),
-          PrimaryButton(
-            onPressed: onTabRetry,
-            child: Text(context.l10n.tryAgain),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: OutlineFillButton(
+              onPressed: onTabRetry,
+              text: context.l10n.tryAgain,
+            ),
           ),
         ],
       );

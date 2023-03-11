@@ -21,17 +21,14 @@ class PermissionsController extends ApiController {
       return responseBuilder.buildOK(data: {
         'DashboardRoute': false,
         'ProfileRoute': false,
-        'SplashRoute': true,
-        {{#enable_feature_counter}}
-        'CounterRouter': false,
-        {{/enable_feature_counter}}
+        'SplashRoute': true,{{#enable_feature_counter}}
+        'CounterRoute': false,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
+        'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
         'NotificationsRoute': false,
-        'LoginRoute': true,
-        {{#enable_feature_deeplinks}}
+        'LoginRoute': true,{{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
         'DeepLinksRoute': false,
-        'DeepLinkDetailsRoute': false,
-        {{/enable_feature_deeplinks}}
+        'DeepLinkDetailsRoute': false,{{/enable_feature_deeplinks}}
       });
     }
 
@@ -42,17 +39,14 @@ class PermissionsController extends ApiController {
     return responseBuilder.buildOK(data: {
       'DashboardRoute': true,
       'ProfileRoute': true,
-      'SplashRoute': true,
-      {{#enable_feature_counter}}
-      'CounterRouter': true,
-      {{/enable_feature_counter}}
+      'SplashRoute': true,{{#enable_feature_counter}}
+      'CounterRoute': true,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
+      'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
       'NotificationsRoute': true,
-      'LoginRoute': true,
-      {{#enable_feature_deeplinks}}
+      'LoginRoute': true,{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
-      'DeepLinkDetailsRoute': true,
-      {{/enable_feature_deeplinks}}
+      'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}
     });
   }
 }

@@ -10,15 +10,11 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart' as shelf_static;
 
-import 'controllers/authentication_controller.dart';
-{{#enable_feature_deeplinks}}
-import 'controllers/deep_links_controller.dart';
-{{/enable_feature_deeplinks}}
+import 'controllers/authentication_controller.dart';{{#enable_feature_counter}}
+import 'controllers/count_controller.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+import 'controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}
 import 'controllers/permissions_controller.dart';
 import 'controllers/push_notifications_controller.dart';
-{{#enable_feature_counter}}
-import 'controllers/{{#enable_feature_counter}}count_controller.dart{{/enable_feature_counter}}';
-{{/enable_feature_counter}}
 import 'utils/api_controller.dart';
 
 Future main() async {

@@ -1,9 +1,7 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
-{{#enable_feature_widget_toolkit}}
 import 'package:widget_toolkit/widget_toolkit.dart';
-{{/enable_feature_widget_toolkit}}
 
 import './design_system.dart';
 import './design_system/design_system_colors.dart';
@@ -40,13 +38,11 @@ class {{project_name.pascalCase()}}Theme {
       iconTheme: _buildIconTheme(baseTheme.iconTheme, designSystemColor),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
-        {{#enable_feature_widget_toolkit}}
         isLightTheme ? WidgetToolkitTheme.light : WidgetToolkitTheme.dark,
         isLightTheme ? ItemPickerTheme.light : ItemPickerTheme.dark,
         isLightTheme ? SearchPickerTheme.light : SearchPickerTheme.dark,
         isLightTheme ? TextFieldDialogTheme.light : TextFieldDialogTheme.dark,
         isLightTheme ? EditAddressTheme.light : EditAddressTheme.dark,
-        {{/enable_feature_widget_toolkit}}
       ],
       // Override any material widget themes here if needed.
     );
