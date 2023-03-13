@@ -14,9 +14,9 @@ class EnterMessageFieldService extends TextFieldValidator<String> {
   @override
   void validateOnType(String text) {
     if (text.length < minLengthRequired) {
-      throw ErrorFormFieldModel<String>(
+      throw FieldErrorModel<String>(
         fieldValue: text,
-        translationKey: I18nErrorKeys.invalidMessage,
+        errorKey: I18nErrorKeys.invalidMessage,
       );
     }
   }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
@@ -71,7 +72,7 @@ class EnterMessagePage extends StatelessWidget {
                           value: message.data,
                           emptyLabel:
                               context.l10n.featureEnterMessage.fieldHintMessage,
-                          validator: EnterMessageFieldService(),
+                          validator: context.read<EnterMessageFieldService>(),
                           header:
                               context.l10n.featureEnterMessage.fieldHintMessage,
                           onChanged: (value) => bloc.events.setMessage(value),

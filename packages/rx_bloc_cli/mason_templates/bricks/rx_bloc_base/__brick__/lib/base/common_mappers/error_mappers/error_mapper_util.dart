@@ -8,9 +8,9 @@ import '../../models/errors/error_model.dart';
 
 class ErrorMapperUtil<T> {
   RxFieldException<T> fromErrorModel(Object error, BuildContext context) {
-    if (error is ErrorFormFieldModel) {
+    if (error is FieldErrorModel) {
       throw RxFieldException<T>(
-          error: context.l10n.error.getString(error.translationKey) ??
+          error: context.l10n.error.getString(error.errorKey) ??
               context.l10n.error.unknown,
           fieldValue: error.fieldValue);
     }

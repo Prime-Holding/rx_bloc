@@ -26,16 +26,10 @@ class HomePage extends StatelessWidget {
     final list = navItemsList(context);
     GoRouter router = GoRouter.of(context);
     return Scaffold(
-      body: Column(
-        children: [
-          RxBlocListener<RouterBlocType, ErrorModel>(
-            state: (bloc) => bloc.states.errors,
-            listener: (context, state) => _onError(context, state),
-          ),
-          Expanded(
-            child: child,
-          ),
-        ],
+      body: RxBlocListener<RouterBlocType, ErrorModel>(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, state) => _onError(context, state),
+        child: child,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
