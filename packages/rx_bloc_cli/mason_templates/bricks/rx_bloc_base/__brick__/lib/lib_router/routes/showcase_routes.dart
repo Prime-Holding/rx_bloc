@@ -21,6 +21,28 @@ class CounterRoute extends GoRouteData implements RouteDataModel {
 }
 {{/enable_feature_counter}}
 
+{{#enable_feature_widget_toolkit}}
+@TypedGoRoute<WidgetToolkitRoute>(path: RoutesPath.widgetToolkit)
+@immutable
+class WidgetToolkitRoute extends GoRouteData implements RouteDataModel {
+  const WidgetToolkitRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const WidgetToolkitPage(),
+      );
+
+  @override
+  String get permissionName => RouteModel.widgetToolkit.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+{{/enable_feature_widget_toolkit}}
+
+{{#enable_feature_deeplinks}}
 @TypedGoRoute<DeepLinksRoute>(
   path: RoutesPath.deepLinks,
   routes: <TypedGoRoute<GoRouteData>>[
@@ -90,3 +112,4 @@ class EnterMessageRoute extends GoRouteData implements RouteDataModel {
   @override
   String get routeLocation => location;
 }
+{{/enable_feature_deeplinks}}

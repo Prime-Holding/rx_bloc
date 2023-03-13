@@ -58,18 +58,28 @@ class HomePage extends StatelessWidget {
         ),
         {{#enable_feature_counter}}
         NavMenuItem(
-          title: context.l10n.navCounter,
+          title: context.l10n.featureCounter.navCounter,
           icon: context.designSystem.icons.calculateIcon,
           route: const CounterRoute(),
           routePath: RoutesPath.counter,
         ),
         {{/enable_feature_counter}}
+        {{#enable_feature_widget_toolkit}}
         NavMenuItem(
-          title: context.l10n.navLinks,
+          title: context.l10n.featureWidgetToolkit.navWidgetToolkit,
+          icon: context.designSystem.icons.widgetIcon,
+          route: const WidgetToolkitRoute(),
+          routePath: RoutesPath.widgetToolkit,
+        ),
+        {{/enable_feature_widget_toolkit}}
+        {{#enable_feature_deeplinks}}
+        NavMenuItem(
+          title: context.l10n.featureDeepLink.navLinks,
           icon: context.designSystem.icons.linkIcon,
           route: const DeepLinksRoute(),
           routePath: RoutesPath.deepLinks,
         ),
+        {{/enable_feature_deeplinks}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,

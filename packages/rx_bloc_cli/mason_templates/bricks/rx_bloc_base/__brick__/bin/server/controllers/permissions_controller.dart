@@ -27,9 +27,11 @@ class PermissionsController extends ApiController {
         {{/enable_feature_counter}}
         'NotificationsRoute': false,
         'LoginRoute': true,
+        {{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
         'DeepLinksRoute': false,
         'DeepLinkDetailsRoute': false,
+        {{/enable_feature_deeplinks}}
       });
     }
 
@@ -46,9 +48,11 @@ class PermissionsController extends ApiController {
       {{/enable_feature_counter}}
       'NotificationsRoute': true,
       'LoginRoute': true,
+      {{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
       'DeepLinkDetailsRoute': true,
+      {{/enable_feature_deeplinks}}
     });
   }
 }

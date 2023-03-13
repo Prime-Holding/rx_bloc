@@ -26,6 +26,13 @@ enum RouteModel {
     permissionName: RoutePermissions.counter,
   ),
   {{/enable_feature_counter}}
+  {{#enable_feature_widget_toolkit}}
+  widgetToolkit(
+    pathName: RoutesPath.widgetToolkit,
+    fullPath: '/widget-toolkit',
+    permissionName: RoutePermissions.widgetToolkit,
+  ),
+  {{/enable_feature_widget_toolkit}}
   notifications(
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',
@@ -36,6 +43,7 @@ enum RouteModel {
     fullPath: '/login',
     permissionName: RoutePermissions.login,
   ),
+  {{#enable_feature_deeplinks}}
   enterMessage(
     pathName: RoutesPath.enterMessage,
     fullPath: '/enterMessage',
@@ -50,7 +58,9 @@ enum RouteModel {
     pathName: RoutesPath.deepLinkDetails,
     fullPath: '/deepLinks/:id',
     permissionName: RoutePermissions.deepLinkDetails,
-  );
+  )
+  {{/enable_feature_deeplinks}}
+  ;
 
   final String pathName;
   final String fullPath;
