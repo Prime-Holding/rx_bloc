@@ -122,7 +122,7 @@ For more information you can refer to the official [GoRouter][gorouter_lnk] and 
 
 ## Architecture
 
-For more details and full overview checkout [this][#architecture_overview] great presentation.
+For more info check [this][#architecture_overview] presentation.
 
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
