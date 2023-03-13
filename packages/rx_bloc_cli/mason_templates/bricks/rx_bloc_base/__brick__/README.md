@@ -122,7 +122,7 @@ For more information you can refer to the official [GoRouter][gorouter_lnk] and 
 
 ## Architecture
 
-[![video thumbnail](https://img.youtube.com/vi/nVX4AzeuVu8/0.jpg)](https://www.youtube.com/watch?v=nVX4AzeuVu8)
+For more details and full overview checkout [this][#architecture_overview] great presentation.
 
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
@@ -337,7 +337,7 @@ In order to make the notifications work on your target platform, make sure you f
 [shelf_static_lnk]: https://pub.dev/packages/shelf_static
 [deep_linking_lnk]: https://docs.flutter.dev/development/ui/navigation/deep-linking
 [gorouter_deep_linking_lnk]: https://pub.dev/documentation/go_router/latest/topics/Deep%20linking-topic.html
-[architecture_overview]: https://www.youtube.com/watch?v=nVX4AzeuVu8&
+[architecture_overview]: https://www.youtube.com/watch?v=nVX4AzeuVu8
 [intellij_plugin]: https://plugins.jetbrains.com/plugin/16165-rxbloc
 [go_router_push]: https://pub.dev/documentation/go_router/latest/go_router/GoRouter/push.html
 [go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
