@@ -1,5 +1,8 @@
 ## [2.2.0] - TBD
 * Update documentation
+* Adding parameter `enable-feature-deeplinks` for enabling the deep link example flow as part of the project
+* Adding parameter `enable-feature-widget-toolkit` for enabling the showcase page for the `widget_toolkit` package as part of the project
+* Bug fixing
 
 ## [2.1.0] - March 08, 2023
 * Adding parameter `enable-feature-counter` for enabling the counter page example as part of the project

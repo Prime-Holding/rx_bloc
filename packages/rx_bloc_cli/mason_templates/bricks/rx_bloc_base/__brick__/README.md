@@ -112,9 +112,18 @@ If you decide to create your feature manually without using the plugin here is a
    }
 ```
 
+Now the new route can be navigated by calling one of the `RouterBloc` events (`go(...)`, `push(...)`).
+Example:
+```
+context.read<RouterBlocType>().go(const MyFeatureRoute())
+```
+
 For more information you can refer to the official [GoRouter][gorouter_lnk] and [GoRouterBuilder][gorouter_builder_lnk] documentation.
 
-## [Architecture][architecture_overview]
+## Architecture
+
+[![video thumbnail](https://img.youtube.com/vi/nVX4AzeuVu8/0.jpg)](https://www.youtube.com/watch?v=nVX4AzeuVu8)
+
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
 ## Routing
