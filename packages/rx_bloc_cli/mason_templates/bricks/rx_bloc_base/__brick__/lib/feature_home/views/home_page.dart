@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
         {{/enable_feature_widget_toolkit}}
         {{#enable_feature_deeplinks}}
         NavMenuItem(
-          title: context.l10n.featureDeepLink.navLinks,
+          title: context.l10n.navLinks,
           icon: context.designSystem.icons.linkIcon,
           route: const DeepLinksRoute(),
           routePath: RoutesPath.deepLinks,
@@ -99,20 +99,9 @@ class HomePage extends StatelessWidget {
   void _onError(BuildContext context, ErrorModel errorModel) =>
       showBlurredBottomSheet(
         context: context,
-        builder: (BuildContext context) => Padding(
-          padding: EdgeInsets.fromLTRB(
-            context.designSystem.spacing.l,
-            context.designSystem.spacing.l,
-            context.designSystem.spacing.l,
-            0,
-          ),
-          child: MessagePanelWidget(
-            message: errorModel.translate(context),
-            messageState: MessagePanelState.neutral,
-          ),
-        ),
-        configuration: const ModalConfiguration(
-          safeAreaBottom: false,
+        builder: (BuildContext context) => MessagePanelWidget(
+          message: errorModel.translate(context),
+          messageState: MessagePanelState.neutral,
         ),
       );
 }

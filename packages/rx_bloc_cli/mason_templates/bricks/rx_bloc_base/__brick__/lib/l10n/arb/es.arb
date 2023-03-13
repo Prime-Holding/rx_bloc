@@ -8,8 +8,10 @@
     "loadingState" : "Loading...",
     "resetPassword" : "Reset password",
     "pageWithResult" : "Enter message",
+    "deepLinkFlowPageTitle" : "Deep link flow",
     "tryAgain" : "Try again",
     "confirm" : "Confirm",
     "submit" : "Submit",
+    "navLinks" : "Links",
     "navProfile" : "Profile"
 }

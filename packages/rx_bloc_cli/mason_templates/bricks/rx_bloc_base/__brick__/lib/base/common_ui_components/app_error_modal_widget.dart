@@ -26,17 +26,9 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
         state: (bloc) => errorState(bloc),
         listener: (context, error) => showBlurredBottomSheet(
           context: context,
-          builder: (BuildContext context) => Padding(
-            padding: EdgeInsets.fromLTRB(
-              context.designSystem.spacing.l,
-              context.designSystem.spacing.l,
-              context.designSystem.spacing.l,
-              0,
-            ),
-            child: MessagePanelWidget(
-              message: error.translate(context),
-              messageState: MessagePanelState.neutral,
-            ),
+          builder: (BuildContext context) => MessagePanelWidget(
+            message: error.translate(context),
+            messageState: MessagePanelState.neutral,
           ),
         ),
       );

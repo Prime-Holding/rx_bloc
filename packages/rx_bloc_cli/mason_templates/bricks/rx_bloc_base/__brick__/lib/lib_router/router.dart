@@ -73,16 +73,10 @@ class AppRouter {
                   child: child,
                 ),
             routes: [
-              $dashboardRoute,
-              {{#enable_feature_counter}}
-              $counterRoute,
-              {{/enable_feature_counter}}
-              {{#enable_feature_deeplinks}}
-              $deepLinksRoute,
-              {{/enable_feature_deeplinks}}
-              {{#enable_feature_widget_toolkit}}
-              $widgetToolkitRoute,
-              {{/enable_feature_widget_toolkit}}
+              $dashboardRoute,{{#enable_feature_counter}}
+              $counterRoute,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
+              $widgetToolkitRoute,{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
+              $deepLinksRoute,{{/enable_feature_deeplinks}}
               $profileRoute,
             ]),
       ];

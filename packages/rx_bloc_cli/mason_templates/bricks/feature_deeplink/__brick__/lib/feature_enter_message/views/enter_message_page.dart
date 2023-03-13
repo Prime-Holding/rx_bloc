@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_mappers/error_mappers/error_mapper_util.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
+import '../../base/extensions/error_model_field_translations.dart';
 import '../blocs/enter_message_bloc.dart';
 import '../services/enter_message_field_service.dart';
 
@@ -64,9 +64,9 @@ class EnterMessagePage extends StatelessWidget {
                           horizontal: context.designSystem.spacing.l,
                         ),
                         child: TextFieldDialog<String>(
-                          errorMapper: (obj, context) =>
-                              ErrorMapperUtil<String>()
-                                  .fromErrorModel(obj, context),
+                          errorMapper: (error, context) =>
+                              ErrorModelFieldL10n.translateError<String>(
+                                  error, context),
                           label: context
                               .l10n.featureEnterMessage.fieldMessageLabel,
                           value: message.data,

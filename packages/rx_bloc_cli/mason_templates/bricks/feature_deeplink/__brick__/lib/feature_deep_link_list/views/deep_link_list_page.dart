@@ -25,7 +25,7 @@ class DeepLinkListPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: customAppBar(
           context,
-          title: context.l10n.featureDeepLink.deepLinkFlowPageTitle,
+          title: context.l10n.deepLinkFlowPageTitle,
           actions: [
             RxLoadingBuilder<DeepLinkListBlocType>(
               state: (bloc) => bloc.states.isLoading,
@@ -93,20 +93,9 @@ class DeepLinkListPage extends StatelessWidget {
   ) =>
       showBlurredBottomSheet(
         context: rootNavigatorKey.currentContext ?? context,
-        builder: (BuildContext context) => Padding(
-          padding: EdgeInsets.fromLTRB(
-            context.designSystem.spacing.l,
-            context.designSystem.spacing.l,
-            context.designSystem.spacing.l,
-            0,
-          ),
-          child: MessagePanelWidget(
-            message: message,
-            messageState: MessagePanelState.informative,
-          ),
-        ),
-        configuration: const ModalConfiguration(
-          safeAreaBottom: false,
+        builder: (BuildContext context) => MessagePanelWidget(
+          message: message,
+          messageState: MessagePanelState.informative,
         ),
       );
 }

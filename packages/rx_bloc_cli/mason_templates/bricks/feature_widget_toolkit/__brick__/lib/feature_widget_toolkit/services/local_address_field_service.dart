@@ -14,7 +14,7 @@ class LocalAddressFieldService extends TextFieldValidator<String> {
     await Future.delayed(const Duration(seconds: 1));
     if (text.length >= maxLengthRequired) {
       throw FieldErrorModel<String>(
-        errorKey: I18nFeatureWidgetToolkitKeys.tooLong,
+        errorKey: I18nErrorKeys.tooLong,
         fieldValue: text,
       );
     }
@@ -25,7 +25,7 @@ class LocalAddressFieldService extends TextFieldValidator<String> {
   void validateOnType(String text) {
     if (text.length < minLengthRequired) {
       throw FieldErrorModel<String>(
-        errorKey: I18nFeatureWidgetToolkitKeys.tooShort,
+        errorKey: I18nErrorKeys.tooShort,
         fieldValue: text,
       );
     }
