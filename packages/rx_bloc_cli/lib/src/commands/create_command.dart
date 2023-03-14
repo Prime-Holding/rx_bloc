@@ -8,6 +8,7 @@ import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
 
 import '../templates/feature_deeplink_bundle.dart';
+import '../templates/lib_router_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
@@ -73,6 +74,7 @@ class CreateCommand extends Command<int> {
   final _counterBundle = featureCounterBundle;
   final _deepLinkBundle = featureDeeplinkBundle;
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
+  final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
 
   final Logger _logger;
@@ -190,6 +192,8 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
+    //Add lib_route to _bundle
+    _bundle.files.addAll(_libRouterBundle.files);
     //Add lib_permissions to _bundle
     _bundle.files.addAll(_permissionsBundle.files);
 
