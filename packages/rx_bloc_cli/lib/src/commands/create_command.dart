@@ -182,10 +182,6 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_counterBundle.files);
     }
 
-    if (arguments.enableCounterFeature) {
-      _bundle.files.addAll(_counterBundle.files);
-    }
-
     // Add widget toolkit brick to _bundle when needed
     if (arguments.enableWidgetToolkitFeature) {
       _bundle.files.addAll(_widgetToolkitBundle.files);
