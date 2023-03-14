@@ -25,7 +25,7 @@ class DeepLinkListPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: customAppBar(
           context,
-          title: context.l10n.deepLinkFlowPageTitle,
+          title: context.l10n.featureDeepLink.deepLinkFlowPageTitle,
           actions: [
             RxLoadingBuilder<DeepLinkListBlocType>(
               state: (bloc) => bloc.states.isLoading,

@@ -76,6 +76,7 @@ r_flutter:
   intl_features:
     - name: error{{#enable_feature_counter}}
     - name: feature_counter{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+    - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}
     - name: feature_login
     - name: feature_notifications{{#enable_feature_widget_toolkit}}
