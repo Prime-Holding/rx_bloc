@@ -5,6 +5,7 @@ import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_counter_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
 
 import '../templates/feature_deeplink_bundle.dart';
 import '../templates/lib_router_bundle.dart';
@@ -74,6 +75,7 @@ class CreateCommand extends Command<int> {
   final _deepLinkBundle = featureDeeplinkBundle;
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
   final _libRouterBundle = libRouterBundle;
+  final _permissionsBundle = libPermissionsBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -196,6 +198,8 @@ class CreateCommand extends Command<int> {
 
     //Add lib_route to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
+    //Add lib_permissions to _bundle
+    _bundle.files.addAll(_permissionsBundle.files);
 
     _logger.info('');
     final fileGenerationProgress = _logger.progress('Bootstrapping');
