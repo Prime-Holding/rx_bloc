@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '3.0.0'
+version '3.0.1'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -41,6 +41,9 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
+     <li>
+     v.3.0.1 - fix imports for features created in sub-folder
+     </li>
      <li>v3.0.0 
         <br /> - detecting user selected folder/item so the bootstrap (RxBloc Tests) menu item is optionally visible. 
         <br /> - skip the feature/lib selection - when features are selected and directly generate tests
