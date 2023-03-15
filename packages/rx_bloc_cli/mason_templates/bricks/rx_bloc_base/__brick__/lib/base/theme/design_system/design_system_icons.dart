@@ -24,6 +24,10 @@ class DesignSystemIcons {
 
   final Icon calculateIcon = _getIcon(Icons.calculate);
 
+  {{#enable_feature_widget_toolkit}}
+  final Icon widgetIcon = _getIcon(Icons.widgets);
+  {{/enable_feature_widget_toolkit}}
+
   final Icon listIcon = _getIcon(Icons.list);
 
   final Icon accountIcon = _getIcon(Icons.account_box);

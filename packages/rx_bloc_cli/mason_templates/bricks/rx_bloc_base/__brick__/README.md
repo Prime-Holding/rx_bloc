@@ -61,8 +61,69 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 You can manually create new features as described above, but to speed up the product development you can use the [IntelliJ RxBloC Plugin][intellij_plugin], which not just creates the feature structure but also integrates it to the prefered routing solution (auto_route, [go_router][gorouter_lnk] or none)
 
+If you decide to create your feature manually without using the plugin here is all necessary steps you should do to register this feature and to be able to use it in the application:
+1. Add your feature path in the `RoutesPath` class which resides under  `lib/lib_router/models/routes_path.dart`:
+```
+   class RoutesPath {
+      static const myNewFeature = ‘my-new-feature’;
+      ...
+   }
+```
 
-## [Architecture][architecture_overview]
+2. Add you feature permission name in the `RoutePermissions` class which resides under `lib/lib_permissions/models/route_permissions.dart`:
+```
+   class RoutePermissions {
+       static const myNewFeature = MyNewFeatureRoute’;
+       ...
+   }
+```
+
+3. Next step is to declare the new features as part of the `RouteModel` enumeration which resides under `lib/lib_router/models/route_model.dart`:
+```
+   enum RouteModel {
+       myNewFeature(
+           pathName: RoutesPath.myNewFeature
+           fullPath: '/my-new-feature',
+           permissionName: RoutePermissions.myNewFeature,
+       ),
+       ...
+   }
+```
+
+4. As a final step the route itself should be created. All routes are situated under `lib/lib_router/routes/` folder which contains different route files organised by the application flow. If the new route doesn’t fit the existing application flows it can be added to the `routes.dart` file which is the default file used by the IntelliJ plugin.
+```
+   @TypedGoRoute<MyFeatureRoute>(path: RoutesPath.myNewFeature)
+   @immutable
+   class MyFeatureRoute extends GoRouteData implements RouteDataModel {
+       const MyFeatureRoute();
+   
+       @override
+       Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+           MaterialPage(
+             key: state.pageKey,
+             child: const MyFeaturePage(),
+           );
+   
+       @override
+       String get permissionName => RouteModel.myNewFeature.permissionName;
+   
+       @override
+       String get routeLocation => location;
+   }
+```
+
+Now the new route can be navigated by calling one of the `RouterBloc` events (`go(...)`, `push(...)`).
+Example:
+```
+context.read<RouterBlocType>().go(const MyFeatureRoute())
+```
+
+For more information you can refer to the official [GoRouter][gorouter_lnk] and [GoRouterBuilder][gorouter_builder_lnk] documentation.
+
+## Architecture
+
+For more info check [this][#architecture_overview] presentation.
+
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
 ## Routing
@@ -256,6 +317,7 @@ In order to make the notifications work on your target platform, make sure you f
 [rx_bloc_info_lnk]: https://pub.dev/packages/rx_bloc#what-is-rx_bloc-
 [extension_methods_lnk]: https://dart.dev/guides/language/extension-methods
 [gorouter_lnk]: https://pub.dev/packages/go_router
+[gorouter_builder_lnk]: https://pub.dev/packages/go_router_builder
 [gorouter_usage_lnk]: https://pub.dev/packages/go_router#documentation
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
@@ -275,7 +337,7 @@ In order to make the notifications work on your target platform, make sure you f
 [shelf_static_lnk]: https://pub.dev/packages/shelf_static
 [deep_linking_lnk]: https://docs.flutter.dev/development/ui/navigation/deep-linking
 [gorouter_deep_linking_lnk]: https://pub.dev/documentation/go_router/latest/topics/Deep%20linking-topic.html
-[architecture_overview]: https://www.youtube.com/watch?v=nVX4AzeuVu8&
+[architecture_overview]: https://www.youtube.com/watch?v=nVX4AzeuVu8
 [intellij_plugin]: https://plugins.jetbrains.com/plugin/16165-rxbloc
 [go_router_push]: https://pub.dev/documentation/go_router/latest/go_router/GoRouter/push.html
 [go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
