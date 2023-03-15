@@ -32,10 +32,6 @@ part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
 part 'routes/showcase_routes.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>();
-
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].
 ///
@@ -43,12 +39,18 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 /// specific page if the `isAuthenticated` state changes (It can be used with
 /// some other global state change as well).
 class AppRouter {
-  AppRouter(this._coordinatorBloc);
+  AppRouter({
+    required this.coordinatorBloc,
+    required this.rootNavigatorKey,
+    required this.shellNavigatorKey,
+  });
 
-  final CoordinatorBlocType _coordinatorBloc;
+  final CoordinatorBlocType coordinatorBloc;
+  final GlobalKey<NavigatorState> rootNavigatorKey;
+  final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
-      _GoRouterRefreshStream(_coordinatorBloc.states.isAuthenticated);
+      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated);
 
   GoRouter get router => _goRouter;
 
@@ -68,7 +70,7 @@ class AppRouter {
         $splashRoute,
         $loginRoute,
         ShellRoute(
-            navigatorKey: _shellNavigatorKey,
+            navigatorKey: shellNavigatorKey,
             builder: (context, state, child) => HomePage(
                   child: child,
                 ),

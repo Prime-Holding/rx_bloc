@@ -98,7 +98,8 @@ class HomePage extends StatelessWidget {
 
   void _onError(BuildContext context, ErrorModel errorModel) =>
       showBlurredBottomSheet(
-        context: context,
+        context: context.read<AppRouter>().rootNavigatorKey.currentContext ??
+            context,
         builder: (BuildContext context) => MessagePanelWidget(
           message: errorModel.translate(context),
           messageState: MessagePanelState.neutral,
