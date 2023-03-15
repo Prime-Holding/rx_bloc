@@ -37,9 +37,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _registerPushHandler(Request request) async {
-    controllers
-        .getController<AuthenticationController>()
-        ?.isAuthenticated(request);
 
     final params = await request.bodyFromFormData();
     final pushToken = params['pushToken'];
@@ -55,9 +52,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _unregisterPushHandler(Request request) async {
-    controllers
-        .getController<AuthenticationController>()
-        ?.isAuthenticated(request);
 
     final params = await request.bodyFromFormData();
     final pushToken = params['pushToken'];
@@ -73,9 +67,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _broadcastPushHandler(Request request) async {
-    controllers
-        .getController<AuthenticationController>()
-        ?.isAuthenticated(request);
 
     final params = await request.bodyFromFormData();
     final title = params['title'];
