@@ -27,4 +27,4 @@ jobs:
         run: bin/compile_bundles.sh
       - name: Publish
         working-directory: packages/rx_bloc_cli
-        run: dart pub publish --dry-run
+        run: dart pub publish --force
