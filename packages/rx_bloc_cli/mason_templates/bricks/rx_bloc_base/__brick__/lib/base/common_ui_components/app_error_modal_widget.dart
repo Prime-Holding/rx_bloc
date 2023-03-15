@@ -5,7 +5,6 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
-import '../../app_extensions.dart';
 import '../extensions/error_model_translations.dart';
 import '../models/errors/error_model.dart';
 
