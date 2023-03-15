@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
