@@ -264,7 +264,7 @@ $newRoute""".trimIndent()
         var subPart = ""
         val libPath = "${event.project?.basePath}${File.separator}lib"
 
-        if(featureSubDirectory.path.contains(libPath)) {
+        if (featureSubDirectory.path.contains(libPath)) {
             val subPartCount = featureSubDirectory.path.replace(libPath, "")
                 .replace("\\", "/").split("/").size
             for (i in 0 until subPartCount) {
