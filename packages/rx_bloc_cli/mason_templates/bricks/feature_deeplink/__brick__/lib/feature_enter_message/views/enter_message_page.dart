@@ -64,9 +64,12 @@ class EnterMessagePage extends StatelessWidget {
                           horizontal: context.designSystem.spacing.l,
                         ),
                         child: TextFieldDialog<String>(
-                          errorMapper: (error, context) =>
-                              ErrorModelFieldL10n.translateError<String>(
-                                  error, context),
+                          /// TODO: To be updated after the new version of the widget_toolkit package is released. RxFieldException wrapper should be removed.
+                          errorMapper: (error, context) => RxFieldException(
+                            error: ErrorModelFieldL10n.translateError<String>(
+                                error, context),
+                            fieldValue: '',
+                          ),
                           label: context
                               .l10n.featureEnterMessage.fieldMessageLabel,
                           value: message.data,

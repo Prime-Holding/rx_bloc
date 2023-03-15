@@ -20,8 +20,12 @@ class EditFieldsPage extends StatelessWidget {
             WidgetSection(
               description: 'TextFieldDialog',
               child: TextFieldDialog<String>(
-                errorMapper: (error, context) =>
-                    ErrorModelFieldL10n.translateError<String>(error, context),
+                /// TODO: To be updated after the new version of the widget_toolkit package is released. RxFieldException wrapper should be removed.
+                RxFieldException(
+                  error: ErrorModelFieldL10n.translateError<String>(
+                      error, context),
+                  fieldValue: '',
+                ),
                 label: 'First Name',
                 value: 'John',
                 validator: LocalAddressFieldService(),
