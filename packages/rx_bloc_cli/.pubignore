@@ -1,6 +1,5 @@
 .gitignore
 example/test_app
-lib/src/templates/.git_keep
 bin/compile.sh
 bin/compile_bundles.sh
 bin/compile_win.bat
