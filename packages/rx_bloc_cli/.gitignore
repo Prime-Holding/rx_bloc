@@ -79,4 +79,3 @@ build/
 # rx_bloc_cli related stuf
 example/test_app
 lib/src/templates
-!lib/src/templates/.git_keep
