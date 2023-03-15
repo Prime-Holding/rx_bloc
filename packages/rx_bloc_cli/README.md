@@ -24,6 +24,8 @@ Create a new project at the given directory with lots of already set-up features
 |  `--organisation` |                `com.example`                | The organisation name |
 |  `--enable-analytics` |                   `false`                   | Enables Firebase analytics for the project |
 |  `--enable-feature-counter` |                   `false`                   | Enables Counter feature for the project |
+|  `--enable-feature-deeplinks` |                   `false`                   | Enables Deep Links showcase flow for the project |
+|  `--enable-feature-widget-toolkit` |                   `false`                   | Enables widget_toolkit package showcase feature for the project |
 
 ### What's Included? 📦
 
