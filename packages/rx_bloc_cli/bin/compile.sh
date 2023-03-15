@@ -30,6 +30,11 @@ dart run mason_cli:mason bundle \
   -o lib/src/templates/ \
   mason_templates/bricks/lib_permissions
 
+dart run mason_cli:mason bundle \
+  -t dart \
+  -o lib/src/templates/ \
+  mason_templates/bricks/lib_auth
+
 rm -rf example/test_app
 mkdir example/test_app
 dart run rx_bloc_cli create \
