@@ -6,7 +6,6 @@ import 'package:widget_toolkit/widget_toolkit.dart';
 import '../ui_components/loading_state_switcher.dart';
 import '../ui_components/widget_section.dart';
 import '../utils/utils.dart';
-import 'widget_toolkit_page.dart';
 
 class CommonComponentsPage extends StatelessWidget {
   const CommonComponentsPage({required this.pageController, Key? key})

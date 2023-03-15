@@ -1,11 +1,14 @@
 {{> licence.dart }}
 
 class CredentialsModel {
-  CredentialsModel(this.username, this.password);
+  CredentialsModel({
+    required this.email,
+    required this.password,
+  });
 
-  final String username;
+  final String email;
   final String password;
 
   bool equals(CredentialsModel credentials) =>
-      username == credentials.username && password == credentials.password;
+      email == credentials.email && password == credentials.password;
 }

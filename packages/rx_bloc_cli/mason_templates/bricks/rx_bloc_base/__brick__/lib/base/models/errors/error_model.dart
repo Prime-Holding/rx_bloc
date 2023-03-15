@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../../../assets.dart' show I18nErrorKeys;
 
 part 'access_denied_error_model.dart';

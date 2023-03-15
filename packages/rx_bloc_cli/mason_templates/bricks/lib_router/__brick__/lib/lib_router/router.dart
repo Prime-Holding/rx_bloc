@@ -6,28 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../base/common_blocs/coordinator_bloc.dart';
-{{#enable_feature_deeplinks}}
-import '../base/models/deep_link_model.dart';
-{{/enable_feature_deeplinks}}
-{{#enable_feature_counter}}
-import '../feature_counter/di/counter_page_with_dependencies.dart';
-{{/enable_feature_counter}}
-import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';
-{{#enable_feature_widget_toolkit}}
-import '../feature_widget_toolkit/views/widget_toolkit_page.dart';
-{{/enable_feature_widget_toolkit}}
-{{#enable_feature_deeplinks}}
+import '../base/common_blocs/coordinator_bloc.dart';{{#enable_feature_deeplinks}}
+import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}
+import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
+import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
-import '../feature_enter_message/di/enter_message_with_dependencies.dart';
-{{/enable_feature_deeplinks}}
+import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
 import '../feature_home/views/home_page.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
-import '../feature_splash/services/splash_service.dart';
+import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
+import '../feature_widget_toolkit/views/widget_toolkit_page.dart';{{/enable_feature_widget_toolkit}}
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
@@ -40,7 +32,7 @@ part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
 part 'routes/showcase_routes.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
 
@@ -61,7 +53,7 @@ class AppRouter {
   GoRouter get router => _goRouter;
 
   late final GoRouter _goRouter = GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: const SplashRoute().location,
     routes: _appRoutesList(),
     redirect: _pageRedirections,
@@ -81,16 +73,10 @@ class AppRouter {
                   child: child,
                 ),
             routes: [
-              $dashboardRoute,
-              {{#enable_feature_counter}}
-              $counterRoute,
-              {{/enable_feature_counter}}
-              {{#enable_feature_deeplinks}}
-              $deepLinksRoute,
-              {{/enable_feature_deeplinks}}
-              {{#enable_feature_widget_toolkit}}
-              $widgetToolkitRoute,
-              {{/enable_feature_widget_toolkit}}
+              $dashboardRoute,{{#enable_feature_counter}}
+              $counterRoute,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
+              $widgetToolkitRoute,{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
+              $deepLinksRoute,{{/enable_feature_deeplinks}}
               $profileRoute,
             ]),
       ];

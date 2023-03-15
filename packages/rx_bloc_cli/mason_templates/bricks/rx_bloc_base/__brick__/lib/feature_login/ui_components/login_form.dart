@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
+import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
-import '../../base/common_ui_components/primary_button.dart';
+import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/extensions/error_model_field_translations.dart';
 import '../blocs/login_bloc.dart';
 
@@ -68,13 +69,12 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(height: context.designSystem.spacing.xs1),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: context.designSystem.spacing.l,
-                    ),
+                    horizontal: context.designSystem.spacing.l,
+                  ),
                   child: _buildLogInButton(),
                 ),
                 AppErrorModalWidget<LoginBlocType>(
                   errorState: (bloc) => bloc.states.errors,
-                  isListeningForNavigationErrors: false,
                 ),
               ],
             ),
@@ -84,25 +84,30 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget _buildLogInButton() => RxBlocBuilder<LoginBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => PrimaryButton(
-          isLoading: loadingState.hasData ? loadingState.data! : false,
+        builder: (context, loadingState, bloc) => GradientFillButton(
+          state: loadingState.isLoading
+              ? ButtonStateModel.loading
+              : ButtonStateModel.enabled,
           onPressed: bloc.events.login,
-          child: Text(context.l10n.featureLogin.logIn),
+          text: context.l10n.featureLogin.logIn,
         ),
       );
 
   Widget _buildFieldEmail(BuildContext context) =>
       RxTextFormFieldBuilder<LoginBlocType>(
-        state: (bloc) => bloc.states.username.translate(context),
+        state: (bloc) => bloc.states.email.translate(context),
         showErrorState: (bloc) => bloc.states.showErrors,
-        onChanged: (bloc, value) => bloc.events.setUsername(value),
+        onChanged: (bloc, value) => bloc.events.setEmail(value),
         builder: (fieldState) => TextFormField(
           controller: fieldState.controller,
           textInputAction: TextInputAction.next,
           focusNode: _emailFocusNode,
           onEditingComplete: () =>
               FocusScope.of(context).requestFocus(_passwordFocusNode),
-          decoration: _getFieldDecoration(fieldState.decoration, 'Email'),
+          decoration: _getFieldDecoration(
+            fieldState.decoration,
+            context.l10n.field.email,
+          ),
         ),
       );
 
@@ -118,7 +123,10 @@ class _LoginFormState extends State<LoginForm> {
           textInputAction: TextInputAction.done,
           focusNode: _passwordFocusNode,
           onEditingComplete: () => FocusScope.of(context).unfocus(),
-          decoration: _getFieldDecoration(fieldState.decoration, 'Password'),
+          decoration: _getFieldDecoration(
+            fieldState.decoration,
+            context.l10n.field.password,
+          ),
         ),
       );
 
@@ -127,5 +135,4 @@ class _LoginFormState extends State<LoginForm> {
     String label,
   ) =>
       decoration.copyWith(labelText: label);
-
 }

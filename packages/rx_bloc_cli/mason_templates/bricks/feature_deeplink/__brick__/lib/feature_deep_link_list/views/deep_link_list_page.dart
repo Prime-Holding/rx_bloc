@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
@@ -14,7 +15,6 @@ import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/deep_link_list_bloc.dart';
 import '../ui_components/enter_message_button.dart';
-import '../ui_components/list_item_widget.dart';
 
 class DeepLinkListPage extends StatelessWidget {
   const DeepLinkListPage({
@@ -68,12 +68,13 @@ class DeepLinkListPage extends StatelessWidget {
                     ),
                     itemCount: items.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        ListItemWidget(
-                      item: items[index],
-                      onTap: () => context.read<RouterBlocType>().events.push(
-                            DeepLinkDetailsRoute(items[index].id),
-                            extra: items[index],
-                          ),
+                        OutlineFillButton(
+                      text: items[index].name,
+                      onPressed: () =>
+                          context.read<RouterBlocType>().events.push(
+                                DeepLinkDetailsRoute(items[index].id),
+                                extra: items[index],
+                              ),
                     ),
                     separatorBuilder: (context, index) => Divider(
                       height: context.designSystem.spacing.l,
@@ -90,10 +91,11 @@ class DeepLinkListPage extends StatelessWidget {
     BuildContext context,
     String message,
   ) =>
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          behavior: SnackBarBehavior.floating,
+      showBlurredBottomSheet(
+        context: rootNavigatorKey.currentContext ?? context,
+        builder: (BuildContext context) => MessagePanelWidget(
+          message: message,
+          messageState: MessagePanelState.informative,
         ),
       );
 }

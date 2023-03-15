@@ -45,7 +45,6 @@ class CounterPage extends StatelessWidget {
               ),
               AppErrorModalWidget<UserAccountBlocType>(
                 errorState: (bloc) => bloc.states.errors,
-                isListeningForNavigationErrors: false,
               ),
             ],
           ),
