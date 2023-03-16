@@ -1,0 +1,5 @@
+.gitignore
+example/test_app
+bin/compile.sh
+bin/compile_bundles.sh
+bin/compile_win.bat

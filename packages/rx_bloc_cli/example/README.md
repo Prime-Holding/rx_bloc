@@ -2,11 +2,11 @@
 
 1. [Getting Started](#getting-started)
 2. [Project structure](#project-structure)
-3. [Adding a new feature](#adding-a-new-feature)
-4. [Architecture](#architecture)
-5. [Routing](#routing)
+3. [Architecture](#architecture)
+4. [Routing](#routing)
    * [Deep linking](#deep-linking)
    * [Access Control List](#access-control-list)
+5. [Adding a new feature](#adding-a-new-feature)
 6. [Localization](#localization)
 7. [Analytics](#analytics)
 8. [Http client](#http-client)
@@ -57,72 +57,9 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
 
 
-## Adding a new feature
-
-You can manually create new features as described above, but to speed up the product development you can use the [IntelliJ RxBloC Plugin][intellij_plugin], which not just creates the feature structure but also integrates it to the prefered routing solution (auto_route, [go_router][gorouter_lnk] or none)
-
-If you decide to create your feature manually without using the plugin here is all necessary steps you should do to register this feature and to be able to use it in the application:
-1. Add your feature path in the `RoutesPath` class which resides under  `lib/lib_router/models/routes_path.dart`:
-```
-   class RoutesPath {
-      static const myNewFeature = ‘my-new-feature’;
-      ...
-   }
-```
-
-2. Add you feature permission name in the `RoutePermissions` class which resides under `lib/lib_permissions/models/route_permissions.dart`:
-```
-   class RoutePermissions {
-       static const myNewFeature = MyNewFeatureRoute’;
-       ...
-   }
-```
-
-3. Next step is to declare the new features as part of the `RouteModel` enumeration which resides under `lib/lib_router/models/route_model.dart`:
-```
-   enum RouteModel {
-       myNewFeature(
-           pathName: RoutesPath.myNewFeature
-           fullPath: '/my-new-feature',
-           permissionName: RoutePermissions.myNewFeature,
-       ),
-       ...
-   }
-```
-
-4. As a final step the route itself should be created. All routes are situated under `lib/lib_router/routes/` folder which contains different route files organised by the application flow. If the new route doesn’t fit the existing application flows it can be added to the `routes.dart` file which is the default file used by the IntelliJ plugin.
-```
-   @TypedGoRoute<MyFeatureRoute>(path: RoutesPath.myNewFeature)
-   @immutable
-   class MyFeatureRoute extends GoRouteData implements RouteDataModel {
-       const MyFeatureRoute();
-   
-       @override
-       Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-           MaterialPage(
-             key: state.pageKey,
-             child: const MyFeaturePage(),
-           );
-   
-       @override
-       String get permissionName => RouteModel.myNewFeature.permissionName;
-   
-       @override
-       String get routeLocation => location;
-   }
-```
-
-Now the new route can be navigated by calling one of the `RouterBloc` events (`go(...)`, `push(...)`).
-Example:
-```
-context.read<RouterBlocType>().go(const MyFeatureRoute())
-```
-
-For more information you can refer to the official [GoRouter][gorouter_lnk] and [GoRouterBuilder][gorouter_builder_lnk] documentation.
-
 ## Architecture
 
-For more info check [this][#architecture_overview] presentation.
+For in-depth review of the following architecture watch [this][architecture_overview] presentation.
 
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
@@ -227,6 +164,69 @@ Expected structure/data for authenticated users.
 
 
 You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically does all steps instead of you, or to manualy add the permission for your route to the `lib/lib_permissions/models/route_permissions.dart`.
+
+## Adding a new feature
+
+You can manually create new features as described above, but to speed up the product development you can use the [IntelliJ RxBloC Plugin][intellij_plugin], which not just creates the feature structure but also integrates it to the prefered routing solution (auto_route, [go_router][gorouter_lnk] or none)
+
+If you decide to create your feature manually without using the plugin here is all necessary steps you should do to register this feature and to be able to use it in the application:
+1. Add your feature path in the `RoutesPath` class which resides under  `lib/lib_router/models/routes_path.dart`:
+```
+   class RoutesPath {
+      static const myNewFeature = ‘my-new-feature’;
+      ...
+   }
+```
+
+2. Add you feature permission name in the `RoutePermissions` class which resides under `lib/lib_permissions/models/route_permissions.dart`:
+```
+   class RoutePermissions {
+       static const myNewFeature = MyNewFeatureRoute’;
+       ...
+   }
+```
+
+3. Next step is to declare the new features as part of the `RouteModel` enumeration which resides under `lib/lib_router/models/route_model.dart`:
+```
+   enum RouteModel {
+       myNewFeature(
+           pathName: RoutesPath.myNewFeature
+           fullPath: '/my-new-feature',
+           permissionName: RoutePermissions.myNewFeature,
+       ),
+       ...
+   }
+```
+
+4. As a final step the route itself should be created. All routes are situated under `lib/lib_router/routes/` folder which contains different route files organised by the application flow. If the new route doesn’t fit the existing application flows it can be added to the `routes.dart` file which is the default file used by the IntelliJ plugin.
+```
+   @TypedGoRoute<MyFeatureRoute>(path: RoutesPath.myNewFeature)
+   @immutable
+   class MyFeatureRoute extends GoRouteData implements RouteDataModel {
+       const MyFeatureRoute();
+   
+       @override
+       Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+           MaterialPage(
+             key: state.pageKey,
+             child: const MyFeaturePage(),
+           );
+   
+       @override
+       String get permissionName => RouteModel.myNewFeature.permissionName;
+   
+       @override
+       String get routeLocation => location;
+   }
+```
+
+Now the new route can be navigated by calling one of the `RouterBloc` events (`go(...)`, `push(...)`).
+Example:
+```
+context.read<RouterBlocType>().go(const MyFeatureRoute())
+```
+
+For more information you can refer to the official [GoRouter][gorouter_lnk] and [GoRouterBuilder][gorouter_builder_lnk] documentation.
 
 ## Localization
 
