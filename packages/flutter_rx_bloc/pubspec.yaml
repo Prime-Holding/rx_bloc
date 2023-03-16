@@ -24,10 +24,6 @@ dev_dependencies:
   mockito: ^5.2.0
   test: ^1.21.1
 
-dependency_overrides:
-  rx_bloc:
-    path: ../rx_bloc
-
 flutter:
   # assets:
   #  - images/a_dot_burr.jpeg

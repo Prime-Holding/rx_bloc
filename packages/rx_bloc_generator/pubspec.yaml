@@ -25,7 +25,3 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   source_gen_test: any
   test: ^1.21.4
-
-dependency_overrides:
-  rx_bloc:
-    path: ../rx_bloc
