@@ -2,6 +2,8 @@
 
 import 'package:widget_toolkit/edit_address.dart';
 
+import '../../assets.dart';
+import '../../base/models/errors/error_model.dart';
 import '../repositories/search_repository.dart';
 
 class CustomEditAddressService<T> extends EditAddressService<T> {
@@ -26,7 +28,43 @@ class CustomEditAddressService<T> extends EditAddressService<T> {
 
   @override
   Future<String> validateCityOnSubmit(String text) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return super.validateCityOnSubmit(text);
+    if (text.trim().isEmpty) {
+      throw FieldErrorModel<String>(
+        errorKey: I18nErrorKeys.tooShort,
+        fieldValue: text,
+      );
+    }
+    return text;
+  }
+
+  @override
+  Future<String> validateStreetOnSubmit(String text) async {
+    if (text.trim().isEmpty) {
+      throw FieldErrorModel<String>(
+        errorKey: I18nErrorKeys.tooShort,
+        fieldValue: text,
+      );
+    }
+    return text;
+  }
+
+  @override
+  void validateCityOnType(String text) {
+    if (text.trim().isEmpty) {
+      throw FieldErrorModel<String>(
+        errorKey: I18nErrorKeys.tooShort,
+        fieldValue: text,
+      );
+    }
+  }
+
+  @override
+  void validateStreetOnType(String text) {
+    if (text.trim().isEmpty) {
+      throw FieldErrorModel<String>(
+        errorKey: I18nErrorKeys.tooShort,
+        fieldValue: text,
+      );
+    }
   }
 }
