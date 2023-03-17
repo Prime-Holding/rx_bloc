@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
@@ -66,11 +65,9 @@ class EnterMessagePage extends StatelessWidget {
                         ),
                         child: TextFieldDialog<String>(
                           /// TODO: To be updated after the new version of the widget_toolkit package is released. RxFieldException wrapper should be removed.
-                          errorMapper: (error, context) => RxFieldException(
-                            error: ErrorModelFieldL10n.translateError<String>(
-                                error, context),
-                            fieldValue: '',
-                          ),
+                          translateError: (error) =>
+                              ErrorModelFieldL10n.translateError<String>(
+                                  error, context),
                           label: context
                               .l10n.featureEnterMessage.fieldMessageLabel,
                           value: message.data,
