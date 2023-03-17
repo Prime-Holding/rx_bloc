@@ -95,10 +95,11 @@ class AppRouter {
         state.subloc == const LoginRoute().location) {
       return const DashboardRoute().location;
     }
-    if (state.subloc != const SplashRoute().location) {
-      if (!context.read<SplashService>().isAppInitialized) {
-        return '${const SplashRoute().location}?from=${state.location}';
-      }
+    if (state.subloc == const SplashRoute().location) {
+      return null;
+    }
+    if (!context.read<SplashService>().isAppInitialized) {
+      return '${const SplashRoute().location}?from=${state.location}';
     }
 
     final pathInfo =

@@ -9,7 +9,6 @@ import '../config.dart';
 import '../repositories/push_token_repository.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
-import 'authentication_controller.dart';
 
 // ignore_for_file: cascade_invocations
 // ignore_for_file: lines_longer_than_80_chars
