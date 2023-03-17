@@ -22,7 +22,6 @@ class EditFieldsPage extends StatelessWidget {
             WidgetSection(
               description: 'TextFieldDialog',
               child: TextFieldDialog<String>(
-                /// TODO: To be updated after the new version of the widget_toolkit package is released. RxFieldException wrapper should be removed.
                 translateError: (error) =>
                     ErrorModelFieldL10n.translateError<String>(error, context),
                 label: 'First Name',
@@ -34,7 +33,6 @@ class EditFieldsPage extends StatelessWidget {
             WidgetSection(
               description: 'EditAddress',
               child: EditAddressWidget<CountryModel>(
-                //TODO show the correct error message
                 translateError: (error) =>
                     ErrorModelFieldL10n.translateError<String>(error, context),
                 service: CustomEditAddressService<CountryModel>(
