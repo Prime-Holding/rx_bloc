@@ -19,7 +19,7 @@ import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
-import '../feature_widget_toolkit/views/widget_toolkit_page.dart';{{/enable_feature_widget_toolkit}}
+import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
