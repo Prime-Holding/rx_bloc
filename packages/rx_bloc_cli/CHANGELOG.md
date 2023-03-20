@@ -1,3 +1,6 @@
+## [2.3.0]
+* Adding `EditAddressWidget` feature as example to `EditFieldsPage`
+
 ## [2.2.0]
 * Update documentation
 * Adding parameter `enable-feature-counter` for enabling the counter showcase as part of the project
