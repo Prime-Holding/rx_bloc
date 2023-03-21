@@ -5,14 +5,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notification
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
-import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../common_blocs/coordinator_bloc.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
@@ -51,16 +48,11 @@ __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
-  late GoRouter goRouter;
 
   @override
   void initState() { {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
-
-    goRouter = AppRouter(
-      context.read<CoordinatorBlocType>(),
-    ).router;
 
     super.initState();
   }{{#push_notifications}}
@@ -100,12 +92,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   }
 
   @override
-  Widget build(BuildContext context) => Provider<RouterBlocType>(
-      create: (context) => RouterBloc(
-        router: goRouter,
-        permissionsService: context.read(),
-      ),
-      child: MaterialApp.router(
+  Widget build(BuildContext context) => MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
         theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
         darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
@@ -114,8 +101,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           GlobalMaterialLocalizations.delegate,
         ],
         supportedLocales: I18n.supportedLocales,
-        routerConfig: goRouter,
+        routerConfig: context.read<AppRouter>().router,
         debugShowCheckedModeBanner: false,
-      ),
-  );
+      );
 }

@@ -1,17 +1,15 @@
 {
     "@@locale": "es",
     "reload": "Reload",
+    "dashboard": "Dashboard",
     "ok" : "OK",
     "close" : "Close",
     "errorState" : "Error occurred",
     "loadingState" : "Loading...",
     "resetPassword" : "Reset password",
     "pageWithResult" : "Enter message",
-    "deepLinkFlowPageTitle" : "Deep link flow",
     "tryAgain" : "Try again",
     "confirm" : "Confirm",
     "submit" : "Submit",
-    "navCounter" : "Counter",
-    "navLinks" : "Links",
     "navProfile" : "Profile"
 }

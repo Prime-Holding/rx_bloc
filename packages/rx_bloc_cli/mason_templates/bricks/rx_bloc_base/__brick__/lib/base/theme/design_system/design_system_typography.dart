@@ -77,7 +77,7 @@ class DesignSystemTypography {
       fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 11.0);
 
   /// App specific typography
-
+{{#enable_feature_counter}}
   late final counterTitle =
       h1Reg12.copyWith(color: _designSystemColor.primaryColor);
 
@@ -87,7 +87,7 @@ class DesignSystemTypography {
     color: _designSystemColor.gray.withOpacity(0.8),
     letterSpacing: -1.5,
   );
-
+{{/enable_feature_counter}}
   late final fadedButtonText =
       h3Med14.copyWith(color: _designSystemColor.black);
 }

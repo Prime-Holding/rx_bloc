@@ -18,7 +18,7 @@ part 'login_bloc_extensions.dart';
 /// A contract class containing all events of the LoginBloC.
 abstract class LoginBlocEvents {
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
-  void setUsername(String username);
+  void setEmail(String email);
 
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setPassword(String password);
@@ -28,8 +28,8 @@ abstract class LoginBlocEvents {
 
 /// A contract class containing all states of the LoginBloC.
 abstract class LoginBlocStates {
-  /// The currently entered username state
-  Stream<String> get username;
+  /// The currently entered email state
+  Stream<String> get email;
 
   /// The currently entered password state
   Stream<String> get password;
@@ -50,11 +50,11 @@ abstract class LoginBlocStates {
 @RxBloc()
 class LoginBloc extends $LoginBloc {
   LoginBloc(
-      this._coordinatorBloc,
-      this._userAccountService,
-      this._validatorService,
-      this._permissionsService,
-      ) {
+    this._coordinatorBloc,
+    this._userAccountService,
+    this._validatorService,
+    this._permissionsService,
+  ) {
     loggedIn.connect().addTo(_compositeSubscription);
   }
 
@@ -64,34 +64,41 @@ class LoginBloc extends $LoginBloc {
   final PermissionsService _permissionsService;
 
   @override
-  Stream<String> _mapToUsernameState() => _$setUsernameEvent
+  Stream<String> _mapToEmailState() => _$setEmailEvent
       .map(_validatorService.validateEmail)
       .startWith('')
       .shareReplay(maxSize: 1);
 
   @override
   Stream<String> _mapToPasswordState() => Rx.merge([
-    _$setPasswordEvent.map(_validatorService.validatePassword),
-    errorState.mapToFieldException(_$setPasswordEvent),
-  ]).startWith('').shareReplay(maxSize: 1);
+        _$setPasswordEvent.map(_validatorService.validatePassword),
+        errorState.mapToFieldException(_$setPasswordEvent),
+      ]).startWith('').shareReplay(maxSize: 1);
 
   @override
   ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
-      .validateCredentials(this)
       .throttleTime(const Duration(seconds: 1))
+      .withLatestFrom2<String, String, CredentialsModel>(email, password,
+          (_, emailValue, passwordValue) {
+        _validatorService.validateEmail(emailValue);
+        _validatorService.validatePassword(passwordValue);
+        return CredentialsModel(email: emailValue, password: passwordValue);
+      })
       .exhaustMap(
         (args) => _checkUserCredentialsAndGetPermission(args).asResultStream(),
-  )
+      )
       .setResultStateHandler(this)
-      .emitLoggedInToCoordinator(_coordinatorBloc)
+      .whereSuccess()
+      .emitAuthenticatedToCoordinator(_coordinatorBloc)
       .startWith(false)
       .publish();
 
   Future<bool> _checkUserCredentialsAndGetPermission(
-      CredentialsModel credentials,
-      ) async {
-    final response = await _userAccountService.login(
-        username: credentials.username, password: credentials.password);
+    CredentialsModel credentials,
+  ) async {
+    final response = await _userAccountService
+        .login(username: credentials.email, password: credentials.password)
+        .then((value) => true);
 
     await _permissionsService.load();
 

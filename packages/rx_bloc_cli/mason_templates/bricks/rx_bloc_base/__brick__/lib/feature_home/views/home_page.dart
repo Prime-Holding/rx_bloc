@@ -1,9 +1,13 @@
-// {{> licence.dart }}
+{{> licence.dart }}
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
+import '../../base/extensions/error_model_translations.dart';
+import '../../base/models/errors/error_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/models/routes_path.dart';
@@ -22,8 +26,13 @@ class HomePage extends StatelessWidget {
     final list = navItemsList(context);
     GoRouter router = GoRouter.of(context);
     return Scaffold(
-      body: child,
+      body: RxBlocListener<RouterBlocType, ErrorModel>(
+        state: (bloc) => bloc.states.errors,
+        listener: (context, state) => _onError(context, state),
+        child: child,
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: _getCurrentIndex(list, router),
         onTap: (index) =>
             context.read<RouterBlocType>().events.go(list[index].route),
@@ -40,7 +49,7 @@ class HomePage extends StatelessWidget {
   }
 
   int _getCurrentIndex(List<NavMenuItem> list, GoRouter router) {
-    int index = list.indexWhere((item) {
+    var index = list.indexWhere((item) {
       final routePath =
           router.routeInformationParser.matcher.findMatch(router.location);
       return routePath.fullpath.startsWith(item.routePath);
@@ -50,17 +59,35 @@ class HomePage extends StatelessWidget {
 
   List<NavMenuItem> navItemsList(BuildContext context) => [
         NavMenuItem(
-          title: context.l10n.navCounter,
+          title: context.l10n.dashboard,
+          icon: context.designSystem.icons.dashboard,
+          route: const DashboardRoute(),
+          routePath: RoutesPath.dashboard,
+        ),
+        {{#enable_feature_counter}}
+        NavMenuItem(
+          title: context.l10n.featureCounter.navCounter,
           icon: context.designSystem.icons.calculateIcon,
           route: const CounterRoute(),
           routePath: RoutesPath.counter,
         ),
+        {{/enable_feature_counter}}
+        {{#enable_feature_widget_toolkit}}
         NavMenuItem(
-          title: context.l10n.navLinks,
+          title: context.l10n.featureWidgetToolkit.navWidgetToolkit,
+          icon: context.designSystem.icons.widgetIcon,
+          route: const WidgetToolkitRoute(),
+          routePath: RoutesPath.widgetToolkit,
+        ),
+        {{/enable_feature_widget_toolkit}}
+        {{#enable_feature_deeplinks}}
+        NavMenuItem(
+          title: context.l10n.featureDeepLink.navLinks,
           icon: context.designSystem.icons.linkIcon,
           route: const DeepLinksRoute(),
           routePath: RoutesPath.deepLinks,
         ),
+        {{/enable_feature_deeplinks}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,
@@ -68,6 +95,15 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.profile,
         ),
       ];
+
+  void _onError(BuildContext context, ErrorModel errorModel) =>
+      showBlurredBottomSheet(
+        context: context,
+        builder: (BuildContext context) => MessagePanelWidget(
+          message: errorModel.translate(context),
+          messageState: MessagePanelState.neutral,
+        ),
+      );
 }
 
 class NavMenuItem {

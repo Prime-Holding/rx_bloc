@@ -10,5 +10,8 @@
   "requiredField": "{fieldName} should not be empty",
   "invalidEmail": "Please enter a valid email",
   "passwordLength": "Password should be at least 6 characters long",
-  "wrongEmailOrPassword": "Wrong email or password"
+  "wrongEmailOrPassword": "Wrong email or password",
+  "invalidMessage": "The entered message should be at least 2 characters long.",
+  "tooLong": "The entered text is too long",
+  "tooShort": "The entered text is too short"
 }

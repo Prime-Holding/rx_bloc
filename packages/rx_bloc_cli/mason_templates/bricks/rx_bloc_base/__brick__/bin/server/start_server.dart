@@ -10,9 +10,9 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart' as shelf_static;
 
-import 'controllers/authentication_controller.dart';
-import 'controllers/count_controller.dart';
-import 'controllers/deep_links_controller.dart';
+import 'controllers/authentication_controller.dart';{{#enable_feature_counter}}
+import 'controllers/count_controller.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+import 'controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}
 import 'controllers/permissions_controller.dart';
 import 'controllers/push_notifications_controller.dart';
 import 'utils/api_controller.dart';
@@ -55,11 +55,16 @@ final _staticHandler = shelf_static.createStaticHandler('bin/server/public',
 /// Registers all controllers that provide some kind of API
 Future<RouteGenerator> _registerControllers() async {
   final generator = RouteGenerator()
+  {{#enable_feature_counter}}
     ..addController(CountController())
+  {{/enable_feature_counter}}
     ..addController(AuthenticationController())
     ..addController(PushNotificationsController())
     ..addController(PermissionsController())
-    ..addController(DeepLinksController());
+    {{#enable_feature_deeplinks}}
+    ..addController(DeepLinksController())
+    {{/enable_feature_deeplinks}}
+    ;
 
   /// TODO: Add your controllers here
 
