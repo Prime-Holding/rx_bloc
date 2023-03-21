@@ -30,11 +30,3 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-dependency_overrides:
-  flutter_rx_bloc:
-    path: ../flutter_rx_bloc
-  rx_bloc:
-    path: ../rx_bloc
-  rx_bloc_generator:
-    path: ../rx_bloc_generator
-
