@@ -3,10 +3,10 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
-import '../../models/auth_token_model.dart';
 {{#enable_feature_google_login}}
 import '../../../feature_login/models/request_models/google_auth_request_model.dart';
 {{/enable_feature_google_login}}
+import '../../models/auth_token_model.dart';
 import '../../models/request_models/authenticate_user_request_model.dart';
 
 part 'auth_data_source.g.dart';

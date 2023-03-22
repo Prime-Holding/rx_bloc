@@ -21,13 +21,8 @@ class EditFieldsPage extends StatelessWidget {
             WidgetSection(
               description: 'TextFieldDialog',
               child: TextFieldDialog<String>(
-<<<<<<< HEAD
-                translateError: (obj) =>
-                    ErrorMapperUtil<String>().errorMapper(obj, context),
-=======
                 translateError: (error) =>
                     ErrorModelFieldL10n.translateError<String>(error, context),
->>>>>>> develop
                 label: 'First Name',
                 value: 'John',
                 validator: LocalAddressFieldService(),

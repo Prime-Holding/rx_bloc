@@ -9,7 +9,6 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/extensions/error_model_field_translations.dart';
-import '../../base/common_ui_components/primary_button.dart';
 {{#enable_feature_google_login}}
 import '../blocs/google_login_bloc.dart';
 {{/enable_feature_google_login}}
