@@ -10,7 +10,7 @@ part 'enter_message_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the EnterMessageBloC.
 abstract class EnterMessageBlocEvents {
-  void setMessage(String messages);
+  void setMessage(String? messages);
 }
 
 /// A contract class containing all states of the EnterMessageBloC.
@@ -21,7 +21,7 @@ abstract class EnterMessageBlocStates {
   /// The error state
   Stream<ErrorModel> get errors;
 
-  Stream<String> get message;
+  Stream<String?> get message;
 }
 
 @RxBloc()
@@ -33,5 +33,5 @@ class EnterMessageBloc extends $EnterMessageBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  Stream<String> _mapToMessageState() => _$setMessageEvent;
+  Stream<String?> _mapToMessageState() => _$setMessageEvent;
 }

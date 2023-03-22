@@ -53,7 +53,6 @@ class LoginPageWithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
             context.read(),
-            context.read(),
           ),
         ),
         {{#enable_feature_google_login}}

@@ -1,3 +1,4 @@
+{{> licence.dart }}
 import 'dart:developer';
 
 import '../../assets.dart';
@@ -17,6 +18,8 @@ class UserAccountService {
   final AuthRepository _authRepository;
   final PushNotificationRepository _pushSubscriptionRepository;
   final PermissionsService _permissionsService;
+
+  bool _logoutLocked = false;
 
   /// Checks the user credentials passed in [username] and [password].
   ///
@@ -51,33 +54,33 @@ class UserAccountService {
     }
 
     // Load permissions
-    try {
-      await _permissionsService.load();
-    } catch (e) {
-      log(e.toString());
-    }
+    await _permissionsService.load();
   }
 
   /// This method logs out the user and delete all stored auth token data.
   ///
   /// After logging out the user it reloads all permissions.
   Future<void> logout() async {
-    // Unsubscribe user push token
-    try {
-      final pushToken =
-          await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
-      if (pushToken != null) {
-        await _pushSubscriptionRepository.unsubscribe(pushToken);
-      }
-    } catch (e) {
-      log(e.toString());
-    }
+    if (!_logoutLocked) {
+      _logoutLocked = true;
 
-    // Perform user logout
-    try {
-      await _authRepository.logout();
-    } catch (e) {
-      log(e.toString());
+      // Unsubscribe user push token
+      try {
+        final pushToken =
+            await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
+        if (pushToken != null) {
+          await _pushSubscriptionRepository.unsubscribe(pushToken);
+        }
+      } catch (e) {
+        log(e.toString());
+      }
+
+      // Perform user logout
+      try {
+        await _authRepository.logout();
+      } catch (e) {
+        log(e.toString());
+      }
     }
 
     // Clear locally stored auth data
@@ -89,5 +92,7 @@ class UserAccountService {
     } catch (e) {
       log(e.toString());
     }
+
+    _logoutLocked = false;
   }
 }

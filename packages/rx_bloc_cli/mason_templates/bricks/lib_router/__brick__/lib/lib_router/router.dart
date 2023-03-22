@@ -6,28 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../base/common_blocs/coordinator_bloc.dart';
-{{#enable_feature_deeplinks}}
-import '../base/models/deep_link_model.dart';
-{{/enable_feature_deeplinks}}
-{{#enable_feature_counter}}
-import '../feature_counter/di/counter_page_with_dependencies.dart';
-{{/enable_feature_counter}}
-import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';
-{{#enable_feature_widget_toolkit}}
-import '../feature_widget_toolkit/views/widget_toolkit_page.dart';
-{{/enable_feature_widget_toolkit}}
-{{#enable_feature_deeplinks}}
+import '../base/common_blocs/coordinator_bloc.dart';{{#enable_feature_deeplinks}}
+import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}
+import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
+import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
-import '../feature_enter_message/di/enter_message_with_dependencies.dart';
-{{/enable_feature_deeplinks}}
+import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
 import '../feature_home/views/home_page.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
-import '../feature_splash/services/splash_service.dart';
+import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
+import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
@@ -40,10 +32,6 @@ part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
 part 'routes/showcase_routes.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>();
-
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].
 ///
@@ -51,17 +39,23 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 /// specific page if the `isAuthenticated` state changes (It can be used with
 /// some other global state change as well).
 class AppRouter {
-  AppRouter(this._coordinatorBloc);
+  AppRouter({
+    required this.coordinatorBloc,
+    required this.rootNavigatorKey,
+    required this.shellNavigatorKey,
+  });
 
-  final CoordinatorBlocType _coordinatorBloc;
+  final CoordinatorBlocType coordinatorBloc;
+  final GlobalKey<NavigatorState> rootNavigatorKey;
+  final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
-      _GoRouterRefreshStream(_coordinatorBloc.states.isAuthenticated);
+      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated);
 
   GoRouter get router => _goRouter;
 
   late final GoRouter _goRouter = GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: const SplashRoute().location,
     routes: _appRoutesList(),
     redirect: _pageRedirections,
@@ -76,21 +70,15 @@ class AppRouter {
         $splashRoute,
         $loginRoute,
         ShellRoute(
-            navigatorKey: _shellNavigatorKey,
+            navigatorKey: shellNavigatorKey,
             builder: (context, state, child) => HomePage(
                   child: child,
                 ),
             routes: [
-              $dashboardRoute,
-              {{#enable_feature_counter}}
-              $counterRoute,
-              {{/enable_feature_counter}}
-              {{#enable_feature_deeplinks}}
-              $deepLinksRoute,
-              {{/enable_feature_deeplinks}}
-              {{#enable_feature_widget_toolkit}}
-              $widgetToolkitRoute,
-              {{/enable_feature_widget_toolkit}}
+              $dashboardRoute,{{#enable_feature_counter}}
+              $counterRoute,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
+              $widgetToolkitRoute,{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
+              $deepLinksRoute,{{/enable_feature_deeplinks}}
               $profileRoute,
             ]),
       ];
@@ -107,10 +95,11 @@ class AppRouter {
         state.subloc == const LoginRoute().location) {
       return const DashboardRoute().location;
     }
-    if (state.subloc != const SplashRoute().location) {
-      if (!context.read<SplashService>().isAppInitialized) {
-        return '${const SplashRoute().location}?from=${state.location}';
-      }
+    if (state.subloc == const SplashRoute().location) {
+      return null;
+    }
+    if (!context.read<SplashService>().isAppInitialized) {
+      return '${const SplashRoute().location}?from=${state.location}';
     }
 
     final pathInfo =

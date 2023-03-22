@@ -7,14 +7,18 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.*
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
+import java.io.File
 
 class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
 
+    private lateinit var event: AnActionEvent
     private lateinit var dataContext: DataContext
 
     override fun actionPerformed(e: AnActionEvent) {
+        event = e
         val dialog = GenerateRxBlocDialog(this, true)
         dialog.show()
     }
@@ -85,7 +89,26 @@ class GenerateRxBlocAction : AnAction(), GenerateRxBlocDialog.Listener {
             return
         }
         val psiFile = PsiFileFactory.getInstance(project)
-            .createFileFromText(fileName, PlainTextLanguage.INSTANCE, generator.generate())
+            .createFileFromText(
+                fileName,
+                PlainTextLanguage.INSTANCE,
+                fixSubPaths(generator.generate(), directory.virtualFile.parent)
+            )
         directory.add(psiFile)
+    }
+
+
+    private fun fixSubPaths(code: String, featureSubDirectory: VirtualFile): String {
+        var subPart = ""
+        val libPath = "${event.project?.basePath}${File.separator}lib"
+
+        if (featureSubDirectory.path.contains(libPath)) {
+            val subPartCount = featureSubDirectory.path.replace(libPath, "")
+                .replace("\\", "/").split("/").size
+            for (i in 0 until subPartCount) {
+                subPart += "../"
+            }
+        }
+        return code.replace("../../base", "$subPart../../base")
     }
 }

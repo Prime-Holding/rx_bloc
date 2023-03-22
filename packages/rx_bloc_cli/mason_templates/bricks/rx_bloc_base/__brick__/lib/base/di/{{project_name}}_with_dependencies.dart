@@ -30,29 +30,19 @@ import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
-import '../common_mappers/error_mappers/error_mapper.dart';
-{{#enable_feature_deeplinks}}
-import '../common_services/deep_link_service.dart';
-{{/enable_feature_deeplinks}}
-import '../data_sources/local/shared_preferences_instance.dart';
-{{#enable_feature_counter}}
-import '../data_sources/remote/count_remote_data_source.dart';
-{{/enable_feature_counter}}
-{{#enable_feature_deeplinks}}
-import '../data_sources/remote/deep_link_remote_data_source.dart';
-{{/enable_feature_deeplinks}}
+import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
+import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
+import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';
-{{#enable_feature_deeplinks}}
-import '../repositories/deep_link_repository.dart';
-{{/enable_feature_deeplinks}}
+import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_counter}}
+import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
+import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';
-{{#enable_feature_counter}}
-import '../repositories/{{#enable_feature_counter}}counter_repository.dart{{/enable_feature_counter}}';
-{{/enable_feature_counter}}
 
-class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
+class {{project_name.pascalCase()}}WithDependencies extends StatefulWidget {
   const {{project_name.pascalCase()}}WithDependencies({
       required this.config,
       required this.child,
@@ -61,6 +51,22 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
 
   final EnvironmentConfig config;
   final Widget child;
+
+  @override
+  State<{{project_name.pascalCase()}}WithDependencies> createState() =>
+      _{{project_name.pascalCase()}}WithDependenciesState();
+}
+
+class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{project_name.pascalCase()}}WithDependencies> {
+  late GlobalKey<NavigatorState> rootNavigatorKey;
+  late GlobalKey<NavigatorState> shellNavigatorKey;
+
+  @override
+  void initState() {
+    super.initState();
+    rootNavigatorKey = GlobalKey<NavigatorState>();
+    shellNavigatorKey = GlobalKey<NavigatorState>();
+  }
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -78,7 +84,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ..._services,
         ..._blocs,
       ],
-      child: child,
+      child: widget.child,
     );
 
   List<SingleChildWidget> get _coordinator => [
@@ -88,7 +94,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       ];
 
   SingleChildWidget get _appRouter => Provider<AppRouter>(
-        create: (context) => AppRouter(context.read()),
+        create: (context) => AppRouter(
+          coordinatorBloc: context.read(),
+          rootNavigatorKey: rootNavigatorKey,
+          shellNavigatorKey: shellNavigatorKey,
+        ),
       );
 
   {{#analytics}}
@@ -102,7 +112,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   {{/analytics}}
 
   List<Provider> get _environment => [
-        Provider<EnvironmentConfig>.value(value: config),
+        Provider<EnvironmentConfig>.value(value: widget.config),
       ];
 
   List<Provider> get _mappers => [
@@ -119,7 +129,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
         Provider<ApiHttpClient>(
           create: (context) {
-            final client = ApiHttpClient()..options.baseUrl = config.baseUrl;
+            final client = ApiHttpClient()
+              ..options.baseUrl = widget.config.baseUrl;
             return client;
           },
         ),
@@ -149,7 +160,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         Provider<RefreshTokenDataSource>(
           create: (context) => RefreshTokenDataSource(
             context.read<PlainHttpClient>(),
-            baseUrl: config.baseUrl,
+            baseUrl: widget.config.baseUrl,
           ),
         ),
         Provider<PushNotificationsDataSource>(

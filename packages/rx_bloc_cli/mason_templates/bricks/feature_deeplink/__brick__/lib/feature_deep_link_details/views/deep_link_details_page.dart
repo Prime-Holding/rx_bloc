@@ -28,7 +28,6 @@ class DeepLinkDetailsPage extends StatelessWidget {
           children: [
             AppErrorModalWidget<DeepLinkDetailsBlocType>(
               errorState: (bloc) => bloc.states.errors,
-              isListeningForNavigationErrors: false,
             ),
             Expanded(
               child: Center(
