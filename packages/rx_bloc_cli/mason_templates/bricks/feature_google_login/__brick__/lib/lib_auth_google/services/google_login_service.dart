@@ -1,8 +1,10 @@
 import 'dart:developer';
-import 'package:google_sign_in/google_sign_in.dart';
-import '../../base/app/config/app_constants.dart';
-import '../../base/repositories/push_notification_repository.dart';
 
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../base/app/config/app_constants.dart';
+import '../../base/models/errors/error_model.dart';
+import '../../base/repositories/push_notification_repository.dart';
 import '../../lib_auth/repositories/auth_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
 import '../repositories/google_auth_repository.dart';
@@ -30,7 +32,7 @@ class GoogleLoginService {
           await googleUser?.authentication;
       //Authenticate user on the server
       final authToken = await _googleAuthRepository.googleAuth(
-          email: googleUser?.email, token: googleAuth?.accessToken);
+          email: googleUser?.email, token: googleAuth?.accessToken!);
 
       // Save response tokens
       await _authRepository.saveToken(authToken.token);
@@ -55,7 +57,7 @@ class GoogleLoginService {
       return true;
     } catch (e) {
       log(e.toString());
-      return false;
+      throw ErrorModel();
     }
   }
 }

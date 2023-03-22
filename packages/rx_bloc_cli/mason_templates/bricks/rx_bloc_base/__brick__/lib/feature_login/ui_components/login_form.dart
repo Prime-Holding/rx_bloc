@@ -10,8 +10,9 @@ import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/extensions/error_model_field_translations.dart';
 {{#enable_feature_google_login}}
-import '../blocs/google_login_bloc.dart';
+import '../../lib_auth_google/di/lib_auth_google_page_with_dependencies.dart';
 {{/enable_feature_google_login}}
+
 import '../blocs/login_bloc.dart';
 
 class LoginForm extends StatefulWidget {
@@ -78,38 +79,21 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 {{#enable_feature_google_login}}
                 const Divider(indent: 5, endIndent: 5),
-                Padding(
+              Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: context.designSystem.spacing.l,
                   ),
-                  child: _buildGoogleLoginButton(),
+                  child: const LibAuthGooglePageWithDependencies(),
                 ),
                 {{/enable_feature_google_login}}
                 AppErrorModalWidget<LoginBlocType>(
                   errorState: (bloc) => bloc.states.errors,
                 ),
-                {{#enable_feature_google_login}}
-                AppErrorModalWidget<GoogleLoginBlocType>(
-                  errorState: (bloc) => bloc.states.errors,
-                ),
-                {{/enable_feature_google_login}}
               ],
             ),
           ],
         ),
       );
-{{#enable_feature_google_login}}
-  Widget _buildGoogleLoginButton() => RxBlocBuilder<GoogleLoginBlocType, bool>(
-        state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => GradientFillButton(
-          state: loadingState.isLoading
-              ? ButtonStateModel.loading
-              : ButtonStateModel.enabled,
-          text: context.l10n.featureGoogleLogin.googleLogin,
-          onPressed: () => bloc.events.googleLogin(),
-        ),
-      );
-{{/enable_feature_google_login}}
   Widget _buildLogInButton() => RxBlocBuilder<LoginBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
         builder: (context, loadingState, bloc) => GradientFillButton(

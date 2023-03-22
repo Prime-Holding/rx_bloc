@@ -9,9 +9,6 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-{{#enable_feature_google_login}}
-import '../../feature_login/repositories/google_auth_repository.dart';
-{{/enable_feature_google_login}}
 import '../../feature_splash/services/splash_service.dart';
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
@@ -227,14 +224,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           ),
         ),
         {{/enable_feature_deeplinks}}
-        {{#enable_feature_google_login}}
-        Provider<GoogleAuthRepository>(
-          create: (context) => GoogleAuthRepository(
-            context.read(),
-            context.read(),
-          ),
-        ),
-        {{/enable_feature_google_login}}
       ];
 
   List<Provider> get _services => [

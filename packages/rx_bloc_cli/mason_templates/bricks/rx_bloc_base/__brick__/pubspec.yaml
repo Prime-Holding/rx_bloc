@@ -81,6 +81,5 @@ r_flutter:
     - name: feature_login
     - name: feature_notifications{{#enable_feature_deeplinks}}
     - name: feature_enter_message
-    - name: feature_deep_link{{/enable_feature_deeplinks}}{{#enable_feature_google_login}}
-    - name: feature_google_login{{/enable_feature_google_login}}
+    - name: feature_deep_link{{/enable_feature_deeplinks}}
     - name: field

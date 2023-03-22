@@ -1,11 +1,5 @@
 #!/usr/bin/env sh
 . $(dirname "$0")/compile_bundles.sh
-
-dart run mason_cli:mason bundle \
-  -t dart \
-  -o lib/src/templates/ \
-  mason_templates/bricks/feature_google_login
-
 rm -rf example/test_app
 mkdir example/test_app
 dart run rx_bloc_cli create \

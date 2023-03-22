@@ -1,17 +1,17 @@
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
-import '../../lib_auth/data_sources/remote/auth_data_source.dart';
 import '../../lib_auth/models/auth_token_model.dart';
-import '../models/request_models/google_auth_request_model.dart';
+import '../data_sources/remote/google_auth_data_source.dart';
+import '../models/google_auth_request_model.dart';
 
 class GoogleAuthRepository {
-  GoogleAuthRepository(this._authDataSource, this._errorMapper);
-  final AuthDataSource _authDataSource;
+  GoogleAuthRepository(this._googleAuthDataSource, this._errorMapper);
+  final GoogleAuthDataSource _googleAuthDataSource;
   final ErrorMapper _errorMapper;
 
   Future<AuthTokenModel> googleAuth(
           {String? email, String? token, String? refreshToken}) =>
       _errorMapper.execute(
-        () => _authDataSource.googleAuth(
+        () => _googleAuthDataSource.googleAuth(
           GoogleAuthRequestModel(
             email: email,
             token: token,
