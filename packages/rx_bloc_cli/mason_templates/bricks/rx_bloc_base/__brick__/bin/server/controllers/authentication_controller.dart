@@ -31,7 +31,32 @@ class AuthenticationController extends ApiController {
       '/api/logout',
       _logoutHandler,
     );
+    {{#enable_feature_google_login}}
+    router.addRequest(
+      RequestType.POST,
+      '/api/authenticate/google',
+      _googleAuthHandler,
+    );
+    {{/enable_feature_google_login}}
   }
+
+  {{#enable_feature_google_login}}
+    Future<Response> _googleAuthHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
+    throwIfEmpty(
+      params['email'],
+      BadRequestException('An error ocurred.'),
+    );
+    throwIfEmpty(
+      params['token'],
+      BadRequestException('An error ocurred.'),
+    );
+
+    final token = _issueNewToken(null);
+    return responseBuilder.buildOK(data: token.toJson());
+  }
+  {{/enable_feature_google_login}}
 
   bool isAuthenticated(Request request) {
     final headers = request.headers;

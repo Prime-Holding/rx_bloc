@@ -20,7 +20,7 @@ class EditFieldsPage extends StatelessWidget {
             WidgetSection(
               description: 'TextFieldDialog',
               child: TextFieldDialog<String>(
-                errorMapper: (obj, context) =>
+                translateError: (obj) =>
                     ErrorMapperUtil<String>().errorMapper(obj, context),
                 label: 'First Name',
                 value: 'John',

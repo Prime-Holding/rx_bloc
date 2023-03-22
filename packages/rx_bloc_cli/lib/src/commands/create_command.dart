@@ -8,6 +8,7 @@ import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
 
 import '../templates/feature_deeplink_bundle.dart';
+import '../templates/feature_google_login_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
@@ -54,6 +55,11 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
+        _googleLoginString,
+        help: 'The google login feature',
+        defaultsTo: 'false',
+      )
+      ..addOption(
         _analyticsString,
         help: 'Enables Firebase analytics for the project',
         allowed: ['true', 'false'],
@@ -69,6 +75,7 @@ class CreateCommand extends Command<int> {
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
+  final _googleLoginString = 'enable-feature-google-login';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -76,6 +83,7 @@ class CreateCommand extends Command<int> {
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
+  final _googleLoginBundle = featureGoogleLoginBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -191,6 +199,10 @@ class CreateCommand extends Command<int> {
     if (arguments.enableDeeplinkFeature) {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
+    // Add google login brick to _bundle when needed
+    if (arguments.enableGoogleLoginFeature) {
+      _bundle.files.addAll(_googleLoginBundle.files);
+    }
 
     //Add lib_route to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
@@ -212,6 +224,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
+        'enable_feature_google_login': arguments.enableGoogleLoginFeature,
       },
     );
 
@@ -238,6 +251,7 @@ class CreateCommand extends Command<int> {
       enableCounterFeature: _parseEnableCounter(arguments),
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
+      enableGoogleLoginFeature: _parseEnableGoogleLoginFeature(arguments),
     );
   }
 
@@ -284,6 +298,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableDeeplinkFeature(ArgResults arguments) {
     final deeplinkEnabled = arguments[_deepLinkString];
     return deeplinkEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with counter feature
+  bool _parseEnableGoogleLoginFeature(ArgResults arguments) {
+    final googleLoginEnabled = arguments[_googleLoginString];
+    return googleLoginEnabled.toLowerCase() == 'true';
   }
 
   /// endregion
@@ -363,10 +383,10 @@ class CreateCommand extends Command<int> {
     _usingLog('Firebase Push Notifications', true);
     _usingLog('Feature Counter Showcase', arguments.enableCounterFeature);
     _usingLog('Feature Deep links Showcase', arguments.enableDeeplinkFeature);
+    _usingLog('Feature Widget Toolkit Showcase',
+        arguments.enableWidgetToolkitFeature);
     _usingLog(
-      'Feature Widget Toolkit Showcase',
-      arguments.enableWidgetToolkitFeature,
-    );
+        'Feature Google Login Showcase', arguments.enableGoogleLoginFeature);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -394,6 +414,7 @@ class _CreateCommandArguments {
     required this.enableCounterFeature,
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
+    required this.enableGoogleLoginFeature,
   });
 
   final String projectName;
@@ -403,4 +424,5 @@ class _CreateCommandArguments {
   final bool enableCounterFeature;
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
+  final bool enableGoogleLoginFeature;
 }
