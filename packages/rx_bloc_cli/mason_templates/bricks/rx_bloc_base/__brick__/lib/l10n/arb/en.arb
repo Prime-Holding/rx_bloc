@@ -10,6 +10,7 @@
     "pageWithResult" : "Enter message",
     "tryAgain" : "Try again",
     "confirm" : "Confirm",
-    "submit" : "Submit",
+    "submit" : "Submit",{{#enable_facebook_auth}}
+    "loginWithFb" : "Login with Facebook",{{/enable_facebook_auth}}
     "navProfile" : "Profile"
 }

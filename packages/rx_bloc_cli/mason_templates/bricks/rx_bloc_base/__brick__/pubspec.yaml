@@ -19,8 +19,9 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^5.0.2
-  flutter_secure_storage: ^7.0.1
+  flutter_rx_bloc: ^5.0.2{{#enable_facebook_auth}}
+  flutter_facebook_auth: ^5.0.8{{/enable_facebook_auth}}
+  flutter_secure_storage: ^8.0.0
   go_router: ^6.2.0
   golden_toolkit: ^0.14.0
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)

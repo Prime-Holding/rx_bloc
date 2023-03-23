@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
-
+{{#enable_facebook_auth}}
+import '../../lib_auth_facebook/di/facebook_auth_page_with_dependencies.dart';{{/enable_facebook_auth}}
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../ui_components/login_form.dart';
@@ -35,6 +36,9 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
+{{#enable_facebook_auth}}
+const FacebookAuthPageWithDependencies(),
+{{/enable_facebook_auth}}
             ],
           ),
         ),

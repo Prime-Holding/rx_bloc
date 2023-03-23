@@ -26,6 +26,15 @@ class AuthenticationController extends ApiController {
       '/api/authenticate',
       _authenticationHandler,
     );
+
+{{#enable_facebook_auth}}
+router.addRequest(
+RequestType.POST,
+'/api/authenticate/facebook',
+_facebookAuthHandler,
+);
+{{/enable_facebook_auth}}
+
     router.addRequest(
       RequestType.POST,
       '/api/logout',
@@ -56,6 +65,18 @@ class AuthenticationController extends ApiController {
     final token = _authenticationService.issueNewToken(null);
     return responseBuilder.buildOK(data: token.toJson());
   }
+{{#enable_facebook_auth}}
+Future<Response> _facebookAuthHandler(Request request) async {
+final params = await request.bodyFromFormData();
+if (params['isAuthenticated'] != true) {
+BadRequestException('User must be authenticated to proceed');
+}
+
+final token = _authenticationService.issueNewToken(null);
+return responseBuilder.buildOK(data: token.toJson());
+}
+{{/enable_facebook_auth}}
+
 
   Future<Response> _logoutHandler(Request request) async {
     await Future.delayed(const Duration(seconds: 1));

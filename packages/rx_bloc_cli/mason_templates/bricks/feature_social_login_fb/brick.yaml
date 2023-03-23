@@ -1,0 +1,10 @@
+name: feature_social_login_fb
+description: Feature facebook authentication brick.
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.41 <0.1.0"
+
+vars:
+
