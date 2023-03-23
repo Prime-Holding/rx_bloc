@@ -35,3 +35,8 @@ dart run mason_cli:mason bundle \
   -t dart \
   -o lib/src/templates/ \
   mason_templates/bricks/lib_auth
+
+dart run mason_cli:mason bundle \
+  -t dart \
+  -o lib/src/templates/ \
+  mason_templates/bricks/lib_auth_apple

@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/custom_app_bar.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';{{#enable_apple_auth}}
+import '../../lib_auth_apple/di/apple_login_button_with_dependencies.dart';{{/enable_apple_auth}}
 import '../ui_components/login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -34,6 +35,10 @@ class LoginPage extends StatelessWidget {
                     title: context.l10n.featureLogin.loginCredentialsHint,
                   ),
                 ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: AppleLoginButtonWithDependencies(),
               ),
             ],
           ),
