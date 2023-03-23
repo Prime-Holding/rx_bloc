@@ -2,8 +2,8 @@
 
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 
-A brick created to add social log in with Apple functionality to our application. Use third party package, so in order to make it work, fulfill requirements, described into its [documentation][5]. 
-When run the created project don't forget to enable "Sign in with Apple" capability for your bundleId.
+A brick designed to integrate social login with Apple functionality into our application. It uses the [sign_in_with_apple][5] package. In order to make it work, fulfill the requirements described in its documentation.
+When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.
 
 Supports iOS.
 

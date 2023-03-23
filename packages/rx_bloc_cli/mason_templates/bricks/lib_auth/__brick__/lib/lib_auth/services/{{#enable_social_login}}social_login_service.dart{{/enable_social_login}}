@@ -1,0 +1,7 @@
+{{> licence.dart }}
+
+import '../models/auth_token_model.dart';
+
+abstract class SocialLoginService {
+  Future<AuthTokenModel> getSocialAuthentication();
+}

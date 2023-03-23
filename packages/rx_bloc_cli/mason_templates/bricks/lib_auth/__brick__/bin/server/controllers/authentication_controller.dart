@@ -70,7 +70,7 @@ class AuthenticationController extends ApiController {
 
     throwIfEmpty(
       params['authorizationCode'],
-      BadRequestException('The user authorization with Apple felt.'),
+      BadRequestException('The user authorization with Apple failed'),
     );
 
     final token = _authenticationService.issueNewToken(null);

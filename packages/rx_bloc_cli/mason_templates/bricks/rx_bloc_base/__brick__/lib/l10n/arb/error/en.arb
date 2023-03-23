@@ -12,7 +12,8 @@
   "passwordLength": "Password should be at least 6 characters long",
   "wrongEmailOrPassword": "Wrong email or password",
   "invalidMessage": "The entered message should be at least 2 characters long.",{{#enable_apple_auth}}
-  "wrongAppleCredentials": "Wrong Apple credentials",{{/enable_apple_auth}}
+  "appleAuthenticationFailed": "Unable to authenticate with Apple.",{{/enable_apple_auth}}{{#enable_social_login}}
+  "unimplementedSocialLoginService": "Unable to authenticate with social media. Please, implement SocialLoginService.",{{/enable_social_login}}
   "tooLong": "The entered text is too long",
   "tooShort": "The entered text is too short"
 }

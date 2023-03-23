@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/models/errors/error_model.dart';
+import '../../lib_auth/services/social_login_service.dart';
+import '../../lib_auth/services/user_account_service.dart';
 import '../blocs/apple_login_bloc.dart';
 import '../data_sources/apple_auth_data_source.dart';
 import '../repositories/apple_auth_repository.dart';
@@ -53,8 +55,13 @@ class AppleLoginButtonWithDependencies extends StatelessWidget {
     ),
   ];
   List<Provider> get _services => [
-    Provider<AppleLoginService>(
+    Provider<SocialLoginService>(
       create: (context) => AppleLoginService(
+        context.read(),
+      ),
+    ),
+    Provider<UserAccountService>(
+      create: (context) => UserAccountService(
         context.read(),
         context.read(),
         context.read(),

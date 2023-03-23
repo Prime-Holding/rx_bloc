@@ -242,7 +242,8 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => UserAccountService(
             context.read(),
             context.read(),
-            context.read(),
+            context.read(),{{#enable_social_login}}
+            null,{{/enable_social_login}}
           ),
         ),
         Provider<AccessTokenService>(

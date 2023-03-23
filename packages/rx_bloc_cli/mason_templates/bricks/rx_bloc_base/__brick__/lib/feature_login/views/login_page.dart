@@ -35,11 +35,11 @@ class LoginPage extends StatelessWidget {
                     title: context.l10n.featureLogin.loginCredentialsHint,
                   ),
                 ),
-              ),
+              ),{{#enable_apple_auth}}
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: AppleLoginButtonWithDependencies(),
-              ),
+              ),{{/enable_apple_auth}}
             ],
           ),
         ),
