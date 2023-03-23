@@ -9,7 +9,10 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:widget_toolkit/language_picker.dart';
 
+import '../../feature_profile/data_sources/language_local_data_source.dart';
+import '../../feature_profile/services/language_service_example.dart';
 import '../../feature_splash/services/splash_service.dart';
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
@@ -185,6 +188,11 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           ),
         ),
         {{/enable_feature_deeplinks}}
+        Provider<LanguageLocalDataSource>(
+          create: (context) => LanguageLocalDataSource(
+            context.read(),
+          ),
+        ),
       ];
 
   List<Provider> get _repositories => [
@@ -262,6 +270,11 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           ),
         ),
         {{/enable_feature_deeplinks}}
+        Provider<LanguageServiceExample>(
+          create: (context) => LanguageServiceExample(
+            localDataSource: context.read(),
+          ),
+        ),
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -277,6 +290,11 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
             context.read(),
             context.read(),
+          ),
+        ),
+        Provider<LanguagePickerBlocType>(
+          create: (context) =>
+            LanguagePickerBloc(context.read<LanguageServiceExample>(),
           ),
         ),
       ];

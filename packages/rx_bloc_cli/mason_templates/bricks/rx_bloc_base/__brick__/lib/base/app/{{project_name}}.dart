@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_toolkit/language_picker.dart';
 
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
@@ -48,13 +49,29 @@ __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
+  late Locale _locale;
 
   @override
-  void initState() { {{#push_notifications}}
+  void initState() {
+    _updateLocale();{{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
 
     super.initState();
+  }
+
+  void _updateLocale() {
+  _locale = const Locale('en');
+
+  context
+      .read<LanguagePickerBlocType>()
+      .states
+      .currentLanguage
+      .listen((language) {
+    setState(
+      () => _locale = Locale(language.locale),
+    );
+  });
   }{{#push_notifications}}
 
   Future<void> _configureFCM() async {
@@ -101,6 +118,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           GlobalMaterialLocalizations.delegate,
         ],
         supportedLocales: I18n.supportedLocales,
+        locale: _locale,
         routerConfig: context.read<AppRouter>().router,
         debugShowCheckedModeBanner: false,
       );

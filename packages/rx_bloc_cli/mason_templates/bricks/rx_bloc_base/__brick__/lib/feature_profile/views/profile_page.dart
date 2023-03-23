@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_toolkit/language_picker.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
@@ -35,6 +36,23 @@ class ProfilePage extends StatelessWidget {
                     .read<RouterBlocType>()
                     .events
                     .push(const NotificationsRoute()),
+              ),
+            ),
+            SizedBox(
+              height: context.designSystem.spacing.xl0,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: context.designSystem.spacing.xl0,
+              ),
+              child: OutlineFillButton(
+                text: context.l10n.changeLanguage,
+                onPressed: () => showChangeLanguageBottomSheet(
+                  context: context,
+                  headerBuilder: (context) {
+                    return Container();
+                  },
+                ),
               ),
             ),
           ],
