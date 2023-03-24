@@ -35,10 +35,7 @@ class AppleLoginButtonWithDependencies extends StatelessWidget {
             AppErrorModalWidget<AppleLoginBlocType>(
               errorState: (bloc) => bloc.states.errors,
             ),
-            RxBlocBuilder<AppleLoginBlocType, bool>(
-              state: (bloc) => bloc.states.isLoading,
-              builder: (context, snapshot, bloc) => const AppleLoginButton(),
-            ),
+            const AppleLoginButton(),
           ],
         ),
       );
