@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'google_credentials_model.dart';
+
 part 'google_auth_request_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
@@ -20,4 +22,14 @@ class GoogleAuthRequestModel {
   factory GoogleAuthRequestModel.fromJson(Map<String, dynamic> json) =>
       _$GoogleAuthRequestModelFromJson(json);
   Map<String, dynamic> toJson() => _$GoogleAuthRequestModelToJson(this);
+
+  factory GoogleAuthRequestModel.fromGoogleCredentials(
+          GoogleCredentialsModel credentials) =>
+      GoogleAuthRequestModel(
+        displayName: credentials.displayName,
+        email: credentials.email,
+        id: credentials.id,
+        photoUrl: credentials.photoUrl,
+        serverAuthCode: credentials.serverAuthCode,
+      );
 }

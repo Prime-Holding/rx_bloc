@@ -4,6 +4,7 @@ import '../../lib_auth/models/auth_token_model.dart';
 import '../data_sources/remote/google_auth_data_source.dart';
 import '../data_sources/remote/google_credential_data_source.dart';
 import '../models/google_auth_request_model.dart';
+import '../models/google_credentials_model.dart';
 
 class GoogleAuthRepository {
   GoogleAuthRepository(this._googleAuthDataSource, this._errorMapper,
@@ -13,24 +14,20 @@ class GoogleAuthRepository {
   final GoogleCredentialDataSource _googleCredentialDataSource;
 
   Future<AuthTokenModel> googleAuth({
-    GoogleAuthRequestModel? googleAuthRequestModel,
+    required GoogleCredentialsModel googleAuthRequestModel,
   }) =>
       _errorMapper.execute(
-        () => _googleAuthDataSource.googleAuth(googleAuthRequestModel!),
+        () => _googleAuthDataSource.googleAuth(
+            GoogleAuthRequestModel.fromGoogleCredentials(
+                googleAuthRequestModel)),
       );
 
-  Future<GoogleAuthRequestModel> getUsersGoogleCredential() async {
-    final googleUser =
+  Future<GoogleCredentialsModel> getUsersGoogleCredential() async {
+    final credentials =
         await _googleCredentialDataSource.getUsersGoogleCredential();
-    if (googleUser == null) {
-      throw GenericErrorModel('Google login failed');
+    if (credentials == null) {
+      throw ErrorModel();
     }
-    return GoogleAuthRequestModel(
-      email: googleUser.email,
-      id: googleUser.id,
-      serverAuthCode: googleUser.serverAuthCode,
-      displayName: googleUser.displayName,
-      photoUrl: googleUser.photoUrl,
-    );
+    return GoogleCredentialsModel.fromGoogleCredentials(credentials);
   }
 }
