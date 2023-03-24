@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../../assets.dart';
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../base/models/errors/error_model.dart';

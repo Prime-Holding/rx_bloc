@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'google_credentials_model.dart';

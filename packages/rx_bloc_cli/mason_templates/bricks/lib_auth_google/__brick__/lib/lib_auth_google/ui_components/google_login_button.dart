@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;

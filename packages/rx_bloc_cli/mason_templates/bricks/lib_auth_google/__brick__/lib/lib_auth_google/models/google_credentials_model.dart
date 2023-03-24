@@ -1,13 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+{{> licence.dart }}
+
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleCredentialsModel {
-  final String? displayName;
-  final String email;
-  final String id;
-  final String? photoUrl;
-  final String? serverAuthCode;
-
   GoogleCredentialsModel({
     this.displayName,
     required this.email,
@@ -15,6 +10,12 @@ class GoogleCredentialsModel {
     this.photoUrl,
     this.serverAuthCode,
   });
+  
+  final String? displayName;
+  final String email;
+  final String id;
+  final String? photoUrl;
+  final String? serverAuthCode;
 
   bool equals(GoogleCredentialsModel credentials) =>
       displayName == credentials.displayName &&
