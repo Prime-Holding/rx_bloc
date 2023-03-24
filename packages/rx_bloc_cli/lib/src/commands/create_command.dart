@@ -233,7 +233,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
         'enable_apple_auth': arguments.enableAppleAuth,
-        'enable_social_login': arguments.enableSocialLogin,
+        'enable_social_login': arguments.enableAppleAuth,
       },
     );
 
@@ -261,7 +261,6 @@ class CreateCommand extends Command<int> {
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
       enableAppleAuth: _parseEnableAppleAuth(arguments),
-      enableSocialLogin: _parseEnableAppleAuth(arguments),
     );
   }
 
@@ -426,7 +425,6 @@ class _CreateCommandArguments {
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
     required this.enableAppleAuth,
-    required this.enableSocialLogin,
   });
 
   final String projectName;
@@ -437,5 +435,4 @@ class _CreateCommandArguments {
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
   final bool enableAppleAuth;
-  final bool enableSocialLogin;
 }
