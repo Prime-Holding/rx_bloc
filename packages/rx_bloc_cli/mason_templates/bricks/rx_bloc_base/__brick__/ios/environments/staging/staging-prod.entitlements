@@ -4,5 +4,9 @@
 <dict>
 	<key>aps-environment</key>
 	<string>production</string>
+	<key>com.apple.developer.applesignin</key>{{#enable_social_login}}
+	<array>
+		<string>Default</string>
+	</array>{{/enable_social_login}}
 </dict>
 </plist>

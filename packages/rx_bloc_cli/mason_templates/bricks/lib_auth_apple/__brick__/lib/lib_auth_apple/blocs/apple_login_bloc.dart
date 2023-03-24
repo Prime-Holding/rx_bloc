@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../lib_auth/services/user_account_service.dart';
+import '../services/apple_social_login_service.dart';
 
 part 'apple_login_bloc.rxb.g.dart';
 
@@ -30,11 +30,11 @@ abstract class AppleLoginBlocStates {
 
 @RxBloc()
 class AppleLoginBloc extends $AppleLoginBloc {
-  AppleLoginBloc(this._userAccountService, this._coordinatorBloc) {
+  AppleLoginBloc(this._appleSocialLoginService, this._coordinatorBloc) {
     loggedIn.connect().addTo(_compositeSubscription);
   }
 
-  final UserAccountService _userAccountService;
+  final AppleSocialLoginService _appleSocialLoginService;
   final CoordinatorBlocType _coordinatorBloc;
 
   @override
@@ -47,7 +47,7 @@ class AppleLoginBloc extends $AppleLoginBloc {
   ConnectableStream<bool> _mapToLoggedInState() => _$loginWithAppleEvent
       .throttleTime(const Duration(seconds: 1))
       .exhaustMap((_) =>
-          _userAccountService.socialLogin().then((_) => true).asResultStream())
+          _appleSocialLoginService.login().then((_) => true).asResultStream())
       .setResultStateHandler(this)
       .whereSuccess()
       .emitAuthenticatedToCoordinator(_coordinatorBloc)

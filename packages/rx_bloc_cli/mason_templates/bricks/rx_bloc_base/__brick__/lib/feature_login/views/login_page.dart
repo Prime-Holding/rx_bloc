@@ -36,9 +36,11 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),{{#enable_apple_auth}}
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                child: AppleLoginButtonWithDependencies(),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: context.designSystem.spacing.xxl,
+                    vertical: context.designSystem.spacing.l),
+                child: const AppleLoginButtonWithDependencies(),
               ),{{/enable_apple_auth}}
             ],
           ),
