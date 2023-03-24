@@ -6,6 +6,7 @@ import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../blocs/google_login_bloc.dart';
 import '../data_sources/remote/google_auth_data_source.dart';
+import '../data_sources/remote/google_credential_data_source.dart';
 import '../repositories/google_auth_repository.dart';
 import '../services/google_login_service.dart';
 import '../ui_components/google_login_button.dart';
@@ -36,6 +37,9 @@ class GoogleLoginButtonWithDependencies extends StatelessWidget {
           create: (context) => GoogleAuthDataSource(
             context.read<ApiHttpClient>(),
           ),
+        ),
+        Provider<GoogleCredentialDataSource>(
+          create: (context) => GoogleCredentialDataSource(),
         ),
       ];
 
