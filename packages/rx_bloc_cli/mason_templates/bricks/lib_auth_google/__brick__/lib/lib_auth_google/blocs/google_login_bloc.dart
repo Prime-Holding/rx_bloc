@@ -41,10 +41,8 @@ class GoogleLoginBloc extends $GoogleLoginBloc {
   ConnectableStream<bool> _mapToIsGoogleAuthenticatedState() =>
       _$googleLoginEvent
           .exhaustMap(
-            (value) => _googleLoginService
-                .authenticate()
-                .then((_) => true)
-                .asResultStream(),
+            (value) =>
+                _googleLoginService.login().then((_) => true).asResultStream(),
           )
           .setResultStateHandler(this)
           .whereSuccess()
