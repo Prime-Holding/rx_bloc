@@ -22,6 +22,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-feature-counter true ^
 --enable-feature-deeplinks true ^
 --enable-feature-widget-toolkit true ^
---enable-google-auth false ^
+--enable-google-auth true ^
 example/test_app ^
 & cd example/test_app
