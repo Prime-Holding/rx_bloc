@@ -1,8 +1,9 @@
 {{> licence.dart }}
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
@@ -11,7 +12,6 @@ import '../data_sources/apple_auth_data_source.dart';
 import '../data_sources/apple_credential_data_source.dart';
 import '../repositories/apple_auth_repository.dart';
 import '../services/apple_social_login_service.dart';
-import '../ui_components/apple_login_button.dart';
 
 /// [AppleLoginButtonWithDependencies] provides out of the box Log in with Apple
 /// functionality along with default view of the button. If you want to customize
@@ -35,7 +35,13 @@ class AppleLoginButtonWithDependencies extends StatelessWidget {
             AppErrorModalWidget<AppleLoginBlocType>(
               errorState: (bloc) => bloc.states.errors,
             ),
-            const AppleLoginButton(),
+            RxBlocBuilder<AppleLoginBlocType, bool>(
+              state: (bloc) => bloc.states.isLoading,
+              builder: (context, snapshot, bloc) => SignInWithAppleButton(
+                  onPressed: () => (snapshot.data ?? false)
+                      ? null
+                      : bloc.events.loginWithApple()),
+            ),
           ],
         ),
       );
