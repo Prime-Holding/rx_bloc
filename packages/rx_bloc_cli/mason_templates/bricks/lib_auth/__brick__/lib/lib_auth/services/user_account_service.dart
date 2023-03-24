@@ -21,6 +21,8 @@ class UserAccountService {
   final PushNotificationRepository _pushSubscriptionRepository;
   final PermissionsService _permissionsService;
 
+  bool _logoutLocked = false;
+
   /// Checks the user credentials passed in [username] and [password].
   ///
   /// After successful login saves the auth `token` and `refresh token` to
@@ -38,13 +40,13 @@ class UserAccountService {
       password: password,
     );
 
-// Save response tokens
+    /// Save response tokens
     await saveTokens(authToken);
 
-// Subscribe user push token
+    /// Subscribe user push token
     await subscribeForNotifications();
 
-// Load permissions
+    /// Load permissions
     await loadPermissions();
   }
 
@@ -87,28 +89,34 @@ class UserAccountService {
   ///
   /// After logging out the user it reloads all permissions.
   Future<void> logout() async {
-// Unsubscribe user push token
-    try {
-      final pushToken =
-          await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
-      if (pushToken != null) {
-        await _pushSubscriptionRepository.unsubscribe(pushToken);
+    if (!_logoutLocked) {
+      _logoutLocked = true;
+
+      /// Unsubscribe user push token
+      try {
+        final pushToken =
+            await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
+        if (pushToken != null) {
+          await _pushSubscriptionRepository.unsubscribe(pushToken);
+        }
+      } catch (e) {
+        log(e.toString());
       }
-    } catch (e) {
-      log(e.toString());
+
+      /// Perform user logout
+      try {
+        await _authRepository.logout();
+      } catch (e) {
+        log(e.toString());
+      }
+
+      /// Clear locally stored auth data
+      await _authRepository.clearAuthData();
+
+      /// Reload user permissions
+      await loadPermissions();
+
+      _logoutLocked = false;
     }
-
-// Perform user logout
-    try {
-      await _authRepository.logout();
-    } catch (e) {
-      log(e.toString());
-    }
-
-// Clear locally stored auth data
-    await _authRepository.clearAuthData();
-
-// Reload user permissions
-    await loadPermissions();
   }
 }
