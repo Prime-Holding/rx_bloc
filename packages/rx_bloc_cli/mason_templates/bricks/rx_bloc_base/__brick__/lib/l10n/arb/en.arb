@@ -10,7 +10,7 @@
     "pageWithResult" : "Enter message",
     "tryAgain" : "Try again",
     "confirm" : "Confirm",
-    "submit" : "Submit",{{#enable_feature_google_login}}
-    "googleLogin":"Google Log in",{{/enable_feature_google_login}}
+    "submit" : "Submit",{{#enable_google_auth}}
+    "googleLogin":"Google Log in",{{/enable_google_auth}}
     "navProfile" : "Profile"
 }

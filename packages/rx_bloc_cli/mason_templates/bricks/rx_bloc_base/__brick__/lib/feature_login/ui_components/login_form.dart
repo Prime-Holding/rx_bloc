@@ -9,9 +9,6 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../base/extensions/error_model_field_translations.dart';
-{{#enable_feature_google_login}}
-import '../../lib_auth_google/di/lib_auth_google_page_with_dependencies.dart';
-{{/enable_feature_google_login}}
 
 import '../blocs/login_bloc.dart';
 
@@ -77,15 +74,6 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   child: _buildLogInButton(),
                 ),
-                {{#enable_feature_google_login}}
-                const Divider(indent: 5, endIndent: 5),
-              Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.designSystem.spacing.l,
-                  ),
-                  child: const LibAuthGooglePageWithDependencies(),
-                ),
-                {{/enable_feature_google_login}}
                 AppErrorModalWidget<LoginBlocType>(
                   errorState: (bloc) => bloc.states.errors,
                 ),

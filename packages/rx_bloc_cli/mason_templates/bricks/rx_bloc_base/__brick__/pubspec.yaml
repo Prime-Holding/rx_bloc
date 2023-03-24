@@ -22,8 +22,8 @@ dependencies:
   flutter_rx_bloc: ^5.0.2
   flutter_secure_storage: ^7.0.1
   go_router: ^6.2.0
-  golden_toolkit: ^0.14.0{{#enable_feature_google_login}}
-  google_sign_in: ^6.0.2{{/enable_feature_google_login}}
+  golden_toolkit: ^0.14.0{{#enable_google_auth}}
+  google_sign_in: ^6.0.2{{/enable_google_auth}}
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.7.0
@@ -76,10 +76,10 @@ r_flutter:
   intl: lib/l10n/arb/en.arb
   intl_features:
     - name: error{{#enable_feature_counter}}
-    - name: feature_counter{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
-    - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
-    - name: feature_login
-    - name: feature_notifications{{#enable_feature_deeplinks}}
+    - name: feature_counter{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
     - name: feature_enter_message
     - name: feature_deep_link{{/enable_feature_deeplinks}}
+    - name: feature_login
+    - name: feature_notifications{{#enable_feature_widget_toolkit}}
+    - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field

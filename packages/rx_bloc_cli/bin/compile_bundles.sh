@@ -39,4 +39,4 @@ dart run mason_cli:mason bundle \
 dart run mason_cli:mason bundle \
   -t dart \
   -o lib/src/templates/ \
-  mason_templates/bricks/feature_google_login
+  mason_templates/bricks/lib_auth_google

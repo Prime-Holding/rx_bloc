@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
+{{#enable_google_auth}}
+import '../../lib_auth_google/di/google_login_button_with_dependencies.dart';
+{{/enable_google_auth}}
 import '../ui_components/login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -35,6 +38,14 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
+              {{#enable_google_auth}}
+                Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.designSystem.spacing.l,
+                ),
+                child: const GoogleLoginButtonWithDependencies(),
+              ),
+              {{/enable_google_auth}}
             ],
           ),
         ),

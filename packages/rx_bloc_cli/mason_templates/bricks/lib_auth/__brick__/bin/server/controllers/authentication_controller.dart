@@ -9,8 +9,9 @@ import '../utils/server_exceptions.dart';
 // ignore_for_file: cascade_invocations
 
 class AuthenticationController extends ApiController {
-  static const authHeader = 'Authorization';
-  final _authTokenRepository = AuthTokenRepository();
+  AuthenticationController(this._authenticationService);
+
+  final AuthenticationService _authenticationService;
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -30,52 +31,33 @@ class AuthenticationController extends ApiController {
       '/api/logout',
       _logoutHandler,
     );
-    {{#enable_feature_google_login}}
+     {{#enable_google_auth}}
     router.addRequest(
       RequestType.POST,
       '/api/authenticate/google',
       _googleAuthHandler,
     );
-    {{/enable_feature_google_login}}
+    {{/enable_google_auth}}
   }
-
-  {{#enable_feature_google_login}}
-    Future<Response> _googleAuthHandler(Request request) async {
+    {{#enable_google_auth}}
+   Future<Response> _googleAuthHandler(Request request) async {
     final params = await request.bodyFromFormData();
 
     throwIfEmpty(
-      params['email'],
-      BadRequestException('An error ocurred.'),
-    );
-    throwIfEmpty(
-      params['token'],
-      BadRequestException('An error ocurred.'),
+      params['serverAuthCode'],
+      BadRequestException('The user authorization with Google failed.'),
     );
 
-    final token = _issueNewToken(null);
+    final token = _authenticationService.issueNewToken(null);
     return responseBuilder.buildOK(data: token.toJson());
   }
-  {{/enable_feature_google_login}}
-
-  bool isAuthenticated(Request request) {
-    final headers = request.headers;
-    if (!headers.containsKey(authHeader)) {
-      throw UnauthorizedException('User not authorized!');
-    }
-
-    final accessToken = _getAccessTokenFromAuthHeader(request.headers);
-    if (!_validateAccessToken(accessToken)) {
-      throw UnauthorizedException('User not authorized!');
-    }
-
-    return true;
-  }
+  {{/enable_google_auth}}
 
   Future<Response> _refreshTokenHandler(Request request) async {
     final params = await request.bodyFromFormData();
     final refreshToken = params['refreshToken'];
 
-    final token = _issueNewToken(refreshToken);
+    final token = _authenticationService.issueNewToken(refreshToken);
     return responseBuilder.buildOK(data: token.toJson());
   }
 
@@ -91,45 +73,18 @@ class AuthenticationController extends ApiController {
       BadRequestException('The password cannot be empty.'),
     );
 
-    final token = _issueNewToken(null);
+    final token = _authenticationService.issueNewToken(null);
     return responseBuilder.buildOK(data: token.toJson());
   }
 
   Future<Response> _logoutHandler(Request request) async {
     await Future.delayed(const Duration(seconds: 1));
-    isAuthenticated(request);
+    _authenticationService.isAuthenticated(request);
 
-    final accessToken = _getAccessTokenFromAuthHeader(request.headers);
-    _authTokenRepository.removeToken(accessToken);
+    final accessToken =
+        _authenticationService.getAccessTokenFromAuthHeader(request.headers);
+    _authenticationService.removeToken(accessToken);
 
     return responseBuilder.buildOK();
-  }
-
-  String _getAccessTokenFromAuthHeader(Map<String, String> headers) {
-    try {
-// Usually the auth header looks like 'Bearer token', but if the format
-// is not respected, it may throw errors
-      return headers[authHeader]?.split(' ')[1] ?? '';
-    } catch (e) {
-      return '';
-    }
-  }
-
-  bool _validateAccessToken(String accessToken) {
-    final token = _authTokenRepository.getToken(accessToken);
-    if (token == null) {
-      throw UnauthorizedException('Invalid access token!');
-    }
-    return token.isValid;
-  }
-
-  AuthToken _issueNewToken(String? refreshToken) {
-    if (refreshToken != null) {
-      final token = _authTokenRepository.getTokenViaRefreshToken(refreshToken);
-      if (token == null) throw BadRequestException('Invalid refresh token!');
-      _authTokenRepository.removeToken(token.token);
-    }
-
-    return _authTokenRepository.issueNewToken();
   }
 }

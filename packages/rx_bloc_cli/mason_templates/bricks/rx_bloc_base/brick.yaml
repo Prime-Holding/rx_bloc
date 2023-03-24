@@ -13,4 +13,4 @@ vars:
   - enable_feature_counter
   - enable_feature_deeplinks
   - enable_feature_widget_toolkit
-  - enable_feature_google_login
+  - enable_google_auth
