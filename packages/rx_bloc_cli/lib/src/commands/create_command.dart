@@ -202,7 +202,7 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
-    // Add deep link brick to _bundle when needed
+    // Add facebook auth brick to _bundle when needed
     if (arguments.enableFacebookAuth) {
       _bundle.files.addAll(_libFacebookAuthBundle.files);
     }
@@ -305,9 +305,9 @@ class CreateCommand extends Command<int> {
     return deeplinkEnabled.toLowerCase() == 'true';
   }
 
-  /// Returns whether the project will be created with counter feature
+  /// Returns whether the project will be created with facebook authentication
   bool _parseFacebookAuth(ArgResults arguments) {
-    final facebookAuthEnabled = arguments[_deepLinkString];
+    final facebookAuthEnabled = arguments[_facebookAuthString];
     return facebookAuthEnabled.toLowerCase() == 'true';
   }
 

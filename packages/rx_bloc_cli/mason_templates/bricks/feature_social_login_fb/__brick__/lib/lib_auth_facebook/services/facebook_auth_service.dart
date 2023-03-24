@@ -30,8 +30,6 @@ class FacebookAuthService {
         // you are logged
         final AccessToken accessToken = result.accessToken!;
         final userInfo = await FacebookAuth.instance.getUserData();
-        print(accessToken.token);
-        print(userInfo['email']);
 
         FacebookAuthRequestModel requestModel = FacebookAuthRequestModel(
           email: userInfo['email'],
@@ -46,8 +44,7 @@ class FacebookAuthService {
         await _authRepository.saveToken(authToken.token);
         await _authRepository.saveRefreshToken(authToken.refreshToken);
       } else {
-        print(result.status);
-        print(result.message);
+        return false;
       }
       // Subscribe user push token
       try {
@@ -75,8 +72,6 @@ class FacebookAuthService {
   Future<bool> facebookLogout() async {
     await FacebookAuth.instance.logOut();
     await _authRepository.clearAuthData();
-    // _accessToken = null;
-    // _userData = null;
     return false;
   }
 }

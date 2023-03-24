@@ -9,14 +9,8 @@ class FacebookAuthRepository {
   final ErrorMapper _errorMapper;
 
   Future<AuthTokenModel> facebookAuth(
-      {required FacebookAuthRequestModel requestModel}) =>
+          {required FacebookAuthRequestModel requestModel}) =>
       _errorMapper.execute(
-            () => _authDataSource.facebookAuthenticate(
-          FacebookAuthRequestModel(
-            email: requestModel.email,
-            facebookToken: requestModel.facebookToken,
-            isAuthenticated: requestModel.isAuthenticated,
-          ),
-        ),
+        () => _authDataSource.facebookAuthenticate(requestModel),
       );
 }

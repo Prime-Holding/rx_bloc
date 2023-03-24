@@ -13,4 +13,4 @@ vars:
   - enable_feature_counter
   - enable_feature_deeplinks
   - enable_feature_widget_toolkit
-  - enable_feature_social_login_fb
+  - enable_facebook_auth
