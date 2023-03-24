@@ -10,6 +10,7 @@ import '../../lib_auth/services/social_login_service.dart';
 import '../../lib_auth/services/user_account_service.dart';
 import '../blocs/apple_login_bloc.dart';
 import '../data_sources/apple_auth_data_source.dart';
+import '../data_sources/apple_credential_data_source.dart';
 import '../repositories/apple_auth_repository.dart';
 import '../services/apple_login_service.dart';
 import '../ui_components/apple_login_button.dart';
@@ -45,10 +46,13 @@ class AppleLoginButtonWithDependencies extends StatelessWidget {
     Provider<AppleAuthDataSource>(
         create: (context) =>
             AppleAuthDataSource(context.read<ApiHttpClient>())),
+    Provider<AppleCredentialDataSource>(
+        create: (context) => AppleCredentialDataSource()),
   ];
   List<Provider> get _repositories => [
     Provider<AppleAuthRepository>(
       create: (context) => AppleAuthRepository(
+        context.read(),
         context.read(),
         context.read(),
       ),
@@ -65,7 +69,7 @@ class AppleLoginButtonWithDependencies extends StatelessWidget {
         context.read(),
         context.read(),
         context.read(),
-        context.read(),
+        socialLoginService: context.read(),
       ),
     ),
   ];

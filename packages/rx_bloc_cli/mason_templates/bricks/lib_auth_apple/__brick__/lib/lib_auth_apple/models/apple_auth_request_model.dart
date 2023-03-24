@@ -2,14 +2,14 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'apple_credentials_model.dart';
+import 'apple_credential_model.dart';
 
 part 'apple_auth_request_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class AppleAuthRequestModel {
   AppleAuthRequestModel({
-    this.authorizationCode,
+    required this.authorizationCode,
     this.userIdentifier,
     this.firstName,
     this.lastName,
@@ -17,7 +17,7 @@ class AppleAuthRequestModel {
     this.identityToken,
   });
 
-  final String? authorizationCode;
+  final String authorizationCode;
   final String? userIdentifier;
   final String? firstName;
   final String? lastName;
@@ -29,7 +29,7 @@ class AppleAuthRequestModel {
   Map<String, dynamic> toJson() => _$AppleAuthRequestModelToJson(this);
 
   factory AppleAuthRequestModel.fromAppleCredentials(
-          AppleCredentialsModel credentials) =>
+      AppleCredentialModel credentials) =>
       AppleAuthRequestModel(
         authorizationCode: credentials.authorizationCode,
         userIdentifier: credentials.userIdentifier,

@@ -12,12 +12,10 @@ import '../repositories/auth_repository.dart';{{#enable_social_login}}
 import 'social_login_service.dart';{{/enable_social_login}}
 
 class UserAccountService {
-  UserAccountService(
-    this._authRepository,
-    this._pushSubscriptionRepository,
-    this._permissionsService,{{#enable_social_login}}
-    this._socialLoginService,{{/enable_social_login}}
-  );
+  UserAccountService(this._authRepository, this._pushSubscriptionRepository,
+      this._permissionsService,{{#enable_social_login}}
+      {SocialLoginService? socialLoginService}{{/enable_social_login}}){{#enable_social_login}}
+      : _socialLoginService = socialLoginService{{/enable_social_login}};
 
   final AuthRepository _authRepository;
   final PushNotificationRepository _pushSubscriptionRepository;

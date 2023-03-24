@@ -46,10 +46,10 @@ class AppleLoginBloc extends $AppleLoginBloc {
   @override
   ConnectableStream<bool> _mapToLoggedInState() => _$loginWithAppleEvent
       .throttleTime(const Duration(seconds: 1))
-      .exhaustMap((_) => _userAccountService.socialLogin().asResultStream())
+      .exhaustMap((_) =>
+          _userAccountService.socialLogin().then((_) => true).asResultStream())
       .setResultStateHandler(this)
       .whereSuccess()
-      .mapTo(true)
       .emitAuthenticatedToCoordinator(_coordinatorBloc)
       .startWith(false)
       .publish();
