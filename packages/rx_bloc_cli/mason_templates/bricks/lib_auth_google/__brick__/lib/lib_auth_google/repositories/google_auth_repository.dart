@@ -1,3 +1,4 @@
+import '../../assets.dart';
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../lib_auth/models/auth_token_model.dart';
@@ -26,7 +27,7 @@ class GoogleAuthRepository {
     final credentials =
         await _googleCredentialDataSource.getUsersGoogleCredential();
     if (credentials == null) {
-      throw ErrorModel();
+      throw GenericErrorModel(I18nErrorKeys.googleAuthError);
     }
     return GoogleCredentialsModel.fromGoogleCredentials(credentials);
   }
