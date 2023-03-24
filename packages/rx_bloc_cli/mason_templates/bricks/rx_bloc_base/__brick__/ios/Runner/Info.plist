@@ -62,17 +62,17 @@
         <key>CFBundleURLSchemes</key>
         <array>
         {{#enable_facebook_auth}}
-        <string>fb206752392032727</string>{{/enable_facebook_auth}}
+        <string>fb{{app_id}}</string>{{/enable_facebook_auth}}
         <string>$(CF_BUNDLE_URL_SCHEME)</string>
         </array>
         </dict>
     </array>{{#enable_facebook_auth}}
      <key>FacebookAppID</key>
-        <string>206752392032727</string>
+        <string>{{app_id}}</string>
         <key>FacebookClientToken</key>
-        <string>81c0a70b81270f4c1c2384303552d7fe</string>
+        <string>{{facebook_client_token}}</string>
         <key>FacebookDisplayName</key>
-        <string>auth_example</string>
+        <string>{{fb_app_name}}</string>
         <key>LSApplicationQueriesSchemes</key>
         <array>
           <string>fbapi</string>
