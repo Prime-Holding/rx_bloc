@@ -26,12 +26,20 @@ class AuthenticationController extends ApiController {
       '/api/authenticate',
       _authenticationHandler,
     );
+{{#enable_apple_auth}}
+    router.addRequest(
+      RequestType.POST,
+      '/api/authenticate/apple',
+      _authenticateWithAppleHandler,
+    );
+{{/enable_apple_auth}}
     router.addRequest(
       RequestType.POST,
       '/api/logout',
       _logoutHandler,
     );
-  }
+
+}
 
   Future<Response> _refreshTokenHandler(Request request) async {
     final params = await request.bodyFromFormData();
@@ -56,6 +64,18 @@ class AuthenticationController extends ApiController {
     final token = _authenticationService.issueNewToken(null);
     return responseBuilder.buildOK(data: token.toJson());
   }
+{{#enable_apple_auth}}
+  Future<Response> _authenticateWithAppleHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
+    throwIfEmpty(
+      params['authorizationCode'],
+      BadRequestException('The user authorization with Apple failed'),
+    );
+
+    final token = _authenticationService.issueNewToken(null);
+    return responseBuilder.buildOK(data: token.toJson());
+  }{{/enable_apple_auth}}
 
   Future<Response> _logoutHandler(Request request) async {
     await Future.delayed(const Duration(seconds: 1));

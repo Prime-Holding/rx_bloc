@@ -3,6 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>production</string>
+	<string>production</string>{{#enable_social_login}}
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>{{/enable_social_login}}
 </dict>
 </plist>
