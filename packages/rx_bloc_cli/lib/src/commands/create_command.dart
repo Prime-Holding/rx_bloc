@@ -7,10 +7,10 @@ import 'package:mason/mason.dart';
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
-import '../templates/lib_auth_apple_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
 import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_router_bundle.dart';
+import '../templates/lib_social_logins_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
@@ -62,12 +62,11 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
-        _appleAuthString,
+        _socialLoginsString,
         help:
-            'Enables login with Apple for the project and add button below the'
-            ' login form',
+            'Enables social login with Apple, Facebook and Google for the project',
         allowed: ['true', 'false'],
-        defaultsTo: 'true',
+        defaultsTo: 'false',
       );
   }
 
@@ -79,7 +78,7 @@ class CreateCommand extends Command<int> {
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
-  final _appleAuthString = 'enable-apple-auth';
+  final _socialLoginsString = 'enable-social-logins';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -88,7 +87,7 @@ class CreateCommand extends Command<int> {
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
   final _libAuthBundle = libAuthBundle;
-  final _libAuthAppleBundle = libAuthAppleBundle;
+  final _libSocialLoginsBundle = libSocialLoginsBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -205,9 +204,9 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
-    // Add login with Apple brick to _bundle when needed
-    if (arguments.enableAppleAuth) {
-      _bundle.files.addAll(_libAuthAppleBundle.files);
+    // Add Social Logins brick to _bundle when needed
+    if (arguments.enableSocialLogins) {
+      _bundle.files.addAll(_libSocialLoginsBundle.files);
     }
 
     //Add lib_route to _bundle
@@ -232,8 +231,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
-        'enable_apple_auth': arguments.enableAppleAuth,
-        'enable_social_login': arguments.enableAppleAuth,
+        'enable_social_logins': arguments.enableSocialLogins,
       },
     );
 
@@ -260,7 +258,7 @@ class CreateCommand extends Command<int> {
       enableCounterFeature: _parseEnableCounter(arguments),
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
-      enableAppleAuth: _parseEnableAppleAuth(arguments),
+      enableSocialLogins: _parseEnableSocialLogins(arguments),
     );
   }
 
@@ -310,9 +308,9 @@ class CreateCommand extends Command<int> {
   }
 
   /// Returns whether the project will be created with counter feature
-  bool _parseEnableAppleAuth(ArgResults arguments) {
-    final appleAuthEnabled = arguments[_appleAuthString];
-    return appleAuthEnabled.toLowerCase() == 'true';
+  bool _parseEnableSocialLogins(ArgResults arguments) {
+    final socialLoginsEnabled = arguments[_socialLoginsString];
+    return socialLoginsEnabled.toLowerCase() == 'true';
   }
 
   /// endregion
@@ -396,7 +394,7 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,
     );
-    _usingLog('Apple authentication', arguments.enableAppleAuth);
+    _usingLog('Social Logins', arguments.enableSocialLogins);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -424,7 +422,7 @@ class _CreateCommandArguments {
     required this.enableCounterFeature,
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
-    required this.enableAppleAuth,
+    required this.enableSocialLogins,
   });
 
   final String projectName;
@@ -434,5 +432,5 @@ class _CreateCommandArguments {
   final bool enableCounterFeature;
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
-  final bool enableAppleAuth;
+  final bool enableSocialLogins;
 }

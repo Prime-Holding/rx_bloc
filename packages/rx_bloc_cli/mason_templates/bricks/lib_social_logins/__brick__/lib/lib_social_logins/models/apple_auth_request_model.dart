@@ -29,7 +29,7 @@ class AppleAuthRequestModel {
   Map<String, dynamic> toJson() => _$AppleAuthRequestModelToJson(this);
 
   factory AppleAuthRequestModel.fromAppleCredentials(
-      AppleCredentialModel credentials) =>
+          AppleCredentialModel credentials) =>
       AppleAuthRequestModel(
         authorizationCode: credentials.authorizationCode,
         userIdentifier: credentials.userIdentifier,

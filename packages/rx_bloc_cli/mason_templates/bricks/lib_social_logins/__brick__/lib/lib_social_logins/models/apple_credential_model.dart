@@ -5,11 +5,11 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 class AppleCredentialModel {
   AppleCredentialModel(
       {required this.authorizationCode,
-        this.userIdentifier,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.identityToken});
+      this.userIdentifier,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.identityToken});
 
   final String authorizationCode;
   final String? userIdentifier;
@@ -20,11 +20,11 @@ class AppleCredentialModel {
 
   bool equals(AppleCredentialModel credentials) =>
       authorizationCode == credentials.authorizationCode &&
-          userIdentifier == credentials.userIdentifier &&
-          email == credentials.email;
+      userIdentifier == credentials.userIdentifier &&
+      email == credentials.email;
 
   factory AppleCredentialModel.fromAppleId(
-      AuthorizationCredentialAppleID credential) =>
+          AuthorizationCredentialAppleID credential) =>
       AppleCredentialModel(
           authorizationCode: credential.authorizationCode,
           email: credential.email,
