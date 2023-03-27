@@ -9,8 +9,8 @@ import '../repositories/facebook_auth_repository.dart';
 import '../services/facebook_auth_service.dart';
 import '../ui_components/facebook_auth_button.dart';
 
-class FacebookAuthPageWithDependencies extends StatelessWidget {
-  const FacebookAuthPageWithDependencies({Key? key}) : super(key: key);
+class FacebookAuthButtonWithDependencies extends StatelessWidget {
+  const FacebookAuthButtonWithDependencies({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MultiProvider(

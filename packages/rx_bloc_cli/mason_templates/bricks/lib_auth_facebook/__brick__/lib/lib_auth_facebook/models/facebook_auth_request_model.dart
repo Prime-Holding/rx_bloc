@@ -7,9 +7,23 @@ class FacebookAuthRequestModel {
   final String? email;
   final String? facebookToken;
   final bool isAuthenticated;
+  final String? name;
+  final String? userPictureUrl;
+  final DateTime? userBirthday;
+  final bool? publicProfile;
+  final String? userGender;
+  final String? userLink;
 
   FacebookAuthRequestModel(
-      {this.email, this.facebookToken, required this.isAuthenticated});
+      {this.name,
+      this.userPictureUrl,
+      this.userBirthday,
+      this.publicProfile,
+      this.userGender,
+      this.userLink,
+      this.email,
+      this.facebookToken,
+      required this.isAuthenticated});
   factory FacebookAuthRequestModel.fromJson(Map<String, dynamic> json) =>
       _$FacebookAuthRequestModelFromJson(json);
   Map<String, dynamic> toJson() => _$FacebookAuthRequestModelToJson(this);

@@ -23,18 +23,40 @@ class FacebookAuthService {
 
   Future<bool> facebookLogin() async {
     try {
-      final LoginResult result = await FacebookAuth.instance
-          .login(); // by default we request the email and the public profile
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: [
+          'email',
+          'public_profile',
+          'user_birthday',
+          'user_friends',
+          'user_gender',
+          'user_link'
+        ], //permissions depends on profile itself, maybe not all requested data will be avaliable
+      ); // by default we request the email and the public profile
       // or FacebookAuth.i.login()
       if (result.status == LoginStatus.success) {
         // you are logged
         final AccessToken accessToken = result.accessToken!;
-        final userInfo = await FacebookAuth.instance.getUserData();
+        final userInfo = await FacebookAuth.instance.getUserData(
+          fields: 'email,name,picture,birthday,friends,gender,link',
+        );
+        print(accessToken.token);
+        print(userInfo['email']);
+        print(userInfo['user_gender']);
+        print(userInfo['name']);
+        print(userInfo['public_profile']);
+        print(userInfo['birthday']);
 
         FacebookAuthRequestModel requestModel = FacebookAuthRequestModel(
           email: userInfo['email'],
           facebookToken: result.accessToken!.token,
           isAuthenticated: true,
+          name: userInfo['name'],
+          userPictureUrl: userInfo['picture']['data']['url'],
+          userBirthday: userInfo['user_birthday'],
+          userGender: userInfo['user_gender'],
+          userLink: userInfo['user_link'],
+          publicProfile: userInfo['public_profile'],
         );
 
         final authToken = await _facebookAuthRepository.facebookAuth(

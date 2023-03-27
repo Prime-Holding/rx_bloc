@@ -4,7 +4,6 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_counter_bundle.dart';
-import 'package:rx_bloc_cli/src/templates/feature_social_login_fb_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_auth_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
@@ -76,7 +75,7 @@ class CreateCommand extends Command<int> {
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
-  final _facebookAuthString = 'enable-facebook-auth';
+  final _facebookAuthString = 'enable-feature-facebook-auth';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -85,7 +84,7 @@ class CreateCommand extends Command<int> {
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
   final _libAuthBundle = libAuthBundle;
-  final _libFacebookAuthBundle = featureSocialLoginFbBundle;
+  final _libFacebookAuthBundle = libAuthFacebookBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -393,7 +392,7 @@ class CreateCommand extends Command<int> {
       arguments.enableWidgetToolkitFeature,
     );
     _usingLog(
-      'Feature Facebook Authentication',
+      'Add Facebook Authentication library to Login feature',
       arguments.enableFacebookAuth,
     );
   }
