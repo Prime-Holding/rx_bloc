@@ -56,12 +56,6 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
-        _googleAuthString,
-        help: 'Enables login with Google for the project and adds button below'
-            'the login form',
-        defaultsTo: 'true',
-      )
-      ..addOption(
         _analyticsString,
         help: 'Enables Firebase analytics for the project',
         allowed: ['true', 'false'],
@@ -86,6 +80,7 @@ class CreateCommand extends Command<int> {
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
   final _socialLoginsString = 'enable-social-logins';
   final _counterBundle = featureCounterBundle;
+  final _deepLinkBundle = featureDeeplinkBundle;
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;

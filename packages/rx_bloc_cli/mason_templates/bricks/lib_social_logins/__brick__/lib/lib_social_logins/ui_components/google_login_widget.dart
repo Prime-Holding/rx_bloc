@@ -2,19 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
-import '../blocs/google_login_bloc.dart';
-import '../data_sources/remote/google_auth_data_source.dart';
-import '../data_sources/remote/google_credential_data_source.dart';
+import '../blocs/social_login_bloc.dart';
+import '../data_sources/google_auth_data_source.dart';
+import '../data_sources/google_credential_data_source.dart';
 import '../repositories/google_auth_repository.dart';
 import '../services/google_login_service.dart';
-import '../ui_components/google_login_button.dart';
+import '../services/social_login_service.dart';
 
-class GoogleLoginButtonWithDependencies extends StatelessWidget {
-  const GoogleLoginButtonWithDependencies({Key? key}) : super(key: key);
+class GoogleLoginWidget extends StatelessWidget {
+  const GoogleLoginWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -26,10 +27,19 @@ class GoogleLoginButtonWithDependencies extends StatelessWidget {
         ],
         child: Column(
           children: [
-            AppErrorModalWidget<GoogleLoginBlocType>(
+            AppErrorModalWidget<SocialLoginBlocType>(
               errorState: (bloc) => bloc.states.errors,
             ),
-            const GoogleLoginButton(),
+            RxBlocBuilder<SocialLoginBlocType, bool>(
+              state: (bloc) => bloc.states.isLoading,
+              builder: (context, loadingState, bloc) => SignInButton(
+                MediaQuery.of(context).platformBrightness == Brightness.dark
+                    ? Buttons.GoogleDark
+                    : Buttons.Google,
+                onPressed: () =>
+                    (loadingState.data ?? false) ? null : bloc.events.login(),
+              ),
+            ),
           ],
         ),
       );
@@ -56,7 +66,7 @@ class GoogleLoginButtonWithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _services => [
-        Provider<GoogleLoginService>(
+        Provider<SocialLoginService>(
           create: (context) => GoogleLoginService(
             context.read(),
             context.read(),
@@ -64,8 +74,8 @@ class GoogleLoginButtonWithDependencies extends StatelessWidget {
         ),
       ];
   List<RxBlocProvider> get _blocs => [
-        RxBlocProvider<GoogleLoginBlocType>(
-          create: (context) => GoogleLoginBloc(
+        RxBlocProvider<SocialLoginBlocType>(
+          create: (context) => SocialLoginBloc(
             context.read(),
             context.read(),
           ),

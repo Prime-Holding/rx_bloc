@@ -4,7 +4,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_widget_toolkit ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_router ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_permissions ^
-& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_auth_google ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_auth ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_social_logins ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
@@ -13,7 +12,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y feature_widget_toolkit_bundle.dart lib\src\templates\ ^
 & move /Y lib_router_bundle.dart lib\src\templates\ ^
 & move /Y lib_permissions_bundle.dart lib\src\templates\ ^
-& move /Y lib_auth_google_bundle.dart lib\src\templates\ ^
 & move /Y lib_auth_bundle.dart lib\src\templates\ ^
 & move /Y lib_social_logins_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\test_app\ ^
