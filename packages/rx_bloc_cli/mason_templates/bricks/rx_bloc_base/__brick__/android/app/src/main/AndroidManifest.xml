@@ -42,6 +42,12 @@
        <!-- This tag below enables push notifications to be registered when app is in foreground -->
        <meta-data
            android:name="com.google.firebase.messaging.default_notification_channel_id"
-           android:value="high_importance_channel" />{{/push_notifications}}
-    </application>
+           android:value="high_importance_channel" />{{/push_notifications}}{{#enable_social_logins}}
+       <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+       <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>{{/enable_social_logins}}
+    </application> {{#enable_social_logins}}
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <queries>
+        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
+    </queries>{{/enable_social_logins}}
 </manifest>
