@@ -33,7 +33,8 @@ dependencies:
   rx_bloc: ^4.0.0
   rx_bloc_list: ^3.2.1
   rxdart: ^0.27.5
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.0.15{{#enable_social_logins}}
+  sign_in_with_apple: ^4.3.0{{/enable_social_logins}}
 
   # Server related packages
   shelf: ^1.4.0

@@ -26,32 +26,25 @@ class AuthenticationController extends ApiController {
       '/api/authenticate',
       _authenticationHandler,
     );
+{{#enable_social_logins}}
+    router.addRequest(
+      RequestType.POST,
+      '/api/authenticate/apple',
+      _authenticateWithAppleHandler,
+    );
+    
+    router.addRequest(
+      RequestType.POST,
+      '/api/authenticate/google',
+      _authenticateWithGoogleHandler,
+    );
+{{/enable_social_logins}}
     router.addRequest(
       RequestType.POST,
       '/api/logout',
       _logoutHandler,
-    );
-     {{#enable_google_auth}}
-    router.addRequest(
-      RequestType.POST,
-      '/api/authenticate/google',
-      _googleAuthHandler,
-    );
-    {{/enable_google_auth}}
+    );    
   }
-    {{#enable_google_auth}}
-   Future<Response> _googleAuthHandler(Request request) async {
-    final params = await request.bodyFromFormData();
-
-    throwIfEmpty(
-      params['serverAuthCode'],
-      BadRequestException('The user authorization with Google failed.'),
-    );
-
-    final token = _authenticationService.issueNewToken(null);
-    return responseBuilder.buildOK(data: token.toJson());
-  }
-  {{/enable_google_auth}}
 
   Future<Response> _refreshTokenHandler(Request request) async {
     final params = await request.bodyFromFormData();
@@ -76,6 +69,31 @@ class AuthenticationController extends ApiController {
     final token = _authenticationService.issueNewToken(null);
     return responseBuilder.buildOK(data: token.toJson());
   }
+{{#enable_social_logins}}
+  Future<Response> _authenticateWithAppleHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
+    throwIfEmpty(
+      params['authorizationCode'],
+      BadRequestException('The user authorization with Apple failed'),
+    );
+
+    final token = _authenticationService.issueNewToken(null);
+    return responseBuilder.buildOK(data: token.toJson());
+  }
+
+  Future<Response> _authenticateWithGoogleHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
+    throwIfEmpty(
+      params['serverAuthCode'],
+      BadRequestException('The user authorization with Google failed.'),
+    );
+
+    final token = _authenticationService.issueNewToken(null);
+    return responseBuilder.buildOK(data: token.toJson());
+  }
+  {{/enable_social_logins}}
 
   Future<Response> _logoutHandler(Request request) async {
     await Future.delayed(const Duration(seconds: 1));
