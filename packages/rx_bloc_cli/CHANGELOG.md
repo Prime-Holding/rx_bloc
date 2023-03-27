@@ -1,3 +1,6 @@
+## [2.4.0]
+* Added parameter `enable-social-logins` for social logins (Apple, Google, Facebook) integration
+
 ## [2.3.0]
 * Adding `EditAddressWidget` feature as example to `EditFieldsPage`
 
