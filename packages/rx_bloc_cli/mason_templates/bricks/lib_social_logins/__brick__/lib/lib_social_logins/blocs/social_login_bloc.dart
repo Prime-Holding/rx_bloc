@@ -6,18 +6,18 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
-import '../services/apple_social_login_service.dart';
+import '../services/social_login_service.dart';
 
-part 'apple_login_bloc.rxb.g.dart';
+part 'social_login_bloc.rxb.g.dart';
 
-/// A contract class containing all events of the LoginWithAppleBloC.
-abstract class AppleLoginBlocEvents {
+/// A contract class containing all events of the SocialLoginBloC
+abstract class SocialLoginBlocEvents {
   /// Initiate session with user's Apple credentials
-  void loginWithApple();
+  void login();
 }
 
-/// A contract class containing all states of the LoginWithAppleBloC.
-abstract class AppleLoginBlocStates {
+/// A contract class containing all states of the SocialLoginBloC.
+abstract class SocialLoginBlocStates {
   /// The loading state
   Stream<bool> get isLoading;
 
@@ -29,12 +29,12 @@ abstract class AppleLoginBlocStates {
 }
 
 @RxBloc()
-class AppleLoginBloc extends $AppleLoginBloc {
-  AppleLoginBloc(this._appleSocialLoginService, this._coordinatorBloc) {
+class SocialLoginBloc extends $SocialLoginBloc {
+  SocialLoginBloc(this._socialLoginService, this._coordinatorBloc) {
     loggedIn.connect().addTo(_compositeSubscription);
   }
 
-  final AppleSocialLoginService _appleSocialLoginService;
+  final SocialLoginService _socialLoginService;
   final CoordinatorBlocType _coordinatorBloc;
 
   @override
@@ -44,10 +44,11 @@ class AppleLoginBloc extends $AppleLoginBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  ConnectableStream<bool> _mapToLoggedInState() => _$loginWithAppleEvent
+  ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
       .throttleTime(const Duration(seconds: 1))
-      .exhaustMap((_) =>
-          _appleSocialLoginService.login().then((_) => true).asResultStream())
+      .switchMap(
+        (_) => _socialLoginService.login().then((_) => true).asResultStream(),
+      )
       .setResultStateHandler(this)
       .whereSuccess()
       .emitAuthenticatedToCoordinator(_coordinatorBloc)

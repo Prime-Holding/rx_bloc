@@ -5,7 +5,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_router ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_permissions ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_auth ^
-& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_auth_apple ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_social_logins ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y feature_counter_bundle.dart lib\src\templates\ ^
 & move /Y feature_deeplink_bundle.dart lib\src\templates\ ^
@@ -13,15 +13,15 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y lib_router_bundle.dart lib\src\templates\ ^
 & move /Y lib_permissions_bundle.dart lib\src\templates\ ^
 & move /Y lib_auth_bundle.dart lib\src\templates\ ^
-& move /Y lib_auth_apple_bundle.dart lib\src\templates\ ^
+& move /Y lib_social_logins_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\test_app\ ^
 & dart pub global activate -s path . --overwrite ^
 & rx_bloc_cli create ^
 --organisation com.primeholding ^
---project-name test_app ^
+--project-name testapp ^
 --enable-feature-counter true ^
 --enable-feature-deeplinks true ^
 --enable-feature-widget-toolkit true ^
---enable-apple-auth true ^
+--enable-social-logins true ^
 example/test_app ^
 & cd example\test_app\

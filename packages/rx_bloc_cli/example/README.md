@@ -56,7 +56,6 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/` | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
 | `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
 
-
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
@@ -104,7 +103,7 @@ Example:
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>test_app.primeholding.com</string>
+        <string>testapp.primeholding.com</string>
         <key>CFBundleURLSchemes</key>
         <array>
         <string>primeholdingscheme</string>
@@ -117,17 +116,17 @@ You can test the deep-links on iOS simulator by executing the following command
 
 Production
 ```
-xcrun simctl openurl booted primeholdingscheme://test_app.primeholding.com/deepLinks/1
+xcrun simctl openurl booted primeholdingscheme://testapp.primeholding.com/deepLinks/1
 ```
 
 Staging
 ```
-xcrun simctl openurl booted primeholdingstagscheme://test_appstag.primeholding.com/deepLinks/1
+xcrun simctl openurl booted primeholdingstagscheme://testappstag.primeholding.com/deepLinks/1
 ```
 
 Development
 ```
-xcrun simctl openurl booted primeholdingdevscheme://test_appdev.primeholding.com/deepLinks/1
+xcrun simctl openurl booted primeholdingdevscheme://testappdev.primeholding.com/deepLinks/1
 ```
 
 `Android`

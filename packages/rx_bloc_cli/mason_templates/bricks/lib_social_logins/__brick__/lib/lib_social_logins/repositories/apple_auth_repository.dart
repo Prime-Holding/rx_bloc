@@ -9,26 +9,26 @@ import '../models/apple_credential_model.dart';
 
 class AppleAuthRepository {
   AppleAuthRepository(
-      this._errorMapper,
-      this._appleAuthDataSource,
-      this._appleCredentialDataSource,
-      );
+    this._errorMapper,
+    this._appleAuthDataSource,
+    this._appleCredentialDataSource,
+  );
 
   final ErrorMapper _errorMapper;
   final AppleAuthDataSource _appleAuthDataSource;
   final AppleCredentialDataSource _appleCredentialDataSource;
 
   Future<AuthTokenModel> authenticateWithApple(
-      {required AppleCredentialModel credentials}) =>
+          {required AppleCredentialModel credentials}) =>
       _errorMapper.execute(
-            () => _appleAuthDataSource.authenticate(
+        () => _appleAuthDataSource.authenticate(
           AppleAuthRequestModel.fromAppleCredentials(credentials),
         ),
       );
 
   Future<AppleCredentialModel> getUsersAppleCredential() async {
     final credential =
-    await _appleCredentialDataSource.getUsersAppleCredential();
+        await _appleCredentialDataSource.getUsersAppleCredential();
     return AppleCredentialModel.fromAppleId(credential);
   }
 }
