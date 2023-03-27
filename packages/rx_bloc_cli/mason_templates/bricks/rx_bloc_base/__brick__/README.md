@@ -58,7 +58,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 ## Architecture
 
-For in-depth review of the following architecture watch [this][#architecture_overview] presentation.
+For in-depth review of the following architecture watch [this][architecture_overview] presentation.
 
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
