@@ -24,8 +24,4 @@ class FacebookAuthService extends SocialLoginService {
     return await _facebookAuthRepository.facebookAuth(requestModel: credential);
   }
 
-  Future<bool> facebookLogout() async {
-    await FacebookAuth.instance.logOut();
-    return false;
-  }
 }

@@ -4,10 +4,10 @@ part 'facebook_auth_request_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class FacebookAuthRequestModel {
-  final String? email;
-  final String? facebookToken;
+  final String email;
+  final String facebookToken;
   final bool isAuthenticated;
-  final String? name;
+  final String name;
   final String? userPictureUrl;
   final DateTime? userBirthday;
   final bool? publicProfile;
@@ -15,14 +15,14 @@ class FacebookAuthRequestModel {
   final String? userLink;
 
   FacebookAuthRequestModel(
-      {this.name,
+      {required this.name,
       this.userPictureUrl,
       this.userBirthday,
       this.publicProfile,
       this.userGender,
       this.userLink,
-      this.email,
-      this.facebookToken,
+      required this.email,
+      required this.facebookToken,
       required this.isAuthenticated});
   factory FacebookAuthRequestModel.fromJson(Map<String, dynamic> json) =>
       _$FacebookAuthRequestModelFromJson(json);

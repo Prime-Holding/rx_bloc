@@ -44,9 +44,14 @@ class FacebookLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
                 state: (bloc) => bloc.states.isLoading,
-                builder: (context, snapshot, bloc) => SignInButton(
-                    Buttons.Facebook,
-                    onPressed: () => bloc.events.login())),
+                builder: (context, snapshot, bloc) => snapshot.data == true
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      )
+                    : SignInButton(Buttons.Facebook,
+                        onPressed: () => bloc.events.login())),
           ],
         ),
       );

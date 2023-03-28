@@ -11,13 +11,12 @@ class FacebookCredentialDataSource {
         'email',
         'public_profile',
         'user_birthday',
-        'user_friends',
         'user_gender',
         'user_link'
       ],
     );
     final userInfo = await FacebookAuth.instance.getUserData(
-      fields: 'email,name,picture,birthday,friends,gender,link',
+      fields: 'email,name,picture,birthday,gender,link',
     );
     return FacebookAuthRequestModel(
       email: userInfo['email'],
