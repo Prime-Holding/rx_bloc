@@ -2,7 +2,7 @@
 
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 
-A brick designed to integrate social login with Apple, Google and Facebook functionality into our application. It uses the [sign_in_with_apple][5] package. In order to make it work, fulfill the requirements described in its documentation.
+A brick designed to integrate social login with Apple, Google and Facebook functionality into our application. It uses the [sign_in_with_apple][5] [google_sign_in][6] packages. To make them work, meet the requirements described in their documentation.
 When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.
 
 Supports iOS.
@@ -23,3 +23,4 @@ A few resources to get you started if this is your first brick template:
 [3]: https://verygood.ventures/blog/code-generation-with-mason
 [4]: https://youtu.be/G4PTjA6tpTU
 [5]: https://pub.dev/packages/sign_in_with_apple
+[6]: https://pub.dev/packages/google_sign_in
