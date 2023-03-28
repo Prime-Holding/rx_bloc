@@ -5,7 +5,9 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../blocs/social_login_bloc.dart';
 import '../data_sources/google_auth_data_source.dart';
@@ -32,13 +34,19 @@ class GoogleLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
-              builder: (context, loadingState, bloc) => SignInButton(
-                MediaQuery.of(context).platformBrightness == Brightness.dark
-                    ? Buttons.GoogleDark
-                    : Buttons.Google,
-                onPressed: () =>
-                    (loadingState.data ?? false) ? null : bloc.events.login(),
-              ),
+              builder: (context, loadingState, bloc) =>
+                  (loadingState.data ?? false)
+                      ? const AppLoadingIndicator()
+                      : SignInButton(
+                          MediaQuery.of(context).platformBrightness ==
+                                  Brightness.dark
+                              ? Buttons.GoogleDark
+                              : Buttons.Google,
+                          text: context.l10n.featureLogin.googleLogin,
+                          onPressed: () => (loadingState.data ?? false)
+                              ? null
+                              : bloc.events.login(),
+                        ),
             ),
           ],
         ),

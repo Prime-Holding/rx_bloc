@@ -1,8 +1,6 @@
 {{> licence.dart }}
 
-import '../../assets.dart';
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
-import '../../base/models/errors/error_model.dart';
 import '../../lib_auth/models/auth_token_model.dart';
 import '../data_sources/google_auth_data_source.dart';
 import '../data_sources/google_credential_data_source.dart';
@@ -26,11 +24,8 @@ class GoogleAuthRepository {
       );
 
   Future<GoogleCredentialsModel> getUsersGoogleCredential() async {
-    final credentials =
-        await _googleCredentialDataSource.getUsersGoogleCredential();
-    if (credentials == null) {
-      throw GenericErrorModel(I18nErrorKeys.googleAuthError);
-    }
-    return GoogleCredentialsModel.fromGoogleCredentials(credentials);
+    final credentials = await _errorMapper
+        .execute(() => _googleCredentialDataSource.getUsersGoogleCredential());
+    return GoogleCredentialsModel.fromGoogleCredentials(credentials!);
   }
 }

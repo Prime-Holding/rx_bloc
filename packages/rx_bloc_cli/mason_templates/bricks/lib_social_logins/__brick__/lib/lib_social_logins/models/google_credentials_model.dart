@@ -1,29 +1,22 @@
 {{> licence.dart }}
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class GoogleCredentialsModel {
+class GoogleCredentialsModel extends Equatable {
   final String? displayName;
   final String email;
   final String id;
   final String? photoUrl;
   final String? serverAuthCode;
 
-  GoogleCredentialsModel({
+  const GoogleCredentialsModel({
     this.displayName,
     required this.email,
     required this.id,
     this.photoUrl,
     this.serverAuthCode,
   });
-
-  bool equals(GoogleCredentialsModel credentials) =>
-      displayName == credentials.displayName &&
-      email == credentials.email &&
-      id == credentials.id &&
-      photoUrl == credentials.photoUrl &&
-      serverAuthCode == credentials.serverAuthCode;
 
   factory GoogleCredentialsModel.fromGoogleCredentials(
           GoogleSignInAccount credential) =>
@@ -34,4 +27,7 @@ class GoogleCredentialsModel {
         photoUrl: credential.photoUrl,
         serverAuthCode: credential.serverAuthCode,
       );
+
+  @override
+  List<Object?> get props => [displayName, email, id, photoUrl, serverAuthCode];
 }

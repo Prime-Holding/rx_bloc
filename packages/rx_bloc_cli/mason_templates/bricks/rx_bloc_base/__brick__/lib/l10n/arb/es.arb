@@ -10,7 +10,6 @@
     "pageWithResult" : "Enter message",
     "tryAgain" : "Try again",
     "confirm" : "Confirm",
-    "submit" : "Submit",{{#enable_social_logins}}
-    "googleLogin":"Google Log in",{{/enable_social_logins}}
+    "submit" : "Submit",
     "navProfile" : "Profile"
 }
