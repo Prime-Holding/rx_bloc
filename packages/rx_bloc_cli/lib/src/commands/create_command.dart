@@ -8,9 +8,8 @@ import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
-import '../templates/lib_permissions_bundle.dart';
-
 import '../templates/lib_internationalisation_bundle.dart';
+import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
