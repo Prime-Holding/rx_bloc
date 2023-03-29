@@ -32,13 +32,13 @@ dependencies:
   rx_bloc: ^4.0.0
   rx_bloc_list: ^3.2.1
   rxdart: ^0.27.5
-  shared_preferences: ^2.0.15{{#enable_social_logins}}
-  sign_in_with_apple: ^4.3.0{{/enable_social_logins}}
+  shared_preferences: ^2.0.15
 
   # Server related packages
   shelf: ^1.4.0
   shelf_router: ^1.1.3
-  shelf_static: ^1.1.1
+  shelf_static: ^1.1.1{{#enable_social_logins}}
+  sign_in_with_apple: ^4.3.0{{/enable_social_logins}}
   widget_toolkit: ^0.0.1-dev7
 
 dev_dependencies:
