@@ -6,11 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit/language_picker.dart';
 
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
-import '../../lib_router/router.dart';
+import '../../lib_router/router.dart';{{#enable_internationalisation}}
+import '../common_blocs/coordinator_bloc.dart';{{/enable_internationalisation}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
@@ -49,22 +49,24 @@ __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
-  late Locale _locale;
+  {{#enable_internationalisation}}
+  late Locale _locale;{{/enable_internationalisation}}
 
   @override
   void initState() {
-    _updateLocale();{{#push_notifications}}
+    {{#enable_internationalisation}}
+    _updateLocale();{{/enable_internationalisation}}{{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
 
     super.initState();
   }
-
+  {{#enable_internationalisation}}
   void _updateLocale() {
   _locale = const Locale('en');
 
   context
-      .read<LanguagePickerBlocType>()
+      .read<CoordinatorBlocType>()
       .states
       .currentLanguage
       .listen((language) {
@@ -72,7 +74,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       () => _locale = Locale(language.locale),
     );
   });
-  }{{#push_notifications}}
+  }{{/enable_internationalisation}}{{#push_notifications}}
 
   Future<void> _configureFCM() async {
     /// Initialize the FCM callbacks
@@ -115,10 +117,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
         localizationsDelegates: const [
           I18n.delegate,
-          GlobalMaterialLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
-        supportedLocales: I18n.supportedLocales,
-        locale: _locale,
+        supportedLocales: I18n.supportedLocales,{{#enable_internationalisation}}
+        locale: _locale,{{/enable_internationalisation}}
         routerConfig: context.read<AppRouter>().router,
         debugShowCheckedModeBanner: false,
       );

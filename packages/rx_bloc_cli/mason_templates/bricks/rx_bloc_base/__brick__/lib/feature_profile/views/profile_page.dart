@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit/language_picker.dart';
 import 'package:widget_toolkit/ui_components.dart';
-
-import '../../app_extensions.dart';
+import '../../app_extensions.dart';{{#enable_internationalisation}}
+import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../lib_internationalisation/services/language_service_example.dart';
+import '../../lib_internationalisation/ui_components/language_picker_button.dart';{{/enable_internationalisation}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../ui_components/logout_action_button.dart';
@@ -40,21 +41,17 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(
               height: context.designSystem.spacing.xl0,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: context.designSystem.spacing.xl0,
-              ),
-              child: OutlineFillButton(
-                text: context.l10n.changeLanguage,
-                onPressed: () => showChangeLanguageBottomSheet(
-                  context: context,
-                  headerBuilder: (context) {
-                    return Container();
-                  },
-                ),
-              ),
-            ),
+            ),{{#enable_internationalisation}}
+            LanguagePickerButton(
+              service: context.read<LanguageServiceExample>(),
+              onChanged: (language) => context
+                  .read<CoordinatorBlocType>()
+                  .events
+                  .setCurrentLanguage(language),
+              padding: context.designSystem.spacing.xl0,
+              buttonText: context.l10n.changeLanguage,
+              translate: (model) => '',
+            ),{{/enable_internationalisation}}
           ],
         ),
       );

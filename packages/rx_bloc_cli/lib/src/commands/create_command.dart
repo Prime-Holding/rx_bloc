@@ -9,6 +9,8 @@ import 'package:rx_bloc_cli/src/templates/lib_auth_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
 
 import '../templates/feature_deeplink_bundle.dart';
+
+import '../templates/lib_internationalisation_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
@@ -55,6 +57,11 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
+        _internationalisationString,
+        help: 'Enables internationalisation',
+        defaultsTo: 'true',
+      )
+      ..addOption(
         _analyticsString,
         help: 'Enables Firebase analytics for the project',
         allowed: ['true', 'false'],
@@ -70,6 +77,7 @@ class CreateCommand extends Command<int> {
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
+  final _internationalisationString = 'enable-internationalisation';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -78,6 +86,8 @@ class CreateCommand extends Command<int> {
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
   final _libAuthBundle = libAuthBundle;
+  // TODO check this
+  final _libInternationalisationBundle = libInternationalisationBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -194,6 +204,11 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
+    if (arguments.enableInternationalisation) {
+      // TODO check this
+      _bundle.files.addAll(_libInternationalisationBundle.files);
+    }
+
     //Add lib_route to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
     //Add lib_permissions to _bundle
@@ -216,6 +231,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
+        'enable_internationalisation': arguments.enableInternationalisation,
       },
     );
 
@@ -242,6 +258,7 @@ class CreateCommand extends Command<int> {
       enableCounterFeature: _parseEnableCounter(arguments),
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
+      enableInternationalisation: _parseEnableInternationalisation(arguments),
     );
   }
 
@@ -276,6 +293,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableWidgetToolkit(ArgResults arguments) {
     final widgetToolkitEnabled = arguments[_widgetToolkitString];
     return widgetToolkitEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will use internationalisation
+  bool _parseEnableInternationalisation(ArgResults arguments) {
+    final internationalisationEnabled = arguments[_internationalisationString];
+    return internationalisationEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will use analytics or not
@@ -371,6 +394,7 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,
     );
+    _usingLog('Internationalisation', arguments.enableInternationalisation);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -398,6 +422,7 @@ class _CreateCommandArguments {
     required this.enableCounterFeature,
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
+    required this.enableInternationalisation,
   });
 
   final String projectName;
@@ -407,4 +432,5 @@ class _CreateCommandArguments {
   final bool enableCounterFeature;
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
+  final bool enableInternationalisation;
 }
