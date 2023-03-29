@@ -49,6 +49,21 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<false/>{{#enable_social_logins}}
+    <key>CFBundleURLSchemes</key>
+    <array>
+    <string>fb$(FB_APP_ID)</string>
+    </array>
+    <key>FacebookAppID</key>
+        <string>$(FB_APP_ID)</string>
+        <key>FacebookClientToken</key>
+        <string>$(FB_CLIENT_TOKEN)</string>
+        <key>FacebookDisplayName</key>
+        <string>$(FB_APP_NAME)</string>
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+          <string>fbapi</string>
+          <string>fb-messenger-share-api</string>
+        </array>{{/enable_social_logins}}
 </dict>
 </plist>

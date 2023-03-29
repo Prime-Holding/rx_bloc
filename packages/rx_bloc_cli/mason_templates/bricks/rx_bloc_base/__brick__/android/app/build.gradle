@@ -71,17 +71,23 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            versionNameSuffix ""
+            versionNameSuffix ""{{#enable_social_logins}}
+            resValue "string", "facebook_app_id", "insert_facebook_app_id"
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stag"
-            versionNameSuffix "-stag"
+            versionNameSuffix "-stag"{{#enable_social_logins}}
+            resValue "string", "facebook_app_id", "insert_facebook_app_id"
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
         }        
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            versionNameSuffix "-dev"
+            versionNameSuffix "-dev"{{#enable_social_logins}}
+            resValue "string", "facebook_app_id", "insert_facebook_app_id"
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
         }
     }
 
