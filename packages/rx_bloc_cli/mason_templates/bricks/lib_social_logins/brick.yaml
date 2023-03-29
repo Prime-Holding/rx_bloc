@@ -1,0 +1,8 @@
+name: lib_social_logins
+description: Adds to your project root a new lib folder with all layers needed to add login with Apple, Google an Facebook functionality.
+
+version: 0.1.0+1
+environment:
+  mason: ">=0.1.0-dev.42 <0.1.0"
+
+vars:
