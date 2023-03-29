@@ -51,8 +51,8 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
 | `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
 | `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
-| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                           |
-| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                       |
+| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |
+| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |
 | `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |
