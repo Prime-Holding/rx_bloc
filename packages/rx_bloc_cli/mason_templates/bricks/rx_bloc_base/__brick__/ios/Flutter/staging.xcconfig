@@ -7,6 +7,3 @@ APP_DISPLAY_NAME = {{#titleCase}}{{project_name}}{{/titleCase}} STAG
 bundle_suffix=.stag
 CF_BUNDLE_URL_NAME={{project_name}}stag.{{organization_name}}.{{domain_name}}
 CF_BUNDLE_URL_SCHEME={{organization_name}}stagscheme
-{{#enable_social_logins}}FB_APP_ID=
-FB_CLIENT_TOKEN=
-FB_APP_NAME={{/enable_social_logins}}

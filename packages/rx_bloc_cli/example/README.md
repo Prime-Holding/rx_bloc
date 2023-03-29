@@ -24,38 +24,37 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 ## Project structure
 
-| Path                                         | Contains                                                                                                                                              |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `lib/main.dart`                              | The production flavour of the app.                                                                                                                    |
-| `lib/main_dev.dart`                          | The development flavour of the app.                                                                                                                   |
-| `lib/main_staging.dart`                      | The staging flavour of the app.                                                                                                                       |
-| `lib/base/`                                  | Common code used on more than one **feature** in the project.                                                                                         |
-| `lib/base/app/`                              | The root of the application and Environment configuration.                                                                                            |
-| `lib/base/common_blocs/`                     | Generally available [BLoCs][rx_bloc_info_lnk]                                                                                                         |
-| `lib/base/common_mappers/`                   | Generally available Mappers                                                                                                                           |
-| `lib/base/common_services/`                  | Generally available Services                                                                                                                          |
-| `lib/base/common_ui_components/`             | Generally available Reusable widgets (buttons, controls etc)                                                                                          |
-| `lib/base/data_sources/local/`               | Generally available local data sources, such as shared preferences, secured storage etc.                                                              |
-| `lib/base/data_sources/remote/`              | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code.                                               |
-| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls.                                                                                       |
-| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients                                                                                                                      |
-| `lib/base/di/`                               | Application dependencies, available in the whole app                                                                                                  |
-| `lib/base/extensions/`                       | Generally available [extension methods][extension_methods_lnk]                                                                                        |
-| `lib/base/models/`                           | The business models used in the application                                                                                                           |
-| `lib/base/repositories/`                     | Generally available repositories used to fetch and persist models                                                                                     |
-| `lib/base/theme/`                            | The custom theme of the app                                                                                                                           |
-| `lib/base/utils/`                            | Generally available utils                                                                                                                             |
-| `lib/feature_X/`                             | Feature related classes                                                                                                                               |
-| `lib/feature_X/blocs`                        | Feature related [BLoCs][rx_bloc_info_lnk]                                                                                                             |
-| `lib/feature_X/di`                           | Feature related dependencies                                                                                                                          |
-| `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
-| `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
-| `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
-| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                           |
-| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                       |
-| `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
-| `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |
+| Path | Contains |
+| ------------ | ------------ |
+| `lib/main.dart` | The production flavour of the app. |
+| `lib/main_dev.dart` | The development flavour of the app. |
+| `lib/main_staging.dart` | The staging flavour of the app. |
+| `lib/base/` | Common code used on more than one **feature** in the project. |
+| `lib/base/app/` | The root of the application and Environment configuration. |
+| `lib/base/common_blocs/` | Generally available [BLoCs][rx_bloc_info_lnk]|
+| `lib/base/common_mappers/` | Generally available Mappers|
+| `lib/base/common_services/` | Generally available Services |
+| `lib/base/common_ui_components/` | Generally available Reusable widgets (buttons, controls etc) |
+| `lib/base/data_sources/local/` | Generally available local data sources, such as shared preferences, secured storage etc. |
+| `lib/base/data_sources/remote/` | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code. |
+| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls. |
+| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients |
+| `lib/base/di/` | Application dependencies, available in the whole app|
+| `lib/base/extensions/` | Generally available [extension methods][extension_methods_lnk] |
+| `lib/base/models/` | The business models used in the application |
+| `lib/base/repositories/` | Generally available repositories used to fetch and persist models |
+| `lib/base/theme/` | The custom theme of the app |
+| `lib/base/utils/` | Generally available utils |
+| `lib/feature_X/` | Feature related classes |
+| `lib/feature_X/blocs` | Feature related [BLoCs][rx_bloc_info_lnk] |
+| `lib/feature_X/di` | Feature related dependencies |
+| `lib/feature_X/services/` | Feature related Services |
+| `lib/feature_X/ui_components/` | Feature related custom widgets |
+| `lib/feature_X/views/` | Feature related pages and forms |
+| `lib/lib_auth/` | The OAuth2 (JWT) based authentication and token management library |
+| `lib/lib_permissions/` | The ACL based library that handles all the in-app routes and custom actions as well. |
+| `lib/lib_router/` | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
+| `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
 
 ## Architecture
 
@@ -307,10 +306,6 @@ In order to make the notifications work on your target platform, make sure you f
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
-
-## Social logins library
-
-Allows you to authenticate users in your app with Apple, Google and Facebook.
 
 ## Next Steps
 

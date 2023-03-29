@@ -61,17 +61,17 @@
         <string>$(CF_BUNDLE_URL_NAME)</string>
         <key>CFBundleURLSchemes</key>
         <array>{{#enable_social_logins}}
-        <string>fb$(FB_APP_ID)</string>{{/enable_social_logins}}
+        <string>fb{app_id}</string>{{/enable_social_logins}}
         <string>$(CF_BUNDLE_URL_SCHEME)</string>
         </array>
         </dict>
     </array>{{#enable_social_logins}}
     <key>FacebookAppID</key>
-        <string>$(FB_APP_ID)</string>
+        <string>{app_id}</string>
         <key>FacebookClientToken</key>
-        <string>$(FB_CLIENT_TOKEN)</string>
+        <string>{client_token}</string>
         <key>FacebookDisplayName</key>
-        <string>$(FB_APP_NAME)</string>
+        <string>{app_name}</string>
         <key>LSApplicationQueriesSchemes</key>
         <array>
           <string>fbapi</string>
