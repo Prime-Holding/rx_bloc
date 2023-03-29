@@ -2,12 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
-import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../blocs/social_login_bloc.dart';
 import '../data_sources/google_auth_data_source.dart';
@@ -15,6 +13,7 @@ import '../data_sources/google_credential_data_source.dart';
 import '../repositories/google_auth_repository.dart';
 import '../services/google_login_service.dart';
 import '../services/social_login_service.dart';
+import 'google_social_button.dart';
 
 class GoogleLoginWidget extends StatelessWidget {
   const GoogleLoginWidget({Key? key}) : super(key: key);
@@ -34,19 +33,27 @@ class GoogleLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
-              builder: (context, loadingState, bloc) =>
-                  (loadingState.data ?? false)
-                      ? const AppLoadingIndicator()
-                      : SignInButton(
-                          MediaQuery.of(context).platformBrightness ==
-                                  Brightness.dark
-                              ? Buttons.GoogleDark
-                              : Buttons.Google,
-                          text: context.l10n.featureLogin.googleLogin,
-                          onPressed: () => (loadingState.data ?? false)
-                              ? null
-                              : bloc.events.login(),
-                        ),
+              builder: (context, loadingState, bloc) => MediaQuery.of(context)
+                          .platformBrightness ==
+                      Brightness.light
+                  ? GoogleSocialButton(
+                      assetImage: context.designSystem.images.googleLightLogo,
+                      backgroundColor:
+                          context.designSystem.colors.googleBackgroundLight,
+                      bloc: bloc,
+                      loadingState: loadingState,
+                      textStyle:
+                          context.designSystem.typography.googleButtonTextLight,
+                    )
+                  : GoogleSocialButton(
+                      assetImage: context.designSystem.images.googleDarkLogo,
+                      backgroundColor:
+                          context.designSystem.colors.googleBackgroundDark,
+                      bloc: bloc,
+                      loadingState: loadingState,
+                      textStyle:
+                          context.designSystem.typography.googleButtonTextDark,
+                    ),
             ),
           ],
         ),

@@ -59,6 +59,16 @@ class DesignSystemColors {
   final black = Colors.black87;
 
   final gray = const Color(0xff808080);
+  {{#enable_social_logins}}
+  final googleBackgroundLight = const Color(0xFFFFFFFF);
 
+  final googleBackgroundDark = const Color(0xFF4285F4);
+
+  final googleTextLight = const Color.fromRGBO(0, 0, 0, 0.54);
+
+  final googleTextDark = const Color(0xFFFFFFFF);
+
+  final googleButtonTextBackground = const Color.fromARGB(0, 0, 0, 0);
+  {{/enable_social_logins}}
   ///
 }

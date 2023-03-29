@@ -90,4 +90,16 @@ class DesignSystemTypography {
 {{/enable_feature_counter}}
   late final fadedButtonText =
       h3Med14.copyWith(color: _designSystemColor.black);
+  {{#enable_social_logins}}
+    late final googleButtonTextLight = TextStyle(
+    fontSize: 14,
+    backgroundColor: _designSystemColor.googleButtonTextBackground,
+    color: _designSystemColor.googleTextLight,
+  );
+  late final googleButtonTextDark = TextStyle(
+    fontSize: 14,
+    backgroundColor: _designSystemColor.googleButtonTextBackground,
+    color: _designSystemColor.googleTextDark,
+  );
+  {{/enable_social_logins}}
 }

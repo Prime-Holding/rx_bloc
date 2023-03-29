@@ -23,9 +23,10 @@ class GoogleAuthRepository {
                 googleAuthRequestModel)),
       );
 
-  Future<GoogleCredentialsModel> getUsersGoogleCredential() async {
-    final credentials = await _errorMapper
-        .execute(() => _googleCredentialDataSource.getUsersGoogleCredential());
-    return GoogleCredentialsModel.fromGoogleCredentials(credentials!);
-  }
+  Future<GoogleCredentialsModel> getUsersGoogleCredential() =>
+      _errorMapper.execute(() async {
+        final credentials =
+            await _googleCredentialDataSource.getUsersGoogleCredential();
+        return GoogleCredentialsModel.fromGoogleCredentials(credentials!);
+      });
 }
