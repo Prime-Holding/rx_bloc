@@ -25,5 +25,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-feature-deeplinks true ^
 --enable-feature-widget-toolkit true ^
 --enable-social-logins true ^
+--enable-internationalisation true ^
 example/test_app ^
 & cd example\test_app\
