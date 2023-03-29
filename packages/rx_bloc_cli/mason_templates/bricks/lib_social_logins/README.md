@@ -8,7 +8,7 @@ When you run the created project, don't forget to enable the "Sign in with Apple
 Supports iOS.
 
 Facebook authentication uses [flutter_facebook_auth][6] package. In order to make it work you must register your app in facebook developer console, there you will find your **app_id**, **client_token** and **app_name**,
-which you need to add to ***Info.plist*** and on ***string.xml*** files on places we already marked.
+which you need to add to ***Info.plist*** and on ***build.gradle*** files on places we already marked.
 
 Some requirements to be able to run application with this version of *facebook auth* is **flutter_secure_storage** package must be 8.0.0 version,
 for iOs in ***Podfile*** platform must be at least 12, for Android ***minSdkVersion*** at least 21.
