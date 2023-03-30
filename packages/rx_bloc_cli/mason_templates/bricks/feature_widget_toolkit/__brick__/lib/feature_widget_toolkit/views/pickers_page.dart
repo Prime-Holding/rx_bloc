@@ -7,6 +7,7 @@ import 'package:widget_toolkit/language_picker.dart';
 import 'package:widget_toolkit/search_picker.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
+import '../../l10n/l10n.dart';
 import '../models/data_model.dart';
 import '../repositories/search_repository.dart';
 import '../services/data_service.dart';
@@ -24,13 +25,14 @@ class PickersPage extends StatelessWidget {
         child: Column(
           children: [
             WidgetSection(
-              description: 'ItemPicker - single select',
+              description:
+                  context.l10n.featureWidgetToolkit.itemPickerSingleSelect,
               child: UpdateStateOnSelection<DataModel>(
                 builder: (updatedData, updateFunction) => OutlineFillButton(
-                  text: 'Select one item',
+                  text: context.l10n.featureWidgetToolkit.selectOneItem,
                   onPressed: () => showItemPickerBottomSheet<DataModel>(
                     context: context,
-                    title: 'Select a single item',
+                    title: context.l10n.featureWidgetToolkit.selectASingleItem,
                     selectedItems: updatedData,
                     callback: (data) => updateFunction.call(data),
                     service: DataService(),
@@ -41,13 +43,14 @@ class PickersPage extends StatelessWidget {
               ),
             ),
             WidgetSection(
-              description: 'ItemPicker - multi select',
+              description:
+                  context.l10n.featureWidgetToolkit.itemPickerMultiSelect,
               child: UpdateStateOnSelection<DataModel>(
                 builder: (updatedData, updateFunction) => OutlineFillButton(
-                  text: 'Select a few items',
+                  text: context.l10n.featureWidgetToolkit.selectAFewItems,
                   onPressed: () => showItemPickerBottomSheet<DataModel>(
                       context: context,
-                      title: 'Select a few items',
+                      title: context.l10n.featureWidgetToolkit.selectAFewItems,
                       selectedItems: updatedData,
                       callback: (data) => updateFunction.call(data),
                       service: DataService(),
@@ -57,31 +60,33 @@ class PickersPage extends StatelessWidget {
               ),
             ),
             WidgetSection(
-              description: 'Search Picker',
+              description: context.l10n.featureWidgetToolkit.searchPicker,
               child: UpdateStateOnSelection<CountryModel>(
                 getString: (CountryModel element) => element.itemDisplayName,
                 builder: (updatedData, updateFunction) => OutlineFillButton(
-                  text: 'Select an item from a long list',
+                  text: context
+                      .l10n.featureWidgetToolkit.selectAnItemFromLongList,
                   onPressed: () => showSearchPickerBottomSheet<CountryModel>(
-                      context: context,
-                      title: 'Select country',
-                      hintText: 'Type substring',
-                      retryText: 'Retry',
-                      selectedItem:
-                          updatedData.isNotEmpty ? updatedData[0] : null,
-                      onItemTap: (item) =>
-                          updateFunction.call(item != null ? [item] : []),
-                      service: SearchService(SearchCountryRepository()),
-                      emptyBuilder: () => const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: MessagePanelWidget(
-                              message:
-                                  'There is no results for the searched query!',
-                              messageState: MessagePanelState.neutral,
-                            ),
-                          ),
-                      modalConfiguration: const SearchPickerModalConfiguration(
-                          safeAreaBottom: true)),
+                    context: context,
+                    title: context.l10n.featureWidgetToolkit.selectCountry,
+                    hintText: context.l10n.featureWidgetToolkit.typeSubstring,
+                    retryText: context.l10n.featureWidgetToolkit.retry,
+                    selectedItem:
+                        updatedData.isNotEmpty ? updatedData[0] : null,
+                    onItemTap: (item) =>
+                        updateFunction.call(item != null ? [item] : []),
+                    service: SearchService(SearchCountryRepository()),
+                    emptyBuilder: () => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: MessagePanelWidget(
+                        message:
+                            context.l10n.featureWidgetToolkit.thereAreNoResults,
+                        messageState: MessagePanelState.neutral,
+                      ),
+                    ),
+                    modalConfiguration: const SearchPickerModalConfiguration(
+                        safeAreaBottom: true),
+                  ),
                 ),
               ),
             ),

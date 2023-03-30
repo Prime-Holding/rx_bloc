@@ -1,6 +1,6 @@
 {
   "@@locale": "bg",
-  "navWidgetToolkit": "Джаджи",
+  "navWidgetToolkit": "Компоненти",
   "commonComponents" : "Общи компоненти",
   "pickers": "Kомпоненти с избиране",
   "editFields": "Полета за редактиране",
@@ -22,5 +22,17 @@
   "gradientFillButton": "Бутон с градиентно запълване",
   "gradientFillButtonDisabled": "Бутон с градиентно запълване - деактивиран",
   "iconTextButton": "Текстов бутон с икона",
-  "retry": "Опитай отново"
+  "retry": "Опитай отново",
+  "itemPickerSingleSelect": "Избор на елемент - един избор",
+  "selectOneItem": "Изберете един елемент",
+  "selectASingleItem": "Изберете един елемент",
+  "itemPickerMultiSelect": "Избор на елемент - избор на няколко",
+  "selectAFewItems": "Изберете няколко елемента",
+  "searchPicker": "Инструмент за избор на търсене",
+  "selectAnItemFromLongList": "Изберете елемент от дълъг списък",
+  "selectCountry": "Изберете държава",
+  "typeSubstring": "Въведете подниз",
+  "thereAreNoResults": "Няма резултати за търсената заявка!",
+  "selectedItems": "Избрани елементи:",
+  "selectedItem": "Избран елемент:"
 }

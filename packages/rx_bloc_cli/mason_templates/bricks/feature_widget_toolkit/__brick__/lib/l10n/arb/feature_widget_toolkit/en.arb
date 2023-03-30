@@ -22,5 +22,17 @@
   "gradientFillButton": "GradientFillButton",
   "gradientFillButtonDisabled": "GradientFillButton - disabled",
   "iconTextButton": "IconTextButton",
-  "retry": "Retry"
+  "retry": "Retry",
+  "itemPickerSingleSelect": "ItemPicker - single select",
+  "selectOneItem": "Select one item",
+  "selectASingleItem": "Select a single item",
+  "itemPickerMultiSelect": "ItemPicker - multi select",
+  "selectAFewItems": "Select a few items",
+  "searchPicker": "Search Picker",
+  "selectAnItemFromLongList": "Select an item from a long list",
+  "selectCountry": "Select country",
+  "typeSubstring": "Type substring",
+  "thereAreNoResults": "There are no results for the searched query!",
+  "selectedItems": "Selected Items:",
+  "selectedItem": "Selected Item:"
 }
