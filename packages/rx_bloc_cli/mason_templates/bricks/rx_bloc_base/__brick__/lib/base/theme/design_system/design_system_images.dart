@@ -4,15 +4,11 @@ import 'package:flutter/material.dart';
 
 @immutable
 class DesignSystemImages {
-  {{#enable_social_logins}}
-  const DesignSystemImages.dark()
-      : googleLogo = '$imagePath/google_dark_icon.svg';
-  const DesignSystemImages.light()
-      : googleLogo = '$imagePath/google_light_icon.svg';
-  {{/enable_social_logins}}
-  {{^enable_social_logins}}
-  const DesignSystemImages();
-  {{/enable_social_logins}}
+  const DesignSystemImages.dark(){{#enable_social_logins}}
+      : googleLogo = '$imagePath/google_dark_icon.svg'{{/enable_social_logins}};
+  const DesignSystemImages.light(){{#enable_social_logins}}
+      : googleLogo = '$imagePath/google_light_icon.svg'{{/enable_social_logins}};
+      
   static const imagePath = 'assets/images';
   final testImage = const AssetImage('$imagePath/testImage.png');
   {{#enable_social_logins}}
