@@ -81,7 +81,6 @@ class _LoginFormState extends State<LoginForm> {
           ],
         ),
       );
-
   Widget _buildLogInButton() => RxBlocBuilder<LoginBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
         builder: (context, loadingState, bloc) => GradientFillButton(

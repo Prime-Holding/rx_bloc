@@ -79,8 +79,6 @@ class CreateCommand extends Command<int> {
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
   final _socialLoginsString = 'enable-social-logins';
-
-  /// bundles
   final _counterBundle = featureCounterBundle;
   final _deepLinkBundle = featureDeeplinkBundle;
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
