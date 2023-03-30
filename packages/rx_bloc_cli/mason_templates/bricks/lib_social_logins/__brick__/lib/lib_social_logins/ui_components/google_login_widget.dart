@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
@@ -13,7 +14,7 @@ import '../data_sources/google_credential_data_source.dart';
 import '../repositories/google_auth_repository.dart';
 import '../services/google_login_service.dart';
 import '../services/social_login_service.dart';
-import 'google_social_button.dart';
+import 'social_login_button.dart';
 
 class GoogleLoginWidget extends StatelessWidget {
   const GoogleLoginWidget({Key? key}) : super(key: key);
@@ -33,27 +34,29 @@ class GoogleLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
-              builder: (context, loadingState, bloc) => MediaQuery.of(context)
-                          .platformBrightness ==
-                      Brightness.light
-                  ? GoogleSocialButton(
-                      assetImage: context.designSystem.images.googleLightLogo,
-                      backgroundColor:
-                          context.designSystem.colors.googleBackgroundLight,
-                      bloc: bloc,
-                      loadingState: loadingState,
-                      textStyle:
-                          context.designSystem.typography.googleButtonTextLight,
-                    )
-                  : GoogleSocialButton(
-                      assetImage: context.designSystem.images.googleDarkLogo,
-                      backgroundColor:
-                          context.designSystem.colors.googleBackgroundDark,
-                      bloc: bloc,
-                      loadingState: loadingState,
-                      textStyle:
-                          context.designSystem.typography.googleButtonTextDark,
-                    ),
+              builder: (context, loadingState, bloc) {
+                final theme = MediaQuery.of(context).platformBrightness ==
+                    Brightness.light;
+                return SocialLoginButton(
+                  isLoading: (loadingState.data ?? false) ? false : true,
+                  text: context.l10n.featureLogin.googleLogin,
+                  textStyle: theme
+                      ? context.designSystem.typography.googleButtonTextLight
+                      : context.designSystem.typography.googleButtonTextDark,
+                  backgroundColor: theme
+                      ? context.designSystem.colors.googleBackgroundLight
+                      : context.designSystem.colors.googleBackgroundDark,
+                  onPressed: (loadingState.data ?? false)
+                      ? null
+                      : () => bloc.events.login(),
+                  child: SvgPicture.asset(
+                    theme
+                        ? context.designSystem.images.googleLightLogo
+                        : context.designSystem.images.googleDarkLogo,
+                    height: context.designSystem.spacing.xxl,
+                  ),
+                );
+              },
             ),
           ],
         ),

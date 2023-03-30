@@ -91,7 +91,7 @@ class DesignSystemTypography {
   late final fadedButtonText =
       h3Med14.copyWith(color: _designSystemColor.black);
   {{#enable_social_logins}}
-    late final googleButtonTextLight = TextStyle(
+late final googleButtonTextLight = TextStyle(
     fontSize: 14,
     backgroundColor: _designSystemColor.googleButtonTextBackground,
     color: _designSystemColor.googleTextLight,
@@ -100,6 +100,19 @@ class DesignSystemTypography {
     fontSize: 14,
     backgroundColor: _designSystemColor.googleButtonTextBackground,
     color: _designSystemColor.googleTextDark,
+  );
+  late final facebookButtonText = TextStyle(
+    fontSize: 14,
+    backgroundColor: _designSystemColor.facebookButtonTextBackground,
+    color: _designSystemColor.facebookTextColor,
+  );
+  late final appleButtonTextDark = TextStyle(
+    fontSize: 14,
+    color: _designSystemColor.appleButtonTextDark,
+  );
+  late final appleButtonTextLight = TextStyle(
+    fontSize: 14,
+    color: _designSystemColor.appleButtonTextLight,
   );
   {{/enable_social_logins}}
 }

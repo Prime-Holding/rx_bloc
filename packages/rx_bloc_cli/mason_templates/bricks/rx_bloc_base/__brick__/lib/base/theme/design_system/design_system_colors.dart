@@ -69,6 +69,20 @@ class DesignSystemColors {
   final googleTextDark = const Color(0xFFFFFFFF);
 
   final googleButtonTextBackground = const Color.fromARGB(0, 0, 0, 0);
+
+  final facebookBackground = const Color(0xFF1877f2);
+
+  final facebookTextColor = const Color(0xFFFFFFFF);
+
+  final facebookButtonTextBackground = const Color.fromRGBO(0, 0, 0, 0);
+
+  final appleButtonTextLight = Colors.white;
+
+  final appleButtonTextDark = Colors.black;
+
+  final appleBackgroundLight = const Color(0xFF000000);
+
+  final appleBackgroundDark = const Color(0xFFFFFFFF);
   {{/enable_social_logins}}
   ///
 }

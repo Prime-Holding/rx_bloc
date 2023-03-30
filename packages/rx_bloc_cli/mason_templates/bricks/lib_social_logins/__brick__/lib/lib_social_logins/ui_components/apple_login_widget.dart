@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 
@@ -14,6 +15,7 @@ import '../data_sources/apple_credential_data_source.dart';
 import '../repositories/apple_auth_repository.dart';
 import '../services/apple_social_login_service.dart';
 import '../services/social_login_service.dart';
+import 'social_login_button.dart';
 
 /// [AppleLoginWidget] provides out of the box Log in with Apple
 /// functionality along with default view of the button. If you want to customize
@@ -39,10 +41,33 @@ class AppleLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
-              builder: (context, snapshot, bloc) => SignInWithAppleButton(
-                onPressed: () =>
-                    (snapshot.data ?? false) ? null : bloc.events.login(),
-              ),
+              builder: (context, snapshot, bloc) {
+                final theme = MediaQuery.of(context).platformBrightness ==
+                    Brightness.light;
+                return SocialLoginButton(
+                  isLoading: (snapshot.data ?? false) ? false : true,
+                  textStyle: theme
+                      ? context.designSystem.typography.appleButtonTextLight
+                      : context.designSystem.typography.appleButtonTextDark,
+                  backgroundColor: theme
+                      ? context.designSystem.colors.appleBackgroundLight
+                      : context.designSystem.colors.appleBackgroundDark,
+                  text: context.l10n.featureLogin.appleLogin,
+                  onPressed: (snapshot.data ?? false)
+                      ? null
+                      : () => bloc.events.login(),
+                  child: SvgPicture.asset(
+                    context.designSystem.images.appleLogo,
+                    height: context.designSystem.spacing.xl,
+                    colorFilter: ColorFilter.mode(
+                      theme
+                          ? context.designSystem.colors.appleBackgroundDark
+                          : context.designSystem.colors.appleBackgroundLight,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

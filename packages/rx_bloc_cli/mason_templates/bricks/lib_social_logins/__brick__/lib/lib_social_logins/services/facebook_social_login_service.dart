@@ -1,8 +1,5 @@
 {{> licence.dart }}
 
-
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-
 import '../../lib_auth/models/auth_token_model.dart';
 import '../../lib_auth/services/user_account_service.dart';
 import '../repositories/facebook_auth_repository.dart';

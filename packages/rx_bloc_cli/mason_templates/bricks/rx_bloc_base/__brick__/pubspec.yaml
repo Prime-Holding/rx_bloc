@@ -15,12 +15,14 @@ dependencies:
   firebase_core: ^2.3.0{{/uses_firebase}}{{#push_notifications}}
   firebase_messaging: ^14.1.1{{/push_notifications}}
   flutter:
-    sdk: flutter
+    sdk: flutter{{#enable_social_logins}}
+  flutter_facebook_auth: ^5.0.8{{/enable_social_logins}}
   flutter_local_notifications: ^13.0.0
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^5.0.2
-  flutter_secure_storage: ^8.0.0
+  flutter_secure_storage: ^8.0.0{{#enable_social_logins}}
+  flutter_svg: ^2.0.4{{/enable_social_logins}}
   go_router: ^6.2.0
   golden_toolkit: ^0.14.0{{#enable_social_logins}}
   google_sign_in: ^6.0.2{{/enable_social_logins}}
@@ -34,8 +36,6 @@ dependencies:
   rx_bloc_list: ^3.2.1
   rxdart: ^0.27.5
   shared_preferences: ^2.0.15{{#enable_social_logins}}
-  flutter_signin_button: ^2.0.0
-  flutter_facebook_auth: ^5.0.8
   sign_in_with_apple: ^4.3.0{{/enable_social_logins}}
 
   # Server related packages

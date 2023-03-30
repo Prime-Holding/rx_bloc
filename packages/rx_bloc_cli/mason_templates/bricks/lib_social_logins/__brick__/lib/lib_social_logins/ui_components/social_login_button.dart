@@ -19,7 +19,7 @@ class SocialLoginButton extends StatelessWidget {
     this.width = 220,
     this.splashColor = Colors.white30,
     this.highlightColor = Colors.white30,
-    this.innerPadding = const EdgeInsets.symmetric(horizontal: 13),
+    this.innerPadding = const EdgeInsets.fromLTRB(12, 0, 0, 0),
     this.textStyle,
     this.shape,
   });
@@ -63,6 +63,7 @@ class SocialLoginButton extends StatelessWidget {
               Padding(
                 padding: innerPadding,
                 child: Container(
+                  width: 36,
                   margin: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
