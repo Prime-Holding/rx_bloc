@@ -1,4 +1,7 @@
 {
   "@@locale": "en",
-  "navWidgetToolkit": "Widgets"
+  "navWidgetToolkit": "Widgets",
+  "commonComponents" : "Common Components",
+  "pickers": "Pickers",
+  "editFields": "Edit Fields"
 }

@@ -1,4 +1,7 @@
 {
   "@@locale": "bg",
-  "navWidgetToolkit": "Компоненти"
+  "navWidgetToolkit": "Джаджи",
+  "commonComponents" : "Общи компоненти",
+  "pickers": "Kомпоненти с избиране",
+  "editFields": "Полета за редактиране"
 }
