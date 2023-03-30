@@ -8,7 +8,7 @@ import '../utils/language_util.dart';
 /// Example for a language data source implementation
 class LanguageLocalDataSource {
   static const keyCurrent = 'languageCurrent';
-  static const keyES = 'languageCurrentES';
+  static const keyBG = 'languageCurrentBG';
   static const keyEN = 'languageCurrentEN';
   static const showErrorValue = 'showError';
 
@@ -18,9 +18,9 @@ class LanguageLocalDataSource {
 
   Future<List<LanguageModel>> getAll() async => [
         LanguageModel(
-          locale: 'es',
-          key: 'spanish',
-          languageCode: 'es',
+          locale: 'bg',
+          key: 'bulgarian',
+          languageCode: 'bg',
         ),
         LanguageModel(
           locale: 'en',
@@ -31,7 +31,6 @@ class LanguageLocalDataSource {
 
   Future<LanguageModel> getCurrent() async {
     final storedLanguage = (await _storage.getString(keyCurrent)) ?? keyEN;
-// throw Exception();
     return _LanguageModelX.fromKey(storedLanguage);
   }
 
@@ -42,11 +41,11 @@ class LanguageLocalDataSource {
 
 extension _LanguageModelX on LanguageModel {
   static LanguageModel fromKey(String key) {
-    if (key == LanguageLocalDataSource.keyES) {
+    if (key == LanguageLocalDataSource.keyBG) {
       return LanguageModel(
-        locale: 'es',
-        key: 'spanish',
-        languageCode: 'es',
+        locale: 'bg',
+        key: 'bulgarian',
+        languageCode: 'bg',
       );
     }
 
@@ -59,9 +58,9 @@ extension _LanguageModelX on LanguageModel {
     }
 
     return LanguageModel(
-      locale: 'es',
-      key: 'spanish',
-      languageCode: 'es',
+      locale: 'en',
+      key: 'english',
+      languageCode: 'en',
     );
   }
 }

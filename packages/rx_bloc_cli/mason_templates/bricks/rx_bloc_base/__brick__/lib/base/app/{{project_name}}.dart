@@ -49,22 +49,20 @@ __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
-  {{#enable_internationalisation}}
-  late Locale _locale;{{/enable_internationalisation}}
+  late Locale _locale;
 
   @override
   void initState() {
-    {{#enable_internationalisation}}
-    _updateLocale();{{/enable_internationalisation}}{{#push_notifications}}
+    _updateLocale();{{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
 
     super.initState();
   }
-  {{#enable_internationalisation}}
+
   void _updateLocale() {
   _locale = const Locale('en');
-
+  {{#enable_internationalisation}}
   context
       .read<CoordinatorBlocType>()
       .states
@@ -73,8 +71,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     setState(
       () => _locale = Locale(language.locale),
     );
-  });
-  }{{/enable_internationalisation}}{{#push_notifications}}
+  });{{/enable_internationalisation}}
+  }{{#push_notifications}}
 
   Future<void> _configureFCM() async {
     /// Initialize the FCM callbacks
@@ -119,8 +117,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           I18n.delegate,
           ...GlobalMaterialLocalizations.delegates,
         ],
-        supportedLocales: I18n.supportedLocales,{{#enable_internationalisation}}
-        locale: _locale,{{/enable_internationalisation}}
+        supportedLocales: I18n.supportedLocales,
+        locale: _locale,
         routerConfig: context.read<AppRouter>().router,
         debugShowCheckedModeBanner: false,
       );

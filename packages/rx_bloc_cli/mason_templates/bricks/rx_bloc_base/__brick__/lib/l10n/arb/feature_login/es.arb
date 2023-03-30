@@ -1,9 +1,0 @@
-{
-  "@@locale": "es",
-  "loginPageTitle": "Login sample",
-  "logIn" : "Log in",
-  "logOut" : "Log out",
-  "profile" : "Profile",
-  "notifications" : "Notifications",
-  "loginCredentialsHint" : "Enter your login credentials: \n A valid email address. \n At least 6 characters password."
-}
