@@ -34,29 +34,19 @@ class GoogleLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
-              builder: (context, loadingState, bloc) {
-                final theme = MediaQuery.of(context).platformBrightness ==
-                    Brightness.light;
-                return SocialLoginButton(
-                  isLoading: (loadingState.data ?? false) ? false : true,
-                  text: context.l10n.featureLogin.googleLogin,
-                  textStyle: theme
-                      ? context.designSystem.typography.googleButtonTextLight
-                      : context.designSystem.typography.googleButtonTextDark,
-                  backgroundColor: theme
-                      ? context.designSystem.colors.googleBackgroundLight
-                      : context.designSystem.colors.googleBackgroundDark,
-                  onPressed: (loadingState.data ?? false)
-                      ? null
-                      : () => bloc.events.login(),
-                  child: SvgPicture.asset(
-                    theme
-                        ? context.designSystem.images.googleLightLogo
-                        : context.designSystem.images.googleDarkLogo,
-                    height: context.designSystem.spacing.xxl,
-                  ),
-                );
-              },
+              builder: (context, loadingState, bloc) =>SocialLoginButton(
+                isLoading: (loadingState.data ?? false) ? false : true,
+                text: context.l10n.featureLogin.googleLogin,
+                textStyle: context.designSystem.typography.googleButtonText,
+                backgroundColor: context.designSystem.colors.googleBackground,
+                onPressed: (loadingState.data ?? false)
+                    ? null
+                    : () => bloc.events.login(),
+                child: SvgPicture.asset(
+                  context.designSystem.images.googleLogo,
+                  height: context.designSystem.spacing.xxl,
+                ),
+              ),
             ),
           ],
         ),

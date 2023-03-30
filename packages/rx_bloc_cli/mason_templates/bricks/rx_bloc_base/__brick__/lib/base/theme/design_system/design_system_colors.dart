@@ -12,13 +12,22 @@ class DesignSystemColors {
       : brightness = Brightness.light,
         primaryColor = const Color(0xff2196f3),
         backgroundColor = Colors.white,
-        scaffoldBackgroundColor = Colors.white;
+        scaffoldBackgroundColor = Colors.white{{#enable_social_logins}},
+        appleBackground = const Color(0xFF000000),
+        appleButtonText = Colors.white,
+        googleBackground = const Color(0xFFFFFFFF),
+        googleButtonText = const Color.fromRGBO(0, 0, 0, 0.54){{/enable_social_logins}};
 
   const DesignSystemColors.dark()
       : brightness = Brightness.dark,
         primaryColor = const Color(0xffce93d8),
         backgroundColor = Colors.black,
-        scaffoldBackgroundColor = Colors.black;
+        scaffoldBackgroundColor = Colors.black{{#enable_social_logins}},
+        appleBackground = const Color(0xFFFFFFFF),
+        appleButtonText = Colors.black,
+        googleBackground = const Color(0xFF4285F4),
+        googleButtonText = const Color(0xFFFFFFFF)
+        {{/enable_social_logins}};
 
   final Brightness brightness;
 
@@ -60,29 +69,17 @@ class DesignSystemColors {
 
   final gray = const Color(0xff808080);
   {{#enable_social_logins}}
-  final googleBackgroundLight = const Color(0xFFFFFFFF);
+  final Color appleBackground;
 
-  final googleBackgroundDark = const Color(0xFF4285F4);
-
-  final googleTextLight = const Color.fromRGBO(0, 0, 0, 0.54);
-
-  final googleTextDark = const Color(0xFFFFFFFF);
-
-  final googleButtonTextBackground = const Color.fromARGB(0, 0, 0, 0);
+  final Color appleButtonText;
 
   final facebookBackground = const Color(0xFF1877f2);
 
   final facebookTextColor = const Color(0xFFFFFFFF);
 
-  final facebookButtonTextBackground = const Color.fromRGBO(0, 0, 0, 0);
+  final Color googleBackground;
 
-  final appleButtonTextLight = Colors.white;
-
-  final appleButtonTextDark = Colors.black;
-
-  final appleBackgroundLight = const Color(0xFF000000);
-
-  final appleBackgroundDark = const Color(0xFFFFFFFF);
+  final Color googleButtonText;
   {{/enable_social_logins}}
   ///
 }

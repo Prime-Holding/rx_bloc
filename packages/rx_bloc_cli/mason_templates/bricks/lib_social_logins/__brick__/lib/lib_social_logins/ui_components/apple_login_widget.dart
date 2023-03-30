@@ -41,33 +41,22 @@ class AppleLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
-              builder: (context, snapshot, bloc) {
-                final theme = MediaQuery.of(context).platformBrightness ==
-                    Brightness.light;
-                return SocialLoginButton(
-                  isLoading: (snapshot.data ?? false) ? false : true,
-                  textStyle: theme
-                      ? context.designSystem.typography.appleButtonTextLight
-                      : context.designSystem.typography.appleButtonTextDark,
-                  backgroundColor: theme
-                      ? context.designSystem.colors.appleBackgroundLight
-                      : context.designSystem.colors.appleBackgroundDark,
-                  text: context.l10n.featureLogin.appleLogin,
-                  onPressed: (snapshot.data ?? false)
-                      ? null
-                      : () => bloc.events.login(),
-                  child: SvgPicture.asset(
-                    context.designSystem.images.appleLogo,
-                    height: context.designSystem.spacing.xl,
-                    colorFilter: ColorFilter.mode(
-                      theme
-                          ? context.designSystem.colors.appleBackgroundDark
-                          : context.designSystem.colors.appleBackgroundLight,
-                      BlendMode.srcIn,
-                    ),
+              builder: (context, snapshot, bloc)=> SocialLoginButton(
+                isLoading: (snapshot.data ?? false) ? false : true,
+                textStyle: context.designSystem.typography.appleButtonText,
+                backgroundColor: context.designSystem.colors.appleBackground,
+                text: context.l10n.featureLogin.appleLogin,
+                onPressed:
+                    (snapshot.data ?? false) ? null : () => bloc.events.login(),
+                child: SvgPicture.asset(
+                  context.designSystem.images.appleLogo,
+                  height: context.designSystem.spacing.xl,
+                  colorFilter: ColorFilter.mode(
+                    context.designSystem.colors.appleButtonText,
+                    BlendMode.srcIn,
                   ),
-                );
-              },
+                ),
+              ),
             ),
           ],
         ),

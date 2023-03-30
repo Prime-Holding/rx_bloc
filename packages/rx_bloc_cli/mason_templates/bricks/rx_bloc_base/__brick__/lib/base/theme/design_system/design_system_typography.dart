@@ -91,28 +91,20 @@ class DesignSystemTypography {
   late final fadedButtonText =
       h3Med14.copyWith(color: _designSystemColor.black);
   {{#enable_social_logins}}
-late final googleButtonTextLight = TextStyle(
+  late final googleButtonText = TextStyle(
     fontSize: 14,
-    backgroundColor: _designSystemColor.googleButtonTextBackground,
-    color: _designSystemColor.googleTextLight,
+    backgroundColor: _designSystemColor.googleBackground,
+    color: _designSystemColor.googleButtonText,
   );
-  late final googleButtonTextDark = TextStyle(
-    fontSize: 14,
-    backgroundColor: _designSystemColor.googleButtonTextBackground,
-    color: _designSystemColor.googleTextDark,
-  );
+
   late final facebookButtonText = TextStyle(
     fontSize: 14,
-    backgroundColor: _designSystemColor.facebookButtonTextBackground,
+    backgroundColor: _designSystemColor.facebookBackground,
     color: _designSystemColor.facebookTextColor,
   );
-  late final appleButtonTextDark = TextStyle(
+  late final appleButtonText = TextStyle(
     fontSize: 14,
-    color: _designSystemColor.appleButtonTextDark,
-  );
-  late final appleButtonTextLight = TextStyle(
-    fontSize: 14,
-    color: _designSystemColor.appleButtonTextLight,
+    color: _designSystemColor.appleButtonText,
   );
   {{/enable_social_logins}}
 }
