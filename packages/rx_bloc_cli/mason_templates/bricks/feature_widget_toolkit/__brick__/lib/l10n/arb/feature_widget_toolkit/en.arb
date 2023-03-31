@@ -34,5 +34,11 @@
   "typeSubstring": "Type substring",
   "thereAreNoResults": "There are no results for the searched query!",
   "selectedItems": "Selected Items:",
-  "selectedItem": "Selected Item:"
+  "selectedItem": "Selected Item:",
+  "textFieldDialog": "TextFieldDialog",
+  "textFieldLabel": "First Name",
+  "nameValue": "John",
+  "headerValue": "Enter your data",
+  "editAddress": "EditAddress",
+  "textFieldButtonText": "Save"
 }

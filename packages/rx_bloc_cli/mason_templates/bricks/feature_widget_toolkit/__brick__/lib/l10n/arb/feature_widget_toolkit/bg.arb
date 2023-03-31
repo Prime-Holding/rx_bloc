@@ -34,5 +34,11 @@
   "typeSubstring": "Въведете подниз",
   "thereAreNoResults": "Няма резултати за търсената заявка!",
   "selectedItems": "Избрани елементи:",
-  "selectedItem": "Избран елемент:"
+  "selectedItem": "Избран елемент:",
+  "textFieldDialog": "Диалог в текстово поле",
+  "textFieldLabel": "Първо име",
+  "nameValue": "Джон",
+  "headerValue": "Въведети информацията",
+  "editAddress": "Промени адрес",
+  "textFieldButtonText": "Запази"
 }
