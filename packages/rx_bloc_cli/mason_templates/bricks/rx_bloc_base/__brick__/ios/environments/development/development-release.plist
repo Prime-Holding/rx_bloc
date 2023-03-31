@@ -49,7 +49,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>{{#enable_social_logins}}
+	<false/>
     {{#enable_social_logins}}
         <key>CFBundleURLSchemes</key>
         <array>

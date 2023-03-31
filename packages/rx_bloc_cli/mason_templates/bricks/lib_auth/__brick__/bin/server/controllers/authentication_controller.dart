@@ -34,6 +34,11 @@ class AuthenticationController extends ApiController {
     );
     router.addRequest(
       RequestType.POST,
+      '/api/authenticate/google',
+      _authenticateWithGoogleHandler,
+    );
+    router.addRequest(
+      RequestType.POST,
       '/api/authenticate/facebook',
       _authenticateWithFacebookHandler,
     );
@@ -42,9 +47,8 @@ class AuthenticationController extends ApiController {
       RequestType.POST,
       '/api/logout',
       _logoutHandler,
-    );
-
-}
+    );    
+  }
 
   Future<Response> _refreshTokenHandler(Request request) async {
     final params = await request.bodyFromFormData();
@@ -82,11 +86,23 @@ class AuthenticationController extends ApiController {
     return responseBuilder.buildOK(data: token.toJson());
   }
 
-Future<Response> _authenticateWithFacebookHandler(Request request) async {
-final params = await request.bodyFromFormData();
-if (params['isAuthenticated'] != true) {
-BadRequestException('User must be authenticated to proceed');
-}
+  Future<Response> _authenticateWithGoogleHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
+    throwIfEmpty(
+      params['serverAuthCode'],
+      BadRequestException('The user authorization with Google failed.'),
+    );
+
+    final token = _authenticationService.issueNewToken(null);
+    return responseBuilder.buildOK(data: token.toJson());
+  }
+  
+  Future<Response> _authenticateWithFacebookHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+    if (params['isAuthenticated'] != true) {
+    BadRequestException('User must be authenticated to proceed');
+  }
 
 final token = _authenticationService.issueNewToken(null);
 return responseBuilder.buildOK(data: token.toJson());

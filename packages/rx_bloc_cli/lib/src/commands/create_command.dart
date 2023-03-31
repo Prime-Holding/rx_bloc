@@ -69,8 +69,8 @@ class CreateCommand extends Command<int> {
       )
       ..addOption(
         _socialLoginsString,
-        help: 'Enables social login with Apple, Facebook and Google for the '
-            'project',
+        help:
+            'Enables social login with Apple, Facebook and Google for the project',
         allowed: ['true', 'false'],
         defaultsTo: 'false',
       );

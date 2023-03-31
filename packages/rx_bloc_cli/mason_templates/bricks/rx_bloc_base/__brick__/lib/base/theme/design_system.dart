@@ -21,7 +21,7 @@ class DesignSystem extends ThemeExtension<DesignSystem> {
   DesignSystem.light()
       : colors = const DesignSystemColors.light(),
         icons = DesignSystemIcons(),
-        images = const DesignSystemImages(),
+        images = const DesignSystemImages.light(),
         spacing = const DesignSystemSpacing(),
         typography =
             DesignSystemTypography.withColor(const DesignSystemColors.light());
@@ -29,7 +29,7 @@ class DesignSystem extends ThemeExtension<DesignSystem> {
   DesignSystem.dark()
       : colors = const DesignSystemColors.dark(),
         icons = DesignSystemIcons(),
-        images = const DesignSystemImages(),
+        images = const DesignSystemImages.dark(),
         spacing = const DesignSystemSpacing(),
         typography =
             DesignSystemTypography.withColor(const DesignSystemColors.dark());
