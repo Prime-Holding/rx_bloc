@@ -1,4 +1,4 @@
-{{> licence.dart }}
+// {{> licence.dart }}
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,7 @@ import '../../l10n/l10n.dart';
 import '../services/custom_edit_address_service.dart';
 import '../services/local_address_field_service.dart';
 import '../ui_components/widget_section.dart';
+import '../utils/edit_address_custom_localisations.dart';
 
 class EditFieldsPage extends StatelessWidget {
   const EditFieldsPage({required this.pageController, Key? key})
@@ -45,6 +46,7 @@ class EditFieldsPage extends StatelessWidget {
                     messageState: MessagePanelState.informative,
                   ),
                 ),
+                localizedStrings: context.read<EditAddressCustomLocalisations>(),
               ),
             ),
           ],

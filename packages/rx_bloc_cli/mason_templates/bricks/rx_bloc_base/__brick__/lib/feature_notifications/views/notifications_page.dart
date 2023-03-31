@@ -83,7 +83,8 @@ class NotificationsPage extends StatelessWidget {
                         onPressed: () => context
                             .read<NotificationsBlocType>()
                             .events
-                            .sendMessage('This is a notification!'),
+                            .sendMessage(context.l10n.featureNotifications
+                                .notificationsMessage),
                       ),
                     ),
                     OutlineFillButton(
@@ -93,7 +94,8 @@ class NotificationsPage extends StatelessWidget {
                           .read<NotificationsBlocType>()
                           .events
                           .sendMessage(
-                            'This is a delayed notification!',
+                            context
+                                .l10n.featureNotifications.notificationsDelayed,
                             delay: 5,
                           ),
                     ),

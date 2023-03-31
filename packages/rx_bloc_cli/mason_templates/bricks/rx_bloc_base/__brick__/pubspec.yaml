@@ -85,3 +85,4 @@ r_flutter:
     - name: feature_notifications{{#enable_feature_widget_toolkit}}
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field
+    - name: lib_router
