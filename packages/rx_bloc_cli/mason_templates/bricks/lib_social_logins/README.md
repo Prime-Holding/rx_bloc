@@ -3,18 +3,32 @@
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 A brick designed to integrate social login with Apple, Google and Facebook functionality into our application.
 
-## Apple Authentication
- It uses the [sign_in_with_apple][5] package. In order to make it work, fulfill the requirements described in its documentation.
+### Apple Authentication
+It uses the [sign_in_with_apple][5] package. In order to make it work, fulfill the requirements described in its documentation.
 When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.
 
 Supports iOS.
 
-## Facebook Authentication
-Facebook authentication uses [flutter_facebook_auth][6] package. In order to make it work you must register your app in facebook developer console, there you will find your **app_id**, **client_token** and **app_name**,
-which you need to add to ***ios/Flutter/(flavor-name).xcconfig*** and on ***android/app/build.gradle*** files on places we already marked.
+### Facebook Authentication
+Facebook authentication uses [flutter_facebook_auth][7] package.
 
-Some requirements to be able to run application with this version of *facebook auth* is **flutter_secure_storage** package must be 8.0.0 version,
-for iOs in ***Podfile*** platform must be at least 12, for Android ***minSdkVersion*** at least 21.
+`Step 1:`  
+In order to make it work you must register your app in facebook developer console.
+
+`Step 2:`  
+There you will find your **app_id**, **client_token** and **app_name**.
+
+`Step 3:`
+- `3.1 Android:` Copy parameters from step 2 in ***android/app/build.gradle***.
+
+- `3.2 iOS:`
+  Copy parameters from step 2 in ***ios/Flutter/(flavor-name).xcconfig***.
+
+
+`Note:` Some requirements to be able to run application with this version of *facebook auth* is
+- **flutter_secure_storage** package must be 8.0.0 version
+- for iOs in ***Podfile*** platform must be at least 12
+- for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation][7].
 
