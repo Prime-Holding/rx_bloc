@@ -1,12 +1,12 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:widget_toolkit/language_picker.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../data_sources/language_local_data_source.dart';
-import '../data_storages/language_picker_shared_preferences_instance.dart';
+import '../di/change_language_with_dependencies.dart';
 import '../services/language_service_example.dart';
 
 class LanguagePickerButton extends StatelessWidget {
@@ -28,26 +28,25 @@ class LanguagePickerButton extends StatelessWidget {
   static const _bulgarian = 'bulgarian';
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(
-      horizontal: padding ?? 25,
-    ),
-    child: OutlineFillButton(
-      text: buttonText ?? _buttonText,
-      onPressed: () => showChangeLanguageBottomSheet(
-        context: context,
-        service: service ??
-            LanguageServiceExample(
-              localDataSource: LanguageLocalDataSource(
-                LanguagePickerSharedPreferencesInstance(),
+  Widget build(BuildContext context) => ChangeLanguageWithDependencies(
+        child: Builder(
+          builder: (context) => Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: padding ?? 25,
+            ),
+            child: OutlineFillButton(
+              text: buttonText ?? _buttonText,
+              onPressed: () => showChangeLanguageBottomSheet(
+                context: context,
+                service: service ?? context.read<LanguageServiceExample>(),
+                onChanged: onChanged ?? (model) => {},
+                translate: translate ??
+                    (model) => model.key == _bulgarian
+                        ? context.l10n.libChangeLanguage.bulgarian
+                        : context.l10n.libChangeLanguage.english,
               ),
             ),
-        onChanged: onChanged ?? (model) => {},
-        translate: translate ?? (model) => model.key == _bulgarian
-            ? context.l10n.libChangeLanguage.bulgarian
-            : context.l10n.libChangeLanguage.english,
-      ),
-    ),
-  );
+          ),
+        ),
+      );
 }
-
