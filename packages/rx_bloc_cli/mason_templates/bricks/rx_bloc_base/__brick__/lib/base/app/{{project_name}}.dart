@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
-import '../../lib_router/router.dart';{{#enable_internationalisation}}
-import '../common_blocs/coordinator_bloc.dart';{{/enable_internationalisation}}
+import '../../lib_router/router.dart';{{#enable_change_language}}
+import '../common_blocs/coordinator_bloc.dart';{{/enable_change_language}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
@@ -62,7 +62,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   void _updateLocale() {
   _locale = const Locale('en');
-  {{#enable_internationalisation}}
+  {{#enable_change_language}}
   context
       .read<CoordinatorBlocType>()
       .states
@@ -71,7 +71,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     setState(
       () => _locale = Locale(language.locale),
     );
-  });{{/enable_internationalisation}}
+  });{{/enable_change_language}}
   }{{#push_notifications}}
 
   Future<void> _configureFCM() async {

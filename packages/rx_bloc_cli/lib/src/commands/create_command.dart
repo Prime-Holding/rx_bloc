@@ -8,7 +8,7 @@ import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
-import '../templates/lib_internationalisation_bundle.dart';
+import '../templates/lib_change_language_bundle.dart';
 import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
@@ -57,8 +57,8 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
-        _internationalisationString,
-        help: 'Enables internationalisation',
+        _changeLanguageString,
+        help: 'Enables change language',
         defaultsTo: 'true',
       )
       ..addOption(
@@ -85,7 +85,7 @@ class CreateCommand extends Command<int> {
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
   final _socialLoginsString = 'enable-social-logins';
-  final _internationalisationString = 'enable-internationalisation';
+  final _changeLanguageString = 'enable-change-language';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -95,7 +95,7 @@ class CreateCommand extends Command<int> {
   final _permissionsBundle = libPermissionsBundle;
   final _libAuthBundle = libAuthBundle;
   final _libSocialLoginsBundle = libSocialLoginsBundle;
-  final _libInternationalisationBundle = libInternationalisationBundle;
+  final _libChangeLanguageBundle = libChangeLanguageBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -217,9 +217,9 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_libSocialLoginsBundle.files);
     }
 
-    // Add internationalisation brick _bundle when needed
-    if (arguments.enableInternationalisation) {
-      _bundle.files.addAll(_libInternationalisationBundle.files);
+    // Add Change Language brick _bundle when needed
+    if (arguments.enableChangeLanguage) {
+      _bundle.files.addAll(_libChangeLanguageBundle.files);
     }
 
     //Add lib_route to _bundle
@@ -245,7 +245,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
         'enable_social_logins': arguments.enableSocialLogins,
-        'enable_internationalisation': arguments.enableInternationalisation,
+        'enable_change_language': arguments.enableChangeLanguage,
       },
     );
 
@@ -273,7 +273,7 @@ class CreateCommand extends Command<int> {
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
       enableSocialLogins: _parseEnableSocialLogins(arguments),
-      enableInternationalisation: _parseEnableInternationalisation(arguments),
+      enableChangeLanguage: _parseEnableChangeLanguage(arguments),
     );
   }
 
@@ -310,10 +310,10 @@ class CreateCommand extends Command<int> {
     return widgetToolkitEnabled.toLowerCase() == 'true';
   }
 
-  /// Returns whether the project will use internationalisation
-  bool _parseEnableInternationalisation(ArgResults arguments) {
-    final internationalisationEnabled = arguments[_internationalisationString];
-    return internationalisationEnabled.toLowerCase() == 'true';
+  /// Returns whether the project will enable change language
+  bool _parseEnableChangeLanguage(ArgResults arguments) {
+    final changeLanguageEnabled = arguments[_changeLanguageString];
+    return changeLanguageEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will use analytics or not
@@ -416,7 +416,7 @@ class CreateCommand extends Command<int> {
       arguments.enableWidgetToolkitFeature,
     );
     _usingLog('Social Logins', arguments.enableSocialLogins);
-    _usingLog('Internationalisation', arguments.enableInternationalisation);
+    _usingLog('Enable Change Language', arguments.enableChangeLanguage);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -445,7 +445,7 @@ class _CreateCommandArguments {
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
     required this.enableSocialLogins,
-    required this.enableInternationalisation,
+    required this.enableChangeLanguage,
   });
 
   final String projectName;
@@ -456,5 +456,5 @@ class _CreateCommandArguments {
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
   final bool enableSocialLogins;
-  final bool enableInternationalisation;
+  final bool enableChangeLanguage;
 }

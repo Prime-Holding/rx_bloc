@@ -14,4 +14,4 @@ vars:
   - enable_feature_deeplinks
   - enable_feature_widget_toolkit
   - enable_social_logins
-  - enable_internationalisation
+  - enable_change_language

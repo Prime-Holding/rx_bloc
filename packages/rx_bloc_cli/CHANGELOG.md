@@ -1,8 +1,6 @@
-## [2.5.0]
-* Added parameter `enable-internationalisation` for enabling a translation of the project
-
 ## [2.4.0]
 * Added parameter `enable-social-logins` for social logins (Apple, Google, Facebook) integration
+* Added parameter `enable-internationalisation` for enabling a translation of the project
 
 ## [2.3.0]
 * Adding `EditAddressWidget` feature as example to `EditFieldsPage`
