@@ -16,6 +16,8 @@ class ProfilePage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  static const _bulgarian = 'bulgarian';
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -50,7 +52,9 @@ class ProfilePage extends StatelessWidget {
                   .setCurrentLanguage(language),
               padding: context.designSystem.spacing.xl0,
               buttonText: context.l10n.changeLanguage,
-              translate: (model) => '',
+              translate: (model) => model.key == _bulgarian
+                  ? context.l10n.bulgarian
+                  : context.l10n.english,
             ),{{/enable_change_language}}
           ],
         ),

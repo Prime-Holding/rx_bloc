@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:widget_toolkit/language_picker.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
+import '../../app_extensions.dart';
 import '../data_sources/language_local_data_source.dart';
 import '../data_storages/language_picker_shared_preferences_instance.dart';
 import '../services/language_service_example.dart';
@@ -24,6 +25,7 @@ class LanguagePickerButton extends StatelessWidget {
   final double? padding;
   final String? buttonText;
   static const String _buttonText = 'Change Language';
+  static const _bulgarian = 'bulgarian';
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -40,8 +42,10 @@ class LanguagePickerButton extends StatelessWidget {
                 LanguagePickerSharedPreferencesInstance(),
               ),
             ),
-        onChanged: onChanged ?? (model) => print('onChanged: $model'),
-        translate: translate ?? (model) => 'translate your model: $model',
+        onChanged: onChanged ?? (model) => {},
+        translate: translate ?? (model) => model.key == _bulgarian
+            ? context.l10n.libChangeLanguage.bulgarian
+            : context.l10n.libChangeLanguage.english,
       ),
     ),
   );
