@@ -308,7 +308,8 @@ In order to make the notifications work on your target platform, make sure you f
 *Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
-{{#enable_social_logins}}
+
+
 ## Social logins library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
@@ -342,7 +343,6 @@ There you will find your **app_id**, **client_token** and **app_name**.
 - for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
-{{/enable_social_logins}}
 
 ## Next Steps
 
