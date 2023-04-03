@@ -46,7 +46,8 @@ class EditFieldsPage extends StatelessWidget {
                     messageState: MessagePanelState.informative,
                   ),
                 ),
-                localizedStrings: context.read<EditAddressCustomLocalisations>(),
+                localizedStrings:
+                    context.read<EditAddressCustomLocalisations>(),
               ),
             ),
           ],
