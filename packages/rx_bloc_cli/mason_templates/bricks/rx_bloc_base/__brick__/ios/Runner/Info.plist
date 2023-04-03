@@ -61,7 +61,9 @@
         <string>$(CF_BUNDLE_URL_NAME)</string>
         <key>CFBundleURLSchemes</key>
         <array>{{#enable_social_logins}}
-        <string>fb$(FB_APP_ID)</string>{{/enable_social_logins}}
+        <string>fb$(FB_APP_ID)</string>
+        <string>$(GOOGLE_REVERSED_CLIENT_ID)</string>
+        {{/enable_social_logins}}
         <string>$(CF_BUNDLE_URL_SCHEME)</string>
         </array>
         </dict>
@@ -76,6 +78,7 @@
         <array>
           <string>fbapi</string>
           <string>fb-messenger-share-api</string>
-        </array>{{/enable_social_logins}}
+        </array>
+        {{/enable_social_logins}}
 </dict>
 </plist>

@@ -392,7 +392,8 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,
     );
-    _usingLog('Social Logins', arguments.enableSocialLogins);
+    _usingLog('Social Logins [Apple, Google, Facebook]',
+        arguments.enableSocialLogins);
   }
 
   /// Shows a delayed log with a success symbol in front of it
