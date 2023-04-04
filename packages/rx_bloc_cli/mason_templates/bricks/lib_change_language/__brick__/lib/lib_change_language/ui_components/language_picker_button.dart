@@ -7,7 +7,7 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../di/change_language_with_dependencies.dart';
-import '../services/language_service_example.dart';
+import '../services/custom_language_service.dart';
 
 class LanguagePickerButton extends StatelessWidget {
   const LanguagePickerButton({
@@ -38,7 +38,7 @@ class LanguagePickerButton extends StatelessWidget {
               text: buttonText ?? _buttonText,
               onPressed: () => showChangeLanguageBottomSheet(
                 context: context,
-                service: service ?? context.read<LanguageServiceExample>(),
+                service: service ?? context.read<CustomLanguageService>(),
                 onChanged: onChanged ?? (model) => {},
                 translate: translate ??
                     (model) => model.key == _bulgarian

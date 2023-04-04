@@ -2,19 +2,18 @@
 
 import 'package:widget_toolkit/language_picker.dart';
 
-import '../data_storages/language_picker_shared_preferences_instance.dart';
+import '../../base/data_sources/local/shared_preferences_instance.dart';
 import '../utils/language_util.dart';
 
-/// Example for a language data source implementation
-class LanguageLocalDataSource {
+class LanguageRepository {
   static const keyCurrent = 'languageCurrent';
   static const keyBG = 'languageCurrentBG';
   static const keyEN = 'languageCurrentEN';
   static const showErrorValue = 'showError';
 
-  LanguageLocalDataSource(this._storage);
+  LanguageRepository(this._storage);
 
-  final LanguagePickerSharedPreferencesInstance _storage;
+  final SharedPreferencesInstance _storage;
 
   Future<List<LanguageModel>> getAll() async => [
         LanguageModel(
@@ -41,7 +40,7 @@ class LanguageLocalDataSource {
 
 extension _LanguageModelX on LanguageModel {
   static LanguageModel fromKey(String key) {
-    if (key == LanguageLocalDataSource.keyBG) {
+    if (key == LanguageRepository.keyBG) {
       return LanguageModel(
         locale: 'bg',
         key: 'bulgarian',
@@ -49,7 +48,7 @@ extension _LanguageModelX on LanguageModel {
       );
     }
 
-    if (key == LanguageLocalDataSource.keyEN) {
+    if (key == LanguageRepository.keyEN) {
       return LanguageModel(
         locale: 'en',
         key: 'english',

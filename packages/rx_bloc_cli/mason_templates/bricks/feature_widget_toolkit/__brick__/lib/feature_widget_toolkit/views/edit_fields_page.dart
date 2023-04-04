@@ -1,4 +1,4 @@
-// {{> licence.dart }}
+{{> licence.dart }}
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

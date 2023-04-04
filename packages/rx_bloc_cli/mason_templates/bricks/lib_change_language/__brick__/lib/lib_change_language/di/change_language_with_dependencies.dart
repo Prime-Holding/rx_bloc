@@ -3,9 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-import '../data_sources/language_local_data_source.dart';
-import '../data_storages/language_picker_shared_preferences_instance.dart';
-import '../services/language_service_example.dart';
+import '../../base/data_sources/local/shared_preferences_instance.dart';
+import '../repositories/language_repository.dart';
+import '../services/custom_language_service.dart';
 
 class ChangeLanguageWithDependencies extends StatelessWidget {
   const ChangeLanguageWithDependencies({
@@ -18,30 +18,23 @@ class ChangeLanguageWithDependencies extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
-          ..._dataStorage,
-          ..._dataSource,
+          ..._repositories,
           ..._services,
         ],
         child: child,
       );
 
-  List<Provider> get _dataStorage => [
-        Provider<LanguagePickerSharedPreferencesInstance>(
-          create: (context) => LanguagePickerSharedPreferencesInstance(),
-        ),
-      ];
-
-  List<Provider> get _dataSource => [
-        Provider<LanguageLocalDataSource>(
-          create: (context) => LanguageLocalDataSource(
-              context.read<LanguagePickerSharedPreferencesInstance>()),
+  List<Provider> get _repositories => [
+        Provider<LanguageRepository>(
+          create: (context) =>
+              LanguageRepository(context.read<SharedPreferencesInstance>()),
         ),
       ];
 
   List<Provider> get _services => [
-        Provider<LanguageServiceExample>(
-          create: (context) => LanguageServiceExample(
-              localDataSource: context.read<LanguageLocalDataSource>()),
+        Provider<CustomLanguageService>(
+          create: (context) => CustomLanguageService(
+              languageRepository: context.read<LanguageRepository>()),
         ),
       ];
 }
