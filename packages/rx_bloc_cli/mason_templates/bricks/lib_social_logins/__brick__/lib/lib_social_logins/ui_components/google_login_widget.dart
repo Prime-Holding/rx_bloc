@@ -51,7 +51,7 @@ class GoogleLoginWidget extends StatelessWidget {
                     : () => bloc.events.login(),
                 child: SvgPicture.asset(
                   context.designSystem.images.googleLogo,
-                  height: context.designSystem.spacing.xxl,
+                  height: context.designSystem.spacing.xxxl,
                 ),
               ),
             ),
