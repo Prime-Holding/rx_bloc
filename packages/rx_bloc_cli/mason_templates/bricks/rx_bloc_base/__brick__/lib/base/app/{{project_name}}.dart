@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
-import '../../lib_router/router.dart';{{#enable_change_language}}
-import '../common_blocs/coordinator_bloc.dart';{{/enable_change_language}}
+import '../../lib_router/router.dart'; {{#enable_change_language}}
+import '../common_blocs/coordinator_bloc.dart';
+import '../data_sources/local/shared_preferences_instance.dart';{{/enable_change_language}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
@@ -49,20 +50,45 @@ __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
-  late Locale _locale;
+  Locale? _locale;
 
   @override
   void initState() {
-    _updateLocale();{{#push_notifications}}
+    {{^enable_change_language}}
+    _locale = const Locale('en'); {{/enable_change_language}}
+    {{#enable_change_language}}
+    _setInitialLocale();
+    _updateLocale(); {{/enable_change_language}} {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
-
     super.initState();
   }
 
-  void _updateLocale() {
-  _locale = const Locale('en');
   {{#enable_change_language}}
+  Future<void> _setInitialLocale() async {
+    var current = await context
+        .read<SharedPreferencesInstance>()
+        .getString('languageCurrent');
+    if (current != null) {
+      if (current.contains('EN')) {
+        setState(() {
+          _locale = const Locale('en');
+        });
+      } else {
+        setState(() {
+          _locale = const Locale('bg');
+        });
+      }
+    }
+    if(current == null){
+      setState(() {
+        _locale = const Locale('en');
+      });
+    }
+  } {{/enable_change_language}}
+
+  {{#enable_change_language}}
+  void _updateLocale() {
   context
       .read<CoordinatorBlocType>()
       .states
@@ -71,9 +97,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     setState(
       () => _locale = Locale(language.locale),
     );
-  });{{/enable_change_language}}
-  }{{#push_notifications}}
+  });
+  } {{/enable_change_language}}
 
+  {{#push_notifications}}
   Future<void> _configureFCM() async {
     /// Initialize the FCM callbacks
     if (kIsWeb){

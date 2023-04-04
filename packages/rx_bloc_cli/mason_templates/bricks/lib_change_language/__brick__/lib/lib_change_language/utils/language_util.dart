@@ -2,17 +2,17 @@
 
 import 'package:widget_toolkit/language_picker.dart';
 
-import '../repositories/language_repository.dart';
+import '../data_sources/language_local_data_source.dart';
 
 class LanguageUtil {
   static String toKey(LanguageModel model) {
     switch (model.key) {
       case 'bulgarian':
-        return LanguageRepository.keyBG;
+        return LanguageLocalDataSource.keyBG;
       case 'english':
-        return LanguageRepository.keyEN;
+        return LanguageLocalDataSource.keyEN;
       default:
-        return LanguageRepository.keyEN;
+        return LanguageLocalDataSource.keyEN;
     }
   }
 }
