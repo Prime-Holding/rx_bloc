@@ -320,8 +320,8 @@ It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) pa
 When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.  
 
 Supports iOS.
-### Google Authentication
-Google authentication uses [google_sign_in][https://pub.dev/packages/google_sign_in] package.
+#### Google Authentication
+Google authentication uses [google_sign_in](https://pub.dev/packages/google_sign_in) package.
  
 Follow the package documentation for registering your application and downloading Google Services file.(GoogleService-Info.plist/google-services.json)
 
@@ -329,9 +329,10 @@ Follow the package documentation for registering your application and downloadin
 For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
 
 `iOS:`
-For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/enviroments/{name_of_the_enviroment}/firebase/***
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_environment}/firebase/***  
+and copy ***reversed_client_id*** from GoogleService-Info.plist to ***ios/Flutter/{name_of_the_environment}.xcconfig*** file
 
-For any other configurations refer to the [google_sign_in][https://pub.dev/packages/google_sign_in] package.  
+For any other configurations refer to the [google_sign_in](https://pub.dev/packages/google_sign_in) package.  
 
 #### Facebook Authentication
 Facebook authentication uses [flutter_facebook_auth](https://pub.dev/packages/flutter_facebook_auth) package.
@@ -346,10 +347,10 @@ There you will find your **app_id**, **client_token** and **app_name**.
 - `3.1 Android:` Copy parameters from step 2 in ***android/app/build.gradle***.
 
 - `3.2 iOS:`
-  Copy parameters from step 2 in ***ios/Flutter/(flavor-name).xcconfig***.
+  Copy parameters from step 2 in ***ios/Flutter/(name_of_the_environment).xcconfig***.
 
 
-`Note:` Some requirements to be able to run application with this version of *facebook auth* is
+*Note:* Some requirements to be able to run application with this version of *facebook auth* is
 - **flutter_secure_storage** package must be 8.0.0 version
 - for iOs in ***Podfile*** platform must be at least 12
 - for Android ***minSdkVersion*** must be at least 21.

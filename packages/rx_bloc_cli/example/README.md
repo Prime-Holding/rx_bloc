@@ -14,7 +14,8 @@
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
 12. [Push notifications](#push-notifications)
-13. [Next Steps](#next-steps)
+13. [Social Logins](#social-logins-library)
+14. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -308,9 +309,52 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
+
 ## Social logins library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
+
+
+#### Apple Authentication
+It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package. In order to make it work, fulfill the requirements described in its documentation.
+When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.  
+
+Supports iOS.
+#### Google Authentication
+Google authentication uses [google_sign_in](https://pub.dev/packages/google_sign_in) package.
+ 
+Follow the package documentation for registering your application and downloading Google Services file.(GoogleService-Info.plist/google-services.json)
+
+`Android:`
+For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
+
+`iOS:`
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_enviroment}/firebase/***
+
+For any other configurations refer to the [google_sign_in](https://pub.dev/packages/google_sign_in) package.  
+
+#### Facebook Authentication
+Facebook authentication uses [flutter_facebook_auth](https://pub.dev/packages/flutter_facebook_auth) package.
+
+`Step 1:`  
+In order to make it work you must register your app in facebook developer console.
+
+`Step 2:`  
+There you will find your **app_id**, **client_token** and **app_name**.
+
+`Step 3:`
+- `3.1 Android:` Copy parameters from step 2 in ***android/app/build.gradle***.
+
+- `3.2 iOS:`
+  Copy parameters from step 2 in ***ios/Flutter/(name_of_the_environment).xcconfig***.
+
+
+*Note:* Some requirements to be able to run application with this version of *facebook auth* is
+- **flutter_secure_storage** package must be 8.0.0 version
+- for iOs in ***Podfile*** platform must be at least 12
+- for Android ***minSdkVersion*** must be at least 21.
+
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
 
 ## Next Steps
 
