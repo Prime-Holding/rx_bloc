@@ -18,8 +18,7 @@ import '../services/social_login_service.dart';
 import 'social_login_button.dart';
 
 /// [AppleLoginWidget] provides out of the box Log in with Apple
-/// functionality along with default view of the button. If you want to customize
-/// the way button looks use [builder].
+/// functionality along with default view of the button.
 ///
 /// If an error occur a modal sheet with message will be shown. For custom error
 /// handling provide [onError] callback.
@@ -41,11 +40,13 @@ class AppleLoginWidget extends StatelessWidget {
             ),
             RxBlocBuilder<SocialLoginBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
-              builder: (context, snapshot, bloc)=> SocialLoginButton(
+              builder: (context, snapshot, bloc) => SocialLoginButton(
                 isLoading: (snapshot.data ?? false) ? false : true,
                 textStyle: context.designSystem.typography.appleButtonText,
                 backgroundColor: context.designSystem.colors.appleBackground,
                 text: context.l10n.featureLogin.appleLogin,
+                progressIndicatorColor:
+                    context.designSystem.colors.appleButtonText,
                 onPressed:
                     (snapshot.data ?? false) ? null : () => bloc.events.login(),
                 child: SvgPicture.asset(

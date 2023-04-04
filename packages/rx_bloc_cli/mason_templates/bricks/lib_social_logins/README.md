@@ -9,6 +9,19 @@ When you run the created project, don't forget to enable the "Sign in with Apple
 
 Supports iOS.
 
+### Google Authentication
+Google authentication uses [google_sign_in][6] package.
+ 
+Follow the package documentation for registering your application and downloading Google Services file.(GoogleService-Info.plist/google-services.json)
+
+`Android:`
+For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
+
+`iOS:`
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/enviroments/{name_of_the_enviroment}/firebase/***
+
+For any other configurations refer to the [google_sign_in][6] package.
+
 ### Facebook Authentication
 Facebook authentication uses [flutter_facebook_auth][7] package.
 
