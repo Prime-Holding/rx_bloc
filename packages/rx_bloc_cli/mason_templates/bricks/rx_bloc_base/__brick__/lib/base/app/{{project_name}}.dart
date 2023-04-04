@@ -66,7 +66,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   {{#enable_change_language}}
   Future<void> _setInitialLocale() async {
-    var current = await context
+    final current = await context
         .read<SharedPreferencesInstance>()
         .getString('languageCurrent');
     if (current != null) {
