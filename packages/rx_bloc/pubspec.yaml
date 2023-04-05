@@ -22,9 +22,9 @@ dev_dependencies:
   test: ^1.18.2
 
 screenshots:
-  - description: "Slogan"
+  - description: "RxBloc Slogan"
     path: doc/asset/slogan.png
-  - description: "IntelliJ Plugin"
+  - description: "RxBloc IntelliJ Plugin"
     path: doc/asset/android_plugin.png
   - description: "Architectural Diagram"
     path: doc/asset/ArchitecturalDiagram.jpg
