@@ -28,7 +28,7 @@ abstract class SplashBlocStates {
   /// BloC.
   ///
   /// The state is `null` when `isLoading` state is `true`
-  Stream<ErrorModel?> get errors;
+  ConnectableStream<ErrorModel?> get errors;
 }
 
 @RxBloc()
@@ -42,6 +42,7 @@ class SplashBloc extends $SplashBloc {
         _splashService = splashService,
         _authService = authService,
         _redirectLocation = redirectLocation {
+    errors.connect().addTo(_compositeSubscription);
     _$initializeAppEvent
         .throttleTime(const Duration(seconds: 1))
         .startWith(null)
@@ -70,10 +71,10 @@ class SplashBloc extends $SplashBloc {
   }
 
   @override
-  Stream<ErrorModel?> _mapToErrorsState() => Rx.merge([
+  ConnectableStream<ErrorModel?> _mapToErrorsState() => Rx.merge([
         errorState.mapToErrorModel(),
         loadingState.where((loading) => loading).map((_) => null),
-      ]).share();
+      ]).publish();
 
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;

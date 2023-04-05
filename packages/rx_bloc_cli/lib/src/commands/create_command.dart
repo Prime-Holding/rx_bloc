@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
-import 'package:rx_bloc_cli/src/templates/feature_counter_bundle.dart';
-import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
-import 'package:rx_bloc_cli/src/templates/lib_auth_bundle.dart';
-import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
 
+import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
+import '../templates/feature_widget_toolkit_bundle.dart';
+import '../templates/lib_auth_bundle.dart';
+import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_router_bundle.dart';
+import '../templates/lib_social_logins_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
@@ -59,6 +60,13 @@ class CreateCommand extends Command<int> {
         help: 'Enables Firebase analytics for the project',
         allowed: ['true', 'false'],
         defaultsTo: 'false',
+      )
+      ..addOption(
+        _socialLoginsString,
+        help:
+            'Enables social login with Apple, Facebook and Google for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'false',
       );
   }
 
@@ -70,14 +78,14 @@ class CreateCommand extends Command<int> {
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
-
-  /// bundles
+  final _socialLoginsString = 'enable-social-logins';
   final _counterBundle = featureCounterBundle;
   final _deepLinkBundle = featureDeeplinkBundle;
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
   final _libAuthBundle = libAuthBundle;
+  final _libSocialLoginsBundle = libSocialLoginsBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -124,7 +132,7 @@ class CreateCommand extends Command<int> {
     _progressFinish(dartGet, progress);
 
     progress = _logger.progress(
-      'dart run build_runner build --delete-conflicting-outputs',
+      'dart run build_runner build',
     );
 
     final buildRunner = await Process.run(
@@ -133,7 +141,6 @@ class CreateCommand extends Command<int> {
         'run',
         'build_runner',
         'build',
-        '--delete-conflicting-outputs',
       ],
       workingDirectory: arguments.outputDirectory.path,
     );
@@ -194,6 +201,11 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
+    // Add Social Logins brick to _bundle when needed
+    if (arguments.enableSocialLogins) {
+      _bundle.files.addAll(_libSocialLoginsBundle.files);
+    }
+
     //Add lib_route to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
     //Add lib_permissions to _bundle
@@ -216,6 +228,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
+        'enable_social_logins': arguments.enableSocialLogins,
       },
     );
 
@@ -242,6 +255,7 @@ class CreateCommand extends Command<int> {
       enableCounterFeature: _parseEnableCounter(arguments),
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
+      enableSocialLogins: _parseEnableSocialLogins(arguments),
     );
   }
 
@@ -288,6 +302,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableDeeplinkFeature(ArgResults arguments) {
     final deeplinkEnabled = arguments[_deepLinkString];
     return deeplinkEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with counter feature
+  bool _parseEnableSocialLogins(ArgResults arguments) {
+    final socialLoginsEnabled = arguments[_socialLoginsString];
+    return socialLoginsEnabled.toLowerCase() == 'true';
   }
 
   /// endregion
@@ -371,6 +391,8 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,
     );
+    _usingLog('Social Logins [Apple, Google, Facebook]',
+        arguments.enableSocialLogins);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -398,6 +420,7 @@ class _CreateCommandArguments {
     required this.enableCounterFeature,
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
+    required this.enableSocialLogins,
   });
 
   final String projectName;
@@ -407,4 +430,5 @@ class _CreateCommandArguments {
   final bool enableCounterFeature;
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
+  final bool enableSocialLogins;
 }

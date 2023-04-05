@@ -40,7 +40,7 @@ import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#e
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';
 
-class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
+class {{project_name.pascalCase()}}WithDependencies extends StatefulWidget {
   const {{project_name.pascalCase()}}WithDependencies({
       required this.config,
       required this.child,
@@ -49,6 +49,22 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
 
   final EnvironmentConfig config;
   final Widget child;
+
+  @override
+  State<{{project_name.pascalCase()}}WithDependencies> createState() =>
+      _{{project_name.pascalCase()}}WithDependenciesState();
+}
+
+class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{project_name.pascalCase()}}WithDependencies> {
+  late GlobalKey<NavigatorState> rootNavigatorKey;
+  late GlobalKey<NavigatorState> shellNavigatorKey;
+
+  @override
+  void initState() {
+    super.initState();
+    rootNavigatorKey = GlobalKey<NavigatorState>();
+    shellNavigatorKey = GlobalKey<NavigatorState>();
+  }
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -66,7 +82,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ..._services,
         ..._blocs,
       ],
-      child: child,
+      child: widget.child,
     );
 
   List<SingleChildWidget> get _coordinator => [
@@ -76,7 +92,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
       ];
 
   SingleChildWidget get _appRouter => Provider<AppRouter>(
-        create: (context) => AppRouter(context.read()),
+        create: (context) => AppRouter(
+          coordinatorBloc: context.read(),
+          rootNavigatorKey: rootNavigatorKey,
+          shellNavigatorKey: shellNavigatorKey,
+        ),
       );
 
   {{#analytics}}
@@ -90,7 +110,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   {{/analytics}}
 
   List<Provider> get _environment => [
-        Provider<EnvironmentConfig>.value(value: config),
+        Provider<EnvironmentConfig>.value(value: widget.config),
       ];
 
   List<Provider> get _mappers => [
@@ -107,7 +127,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
         Provider<ApiHttpClient>(
           create: (context) {
-            final client = ApiHttpClient()..options.baseUrl = config.baseUrl;
+            final client = ApiHttpClient()
+              ..options.baseUrl = widget.config.baseUrl;
             return client;
           },
         ),
@@ -137,7 +158,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         Provider<RefreshTokenDataSource>(
           create: (context) => RefreshTokenDataSource(
             context.read<PlainHttpClient>(),
-            baseUrl: config.baseUrl,
+            baseUrl: widget.config.baseUrl,
           ),
         ),
         Provider<PushNotificationsDataSource>(

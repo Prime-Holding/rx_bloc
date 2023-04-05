@@ -2,10 +2,14 @@
 
 import 'package:shelf/shelf.dart';
 
+import '../services/authentication_service.dart';
 import '../utils/api_controller.dart';
-import 'authentication_controller.dart';
 
 class PermissionsController extends ApiController {
+  PermissionsController(this._authenticationService);
+
+  final AuthenticationService _authenticationService;
+
   @override
   void registerRequests(WrappedRouter router) {
     router.addRequest(
@@ -17,7 +21,7 @@ class PermissionsController extends ApiController {
 
   Response permissionsHandler(Request request) {
     final headers = request.headers;
-    if (!headers.containsKey(AuthenticationController.authHeader)) {
+    if (!headers.containsKey(AuthenticationService.authHeader)) {
       return responseBuilder.buildOK(data: {
         'DashboardRoute': false,
         'ProfileRoute': false,
@@ -32,9 +36,7 @@ class PermissionsController extends ApiController {
       });
     }
 
-    controllers
-        .getController<AuthenticationController>()
-        ?.isAuthenticated(request);
+    _authenticationService.isAuthenticated(request);
 
     return responseBuilder.buildOK(data: {
       'DashboardRoute': true,

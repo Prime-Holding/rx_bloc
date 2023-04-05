@@ -26,6 +26,7 @@ Create a new project at the given directory with lots of already set-up features
 |  `--enable-feature-counter` |                   `false`                   | Enables Counter feature for the project |
 |  `--enable-feature-deeplinks` |                   `false`                   | Enables Deep Links showcase flow for the project |
 |  `--enable-feature-widget-toolkit` |                   `false`                   | Enables widget_toolkit package showcase feature for the project |
+|  `--enable-social-logins` |                   `false`                   | Integrate social login with Apple, Google and Facebook functionality into our application |
 
 ### What's Included? 📦
 

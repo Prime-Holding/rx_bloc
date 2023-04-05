@@ -31,7 +31,7 @@ class WidgetToolkitRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const WidgetToolkitPage(),
+        child: const WidgetToolkitWithDependencies(),
       );
 
   @override

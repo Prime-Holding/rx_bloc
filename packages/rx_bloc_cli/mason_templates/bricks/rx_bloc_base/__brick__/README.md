@@ -2,19 +2,20 @@
 
 1. [Getting Started](#getting-started)
 2. [Project structure](#project-structure)
-3. [Adding a new feature](#adding-a-new-feature)
-4. [Architecture](#architecture)
-5. [Routing](#routing)
+3. [Architecture](#architecture)
+4. [Routing](#routing)
    * [Deep linking](#deep-linking)
    * [Access Control List](#access-control-list)
+5. [Adding a new feature](#adding-a-new-feature)
 6. [Localization](#localization)
 7. [Analytics](#analytics)
 8. [Http client](#http-client)
 9. [Design system](#design-system)
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
-12. [Push notifications](#push-notifications)
-13. [Next Steps](#next-steps)
+12. [Push notifications](#push-notifications){{#enable_social_logins}}
+13. [Social Logins](#social-logins-library){{/enable_social_logins}}
+14. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -24,105 +25,42 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 ## Project structure
 
-| Path | Contains |
-| ------------ | ------------ |
-| `lib/main.dart` | The production flavour of the app. |
-| `lib/main_dev.dart` | The development flavour of the app. |
-| `lib/main_staging.dart` | The staging flavour of the app. |
-| `lib/base/` | Common code used on more than one **feature** in the project. |
-| `lib/base/app/` | The root of the application and Environment configuration. |
-| `lib/base/common_blocs/` | Generally available [BLoCs][rx_bloc_info_lnk]|
-| `lib/base/common_mappers/` | Generally available Mappers|
-| `lib/base/common_services/` | Generally available Services |
-| `lib/base/common_ui_components/` | Generally available Reusable widgets (buttons, controls etc) |
-| `lib/base/data_sources/local/` | Generally available local data sources, such as shared preferences, secured storage etc. |
-| `lib/base/data_sources/remote/` | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code. |
-| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls. |
-| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients |
-| `lib/base/di/` | Application dependencies, available in the whole app|
-| `lib/base/extensions/` | Generally available [extension methods][extension_methods_lnk] |
-| `lib/base/models/` | The business models used in the application |
-| `lib/base/repositories/` | Generally available repositories used to fetch and persist models |
-| `lib/base/theme/` | The custom theme of the app |
-| `lib/base/utils/` | Generally available utils |
-| `lib/feature_X/` | Feature related classes |
-| `lib/feature_X/blocs` | Feature related [BLoCs][rx_bloc_info_lnk] |
-| `lib/feature_X/di` | Feature related dependencies |
-| `lib/feature_X/services/` | Feature related Services |
-| `lib/feature_X/ui_components/` | Feature related custom widgets |
-| `lib/feature_X/views/` | Feature related pages and forms |
-| `lib/lib_auth/` | The OAuth2 (JWT) based authentication and token management library |
-| `lib/lib_permissions/` | The ACL based library that handles all the in-app routes and custom actions as well. |
-| `lib/lib_router/` | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
-
-
-## Adding a new feature
-
-You can manually create new features as described above, but to speed up the product development you can use the [IntelliJ RxBloC Plugin][intellij_plugin], which not just creates the feature structure but also integrates it to the prefered routing solution (auto_route, [go_router][gorouter_lnk] or none)
-
-If you decide to create your feature manually without using the plugin here is all necessary steps you should do to register this feature and to be able to use it in the application:
-1. Add your feature path in the `RoutesPath` class which resides under  `lib/lib_router/models/routes_path.dart`:
-```
-   class RoutesPath {
-      static const myNewFeature = ‘my-new-feature’;
-      ...
-   }
-```
-
-2. Add you feature permission name in the `RoutePermissions` class which resides under `lib/lib_permissions/models/route_permissions.dart`:
-```
-   class RoutePermissions {
-       static const myNewFeature = MyNewFeatureRoute’;
-       ...
-   }
-```
-
-3. Next step is to declare the new features as part of the `RouteModel` enumeration which resides under `lib/lib_router/models/route_model.dart`:
-```
-   enum RouteModel {
-       myNewFeature(
-           pathName: RoutesPath.myNewFeature
-           fullPath: '/my-new-feature',
-           permissionName: RoutePermissions.myNewFeature,
-       ),
-       ...
-   }
-```
-
-4. As a final step the route itself should be created. All routes are situated under `lib/lib_router/routes/` folder which contains different route files organised by the application flow. If the new route doesn’t fit the existing application flows it can be added to the `routes.dart` file which is the default file used by the IntelliJ plugin.
-```
-   @TypedGoRoute<MyFeatureRoute>(path: RoutesPath.myNewFeature)
-   @immutable
-   class MyFeatureRoute extends GoRouteData implements RouteDataModel {
-       const MyFeatureRoute();
-   
-       @override
-       Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-           MaterialPage(
-             key: state.pageKey,
-             child: const MyFeaturePage(),
-           );
-   
-       @override
-       String get permissionName => RouteModel.myNewFeature.permissionName;
-   
-       @override
-       String get routeLocation => location;
-   }
-```
-
-Now the new route can be navigated by calling one of the `RouterBloc` events (`go(...)`, `push(...)`).
-Example:
-```
-context.read<RouterBlocType>().go(const MyFeatureRoute())
-```
-
-For more information you can refer to the official [GoRouter][gorouter_lnk] and [GoRouterBuilder][gorouter_builder_lnk] documentation.
+| Path                                         | Contains                                                                                                                                              |
+|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lib/main.dart`                              | The production flavour of the app.                                                                                                                    |
+| `lib/main_dev.dart`                          | The development flavour of the app.                                                                                                                   |
+| `lib/main_staging.dart`                      | The staging flavour of the app.                                                                                                                       |
+| `lib/base/`                                  | Common code used on more than one **feature** in the project.                                                                                         |
+| `lib/base/app/`                              | The root of the application and Environment configuration.                                                                                            |
+| `lib/base/common_blocs/`                     | Generally available [BLoCs][rx_bloc_info_lnk]                                                                                                         |
+| `lib/base/common_mappers/`                   | Generally available Mappers                                                                                                                           |
+| `lib/base/common_services/`                  | Generally available Services                                                                                                                          |
+| `lib/base/common_ui_components/`             | Generally available Reusable widgets (buttons, controls etc)                                                                                          |
+| `lib/base/data_sources/local/`               | Generally available local data sources, such as shared preferences, secured storage etc.                                                              |
+| `lib/base/data_sources/remote/`              | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code.                                               |
+| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls.                                                                                       |
+| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients                                                                                                                      |
+| `lib/base/di/`                               | Application dependencies, available in the whole app                                                                                                  |
+| `lib/base/extensions/`                       | Generally available [extension methods][extension_methods_lnk]                                                                                        |
+| `lib/base/models/`                           | The business models used in the application                                                                                                           |
+| `lib/base/repositories/`                     | Generally available repositories used to fetch and persist models                                                                                     |
+| `lib/base/theme/`                            | The custom theme of the app                                                                                                                           |
+| `lib/base/utils/`                            | Generally available utils                                                                                                                             |
+| `lib/feature_X/`                             | Feature related classes                                                                                                                               |
+| `lib/feature_X/blocs`                        | Feature related [BLoCs][rx_bloc_info_lnk]                                                                                                             |
+| `lib/feature_X/di`                           | Feature related dependencies                                                                                                                          |
+| `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
+| `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
+| `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
+| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library{{#enable_social_logins}}                                                           |
+| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library  {{/enable_social_logins}}                                                                     |
+| `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
+| `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
+| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |
 
 ## Architecture
 
-For more info check [this][#architecture_overview] presentation.
+For in-depth review of the following architecture watch [this][architecture_overview] presentation.
 
 <img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
 
@@ -228,6 +166,69 @@ Expected structure/data for authenticated users.
 
 You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically does all steps instead of you, or to manualy add the permission for your route to the `lib/lib_permissions/models/route_permissions.dart`.
 
+## Adding a new feature
+
+You can manually create new features as described above, but to speed up the product development you can use the [IntelliJ RxBloC Plugin][intellij_plugin], which not just creates the feature structure but also integrates it to the prefered routing solution (auto_route, [go_router][gorouter_lnk] or none)
+
+If you decide to create your feature manually without using the plugin here is all necessary steps you should do to register this feature and to be able to use it in the application:
+1. Add your feature path in the `RoutesPath` class which resides under  `lib/lib_router/models/routes_path.dart`:
+```
+   class RoutesPath {
+      static const myNewFeature = ‘my-new-feature’;
+      ...
+   }
+```
+
+2. Add you feature permission name in the `RoutePermissions` class which resides under `lib/lib_permissions/models/route_permissions.dart`:
+```
+   class RoutePermissions {
+       static const myNewFeature = MyNewFeatureRoute’;
+       ...
+   }
+```
+
+3. Next step is to declare the new features as part of the `RouteModel` enumeration which resides under `lib/lib_router/models/route_model.dart`:
+```
+   enum RouteModel {
+       myNewFeature(
+           pathName: RoutesPath.myNewFeature
+           fullPath: '/my-new-feature',
+           permissionName: RoutePermissions.myNewFeature,
+       ),
+       ...
+   }
+```
+
+4. As a final step the route itself should be created. All routes are situated under `lib/lib_router/routes/` folder which contains different route files organised by the application flow. If the new route doesn’t fit the existing application flows it can be added to the `routes.dart` file which is the default file used by the IntelliJ plugin.
+```
+   @TypedGoRoute<MyFeatureRoute>(path: RoutesPath.myNewFeature)
+   @immutable
+   class MyFeatureRoute extends GoRouteData implements RouteDataModel {
+       const MyFeatureRoute();
+   
+       @override
+       Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+           MaterialPage(
+             key: state.pageKey,
+             child: const MyFeaturePage(),
+           );
+   
+       @override
+       String get permissionName => RouteModel.myNewFeature.permissionName;
+   
+       @override
+       String get routeLocation => location;
+   }
+```
+
+Now the new route can be navigated by calling one of the `RouterBloc` events (`go(...)`, `push(...)`).
+Example:
+```
+context.read<RouterBlocType>().go(const MyFeatureRoute())
+```
+
+For more information you can refer to the official [GoRouter][gorouter_lnk] and [GoRouterBuilder][gorouter_builder_lnk] documentation.
+
 ## Localization
 
 Your app supports [localization][localization_lnk] out of the box.
@@ -308,6 +309,54 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
+{{#enable_social_logins}}
+## Social logins library
+
+Allows you to authenticate users in your app with Apple, Google and Facebook.
+
+
+#### Apple Authentication
+It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package. In order to make it work, fulfill the requirements described in its documentation.
+When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.  
+
+Supports iOS.
+#### Google Authentication
+Google authentication uses [google_sign_in](https://pub.dev/packages/google_sign_in) package.
+ 
+Follow the package documentation for registering your application and downloading Google Services file.(GoogleService-Info.plist/google-services.json)
+
+`Android:`
+For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
+
+`iOS:`
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_environment}/firebase/***  
+and copy ***reversed_client_id*** from GoogleService-Info.plist to ***ios/Flutter/{name_of_the_environment}.xcconfig*** file
+
+For any other configurations refer to the [google_sign_in](https://pub.dev/packages/google_sign_in) package.  
+
+#### Facebook Authentication
+Facebook authentication uses [flutter_facebook_auth](https://pub.dev/packages/flutter_facebook_auth) package.
+
+`Step 1:`  
+In order to make it work you must register your app in facebook developer console.
+
+`Step 2:`  
+There you will find your **app_id**, **client_token** and **app_name**.
+
+`Step 3:`
+- `3.1 Android:` Copy parameters from step 2 in ***android/app/build.gradle***.
+
+- `3.2 iOS:`
+  Copy parameters from step 2 in ***ios/Flutter/(name_of_the_environment).xcconfig***.
+
+
+*Note:* Some requirements to be able to run application with this version of *facebook auth* is
+- **flutter_secure_storage** package must be 8.0.0 version
+- for iOs in ***Podfile*** platform must be at least 12
+- for Android ***minSdkVersion*** must be at least 21.
+
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
+{{/enable_social_logins}}
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.

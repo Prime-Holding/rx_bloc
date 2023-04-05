@@ -1,0 +1,30 @@
+name: 'Publish rx_bloc_list to pub.dev'
+
+on:
+  push:
+    tags:
+      - 'rx_bloc_list-v[0-9]+.[0-9]+.[0-9]+*'
+
+# Publish using custom workflow
+jobs:
+  publish:
+    name: 'Publish rx_bloc_list to pub.dev'
+    environment: pub.dev
+    permissions:
+      id-token: write # This is required for authentication using OIDC
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          channel: "stable"
+      - uses: dart-lang/setup-dart@v1
+      - name: Install dependencies
+        working-directory: packages/rx_bloc_list
+        run: dart pub get
+      - name: Dart format
+        working-directory: packages/rx_bloc_list
+        run: dart format .
+      - name: Publish
+        working-directory: packages/rx_bloc_list
+        run: dart pub publish --force

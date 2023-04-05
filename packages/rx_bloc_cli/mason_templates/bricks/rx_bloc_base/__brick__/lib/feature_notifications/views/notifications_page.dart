@@ -23,35 +23,28 @@ class NotificationsPage extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () => showBlurredBottomSheet(
-                context: rootNavigatorKey.currentContext ?? context,
-                builder: (BuildContext context) => Padding(
-                  padding: EdgeInsets.all(
-                    context.designSystem.spacing.l,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        context.l10n.featureNotifications
-                            .notificationsPageDescription,
-                        textAlign: TextAlign.center,
-                      ),
-                      const Divider(
-                        height: 30,
-                        thickness: 2,
-                        indent: 120,
-                        endIndent: 120,
-                      ),
-                      Text(
-                        context
-                            .l10n.featureNotifications.notificationsPageConfig,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-                configuration: const ModalConfiguration(
-                  safeAreaBottom: false,
+                context:
+                    context.read<AppRouter>().rootNavigatorKey.currentContext ??
+                        context,
+                builder: (BuildContext context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      context.l10n.featureNotifications
+                          .notificationsPageDescription,
+                      textAlign: TextAlign.center,
+                    ),
+                    const Divider(
+                      height: 30,
+                      thickness: 2,
+                      indent: 120,
+                      endIndent: 120,
+                    ),
+                    Text(
+                      context.l10n.featureNotifications.notificationsPageConfig,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
               icon: Icon(context.designSystem.icons.info),

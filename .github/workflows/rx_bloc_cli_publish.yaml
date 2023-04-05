@@ -25,6 +25,9 @@ jobs:
       - name: Generate bundles
         working-directory: packages/rx_bloc_cli
         run: bin/compile_bundles.sh
+      - name: Dart format
+        working-directory: packages/rx_bloc_cli
+        run: dart format .
       - name: Publish
         working-directory: packages/rx_bloc_cli
         run: dart pub publish --force

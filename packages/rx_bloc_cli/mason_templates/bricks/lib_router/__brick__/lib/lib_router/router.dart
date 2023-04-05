@@ -19,7 +19,7 @@ import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
-import '../feature_widget_toolkit/views/widget_toolkit_page.dart';{{/enable_feature_widget_toolkit}}
+import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
@@ -32,10 +32,6 @@ part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
 part 'routes/showcase_routes.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>();
-
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].
 ///
@@ -43,12 +39,18 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 /// specific page if the `isAuthenticated` state changes (It can be used with
 /// some other global state change as well).
 class AppRouter {
-  AppRouter(this._coordinatorBloc);
+  AppRouter({
+    required this.coordinatorBloc,
+    required this.rootNavigatorKey,
+    required this.shellNavigatorKey,
+  });
 
-  final CoordinatorBlocType _coordinatorBloc;
+  final CoordinatorBlocType coordinatorBloc;
+  final GlobalKey<NavigatorState> rootNavigatorKey;
+  final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
-      _GoRouterRefreshStream(_coordinatorBloc.states.isAuthenticated);
+      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated);
 
   GoRouter get router => _goRouter;
 
@@ -68,7 +70,7 @@ class AppRouter {
         $splashRoute,
         $loginRoute,
         ShellRoute(
-            navigatorKey: _shellNavigatorKey,
+            navigatorKey: shellNavigatorKey,
             builder: (context, state, child) => HomePage(
                   child: child,
                 ),
@@ -93,10 +95,11 @@ class AppRouter {
         state.subloc == const LoginRoute().location) {
       return const DashboardRoute().location;
     }
-    if (state.subloc != const SplashRoute().location) {
-      if (!context.read<SplashService>().isAppInitialized) {
-        return '${const SplashRoute().location}?from=${state.location}';
-      }
+    if (state.subloc == const SplashRoute().location) {
+      return null;
+    }
+    if (!context.read<SplashService>().isAppInitialized) {
+      return '${const SplashRoute().location}?from=${state.location}';
     }
 
     final pathInfo =
