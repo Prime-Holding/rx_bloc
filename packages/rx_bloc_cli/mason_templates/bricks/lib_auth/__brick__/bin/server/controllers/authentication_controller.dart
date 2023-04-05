@@ -90,7 +90,7 @@ class AuthenticationController extends ApiController {
     final params = await request.bodyFromFormData();
 
     throwIfEmpty(
-      params['serverAuthCode'],
+      params['email'],
       BadRequestException('The user authorization with Google failed.'),
     );
 

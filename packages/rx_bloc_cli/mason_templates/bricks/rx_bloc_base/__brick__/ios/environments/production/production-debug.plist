@@ -60,6 +60,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
         <string>fb$(FB_APP_ID)</string>
+        <string>$(GOOGLE_REVERSED_CLIENT_ID)</string>
         </array>
         <key>FacebookAppID</key>
             <string>$(FB_APP_ID)</string>
@@ -71,6 +72,7 @@
             <array>
               <string>fbapi</string>
               <string>fb-messenger-share-api</string>
-            </array>{{/enable_social_logins}}
+            </array>
+    {{/enable_social_logins}}
 </dict>
 </plist>
