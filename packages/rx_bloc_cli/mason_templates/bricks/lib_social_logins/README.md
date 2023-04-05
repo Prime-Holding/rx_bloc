@@ -4,8 +4,8 @@
 A brick designed to integrate social login with Apple, Google and Facebook functionality into our application.
 
 ### Apple Authentication
-It uses the [sign_in_with_apple][5] package. In order to make it work, fulfill the requirements described in its documentation.
-When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.
+It uses the [sign_in_with_apple][5] package.  
+In order to make it work, fulfill the requirements described in its [documentation](https://pub.dev/documentation/sign_in_with_apple/latest/).
 
 Supports iOS.
 
