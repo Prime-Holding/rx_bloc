@@ -316,8 +316,8 @@ Allows you to authenticate users in your app with Apple, Google and Facebook.
 
 
 #### Apple Authentication
-It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package. In order to make it work, fulfill the requirements described in its documentation.
-When you run the created project, don't forget to enable the "Sign in with Apple" capability for your bundleId.  
+It uses the [sign_in_with_apple][5] package.  
+In order to make it work, fulfill the requirements described in its [documentation](https://pub.dev/documentation/sign_in_with_apple/latest/).
 
 Supports iOS.
 #### Google Authentication
