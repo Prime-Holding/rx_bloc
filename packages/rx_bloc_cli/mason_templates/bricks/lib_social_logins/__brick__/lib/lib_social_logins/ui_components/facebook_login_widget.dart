@@ -17,8 +17,7 @@ import '../services/social_login_service.dart';
 import 'social_login_button.dart';
 
 /// [FacebookLoginWidget] provides out of the box Log in with Apple
-/// functionality along with default view of the button. If you want to customize
-/// the way button looks use [builder].
+/// functionality along with default view of the button.
 ///
 /// If an error occur a modal sheet with message will be shown. For custom error
 /// handling provide [onError] callback.
@@ -45,6 +44,8 @@ class FacebookLoginWidget extends StatelessWidget {
                 backgroundColor: context.designSystem.colors.facebookBackground,
                 text: context.l10n.featureLogin.facebookLogin,
                 textStyle: context.designSystem.typography.facebookButtonText,
+                progressIndicatorColor:
+                    context.designSystem.colors.facebookTextColor,
                 onPressed:
                     (snapshot.data ?? false) ? null : () => bloc.events.login(),
                 child: SvgPicture.asset(

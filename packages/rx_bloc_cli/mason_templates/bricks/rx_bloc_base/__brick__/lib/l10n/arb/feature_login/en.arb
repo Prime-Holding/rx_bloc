@@ -5,8 +5,8 @@
   "logOut" : "Log out",
   "profile" : "Profile",
   "notifications" : "Notifications",{{#enable_social_logins}}
-  "appleLogin":"Apple Log in",
-  "googleLogin":"Google Log in",
-  "facebookLogin":"Facebook Log in",{{/enable_social_logins}}
+  "appleLogin":"Sign in with Apple",
+  "googleLogin":"Sign in with Google",
+  "facebookLogin":"Login with Facebook",{{/enable_social_logins}}
   "loginCredentialsHint" : "Enter your login credentials: \n A valid email address. \n At least 6 characters password."
 }

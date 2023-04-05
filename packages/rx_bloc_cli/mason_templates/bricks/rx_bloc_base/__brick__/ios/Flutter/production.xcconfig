@@ -8,4 +8,6 @@ CF_BUNDLE_URL_NAME={{project_name}}.{{organization_name}}.{{domain_name}}
 CF_BUNDLE_URL_SCHEME={{organization_name}}scheme
 {{#enable_social_logins}}FB_APP_ID=
 FB_CLIENT_TOKEN=
-FB_APP_NAME={{/enable_social_logins}}
+FB_APP_NAME=
+GOOGLE_REVERSED_CLIENT_ID=
+{{/enable_social_logins}}

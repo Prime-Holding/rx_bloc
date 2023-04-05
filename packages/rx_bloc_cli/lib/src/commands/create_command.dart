@@ -142,7 +142,7 @@ class CreateCommand extends Command<int> {
     _progressFinish(dartGet, progress);
 
     progress = _logger.progress(
-      'dart run build_runner build --delete-conflicting-outputs',
+      'dart run build_runner build',
     );
 
     final buildRunner = await Process.run(
@@ -151,7 +151,6 @@ class CreateCommand extends Command<int> {
         'run',
         'build_runner',
         'build',
-        '--delete-conflicting-outputs',
       ],
       workingDirectory: arguments.outputDirectory.path,
     );
@@ -415,7 +414,8 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,
     );
-    _usingLog('Social Logins', arguments.enableSocialLogins);
+    _usingLog('Social Logins [Apple, Google, Facebook]',
+        arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
   }
 

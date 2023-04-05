@@ -14,14 +14,15 @@ class SocialLoginButton extends StatelessWidget {
     required this.text,
     this.onPressed,
     this.elevation = 2.0,
-    this.height = 36.0,
+    this.height = 40.0,
     this.padding = const EdgeInsets.all(0),
-    this.width = 220,
+    this.width = 225,
     this.splashColor = Colors.white30,
     this.highlightColor = Colors.white30,
     this.innerPadding = const EdgeInsets.fromLTRB(12, 0, 0, 0),
     this.textStyle,
     this.shape,
+    this.progressIndicatorColor = Colors.black,
   });
   final Function()? onPressed;
   final Color backgroundColor;
@@ -37,6 +38,7 @@ class SocialLoginButton extends StatelessWidget {
   final bool isLoading;
   final TextStyle? textStyle;
   final ShapeBorder? shape;
+  final Color? progressIndicatorColor;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,7 @@ class SocialLoginButton extends StatelessWidget {
               Padding(
                 padding: innerPadding,
                 child: Container(
-                  width: 36,
+                  width: height,
                   margin: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
@@ -81,6 +83,7 @@ class SocialLoginButton extends StatelessWidget {
   }
 
   Widget _proggressIndicator(BuildContext context) => AppLoadingIndicator(
+        color: progressIndicatorColor,
         padding: EdgeInsets.all(context.designSystem.spacing.xss1),
         size: Size(height, height),
       );
