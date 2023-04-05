@@ -1,10 +1,10 @@
+{{> licence.dart }}
+
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:widget_toolkit/language_picker.dart' hide ErrorModel;
 
-import '../../base/extensions/error_model_extensions.dart';
-import '../../base/models/errors/error_model.dart';
-import '../services/custom_language_service.dart';
+import '../services/app_language_service.dart';
 
 part 'change_language_bloc.rxb.g.dart';
 
@@ -15,12 +15,6 @@ abstract class ChangeLanguageBlocEvents {
 
 /// A contract class containing all states of the ChangeLanguageBloC.
 abstract class ChangeLanguageBlocStates {
-  /// The loading state
-  Stream<bool> get isLoading;
-
-  /// The error state
-  Stream<ErrorModel> get errors;
-
   ConnectableStream<LanguageModel> get currentLanguage;
 }
 
@@ -30,24 +24,18 @@ class ChangeLanguageBloc extends $ChangeLanguageBloc {
     currentLanguage.connect().addTo(_compositeSubscription);
   }
 
-  final CustomLanguageService languageService;
-
-  @override
-  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
-
-  @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
+  final AppLanguageService languageService;
 
   final Stream<LanguageModel?> _initialLanguage =
-      PublishSubject<LanguageModel?>();
+  PublishSubject<LanguageModel?>();
 
   @override
   ConnectableStream<LanguageModel> _mapToCurrentLanguageState() => Rx.merge([
-        _$setCurrentLanguageEvent,
-        _initialLanguage
-            .startWith(null)
-            .switchMap((_) => languageService.getCurrent().asResultStream())
-            .whereSuccess()
-            .asBroadcastStream(),
-      ]).publish();
+    _$setCurrentLanguageEvent,
+    _initialLanguage
+        .startWith(null)
+        .switchMap((_) => languageService.getCurrent().asResultStream())
+        .whereSuccess()
+        .asBroadcastStream(),
+  ]).publish();
 }

@@ -6,7 +6,8 @@ import 'package:widget_toolkit/language_picker.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../services/custom_language_service.dart';
+import '../extensions/language_model_extensions.dart';
+import '../services/app_language_service.dart';
 
 class LanguagePickerButton extends StatelessWidget {
   const LanguagePickerButton({
@@ -24,25 +25,19 @@ class LanguagePickerButton extends StatelessWidget {
   final double? padding;
   final String? buttonText;
   static const String _buttonText = 'Change Language';
-  static const _bulgarian = 'bulgarian';
 
   @override
-  Widget build(BuildContext context) => Builder(
-        builder: (context) => Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: padding ?? context.designSystem.spacing.xl0,
-          ),
-          child: OutlineFillButton(
-            text: buttonText ?? _buttonText,
-            onPressed: () => showChangeLanguageBottomSheet(
-              context: context,
-              service: service ?? context.read<CustomLanguageService>(),
-              onChanged: onChanged ?? (model) => {},
-              translate: translate ??
-                  (model) => model.key == _bulgarian
-                      ? context.l10n.libChangeLanguage.bulgarian
-                      : context.l10n.libChangeLanguage.english,
-            ),
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: padding ?? context.designSystem.spacing.xl0,
+        ),
+        child: OutlineFillButton(
+          text: buttonText ?? _buttonText,
+          onPressed: () => showChangeLanguageBottomSheet(
+            context: context,
+            service: service ?? context.read<AppLanguageService>(),
+            onChanged: onChanged ?? (model) => {},
+            translate: translate ?? (model) => model.asText(context),
           ),
         ),
       );

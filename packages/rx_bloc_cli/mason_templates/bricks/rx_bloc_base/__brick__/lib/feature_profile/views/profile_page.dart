@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/ui_components.dart';
 import '../../app_extensions.dart';{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
+import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
@@ -14,8 +15,6 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({
     Key? key,
   }) : super(key: key);
-
-  static const _bulgarian = 'bulgarian';
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -50,9 +49,7 @@ class ProfilePage extends StatelessWidget {
                   .setCurrentLanguage(language),
               padding: context.designSystem.spacing.xl0,
               buttonText: context.l10n.changeLanguage,
-              translate: (model) => model.key == _bulgarian
-                  ? context.l10n.bulgarian
-                  : context.l10n.english,
+              translate: (model) => model.asText(context),
             ),{{/enable_change_language}}
           ],
         ),

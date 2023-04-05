@@ -5,8 +5,8 @@ import 'package:widget_toolkit/language_picker.dart';
 import '../repositories/language_repository.dart';
 
 /// Example implementation of the LanguageService
-class CustomLanguageService extends LanguageService {
-  CustomLanguageService({
+class AppLanguageService extends LanguageService {
+  AppLanguageService({
     required LanguageRepository languageRepository,
   }) : _languageRepository = languageRepository;
 

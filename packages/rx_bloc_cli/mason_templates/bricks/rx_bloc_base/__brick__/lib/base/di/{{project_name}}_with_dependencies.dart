@@ -24,7 +24,7 @@ import '../../lib_auth/services/user_account_service.dart'; {{#enable_change_lan
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
-import '../../lib_change_language/services/custom_language_service.dart'; {{/enable_change_language}}
+import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
@@ -235,7 +235,8 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         {{/enable_feature_deeplinks}} {{#enable_change_language}}
         Provider<LanguageRepository>(
           create: (context) => LanguageRepository(
-            languageLocalDataSource: context.read<LanguageLocalDataSource>(),
+            context.read<ErrorMapper>(),
+            context.read<LanguageLocalDataSource>(),
           ),
         ),{{/enable_change_language}}
       ];
@@ -274,8 +275,8 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
           ),
         ),{{/enable_feature_deeplinks}} {{#enable_change_language}}
-        Provider<CustomLanguageService>(
-          create: (context) => CustomLanguageService(
+        Provider<AppLanguageService>(
+          create: (context) => AppLanguageService(
             languageRepository: context.read<LanguageRepository>(),
           ),
         ), {{/enable_change_language}}
@@ -298,7 +299,8 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ), {{#enable_change_language}}
         RxBlocProvider<ChangeLanguageBlocType>(
           create: (context) => ChangeLanguageBloc(
-            languageService: context.read<CustomLanguageService>()),
+            languageService: context.read<AppLanguageService>(),
+          ),
         ), {{/enable_change_language}}
       ];
 }
