@@ -5,12 +5,10 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-{{#enable_change_language}}
-import 'package:widget_toolkit/language_picker.dart' show LanguageModel;{{/enable_change_language}}
-
 import '../models/errors/error_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
+
 part 'coordinator_bloc_extensions.dart';
 
 abstract class CoordinatorEvents {
@@ -20,15 +18,11 @@ abstract class CoordinatorEvents {
     required ErrorModel error,
     String? stackTrace,
   });
-  {{#enable_change_language}}
-  void setCurrentLanguage(LanguageModel model);{{/enable_change_language}}
 }
 
 abstract class CoordinatorStates {
   @RxBlocIgnoreState()
   Stream<bool> get isAuthenticated;
-  {{#enable_change_language}}
-  Stream<LanguageModel> get currentLanguage;{{/enable_change_language}}
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -39,8 +33,4 @@ abstract class CoordinatorStates {
 class CoordinatorBloc extends $CoordinatorBloc {
   @override
   Stream<bool> get isAuthenticated => _$authenticatedEvent;
-  {{#enable_change_language}}
-  @override
-  Stream<LanguageModel> _mapToCurrentLanguageState() =>
-      _$setCurrentLanguageEvent;{{/enable_change_language}}
 }

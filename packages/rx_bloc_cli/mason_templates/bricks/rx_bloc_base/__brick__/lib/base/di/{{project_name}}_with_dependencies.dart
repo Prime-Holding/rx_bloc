@@ -20,7 +20,11 @@ import '../../lib_auth/data_sources/remote/refresh_token_data_source.dart';
 import '../../lib_auth/repositories/auth_repository.dart';
 import '../../lib_auth/services/access_token_service.dart';
 import '../../lib_auth/services/auth_service.dart';
-import '../../lib_auth/services/user_account_service.dart';
+import '../../lib_auth/services/user_account_service.dart'; {{#enable_change_language}}
+import '../../lib_change_language/bloc/change_language_bloc.dart';
+import '../../lib_change_language/data_sources/language_local_data_source.dart';
+import '../../lib_change_language/repositories/language_repository.dart';
+import '../../lib_change_language/services/custom_language_service.dart'; {{/enable_change_language}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
@@ -184,7 +188,11 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read<ApiHttpClient>(),
           ),
         ),
-        {{/enable_feature_deeplinks}}
+        {{/enable_feature_deeplinks}} {{#enable_change_language}}
+        Provider<LanguageLocalDataSource>(
+          create: (context) => LanguageLocalDataSource(
+          context.read<SharedPreferencesInstance>()),
+        ),{{/enable_change_language}}
       ];
 
   List<Provider> get _repositories => [
@@ -224,7 +232,12 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
           ),
         ),
-        {{/enable_feature_deeplinks}}
+        {{/enable_feature_deeplinks}} {{#enable_change_language}}
+        Provider<LanguageRepository>(
+          create: (context) => LanguageRepository(
+            languageLocalDataSource: context.read<LanguageLocalDataSource>(),
+          ),
+        ),{{/enable_change_language}}
       ];
 
   List<Provider> get _services => [
@@ -260,7 +273,12 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => DeepLinkService(
             context.read(),
           ),
-        ),{{/enable_feature_deeplinks}}
+        ),{{/enable_feature_deeplinks}} {{#enable_change_language}}
+        Provider<CustomLanguageService>(
+          create: (context) => CustomLanguageService(
+            languageRepository: context.read<LanguageRepository>(),
+          ),
+        ), {{/enable_change_language}}
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -277,6 +295,10 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
             context.read(),
           ),
-        ),
+        ), {{#enable_change_language}}
+        RxBlocProvider<ChangeLanguageBlocType>(
+          create: (context) => ChangeLanguageBloc(
+            languageService: context.read<CustomLanguageService>()),
+        ), {{/enable_change_language}}
       ];
 }

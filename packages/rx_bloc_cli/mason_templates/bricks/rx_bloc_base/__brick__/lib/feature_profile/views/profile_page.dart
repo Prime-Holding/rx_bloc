@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/ui_components.dart';
 import '../../app_extensions.dart';{{#enable_change_language}}
-import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
@@ -45,7 +45,7 @@ class ProfilePage extends StatelessWidget {
             ),{{#enable_change_language}}
             LanguagePickerButton(
               onChanged: (language) => context
-                  .read<CoordinatorBlocType>()
+                  .read<ChangeLanguageBlocType>()
                   .events
                   .setCurrentLanguage(language),
               padding: context.designSystem.spacing.xl0,

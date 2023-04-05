@@ -1,17 +1,18 @@
 {{> licence.dart }}
+{{#enable_change_language}}
+import 'dart:async'; {{/enable_change_language}}
 {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
-
+import 'package:provider/provider.dart'; {{#enable_change_language}}
+import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
 import '../../l10n/l10n.dart';
-import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
-import '../../lib_router/router.dart'; {{#enable_change_language}}
-import '../common_blocs/coordinator_bloc.dart';
-import '../data_sources/local/shared_preferences_instance.dart';{{/enable_change_language}}
+import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
+import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}
+import '../../lib_router/router.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
@@ -45,19 +46,20 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
 class _MyMaterialApp extends StatefulWidget {
   const _MyMaterialApp();
 
-@override
-__MyMaterialAppState createState() => __MyMaterialAppState();
+  @override
+  __MyMaterialAppState createState() => __MyMaterialAppState();
 }
 
 class __MyMaterialAppState extends State<_MyMaterialApp> {
   Locale? _locale;
+  {{#enable_change_language}}
+  late StreamSubscription<LanguageModel> _languageSubscription; {{/enable_change_language}}
 
   @override
   void initState() {
     {{^enable_change_language}}
     _locale = const Locale('en'); {{/enable_change_language}}
     {{#enable_change_language}}
-    _setInitialLocale();
     _updateLocale(); {{/enable_change_language}} {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
@@ -65,39 +67,23 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   }
 
   {{#enable_change_language}}
-  Future<void> _setInitialLocale() async {
-    final current = await context
-        .read<SharedPreferencesInstance>()
-        .getString('languageCurrent');
-    if (current != null) {
-      if (current.contains('EN')) {
-        setState(() {
-          _locale = const Locale('en');
-        });
-      } else {
-        setState(() {
-          _locale = const Locale('bg');
-        });
-      }
-    }
-    if(current == null){
-      setState(() {
-        _locale = const Locale('en');
-      });
-    }
+  void _updateLocale() {
+    _languageSubscription = context
+        .read<ChangeLanguageBlocType>()
+        .states
+        .currentLanguage
+        .listen((language) {
+      setState(
+        () => _locale = Locale(language.locale),
+      );
+    });
   } {{/enable_change_language}}
 
   {{#enable_change_language}}
-  void _updateLocale() {
-  context
-      .read<CoordinatorBlocType>()
-      .states
-      .currentLanguage
-      .listen((language) {
-    setState(
-      () => _locale = Locale(language.locale),
-    );
-  });
+  @override
+  void dispose() {
+    _languageSubscription.cancel();
+    super.dispose();
   } {{/enable_change_language}}
 
   {{#push_notifications}}
