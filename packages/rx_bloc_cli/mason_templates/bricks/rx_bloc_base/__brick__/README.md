@@ -13,8 +13,8 @@
 9. [Design system](#design-system)
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
-12. [Push notifications](#push-notifications)
-13. [Social Logins](#social-logins-library)
+12. [Push notifications](#push-notifications){{#enable_social_logins}}
+13. [Social Logins](#social-logins-library){{/enable_social_logins}}
 14. [Next Steps](#next-steps)
 
 ## Getting started
@@ -309,7 +309,7 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
-
+{{#enable_social_logins}}
 ## Social logins library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
@@ -356,7 +356,7 @@ There you will find your **app_id**, **client_token** and **app_name**.
 - for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
-
+{{/enable_social_logins}}
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.

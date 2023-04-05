@@ -329,7 +329,8 @@ Follow the package documentation for registering your application and downloadin
 For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
 
 `iOS:`
-For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_enviroment}/firebase/***
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_environment}/firebase/***  
+and copy ***reversed_client_id*** from GoogleService-Info.plist to ***ios/Flutter/{name_of_the_environment}.xcconfig*** file
 
 For any other configurations refer to the [google_sign_in](https://pub.dev/packages/google_sign_in) package.  
 
