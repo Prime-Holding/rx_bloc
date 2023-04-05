@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
+
 class UpdateStateOnSelection<T> extends StatefulWidget {
   const UpdateStateOnSelection(
       {required this.builder, this.getString, Key? key})
@@ -32,7 +34,8 @@ class _UpdateStateOnSelectionState<T> extends State<UpdateStateOnSelection<T>> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) =>
+      Column(
         children: [
           widget.builder
               .call(localData, (List<T> newData) => updateState(newData)),
@@ -41,9 +44,11 @@ class _UpdateStateOnSelectionState<T> extends State<UpdateStateOnSelection<T>> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 12),
-                Text((localData.length >= 2)
-                    ? 'Selected Items:'
-                    : 'Selected Item:'),
+                Text(
+                  (localData.length >= 2)
+                      ? context.l10n.featureWidgetToolkit.selectedItems
+                      : context.l10n.featureWidgetToolkit.selectedItem,
+                ),
                 const SizedBox(height: 12),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -52,11 +57,12 @@ class _UpdateStateOnSelectionState<T> extends State<UpdateStateOnSelection<T>> {
                     children: [
                       ...localData
                           .map(
-                            (e) => Text(
+                            (e) =>
+                            Text(
                               '${widget.getString?.call(e) ?? e.toString()} ',
                               style: const TextStyle(fontSize: 10),
                             ),
-                          )
+                      )
                           .toList(),
                     ],
                   ),

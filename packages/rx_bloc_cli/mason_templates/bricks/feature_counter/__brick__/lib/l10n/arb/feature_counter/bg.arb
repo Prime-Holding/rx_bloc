@@ -1,0 +1,11 @@
+{
+  "@@locale": "bg",
+  "counterAppBarTitle": "Брояч",
+  "@counterAppBarTitle": {
+    "description": "Текст, показан в AppBar на страницата за брояч"
+  },
+  "counterPageTitle": "Пример за брояч",
+  "increment": "Увеличаване",
+  "decrement": "Намаление",
+  "navCounter" : "Брояч"
+}
