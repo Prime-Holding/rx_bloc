@@ -1,9 +1,12 @@
 {
   "@@locale": "bg",
   "loginPageTitle": "Примерно влизане",
-  "logIn" : "Влезте",
+  "logIn" : "Вход с E-mail",
   "logOut" : "Излезте",
   "profile" : "Профил",
   "notifications" : "Известия",
+  "appleLogin":"Вход с Apple",
+  "googleLogin":"Вход с Google",
+  "facebookLogin":"Вход с Facebook",
   "loginCredentialsHint" : "Въведете идентификационните си данни за вход: \n Валиден имейл адрес. \n Най-малко 6 знака парола."
 }
