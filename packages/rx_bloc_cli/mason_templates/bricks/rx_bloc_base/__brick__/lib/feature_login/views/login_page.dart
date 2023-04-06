@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/custom_app_bar.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';{{#enable_social_logins}}
 import '../../lib_social_logins/ui_components/apple_login_widget.dart';
 import '../../lib_social_logins/ui_components/facebook_login_widget.dart';
-import '../../lib_social_logins/ui_components/google_login_widget.dart';
+import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enable_social_logins}}
 import '../ui_components/login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -29,13 +29,13 @@ class LoginPage extends StatelessWidget {
               children: [
                 LoginForm(
                   title: context.l10n.featureLogin.loginCredentialsHint,
-                ),
+                ),{{#enable_social_logins}}
                 SizedBox(height: context.designSystem.spacing.xs),
                 const FacebookLoginWidget(),
                 SizedBox(height: context.designSystem.spacing.xs),
                 const AppleLoginWidget(),
                 SizedBox(height: context.designSystem.spacing.xs),
-                const GoogleLoginWidget(),
+                const GoogleLoginWidget(),{{/enable_social_logins}}
               ],
             ),
           ),
