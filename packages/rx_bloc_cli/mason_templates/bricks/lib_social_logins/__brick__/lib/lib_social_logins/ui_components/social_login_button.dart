@@ -20,6 +20,7 @@ class SocialLoginButton extends StatelessWidget {
     this.highlightColor = Colors.white30,
     this.textStyle,
     this.progressIndicatorColor = Colors.black,
+    this.borderSide = BorderSide.none,
   });
   final Function()? onPressed;
   final Color backgroundColor;
@@ -33,6 +34,7 @@ class SocialLoginButton extends StatelessWidget {
   final bool isLoading;
   final TextStyle? textStyle;
   final Color? progressIndicatorColor;
+  final BorderSide borderSide;
 
   @override
   Widget build(BuildContext context) => MaterialButton(
@@ -50,6 +52,7 @@ class SocialLoginButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             context.designSystem.spacing.l1,
           ),
+          side: borderSide,
         ),
         child: Container(
           padding: EdgeInsets.symmetric(

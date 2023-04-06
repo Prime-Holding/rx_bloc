@@ -43,6 +43,10 @@ class GoogleLoginWidget extends StatelessWidget {
               builder: (context, loadingState, bloc) => SocialLoginButton(
                 isLoading: (loadingState.data ?? false) ? false : true,
                 text: context.l10n.featureLogin.googleLogin,
+                borderSide: BorderSide(
+                  color: context.designSystem.colors.white,
+                  width: 0.3,
+                ),
                 textStyle: context.designSystem.typography.googleButtonText,
                 backgroundColor: context.designSystem.colors.googleBackground,
                 progressIndicatorColor:
