@@ -79,6 +79,8 @@ class EnterMessagePage extends StatelessWidget {
                           modalConfiguration: const TextFieldModalConfiguration(
                             safeAreaBottom: false,
                           ),
+                          fillButtonText:
+                              context.l10n.featureEnterMessage.fillButtonText,
                         ),
                       ),
                     ),

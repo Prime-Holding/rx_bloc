@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import '../models/errors/error_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
+
 part 'coordinator_bloc_extensions.dart';
 
 abstract class CoordinatorEvents {

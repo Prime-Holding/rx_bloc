@@ -43,6 +43,7 @@ class {{project_name.pascalCase()}}Theme {
         isLightTheme ? SearchPickerTheme.light : SearchPickerTheme.dark,
         isLightTheme ? TextFieldDialogTheme.light : TextFieldDialogTheme.dark,
         isLightTheme ? EditAddressTheme.light : EditAddressTheme.dark,
+        isLightTheme ? LanguagePickerTheme.light : LanguagePickerTheme.dark,
       ],
       // Override any material widget themes here if needed.
     );

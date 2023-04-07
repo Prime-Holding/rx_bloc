@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
   "loginPageTitle": "Login sample",
-  "logIn" : "Log in",
+  "logIn" : "Log in with Email",
   "logOut" : "Log out",
   "profile" : "Profile",
   "notifications" : "Notifications",{{#enable_social_logins}}

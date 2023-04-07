@@ -1,0 +1,6 @@
+{
+  "@@locale": "bg",
+  "appBarText": "Страница с грешка!",
+  "errorOccurred": "Появи се грешка",
+  "error": "Грешка: {theError}"
+}

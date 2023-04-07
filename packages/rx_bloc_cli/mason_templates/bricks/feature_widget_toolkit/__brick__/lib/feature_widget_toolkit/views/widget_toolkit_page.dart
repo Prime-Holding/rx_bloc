@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../app_extensions.dart';
 import 'common_components_page.dart';
 import 'edit_fields_page.dart';
 import 'pickers_page.dart';
@@ -15,33 +16,41 @@ class WidgetToolkitPage extends StatefulWidget {
 
 class _WidgetToolkitPageState extends State<WidgetToolkitPage> {
   late PageController pageController;
-  String title = 'Common Components';
+  late String title;
+
   int nextPageIndex = 1;
 
   @override
   void initState() {
     pageController = PageController();
+
     maintainAppBar();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    title = context.l10n.featureWidgetToolkit.commonComponents;
   }
 
   void maintainAppBar() {
     pageController.addListener(() {
       if (pageController.page == 0) {
         setState(() {
-          title = 'Common Components';
+          title = context.l10n.featureWidgetToolkit.commonComponents;
           nextPageIndex = 1;
         });
       }
       if (pageController.page == 1) {
         setState(() {
-          title = 'Pickers';
+          title = context.l10n.featureWidgetToolkit.pickers;
           nextPageIndex = 2;
         });
       }
       if (pageController.page == 2) {
         setState(() {
-          title = 'Edit Fields';
+          title = context.l10n.featureWidgetToolkit.editFields;
           nextPageIndex = 0;
         });
       }

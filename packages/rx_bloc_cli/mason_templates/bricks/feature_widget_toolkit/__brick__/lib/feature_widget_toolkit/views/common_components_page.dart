@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
+import '../../l10n/l10n.dart';
 import '../ui_components/loading_state_switcher.dart';
 import '../ui_components/widget_section.dart';
 import '../utils/utils.dart';
@@ -12,19 +13,22 @@ class CommonComponentsPage extends StatelessWidget {
       : super(key: key);
 
   final PageController pageController;
+  static const String _imageUrl =
+      'https://www.btsbg.org/sites/default/files/obekti/stobski-piramidi-selo-stob.jpg';
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         child: Column(
           children: [
             WidgetSection(
-              description: 'OpenUrlWidget - launch URL link',
+              description:
+                  context.l10n.featureWidgetToolkit.openUrlWidgetLaunchURLLink,
               child: OpenUrlWidget.withDependencies(
-                url: 'https://www.primeholding.com/',
+                url: context.l10n.featureWidgetToolkit.primeHoldingUrl,
                 translateError: translateError,
-                child: const Text(
-                  'https://www.primeholding.com/',
-                  style: TextStyle(
+                child: Text(
+                  context.l10n.featureWidgetToolkit.primeHoldingUrl,
+                  style: const TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
                   ),
@@ -33,14 +37,15 @@ class CommonComponentsPage extends StatelessWidget {
               ),
             ),
             WidgetSection(
-              description: 'OpenUrlWidget - call a phone number',
+              description: context
+                  .l10n.featureWidgetToolkit.openUrlWidgetCallAPhoneNumber,
               child: OpenUrlWidget.withDependencies(
-                url: '+123456789012',
+                url: context.l10n.featureWidgetToolkit.phoneNumber,
                 uriType: UriType.telephone,
                 translateError: translateError,
-                child: const Text(
-                  '+123456789012',
-                  style: TextStyle(
+                child: Text(
+                  context.l10n.featureWidgetToolkit.phoneNumber,
+                  style: const TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
                   ),
@@ -50,66 +55,71 @@ class CommonComponentsPage extends StatelessWidget {
             ),
             LoadingStateSwitcher(
               builder: (isLoading, simulateLoading) => WidgetSection(
-                description: 'Shimmer Wrapper',
+                description: context.l10n.featureWidgetToolkit.shimmerWrapper,
                 childSize: const Size(180, 120),
                 onRefresh: () => simulateLoading.call(true),
                 child: ShimmerWrapper(
                   showShimmer: isLoading,
                   fadeTransition: true,
                   alignment: Alignment.center,
-                  child: Image.network(
-                      'https://www.btsbg.org/sites/default/files/obekti/stobski-piramidi-selo-stob.jpg'),
+                  child: Image.network(_imageUrl),
                 ),
               ),
             ),
             LoadingStateSwitcher(
               builder: (isLoading, simulateLoading) => WidgetSection(
-                description: 'Text Shimmer',
+                description: context.l10n.featureWidgetToolkit.textShimmer,
                 childSize: const Size(320, 32),
                 onRefresh: () => simulateLoading.call(true),
                 child: ShimmerText(
-                  isLoading ? null : 'Displays Text after loaded',
+                  isLoading
+                      ? null
+                      : context
+                          .l10n.featureWidgetToolkit.displaysTextAfterLoaded,
                   alignment: Alignment.center,
                   type: ShimmerType.random(),
                 ),
               ),
             ),
             WidgetSection(
-              description: 'Modal Sheet with message',
+              description:
+                  context.l10n.featureWidgetToolkit.modalSheetWithMessage,
               child: OutlineFillButton(
-                text: 'Open modal sheet',
+                text: context.l10n.featureWidgetToolkit.openModalSheet,
                 onPressed: () => showBlurredBottomSheet(
                   context: context,
-                  builder: (BuildContext context) => const Padding(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  builder: (BuildContext context) => Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: MessagePanelWidget(
-                        message: 'This is an informative message',
+                        message: context.l10n.featureWidgetToolkit
+                            .thisIsAnInformativeMessage,
                         messageState: MessagePanelState.informative),
                   ),
                 ),
               ),
             ),
             WidgetSection(
-              description: 'Error Modal Sheet',
+              description: context.l10n.featureWidgetToolkit.errorModalSheet,
               child: GradientFillButton(
-                text: 'Present error in modal',
+                text: context.l10n.featureWidgetToolkit.presentErrorInModal,
                 onPressed: () => showErrorBlurredBottomSheet(
-                  error: 'This is an error message',
+                  error: context.l10n.featureWidgetToolkit.thisIsAnErrorMessage,
                   context: context,
                   retryCallback: (context) =>
                       Future.delayed(const Duration(seconds: 2)),
+                  retryButtonText: context.l10n.featureWidgetToolkit.retry,
                 ),
               ),
             ),
             WidgetSection(
-              description: 'Buttons',
+              description: context.l10n.featureWidgetToolkit.buttons,
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 15),
                     child: OutlineFillButton(
-                      text: 'OutlineFillButton',
+                      text: context.l10n.featureWidgetToolkit.outlineFillButton,
                       onPressed: () {},
                     ),
                   ),
@@ -117,14 +127,17 @@ class CommonComponentsPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 15),
                     child: GradientFillButton(
-                      text: 'GradientFillButton',
+                      text:
+                          context.l10n.featureWidgetToolkit.gradientFillButton,
                       onPressed: () {},
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
                     child: GradientFillButton(
-                      text: 'GradientFillButton - disabled',
+                      text: context
+                          .l10n.featureWidgetToolkit.gradientFillButtonDisabled,
                       state: ButtonStateModel.disabled,
                       onPressed: null,
                     ),
@@ -133,7 +146,7 @@ class CommonComponentsPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 15),
                     child: IconTextButton(
-                      text: 'IconTextButton',
+                      text: context.l10n.featureWidgetToolkit.iconTextButton,
                       icon: Icons.send_time_extension_outlined,
                       onPressed: () {},
                     ),

@@ -33,6 +33,7 @@ class GoogleLoginWidget extends StatelessWidget {
           ..._blocs,
         ],
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             AppErrorModalWidget<SocialLoginBlocType>(
               errorState: (bloc) => bloc.states.errors,
@@ -42,6 +43,10 @@ class GoogleLoginWidget extends StatelessWidget {
               builder: (context, loadingState, bloc) => SocialLoginButton(
                 isLoading: (loadingState.data ?? false) ? false : true,
                 text: context.l10n.featureLogin.googleLogin,
+                borderSide: BorderSide(
+                  color: context.designSystem.colors.white,
+                  width: 0.3,
+                ),
                 textStyle: context.designSystem.typography.googleButtonText,
                 backgroundColor: context.designSystem.colors.googleBackground,
                 progressIndicatorColor:
@@ -51,7 +56,7 @@ class GoogleLoginWidget extends StatelessWidget {
                     : () => bloc.events.login(),
                 child: SvgPicture.asset(
                   context.designSystem.images.googleLogo,
-                  height: context.designSystem.spacing.xxxl,
+                  height: context.designSystem.spacing.xl,
                 ),
               ),
             ),
