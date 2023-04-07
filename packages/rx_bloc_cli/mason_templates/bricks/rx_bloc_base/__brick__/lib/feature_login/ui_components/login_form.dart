@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void dispose() {
-    // Since the focus nodes are long living object, they should be disposed.
+// Since the focus nodes are long living object, they should be disposed.
     for (var focusNode in _focusNodes) {
       focusNode.dispose();
     }
@@ -43,95 +43,86 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.all(
-          context.designSystem.spacing.m,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              widget.title,
-              style: context.designSystem.typography.h3Reg14,
-              textAlign: TextAlign.center,
-            ),
-            Column(
-              children: [
-                _buildFieldEmail(context),
-                SizedBox(height: context.designSystem.spacing.xs1),
-                _buildFieldPassword(context),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Divider(indent: 5, endIndent: 5),
-                SizedBox(height: context.designSystem.spacing.xs1),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.designSystem.spacing.l,
-                  ),
-                  child: _buildLogInButton(),
-                ),
-                AppErrorModalWidget<LoginBlocType>(
-                  errorState: (bloc) => bloc.states.errors,
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-  Widget _buildLogInButton() => RxBlocBuilder<LoginBlocType, bool>(
-        state: (bloc) => bloc.states.isLoading,
-        builder: (context, loadingState, bloc) => GradientFillButton(
-          state: loadingState.isLoading
-              ? ButtonStateModel.loading
-              : ButtonStateModel.enabled,
-          onPressed: bloc.events.login,
-          text: context.l10n.featureLogin.logIn,
-        ),
-      );
-
-  Widget _buildFieldEmail(BuildContext context) =>
-      RxTextFormFieldBuilder<LoginBlocType>(
-        state: (bloc) => bloc.states.email.translate(context),
-        showErrorState: (bloc) => bloc.states.showErrors,
-        onChanged: (bloc, value) => bloc.events.setEmail(value),
-        builder: (fieldState) => TextFormField(
-          controller: fieldState.controller,
-          textInputAction: TextInputAction.next,
-          focusNode: _emailFocusNode,
-          onEditingComplete: () =>
-              FocusScope.of(context).requestFocus(_passwordFocusNode),
-          decoration: _getFieldDecoration(
-            fieldState.decoration,
-            context.l10n.field.email,
+  Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            widget.title,
+            style: context.designSystem.typography.h3Reg14,
+            textAlign: TextAlign.center,
           ),
-        ),
-      );
-
-  Widget _buildFieldPassword(BuildContext context) =>
-      RxTextFormFieldBuilder<LoginBlocType>(
-        state: (bloc) => bloc.states.password.translate(context),
-        showErrorState: (bloc) => bloc.states.showErrors,
-        onChanged: (bloc, value) => bloc.events.setPassword(value),
-        obscureText: true,
-        builder: (fieldState) => TextFormField(
-          obscureText: fieldState.isTextObscured,
-          controller: fieldState.controller,
-          textInputAction: TextInputAction.done,
-          focusNode: _passwordFocusNode,
-          onEditingComplete: () => FocusScope.of(context).unfocus(),
-          decoration: _getFieldDecoration(
-            fieldState.decoration,
-            context.l10n.field.password,
+          RxTextFormFieldBuilder<LoginBlocType>(
+            state: (bloc) => bloc.states.email.translate(context),
+            showErrorState: (bloc) => bloc.states.showErrors,
+            onChanged: (bloc, value) => bloc.events.setEmail(value),
+            builder: (fieldState) => _buildEmailField(
+              fieldState,
+              context,
+            ),
           ),
-        ),
+          SizedBox(height: context.designSystem.spacing.xs1),
+          RxTextFormFieldBuilder<LoginBlocType>(
+            state: (bloc) => bloc.states.password.translate(context),
+            showErrorState: (bloc) => bloc.states.showErrors,
+            onChanged: (bloc, value) => bloc.events.setPassword(value),
+            obscureText: true,
+            builder: (fieldState) => _buildPasswordField(
+              fieldState,
+              context,
+            ),
+          ),
+          const Divider(indent: 5, endIndent: 5),
+          SizedBox(height: context.designSystem.spacing.xs1),
+          RxBlocBuilder<LoginBlocType, bool>(
+            state: (bloc) => bloc.states.isLoading,
+            builder: _buildLoginButton,
+          ),
+          AppErrorModalWidget<LoginBlocType>(
+            errorState: (bloc) => bloc.states.errors,
+          ),
+        ],
       );
 
-  InputDecoration _getFieldDecoration(
-    InputDecoration decoration,
-    String label,
+  TextFormField _buildPasswordField(
+    RxTextFormFieldBuilderState<LoginBlocType> fieldState,
+    BuildContext context,
   ) =>
-      decoration.copyWith(labelText: label);
+      TextFormField(
+        obscureText: fieldState.isTextObscured,
+        controller: fieldState.controller,
+        textInputAction: TextInputAction.done,
+        focusNode: _passwordFocusNode,
+        onEditingComplete: () => FocusScope.of(context).unfocus(),
+        decoration: fieldState.decoration.copyWith(
+          labelText: context.l10n.field.password,
+        ),
+      );
+
+  TextFormField _buildEmailField(
+    RxTextFormFieldBuilderState<LoginBlocType> fieldState,
+    BuildContext context,
+  ) =>
+      TextFormField(
+        controller: fieldState.controller,
+        textInputAction: TextInputAction.next,
+        focusNode: _emailFocusNode,
+        onEditingComplete: () =>
+            FocusScope.of(context).requestFocus(_passwordFocusNode),
+        decoration: fieldState.decoration.copyWith(
+          labelText: context.l10n.field.email,
+        ),
+      );
+
+  GradientFillButton _buildLoginButton(
+    BuildContext context,
+    AsyncSnapshot<bool> loadingState,
+    LoginBlocType bloc,
+  ) =>
+      GradientFillButton(
+        state: loadingState.isLoading
+            ? ButtonStateModel.loading
+            : ButtonStateModel.enabled,
+        onPressed: bloc.events.login,
+        text: context.l10n.featureLogin.logIn,
+      );
 }

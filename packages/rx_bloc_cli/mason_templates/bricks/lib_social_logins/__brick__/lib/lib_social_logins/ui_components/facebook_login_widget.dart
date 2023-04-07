@@ -33,6 +33,7 @@ class FacebookLoginWidget extends StatelessWidget {
           ..._blocs,
         ],
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             AppErrorModalWidget<SocialLoginBlocType>(
               errorState: (bloc) => bloc.states.errors,

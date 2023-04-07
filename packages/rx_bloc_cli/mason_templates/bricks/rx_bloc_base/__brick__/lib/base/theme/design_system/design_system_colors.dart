@@ -25,7 +25,7 @@ class DesignSystemColors {
         scaffoldBackgroundColor = Colors.black{{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
         appleButtonText = Colors.black,
-        googleBackground = const Color(0xFF4285F4),
+        googleBackground = Colors.black,
         googleButtonText = const Color(0xFFFFFFFF)
         {{/enable_social_logins}};
 
@@ -66,6 +66,8 @@ class DesignSystemColors {
   final snow = const Color(0xfffffafa);
 
   final black = Colors.black87;
+
+  final white = Colors.white;
 
   final gray = const Color(0xff808080);
   {{#enable_social_logins}}
