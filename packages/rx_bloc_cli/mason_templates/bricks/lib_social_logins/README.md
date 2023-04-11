@@ -32,15 +32,26 @@ In order to make it work you must register your app in facebook developer consol
 There you will find your **app_id**, **client_token** and **app_name**.
 
 `Step 3:`
-- `3.1 Android:` Copy parameters from step 2 in ***android/app/build.gradle***.
+- `3.1 Android:` Edit ***android/app/build.gradle***, paste parameters from step 2 in
+ ```
+productFlavors{
+  name_of_the_enviroment{
+  dimension "default"
+            applicationIdSuffix ""
+            versionNameSuffix ""
+            resValue "string", "facebook_app_id", "insert_facebook_app_id_here"
+            resValue "string", "facebook_client_token", "insert_client_token_here"
+    }
+  }
+  ```
 
 - `3.2 iOS:`
-  Copy parameters from step 2 in ***ios/Flutter/(flavor-name).xcconfig***.
+  Edit ***ios/Flutter/(flavor-name).xcconfig*** and paste parameters from step 2.
 
 
 `Note:` Some requirements to be able to run application with this version of *facebook auth* is
 - **flutter_secure_storage** package must be 8.0.0 version
-- for iOs in ***Podfile*** platform must be at least 12
+- for iOS in ***Podfile*** platform must be at least 12
 - for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation][7].
