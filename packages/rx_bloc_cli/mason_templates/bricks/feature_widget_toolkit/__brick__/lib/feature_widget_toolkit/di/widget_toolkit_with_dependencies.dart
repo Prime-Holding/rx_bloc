@@ -6,6 +6,7 @@ import 'package:widget_toolkit/edit_address.dart';
 
 import '../repositories/search_repository.dart';
 import '../services/custom_edit_address_service.dart';
+import '../utils/edit_address_custom_localisations.dart';
 import '../views/widget_toolkit_page.dart';
 
 class WidgetToolkitWithDependencies extends StatelessWidget {
@@ -14,11 +15,18 @@ class WidgetToolkitWithDependencies extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
+          ..._localisations,
           ..._repositories,
           ..._services,
         ],
         child: Builder(builder: (context) => const WidgetToolkitPage()),
       );
+
+  List<Provider> get _localisations => [
+        Provider<EditAddressCustomLocalisations>(
+          create: (context) => EditAddressCustomLocalisations(context),
+        ),
+      ];
 
   List<Provider> get _repositories => [
         Provider<SearchCountryRepository<CountryModel>>(

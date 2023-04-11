@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/ui_components.dart';
-
-import '../../app_extensions.dart';
+import '../../app_extensions.dart';{{#enable_change_language}}
+import '../../lib_change_language/bloc/change_language_bloc.dart';
+import '../../lib_change_language/extensions/language_model_extensions.dart';
+import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../ui_components/logout_action_button.dart';
@@ -37,6 +39,18 @@ class ProfilePage extends StatelessWidget {
                     .push(const NotificationsRoute()),
               ),
             ),
+            SizedBox(
+              height: context.designSystem.spacing.xl0,
+            ),{{#enable_change_language}}
+            LanguagePickerButton(
+              onChanged: (language) => context
+                  .read<ChangeLanguageBlocType>()
+                  .events
+                  .setCurrentLanguage(language),
+              padding: context.designSystem.spacing.xl0,
+              buttonText: context.l10n.changeLanguage,
+              translate: (model) => model.asText(context),
+            ),{{/enable_change_language}}
           ],
         ),
       );
