@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '3.0.1'
+version '3.0.2'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -41,6 +41,9 @@ compileTestKotlin {
 patchPluginXml {
     changeNotes """
      <ul>
+      <li>
+     v.3.0.2 - separate state mock initialization
+     </li>
      <li>
      v.3.0.1 - fix imports for features created in sub-folder
      </li>
