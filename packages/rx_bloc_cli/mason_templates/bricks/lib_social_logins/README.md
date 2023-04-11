@@ -32,18 +32,18 @@ In order to make it work you must register your app in facebook developer consol
 There you will find your **app_id**, **client_token** and **app_name**.
 
 `Step 3:`
-- `3.1 Android:` Edit ***android/app/build.gradle***, paste parameters from step 2 in  
- <code>
+- `3.1 Android:` Edit ***android/app/build.gradle***, paste parameters from step 2 in
+ ```
 productFlavors{
   name_of_the_enviroment{
   dimension "default"
             applicationIdSuffix ""
             versionNameSuffix ""
-            resValue "string", "facebook_app_id", "insert_facebook_app_id" <--- here
-            resValue "string", "facebook_client_token", "insert_client_token" <--- here
+            resValue "string", "facebook_app_id", "insert_facebook_app_id_here"
+            resValue "string", "facebook_client_token", "insert_client_token_here"
     }
   }
-  </code>.
+  ```
 
 - `3.2 iOS:`
   Edit ***ios/Flutter/(flavor-name).xcconfig*** and paste parameters from step 2.
