@@ -182,7 +182,7 @@ class BootstrapSingleTestAction : AnAction() {
         return str
     }
 
-    private fun generateTest(
+    fun generateTest(
         file: VirtualFile,
         text: String,
         constructorFields: MutableMap<String, String>,
@@ -214,7 +214,7 @@ class BootstrapSingleTestAction : AnAction() {
         }
 
 
-        sb.appendln("import '${file.name}_test.mocks.dart';")
+        sb.appendln("import '${file.name.replace(".dart", "_test.mocks.dart")}';")
 
         sb.appendln("@GenerateMocks([")
         constructorFields.forEach {
@@ -442,7 +442,7 @@ void main () {
         }
     }
 
-    private fun generateConstructorParams(
+    fun generateConstructorParams(
         constructorFields: MutableMap<String, String>, constructorNamedFields: MutableMap<String, Boolean>
     ): String {
         val sb = StringBuffer()
