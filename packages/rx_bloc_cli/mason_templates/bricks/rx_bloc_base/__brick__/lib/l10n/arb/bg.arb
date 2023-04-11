@@ -1,0 +1,18 @@
+{
+  "@@locale": "bg",
+  "reload": "Презареди",
+  "dashboard": "Табло за управление",
+  "ok": "добре",
+  "close" : "Затвори",
+  "errorState": "Възникна грешка",
+  "loadingState": "Зарежда се...",
+  "resetPassword": "Нулиране на парола",
+  "pageWithResult": "Въведете съобщение",
+  "tryAgain" : "Опитайте отново",
+  "confirm" : "Потвърдете",
+  "submit" : "Изпращане",
+  "navProfile": "Профил",
+  "english": "английски",
+  "bulgarian": "български",
+  "changeLanguage" : "Смени език"
+}

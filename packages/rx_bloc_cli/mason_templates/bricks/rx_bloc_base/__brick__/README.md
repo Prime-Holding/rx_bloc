@@ -13,8 +13,9 @@
 9. [Design system](#design-system)
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
-12. [Push notifications](#push-notifications)
-13. [Next Steps](#next-steps)
+12. [Push notifications](#push-notifications){{#enable_social_logins}}
+13. [Social Logins](#social-logins-library){{/enable_social_logins}}
+14. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -24,37 +25,38 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 ## Project structure
 
-| Path | Contains |
-| ------------ | ------------ |
-| `lib/main.dart` | The production flavour of the app. |
-| `lib/main_dev.dart` | The development flavour of the app. |
-| `lib/main_staging.dart` | The staging flavour of the app. |
-| `lib/base/` | Common code used on more than one **feature** in the project. |
-| `lib/base/app/` | The root of the application and Environment configuration. |
-| `lib/base/common_blocs/` | Generally available [BLoCs][rx_bloc_info_lnk]|
-| `lib/base/common_mappers/` | Generally available Mappers|
-| `lib/base/common_services/` | Generally available Services |
-| `lib/base/common_ui_components/` | Generally available Reusable widgets (buttons, controls etc) |
-| `lib/base/data_sources/local/` | Generally available local data sources, such as shared preferences, secured storage etc. |
-| `lib/base/data_sources/remote/` | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code. |
-| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls. |
-| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients |
-| `lib/base/di/` | Application dependencies, available in the whole app|
-| `lib/base/extensions/` | Generally available [extension methods][extension_methods_lnk] |
-| `lib/base/models/` | The business models used in the application |
-| `lib/base/repositories/` | Generally available repositories used to fetch and persist models |
-| `lib/base/theme/` | The custom theme of the app |
-| `lib/base/utils/` | Generally available utils |
-| `lib/feature_X/` | Feature related classes |
-| `lib/feature_X/blocs` | Feature related [BLoCs][rx_bloc_info_lnk] |
-| `lib/feature_X/di` | Feature related dependencies |
-| `lib/feature_X/services/` | Feature related Services |
-| `lib/feature_X/ui_components/` | Feature related custom widgets |
-| `lib/feature_X/views/` | Feature related pages and forms |
-| `lib/lib_auth/` | The OAuth2 (JWT) based authentication and token management library |
-| `lib/lib_permissions/` | The ACL based library that handles all the in-app routes and custom actions as well. |
-| `lib/lib_router/` | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes` | Declarations of all nested pages in the application are located here |
+| Path                                         | Contains                                                                                                                                              |
+|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lib/main.dart`                              | The production flavour of the app.                                                                                                                    |
+| `lib/main_dev.dart`                          | The development flavour of the app.                                                                                                                   |
+| `lib/main_staging.dart`                      | The staging flavour of the app.                                                                                                                       |
+| `lib/base/`                                  | Common code used on more than one **feature** in the project.                                                                                         |
+| `lib/base/app/`                              | The root of the application and Environment configuration.                                                                                            |
+| `lib/base/common_blocs/`                     | Generally available [BLoCs][rx_bloc_info_lnk]                                                                                                         |
+| `lib/base/common_mappers/`                   | Generally available Mappers                                                                                                                           |
+| `lib/base/common_services/`                  | Generally available Services                                                                                                                          |
+| `lib/base/common_ui_components/`             | Generally available Reusable widgets (buttons, controls etc)                                                                                          |
+| `lib/base/data_sources/local/`               | Generally available local data sources, such as shared preferences, secured storage etc.                                                              |
+| `lib/base/data_sources/remote/`              | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code.                                               |
+| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls.                                                                                       |
+| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients                                                                                                                      |
+| `lib/base/di/`                               | Application dependencies, available in the whole app                                                                                                  |
+| `lib/base/extensions/`                       | Generally available [extension methods][extension_methods_lnk]                                                                                        |
+| `lib/base/models/`                           | The business models used in the application                                                                                                           |
+| `lib/base/repositories/`                     | Generally available repositories used to fetch and persist models                                                                                     |
+| `lib/base/theme/`                            | The custom theme of the app                                                                                                                           |
+| `lib/base/utils/`                            | Generally available utils                                                                                                                             |
+| `lib/feature_X/`                             | Feature related classes                                                                                                                               |
+| `lib/feature_X/blocs`                        | Feature related [BLoCs][rx_bloc_info_lnk]                                                                                                             |
+| `lib/feature_X/di`                           | Feature related dependencies                                                                                                                          |
+| `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
+| `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
+| `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
+| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library{{#enable_social_logins}}                                                           |
+| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library  {{/enable_social_logins}}                                                                     |
+| `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
+| `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
+| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |
 
 ## Architecture
 
@@ -307,6 +309,54 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
+{{#enable_social_logins}}
+## Social logins library
+
+Allows you to authenticate users in your app with Apple, Google and Facebook.
+
+
+#### Apple Authentication
+It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package.  
+In order to make it work, fulfill the requirements described in its [documentation](https://pub.dev/documentation/sign_in_with_apple/latest/).
+
+Supports iOS.
+#### Google Authentication
+Google authentication uses [google_sign_in](https://pub.dev/packages/google_sign_in) package.
+ 
+Follow the package documentation for registering your application and downloading Google Services file.(GoogleService-Info.plist/google-services.json)
+
+`Android:`
+For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
+
+`iOS:`
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_environment}/firebase/***  
+and copy ***reversed_client_id*** from GoogleService-Info.plist to ***ios/Flutter/{name_of_the_environment}.xcconfig*** file
+
+For any other configurations refer to the [google_sign_in](https://pub.dev/packages/google_sign_in) package.  
+
+#### Facebook Authentication
+Facebook authentication uses [flutter_facebook_auth](https://pub.dev/packages/flutter_facebook_auth) package.
+
+`Step 1:`  
+In order to make it work you must register your app in facebook developer console.
+
+`Step 2:`  
+There you will find your **app_id**, **client_token** and **app_name**.
+
+`Step 3:`
+- `3.1 Android:` Copy parameters from step 2 in ***android/app/build.gradle***.
+
+- `3.2 iOS:`
+  Copy parameters from step 2 in ***ios/Flutter/(name_of_the_environment).xcconfig***.
+
+
+*Note:* Some requirements to be able to run application with this version of *facebook auth* is
+- **flutter_secure_storage** package must be 8.0.0 version
+- for iOs in ***Podfile*** platform must be at least 12
+- for Android ***minSdkVersion*** must be at least 21.
+
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
+{{/enable_social_logins}}
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.

@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
+
 class ErrorPage extends StatelessWidget {
   const ErrorPage({
     this.error,
@@ -13,12 +15,12 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Error page!'),
+          title: Text(context.l10n.libRouter.appBarText),
         ),
         body: Center(
           child: error == null
-              ? const Text('An error occurred.')
-              : Text('Error: ${error.toString()}'),
+              ? Text(context.l10n.libRouter.errorOccurred)
+              : Text(context.l10n.libRouter.error(error.toString())),
         ),
       );
 }
