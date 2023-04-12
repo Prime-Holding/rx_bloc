@@ -14,7 +14,7 @@ public class RxBlocGeneratorTest {
     public void testWithDefaultStatesAndService() throws IOException {
         RxBlocGenerator rxBlocGenerator = new RxBlocGenerator("profile_bloc.dart", true, true);
         String generate = rxBlocGenerator.generate().trim();
-        File file = new File("src/test/resources/generator/WithDefaultStatesAndService_rx_bloc_generator_test.dart");
+        File file = new File("src/test/resources/generator/RxBlocGenerator/WithDefaultStatesAndService_rx_bloc_generator_test.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
         assertEquals(generate, inputRepoText);
     }
@@ -24,7 +24,7 @@ public class RxBlocGeneratorTest {
     public void testWithDefaultStates() throws IOException {
         RxBlocGenerator rxBlocGenerator = new RxBlocGenerator("profile_bloc.dart", true, false);
         String generate = rxBlocGenerator.generate().trim();
-        File file = new File("src/test/resources/generator/WithDefaultStates_rx_bloc_generator_test.dart");
+        File file = new File("src/test/resources/generator/RxBlocGenerator/WithDefaultStates_rx_bloc_generator_test.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
 
         assertEquals(generate, inputRepoText);
@@ -35,7 +35,7 @@ public class RxBlocGeneratorTest {
     public void testWithService() throws IOException {
         RxBlocGenerator rxBlocGenerator = new RxBlocGenerator("profile_bloc.dart", false, true);
         String generate = rxBlocGenerator.generate().trim();
-        File file = new File("src/test/resources/generator/WithService_rx_bloc_generator_test.dart");
+        File file = new File("src/test/resources/generator/RxBlocGenerator/WithService_rx_bloc_generator_test.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
         assertEquals(generate, inputRepoText);
     }
@@ -45,7 +45,7 @@ public class RxBlocGeneratorTest {
     public void testWithNothing() throws IOException {
         RxBlocGenerator rxBlocGenerator = new RxBlocGenerator("profile_bloc.dart", false, false);
         String generate = rxBlocGenerator.generate().trim();
-        File file = new File("src/test/resources/generator/WithNothing_rx_bloc_generator_test.dart");
+        File file = new File("src/test/resources/generator/RxBlocGenerator/WithNothing_rx_bloc_generator_test.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
 
         assertEquals(generate, inputRepoText);
