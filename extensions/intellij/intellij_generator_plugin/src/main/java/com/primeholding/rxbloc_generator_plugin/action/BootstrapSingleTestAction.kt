@@ -253,7 +253,7 @@ class BootstrapSingleTestAction : AnAction() {
         else acc.append(c)
     }.toString()
 
-    private fun generateImportsFromFileAndClasses(
+    fun generateImportsFromFileAndClasses(
         text: String,
         values: MutableCollection<String>,
         rootDir: VirtualFile,
@@ -268,9 +268,14 @@ class BootstrapSingleTestAction : AnAction() {
             values.forEach {
 
                 if (it.contains("<") && it.contains(">")) {
-                    val innerType = it.substring(it.indexOf("<") + 1, it.indexOf("<"))
-                    if (line.contains("${innerType.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
-                        sb.append(Utils.fixRelativeImports(line, rootDir, file)).append("\n")
+                    val index1 = it.indexOf("<") + 1
+                    val index2 = it.indexOf(">")
+
+                    if (index1 <= index2) {
+                        val innerType = it.substring(index1, index2)
+                        if (line.contains("${innerType.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
+                            sb.append(Utils.fixRelativeImports(line, rootDir, file)).append("\n")
+                        }
                     }
                 } else {
                     if (line.contains("${it.camelToSnakeCase()}.dart") && line.startsWith("import '")) {

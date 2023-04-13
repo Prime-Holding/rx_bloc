@@ -11,7 +11,9 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -217,12 +219,31 @@ public class BootstrapSingleTestActionTest {
 //    }
 
 
-//    @Test
-//    public void testGenerateImportsFromFileAndClasses() {
-//        // implement testGenerateImportsFromFileAndClasses
+    @Test
+    public void testGenerateImportsFromFileAndClasses() {
+        String text = "";
+        List<String> values = new ArrayList<>();
+        VirtualFile rootDir = mock(VirtualFile.class);
+        VirtualFile file = mock(VirtualFile.class);
+        VirtualFile blocsDir = mock(VirtualFile.class);
+        when(file.getParent()).thenReturn(blocsDir);
+        when(blocsDir.getPath()).thenReturn("Path/to/project/my_app/lib/subfolder/feature_x2r4/blocs");
+        when(rootDir.getPath()).thenReturn("Path/to/project/my_app");
+        when(rootDir.getName()).thenReturn("my_app");
 
-    //TODO test different (sub-dir)location of the files under the lib
-//        bootstrapSingleTestAction.generateImportsFromFileAndClasses();
-//    }
+        String classes = bootstrapSingleTestAction.generateImportsFromFileAndClasses(text, values, rootDir, file);
+        assertEquals("", classes);
+
+        text = "import 'package:rx_bloc/rx_bloc.dart';\n" +
+                "import 'package:rxdart/rxdart.dart';\n" +
+                "import '../../base/extensions/error_model_extensions.dart';\n" +
+                "import '../../../base/models/errors/profile_data.dart';\n" +
+                "class MyBloc {}";
+
+        values.add("List<ProfileData>");
+        classes = bootstrapSingleTestAction.generateImportsFromFileAndClasses(text, values, rootDir, file);
+        assertEquals("import 'package:my_app/base/models/errors/profile_data.dart';",
+                classes.trim());
+    }
 
 }
