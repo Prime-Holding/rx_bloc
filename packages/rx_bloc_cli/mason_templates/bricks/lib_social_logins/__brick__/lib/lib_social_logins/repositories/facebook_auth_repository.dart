@@ -17,7 +17,7 @@ class FacebookAuthRepository {
         () => _fbAuthDataSource.facebookAuthenticate(requestModel),
       );
 
-  Future<FacebookAuthRequestModel> getUserFacebookCredentials() async =>
+  Future<FacebookAuthRequestModel?> getUserFacebookCredentials() async =>
       _errorMapper
           .execute(() => _credentialDataSource.getUsersFacebookCredential());
 }

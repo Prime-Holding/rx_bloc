@@ -47,7 +47,7 @@ class SocialLoginBloc extends $SocialLoginBloc {
   ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
       .throttleTime(const Duration(seconds: 1))
       .switchMap(
-        (_) => _socialLoginService.login().then((_) => true).asResultStream(),
+        (_) => _socialLoginService.login().then((token) => token != null ? true : false).asResultStream(),
       )
       .setResultStateHandler(this)
       .whereSuccess()

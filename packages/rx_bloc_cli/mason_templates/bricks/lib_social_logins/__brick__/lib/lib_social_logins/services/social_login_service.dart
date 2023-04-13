@@ -4,15 +4,15 @@ import '../../lib_auth/models/auth_token_model.dart';
 import '../../lib_auth/services/user_account_service.dart';
 
 abstract class SocialLoginService {
-  SocialLoginService(this._userAccountService);
+SocialLoginService(this._userAccountService);
 
-  final UserAccountService _userAccountService;
+final UserAccountService _userAccountService;
 
-  Future<AuthTokenModel> authenticate();
+Future<AuthTokenModel?>? authenticate();
 
-  Future<AuthTokenModel> login() async {
-    final authToken = await authenticate();
-
+Future<AuthTokenModel?> login() async {
+  final authToken = await authenticate();
+  if (authToken != null) {
     // Save response tokens
     await _userAccountService.saveTokens(authToken);
 
@@ -23,5 +23,8 @@ abstract class SocialLoginService {
     await _userAccountService.loadPermissions();
 
     return authToken;
+  }  else {
+      return null;
+    }
   }
 }
