@@ -88,6 +88,7 @@ class _LoginFormState extends State<LoginForm> {
     BuildContext context,
   ) =>
       TextFormField(
+        key: K.loginPasswordKey,
         obscureText: fieldState.isTextObscured,
         controller: fieldState.controller,
         textInputAction: TextInputAction.done,
@@ -103,6 +104,7 @@ class _LoginFormState extends State<LoginForm> {
     BuildContext context,
   ) =>
       TextFormField(
+        key: K.loginEmailKey,
         controller: fieldState.controller,
         textInputAction: TextInputAction.next,
         focusNode: _emailFocusNode,
@@ -119,6 +121,7 @@ class _LoginFormState extends State<LoginForm> {
     LoginBlocType bloc,
   ) =>
       GradientFillButton(
+        key: K.loginButtonKey,
         state: loadingState.isLoading
             ? ButtonStateModel.loading
             : ButtonStateModel.enabled,

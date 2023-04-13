@@ -14,6 +14,8 @@ class ActionButton extends StatelessWidget {
     this.loading = false,
     this.heroTag,
     Key? key,
+    this.appLoadingIndicatorKey,
+    this.floatingActionButtonKey,
   }) : super(key: key);
 
   /// Loading flag that shows a loading indicator
@@ -31,6 +33,9 @@ class ActionButton extends StatelessWidget {
   /// otherwise activated.
   final VoidCallback? onPressed;
 
+  final Key? appLoadingIndicatorKey;
+  final Key? floatingActionButtonKey;
+
   @override
   Widget build(BuildContext context) {
     if (loading) {
@@ -38,11 +43,13 @@ class ActionButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           horizontal: context.designSystem.spacing.xs1,
         ),
-        child: AppLoadingIndicator.innerCircleValue(context),
+        child: AppLoadingIndicator.innerCircleValue(
+            context, appLoadingIndicatorKey),
       );
     }
 
     return FloatingActionButton(
+      key: floatingActionButtonKey,
       backgroundColor: onPressed == null
           ? context.designSystem.colors.inactiveButtonColor
           : context.designSystem.colors.activeButtonColor,

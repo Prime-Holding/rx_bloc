@@ -45,7 +45,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionName flutterVersionName {{#enable_patrol_integration_tests}}
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol_integration_tests}}
     }
 
     signingConfigs {
@@ -111,5 +112,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"{{#analytics}}
     implementation platform('com.google.firebase:firebase-bom:27.0.0')
-    implementation 'com.google.firebase:firebase-analytics'{{/analytics}}
+    implementation 'com.google.firebase:firebase-analytics'{{/analytics}}{{#enable_patrol_integration_tests}}
+    testImplementation "junit:junit:4.13.2"{{/enable_patrol_integration_tests}}
 }

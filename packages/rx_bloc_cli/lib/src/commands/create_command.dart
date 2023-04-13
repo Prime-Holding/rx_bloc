@@ -73,6 +73,12 @@ class CreateCommand extends Command<int> {
             'project',
         allowed: ['true', 'false'],
         defaultsTo: 'false',
+      )
+      ..addOption(
+        _patrolTestsString,
+        help: 'Enables Patrol integration tests for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'true',
       );
   }
 
@@ -86,6 +92,7 @@ class CreateCommand extends Command<int> {
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
   final _socialLoginsString = 'enable-social-logins';
   final _changeLanguageString = 'enable-change-language';
+  final _patrolTestsString = 'enable-patrol-integration-tests';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -245,6 +252,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
+        'enable_patrol_integration_tests': arguments.enablePatrolTests,
       },
     );
 
@@ -273,6 +281,7 @@ class CreateCommand extends Command<int> {
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
       enableSocialLogins: _parseEnableSocialLogins(arguments),
       enableChangeLanguage: _parseEnableChangeLanguage(arguments),
+      enablePatrolTests: _parseEnablePatrolTests(arguments),
     );
   }
 
@@ -301,6 +310,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableCounter(ArgResults arguments) {
     final counterEnabled = arguments[_counterString];
     return counterEnabled.toLowerCase() == 'true';
+  }
+
+  /// Return whether the project will be created with patrol integration tests
+  bool _parseEnablePatrolTests(ArgResults arguments) {
+    final patrolEnabled = arguments[_patrolTestsString];
+    return patrolEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with widget toolkit feature
@@ -417,6 +432,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
+    _usingLog('Patrol integration tests', arguments.enablePatrolTests);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -446,6 +462,7 @@ class _CreateCommandArguments {
     required this.enableWidgetToolkitFeature,
     required this.enableSocialLogins,
     required this.enableChangeLanguage,
+    required this.enablePatrolTests,
   });
 
   final String projectName;
@@ -457,4 +474,5 @@ class _CreateCommandArguments {
   final bool enableWidgetToolkitFeature;
   final bool enableSocialLogins;
   final bool enableChangeLanguage;
+  final bool enablePatrolTests;
 }
