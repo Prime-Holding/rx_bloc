@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class SmartSnippets {
     public static final String BLOC_SNIPPET_KEY = "BlocType";
 
-    static String getSnippet(SnippetType snippetType, String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
+    public static String getSnippet(SnippetType snippetType, String widget, String blocTypeDirectorySuggest, String stateTypeDirectorySuggest, String stateVariableNameSuggest) {
         switch (snippetType) {
             case RxBlocBuilder:
                 return blocBuilderSnippet(widget, blocTypeDirectorySuggest, stateTypeDirectorySuggest, stateVariableNameSuggest);

@@ -87,10 +87,10 @@ public abstract class BlocWrapWithIntentionAction extends PsiElementBaseIntentio
      *                                     when manipulation of the psi tree fails.
      */
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
-        invokeSnippetAction(project, editor, snippetType);
+        invokeSnippetAction(project, editor);
     }
 
-    protected void invokeSnippetAction(@NotNull Project project, Editor editor, SnippetType snippetType) {
+    protected void invokeSnippetAction(@NotNull Project project, Editor editor) {
         final Document document = editor.getDocument();
 
         final PsiElement element = callExpressionElement;
