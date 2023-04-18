@@ -8,11 +8,10 @@ abstract class SocialLoginService {
 
   final UserAccountService _userAccountService;
 
-  Future<AuthTokenModel?>? authenticate();
+  Future<AuthTokenModel> authenticate();
 
-  Future<AuthTokenModel?> login() async {
+  Future<AuthTokenModel> login() async {
     final authToken = await authenticate();
-    if (authToken != null) {
       // Save response tokens
       await _userAccountService.saveTokens(authToken);
 
@@ -23,8 +22,6 @@ abstract class SocialLoginService {
       await _userAccountService.loadPermissions();
 
       return authToken;
-    } else {
-      return null;
     }
   }
-}
+

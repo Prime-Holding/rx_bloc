@@ -13,19 +13,12 @@ class GoogleLoginService extends SocialLoginService {
   final GoogleAuthRepository _googleAuthRepository;
 
   @override
-  Future<AuthTokenModel?> authenticate() async {
-    try {
-      final GoogleCredentialsModel? googleUser =
+  Future<AuthTokenModel> authenticate() async {
+      final GoogleCredentialsModel googleUser =
           await _googleAuthRepository.getUsersGoogleCredential();
-      if (googleUser != null) {
+
         return _googleAuthRepository.googleAuth(
             googleAuthRequestModel: googleUser);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print(e);
-      return null;
-    }
+
   }
 }

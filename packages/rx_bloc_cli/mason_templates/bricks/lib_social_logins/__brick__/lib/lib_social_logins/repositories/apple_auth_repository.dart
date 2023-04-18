@@ -19,20 +19,17 @@ class AppleAuthRepository {
   final AppleCredentialDataSource _appleCredentialDataSource;
 
   Future<AuthTokenModel> authenticateWithApple(
-          {AppleCredentialModel? credentials}) =>
+          {required AppleCredentialModel credentials}) =>
       _errorMapper.execute(
         () => _appleAuthDataSource.authenticate(
           AppleAuthRequestModel.fromAppleCredentials(credentials!),
         ),
       );
 
-  Future<AppleCredentialModel?> getUsersAppleCredential() async {
+  Future<AppleCredentialModel> getUsersAppleCredential() async {
     final credential =
         await _appleCredentialDataSource.getUsersAppleCredential();
-    if (credential.userIdentifier != null) {
       return AppleCredentialModel.fromAppleId(credential);
-    } else {
-      return null;
-    }
+
   }
 }

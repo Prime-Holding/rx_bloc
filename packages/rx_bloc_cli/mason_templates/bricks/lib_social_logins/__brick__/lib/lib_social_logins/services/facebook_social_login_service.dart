@@ -14,20 +14,13 @@ class FacebookAuthService extends SocialLoginService {
   final FacebookAuthRepository _facebookAuthRepository;
 
   @override
-  Future<AuthTokenModel?> authenticate() async {
-    try {
+  Future<AuthTokenModel> authenticate() async {
       final credential =
           await _facebookAuthRepository.getUserFacebookCredentials();
 
-      if (credential != null) {
+
         return await _facebookAuthRepository.facebookAuth(
             requestModel: credential);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print(e);
-      return null;
-    }
+
   }
 }

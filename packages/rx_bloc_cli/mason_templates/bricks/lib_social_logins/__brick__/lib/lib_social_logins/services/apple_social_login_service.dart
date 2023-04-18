@@ -13,19 +13,11 @@ class AppleSocialLoginService extends SocialLoginService {
   final AppleAuthRepository _appleAuthRepository;
 
   @override
-  Future<AuthTokenModel?> authenticate() async {
-    try {
+  Future<AuthTokenModel> authenticate() async {
       final credential = await _appleAuthRepository.getUsersAppleCredential();
-      if (credential != null) {
         return await _appleAuthRepository.authenticateWithApple(
           credentials: credential,
         );
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print(e);
-      return null;
-    }
+
   }
 }
