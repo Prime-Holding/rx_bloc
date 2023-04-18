@@ -72,6 +72,10 @@ public class UtilsTest {
         String relativeImports = Utils.Companion.fixRelativeImports("import '../../../../../base/models/errors/error_model.dart';",
                 appFolder, file);
         assertEquals(relativeImports, "import 'package:my_app/base/models/errors/error_model.dart';");
+
+        relativeImports = Utils.Companion.fixRelativeImports("import 'error_model.dart';",
+                appFolder, file);
+        assertEquals(relativeImports, "import 'package:my_app/subfolder/feature_x2r4/blocs/error_model.dart';");
     }
 
 

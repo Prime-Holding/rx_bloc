@@ -196,27 +196,83 @@ public class BootstrapSingleTestActionTest {
         constructorNamedFields.put(myName, true);
     }
 
-//    @Test
-//    public void testGenerateService() {
-//        // the same as repo as such this is not so crucial
-//
-//        HashMap<String, String> constructorFields = new HashMap<>();
-//        HashMap<String, Boolean> constructorNamedFields = new HashMap<>();
-//
-//        VirtualFile serviceFileMock = mock(VirtualFile.class);
-//        DataContext dataContextMock = mock(DataContext.class);
-//        AnActionEvent anActionEventMock = mock(AnActionEvent.class);
-//        Presentation presentation = new Presentation();
-//        Project projectMock = mock(Project.class);
-//        when(anActionEventMock.getPresentation()).thenReturn(presentation);
-//        when(anActionEventMock.getProject()).thenReturn(projectMock);
-//        when(anActionEventMock.getDataContext()).thenReturn(dataContextMock);
-//
-//        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{serviceFileMock});
-////        File file = new File("src/test/resources/empty_repository.dart");
-//
-////        bootstrapSingleTestAction.generateTest(serviceFileMock, projectMock);
-//    }
+    @Test
+    public void testGenerateServices() throws IOException {
+        HashMap<String, String> constructorFields = new HashMap<>();
+        HashMap<String, Boolean> constructorNamedFields = new HashMap<>();
+
+        VirtualFile serviceFileMock = mock(VirtualFile.class);
+        DataContext dataContextMock = mock(DataContext.class);
+        AnActionEvent anActionEventMock = mock(AnActionEvent.class);
+        Presentation presentation = new Presentation();
+        Project projectMock = mock(Project.class);
+        when(anActionEventMock.getPresentation()).thenReturn(presentation);
+        when(anActionEventMock.getProject()).thenReturn(projectMock);
+        when(anActionEventMock.getDataContext()).thenReturn(dataContextMock);
+
+        when(dataContextMock.getData(DataKeys.VIRTUAL_FILE_ARRAY)).thenReturn(new VirtualFile[]{serviceFileMock});
+        File file = new File("src/test/resources/bootstrap_services_tests/empty_service.dart");
+
+        when(serviceFileMock.getPath()).thenReturn(file.getPath());
+        when(serviceFileMock.getName()).thenReturn(file.getName());
+        String inputServiceText = String.join("\n", Files.readAllLines(file.toPath()));
+
+//        test generation with no constructor fields and no public methods
+        String generateTest = bootstrapSingleTestAction.generateTest(serviceFileMock, inputServiceText, constructorFields, constructorNamedFields).trim();
+
+        file = new File("src/test/resources/bootstrap_services_tests/empty_service_result.dart");
+        inputServiceText = String.join("\n", Files.readAllLines(file.toPath())).trim();
+
+        assertEquals(generateTest, inputServiceText);
+
+        //test with constructor fields (no named) and only private methods
+        addFields(constructorFields);
+        file = new File("src/test/resources/bootstrap_services_tests/only_private_service.dart");
+
+        when(serviceFileMock.getPath()).thenReturn(file.getPath());
+        when(serviceFileMock.getName()).thenReturn(file.getName());
+        inputServiceText = String.join("\n", Files.readAllLines(file.toPath()));
+
+        generateTest = bootstrapSingleTestAction.generateTest(serviceFileMock, inputServiceText, constructorFields, constructorNamedFields).trim();
+
+        file = new File("src/test/resources/bootstrap_services_tests/only_private_service_result.dart");
+        inputServiceText = String.join("\n", Files.readAllLines(file.toPath())).trim();
+
+        assertEquals(generateTest, inputServiceText);
+
+        //test with mix of named and non-named fields and public and private methods
+        addFields(constructorFields);
+        file = new File("src/test/resources/bootstrap_services_tests/full_service.dart");
+
+        when(serviceFileMock.getPath()).thenReturn(file.getPath());
+        when(serviceFileMock.getName()).thenReturn(file.getName());
+        inputServiceText = String.join("\n", Files.readAllLines(file.toPath()));
+
+        addNamed(constructorNamedFields, "myName");
+        generateTest = bootstrapSingleTestAction.generateTest(serviceFileMock, inputServiceText, constructorFields, constructorNamedFields).trim();
+
+        file = new File("src/test/resources/bootstrap_services_tests/full_service_result.dart");
+        inputServiceText = String.join("\n", Files.readAllLines(file.toPath())).trim();
+
+        assertEquals(generateTest, inputServiceText);
+
+        //test with all named constructor fields and only public methods
+
+        addFields(constructorFields);
+        file = new File("src/test/resources/bootstrap_services_tests/only_public_service.dart");
+
+        when(serviceFileMock.getPath()).thenReturn(file.getPath());
+        when(serviceFileMock.getName()).thenReturn(file.getName());
+        inputServiceText = String.join("\n", Files.readAllLines(file.toPath()));
+
+        addNamed(constructorNamedFields, "myName2");
+        generateTest = bootstrapSingleTestAction.generateTest(serviceFileMock, inputServiceText, constructorFields, constructorNamedFields).trim();
+
+        file = new File("src/test/resources/bootstrap_services_tests/only_public_service_result.dart");
+        inputServiceText = String.join("\n", Files.readAllLines(file.toPath())).trim();
+
+        assertEquals(generateTest, inputServiceText);
+    }
 
 
     @Test
@@ -227,6 +283,8 @@ public class BootstrapSingleTestActionTest {
         VirtualFile file = mock(VirtualFile.class);
         VirtualFile blocsDir = mock(VirtualFile.class);
         when(file.getParent()).thenReturn(blocsDir);
+        when(file.getPath()).thenReturn("Path/to/project/my_app/lib/subfolder/feature_x2r4/blocs/my_service.dart");
+        when(file.getName()).thenReturn("my_service.dart");
         when(blocsDir.getPath()).thenReturn("Path/to/project/my_app/lib/subfolder/feature_x2r4/blocs");
         when(rootDir.getPath()).thenReturn("Path/to/project/my_app");
         when(rootDir.getName()).thenReturn("my_app");
@@ -243,6 +301,18 @@ public class BootstrapSingleTestActionTest {
         values.add("List<ProfileData>");
         classes = bootstrapSingleTestAction.generateImportsFromFileAndClasses(text, values, rootDir, file);
         assertEquals("import 'package:my_app/base/models/errors/profile_data.dart';",
+                classes.trim());
+
+        //test same directory import
+        text = "import 'profile_data.dart';\n";
+        classes = bootstrapSingleTestAction.generateImportsFromFileAndClasses(text, values, rootDir, file);
+        assertEquals("import 'package:my_app/subfolder/feature_x2r4/blocs/profile_data.dart';",
+                classes.trim());
+
+//        test full package declaration
+        text = "import 'package:my_app/subfolder/feature_x2r4/blocs/profile_data.dart';\n";
+        classes = bootstrapSingleTestAction.generateImportsFromFileAndClasses(text, values, rootDir, file);
+        assertEquals("import 'package:my_app/subfolder/feature_x2r4/blocs/profile_data.dart';",
                 classes.trim());
     }
 

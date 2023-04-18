@@ -352,7 +352,9 @@ class Utils {
                     )
                 }';"
             } else {
-                if (!importLine.startsWith("import 'package:")) {
+                if (importLine.startsWith("import 'package:")) {
+                    result = importLine
+                } else {
                     val indexStart = importLine.indexOf('\'')
                     if (indexStart != -1) {
                         val indexEnd = importLine.indexOf('\'', indexStart + 1)
