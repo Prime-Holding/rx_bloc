@@ -29,10 +29,11 @@ jobs:
         build-root-directory: extensions/intellij/intellij_generator_plugin
         arguments: assemble
         
-    - name: Rename file 
-      run: mv build/distributions/* build/distributions/rxbloc_plugin_zip
+    - name: Zip file 
+      run:  tar -cvf rxbloc_plugin.tar build/distributions/*
+     
       
     - uses: actions/upload-artifact@v3
       with:
         name: rxbloc_plugin
-        path: build/distributions/
+        path: rxbloc_plugin.tar
