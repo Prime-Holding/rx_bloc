@@ -28,8 +28,13 @@ class GoogleAuthRepository {
       _errorMapper.execute(() async {
         final credentials =
             await _googleCredentialDataSource.getUsersGoogleCredential();
+
         return GoogleCredentialsModel.fromGoogleCredentials(credentials!);
       }).onError((error, stackTrace) {
-        throw CancelledErrorModel();
+        if (error.toString() == CancelledErrorModel.googleUserDataEmpty) {
+          throw CancelledErrorModel();
+        } else {
+          throw Exception(error);
+        }
       });
 }

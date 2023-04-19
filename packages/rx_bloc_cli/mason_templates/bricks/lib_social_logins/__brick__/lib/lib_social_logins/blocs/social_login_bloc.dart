@@ -38,11 +38,6 @@ class SocialLoginBloc extends $SocialLoginBloc {
   final SocialLoginService _socialLoginService;
   final CoordinatorBlocType _coordinatorBloc;
 
-  static const String appleCanceled =
-      'SignInWithAppleAuthorizationError(AuthorizationErrorCode.unknown, The operation couldn’t be completed. (com.apple.AuthenticationServices.AuthorizationError error 1000.))';
-  static const String googleAndFacebookCanceled =
-      'Null check operator used on a null value';
-
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
 
@@ -53,13 +48,11 @@ class SocialLoginBloc extends $SocialLoginBloc {
   ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
       .throttleTime(const Duration(seconds: 1))
       .switchMap(
-        (_) =>
-            _socialLoginService.login().then((_) => true).catchError((error) {
-          print(error);
-          if (error is CancelledErrorModel) {
-            return false;
-          }
-        }).asResultStream(),
+        (_) => _socialLoginService
+            .login()
+            .then((_) => true)
+            .catchError((error) => error is! CancelledErrorModel)
+            .asResultStream(),
       )
       .setResultStateHandler(this)
       .whereSuccess()

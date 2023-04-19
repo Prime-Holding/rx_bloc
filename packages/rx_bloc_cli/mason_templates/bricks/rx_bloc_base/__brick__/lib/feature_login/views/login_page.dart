@@ -33,14 +33,13 @@ class LoginPage extends StatelessWidget {
                 ),{{#enable_social_logins}}
                 SizedBox(height: context.designSystem.spacing.xs),
                 const FacebookLoginWidget(),
-                Platform.isAndroid
-                  ? const SizedBox.shrink()
-                      : Column(
-                  children: [
-                    SizedBox(height: context.designSystem.spacing.xs),
-                    const AppleLoginWidget(),
-                  ],
-                ),
+                if (Platform.isIOS)
+                  Column(
+                    children: [
+                      SizedBox(height: context.designSystem.spacing.xs),
+                      const AppleLoginWidget(),
+                    ],
+                  ),
                 SizedBox(height: context.designSystem.spacing.xs),
                 const GoogleLoginWidget(),{{/enable_social_logins}}
               ],

@@ -12,6 +12,13 @@ class AppleCredentialDataSource {
           AppleIDAuthorizationScopes.fullName,
         ],
       ).onError((error, stackTrace) {
-        throw CancelledErrorModel();
+        if (error is SignInWithAppleAuthorizationException && // if user don't have saved apple id we have unknown error code so we will use message with error 1000
+                error.message == CancelledErrorModel.cancelledAppleMessage ||
+            error is SignInWithAppleAuthorizationException && // if user have saved apple id we can get error code
+                error.code == AuthorizationErrorCode.canceled) {
+          throw CancelledErrorModel();
+        } else {
+          throw Exception(error);
+        }
       });
 }
