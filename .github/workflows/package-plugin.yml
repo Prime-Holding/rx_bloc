@@ -17,7 +17,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,8 +37,8 @@ jobs:
       with:
         build-root-directory: extensions/intellij/intellij_generator_plugin
         arguments: assemble
+    - name: Upload Artifact     
     - uses: actions/upload-artifact@v3
       with:
-        name: rxbloc_generator_plugin
-        path: /home/runner/work/rx_bloc/rx_bloc/extensions/intellij/intellij_generator_plugin/build/distributions/*.zip
+        path: './extensions/intellij/intellij_generator_plugin/build/distributions'
       
