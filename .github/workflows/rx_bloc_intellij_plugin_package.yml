@@ -6,13 +6,13 @@
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: Package IntelliJ RxBloC Plugin
+name: Rx BloC IntelliJ Plugin Package
 
 on:
   push:
     paths:
       - "extensions/intellij/intellij_generator_plugin"
-      - ".github/workflows/package-plugin.yml"
+      - ".github/workflows/rx_bloc_intellij_plugin_package.yml"
       
 
 jobs:
