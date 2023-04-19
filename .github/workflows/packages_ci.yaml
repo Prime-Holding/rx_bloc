@@ -13,7 +13,7 @@ on:
       - "packages/**"
       - "examples/**"    
     paths-ignore:
-     - "extensions/intellij/intellij_generator_plugin"
+     - "extensions/intellij/intellij_generator_plugin/*"
      - ".github/workflows/rx_bloc_intellij_plugin_package.yml"
 
 jobs:
