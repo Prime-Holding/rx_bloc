@@ -12,7 +12,7 @@ on:
   push:
     paths:
       - "extensions/intellij/intellij_generator_plugin/**"
-      - ".github/workflows/rx_bloc_intellij_plugin_package.yml"
+      - ".github/workflows/build_rx_bloc_intellij_plugin.yml"
       
 
 jobs:
