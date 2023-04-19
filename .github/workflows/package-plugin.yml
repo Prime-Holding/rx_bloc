@@ -41,9 +41,9 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         build-root-directory: extensions/intellij/intellij_generator_plugin
-        arguments: clean assemble
+        arguments: assemble
     - uses: actions/upload-artifact@v3
       with:
         name: rxbloc_generator_plugin
-        path: build/distributions/
+        path: extensions/intellij/intellij_generator_plugin/build/distributions/
       
