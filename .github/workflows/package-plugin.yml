@@ -45,5 +45,5 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: rxbloc_generator_plugin
-        path: extensions/intellij/intellij_generator_plugin/build/distributions/
+        path: build/distributions/
       
