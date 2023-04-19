@@ -5,11 +5,18 @@
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: Package IntelliJ RxBloC Plugin
+name: Test IntelliJ RxBloC Plugin
 
 on:
-  release:
-    types: [created]
+  push:
+    paths:
+      - "extensions/intellij/intellij_generator_plugin"
+      - ".github/workflows/IntelliJ_Plugin_CI.yml"
+      
+  pull_request:
+    paths:
+      - "extensions/intellij/intellij_generator_plugin"
+      - ".github/workflows/IntelliJ_Plugin_CI.yml"
 
 jobs:
   build:
@@ -33,15 +40,4 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         working-directory: extensions/intellij/intellij_generator_plugin
-        arguments: clean assemble
-
-    # commented until verified that building is workiing
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    #- name: Publish to GitHub Packages
-    #  uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-    #  with:
-    #    arguments: publish
-    #  env:
-    #    USERNAME: ${{ github.actor }}
-    #    TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        arguments: test
