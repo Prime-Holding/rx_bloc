@@ -38,7 +38,7 @@ jobs:
         build-root-directory: extensions/intellij/intellij_generator_plugin
         arguments: assemble
     - name: Upload Artifact     
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         path: './extensions/intellij/intellij_generator_plugin/build/distributions'
       
