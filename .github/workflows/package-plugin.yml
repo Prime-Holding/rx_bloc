@@ -36,10 +36,10 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         build-root-directory: extensions/intellij/intellij_generator_plugin
-        arguments: assemble
+        arguments: build --no-daemon
     - name: Upload Artifact     
       uses: actions/upload-artifact@v3
       with:
         name: rx_bloc_plugin
-        path: './build/distributions/'
+        path: build/distributions
       
