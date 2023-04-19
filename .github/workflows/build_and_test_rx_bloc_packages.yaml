@@ -1,4 +1,4 @@
-name: Packages CI
+name: "Build and Test rx_bloc packages "
 
 on:
   push:
