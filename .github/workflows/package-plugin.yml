@@ -40,7 +40,7 @@ jobs:
         arguments: assemble
         
     - name: Zip file 
-      run:  tar -cvf rxbloc_plugin.tar build/distributions/*
+      run:  tar -cvf rxbloc_plugin.tar extensions/intellij/intellij_generator_plugin/build/distributions/*
      
       
     - uses: actions/upload-artifact@v3
