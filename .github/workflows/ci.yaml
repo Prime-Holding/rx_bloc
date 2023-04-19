@@ -7,11 +7,11 @@ on:
       - "packages/**"
       - "examples/**"
 
-  pull_request:
-    paths:
-      - ".github/workflows/ci.yaml"
-      - "packages/**"
-      - "examples/**"
+#   pull_request:
+#     paths:
+#       - ".github/workflows/ci.yaml"
+#       - "packages/**"
+#       - "examples/**"
 
 jobs:
   examples:
