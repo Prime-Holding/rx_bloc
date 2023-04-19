@@ -4,6 +4,7 @@ import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../lib_auth/models/auth_token_model.dart';
 import '../data_sources/google_auth_data_source.dart';
 import '../data_sources/google_credential_data_source.dart';
+import '../models/cancelled_error_model.dart';
 import '../models/google_auth_request_model.dart';
 import '../models/google_credentials_model.dart';
 
@@ -28,5 +29,7 @@ class GoogleAuthRepository {
         final credentials =
             await _googleCredentialDataSource.getUsersGoogleCredential();
         return GoogleCredentialsModel.fromGoogleCredentials(credentials!);
+      }).onError((error, stackTrace) {
+        throw CancelledErrorModel();
       });
 }

@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import '../models/cancelled_error_model.dart';
 
 import '../models/facebook_auth_request_model.dart';
 
@@ -17,7 +18,9 @@ class FacebookCredentialDataSource {
     );
     final userInfo = await FacebookAuth.instance.getUserData(
       fields: 'email,name,picture,birthday,gender,link',
-    );
+    ).onError((error, stackTrace) {
+throw CancelledErrorModel();
+});
     return FacebookAuthRequestModel(
       email: userInfo['email'],
       facebookToken: result.accessToken!.token,

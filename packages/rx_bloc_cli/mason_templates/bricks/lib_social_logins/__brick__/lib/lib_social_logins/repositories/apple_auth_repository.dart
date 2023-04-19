@@ -22,7 +22,7 @@ class AppleAuthRepository {
           {required AppleCredentialModel credentials}) =>
       _errorMapper.execute(
         () => _appleAuthDataSource.authenticate(
-          AppleAuthRequestModel.fromAppleCredentials(credentials!),
+          AppleAuthRequestModel.fromAppleCredentials(credentials),
         ),
       );
 
