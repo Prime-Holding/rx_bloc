@@ -14,10 +14,6 @@ on:
       - "extensions/intellij/intellij_generator_plugin"
       - ".github/workflows/package-plugin.yml"
       
-  pull_request:
-    paths:
-      - "extensions/intellij/intellij_generator_plugin"
-      - ".github/workflows/package-plugin.yml"
 
 jobs:
   build:
@@ -45,5 +41,5 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: rxbloc_generator_plugin
-        path: extensions/intellij/intellij_generator_plugin/build/distributions/
+        path: /home/runner/work/rx_bloc/rx_bloc/extensions/intellij/intellij_generator_plugin/build/distributions/
       
