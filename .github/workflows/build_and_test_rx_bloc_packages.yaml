@@ -7,14 +7,14 @@ on:
       - "packages/**"
       - "examples/**"
 
-  pull_request:
-    paths:
-      - ".github/workflows/ci.yaml"
-      - "packages/**"
-      - "examples/**"    
-    paths-ignore:
-     - "extensions/intellij/intellij_generator_plugin/**"
-     - ".github/workflows/build_rx_bloc_intellij_plugin.yml"
+#   pull_request:
+#     paths:
+#       - ".github/workflows/ci.yaml"
+#       - "packages/**"
+#       - "examples/**"    
+#     paths-ignore:
+#      - "extensions/intellij/intellij_generator_plugin/**"
+#      - ".github/workflows/build_rx_bloc_intellij_plugin.yml"
 
 jobs:
   examples:
