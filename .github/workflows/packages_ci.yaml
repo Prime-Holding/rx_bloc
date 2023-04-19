@@ -3,7 +3,7 @@ name: Packages CI
 on:
   push:
     paths:
-      - ".github/workflows/ci.yaml"
+      - ".github/workflows/packages_ci.yaml"
       - "packages/**"
       - "examples/**"
 
