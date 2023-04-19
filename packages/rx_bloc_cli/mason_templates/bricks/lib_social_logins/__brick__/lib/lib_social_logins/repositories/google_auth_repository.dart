@@ -29,12 +29,10 @@ class GoogleAuthRepository {
         final credentials =
             await _googleCredentialDataSource.getUsersGoogleCredential();
 
-        return GoogleCredentialsModel.fromGoogleCredentials(credentials!);
-      }).onError((error, stackTrace) {
-        if (error.toString() == CancelledErrorModel.googleUserDataEmpty) {
+        if (credentials == null) {
           throw CancelledErrorModel();
-        } else {
-          throw Exception(error);
         }
+
+        return GoogleCredentialsModel.fromGoogleCredentials(credentials);
       });
 }

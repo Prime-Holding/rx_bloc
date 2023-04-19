@@ -48,15 +48,21 @@ class SocialLoginBloc extends $SocialLoginBloc {
   ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
       .throttleTime(const Duration(seconds: 1))
       .switchMap(
-        (_) => _socialLoginService
-            .login()
-            .then((_) => true)
-            .catchError((error) => error is! CancelledErrorModel)
-            .asResultStream(),
+        (_) => _login().asResultStream(),
       )
       .setResultStateHandler(this)
       .whereSuccess()
       .emitAuthenticatedToCoordinator(_coordinatorBloc)
       .startWith(false)
       .publish();
+
+  Future<bool> _login() async {
+    try {
+      await _socialLoginService.login();
+    } on CancelledErrorModel catch (_) {
+      return false;
+    }
+
+    return true;
+  }
 }
