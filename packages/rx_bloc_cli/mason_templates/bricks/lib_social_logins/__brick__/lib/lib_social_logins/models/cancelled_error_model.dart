@@ -10,5 +10,6 @@ class CancelledErrorModel extends ErrorModel {
       'The operation couldn’t be completed. (com.facebook.sdk.core error 8.)';
   static const String facebookFailed = 'FAILED';
 
-  static String googleUserCancelled = 'sign_in_canceled';
+  static String googleUserDataEmpty =
+      'Null check operator used on a null value';
 }
