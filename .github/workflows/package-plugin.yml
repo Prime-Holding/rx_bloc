@@ -33,9 +33,9 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Build with Gradle
-      run: /home/runner/work/extensions/intellij/intellij_generator_plugin/gradlew build --no-daemon
+      run: /home/runner/work/rx_bloc/extensions/intellij/intellij_generator_plugin/gradlew build --no-daemon
     - name: Upload Artifact     
       uses: actions/upload-artifact@v2
       with:
         name: rx_bloc_plugin
-        path: /home/runner/work/extensions/intellij/intellij_generator_plugin/build/distributions/*.zip
+        path: /home/runner/work/rx_bloc/extensions/intellij/intellij_generator_plugin/build/distributions/*.zip
