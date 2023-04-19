@@ -38,7 +38,7 @@ jobs:
         build-root-directory: extensions/intellij/intellij_generator_plugin
         arguments: build --no-daemon
     - name: Upload Artifact     
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: rx_bloc_plugin
         path: extensions/intellij/intellij_generator_plugin/build/distributions
