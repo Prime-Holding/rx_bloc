@@ -3,7 +3,7 @@ name: Packages CI
 on:
   push:
     paths:
-      - ".github/workflows/packages_ci.yaml"
+      - ".github/workflows/ci_rx_bloc_packages.yaml"
       - "packages/**"
       - "examples/**"
 
@@ -14,7 +14,7 @@ on:
       - "examples/**"    
     paths-ignore:
      - "extensions/intellij/intellij_generator_plugin/**"
-     - ".github/workflows/rx_bloc_intellij_plugin_package.yml"
+     - ".github/workflows/build_rx_bloc_intellij_plugin.yml"
 
 jobs:
   examples:
