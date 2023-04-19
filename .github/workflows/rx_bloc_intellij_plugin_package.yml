@@ -11,7 +11,7 @@ name: Rx BloC IntelliJ Plugin Package
 on:
   push:
     paths:
-      - "extensions/intellij/intellij_generator_plugin/*"
+      - "extensions/intellij/intellij_generator_plugin/**"
       - ".github/workflows/rx_bloc_intellij_plugin_package.yml"
       
 
