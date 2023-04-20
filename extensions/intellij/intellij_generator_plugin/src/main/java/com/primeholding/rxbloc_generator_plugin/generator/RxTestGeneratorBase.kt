@@ -153,24 +153,35 @@ abstract class RxTestGeneratorBase(
     private fun generateBlocStatesWhenMock(): String {
         val sb = StringBuilder()
         bloc.stateVariableNames.forEachIndexed { index, it ->
-            sb.append("\n")
-            sb.append("  when(statesMock.${it}).thenAnswer(\n")
-
-            if (bloc.stateVariableTypes[index] == "void") {
-                if (bloc.stateIsConnectableStream[index]) {
-                    sb.append("    (_) => const Stream<${bloc.stateVariableTypes[index]}>.empty().publish(),\n")
-                } else {
-                    sb.append("    (_) =>  const Stream.empty(),\n")
+            if (bloc.stateIsConnectableStream[index]) {
+                sb.append("  final ${it}State = ")
+                if (bloc.stateVariableTypes[index] != "void") {
+                    sb.append("(${it} != null\n")
+                    sb.append("          ? Stream.value(${it})\n")
+                    sb.append("          : ")
                 }
+                sb.append("const Stream<${bloc.stateVariableTypes[index]}>.empty()")
+                if (bloc.stateVariableTypes[index] != "void") {
+                    sb.append(")\n    ")
+                }
+                sb.append(".publishReplay(maxSize: 1)\n")
+                sb.append("    ..connect();\n")
             } else {
-                if (bloc.stateIsConnectableStream[index]) {
-                    sb.append("    (_) => $it != null ? Stream.value(${it}).publish() : const Stream<${bloc.stateVariableTypes[index]}>.empty().publish(),\n")
-                } else {
-                    sb.append("    (_) => $it != null ? Stream.value(${it}) : const Stream.empty(),\n")
+                sb.append("\n")
+                sb.append("  final ${it}State = ")
+
+                if (bloc.stateVariableTypes[index] != "void") {
+                    sb.append(" $it != null\n")
+                    sb.append("    ? Stream.value(${it}).shareReplay(maxSize: 1)\n")
+                    sb.append("    : ")
                 }
+                sb.append("const Stream<${bloc.stateVariableTypes[index]}>.empty();\n")
+                sb.append("\n")
             }
-            //the value could be derived from the state if it gets parsed, (or at least for the common data types).
-            sb.append("  );\n")
+        }
+        sb.append("\n")
+        bloc.stateVariableNames.forEach { it ->
+            sb.append("  when(statesMock.${it}).thenAnswer((_) => ${it}State);\n")
         }
         return sb.toString()
     }
