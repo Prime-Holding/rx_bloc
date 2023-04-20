@@ -1,4 +1,3 @@
-{{#enable_patrol_integration_tests}}
 package {{domain_name}}.{{organization_name}}.{{project_name}}; 
 
 import org.junit.Rule;
@@ -11,4 +10,3 @@ public class MainActivityTest {
     @Rule
     public PatrolTestRule<MainActivity> rule = new PatrolTestRule<>(MainActivity.class);
 }
-{{/enable_patrol_integration_tests}}

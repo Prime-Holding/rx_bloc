@@ -92,7 +92,7 @@ class CreateCommand extends Command<int> {
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
   final _socialLoginsString = 'enable-social-logins';
   final _changeLanguageString = 'enable-change-language';
-  final _patrolTestsString = 'enable-patrol-integration-tests';
+  final _patrolTestsString = 'enable-patrol';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -252,7 +252,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
-        'enable_patrol_integration_tests': arguments.enablePatrolTests,
+        'enable_patrol': arguments.enablePatrolTests,
       },
     );
 

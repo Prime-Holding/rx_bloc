@@ -10,6 +10,6 @@ dart run rx_bloc_cli create \
   --enable-feature-widget-toolkit=true \
   --enable-social-logins=true \
   --enable-change-language=true \
-  --enable-patrol-integration-tests=true \
+  --enable-patrol=true \
   example/test_app
 cp example/test_app/README.md example/
