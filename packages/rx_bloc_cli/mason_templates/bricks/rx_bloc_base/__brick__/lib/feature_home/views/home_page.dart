@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
         child: child,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        key: K.bottomNavigationBarKey,
+        key: K.bottomNavigationBar,
         type: BottomNavigationBarType.fixed,
         currentIndex: _getCurrentIndex(list, router),
         onTap: (index) =>

@@ -26,7 +26,7 @@ class CounterPage extends StatelessWidget {
             RxLoadingBuilder<CounterBlocType>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, isLoading, tag, bloc) => UpdateButton(
-                key: K.counterReloadKey,
+                key: K.counterReload,
                 isActive: !isLoading,
                 onPressed: () => bloc.events.reload(),
               ),
@@ -43,7 +43,7 @@ class CounterPage extends StatelessWidget {
                     _buildCount(context, countState),
               ),
               AppErrorModalWidget<CounterBlocType>(
-                key: K.counterErrorKey,
+                key: K.counterError,
                 errorState: (bloc) => bloc.states.errors,
               ),
               AppErrorModalWidget<UserAccountBlocType>(
@@ -59,7 +59,7 @@ class CounterPage extends StatelessWidget {
       snapshot.hasData
           ? Text(
               snapshot.data!.toString(),
-              key: K.counterCountKey,
+              key: K.counterCount,
               style: context.designSystem.typography.counterText,
             )
           : Text(
@@ -74,8 +74,8 @@ class CounterPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ActionButton(
-              floatingActionButtonKey: K.counterIncrementKey,
-              appLoadingIndicatorKey: K.appLoadingIndicatorIncrementKey,
+              floatingActionButtonKey: K.counterIncrement,
+              appLoadingIndicatorKey: K.appLoadingIndicatorIncrement,
               icon: Icon(context.designSystem.icons.plusSign),
               tooltip: context.l10n.featureCounter.increment,
               onPressed: isLoading ? null : bloc.events.increment,
@@ -84,8 +84,8 @@ class CounterPage extends StatelessWidget {
             ),
             SizedBox(width: context.designSystem.spacing.m),
             ActionButton(
-              floatingActionButtonKey: K.counterDecrementKey,
-              appLoadingIndicatorKey: K.appLoadingIndicatorDecrementKey,
+              floatingActionButtonKey: K.counterDecrement,
+              appLoadingIndicatorKey: K.appLoadingIndicatorDecrement,
               icon: Icon(context.designSystem.icons.minusSign),
               tooltip: context.l10n.featureCounter.decrement,
               onPressed: isLoading ? null : bloc.events.decrement,

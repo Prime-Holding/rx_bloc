@@ -1,64 +1,45 @@
-import 'package:flutter/material.dart';
-import 'package:testapp/base/common_ui_components/action_button.dart';
-import 'package:testapp/keys.dart';
 import 'package:testapp/main.dart' as app;
 
-import '../common.dart';
-import '../utils/counter_helper.dart';
+import '../main/base/common.dart';
+import '../main/pages/counter_page.dart';
+import '../main/pages/home_page.dart';
+import '../main/pages/login_page.dart';
+import '../main/pages/profile_page.dart';
+import '../main/steps_utils/counter_utils.dart';
 
 void main() {
+  LoginPagePatrol loginPagePatrol;
+  HomePagePatrol homePagePatrol;
+  CounterPagePatrol counterPagePatrol;
+  ProfilePagePatrol profilePagePatrol;
   patrol(
-    'Test weather counter feature displays appropriate states',
-    ($) async {
+    'Test flow of user login in, navigating to counter page,'
+    'incrementing counter and expecting appropriate states,'
+    'decrementing counter and expecting appropriate states,'
+    'and navigating to the profile page and logging out',
+    (tester) async {
       app.main();
-      final CounterHelper inc = CounterHelper($);
+      final CounterUtils counterUtils = CounterUtils(tester);
+      loginPagePatrol = LoginPagePatrol(tester);
+      homePagePatrol = HomePagePatrol(tester);
+      counterPagePatrol = CounterPagePatrol(tester);
+      profilePagePatrol = ProfilePagePatrol(tester);
       //Log in
-      await $(K.loginEmailKey).enterText('admin@email.com');
-      await $(K.loginPasswordKey).enterText('123456');
-      await $(K.loginButtonKey).tap();
-      expect($(K.bottomNavigationBarKey), findsOneWidget);
-
+      await counterUtils.loginAction(loginPagePatrol);
       //Navigate to counter page
-      await $(find.byIcon(Icons.calculate)).tap();
-      await $.pumpAndSettle();
-
-      //Get value of the counter
-      int textValue = int.parse($(K.counterCountKey).text!);
-      expect(int.parse($(K.counterCountKey).text!), equals(textValue));
-
+      await homePagePatrol.tapBtnCalcPage();
       //Increment counter 5 times
-      for (int i = 0; i < 5; i++) {
-        await inc.tapActionButton(
-          find.byType(ActionButton),
-          K.counterIncrementKey,
-          K.appLoadingIndicatorIncrementKey,
-          ++textValue,
-        );
-      }
+      await counterUtils.incrementAction(counterPagePatrol);
       //Show error modal on increment
-      await inc.showErrorModalSheet(K.counterIncrementKey);
-
-      //Decrement 5 times
-      for (int i = 0; i < 5; i++) {
-        await inc.tapActionButton(
-          find.byType(ActionButton),
-          K.counterDecrementKey,
-          K.appLoadingIndicatorDecrementKey,
-          --textValue,
-        );
-      }
-      //Show error modal on decrement
-      await inc.showErrorModalSheet(K.counterDecrementKey);
-
+      await counterUtils.showErrorModalSheetIncrement(counterPagePatrol);
+      //Decrement counter 5 times
+      await counterUtils.decrementAction(counterPagePatrol);
+      //Show error modal on Decrement
+      await counterUtils.showErrorModalSheetDecrement(counterPagePatrol);
       //Tap reload button and expect same counter value
-      await $(K.counterReloadKey).tap();
-      await $.pumpAndSettle();
-      expect(int.parse($(K.counterCountKey).text!), equals(textValue));
-
+      await counterUtils.reloadCounter(counterPagePatrol);
       //Logout
-      await $.tap(find.byIcon(Icons.account_box));
-      await $.tap(find.byIcon(Icons.logout));
-      expect($(K.loginButtonKey), findsOneWidget);
+      await counterUtils.logout(homePagePatrol, profilePagePatrol);
     },
   );
 }

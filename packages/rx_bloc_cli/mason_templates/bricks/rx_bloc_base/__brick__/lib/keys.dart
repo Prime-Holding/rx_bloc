@@ -5,20 +5,19 @@ typedef K = Keys;
 class Keys {
   const Keys();
 
-  static const loginButtonKey = Key('loginButtonKey');
-  static const loginEmailKey = Key('loginEmailKey');
-  static const loginPasswordKey = Key('loginPasswordKey');  
-  static const bottomNavigationBarKey = Key('bottomNavigationBarKey');
-{{#enable_feature_counter}}
-  static const counterCountKey = Key('counterCountKey');
-  static const counterIncrementKey = Key('counterIncrementKey');
-  static const appLoadingIndicatorIncrementKey =
-      Key('appLoadingIndicatorIncrementKey');
-  static const counterDecrementKey = Key('counterDecrementKey');
-  static const appLoadingIndicatorDecrementKey =
-      Key('appLoadingIndicatorDecrementKey');
-  static const counterReloadKey = Key('counterReloadKey');
-
-  static const counterErrorKey = Key('counterErrorKey');
+  static const loginButton = Key('loginButton');
+  static const loginEmail = Key('loginEmail');
+  static const loginPassword = Key('loginPassword');
+  {{#enable_feature_counter}}
+  static const counterCount = Key('counterCount');
+  static const counterIncrement = Key('counterIncrement');
+  static const appLoadingIndicatorIncrement =
+      Key('appLoadingIndicatorIncrement');
+  static const counterDecrement = Key('counterDecrement');
+  static const appLoadingIndicatorDecrement =
+      Key('appLoadingIndicatorDecrement');
+  static const counterReload = Key('counterReload');
+  static const bottomNavigationBar = Key('bottomNavigationBar');
+  static const counterError = Key('counterErrorKey');
 {{/enable_feature_counter}}
 }
