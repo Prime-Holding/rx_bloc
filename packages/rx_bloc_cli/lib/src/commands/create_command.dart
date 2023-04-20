@@ -78,7 +78,7 @@ class CreateCommand extends Command<int> {
         _patrolTestsString,
         help: 'Enables Patrol integration tests for the project',
         allowed: ['true', 'false'],
-        defaultsTo: 'true',
+        defaultsTo: 'false',
       );
   }
 

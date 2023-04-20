@@ -45,8 +45,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName {{#enable_patrol_integration_tests}}
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol_integration_tests}}
+        versionName flutterVersionName
     }
 
     signingConfigs {
@@ -81,14 +80,16 @@ android {
             applicationIdSuffix ".stag"
             versionNameSuffix "-stag"{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
-            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol_integration_tests}}
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol_integration_tests}}
         }        
         development {
             dimension "default"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
-            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol_integration_tests}}
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol_integration_tests}}
         }
     }
 
