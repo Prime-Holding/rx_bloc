@@ -362,7 +362,7 @@ productFlavors{
 
 
 `Note:` Some requirements to be able to run application with this version of *facebook auth* is
-- **flutter_secure_storage** package must be 8.0.0 version
+- **flutter_secure_storage** package must be at least 8.0.0 version
 - for iOS in ***Podfile*** platform must be at least 12
 - for Android ***minSdkVersion*** must be at least 21.
 

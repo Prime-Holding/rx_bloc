@@ -1,4 +1,4 @@
-{{> licence.dart }}
+{{> licence.dart}}
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../lib_auth/models/auth_token_model.dart';
@@ -27,6 +27,7 @@ class GoogleAuthRepository {
       _errorMapper.execute(() async {
         final credentials =
             await _googleCredentialDataSource.getUsersGoogleCredential();
-        return GoogleCredentialsModel.fromGoogleCredentials(credentials!);
+
+        return GoogleCredentialsModel.fromGoogleCredentials(credentials);
       });
 }
