@@ -1,3 +1,5 @@
+{{> licence.dart}}
+
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../lib_auth/models/auth_token_model.dart';
 import '../data_sources/facebook_auth_data_source.dart';

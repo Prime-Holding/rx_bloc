@@ -12,7 +12,6 @@ abstract class SocialLoginService {
 
   Future<AuthTokenModel> login() async {
     final authToken = await authenticate();
-
     // Save response tokens
     await _userAccountService.saveTokens(authToken);
 
