@@ -45,3 +45,8 @@ dart run mason_cli:mason bundle \
   -t dart \
   -o lib/src/templates/ \
   mason_templates/bricks/lib_social_logins
+
+dart run mason_cli:mason bundle \
+  -t dart \
+  -o lib/src/templates/ \
+  mason_templates/bricks/patrol_integration_tests

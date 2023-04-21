@@ -8,6 +8,7 @@ class Keys {
   static const loginButton = Key('loginButton');
   static const loginEmail = Key('loginEmail');
   static const loginPassword = Key('loginPassword');
+  static const bottomNavigationBar = Key('bottomNavigationBar');
   {{#enable_feature_counter}}
   static const counterCount = Key('counterCount');
   static const counterIncrement = Key('counterIncrement');
@@ -17,7 +18,6 @@ class Keys {
   static const appLoadingIndicatorDecrement =
       Key('appLoadingIndicatorDecrement');
   static const counterReload = Key('counterReload');
-  static const bottomNavigationBar = Key('bottomNavigationBar');
   static const counterError = Key('counterErrorKey');
 {{/enable_feature_counter}}
 }

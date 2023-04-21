@@ -1,3 +1,4 @@
+{{> licence.dart }}
 package {{domain_name}}.{{organization_name}}.{{project_name}}; 
 
 import org.junit.Rule;

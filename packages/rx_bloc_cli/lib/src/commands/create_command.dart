@@ -103,6 +103,7 @@ class CreateCommand extends Command<int> {
   final _libAuthBundle = libAuthBundle;
   final _libSocialLoginsBundle = libSocialLoginsBundle;
   final _libChangeLanguageBundle = libChangeLanguageBundle;
+  final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -226,6 +227,10 @@ class CreateCommand extends Command<int> {
     // Add Change Language brick _bundle when needed
     if (arguments.enableChangeLanguage) {
       _bundle.files.addAll(_libChangeLanguageBundle.files);
+    }
+    // Add Patrol tests brick to _bundle when needed
+    if (arguments.enablePatrolTests) {
+      _bundle.files.addAll(_patrolIntegrationTestsBundle.files);
     }
 
     //Add lib_route to _bundle

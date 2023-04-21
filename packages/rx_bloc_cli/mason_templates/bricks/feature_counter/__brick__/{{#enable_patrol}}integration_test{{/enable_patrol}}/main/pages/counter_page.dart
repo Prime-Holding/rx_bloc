@@ -1,53 +1,50 @@
+{{> licence.dart }}
+
 import 'package:testapp/keys.dart';
+import 'package:widget_toolkit/ui_components.dart';
 
-import '../base/common.dart';
-import 'base_page.dart';
+import '../base/base_page.dart';
+import '../configuration/build_app.dart';
 
-class CounterPagePatrol extends BasePagePatrol {
-  CounterPagePatrol(PatrolTester tester) : super(tester);
+class CounterPage extends BasePage {
+  CounterPage(PatrolTester $) : super($);
 
-  final Finder locTxtCount = find.byKey(K.counterCount);
-  final Finder locBtnIncrement = find.byKey(K.counterIncrement);
-  final Finder locSpinnerIncrement = find.byKey(K.appLoadingIndicatorIncrement);
-  final Finder locBtnDecrement = find.byKey(K.counterDecrement);
-  final Finder locSpinnerDecrement = find.byKey(K.appLoadingIndicatorDecrement);
-  final Finder locBtnReload = find.byKey(K.counterReload);
-  final Finder locMdlError = find.byKey(K.counterError);
-  final Finder locBtnError = find.byType(SmallButton);
+  PatrolFinder get locCountText => $(K.counterCount);
+  PatrolFinder get locBtnError => $(SmallButton);
 
   Future<void> tapBtnIncrement() async {
-    await tapElement(locBtnIncrement, andSettle: false);
+    await $(K.counterIncrement).tap(andSettle: false);
   }
 
   Future<void> tapBtnDecrement() async {
-    await tapElement(locBtnDecrement, andSettle: false);
+    await $(K.counterDecrement).tap(andSettle: false);
   }
 
   Future<void> tapBtnReload() async {
-    await tapElement(locBtnReload);
+    await $(K.counterReload).tap();
   }
 
   Future<bool> isSpinnerIncrementDisplayed() async {
-    return isVisible(locSpinnerIncrement);
+    return isVisible($(K.appLoadingIndicatorIncrement));
   }
 
   Future<bool> isSpinnerDecrementDisplayed() async {
-    return isVisible(locSpinnerDecrement);
+    return isVisible($(K.appLoadingIndicatorDecrement));
   }
 
   Future<bool> isTextCountDisplayed() async {
-    return isVisible(locTxtCount);
+    return isVisible($(locCountText));
   }
 
   Future<bool> isModalErrorDisplayed() async {
-    return isDisplayed(locMdlError);
+    return isDisplayed($(K.counterError));
   }
 
   Future<int> getCounterValue() async {
-    return int.parse(tester(locTxtCount).text!);
+    return int.parse($(locCountText).text!);
   }
 
   Future<void> tapBtnError() async {
-    await tapElement(locBtnError);
+    await $(locBtnError).tap();
   }
 }

@@ -1,45 +1,39 @@
-import 'package:testapp/main.dart' as app;
+{{> licence.dart }}
 
-import '../main/base/common.dart';
-import '../main/pages/counter_page.dart';
-import '../main/pages/home_page.dart';
-import '../main/pages/login_page.dart';
-import '../main/pages/profile_page.dart';
-import '../main/steps_utils/counter_utils.dart';
+import '../main/configuration/build_app.dart';
+import '../main/configuration/patrol_base_config.dart';
+import '../main/steps_utils/counter_page_steps.dart';
+import '../main/steps_utils/home_page_steps.dart';
+import '../main/steps_utils/login_page_steps.dart';
+import '../main/steps_utils/profile_page_steps.dart';
 
 void main() {
-  LoginPagePatrol loginPagePatrol;
-  HomePagePatrol homePagePatrol;
-  CounterPagePatrol counterPagePatrol;
-  ProfilePagePatrol profilePagePatrol;
-  patrol(
+  final patrolBaseConfig = PatrolBaseConfig();
+  patrolBaseConfig.patrol(
     'Test flow of user login in, navigating to counter page,'
     'incrementing counter and expecting appropriate states,'
     'decrementing counter and expecting appropriate states,'
     'and navigating to the profile page and logging out',
-    (tester) async {
-      app.main();
-      final CounterUtils counterUtils = CounterUtils(tester);
-      loginPagePatrol = LoginPagePatrol(tester);
-      homePagePatrol = HomePagePatrol(tester);
-      counterPagePatrol = CounterPagePatrol(tester);
-      profilePagePatrol = ProfilePagePatrol(tester);
+    ($) async {
+      BuildApp app = BuildApp($);
+      await app.buildApp();
+
       //Log in
-      await counterUtils.loginAction(loginPagePatrol);
+      await LoginPageSteps.loginAction($);
       //Navigate to counter page
-      await homePagePatrol.tapBtnCalcPage();
+      await HomePageSteps.navigateToCounterPage($);
       //Increment counter 5 times
-      await counterUtils.incrementAction(counterPagePatrol);
+      await CounterPageSteps.incrementAction($);
       //Show error modal on increment
-      await counterUtils.showErrorModalSheetIncrement(counterPagePatrol);
+      await CounterPageSteps.showErrorModalSheetIncrement($);
       //Decrement counter 5 times
-      await counterUtils.decrementAction(counterPagePatrol);
+      await CounterPageSteps.decrementAction($);
       //Show error modal on Decrement
-      await counterUtils.showErrorModalSheetDecrement(counterPagePatrol);
+      await CounterPageSteps.showErrorModalSheetDecrement($);
       //Tap reload button and expect same counter value
-      await counterUtils.reloadCounter(counterPagePatrol);
+      await CounterPageSteps.reloadCounter($);
       //Logout
-      await counterUtils.logout(homePagePatrol, profilePagePatrol);
+      await ProfilePageSteps.logout($);
     },
   );
 }
