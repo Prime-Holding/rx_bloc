@@ -27,7 +27,7 @@ jobs:
         run: bin/compile_bundles.sh
       - name: Dart format
         working-directory: packages/rx_bloc_cli
-        run: dart format .
+        run: dart format lib
       - name: Publish
         working-directory: packages/rx_bloc_cli
         run: dart pub publish --force

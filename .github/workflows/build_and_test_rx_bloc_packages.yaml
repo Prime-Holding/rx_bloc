@@ -1,17 +1,17 @@
-name: CI
+name: "Build and Test rx_bloc packages "
 
 on:
   push:
     paths:
-      - ".github/workflows/ci.yaml"
+      - ".github/workflows/build_and_test_rx_bloc_packages.yaml"
       - "packages/**"
       - "examples/**"
-
+     
   pull_request:
     paths:
       - ".github/workflows/ci.yaml"
       - "packages/**"
-      - "examples/**"
+      - "examples/**"    
 
 jobs:
   examples:
