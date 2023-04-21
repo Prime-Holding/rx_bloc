@@ -91,9 +91,22 @@
                 group-id="NewGroup"
                 anchor="first"/>
         </action>
+        <action class="com.primeholding.rxbloc_generator_plugin.action.GenerateServiceMockAction"
+                description="Generate a new Service Mock"
+                id="GenerateServiceMockAction"
+                icon="/icons/rx_bloc.png"
+                text="Service Mock">
+            <add-to-group
+                    group-id="NewGroup"
+                    anchor="first"/>
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>com.primeholding.rxbloc_generator_plugin.intention_action.GenerateModelJsonFactoryAction</className>
+            <category>JSON</category>
+        </intentionAction>
         <intentionAction>
             <className>com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithBlocBuilderIntentionAction</className>
             <category>RxBloc</category>
