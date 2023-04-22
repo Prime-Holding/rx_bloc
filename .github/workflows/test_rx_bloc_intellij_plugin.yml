@@ -10,13 +10,13 @@ name: Test IntelliJ RxBloC Plugin
 on:
   push:
     paths:
-      - "extensions/intellij/intellij_generator_plugin"
-      - ".github/workflows/IntelliJ_Plugin_CI.yml"
+      - "extensions/intellij/intellij_generator_plugin/**"
+      - ".github/workflows/test_rx_bloc_intellij_plugin.yml"
       
   pull_request:
     paths:
-      - "extensions/intellij/intellij_generator_plugin"
-      - ".github/workflows/IntelliJ_Plugin_CI.yml"
+      - "extensions/intellij/intellij_generator_plugin/**"
+      - ".github/workflows/test_rx_bloc_intellij_plugin.yml"
 
 jobs:
   build:
