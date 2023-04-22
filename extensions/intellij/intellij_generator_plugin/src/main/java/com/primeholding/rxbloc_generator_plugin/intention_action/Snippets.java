@@ -8,7 +8,7 @@ public class Snippets {
     public static final String STATE_TYPE_SNIPPET_KEY = "StateType";
     public static final String STATE_SNIPPET_KEY = "someState";
 
-    static String getSnippet(SnippetType snippetType, String widget) {
+    public static String getSnippet(SnippetType snippetType, String widget) {
         switch (snippetType) {
             case RxBlocBuilder:
                 return blocBuilderSnippet(widget);
@@ -114,7 +114,7 @@ public class Snippets {
                 " buildLoading: (context, bloc) => \n" +
                 "   const CircularProgressIndicator(),\n" +
                 " buildError: (context, error, bloc) => \n" +
-                "   Text(error),\n" +
+                "   Text(error.toString()),\n" +
                 ")\n", BLOC_SNIPPET_KEY, STATE_TYPE_SNIPPET_KEY, STATE_SNIPPET_KEY, widget);
     }
 }

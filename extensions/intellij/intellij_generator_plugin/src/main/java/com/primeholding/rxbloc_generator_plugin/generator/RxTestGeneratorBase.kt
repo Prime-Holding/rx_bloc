@@ -144,7 +144,7 @@ abstract class RxTestGeneratorBase(
             sb.append("      act: (bloc) async {},\n")
             sb.append("      state: (bloc) => bloc.states.${it},\n")
             sb.append("      expect: []);\n")
-            sb.append("  });        \n")
+            sb.append("  });\n")
 
         }
         return sb.toString()
