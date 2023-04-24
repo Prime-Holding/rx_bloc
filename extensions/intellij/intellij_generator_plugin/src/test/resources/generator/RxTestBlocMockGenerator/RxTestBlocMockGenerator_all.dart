@@ -30,27 +30,27 @@ SampleBlocType sampleMockFactory({
 
 
   final state1State =  state1 != null
-    ? Stream.value(state1)
+    ? Stream.value(state1).shareReplay(maxSize: 1)
     : const Stream<String>.empty();
 
 
   final stateNullable1State =  stateNullable1 != null
-    ? Stream.value(stateNullable1)
+    ? Stream.value(stateNullable1).shareReplay(maxSize: 1)
     : const Stream<String?>.empty();
 
 
   final stateResult2State =  stateResult2 != null
-    ? Stream.value(stateResult2)
+    ? Stream.value(stateResult2).shareReplay(maxSize: 1)
     : const Stream<Result<String>>.empty();
 
 
   final stateListOfCustomTypeState =  stateListOfCustomType != null
-    ? Stream.value(stateListOfCustomType)
+    ? Stream.value(stateListOfCustomType).shareReplay(maxSize: 1)
     : const Stream<List<CustomType>>.empty();
 
 
   final statePaginatedResult3State =  statePaginatedResult3 != null
-    ? Stream.value(statePaginatedResult3)
+    ? Stream.value(statePaginatedResult3).shareReplay(maxSize: 1)
     : const Stream<PaginatedList<CustomType2>>.empty();
 
   final connectableStateState = (connectableState != null
