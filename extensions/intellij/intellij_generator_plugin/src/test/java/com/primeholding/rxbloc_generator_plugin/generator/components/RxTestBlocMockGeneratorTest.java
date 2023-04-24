@@ -14,7 +14,6 @@ public class RxTestBlocMockGeneratorTest extends BaseTestGenerator {
     public void testBlocWithAll() throws IOException {
         RxTestBlocMockGenerator rxBlocGenerator = new RxTestBlocMockGenerator(blockName(), projectName(), getWithAllBloc());
         String generate = rxBlocGenerator.generate().trim();
-        //TODO this needs to be pre-generated after merge with the latest fix
         File file = new File("src/test/resources/generator/RxTestBlocMockGenerator/RxTestBlocMockGenerator_all.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
         assertEquals(generate, inputRepoText);
