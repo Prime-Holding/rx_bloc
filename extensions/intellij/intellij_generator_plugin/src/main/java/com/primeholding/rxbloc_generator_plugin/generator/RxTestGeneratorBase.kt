@@ -172,7 +172,7 @@ abstract class RxTestGeneratorBase(
 
                 if (bloc.stateVariableTypes[index] != "void") {
                     sb.append(" $it != null\n")
-                    sb.append("    ? Stream.value(${it}).shareReplay(maxSize: 1)\n")
+                    sb.append("    ? Stream.value(${it})\n")
                     sb.append("    : ")
                 }
                 sb.append("const Stream<${bloc.stateVariableTypes[index]}>.empty();\n")

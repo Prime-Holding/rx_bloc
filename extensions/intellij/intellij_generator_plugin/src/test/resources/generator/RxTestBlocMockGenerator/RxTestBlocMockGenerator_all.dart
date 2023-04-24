@@ -26,33 +26,46 @@ SampleBlocType sampleMockFactory({
   when(blocMock.states).thenReturn(statesMock);
 
 
-  when(statesMock.state0void).thenAnswer(
-    (_) =>  const Stream.empty(),
-  );
+  final state0voidState = const Stream<void>.empty();
 
-  when(statesMock.state1).thenAnswer(
-    (_) => state1 != null ? Stream.value(state1) : const Stream.empty(),
-  );
 
-  when(statesMock.stateNullable1).thenAnswer(
-    (_) => stateNullable1 != null ? Stream.value(stateNullable1) : const Stream.empty(),
-  );
+  final state1State =  state1 != null
+    ? Stream.value(state1)
+    : const Stream<String>.empty();
 
-  when(statesMock.stateResult2).thenAnswer(
-    (_) => stateResult2 != null ? Stream.value(stateResult2) : const Stream.empty(),
-  );
 
-  when(statesMock.stateListOfCustomType).thenAnswer(
-    (_) => stateListOfCustomType != null ? Stream.value(stateListOfCustomType) : const Stream.empty(),
-  );
+  final stateNullable1State =  stateNullable1 != null
+    ? Stream.value(stateNullable1)
+    : const Stream<String?>.empty();
 
-  when(statesMock.statePaginatedResult3).thenAnswer(
-    (_) => statePaginatedResult3 != null ? Stream.value(statePaginatedResult3) : const Stream.empty(),
-  );
 
-  when(statesMock.connectableState).thenAnswer(
-    (_) => connectableState != null ? Stream.value(connectableState).publish() : const Stream<bool>.empty().publish(),
-  );
+  final stateResult2State =  stateResult2 != null
+    ? Stream.value(stateResult2)
+    : const Stream<Result<String>>.empty();
+
+
+  final stateListOfCustomTypeState =  stateListOfCustomType != null
+    ? Stream.value(stateListOfCustomType)
+    : const Stream<List<CustomType>>.empty();
+
+
+  final statePaginatedResult3State =  statePaginatedResult3 != null
+    ? Stream.value(statePaginatedResult3)
+    : const Stream<PaginatedList<CustomType2>>.empty();
+
+  final connectableStateState = (connectableState != null
+          ? Stream.value(connectableState)
+          : const Stream<bool>.empty())
+    .publishReplay(maxSize: 1)
+    ..connect();
+
+  when(statesMock.state0void).thenAnswer((_) => state0voidState);
+  when(statesMock.state1).thenAnswer((_) => state1State);
+  when(statesMock.stateNullable1).thenAnswer((_) => stateNullable1State);
+  when(statesMock.stateResult2).thenAnswer((_) => stateResult2State);
+  when(statesMock.stateListOfCustomType).thenAnswer((_) => stateListOfCustomTypeState);
+  when(statesMock.statePaginatedResult3).thenAnswer((_) => statePaginatedResult3State);
+  when(statesMock.connectableState).thenAnswer((_) => connectableStateState);
 
 
   return blocMock;
