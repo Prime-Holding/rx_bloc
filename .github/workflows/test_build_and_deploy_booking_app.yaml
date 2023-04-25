@@ -52,7 +52,7 @@ jobs:
         id: test_coverage_file
         working-directory: ${{ matrix.folder }}
         run: |
-          flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart'
+          flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
           if [ -s "/coverage/lcov.info" ]; then 
             echo "result=true" >> $GITHUB_OUTPUT ; 
           else 
