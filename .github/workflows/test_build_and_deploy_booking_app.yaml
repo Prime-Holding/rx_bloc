@@ -29,6 +29,8 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - run: dart --version
       - run: flutter --version
       - name: Install Dependencies
@@ -71,4 +73,4 @@ jobs:
     needs: test_app_with_coverage
     steps:
       - name: noop
-        run: echo 'noon'
+        run: echo 'noop'
