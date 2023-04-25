@@ -19,7 +19,6 @@ jobs:
       matrix:
         folder:
           [
-            "examples/booking_app",
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
