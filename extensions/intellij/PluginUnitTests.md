@@ -1,4 +1,4 @@
-### Unit Tests on The Plugin
+# Unit Tests on The Plugin
 
 ## Overview 
 
@@ -47,6 +47,9 @@ compare(RxBlocBuilder, "RxBlocBuilder<ProfileBlocType, ProfileData>(\n" +
 }
 assertEquals(result, replacement);
 ```
+
+## Guideline 
+
 The essential business logic of the plugins are String/Code transformations with different parameters or new code generators.
 
 - New Code Generators
