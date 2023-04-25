@@ -34,7 +34,9 @@ WriteCommandAction.runWriteCommandAction(e.project!!) {
    
 ## Simple messaging to the user
 
-The API for showing a [JOptionPane](https://docs.oracle.com/javase/7/docs/api/javax/swing/JOptionPane.html) messages is [com.intellij.openapi.ui.Messages](https://github.com/JetBrains/intellij-community/blob/master/platform/platform-api/src/com/intellij/openapi/ui/Messages.java)
+The API for showing a [JOptionPane](https://docs.oracle.com/javase/7/docs/api/javax/swing/JOptionPane.html) messages is [com.intellij.openapi.ui.Messages](https://github.com/JetBrains/intellij-community/blob/master/platform/platform-api/src/com/intellij/openapi/ui/Messages.java). Sample usage could be: 
 
-
+``` 
+Messages.showMessageDialog("Message","Title", null/*icon*/) 
+``` 
    
