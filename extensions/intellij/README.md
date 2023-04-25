@@ -1,5 +1,15 @@
 # RxBloc Plugin for IntelliJ and Android Studio
 
+This README is summary of the sub-documentations: 
+
+- [Getting Started](https://github.com/Prime-Holding/rx_bloc/blob/plugin-readme/extensions/intellij/GettingStarted.md) 
+- [Current Functionalities](https://github.com/Prime-Holding/rx_bloc/blob/plugin-readme/extensions/intellij/CurrentFunctionalities.md)
+- [Extracting Semantics From The Code](https://github.com/Prime-Holding/rx_bloc/blob/plugin-readme/extensions/intellij/ExtractingSemanticsFromTheCode.md)
+- [Implelement New Actions](https://github.com/Prime-Holding/rx_bloc/blob/plugin-readme/extensions/intellij/ImplelementNewActions.md)
+- [IntelliJ APIs](https://github.com/Prime-Holding/rx_bloc/blob/plugin-readme/extensions/intellij/IntelliJ_APIs.md)
+- [Plugin Unit Tests](https://github.com/Prime-Holding/rx_bloc/blob/plugin-readme/extensions/intellij/PluginUnitTests.md)
+
+
 ![dialog](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc/doc/asset/android_plugin.png)
 
 ## Introduction
