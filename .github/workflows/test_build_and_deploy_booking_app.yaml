@@ -1,22 +1,29 @@
 name: "Test, build and deploy Booking App"
 
+# Define local variables
+env:
+  CURRENT_WORKFLOW_PATH: ".github/workflows/test_build_and_deploy_booking_app.yaml"
+  PROJECT_PATH: "examples/booking_app"
+  APP_MIN_COVERAGE : 55
+
+# Define events when this workflow is triggered
 on:
   push:
     paths:
-      - ".github/workflows/build_test_and_deploy_booking_app.yaml"
-      - "examples/booking_app"
+      - $CURRENT_WORKFLOW_PATH
+      - $PROJECT_PATH
       
   pull_request:
     paths:
-      - ".github/workflows/build_test_and_deploy_booking_app.yaml"
-      - "examples/booking_app"
+      - $CURRENT_WORKFLOW_PATH
+      - $PROJECT_PATH
 
+# Define a list of jobs that will be executed with this workflow
 jobs:
   test_app_with_coverage:
     strategy:
       matrix:
-        folder: 
-          [ "examples/booking_app" ]
+        folder: [ $PROJECT_PATH ]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -44,13 +51,21 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
       - name: Remove unnecessary files
+        id: test_coverage_file
         working-directory: ${{ matrix.folder }}
-        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+        run: |
+          flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart'
+          if [ -s "/coverage/lcov.info" ]; then 
+            echo "result=true" >> $GITHUB_OUTPUT ; 
+          else 
+            echo "result=false" >> $GITHUB_OUTPUT ; 
+          fi
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v2
+        if: steps.test_coverage_file.outputs.result == 'true'
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
-          min_coverage: 55
+          min_coverage: $APP_MIN_COVERAGE
     
   # We'd most likely have two jobs: one for android and one for ios deployment
   deploy_app:
