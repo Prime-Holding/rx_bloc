@@ -1,0 +1,61 @@
+name: "Test, build and deploy Booking App"
+
+on:
+  push:
+    paths:
+      - ".github/workflows/build_test_and_deploy_booking_app.yaml"
+      - "examples/booking_app"
+      
+  pull_request:
+    paths:
+      - ".github/workflows/build_test_and_deploy_booking_app.yaml"
+      - "examples/booking_app"
+
+jobs:
+  test_app_with_coverage:
+    strategy:
+      matrix:
+        folder: 
+          [ "examples/booking_app" ]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - run: dart --version
+      - run: flutter --version
+      - name: Install Dependencies
+        working-directory: ${{ matrix.folder }}
+        run: |
+          flutter clean
+          flutter pub get
+      - name: Analyze
+        working-directory: ${{ matrix.folder }}
+        run: flutter analyze lib
+      - name: Run tests
+        working-directory: ${{ matrix.folder }}
+        run: |
+          if [ -d "test" ]; then
+            flutter test --coverage --exclude-tags=not-tests
+          fi
+      - name: Format coverage
+        working-directory: ${{ matrix.folder }}
+        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+      - name: Remove unnecessary files
+        working-directory: ${{ matrix.folder }}
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v2
+        with:
+          path: "${{ matrix.folder }}/coverage/lcov.info"
+          min_coverage: 55
+    
+  # We'd most likely have two jobs: one for android and one for ios deployment
+  deploy_app:
+    runs-on: ubuntu-latest
+    needs: test_app_with_coverage
+    steps:
+      - name: noop
+        run: echo 'noon'
