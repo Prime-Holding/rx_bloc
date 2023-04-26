@@ -68,6 +68,10 @@ jobs:
           min_coverage: $APP_MIN_COVERAGE
     
   deploy_android_app:
+    strategy:
+      matrix:
+        folder: [ "examples/booking_app" ]
+      fail-fast: false
     runs-on: ubuntu-latest
     needs: test_app_with_coverage
     steps:
