@@ -12,6 +12,7 @@ import '../templates/lib_change_language_bundle.dart';
 import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
+import '../templates/patrol_integration_tests_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
