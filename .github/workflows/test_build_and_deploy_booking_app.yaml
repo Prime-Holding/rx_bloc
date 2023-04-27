@@ -85,10 +85,25 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+      - name: Configure build
+        run: |
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" > android/key.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=../key.jks" >> android/key.properties
+          echo "${{ secrets.STORE_FILE_CONTENT }}" | base64 --decode > android/key.jks
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
       - name: Build android app
-        run: flutter build apk --release -t lib/main.dart
+        run: flutter build appbundle --release -t lib/main.dart
       - uses: actions/upload-artifact@v3
         with:
-          name: booking-app-release-apk
-          path: "${{ env.PROJECT_PATH }}/build/app/outputs/apk/release/app-release.apk"
-
+          name: app-release
+          path: "${{ env.PROJECT_PATH }}/build/app/outputs/bundle/release/app-release.aab"
+      - name: Release app to internal track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
+          packageName: com.primeholding.booking_app
+          releaseFiles: app-release.aab
+          track: internal
+          status: completed
