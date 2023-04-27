@@ -1,4 +1,4 @@
-{{> licence.dart }}
+{{> licence.dart}}
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../lib_auth/models/auth_token_model.dart';
@@ -29,6 +29,7 @@ class AppleAuthRepository {
   Future<AppleCredentialModel> getUsersAppleCredential() async {
     final credential =
         await _appleCredentialDataSource.getUsersAppleCredential();
-    return AppleCredentialModel.fromAppleId(credential);
+      return AppleCredentialModel.fromAppleId(credential);
+
   }
 }

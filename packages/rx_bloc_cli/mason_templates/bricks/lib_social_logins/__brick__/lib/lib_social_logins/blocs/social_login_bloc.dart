@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
+import '../models/cancelled_error_model.dart';
 import '../services/social_login_service.dart';
 
 part 'social_login_bloc.rxb.g.dart';
@@ -47,11 +48,21 @@ class SocialLoginBloc extends $SocialLoginBloc {
   ConnectableStream<bool> _mapToLoggedInState() => _$loginEvent
       .throttleTime(const Duration(seconds: 1))
       .switchMap(
-        (_) => _socialLoginService.login().then((_) => true).asResultStream(),
+        (_) => _login().asResultStream(),
       )
       .setResultStateHandler(this)
       .whereSuccess()
       .emitAuthenticatedToCoordinator(_coordinatorBloc)
       .startWith(false)
       .publish();
+
+  Future<bool> _login() async {
+    try {
+      await _socialLoginService.login();
+    } on CancelledErrorModel catch (_) {
+      return false;
+    }
+
+    return true;
+  }
 }
