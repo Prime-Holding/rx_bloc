@@ -33,6 +33,7 @@ class BuildApp {
       default:
         app.main();
     }
+    await $.pumpAndSettle();
     FlutterError.onError = originalOnError;
   }
 }
