@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.primeholding.booking_app">
    <application
-        android:label="booking_app"
+        android:label="Booking app"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
