@@ -19,10 +19,9 @@ env:
 # Define a list of jobs that will be executed with this workflow
 jobs:
   test_app_with_coverage:
-    strategy:
-      matrix:
-        folder: [ "examples/booking_app" ]
-      fail-fast: false
+    defaults:
+      run:
+        working-directory: "examples/booking_app"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,25 +33,20 @@ jobs:
       - run: dart --version
       - run: flutter --version
       - name: Install Dependencies
-        working-directory: ${{ matrix.folder }}
         run: |
           flutter clean
           flutter pub get
       - name: Analyze
-        working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
       - name: Run tests
-        working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
             flutter test --coverage --exclude-tags=not-tests
           fi
       - name: Format coverage
-        working-directory: ${{ matrix.folder }}
         run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
       - name: Remove unnecessary files
         id: test_coverage_file
-        working-directory: ${{ matrix.folder }}
         run: |
           flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
           if [ -s "/coverage/lcov.info" ]; then 
@@ -64,14 +58,13 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v2
         if: steps.test_coverage_file.outputs.result == 'true'
         with:
-          path: "${{ matrix.folder }}/coverage/lcov.info"
+          path: "/coverage/lcov.info"
           min_coverage: $APP_MIN_COVERAGE
     
   deploy_android_app:
-    strategy:
-      matrix:
-        folder: [ "examples/booking_app" ]
-      fail-fast: false
+    defaults:
+      run:
+        working-directory: "examples/booking_app"
     runs-on: ubuntu-latest
     needs: test_app_with_coverage
     steps:
@@ -88,15 +81,13 @@ jobs:
       - run: dart --version
       - run: flutter --version
       - name: Install Dependencies
-        working-directory: ${{ matrix.folder }}
         run: |
           flutter clean
           flutter pub get
       - name: Build android app
-        working-directory: ${{ matrix.folder }}
         run: flutter build apk --release -t lib/main.dart
       - uses: actions/upload-artifact@v3
         with:
           name: booking-app-release-apk
-          path: "${{ matrix.folder }}/build/app/outputs/apk/release/app-release.apk"
+          path: "/build/app/outputs/apk/release/app-release.apk"
 
