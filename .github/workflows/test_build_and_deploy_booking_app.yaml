@@ -93,6 +93,7 @@ jobs:
           flutter clean
           flutter pub get
       - name: Build android app
+        working-directory: ${{ matrix.folder }}
         run: flutter build apk --release -t lib/main.dart
       - uses: actions/upload-artifact@v3
         with:
