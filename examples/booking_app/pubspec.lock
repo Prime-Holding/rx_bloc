@@ -670,14 +670,14 @@ packages:
       path: "../../packages/rx_bloc"
       relative: true
     source: path
-    version: "4.0.0"
+    version: "4.0.1"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
       path: "../../packages/rx_bloc_generator"
       relative: true
     source: path
-    version: "6.0.1"
+    version: "6.0.2"
   rx_bloc_list:
     dependency: "direct main"
     description:
@@ -932,5 +932,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.4 <4.0.0"
+  dart: ">=2.18.4 <3.0.0"
   flutter: ">=3.3.0"
