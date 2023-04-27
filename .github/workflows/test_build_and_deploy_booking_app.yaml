@@ -14,6 +14,7 @@ on:
 
 # Define local variables
 env:
+  PROJECT_PATH : "examples/booking_app"
   APP_MIN_COVERAGE : 55
 
 # Define a list of jobs that will be executed with this workflow
@@ -21,7 +22,7 @@ jobs:
   test_app_with_coverage:
     defaults:
       run:
-        working-directory: "examples/booking_app"
+        working-directory: $PROJECT_PATH
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -64,7 +65,7 @@ jobs:
   deploy_android_app:
     defaults:
       run:
-        working-directory: "examples/booking_app"
+        working-directory: $PROJECT_PATH
     runs-on: ubuntu-latest
     needs: test_app_with_coverage
     steps:
@@ -89,5 +90,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: booking-app-release-apk
-          path: "/build/app/outputs/apk/release/app-release.apk"
+          path: "$PROJECT_PATH/build/app/outputs/apk/release/app-release.apk"
 
