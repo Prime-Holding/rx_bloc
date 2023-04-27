@@ -1,21 +1,21 @@
 name: "Test, build and deploy Booking App"
 
-# Define local variables
-env:
-  PROJECT_PATH : "examples/booking_app"
-  APP_MIN_COVERAGE : 55
-
 # Define events when this workflow is triggered
 on:
   push:
     paths:
       - ".github/workflows/test_build_and_deploy_booking_app.yaml"
-      - ${{ env.PROJECT_PATH }}
+      - "examples/booking_app"
       
   pull_request:
     paths:
       - ".github/workflows/test_build_and_deploy_booking_app.yaml"
-      - ${{ env.PROJECT_PATH }}
+      - "examples/booking_app"
+
+# Define local variables
+env:
+  PROJECT_PATH : "examples/booking_app"
+  APP_MIN_COVERAGE : 55
 
 # Define a list of jobs that will be executed with this workflow
 jobs:
