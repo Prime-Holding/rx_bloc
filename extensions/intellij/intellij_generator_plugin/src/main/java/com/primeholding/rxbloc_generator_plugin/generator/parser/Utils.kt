@@ -302,7 +302,10 @@ class Utils {
                                         constructorFieldNamedNames = mutableMapOf(),
                                         constructorFieldNames = mutableListOf(),
                                         constructorFieldTypes = mutableListOf(),
-                                        returnedType = ""
+
+                                        //If future developments require - from here you could extract sub-type
+                                        //located in Future<SomeType> or Stream<SomeType>
+                                        returnedType = line.substring(0, line.indexOf(name)).trim()
                                     )
                                 )
                             }

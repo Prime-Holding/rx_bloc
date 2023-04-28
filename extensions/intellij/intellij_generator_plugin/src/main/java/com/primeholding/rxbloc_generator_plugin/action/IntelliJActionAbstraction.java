@@ -57,9 +57,13 @@ public abstract class IntelliJActionAbstraction {
         );
     }
 
-    protected abstract String commandName();
+    protected String commandName() {
+        return "";
+    }
 
-    public abstract IntelliJActionAbstraction checkPreconditions();
+    public IntelliJActionAbstraction checkPreconditions() {
+        return this;
+    }
 
     public abstract void run();
 

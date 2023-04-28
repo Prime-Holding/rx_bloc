@@ -89,8 +89,15 @@ abstract class RxTestGeneratorBase(
                 bloc.constructorFieldNamedNames
             ),
             TEMPLATE_late_bloc_initialization_fields to generateBlocFieldsLateDefinition(),
-            TEMPLATE_bloc_initialization_fields_mocks to generateBlocInitializationOfMocks(),
-            TEMPLATE_initiate_bloc_initialization_fields_setUp to generateBlocSetup()
+            TEMPLATE_bloc_initialization_fields_mocks to generateBlocInitializationOfMocks(
+                includeDiMocksFlag,
+                bloc
+            ),
+            TEMPLATE_initiate_bloc_initialization_fields_setUp to generateBlocSetup(
+                includeDiMocksFlag,
+                bloc,
+                false
+            )
 
 
         )
@@ -180,7 +187,7 @@ abstract class RxTestGeneratorBase(
             }
         }
         sb.append("\n")
-        bloc.stateVariableNames.forEach { it ->
+        bloc.stateVariableNames.forEach {
             sb.append("  when(statesMock.${it}).thenAnswer((_) => ${it}State);\n")
         }
         return sb.toString()
@@ -196,41 +203,6 @@ abstract class RxTestGeneratorBase(
         if (includeDiMocksFlag) {
             bloc.constructorFieldNames.forEachIndexed { index, it ->
                 sb.append("  late ${bloc.constructorFieldTypes[index]} ${it};\n")
-            }
-        } else {
-            sb.append("//TODO\n")
-        }
-        return sb.toString()
-    }
-
-    private fun isMockable(type: String): Boolean {
-        return !(listOf("int", "double", "String").contains(type))
-    }
-
-    private fun generateBlocInitializationOfMocks(): String {
-        val sb = StringBuilder()
-        if (includeDiMocksFlag) {
-            sb.append("@GenerateMocks([\n")
-            bloc.constructorFieldTypes.forEach {
-                if (isMockable(it)) {
-                    sb.append("        $it,\n")
-                }
-            }
-            sb.append("])\n")
-        } else {
-            sb.append("//TODO @GeneratedMocks([])\n")
-        }
-        return sb.toString()
-    }
-
-    private fun generateBlocSetup(): String {
-        val sb = StringBuilder()
-        if (includeDiMocksFlag) {
-            bloc.constructorFieldNames.forEachIndexed { index, it ->
-
-                if (isMockable(bloc.constructorFieldTypes[index])) {
-                    sb.append("    $it = Mock${bloc.constructorFieldTypes[index]}();\n")
-                }
             }
         } else {
             sb.append("//TODO\n")
@@ -321,29 +293,7 @@ abstract class RxTestGeneratorBase(
         val libFolder = findLibFolder(file)
 
         if (libFolder != null) {
-            lines.forEach { line ->
-                constructorFieldTypes.forEach {
-                    val snake = it.toLowerSnakeCase()
-                    if (line.contains("import '")) {
-
-                        if (line.contains("$snake.dart")) {
-                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
-                        }
-
-                        if (snake.endsWith("bloc_type") && line.contains(
-                                "${
-                                    snake.replace(
-                                        "bloc_type",
-                                        "bloc"
-                                    )
-                                }.dart"
-                            )
-                        ) {
-                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
-                        }
-                    }
-                }
-            }
+            constructImports(lines, libFolder, constructorFieldTypes, sb, file)
         }
         var resultAdded = false
         var paginatedListAdded = false
@@ -460,5 +410,73 @@ abstract class RxTestGeneratorBase(
             }
             return sb.toString()
         }
+
+        fun constructImports(
+            lines: List<String>,
+            libFolder: VirtualFile,
+            constructorFieldTypes: MutableList<String>,
+            sb: StringBuilder,
+            file: VirtualFile
+        ) {
+            lines.forEach { line ->
+                constructorFieldTypes.forEach {
+                    val snake = it.toLowerSnakeCase()
+                    if (line.contains("import '")) {
+
+                        if (line.contains("$snake.dart")) {
+                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
+                        }
+
+                        if (snake.endsWith("bloc_type") && line.contains(
+                                "${
+                                    snake.replace(
+                                        "bloc_type",
+                                        "bloc"
+                                    )
+                                }.dart"
+                            )
+                        ) {
+                            sb.appendln(Utils.fixRelativeImports(line, libFolder.parent, file))
+                        }
+                    }
+                }
+            }
+        }
+
+        fun isMockable(type: String): Boolean {
+            return !(listOf("int", "double", "String").contains(type))
+        }
+
+        fun generateBlocInitializationOfMocks(includeDiMocksFlag: Boolean, testableClass: TestableClass): String {
+            val sb = StringBuilder()
+            if (includeDiMocksFlag) {
+                sb.append("@GenerateMocks([\n")
+                testableClass.constructorFieldTypes.forEach {
+                    if (isMockable(it)) {
+                        sb.append("        $it,\n")
+                    }
+                }
+                sb.append("])\n")
+            } else {
+                sb.append("//TODO @GeneratedMocks([])\n")
+            }
+            return sb.toString()
+        }
+
+        fun generateBlocSetup(includeDiMocksFlag: Boolean, bloc: TestableClass, includeFinal:Boolean): String {
+           val sb = StringBuilder()
+            val finalAddition = if(includeFinal) "final" else ""
+           if (includeDiMocksFlag) {
+               bloc.constructorFieldNames.forEachIndexed { index, it ->
+
+                   if (isMockable(bloc.constructorFieldTypes[index])) {
+                       sb.append("   $finalAddition $it = Mock${bloc.constructorFieldTypes[index]}();\n")
+                   }
+               }
+           } else {
+               sb.append("//TODO\n")
+           }
+           return sb.toString()
+       }
     }
 }
