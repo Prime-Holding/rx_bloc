@@ -8,7 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart'; {{#enable_change_language}}
-import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
+import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}{{#enable_dev_menu}}
+import '../../lib_dev_menu/utils/debug_menu.dart';{{/enable_dev_menu}}
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}
@@ -28,15 +29,22 @@ import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}
 class {{project_name.pascalCase()}} extends StatelessWidget {
   const {{project_name.pascalCase()}}({
     this.config = const EnvironmentConfig.production(),
-    Key? key,
+{{#enable_dev_menu}}
+    this.createDebugMenuInstance,{{/enable_dev_menu}}
+  Key? key,
   }) : super(key: key);
 
   final EnvironmentConfig config;
-
-  @override
+{{#enable_dev_menu}}
+  final CreateDebugMenuInstance? createDebugMenuInstance;
+{{/enable_dev_menu}}
+@override
   Widget build(BuildContext context) => {{project_name.pascalCase()}}WithDependencies(
         config: config,
-        child: const _MyMaterialApp(),
+{{#enable_dev_menu}}
+
+        child: _MyMaterialApp(config, createDebugMenuInstance),{{/enable_dev_menu}}
+{{^enable_dev_menu}} child: const _MyMaterialApp(),{{/enable_dev_menu}}
       );
 }
 
@@ -44,8 +52,15 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
 /// accessible throughout the app (such as App-level dependencies, Firebase
 /// services, etc).
 class _MyMaterialApp extends StatefulWidget {
-  const _MyMaterialApp();
-
+{{^enable_dev_menu}} const _MyMaterialApp(); {{/enable_dev_menu}}
+{{#enable_dev_menu}} const _MyMaterialApp(
+    this.config,
+    this.createDebugMenuInstance,
+); {{/enable_dev_menu}}
+{{#enable_dev_menu}}
+  final EnvironmentConfig config;
+  final CreateDebugMenuInstance? createDebugMenuInstance;
+{{/enable_dev_menu}}
   @override
   __MyMaterialAppState createState() => __MyMaterialAppState();
 }
@@ -120,9 +135,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           AnalyticsInterceptor(context.read()),{{/analytics}}
         );
   }
-
+{{#enable_dev_menu}}
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
+  Widget build(BuildContext context) {
+    final materialApp = MaterialApp.router(
         title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
         theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
         darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
@@ -135,4 +151,38 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         routerConfig: context.read<AppRouter>().router,
         debugShowCheckedModeBanner: false,
       );
+
+      if (widget.createDebugMenuInstance != null) {
+        return widget.createDebugMenuInstance!.call(
+          context,
+          materialApp,
+          context
+              .read<AppRouter>()
+              .router
+              .routeInformationParser
+              .configuration
+              .navigatorKey,
+        );
+      }
+
+      return materialApp;
+  }
+
+{{/enable_dev_menu}}
+
+{{^enable_dev_menu}}
+  @override
+  Widget build(BuildContext context) => MaterialApp.router(
+    title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
+    theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
+    darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
+    localizationsDelegates: const [
+      I18n.delegate,
+      ...GlobalMaterialLocalizations.delegates,
+    ],
+    supportedLocales: I18n.supportedLocales,
+    locale: _locale,
+    routerConfig: context.read<AppRouter>().router,
+    debugShowCheckedModeBanner: false,
+  ); {{/enable_dev_menu}}
 }

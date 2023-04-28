@@ -7,6 +7,8 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
+  {{#enable_dev_menu}}
+  alice: ^0.3.2{{/enable_dev_menu}}
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
   dio: ^4.0.6
@@ -17,7 +19,7 @@ dependencies:
   flutter:
     sdk: flutter{{#enable_social_logins}}
   flutter_facebook_auth: ^5.0.8{{/enable_social_logins}}
-  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications: ^12.0.3
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^5.0.2

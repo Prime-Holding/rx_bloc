@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 {{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
+import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}{{#enable_dev_menu}}
+import 'package:dio/dio.dart';{{/enable_dev_menu}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -24,7 +25,8 @@ import '../../lib_auth/services/user_account_service.dart'; {{#enable_change_lan
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
-import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}
+import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}{{#enable_dev_menu}}
+import '../../lib_dev_menu/extensions/dio_extension.dart';{{/enable_dev_menu}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
@@ -135,7 +137,10 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
               ..options.baseUrl = widget.config.baseUrl;
             return client;
           },
-        ),
+        ),{{#enable_dev_menu}}
+        Provider<Dio>(
+          create: (context) => DioFactoryX.newInstance(),
+        ),{{/enable_dev_menu}}
       ];
 
   List<SingleChildWidget> get _dataStorages => [
