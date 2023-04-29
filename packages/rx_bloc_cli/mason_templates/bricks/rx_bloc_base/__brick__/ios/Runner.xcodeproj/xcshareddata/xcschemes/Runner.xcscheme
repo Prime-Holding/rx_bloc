@@ -37,6 +37,18 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+          <TestableReference
+             skipped = "NO"
+             parallelizable = "YES">
+             <BuildableReference
+                BuildableIdentifier = "primary"
+                BlueprintIdentifier = "ADA94A8F29FD24A700C9021B"
+                BuildableName = "RunnerUITests.xctest"
+                BlueprintName = "RunnerUITests"
+                ReferencedContainer = "container:Runner.xcodeproj">
+             </BuildableReference>
+          </TestableReference>
+
       </Testables>
    </TestAction>
    <LaunchAction
