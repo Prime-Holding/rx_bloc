@@ -36,7 +36,7 @@
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <Testables>
+      <Testables> {{#enable_patrol}}
           <TestableReference
              skipped = "NO"
              parallelizable = "YES">
@@ -47,8 +47,7 @@
                 BlueprintName = "RunnerUITests"
                 ReferencedContainer = "container:Runner.xcodeproj">
              </BuildableReference>
-          </TestableReference>
-
+          </TestableReference> {{/enable_patrol}}
       </Testables>
    </TestAction>
    <LaunchAction
