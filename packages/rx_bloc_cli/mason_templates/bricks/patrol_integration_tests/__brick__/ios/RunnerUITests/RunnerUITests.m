@@ -1,7 +1,4 @@
-//
-//  RunnerUITests.m
-//  RunnerUITests
-//
-//  Created by Krasimir Petkov on 29.04.23.
-//
+@import XCTest;
+@import patrol;
 
+PATROL_INTEGRATION_TEST_IOS_RUNNER(RunnerUITests)

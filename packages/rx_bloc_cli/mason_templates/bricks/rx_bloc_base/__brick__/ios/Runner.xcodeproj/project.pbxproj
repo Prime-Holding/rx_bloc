@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -171,9 +171,11 @@
             isa = PBXNativeTarget;
             buildConfigurationList = ADA94AA429FD24A700C9021B /* Build configuration list for PBXNativeTarget "RunnerUITests" */;
             buildPhases = (
-                ADA94A8C29FD24A700C9021B /* Sources */,
+                ADA94A8C29FD24A700C9021B /* Sources */, {{#enable_patrol}}
+                ADA94AA529FD2F2800C9021B /* xcode_backend build */, {{/enable_patrol}}
                 ADA94A8D29FD24A700C9021B /* Frameworks */,
-                ADA94A8E29FD24A700C9021B /* Resources */,
+                ADA94A8E29FD24A700C9021B /* Resources */, {{#enable_patrol}}
+                ADA94AA629FD2F5900C9021B /* xcode_backend embed_and_thin */, {{/enable_patrol}}
             );
             buildRules = (
             );
@@ -295,7 +297,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
-		};
+		}; {{#enable_patrol}}
+        ADA94AA529FD2F2800C9021B /* xcode_backend build */ = {
+            isa = PBXShellScriptBuildPhase;
+            alwaysOutOfDate = 1;
+            buildActionMask = 2147483647;
+            files = (
+            );
+            inputFileListPaths = (
+            );
+            inputPaths = (
+            );
+            name = "xcode_backend build";
+            outputFileListPaths = (
+            );
+            outputPaths = (
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/sh;
+            shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+        };
+        ADA94AA629FD2F5900C9021B /* xcode_backend embed_and_thin */ = {
+            isa = PBXShellScriptBuildPhase;
+            alwaysOutOfDate = 1;
+            buildActionMask = 2147483647;
+            files = (
+            );
+            inputFileListPaths = (
+            );
+            inputPaths = (
+            );
+            name = "xcode_backend embed_and_thin";
+            outputFileListPaths = (
+            );
+            outputPaths = (
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/sh;
+            shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
+        }; {{/enable_patrol}}
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
