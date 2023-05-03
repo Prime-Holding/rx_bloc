@@ -3,7 +3,6 @@ name: "Test and deploy Booking app"
 # Define events when this workflow is triggered
 on:
   push:
-    branches: [main]
     paths:
       - ".github/workflows/test_and_deploy_booking_app.yaml"
       - "examples/booking_app"
@@ -32,3 +31,10 @@ jobs:
       key_properties_content_base64: ${{ secrets.KEY_PROPERTIES_CONTENT_BASE64 }}
       store_file_content_base64: ${{ secrets.STORE_FILE_CONTENT_BASE64 }}
       playstore_account_key: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
+
+  deploy_ios_booking_app:
+    needs: [test_booking_app]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy iOS app here
+        run: echo "Deploy iOS app here"
