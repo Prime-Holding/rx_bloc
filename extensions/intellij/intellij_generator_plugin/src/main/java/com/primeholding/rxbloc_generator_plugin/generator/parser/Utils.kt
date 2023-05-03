@@ -1,5 +1,7 @@
 package com.primeholding.rxbloc_generator_plugin.generator.parser
 
+import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithIntentionAction
@@ -377,6 +379,19 @@ class Utils {
             return VfsUtil.findFileByIoFile(File(basePath), false)!!
         }
 
+        fun writeToFile(ioFile: String, value: String) {
+            writeToFile(File(ioFile), value)
+        }
+
+        fun writeToFile(ioFile: File, value: String) {
+            FileUtil.writeToFile(ioFile, value)
+        }
+
+        fun createFile(newFilePath: String): VirtualFile? {
+
+            val newFile = File(newFilePath)
+            return LocalFileSystem.getInstance().findFileByIoFile(newFile)
+        }
     }
 
 
