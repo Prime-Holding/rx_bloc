@@ -1,0 +1,34 @@
+name: "Test and deploy Booking app"
+
+# Define events when this workflow is triggered
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/test_and_deploy_booking_app.yaml"
+      - "examples/booking_app"
+      
+  pull_request:
+    paths:
+      - ".github/workflows/test_and_deploy_booking_app.yaml"
+      - "examples/booking_app"
+
+# Define jobs that should be running within this workflow
+jobs:
+  test_booking_app:
+    uses: ./.github/workflows/test_app_with_coverage.yaml
+    with:
+      project_path: "examples/booking_app"
+      min_coverage: 55
+      
+  deploy_android_booking_app:
+    needs: [test_booking_app]
+    uses: ./.github/workflows/deploy_android_app.yaml
+    with:
+      project_path: "examples/booking_app"
+      package_name: com.primeholding.booking_app
+      publish_to_store: false
+    secrets:
+      key_properties_content_base64: ${{ secrets.KEY_PROPERTIES_CONTENT_BASE64 }}
+      store_file_content_base64: ${{ secrets.STORE_FILE_CONTENT_BASE64 }}
+      playstore_account_key: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
