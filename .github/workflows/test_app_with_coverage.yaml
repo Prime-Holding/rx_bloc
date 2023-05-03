@@ -1,28 +1,24 @@
 name: "Test App with coverage"
 
-# Define events when this workflow is triggered
 on:
-  push:
-    paths:
-      - ".github/workflows/test_app_with_coverage.yaml"
-      - "examples/booking_app"
-      
-  pull_request:
-    paths:
-      - ".github/workflows/test_app_with_coverage.yaml"
-      - "examples/booking_app"
+  workflow_call:
+    inputs:
+      project_path:
+        type: string
+        default: ''
+        required: false
+        description: 'The location of the flutter project within the repository'
+      min_coverage:
+        type: number
+        default: 100
+        required: false
+        description: 'The min coverage that the app has to reach'
 
-# Define local variables 
-env:
-  PROJECT_PATH : "examples/booking_app"
-  APP_MIN_COVERAGE : 55
-
-# Define a list of jobs that will be executed with this workflow
 jobs:
   test_app_with_coverage:
     defaults:
       run:
-        working-directory: ${{ env.PROJECT_PATH }}
+        working-directory: ${{ inputs.project_path }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -50,7 +46,7 @@ jobs:
         id: test_coverage_file
         run: |
           flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
-          if [ -s "/coverage/lcov.info" ]; then 
+          if [ -s "coverage/lcov.info" ]; then 
             echo "result=true" >> $GITHUB_OUTPUT ; 
           else 
             echo "result=false" >> $GITHUB_OUTPUT ; 
@@ -60,4 +56,4 @@ jobs:
         if: steps.test_coverage_file.outputs.result == 'true'
         with:
           path: "/coverage/lcov.info"
-          min_coverage: ${{ env.APP_MIN_COVERAGE }}
+          min_coverage: ${{ inputs.min_coverage }}
