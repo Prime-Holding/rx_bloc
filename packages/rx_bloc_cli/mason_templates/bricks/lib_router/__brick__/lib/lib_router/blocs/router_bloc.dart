@@ -35,6 +35,11 @@ abstract class RouterBlocEvents {
   /// * [go] which navigates to the location.
   /// * [goToLocation] which navigates to given location.
   void push(RouteDataModel route, {Object? extra});
+
+  /// Uses [GoRouter.pop()] to pop from the given location to the previous page
+  /// from the page stack with an optional [result] object which can be returned
+  /// as part of the navigation.
+  void pop([Object? result]);
 }
 
 /// A contract class containing all states of the NavigationBloC.
@@ -74,6 +79,7 @@ class RouterBloc extends $RouterBloc {
             .throttleTime(const Duration(seconds: 1))
             .switchMap((routeData) => _push(routeData).asResultStream()),
         _$goToLocationEvent.doOnData(_router.go).asResultStream(),
+        _$popEvent.doOnData((routeData) => _pop(routeData)).asResultStream(),
       ]).setErrorStateHandler(this).whereSuccess().publish();
 
   Future<void> _go(_GoEventArgs routeData) async {
@@ -85,4 +91,6 @@ class RouterBloc extends $RouterBloc {
     await _permissionsService.checkPermission(routeData.route.permissionName);
     await _router.push(routeData.route.routeLocation, extra: routeData.extra);
   }
+
+  void _pop([Object? result]) => _router.pop(result);
 }
