@@ -1,2 +1,2 @@
 /// Indicates the version of the package
-const rxBlocCliPackageVersion = '2.4.0';
+const rxBlocCliPackageVersion = '2.5.0';
