@@ -52,7 +52,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const Text('Push notification token'),
+                          Text(context.l10n.libDevMenu.token),
                           SelectableText(snapshot.data!),
                           SizedBox(height: context.designSystem.spacing.m),
                         ],
@@ -72,11 +72,9 @@ class _DevMenuState extends State<_DevMenuWidget> {
               //         )
               //       : const SizedBox(),
               // ),
-              const Text(
-                  'Please, enter the IP address of the computer from your local network - where you have the Software for Proxying Charles started.'),
+              Text(context.l10n.libDevMenu.enterIPAddress),
               SizedBox(height: context.designSystem.spacing.m),
-              const Text(
-                  'After you save the IP, to apply the change, please restart your application!'),
+              Text(context.l10n.libDevMenu.restartApp),
               SizedBox(height: context.designSystem.spacing.m),
               TextFormField(
                 autofocus: true,
@@ -84,11 +82,11 @@ class _DevMenuState extends State<_DevMenuWidget> {
               ),
               SizedBox(height: context.designSystem.spacing.m),
               GradientFillButton(
-                text: 'Save',
+                text: context.l10n.libDevMenu.save,
                 areIconsClose: true,
                 onPressed: () async {
-                  await SharedPreferencesInstance()
-                      .setString('proxy', _controller.text);
+                  await SharedPreferencesInstance().setString(
+                      context.l10n.libDevMenu.proxy, _controller.text);
 
                   if (mounted) {
                     Navigator.pop(context);
@@ -97,7 +95,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
               ),
               SizedBox(height: context.designSystem.spacing.m),
               GradientFillButton(
-                text: 'Run HTTP Interceptor',
+                text: context.l10n.libDevMenu.runInterceptor,
                 areIconsClose: true,
                 onPressed: () async {
                   context.read<Alice>().showInspector();

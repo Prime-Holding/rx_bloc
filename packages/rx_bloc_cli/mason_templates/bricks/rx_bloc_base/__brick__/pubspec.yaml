@@ -87,4 +87,5 @@ r_flutter:
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field
     - name: lib_router{{#enable_change_language}}
-    - name: lib_change_language{{/enable_change_language}}
+    - name: lib_change_language{{/enable_change_language}}{{#enable_dev_menu}}
+    - name: lib_dev_menu{{/enable_dev_menu}}
