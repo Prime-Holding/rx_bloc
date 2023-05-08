@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,8 +17,19 @@
         888E668026666C4D006075A7 /* environments in Resources */ = {isa = PBXBuildFile; fileRef = 888E667F26666C4D006075A7 /* environments */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
-		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-/* End PBXBuildFile section */
+		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; }; {{#enable_patrol}}
+        ADA94A9329FD24A700C9021B /* RunnerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA94A9229FD24A700C9021B /* RunnerUITests.m */; }; {{/enable_patrol}}
+/* End PBXBuildFile section */ {{#enable_patrol}}
+
+/* Begin PBXContainerItemProxy section */
+        ADA94A9629FD24A700C9021B /* PBXContainerItemProxy */ = {
+            isa = PBXContainerItemProxy;
+            containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+            proxyType = 1;
+            remoteGlobalIDString = 97C146ED1CF9000F007C117D;
+            remoteInfo = Runner;
+        };
+/* End PBXContainerItemProxy section */ {{/enable_patrol}}
 
 /* Begin PBXCopyFilesBuildPhase section */
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
@@ -51,7 +62,9 @@
 		97C146FB1CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; }; {{#enable_patrol}}
+        ADA94A9029FD24A700C9021B /* RunnerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+        ADA94A9229FD24A700C9021B /* RunnerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RunnerUITests.m; sourceTree = "<group>"; }; {{/enable_patrol}}
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +74,14 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-		};
+		}; {{#enable_patrol}}
+        ADA94A8D29FD24A700C9021B /* Frameworks */ = {
+            isa = PBXFrameworksBuildPhase;
+            buildActionMask = 2147483647;
+            files = (
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+        }; {{/enable_patrol}}
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -84,7 +104,8 @@
 			children = (
                 888E667F26666C4D006075A7 /* environments */,
 				9740EEB11CF90186004384FC /* Flutter */,
-				97C146F01CF9000F007C117D /* Runner */,
+				97C146F01CF9000F007C117D /* Runner */, {{#enable_patrol}}
+                ADA94A9129FD24A700C9021B /* RunnerUITests */, {{/enable_patrol}}
 				97C146EF1CF9000F007C117D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,7 +113,8 @@
 		97C146EF1CF9000F007C117D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				97C146EE1CF9000F007C117D /* Runner.app */,
+				97C146EE1CF9000F007C117D /* Runner.app */, {{#enable_patrol}}
+                ADA94A9029FD24A700C9021B /* RunnerUITests.xctest */, {{/enable_patrol}}
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,7 +134,15 @@
 			);
 			path = Runner;
 			sourceTree = "<group>";
-		};
+		}; {{#enable_patrol}}
+        ADA94A9129FD24A700C9021B /* RunnerUITests */ = {
+            isa = PBXGroup;
+            children = (
+                ADA94A9229FD24A700C9021B /* RunnerUITests.m */,
+            );
+            path = RunnerUITests;
+            sourceTree = "<group>";
+        }; {{/enable_patrol}}
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -136,7 +166,27 @@
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
-		};
+		}; {{#enable_patrol}}
+        ADA94A8F29FD24A700C9021B /* RunnerUITests */ = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = ADA94AA429FD24A700C9021B /* Build configuration list for PBXNativeTarget "RunnerUITests" */;
+            buildPhases = (
+                ADA94A8C29FD24A700C9021B /* Sources */, {{#enable_patrol}}
+                ADA94AA529FD2F2800C9021B /* xcode_backend build */, {{/enable_patrol}}
+                ADA94A8D29FD24A700C9021B /* Frameworks */,
+                ADA94A8E29FD24A700C9021B /* Resources */, {{#enable_patrol}}
+                ADA94AA629FD2F5900C9021B /* xcode_backend embed_and_thin */, {{/enable_patrol}}
+            );
+            buildRules = (
+            );
+            dependencies = (
+                ADA94A9729FD24A700C9021B /* PBXTargetDependency */,
+            );
+            name = RunnerUITests;
+            productName = RunnerUITests;
+            productReference = ADA94A9029FD24A700C9021B /* RunnerUITests.xctest */;
+            productType = "com.apple.product-type.bundle.ui-testing";
+        }; {{/enable_patrol}}
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -149,7 +199,11 @@
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 1100;
-					};
+					}; {{#enable_patrol}}
+                    ADA94A8F29FD24A700C9021B = {
+                        CreatedOnToolsVersion = 14.3;
+                        TestTargetID = 97C146ED1CF9000F007C117D;
+                    }; {{/enable_patrol}}
 				};
 			};
 			buildConfigurationList = 97C146E91CF9000F007C117D /* Build configuration list for PBXProject "Runner" */;
@@ -165,7 +219,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				97C146ED1CF9000F007C117D /* Runner */,
+				97C146ED1CF9000F007C117D /* Runner */, {{#enable_patrol}}
+                ADA94A8F29FD24A700C9021B /* RunnerUITests */, {{/enable_patrol}}
 			);
 		};
 /* End PBXProject section */
@@ -186,7 +241,14 @@
 				88463D8F2628C7FE0073536C /* development.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-		};
+		}; {{#enable_patrol}}
+        ADA94A8E29FD24A700C9021B /* Resources */ = {
+            isa = PBXResourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = (
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+        }; {{/enable_patrol}}
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -235,7 +297,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
-		};
+		}; {{#enable_patrol}}
+        ADA94AA529FD2F2800C9021B /* xcode_backend build */ = {
+            isa = PBXShellScriptBuildPhase;
+            alwaysOutOfDate = 1;
+            buildActionMask = 2147483647;
+            files = (
+            );
+            inputFileListPaths = (
+            );
+            inputPaths = (
+            );
+            name = "xcode_backend build";
+            outputFileListPaths = (
+            );
+            outputPaths = (
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/sh;
+            shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+        };
+        ADA94AA629FD2F5900C9021B /* xcode_backend embed_and_thin */ = {
+            isa = PBXShellScriptBuildPhase;
+            alwaysOutOfDate = 1;
+            buildActionMask = 2147483647;
+            files = (
+            );
+            inputFileListPaths = (
+            );
+            inputPaths = (
+            );
+            name = "xcode_backend embed_and_thin";
+            outputFileListPaths = (
+            );
+            outputPaths = (
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/sh;
+            shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
+        }; {{/enable_patrol}}
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -247,8 +347,24 @@
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
+		}; {{#enable_patrol}}
+        ADA94A8C29FD24A700C9021B /* Sources */ = {
+            isa = PBXSourcesBuildPhase;
+            buildActionMask = 2147483647;
+            files = (
+                ADA94A9329FD24A700C9021B /* RunnerUITests.m in Sources */,
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+        }; {{/enable_patrol}}
+/* End PBXSourcesBuildPhase section */ {{#enable_patrol}}
+
+/* Begin PBXTargetDependency section */
+        ADA94A9729FD24A700C9021B /* PBXTargetDependency */ = {
+            isa = PBXTargetDependency;
+            target = 97C146ED1CF9000F007C117D /* Runner */;
+            targetProxy = ADA94A9629FD24A700C9021B /* PBXContainerItemProxy */;
+        };
+/* End PBXTargetDependency section */ {{/enable_patrol}}
 
 /* Begin PBXVariantGroup section */
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
@@ -312,7 +428,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -391,7 +507,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -465,7 +581,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -539,7 +655,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -621,7 +737,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -695,7 +811,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -771,7 +887,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -851,7 +967,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -925,7 +1041,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1001,7 +1117,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1081,7 +1197,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1131,7 +1247,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1186,7 +1302,311 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
-		};
+		}; {{#enable_patrol}}
+        ADA94A9829FD24A700C9021B /* Debug */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = Debug;
+        };
+        ADA94A9929FD24A700C9021B /* Debug-production */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Debug-production";
+        };
+        ADA94A9A29FD24A700C9021B /* Debug-staging */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Debug-staging";
+        };
+        ADA94A9B29FD24A700C9021B /* Debug-development */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Debug-development";
+        };
+        ADA94A9C29FD24A700C9021B /* Release */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = Release;
+        };
+        ADA94A9D29FD24A700C9021B /* Release-production */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Release-production";
+        };
+        ADA94A9E29FD24A700C9021B /* Release-staging */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Release-staging";
+        };
+        ADA94A9F29FD24A700C9021B /* Release-development */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Release-development";
+        };
+        ADA94AA029FD24A700C9021B /* Profile */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = Profile;
+        };
+        ADA94AA129FD24A700C9021B /* Profile-production */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Profile-production";
+        };
+        ADA94AA229FD24A700C9021B /* Profile-staging */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Profile-staging";
+        };
+        ADA94AA329FD24A700C9021B /* Profile-development */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+                CLANG_ENABLE_OBJC_WEAK = YES;
+                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+                CODE_SIGN_STYLE = Automatic;
+                CURRENT_PROJECT_VERSION = 1;
+                GCC_C_LANGUAGE_STANDARD = gnu11;
+                GENERATE_INFOPLIST_FILE = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+                MARKETING_VERSION = 1.0;
+                MTL_FAST_MATH = YES;
+                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SWIFT_EMIT_LOC_STRINGS = NO;
+                TARGETED_DEVICE_FAMILY = "1,2";
+                TEST_TARGET_NAME = Runner;
+            };
+            name = "Profile-development";
+        }; {{/enable_patrol}}
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1227,7 +1647,26 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
-		};
+		}; {{#enable_patrol}}
+        ADA94AA429FD24A700C9021B /* Build configuration list for PBXNativeTarget "RunnerUITests" */ = {
+            isa = XCConfigurationList;
+            buildConfigurations = (
+                ADA94A9829FD24A700C9021B /* Debug */,
+                ADA94A9929FD24A700C9021B /* Debug-production */,
+                ADA94A9A29FD24A700C9021B /* Debug-staging */,
+                ADA94A9B29FD24A700C9021B /* Debug-development */,
+                ADA94A9C29FD24A700C9021B /* Release */,
+                ADA94A9D29FD24A700C9021B /* Release-production */,
+                ADA94A9E29FD24A700C9021B /* Release-staging */,
+                ADA94A9F29FD24A700C9021B /* Release-development */,
+                ADA94AA029FD24A700C9021B /* Profile */,
+                ADA94AA129FD24A700C9021B /* Profile-production */,
+                ADA94AA229FD24A700C9021B /* Profile-staging */,
+                ADA94AA329FD24A700C9021B /* Profile-development */,
+            );
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        }; {{/enable_patrol}}
 /* End XCConfigurationList section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
