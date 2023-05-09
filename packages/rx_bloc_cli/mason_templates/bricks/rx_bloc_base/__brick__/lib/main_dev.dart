@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'base/app/config/environment_config.dart';
 import 'base/app/initialization/app_setup.dart';

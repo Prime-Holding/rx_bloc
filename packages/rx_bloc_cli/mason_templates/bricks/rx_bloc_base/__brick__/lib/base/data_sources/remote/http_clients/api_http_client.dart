@@ -1,3 +1,5 @@
+{{#enable_dev_menu}}
+import 'package:alice/alice.dart';{{/enable_dev_menu}}
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 {{#analytics}}
@@ -18,7 +20,8 @@ class ApiHttpClient with DioMixin implements Dio {
 
   void configureInterceptors(
       AuthInterceptor authInterceptor,{{#analytics}}
-      AnalyticsInterceptor analyticsInterceptor,{{/analytics}}
+      AnalyticsInterceptor analyticsInterceptor,{{/analytics}}{{#enable_dev_menu}}
+      Alice alice,{{/enable_dev_menu}}
   ) {
     this.authInterceptor = authInterceptor;{{#analytics}}
     this.analyticsInterceptor = analyticsInterceptor;{{/analytics}}
@@ -26,7 +29,8 @@ class ApiHttpClient with DioMixin implements Dio {
     interceptors.addAll([
       logInterceptor,
       authInterceptor,{{#analytics}}
-      analyticsInterceptor,{{/analytics}}
+      analyticsInterceptor,{{/analytics}}{{#enable_dev_menu}}
+      alice.getDioInterceptor(),{{/enable_dev_menu}}
     ]);
   }
 }

@@ -4,7 +4,9 @@
 import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';{{/push_notifications}}
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';{{#enable_dev_menu}}
+import '../../../lib_dev_menu/extensions/dio_extension.dart';
+import '../../data_sources/local/shared_preferences_instance.dart';{{/enable_dev_menu}}
 
 import '../../utils/helpers.dart';
 import '../config/environment_config.dart';{{#push_notifications}}
@@ -41,6 +43,12 @@ Future configureApp(EnvironmentConfig envConfig) async {
           projectId: 'projectId',
         ),
       ));
+
+{{#enable_dev_menu}}
+    if (envConfig != const EnvironmentConfig.production()) {
+      DioFactoryX.proxy =
+        await SharedPreferencesInstance().getString('proxy') ?? '';
+}{{/enable_dev_menu}}
   await _setupNotifications();
 
   // TODO: Add your own code that is going to be run before the actual app

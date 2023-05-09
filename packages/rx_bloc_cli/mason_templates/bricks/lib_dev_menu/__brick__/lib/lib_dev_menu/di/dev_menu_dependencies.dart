@@ -1,4 +1,3 @@
-import 'package:alice/alice.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -16,23 +15,11 @@ class DevMenuDependencies {
 
   late List<SingleChildWidget> providers = [
     ..._blocs,
-    ..._packages,
   ];
 
   late final List<RxBlocProvider> _blocs = [
     RxBlocProvider<DevMenuBlocType>(
       create: (context) => DevMenuBloc(),
     ),
-  ];
-
-  late final List<SingleChildWidget> _packages = [
-    Provider<Alice>(
-      create: (context) => Alice(
-        showNotification: true,
-        showInspectorOnShake: false,
-        darkTheme: false,
-        maxCallsCount: 1000,
-      ),
-    )
   ];
 }

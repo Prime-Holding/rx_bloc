@@ -70,15 +70,14 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
   }
 
   void _setupAlice() {
+    final alice = context.read<Alice>();
+
     //Set navigator key
-    context.read<Alice>().setNavigatorKey(widget.navigatorKey);
+    alice.setNavigatorKey(widget.navigatorKey);
 
     // Attach interceptor to Dio
-    context
-        .read<Dio>()
-        .interceptors
-        .add(context.read<Alice>().getDioInterceptor());
+    context.read<Dio>().interceptors.add(alice.getDioInterceptor());
     DioFactoryX.refreshTokenInstance.interceptors
-        .add(context.read<Alice>().getDioInterceptor());
+        .add(alice.getDioInterceptor());
   }
 }

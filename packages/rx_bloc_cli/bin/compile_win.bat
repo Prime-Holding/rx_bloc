@@ -7,6 +7,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_auth ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_social_logins ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_change_language ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_dev_menu ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y feature_counter_bundle.dart lib\src\templates\ ^
 & move /Y feature_deeplink_bundle.dart lib\src\templates\ ^
@@ -16,6 +17,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y lib_auth_bundle.dart lib\src\templates\ ^
 & move /Y lib_social_logins_bundle.dart lib\src\templates\ ^
 & move /Y lib_change_language.dart lib\src\templates\ ^
+& move /Y lib_dev_menu.dart lib\src\templates\ ^
 & rmdir /s/q example\test_app\ ^
 & dart pub global activate -s path . --overwrite ^
 & rx_bloc_cli create ^
@@ -26,5 +28,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-feature-widget-toolkit true ^
 --enable-social-logins true ^
 --enable-change-language true ^
+--enable-dev-menu true ^
 example/test_app ^
 & cd example/test_app

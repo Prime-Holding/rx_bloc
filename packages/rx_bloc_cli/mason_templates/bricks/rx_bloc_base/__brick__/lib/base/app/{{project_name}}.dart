@@ -1,6 +1,7 @@
 {{> licence.dart }}
 {{#enable_change_language}}
-import 'dart:async'; {{/enable_change_language}}
+import 'dart:async'; {{/enable_change_language}}{{#enable_dev_menu}}
+import 'package:alice/alice.dart';{{/enable_dev_menu}}
 {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
@@ -132,7 +133,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
             context.read(),
             context.read(),
           ),{{#analytics}}
-          AnalyticsInterceptor(context.read()),{{/analytics}}
+          AnalyticsInterceptor(context.read()),{{/analytics}}{{#enable_dev_menu}}
+          context.read<Alice>(),{{/enable_dev_menu}}
         );
   }
 {{#enable_dev_menu}}
