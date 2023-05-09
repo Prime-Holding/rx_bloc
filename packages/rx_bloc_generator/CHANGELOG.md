@@ -1,6 +1,3 @@
-## [6.0.3] - April 7, 2023
-* Set specific version for `source_gen` dependency
-
 ## [6.0.2] - April 7, 2023
 * Update dependencies
 
