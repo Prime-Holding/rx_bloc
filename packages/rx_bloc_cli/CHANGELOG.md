@@ -1,3 +1,7 @@
+## [3.0.0]
+* Added new event: `pop` for the `RouterBlocEvents` for enabling popping from a location
+* Updated major versions of dependencies `go_router`, `go_router_builder`
+
 ## [2.4.0]
 * Added parameter `enable-social-logins` for social logins (Apple, Google, Facebook) integration
 * Added parameter `enable-change-language` for enabling a translation of the project
