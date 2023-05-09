@@ -14,6 +14,8 @@
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
 12. [Push notifications](#push-notifications)
+13. [Social Logins](#social-logins-library)
+14. [Dev Menu](#dev-menu)
 15. [Next Steps](#next-steps)
 
 ## Getting started
@@ -52,9 +54,11 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
 | `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
 | `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |
+| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |
 | `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |
+| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
+| `lib/lib_dev_menu`                           | A useful package when it comes to debugging your app and/or easily accessing some common development specific information and settings.               |
 
 ## Architecture
 
@@ -307,6 +311,110 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
+
+## Social logins library
+
+Allows you to authenticate users in your app with Apple, Google and Facebook.
+
+
+#### Apple Authentication
+It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package.  
+In order to make it work, fulfill the requirements described in its [documentation](https://pub.dev/documentation/sign_in_with_apple/latest/).
+
+Supports iOS.
+#### Google Authentication
+Google authentication uses [google_sign_in](https://pub.dev/packages/google_sign_in) package.
+ 
+Follow the package documentation for registering your application and downloading Google Services file.(GoogleService-Info.plist/google-services.json)
+
+`Android:`
+For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
+
+`iOS:`
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_environment}/firebase/***  
+and copy ***reversed_client_id*** from GoogleService-Info.plist to ***ios/Flutter/{name_of_the_environment}.xcconfig*** file
+
+For any other configurations refer to the [google_sign_in](https://pub.dev/packages/google_sign_in) package.  
+
+#### Facebook Authentication
+Facebook authentication uses [flutter_facebook_auth](https://pub.dev/packages/flutter_facebook_auth) package.
+
+`Step 1:`  
+In order to make it work you must register your app in facebook developer console.
+
+`Step 2:`  
+There you will find your **app_id**, **client_token** and **app_name**.
+
+`Step 3:`
+- `3.1 Android:` Edit ***android/app/build.gradle***, paste parameters from step 2 in
+ ```
+productFlavors{
+  name_of_the_enviroment{
+  dimension "default"
+            applicationIdSuffix ""
+            versionNameSuffix ""
+            resValue "string", "facebook_app_id", "insert_facebook_app_id_here"
+            resValue "string", "facebook_client_token", "insert_client_token_here"
+    }
+  }
+  ```
+
+- `3.2 iOS:`
+  Edit ***ios/Flutter/(flavor-name).xcconfig*** and paste parameters from step 2.
+
+
+`Note:` Some requirements to be able to run application with this version of *facebook auth* is
+- **flutter_secure_storage** package must be at least 8.0.0 version
+- for iOS in ***Podfile*** platform must be at least 12
+- for Android ***minSdkVersion*** must be at least 21.
+
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
+
+
+## Dev Menu
+
+Dev menu package is a useful package when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
+
+### Widgets
+
+Within the `prime_dev_menu` package you can find the `DevMenuListener` widget and the `showDevMenuBottomSheet` function.
+
+#### DevMenuListener
+
+The `DevMenuListener` widget is a widget that is listening for user interactions (quick taps or long taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
+
+You can define which type of interactions you want to register by toggling the value of the `triggerWithLongPress` field (defaults to `false` which means that quick user taps will be registered, unlike when the value is set to `true` which will react to long user taps).
+
+With the `enabled` field, you can customize when the user interactions will be triggered and the callback is executed. If set to `false`, the widget will not fire any events. This can be useful to limit the execution of the development/debug related code only while in debug mode and prevent any code running in release mode or under any specified conditions.
+
+The widget is dependent on the `DevMenuBloc` which is an essential part of the system. The mentioned bloc should be registered with a provider in the widget tree above the widget which is trying to access it. The `DevMenuBloc` contains the necessary logic for registering and emitting stream events after a specific number of taps has been made. By default that number is 5 taps, but a custom number can be specified (by setting the `maxTaps` value when instantiating the bloc). The `DevMenuDependencies.from` factory can be used to define all necessary dependencies which can be accessed from the `providers` field.
+
+The `DevMenuListener` widget comes with a static method called `DevMenuListener.withDependencies` which allows you to easily and on-the-go define a widget with the necessary dependencies. It will instantiate and properly nest a child widget within a MultiProvider for you. The hitbox of the `child` widget will be used to trigger any interactions within the bloc.
+
+As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
+
+```dart
+DevMenuListener.withDependencies(
+  triggerWithLongPress: true,
+  maxTaps: 3,
+  onDevMenuPresented: (){
+    showDevMenuBottomSheet(
+      context: context,
+      builder: (context) => MyDevMenuWidget(),
+    );
+  },
+  child: HomePage(),
+)
+
+```
+
+#### `showDevMenuBottomSheet`
+
+The `showDevMenuBottomSheet` function is a convenience function for displaying a DevMenu modal sheet with some pre-configured options. It requires a `builder` function which takes a `BuildContext` and returns a `Widget` which will be displayed within the modal sheet.
+
+It works great when incorporated with the `DevMenuListener` widget within the `onDevMenuPresented` callback.
+
+As part of the dev menu modal sheet, there is a customizable `options` parameter which requires a `DevMenuConfig` class. That config class allows you to customize different aspects and features of the dev menu and as well turn on/off some options.
 
 
 ## Next Steps
