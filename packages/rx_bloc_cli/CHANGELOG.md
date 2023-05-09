@@ -1,4 +1,4 @@
-## [2.x.x]
+## [2.5.0]
 * Added new event: `pop` for the `RouterBlocEvents` for enabling popping from a location
 * Updated major versions of dependencies `go_router`, `go_router_builder`
 * Add support for Dio 5 and fix related errors and warnings
