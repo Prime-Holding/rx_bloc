@@ -10,7 +10,7 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
       MaterialPage(
         key: state.pageKey,
         child: SplashPageWithDependencies(
-          redirectToLocation: state.queryParams['from'],
+          redirectToLocation: state.queryParameters['from'],
         ),
       );
 
