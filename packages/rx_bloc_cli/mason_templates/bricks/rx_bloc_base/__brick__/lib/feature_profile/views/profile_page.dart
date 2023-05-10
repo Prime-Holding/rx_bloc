@@ -50,7 +50,22 @@ class ProfilePage extends StatelessWidget {
               padding: context.designSystem.spacing.xl0,
               buttonText: context.l10n.changeLanguage,
               translate: (model) => model.asText(context),
-            ),{{/enable_change_language}}
+            ),{{/enable_change_language}}{{#enable_pin_code}}
+            SizedBox(
+              height: context.designSystem.spacing.xl0,
+            ),
+            Padding(
+               padding: EdgeInsets.symmetric(
+               horizontal: context.designSystem.spacing.xl0,
+              ),
+              child: OutlineFillButton(
+                text: context.l10n.libPinCode.createPin,
+                onPressed: () => context
+                  .read<RouterBlocType>()
+                  .events
+                  .push(const PinCodeRoute()),// todo
+              ),
+            ),{{/enable_pin_code}}
           ],
         ),
       );

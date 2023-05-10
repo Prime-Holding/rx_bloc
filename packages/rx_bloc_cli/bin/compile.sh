@@ -10,5 +10,6 @@ dart run rx_bloc_cli create \
   --enable-feature-widget-toolkit=true \
   --enable-social-logins=true \
   --enable-change-language=true \
+  --enable-pin-code=true \
   example/test_app
 cp example/test_app/README.md example/

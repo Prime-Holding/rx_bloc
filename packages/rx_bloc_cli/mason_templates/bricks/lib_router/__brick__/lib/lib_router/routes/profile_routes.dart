@@ -3,7 +3,10 @@ part of '../router.dart';
 @TypedGoRoute<ProfileRoute>(path: RoutesPath.profile, routes: [
   TypedGoRoute<NotificationsRoute>(
     path: RoutesPath.notifications,
-  ),
+  ),{{#enable_pin_code}}
+  TypedGoRoute<PinCodeRoute>(
+    path: RoutesPath.pinCode,
+  ),{{/enable_pin_code}}
 ])
 @immutable
 class ProfileRoute extends GoRouteData implements RouteDataModel {
@@ -36,6 +39,24 @@ class NotificationsRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get permissionName => RouteModel.notifications.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+
+@immutable
+class PinCodeRoute extends GoRouteData implements RouteDataModel {
+  const PinCodeRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const PinCodePage(),
+      );
+
+  @override
+  String get permissionName => RouteModel.pinCode.permissionName;
 
   @override
   String get routeLocation => location;

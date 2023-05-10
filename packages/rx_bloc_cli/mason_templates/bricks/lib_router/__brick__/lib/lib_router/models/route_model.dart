@@ -33,7 +33,12 @@ enum RouteModel {
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',
     permissionName: RoutePermissions.notifications,
-  ),
+  ),{{#enable_pin_code}}
+  pinCode(
+    pathName: RoutesPath.pinCode,
+    fullPath: '/pinCode',
+    permissionName: RoutePermissions.pinCode,
+  ),{{/enable_pin_code}}
   login(
     pathName: RoutesPath.login,
     fullPath: '/login',
