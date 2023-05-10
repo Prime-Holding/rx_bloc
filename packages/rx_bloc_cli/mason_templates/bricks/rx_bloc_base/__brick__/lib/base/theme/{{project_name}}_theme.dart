@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
-import 'package:widget_toolkit/widget_toolkit.dart';
+import 'package:widget_toolkit/widget_toolkit.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}
 
 import './design_system.dart';
 import './design_system/design_system_colors.dart';
@@ -43,7 +44,8 @@ class {{project_name.pascalCase()}}Theme {
         isLightTheme ? SearchPickerTheme.light : SearchPickerTheme.dark,
         isLightTheme ? TextFieldDialogTheme.light : TextFieldDialogTheme.dark,
         isLightTheme ? EditAddressTheme.light : EditAddressTheme.dark,
-        isLightTheme ? LanguagePickerTheme.light : LanguagePickerTheme.dark,
+        isLightTheme ? LanguagePickerTheme.light : LanguagePickerTheme.dark,{{#enable_pin_code}}
+        isLightTheme ? PinCodeTheme.light : PinCodeTheme.dark,{{/enable_pin_code}}
       ],
       // Override any material widget themes here if needed.
     );

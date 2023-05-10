@@ -41,6 +41,16 @@ dependencies:
   shelf_static: ^1.1.1 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
   sign_in_with_apple: ^4.3.0{{/enable_social_logins}}
   widget_toolkit: ^0.0.1-dev7
+  widget_toolkit_biometrics: ^0.0.1-dev2 #todo
+  widget_toolkit_pin: ^0.0.1-dev1 #todo
+
+dependency_overrides: #todo delete override after publishing
+  widget_toolkit:
+    path: ../../../../../widget_toolkit/packages/widget_toolkit
+  widget_toolkit_biometrics:
+    path: ../../../../../widget_toolkit/packages/widget_toolkit_biometrics
+  widget_toolkit_pin:
+    path: ../../../../../widget_toolkit/packages/widget_toolkit_pin
 
 dev_dependencies:
   build_runner: ^2.3.0
