@@ -11,13 +11,13 @@ import '../../base/repositories/push_notification_repository.dart';
 import 'app_modal_bottom_sheet.dart';
 
 void showAppDevMenuBottomSheet(BuildContext context) => showAppModalBottomSheet(
-  applySafeArea: true,
-  context: context,
-  hideCloseButton: true,
-  hideTheLine: true,
-  builder: (ctx) => const _DevMenuWidget(),
-  onDonePressed: () => Navigator.of(context).pop(),
-);
+      applySafeArea: true,
+      context: context,
+      hideCloseButton: true,
+      hideTheLine: true,
+      builder: (ctx) => const _DevMenuWidget(),
+      onDonePressed: () => Navigator.of(context).pop(),
+    );
 
 class _DevMenuWidget extends StatefulWidget {
   const _DevMenuWidget({Key? key}) : super(key: key);
@@ -37,77 +37,77 @@ class _DevMenuState extends State<_DevMenuWidget> {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.fromLTRB(
-      context.designSystem.spacing.m,
-      context.designSystem.spacing.m,
-      context.designSystem.spacing.m,
-      context.designSystem.spacing.m +
-          MediaQuery.of(context).viewInsets.bottom,
-    ),
-    child: SingleChildScrollView(
-      child: Column(
-        children: [
-          FutureBuilder<String?>(
-            future: context.read<PushNotificationRepository>().getToken(),
-            builder: (context, snapshot) => snapshot.data != null
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(context.l10n.libDevMenu.token),
-                SelectableText(snapshot.data!),
-                SizedBox(height: context.designSystem.spacing.m),
-              ],
-            )
-                : const SizedBox(),
-          ),
-          Text(context.l10n.libDevMenu.enterIPAddress),
-          SizedBox(height: context.designSystem.spacing.m),
-          Text(context.l10n.libDevMenu.restartApp),
-          SizedBox(height: context.designSystem.spacing.m),
-          TextFormField(
-            autofocus: true,
-            controller: _controller,
-          ),
-          SizedBox(height: context.designSystem.spacing.l),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+        padding: EdgeInsets.fromLTRB(
+          context.designSystem.spacing.m,
+          context.designSystem.spacing.m,
+          context.designSystem.spacing.m,
+          context.designSystem.spacing.m +
+              MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              Expanded(
-                child: FilledButton(
-                  onPressed: () async {
-                    await SharedPreferencesInstance().setString(
-                        context.l10n.libDevMenu.proxy, _controller.text);
+              FutureBuilder<String?>(
+                future: context.read<PushNotificationRepository>().getToken(),
+                builder: (context, snapshot) => snapshot.data != null
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(context.l10n.libDevMenu.token),
+                          SelectableText(snapshot.data!),
+                          SizedBox(height: context.designSystem.spacing.m),
+                        ],
+                      )
+                    : const SizedBox(),
+              ),
+              Text(context.l10n.libDevMenu.enterIPAddress),
+              SizedBox(height: context.designSystem.spacing.m),
+              Text(context.l10n.libDevMenu.restartApp),
+              SizedBox(height: context.designSystem.spacing.m),
+              TextFormField(
+                autofocus: true,
+                controller: _controller,
+              ),
+              SizedBox(height: context.designSystem.spacing.l),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () async {
+                        await SharedPreferencesInstance().setString(
+                            context.l10n.libDevMenu.proxy, _controller.text);
 
-                    if (mounted) {
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: context.designSystem.spacing.m),
-                    child: Text(context.l10n.libDevMenu.save),
+                        if (mounted) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: context.designSystem.spacing.m),
+                        child: Text(context.l10n.libDevMenu.save),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(
-                width: context.designSystem.spacing.s,
-              ),
-              Expanded(
-                child: FilledButton(
-                  onPressed: () async {
-                    context.read<Alice>().showInspector();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: context.designSystem.spacing.m),
-                    child: Text(context.l10n.libDevMenu.runInterceptor),
+                  SizedBox(
+                    width: context.designSystem.spacing.s,
                   ),
-                ),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () async {
+                        context.read<Alice>().showInspector();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: context.designSystem.spacing.m),
+                        child: Text(context.l10n.libDevMenu.runInterceptor),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }
