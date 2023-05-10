@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}{{#enable_dev_menu}}
-import '../../lib_dev_menu/utils/debug_menu.dart';{{/enable_dev_menu}}
+import '../utils/debug_menu.dart';{{/enable_dev_menu}}
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}

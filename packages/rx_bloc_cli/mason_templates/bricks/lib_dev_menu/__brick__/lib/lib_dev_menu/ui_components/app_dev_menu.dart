@@ -1,12 +1,14 @@
+{{> licence.dart }}
+
 import 'package:alice/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/extensions/dio_extension.dart';
 import '../blocs/dev_menu_bloc.dart';
 import '../di/dev_menu_dependencies.dart';
-import '../extensions/dio_extension.dart';
 
 class AppDevMenuGestureDetector extends StatefulWidget {
   const AppDevMenuGestureDetector({

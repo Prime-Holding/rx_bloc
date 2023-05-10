@@ -5,8 +5,8 @@ import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#push_noti
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';{{/push_notifications}}
 import 'package:flutter/material.dart';{{#enable_dev_menu}}
-import '../../../lib_dev_menu/extensions/dio_extension.dart';
-import '../../data_sources/local/shared_preferences_instance.dart';{{/enable_dev_menu}}
+import '../../data_sources/local/shared_preferences_instance.dart';
+import '../../extensions/dio_extension.dart';{{/enable_dev_menu}}
 
 import '../../utils/helpers.dart';
 import '../config/environment_config.dart';{{#push_notifications}}

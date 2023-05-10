@@ -28,7 +28,7 @@ import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
 import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}{{#enable_dev_menu}}
-import '../../lib_dev_menu/extensions/dio_extension.dart';{{/enable_dev_menu}}
+import '../extensions/dio_extension.dart';{{/enable_dev_menu}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
@@ -136,8 +136,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         showInspectorOnShake: false,
         darkTheme: false,
         maxCallsCount: 1000,
-      ),
-    ),
+      )),
   ];
 {{/enable_dev_menu}}
 
