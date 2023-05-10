@@ -182,7 +182,7 @@ class BootstrapSingleTestAction : AnAction() {
         return str
     }
 
-    private fun generateTest(
+    fun generateTest(
         file: VirtualFile,
         text: String,
         constructorFields: MutableMap<String, String>,
@@ -214,7 +214,7 @@ class BootstrapSingleTestAction : AnAction() {
         }
 
 
-        sb.appendln("import '${file.name}_test.mocks.dart';")
+        sb.appendln("import '${file.name.replace(".dart", "_test.mocks.dart")}';")
 
         sb.appendln("@GenerateMocks([")
         constructorFields.forEach {
@@ -253,7 +253,7 @@ class BootstrapSingleTestAction : AnAction() {
         else acc.append(c)
     }.toString()
 
-    private fun generateImportsFromFileAndClasses(
+    fun generateImportsFromFileAndClasses(
         text: String,
         values: MutableCollection<String>,
         rootDir: VirtualFile,
@@ -268,9 +268,14 @@ class BootstrapSingleTestAction : AnAction() {
             values.forEach {
 
                 if (it.contains("<") && it.contains(">")) {
-                    val innerType = it.substring(it.indexOf("<") + 1, it.indexOf("<"))
-                    if (line.contains("${innerType.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
-                        sb.append(Utils.fixRelativeImports(line, rootDir, file)).append("\n")
+                    val index1 = it.indexOf("<") + 1
+                    val index2 = it.indexOf(">")
+
+                    if (index1 <= index2) {
+                        val innerType = it.substring(index1, index2)
+                        if (line.contains("${innerType.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
+                            sb.append(Utils.fixRelativeImports(line, rootDir, file)).append("\n")
+                        }
                     }
                 } else {
                     if (line.contains("${it.camelToSnakeCase()}.dart") && line.startsWith("import '")) {
@@ -442,7 +447,7 @@ void main () {
         }
     }
 
-    private fun generateConstructorParams(
+    fun generateConstructorParams(
         constructorFields: MutableMap<String, String>, constructorNamedFields: MutableMap<String, Boolean>
     ): String {
         val sb = StringBuffer()

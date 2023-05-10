@@ -2,10 +2,13 @@ plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.4.2'
     id 'org.jetbrains.kotlin.jvm' version '1.3.11'
+    id 'jacoco'
+    id 'org.barfuin.gradle.jacocolog' version '1.0.1'
+
 }
 
 group 'com.rx_bloc'
-version '3.0.1'
+version '3.0.2'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -28,6 +31,9 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testCompile "org.mockito:mockito-core:2.7.5"
+
     implementation "com.fleshgrinder.kotlin:case-format:0.2.0"
 }
 
@@ -37,10 +43,19 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
 
 patchPluginXml {
     changeNotes """
      <ul>
+      <li>
+     v.3.0.2 - separate state mock initialization
+     </li>
      <li>
      v.3.0.1 - fix imports for features created in sub-folder
      </li>

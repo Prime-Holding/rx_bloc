@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
@@ -36,7 +37,6 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
         routingIntegration: RoutingIntegration
     ) {
         blocName?.let { name ->
-
             if (name.isEmpty()) {
                 Messages.showMessageDialog(
                     "Provide Feature Name",
@@ -131,29 +131,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
     private fun goRouteAdditions(name: String, featureSubDirectory: VirtualFile?) {
         val featureCamelCase = name.toUpperCamelCase()
         val featureFieldCase = name.toLowerCamelCase()
-        val newRoute = """
-
-//TODO move it the desired place in the routing tree Or make it as root route: @TypedGoRoute<${featureCamelCase}Route>(path: path) and run Build Runner - Build
-@immutable
-class ${featureCamelCase}Route extends GoRouteData implements RouteDataModel {
-  const ${featureCamelCase}Route();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-      MaterialPage(
-        key: state.pageKey,
-        child: const ${featureCamelCase}PageWithDependencies(),
-      );
-
-  @override
-  String get permissionName => RouteModel.${featureFieldCase}.permissionName;
-
-  @override
-  String get routeLocation => location;
-  //TODO execute rebuild and remove this todo - when location is found
-}
-        
-"""
+        val newRoute = generateNewRoute(featureCamelCase, featureFieldCase)
         event.project?.let {
             var filePath =
                 "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}routes${File.separator}routes.dart"
@@ -181,19 +159,11 @@ $newRoute""".trimIndent()
             }
 
 
-            var subPart = ""
-            featureSubDirectory?.let { featureSubFolder ->
-                val libPath = "${it.basePath}${File.separator}lib"
-                subPart = featureSubFolder.path.replace(libPath, "")
-                    .replace("\\", "/").replace("/feature_${name.toLowerSnakeCase()}", "")
-            }
+            val subPart = makeSubPart(featureSubDirectory, name, it)
             val routerPath = "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}router.dart"
             val router = File(routerPath)
             if (router.exists()) {
-                val text = router.readText().replace(
-                    "import 'models/routes_path.dart';",
-                    "import 'models/routes_path.dart';\nimport '..$subPart/feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';"
-                ).replace("part 'router.g.dart';", "part 'router.g.dart';\n${partRoutes}")
+                val text = editRouter(router.readText(), subPart, name, partRoutes)
                 VfsTestUtil.overwriteTestData(routerPath, text)
             }
 
@@ -202,27 +172,14 @@ $newRoute""".trimIndent()
                 "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}routes_path.dart"
             file = File(filePath)
             if (file.exists()) {
-                val text = File(file.path).readText()
-                    .replace(
-                        "RoutesPath {",
-                        "RoutesPath {\n  static const $featureFieldCase = '$featureFieldCase';// TODO fix path of the route according to your needs. FYI if it starts with / is for root routes"
-                    )
+                val text = editRoutesPath(File(file.path).readText(), featureFieldCase)
                 VfsTestUtil.overwriteTestData(file.path, text)
             }
             filePath =
                 "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}route_model.dart"
             file = File(filePath)
             if (file.exists()) {
-                val text = File(file.path).readText()
-                    .replace(
-                        "RouteModel {", """RouteModel {
-  $featureFieldCase(
-    pathName: RoutesPath.$featureFieldCase,
-    fullPath: '$featureFieldCase',//TODO fix path
-    permissionName: RoutePermissions.$featureFieldCase,
-  ),
-"""
-                    )
+                val text = editRouteModel(File(file.path).readText(), featureFieldCase)
                 VfsTestUtil.overwriteTestData(file.path, text)
             }
 
@@ -230,10 +187,7 @@ $newRoute""".trimIndent()
                 "${it.basePath}${File.separator}lib${File.separator}lib_permissions${File.separator}models${File.separator}route_permissions.dart"
             file = File(filePath)
             if (file.exists()) {
-                val text = File(file.path).readText().replace(
-                    "RoutePermissions {",
-                    "RoutePermissions {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
-                )
+                val text = editRoutePermissions(File(file.path).readText(), featureFieldCase, featureCamelCase)
                 VfsTestUtil.overwriteTestData(file.path, text)
             }
 
@@ -241,12 +195,77 @@ $newRoute""".trimIndent()
                 "${it.basePath}${File.separator}bin${File.separator}server${File.separator}controllers${File.separator}permissions_controller.dart"
             file = File(filePath)
             if (file.exists()) {
-                val text = File(file.path).readText()
-                    .replace("data: {", "data: {\n         '${featureCamelCase}Route': true,")
+                val text = editPermissionsController(File(file.path).readText(), featureCamelCase)
                 VfsTestUtil.overwriteTestData(file.path, text)
             }
         }
     }
+
+    fun editPermissionsController(text: String, featureCamelCase: String): String = text
+        .replace("data: {", "data: {\n         '${featureCamelCase}Route': true,")
+
+    fun editRoutePermissions(text: String, featureFieldCase: String, featureCamelCase: String): String =
+        text.replace(
+            "RoutePermissions {",
+            "RoutePermissions {\n  static const $featureFieldCase = '${featureCamelCase}Route';"
+        )
+
+    fun editRouteModel(text: String, featureFieldCase: String): String = text
+        .replace(
+            "RouteModel {", """RouteModel {
+  $featureFieldCase(
+    pathName: RoutesPath.$featureFieldCase,
+    fullPath: '$featureFieldCase',//TODO fix path
+    permissionName: RoutePermissions.$featureFieldCase,
+  ),"""
+        )
+
+    fun editRoutesPath(text: String, featureFieldCase: String): String = text.replace(
+        "RoutesPath {",
+        "RoutesPath {\n  static const $featureFieldCase = '$featureFieldCase';// TODO fix path of the route according to your needs. FYI if it starts with / is for root routes"
+    )
+
+    fun makeSubPart(featureSubDirectory: VirtualFile?, name: String, project: Project): String {
+        var subPart = ""
+        featureSubDirectory?.let { featureSubFolder ->
+            val libPath = "${project.basePath}${File.separator}lib"
+            subPart = featureSubFolder.path.replace(libPath, "")
+                .replace("\\", "/").replace("/feature_${name.toLowerSnakeCase()}", "")
+        }
+
+        return subPart
+    }
+
+    fun editRouter(originalRouterText: String, subPart: String, name: String, partRoutes: String): String {
+        return originalRouterText.replace(
+            "import 'models/routes_path.dart';",
+            "import 'models/routes_path.dart';\nimport '..$subPart/feature_${name.toLowerSnakeCase()}/di/${name.toLowerSnakeCase()}_page_with_dependencies.dart';"
+        ).replace("part 'router.g.dart';", "part 'router.g.dart';\n${partRoutes}")
+    }
+
+    fun generateNewRoute(featureCamelCase: String, featureFieldCase: String) = """
+    
+//TODO move it the desired place in the routing tree Or make it as root route: @TypedGoRoute<${featureCamelCase}Route>(path: path) and run Build Runner - Build
+@immutable
+class ${featureCamelCase}Route extends GoRouteData implements RouteDataModel {
+  const ${featureCamelCase}Route();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const ${featureCamelCase}PageWithDependencies(),
+      );
+
+  @override
+  String get permissionName => RouteModel.${featureFieldCase}.permissionName;
+
+  @override
+  String get routeLocation => location;
+  //TODO execute rebuild and remove this todo - when location is found
+}
+        
+"""
 
     private fun createSourceFile(generator: RxGeneratorBase, directory: VirtualFile): VirtualFile? {
         val fileName = generator.fileName()

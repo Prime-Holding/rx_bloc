@@ -1,10 +1,12 @@
 {{> licence.dart }}
 
+{{#enable_social_logins}}
+import 'dart:io' show Platform;{{/enable_social_logins}}
+
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';{{#enable_social_logins}}
-import 'dart:io' show Platform;
 import '../../lib_social_logins/ui_components/apple_login_widget.dart';
 import '../../lib_social_logins/ui_components/facebook_login_widget.dart';
 import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enable_social_logins}}

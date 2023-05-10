@@ -23,5 +23,5 @@ ${_bloc_initialization_fields_list});
   ${initiate_bloc_initialization_fields}
   });
 
-    ${test_rxbloc_state_group}
+${test_rxbloc_state_group}
 }

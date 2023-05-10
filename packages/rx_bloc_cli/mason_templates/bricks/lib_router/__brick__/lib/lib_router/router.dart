@@ -88,14 +88,14 @@ class AppRouter {
     BuildContext context,
     GoRouterState state,
   ) async {
-    if (_refreshListener.isLoggedIn && state.queryParams['from'] != null) {
-      return state.queryParams['from'];
+    if (_refreshListener.isLoggedIn && state.queryParameters['from'] != null) {
+      return state.queryParameters['from'];
     }
     if (_refreshListener.isLoggedIn &&
-        state.subloc == const LoginRoute().location) {
+        state.matchedLocation == const LoginRoute().location) {
       return const DashboardRoute().location;
     }
-    if (state.subloc == const SplashRoute().location) {
+    if (state.matchedLocation == const SplashRoute().location) {
       return null;
     }
     if (!context.read<SplashService>().isAppInitialized) {
@@ -105,7 +105,7 @@ class AppRouter {
     final pathInfo =
         router.routeInformationParser.matcher.findMatch(state.location);
 
-    final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullpath);
+    final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
 
     final hasPermissions = routeName != null
         ? await context
