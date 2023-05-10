@@ -75,10 +75,18 @@ You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically d
 
 
 The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc` so that every route can be protected if needed.
-You can [push][go_router_push] or [go][go_router_go] as follows
+You can [push][go_router_push], [pop][go_router_pop], [goToLocation][go_to_location] or [go][go_router_go] as follows
 
 ```
 context.read<RouterBlocType>().events.push(MyNewRoute())
+```
+
+```
+context.read<RouterBlocType>().events.pop(Object())
+```
+
+```
+context.read<RouterBlocType>().events.goToLocation('Location')
 ```
 
 or
@@ -450,3 +458,5 @@ As part of the dev menu modal sheet, there is a customizable `options` parameter
 [intellij_plugin]: https://plugins.jetbrains.com/plugin/16165-rxbloc
 [go_router_push]: https://pub.dev/documentation/go_router/latest/go_router/GoRouter/push.html
 [go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
+[go_to_location]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
+[go_router_pop]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pop.html
