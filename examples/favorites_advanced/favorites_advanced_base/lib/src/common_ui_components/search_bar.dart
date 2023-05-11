@@ -19,7 +19,8 @@ class HotelSearchBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 16, top: 16, bottom: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: HotelAppTheme.buildLightTheme().backgroundColor,
+                    color:
+                        HotelAppTheme.buildLightTheme().colorScheme.background,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(38.0),
                     ),
