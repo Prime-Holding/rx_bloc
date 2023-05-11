@@ -634,12 +634,13 @@ packages:
     source: hosted
     version: "3.2.1"
   rflutter_alert:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: rflutter_alert
-      sha256: a77c8c937fad29e70565388c5934f678b92325047663367b985570ba101929fa
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "535b382daa5ffea797fbea9b14d406567d492027"
+      url: "https://github.com/kent2508/rflutter_alert.git"
+    source: git
     version: "2.0.4"
   rx_bloc:
     dependency: "direct main"
@@ -732,6 +733,14 @@ packages:
       url: "https://github.com/bhavin-concetto/smoothratingbar.git"
     source: git
     version: "1.1.1"
+  smooth_star_rating_null_safety:
+    dependency: transitive
+    description:
+      name: smooth_star_rating_null_safety
+      sha256: "8b3e56609da43577e5e72732d1dcad62fcabbd8131b228542f9ce2e9dc245dc1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4+2"
   source_gen:
     dependency: transitive
     description:
