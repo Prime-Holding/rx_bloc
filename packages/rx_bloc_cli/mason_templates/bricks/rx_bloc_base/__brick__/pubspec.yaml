@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   {{#enable_dev_menu}}
-  alice: ^0.3.2{{/enable_dev_menu}}
+  alice: ^0.3.2 {{/enable_dev_menu}}
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
   dio: ^5.1.2
@@ -59,7 +59,13 @@ dev_dependencies:
   rx_bloc_generator: ^6.0.1
   rx_bloc_test: any
   test: any
-
+  {{#enable_dev_menu}}
+dependency_overrides:
+  alice:
+    git:
+      url: https://github.com/Prime-Holding/alice.git
+      ref: master
+{{/enable_dev_menu}}
 flutter:
   uses-material-design: true
   assets:

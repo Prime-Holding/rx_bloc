@@ -1,5 +1,5 @@
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ extension DioFactoryX on Dio {
 
   static Dio newInstance() {
     final dio = Dio();
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
         (client) {
       if (DioFactoryX.proxy.isNotEmpty) {
         client.findProxy = ((uri) {
@@ -48,10 +48,3 @@ extension DioFactoryX on Dio {
           ),
       ]);
 }
-
-// extension DioErrorExtension on DioError {
-//   bool isNetworkException() =>
-//       error is CertificateCouldNotBeVerifiedException ||
-//       error is SocketException ||
-//       error is CertificateNotVerifiedException;
-// }
