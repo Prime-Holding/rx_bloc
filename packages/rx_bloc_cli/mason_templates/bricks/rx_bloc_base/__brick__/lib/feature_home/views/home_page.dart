@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
     var index = list.indexWhere((item) {
       final routePath =
           router.routeInformationParser.matcher.findMatch(router.location);
-      return routePath.fullpath.startsWith(item.routePath);
+      return routePath.fullPath.startsWith(item.routePath);
     });
     return index.isNegative ? 0 : index;
   }

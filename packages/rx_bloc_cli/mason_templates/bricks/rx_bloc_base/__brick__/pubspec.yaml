@@ -9,7 +9,7 @@ environment:
 dependencies:
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
-  dio: ^4.0.6
+  dio: ^5.1.2
   equatable: ^2.0.5{{#analytics}}
   firebase_analytics: ^10.0.6{{/analytics}}{{#uses_firebase}}
   firebase_core: ^2.3.0{{/uses_firebase}}{{#push_notifications}}
@@ -23,7 +23,7 @@ dependencies:
   flutter_rx_bloc: ^5.0.2
   flutter_secure_storage: ^8.0.0{{#enable_social_logins}}
   flutter_svg: ^2.0.4{{/enable_social_logins}}
-  go_router: ^6.2.0
+  go_router: ^7.0.0
   golden_toolkit: ^0.14.0{{#enable_social_logins}}
   google_sign_in: ^6.0.2{{/enable_social_logins}}
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
@@ -31,7 +31,7 @@ dependencies:
   json_annotation: ^4.7.0
   jwt_decoder: ^2.0.1
   provider: ^6.0.3
-  retrofit: ^3.3.0
+  retrofit: ^4.0.1
   rx_bloc: ^4.0.0
   rx_bloc_list: ^3.2.1
   rxdart: ^0.27.5
@@ -49,12 +49,12 @@ dev_dependencies:
   flutter_lints: any
   flutter_test:
     sdk: flutter
-  go_router_builder: ^1.1.2
+  go_router_builder: ^2.0.0
   json_serializable: ^6.5.1
   mockito: ^5.3.2 {{#enable_patrol}}
   patrol: ^1.1.0 {{/enable_patrol}}
   r_flutter: 0.9.0
-  retrofit_generator: ^4.2.0
+  retrofit_generator: ^6.0.0+3
   rx_bloc_generator: ^6.0.1
   rx_bloc_test: any
   test: any {{#enable_patrol}}
