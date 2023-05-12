@@ -57,7 +57,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
                     RxTextFormFieldBuilder<HotelSearchBlocType>(
                       state: (bloc) => bloc.states.queryFilter,
                       showErrorState: (_) => const Stream.empty(),
-                      builder: (fieldState) => SearchBar(
+                      builder: (fieldState) => HotelSearchBar(
                         controller: fieldState.controller,
                       ),
                       onChanged: (bloc, text) {

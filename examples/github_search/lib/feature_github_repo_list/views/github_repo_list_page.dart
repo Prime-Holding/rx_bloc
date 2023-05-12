@@ -56,7 +56,7 @@ class GithubRepoListPage extends StatelessWidget implements AutoRouteWrapper {
                     RxTextFormFieldBuilder<GithubRepoListBlocType>(
                   state: (bloc) => bloc.states.queryFilter,
                   showErrorState: (_) => const Stream.empty(),
-                  builder: (fieldState) => SearchBar(
+                  builder: (fieldState) => GithubSearchBar(
                     controller: fieldState.controller,
                   ),
                   onChanged: (bloc, text) {

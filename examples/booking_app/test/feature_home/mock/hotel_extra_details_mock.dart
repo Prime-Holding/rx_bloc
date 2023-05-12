@@ -1,5 +1,4 @@
 import 'package:booking_app/base/common_blocs/hotels_extra_details_bloc.dart';
-import 'package:favorites_advanced_base/models.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
