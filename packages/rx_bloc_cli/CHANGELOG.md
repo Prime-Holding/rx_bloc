@@ -1,3 +1,7 @@
+## [2.6.0]
+* Added parameter `enable-patrol` for enabling patol package for integration tests
+* Updated to Dart 3.0
+
 ## [2.5.0]
 * Added new event: `pop` for the `RouterBlocEvents` for enabling popping from a location
 * Updated major versions of dependencies `go_router`, `go_router_builder`
