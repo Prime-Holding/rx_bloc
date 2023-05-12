@@ -73,7 +73,8 @@ android {
             applicationIdSuffix ""
             versionNameSuffix ""{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
-            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol}}
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol}}
         }
         staging {
             dimension "default"
