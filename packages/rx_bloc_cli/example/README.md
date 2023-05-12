@@ -384,6 +384,10 @@ Patrol allows developers to use native automation and custom finders to write in
 
 To run patrol integration tests install [patrol_cli](https://pub.dev/packages/patrol_cli) package. 
 This package enables applications to use native automation features
+
+#### Running the Tests
+
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
