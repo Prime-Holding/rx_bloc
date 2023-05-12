@@ -18,6 +18,7 @@ $ dart pub global activate rx_bloc_cli
 
 Create a new project at the given directory with lots of already set-up features out of the box. Customize your project with the following properties:
 
+
 |  parameter |                 defaults to                 |                                        description                                        |
 | ---------- |:-------------------------------------------:|:-----------------------------------------------------------------------------------------:|
 |  `--project-name` | Name of directory where the project resides |  The project name for this new Flutter project. This must be a valid dart package name.   |
@@ -28,6 +29,7 @@ Create a new project at the given directory with lots of already set-up features
 |  `--enable-feature-widget-toolkit` |                   `false`                   |              Enables widget_toolkit package showcase feature for the project              |
 |  `--enable-social-logins` |                   `false`                   | Integrate social login with Apple, Google and Facebook functionality into our application |
 |  `--enable-change-language` |                   `true`                    |                     Enables changing of the language for the project                      |
+|  `--enable-patrol`  |                   `false`                    | Enables patrol package for integration tests for the project |
 
 ### What's Included? 📦
 

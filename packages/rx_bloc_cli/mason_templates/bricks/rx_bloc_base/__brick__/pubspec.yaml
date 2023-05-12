@@ -51,12 +51,22 @@ dev_dependencies:
     sdk: flutter
   go_router_builder: ^2.0.0
   json_serializable: ^6.5.1
-  mockito: ^5.3.2
+  mockito: ^5.3.2 {{#enable_patrol}}
+  patrol: ^1.1.0 {{/enable_patrol}}
   r_flutter: 0.9.0
   retrofit_generator: ^6.0.0+3
   rx_bloc_generator: ^6.0.1
   rx_bloc_test: any
-  test: any
+  test: any {{#enable_patrol}}
+
+patrol:
+  app_name: {{project_name}}
+  flavor: development
+  android:
+    package_name: {{domain_name}}.{{organization_name}}.{{project_name}}
+  ios:
+    bundle_id: {{domain_name}}.{{organization_name}}.{{project_name}}
+    app_name: {{project_name}} {{/enable_patrol}}  
 
 flutter:
   uses-material-design: true

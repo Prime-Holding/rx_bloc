@@ -15,7 +15,8 @@
 11. [Server](#server)
 12. [Push notifications](#push-notifications)
 13. [Social Logins](#social-logins-library)
-14. [Next Steps](#next-steps)
+14. [Patrol integration tests](#patrol-integration-tests)
+15. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -376,6 +377,13 @@ productFlavors{
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
 
+## Patrol Integration Tests
+
+The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
+Patrol allows developers to use native automation and custom finders to write integration tests faster.
+
+To run patrol integration tests install [patrol_cli](https://pub.dev/packages/patrol_cli) package. 
+This package enables applications to use native automation features
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.

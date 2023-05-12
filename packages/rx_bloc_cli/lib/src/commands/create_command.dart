@@ -12,6 +12,7 @@ import '../templates/lib_change_language_bundle.dart';
 import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
+import '../templates/patrol_integration_tests_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
@@ -73,6 +74,12 @@ class CreateCommand extends Command<int> {
             'project',
         allowed: ['true', 'false'],
         defaultsTo: 'false',
+      )
+      ..addOption(
+        _patrolTestsString,
+        help: 'Enables Patrol integration tests for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'false',
       );
   }
 
@@ -86,6 +93,7 @@ class CreateCommand extends Command<int> {
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
   final _socialLoginsString = 'enable-social-logins';
   final _changeLanguageString = 'enable-change-language';
+  final _patrolTestsString = 'enable-patrol';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -96,6 +104,7 @@ class CreateCommand extends Command<int> {
   final _libAuthBundle = libAuthBundle;
   final _libSocialLoginsBundle = libSocialLoginsBundle;
   final _libChangeLanguageBundle = libChangeLanguageBundle;
+  final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -220,6 +229,10 @@ class CreateCommand extends Command<int> {
     if (arguments.enableChangeLanguage) {
       _bundle.files.addAll(_libChangeLanguageBundle.files);
     }
+    // Add Patrol tests brick to _bundle when needed
+    if (arguments.enablePatrolTests) {
+      _bundle.files.addAll(_patrolIntegrationTestsBundle.files);
+    }
 
     //Add lib_route to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
@@ -245,6 +258,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
+        'enable_patrol': arguments.enablePatrolTests,
       },
     );
 
@@ -273,6 +287,7 @@ class CreateCommand extends Command<int> {
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
       enableSocialLogins: _parseEnableSocialLogins(arguments),
       enableChangeLanguage: _parseEnableChangeLanguage(arguments),
+      enablePatrolTests: _parseEnablePatrolTests(arguments),
     );
   }
 
@@ -301,6 +316,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableCounter(ArgResults arguments) {
     final counterEnabled = arguments[_counterString];
     return counterEnabled.toLowerCase() == 'true';
+  }
+
+  /// Return whether the project will be created with patrol integration tests
+  bool _parseEnablePatrolTests(ArgResults arguments) {
+    final patrolEnabled = arguments[_patrolTestsString];
+    return patrolEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with widget toolkit feature
@@ -417,6 +438,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
+    _usingLog('Patrol integration tests', arguments.enablePatrolTests);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -446,6 +468,7 @@ class _CreateCommandArguments {
     required this.enableWidgetToolkitFeature,
     required this.enableSocialLogins,
     required this.enableChangeLanguage,
+    required this.enablePatrolTests,
   });
 
   final String projectName;
@@ -457,4 +480,5 @@ class _CreateCommandArguments {
   final bool enableWidgetToolkitFeature;
   final bool enableSocialLogins;
   final bool enableChangeLanguage;
+  final bool enablePatrolTests;
 }

@@ -1,8 +1,8 @@
 import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({
+class HotelSearchBar extends StatelessWidget {
+  const HotelSearchBar({
     required this.controller,
     Key? key,
   }) : super(key: key);

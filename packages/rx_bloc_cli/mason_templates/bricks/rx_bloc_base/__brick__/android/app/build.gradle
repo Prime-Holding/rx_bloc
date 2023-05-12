@@ -80,14 +80,16 @@ android {
             applicationIdSuffix ".stag"
             versionNameSuffix "-stag"{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
-            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol}}
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol}}
         }        
         development {
             dimension "default"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
-            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol}}
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol}}
         }
     }
 
@@ -111,5 +113,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"{{#analytics}}
     implementation platform('com.google.firebase:firebase-bom:27.0.0')
-    implementation 'com.google.firebase:firebase-analytics'{{/analytics}}
+    implementation 'com.google.firebase:firebase-analytics'{{/analytics}}{{#enable_patrol}}
+    testImplementation "junit:junit:4.13.2"{{/enable_patrol}}
 }

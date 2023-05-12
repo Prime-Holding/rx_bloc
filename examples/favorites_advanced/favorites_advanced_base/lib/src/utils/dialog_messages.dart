@@ -37,7 +37,7 @@ Future<void> showYesNoMessage({
               color: Colors.black,
             ),
           ),
-          color: Theme.of(context).buttonColor,
+          color: Theme.of(context).buttonTheme.colorScheme!.primary,
         ),
         DialogButton(
           onPressed: () {
