@@ -1,5 +1,8 @@
+## [x.x.x]
+* Added SSE communication facilities template
+
 ## [2.6.0]
-* Added parameter `enable-patrol` for enabling patol package for integration tests
+* Added parameter `enable-patrol` for enabling patrol package for integration tests
 * Updated to Dart 3.0
 
 ## [2.5.0]
