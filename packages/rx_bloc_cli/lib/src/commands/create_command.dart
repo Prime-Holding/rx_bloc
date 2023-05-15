@@ -498,6 +498,8 @@ class CreateCommand extends Command<int> {
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
     _usingLog('Dev Menu', arguments.enableDevMenu);
     _usingLog('Patrol integration tests', arguments.enablePatrolTests);
+    _usingLog('Realtime communication',
+        arguments.realtimeCommunicationType != _RealtimeCommunicationType.none);
   }
 
   /// Shows a delayed log with a success symbol in front of it

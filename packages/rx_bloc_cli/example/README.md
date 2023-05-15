@@ -17,7 +17,8 @@
 13. [Social Logins](#social-logins-library)
 14. [Dev Menu](#dev-menu)
 15. [Patrol integration tests](#patrol-integration-tests)
-16. [Next Steps](#next-steps)
+16. [Realtime communication](#realtime-communication)
+17. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -321,7 +322,7 @@ In order to make the notifications work on your target platform, make sure you f
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
 
-## Social logins library
+## Social Logins Library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
 
@@ -378,6 +379,7 @@ productFlavors{
 - for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
+
 
 
 ## Dev Menu
@@ -439,6 +441,13 @@ This package enables applications to use native automation features
 #### Running the Tests
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
+
+## Realtime Communication
+
+Provides base datasource, repository, service and utility classes for establishing a SSE connection.
+Register the classes into the DI system and configure the SSE endpoint by passing it as a parameter to `SseRemoteDataSource`.
+After this is done the event stream exposed by `SseService` can be used by any BLoC.
+
 
 ## Next Steps
 
