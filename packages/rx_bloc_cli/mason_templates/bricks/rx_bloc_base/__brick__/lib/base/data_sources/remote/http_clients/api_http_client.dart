@@ -1,7 +1,5 @@
-{{#enable_dev_menu}}
-import 'package:alice/alice.dart';{{/enable_dev_menu}}
-import 'package:dio/io.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 {{#analytics}}
 import '../interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../../../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
@@ -13,6 +11,29 @@ class ApiHttpClient with DioMixin implements Dio {
     options = BaseOptions();
     httpClientAdapter = IOHttpClientAdapter();
   }
+{{#enable_dev_menu}}
+//dev menu
+  static String proxy = '';
+
+  static Dio refreshTokenInstance = newInstance();
+  static Dio newInstance() {
+    final dio = Dio();
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      if (ApiHttpClient.proxy.isNotEmpty) {
+        client.findProxy = ((uri) {
+          return 'PROXY ${ApiHttpClient.proxy}:8888';
+        });
+      }
+      if (proxy.isNotEmpty) {
+        client.badCertificateCallback = ((cert, host, port) => true);
+      }
+      return client;
+    };
+
+    return dio;
+  }
+{{/enable_dev_menu}}
 
   final logInterceptor = createDioEventLogInterceptor('ApiHttpClient');
   late AuthInterceptor authInterceptor;{{#analytics}}
@@ -20,8 +41,7 @@ class ApiHttpClient with DioMixin implements Dio {
 
   void configureInterceptors(
       AuthInterceptor authInterceptor,{{#analytics}}
-      AnalyticsInterceptor analyticsInterceptor,{{/analytics}}{{#enable_dev_menu}}
-      Alice alice,{{/enable_dev_menu}}
+      AnalyticsInterceptor analyticsInterceptor,{{/analytics}}
   ) {
     this.authInterceptor = authInterceptor;{{#analytics}}
     this.analyticsInterceptor = analyticsInterceptor;{{/analytics}}
@@ -29,8 +49,7 @@ class ApiHttpClient with DioMixin implements Dio {
     interceptors.addAll([
       logInterceptor,
       authInterceptor,{{#analytics}}
-      analyticsInterceptor,{{/analytics}}{{#enable_dev_menu}}
-      alice.getDioInterceptor(),{{/enable_dev_menu}}
+      analyticsInterceptor,{{/analytics}}
     ]);
   }
 }

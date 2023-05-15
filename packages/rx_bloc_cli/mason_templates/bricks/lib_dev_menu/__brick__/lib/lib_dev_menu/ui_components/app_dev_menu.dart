@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/extensions/dio_extension.dart';
+import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../blocs/dev_menu_bloc.dart';
 import '../di/dev_menu_dependencies.dart';
 
@@ -78,8 +78,8 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
     alice.setNavigatorKey(widget.navigatorKey);
 
     // Attach interceptor to Dio
-    context.read<Dio>().interceptors.add(alice.getDioInterceptor());
-    DioFactoryX.refreshTokenInstance.interceptors
+    context.read<ApiHttpClient>().interceptors.add(alice.getDioInterceptor());
+    ApiHttpClient.refreshTokenInstance.interceptors
         .add(alice.getDioInterceptor());
   }
 }

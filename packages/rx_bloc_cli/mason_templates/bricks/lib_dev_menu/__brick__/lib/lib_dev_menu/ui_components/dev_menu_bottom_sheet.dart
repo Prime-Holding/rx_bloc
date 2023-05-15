@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/data_sources/local/shared_preferences_instance.dart';
-import '../../base/extensions/dio_extension.dart';
+import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/repositories/push_notification_repository.dart';
 import 'app_modal_bottom_sheet.dart';
 
@@ -31,7 +31,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
 
   @override
   void initState() {
-    _controller = TextEditingController(text: DioFactoryX.proxy);
+    _controller = TextEditingController(text: ApiHttpClient.proxy);
     super.initState();
   }
 
@@ -85,7 +85,10 @@ class _DevMenuState extends State<_DevMenuWidget> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: context.designSystem.spacing.m),
-                        child: Text(context.l10n.libDevMenu.save),
+                        child: Text(
+                          context.l10n.libDevMenu.save,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
@@ -100,7 +103,10 @@ class _DevMenuState extends State<_DevMenuWidget> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: context.designSystem.spacing.m),
-                        child: Text(context.l10n.libDevMenu.runInterceptor),
+                        child: Text(
+                          context.l10n.libDevMenu.runInterceptor,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),

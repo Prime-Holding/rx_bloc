@@ -6,7 +6,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';{{/push_notifications}}
 import 'package:flutter/material.dart';{{#enable_dev_menu}}
 import '../../data_sources/local/shared_preferences_instance.dart';
-import '../../extensions/dio_extension.dart';{{/enable_dev_menu}}
+import '../../data_sources/remote/http_clients/api_http_client.dart';
+{{/enable_dev_menu}}
 
 import '../../utils/helpers.dart';
 import '../config/environment_config.dart';{{#push_notifications}}
@@ -46,7 +47,7 @@ Future configureApp(EnvironmentConfig envConfig) async {
 
 {{#enable_dev_menu}}
     if (envConfig != const EnvironmentConfig.production()) {
-      DioFactoryX.proxy =
+    ApiHttpClient.proxy =
         await SharedPreferencesInstance().getString('proxy') ?? '';
 }{{/enable_dev_menu}}
   await _setupNotifications();
