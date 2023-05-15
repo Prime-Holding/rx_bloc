@@ -1,21 +1,24 @@
 name: rx_bloc_cli
 description: "rx_bloc_cli that enables quick project setup including: flavors, localization [intl], state management [rx_bloc], routing [go_router], design system, analytics [firebase], tests"
-version: 2.5.0
+version: 2.6.0
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_cli
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   args: ^2.3.1
   flutter_lints: ^2.0.1
-  mason: ^0.1.0-dev.39
+  mason: ^0.1.0-dev.49
   path: ^1.8.2
 
 dev_dependencies:
-  mason_cli: ^0.1.0-dev.41
+  mason_cli: ^0.1.0-dev.50
+
+dependency_overrides:
+  pub_semver: ^2.1.4 # override this until 'mason' is updated to use 'pub_semver' 2.1.4 or newer
 
 executables:
   rx_bloc_cli:

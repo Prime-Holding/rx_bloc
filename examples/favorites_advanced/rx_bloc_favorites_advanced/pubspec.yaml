@@ -65,6 +65,10 @@ dependency_overrides:
     path: ../favorites_advanced_base
   flutter_rx_bloc:
     path: ../../../packages/flutter_rx_bloc
+  rflutter_alert:
+    git:
+      url: https://github.com/kent2508/rflutter_alert.git
+      ref: master
   rx_bloc:
     path: ../../../packages/rx_bloc
   rx_bloc_generator:

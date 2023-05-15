@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../l10n/l10n.dart';
 import '../theme/design_system.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({
+class GithubSearchBar extends StatelessWidget {
+  const GithubSearchBar({
     required this.controller,
     Key? key,
   }) : super(key: key);
