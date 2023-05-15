@@ -16,7 +16,9 @@
 12. [Push notifications](#push-notifications){{#enable_social_logins}}
 13. [Social Logins](#social-logins-library){{/enable_social_logins}}{{#enable_dev_menu}}
 14. [Dev Menu](#dev-menu){{/enable_dev_menu}}
-15. [Next Steps](#next-steps)
+15. [Social Logins](#social-logins-library){{/enable_social_logins}}{{#enable_patrol}}
+16. [Patrol integration tests](#patrol-integration-tests){{/enable_patrol}}
+17. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -319,8 +321,14 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
+{{#realtime_communication}}
+## Realtime Communication
+
+Provides base datasource, repository, service and utility classes for establishing a SSE connection.
+{{/realtime_communication}}
+
 {{#enable_social_logins}}
-## Social logins library
+## Social Logins Library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
 
@@ -378,6 +386,7 @@ productFlavors{
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
 {{/enable_social_logins}}
+
 {{#enable_dev_menu}}
 ## Dev Menu
 
@@ -427,6 +436,22 @@ As part of the dev menu modal sheet, there is a customizable `options` parameter
 `Note:` To remove DevMenu and Alice package from project while preparing for production run `bin/remove_alice.sh` script.
 
 {{/enable_dev_menu}}
+
+
+{{#enable_patrol}}
+## Patrol Integration Tests
+
+The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
+Patrol allows developers to use native automation and custom finders to write integration tests faster.
+
+To run patrol integration tests install [patrol_cli](https://pub.dev/packages/patrol_cli) package. 
+This package enables applications to use native automation features
+
+#### Running the Tests
+
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
+{{/enable_patrol}}
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.

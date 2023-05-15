@@ -11,8 +11,10 @@ import '../templates/lib_auth_bundle.dart';
 import '../templates/lib_change_language_bundle.dart';
 import '../templates/lib_dev_menu_bundle.dart';
 import '../templates/lib_permissions_bundle.dart';
+import '../templates/lib_realtime_communication_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
+import '../templates/patrol_integration_tests_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
@@ -80,6 +82,19 @@ class CreateCommand extends Command<int> {
             'project',
         allowed: ['true', 'false'],
         defaultsTo: 'false',
+      )
+      ..addOption(
+        _patrolTestsString,
+        help: 'Enables Patrol integration tests for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'false',
+      )
+      ..addOption(
+        _realtimeCommunicationString,
+        help: 'Enables realtime communication facilities like SSE, WebSocket '
+            'or gRPC',
+        allowed: ['none', 'sse'],
+        defaultsTo: 'none',
       );
   }
 
@@ -94,6 +109,8 @@ class CreateCommand extends Command<int> {
   final _socialLoginsString = 'enable-social-logins';
   final _changeLanguageString = 'enable-change-language';
   final _devMenuString = 'enable-dev-menu';
+  final _patrolTestsString = 'enable-patrol';
+  final _realtimeCommunicationString = 'realtime-communication';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -105,6 +122,8 @@ class CreateCommand extends Command<int> {
   final _libSocialLoginsBundle = libSocialLoginsBundle;
   final _libChangeLanguageBundle = libChangeLanguageBundle;
   final _libDevMenuBundle = libDevMenuBundle;
+  final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
+  final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -229,6 +248,15 @@ class CreateCommand extends Command<int> {
     if (arguments.enableChangeLanguage) {
       _bundle.files.addAll(_libChangeLanguageBundle.files);
     }
+    // Add Patrol tests brick to _bundle when needed
+    if (arguments.enablePatrolTests) {
+      _bundle.files.addAll(_patrolIntegrationTestsBundle.files);
+    }
+
+    if (arguments.realtimeCommunicationType !=
+        _RealtimeCommunicationType.none) {
+      _bundle.files.addAll(_libRealtimeCommunicationBundle.files);
+    }
 
     // Add Dev Menu brick _bundle when needed
     if (arguments.enableDevMenu) {
@@ -260,6 +288,9 @@ class CreateCommand extends Command<int> {
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
         'enable_dev_menu': arguments.enableDevMenu,
+        'enable_patrol': arguments.enablePatrolTests,
+        'realtime_communication': arguments.realtimeCommunicationType !=
+            _RealtimeCommunicationType.none,
       },
     );
 
@@ -289,6 +320,8 @@ class CreateCommand extends Command<int> {
       enableSocialLogins: _parseEnableSocialLogins(arguments),
       enableChangeLanguage: _parseEnableChangeLanguage(arguments),
       enableDevMenu: _parseEnableDevMenu(arguments),
+      enablePatrolTests: _parseEnablePatrolTests(arguments),
+      realtimeCommunicationType: _parseRealtimeCommunicationType(arguments),
     );
   }
 
@@ -317,6 +350,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableCounter(ArgResults arguments) {
     final counterEnabled = arguments[_counterString];
     return counterEnabled.toLowerCase() == 'true';
+  }
+
+  /// Return whether the project will be created with patrol integration tests
+  bool _parseEnablePatrolTests(ArgResults arguments) {
+    final patrolEnabled = arguments[_patrolTestsString];
+    return patrolEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with widget toolkit feature
@@ -353,6 +392,24 @@ class CreateCommand extends Command<int> {
   bool _parseEnableDevMenu(ArgResults arguments) {
     final devMenuEnabled = arguments[_devMenuString];
     return devMenuEnabled.toLowerCase() == 'true';
+  }
+
+  _RealtimeCommunicationType _parseRealtimeCommunicationType(arguments) {
+    final type = arguments[_realtimeCommunicationString] as String;
+
+    switch (type.toLowerCase()) {
+      case 'sse':
+        return _RealtimeCommunicationType.sse;
+      case 'websocket':
+        return _RealtimeCommunicationType.websocket;
+      case 'grpc':
+        return _RealtimeCommunicationType.grpc;
+      case 'none':
+        return _RealtimeCommunicationType.none;
+    }
+
+    throw UsageException(
+        'Unexpected value for parameter $_realtimeCommunicationString.', usage);
   }
 
   /// endregion
@@ -440,6 +497,7 @@ class CreateCommand extends Command<int> {
         arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
     _usingLog('Dev Menu', arguments.enableDevMenu);
+    _usingLog('Patrol integration tests', arguments.enablePatrolTests);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -470,6 +528,8 @@ class _CreateCommandArguments {
     required this.enableSocialLogins,
     required this.enableChangeLanguage,
     required this.enableDevMenu,
+    required this.enablePatrolTests,
+    required this.realtimeCommunicationType,
   });
 
   final String projectName;
@@ -482,4 +542,8 @@ class _CreateCommandArguments {
   final bool enableSocialLogins;
   final bool enableChangeLanguage;
   final bool enableDevMenu;
+  final bool enablePatrolTests;
+  final _RealtimeCommunicationType realtimeCommunicationType;
 }
+
+enum _RealtimeCommunicationType { none, sse, websocket, grpc }

@@ -16,7 +16,8 @@
 12. [Push notifications](#push-notifications)
 13. [Social Logins](#social-logins-library)
 14. [Dev Menu](#dev-menu)
-15. [Next Steps](#next-steps)
+15. [Patrol integration tests](#patrol-integration-tests)
+16. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -424,6 +425,20 @@ It works great when incorporated with the `DevMenuListener` widget within the `o
 
 As part of the dev menu modal sheet, there is a customizable `options` parameter which requires a `DevMenuConfig` class. That config class allows you to customize different aspects and features of the dev menu and as well turn on/off some options.
 
+`Note:` To remove DevMenu and Alice package from project while preparing for production run `bin/remove_alice.sh` script.
+
+
+## Patrol Integration Tests
+
+The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
+Patrol allows developers to use native automation and custom finders to write integration tests faster.
+
+To run patrol integration tests install [patrol_cli](https://pub.dev/packages/patrol_cli) package. 
+This package enables applications to use native automation features
+
+#### Running the Tests
+
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
 
 ## Next Steps
 

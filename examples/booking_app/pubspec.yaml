@@ -55,6 +55,10 @@ dev_dependencies:
 
 
 dependency_overrides:
+  rflutter_alert:
+    git:
+      url: https://github.com/kent2508/rflutter_alert.git
+      ref: master
   animated_stream_list:
     git:
       url: https://github.com/nilsreichardt/animated-stream-list.git

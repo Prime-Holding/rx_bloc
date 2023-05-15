@@ -46,7 +46,8 @@ class HotelAppTheme {
       ),
       textTheme: _buildTextTheme(base.textTheme),
       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
-      accentTextTheme: _buildTextTheme(base.accentTextTheme),
+
+      //  accentTextTheme: _buildTextTheme(base.accentTextTheme),
       platform: TargetPlatform.iOS,
     );
   }

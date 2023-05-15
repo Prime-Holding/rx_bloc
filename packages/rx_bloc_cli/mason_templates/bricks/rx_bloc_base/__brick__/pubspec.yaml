@@ -4,7 +4,7 @@ homepage: https://{{organization_name}}.{{domain_name}}
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   {{#enable_dev_menu}}
@@ -53,12 +53,24 @@ dev_dependencies:
     sdk: flutter
   go_router_builder: ^2.0.0
   json_serializable: ^6.5.1
-  mockito: ^5.3.2
+  mockito: ^5.3.2 {{#enable_patrol}}
+  patrol: ^1.1.2 {{/enable_patrol}}
   r_flutter: 0.9.0
   retrofit_generator: ^6.0.0+3
   rx_bloc_generator: ^6.0.1
   rx_bloc_test: any
-  test: any
+  test: any {{#enable_patrol}}
+
+patrol:
+  app_name: {{project_name}}
+  flavor: development
+  android:
+    package_name: {{domain_name}}.{{organization_name}}.{{project_name}}
+  ios:
+    bundle_id: {{domain_name}}.{{organization_name}}.{{project_name}}
+    app_name: {{project_name}} {{/enable_patrol}}
+
+
   {{#enable_dev_menu}}
 dependency_overrides:
   alice:
@@ -66,6 +78,7 @@ dependency_overrides:
       url: https://github.com/Prime-Holding/alice.git
       ref: master
 {{/enable_dev_menu}}
+
 flutter:
   uses-material-design: true
   assets:
