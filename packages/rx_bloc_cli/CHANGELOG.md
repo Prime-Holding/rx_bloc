@@ -2,6 +2,7 @@
 * Added parameter `enable-patrol` for enabling patrol package for integration tests
 * Added SSE communication facilities template
 * Updated to Dart 3.0
+* Fix android compatibility with the latest java and gradle versions
 
 ## [2.5.0]
 * Added new event: `pop` for the `RouterBlocEvents` for enabling popping from a location
