@@ -274,6 +274,8 @@ class CreateCommand extends Command<int> {
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
         'enable_patrol': arguments.enablePatrolTests,
+        'realtime_communication': arguments.realtimeCommunicationType !=
+            _RealtimeCommunicationType.none,
       },
     );
 

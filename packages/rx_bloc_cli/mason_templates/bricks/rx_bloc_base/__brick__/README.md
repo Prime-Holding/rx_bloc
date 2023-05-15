@@ -318,8 +318,14 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
+{{#realtime_communication}}
+## Realtime Communication
+
+Provides base datasource, repository, service and utility classes for establishing a SSE connection.
+{{/realtime_communication}}
+
 {{#enable_social_logins}}
-## Social logins library
+## Social Logins Library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
 
