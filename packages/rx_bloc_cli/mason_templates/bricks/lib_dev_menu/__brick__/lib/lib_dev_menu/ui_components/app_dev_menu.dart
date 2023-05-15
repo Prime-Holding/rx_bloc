@@ -77,7 +77,7 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
     //Set navigator key
     alice.setNavigatorKey(widget.navigatorKey);
 
-    // Attach interceptor to Dio
+    // Attach interceptor to ApiHttpClient
     context.read<ApiHttpClient>().interceptors.add(alice.getDioInterceptor());
     ApiHttpClient.refreshTokenInstance.interceptors
         .add(alice.getDioInterceptor());
