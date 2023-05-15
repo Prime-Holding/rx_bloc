@@ -80,8 +80,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         _appRouter,{{#analytics}}
         ..._analytics,{{/analytics}}
         ..._environment,
-        ..._mappers,{{#enable_dev_menu}}
-        ..._packages,{{/enable_dev_menu}}
+        ..._mappers,
         ..._httpClients,
         ..._dataStorages,
         ..._dataSources,
@@ -125,18 +124,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => ErrorMapper(context.read()),
         ),
       ];
-{{#enable_dev_menu}}
-
-  List<Provider> get _packages => [
-    Provider<Alice>(
-      create: (context) => Alice(
-        showNotification: true,
-        showInspectorOnShake: false,
-        darkTheme: false,
-        maxCallsCount: 1000,
-      )),
-  ];
-{{/enable_dev_menu}}
 
   List<Provider> get _httpClients => [
         Provider<PlainHttpClient>(

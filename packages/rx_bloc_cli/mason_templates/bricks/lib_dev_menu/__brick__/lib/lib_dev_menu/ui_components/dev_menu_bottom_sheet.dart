@@ -4,6 +4,7 @@ import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../alice_instance.dart';
 import '../../app_extensions.dart';
 import '../../base/data_sources/local/shared_preferences_instance.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
@@ -98,7 +99,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
                   Expanded(
                     child: FilledButton(
                       onPressed: () async {
-                        context.read<Alice>().showInspector();
+                        alice.showInspector();
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(

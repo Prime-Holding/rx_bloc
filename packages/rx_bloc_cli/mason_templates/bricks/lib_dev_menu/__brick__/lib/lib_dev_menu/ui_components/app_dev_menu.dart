@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../alice_instance.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../blocs/dev_menu_bloc.dart';
 import '../di/dev_menu_dependencies.dart';
@@ -72,7 +73,6 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
   }
 
   void _setupAlice() {
-    final alice = context.read<Alice>();
 
     //Set navigator key
     alice.setNavigatorKey(widget.navigatorKey);
