@@ -16,7 +16,8 @@
 12. [Push notifications](#push-notifications)
 13. [Social Logins](#social-logins-library)
 14. [Patrol integration tests](#patrol-integration-tests)
-15. [Next Steps](#next-steps)
+15. [Realtime communication](#realtime-communication)
+16. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -384,6 +385,13 @@ Patrol allows developers to use native automation and custom finders to write in
 
 To run patrol integration tests install [patrol_cli](https://pub.dev/packages/patrol_cli) package. 
 This package enables applications to use native automation features
+
+## Realtime Communication
+
+Provides base datasource, repository, service and utility classes for establishing a SSE connection.
+Register the classes into the DI system and configure the SSE endpoint by passing it as a parameter to `SseRemoteDataSource`.
+After this is done the event stream exposed by `SseService` can be used by any BLoC.
+
 
 #### Running the Tests
 
