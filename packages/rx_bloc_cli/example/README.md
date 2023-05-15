@@ -326,8 +326,6 @@ In order to make the notifications work on your target platform, make sure you f
 
 Provides base datasource, repository, service and utility classes for establishing a SSE connection.
 
-
-
 ## Social Logins Library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
@@ -436,9 +434,6 @@ As part of the dev menu modal sheet, there is a customizable `options` parameter
 `Note:` To remove DevMenu and Alice package from project while preparing for production run `bin/remove_alice.sh` script.
 
 
-
-
-
 ## Patrol Integration Tests
 
 The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
@@ -450,6 +445,13 @@ This package enables applications to use native automation features
 #### Running the Tests
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
+
+
+## Realtime Communication
+
+Provides base datasource, repository, service and utility classes for establishing a SSE connection.
+Register the classes into the DI system and configure the SSE endpoint by passing it as a parameter to `SseRemoteDataSource`.
+After this is done the event stream exposed by `SseService` can be used by any BLoC.
 
 
 ## Next Steps

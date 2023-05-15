@@ -321,12 +321,6 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
-{{#realtime_communication}}
-## Realtime Communication
-
-Provides base datasource, repository, service and utility classes for establishing a SSE connection.
-{{/realtime_communication}}
-
 {{#enable_social_logins}}
 ## Social Logins Library
 
@@ -451,6 +445,13 @@ This package enables applications to use native automation features
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
 {{/enable_patrol}}
+
+{{#realtime_communication}}
+## Realtime Communication
+
+Provides base datasource, repository, service and utility classes for establishing a SSE connection.
+Register the classes into the DI system and configure the SSE endpoint by passing it as a parameter to `SseRemoteDataSource`.
+After this is done the event stream exposed by `SseService` can be used by any BLoC.{{/realtime_communication}}
 
 ## Next Steps
 
