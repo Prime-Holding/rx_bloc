@@ -50,3 +50,8 @@ dart run mason_cli:mason bundle \
   -t dart \
   -o lib/src/templates/ \
   mason_templates/bricks/patrol_integration_tests
+
+dart run mason_cli:mason bundle \
+  -t dart \
+  -o lib/src/templates/ \
+  mason_templates/bricks/lib_realtime_communication
