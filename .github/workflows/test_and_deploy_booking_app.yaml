@@ -1,5 +1,8 @@
 name: "Test and deploy Booking app"
 
+env:
+  FLUTTER_VERSION: '3.7.12'
+
 # Define events when this workflow is triggered
 on:
   push:
