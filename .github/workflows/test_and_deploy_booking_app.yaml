@@ -8,11 +8,17 @@ on:
   push:
     paths:
       - ".github/workflows/test_and_deploy_booking_app.yaml"
+      - ".github/workflows/test_app_with_coverage.yaml"
+      - ".github/workflows/deploy_android_app.yaml"
+      - ".github/workflows/deploy_ios_app.yaml"
       - "examples/booking_app"
       
   pull_request:
     paths:
       - ".github/workflows/test_and_deploy_booking_app.yaml"
+      - ".github/workflows/test_app_with_coverage.yaml"
+      - ".github/workflows/deploy_android_app.yaml"
+      - ".github/workflows/deploy_ios_app.yaml"
       - "examples/booking_app"
 
 # Define jobs that should be running within this workflow
