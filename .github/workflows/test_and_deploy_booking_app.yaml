@@ -19,6 +19,7 @@ jobs:
     with:
       project_path: "examples/booking_app"
       min_coverage: 55
+      flutter_version: '3.7.12'
       
   deploy_android_booking_app:
     needs: [test_booking_app]
@@ -27,6 +28,7 @@ jobs:
       project_path: "examples/booking_app"
       package_name: com.primeholding.booking_app
       publish_to_store: false
+      flutter_version: '3.7.12'
     secrets:
       key_properties_content_base64: ${{ secrets.KEY_PROPERTIES_CONTENT_BASE64 }}
       store_file_content_base64: ${{ secrets.STORE_FILE_CONTENT_BASE64 }}
@@ -37,4 +39,5 @@ jobs:
     uses: ./.github/workflows/deploy_ios_app.yaml
     with:
       project_path: "examples/booking_app"
+      flutter_version: '3.7.12'
         

@@ -8,6 +8,11 @@ on:
         default: ''
         required: false
         description: 'The location of the flutter project within the repository'
+      flutter_version:
+        type: string
+        default: ''
+        required: false
+        description: 'The flutter version used to build the project'
 
 jobs:
   deploy_ios_app:
@@ -23,6 +28,7 @@ jobs:
           java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ inputs.flutter_version }}
           channel: "stable"
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
