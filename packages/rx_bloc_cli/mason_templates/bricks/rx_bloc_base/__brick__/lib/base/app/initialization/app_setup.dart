@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';{{/push_notifications}}
 import 'package:flutter/material.dart';{{#enable_dev_menu}}
 import '../../data_sources/local/shared_preferences_instance.dart';
 import '../../data_sources/remote/http_clients/api_http_client.dart';
+import '../../data_sources/remote/http_clients/plain_http_client.dart';
 {{/enable_dev_menu}}
 
 import '../../utils/helpers.dart';
@@ -48,6 +49,8 @@ Future configureApp(EnvironmentConfig envConfig) async {
 {{#enable_dev_menu}}
     if (envConfig != const EnvironmentConfig.production()) {
     ApiHttpClient.proxy =
+        await SharedPreferencesInstance().getString('proxy') ?? '';
+    PlainHttpClient.proxy =
         await SharedPreferencesInstance().getString('proxy') ?? '';
 }{{/enable_dev_menu}}
   await _setupNotifications();

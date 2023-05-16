@@ -10,16 +10,8 @@ class ApiHttpClient with DioMixin implements Dio {
   ApiHttpClient() {
     options = BaseOptions();
     httpClientAdapter = IOHttpClientAdapter();
-  }
-{{#enable_dev_menu}}
-//dev menu
-  static String proxy = '';
-
-  static Dio refreshTokenInstance = newInstance();
-  static Dio newInstance() {
-    final dio = Dio();
-    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-        (client) {
+    {{#enable_dev_menu}}
+    (httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
       if (ApiHttpClient.proxy.isNotEmpty) {
         client.findProxy = ((uri) {
           return 'PROXY ${ApiHttpClient.proxy}:8888';
@@ -29,11 +21,12 @@ class ApiHttpClient with DioMixin implements Dio {
         client.badCertificateCallback = ((cert, host, port) => true);
       }
       return client;
-    };
-
-    return dio;
+    };{{/enable_dev_menu}}
   }
-{{/enable_dev_menu}}
+{{#enable_dev_menu}}
+
+  static String proxy = '';
+  {{/enable_dev_menu}}
 
   final logInterceptor = createDioEventLogInterceptor('ApiHttpClient');
   late AuthInterceptor authInterceptor;{{#analytics}}

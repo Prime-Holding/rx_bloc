@@ -427,7 +427,7 @@ It works great when incorporated with the `DevMenuListener` widget within the `o
 
 As part of the dev menu modal sheet, there is a customizable `options` parameter which requires a `DevMenuConfig` class. That config class allows you to customize different aspects and features of the dev menu and as well turn on/off some options.
 
-`Note:` To remove DevMenu and Alice package from project while preparing for production run `bin/remove_alice.sh` script.
+`Note:` To remove DevMenu and Alice package from project while preparing for production run `bin/remove_alice.sh` script. Please check dependency_overrides in `pubspec.yaml` before running script, if alice is not only one 
 
 
 

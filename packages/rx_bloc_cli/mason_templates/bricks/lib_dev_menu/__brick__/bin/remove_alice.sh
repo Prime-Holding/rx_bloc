@@ -19,4 +19,4 @@ sed -i '' '/          context.read<Alice>(),/d' lib/base/app/testapp.dart
 sed -i '' "/import 'package:alice\/alice.dart'\;/d" lib/base/di/testapp_with_dependencies.dart
 sed -i '' '/          ..._packages,/d' lib/base/di/testapp_with_dependencies.dart
 sed -i '' '/        Provider<Alice>(/ ,/                )),/d' lib/base/di/testapp_with_dependencies.dart
-sed -i '' '/dependency_overrides:/ ,/      ref: master/d' pubspec.yaml #if there is other dependency overrides that alice replace "dependency_overrides:" with "alice:"
+sed -i '' '/dependency_overrides:/ ,/      ref: master/d' pubspec.yaml #if there is other dependency overrides than alice replace "dependency_overrides:" with "alice:"
