@@ -34,7 +34,7 @@ jobs:
 
   deploy_ios_booking_app:
     needs: [test_booking_app]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy iOS app here
-        run: echo "Deploy iOS app here"
+    uses: ./.github/workflows/deploy_ios_app.yaml
+    with:
+      project_path: "examples/booking_app"
+        
