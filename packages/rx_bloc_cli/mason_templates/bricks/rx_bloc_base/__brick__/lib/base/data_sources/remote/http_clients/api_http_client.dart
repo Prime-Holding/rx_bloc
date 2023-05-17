@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
+import 'package:dio/io.dart';{{#enable_dev_menu}}
+import '../../../app/config/environment_config.dart';{{/enable_dev_menu}}
 {{#analytics}}
 import '../interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../../../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
@@ -11,17 +12,19 @@ class ApiHttpClient with DioMixin implements Dio {
     options = BaseOptions();
     httpClientAdapter = IOHttpClientAdapter();
     {{#enable_dev_menu}}
-    (httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
-      if (ApiHttpClient.proxy.isNotEmpty) {
-        client.findProxy = ((uri) {
-          return 'PROXY ${ApiHttpClient.proxy}:8888';
-        });
-      }
-      if (proxy.isNotEmpty) {
-        client.badCertificateCallback = ((cert, host, port) => true);
-      }
-      return client;
-    };{{/enable_dev_menu}}
+    if (EnvironmentConfig.enableDevMenu == true) {
+      (httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
+        if (ApiHttpClient.proxy.isNotEmpty) {
+          client.findProxy = ((uri) {
+            return 'PROXY ${ApiHttpClient.proxy}:8888';
+          });
+        }
+        if (proxy.isNotEmpty) {
+          client.badCertificateCallback = ((cert, host, port) => true);
+        }
+        return client;
+      };
+    }{{/enable_dev_menu}}
   }
 {{#enable_dev_menu}}
 

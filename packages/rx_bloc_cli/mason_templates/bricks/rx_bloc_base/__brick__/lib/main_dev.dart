@@ -15,20 +15,28 @@ void main() async {
   const environment = EnvironmentConfig.development();
 
   await configureApp(environment);
-
-  runApp({{^enable_dev_menu}}const{{/enable_dev_menu}} {{project_name.pascalCase()}}(
-    config: environment,{{#enable_dev_menu}}
-    createDebugMenuInstance: (context, widget, navKey) =>
-        AppDevMenuGestureDetector.withDependencies(
-      context,
-      navKey,
-      child: widget,
-      onDevMenuPresented: () {
-        showAppDevMenuBottomSheet(
-          navKey.currentContext!,
-        );
-      },
-    ),
+{{#enable_dev_menu}}
+  if (EnvironmentConfig.enableDevMenu == true) {
 {{/enable_dev_menu}}
-  ));
+    runApp({{^enable_dev_menu}}const{{/enable_dev_menu}} {{project_name.pascalCase()}}(
+      config: environment,{{#enable_dev_menu}}
+      createDebugMenuInstance: (context, widget, navKey) =>
+          AppDevMenuGestureDetector.withDependencies(
+        context,
+        navKey,
+        child: widget,
+        onDevMenuPresented: () {
+          showAppDevMenuBottomSheet(
+            navKey.currentContext!,
+          );
+        },
+      ),
+{{/enable_dev_menu}}
+    ));
+{{#enable_dev_menu}}
+  } else {
+    runApp(const {{project_name.pascalCase()}}(
+      config: environment,
+    ));
+  }{{/enable_dev_menu}}
 }

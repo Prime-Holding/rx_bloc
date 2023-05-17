@@ -16,7 +16,9 @@ void main() async {
   const environment = EnvironmentConfig.staging();
 
   await configureApp(environment);
-
+{{#enable_dev_menu}}
+  if (EnvironmentConfig.enableDevMenu == true) {
+{{/enable_dev_menu}}
   await setupAndRunApp(
     (config) => {{project_name.pascalCase()}}(
       config: config, {{#enable_dev_menu}}
@@ -34,5 +36,13 @@ void main() async {
     ),
     environment: environment,
   );
+{{#enable_dev_menu}}
+  } else {
+    await setupAndRunApp(
+      (config) => {{project_name.pascalCase()}}(
+        config: config,
+      ),
+      environment: environment);
+  }{{/enable_dev_menu}}
 }
 

@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Staging_with_dev_menu" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define=&quot;ENABLE_DEV_MENU=true&quot;" />
+    <option name="buildFlavor" value="staging" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main_staging.dart" />
+    <method v="2" />
+  </configuration>
+</component>
