@@ -10,7 +10,7 @@ class SseTransformer extends StreamTransformerBase<String, SseMessageModel> {
   }
 }
 
-class _SseEventSink extends EventSink<String> {
+class _SseEventSink implements EventSink<String> {
   _SseEventSink(this._eventSink);
 
   final EventSink<SseMessageModel> _eventSink;

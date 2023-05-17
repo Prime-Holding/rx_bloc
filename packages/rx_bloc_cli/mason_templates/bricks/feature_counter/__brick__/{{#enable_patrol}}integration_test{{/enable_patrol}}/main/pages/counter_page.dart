@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import 'package:testapp/keys.dart';
+import 'package:{{project_name}}/keys.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../base/base_page.dart';
