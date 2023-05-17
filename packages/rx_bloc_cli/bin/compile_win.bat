@@ -29,5 +29,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-social-logins true ^
 --enable-change-language true ^
 --enable-patrol true ^
+--realtime-communication sse ^
 example/test_app ^
 & cd example/test_app
