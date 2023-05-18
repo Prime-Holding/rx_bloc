@@ -32,6 +32,7 @@ class HomePage extends StatelessWidget {
         child: child,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        key: K.bottomNavigationBar,
         type: BottomNavigationBarType.fixed,
         currentIndex: _getCurrentIndex(list, router),
         onTap: (index) =>
@@ -52,7 +53,7 @@ class HomePage extends StatelessWidget {
     var index = list.indexWhere((item) {
       final routePath =
           router.routeInformationParser.matcher.findMatch(router.location);
-      return routePath.fullpath.startsWith(item.routePath);
+      return routePath.fullPath.startsWith(item.routePath);
     });
     return index.isNegative ? 0 : index;
   }

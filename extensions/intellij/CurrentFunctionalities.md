@@ -105,7 +105,7 @@ At the time of writing this, the functionality was more important than the code 
 
 <img width="588" alt="image13" src="https://user-images.githubusercontent.com/98388232/234257754-e429fd7f-439d-4866-a32d-8a46b37c0090.png">
 
-- [IntelliJ APIs - reading/writing files](https://github.com/Prime-Holding/rx_bloc/blob/plugin-readme/extensions/intellij/IntelliJ_APIs.md), 
+- [IntelliJ APIs - reading/writing files](https://github.com/Prime-Holding/rx_bloc/blob/develop/extensions/intellij/IntelliJ_APIs.md), 
 - cursor location (IDEs APIs), [BlocWrapWithIntentionAction.execute()](https://github.com/Prime-Holding/rx_bloc/blob/9ff87b7a6c3d707403cfe1258c809f5950a4ed38/extensions/intellij/intellij_generator_plugin/src/main/java/com/primeholding/rxbloc_generator_plugin/intention_action/BlocWrapWithIntentionAction.java) // the caret positioning
 - and the actual custom snippet wrapping. 
 

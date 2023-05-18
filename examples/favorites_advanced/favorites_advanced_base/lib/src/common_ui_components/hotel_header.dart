@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
 import '../../core.dart';
 import '../../models.dart';
@@ -11,7 +10,7 @@ class HotelHeader extends StatelessWidget {
     Key? key,
     required this.hotel,
     required EdgeInsets? padding,
-  })   : _padding = padding,
+  })  : _padding = padding,
         super(key: key);
 
   final Hotel hotel;

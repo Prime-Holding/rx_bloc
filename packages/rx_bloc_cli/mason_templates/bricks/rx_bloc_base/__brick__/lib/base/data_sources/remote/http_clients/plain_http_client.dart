@@ -1,5 +1,5 @@
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 {{#analytics}}
 import '../interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../interceptors/log_interceptor.dart';
@@ -9,7 +9,7 @@ import '../interceptors/log_interceptor.dart';
 class PlainHttpClient with DioMixin implements Dio {
   PlainHttpClient() {
     options = BaseOptions();
-    httpClientAdapter = DefaultHttpClientAdapter();
+    httpClientAdapter = IOHttpClientAdapter();
   }
 
   final logInterceptor = createDioEventLogInterceptor('PlainHttpClient');{{#analytics}}

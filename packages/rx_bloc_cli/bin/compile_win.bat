@@ -7,6 +7,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_auth ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_social_logins ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_change_language ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/patrol_integration_tests ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y feature_counter_bundle.dart lib\src\templates\ ^
 & move /Y feature_deeplink_bundle.dart lib\src\templates\ ^
@@ -15,7 +16,8 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y lib_permissions_bundle.dart lib\src\templates\ ^
 & move /Y lib_auth_bundle.dart lib\src\templates\ ^
 & move /Y lib_social_logins_bundle.dart lib\src\templates\ ^
-& move /Y lib_change_language.dart lib\src\templates\ ^
+& move /Y lib_change_language_bundle.dart lib\src\templates\ ^
+& move /Y patrol_integration_tests_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\test_app\ ^
 & dart pub global activate -s path . --overwrite ^
 & rx_bloc_cli create ^
@@ -25,6 +27,9 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-feature-deeplinks true ^
 --enable-feature-widget-toolkit true ^
 --enable-social-logins true ^
+--enable-analytics true ^
 --enable-change-language true ^
+--enable-patrol true ^
+--realtime-communication sse ^
 example/test_app ^
 & cd example/test_app
