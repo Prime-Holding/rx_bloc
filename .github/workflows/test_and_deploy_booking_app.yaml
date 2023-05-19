@@ -44,9 +44,14 @@ jobs:
       playstore_account_key: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
 
   deploy_ios_booking_app:
-    needs: [test_booking_app]
-    uses: ./.github/workflows/deploy_ios_app.yaml
-    with:
-      project_path: "examples/booking_app"
-      flutter_version: '3.7.12'
+      needs: [test_booking_app]
+      uses: ./.github/workflows/deploy_ios_app.yaml
+      with:
+        project_path: "examples/booking_app"
+        flutter_version: '3.7.12'
+      secrets:
+        appstore_cert_base64: ${{ secrets.APPSTORE_CERT_BASE64 }}
+        appstore_cert_password: ${{ secrets.APPSTORE_CERT_PASSWORD }}
+        mobile_provision_base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
+        keychain_password: ${{ secrets.KEYCHAIN_PASSWORD }}
         
