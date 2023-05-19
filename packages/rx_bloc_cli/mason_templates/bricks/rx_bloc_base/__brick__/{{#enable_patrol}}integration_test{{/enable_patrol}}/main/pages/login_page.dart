@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
 import 'package:patrol/patrol.dart';
-import 'package:testapp/keys.dart';
+import 'package:{{project_name}}/keys.dart';
 
 import '../base/base_page.dart';
 
