@@ -6,6 +6,8 @@
  <string>app-store</string>
  <key>teamID</key>
  <string>ZNE622G954</string>
+ <key>signingStyle</key>
+ <string>manual</string>
  <key>provisioningProfiles</key>
  <dict>
  <key>com.primeholding.bookingAppSample</key>
