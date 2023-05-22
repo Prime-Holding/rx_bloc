@@ -1,14 +1,15 @@
 {{> licence.dart }}
 
-import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../alice_instance.dart';
 import '../../app_extensions.dart';
 import '../../base/data_sources/local/shared_preferences_instance.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/repositories/push_notification_repository.dart';
+import '../alice_instance.dart';
+import '../blocs/dev_menu_bloc.dart';
 import 'app_modal_bottom_sheet.dart';
 
 void showAppDevMenuBottomSheet(BuildContext context) => showAppModalBottomSheet(
@@ -32,7 +33,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
 
   @override
   void initState() {
-    _controller = TextEditingController(text: ApiHttpClient.proxy);
+    _controller = TextEditingController();
     super.initState();
   }
 
@@ -65,30 +66,40 @@ class _DevMenuState extends State<_DevMenuWidget> {
               SizedBox(height: context.designSystem.spacing.m),
               Text(context.l10n.libDevMenu.restartApp),
               SizedBox(height: context.designSystem.spacing.m),
-              TextFormField(
-                autofocus: true,
-                controller: _controller,
+              FutureBuilder(
+                future: context
+                    .read<SharedPreferencesInstance>()
+                    .getString('proxy'),
+                builder: (context, snapshot) {
+                  _controller.text = snapshot.data ?? '';
+                  return TextFormField(
+                    autofocus: true,
+                    controller: _controller,
+                  );
+                },
               ),
               SizedBox(height: context.designSystem.spacing.l),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: FilledButton(
-                      onPressed: () async {
-                        await SharedPreferencesInstance().setString(
-                            context.l10n.libDevMenu.proxy, _controller.text);
+                    child: RxBlocBuilder<DevMenuBlocType, void>(
+                      state: (bloc) => bloc.states.proxySaved,
+                      builder: (context, snapshot, bloc) => FilledButton(
+                        onPressed: () {
+                          bloc.events.saveProxy(_controller.text);
 
-                        if (mounted) {
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: context.designSystem.spacing.m),
-                        child: Text(
-                          context.l10n.libDevMenu.save,
-                          textAlign: TextAlign.center,
+                          if (mounted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: context.designSystem.spacing.m),
+                          child: Text(
+                            context.l10n.libDevMenu.save,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),

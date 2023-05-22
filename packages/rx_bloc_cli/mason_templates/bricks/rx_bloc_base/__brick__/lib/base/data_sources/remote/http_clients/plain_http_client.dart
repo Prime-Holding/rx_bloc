@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';{{#enable_dev_menu}}
-import '../../../app/config/environment_config.dart';{{/enable_dev_menu}}
+import '../../../app/config/environment_config.dart';
+import '../../local/shared_preferences_instance.dart';{{/enable_dev_menu}}
 {{#analytics}}
 import '../interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../interceptors/log_interceptor.dart';
@@ -8,27 +9,17 @@ import '../interceptors/log_interceptor.dart';
 /// An HTTP client with a minimal set of interceptors.
 /// Used for accessing external resources and/or unprotected APIs.
 class PlainHttpClient with DioMixin implements Dio {
-  PlainHttpClient() {
+  PlainHttpClient({{#enable_dev_menu}}this._storage{{/enable_dev_menu}}) {
     options = BaseOptions();
     httpClientAdapter = IOHttpClientAdapter();
     {{#enable_dev_menu}}
-    if (EnvironmentConfig.enableDevMenu == true) {
-      (httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
-        if (PlainHttpClient.proxy.isNotEmpty) {
-          client.findProxy = ((uri) {
-            return 'PROXY ${PlainHttpClient.proxy}:8888';
-          });
-        }
-        if (proxy.isNotEmpty) {
-          client.badCertificateCallback = ((cert, host, port) => true);
-        }
-        return client;
-      };
+    if (EnvironmentConfig.enableDevMenu) {
+      setupProxy();
     }{{/enable_dev_menu}}
   }
   {{#enable_dev_menu}}
 
-  static String proxy = '';
+  final SharedPreferencesInstance _storage;
   {{/enable_dev_menu}}
 
   final logInterceptor = createDioEventLogInterceptor('PlainHttpClient');{{#analytics}}
@@ -44,4 +35,18 @@ class PlainHttpClient with DioMixin implements Dio {
       analyticsInterceptor,{{/analytics}}
     ]);
   }
+{{#enable_dev_menu}}
+
+  Future<void> setupProxy() async {
+    String proxy = await _storage.getString('proxy') ?? '';
+    (httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
+      if (proxy.isNotEmpty) {
+        client.findProxy = ((uri) {
+          return 'PROXY $proxy:8888';
+        });
+        client.badCertificateCallback = ((cert, host, port) => true);
+      }
+      return client;
+    };
+  }{{/enable_dev_menu}}
 }

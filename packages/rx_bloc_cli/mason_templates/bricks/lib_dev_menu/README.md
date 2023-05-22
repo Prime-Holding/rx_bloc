@@ -2,11 +2,11 @@
 
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 
-Dev menu package is a useful package when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
+Dev menu brick is a useful when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
 
 ## Widgets
 
-Within the `prime_dev_menu` package you can find the `DevMenuListener` widget and the `showDevMenuBottomSheet` function.
+Within the `dev_menu` brick you can find the `DevMenuListener` widget and the `showDevMenuBottomSheet` function.
 
 ### DevMenuListener
 
@@ -45,6 +45,10 @@ It works great when incorporated with the `DevMenuListener` widget within the `o
 
 As part of the dev menu modal sheet, there is a customizable `options` parameter which requires a `DevMenuConfig` class. That config class allows you to customize different aspects and features of the dev menu and as well turn on/off some options.
 
+By default after you trigger  `DevMenuListener` you only need to add your proxy ip and restart app so you are all set to use Charles.
+Alice is working right out of the box.
+
+`Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
 A new brick created with the Mason CLI.
 

@@ -128,12 +128,16 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
   List<Provider> get _httpClients => [
         Provider<PlainHttpClient>(
           create: (context) {
-            return PlainHttpClient();
+{{#enable_dev_menu}}
+            final storage = SharedPreferencesInstance();{{/enable_dev_menu}}
+            return PlainHttpClient({{#enable_dev_menu}}storage{{/enable_dev_menu}});
           },
         ),
         Provider<ApiHttpClient>(
           create: (context) {
-            final client = ApiHttpClient()
+{{#enable_dev_menu}}
+            final storage = SharedPreferencesInstance();{{/enable_dev_menu}}
+            final client = ApiHttpClient({{#enable_dev_menu}}storage{{/enable_dev_menu}})
               ..options.baseUrl = widget.config.baseUrl;
             return client;
           },

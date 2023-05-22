@@ -60,7 +60,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
-| `lib/lib_dev_menu`                           | A useful package when it comes to debugging your app and/or easily accessing some common development specific information and settings.               |
+| `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
 
 ## Architecture
 
@@ -382,25 +382,20 @@ All additional info about package and better explanation how to implement you ca
 
 
 
+
 ## Dev Menu
 
-Dev menu package is a useful package when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
+Dev menu brick is a useful feature when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
 
 ### Widgets
 
-Within the `prime_dev_menu` package you can find the `DevMenuListener` widget and the `showDevMenuBottomSheet` function.
+Within the `dev_menu` brick you can find the `DevMenuListener` widget and the `showDevMenuBottomSheet` function.
 
 #### DevMenuListener
 
 The `DevMenuListener` widget is a widget that is listening for user interactions (quick taps or long taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
 
 You can define which type of interactions you want to register by toggling the value of the `triggerWithLongPress` field (defaults to `false` which means that quick user taps will be registered, unlike when the value is set to `true` which will react to long user taps).
-
-With the `enabled` field, you can customize when the user interactions will be triggered and the callback is executed. If set to `false`, the widget will not fire any events. This can be useful to limit the execution of the development/debug related code only while in debug mode and prevent any code running in release mode or under any specified conditions.
-
-The widget is dependent on the `DevMenuBloc` which is an essential part of the system. The mentioned bloc should be registered with a provider in the widget tree above the widget which is trying to access it. The `DevMenuBloc` contains the necessary logic for registering and emitting stream events after a specific number of taps has been made. By default that number is 5 taps, but a custom number can be specified (by setting the `maxTaps` value when instantiating the bloc). The `DevMenuDependencies.from` factory can be used to define all necessary dependencies which can be accessed from the `providers` field.
-
-The `DevMenuListener` widget comes with a static method called `DevMenuListener.withDependencies` which allows you to easily and on-the-go define a widget with the necessary dependencies. It will instantiate and properly nest a child widget within a MultiProvider for you. The hitbox of the `child` widget will be used to trigger any interactions within the bloc.
 
 As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
 
@@ -418,16 +413,10 @@ DevMenuListener.withDependencies(
 )
 
 ```
+By default after you trigger  `DevMenuListener` you only need to add your proxy ip and restart app so you are all set to use Charles.
+Alice is working right out of the box.
 
-#### `showDevMenuBottomSheet`
-
-The `showDevMenuBottomSheet` function is a convenience function for displaying a DevMenu modal sheet with some pre-configured options. It requires a `builder` function which takes a `BuildContext` and returns a `Widget` which will be displayed within the modal sheet.
-
-It works great when incorporated with the `DevMenuListener` widget within the `onDevMenuPresented` callback.
-
-As part of the dev menu modal sheet, there is a customizable `options` parameter which requires a `DevMenuConfig` class. That config class allows you to customize different aspects and features of the dev menu and as well turn on/off some options.
-
-`Note:` To remove DevMenu and Alice package from project while preparing for production run `bin/remove_alice.sh` script. Please check dependency_overrides in `pubspec.yaml` before running script, if alice is not only one 
+`Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
 
 

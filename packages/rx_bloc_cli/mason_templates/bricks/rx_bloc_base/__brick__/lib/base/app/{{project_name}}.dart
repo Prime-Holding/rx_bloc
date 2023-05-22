@@ -9,7 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}{{#enable_dev_menu}}
-import '../utils/debug_menu.dart';{{/enable_dev_menu}}
+import '../../lib_dev_menu/alice_instance.dart';
+import '../../lib_dev_menu/ui_components/app_dev_menu.dart';
+import '../utils/dev_menu.dart';
+import '../../lib_dev_menu/ui_components/dev_menu_bottom_sheet.dart';{{/enable_dev_menu}}
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}
@@ -30,20 +33,20 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
   const {{project_name.pascalCase()}}({
     this.config = const EnvironmentConfig.production(),
 {{#enable_dev_menu}}
-    this.createDebugMenuInstance,{{/enable_dev_menu}}
+    this.createDevMenuInstance,{{/enable_dev_menu}}
   Key? key,
   }) : super(key: key);
 
   final EnvironmentConfig config;
 {{#enable_dev_menu}}
-  final CreateDebugMenuInstance? createDebugMenuInstance;
+  final CreateDevMenuInstance? createDevMenuInstance;
 {{/enable_dev_menu}}
 @override
   Widget build(BuildContext context) => {{project_name.pascalCase()}}WithDependencies(
         config: config,
 {{#enable_dev_menu}}
 
-        child: _MyMaterialApp(config, createDebugMenuInstance),{{/enable_dev_menu}}
+        child: _MyMaterialApp(config, createDevMenuInstance),{{/enable_dev_menu}}
 {{^enable_dev_menu}} child: const _MyMaterialApp(),{{/enable_dev_menu}}
       );
 }
@@ -55,11 +58,11 @@ class _MyMaterialApp extends StatefulWidget {
 {{^enable_dev_menu}} const _MyMaterialApp(); {{/enable_dev_menu}}
 {{#enable_dev_menu}} const _MyMaterialApp(
     this.config,
-    this.createDebugMenuInstance,
+    this.createDevMenuInstance,
 ); {{/enable_dev_menu}}
 {{#enable_dev_menu}}
   final EnvironmentConfig config;
-  final CreateDebugMenuInstance? createDebugMenuInstance;
+  final CreateDevMenuInstance? createDevMenuInstance;
 {{/enable_dev_menu}}
   @override
   __MyMaterialAppState createState() => __MyMaterialAppState();
@@ -152,16 +155,18 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         debugShowCheckedModeBanner: false,
       );
 
-      if (widget.createDebugMenuInstance != null) {
-        return widget.createDebugMenuInstance!.call(
+      if (EnvironmentConfig.enableDevMenu) {
+        final navKey = alice.getNavigatorKey();
+        return AppDevMenuGestureDetector.withDependencies(
           context,
-          materialApp,
-          context
-              .read<AppRouter>()
-              .router
-              .routeInformationParser
-              .configuration
-              .navigatorKey,
+          navKey!,
+          child: materialApp,
+          onDevMenuPresented: () {
+            alice.setNavigatorKey(context.read<AppRouter>().rootNavigatorKey);
+            showAppDevMenuBottomSheet(
+              context.read<AppRouter>().rootNavigatorKey.currentContext!,
+            );
+          },
         );
       }
 
@@ -184,5 +189,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     locale: _locale,
     routerConfig: context.read<AppRouter>().router,
     debugShowCheckedModeBanner: false,
-  ); {{/enable_dev_menu}}
+  );
+
+{{/enable_dev_menu}}
 }

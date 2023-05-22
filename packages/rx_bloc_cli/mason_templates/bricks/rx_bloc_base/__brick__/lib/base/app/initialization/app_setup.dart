@@ -4,12 +4,7 @@
 import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';{{/push_notifications}}
-import 'package:flutter/material.dart';{{#enable_dev_menu}}
-import '../../data_sources/local/shared_preferences_instance.dart';
-import '../../data_sources/remote/http_clients/api_http_client.dart';
-import '../../data_sources/remote/http_clients/plain_http_client.dart';
-{{/enable_dev_menu}}
-
+import 'package:flutter/material.dart';
 import '../../utils/helpers.dart';
 import '../config/environment_config.dart';{{#push_notifications}}
 import 'firebase_messaging_callbacks.dart';{{/push_notifications}}
@@ -45,14 +40,6 @@ Future configureApp(EnvironmentConfig envConfig) async {
           projectId: 'projectId',
         ),
       ));
-
-{{#enable_dev_menu}}
-    if (envConfig != const EnvironmentConfig.production()) {
-    ApiHttpClient.proxy =
-        await SharedPreferencesInstance().getString('proxy') ?? '';
-    PlainHttpClient.proxy =
-        await SharedPreferencesInstance().getString('proxy') ?? '';
-}{{/enable_dev_menu}}
   await _setupNotifications();
 
   // TODO: Add your own code that is going to be run before the actual app
