@@ -3,22 +3,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/data_sources/local/shared_preferences_instance.dart';
-import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/repositories/push_notification_repository.dart';
 import '../alice_instance.dart';
 import '../blocs/dev_menu_bloc.dart';
-import 'app_modal_bottom_sheet.dart';
 
-void showAppDevMenuBottomSheet(BuildContext context) => showAppModalBottomSheet(
-      applySafeArea: true,
+void showAppDevMenuBottomSheet(BuildContext context) => showBlurredBottomSheet(
+      configuration: const ModalConfiguration(
+        safeAreaBottom: true,
+        showCloseButton: false,
+        isDismissible: true,
+        showHeaderPill: true,
+        haveOnlyOneSheet: true,
+      ),
       context: context,
-      hideCloseButton: true,
-      hideTheLine: true,
       builder: (ctx) => const _DevMenuWidget(),
-      onDonePressed: () => Navigator.of(context).pop(),
     );
 
 class _DevMenuWidget extends StatefulWidget {

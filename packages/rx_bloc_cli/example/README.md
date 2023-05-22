@@ -389,31 +389,28 @@ Dev menu brick is a useful feature when it comes to debugging your app and/or ea
 
 ### Widgets
 
-Within the `dev_menu` brick you can find the `DevMenuListener` widget and the `showDevMenuBottomSheet` function.
+Within the `dev_menu` brick you can find the `AppDevMenuGestureDetector` widget and the `showDevMenuBottomSheet` function.
 
-#### DevMenuListener
+#### AppDevMenuGestureDetector
 
-The `DevMenuListener` widget is a widget that is listening for user interactions (quick taps or long taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
-
-You can define which type of interactions you want to register by toggling the value of the `triggerWithLongPress` field (defaults to `false` which means that quick user taps will be registered, unlike when the value is set to `true` which will react to long user taps).
+The `AppDevMenuGestureDetector` widget is a widget that is listening for user interactions (quick taps or long taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
 
 As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
 
 ```dart
-DevMenuListener.withDependencies(
-  triggerWithLongPress: true,
-  maxTaps: 3,
-  onDevMenuPresented: (){
-    showDevMenuBottomSheet(
-      context: context,
-      builder: (context) => MyDevMenuWidget(),
-    );
-  },
-  child: HomePage(),
-)
+  AppDevMenuGestureDetector.withDependencies(
+    context,
+    navKey!,
+    child: materialApp,
+      onDevMenuPresented: () {
+        showAppDevMenuBottomSheet(
+          context.read<AppRouter>().rootNavigatorKey.currentContext!,
+        );
+      },
+  );
 
 ```
-By default after you trigger  `DevMenuListener` you only need to add your proxy ip and restart app so you are all set to use Charles.
+By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
 `Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.

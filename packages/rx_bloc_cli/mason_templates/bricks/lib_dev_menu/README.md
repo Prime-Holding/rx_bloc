@@ -6,49 +6,45 @@ Dev menu brick is a useful when it comes to debugging your app and/or easily acc
 
 ## Widgets
 
-Within the `dev_menu` brick you can find the `DevMenuListener` widget and the `showDevMenuBottomSheet` function.
+Within the `dev_menu` brick you can find the `AppDevMenuGestureDetector` widget and the `showAppDevMenuBottomSheet` function which will .
 
-### DevMenuListener
+### AppDevMenuGestureDetector
 
-The `DevMenuListener` widget is a widget that is listening for user interactions (quick taps or long taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
+The `AppDevMenuGestureDetector` widget is a widget that is listening for user interactions (quick taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
 
-You can define which type of interactions you want to register by toggling the value of the `triggerWithLongPress` field (defaults to `false` which means that quick user taps will be registered, unlike when the value is set to `true` which will react to long user taps).
+The widget is dependent on the `DevMenuBloc` which is an essential part of the system. The `DevMenuBloc` contains the necessary logic for registering and emitting stream events after a specific number of taps has been made. By default that number is 5 taps, but a custom number can be specified (by setting the `maxTaps` value when instantiating the bloc). The `DevMenuDependencies.from` factory can be used to define all necessary dependencies which can be accessed from the `providers` field.
 
-With the `enabled` field, you can customize when the user interactions will be triggered and the callback is executed. If set to `false`, the widget will not fire any events. This can be useful to limit the execution of the development/debug related code only while in debug mode and prevent any code running in release mode or under any specified conditions.
+The `AppDevMenuGestureDetector` widget comes with a static method called `AppDevMenuGestureDetector.withDependencies` which allows you to easily and on-the-go define a widget with the necessary dependencies. It will instantiate and properly nest a child widget within a MultiProvider for you. The hitbox of the `child` widget will be used to trigger any interactions within the bloc.
 
-The widget is dependent on the `DevMenuBloc` which is an essential part of the system. The mentioned bloc should be registered with a provider in the widget tree above the widget which is trying to access it. The `DevMenuBloc` contains the necessary logic for registering and emitting stream events after a specific number of taps has been made. By default that number is 5 taps, but a custom number can be specified (by setting the `maxTaps` value when instantiating the bloc). The `DevMenuDependencies.from` factory can be used to define all necessary dependencies which can be accessed from the `providers` field.
-
-The `DevMenuListener` widget comes with a static method called `DevMenuListener.withDependencies` which allows you to easily and on-the-go define a widget with the necessary dependencies. It will instantiate and properly nest a child widget within a MultiProvider for you. The hitbox of the `child` widget will be used to trigger any interactions within the bloc.
-
-As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
+As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page. By default whole app is wrapped so you are able to access DevMenu from any page.
 
 ```dart
-DevMenuListener.withDependencies(
-  triggerWithLongPress: true,
-  maxTaps: 3,
-  onDevMenuPresented: (){
-    showDevMenuBottomSheet(
-      context: context,
-      builder: (context) => MyDevMenuWidget(),
-    );
-  },
-  child: HomePage(),
-)
+  AppDevMenuGestureDetector.withDependencies(
+    context,
+    navKey!,
+    child: materialApp,
+      onDevMenuPresented: () {
+      showAppDevMenuBottomSheet(
+        context.read<AppRouter>().rootNavigatorKey.currentContext!,
+      );
+    },
+  );
 
 ```
 
-### `showDevMenuBottomSheet`
+### `showAppDevMenuBottomSheet`
 
-The `showDevMenuBottomSheet` function is a convenience function for displaying a DevMenu modal sheet with some pre-configured options. It requires a `builder` function which takes a `BuildContext` and returns a `Widget` which will be displayed within the modal sheet.
+The `showAppDevMenuBottomSheet` function is a convenience function for displaying a DevMenu modal sheet with some pre-configured options. It requires a `builder` function which takes a `BuildContext` and returns a `Widget` which will be displayed within the modal sheet.
 
-It works great when incorporated with the `DevMenuListener` widget within the `onDevMenuPresented` callback.
+It works great when incorporated with the `AppDevMenuGestureDetector` widget within the `onDevMenuPresented` callback.
 
 As part of the dev menu modal sheet, there is a customizable `options` parameter which requires a `DevMenuConfig` class. That config class allows you to customize different aspects and features of the dev menu and as well turn on/off some options.
 
-By default after you trigger  `DevMenuListener` you only need to add your proxy ip and restart app so you are all set to use Charles.
+By default after you trigger  `onDevMenuPresented` callback you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
 `Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
+This can be useful to limit the execution of the development/debug related code only while in debug mode and prevent any code running in release mode or under any specified conditions.
 
 A new brick created with the Mason CLI.
 

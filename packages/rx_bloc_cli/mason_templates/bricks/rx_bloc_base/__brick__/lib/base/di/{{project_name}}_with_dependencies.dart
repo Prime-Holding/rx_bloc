@@ -1,7 +1,5 @@
 {{> licence.dart }}
 
-{{#enable_dev_menu}}
-import 'package:alice/alice.dart';{{/enable_dev_menu}}
 {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
