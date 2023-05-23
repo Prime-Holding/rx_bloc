@@ -1,4 +1,10 @@
 ## Tue May 23 2023
+- commit a2046882484b78bbf5e11db3a2b046699a3ec766
+- Author: zdravkoc
+
+    Navigator key can't be null
+
+## Tue May 23 2023
 - commit a7380a041d6e2411c696a02676d06d74701d8cd8
 - Author: zdravkoc
 
