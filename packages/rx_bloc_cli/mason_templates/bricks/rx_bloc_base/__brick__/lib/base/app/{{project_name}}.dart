@@ -9,10 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}{{#enable_dev_menu}}
-import '../../lib_dev_menu/alice_instance.dart';
 import '../../lib_dev_menu/ui_components/app_dev_menu.dart';
-import '../utils/dev_menu.dart';
-import '../../lib_dev_menu/ui_components/dev_menu_bottom_sheet.dart';{{/enable_dev_menu}}
+import '../utils/dev_menu.dart';{{/enable_dev_menu}}
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}
@@ -155,18 +153,12 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         debugShowCheckedModeBanner: false,
       );
 
+
       if (EnvironmentConfig.enableDevMenu) {
-        final navKey = alice.getNavigatorKey();
         return AppDevMenuGestureDetector.withDependencies(
           context,
-          navKey!,
+          context.read<AppRouter>().rootNavigatorKey,
           child: materialApp,
-          onDevMenuPresented: () {
-            alice.setNavigatorKey(context.read<AppRouter>().rootNavigatorKey);
-            showAppDevMenuBottomSheet(
-              context.read<AppRouter>().rootNavigatorKey.currentContext!,
-            );
-          },
         );
       }
 

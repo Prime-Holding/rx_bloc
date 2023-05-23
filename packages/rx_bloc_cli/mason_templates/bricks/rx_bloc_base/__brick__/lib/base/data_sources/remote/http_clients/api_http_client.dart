@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';{{#enable_dev_menu}}
 import '../../../app/config/environment_config.dart';
-import '../../../../lib_dev_menu/utils/setup_proxy.dart';{{/enable_dev_menu}}
+import '../../../../lib_dev_menu/extensions/setup_proxy.dart';{{/enable_dev_menu}}
 {{#analytics}}
 import '../interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../../../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';
@@ -14,7 +14,7 @@ class ApiHttpClient with DioMixin implements Dio {
     httpClientAdapter = IOHttpClientAdapter();
     {{#enable_dev_menu}}
     if (EnvironmentConfig.enableDevMenu) {
-      setupProxy(httpClientAdapter);
+      httpClientAdapter.setupProxy();
     }
    {{/enable_dev_menu}}
   }

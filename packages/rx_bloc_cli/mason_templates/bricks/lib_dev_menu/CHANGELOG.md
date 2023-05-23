@@ -1,4 +1,10 @@
 ## Tue May 23 2023
+- commit 67ae80b604e7664399206583df2e6474ef66663c
+- Author: zdravkoc
+
+    Added getProxy state
+
+## Tue May 23 2023
 - commit 4db947d500aa5464f0d4f0806e1a61a8478e588f
 - Author: zdravkoc
 

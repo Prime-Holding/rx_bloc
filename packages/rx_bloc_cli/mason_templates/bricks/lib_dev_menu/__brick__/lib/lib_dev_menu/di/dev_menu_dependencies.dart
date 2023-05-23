@@ -1,3 +1,4 @@
+import 'package:alice/alice.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -9,39 +10,49 @@ import '../repository/dev_menu_repository.dart';
 import '../service/dev_menu_service.dart';
 
 class DevMenuDependencies {
-  DevMenuDependencies._(this.context);
+  DevMenuDependencies();
 
   factory DevMenuDependencies.from(BuildContext context) =>
-      DevMenuDependencies._(context);
+      DevMenuDependencies();
 
-  final BuildContext context;
   late List<SingleChildWidget> providers = [
     ..._dataSources,
+    ..._packages,
     ..._repositories,
     ..._services,
     ..._blocs,
   ];
 
-  late final List<Provider> _dataSources = [
-    Provider<DevMenuDataSource>(create: (context) => DevMenuDataSource())
-  ];
-  late final List<Provider> _repositories = [
-    Provider<DevMenuRepository>(
-        create: (context) => DevMenuRepository(
-              context.read(),
-              context.read(),
-            ))
-  ];
-  late final List<Provider> _services = [
-    Provider<DevMenuService>(
-        create: (context) => DevMenuService(context.read()))
-  ];
+  List<Provider> get _packages => [
+        Provider<Alice>(
+          create: (context) => Alice(
+            showNotification: true,
+            showInspectorOnShake: false,
+            darkTheme: false,
+            maxCallsCount: 1000,
+          ),
+        )
+      ];
 
-  late final List<RxBlocProvider> _blocs = [
-    RxBlocProvider<DevMenuBlocType>(
-      create: (context) => DevMenuBloc(
-        context.read(),
-      ),
-    ),
-  ];
+  List<Provider> get _dataSources =>
+      [Provider<DevMenuDataSource>(create: (context) => DevMenuDataSource())];
+  List<Provider> get _repositories => [
+        Provider<DevMenuRepository>(
+            create: (context) => DevMenuRepository(
+                  context.read(),
+                  context.read(),
+                ))
+      ];
+  List<Provider> get _services => [
+        Provider<DevMenuService>(
+            create: (context) => DevMenuService(context.read()))
+      ];
+
+  List<RxBlocProvider> get _blocs => [
+        RxBlocProvider<DevMenuBlocType>(
+          create: (context) => DevMenuBloc(
+            context.read(),
+          ),
+        ),
+      ];
 }

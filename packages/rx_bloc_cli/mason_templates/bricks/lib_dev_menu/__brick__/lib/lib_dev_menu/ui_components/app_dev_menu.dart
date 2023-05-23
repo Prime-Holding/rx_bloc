@@ -1,16 +1,16 @@
 {{> licence.dart }}
 
 import 'package:alice/alice.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../alice_instance.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/data_sources/remote/http_clients/plain_http_client.dart';
+import '../../lib_router/router.dart';
 import '../blocs/dev_menu_bloc.dart';
 import '../di/dev_menu_dependencies.dart';
+import 'dev_menu_bottom_sheet.dart';
 
 class AppDevMenuGestureDetector extends StatefulWidget {
   const AppDevMenuGestureDetector({
@@ -22,18 +22,21 @@ class AppDevMenuGestureDetector extends StatefulWidget {
 
   final Widget child;
   final VoidCallback onDevMenuPresented;
-  final GlobalKey<NavigatorState> navigatorKey;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   static Widget withDependencies(
     BuildContext context,
     GlobalKey<NavigatorState> navigatorKey, {
     required Widget child,
-    required VoidCallback onDevMenuPresented,
   }) =>
       MultiProvider(
         providers: DevMenuDependencies.from(context).providers,
         child: AppDevMenuGestureDetector(
-          onDevMenuPresented: onDevMenuPresented,
+          onDevMenuPresented: () {
+            showAppDevMenuBottomSheet(
+              context.read<AppRouter>().rootNavigatorKey.currentContext!,
+            );
+          },
           navigatorKey: navigatorKey,
           child: child,
         ),
@@ -74,8 +77,10 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
   }
 
   void _setupAlice() {
+    Alice alice = context.read<Alice>();
+
     //Set navigator key
-    alice.setNavigatorKey(widget.navigatorKey);
+    alice.setNavigatorKey(widget.navigatorKey!);
 
     // Attach interceptor to ApiHttpClient
     context.read<ApiHttpClient>().interceptors.add(alice.getDioInterceptor());

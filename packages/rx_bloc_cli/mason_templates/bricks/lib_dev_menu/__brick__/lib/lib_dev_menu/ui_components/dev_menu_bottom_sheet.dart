@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,6 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/repositories/push_notification_repository.dart';
-import '../alice_instance.dart';
 import '../blocs/dev_menu_bloc.dart';
 
 void showAppDevMenuBottomSheet(BuildContext context) => showBlurredBottomSheet(
@@ -109,7 +109,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
                   Expanded(
                     child: FilledButton(
                       onPressed: () async {
-                        alice.showInspector();
+                        context.read<Alice>().showInspector();
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(
