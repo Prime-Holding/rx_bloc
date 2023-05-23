@@ -19,6 +19,9 @@ abstract class DevMenuBlocStates {
   Stream<void> get onDevMenuPresented;
 
   Stream<void> get proxySaved;
+
+  Stream<String?> get getProxy;
+
 }
 
 @RxBloc()
@@ -44,4 +47,7 @@ class DevMenuBloc extends $DevMenuBloc {
   @override
   Stream<void> _mapToProxySavedState() => _$saveProxyEvent
       .switchMap((proxy) => _service.saveProxy(proxy: proxy ?? '').asStream());
+
+  @override
+  Stream<String?> _mapToGetProxyState() => _service.getProxy().asStream();
 }

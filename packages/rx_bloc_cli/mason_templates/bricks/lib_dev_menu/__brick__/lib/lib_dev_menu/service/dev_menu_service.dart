@@ -7,4 +7,6 @@ class DevMenuService {
 
   Future<void> saveProxy({required String proxy}) async =>
       _repository.saveProxy(proxy);
+
+  Future<String?> getProxy() async => await _repository.getProxy();
 }

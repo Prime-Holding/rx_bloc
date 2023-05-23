@@ -1,3 +1,14 @@
+## Tue May 23 2023
+- commit 4db947d500aa5464f0d4f0806e1a61a8478e588f
+- Author: zdravkoc
+
+    Setup proxy method extracted
+    
+    - Same method is used for both HttpClient classes now
+    - HttpClasses don't need SharedPreferences anymore
+    - Proxy is shown properly
+
+
 ## Mon May 22 2023
 
 - commit 3290edd0a4bb0fc94da51e702f957f27e398ed62 

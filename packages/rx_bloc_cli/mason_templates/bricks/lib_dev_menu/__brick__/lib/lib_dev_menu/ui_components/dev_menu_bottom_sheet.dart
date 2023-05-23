@@ -9,7 +9,6 @@ import '../../app_extensions.dart';
 import '../../base/repositories/push_notification_repository.dart';
 import '../alice_instance.dart';
 import '../blocs/dev_menu_bloc.dart';
-import '../repository/dev_menu_repository.dart';
 
 void showAppDevMenuBottomSheet(BuildContext context) => showBlurredBottomSheet(
       configuration: const ModalConfiguration(
@@ -68,9 +67,9 @@ class _DevMenuState extends State<_DevMenuWidget> {
               SizedBox(height: context.designSystem.spacing.m),
               Text(context.l10n.libDevMenu.restartApp),
               SizedBox(height: context.designSystem.spacing.m),
-              FutureBuilder(
-                future: context.read<DevMenuRepository>().getProxy(),
-                builder: (context, snapshot) {
+              RxBlocBuilder<DevMenuBlocType, String?>(
+                state: (bloc) => bloc.states.getProxy,
+                builder: (context, snapshot, bloc) {
                   _controller.text = snapshot.data ?? '';
                   return TextFormField(
                     autofocus: true,
