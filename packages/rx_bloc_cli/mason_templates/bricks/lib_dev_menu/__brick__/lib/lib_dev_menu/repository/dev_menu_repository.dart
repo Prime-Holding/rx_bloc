@@ -12,4 +12,7 @@ class DevMenuRepository {
 
   Future<void> saveProxy(String proxy) =>
       _errorMapper.execute(() => _dataSource.saveProxy(proxy));
+
+  Future<String?> getProxy() =>
+      _errorMapper.execute(() => _dataSource.getProxy());
 }

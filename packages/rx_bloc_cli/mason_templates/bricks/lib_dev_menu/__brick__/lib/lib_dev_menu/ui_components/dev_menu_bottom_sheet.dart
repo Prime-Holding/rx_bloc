@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/data_sources/local/shared_preferences_instance.dart';
 import '../../base/repositories/push_notification_repository.dart';
 import '../alice_instance.dart';
 import '../blocs/dev_menu_bloc.dart';
+import '../repository/dev_menu_repository.dart';
 
 void showAppDevMenuBottomSheet(BuildContext context) => showBlurredBottomSheet(
       configuration: const ModalConfiguration(
@@ -69,9 +69,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
               Text(context.l10n.libDevMenu.restartApp),
               SizedBox(height: context.designSystem.spacing.m),
               FutureBuilder(
-                future: context
-                    .read<SharedPreferencesInstance>()
-                    .getString('proxy'),
+                future: context.read<DevMenuRepository>().getProxy(),
                 builder: (context, snapshot) {
                   _controller.text = snapshot.data ?? '';
                   return TextFormField(
