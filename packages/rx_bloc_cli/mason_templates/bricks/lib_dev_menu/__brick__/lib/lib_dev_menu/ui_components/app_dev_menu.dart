@@ -22,7 +22,7 @@ class AppDevMenuGestureDetector extends StatefulWidget {
 
   final Widget child;
   final VoidCallback onDevMenuPresented;
-  final GlobalKey<NavigatorState>? navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey;
 
   static Widget withDependencies(
     BuildContext context,
@@ -80,7 +80,7 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
     Alice alice = context.read<Alice>();
 
     //Set navigator key
-    alice.setNavigatorKey(widget.navigatorKey!);
+    alice.setNavigatorKey(widget.navigatorKey);
 
     // Attach interceptor to ApiHttpClient
     context.read<ApiHttpClient>().interceptors.add(alice.getDioInterceptor());

@@ -1,4 +1,13 @@
 ## Tue May 23 2023
+- commit a7380a041d6e2411c696a02676d06d74701d8cd8
+- Author: zdravkoc
+
+    Alice instance moved in dev menu DI
+    
+    Alice instance moved to the dev menu dependencies
+    setupProxy method is httpClientAdapter extension now
+
+## Tue May 23 2023
 - commit 67ae80b604e7664399206583df2e6474ef66663c
 - Author: zdravkoc
 
