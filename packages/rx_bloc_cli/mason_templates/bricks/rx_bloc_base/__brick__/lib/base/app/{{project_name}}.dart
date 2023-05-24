@@ -1,26 +1,25 @@
 {{> licence.dart }}
 {{#enable_change_language}}
 import 'dart:async'; {{/enable_change_language}}
-{{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}{{#push_notifications}}
+{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart'; {{#enable_change_language}}
-import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}{{#enable_dev_menu}}
-import '../../lib_dev_menu/ui_components/app_dev_menu.dart';
-import '../utils/dev_menu.dart';{{/enable_dev_menu}}
+import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
 import '../../l10n/l10n.dart';
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
-import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}
+import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
+import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}
 import '../../lib_router/router.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../di/{{project_name}}_with_dependencies.dart';
 import '../theme/design_system.dart';
-import '../theme/{{project_name}}_theme.dart';
+import '../theme/{{project_name}}_theme.dart';{{#enable_dev_menu}}
+import '../utils/dev_menu.dart';{{/enable_dev_menu}}
 import '../utils/helpers.dart';
 import 'config/app_constants.dart';
 import 'config/environment_config.dart';{{#push_notifications}}

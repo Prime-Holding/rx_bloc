@@ -22,7 +22,7 @@ class AppDevMenuGestureDetector extends StatefulWidget {
 
   final Widget child;
   final VoidCallback onDevMenuPresented;
-  final GlobalKey<NavigatorState> navigatorKey;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   static Widget withDependencies(
     BuildContext context,

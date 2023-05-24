@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';{{#enable_dev_menu}}
-import '../../../app/config/environment_config.dart';
-import '../../../../lib_dev_menu/extensions/setup_proxy.dart';{{/enable_dev_menu}}
-{{#analytics}}
+import 'package:dio/io.dart';
+
+{{#enable_dev_menu}}
+import '../../../../lib_dev_menu/extensions/setup_proxy.dart';
+import '../../../app/config/environment_config.dart';{{/enable_dev_menu}}{{#analytics}}
 import '../interceptors/analytics_interceptor.dart';{{/analytics}}
 import '../interceptors/log_interceptor.dart';
 
