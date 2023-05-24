@@ -1,3 +1,17 @@
+## Wed May 24 2023
+- commit ca1359a63c91e0cf39d0592a89b5194bf10bea30
+- Merge: d0eab3e8 f051e0cd
+- Author: zdravkoc
+
+    Merge branch 'develop' into feature/dev_menu_brick
+
+## Tue May 23 2023
+- commit d0eab3e887cf25e2a847f0ac2214b4ea6495c945
+- Author: zdravkoc
+
+    Check if navigator key is null
+
+
 ## Tue May 23 2023
 - commit a2046882484b78bbf5e11db3a2b046699a3ec766
 - Author: zdravkoc
