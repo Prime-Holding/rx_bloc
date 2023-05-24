@@ -3,9 +3,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:testapp/main.dart' as app;
-import 'package:testapp/main_dev.dart' as app_dev;
-import 'package:testapp/main_staging.dart' as app_staging;
+import 'package:{{project_name}}/main.dart' as app;
+import 'package:{{project_name}}/main_dev.dart' as app_dev;
+import 'package:{{project_name}}/main_staging.dart' as app_staging;
 
 export 'package:flutter/foundation.dart';
 export 'package:flutter_test/flutter_test.dart';

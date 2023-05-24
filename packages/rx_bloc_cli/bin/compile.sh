@@ -5,6 +5,7 @@ mkdir example/test_app
 dart run rx_bloc_cli create \
   --project-name=testapp \
   --organisation=com.primeholding \
+  --enable-analytics=true \
   --enable-feature-counter=true \
   --enable-feature-deeplinks=true\
   --enable-feature-widget-toolkit=true \

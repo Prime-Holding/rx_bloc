@@ -1,3 +1,7 @@
+## [2.6.1]
+* Fixed automated tests not running when analytics is enabled
+* Fixed android compilation issues 
+
 ## [2.6.0]
 * Added parameter `enable-patrol` for enabling patrol package for integration tests
 * Added SSE communication facilities template
