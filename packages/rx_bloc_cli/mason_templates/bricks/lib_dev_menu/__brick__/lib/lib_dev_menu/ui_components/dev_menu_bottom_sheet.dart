@@ -44,8 +44,7 @@ class _DevMenuState extends State<_DevMenuWidget> {
           context.designSystem.spacing.m,
           context.designSystem.spacing.m,
           context.designSystem.spacing.m,
-          context.designSystem.spacing.m +
-              MediaQuery.of(context).viewInsets.bottom,
+          context.designSystem.spacing.m,
         ),
         child: SingleChildScrollView(
           child: Column(
