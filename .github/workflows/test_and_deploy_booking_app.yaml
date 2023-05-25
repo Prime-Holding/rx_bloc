@@ -1,8 +1,5 @@
 name: "Test and deploy Booking app"
 
-env:
-  FLUTTER_VERSION: '3.7.12'
-
 # Define events when this workflow is triggered
 on:
   push:
@@ -44,14 +41,17 @@ jobs:
       playstore_account_key: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
 
   deploy_ios_booking_app:
-      needs: [test_booking_app]
-      uses: ./.github/workflows/deploy_ios_app.yaml
-      with:
-        project_path: "examples/booking_app"
-        flutter_version: '3.7.12'
-      secrets:
-        appstore_cert_base64: ${{ secrets.APPSTORE_CERT_BASE64 }}
-        appstore_cert_password: ${{ secrets.APPSTORE_CERT_PASSWORD }}
-        mobile_provision_base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
-        keychain_password: ${{ secrets.KEYCHAIN_PASSWORD }}
+    needs: [test_booking_app]
+    uses: ./.github/workflows/deploy_ios_app.yaml
+    with:
+      project_path: "examples/booking_app"
+      flutter_version: '3.7.12'
+    secrets:
+      appstore_issuer_id: ${{ secrets.APPSTORE_ISSUER_ID }}
+      appstore_cert_base64: ${{ secrets.APPSTORE_CERT_BASE64 }}
+      appstore_cert_password: ${{ secrets.APPSTORE_CERT_PASSWORD }}
+      mobile_provision_base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
+      keychain_password: ${{ secrets.KEYCHAIN_PASSWORD }}
+      appstore_api_key_id: ${{ secrets.APPSTORE_API_KEY_ID }}
+      appstore_api_key_base64: ${{ secrets.APPSTORE_API_KEY_BASE64 }}
         

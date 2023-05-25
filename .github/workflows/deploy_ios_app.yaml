@@ -15,6 +15,8 @@ on:
         description: 'The flutter version used to build the project'
 
     secrets:
+      appstore_issuer_id:
+        required: true
       appstore_cert_base64:
         required: true
       appstore_cert_password:
@@ -23,7 +25,10 @@ on:
         required: true
       keychain_password:
         required: true
-
+      appstore_api_key_id:
+        required: true
+      appstore_api_key_base64:
+        required: true
 
 jobs:
   deploy_ios_app:
@@ -61,6 +66,8 @@ jobs:
           # Apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+      - name: Install App Store Api Key
+        run: echo -n "${{ secrets.appstore_api_key_base64 }}" | base64 --decode --output ~/private_keys/AuthKey_${{ secrets.appstore_api_key_id }}.p8
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ inputs.flutter_version }}
@@ -75,13 +82,26 @@ jobs:
           flutter pub get
       - name: Build ios app
         run: flutter build ipa --export-options-plist=ios/ExportOptions.plist -t lib/main.dart
+      - name: Rename ipa file
+        run: |
+          for file in build/ios/ipa/*.ipa
+          do
+              mv "$file" "${file// /_}"
+          done
       - name: Upload ipa artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
          name: release-ipa
-         path: build/ios/ipa/*.ipa
+         path: ${{ inputs.project_path }}/build/ios/ipa/*.ipa
+      - name: Publish to TestFligh
+        run: |
+          xcrun altool --validate-app -f ${{ inputs.project_path }}/build/ios/ipa/*.ipa -t ios --apiKey ${{ secrets.appstore_api_key_id }} --apiIssuer ${{ secrets.appstore_issuer_id }}
+          xcrun altool --upload-app -f ${{ inputs.project_path }}/build/ios/ipa/*.ipa -t ios --apiKey ${{ secrets.appstore_api_key_id }} --apiIssuer ${{ secrets.appstore_issuer_id }}
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+      - name: Clean up App Store Api key
+        if: ${{ always() }}
+        run: rm -f ~/private_keys/AuthKey_${{ secrets.appstore_api_key_id }}.p8
