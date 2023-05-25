@@ -1,5 +1,7 @@
 {
   "@@locale": "en",
   "createPin": "Create pin code",
-  "changePin": "Change pin code"
+  "changePin": "Change pin code",
+  "pinCreatedMessage": "Pin was created successfully",
+  "confirmPin": "Confirm pin code"
 }

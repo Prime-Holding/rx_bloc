@@ -1,5 +1,7 @@
 {
   "@@locale": "bg",
   "createPin": "Създай пин код",
-  "changePin": "Смени пин код"
+  "changePin": "Смени пин код",
+  "pinCreatedMessage": "Пин кодът е създаден",
+  "confirmPin": "Потвърди пин код"
 }

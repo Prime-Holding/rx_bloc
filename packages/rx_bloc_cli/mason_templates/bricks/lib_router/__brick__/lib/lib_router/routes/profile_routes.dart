@@ -42,7 +42,7 @@ class NotificationsRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get routeLocation => location;
-}
+}{{#enable_pin_code}}
 
 @immutable
 class PinCodeRoute extends GoRouteData implements RouteDataModel {
@@ -52,7 +52,9 @@ class PinCodeRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const PinCodePage(),
+        child: PinCodePage(
+          title: state.extra.toString(),
+        ),
       );
 
   @override
@@ -60,4 +62,4 @@ class PinCodeRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get routeLocation => location;
-}
+}{{/enable_pin_code}}
