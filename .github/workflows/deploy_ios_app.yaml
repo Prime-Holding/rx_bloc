@@ -13,7 +13,7 @@ on:
         default: ''
         required: false
         description: 'The flutter version used to build the project'
-
+        
     secrets:
       appstore_issuer_id:
         required: true
@@ -29,7 +29,7 @@ on:
         required: true
       appstore_api_key_base64:
         required: true
-
+       
 jobs:
   deploy_ios_app:
     defaults:
@@ -49,25 +49,27 @@ jobs:
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-
+          
           # Import certificate and provisioning profile from secrets
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
-
+          
           # Create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
+          
           # Import certificate to keychain
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
-
+          
           # Apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - name: Install App Store Api Key
-        run: echo -n "${{ secrets.appstore_api_key_base64 }}" | base64 --decode --output ~/private_keys/AuthKey_${{ secrets.appstore_api_key_id }}.p8
+        run: |
+          mkdir ~/private_keys
+          echo -n "${{ secrets.appstore_api_key_base64 }}" | base64 --decode --output ~/private_keys/AuthKey_${{ secrets.appstore_api_key_id }}.p8
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ inputs.flutter_version }}
@@ -80,23 +82,19 @@ jobs:
         run: |
           flutter clean
           flutter pub get
-      - name: Build ios app
-        run: flutter build ipa --export-options-plist=ios/ExportOptions.plist -t lib/main.dart
-      - name: Rename ipa file
+      - name: Build iOS app
         run: |
-          for file in build/ios/ipa/*.ipa
-          do
-              mv "$file" "${file// /_}"
-          done
+          flutter build ipa --export-options-plist=ios/ExportOptions.plist -t lib/main.dart
+          mv "$(pwd)/build/ios/ipa/Booking app.ipa" "$(pwd)/build/ios/ipa/release-ipa.ipa"
       - name: Upload ipa artifacts
         uses: actions/upload-artifact@v3
         with:
          name: release-ipa
-         path: ${{ inputs.project_path }}/build/ios/ipa/*.ipa
-      - name: Publish to TestFligh
+         path: ${{ inputs.project_path }}/build/ios/ipa/release-ipa.ipa
+      - name: Publish to Test Flight
         run: |
-          xcrun altool --validate-app -f ${{ inputs.project_path }}/build/ios/ipa/*.ipa -t ios --apiKey ${{ secrets.appstore_api_key_id }} --apiIssuer ${{ secrets.appstore_issuer_id }}
-          xcrun altool --upload-app -f ${{ inputs.project_path }}/build/ios/ipa/*.ipa -t ios --apiKey ${{ secrets.appstore_api_key_id }} --apiIssuer ${{ secrets.appstore_issuer_id }}
+          xcrun altool --validate-app -f $(pwd)/build/ios/ipa/release-ipa.ipa -t ios --apiKey ${{ secrets.appstore_api_key_id }} --apiIssuer ${{ secrets.appstore_issuer_id }}
+          xcrun altool --upload-app -f $(pwd)/build/ios/ipa/release-ipa.ipa -t ios --apiKey ${{ secrets.appstore_api_key_id }} --apiIssuer ${{ secrets.appstore_issuer_id }}
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
@@ -105,3 +103,4 @@ jobs:
       - name: Clean up App Store Api key
         if: ${{ always() }}
         run: rm -f ~/private_keys/AuthKey_${{ secrets.appstore_api_key_id }}.p8
+        
