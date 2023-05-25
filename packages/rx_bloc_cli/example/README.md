@@ -15,9 +15,10 @@
 11. [Server](#server)
 12. [Push notifications](#push-notifications)
 13. [Social Logins](#social-logins-library)
-14. [Patrol integration tests](#patrol-integration-tests)
-15. [Realtime communication](#realtime-communication)
-16. [Next Steps](#next-steps)
+14. [Dev Menu](#dev-menu)
+15. [Patrol integration tests](#patrol-integration-tests)
+16. [Realtime communication](#realtime-communication)
+17. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -54,11 +55,12 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
 | `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
 | `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
-| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                           |
-| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                       |
+| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |
+| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |
 | `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |
+| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
+| `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
 
 ## Architecture
 
@@ -377,6 +379,43 @@ productFlavors{
 - for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
+
+
+
+
+## Dev Menu
+
+Dev menu brick is a useful feature when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
+
+### Widgets
+
+Within the `dev_menu` brick you can find the `AppDevMenuGestureDetector` widget and the `showDevMenuBottomSheet` function.
+
+#### AppDevMenuGestureDetector
+
+The `AppDevMenuGestureDetector` widget is a widget that is listening for user interactions (quick taps or long taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
+
+As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
+
+```dart
+  AppDevMenuGestureDetector.withDependencies(
+    context,
+    navKey!,
+    child: materialApp,
+      onDevMenuPresented: () {
+        showAppDevMenuBottomSheet(
+          context.read<AppRouter>().rootNavigatorKey.currentContext!,
+        );
+      },
+  );
+
+```
+By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
+Alice is working right out of the box.
+
+`Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
+
+
 
 
 

@@ -11,6 +11,7 @@ dart run rx_bloc_cli create \
   --enable-feature-widget-toolkit=true \
   --enable-social-logins=true \
   --enable-change-language=true \
+  --enable-dev-menu=true \
   --enable-patrol=true \
   --realtime-communication=sse \
   example/test_app

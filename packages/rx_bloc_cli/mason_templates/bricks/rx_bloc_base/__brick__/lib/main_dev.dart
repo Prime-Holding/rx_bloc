@@ -6,8 +6,8 @@ import 'base/app/{{project_name}}.dart';
 
 /// Main entry point for the development environment
 void main() async => await setupAndRunApp(
-  (config) => {{project_name.pascalCase()}}(
-    config: config,
-  ),
-  environment: const EnvironmentConfig.development(),
-);
+      (config) => {{project_name.pascalCase()}}(
+        config: config,
+      ),
+      environment: const EnvironmentConfig.development(),
+    );
