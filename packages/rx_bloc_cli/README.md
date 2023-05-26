@@ -31,6 +31,8 @@ Create a new project at the given directory with lots of already set-up features
 |  `--enable-change-language` |                   `true`                    |                     Enables changing of the language for the project                      |
 |  `--enable-patrol` |                   `false`                   |               Enables patrol package for integration tests for the project                |
 |  `--realtime-communication`  |                   `none`                    |           Enables realtime communication facilities for SSE. Values: none, sse.           |
+| `--enable-dev-menu`               |                   `true`                    |                Enables dev menu to easily access proxy debugging services.                |
+
 
 ### What's Included? 📦
 
