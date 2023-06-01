@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#push_noti
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';{{/push_notifications}}
 import 'package:flutter/material.dart';
-
 import '../../utils/helpers.dart';
 import '../config/environment_config.dart';{{#push_notifications}}
 import 'firebase_messaging_callbacks.dart';{{/push_notifications}}
