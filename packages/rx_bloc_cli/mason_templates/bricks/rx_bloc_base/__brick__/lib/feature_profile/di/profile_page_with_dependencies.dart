@@ -19,7 +19,9 @@ class ProfilePageWithDependencies extends StatelessWidget {
 
   List<RxBlocProvider> get _blocs => [
         RxBlocProvider<ProfileBlocType>(
-          create: (context) => ProfileBloc(),
+          create: (context) => ProfileBloc(
+            context.read(),
+          ),
         ),
       ];
 }

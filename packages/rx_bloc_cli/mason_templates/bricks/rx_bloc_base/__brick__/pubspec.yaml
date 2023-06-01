@@ -91,7 +91,8 @@ r_flutter:
     - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}
     - name: feature_login
-    - name: feature_notifications{{#enable_feature_widget_toolkit}}
+    - name: feature_notifications
+    - name: feature_profile{{#enable_feature_widget_toolkit}}
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field
     - name: lib_router{{#enable_change_language}}

@@ -62,7 +62,10 @@ class UserAccountService {
     try {
       final pushToken =
           await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
-      if (pushToken != null) {
+      final notificationsSubscribed =
+          await _pushSubscriptionRepository.notificationsSubscribed();
+
+      if (pushToken != null && notificationsSubscribed == true) {
         await _pushSubscriptionRepository.subscribe(pushToken);
       }
     } catch (e) {

@@ -7,12 +7,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../common_blocs/push_notifications_bloc.dart';
+import '../../models/event_model.dart';
 import '../../utils/local_notifications.dart';
 
 /// Callback executed once the app receives a FCM message while in foreground
-Future<void> onForegroundMessage(
-    BuildContext context, RemoteMessage message) async {
+void onForegroundMessage(BuildContext context, RemoteMessage message) {
   log('Foreground Message received!');
   final notification = message.notification;
 
@@ -24,7 +26,7 @@ Future<void> onForegroundMessage(
     // Present the foreground notification on Android only
     // https://firebase.flutter.dev/docs/messaging/notifications/#application-in-foreground
     if (!kIsWeb && androidNotification != null) {
-      await showLocalNotification(
+       showLocalNotification(
         id: notification.hashCode,
         title: title,
         content: body,
@@ -35,6 +37,10 @@ Future<void> onForegroundMessage(
       log('$title : $body');
     }
   }
+  context
+      .read<PushNotificationsBlocType>()
+      .events
+      .tapOnEvent(EventModel.fromJson(message.data));
 }
 
 /// Callback executed once the app receives a FCM message while in background
@@ -50,7 +56,13 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
 /// Callback executed if the app has opened from a background state (and was
 /// not terminated).
 Future<void> onMessageOpenedFromBackground(
-    BuildContext context, RemoteMessage message) async {
+      BuildContext context,
+  RemoteMessage message,
+) async {
+  context
+      .read<PushNotificationsBlocType>()
+      .events
+      .tapOnEvent(EventModel.fromJson(message.data));
     log('Message opened from background.');
 }
 

@@ -11,12 +11,17 @@ class NotificationService {
     required String message,
     String? title,
     int? delay,
-  }) =>
-      _repository.sendPushMessage(
-        message: message,
-        title: title,
-        delay: delay,
-      );
+    Map<String, Object?>? data,
+  }) async {
+    final pushToken = await _repository.getToken();
+    return _repository.sendPushMessage(
+      message: message,
+      title: title,
+      delay: delay,
+      data: data,
+      pushToken: pushToken,
+    );
+  }
 
   Future<bool> requestNotificationPermissions() =>
       _repository.requestNotificationPermissions();
