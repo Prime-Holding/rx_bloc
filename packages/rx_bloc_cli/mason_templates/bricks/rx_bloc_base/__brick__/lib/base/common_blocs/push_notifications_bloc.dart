@@ -7,12 +7,14 @@ import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../models/event_model.dart';
+import '../models/notification_model.dart';
 part 'push_notifications_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the PushNotificationsBloC.
 abstract class PushNotificationsBlocEvents {
-  void tapOnEvent(EventModel event);
+  /// Event for handling opening push notifications from background
+  /// or from in-app
+  void tapOnEvent(NotificationModel event);
 }
 
 /// A contract class containing all states of the PushNotificationsBloC.
@@ -32,7 +34,6 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
     onRouting.connect().addTo(_compositeSubscription);
   }
 
-  //final PushNotificationsService pushNotificationsService;
   final RouterBlocType _routerBloc;
 
   @override
@@ -40,9 +41,9 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
         _$tapOnEventEvent,
       ]).asyncMap<void>((event) {
         switch (event.type) {
-          case EventModelType.dashboard:
+          case NotificationModelType.dashboard:
             return _routerBloc.events.go(const DashboardRoute());
-          case EventModelType.profile:
+          case NotificationModelType.profile:
             return _routerBloc.events.go(const ProfileRoute());
           default:
             null;

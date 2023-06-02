@@ -8,7 +8,7 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
-import '../../base/models/event_model.dart';
+import '../../base/models/notification_model.dart';
 import '../../base/utils/helpers.dart';
 import '../../lib_router/router.dart';
 import '../blocs/notifications_bloc.dart';
@@ -114,10 +114,9 @@ class NotificationsPage extends StatelessWidget {
                                 context.l10n.featureNotifications
                                     .notificationRedirecing,
                                 delay: 5,
-                                data: EventModel(
-                                  type: EventModelType.dashboard,
+                                data: NotificationModel(
+                                  type: NotificationModelType.dashboard,
                                   id: '1',
-                                  parentId: '1',
                                 ).toJson()),
                       ),
                     ),

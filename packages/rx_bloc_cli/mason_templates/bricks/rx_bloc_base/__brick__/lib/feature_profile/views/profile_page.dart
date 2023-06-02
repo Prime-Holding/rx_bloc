@@ -90,11 +90,9 @@ class ProfilePage extends StatelessWidget {
                 state: (bloc) => bloc.states.areNotificationsEnabled,
                 builder: (context, areNotificationsEnabled, bloc) => Switch(
                   value: areNotificationsEnabled.value,
-                  onChanged: (_) {
-                    bloc.events.setNotifications(
-                      !areNotificationsEnabled.value,
-                    );
-                  },
+                  onChanged: (_) => bloc.events.setNotifications(
+                    !areNotificationsEnabled.value,
+                  ),
                 ),
               ),
             ),

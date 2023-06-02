@@ -2,6 +2,8 @@
 
 import 'shared_preferences_instance.dart';
 
+/// This class is used to save user profile related settings into shared preferences
+/// Currently only notification settings are saved
 class ProfileLocalDataSource {
   static const _notificationsEnabled = 'notificationsEnabled';
   static const _notificationsSubscribed = 'notificationsSubscribed';

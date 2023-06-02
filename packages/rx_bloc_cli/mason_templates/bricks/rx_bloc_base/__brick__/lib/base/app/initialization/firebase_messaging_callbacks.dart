@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_blocs/push_notifications_bloc.dart';
-import '../../models/event_model.dart';
+import '../../models/notification_model.dart';
 import '../../utils/local_notifications.dart';
 
 /// Callback executed once the app receives a FCM message while in foreground
@@ -40,7 +40,7 @@ void onForegroundMessage(BuildContext context, RemoteMessage message) {
   context
       .read<PushNotificationsBlocType>()
       .events
-      .tapOnEvent(EventModel.fromJson(message.data));
+      .tapOnEvent(NotificationModel.fromJson(message.data));
 }
 
 /// Callback executed once the app receives a FCM message while in background
@@ -62,7 +62,7 @@ Future<void> onMessageOpenedFromBackground(
   context
       .read<PushNotificationsBlocType>()
       .events
-      .tapOnEvent(EventModel.fromJson(message.data));
+      .tapOnEvent(NotificationModel.fromJson(message.data));
     log('Message opened from background.');
 }
 
