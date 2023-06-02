@@ -24,12 +24,20 @@ class PushNotificationsService {
     await _pushNotificationRepository.setNotificationSubscribed(false);
   }
 
-  Future<bool> areNotificationsEnabled() async =>
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.areNotificationsEnabled() ??
-      false;
+  Future<bool> areNotificationsEnabled() async {
+    final notificationsEnabled = await _flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.areNotificationsEnabled() ??
+        false;
+    if (notificationsEnabled) {
+      await subscribe();
+      return true;
+    } else {
+      await unsubscribe();
+      return false;
+    }
+  }
 
   Future<bool> requestNotificationPermissions() =>
       _pushNotificationRepository.requestNotificationPermissions();
