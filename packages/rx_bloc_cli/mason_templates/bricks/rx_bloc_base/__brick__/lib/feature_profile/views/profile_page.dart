@@ -8,8 +8,7 @@ import '../../app_extensions.dart';{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}{{#enable_pin_code}}
-import '../../lib_pin_code/bloc/pin_bloc.dart';
-import '../../lib_pin_code/models/pin_code_data.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/bloc/pin_bloc.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../ui_components/logout_action_button.dart';
@@ -20,7 +19,8 @@ class ProfilePage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) =>
+      Scaffold(
         appBar: AppBar(
           actions: const [
             LogoutActionButton(),
@@ -36,52 +36,83 @@ class ProfilePage extends StatelessWidget {
               ),
               child: OutlineFillButton(
                 text: context.l10n.featureNotifications.notificationPageTitle,
-                onPressed: () => context
-                    .read<RouterBlocType>()
-                    .events
-                    .push(const NotificationsRoute()),
+                onPressed: () =>
+                    context
+                        .read<RouterBlocType>()
+                        .events
+                        .push(const NotificationsRoute()),
               ),
             ),
             SizedBox(
               height: context.designSystem.spacing.xl0,
-            ),{{#enable_change_language}}
+            ), {{#enable_change_language}}
             LanguagePickerButton(
-              onChanged: (language) => context
-                  .read<ChangeLanguageBlocType>()
-                  .events
-                  .setCurrentLanguage(language),
+              onChanged: (language) =>
+                  context
+                      .read<ChangeLanguageBlocType>()
+                      .events
+                      .setCurrentLanguage(language),
               padding: context.designSystem.spacing.xl0,
               buttonText: context.l10n.changeLanguage,
               translate: (model) => model.asText(context),
-            ),{{/enable_change_language}}{{#enable_pin_code}}
+            ), {{/enable_change_language}}{{#enable_pin_code}}
             SizedBox(
               height: context.designSystem.spacing.xl0,
             ),
-            RxBlocBuilder<PinBlocType, PinCodeData>(
-              state: (bloc) => bloc.states.pinCodeData,
-              builder: (context, snapshot, bloc) => Padding(
-                 padding: EdgeInsets.symmetric(
-                 horizontal: context.designSystem.spacing.xl0,
-                ),
-                child: OutlineFillButton(
-                  text: _buildCreateOrChangeText(snapshot, context),
-                  onPressed: () => context.read<RouterBlocType>().events.push(
-                        const PinCodeRoute(),
-                         extra: _buildCreateOrChangeText(snapshot, context),
-                      ),
-                ),
-              ),
-            ),{{/enable_pin_code}}
+            RxBlocBuilder<PinBlocType, bool>(
+              state: (bloc) => bloc.states.isVerificationPinCorrect,
+              builder: (context, isVerificationPinCorrect, bloc) =>
+                  RxBlocBuilder<PinBlocType, bool>(
+                    state: (bloc) => bloc.states.isPinCreated,
+                    builder: (context, createdPin, bloc) =>
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: context.designSystem.spacing.xl0,
+                          ),
+                          child: OutlineFillButton(
+                            text: _buildPinButtonText(createdPin, context),
+                            onPressed: () =>
+                                context
+                                    .read<RouterBlocType>()
+                                    .events
+                                    .push(
+                                  const PinCodeRoute(),
+                                  extra: _buildExtraText(
+                                      createdPin, isVerificationPinCorrect,
+                                      context),
+                                ),
+                          ),
+                        ),
+                  ),
+            )
+            , {{/enable_pin_code}}
           ],
         ),
       ); {{#enable_pin_code}}
 
-  String _buildCreateOrChangeText(
-          AsyncSnapshot<PinCodeData> snapshot, BuildContext context) =>
-      snapshot.hasData
-          ? snapshot.data!.isPinCodeCreated
-              ? context.l10n.libPinCode.changePin
-              : context.l10n.libPinCode.createPin
-          : context.l10n.libPinCode.createPin; {{/enable_pin_code}}
+  String _buildExtraText(AsyncSnapshot<bool> createdPin,
+      AsyncSnapshot<bool> isVerificationPinCorrect, BuildContext context) {
+    if (createdPin.hasData && createdPin.data!) {
+      if (createdPin.data!) {
+        if (isVerificationPinCorrect.hasData &&
+            isVerificationPinCorrect.data!) {
+          return context.l10n.libPinCode.enterNewPin;
+        }
+        return context.l10n.libPinCode.enterCurrentPin;
+      }
+    }
+    return context.l10n.libPinCode.createPin;
+  }
+
+  String _buildPinButtonText(AsyncSnapshot<bool> snapshot,
+      BuildContext context) {
+    if (snapshot.hasData) {
+      if (snapshot.data!) {
+        return context.l10n.libPinCode.changePin;
+      }
+      return context.l10n.libPinCode.createPin;
+    }
+    return context.l10n.libPinCode.createPin;
+  } {{/enable_pin_code}}
 
 }

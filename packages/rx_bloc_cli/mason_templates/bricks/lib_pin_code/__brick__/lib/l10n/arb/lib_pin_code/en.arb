@@ -2,6 +2,8 @@
   "@@locale": "en",
   "createPin": "Create pin code",
   "changePin": "Change pin code",
-  "pinCreatedMessage": "Pin was created successfully",
-  "confirmPin": "Confirm pin code"
+  "pinVerifiedMessage": "Pin was verified successfully",
+  "confirmPin": "Confirm pin code",
+  "enterCurrentPin": "Enter current pin",
+  "enterNewPin": "Enter new pin"
 }

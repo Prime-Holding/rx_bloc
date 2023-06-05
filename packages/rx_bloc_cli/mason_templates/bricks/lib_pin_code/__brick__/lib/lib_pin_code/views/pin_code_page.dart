@@ -12,10 +12,9 @@ import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../bloc/pin_bloc.dart';
-import '../models/pin_code_data.dart';
 import '../services/profile_local_data_source.dart';
 
-class PinCodePage extends StatefulWidget {
+class PinCodePage extends StatelessWidget {
   const PinCodePage({
     this.title = 'Pin Code Page',
     super.key,
@@ -24,40 +23,45 @@ class PinCodePage extends StatefulWidget {
   final String title;
 
   @override
-  State<PinCodePage> createState() => _PinCodePageState();
-}
-
-class _PinCodePageState extends State<PinCodePage> {
-  late PinCodeData? pinCodeData =
-      PinCodeData(isPinCodeCreated: false, isPinCodeUpdated: false);
-
-  @override
   Widget build(BuildContext context) => MultiProvider(
-        providers: [
-          Provider<BiometricsLocalDataSource>(
-            create: (context) => ProfileLocalDataSource(),
-          )
-        ],
-        child: Builder(
-          builder: (context) => RxBlocBuilder<PinBlocType, PinCodeData>(
-            state: (bloc) => bloc.states.pinCodeData,
-            builder: (context, snapshot, bloc) => WillPopScope(
+    providers: [
+      Provider<BiometricsLocalDataSource>(
+        create: (context) => ProfileLocalDataSource(),
+      )
+    ],
+    child: Builder(
+      builder: (context) => RxBlocBuilder<PinBlocType, bool>(
+        state: (bloc) => bloc.states.isVerificationPinCorrect,
+        builder: (context, isVerificationPinCorrect, bloc) {
+          if ((isVerificationPinCorrect.hasData &&
+              isVerificationPinCorrect.data!)) {
+            context.read<RouterBlocType>().events.pop();
+            context.read<RouterBlocType>().events.push(const PinCodeRoute(),
+                extra: context.l10n.libPinCode.enterNewPin);
+          } else if ((isVerificationPinCorrect.hasData &&
+              !isVerificationPinCorrect.data!)) {
+            context.read<RouterBlocType>().events.pop();
+            context.read<RouterBlocType>().events.push(const PinCodeRoute(),
+                extra: context.l10n.libPinCode.confirmPin);
+          }
+          return RxBlocBuilder<PinBlocType, bool>(
+            state: (bloc) => bloc.states.isPinCreated,
+            builder: (context, isPinCreated, bloc) => WillPopScope(
               onWillPop: () async {
-                if (snapshot.hasData) {
-                  if (!snapshot.data!.isPinCodeCreated) {
-                    context.read<PinBlocType>().events.setPinCodeData(
-                          PinCodeData(
-                            isPinCodeCreated: false,
-                            isPinCodeUpdated: false,
-                          ),
-                        );
+                context.read<PinBlocType>().events.deleteSavedData();
+                if (isPinCreated.hasData) {
+                  if (!isPinCreated.data!) {
+                    context
+                        .read<PinBlocType>()
+                        .events
+                        .setIsPinCreated(false);
                   }
                 }
                 return true;
               },
               child: Scaffold(
                 appBar: AppBar(
-                  title: Text(widget.title),
+                  title: Text(title),
                 ),
                 extendBodyBehindAppBar: true,
                 body: SizedBox(
@@ -67,15 +71,16 @@ class _PinCodePageState extends State<PinCodePage> {
                       Expanded(
                         child: PinCodeKeyboard(
                           mapBiometricMessageToString:
-                              _exampleMapMessageToString,
+                          _exampleMapMessageToString,
                           pinCodeService: context.read<PinCodeService>(),
                           biometricsLocalDataSource:
-                              context.read<BiometricsLocalDataSource>(),
+                          context.read<BiometricsLocalDataSource>(),
                           translateError: _translateError,
                           onError: (error, translatedError) =>
                               _onError(error, translatedError, context),
                           isPinCodeVerified: (verified) =>
-                              isPinCodeVerified(verified, context),
+                              isPinCodeVerified(isPinCreated, verified,
+                                  isVerificationPinCorrect, context),
                         ),
                       ),
                     ],
@@ -83,30 +88,35 @@ class _PinCodePageState extends State<PinCodePage> {
                 ),
               ),
             ),
-          ),
-        ),
-      );
+          );
+        },
+      ),
+    ),
+  );
 
   Future<void> isPinCodeVerified(
-      bool isPinVerified, BuildContext context) async {
+      AsyncSnapshot<bool> isPinCreated,
+      bool isPinVerified,
+      AsyncSnapshot<bool> isVerificationPinCorrect,
+      BuildContext context) async {
     if (isPinVerified) {
-      pinCodeData =
-          PinCodeData(isPinCodeCreated: isPinVerified, isPinCodeUpdated: false);
-
-      context.read<PinBlocType>().events.setPinCodeData(pinCodeData!);
-
+      context.read<PinBlocType>().events.setIsPinCreated(isPinVerified);
       await showBlurredBottomSheet(
         context: context,
         configuration: const ModalConfiguration(safeAreaBottom: false),
         builder: (context) => MessagePanelWidget(
-          message: context.l10n.libPinCode.pinCreatedMessage,
+          message: context.l10n.libPinCode.pinVerifiedMessage,
           messageState: MessagePanelState.positiveCheck,
         ),
       );
     } else {
-      context.read<RouterBlocType>().events.pop();
-      context.read<RouterBlocType>().events.push(const PinCodeRoute(),
-          extra: context.l10n.libPinCode.confirmPin);
+      if (!isVerificationPinCorrect.hasData) {
+        context.read<PinBlocType>().events.setIsVerificationPinCorrect();
+      } else {
+        context.read<RouterBlocType>().events.pop();
+        context.read<RouterBlocType>().events.push(const PinCodeRoute(),
+            extra: context.l10n.libPinCode.confirmPin);
+      }
     }
   }
 
@@ -142,3 +152,4 @@ class _PinCodePageState extends State<PinCodePage> {
     }
   }
 }
+

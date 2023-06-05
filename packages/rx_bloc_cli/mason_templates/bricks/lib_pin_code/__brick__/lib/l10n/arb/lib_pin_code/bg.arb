@@ -2,6 +2,8 @@
   "@@locale": "bg",
   "createPin": "Създай пин код",
   "changePin": "Смени пин код",
-  "pinCreatedMessage": "Пин кодът е създаден",
-  "confirmPin": "Потвърди пин код"
+  "pinVerifiedMessage": "Пин кодът е верифициран",
+  "confirmPin": "Потвърди пин код",
+  "enterCurrentPin": "Въведи настоящ пин",
+  "enterNewPin": "Въведи нов пин"
 }
