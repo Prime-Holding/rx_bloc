@@ -151,11 +151,11 @@ class _GoRouterRefreshStream extends ChangeNotifier {
         },
       );
 {{#enable_feature_otp}}
-     _subscriptionOtp = streamTwo.listen((bool isOtpConfirmed) {
+     _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
         this.isOtpConfirmed = isOtpConfirmed;
         notifyListeners();
-      });
-  } {{/enable_feature_otp}}
+      });{{/enable_feature_otp}}
+  }
 
   late final StreamSubscription<bool> _subscription;{{#enable_feature_otp}}
   late final StreamSubscription<bool> _subscriptionOtp; {{/enable_feature_otp}}
