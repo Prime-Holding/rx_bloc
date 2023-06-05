@@ -15,7 +15,7 @@ abstract class CoordinatorEvents {
   void authenticated({required bool isAuthenticated});
 
 {{#enable_feature_otp}}
-  void confirmed({required bool isOtpConfirmed});{{/enable_feature_otp}}
+  void otpConfirmed({required bool isOtpConfirmed});{{/enable_feature_otp}}
 
 
   void errorLogged({
@@ -44,5 +44,5 @@ class CoordinatorBloc extends $CoordinatorBloc {
 
 {{#enable_feature_otp}}
   @override
-  Stream<bool> get isOtpConfirmed => _$confirmedEvent;{{/enable_feature_otp}}
+  Stream<bool> get isOtpConfirmed => _$otpConfirmedEvent;{{/enable_feature_otp}}
 }

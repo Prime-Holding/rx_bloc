@@ -16,7 +16,7 @@ extension CoordinatorBinderExtensions on Stream<bool> {
 extension CoordinatorConfirmedBinderExtensions on Stream<bool> {
   Stream<bool> emitOtpConfirmedToCoordinator(CoordinatorBlocType coordinator) =>
     doOnData(
-      (isOtpConfirmed) => coordinator.events.confirmed(
+      (isOtpConfirmed) => coordinator.events.otpConfirmed(
         isOtpConfirmed: isOtpConfirmed,
       ),
     );
