@@ -14,6 +14,10 @@ part 'coordinator_bloc_extensions.dart';
 abstract class CoordinatorEvents {
   void authenticated({required bool isAuthenticated});
 
+{{#enable_feature_otp}}
+  void confirmed({required bool isOtpConfirmed});{{/enable_feature_otp}}
+
+
   void errorLogged({
     required ErrorModel error,
     String? stackTrace,
@@ -23,6 +27,10 @@ abstract class CoordinatorEvents {
 abstract class CoordinatorStates {
   @RxBlocIgnoreState()
   Stream<bool> get isAuthenticated;
+
+{{#enable_feature_otp}}
+  @RxBlocIgnoreState()
+  Stream<bool> get isOtpConfirmed;{{/enable_feature_otp}}
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -33,4 +41,8 @@ abstract class CoordinatorStates {
 class CoordinatorBloc extends $CoordinatorBloc {
   @override
   Stream<bool> get isAuthenticated => _$authenticatedEvent;
+
+{{#enable_feature_otp}}
+  @override
+  Stream<bool> get isOtpConfirmed => _$confirmedEvent;{{/enable_feature_otp}}
 }

@@ -11,3 +11,13 @@ extension CoordinatorBinderExtensions on Stream<bool> {
         ),
       );
 }
+
+{{#enable_feature_otp}}
+extension CoordinatorConfirmedBinderExtensions on Stream<bool> {
+  Stream<bool> emitOtpConfirmedToCoordinator(CoordinatorBlocType coordinator) =>
+    doOnData(
+      (isOtpConfirmed) => coordinator.events.confirmed(
+        isOtpConfirmed: isOtpConfirmed,
+      ),
+    );
+}{{/enable_feature_otp}}

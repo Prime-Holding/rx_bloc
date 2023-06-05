@@ -32,7 +32,8 @@ dependencies:
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.7.0
   jwt_decoder: ^2.0.1
-  provider: ^6.0.3
+  provider: ^6.0.3{{#enable_feature_otp}}
+  pinput: ^2.2.31{{/enable_feature_otp}}
   retrofit: ^4.0.1
   rx_bloc: ^4.0.0
   rx_bloc_list: ^3.2.1
@@ -107,4 +108,5 @@ r_flutter:
     - name: field
     - name: lib_router{{#enable_change_language}}
     - name: lib_change_language{{/enable_change_language}}{{#enable_dev_menu}}
-    - name: lib_dev_menu{{/enable_dev_menu}}
+    - name: lib_dev_menu{{/enable_dev_menu}}{{#enable_feature_otp}}
+    - name: feature_otp{{/enable_feature_otp}}

@@ -1,0 +1,22 @@
+{
+  "@@locale": "bg",
+  "resend": "Повторно изпращане",
+  "resendButtonActiveStateLabel": "Повторно изпращане на код",
+  "resendButtonLoadingStateLabel": "Изпращане на код",
+  "resendButtonCodeSentStateLabel": "Кодът е изпратен",
+  "resendButtonErrorStateLabel": "Възникна грешка при изпращане на код",
+  "resendButtonDisabledStateLabel": "Секунди, за да активирате бутона",
+  "codeValidity": "Валидност на кода",
+  "smsCodeResendError": "Възникна грешка. Опитайте отново.",
+  "codeResent": "Кодът е изпратен отново",
+  "phoneNumber": "Телефонен номер",
+  "hint": "*hint* Правилният код може да бъде 0000",
+  "sendNewCode" : "Изпращане на нов код",
+  "codeSent": "Новият код е изпратен",
+  "minutes": "Минути",
+  "codeStateCorrect": "ВАЛИДЕН КОД!",
+  "codeStateWrong": "ГРЕШЕН КОД!",
+  "codeStateDisabled": "Вашето време е изтекло, моля, изпратете нов код",
+  "codeStateDefault": "Въведете получения SMS код",
+  "otpPageTitle": "OTP функция пример"
+}

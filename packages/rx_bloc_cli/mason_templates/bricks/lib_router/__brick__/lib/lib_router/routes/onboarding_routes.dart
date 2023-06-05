@@ -18,3 +18,24 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
   @override
   String get routeLocation => location;
 }
+{{#enable_feature_otp}}
+
+@TypedGoRoute<OtpRoute>(path: RoutesPath.otpRoute)
+@immutable
+class OtpRoute extends GoRouteData implements RouteDataModel {
+  const OtpRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const OtpScreen(),
+      );
+
+  @override
+  String get permissionName => RouteModel.dashboard.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+{{/enable_feature_otp}}

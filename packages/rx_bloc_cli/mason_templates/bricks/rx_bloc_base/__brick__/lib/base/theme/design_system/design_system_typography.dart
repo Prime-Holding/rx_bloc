@@ -107,4 +107,17 @@ class DesignSystemTypography {
     color: _designSystemColor.appleButtonText,
   );
   {{/enable_social_logins}}
+  {{#enable_feature_otp}}
+  late final otpPinText = const TextStyle(
+    fontSize: 18,
+    color: Colors.black87,
+  );
+
+  late final otpResendButtonText = const TextStyle(
+    fontWeight: FontWeight.w600,
+    fontStyle: FontStyle.normal,
+    letterSpacing: 0.8,
+    fontSize: 10.0)
+      .copyWith(color: _designSystemColor.black);
+  {{/enable_feature_otp}}
 }

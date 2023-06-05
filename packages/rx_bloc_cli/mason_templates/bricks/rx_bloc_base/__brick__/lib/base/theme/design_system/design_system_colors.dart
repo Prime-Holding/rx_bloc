@@ -83,5 +83,19 @@ class DesignSystemColors {
 
   final Color googleButtonText;
   {{/enable_social_logins}}
+{{#enable_feature_otp}}
+//otp colors
+  final Color pinBgColor = const Color(0xE5EEEEEE);
+
+  final Color pinBgDisabledColor = const Color(0xFF9D9D9D);
+
+  final pinBgSuccessColor = const Color.fromRGBO(102, 240, 174, .5);
+
+  final Color pinSuccessBorderColor = Colors.green;
+
+  final pinErrorBorderColor = Colors.red;
+
+  final pinBgSubmittedColor = const Color.fromRGBO(222, 231, 240, .7);
+{{/enable_feature_otp}}
   ///
 }

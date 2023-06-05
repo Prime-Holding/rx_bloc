@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "resend": "Resend",
+  "resendButtonActiveStateLabel": "Resend code",
+  "resendButtonLoadingStateLabel": "Sending code",
+  "resendButtonCodeSentStateLabel": "Code was sent",
+  "resendButtonErrorStateLabel": "An error occurred while sending code",
+  "resendButtonDisabledStateLabel": "Seconds to enable the button",
+  "codeValidity": "Code validity",
+  "smsCodeResendError": "An error occurred. try again.",
+  "codeResent": "Code resent",
+  "phoneNumber": "Phone Number",
+  "hint": "*hint* The correct code might be 0000",
+  "sendNewCode" : "Send New Code",
+  "codeSent": "The new code has been sent",
+  "minutes": "Minutes",
+  "codeStateCorrect": "VALID CODE!",
+  "codeStateWrong": "WRONG CODE!",
+  "codeStateDisabled": "Your time has expired, please submit a new code",
+  "codeStateDefault": "Enter the received SMS code",
+  "otpPageTitle": "OTP feature Example"
+
+}
