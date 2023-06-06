@@ -3,8 +3,6 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../base/extensions/error_model_extensions.dart';
-import '../../base/models/errors/error_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../models/notification_model.dart';
@@ -19,13 +17,8 @@ abstract class PushNotificationsBlocEvents {
 
 /// A contract class containing all states of the PushNotificationsBloC.
 abstract class PushNotificationsBlocStates {
+  ///State used for handling routing on push notification recived
   ConnectableStream<void> get onRouting;
-
-  /// The loading state
-  Stream<bool> get isLoading;
-
-  /// The error state
-  Stream<ErrorModel> get errors;
 }
 
 @RxBloc()
@@ -37,9 +30,8 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
   final RouterBlocType _routerBloc;
 
   @override
-  ConnectableStream<void> _mapToOnRoutingState() => Rx.merge([
-        _$tapOnEventEvent,
-      ]).asyncMap<void>((event) {
+  ConnectableStream<void> _mapToOnRoutingState() =>
+      _$tapOnEventEvent.asyncMap<void>((event) {
         switch (event.type) {
           case NotificationModelType.dashboard:
             return _routerBloc.events.go(const DashboardRoute());
@@ -49,10 +41,4 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
             null;
         }
       }).publish();
-
-  @override
-  Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
-
-  @override
-  Stream<bool> _mapToIsLoadingState() => loadingState;
 }
