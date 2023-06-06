@@ -47,7 +47,7 @@ class SmsCodeProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiProvider(
-        providers: [..._blocs],
+        providers: _blocs,
         child: SmsCodeWidget(
           builder: builder,
           onError: onError,

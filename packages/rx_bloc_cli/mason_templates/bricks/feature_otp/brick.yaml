@@ -1,5 +1,5 @@
 name: feature_otp
-description: A new brick created with the Mason CLI.
+description: Brick that can help you with building sms/pin code workflows for your app.
 
 version: 0.1.0+1
 

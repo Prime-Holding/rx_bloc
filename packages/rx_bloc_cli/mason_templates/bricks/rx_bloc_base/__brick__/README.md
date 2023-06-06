@@ -17,7 +17,7 @@
 13. [Social Logins](#social-logins-library){{/enable_social_logins}}{{#enable_dev_menu}}
 14. [Dev Menu](#dev-menu){{/enable_dev_menu}}{{#enable_patrol}}
 15. [Patrol integration tests](#patrol-integration-tests){{/enable_patrol}}{{#realtime_communication}}
-16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{enable_feature_otp}}
+16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{#enable_feature_otp}}
 17. [Feature OTP](#feature-otp){{/enable_feature_otp}}
 18. [Next Steps](#next-steps)
 

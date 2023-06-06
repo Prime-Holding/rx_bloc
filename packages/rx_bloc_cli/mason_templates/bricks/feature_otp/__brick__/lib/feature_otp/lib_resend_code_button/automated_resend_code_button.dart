@@ -106,8 +106,6 @@ class _AutomatedResendCodeButtonState extends State<AutomatedResendCodeButton> {
   TextStyle _getDefaultTextStyle(BuildContext context) =>
       context.widgetToolkitTheme.outlineButtonDescriptionTextStyle
           .copyWith(color: getTextColor(context));
-  // context.smsCodeTheme.resendButtonDefaultTextStyle
-  //     .copyWith(color: getTextColor(context));
 
   @override
   void initState() {
@@ -166,21 +164,21 @@ class _AutomatedResendCodeButtonState extends State<AutomatedResendCodeButton> {
         text: context.l10n.featureOtp.resendButtonActiveStateLabel,
         onPressed: () async {
           bool getError = false;
-          _setLoadingState();
+          _setButtonState(_ResendButtonState.loading);
           try {
             await widget.onPressed.call();
           } catch (e) {
             getError = true;
-            _setErrorState();
+            _setButtonState(_ResendButtonState.error);
             widget.onError?.call(e.asErrorString);
           }
           if (!getError) {
-            _setSentCodeState();
+            _setButtonState(_ResendButtonState.codeSent);
             await _sentStateDuration();
           } else {
             await _errorStateDuration();
           }
-          _setDisabledState();
+          _setButtonState(_ResendButtonState.disabled);
         },
       );
 
@@ -238,24 +236,12 @@ class _AutomatedResendCodeButtonState extends State<AutomatedResendCodeButton> {
   Future<void> _errorStateDuration() =>
       Future.delayed(Duration(seconds: widget.errorStateDuration));
 
-  void _onCountDownTick(int remainingTime) =>
-      remainingTime == 0 ? _setActiveState() : null;
+  void _setButtonState(_ResendButtonState buttonState) => setState(() {
+        _buttonState = buttonState;
+      });
 
-  void _setActiveState() => setState(() {
-        _buttonState = _ResendButtonState.active;
-      });
-  void _setLoadingState() => setState(() {
-        _buttonState = _ResendButtonState.loading;
-      });
-  void _setDisabledState() => setState(() {
-        _buttonState = _ResendButtonState.disabled;
-      });
-  void _setSentCodeState() => setState(() {
-        _buttonState = _ResendButtonState.codeSent;
-      });
-  void _setErrorState() => setState(() {
-        _buttonState = _ResendButtonState.error;
-      });
+  void _onCountDownTick(int remainingTime) =>
+      remainingTime == 0 ? _setButtonState(_ResendButtonState.active) : null;
 }
 
 /// Enum describing different resend button states

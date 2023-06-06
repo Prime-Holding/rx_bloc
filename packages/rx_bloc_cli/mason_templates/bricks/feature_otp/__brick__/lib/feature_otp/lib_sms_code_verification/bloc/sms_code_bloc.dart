@@ -85,8 +85,9 @@ class SmsCodeBloc extends $SmsCodeBloc {
       {required SmsCodeService service,
       required CountdownService countdownService,
       String? initialPhoneNumber,
-      this.sentNewCodeActivationTime = 3})
-      : _service = service,
+      int sentNewCodeActivationTime = 3})
+      : _sentNewCodeActivationTime = sentNewCodeActivationTime,
+        _service = service,
         _countDownService = countdownService,
         _initialPhoneNumber = initialPhoneNumber {
     if (_initialPhoneNumber != null) {
@@ -105,7 +106,7 @@ class SmsCodeBloc extends $SmsCodeBloc {
   final SmsCodeService _service;
   final CountdownService _countDownService;
   final String? _initialPhoneNumber;
-  final int sentNewCodeActivationTime;
+  final int _sentNewCodeActivationTime;
   final CoordinatorBlocType _coordinatorBlocType;
   final BehaviorSubject<String> _number = BehaviorSubject<String>();
 
@@ -170,7 +171,7 @@ class SmsCodeBloc extends $SmsCodeBloc {
   @override
   Stream<bool> _mapToSentNewCodeState() => _$codeSentEvent
       .startWith(false)
-      .switchAfterSeconds(sentNewCodeActivationTime);
+      .switchAfterSeconds(_sentNewCodeActivationTime);
 
   @override
   Stream<int> _mapToPinLengthState() => _service

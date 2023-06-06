@@ -42,9 +42,7 @@ class CountdownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         key: key,
-        providers: [
-          ..._blocs,
-        ],
+        providers: _blocs,
         child: CountdownComponent(
           textStyle: textStyle,
           onCountdownTick: onCountdownTick,

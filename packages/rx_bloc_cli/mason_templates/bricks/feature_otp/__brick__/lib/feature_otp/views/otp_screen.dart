@@ -21,7 +21,7 @@ class OtpScreen extends StatelessWidget {
         body: SafeArea(
           child: SmsCodeProvider(
             sentNewCodeActivationTime: 2,
-            smsCodeService: FakeSmsCodeService(),
+            smsCodeService: _FakeSmsCodeService(),
             builder: (state) => Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -31,7 +31,7 @@ class OtpScreen extends StatelessWidget {
                     builder: (context, number, onChanged) => TextFieldDialog(
                       label: context.l10n.featureOtp.phoneNumber,
                       value: number,
-                      validator: FakeTextFieldValidator(),
+                      validator: _FakeTextFieldValidator(),
                       translateError: (Object error) => null,
                       onChanged: onChanged,
                     ),
@@ -76,7 +76,7 @@ class OtpScreen extends StatelessWidget {
       );
 }
 
-class FakeTextFieldValidator extends TextFieldValidator<String> {
+class _FakeTextFieldValidator extends TextFieldValidator<String> {
   @override
   Future<String> validateOnSubmit(String text) async => text;
 
@@ -85,7 +85,7 @@ class FakeTextFieldValidator extends TextFieldValidator<String> {
 }
 
 /// Service used to implement SMS code logic
-class FakeSmsCodeService implements SmsCodeService {
+class _FakeSmsCodeService implements SmsCodeService {
   /// Confirm if the entered code is equal to the last send code
   @override
   Future<dynamic> confirmPhoneCode(String code) async {

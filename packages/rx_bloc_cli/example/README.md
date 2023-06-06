@@ -13,12 +13,12 @@
 9. [Design system](#design-system)
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
-12. [Push notifications](#push-notifications){{#enable_social_logins}}
-13. [Social Logins](#social-logins-library){{/enable_social_logins}}{{#enable_dev_menu}}
-14. [Dev Menu](#dev-menu){{/enable_dev_menu}}{{#enable_patrol}}
-15. [Patrol integration tests](#patrol-integration-tests){{/enable_patrol}}{{#realtime_communication}}
-16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{enable_feature_otp}}
-17. [Feature OTP](#feature-otp){{/enable_feature_otp}}
+12. [Push notifications](#push-notifications)
+13. [Social Logins](#social-logins-library)
+14. [Dev Menu](#dev-menu)
+15. [Patrol integration tests](#patrol-integration-tests)
+16. [Realtime communication](#realtime-communication)
+17. [Feature OTP](#feature-otp)
 18. [Next Steps](#next-steps)
 
 ## Getting started
@@ -56,13 +56,13 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
 | `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
 | `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
-| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |{{#enable_social_logins}}
-| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |{{/enable_social_logins}}
+| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |
+| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |
 | `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |{{#enable_dev_menu}}  
-| `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |{{/enable_dev_menu}}{{#enable_feature_otp}}
-| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |{{/enable_feature_otp}}
+| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
+| `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
+| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
 
 ## Architecture
 
@@ -119,10 +119,10 @@ Example:
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>{{project_name}}.{{organization_name}}.{{domain_name}}</string>
+        <string>testapp.primeholding.com</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>{{organization_name}}scheme</string>
+        <string>primeholdingscheme</string>
         </array>
         </dict>
     </array>
@@ -132,17 +132,17 @@ You can test the deep-links on iOS simulator by executing the following command
 
 Production
 ```
-xcrun simctl openurl booted {{organization_name}}scheme://{{project_name}}.{{organization_name}}.{{domain_name}}/deepLinks/1
+xcrun simctl openurl booted primeholdingscheme://testapp.primeholding.com/deepLinks/1
 ```
 
 Staging
 ```
-xcrun simctl openurl booted {{organization_name}}stagscheme://{{project_name}}stag.{{organization_name}}.{{domain_name}}/deepLinks/1
+xcrun simctl openurl booted primeholdingstagscheme://testappstag.primeholding.com/deepLinks/1
 ```
 
 Development
 ```
-xcrun simctl openurl booted {{organization_name}}devscheme://{{project_name}}dev.{{organization_name}}.{{domain_name}}/deepLinks/1
+xcrun simctl openurl booted primeholdingdevscheme://testappdev.primeholding.com/deepLinks/1
 ```
 
 `Android`
@@ -323,7 +323,7 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
-{{#enable_social_logins}}
+
 ## Social Logins Library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
@@ -381,9 +381,9 @@ productFlavors{
 - for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
-{{/enable_social_logins}}
 
-{{#enable_dev_menu}}
+
+
 
 ## Dev Menu
 
@@ -417,10 +417,10 @@ Alice is working right out of the box.
 
 `Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
-{{/enable_dev_menu}}
 
 
-{{#enable_patrol}}
+
+
 ## Patrol Integration Tests
 
 The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
@@ -432,14 +432,14 @@ This package enables applications to use native automation features
 #### Running the Tests
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
-{{/enable_patrol}}
 
-{{#realtime_communication}}
+
+
 ## Realtime Communication
 
 Provides base datasource, repository, service and utility classes for establishing a SSE connection.
 Register the classes into the DI system and configure the SSE endpoint by passing it as a parameter to `SseRemoteDataSource`.
-After this is done the event stream exposed by `SseService` can be used by any BLoC.{{/realtime_communication}}
+After this is done the event stream exposed by `SseService` can be used by any BLoC.
 
 ## Feature OTP
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  

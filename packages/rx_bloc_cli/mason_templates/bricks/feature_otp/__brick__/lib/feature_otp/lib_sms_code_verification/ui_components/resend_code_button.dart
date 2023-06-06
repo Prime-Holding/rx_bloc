@@ -7,6 +7,8 @@ import '../../../app_extensions.dart';
 import '../../../base/models/temporary_code_state.dart';
 import '../bloc/sms_code_bloc.dart';
 
+//It builds a TextButton with all necessary functionalities and state handling
+// with great amount of customization options and automated styling.
 class ResendCodeButton extends StatelessWidget {
   const ResendCodeButton(
       {this.label,
