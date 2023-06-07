@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:notification_permissions/notification_permissions.dart';
 
 import '../../assets.dart';
 import '../models/errors/error_model.dart';
@@ -8,11 +8,9 @@ import '../repositories/push_notification_repository.dart';
 
 class PushNotificationsService {
   final PushNotificationRepository _pushNotificationRepository;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   PushNotificationsService(
       this._pushNotificationRepository, 
-      this._flutterLocalNotificationsPlugin,
   );
 
   Future<void> unsubscribe() async {
@@ -25,12 +23,9 @@ class PushNotificationsService {
   }
 
   Future<bool> areNotificationsEnabled() async {
-    final notificationsEnabled = await _flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
-            ?.areNotificationsEnabled() ??
-        false;
-    if (notificationsEnabled) {
+    final permissionStatus =
+        await NotificationPermissions.getNotificationPermissionStatus();
+    if (permissionStatus == PermissionStatus.granted) {
       await subscribe();
       return true;
     } else {

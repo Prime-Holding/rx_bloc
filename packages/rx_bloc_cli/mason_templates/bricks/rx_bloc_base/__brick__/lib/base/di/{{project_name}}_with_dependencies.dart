@@ -5,7 +5,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -292,7 +291,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<PushNotificationsService>(
           create: (context) => PushNotificationsService(
             context.read(),
-            FlutterLocalNotificationsPlugin(),
           ),
         ),
       ];
