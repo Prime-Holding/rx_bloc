@@ -10,6 +10,8 @@ part 'push_notifications_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the PushNotificationsBloC.
 abstract class PushNotificationsBlocEvents {
+  /// Event for handling opening push notifications from background
+  /// or from in-app
   void tapOnEvent(NotificationModel event);
 }
 
