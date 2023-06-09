@@ -49,5 +49,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
-    </queries>{{/enable_social_logins}}
+    </queries>{{/enable_social_logins}}{{#enable_pin_code}}
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>{{/enable_pin_code}}
 </manifest>

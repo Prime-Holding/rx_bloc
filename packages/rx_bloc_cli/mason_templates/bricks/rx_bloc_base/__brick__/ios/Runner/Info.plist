@@ -79,8 +79,8 @@
           <string>fbapi</string>
           <string>fb-messenger-share-api</string>
         </array>
-        {{/enable_social_logins}}
+        {{/enable_social_logins}}{{#enable_pin_code}}
     <key>NSFaceIDUsageDescription</key>
-    <string>Why is my app authenticating using face id?</string>
+    <string>Why is my app authenticating using face id?</string>{{/enable_pin_code}}
 </dict>
 </plist>

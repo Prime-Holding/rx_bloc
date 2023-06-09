@@ -9,6 +9,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}
 
 import '../../feature_splash/services/splash_service.dart';
@@ -30,7 +31,8 @@ import '../../lib_permissions/data_sources/remote/permissions_remote_data_source
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
 import '../../lib_pin_code/bloc/pin_bloc.dart';
-import '../../lib_pin_code/services/app_pin_code_service.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/services/app_pin_code_service.dart';
+import '../../lib_pin_code/services/profile_local_data_source.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
@@ -195,7 +197,11 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<LanguageLocalDataSource>(
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
-        ),{{/enable_change_language}}
+        ),{{/enable_change_language}}{{#enable_pin_code}}
+        Provider<BiometricsLocalDataSource>(
+          create: (context) => ProfileLocalDataSource(
+          sharedPreferences:  context.read<SharedPreferencesInstance>()),
+        ),{{/enable_pin_code}}
       ];
 
   List<Provider> get _repositories => [
@@ -312,7 +318,10 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           ),
         ), {{/enable_change_language}} {{#enable_pin_code}}
         RxBlocProvider<PinBlocType>(
-          create: (context) => PinBloc(service: context.read<PinCodeService>()),
+          create: (context) => PinBloc(
+            service: context.read<PinCodeService>(),
+            biometrics: context.read<BiometricsLocalDataSource>(),
+          ),
         ),{{/enable_pin_code}}
       ];
 }
