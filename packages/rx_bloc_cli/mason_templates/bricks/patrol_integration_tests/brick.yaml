@@ -1,0 +1,7 @@
+name: patrol_integration_tests
+description: Adds required configuration for patrol package for integration testing
+
+version: 0.1.0+1
+environment:
+  mason: ">=0.1.0-dev.49 <0.1.0"
+vars:

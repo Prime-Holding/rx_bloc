@@ -20,15 +20,15 @@ class AnalyticsInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) {
     final hasResponse = err.response != null;
     observer.analytics.logEvent(name: 'RequestError', parameters: {
-      'errorType': err.type,
+      'errorType': err.type.toString(),
       'errorMessage': err.message,
-      'stackTrace': err.stackTrace,
+      'stackTrace': err.stackTrace.toString(),
       'requestUrl': err.requestOptions.path,
       'requestMethod': err.requestOptions.method,
       if (hasResponse && err.response!.statusCode != null)
       'responseStatusCode': err.response!.statusCode,
       if (hasResponse && err.response!.data != null)
-      'responseData': err.response!.data,
+      'responseData': err.response!.data.toString(),
     });
     super.onError(err, handler);
   }

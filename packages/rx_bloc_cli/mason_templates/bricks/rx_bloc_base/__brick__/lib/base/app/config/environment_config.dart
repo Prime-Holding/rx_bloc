@@ -32,4 +32,8 @@ class EnvironmentConfig {
 
   String get baseUrl =>
       Platform.isIOS ? iosSimulatorBaseApiUrl : androidEmulatorBaseApiUrl;
+
+{{#enable_dev_menu}}
+  static const bool enableDevMenu =
+      String.fromEnvironment('ENABLE_DEV_MENU') == 'true';{{/enable_dev_menu}}
 }

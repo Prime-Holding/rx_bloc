@@ -20,8 +20,10 @@ class AppLoadingIndicator extends StatelessWidget {
   final double? strokeWidth;
   final Color? color;
 
-  factory AppLoadingIndicator.innerCircleValue(BuildContext context) =>
+  factory AppLoadingIndicator.innerCircleValue(
+          BuildContext context, Key? appLoadingkey) =>
       AppLoadingIndicator(
+        key: appLoadingkey,
         padding: EdgeInsets.zero,
         size: Size(
           context.designSystem.spacing.xxl2,

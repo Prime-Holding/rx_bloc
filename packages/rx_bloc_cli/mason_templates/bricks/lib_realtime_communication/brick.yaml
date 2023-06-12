@@ -1,0 +1,8 @@
+name: lib_realtime_communication
+description: Realtime communication facilities like SSE, WebSocket and gRPC.
+
+version: 0.1.0+1
+environment:
+  mason: ">=0.1.0-dev.47 <0.1.0"
+
+vars:
