@@ -45,7 +45,7 @@ class AppleLoginWidget extends StatelessWidget {
                 isLoading: (snapshot.data ?? false) ? false : true,
                 textStyle: context.designSystem.typography.appleButtonText,
                 backgroundColor: context.designSystem.colors.appleBackground,
-                text: context.l10n.featureLogin.appleLogin,
+                text: context.l10n.featureSocialLogins.appleLogin,
                 progressIndicatorColor:
                     context.designSystem.colors.appleButtonText,
                 onPressed:
