@@ -6,6 +6,7 @@ import 'package:mason/mason.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
+import '../templates/feature_login_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
 import '../templates/lib_change_language_bundle.dart';
@@ -77,6 +78,12 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
+        _featureLoginString,
+        help: 'Enables login feature for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'true',
+      )
+      ..addOption(
         _socialLoginsString,
         help: 'Enables social login with Apple, Facebook and Google for the '
             'project',
@@ -106,6 +113,7 @@ class CreateCommand extends Command<int> {
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
+  final _featureLoginString = 'enable-login';
   final _socialLoginsString = 'enable-social-logins';
   final _changeLanguageString = 'enable-change-language';
   final _devMenuString = 'enable-dev-menu';
@@ -119,6 +127,7 @@ class CreateCommand extends Command<int> {
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
   final _libAuthBundle = libAuthBundle;
+  final _featureLoginBundle = featureLoginBundle;
   final _libSocialLoginsBundle = libSocialLoginsBundle;
   final _libChangeLanguageBundle = libChangeLanguageBundle;
   final _libDevMenuBundle = libDevMenuBundle;
@@ -239,6 +248,11 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
+    // Add Feature Login brick to _bundle when needed
+    if (arguments.enableLogin) {
+      _bundle.files.addAll(_featureLoginBundle.files);
+    }
+
     // Add Social Logins brick to _bundle when needed
     if (arguments.enableSocialLogins) {
       _bundle.files.addAll(_libSocialLoginsBundle.files);
@@ -285,6 +299,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
+        'enable_login': arguments.enableLogin,
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
         'enable_dev_menu': arguments.enableDevMenu,
@@ -317,6 +332,7 @@ class CreateCommand extends Command<int> {
       enableCounterFeature: _parseEnableCounter(arguments),
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
+      enableLogin: _parseEnableFeatureLogin(arguments),
       enableSocialLogins: _parseEnableSocialLogins(arguments),
       enableChangeLanguage: _parseEnableChangeLanguage(arguments),
       enableDevMenu: _parseEnableDevMenu(arguments),
@@ -380,6 +396,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableDeeplinkFeature(ArgResults arguments) {
     final deeplinkEnabled = arguments[_deepLinkString];
     return deeplinkEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with counter feature
+  bool _parseEnableFeatureLogin(ArgResults arguments) {
+    final featureLoginEnabled = arguments[_featureLoginString];
+    return featureLoginEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with counter feature
@@ -493,6 +515,7 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,
     );
+    _usingLog('Feature Login', arguments.enableLogin);
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
@@ -527,6 +550,7 @@ class _CreateCommandArguments {
     required this.enableCounterFeature,
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
+    required this.enableLogin,
     required this.enableSocialLogins,
     required this.enableChangeLanguage,
     required this.enableDevMenu,
@@ -541,6 +565,7 @@ class _CreateCommandArguments {
   final bool enableCounterFeature;
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
+  final bool enableLogin;
   final bool enableSocialLogins;
   final bool enableChangeLanguage;
   final bool enableDevMenu;
