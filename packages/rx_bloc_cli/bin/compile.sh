@@ -10,7 +10,7 @@ dart run rx_bloc_cli create \
   --enable-feature-deeplinks=true\
   --enable-feature-widget-toolkit=true \
   --enable-login=false \
-  --enable-social-logins=false \
+  --enable-social-logins=true \
   --enable-change-language=true \
   --enable-dev-menu=true \
   --enable-patrol=true \

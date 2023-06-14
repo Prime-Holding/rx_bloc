@@ -100,9 +100,8 @@ r_flutter:
     - name: error{{#enable_feature_counter}}
     - name: feature_counter{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
     - name: feature_deep_link
-    - name: feature_enter_message{{/enable_feature_deeplinks}}{{#enable_login}}
-    - name: feature_login{{/enable_login}}{{#enable_social_logins}}
-    - name: feature_social_logins{{/enable_social_logins}}
+    - name: feature_enter_message{{/enable_feature_deeplinks}}{{#has_authentication}}
+    - name: feature_login{{/has_authentication}}
     - name: feature_notifications{{#enable_feature_widget_toolkit}}
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field

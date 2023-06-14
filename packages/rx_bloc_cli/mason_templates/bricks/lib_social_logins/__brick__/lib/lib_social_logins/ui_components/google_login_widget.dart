@@ -42,7 +42,7 @@ class GoogleLoginWidget extends StatelessWidget {
               state: (bloc) => bloc.states.isLoading,
               builder: (context, loadingState, bloc) => SocialLoginButton(
                 isLoading: (loadingState.data ?? false) ? false : true,
-                text: context.l10n.featureSocialLogins.googleLogin,
+                text: context.l10n.featureLogin.googleLogin,
                 borderSide: BorderSide(
                   color: context.designSystem.colors.white,
                   width: 0.3,

@@ -43,7 +43,7 @@ class FacebookLoginWidget extends StatelessWidget {
               builder: (context, snapshot, bloc) => SocialLoginButton(
                 isLoading: (snapshot.data ?? false) ? false : true,
                 backgroundColor: context.designSystem.colors.facebookBackground,
-                text: context.l10n.featureSocialLogins.facebookLogin,
+                text: context.l10n.featureLogin.facebookLogin,
                 textStyle: context.designSystem.typography.facebookButtonText,
                 progressIndicatorColor:
                     context.designSystem.colors.facebookTextColor,

@@ -13,8 +13,9 @@ import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
-import '../feature_home/views/home_page.dart';{{#has_authentication}}
-import '../feature_login/di/login_page_with_dependencies.dart';{{/has_authentication}}
+import '../feature_home/views/home_page.dart';{{#has_authentication}}{{#enable_login}}
+import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}{{^enable_login}}
+import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';

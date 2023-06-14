@@ -7,7 +7,7 @@ import 'package:provider/single_child_widget.dart';
 
 import '../blocs/login_bloc.dart';
 import '../services/login_validator_service.dart';
-import '../views/login_page.dart';
+import '../../../../../lib_auth/__brick__/lib/feature_login/views/login_page.dart';
 
 class LoginPageWithDependencies extends StatelessWidget {
   const LoginPageWithDependencies({Key? key}) : super(key: key);

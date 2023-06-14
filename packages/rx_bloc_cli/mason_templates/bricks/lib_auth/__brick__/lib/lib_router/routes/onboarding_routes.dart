@@ -1,4 +1,4 @@
-part of '../../../../../lib_router/__brick__/lib/lib_router/router.dart';
+part of '../router.dart';
 
 @TypedGoRoute<LoginRoute>(path: RoutesPath.login)
 @immutable
@@ -9,7 +9,7 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const LoginPageWithDependencies(),
+        child: {{#enable_login}}const LoginPageWithDependencies(){{/enable_login}}{{^enable_login}}const LoginPage(){{/enable_login}},
       );
 
   @override
