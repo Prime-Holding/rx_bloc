@@ -16,21 +16,21 @@ void main() {
       [
         generateDeviceBuilder(
           scenario: Scenario(name: 'counter'),
-          widget: counterPageFactory(count: 2, isLoggedIn: true),
+          widget: counterPageFactory(count: 2{{#has_authentication}}, isLoggedIn: true{{/has_authentication}}),
         ),
         generateDeviceBuilder(
           scenario: Scenario(name: 'error'),
           widget: counterPageFactory(
             count: 2,
-            error: NetworkErrorModel(),
-            isLoggedIn: false,
+            error: NetworkErrorModel(),{{#has_authentication}}
+            isLoggedIn: false,{{/has_authentication}}
           ),
         ),
         generateDeviceBuilder(
           scenario: Scenario(name: 'loading'),
           widget: counterPageFactory(
-            count: 2,
-            isLoggedIn: false,
+            count: 2,{{#has_authentication}}
+            isLoggedIn: false,{{/has_authentication}}
             isLoading: LoadingWithTag(
               loading: true,
               tag: CounterBloc.tagIncrement,

@@ -8,8 +8,8 @@ import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}
 import '../../lib_router/blocs/router_bloc.dart';
-import '../../lib_router/router.dart';
-import '../ui_components/logout_action_button.dart';
+import '../../lib_router/router.dart';{{#has_authentication}}
+import '../ui_components/logout_action_button.dart';{{/has_authentication}}
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({
@@ -18,11 +18,11 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
+        appBar: AppBar({{#has_authentication}}
           actions: const [
             LogoutActionButton(),
           ],
-        ),
+        {{/has_authentication}}),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,

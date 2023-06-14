@@ -1,4 +1,4 @@
-part of '../router.dart';
+part of '../../../../../lib_router/__brick__/lib/lib_router/router.dart';
 
 @TypedGoRoute<LoginRoute>(path: RoutesPath.login)
 @immutable

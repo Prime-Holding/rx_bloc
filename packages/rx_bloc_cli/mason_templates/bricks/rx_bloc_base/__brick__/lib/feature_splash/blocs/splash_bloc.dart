@@ -4,8 +4,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/extensions/error_model_extensions.dart';
-import '../../base/models/errors/error_model.dart';
-import '../../lib_auth/services/auth_service.dart';
+import '../../base/models/errors/error_model.dart';{{#has_authentication}}
+import '../../lib_auth/services/auth_service.dart';{{/has_authentication}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/splash_service.dart';
@@ -35,12 +35,12 @@ abstract class SplashBlocStates {
 class SplashBloc extends $SplashBloc {
   SplashBloc(
     RouterBlocType navigationBloc,
-    SplashService splashService,
-    AuthService authService, {
+    SplashService splashService,{{#has_authentication}}
+    AuthService authService,{{/has_authentication}} {
     String? redirectLocation,
   })  : _navigationBloc = navigationBloc,
-        _splashService = splashService,
-        _authService = authService,
+        _splashService = splashService,{{#has_authentication}}
+        _authService = authService,{{/has_authentication}}
         _redirectLocation = redirectLocation {
     errors.connect().addTo(_compositeSubscription);
     _$initializeAppEvent
@@ -54,8 +54,8 @@ class SplashBloc extends $SplashBloc {
   }
 
   final RouterBlocType _navigationBloc;
-  final SplashService _splashService;
-  final AuthService _authService;
+  final SplashService _splashService;{{#has_authentication}}
+  final AuthService _authService;{{/has_authentication}}
   final String? _redirectLocation;
 
   Future<void> initializeAppAndNavigate() async {
@@ -63,10 +63,11 @@ class SplashBloc extends $SplashBloc {
 
     if (_redirectLocation != null) {
       _navigationBloc.events.goToLocation(_redirectLocation!);
-    } else {
+    } else { {{#has_authentication}}
       await _authService.isAuthenticated()
           ? _navigationBloc.events.go(const DashboardRoute())
-          : _navigationBloc.events.go(const LoginRoute());
+          : _navigationBloc.events.go(const LoginRoute());{{/has_authentication}}{{^has_authentication}}
+      _navigationBloc.events.go(const DashboardRoute());{{/has_authentication}}
     }
   }
 

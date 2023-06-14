@@ -281,8 +281,10 @@ class CreateCommand extends Command<int> {
     _bundle.files.addAll(_libRouterBundle.files);
     //Add lib_permissions to _bundle
     _bundle.files.addAll(_permissionsBundle.files);
-    //Add lib_auth to _bundle
-    _bundle.files.addAll(_libAuthBundle.files);
+    //Add lib_auth to _bundle when needed
+    if (arguments.hasAuthentication) {
+      _bundle.files.addAll(_libAuthBundle.files);
+    }
 
     _logger.info('');
     final fileGenerationProgress = _logger.progress('Bootstrapping');
@@ -304,6 +306,7 @@ class CreateCommand extends Command<int> {
         'enable_change_language': arguments.enableChangeLanguage,
         'enable_dev_menu': arguments.enableDevMenu,
         'enable_patrol': arguments.enablePatrolTests,
+        'has_authentication': arguments.hasAuthentication,
         'realtime_communication': arguments.realtimeCommunicationType !=
             _RealtimeCommunicationType.none,
       },
@@ -571,6 +574,8 @@ class _CreateCommandArguments {
   final bool enableDevMenu;
   final bool enablePatrolTests;
   final _RealtimeCommunicationType realtimeCommunicationType;
+
+  bool get hasAuthentication => enableLogin || enableSocialLogins;
 }
 
 enum _RealtimeCommunicationType { none, sse, websocket, grpc }
