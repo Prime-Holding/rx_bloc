@@ -32,7 +32,7 @@ dependencies:
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.7.0
   jwt_decoder: ^2.0.1
-  notification_permissions: ^0.6.1
+  permission_handler: ^10.3.0
   provider: ^6.0.3
   retrofit: ^4.0.1
   rx_bloc: ^4.0.0

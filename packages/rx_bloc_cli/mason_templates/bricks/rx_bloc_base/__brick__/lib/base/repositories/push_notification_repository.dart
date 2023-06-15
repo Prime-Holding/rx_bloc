@@ -76,9 +76,6 @@ class PushNotificationRepository {
   Future<void> setNotificationSubscribed(bool subscribed) => _errorMapper
       .execute(() => _localDataSource.setNotificationsSubscribed(subscribed));
 
-  Future<void> setNotificationsEnabled(bool enabled) => _errorMapper
-      .execute(() => _localDataSource.setNotificationsEnabled(enabled));
-
   Future<bool> notificationsSubscribed() =>
       _errorMapper.execute(() => _localDataSource.notificationsSubscribed());
 }

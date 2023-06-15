@@ -43,7 +43,6 @@ class ProfileBloc extends $ProfileBloc {
 
   @override
   Stream<Result<bool>> _mapToAreNotificationsEnabledState() => Rx.merge([
-        _notificationService.isSubscribed().asResultStream(),
         _notificationService.areNotificationsEnabled().asResultStream(),
         _$setNotificationsEvent.switchMap(
           (subscribePushNotifications) {

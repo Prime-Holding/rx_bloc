@@ -83,7 +83,7 @@ class PushNotificationsController extends ApiController {
       BadRequestException('Push message can not be empty.'),
     );
     if (!(_pushTokens.tokens.any((element) => element.token == pushToken))) {
-      throw BadRequestException('Notifications disabled by the user');
+      throw NotFoundException('Notifications disabled by the user');
     }
 
     Future.delayed(Duration(seconds: delay),
