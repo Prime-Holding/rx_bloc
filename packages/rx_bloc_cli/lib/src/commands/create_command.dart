@@ -395,19 +395,19 @@ class CreateCommand extends Command<int> {
     return analyticsEnabled.toLowerCase() == 'true';
   }
 
-  /// Returns whether the project will be created with counter feature
+  /// Returns whether the project will be created with deeplink feature
   bool _parseEnableDeeplinkFeature(ArgResults arguments) {
     final deeplinkEnabled = arguments[_deepLinkString];
     return deeplinkEnabled.toLowerCase() == 'true';
   }
 
-  /// Returns whether the project will be created with counter feature
+  /// Returns whether the project will be created with login feature
   bool _parseEnableFeatureLogin(ArgResults arguments) {
     final featureLoginEnabled = arguments[_featureLoginString];
     return featureLoginEnabled.toLowerCase() == 'true';
   }
 
-  /// Returns whether the project will be created with counter feature
+  /// Returns whether the project will be created with social logins feature
   bool _parseEnableSocialLogins(ArgResults arguments) {
     final socialLoginsEnabled = arguments[_socialLoginsString];
     return socialLoginsEnabled.toLowerCase() == 'true';

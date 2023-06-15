@@ -1,5 +1,5 @@
 name: feature_login
-description: A new brick created with the Mason CLI.
+description: Login brick. Provides a way to log in the app with email and password.
 
 version: 0.1.0+1
 
