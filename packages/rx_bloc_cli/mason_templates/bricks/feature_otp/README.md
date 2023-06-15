@@ -125,4 +125,6 @@ SmsCodeProvider(
     ],  
   ),  
 ),
-```
+```   
+
+For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
