@@ -1,6 +1,6 @@
 {{> licence.dart }}
 
-import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../assets.dart';
 import '../models/errors/error_model.dart';
@@ -8,9 +8,11 @@ import '../repositories/push_notification_repository.dart';
 
 class PushNotificationsService {
   final PushNotificationRepository _pushNotificationRepository;
+  final FirebaseMessaging firebaseMessaging;
 
   PushNotificationsService(
     this._pushNotificationRepository,
+    this.firebaseMessaging,
   );
 
   Future<void> unsubscribe([bool setNotifications = false]) async {
@@ -24,20 +26,27 @@ class PushNotificationsService {
   }
 
   Future<bool> areNotificationsEnabled() async {
-    final permissionStatus = await Permission.notification.status;
+    final permissionStatus = await firebaseMessaging.getNotificationSettings();
     final shouldSubscribe =
         await _pushNotificationRepository.notificationsSubscribed();
-    if (permissionStatus == PermissionStatus.granted && shouldSubscribe) {
-      await subscribe();
-      return true;
-    } else if (permissionStatus != PermissionStatus.granted &&
-        shouldSubscribe) {
-      await unsubscribe(true);
-      return false;
-    } else {
-      await unsubscribe();
-      return false;
+    switch (permissionStatus.authorizationStatus) {
+      case (AuthorizationStatus.authorized):
+        if (shouldSubscribe) {
+          await subscribe();
+          return true;
+        }
+      case (AuthorizationStatus.denied):
+      case (AuthorizationStatus.provisional):
+      case (AuthorizationStatus.notDetermined):
+        if (shouldSubscribe == true) {
+          await unsubscribe(true);
+          return false;
+        }
+      default:
+        await unsubscribe();
+        return false;
     }
+    return false;
   }
 
   Future<bool> requestNotificationPermissions() =>
