@@ -44,7 +44,7 @@ class ProfileBloc extends $ProfileBloc {
 
   @override
   Stream<Result<bool>> _mapToAreNotificationsEnabledState() => Rx.merge([
-        _notificationService.notificationSettings().then((value) async {
+        _notificationService.getNotificationSettings().then((value) async {
           switch (value.$2.authorizationStatus) {
             case (AuthorizationStatus.authorized):
               if (value.$1) {
