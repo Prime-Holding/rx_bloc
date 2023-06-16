@@ -8,11 +8,9 @@ import '../repositories/push_notification_repository.dart';
 
 class PushNotificationsService {
   final PushNotificationRepository _pushNotificationRepository;
-  final FirebaseMessaging firebaseMessaging;
 
   PushNotificationsService(
     this._pushNotificationRepository,
-    this.firebaseMessaging,
   );
 
   Future<void> unsubscribe([bool setNotifications = false]) async {
@@ -26,7 +24,8 @@ class PushNotificationsService {
   }
 
   Future<bool> areNotificationsEnabled() async {
-    final permissionStatus = await firebaseMessaging.getNotificationSettings();
+    final permissionStatus =
+        await _pushNotificationRepository.getNotificationSettings();
     final shouldSubscribe =
         await _pushNotificationRepository.notificationsSubscribed();
     switch (permissionStatus.authorizationStatus) {

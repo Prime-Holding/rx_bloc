@@ -291,7 +291,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<PushNotificationsService>(
           create: (context) => PushNotificationsService(
             context.read(),
-            context.read(),
           ),
         ),
       ];
