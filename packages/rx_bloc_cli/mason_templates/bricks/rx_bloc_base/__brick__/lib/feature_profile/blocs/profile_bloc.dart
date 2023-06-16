@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -43,7 +44,22 @@ class ProfileBloc extends $ProfileBloc {
 
   @override
   Stream<Result<bool>> _mapToAreNotificationsEnabledState() => Rx.merge([
-        _notificationService.areNotificationsEnabled().asResultStream(),
+        _notificationService.notificationSettings().then((value) async {
+          switch (value.$2.authorizationStatus) {
+            case (AuthorizationStatus.authorized):
+              if (value.$1) {
+                await _notificationService.subscribe();
+                return true;
+              }
+            case (AuthorizationStatus.denied):
+            case (AuthorizationStatus.provisional):
+            case (AuthorizationStatus.notDetermined):
+            default:
+              await _notificationService.unsubscribe(value.$1);
+              return false;
+          }
+          return false;
+        }).asResultStream(),
         _$setNotificationsEvent.switchMap(
           (subscribePushNotifications) {
             if (subscribePushNotifications) {

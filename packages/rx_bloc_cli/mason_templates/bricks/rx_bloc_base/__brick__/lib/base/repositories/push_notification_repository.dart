@@ -78,4 +78,7 @@ class PushNotificationRepository {
 
   Future<bool> notificationsSubscribed() =>
       _errorMapper.execute(() => _localDataSource.notificationsSubscribed());
+
+  Future<NotificationSettings> getNotificationSettings() => _errorMapper
+      .execute(() async => await _firebaseMessaging.getNotificationSettings());
 }

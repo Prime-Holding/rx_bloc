@@ -23,29 +23,12 @@ class PushNotificationsService {
         .setNotificationSubscribed(setNotifications);
   }
 
-  Future<bool> areNotificationsEnabled() async {
+  Future<(bool, NotificationSettings)> getNotificationSettings() async {
     final permissionStatus =
         await _pushNotificationRepository.getNotificationSettings();
-    final shouldSubscribe =
+    final isSubscribed =
         await _pushNotificationRepository.notificationsSubscribed();
-    switch (permissionStatus.authorizationStatus) {
-      case (AuthorizationStatus.authorized):
-        if (shouldSubscribe) {
-          await subscribe();
-          return true;
-        }
-      case (AuthorizationStatus.denied):
-      case (AuthorizationStatus.provisional):
-      case (AuthorizationStatus.notDetermined):
-        if (shouldSubscribe == true) {
-          await unsubscribe(true);
-          return false;
-        }
-      default:
-        await unsubscribe();
-        return false;
-    }
-    return false;
+    return (isSubscribed, permissionStatus);
   }
 
   Future<bool> requestNotificationPermissions() =>
