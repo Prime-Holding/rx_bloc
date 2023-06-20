@@ -81,6 +81,10 @@ Available commands:
 
 Run "rx_bloc_cli help <command>" for more information about a command.
 ```
+## Extendability
+
+Rx Bloc Command Line Interface supports [extendability] with the help of mason templates
+
 
 [null_safety_lnk]: https://dart.dev/null-safety
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
@@ -95,3 +99,4 @@ Run "rx_bloc_cli help <command>" for more information about a command.
 [create_command_gif_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/assets/rx_bloc_cli_create.gif
 [dio_http_client_lnk]: https://pub.dev/packages/dio
 [interceptors_lnk]: https://pub.dev/documentation/dio/latest/dio/Interceptor-class.html
+[extendability]: /packages/rx_bloc_cli/mason_templates/README.md
