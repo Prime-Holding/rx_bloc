@@ -5,8 +5,8 @@ import 'package:widget_toolkit/theme_data.dart';
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
 import '../../app_extensions.dart';
-import '../fake_classes/custom_sms_code_service.dart';
-import '../fake_classes/otp_text_field_validator.dart';
+import '../services/custom_sms_code_service.dart';
+import '../services/otp_text_field_validator.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
