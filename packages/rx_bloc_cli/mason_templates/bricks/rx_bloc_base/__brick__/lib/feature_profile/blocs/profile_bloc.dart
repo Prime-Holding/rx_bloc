@@ -1,6 +1,5 @@
 {{> licence.dart }}
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,12 +13,16 @@ part 'profile_bloc.rxb.g.dart';
 abstract class ProfileBlocEvents {
   void setNotifications(bool enabled);
 
+  void loadNotificationsSettings();
+
   void requestNotificationPermissions();
 }
 
 /// A contract class containing all states of the ProfileBloC.
 abstract class ProfileBlocStates {
   Stream<Result<bool>> get areNotificationsEnabled;
+
+  ConnectableStream<Result<bool>> get syncNotificationsStatus;
 
   /// The loading state
   Stream<bool> get isLoading;
@@ -30,7 +33,9 @@ abstract class ProfileBlocStates {
 
 @RxBloc()
 class ProfileBloc extends $ProfileBloc {
-  ProfileBloc(this._notificationService);
+  ProfileBloc(this._notificationService) {
+    syncNotificationsStatus.connect().addTo(_compositeSubscription);
+  }
   final PushNotificationsService _notificationService;
 
   static const tagNotificationSubscribe = 'tagNotificationSubscribe';
@@ -43,23 +48,8 @@ class ProfileBloc extends $ProfileBloc {
   Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
-  Stream<Result<bool>> _mapToAreNotificationsEnabledState() => Rx.merge([
-        _notificationService.getNotificationSettings().then((value) async {
-          switch (value.$2.authorizationStatus) {
-            case (AuthorizationStatus.authorized):
-              if (value.$1) {
-                await _notificationService.subscribe();
-                return true;
-              }
-            case (AuthorizationStatus.denied):
-            case (AuthorizationStatus.provisional):
-            case (AuthorizationStatus.notDetermined):
-            default:
-              await _notificationService.unsubscribe(value.$1);
-              return false;
-          }
-          return false;
-        }).asResultStream(),
+  ConnectableStream<Result<bool>> _mapToSyncNotificationsStatusState() =>
+      Rx.merge([
         _$setNotificationsEvent.switchMap(
           (subscribePushNotifications) {
             if (subscribePushNotifications) {
@@ -75,5 +65,20 @@ class ProfileBloc extends $ProfileBloc {
                 .asResultStream(tag: tagNotificationUnsubscribe);
           },
         ),
-      ]).setResultStateHandler(this).shareReplay(maxSize: 1);
+        _$loadNotificationsSettingsEvent.startWith(null).switchMap((value) =>
+            _notificationService
+                .syncNotificationSettings()
+                .then((_) => true)
+                .asResultStream()),
+      ]).setResultStateHandler(this).publish();
+
+  @override
+  Stream<Result<bool>> _mapToAreNotificationsEnabledState() => Rx.merge([
+        _$loadNotificationsSettingsEvent.startWith(null),
+        syncNotificationsStatus.whereSuccess(),
+      ])
+          .switchMap((value) =>
+              _notificationService.areNotificationsEnabled().asResultStream())
+          .setResultStateHandler(this)
+          .shareReplay(maxSize: 1);
 }

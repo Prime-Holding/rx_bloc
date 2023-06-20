@@ -18,11 +18,36 @@ import '../blocs/profile_bloc.dart';
 import '../extensions/push_notifications_extensions.dart';
 import '../ui_components/logout_action_button.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      context.read<ProfileBlocType>().events.loadNotificationsSettings();
+    }
+  }
+  
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -66,7 +91,7 @@ class ProfilePage extends StatelessWidget {
               errorState: (bloc) => bloc.states.errors,
             ),
             RxBlocListener<ProfileBlocType, Result<bool>>(
-              state: (bloc) => bloc.states.areNotificationsEnabled,
+              state: (bloc) => bloc.states.syncNotificationsStatus,
               condition: (previous, current) => current is ResultSuccess<bool>,
               listener: (context, state) {
                 if (state.tag.isLoadingSubscription) {

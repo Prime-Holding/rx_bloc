@@ -79,6 +79,15 @@ class PushNotificationRepository {
   Future<bool> notificationsSubscribed() =>
       _errorMapper.execute(() => _localDataSource.notificationsSubscribed());
 
-  Future<NotificationSettings> getNotificationSettings() => _errorMapper
-      .execute(() async => await _firebaseMessaging.getNotificationSettings());
+  Future<bool> notificationsEnabledUser() =>
+      _errorMapper.execute(() => _localDataSource.notificationsEnabled());
+
+  Future<void> setNotificationsEnabledUser(bool enabled) => _errorMapper
+      .execute(() => _localDataSource.setNotificationsEnabled(enabled));
+
+  Future<bool> areNotificationsEnabledDevice() =>
+      _errorMapper.execute(() async =>
+          (await _firebaseMessaging.getNotificationSettings())
+              .authorizationStatus ==
+          AuthorizationStatus.authorized);
 }

@@ -1,7 +1,5 @@
 {{> licence.dart }}
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-
 import '../../assets.dart';
 import '../models/errors/error_model.dart';
 import '../repositories/push_notification_repository.dart';
@@ -21,14 +19,37 @@ class PushNotificationsService {
     await _pushNotificationRepository.unsubscribe(token);
     await _pushNotificationRepository
         .setNotificationSubscribed(setNotifications);
+    await _pushNotificationRepository
+        .setNotificationsEnabledUser(setNotifications);
   }
 
-  Future<(bool, NotificationSettings)> getNotificationSettings() async {
-    final permissionStatus =
-        await _pushNotificationRepository.getNotificationSettings();
-    final isSubscribed =
+  Future<bool> areNotificationsEnabled() async {
+    final enabled =
+        await _pushNotificationRepository.areNotificationsEnabledDevice();
+    final subscribed =
+        await _pushNotificationRepository.notificationsEnabledUser();
+    return enabled && subscribed;
+  }
+
+  Future<void> syncNotificationSettings() async {
+    final areNotificationsEnabledDevice =
+        await _pushNotificationRepository.areNotificationsEnabledDevice();
+    final areNotificationsEnabledUser =
+        await _pushNotificationRepository.notificationsEnabledUser();
+    final isDeviceSubscribed =
         await _pushNotificationRepository.notificationsSubscribed();
-    return (isSubscribed, permissionStatus);
+
+    if (!areNotificationsEnabledDevice && areNotificationsEnabledUser) {
+      await unsubscribe(true);
+      return;
+    }
+    if (areNotificationsEnabledUser && isDeviceSubscribed) {
+      await subscribe();
+      return;
+    }
+    await ((areNotificationsEnabledUser && areNotificationsEnabledDevice)
+        ? subscribe()
+        : unsubscribe());
   }
 
   Future<bool> requestNotificationPermissions() =>
@@ -49,5 +70,6 @@ class PushNotificationsService {
     }
     await _pushNotificationRepository.subscribe(token);
     await _pushNotificationRepository.setNotificationSubscribed(true);
+    await _pushNotificationRepository.setNotificationsEnabledUser(true);
   }
 }
