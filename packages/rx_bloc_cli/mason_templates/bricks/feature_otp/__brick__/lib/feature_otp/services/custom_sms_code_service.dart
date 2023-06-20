@@ -3,8 +3,8 @@ import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 
 /// Service used to implement SMS code logic
-class FakeSmsCodeService implements SmsCodeService {
-  FakeSmsCodeService(this._coordinatorBloc);
+class CustomSmsCodeService implements SmsCodeService {
+  CustomSmsCodeService(this._coordinatorBloc);
   final CoordinatorBlocType _coordinatorBloc;
 
   /// Confirm if the entered code is equal to the last send code

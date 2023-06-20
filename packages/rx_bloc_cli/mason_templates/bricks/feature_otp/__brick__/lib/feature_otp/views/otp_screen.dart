@@ -5,8 +5,8 @@ import 'package:widget_toolkit/theme_data.dart';
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
 import '../../app_extensions.dart';
-import '../fake_classes/fake_sms_code_service.dart';
-import '../fake_classes/fake_text_field_validator.dart';
+import '../fake_classes/custom_sms_code_service.dart';
+import '../fake_classes/otp_text_field_validator.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
@@ -34,7 +34,7 @@ class OtpScreen extends StatelessWidget {
         body: SafeArea(
           child: SmsCodeProvider(
             sentNewCodeActivationTime: 2,
-            smsCodeService: FakeSmsCodeService(context.read()),
+            smsCodeService: CustomSmsCodeService(context.read()),
             builder: (state) => Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -44,7 +44,7 @@ class OtpScreen extends StatelessWidget {
                     builder: (context, number, onChanged) => TextFieldDialog(
                       label: phoneNumber,
                       value: number,
-                      validator: FakeTextFieldValidator(),
+                      validator: OtpTextFieldValidator(),
                       translateError: (Object error) => null,
                       onChanged: onChanged,
                     ),

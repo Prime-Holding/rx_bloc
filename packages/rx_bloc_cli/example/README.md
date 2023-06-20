@@ -444,6 +444,7 @@ After this is done the event stream exposed by `SseService` can be used by any B
 ## Feature OTP
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
+For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 
 ## Next Steps
 
