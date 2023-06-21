@@ -7,8 +7,8 @@ import '../../app_extensions.dart';
 import '../services/custom_sms_code_service.dart';
 import '../services/otp_text_field_validator.dart';
 
-class OtpScreen extends StatelessWidget {
-  const OtpScreen({super.key});
+class OtpPage extends StatelessWidget {
+  const OtpPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
