@@ -29,7 +29,7 @@ class OtpRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const OtpScreen(),
+        child: const OtpScreenWithDependencies(),
       );
 
   @override

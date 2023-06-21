@@ -16,7 +16,7 @@ import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/ena
 import '../feature_home/views/home_page.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
-import '../feature_otp/views/otp_screen.dart';{{/enable_feature_otp}}
+import '../feature_otp/di/otp_screen_with_dependencies.dart';{{/enable_feature_otp}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}

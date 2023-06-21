@@ -11,66 +11,64 @@ class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final String phoneNumber = context.l10n.featureOtp.phoneNumber;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.featureOtp.otpPageTitle),
-      ),
-      body: SafeArea(
-        child: SmsCodeProvider(
-          sentNewCodeActivationTime: 2,
-          smsCodeService: CustomSmsCodeService(context.read()),
-          builder: (state) => Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SmsPhoneNumberField(
-                  builder: (context, number, onChanged) => TextFieldDialog(
-                    label: phoneNumber,
-                    value: number,
-                    validator: OtpTextFieldValidator(),
-                    translateError: (Object error) => null,
-                    onChanged: onChanged,
-                  ),
-                ),
-                Column(
-                  children: [
-                    Text(
-                      context.l10n.featureOtp.hint,
-                      style: TextStyle(color: context.designSystem.colors.gray),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text(context.l10n.featureOtp.otpPageTitle),
+        ),
+        body: SafeArea(
+          child: SmsCodeProvider(
+            sentNewCodeActivationTime: 2,
+            smsCodeService: context.read<CustomSmsCodeService>(),
+            builder: (state) => Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SmsPhoneNumberField(
+                    builder: (context, number, onChanged) => TextFieldDialog(
+                      label: context.l10n.featureOtp.phoneNumber,
+                      value: number,
+                      validator: OtpTextFieldValidator(),
+                      translateError: (Object error) => null,
+                      onChanged: onChanged,
                     ),
-                    const SizedBox(height: 8),
-                    const SmsCodeField(),
-                    const SizedBox(height: 8),
-                    const ValidityWidget(),
-                  ],
-                ),
-                SizedBox(
-                  height: 85,
-                  child: Column(
+                  ),
+                  Column(
                     children: [
-                      ResendCodeButton(
-                        activeStateIcon: Icon(
-                          Icons.send,
-                          color: context.designSystem.colors.primaryColor,
-                        ),
-                        pressedStateIcon: Icon(
-                          Icons.check_circle_outline,
-                          color:
-                              context.designSystem.colors.pinSuccessBorderColor,
-                        ),
+                      Text(
+                        context.l10n.featureOtp.hint,
+                        style:
+                            TextStyle(color: context.designSystem.colors.gray),
                       ),
-                      const ResendButtonTimer(),
+                      const SizedBox(height: 8),
+                      const SmsCodeField(),
+                      const SizedBox(height: 8),
+                      const ValidityWidget(),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 85,
+                    child: Column(
+                      children: [
+                        ResendCodeButton(
+                          activeStateIcon: Icon(
+                            Icons.send,
+                            color: context.designSystem.colors.primaryColor,
+                          ),
+                          pressedStateIcon: Icon(
+                            Icons.check_circle_outline,
+                            color: context
+                                .designSystem.colors.pinSuccessBorderColor,
+                          ),
+                        ),
+                        const ResendButtonTimer(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
