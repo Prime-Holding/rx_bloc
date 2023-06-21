@@ -23,16 +23,6 @@ class PushNotificationRepository {
   final FirebaseMessaging _firebaseMessaging;
   final ProfileLocalDataSource _localDataSource;
 
-  Future<void> subscribe(String pushToken) => _errorMapper.execute(
-        () => _pushDataSource
-            .subscribePushToken(PushNotificationDataRequestModel(pushToken)),
-      );
-
-  Future<void> unsubscribe(String pushToken) => _errorMapper.execute(
-        () => _pushDataSource
-            .unsubscribePushToken(PushNotificationDataRequestModel(pushToken)),
-      );
-
   // Sends a push notification to the server which will be broadcast to all
   // logged in users.
   Future<void> sendPushMessage({
@@ -73,7 +63,7 @@ class PushNotificationRepository {
   Future<String?> getToken({String? vapidKey}) => _errorMapper
       .execute(() => _firebaseMessaging.getToken(vapidKey: vapidKey));
 
-  Future<void> setNotificationSubscribed(bool subscribed) => _errorMapper
+  Future<void> _setNotificationSubscribed(bool subscribed) => _errorMapper
       .execute(() => _localDataSource.setNotificationsSubscribed(subscribed));
 
   Future<bool> notificationsSubscribed() =>
@@ -82,7 +72,7 @@ class PushNotificationRepository {
   Future<bool> notificationsEnabledUser() =>
       _errorMapper.execute(() => _localDataSource.notificationsEnabled());
 
-  Future<void> setNotificationsEnabledUser(bool enabled) => _errorMapper
+  Future<void> _setNotificationsEnabledUser(bool enabled) => _errorMapper
       .execute(() => _localDataSource.setNotificationsEnabled(enabled));
 
   Future<bool> areNotificationsEnabledDevice() =>
@@ -90,4 +80,34 @@ class PushNotificationRepository {
           (await _firebaseMessaging.getNotificationSettings())
               .authorizationStatus ==
           AuthorizationStatus.authorized);
+
+  Future<bool> areNotificationsEnabled() async =>
+      await notificationsEnabledUser() && await areNotificationsEnabledDevice();
+
+  Future<void> subscribeForPushNotifications() async => await _subscribe();
+
+  Future<void> unsubscribeForPushNotifications(bool setNotifications) async {
+    await _unsubscribe(setNotifications);
+  }
+
+  Future<void> _subscribe() async {
+    await _setNotificationSubscribed(true);
+    await _performAction(_pushDataSource.subscribePushToken);
+    await _setNotificationsEnabledUser(true);
+  }
+
+  Future<void> _unsubscribe(bool setNotifications) async {
+    await _performAction(_pushDataSource.unsubscribePushToken);
+    await _setNotificationSubscribed(setNotifications);
+    await _setNotificationsEnabledUser(setNotifications);
+  }
+
+  Future<void> _performAction(
+      Function(PushNotificationDataRequestModel) action) async {
+    final token = await getToken();
+    if (token != null) {
+      final requestModel = PushNotificationDataRequestModel(token);
+      return await _errorMapper.execute(() => action(requestModel));
+    }
+  }
 }

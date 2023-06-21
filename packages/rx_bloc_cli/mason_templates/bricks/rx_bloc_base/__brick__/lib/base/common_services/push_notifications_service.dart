@@ -1,35 +1,13 @@
 {{> licence.dart }}
 
-import '../../assets.dart';
-import '../models/errors/error_model.dart';
 import '../repositories/push_notification_repository.dart';
 
-class PushNotificationsService {
-  final PushNotificationRepository _pushNotificationRepository;
-
+class PushNotificationsService {  
   PushNotificationsService(
     this._pushNotificationRepository,
   );
+  final PushNotificationRepository _pushNotificationRepository;
 
-  Future<void> unsubscribe([bool setNotifications = false]) async {
-    final token = await _pushNotificationRepository.getToken();
-    if (token == null) {
-      throw ErrorModel();
-    }
-    await _pushNotificationRepository.unsubscribe(token);
-    await _pushNotificationRepository
-        .setNotificationSubscribed(setNotifications);
-    await _pushNotificationRepository
-        .setNotificationsEnabledUser(setNotifications);
-  }
-
-  Future<bool> areNotificationsEnabled() async {
-    final enabled =
-        await _pushNotificationRepository.areNotificationsEnabledDevice();
-    final subscribed =
-        await _pushNotificationRepository.notificationsEnabledUser();
-    return enabled && subscribed;
-  }
 
   Future<void> syncNotificationSettings() async {
     final areNotificationsEnabledDevice =
@@ -52,24 +30,16 @@ class PushNotificationsService {
         : unsubscribe());
   }
 
-  Future<bool> requestNotificationPermissions() =>
-      _pushNotificationRepository.requestNotificationPermissions();
+  Future<bool> requestNotificationPermissions() async =>
+      await _pushNotificationRepository.requestNotificationPermissions();
 
-  Future<bool> isSubscribed() =>
-      _pushNotificationRepository.notificationsSubscribed();
+  Future<void> subscribe() async =>
+      await _pushNotificationRepository.subscribeForPushNotifications();
 
-  Future<void> subscribe() async {
-    if (!(await _pushNotificationRepository.requestNotificationPermissions())) {
-      throw GenericErrorModel(I18nErrorKeys.notificationsDisabledMessage);
-    }
+  Future<void> unsubscribe([bool setNotifications = false]) async =>
+      await _pushNotificationRepository
+          .unsubscribeForPushNotifications(setNotifications);
 
-    final token = await _pushNotificationRepository.getToken();
-
-    if (token == null) {
-      throw GenericErrorModel(I18nErrorKeys.accessDenied);
-    }
-    await _pushNotificationRepository.subscribe(token);
-    await _pushNotificationRepository.setNotificationSubscribed(true);
-    await _pushNotificationRepository.setNotificationsEnabledUser(true);
-  }
+  Future<bool> areNotificationsEnabled() async =>
+      await _pushNotificationRepository.areNotificationsEnabled();
 }
