@@ -212,7 +212,7 @@ packages:
       path: "../../flutter_rx_bloc"
       relative: true
     source: path
-    version: "5.0.2"
+    version: "5.1.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -392,7 +392,7 @@ packages:
       path: "../../rx_bloc"
       relative: true
     source: path
-    version: "4.0.1"
+    version: "4.1.0"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
@@ -407,7 +407,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.2.1"
+    version: "3.3.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -550,5 +550,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=3.0.0-0 <4.0.0"
-  flutter: ">=3.0.0"
+  dart: ">=3.0.5 <4.0.0"
+  flutter: ">=3.10.5"

@@ -1,25 +1,25 @@
 name: rx_bloc
 description: A Flutter package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of reactive streams.
-version: 4.0.1
+version: 4.1.0
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
-  collection: ^1.15.0
-  meta: ^1.7.0
-  rxdart: ^0.27.3
+  collection: ^1.17.1
+  meta: ^1.9.1
+  rxdart: ^0.27.7
 
 dev_dependencies:
   clean_coverage: ^0.0.3
-  coverage: ^1.3.2
+  coverage: ^1.6.3
   flutter_lints: ^2.0.1
-  mockito: ^5.0.17
-  quiver: ^3.0.1
-  test: ^1.18.2
+  mockito: ^5.4.2
+  quiver: ^3.2.1
+  test: ^1.24.1
 
 screenshots:
   - description: "RxBloc Slogan"
