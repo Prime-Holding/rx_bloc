@@ -30,19 +30,20 @@ class PushNotificationRepository {
     String? title,
     int? delay,
     Map<String, Object?>? data,
-    String? pushToken,
-  }) =>
-      _errorMapper.execute(
-        () => _pushDataSource.sendPushMessage(
-          PushMessageRequestModel(
-            message: message,
-            title: title,
-            delay: delay ?? 0,
-            data: data ?? {},
-            pushToken: pushToken,
-          ),
+  }) async {
+    final pushToken = await getToken();
+    return _errorMapper.execute(
+      () => _pushDataSource.sendPushMessage(
+        PushMessageRequestModel(
+          message: message,
+          title: title,
+          delay: delay ?? 0,
+          data: data ?? {},
+          pushToken: pushToken,
         ),
-      );
+      ),
+    );
+  }
 
   // Checks if the user has granted permissions for displaying push messages.
   // If called the very first time, the user is asked to grant permissions.
@@ -84,19 +85,13 @@ class PushNotificationRepository {
   Future<bool> areNotificationsEnabled() async =>
       await notificationsEnabledUser() && await areNotificationsEnabledDevice();
 
-  Future<void> subscribeForPushNotifications() async => await _subscribe();
-
-  Future<void> unsubscribeForPushNotifications(bool setNotifications) async {
-    await _unsubscribe(setNotifications);
-  }
-
-  Future<void> _subscribe() async {
+  Future<void> subscribeForPushNotifications() async {
     await _setNotificationSubscribed(true);
     await _performAction(_pushDataSource.subscribePushToken);
     await _setNotificationsEnabledUser(true);
   }
 
-  Future<void> _unsubscribe(bool setNotifications) async {
+  Future<void> unsubscribeForPushNotifications(bool setNotifications) async {
     await _performAction(_pushDataSource.unsubscribePushToken);
     await _setNotificationSubscribed(setNotifications);
     await _setNotificationsEnabledUser(setNotifications);
