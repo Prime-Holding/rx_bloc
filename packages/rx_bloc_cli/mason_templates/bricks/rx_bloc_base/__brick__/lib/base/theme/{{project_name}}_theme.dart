@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
-import 'package:widget_toolkit/widget_toolkit.dart';
+import 'package:widget_toolkit/widget_toolkit.dart';{{#enable_feature_otp}}
+import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';{{/enable_feature_otp}}
 
 import './design_system.dart';
 import './design_system/design_system_colors.dart';
@@ -43,7 +44,9 @@ class {{project_name.pascalCase()}}Theme {
         isLightTheme ? SearchPickerTheme.light : SearchPickerTheme.dark,
         isLightTheme ? TextFieldDialogTheme.light : TextFieldDialogTheme.dark,
         isLightTheme ? EditAddressTheme.light : EditAddressTheme.dark,
-        isLightTheme ? LanguagePickerTheme.light : LanguagePickerTheme.dark,
+        isLightTheme ? LanguagePickerTheme.light : LanguagePickerTheme.dark,{{#enable_feature_otp}}
+        isLightTheme ? SmsCodeTheme.light : SmsCodeTheme.dark,{{/enable_feature_otp}}
+
       ],
       // Override any material widget themes here if needed.
     );
