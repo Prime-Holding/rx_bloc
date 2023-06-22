@@ -1,0 +1,6 @@
+{
+  "@@locale": "en",
+  "phoneNumber": "Phone Number",
+  "hint": "*hint* The correct code might be 0000",
+  "otpPageTitle": "OTP feature Example"
+}

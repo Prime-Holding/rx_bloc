@@ -47,7 +47,8 @@ class UserAccountBloc extends $UserAccountBloc {
             _userAccountService.logout().then((_) => false).asResultStream())
         .setResultStateHandler(this)
         .whereSuccess()
-        .emitAuthenticatedToCoordinator(_coordinatorBloc)
+        .emitAuthenticatedToCoordinator(_coordinatorBloc){{#enable_feature_otp}}
+        .emitOtpConfirmedToCoordinator(_coordinatorBloc){{/enable_feature_otp}}
         .doOnData((_) => _routerBloc.events.go(const LoginRoute()))
         .listen(null)
         .addTo(_compositeSubscription);
