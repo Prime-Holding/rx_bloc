@@ -11,11 +11,13 @@ class NotificationService {
     required String message,
     String? title,
     int? delay,
+    Map<String, Object?>? data,
   }) =>
       _repository.sendPushMessage(
         message: message,
         title: title,
         delay: delay,
+        data: data,
       );
 
   Future<bool> requestNotificationPermissions() =>

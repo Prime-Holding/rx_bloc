@@ -9,6 +9,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_change_language ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_dev_menu ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/patrol_integration_tests ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_realtime_communication ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_otp ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y feature_counter_bundle.dart lib\src\templates\ ^
@@ -22,6 +23,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y lib_dev_menu.dart lib\src\templates\ ^
 & move /Y lib_change_language_bundle.dart lib\src\templates\ ^
 & move /Y patrol_integration_tests_bundle.dart lib\src\templates\ ^
+& move /Y lib_realtime_communication_bundle.dart lib\src\templates\ ^
 & move /Y feature_otp_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\test_app\ ^
 & dart pub global activate -s path . --overwrite ^
