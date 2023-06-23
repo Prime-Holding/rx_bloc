@@ -34,14 +34,14 @@ class AuthInterceptor extends QueuedInterceptor {
       try {
         _log('Access token expired. Fetching a new one.');
         accessToken = await _accessTokenService.refreshAccessToken();
-      } on DioError catch (error) {
+      } on DioException catch (error) {
         _log('Could not fetch new access token. Logging out.');
         _userAccountBloc.events.logout();
         return handler.reject(error);
       } catch (error) {
         _log('Could not fetch new access token. Logging out.');
         _userAccountBloc.events.logout();
-        return handler.reject(DioError(requestOptions: options));
+        return handler.reject(DioException(requestOptions: options));
       }
     }
 
@@ -56,7 +56,7 @@ class AuthInterceptor extends QueuedInterceptor {
   }
 
   @override
-  Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     final currentAccessToken = await _accessTokenService.getAccessToken();
 
     /// Assuming status code 401 stands for token expired.
@@ -82,10 +82,10 @@ class AuthInterceptor extends QueuedInterceptor {
       try {
         _log('Fetching a new access token.');
         newToken = await _accessTokenService.refreshAccessToken();
-      } on DioError catch (error) {
+      } on DioException catch (error) {
         handler.reject(error);
       } catch (error) {
-        handler.reject(DioError(requestOptions: options));
+        handler.reject(DioException(requestOptions: options));
       }
 
       if (newToken == null) {
