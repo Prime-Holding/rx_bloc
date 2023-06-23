@@ -64,14 +64,12 @@ class _BuildController {
             .toList(),
       ).build().toDartCodeString(),
 
-    // Uncomment to include '_[EventMethodName]EventArgs' typedef for each named record
-    //   // typedef _[EventMethodName]EventArgs
-    //   // ..._eventMethodsArgsClasses(),
-    //   ...eventClass!.methods
-    //       .where((MethodElement method) => method.isUsingRecord)
-    //       .map((MethodElement method) {
-    //     return _EventArgsTypeDef(method).build().toDartCodeString();
-    //   }).toList()
+      // typedef _[EventMethodName]EventArgs
+      ...eventClass!.methods
+          .where((MethodElement method) => method.isUsingRecord)
+          .map((MethodElement method) {
+        return method.argsRecord.typeDef().toDartCodeString();
+      }).toList()
     ].forEach(output.writeln);
 
     return output.toString();

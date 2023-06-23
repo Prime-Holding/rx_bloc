@@ -1,9 +1,5 @@
 part of rx_bloc_generator;
 
-/// Dart emitter instance
-final _emitter =
-    DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true);
-
 /// Supported types of streams
 class _BlocEventStreamTypes {
   /// Constants feel more comfortable than strings
@@ -23,10 +19,12 @@ extension _StringExtensions on String {
 /// It is the main [DartFormatter]
 extension _SpecExtensions on Spec {
   String toDartCodeString() => DartFormatter().format(
-        accept(
-          _emitter,
-        ).toString(),
+        toRawDartCodeString(),
       );
+
+  String toRawDartCodeString() => accept(
+        DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true),
+      ).toString();
 }
 
 extension _StateFieldElement on FieldElement {
@@ -115,7 +113,7 @@ extension _EventMethodElement on MethodElement {
   /// if `fetchNews(int param1, int param2)` -> _FetchNewsEventArgs
   String get publishSubjectGenericType {
     if (isUsingRecord) {
-      return recordType;
+      return argsRecord.recordType().toRawDartCodeString();
     }
     return parameters.isNotEmpty
         // The only parameter's type
@@ -129,7 +127,7 @@ extension _EventMethodElement on MethodElement {
   /// _${EventMethodName}EventName.add(param)
   ///
   /// Example 2:
-  /// _${EventMethodName}EventName.add(_MethodEventArgs(param1, param2))
+  /// _${EventMethodName}EventName.add((param1: param1, param2: param2))
   ///
   Code buildBody() {
     var requiredParams = parameters.whereRequired().clone();
@@ -150,7 +148,7 @@ extension _EventMethodElement on MethodElement {
       return _callStreamAddMethod(refer(optionalParams.first.name));
     }
 
-    return _callStreamAddMethod(recordInstanceWithParameters);
+    return _callStreamAddMethod(argsRecord.newInstanceWithParameters());
   }
 
   /// Example:
@@ -160,34 +158,14 @@ extension _EventMethodElement on MethodElement {
 }
 
 extension _EventMethodNamedRecordArgument on MethodElement {
-  /// Use named record as wrapper when the event's parameters are more than 1
+  /// Indicates if a named record wrapper is generated for the parameters
   bool get isUsingRecord => parameters.length > 1;
 
-  /// The type of record used to wrap the method parameters
-  ///
-  ///   Example:
-  ///   `BehaviorSubject<({int x, int y})>()`
-  String get recordType {
+  /// A named record wrapper for the method's parameters
+  _EventArgsRecord get argsRecord {
     assert(isUsingRecord);
-    final entries = parameters.map((p) {
-      return MapEntry(p.name, refer(p.getTypeDisplayName()));
-    });
-    final record = RecordType((b) => b..namedFieldTypes.addEntries(entries));
-    return record.accept(_emitter).toString();
+    return _EventArgsRecord(this);
   }
-
-  /// The record instance with parameter values
-  /// passed to the stream's `add` method
-  ///
-  ///   Example:
-  ///   `_$generatedSubject.add((x: x, y: y))`
-  CodeExpression get recordInstanceWithParameters {
-    assert(isUsingRecord);
-    final pairs = parameters.map((p) => '${p.name}: ${p.name}').join(', ');
-    return CodeExpression(Code('($pairs,)'));
-  }
-
-  String get recordTypeDefName => '_${name.capitalize()}EventArgs';
 }
 
 extension _ListParameterElementWhere on List<ParameterElement> {

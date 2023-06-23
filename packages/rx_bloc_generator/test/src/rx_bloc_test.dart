@@ -434,6 +434,73 @@ abstract class $CounterBloc extends RxBlocBase
     super.dispose();
   }
 }
+
+// ignore: unused_element
+typedef _WithPositionalAndOptionalEventArgs = ({int pp, int? op});
+
+// ignore: unused_element
+typedef _WithPositionalAndNamedEventArgs = ({int pp, int np});
+
+// ignore: unused_element
+typedef _WithPositionalAndOptionalDefaultParamEventArgs = ({int pp, int op});
+
+// ignore: unused_element
+typedef _WithPositionalAndNamedDefaultParamEventArgs = ({int pp, int np});
+
+// ignore: unused_element
+typedef _With2PositionalEventArgs = ({int pp1, int pp2});
+
+// ignore: unused_element
+typedef _With2OptionalEventArgs = ({int? op1, int? op2});
+
+// ignore: unused_element
+typedef _With2NamedEventArgs = ({int np1, int np2});
+
+// ignore: unused_element
+typedef _With2OptionalDefaultEventArgs = ({int op1, int op2});
+
+// ignore: unused_element
+typedef _With2NamedDefaultEventArgs = ({int np1, int np2});
+
+// ignore: unused_element
+typedef _With2PositionalAndOptionalEventArgs = ({int pp1, int pp2, int? op1});
+
+// ignore: unused_element
+typedef _With2PositionalAndNamedEventArgs = ({int pp1, int pp2, int np1});
+
+// ignore: unused_element
+typedef _WithPositionalAnd2OptionalEventArgs = ({int pp, int? op1, int? op2});
+
+// ignore: unused_element
+typedef _WithPositionalAnd2NamedEventArgs = ({int pp, int? np1, int? np2});
+
+// ignore: unused_element
+typedef _WithPositionalAnd1Named1RequiredEventArgs = ({
+  int pp,
+  int? np1,
+  int np2
+});
+
+// ignore: unused_element
+typedef _WithTwoNamedRequiredEventArgs = ({int nr, bool nr2});
+
+// ignore: unused_element
+typedef _WithAnnotationAnd2PositionalEventArgs = ({int pp1, int pp2});
+
+// ignore: unused_element
+typedef _WithSeededPositionalAndOptionalEventArgs = ({int pp, int? op});
+
+// ignore: unused_element
+typedef _WithSeededTwoPositionalOptionalDefaultNullEventArgs = ({
+  int? p1,
+  int? p2
+});
+
+// ignore: unused_element
+typedef _WithSeededTwoPositionalOptionalEventArgs = ({int? p1, int? p2});
+
+// ignore: unused_element
+typedef _WithSeeded2PositionalEnumEventArgs = ({int pp1, TestEnumParam pp2});
 ''')
 @RxBloc()
 class CounterBloc {}
