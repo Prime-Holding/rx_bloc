@@ -22,7 +22,7 @@ part 'src/builders/bloc_type_class.dart';
 part 'src/builders/builder_contract.dart';
 part 'src/builders/composition_field.dart';
 part 'src/builders/dispose_method.dart';
-part 'src/builders/event_arguments_class.dart';
+part 'src/builders/event_args_typedef.dart';
 part 'src/builders/event_field.dart';
 part 'src/builders/event_method.dart';
 part 'src/builders/state_field.dart';

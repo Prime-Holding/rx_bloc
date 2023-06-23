@@ -1,5 +1,9 @@
 part of rx_bloc_generator;
 
+/// Dart emitter instance
+final _emitter =
+    DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true);
+
 /// Supported types of streams
 class _BlocEventStreamTypes {
   /// Constants feel more comfortable than strings
@@ -20,7 +24,7 @@ extension _StringExtensions on String {
 extension _SpecExtensions on Spec {
   String toDartCodeString() => DartFormatter().format(
         accept(
-          DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true),
+          _emitter,
         ).toString(),
       );
 }
@@ -34,10 +38,6 @@ extension _StateFieldElement on FieldElement {
 extension _EventMethodElement on MethodElement {
   /// The event field name in the generated file
   String get eventFieldName => '_\$${name}Event';
-
-  /// The name of the arguments class that will be generated if
-  /// the event contains more than one parameter
-  String get eventArgumentsClassName => '_${name.capitalize()}EventArgs';
 
   /// Is the the [RxBlocEvent.seed] annotation is provided
   bool get hasSeedAnnotation => RegExp(r'(?<=seed: ).*(?=\)|,)')
@@ -77,7 +77,7 @@ extension _EventMethodElement on MethodElement {
     var seedArguments = seedArgumentsMatch.toString();
     return refer(
       // ignore: lines_longer_than_80_chars
-      '${isUsingArgumentClass && !seedArguments.contains('(const') ? 'const ' : ''}'
+      '${isUsingRecord && !seedArguments.contains('(const') ? 'const ' : ''}'
       '${seedArguments.substring(1, seedArguments.length - 1)}',
     );
   }
@@ -108,17 +108,14 @@ extension _EventMethodElement on MethodElement {
   bool get isBehavior =>
       _computedRxBlocEventAnnotation.toString().contains('behaviour');
 
-  /// Use argument class when the event's parameters are more than 1
-  bool get isUsingArgumentClass => parameters.length > 1;
-
   /// Provides the stream type based on the number of the parameters
   /// Example:
   /// if `fetchNews(int param)` then -> int
   /// if `fetchNews(String param)` then -> String
   /// if `fetchNews(int param1, int param2)` -> _FetchNewsEventArgs
   String get publishSubjectGenericType {
-    if (isUsingArgumentClass) {
-      return eventArgumentsClassName;
+    if (isUsingRecord) {
+      return recordType;
     }
     return parameters.isNotEmpty
         // The only parameter's type
@@ -153,39 +150,44 @@ extension _EventMethodElement on MethodElement {
       return _callStreamAddMethod(refer(optionalParams.first.name));
     }
 
-    return _callStreamAddMethod(
-      refer('_${name.capitalize()}EventArgs').newInstance(
-        _positionalArguments,
-        _namedArguments,
-      ),
-    );
+    return _callStreamAddMethod(recordInstanceWithParameters);
   }
 
   /// Example:
   /// _${methodName}Event.add()
   Code _callStreamAddMethod(Expression argument) =>
       refer('$eventFieldName.add').call([argument]).code;
+}
 
-  /// Provides the event's positional arguments as a [Map] of [Expression]
-  List<Expression> get _positionalArguments => parameters
-      .where((ParameterElement parameter) => parameter.isPositional)
-      .map(
-        (ParameterElement parameter) => refer(parameter.name),
-      )
-      .toList();
+extension _EventMethodNamedRecordArgument on MethodElement {
+  /// Use named record as wrapper when the event's parameters are more than 1
+  bool get isUsingRecord => parameters.length > 1;
 
-  /// Provides the event's name arguments as a [Map] of [Expression]
-  Map<String, Expression> get _namedArguments {
-    var params = parameters.clone();
-
-    // Only named are not positional parameters
-    var namedArguments = <String, Expression>{};
-    for (var param in params.where((Parameter param) => param.named)) {
-      namedArguments[param.name] = refer(param.name);
-    }
-    // For methods with more than 1 parameters provide the new param class
-    return namedArguments;
+  /// The type of record used to wrap the method parameters
+  ///
+  ///   Example:
+  ///   `BehaviorSubject<({int x, int y})>()`
+  String get recordType {
+    assert(isUsingRecord);
+    final entries = parameters.map((p) {
+      return MapEntry(p.name, refer(p.getTypeDisplayName()));
+    });
+    final record = RecordType((b) => b..namedFieldTypes.addEntries(entries));
+    return record.accept(_emitter).toString();
   }
+
+  /// The record instance with parameter values
+  /// passed to the stream's `add` method
+  ///
+  ///   Example:
+  ///   `_$generatedSubject.add((x: x, y: y))`
+  CodeExpression get recordInstanceWithParameters {
+    assert(isUsingRecord);
+    final pairs = parameters.map((p) => '${p.name}: ${p.name}').join(', ');
+    return CodeExpression(Code('($pairs,)'));
+  }
+
+  String get recordTypeDefName => '_${name.capitalize()}EventArgs';
 }
 
 extension _ListParameterElementWhere on List<ParameterElement> {
