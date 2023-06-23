@@ -1,9 +1,9 @@
 part of 'error_mapper.dart';
 
-extension _DioErrorMapper on DioError {
+extension _DioErrorMapper on DioException {
   static const String kConnectionRefusedError = 'Connection refused';
   ErrorModel asErrorModel() {
-    if (type == DioErrorType.badResponse && response != null) {
+    if (type == DioExceptionType.badResponse && response != null) {
       if (response!.statusCode == 500) {
         try {
           // TODO: create error model from response
@@ -29,7 +29,7 @@ extension _DioErrorMapper on DioError {
       }
     }
 
-    if (type == DioErrorType.unknown && error is SocketException) {
+    if (type == DioExceptionType.unknown && error is SocketException) {
       final errorCode = (error as SocketException).osError?.errorCode;
       if (errorCode == 101) {
         return NoConnectionErrorModel();
