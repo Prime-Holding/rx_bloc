@@ -31,9 +31,9 @@ dependencies:
   http: ^0.13.5 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.7.0
-  jwt_decoder: ^2.0.1
-  provider: ^6.0.3{{#enable_feature_otp}}
+  jwt_decoder: ^2.0.1{{#enable_feature_otp}}
   pinput: ^2.2.31{{/enable_feature_otp}}
+  provider: ^6.0.3
   retrofit: ^4.0.1
   rx_bloc: ^4.0.0
   rx_bloc_list: ^3.2.1
