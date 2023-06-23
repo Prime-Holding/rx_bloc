@@ -24,7 +24,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  rx_bloc_generator: any
+  rx_bloc_generator: ^6.1.0
 
 flutter:
   uses-material-design: true
