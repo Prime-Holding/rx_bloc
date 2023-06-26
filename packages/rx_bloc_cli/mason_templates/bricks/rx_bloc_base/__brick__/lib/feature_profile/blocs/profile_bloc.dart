@@ -14,8 +14,6 @@ abstract class ProfileBlocEvents {
   void setNotifications(bool enabled);
 
   void loadNotificationsSettings();
-
-  void requestNotificationPermissions();
 }
 
 /// A contract class containing all states of the ProfileBloC.

@@ -86,9 +86,14 @@ class PushNotificationRepository {
       await notificationsEnabledUser() && await areNotificationsEnabledDevice();
 
   Future<void> subscribeForPushNotifications() async {
-    await _setNotificationSubscribed(true);
-    await _performAction(_pushDataSource.subscribePushToken);
-    await _setNotificationsEnabledUser(true);
+    final deviceNotificationsEnabled = await areNotificationsEnabled();
+    if (deviceNotificationsEnabled) {
+      await _setNotificationSubscribed(true);
+      await _performAction(_pushDataSource.subscribePushToken);
+      await _setNotificationsEnabledUser(true);
+    } else {
+      throw GenericErrorModel(I18nErrorKeys.notificationsDisabledMessage);
+    }
   }
 
   Future<void> unsubscribeForPushNotifications(bool setNotifications) async {

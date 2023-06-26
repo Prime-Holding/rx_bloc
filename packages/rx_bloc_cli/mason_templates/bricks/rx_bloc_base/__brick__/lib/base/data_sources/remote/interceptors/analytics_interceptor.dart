@@ -17,7 +17,7 @@ class AnalyticsInterceptor extends Interceptor {
   final FirebaseAnalyticsObserver observer;
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     final hasResponse = err.response != null;
     observer.analytics.logEvent(name: 'RequestError', parameters: {
       'errorType': err.type.toString(),

@@ -1,3 +1,6 @@
+{{> licence.dart }}
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 extension SetupProxy on HttpClientAdapter {
   Future<void> setupProxy() async {
     String proxy = (await _instance).getString('dev_menu_http_proxy') ?? '';
-    (this as IOHttpClientAdapter).onHttpClientCreate = (client) {
+    (this as IOHttpClientAdapter).createHttpClient = () {
+      final client = HttpClient();
       if (proxy.isNotEmpty) {
         client.findProxy = ((uri) {
           return 'PROXY $proxy:8888';
