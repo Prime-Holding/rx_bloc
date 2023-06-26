@@ -32,8 +32,11 @@ import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
+import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
+import '../common_services/push_notifications_service.dart';
+import '../data_sources/local/profile_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
@@ -193,6 +196,10 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),{{/enable_change_language}}
+        Provider<ProfileLocalDataSource>(
+          create: (context) =>
+              ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+        ),
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -206,6 +213,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ),{{/has_authentication}}
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),
@@ -280,6 +288,11 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             languageRepository: context.read<LanguageRepository>(),
           ),
         ), {{/enable_change_language}}
+        Provider<PushNotificationsService>(
+          create: (context) => PushNotificationsService(
+            context.read(),
+          ),
+        ),
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -302,5 +315,10 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             languageService: context.read<AppLanguageService>(),
           ),
         ), {{/enable_change_language}}
+        RxBlocProvider<PushNotificationsBlocType>(
+          create: (context) => PushNotificationsBloc(
+            context.read(),
+          ),
+        ),
       ];
 }

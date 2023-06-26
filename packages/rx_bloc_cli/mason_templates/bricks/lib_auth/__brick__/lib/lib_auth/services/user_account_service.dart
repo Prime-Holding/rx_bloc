@@ -3,7 +3,6 @@
 import 'dart:developer';
 
 import '../../assets.dart';
-import '../../base/app/config/app_constants.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/repositories/push_notification_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
@@ -60,10 +59,11 @@ class UserAccountService {
   /// Subscribe user push token
   Future<void> subscribeForNotifications({bool graceful = true}) async {
     try {
-      final pushToken =
-          await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
-      if (pushToken != null) {
-        await _pushSubscriptionRepository.subscribe(pushToken);
+      final notificationsSubscribed =
+          await _pushSubscriptionRepository.notificationsSubscribed();
+
+      if (notificationsSubscribed == true) {
+        await _pushSubscriptionRepository.subscribeForPushNotifications();
       }
     } catch (e) {
       if (!graceful) {
@@ -92,13 +92,9 @@ class UserAccountService {
     if (!_logoutLocked) {
       _logoutLocked = true;
 
-      /// Unsubscribe user push token
+      // Perform unsubscribe for remote notifications
       try {
-        final pushToken =
-            await _pushSubscriptionRepository.getToken(vapidKey: webVapidKey);
-        if (pushToken != null) {
-          await _pushSubscriptionRepository.unsubscribe(pushToken);
-        }
+        await _pushSubscriptionRepository.unsubscribeForPushNotifications(true);
       } catch (e) {
         log(e.toString());
       }

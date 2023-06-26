@@ -13,7 +13,8 @@ abstract class NotificationsBlocEvents {
   void requestNotificationPermissions();
 
   /// Issues a new push message
-  void sendMessage(String message, {String? title, int? delay});
+  void sendMessage(String message,
+      {String? title, int? delay, Map<String, Object?>? data});
 }
 
 /// A contract class containing all states of the NotificationsBloC.
@@ -36,6 +37,7 @@ class NotificationsBloc extends $NotificationsBloc {
                 message: args.message,
                 title: args.title,
                 delay: args.delay,
+                data: args.data,
               )
               .then((_) => true)
               .asResultStream(),

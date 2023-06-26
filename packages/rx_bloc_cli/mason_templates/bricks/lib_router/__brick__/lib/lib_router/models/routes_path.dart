@@ -5,7 +5,8 @@ class RoutesPath {
   static const profile = '/profile';
   static const splash = '/splash';{{#enable_feature_counter}}
   static const counter = '/counter';{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
-  static const widgetToolkit = '/widget-toolkit';{{/enable_feature_widget_toolkit}}
+  static const widgetToolkit = '/widget-toolkit';{{/enable_feature_widget_toolkit}}{{#enable_feature_otp}}
+  static const otpRoute = '/otp-screen';{{/enable_feature_otp}}
   static const notifications = 'notifications';{{#has_authentication}}
   static const login = '/login';{{/has_authentication}}{{#enable_feature_deeplinks}}
   static const enterMessage = 'enterMessage';

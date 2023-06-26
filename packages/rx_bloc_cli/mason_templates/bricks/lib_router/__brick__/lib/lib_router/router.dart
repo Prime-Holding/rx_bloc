@@ -16,7 +16,8 @@ import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/ena
 import '../feature_home/views/home_page.dart';{{#has_authentication}}{{#enable_login}}
 import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}{{^enable_login}}
 import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}
-import '../feature_notifications/di/notifications_page_with_dependencies.dart';
+import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
+import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
@@ -51,7 +52,8 @@ class AppRouter {
   final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
-      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated);
+      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
+{{#enable_feature_otp}}coordinatorBloc.states.isOtpConfirmed {{/enable_feature_otp}});
 
   GoRouter get router => _goRouter;
 
@@ -69,7 +71,8 @@ class AppRouter {
 
   List<RouteBase> _appRoutesList() => [
         $splashRoute,{{#has_authentication}}
-        $loginRoute,{{/has_authentication}}
+        $loginRoute,{{/has_authentication}}{{#enable_feature_otp}}
+        $otpRoute,{{/enable_feature_otp}}
         ShellRoute(
             navigatorKey: shellNavigatorKey,
             builder: (context, state, child) => HomePage(
@@ -92,10 +95,23 @@ class AppRouter {
     if (_refreshListener.isLoggedIn && state.queryParameters['from'] != null) {
       return state.queryParameters['from'];
     }
+    {{^enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
       return const DashboardRoute().location;
-    }{{/has_authentication}}
+    }{{/enable_feature_otp}}
+ 
+    {{#enable_feature_otp}}
+    if (_refreshListener.isLoggedIn &&
+        state.matchedLocation == const LoginRoute().location) {
+      return const OtpRoute().location;
+    }
+    if (_refreshListener.isLoggedIn &&
+        _refreshListener.isOtpConfirmed &&
+        state.matchedLocation == const OtpRoute().location) {
+      return const DashboardRoute().location;
+    }
+    {{/enable_feature_otp}}{{/has_authentication}}
     if (state.matchedLocation == const SplashRoute().location) {
       return null;
     }
@@ -126,23 +142,33 @@ class AppRouter {
     return null;
   }
 }
-
 class _GoRouterRefreshStream extends ChangeNotifier {
-  _GoRouterRefreshStream(Stream<bool> stream) {
-    _subscription = stream.listen(
-      (bool isLoggedIn) {
-        this.isLoggedIn = isLoggedIn;
+  _GoRouterRefreshStream(Stream<bool> stream,
+{{#enable_feature_otp}} Stream<bool> streamOTP{{/enable_feature_otp}}) {
+    _subscription =
+      stream.listen(
+        (bool isLoggedIn) {
+          this.isLoggedIn = isLoggedIn;
+          notifyListeners();
+        },
+      );
+{{#enable_feature_otp}}
+     _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
+        this.isOtpConfirmed = isOtpConfirmed;
         notifyListeners();
-      },
-    );
+      });{{/enable_feature_otp}}
   }
 
-  late final StreamSubscription<bool> _subscription;
+  late final StreamSubscription<bool> _subscription;{{#enable_feature_otp}}
+  late final StreamSubscription<bool> _subscriptionOtp; {{/enable_feature_otp}}
   late bool isLoggedIn = false;
-
+  {{#enable_feature_otp}}
+  late bool isOtpConfirmed = false;{{/enable_feature_otp}}
   @override
   void dispose() {
-    _subscription.cancel();
+
+    _subscription.cancel();{{#enable_feature_otp}}
+    _subscriptionOtp.cancel();{{/enable_feature_otp}}
     super.dispose();
   }
 }
