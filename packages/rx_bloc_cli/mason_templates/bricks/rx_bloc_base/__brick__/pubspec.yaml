@@ -11,7 +11,7 @@ dependencies:
   alice: ^0.3.2 {{/enable_dev_menu}}
   collection: ^1.16.0
   cupertino_icons: ^1.0.5
-  dio: ^5.1.2
+  dio: ^5.2.1+1
   equatable: ^2.0.5{{#analytics}}
   firebase_analytics: ^10.0.6{{/analytics}}{{#uses_firebase}}
   firebase_core: ^2.3.0{{/uses_firebase}}{{#push_notifications}}

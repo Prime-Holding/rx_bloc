@@ -2,12 +2,11 @@
 
 import '../repositories/push_notification_repository.dart';
 
-class PushNotificationsService {  
+class PushNotificationsService {
   PushNotificationsService(
     this._pushNotificationRepository,
   );
   final PushNotificationRepository _pushNotificationRepository;
-
 
   Future<void> syncNotificationSettings() async {
     final areNotificationsEnabledDevice =
@@ -29,9 +28,6 @@ class PushNotificationsService {
         ? subscribe()
         : unsubscribe());
   }
-
-  Future<bool> requestNotificationPermissions() async =>
-      await _pushNotificationRepository.requestNotificationPermissions();
 
   Future<void> subscribe() async =>
       await _pushNotificationRepository.subscribeForPushNotifications();
