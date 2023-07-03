@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'build_app.dart';
+
 class ConfigParams {
   const ConfigParams();
 
@@ -7,7 +9,7 @@ class ConfigParams {
   static const generalExistsTimeout = Duration(seconds: 10);
   static const generalVisibleTimeout = Duration(seconds: 10);
   static const generalSettleTimeout = Duration(seconds: 10);
-  static const generalAndSettle = true;
+  static const settlePolicy = SettlePolicy.settle;
 
   ///General NativeAutomatorConfig parameters
   static const generalConnectionTimeout = Duration(seconds: 60);

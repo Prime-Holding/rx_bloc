@@ -25,6 +25,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final list = navItemsList(context);
     GoRouter router = GoRouter.of(context);
+    GoRouterState routerState = GoRouterState.of(context);
     return Scaffold(
       body: RxBlocListener<RouterBlocType, ErrorModel>(
         state: (bloc) => bloc.states.errors,
@@ -34,7 +35,7 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         key: K.bottomNavigationBar,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _getCurrentIndex(list, router),
+        currentIndex: _getCurrentIndex(list, router, routerState),
         onTap: (index) =>
             context.read<RouterBlocType>().events.go(list[index].route),
         items: list
@@ -49,10 +50,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  int _getCurrentIndex(List<NavMenuItem> list, GoRouter router) {
+  int _getCurrentIndex(
+      List<NavMenuItem> list, GoRouter router, GoRouterState goRouterState) {
     var index = list.indexWhere((item) {
-      final routePath =
-          router.routeInformationParser.matcher.findMatch(router.location);
+      final routePath = router.routeInformationParser.configuration
+          .findMatch(goRouterState.location);
       return routePath.fullPath.startsWith(item.routePath);
     });
     return index.isNegative ? 0 : index;

@@ -74,7 +74,8 @@ android {
             versionNameSuffix ""{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
             resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol}}
-            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol}}
+            testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
+            testInstrumentationRunnerArguments clearPackageData: "true" {{/enable_patrol}}
         }
         staging {
             dimension "default"
@@ -82,7 +83,8 @@ android {
             versionNameSuffix "-stag"{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
             resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol}}
-            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol}}
+            testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
+            testInstrumentationRunnerArguments clearPackageData: "true" {{/enable_patrol}}
         }        
         development {
             dimension "default"
@@ -90,7 +92,8 @@ android {
             versionNameSuffix "-dev"{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
             resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}} {{#enable_patrol}}
-            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" {{/enable_patrol}}
+            testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
+            testInstrumentationRunnerArguments clearPackageData: "true" {{/enable_patrol}}
         }
     }
 
@@ -104,6 +107,10 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    {{#enable_patrol}}
+    testOptions {
+    execution "ANDROIDX_TEST_ORCHESTRATOR"
+    }{{/enable_patrol}}
 }
 
 flutter {
@@ -114,5 +121,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"{{#analytics}}
     implementation platform('com.google.firebase:firebase-bom:27.0.0')
     implementation 'com.google.firebase:firebase-analytics'{{/analytics}}{{#enable_patrol}}
-    testImplementation "junit:junit:4.13.2"{{/enable_patrol}}
+    androidTestUtil "androidx.test:orchestrator:1.4.2"{{/enable_patrol}}
 }

@@ -11,11 +11,11 @@ environment:
 dependencies:
   args: ^2.4.2
   flutter_lints: ^2.0.2
-  mason: ^0.1.0-dev.49
+  mason: ^0.1.0-dev.50
   path: ^1.8.3
 
 dev_dependencies:
-  mason_cli: ^0.1.0-dev.50
+  mason_cli: ^0.1.0-dev.51
 
 dependency_overrides:
   pub_semver: ^2.1.4 
