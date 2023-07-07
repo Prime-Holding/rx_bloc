@@ -30,9 +30,10 @@ class NotificationModel with EquatableMixin {
 }
 
 enum NotificationModelType {
+  {{#enable_feature_profile}}
   @JsonValue('Profile')
   profile,
-
+  {{/enable_feature_profile}}
   @JsonValue('Dashboard')
   dashboard,
 }

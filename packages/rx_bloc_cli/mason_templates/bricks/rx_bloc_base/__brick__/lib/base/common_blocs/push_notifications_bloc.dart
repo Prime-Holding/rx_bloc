@@ -31,8 +31,10 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
     switch (event.type) {
       case NotificationModelType.dashboard:
         return _routerBloc.events.go(const DashboardRoute());
+    {{#enable_feature_profile}}
       case NotificationModelType.profile:
         return _routerBloc.events.go(const ProfileRoute());
+    {{/enable_feature_profile}}
       default:
         null;
     }

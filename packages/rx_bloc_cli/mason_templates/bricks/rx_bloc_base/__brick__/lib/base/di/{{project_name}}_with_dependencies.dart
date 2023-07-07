@@ -35,8 +35,8 @@ import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
-import '../common_services/push_notifications_service.dart';
-import '../data_sources/local/profile_local_data_source.dart';
+import '../common_services/push_notifications_service.dart';{{#enable_feature_profile}}
+import '../data_sources/local/profile_local_data_source.dart';{{/enable_feature_profile}}
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
@@ -196,10 +196,12 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),{{/enable_change_language}}
+        {{#enable_feature_profile}}
         Provider<ProfileLocalDataSource>(
           create: (context) =>
               ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
         ),
+        {{/enable_feature_profile}}
       ];
 
   List<Provider> get _repositories => [

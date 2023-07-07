@@ -19,7 +19,7 @@ dependencies:
   flutter:
     sdk: flutter{{#enable_social_logins}}
   flutter_facebook_auth: ^5.0.8{{/enable_social_logins}}
-  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications: ^14.1.1
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^5.0.2
@@ -104,8 +104,8 @@ r_flutter:
     - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}
     - name: feature_login
-    - name: feature_notifications
-    - name: feature_profile{{#enable_feature_widget_toolkit}}
+    - name: feature_notifications{{#enable_feature_profile}}
+    - name: feature_profile{{/enable_feature_profile}}{{#enable_feature_widget_toolkit}}
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field
     - name: lib_router{{#enable_change_language}}

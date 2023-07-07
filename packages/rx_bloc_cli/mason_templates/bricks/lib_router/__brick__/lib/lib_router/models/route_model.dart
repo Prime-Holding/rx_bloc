@@ -8,12 +8,12 @@ enum RouteModel {
     pathName: RoutesPath.dashboard,
     fullPath: '/dashboard',
     permissionName: RoutePermissions.dashboard,
-  ),
+  ),{{#enable_feature_profile}}
   profile(
     pathName: RoutesPath.profile,
     fullPath: '/profile',
     permissionName: RoutePermissions.profile,
-  ),
+  ),{{/enable_feature_profile}}
   splash(
     pathName: RoutesPath.splash,
     fullPath: '/splash',
@@ -28,12 +28,12 @@ enum RouteModel {
     pathName: RoutesPath.widgetToolkit,
     fullPath: '/widget-toolkit',
     permissionName: RoutePermissions.widgetToolkit,
-  ),{{/enable_feature_widget_toolkit}}
+  ),{{/enable_feature_widget_toolkit}}{{#enable_feature_profile}}
   notifications(
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',
     permissionName: RoutePermissions.notifications,
-  ),
+  ),{{/enable_feature_profile}}
   login(
     pathName: RoutesPath.login,
     fullPath: '/login',

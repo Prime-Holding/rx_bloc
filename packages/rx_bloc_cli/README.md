@@ -33,6 +33,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--realtime-communication`        |                   `none`                    |           Enables realtime communication facilities for SSE. Values: none, sse.           |
 | `--enable-dev-menu`               |                   `true`                    |                Enables dev menu to easily access proxy debugging services.                |
 | `--enable-otp`                    |                   `false`                   |          Enables OTP feature that can help with building sms/pin code workflows.          |
+| `--enable-profile`                |                   `true`                    |                        Add profile feature to the base application                        |
 
 
 ### What's Included? 📦

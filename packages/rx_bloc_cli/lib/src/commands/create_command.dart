@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/templates/feature_profile_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
@@ -102,6 +103,12 @@ class CreateCommand extends Command<int> {
             'or gRPC',
         allowed: ['none', 'sse'],
         defaultsTo: 'none',
+      )
+      ..addOption(
+        _featureProfileString,
+        help: 'Enables profile feature for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'true',
       );
   }
 
@@ -119,6 +126,7 @@ class CreateCommand extends Command<int> {
   final _patrolTestsString = 'enable-patrol';
   final _realtimeCommunicationString = 'realtime-communication';
   final _otpFeatureString = 'enable-otp';
+  final _featureProfileString = 'enable-profile';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -133,6 +141,7 @@ class CreateCommand extends Command<int> {
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
+  final _featureProfileBundle = featureProfileBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -275,6 +284,10 @@ class CreateCommand extends Command<int> {
     if (arguments.enableOtpFeature) {
       _bundle.files.addAll(_featureOtpBundle.files);
     }
+    // Add feature profile brick _bundle when needed
+    if (arguments.enableProfileFeature) {
+      _bundle.files.addAll(_featureProfileBundle.files);
+    }
 
     //Add lib_route to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
@@ -305,6 +318,7 @@ class CreateCommand extends Command<int> {
         'enable_patrol': arguments.enablePatrolTests,
         'realtime_communication': arguments.realtimeCommunicationType !=
             _RealtimeCommunicationType.none,
+        'enable_feature_profile': arguments.enableProfileFeature,
       },
     );
 
@@ -337,6 +351,7 @@ class CreateCommand extends Command<int> {
       enableOtpFeature: _parseEnableOtpFeature(arguments),
       enablePatrolTests: _parseEnablePatrolTests(arguments),
       realtimeCommunicationType: _parseRealtimeCommunicationType(arguments),
+      enableProfileFeature: _parseEnableProfileFeature(arguments),
     );
   }
 
@@ -413,6 +428,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableOtpFeature(ArgResults arguments) {
     final otpFeatureEnabled = arguments[_otpFeatureString];
     return otpFeatureEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with profile feature
+  bool _parseEnableProfileFeature(ArgResults arguments) {
+    final featureProfileEnabled = arguments[_featureProfileString];
+    return featureProfileEnabled.toLowerCase() == 'true';
   }
 
   _RealtimeCommunicationType _parseRealtimeCommunicationType(arguments) {
@@ -522,6 +543,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Patrol integration tests', arguments.enablePatrolTests);
     _usingLog('Realtime communication',
         arguments.realtimeCommunicationType != _RealtimeCommunicationType.none);
+    _usingLog('Feature Profile', arguments.enableProfileFeature);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -555,6 +577,7 @@ class _CreateCommandArguments {
     required this.enableOtpFeature,
     required this.enablePatrolTests,
     required this.realtimeCommunicationType,
+    required this.enableProfileFeature,
   });
 
   final String projectName;
@@ -570,6 +593,10 @@ class _CreateCommandArguments {
   final bool enableOtpFeature;
   final bool enablePatrolTests;
   final _RealtimeCommunicationType realtimeCommunicationType;
+  final bool enableProfileFeature;
+
+  bool get hasProfile =>
+      enableProfileFeature || enableSocialLogins || enableChangeLanguage;
 }
 
 enum _RealtimeCommunicationType { none, sse, websocket, grpc }

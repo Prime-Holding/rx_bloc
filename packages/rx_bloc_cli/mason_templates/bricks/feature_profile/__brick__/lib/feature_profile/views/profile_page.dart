@@ -8,10 +8,10 @@ import 'package:widget_toolkit/models.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/app_error_modal_widget.dart';{{#enable_change_language}}
+import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
-import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}
+import '../../lib_change_language/ui_components/language_picker_button.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/profile_bloc.dart';

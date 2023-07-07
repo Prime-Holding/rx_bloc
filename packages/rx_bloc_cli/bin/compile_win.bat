@@ -11,6 +11,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/patrol_integration_tests ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_realtime_communication ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_otp ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_profile ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y feature_counter_bundle.dart lib\src\templates\ ^
 & move /Y feature_deeplink_bundle.dart lib\src\templates\ ^
@@ -25,6 +26,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y patrol_integration_tests_bundle.dart lib\src\templates\ ^
 & move /Y lib_realtime_communication_bundle.dart lib\src\templates\ ^
 & move /Y feature_otp_bundle.dart lib\src\templates\ ^
+& move /Y feature_profile_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\test_app\ ^
 & dart pub global activate -s path . --overwrite ^
 & rx_bloc_cli create ^
@@ -40,5 +42,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-patrol true ^
 --realtime-communication sse ^
 --enable-otp true ^
+--enable-profile true ^
 example/test_app ^
 & cd example/test_app

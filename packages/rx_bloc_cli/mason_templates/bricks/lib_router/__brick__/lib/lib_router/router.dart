@@ -14,10 +14,10 @@ import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
 import '../feature_home/views/home_page.dart';
-import '../feature_login/di/login_page_with_dependencies.dart';
-import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
-import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
-import '../feature_profile/di/profile_page_with_dependencies.dart';
+import '../feature_login/di/login_page_with_dependencies.dart';{{#enable_feature_profile}}
+import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{/enable_feature_profile}}{{#enable_feature_otp}}
+import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_feature_profile}}
+import '../feature_profile/di/profile_page_with_dependencies.dart';{{/enable_feature_profile}}
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
 import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}
@@ -28,8 +28,8 @@ import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart';
-part 'routes/onboarding_routes.dart';
-part 'routes/profile_routes.dart';
+part 'routes/onboarding_routes.dart';{{#enable_feature_profile}}
+part 'routes/profile_routes.dart';{{/enable_feature_profile}}
 part 'routes/routes.dart';
 part 'routes/showcase_routes.dart';
 
@@ -81,8 +81,8 @@ class AppRouter {
               $dashboardRoute,{{#enable_feature_counter}}
               $counterRoute,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
               $widgetToolkitRoute,{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
-              $deepLinksRoute,{{/enable_feature_deeplinks}}
-              $profileRoute,
+              $deepLinksRoute,{{/enable_feature_deeplinks}}{{#enable_feature_profile}}
+              $profileRoute,{{/enable_feature_profile}}
             ]),
       ];
 
