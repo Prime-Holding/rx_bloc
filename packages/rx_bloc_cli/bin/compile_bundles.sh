@@ -66,3 +66,8 @@ dart run mason_cli:mason bundle \
   -o lib/src/templates/ \
   mason_templates/bricks/feature_otp
 
+dart run mason_cli:mason bundle \
+  -t dart \
+  -o lib/src/templates/ \
+  mason_templates/bricks/feature_profile
+

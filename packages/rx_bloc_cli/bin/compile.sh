@@ -15,6 +15,7 @@ dart run rx_bloc_cli create \
   --enable-patrol=true \
   --realtime-communication=sse \
   --enable-otp=true \
+  --enable-profile=true \
   example/test_app
 
 # Copy the readme file one level up so that it is visible on the pub.dev page
