@@ -1,3 +1,10 @@
+## [5.0.0]
+* Support Dart `3.0`
+* **Breaking changes**
+- Converted `Result` to *sealed class*
+* Update `rxdart` to use version `0.27.7`
+* Updated dependencies
+
 ## [4.0.1]
 - Documentation improvements
 

@@ -1,3 +1,9 @@
+## [6.0.0] - July 10, 2023
+* Support Dart `3.0`
+* Update `rx_bloc` to use version `5.0.0`
+* Update `rxdart` to use version `0.27.7`
+* Updated dependencies
+
 ## [5.0.2] - January 28, 2023
 * Updated rx_bloc dependencies
 

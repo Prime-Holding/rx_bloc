@@ -1,3 +1,8 @@
+## [4.0.0] July 10, 2023
+* Support Dart `3.0`
+* Updated `flutter_rx_bloc` to use version `6.0.0`
+* Updated `rx_bloc` to use version `5.0.0`
+
 ## [3.2.1] January 28, 2022
 * Update the example project
 * Updated `rx_bloc` to use version `4.0.0`
