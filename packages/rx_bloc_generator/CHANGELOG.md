@@ -1,5 +1,5 @@
-## [7.0.0] - July 10, 2023
-* Support Dart 3.0
+## [7.0.0] - July 11, 2023
+* Dart `3.0` Required
 * _[BREAKING CHANGE]_ Version >=7.0.0 introduces a change by generating named record instead of event arguments class.
 ```dart
  // <7.0.0 generates an event arguments class.

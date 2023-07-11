@@ -1,5 +1,5 @@
-## [4.0.0] - July 10, 2023
-* Support Dart `3.0`
+## [4.0.0] - July 11, 2023
+* Dart `3.0` Required
 * Upgraded dependencies:
 * `rx_bloc` *5.0.0*
 
