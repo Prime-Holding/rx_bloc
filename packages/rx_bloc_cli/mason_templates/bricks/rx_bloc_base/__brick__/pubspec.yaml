@@ -6,8 +6,7 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
-dependencies:
-  {{#enable_dev_menu}}
+dependencies: {{#enable_dev_menu}}
   alice: ^0.3.3 {{/enable_dev_menu}}
   collection: ^1.17.1
   cupertino_icons: ^1.0.5
@@ -18,8 +17,8 @@ dependencies:
   firebase_messaging: ^14.6.4{{/push_notifications}}
   flutter:
     sdk: flutter{{#enable_social_logins}}
-  flutter_facebook_auth: ^5.0.11{{/enable_social_logins}}
-  flutter_local_notifications: ^14.1.1
+  flutter_facebook_auth: ^6.0.0{{/enable_social_logins}}
+  flutter_local_notifications: ^15.1.0+1
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^5.0.2
@@ -28,7 +27,7 @@ dependencies:
   go_router: ^9.0.0
   golden_toolkit: ^0.15.0{{#enable_social_logins}}
   google_sign_in: ^6.1.4{{/enable_social_logins}}
-  http: ^0.13.6 # This package is used for the local server (if not used, can be removed)
+  http: ^1.1.0 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.8.1
   jwt_decoder: ^2.0.1{{#enable_feature_otp}}
@@ -56,7 +55,7 @@ dev_dependencies:
   go_router_builder: ^2.2.0
   json_serializable: ^6.7.0
   mockito: ^5.4.2 {{#enable_patrol}}
-  patrol: ^2.0.0 {{/enable_patrol}}
+  patrol: ^2.0.3 {{/enable_patrol}}
   r_flutter: 0.9.0
   retrofit_generator: ^7.0.7
   rx_bloc_generator: ^6.0.2
