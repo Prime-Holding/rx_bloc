@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run All Tests" type="DartTestRunConfigurationType" factoryName="Dart Test">
-    <option name="filePath" value="$PROJECT_DIR$/test" />
-    <option name="scope" value="FOLDER" />
-    <option name="testRunnerOptions" value="--exclude-tags not-tests" />
-    <method v="2" />
-  </configuration>
-</component>
