@@ -7,7 +7,7 @@ import 'package:collection/collection.dart';
 /// 1. Loading
 /// 2. Success
 /// 3. Error
-abstract class Result<T> {
+sealed class Result<T> {
   /// The success event of a stream.
   factory Result.success(
     T data, {

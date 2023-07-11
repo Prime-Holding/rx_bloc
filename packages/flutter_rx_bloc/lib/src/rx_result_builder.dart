@@ -58,16 +58,17 @@ class RxResultBuilder<B extends RxBlocTypeBase, T> extends StatelessWidget {
         final result = snapshot.connectionState == ConnectionState.active ||
                 snapshot.connectionState == ConnectionState.done
             ? (snapshot.hasError
-                ? Result.error(snapshot.asException()!)
+                ? Result<T>.error(snapshot.asException()!)
                 : snapshot.data)
-            : Result.loading();
+            : Result<T>.loading();
 
-        if (result is ResultSuccess<T>) {
-          return buildSuccess(buildContext, result.data, block);
-        } else if (result is ResultError<T>) {
-          return buildError(buildContext, result.error, block);
-        } else {
-          return buildLoading(context, block);
+        switch (result) {
+          case ResultSuccess<T>():
+            return buildSuccess(buildContext, result.data, block);
+          case ResultError<T>():
+            return buildError(buildContext, result.error, block);
+          case ResultLoading<T>() || null:
+            return buildLoading(context, block);
         }
       },
     );
