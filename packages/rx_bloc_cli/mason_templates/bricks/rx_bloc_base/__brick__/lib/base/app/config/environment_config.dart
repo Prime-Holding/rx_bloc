@@ -2,6 +2,8 @@
 
 import 'dart:io';
 
+/// Environment configuration that enables you to define and read
+/// environment specific properties (such as API endpoints, server secrets, ...)
 enum EnvironmentConfig {
   development(
     androidEmulatorBaseApiUrl: 'http://10.0.2.2:8080',
