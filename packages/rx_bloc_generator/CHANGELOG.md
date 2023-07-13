@@ -1,3 +1,17 @@
+## [7.0.0] - July 12, 2023
+* Dart `3.0` Required
+* _[BREAKING CHANGE]_ Version >=7.0.0 introduces a change by generating named record instead of event arguments class.
+```dart
+ // <7.0.0 generates an event arguments class.
+   @RxBlocEvent(type:RxBlocEventType.behaviour, seed: _SubtractEventArgs(0, 0))
+  void subtract(int a, int b);
+
+// >=7.0.0 generates a named record.
+@RxBlocEvent(type:RxBlocEventType.behaviour, seed: (a: 0, b: 0))
+void subtract(int a, int b);
+  ```
+* Update dependencies
+
 ## [6.0.2] - April 7, 2023
 * Update dependencies
 

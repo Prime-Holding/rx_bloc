@@ -110,11 +110,11 @@ extension ModelManageEvents<E extends Identifiable> on Stream<E> {
         }
       });
 
-  Stream<_Tuple<E>> _withLatestFromList(Stream<List<E>> list) =>
-      withLatestFrom<List<E>, _Tuple<E>>(
+  Stream<({E item, List<E> list})> _withLatestFromList(Stream<List<E>> list) =>
+      withLatestFrom<List<E>, ({E item, List<E> list})>(
         list,
         (identifiable, lastUpdatedList) =>
-            _Tuple(identifiable, lastUpdatedList),
+            (item: identifiable, list: lastUpdatedList),
       );
 }
 
@@ -152,11 +152,4 @@ extension _ListX<E extends Identifiable> on List<E> {
 
     return removedIdentifiable(identifiable);
   }
-}
-
-class _Tuple<E> {
-  _Tuple(this.item, this.list);
-
-  final E item;
-  final List<E> list;
 }

@@ -19,7 +19,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y lib_permissions_bundle.dart lib\src\templates\ ^
 & move /Y lib_auth_bundle.dart lib\src\templates\ ^
 & move /Y lib_social_logins_bundle.dart lib\src\templates\ ^
-& move /Y lib_change_language.dart lib\src\templates\ ^
 & move /Y lib_dev_menu_bundle.dart lib\src\templates\ ^
 & move /Y lib_change_language_bundle.dart lib\src\templates\ ^
 & move /Y patrol_integration_tests_bundle.dart lib\src\templates\ ^

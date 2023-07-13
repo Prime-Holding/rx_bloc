@@ -13,11 +13,11 @@ class CounterPage extends BasePage {
   PatrolFinder get locBtnError => $(SmallButton);
 
   Future<void> tapBtnIncrement() async {
-    await $(K.counterIncrement).tap(andSettle: false);
+    await $(K.counterIncrement).tap(settlePolicy: SettlePolicy.noSettle);
   }
 
   Future<void> tapBtnDecrement() async {
-    await $(K.counterDecrement).tap(andSettle: false);
+    await $(K.counterDecrement).tap(settlePolicy: SettlePolicy.noSettle);
   }
 
   Future<void> tapBtnReload() async {
