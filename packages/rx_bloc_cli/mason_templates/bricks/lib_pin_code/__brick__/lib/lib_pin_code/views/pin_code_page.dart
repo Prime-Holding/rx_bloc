@@ -45,12 +45,12 @@ class _PinCodePageState extends State<PinCodePage> {
               builder: (context, isVerificationPinCorrect, bloc) {
                 if ((isVerificationPinCorrect.hasData &&
                     isVerificationPinCorrect.data!)) {
-                  context.read<RouterBlocType>().events.pushReplace(
+                  context.read<RouterBlocType>().events.pushReplacement(
                       const PinCodeRoute(),
                       extra: context.l10n.libPinCode.enterNewPin);
                 } else if ((isVerificationPinCorrect.hasData &&
                     !isVerificationPinCorrect.data!)) {
-                  context.read<RouterBlocType>().events.pushReplace(
+                  context.read<RouterBlocType>().events.pushReplacement(
                       const PinCodeRoute(),
                       extra: context.l10n.libPinCode.confirmPin);
                 }
@@ -115,7 +115,7 @@ class _PinCodePageState extends State<PinCodePage> {
     AsyncSnapshot<bool> isAuthenticatedWithBiometrics,
   ) async {
     if (isAuthWithBiometrics) {
-      context.read<RouterBlocType>().events.pushReplace(const PinCodeRoute(),
+      context.read<RouterBlocType>().events.pushReplacement(const PinCodeRoute(),
           extra: context.l10n.libPinCode.enterNewPin);
       context.read<PinBlocType>().events.setIsAuthenticatedWithBiometrics(
           isAuthenticatedWithBiometrics: true);
@@ -141,7 +141,7 @@ class _PinCodePageState extends State<PinCodePage> {
       if (!isVerificationPinCorrect.hasData) {
         context.read<PinBlocType>().events.setIsVerificationPinCorrect();
       } else {
-        context.read<RouterBlocType>().events.pushReplace(const PinCodeRoute(),
+        context.read<RouterBlocType>().events.pushReplacement(const PinCodeRoute(),
             extra: context.l10n.libPinCode.confirmPin);
       }
     }

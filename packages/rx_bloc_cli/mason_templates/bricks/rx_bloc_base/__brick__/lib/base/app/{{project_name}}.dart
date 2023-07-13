@@ -5,13 +5,19 @@ import 'dart:async'; {{/enable_change_language}}
 import 'package:firebase_messaging/firebase_messaging.dart';{{/push_notifications}}
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';{{#enable_pin_code}}
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+import 'package:local_session_timeout/local_session_timeout.dart';{{/enable_pin_code}}
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
-import '../../l10n/l10n.dart';
+import '../../l10n/l10n.dart';{{#enable_pin_code}}
+import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
-import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}
+import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
+import '../../lib_pin_code/bloc/pin_bloc.dart';
+import '../../lib_pin_code/views/verify_pin_code_page.dart';
+import '../../lib_router/blocs/router_bloc.dart';{{/enable_pin_code}}
 import '../../lib_router/router.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';{{#analytics}}
@@ -68,18 +74,52 @@ class _MyMaterialApp extends StatefulWidget {
 class __MyMaterialAppState extends State<_MyMaterialApp> {
   Locale? _locale;
   {{#enable_change_language}}
-  late StreamSubscription<LanguageModel> _languageSubscription; {{/enable_change_language}}
+  late StreamSubscription<LanguageModel> _languageSubscription; {{/enable_change_language}}{{#enable_pin_code}}
+  late SessionConfig _sessionConfig;{{/enable_pin_code}}
 
   @override
   void initState() {
     {{^enable_change_language}}
-    _locale = const Locale('en'); {{/enable_change_language}}
+    _locale = const Locale('en'); {{/enable_change_language}}{{#enable_pin_code}}
+    _createSessionConfig();{{/enable_pin_code}}
     {{#enable_change_language}}
     _updateLocale(); {{/enable_change_language}} {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
     _configureInterceptors();
     super.initState();
   }
+
+  {{#enable_pin_code}}
+  void _createSessionConfig() {
+    context.read<PinBlocType>().events.deleteSavedData();
+    _sessionConfig = SessionConfig(
+      invalidateSessionForAppLostFocus: const Duration(seconds: 1000),
+      invalidateSessionForUserInactivity: const Duration(seconds: 7),
+    );
+    context
+        .read<PinBlocType>()
+        .events
+        .setSessionState(SessionState.startListening);
+    _userInactivityListeners();
+  }
+
+  void _userInactivityListeners() {
+    _sessionConfig.stream.listen((timeoutEvent) {
+    if (timeoutEvent == SessionTimeoutState.userInactivityTimeout) {
+      context.read<RouterBlocType>().events.go(
+      const VerifyPinCodeRoute(),
+      extra: const PinCodeArguments(
+      title: 'Enter Pin Code', isSessionTimeout: true),
+      );
+    } else if (timeoutEvent == SessionTimeoutState.appFocusTimeout) {
+      context.read<RouterBlocType>().events.go(
+      const VerifyPinCodeRoute(),
+      extra: const PinCodeArguments(
+      title: 'Enter Pin Code', isSessionTimeout: true),
+      );
+    }
+  });
+  }{{/enable_pin_code}}
 
   {{#enable_change_language}}
   void _updateLocale() {
@@ -135,46 +175,66 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           AnalyticsInterceptor(context.read()),{{/analytics}}
         );
   }
-{{#enable_dev_menu}}
+
   @override
   Widget build(BuildContext context) {
-    final materialApp = MaterialApp.router(
-        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
-        theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
-        darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
-        localizationsDelegates: const [
-          I18n.delegate,
-          ...GlobalMaterialLocalizations.delegates,
-        ],
-        supportedLocales: I18n.supportedLocales,
-        locale: _locale,
-        routerConfig: context.read<AppRouter>().router,
-        debugShowCheckedModeBanner: false,
-      );
+    final materialApp = {{^enable_pin_code}} _buildMaterialApp(context);
+    {{/enable_pin_code}}{{#enable_pin_code}}
+      _buildMaterialAppWithPinCode(); {{/enable_pin_code}}
 
-
+      {{#enable_dev_menu}}
       if (EnvironmentConfig.enableDevMenu) {
         return AppDevMenuGestureDetector.withDependencies(
           context,
           context.read<AppRouter>().rootNavigatorKey,
           child: materialApp,
         );
-      }
+      }{{/enable_dev_menu}}
 
       return materialApp;
   }
+{{#enable_pin_code}}
+  Widget _buildMaterialAppWithPinCode() => RxBlocBuilder<PinBlocType, bool>(
+    state: (bloc) => bloc.states.isPinCreated,
+    builder: (context, isPinCreated, bloc) =>
+    RxBlocBuilder<UserAccountBlocType, bool>(
+    state: (bloc) => bloc.states.loggedIn,
+    builder: (context, loggedIn, bloc) {
+    if (loggedIn.hasData) {
+    if (!loggedIn.data!) {
+    // If user logs out, set stopListening
+    context.read<PinBlocType>().events
+    ..setSessionState(SessionState.stopListening)
+    ..deleteStoredPin();
+    return _buildMaterialApp(context);
+    }
+    if ((loggedIn.data!) &&
+    (isPinCreated.hasData && isPinCreated.data!)) {
+    context
+        .read<PinBlocType>()
+        .events
+        .setSessionState(SessionState.startListening);
 
-{{/enable_dev_menu}}
+    return SessionTimeoutManager(
+    userActivityDebounceDuration: const Duration(seconds: 2),
+    sessionConfig: _sessionConfig,
+    sessionStateStream:
+    context.read<PinBlocType>().states.sessionState,
+    child: _buildMaterialApp(context));
+    }
+    }
+    return _buildMaterialApp(context);
+    },
+    ),
+  );{{/enable_pin_code}}
 
-{{^enable_dev_menu}}
-  @override
-  Widget build(BuildContext context) => MaterialApp.router(
+Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
     title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
     theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
     darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
     localizationsDelegates: const [
-      I18n.delegate,
-      ...GlobalMaterialLocalizations.delegates,
+    I18n.delegate,
+    ...GlobalMaterialLocalizations.delegates,
     ],
     supportedLocales: I18n.supportedLocales,
     locale: _locale,
@@ -182,5 +242,4 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     debugShowCheckedModeBanner: false,
   );
 
-{{/enable_dev_menu}}
 }
