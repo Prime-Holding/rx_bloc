@@ -19,10 +19,12 @@ extension _StringExtensions on String {
 /// It is the main [DartFormatter]
 extension _SpecExtensions on Spec {
   String toDartCodeString() => DartFormatter().format(
-        accept(
-          DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true),
-        ).toString(),
+        toRawDartCodeString(),
       );
+
+  String toRawDartCodeString() => accept(
+        DartEmitter(allocator: Allocator.none, useNullSafetySyntax: true),
+      ).toString();
 }
 
 extension _StateFieldElement on FieldElement {
@@ -34,10 +36,6 @@ extension _StateFieldElement on FieldElement {
 extension _EventMethodElement on MethodElement {
   /// The event field name in the generated file
   String get eventFieldName => '_\$${name}Event';
-
-  /// The name of the arguments class that will be generated if
-  /// the event contains more than one parameter
-  String get eventArgumentsClassName => '_${name.capitalize()}EventArgs';
 
   /// Is the the [RxBlocEvent.seed] annotation is provided
   bool get hasSeedAnnotation => RegExp(r'(?<=seed: ).*(?=\)|,)')
@@ -77,7 +75,7 @@ extension _EventMethodElement on MethodElement {
     var seedArguments = seedArgumentsMatch.toString();
     return refer(
       // ignore: lines_longer_than_80_chars
-      '${isUsingArgumentClass && !seedArguments.contains('(const') ? 'const ' : ''}'
+      '${isUsingRecord && !seedArguments.contains('(const') ? 'const ' : ''}'
       '${seedArguments.substring(1, seedArguments.length - 1)}',
     );
   }
@@ -108,17 +106,14 @@ extension _EventMethodElement on MethodElement {
   bool get isBehavior =>
       _computedRxBlocEventAnnotation.toString().contains('behaviour');
 
-  /// Use argument class when the event's parameters are more than 1
-  bool get isUsingArgumentClass => parameters.length > 1;
-
   /// Provides the stream type based on the number of the parameters
   /// Example:
   /// if `fetchNews(int param)` then -> int
   /// if `fetchNews(String param)` then -> String
   /// if `fetchNews(int param1, int param2)` -> _FetchNewsEventArgs
   String get publishSubjectGenericType {
-    if (isUsingArgumentClass) {
-      return eventArgumentsClassName;
+    if (isUsingRecord) {
+      return argsRecord.recordType().toRawDartCodeString();
     }
     return parameters.isNotEmpty
         // The only parameter's type
@@ -132,7 +127,7 @@ extension _EventMethodElement on MethodElement {
   /// _${EventMethodName}EventName.add(param)
   ///
   /// Example 2:
-  /// _${EventMethodName}EventName.add(_MethodEventArgs(param1, param2))
+  /// _${EventMethodName}EventName.add((param1: param1, param2: param2))
   ///
   Code buildBody() {
     var requiredParams = parameters.whereRequired().clone();
@@ -153,38 +148,23 @@ extension _EventMethodElement on MethodElement {
       return _callStreamAddMethod(refer(optionalParams.first.name));
     }
 
-    return _callStreamAddMethod(
-      refer('_${name.capitalize()}EventArgs').newInstance(
-        _positionalArguments,
-        _namedArguments,
-      ),
-    );
+    return _callStreamAddMethod(argsRecord.newInstanceWithParameters());
   }
 
   /// Example:
   /// _${methodName}Event.add()
   Code _callStreamAddMethod(Expression argument) =>
       refer('$eventFieldName.add').call([argument]).code;
+}
 
-  /// Provides the event's positional arguments as a [Map] of [Expression]
-  List<Expression> get _positionalArguments => parameters
-      .where((ParameterElement parameter) => parameter.isPositional)
-      .map(
-        (ParameterElement parameter) => refer(parameter.name),
-      )
-      .toList();
+extension _EventMethodNamedRecordArgument on MethodElement {
+  /// Indicates if a named record wrapper is generated for the parameters
+  bool get isUsingRecord => parameters.length > 1;
 
-  /// Provides the event's name arguments as a [Map] of [Expression]
-  Map<String, Expression> get _namedArguments {
-    var params = parameters.clone();
-
-    // Only named are not positional parameters
-    var namedArguments = <String, Expression>{};
-    for (var param in params.where((Parameter param) => param.named)) {
-      namedArguments[param.name] = refer(param.name);
-    }
-    // For methods with more than 1 parameters provide the new param class
-    return namedArguments;
+  /// A named record wrapper for the method's parameters
+  _EventArgsRecord get argsRecord {
+    assert(isUsingRecord);
+    return _EventArgsRecord(this);
   }
 }
 

@@ -37,8 +37,11 @@ import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
+import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
+import '../common_services/push_notifications_service.dart';
+import '../data_sources/local/profile_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
@@ -197,7 +200,11 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<LanguageLocalDataSource>(
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
-        ),{{/enable_change_language}}{{#enable_pin_code}}
+        ),{{/enable_change_language}}
+        Provider<ProfileLocalDataSource>(
+          create: (context) =>
+              ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+        ),{{#enable_pin_code}}
         Provider<BiometricsLocalDataSource>(
           create: (context) => ProfileLocalDataSource(
           sharedPreferences:  context.read<SharedPreferencesInstance>()),
@@ -215,6 +222,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ),
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
+            context.read(),
             context.read(),
             context.read(),
             context.read(),
@@ -288,7 +296,12 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => AppLanguageService(
             languageRepository: context.read<LanguageRepository>(),
           ),
-        ), {{/enable_change_language}} {{#enable_pin_code}}
+        ), {{/enable_change_language}}
+        Provider<PushNotificationsService>(
+          create: (context) => PushNotificationsService(
+            context.read(),
+          ),
+        ), {{#enable_pin_code}}
         Provider<PinCodeService>(
           create: (context) => AppPinCodeService(
             sharedPreferences: context.read<SharedPreferencesInstance>(),
@@ -316,7 +329,12 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => ChangeLanguageBloc(
             languageService: context.read<AppLanguageService>(),
           ),
-        ), {{/enable_change_language}} {{#enable_pin_code}}
+        ), {{/enable_change_language}}
+        RxBlocProvider<PushNotificationsBlocType>(
+          create: (context) => PushNotificationsBloc(
+            context.read(),
+          ),
+        ), {{#enable_pin_code}}
         RxBlocProvider<PinBlocType>(
           create: (context) => PinBloc(
             service: context.read<PinCodeService>(),

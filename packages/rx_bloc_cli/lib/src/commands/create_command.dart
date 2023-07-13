@@ -6,6 +6,7 @@ import 'package:mason/mason.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
+import '../templates/feature_otp_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
 import '../templates/lib_change_language_bundle.dart';
@@ -91,6 +92,12 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
+        _otpFeatureString,
+        help: 'Enables OTP feature for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'false',
+      )
+      ..addOption(
         _realtimeCommunicationString,
         help: 'Enables realtime communication facilities like SSE, WebSocket '
             'or gRPC',
@@ -119,6 +126,7 @@ class CreateCommand extends Command<int> {
   final _patrolTestsString = 'enable-patrol';
   final _realtimeCommunicationString = 'realtime-communication';
   final _enablePinCodeString = 'enable-pin-code';
+  final _otpFeatureString = 'enable-otp';
 
   /// bundles
   final _counterBundle = featureCounterBundle;
@@ -133,6 +141,7 @@ class CreateCommand extends Command<int> {
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _libPinCodeBundle = libPinCodeBundle;
+  final _featureOtpBundle = featureOtpBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
@@ -271,6 +280,10 @@ class CreateCommand extends Command<int> {
     if (arguments.enableDevMenu) {
       _bundle.files.addAll(_libDevMenuBundle.files);
     }
+    // Add feature OTP brick _bundle when needed
+    if (arguments.enableOtpFeature) {
+      _bundle.files.addAll(_featureOtpBundle.files);
+    }
 
     // Add Pin Code brick _bundle when needed
     if (arguments.enablePinCode) {
@@ -302,6 +315,7 @@ class CreateCommand extends Command<int> {
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
         'enable_dev_menu': arguments.enableDevMenu,
+        'enable_feature_otp': arguments.enableOtpFeature,
         'enable_patrol': arguments.enablePatrolTests,
         'realtime_communication': arguments.realtimeCommunicationType !=
             _RealtimeCommunicationType.none,
@@ -335,6 +349,7 @@ class CreateCommand extends Command<int> {
       enableSocialLogins: _parseEnableSocialLogins(arguments),
       enableChangeLanguage: _parseEnableChangeLanguage(arguments),
       enableDevMenu: _parseEnableDevMenu(arguments),
+      enableOtpFeature: _parseEnableOtpFeature(arguments),
       enablePatrolTests: _parseEnablePatrolTests(arguments),
       realtimeCommunicationType: _parseRealtimeCommunicationType(arguments),
       enablePinCode: _parseEnablePinCode(arguments),
@@ -414,6 +429,12 @@ class CreateCommand extends Command<int> {
   bool _parseEnableDevMenu(ArgResults arguments) {
     final devMenuEnabled = arguments[_devMenuString];
     return devMenuEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with otp feature
+  bool _parseEnableOtpFeature(ArgResults arguments) {
+    final otpFeatureEnabled = arguments[_otpFeatureString];
+    return otpFeatureEnabled.toLowerCase() == 'true';
   }
 
   _RealtimeCommunicationType _parseRealtimeCommunicationType(arguments) {
@@ -519,6 +540,7 @@ class CreateCommand extends Command<int> {
         arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
     _usingLog('Dev Menu', arguments.enableDevMenu);
+    _usingLog('OTP Feature', arguments.enableOtpFeature);
     _usingLog('Patrol integration tests', arguments.enablePatrolTests);
     _usingLog('Realtime communication',
         arguments.realtimeCommunicationType != _RealtimeCommunicationType.none);
@@ -553,6 +575,7 @@ class _CreateCommandArguments {
     required this.enableSocialLogins,
     required this.enableChangeLanguage,
     required this.enableDevMenu,
+    required this.enableOtpFeature,
     required this.enablePatrolTests,
     required this.realtimeCommunicationType,
     required this.enablePinCode,
@@ -568,6 +591,7 @@ class _CreateCommandArguments {
   final bool enableSocialLogins;
   final bool enableChangeLanguage;
   final bool enableDevMenu;
+  final bool enableOtpFeature;
   final bool enablePatrolTests;
   final _RealtimeCommunicationType realtimeCommunicationType;
   final bool enablePinCode;

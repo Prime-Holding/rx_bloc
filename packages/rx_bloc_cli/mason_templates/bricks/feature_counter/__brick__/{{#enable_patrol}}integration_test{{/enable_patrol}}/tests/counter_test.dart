@@ -20,6 +20,9 @@ void main() {
 
       //Log in
       await LoginPageSteps.loginAction($);
+      {{#enable_feature_otp}}
+      //TODO: Implement OTP page steps
+      {{/enable_feature_otp}}
       //Navigate to counter page
       await HomePageSteps.navigateToCounterPage($);
       //Increment counter 5 times

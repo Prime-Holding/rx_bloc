@@ -19,19 +19,20 @@ $ dart pub global activate rx_bloc_cli
 Create a new project at the given directory with lots of already set-up features out of the box. Customize your project with the following properties:
 
 
-|  parameter |                 defaults to                 |                                        description                                        |
-| ------ |:-------------------------------------------:|:-----------------------------------------------------------------------------------------:|
-|  `--project-name` | Name of directory where the project resides |  The project name for this new Flutter project. This must be a valid dart package name.   |
-|  `--organisation` |                `com.example`                |                                   The organisation name                                   |
-|  `--enable-analytics` |                   `false`                   |                        Enables Firebase analytics for the project                         |
-|  `--enable-feature-counter` |                   `false`                   |                          Enables Counter feature for the project                          |
-|  `--enable-feature-deeplinks` |                   `false`                   |                     Enables Deep Links showcase flow for the project                      |
-|  `--enable-feature-widget-toolkit` |                   `false`                   |              Enables widget_toolkit package showcase feature for the project              |
-|  `--enable-social-logins` |                   `false`                   | Integrate social login with Apple, Google and Facebook functionality into our application |
-|  `--enable-change-language` |                   `true`                    |                     Enables changing of the language for the project                      |
-|  `--enable-patrol` |                   `false`                   |               Enables patrol package for integration tests for the project                |
-|  `--realtime-communication`  |                   `none`                    |           Enables realtime communication facilities for SSE. Values: none, sse.           |
+| parameter                         |                 defaults to                 |                                        description                                        |
+|-----------------------------------|:-------------------------------------------:|:-----------------------------------------------------------------------------------------:|
+| `--project-name`                  | Name of directory where the project resides |  The project name for this new Flutter project. This must be a valid dart package name.   |
+| `--organisation`                  |                `com.example`                |                                   The organisation name                                   |
+| `--enable-analytics`              |                   `false`                   |                        Enables Firebase analytics for the project                         |
+| `--enable-feature-counter`        |                   `false`                   |                          Enables Counter feature for the project                          |
+| `--enable-feature-deeplinks`      |                   `false`                   |                     Enables Deep Links showcase flow for the project                      |
+| `--enable-feature-widget-toolkit` |                   `false`                   |              Enables widget_toolkit package showcase feature for the project              |
+| `--enable-social-logins`          |                   `false`                   | Integrate social login with Apple, Google and Facebook functionality into our application |
+| `--enable-change-language`        |                   `true`                    |                     Enables changing of the language for the project                      |
+| `--enable-patrol`                 |                   `false`                   |               Enables patrol package for integration tests for the project                |
+| `--realtime-communication`        |                   `none`                    |           Enables realtime communication facilities for SSE. Values: none, sse.           |
 | `--enable-dev-menu`               |                   `true`                    |                Enables dev menu to easily access proxy debugging services.                |
+| `--enable-otp`                    |                   `false`                   |          Enables OTP feature that can help with building sms/pin code workflows.          |
 
 
 ### What's Included? 📦
@@ -80,6 +81,10 @@ Available commands:
 
 Run "rx_bloc_cli help <command>" for more information about a command.
 ```
+## Extendability
+
+Rx Bloc Command Line Interface supports [extendability] with the help of mason templates
+
 
 [null_safety_lnk]: https://dart.dev/null-safety
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
@@ -94,3 +99,4 @@ Run "rx_bloc_cli help <command>" for more information about a command.
 [create_command_gif_lnk]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/assets/rx_bloc_cli_create.gif
 [dio_http_client_lnk]: https://pub.dev/packages/dio
 [interceptors_lnk]: https://pub.dev/documentation/dio/latest/dio/Interceptor-class.html
+[extendability]: /packages/rx_bloc_cli/mason_templates/README.md

@@ -12,7 +12,6 @@ linter:
     sort_pub_dependencies: true
     close_sinks: true
     cancel_subscriptions: true
-    avoid_returning_null_for_future: true
 
 analyzer:
   exclude:

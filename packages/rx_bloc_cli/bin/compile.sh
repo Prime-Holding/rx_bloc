@@ -14,6 +14,7 @@ dart run rx_bloc_cli create \
   --enable-dev-menu=true \
   --enable-patrol=true \
   --realtime-communication=sse \
+  --enable-otp=true \
   --enable-pin-code=true \
   example/test_app
 
