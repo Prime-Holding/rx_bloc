@@ -70,6 +70,8 @@ class PushNotificationsController extends ApiController {
     final params = await request.bodyFromFormData();
     final title = params['title'];
     final message = params['message'];
+    final data = params['data'];
+    final pushToken = params['pushToken'];
 
     final delayParam = params['delay'];
     final delay = delayParam != null && (delayParam is int)
@@ -80,9 +82,12 @@ class PushNotificationsController extends ApiController {
       message,
       BadRequestException('Push message can not be empty.'),
     );
+    if (!(_pushTokens.tokens.any((element) => element.token == pushToken))) {
+      throw NotFoundException('Notifications disabled by the user');
+    }
 
     Future.delayed(Duration(seconds: delay),
-        () async => _sendMessage(title: title, message: message));
+       () async => _sendMessage(title: title, message: message, data: data));
 
     return responseBuilder.buildOK();
   }

@@ -148,7 +148,7 @@ class ErrorMapper implements ErrorMapperInterface {
 
   /// Map the passed [exception] to a Business Error.
   ErrorModel _mapExceptionToBusinessError(Exception exception) {
-    if (exception is DioError) {
+    if (exception is DioException) {
       return exception.asErrorModel();
     }
 
