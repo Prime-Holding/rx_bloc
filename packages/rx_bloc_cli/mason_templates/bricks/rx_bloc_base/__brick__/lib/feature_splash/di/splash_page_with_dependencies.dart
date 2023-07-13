@@ -20,7 +20,8 @@ class SplashPageWithDependencies extends StatelessWidget {
           create: (context) => SplashBloc(
             context.read(),
             context.read(),
-            context.read(),
+            context.read(),{{#enable_pin_code}}
+            context.read(),{{/enable_pin_code}}
             redirectLocation: redirectToLocation,
           ),
         ),

@@ -19,25 +19,64 @@ class AppPinCodeService implements PinCodeService {
 
   /// This pin is intended to be stored in the secured storage for production
   /// applications
-  final _isForFirstTime = 'isForFirstTime';
-  final _firstPin = 'firstPin';
-  final _secondPin = 'secondPin';
-  final _storedPin = 'storedPin';
-  bool _isForFirstTimeExecuted = false;
-  bool? _isVerificationPinCorrect;
-  bool _isVerificationPinProcess = false;
-  bool _isChangePin = false;
-  static const _isAuthenticated = 'isAuthenticated';
+  static const _isForFirstTime = 'isForFirstTime';
+  static const _firstPin = 'firstPin';
+  static const _secondPin = 'secondPin';
+  static const _storedPin = 'storedPin';
   static const _isAuthenticatedWithBiometrics = 'isAuthenticatedWithBiometrics';
   static const _areBiometricsEnabled = 'areBiometricsEnabled';
+  static const _areBiometricsEnabledWhileUsingTheApp =
+      'areBiometricsEnabledWhileUsingTheApp';
+  bool _isForFirstTimeExecuted = false;
+  bool _isVerificationPinProcess = true;
+  bool _isChangePin = false;
+  bool _isFromSessionTimeout = false;
+  bool? _isVerificationPinCorrect;
+
+  Future<void> deleteStoredPin() async {
+    await storage.write(key: _storedPin, value: null);
+    await storage.write(key: _firstPin, value: null);
+    await storage.write(key: _secondPin, value: null);
+    await sharedPreferences.setBool(_isForFirstTime, true);
+    await sharedPreferences.setBool(_isAuthenticatedWithBiometrics, false);
+    _isForFirstTimeExecuted = false;
+    _isVerificationPinCorrect = null;
+    _isVerificationPinProcess = true;
+    _isChangePin = false;
+  }
+
+  Future<void> deleteSavedData() async {
+    var enabledFromBefore = await sharedPreferences
+        .getString(_areBiometricsEnabledWhileUsingTheApp);
+    var current = await sharedPreferences.getBool(_areBiometricsEnabled);
+    if ((enabledFromBefore == 'true' && current != true)) {
+      await sharedPreferences.setString(
+          _areBiometricsEnabledWhileUsingTheApp, current.toString());
+    } else if ((enabledFromBefore == 'false' && current != false)) {
+      await sharedPreferences.setString(
+          _areBiometricsEnabledWhileUsingTheApp, current.toString());
+    }
+    await storage.write(key: _firstPin, value: null);
+    await storage.write(key: _secondPin, value: null);
+    await sharedPreferences.setBool(_isForFirstTime, true);
+    await sharedPreferences.setBool(_isAuthenticatedWithBiometrics, false);
+    _isForFirstTimeExecuted = false;
+    _isVerificationPinCorrect = null;
+    _isVerificationPinProcess = true;
+    _isChangePin = false;
+  }
+
+  Future<bool> setPinCodeType(bool isFromSessionTimeout) async {
+    _isFromSessionTimeout = isFromSessionTimeout;
+    return isFromSessionTimeout;
+  }
 
   @override
   Future<bool> isPinCodeInSecureStorage() async {
-    final isAuthenticate = await sharedPreferences.getBool(_isAuthenticated);
     final isAuthenticateWithBiometrics =
         await sharedPreferences.getBool(_isAuthenticatedWithBiometrics);
-    if (isAuthenticate == true || isAuthenticateWithBiometrics == true) {
-      await sharedPreferences.setBool(_isAuthenticated, false);
+    if (isAuthenticateWithBiometrics == true) {
+      await sharedPreferences.setBool(_isAuthenticatedWithBiometrics, false);
       return false;
     }
     var storedPin = await storage.read(key: _storedPin);
@@ -52,43 +91,15 @@ class AppPinCodeService implements PinCodeService {
       _isForFirstTimeExecuted = true;
       return false;
     }
-
     return false;
   }
 
-  Future<void> _deleteSavedPinCodes() async {
-    await storage.write(key: _firstPin, value: null);
-    await storage.write(key: _secondPin, value: null);
-    await sharedPreferences.setBool(_isForFirstTime, true);
-    await sharedPreferences.setBool(_isAuthenticated, false);
-    await sharedPreferences.setBool(_areBiometricsEnabled, true);
-    await sharedPreferences.setBool(_isAuthenticatedWithBiometrics, false);
-    await storage.write(key: _storedPin, value: null);
-  }
-
-  Future<bool> setIsPinCreated(bool? isPinCreated) async {
-    if (isPinCreated == null) {
-      var storedPin = await storage.read(key: _storedPin);
-      if (storedPin != null) {
-        return true;
-      }
-      return false;
-    }
-    if (!isPinCreated) {
-      await _deleteSavedPinCodes();
-    }
-
-    return isPinCreated;
-  }
-
-  Future<bool> checkIsVerificationPinCorrect(bool? value) async {
-    if (_isVerificationPinCorrect == true) {
-      _isVerificationPinCorrect = false;
-      _isVerificationPinProcess = false;
-      _isChangePin = true;
+  Future<bool> checkIsPinCreated() async {
+    var storedPin = await storage.read(key: _storedPin);
+    if (storedPin != null) {
       return true;
     }
-    return value ?? false;
+    return false;
   }
 
   @override
@@ -104,18 +115,28 @@ class AppPinCodeService implements PinCodeService {
     var currentPin = await storage.read(key: _storedPin);
     final isAuthenticated =
         await sharedPreferences.getBool(_isAuthenticatedWithBiometrics);
-    if (isAuthenticated == true) {
-      // After success biometrics authentication
-      _isChangePin = true;
-    }
-    if (currentPin != null) {
-      // Update pin process
+    if (currentPin == null) {
+// Create Pin process
+      final isFirst = await sharedPreferences.getBool(_isForFirstTime) ?? false;
+      return await _createPin(pinCode, isFirst);
+    } else {
+      if (_isFromSessionTimeout) {
+// Verify Pin From Inactivity
+        return currentPin == pinCode
+            ? true
+            : throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
+      }
+// Update pin process
       if (isAuthenticated != true) {
         if (_isVerificationPinCorrect == null) {
-          if (currentPin != pinCode) {
-            throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
+          var first = await storage.read(key: _firstPin);
+          if (first == null) {
+            await storage.write(key: _secondPin, value: null);
+            await sharedPreferences.setBool(_isForFirstTime, true);
+            _isChangePin = true;
+            await sharedPreferences.setString(
+                _areBiometricsEnabledWhileUsingTheApp, 'false');
           }
-          _isVerificationPinProcess = true;
         }
       }
       final firstPin = await storage.read(key: _firstPin);
@@ -126,22 +147,21 @@ class AppPinCodeService implements PinCodeService {
           _isChangePin = false;
           await sharedPreferences.setBool(
               _isAuthenticatedWithBiometrics, false);
-          await sharedPreferences.setBool(_isAuthenticated, false);
           return true;
         }
-
         throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
       }
       if (isAuthenticated != true) {
         if (firstPin == null && _isVerificationPinProcess) {
-          // Verification process
+// Verification process - Enter current pin
           if (currentPin == pinCode) {
             _isVerificationPinCorrect = true;
-            return false;
+            _isVerificationPinProcess = false;
+            return true;
           }
           _isVerificationPinCorrect = false;
-          _isVerificationPinProcess = false;
-          return false;
+          _isVerificationPinProcess = true;
+          throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
         }
       }
       if (_isChangePin) {
@@ -150,13 +170,12 @@ class AppPinCodeService implements PinCodeService {
         if (isFirst) {
           await sharedPreferences.setBool(_isForFirstTime, false);
           await storage.write(key: _firstPin, value: pinCode);
-          return false;
+          return true;
         }
         final firstPin = await storage.read(key: _firstPin);
         if (pinCode == firstPin) {
           await storage.write(key: _secondPin, value: pinCode);
           await storage.write(key: _storedPin, value: pinCode);
-          await sharedPreferences.setBool(_isAuthenticated, false);
           await sharedPreferences.setBool(
               _isAuthenticatedWithBiometrics, false);
           return true;
@@ -167,17 +186,16 @@ class AppPinCodeService implements PinCodeService {
         }
         return false;
       }
-      return true;
+      return false;
     }
+  }
 
-    // Create Pin process
-    var isFirst = await sharedPreferences.getBool(_isForFirstTime);
-    isFirst = isFirst ?? false;
+  Future<bool> _createPin(String pinCode, bool isFirst) async {
     if (pinCode.length == await getPinLength()) {
       if (isFirst) {
         await sharedPreferences.setBool(_isForFirstTime, false);
         await storage.write(key: _firstPin, value: pinCode);
-        return false;
+        return true;
       }
       final firstPin = await storage.read(key: _firstPin);
       if (pinCode == firstPin) {
@@ -198,17 +216,5 @@ class AppPinCodeService implements PinCodeService {
   Future<String?> getPinCode() async {
     var currentPin = await storage.read(key: _storedPin);
     return currentPin;
-  }
-
-  Future<void> deleteSavedData() async {
-    await storage.write(key: _firstPin, value: null);
-    await storage.write(key: _secondPin, value: null);
-    await sharedPreferences.setBool(_isForFirstTime, true);
-    await sharedPreferences.setBool(_isAuthenticated, false);
-    await sharedPreferences.setBool(_isAuthenticatedWithBiometrics, false);
-    _isForFirstTimeExecuted = false;
-    _isVerificationPinCorrect = null;
-    _isVerificationPinProcess = false;
-    _isChangePin = false;
   }
 }

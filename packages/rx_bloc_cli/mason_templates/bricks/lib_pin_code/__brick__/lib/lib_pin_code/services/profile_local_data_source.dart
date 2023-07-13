@@ -10,32 +10,57 @@ class ProfileLocalDataSource implements BiometricsLocalDataSource {
     required this.sharedPreferences,
   });
 
+  bool? onRestart;
   final SharedPreferencesInstance sharedPreferences;
 
+  /// This value is the state for the user general choice for the app
   static const _areBiometricsEnabled = 'areBiometricsEnabled';
-  static const _isAuthenticated = 'isAuthenticated';
-  static const _isAuthenticatedWithBiometrics = 'isAuthenticatedWithBiometrics';
+
+  /// This value is changed in while using the app to stop and start auto biometrics
+  static const _areBiometricsEnabledWhileUsingTheApp =
+      'areBiometricsEnabledWhileUsingTheApp';
+
+  Future<bool> temporaryDisableBiometrics(bool disable) async {
+    if (disable) {
+      await sharedPreferences.setString(
+          _areBiometricsEnabledWhileUsingTheApp, 'false');
+    } else {
+      await sharedPreferences.setString(
+          _areBiometricsEnabledWhileUsingTheApp, 'true');
+    }
+    return false;
+  }
 
   @override
   Future<bool> areBiometricsEnabled() async {
-    final areEnabled = await sharedPreferences.getBool(_areBiometricsEnabled);
+    if (onRestart == null) {
+// If biometrics were saved before while using the app, set the previous
+// value once
+      var areBiometricsEnabled =
+          await sharedPreferences.getBool(_areBiometricsEnabled);
+      if (areBiometricsEnabled == true) {
+        await sharedPreferences.setString(
+            _areBiometricsEnabledWhileUsingTheApp, 'true');
+      } else if (areBiometricsEnabled == false) {
+        await sharedPreferences.setString(
+            _areBiometricsEnabledWhileUsingTheApp, 'false');
+      }
+      onRestart = false;
+    }
 
-    return areEnabled ?? false;
+    final areEnabledBefore = await sharedPreferences
+        .getString(_areBiometricsEnabledWhileUsingTheApp);
+
+    if (areEnabledBefore == 'true') {
+      return true;
+    }
+    return false;
   }
 
   @override
   Future<void> setBiometricsEnabled(bool enable) async {
-    final storage = sharedPreferences;
-    await storage.setBool(_areBiometricsEnabled, enable);
-  }
-
-  Future<bool> isAuthenticatedWithBiometrics(
-      bool? isAuthenticatedWithBiometrics) async {
-    if (isAuthenticatedWithBiometrics == true) {
-      await sharedPreferences.setBool(_isAuthenticated, true);
-      await sharedPreferences.setBool(_isAuthenticatedWithBiometrics, true);
-      return true;
-    }
-    return false;
+    await sharedPreferences.setString(
+        _areBiometricsEnabledWhileUsingTheApp, enable.toString());
+    await sharedPreferences.setBool(_areBiometricsEnabled, enable);
   }
 }

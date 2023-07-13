@@ -7,7 +7,7 @@ class RoutePermissions {
   static const counter = 'CounterRoute';{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
   static const widgetToolkit = 'WidgetToolkitRoute';{{/enable_feature_widget_toolkit}}
   static const notifications = 'NotificationsRoute';{{#enable_pin_code}}
-  static const pinCode = 'PinCodeRoute';{{/enable_pin_code}}
+  static const pinCode = 'VerifyPinCode';{{/enable_pin_code}}
   static const login = 'LoginRoute';{{#enable_feature_deeplinks}}
   static const enterMessage = 'EnterMessageRoute';
   static const deepLinks = 'DeepLinksRoute';

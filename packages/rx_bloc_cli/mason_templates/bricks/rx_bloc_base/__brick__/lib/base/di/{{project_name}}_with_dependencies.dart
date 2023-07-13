@@ -200,11 +200,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<LanguageLocalDataSource>(
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
-        ),{{/enable_change_language}}
-        Provider<ProfileLocalDataSource>(
-          create: (context) =>
-              ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
-        ),{{#enable_pin_code}}
+        ),{{/enable_change_language}}{{#enable_pin_code}}
         Provider<BiometricsLocalDataSource>(
           create: (context) => ProfileLocalDataSource(
           sharedPreferences:  context.read<SharedPreferencesInstance>()),
@@ -339,6 +335,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => PinBloc(
             service: context.read<PinCodeService>(),
             biometrics: context.read<BiometricsLocalDataSource>(),
+            coordinatorBloc: context.read<CoordinatorBlocType>(),
           ),
         ),{{/enable_pin_code}}
       ];

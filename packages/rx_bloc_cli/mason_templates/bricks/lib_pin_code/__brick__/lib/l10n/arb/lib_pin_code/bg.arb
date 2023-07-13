@@ -3,7 +3,13 @@
   "createPin": "Създай пин код",
   "changePin": "Смени пин код",
   "pinVerifiedMessage": "Пин кодът е верифициран",
+  "pinUpdatedMessage": "Пин кодът е обновен",
   "confirmPin": "Потвърди пин код",
   "enterCurrentPin": "Въведи настоящ пин",
-  "enterNewPin": "Въведи нов пин"
+  "enterNewPin": "Въведи нов пин",
+  "translatedError": "Преведена грешка",
+  "biometricsNotSetup": "За да използвате биометрика, трябва да я активирате от настройките на устройството!",
+  "biometricsNotSupported": "Устройството Ви няма функция да използва биометрична автентикация",
+  "biometricsEnabled": "Биометричната функция е активирана",
+  "biometricsDisabled": "Биометричната функция е деактивирана"
 }
