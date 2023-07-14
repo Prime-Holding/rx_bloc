@@ -28,7 +28,7 @@ import 'initialization/firebase_messaging_callbacks.dart';{{/push_notifications}
 /// This widget is the root of your application.
 class {{project_name.pascalCase()}} extends StatelessWidget {
   const {{project_name.pascalCase()}}({
-    this.config = const EnvironmentConfig.production(),
+    this.config = EnvironmentConfig.production,
 {{#enable_dev_menu}}
     this.createDevMenuInstance,{{/enable_dev_menu}}
   Key? key,

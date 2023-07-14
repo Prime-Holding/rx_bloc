@@ -1,8 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 @Tags(['not-tests'])
-
 import 'package:rx_bloc/rx_bloc.dart';
+
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 import 'package:test/test.dart';
@@ -51,63 +51,59 @@ abstract class $CounterBloc extends RxBlocBase
 
   /// Тhe [Subject] where events sink to by calling [withPositionalAndOptional]
   final _$withPositionalAndOptionalEvent =
-      PublishSubject<_WithPositionalAndOptionalEventArgs>();
+      PublishSubject<({int pp, int? op})>();
 
   /// Тhe [Subject] where events sink to by calling [withPositionalAndNamed]
-  final _$withPositionalAndNamedEvent =
-      PublishSubject<_WithPositionalAndNamedEventArgs>();
+  final _$withPositionalAndNamedEvent = PublishSubject<({int pp, int np})>();
 
   /// Тhe [Subject] where events sink to by calling
   /// [withPositionalAndOptionalDefaultParam]
   final _$withPositionalAndOptionalDefaultParamEvent =
-      PublishSubject<_WithPositionalAndOptionalDefaultParamEventArgs>();
+      PublishSubject<({int pp, int op})>();
 
   /// Тhe [Subject] where events sink to by calling
   /// [withPositionalAndNamedDefaultParam]
   final _$withPositionalAndNamedDefaultParamEvent =
-      PublishSubject<_WithPositionalAndNamedDefaultParamEventArgs>();
+      PublishSubject<({int pp, int np})>();
 
   /// Тhe [Subject] where events sink to by calling [with2Positional]
-  final _$with2PositionalEvent = PublishSubject<_With2PositionalEventArgs>();
+  final _$with2PositionalEvent = PublishSubject<({int pp1, int pp2})>();
 
   /// Тhe [Subject] where events sink to by calling [with2Optional]
-  final _$with2OptionalEvent = PublishSubject<_With2OptionalEventArgs>();
+  final _$with2OptionalEvent = PublishSubject<({int? op1, int? op2})>();
 
   /// Тhe [Subject] where events sink to by calling [with2Named]
-  final _$with2NamedEvent = PublishSubject<_With2NamedEventArgs>();
+  final _$with2NamedEvent = PublishSubject<({int np1, int np2})>();
 
   /// Тhe [Subject] where events sink to by calling [with2OptionalDefault]
-  final _$with2OptionalDefaultEvent =
-      PublishSubject<_With2OptionalDefaultEventArgs>();
+  final _$with2OptionalDefaultEvent = PublishSubject<({int op1, int op2})>();
 
   /// Тhe [Subject] where events sink to by calling [with2NamedDefault]
-  final _$with2NamedDefaultEvent =
-      PublishSubject<_With2NamedDefaultEventArgs>();
+  final _$with2NamedDefaultEvent = PublishSubject<({int np1, int np2})>();
 
   /// Тhe [Subject] where events sink to by calling [with2PositionalAndOptional]
   final _$with2PositionalAndOptionalEvent =
-      PublishSubject<_With2PositionalAndOptionalEventArgs>();
+      PublishSubject<({int pp1, int pp2, int? op1})>();
 
   /// Тhe [Subject] where events sink to by calling [with2PositionalAndNamed]
   final _$with2PositionalAndNamedEvent =
-      PublishSubject<_With2PositionalAndNamedEventArgs>();
+      PublishSubject<({int pp1, int pp2, int np1})>();
 
   /// Тhe [Subject] where events sink to by calling [withPositionalAnd2Optional]
   final _$withPositionalAnd2OptionalEvent =
-      PublishSubject<_WithPositionalAnd2OptionalEventArgs>();
+      PublishSubject<({int pp, int? op1, int? op2})>();
 
   /// Тhe [Subject] where events sink to by calling [withPositionalAnd2Named]
   final _$withPositionalAnd2NamedEvent =
-      PublishSubject<_WithPositionalAnd2NamedEventArgs>();
+      PublishSubject<({int pp, int? np1, int? np2})>();
 
   /// Тhe [Subject] where events sink to by calling
   /// [withPositionalAnd1Named1Required]
   final _$withPositionalAnd1Named1RequiredEvent =
-      PublishSubject<_WithPositionalAnd1Named1RequiredEventArgs>();
+      PublishSubject<({int pp, int? np1, int np2})>();
 
   /// Тhe [Subject] where events sink to by calling [withTwoNamedRequired]
-  final _$withTwoNamedRequiredEvent =
-      PublishSubject<_WithTwoNamedRequiredEventArgs>();
+  final _$withTwoNamedRequiredEvent = PublishSubject<({int nr, bool nr2})>();
 
   /// Тhe [Subject] where events sink to by calling
   /// [withAnnotationAndPositional]
@@ -116,25 +112,22 @@ abstract class $CounterBloc extends RxBlocBase
   /// Тhe [Subject] where events sink to by calling
   /// [withAnnotationAnd2Positional]
   final _$withAnnotationAnd2PositionalEvent =
-      BehaviorSubject<_WithAnnotationAnd2PositionalEventArgs>.seeded(
-          const _WithAnnotationAnd2PositionalEventArgs(1, 2));
+      BehaviorSubject<({int pp1, int pp2})>.seeded(const (pp1: 1, pp2: 2));
 
   /// Тhe [Subject] where events sink to by calling
   /// [withSeededPositionalAndOptional]
   final _$withSeededPositionalAndOptionalEvent =
-      BehaviorSubject<_WithSeededPositionalAndOptionalEventArgs>.seeded(
-          const _WithSeededPositionalAndOptionalEventArgs(1, 2));
+      BehaviorSubject<({int pp, int? op})>.seeded(const (pp: 1, op: 2));
 
   /// Тhe [Subject] where events sink to by calling
   /// [withSeededTwoPositionalOptionalDefaultNull]
   final _$withSeededTwoPositionalOptionalDefaultNullEvent =
-      BehaviorSubject<_WithAnnotationAnd2PositionalEventArgs?>.seeded(null);
+      BehaviorSubject<({int? p1, int? p2})>.seeded(const (p1: null, p2: null));
 
   /// Тhe [Subject] where events sink to by calling
   /// [withSeededTwoPositionalOptional]
   final _$withSeededTwoPositionalOptionalEvent =
-      BehaviorSubject<_WithAnnotationAnd2PositionalEventArgs?>.seeded(
-          TestEnumParam.seed);
+      BehaviorSubject<({int? p1, int? p2})>.seeded(const (p1: 0, p2: 1));
 
   /// Тhe [Subject] where events sink to by calling [withSeededPositionalEnum]
   final _$withSeededPositionalEnumEvent =
@@ -142,8 +135,8 @@ abstract class $CounterBloc extends RxBlocBase
 
   /// Тhe [Subject] where events sink to by calling [withSeeded2PositionalEnum]
   final _$withSeeded2PositionalEnumEvent =
-      BehaviorSubject<_WithSeeded2PositionalEnumEventArgs>.seeded(
-          const _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed));
+      BehaviorSubject<({int pp1, TestEnumParam pp2})>.seeded(
+          const (pp1: 1, pp2: TestEnumParam.seed));
 
   /// The state of [isNotIgnored] implemented in [_mapToIsNotIgnoredState]
   late final Stream<bool> _isNotIgnoredState = _mapToIsNotIgnoredState();
@@ -181,9 +174,9 @@ abstract class $CounterBloc extends RxBlocBase
     int pp, [
     int? op,
   ]) =>
-      _$withPositionalAndOptionalEvent.add(_WithPositionalAndOptionalEventArgs(
-        pp,
-        op,
+      _$withPositionalAndOptionalEvent.add((
+        pp: pp,
+        op: op,
       ));
 
   @override
@@ -191,8 +184,8 @@ abstract class $CounterBloc extends RxBlocBase
     int pp, {
     required int np,
   }) =>
-      _$withPositionalAndNamedEvent.add(_WithPositionalAndNamedEventArgs(
-        pp,
+      _$withPositionalAndNamedEvent.add((
+        pp: pp,
         np: np,
       ));
 
@@ -201,10 +194,9 @@ abstract class $CounterBloc extends RxBlocBase
     int pp, [
     int op = 0,
   ]) =>
-      _$withPositionalAndOptionalDefaultParamEvent
-          .add(_WithPositionalAndOptionalDefaultParamEventArgs(
-        pp,
-        op,
+      _$withPositionalAndOptionalDefaultParamEvent.add((
+        pp: pp,
+        op: op,
       ));
 
   @override
@@ -212,9 +204,8 @@ abstract class $CounterBloc extends RxBlocBase
     int pp, {
     int np = 0,
   }) =>
-      _$withPositionalAndNamedDefaultParamEvent
-          .add(_WithPositionalAndNamedDefaultParamEventArgs(
-        pp,
+      _$withPositionalAndNamedDefaultParamEvent.add((
+        pp: pp,
         np: np,
       ));
 
@@ -223,9 +214,9 @@ abstract class $CounterBloc extends RxBlocBase
     int pp1,
     int pp2,
   ) =>
-      _$with2PositionalEvent.add(_With2PositionalEventArgs(
-        pp1,
-        pp2,
+      _$with2PositionalEvent.add((
+        pp1: pp1,
+        pp2: pp2,
       ));
 
   @override
@@ -233,9 +224,9 @@ abstract class $CounterBloc extends RxBlocBase
     int? op1,
     int? op2,
   ]) =>
-      _$with2OptionalEvent.add(_With2OptionalEventArgs(
-        op1,
-        op2,
+      _$with2OptionalEvent.add((
+        op1: op1,
+        op2: op2,
       ));
 
   @override
@@ -243,7 +234,7 @@ abstract class $CounterBloc extends RxBlocBase
     required int np1,
     required int np2,
   }) =>
-      _$with2NamedEvent.add(_With2NamedEventArgs(
+      _$with2NamedEvent.add((
         np1: np1,
         np2: np2,
       ));
@@ -253,9 +244,9 @@ abstract class $CounterBloc extends RxBlocBase
     int op1 = 0,
     int op2 = 0,
   ]) =>
-      _$with2OptionalDefaultEvent.add(_With2OptionalDefaultEventArgs(
-        op1,
-        op2,
+      _$with2OptionalDefaultEvent.add((
+        op1: op1,
+        op2: op2,
       ));
 
   @override
@@ -263,7 +254,7 @@ abstract class $CounterBloc extends RxBlocBase
     int np1 = 0,
     int np2 = 0,
   }) =>
-      _$with2NamedDefaultEvent.add(_With2NamedDefaultEventArgs(
+      _$with2NamedDefaultEvent.add((
         np1: np1,
         np2: np2,
       ));
@@ -274,11 +265,10 @@ abstract class $CounterBloc extends RxBlocBase
     int pp2, [
     int? op1,
   ]) =>
-      _$with2PositionalAndOptionalEvent
-          .add(_With2PositionalAndOptionalEventArgs(
-        pp1,
-        pp2,
-        op1,
+      _$with2PositionalAndOptionalEvent.add((
+        pp1: pp1,
+        pp2: pp2,
+        op1: op1,
       ));
 
   @override
@@ -287,9 +277,9 @@ abstract class $CounterBloc extends RxBlocBase
     int pp2, {
     required int np1,
   }) =>
-      _$with2PositionalAndNamedEvent.add(_With2PositionalAndNamedEventArgs(
-        pp1,
-        pp2,
+      _$with2PositionalAndNamedEvent.add((
+        pp1: pp1,
+        pp2: pp2,
         np1: np1,
       ));
 
@@ -299,11 +289,10 @@ abstract class $CounterBloc extends RxBlocBase
     int? op1,
     int? op2,
   ]) =>
-      _$withPositionalAnd2OptionalEvent
-          .add(_WithPositionalAnd2OptionalEventArgs(
-        pp,
-        op1,
-        op2,
+      _$withPositionalAnd2OptionalEvent.add((
+        pp: pp,
+        op1: op1,
+        op2: op2,
       ));
 
   @override
@@ -312,8 +301,8 @@ abstract class $CounterBloc extends RxBlocBase
     int? np1,
     int? np2,
   }) =>
-      _$withPositionalAnd2NamedEvent.add(_WithPositionalAnd2NamedEventArgs(
-        pp,
+      _$withPositionalAnd2NamedEvent.add((
+        pp: pp,
         np1: np1,
         np2: np2,
       ));
@@ -324,9 +313,8 @@ abstract class $CounterBloc extends RxBlocBase
     int? np1,
     required int np2,
   }) =>
-      _$withPositionalAnd1Named1RequiredEvent
-          .add(_WithPositionalAnd1Named1RequiredEventArgs(
-        pp,
+      _$withPositionalAnd1Named1RequiredEvent.add((
+        pp: pp,
         np1: np1,
         np2: np2,
       ));
@@ -336,7 +324,7 @@ abstract class $CounterBloc extends RxBlocBase
     required int nr,
     required bool nr2,
   }) =>
-      _$withTwoNamedRequiredEvent.add(_WithTwoNamedRequiredEventArgs(
+      _$withTwoNamedRequiredEvent.add((
         nr: nr,
         nr2: nr2,
       ));
@@ -350,32 +338,40 @@ abstract class $CounterBloc extends RxBlocBase
     int pp1,
     int pp2,
   ) =>
-      _$withAnnotationAnd2PositionalEvent
-          .add(_WithAnnotationAnd2PositionalEventArgs(
-        pp1,
-        pp2,
+      _$withAnnotationAnd2PositionalEvent.add((
+        pp1: pp1,
+        pp2: pp2,
       ));
 
   @override
   void withSeededPositionalAndOptional(
     int pp, [
-    int op,
+    int? op,
   ]) =>
-      _$withSeededPositionalAndOptionalEvent
-          .add(_WithSeededPositionalAndOptionalEventArgs(
-        pp,
-        op,
+      _$withSeededPositionalAndOptionalEvent.add((
+        pp: pp,
+        op: op,
       ));
 
   @override
-  void withSeededTwoPositionalOptionalDefaultNull(
-          _WithAnnotationAnd2PositionalEventArgs? op) =>
-      _$withSeededTwoPositionalOptionalDefaultNullEvent.add(op);
+  void withSeededTwoPositionalOptionalDefaultNull([
+    int? p1,
+    int? p2,
+  ]) =>
+      _$withSeededTwoPositionalOptionalDefaultNullEvent.add((
+        p1: p1,
+        p2: p2,
+      ));
 
   @override
-  void withSeededTwoPositionalOptional(
-          _WithAnnotationAnd2PositionalEventArgs? op) =>
-      _$withSeededTwoPositionalOptionalEvent.add(op);
+  void withSeededTwoPositionalOptional([
+    int? p1,
+    int? p2,
+  ]) =>
+      _$withSeededTwoPositionalOptionalEvent.add((
+        p1: p1,
+        p2: p2,
+      ));
 
   @override
   void withSeededPositionalEnum(TestEnumParam op) =>
@@ -386,9 +382,9 @@ abstract class $CounterBloc extends RxBlocBase
     int pp1,
     TestEnumParam pp2,
   ) =>
-      _$withSeeded2PositionalEnumEvent.add(_WithSeeded2PositionalEnumEventArgs(
-        pp1,
-        pp2,
+      _$withSeeded2PositionalEnumEvent.add((
+        pp1: pp1,
+        pp2: pp2,
       ));
 
   @override
@@ -439,254 +435,72 @@ abstract class $CounterBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withPositionalAndOptional] event
-class _WithPositionalAndOptionalEventArgs {
-  const _WithPositionalAndOptionalEventArgs(
-    this.pp, [
-    this.op,
-  ]);
+// ignore: unused_element
+typedef _WithPositionalAndOptionalEventArgs = ({int pp, int? op});
 
-  final int pp;
+// ignore: unused_element
+typedef _WithPositionalAndNamedEventArgs = ({int pp, int np});
 
-  final int? op;
-}
+// ignore: unused_element
+typedef _WithPositionalAndOptionalDefaultParamEventArgs = ({int pp, int op});
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withPositionalAndNamed] event
-class _WithPositionalAndNamedEventArgs {
-  const _WithPositionalAndNamedEventArgs(
-    this.pp, {
-    required this.np,
-  });
+// ignore: unused_element
+typedef _WithPositionalAndNamedDefaultParamEventArgs = ({int pp, int np});
 
-  final int pp;
+// ignore: unused_element
+typedef _With2PositionalEventArgs = ({int pp1, int pp2});
 
-  final int np;
-}
+// ignore: unused_element
+typedef _With2OptionalEventArgs = ({int? op1, int? op2});
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withPositionalAndOptionalDefaultParam] event
-class _WithPositionalAndOptionalDefaultParamEventArgs {
-  const _WithPositionalAndOptionalDefaultParamEventArgs(
-    this.pp, [
-    this.op = 0,
-  ]);
+// ignore: unused_element
+typedef _With2NamedEventArgs = ({int np1, int np2});
 
-  final int pp;
+// ignore: unused_element
+typedef _With2OptionalDefaultEventArgs = ({int op1, int op2});
 
-  final int op;
-}
+// ignore: unused_element
+typedef _With2NamedDefaultEventArgs = ({int np1, int np2});
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withPositionalAndNamedDefaultParam] event
-class _WithPositionalAndNamedDefaultParamEventArgs {
-  const _WithPositionalAndNamedDefaultParamEventArgs(
-    this.pp, {
-    this.np = 0,
-  });
+// ignore: unused_element
+typedef _With2PositionalAndOptionalEventArgs = ({int pp1, int pp2, int? op1});
 
-  final int pp;
+// ignore: unused_element
+typedef _With2PositionalAndNamedEventArgs = ({int pp1, int pp2, int np1});
 
-  final int np;
-}
+// ignore: unused_element
+typedef _WithPositionalAnd2OptionalEventArgs = ({int pp, int? op1, int? op2});
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.with2Positional] event
-class _With2PositionalEventArgs {
-  const _With2PositionalEventArgs(
-    this.pp1,
-    this.pp2,
-  );
+// ignore: unused_element
+typedef _WithPositionalAnd2NamedEventArgs = ({int pp, int? np1, int? np2});
 
-  final int pp1;
+// ignore: unused_element
+typedef _WithPositionalAnd1Named1RequiredEventArgs = ({
+  int pp,
+  int? np1,
+  int np2
+});
 
-  final int pp2;
-}
+// ignore: unused_element
+typedef _WithTwoNamedRequiredEventArgs = ({int nr, bool nr2});
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.with2Optional] event
-class _With2OptionalEventArgs {
-  const _With2OptionalEventArgs([
-    this.op1,
-    this.op2,
-  ]);
+// ignore: unused_element
+typedef _WithAnnotationAnd2PositionalEventArgs = ({int pp1, int pp2});
 
-  final int? op1;
+// ignore: unused_element
+typedef _WithSeededPositionalAndOptionalEventArgs = ({int pp, int? op});
 
-  final int? op2;
-}
+// ignore: unused_element
+typedef _WithSeededTwoPositionalOptionalDefaultNullEventArgs = ({
+  int? p1,
+  int? p2
+});
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.with2Named] event
-class _With2NamedEventArgs {
-  const _With2NamedEventArgs({
-    required this.np1,
-    required this.np2,
-  });
+// ignore: unused_element
+typedef _WithSeededTwoPositionalOptionalEventArgs = ({int? p1, int? p2});
 
-  final int np1;
-
-  final int np2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.with2OptionalDefault] event
-class _With2OptionalDefaultEventArgs {
-  const _With2OptionalDefaultEventArgs([
-    this.op1 = 0,
-    this.op2 = 0,
-  ]);
-
-  final int op1;
-
-  final int op2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.with2NamedDefault] event
-class _With2NamedDefaultEventArgs {
-  const _With2NamedDefaultEventArgs({
-    this.np1 = 0,
-    this.np2 = 0,
-  });
-
-  final int np1;
-
-  final int np2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.with2PositionalAndOptional] event
-class _With2PositionalAndOptionalEventArgs {
-  const _With2PositionalAndOptionalEventArgs(
-    this.pp1,
-    this.pp2, [
-    this.op1,
-  ]);
-
-  final int pp1;
-
-  final int pp2;
-
-  final int? op1;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.with2PositionalAndNamed] event
-class _With2PositionalAndNamedEventArgs {
-  const _With2PositionalAndNamedEventArgs(
-    this.pp1,
-    this.pp2, {
-    required this.np1,
-  });
-
-  final int pp1;
-
-  final int pp2;
-
-  final int np1;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withPositionalAnd2Optional] event
-class _WithPositionalAnd2OptionalEventArgs {
-  const _WithPositionalAnd2OptionalEventArgs(
-    this.pp, [
-    this.op1,
-    this.op2,
-  ]);
-
-  final int pp;
-
-  final int? op1;
-
-  final int? op2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withPositionalAnd2Named] event
-class _WithPositionalAnd2NamedEventArgs {
-  const _WithPositionalAnd2NamedEventArgs(
-    this.pp, {
-    this.np1,
-    this.np2,
-  });
-
-  final int pp;
-
-  final int? np1;
-
-  final int? np2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withPositionalAnd1Named1Required] event
-class _WithPositionalAnd1Named1RequiredEventArgs {
-  const _WithPositionalAnd1Named1RequiredEventArgs(
-    this.pp, {
-    this.np1,
-    required this.np2,
-  });
-
-  final int pp;
-
-  final int? np1;
-
-  final int np2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withTwoNamedRequired] event
-class _WithTwoNamedRequiredEventArgs {
-  const _WithTwoNamedRequiredEventArgs({
-    required this.nr,
-    required this.nr2,
-  });
-
-  final int nr;
-
-  final bool nr2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withAnnotationAnd2Positional] event
-class _WithAnnotationAnd2PositionalEventArgs {
-  const _WithAnnotationAnd2PositionalEventArgs(
-    this.pp1,
-    this.pp2,
-  );
-
-  final int pp1;
-
-  final int pp2;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withSeededPositionalAndOptional] event
-class _WithSeededPositionalAndOptionalEventArgs {
-  const _WithSeededPositionalAndOptionalEventArgs(
-    this.pp, [
-    this.op,
-  ]);
-
-  final int pp;
-
-  final int op;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [CounterBlocEvents.withSeeded2PositionalEnum] event
-class _WithSeeded2PositionalEnumEventArgs {
-  const _WithSeeded2PositionalEnumEventArgs(
-    this.pp1,
-    this.pp2,
-  );
-
-  final int pp1;
-
-  final TestEnumParam pp2;
-}
+// ignore: unused_element
+typedef _WithSeeded2PositionalEnumEventArgs = ({int pp1, TestEnumParam pp2});
 ''')
 @RxBloc()
 class CounterBloc {}
@@ -744,31 +558,27 @@ abstract class CounterBlocEvents {
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: _WithAnnotationAnd2PositionalEventArgs(1, 2),
+    seed: (pp1: 1, pp2: 2),
   )
   void withAnnotationAnd2Positional(int pp1, int pp2);
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: _WithSeededPositionalAndOptionalEventArgs(1, 2),
+    seed: (pp: 1, op: 2),
   )
-  void withSeededPositionalAndOptional(int pp, [int op]);
+  void withSeededPositionalAndOptional(int pp, [int? op]);
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: null,
+    seed: (p1: null, p2: null),
   )
-  void withSeededTwoPositionalOptionalDefaultNull(
-    _WithAnnotationAnd2PositionalEventArgs? op,
-  );
+  void withSeededTwoPositionalOptionalDefaultNull([int? p1, int? p2]);
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: TestEnumParam.seed,
+    seed: (p1: 0, p2: 1),
   )
-  void withSeededTwoPositionalOptional(
-    _WithAnnotationAnd2PositionalEventArgs? op,
-  );
+  void withSeededTwoPositionalOptional([int? p1, int? p2]);
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
@@ -778,7 +588,7 @@ abstract class CounterBlocEvents {
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: _WithSeeded2PositionalEnumEventArgs(1, TestEnumParam.seed),
+    seed: (pp1: 1, pp2: TestEnumParam.seed),
   )
   void withSeeded2PositionalEnum(int pp1, TestEnumParam pp2);
 }

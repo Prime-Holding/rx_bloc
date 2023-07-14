@@ -17,57 +17,54 @@ extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
                 isLoading: false,
               );
 
-        // If the data is still being fetched/loading, respond with isLoading as true
-        if (result is ResultLoading<PaginatedList<T>>) {
-          if (subjectValue._backupList.isNotEmpty) {
+        switch (result) {
+          // If the data is still being fetched/loading, respond with isLoading as true
+          case ResultLoading<PaginatedList<T>>():
+            if (subjectValue._backupList.isNotEmpty) {
+              return subjectValue.copyWith(
+                isLoading: true,
+                list: subjectValue._backupList,
+              );
+            }
+
             return subjectValue.copyWith(
               isLoading: true,
-              list: subjectValue._backupList,
+              isInitialized: false,
             );
-          }
 
-          return subjectValue.copyWith(
-            isLoading: true,
-            isInitialized: false,
-          );
-        }
-
-        // If an error occurred, pass this error down and mark loading as false
-        if (result is ResultError<PaginatedList<T>>) {
-          subjectValue._backupList.clear();
-          return subjectValue.copyWith(
-            isLoading: false,
-            isInitialized: false,
-            error: result.error,
-            list: [],
-          );
-        }
-
-        // If we got the resulting data successfully, merge and return it
-        if (result is ResultSuccess<PaginatedList<T>>) {
-          // Have we previously reset data. If yes clear the temporary data
-          final isReset = subjectValue._backupList.isNotEmpty;
-          final listData = isReset
-              ? <T>[...result.data.list]
-              : <T>[
-                  ...subjectValue.list,
-                  ...result.data.list,
-                ];
-          if (isReset) {
-            subjectValue.length = 0;
+          // If an error occurred, pass this error down and mark loading as false
+          case ResultError<PaginatedList<T>>():
             subjectValue._backupList.clear();
-          }
+            return subjectValue.copyWith(
+              isLoading: false,
+              isInitialized: false,
+              error: result.error,
+              list: [],
+            );
 
-          return subjectValue.copyWith(
-            totalCount: result.data.totalCount,
-            pageSize: result.data.pageSize,
-            list: listData,
-            isLoading: false,
-            isInitialized: true,
-          );
+          // If we got the resulting data successfully, merge and return it
+          case ResultSuccess<PaginatedList<T>>():
+            // Have we previously reset data. If yes clear the temporary data
+            final isReset = subjectValue._backupList.isNotEmpty;
+            final listData = isReset
+                ? <T>[...result.data.list]
+                : <T>[
+                    ...subjectValue.list,
+                    ...result.data.list,
+                  ];
+            if (isReset) {
+              subjectValue.length = 0;
+              subjectValue._backupList.clear();
+            }
+
+            return subjectValue.copyWith(
+              totalCount: result.data.totalCount,
+              pageSize: result.data.pageSize,
+              list: listData,
+              isLoading: false,
+              isInitialized: true,
+            );
         }
-
-        return subjectValue;
       }).distinct();
 }
 
