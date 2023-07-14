@@ -1,4 +1,0 @@
-{{> licence.dart }}
-
-class PinDataSource {
-}

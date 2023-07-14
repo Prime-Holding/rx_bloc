@@ -5,11 +5,11 @@ import 'dart:async';
 import 'package:local_session_timeout/local_session_timeout.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
+
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../services/app_pin_code_service.dart';
-import '../services/pin_biometrics_local_data_source.dart';
+import '../services/pin_biometrics_service.dart';
 
 part 'pin_bloc.rxb.g.dart';
 
@@ -61,10 +61,11 @@ abstract class PinBlocStates {
 
 @RxBloc()
 class PinBloc extends $PinBloc {
-  PinBloc(
-      {required this.service,
-      required this.biometrics,
-      required this.coordinatorBloc}) {
+  PinBloc({
+    required this.service,
+    required this.pinBiometricsService,
+    required this.coordinatorBloc,
+  }) {
     pinCodeType.connect().addTo(_compositeSubscription);
     deletedData.connect().addTo(_compositeSubscription);
     deleteStoredPinData.connect().addTo(_compositeSubscription);
@@ -75,14 +76,14 @@ class PinBloc extends $PinBloc {
 
   final CoordinatorBlocType coordinatorBloc;
   final PinCodeService service;
-  final BiometricsLocalDataSource biometrics;
+  final PinBiometricsService pinBiometricsService;
   final StreamController<SessionState> sessionStateController =
       StreamController<SessionState>();
 
   @override
   ConnectableStream<bool> _mapToBiometricsDisabledState() =>
       _$temporaryDisableBiometricsEvent
-          .switchMap((disable) => (biometrics as PinBiometricsLocalDataSource)
+          .switchMap((disable) => pinBiometricsService
               .temporaryDisableBiometrics(disable)
               .asResultStream())
           .setResultStateHandler(this)
@@ -113,9 +114,8 @@ class PinBloc extends $PinBloc {
   @override
   ConnectableStream<bool> _mapToAreBiometricsEnabledState() =>
       _$checkAreBiometricsEnabledEvent
-          .switchMap((_) => (biometrics as PinBiometricsLocalDataSource)
-              .areBiometricsEnabled()
-              .asResultStream())
+          .switchMap((_) =>
+              pinBiometricsService.areBiometricsEnabled().asResultStream())
           .setResultStateHandler(this)
           .whereSuccess()
           .publish();

@@ -31,8 +31,12 @@ import '../../lib_permissions/data_sources/remote/permissions_remote_data_source
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
 import '../../lib_pin_code/bloc/pin_bloc.dart';
+import '../../lib_pin_code/data_source/pin_biometrics_local_data_source.dart';
+import '../../lib_pin_code/data_source/pin_code_data_source.dart';
+import '../../lib_pin_code/repository/pin_biometrics_repository.dart';
+import '../../lib_pin_code/repository/pin_code_repository.dart';
 import '../../lib_pin_code/services/app_pin_code_service.dart';
-import '../../lib_pin_code/services/pin_biometrics_local_data_source.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/services/pin_biometrics_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
@@ -207,8 +211,14 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
       ),{{#enable_pin_code}}
       Provider<BiometricsLocalDataSource>(
           create: (context) => PinBiometricsLocalDataSource(
-          sharedPreferences:  context.read<SharedPreferencesInstance>()),
-        ),{{/enable_pin_code}}
+          context.read<SharedPreferencesInstance>()),
+        ),
+      Provider<PinCodeDataSource>(
+      create: (context) => PinCodeDataSource(
+      context.read<SharedPreferencesInstance>(),
+      context.read<FlutterSecureStorage>(),
+      ),
+      ),{{/enable_pin_code}}
       ];
 
   List<Provider> get _repositories => [
@@ -255,7 +265,19 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read<ErrorMapper>(),
             context.read<LanguageLocalDataSource>(),
           ),
-        ),{{/enable_change_language}}
+        ),{{/enable_change_language}} {{#enable_pin_code}}
+      Provider<PinCodeRepository>(
+      create: (context) => PinCodeRepository(
+      context.read<ErrorMapper>(),
+      context.read<PinCodeDataSource>(),
+      ),
+      ),
+      Provider<PinBiometricsRepository>(
+      create: (context) => PinBiometricsRepository(
+      context.read<BiometricsLocalDataSource>(),
+      ),
+      ),{{/enable_pin_code}}
+
       ];
 
   List<Provider> get _services => [
@@ -303,10 +325,14 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           ),
         ), {{#enable_pin_code}}
         Provider<PinCodeService>(
-          create: (context) => AppPinCodeService(
-            sharedPreferences: context.read<SharedPreferencesInstance>(),
-            storage: context.read<FlutterSecureStorage>(),
-          ),
+        create: (context) => AppPinCodeService(
+        context.read<PinCodeRepository>(),
+        ),
+        ),
+        Provider<PinBiometricsService>(
+        create: (context) => PinBiometricsService(
+        context.read<PinBiometricsRepository>(),
+        ),
         ),{{/enable_pin_code}}
       ];
 
@@ -338,7 +364,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         RxBlocProvider<PinBlocType>(
           create: (context) => PinBloc(
             service: context.read<PinCodeService>(),
-            biometrics: context.read<BiometricsLocalDataSource>(),
+            pinBiometricsService: context.read<PinBiometricsService>(),
             coordinatorBloc: context.read<CoordinatorBlocType>(),
           ),
         ),{{/enable_pin_code}}

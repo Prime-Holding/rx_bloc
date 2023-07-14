@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 class PinCodeArguments {
   const PinCodeArguments({
     required this.title,
