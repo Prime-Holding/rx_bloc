@@ -9,5 +9,5 @@ void main() async => await setupAndRunApp(
   (config) => {{project_name.pascalCase()}}(
     config: config,
   ),
-  environment: const EnvironmentConfig.production(),
+  environment: EnvironmentConfig.production,
 );
