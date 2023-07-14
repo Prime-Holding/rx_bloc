@@ -32,7 +32,7 @@ import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
 import '../../lib_pin_code/bloc/pin_bloc.dart';
 import '../../lib_pin_code/services/app_pin_code_service.dart';
-import '../../lib_pin_code/services/profile_local_data_source.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/services/pin_biometrics_local_data_source.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
@@ -200,9 +200,13 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<LanguageLocalDataSource>(
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
-        ),{{/enable_change_language}}{{#enable_pin_code}}
-        Provider<BiometricsLocalDataSource>(
-          create: (context) => ProfileLocalDataSource(
+        ),{{/enable_change_language}}
+      Provider<ProfileLocalDataSource>(
+         create: (context) =>
+        ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+      ),{{#enable_pin_code}}
+      Provider<BiometricsLocalDataSource>(
+          create: (context) => PinBiometricsLocalDataSource(
           sharedPreferences:  context.read<SharedPreferencesInstance>()),
         ),{{/enable_pin_code}}
       ];

@@ -16,7 +16,7 @@ import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; 
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
 import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
 import '../../lib_pin_code/bloc/pin_bloc.dart';
-import '../../lib_pin_code/views/verify_pin_code_page.dart';
+import '../../lib_pin_code/models/pin_code_arguments.dart';
 import '../../lib_router/blocs/router_bloc.dart';{{/enable_pin_code}}
 import '../../lib_router/router.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';

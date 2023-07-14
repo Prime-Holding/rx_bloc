@@ -4,8 +4,14 @@ part of '../router.dart';
   TypedGoRoute<NotificationsRoute>(
     path: RoutesPath.notifications,
   ),{{#enable_pin_code}}
-  TypedGoRoute<PinCodeRoute>(
-    path: RoutesPath.pinCode,
+  TypedGoRoute<CreatePinRoute>(
+  path: RoutesPath.createPin,
+  ),
+  TypedGoRoute<ConfirmPinRoute>(
+  path: RoutesPath.confirmPin,
+  ),
+  TypedGoRoute<UpdatePinRoute>(
+  path: RoutesPath.updatePin,
   ),{{/enable_pin_code}}
 ])
 @immutable
@@ -45,21 +51,61 @@ class NotificationsRoute extends GoRouteData implements RouteDataModel {
 }{{#enable_pin_code}}
 
 @immutable
-class PinCodeRoute extends GoRouteData implements RouteDataModel {
-  const PinCodeRoute();
+class CreatePinRoute extends GoRouteData implements RouteDataModel {
+  const CreatePinRoute();
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-      MaterialPage(
-        key: state.pageKey,
-        child: PinCodePage(
-          title: state.extra.toString(),
-        ),
-      );
+    MaterialPage(
+    key: state.pageKey,
+    child: CreatePinPage(
+    pinCodeArguments: state.extra as PinCodeArguments,
+    ),
+  );
 
   @override
   String get permissionName => RouteModel.pinCode.permissionName;
 
   @override
   String get routeLocation => location;
+}
+
+@immutable
+class ConfirmPinRoute extends GoRouteData implements RouteDataModel {
+  const ConfirmPinRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+    MaterialPage(
+    key: state.pageKey,
+    child: ConfirmPinPage(
+    pinCodeArguments: state.extra as PinCodeArguments,
+    ),
+  );
+
+  @override
+  String get permissionName => RouteModel.pinCode.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+
+@immutable
+class UpdatePinRoute extends GoRouteData implements RouteDataModel {
+  const UpdatePinRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+    MaterialPage(
+    key: state.pageKey,
+    child: UpdatePinPage(
+    pinCodeArguments: state.extra as PinCodeArguments,
+  ),
+);
+
+@override
+String get permissionName => RouteModel.pinCode.permissionName;
+
+@override
+String get routeLocation => location;
 }{{/enable_pin_code}}

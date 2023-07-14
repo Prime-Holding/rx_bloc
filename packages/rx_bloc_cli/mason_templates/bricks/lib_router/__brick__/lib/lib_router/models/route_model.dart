@@ -35,8 +35,8 @@ enum RouteModel {
     permissionName: RoutePermissions.notifications,
   ),{{#enable_pin_code}}
   pinCode(
-    pathName: RoutesPath.pinCode,
-    fullPath: '/pinCode',
+    pathName: RoutesPath.verifyPinCode,
+    fullPath: '/verifyPinCode',
     permissionName: RoutePermissions.pinCode,
   ),{{/enable_pin_code}}
   login(

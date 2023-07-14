@@ -10,6 +10,7 @@ import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/pin_bloc.dart';
+import '../models/pin_code_arguments.dart';
 
 class VerifyPinCodePage extends StatefulWidget {
   const VerifyPinCodePage({
@@ -142,14 +143,3 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   }
 }
 
-class PinCodeArguments {
-  const PinCodeArguments({
-    required this.title,
-    this.isSessionTimeout = false,
-    this.onReturn,
-  });
-
-  final String title;
-  final bool isSessionTimeout;
-  final Function? onReturn;
-}

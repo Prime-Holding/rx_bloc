@@ -39,7 +39,7 @@ abstract class RouterBlocEvents {
   /// Uses [GoRouter.pushReplacement()] to replace the given location in the page
   /// stack and always use a new page key. The method accepts an optional [extra]
   /// object, which can be passed as part of the navigation.
-  void pushReplacement(RouteDataModel route, {Object? extra});
+  void pushReplace(RouteDataModel route, {Object? extra});
 
   /// Uses [GoRouter.pop()] to pop from the given location to the previous page
   /// from the page stack with an optional [result] object which can be returned
@@ -86,7 +86,7 @@ class RouterBloc extends $RouterBloc {
         _$goToLocationEvent.doOnData(_router.go).asResultStream(),
         _$pushReplaceEvent
             .throttleTime(const Duration(seconds: 1))
-            .switchMap((routeData) => _pushReplacement(routeData).asResultStream()),
+            .switchMap((routeData) => _pushReplace(routeData).asResultStream()),
         _$popEvent.doOnData((routeData) => _pop(routeData)).asResultStream(),
       ]).setErrorStateHandler(this).whereSuccess().publish();
 
@@ -100,7 +100,7 @@ class RouterBloc extends $RouterBloc {
     await _router.push(routeData.route.routeLocation, extra: routeData.extra);
   }
 
-  Future<void> _pushReplacement(_PushReplacementEventArgs routeData) async {
+  Future<void> _pushReplace(_PushReplaceEventArgs routeData) async {
     await _permissionsService.checkPermission(routeData.route.permissionName);
     _router.pushReplacement(routeData.route.routeLocation,
         extra: routeData.extra);

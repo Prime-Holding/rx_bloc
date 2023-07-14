@@ -13,7 +13,7 @@ import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}{{#enable_pin_code}}
 import '../../lib_pin_code/bloc/pin_bloc.dart';
-  import '../../lib_pin_code/views/verify_pin_code_page.dart';{{/enable_pin_code}}
+  import '../../lib_pin_code/models/pin_code_arguments.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/profile_bloc.dart';

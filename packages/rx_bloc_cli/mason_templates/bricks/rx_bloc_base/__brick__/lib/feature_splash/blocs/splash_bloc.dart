@@ -6,7 +6,7 @@ import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../lib_auth/services/auth_service.dart';{{#enable_pin_code}}
-import '../../lib_pin_code/views/verify_pin_code_page.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/models/pin_code_arguments.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/splash_service.dart';

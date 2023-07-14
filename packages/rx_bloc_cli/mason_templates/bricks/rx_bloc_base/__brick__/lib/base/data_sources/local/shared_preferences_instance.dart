@@ -13,13 +13,7 @@ class SharedPreferencesInstance {
       (await _instance).getString(key);
 
   Future<bool> setString(String key, String value) async =>
-      (await _instance).setString(key, value);{{#enable_pin_code}}
-
-  Future<bool?> getBool(String key) async =>
-      (await _instance).getBool(key);
-
-  Future<bool> setBool(String key, bool value) async =>
-      (await _instance).setBool(key, value);{{/enable_pin_code}}
+      (await _instance).setString(key, value);
 
   Future<bool> remove(String key) async => (await _instance).remove(key);
 

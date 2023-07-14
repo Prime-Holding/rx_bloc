@@ -11,7 +11,7 @@ import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../bloc/pin_bloc.dart';
-import 'verify_pin_code_page.dart';
+import '../models/pin_code_arguments.dart';
 
 class CreatePinPage extends StatefulWidget {
   const CreatePinPage({

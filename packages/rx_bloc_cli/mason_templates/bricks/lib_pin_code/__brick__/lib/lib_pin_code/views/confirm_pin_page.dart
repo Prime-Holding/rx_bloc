@@ -9,7 +9,7 @@ import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../app_extensions.dart';
 import '../bloc/pin_bloc.dart';
-import 'verify_pin_code_page.dart';
+import '../models/pin_code_arguments.dart';
 
 class ConfirmPinPage extends StatefulWidget {
   const ConfirmPinPage({

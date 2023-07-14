@@ -5,8 +5,8 @@ import '../../base/data_sources/local/shared_preferences_instance.dart';
 
 /// You have to implement and provide a [BiometricsLocalDataSource], you can
 /// store the value of [_areBiometricsEnabled], for example in [SharedPreferences]
-class ProfileLocalDataSource implements BiometricsLocalDataSource {
-  ProfileLocalDataSource({
+class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
+  PinBiometricsLocalDataSource({
     required this.sharedPreferences,
   });
 

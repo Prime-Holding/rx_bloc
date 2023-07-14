@@ -9,7 +9,7 @@ import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../services/app_pin_code_service.dart';
-import '../services/profile_local_data_source.dart';
+import '../services/pin_biometrics_local_data_source.dart';
 
 part 'pin_bloc.rxb.g.dart';
 
@@ -82,7 +82,7 @@ class PinBloc extends $PinBloc {
   @override
   ConnectableStream<bool> _mapToBiometricsDisabledState() =>
       _$temporaryDisableBiometricsEvent
-          .switchMap((disable) => (biometrics as ProfileLocalDataSource)
+          .switchMap((disable) => (biometrics as PinBiometricsLocalDataSource)
               .temporaryDisableBiometrics(disable)
               .asResultStream())
           .setResultStateHandler(this)
@@ -113,7 +113,7 @@ class PinBloc extends $PinBloc {
   @override
   ConnectableStream<bool> _mapToAreBiometricsEnabledState() =>
       _$checkAreBiometricsEnabledEvent
-          .switchMap((_) => (biometrics as ProfileLocalDataSource)
+          .switchMap((_) => (biometrics as PinBiometricsLocalDataSource)
               .areBiometricsEnabled()
               .asResultStream())
           .setResultStateHandler(this)
