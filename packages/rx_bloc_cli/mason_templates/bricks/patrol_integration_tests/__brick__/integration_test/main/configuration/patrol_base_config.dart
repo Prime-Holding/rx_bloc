@@ -9,10 +9,11 @@ class PatrolBaseConfig {
   /// parameters section. More info -> at the class documentation.
   PatrolTesterConfig customPatrolTesterConfig() {
     PatrolTesterConfig patrolTesterConfig = const PatrolTesterConfig(
-        existsTimeout: ConfigParams.generalExistsTimeout,
-        visibleTimeout: ConfigParams.generalVisibleTimeout,
-        settleTimeout: ConfigParams.generalSettleTimeout,
-        andSettle: ConfigParams.generalAndSettle);
+      existsTimeout: ConfigParams.generalExistsTimeout,
+      visibleTimeout: ConfigParams.generalVisibleTimeout,
+      settleTimeout: ConfigParams.generalSettleTimeout,
+      settlePolicy: ConfigParams.settlePolicy,
+    );
     return patrolTesterConfig;
   }
 

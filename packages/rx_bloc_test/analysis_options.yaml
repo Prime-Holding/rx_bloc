@@ -1,10 +1,10 @@
 analyzer:
-  strong-mode:
-    implicit-casts: false
   errors:
     close_sinks: ignore
   exclude:
     - lib/src/bloc/loading_bloc.rxb.g.dart
+  language:
+    strict-casts: true
 
 linter:
   rules:

@@ -120,7 +120,7 @@ class AppRouter {
     }
 
     final pathInfo =
-        router.routeInformationParser.matcher.findMatch(state.location);
+        router.routeInformationParser.configuration.findMatch(state.location);
 
     final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
 
