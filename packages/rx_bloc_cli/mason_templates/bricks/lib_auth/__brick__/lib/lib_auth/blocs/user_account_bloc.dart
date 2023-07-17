@@ -67,7 +67,8 @@ class UserAccountBloc extends $UserAccountBloc {
       ]){{#enable_pin_code}}
       .doOnData((isUserLoggedIn) {
         if (!isUserLoggedIn) {
-           return _coordinatorBloc.events.deleteStoredPin();
+          _coordinatorBloc.events.deleteStoredPin();
+          _coordinatorBloc.events.checkIsPinCreated();
         }
       }){{/enable_pin_code}}
      .publishReplay(maxSize: 1);

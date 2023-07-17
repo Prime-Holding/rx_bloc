@@ -77,7 +77,7 @@ class PinBloc extends $PinBloc {
   final CoordinatorBlocType coordinatorBloc;
   final PinCodeService service;
   final PinBiometricsService pinBiometricsService;
-  final StreamController<SessionState> sessionStateController =
+  final StreamController<SessionState> _sessionStateController =
       StreamController<SessionState>();
 
   @override
@@ -103,12 +103,12 @@ class PinBloc extends $PinBloc {
 
   @override
   ConnectableStream<SessionState> _mapToSessionStateState() =>
-      sessionStateController.stream.publish();
+      _sessionStateController.stream.publish();
 
   @override
   ConnectableStream<SessionState> _mapToSessionValueState() =>
       _$setSessionStateEvent.doOnData((event) {
-        sessionStateController.add(event);
+        _sessionStateController.add(event);
       }).publish();
 
   @override
@@ -151,7 +151,7 @@ class PinBloc extends $PinBloc {
 
   @override
   void dispose() {
-    sessionStateController.close();
+    _sessionStateController.close();
     super.dispose();
   }
 }
