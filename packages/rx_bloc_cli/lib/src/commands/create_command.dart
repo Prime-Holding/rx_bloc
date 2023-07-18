@@ -544,7 +544,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Patrol integration tests', arguments.enablePatrolTests);
     _usingLog('Realtime communication',
         arguments.realtimeCommunicationType != _RealtimeCommunicationType.none);
-    _usingLog('Enable Pin Code', arguments.enablePinCode);
+    _usingLog('Pin Code', arguments.enablePinCode);
   }
 
   /// Shows a delayed log with a success symbol in front of it

@@ -19,7 +19,6 @@
 15. [Patrol integration tests](#patrol-integration-tests)
 16. [Realtime communication](#realtime-communication)
 17. [Feature OTP](#feature-otp)
-18. [Pin Code](#pin-code)
 19. [Next Steps](#next-steps)
 
 ## Getting started
@@ -64,7 +63,6 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                 |  
 | `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                            |
 | `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                  |
-| `lib/lib_pin_code`                           | Contains a pin code page, that can help you build pin code screens with biometrics workflows for your app.                                     |
 
 ## Architecture
 
@@ -453,9 +451,6 @@ The brick contains widgets for entering pin codes, pasting them, resend logic an
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 
 
-## Feature Pin Code
-The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
-The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 
 ## Next Steps
 
