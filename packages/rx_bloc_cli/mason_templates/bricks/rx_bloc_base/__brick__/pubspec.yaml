@@ -30,8 +30,7 @@ dependencies: {{#enable_dev_menu}}
   http: ^1.1.0 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.8.1
-  jwt_decoder: ^2.0.1{{#enable_feature_otp}}
-  pinput: ^2.2.31{{/enable_feature_otp}}{{#enable_pin_code}}
+  jwt_decoder: ^2.0.1{{#enable_pin_code}}
   local_session_timeout: ^2.3.0{{/enable_pin_code}}
   provider: ^6.0.5
   retrofit: ^4.0.1
@@ -43,9 +42,9 @@ dependencies: {{#enable_dev_menu}}
   shelf_router: ^1.1.4 # This package is used for the local server (if not used, can be removed)
   shelf_static: ^1.1.2 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
   sign_in_with_apple: ^5.0.0{{/enable_social_logins}}
-  widget_toolkit: ^0.0.1-dev9{{#enable_feature_otp}}
+  widget_toolkit: ^0.0.1-dev9 {{#enable_pin_code}}
+  widget_toolkit_biometrics: ^0.0.1-dev4 {{/enable_pin_code}} {{#enable_feature_otp}}
   widget_toolkit_otp: ^0.0.1-dev4{{/enable_feature_otp}}{{#enable_pin_code}}
-  widget_toolkit_biometrics: ^0.0.1-dev4
   widget_toolkit_pin: ^0.0.1-dev2{{/enable_pin_code}}
 
 dev_dependencies:
@@ -106,12 +105,12 @@ r_flutter:
     - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}
     - name: feature_login
-    - name: feature_notifications
+    - name: feature_notifications{{#enable_feature_otp}}
+    - name: feature_otp{{/enable_feature_otp}}
     - name: feature_profile{{#enable_feature_widget_toolkit}}
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
-    - name: field
-    - name: lib_router{{#enable_change_language}}
+    - name: field {{#enable_change_language}}
     - name: lib_change_language{{/enable_change_language}}{{#enable_dev_menu}}
-    - name: lib_dev_menu{{/enable_dev_menu}}{{#enable_feature_otp}}
-    - name: feature_otp{{/enable_feature_otp}}{{#enable_pin_code}}
+    - name: lib_dev_menu{{/enable_dev_menu}}{{#enable_pin_code}}
     - name: lib_pin_code{{/enable_pin_code}}
+    - name: lib_router

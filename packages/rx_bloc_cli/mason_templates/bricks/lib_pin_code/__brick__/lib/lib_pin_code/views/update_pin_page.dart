@@ -16,7 +16,7 @@ import '../models/pin_code_arguments.dart';
 class UpdatePinPage extends StatefulWidget {
   const UpdatePinPage({
     this.pinCodeArguments = const PinCodeArguments(
-      title: 'Update Pin Page',
+      title: '',
       isSessionTimeout: false,
     ),
     super.key,
@@ -48,7 +48,11 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
           },
           child: Scaffold(
             appBar: AppBar(
-              title: Text(widget.pinCodeArguments.title),
+              title: Text(
+                widget.pinCodeArguments.title.isEmpty
+                ? context.l10n.libPinCode.updatePinPage
+                    : widget.pinCodeArguments.title,
+                ),
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(

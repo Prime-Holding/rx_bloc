@@ -41,9 +41,9 @@ class PinCodeDataSource {
   }
 
   Future<void> deleteSavedData() async {
-    var enabledFromBefore = await _sharedPreferences
+    final enabledFromBefore = await _sharedPreferences
         .getString(_areBiometricsEnabledWhileUsingTheApp);
-    var current = await _sharedPreferences.getBool(_areBiometricsEnabled);
+    final current = await _sharedPreferences.getBool(_areBiometricsEnabled);
     if ((enabledFromBefore == 'true' && current != true)) {
       await _sharedPreferences.setString(
           _areBiometricsEnabledWhileUsingTheApp, current.toString());
@@ -73,13 +73,12 @@ class PinCodeDataSource {
       await _sharedPreferences.setBool(_isAuthenticatedWithBiometrics, false);
       return false;
     }
-    var storedPin = await _storage.read(key: _storedPin);
+    final storedPin = await _storage.read(key: _storedPin);
     if (storedPin != null) {
       return true;
     }
-    var isFirst = await _sharedPreferences.getBool(_isForFirstTime); //
-    isFirst = isFirst ?? true;
-    var firstPin = await _storage.read(key: _firstPin);
+    final isFirst = await _sharedPreferences.getBool(_isForFirstTime) ?? true;
+    final firstPin = await _storage.read(key: _firstPin);
     if (isFirst && firstPin == null && !_isForFirstTimeExecuted) {
       await _sharedPreferences.setBool(_isForFirstTime, true);
       _isForFirstTimeExecuted = true;
@@ -89,7 +88,7 @@ class PinCodeDataSource {
   }
 
   Future<bool> checkIsPinCreated() async {
-    var storedPin = await _storage.read(key: _storedPin);
+    final storedPin = await _storage.read(key: _storedPin);
     if (storedPin != null) {
       return true;
     }
@@ -103,7 +102,7 @@ class PinCodeDataSource {
   Future<int> getPinLength() async => 3;
 
   Future<bool> verifyPinCode(String pinCode) async {
-    var currentPin = await _storage.read(key: _storedPin);
+    final currentPin = await _storage.read(key: _storedPin);
     final isAuthenticated =
         await _sharedPreferences.getBool(_isAuthenticatedWithBiometrics);
     if (currentPin == null) {
@@ -121,7 +120,7 @@ class PinCodeDataSource {
       // Update pin process
       if (isAuthenticated != true) {
         if (_isVerificationPinCorrect == null) {
-          var first = await _storage.read(key: _firstPin);
+          final first = await _storage.read(key: _firstPin);
           if (first == null) {
             await _storage.write(key: _secondPin, value: null);
             await _sharedPreferences.setBool(_isForFirstTime, true);
@@ -157,8 +156,8 @@ class PinCodeDataSource {
         }
       }
       if (_isChangePin) {
-        var isFirst = await _sharedPreferences.getBool(_isForFirstTime);
-        isFirst = isFirst ?? true;
+        final isFirst = await _sharedPreferences.getBool(_isForFirstTime)
+          ?? true;
         if (isFirst) {
           await _sharedPreferences.setBool(_isForFirstTime, false);
           await _storage.write(key: _firstPin, value: pinCode);
@@ -204,8 +203,5 @@ class PinCodeDataSource {
     return false;
   }
 
-  Future<String?> getPinCode() async {
-    var currentPin = await _storage.read(key: _storedPin);
-    return currentPin;
-  }
+  Future<String?> getPinCode() async => await _storage.read(key: _storedPin);
 }

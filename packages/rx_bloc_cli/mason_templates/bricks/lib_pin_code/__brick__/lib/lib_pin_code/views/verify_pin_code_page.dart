@@ -15,7 +15,7 @@ import '../models/pin_code_arguments.dart';
 class VerifyPinCodePage extends StatefulWidget {
   const VerifyPinCodePage({
     this.pinCodeArguments = const PinCodeArguments(
-      title: 'Verify Pin Code Page',
+      title: '',
       isSessionTimeout: false,
     ),
     super.key,
@@ -47,7 +47,11 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
           },
           child: Scaffold(
             appBar: AppBar(
-              title: Text(widget.pinCodeArguments.title),
+              title: Text(
+                widget.pinCodeArguments.title.isEmpty
+                ? context.l10n.libPinCode.verifyPinCodePage
+                    : widget.pinCodeArguments.title,
+                ),
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
@@ -88,7 +92,6 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
         context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
               isPinCodeConfirmed: true,
             );
-        return;
       }
     }
   }

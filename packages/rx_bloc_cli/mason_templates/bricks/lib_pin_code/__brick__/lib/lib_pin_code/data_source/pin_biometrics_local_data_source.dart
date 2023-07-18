@@ -36,7 +36,7 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
     if (onRestart == null) {
       // If biometrics were saved before while using the app, set the previous
       // value once
-      var areBiometricsEnabled =
+      final areBiometricsEnabled =
           await _sharedPreferences.getBool(_areBiometricsEnabled);
       if (areBiometricsEnabled == true) {
         await _sharedPreferences.setString(

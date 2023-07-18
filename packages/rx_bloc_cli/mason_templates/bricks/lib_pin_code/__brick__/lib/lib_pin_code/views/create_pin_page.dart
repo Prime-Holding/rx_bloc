@@ -16,7 +16,7 @@ import '../models/pin_code_arguments.dart';
 class CreatePinPage extends StatefulWidget {
   const CreatePinPage({
     this.pinCodeArguments = const PinCodeArguments(
-      title: 'Create Pin Page',
+      title: '',
       isSessionTimeout: false,
     ),
     super.key,
@@ -60,7 +60,11 @@ class _CreatePinPageState extends State<CreatePinPage> {
           },
           child: Scaffold(
             appBar: AppBar(
-              title: Text(widget.pinCodeArguments.title),
+              title: Text(
+              widget.pinCodeArguments.title.isEmpty
+              ? context.l10n.libPinCode.createPinPage
+                  : widget.pinCodeArguments.title,
+              ),
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(

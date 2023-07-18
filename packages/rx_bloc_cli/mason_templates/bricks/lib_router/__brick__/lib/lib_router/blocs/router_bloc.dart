@@ -102,7 +102,7 @@ class RouterBloc extends $RouterBloc {
 
   Future<void> _pushReplace(_PushReplaceEventArgs routeData) async {
     await _permissionsService.checkPermission(routeData.route.permissionName);
-    _router.pushReplacement(routeData.route.routeLocation,
+    await _router.pushReplacement(routeData.route.routeLocation,
         extra: routeData.extra);
   }
 

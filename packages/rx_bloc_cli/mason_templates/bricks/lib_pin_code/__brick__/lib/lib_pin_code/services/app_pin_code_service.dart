@@ -1,6 +1,5 @@
 {{> licence.dart }}
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../repository/pin_code_repository.dart';

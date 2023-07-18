@@ -14,7 +14,7 @@ import '../models/pin_code_arguments.dart';
 class ConfirmPinPage extends StatefulWidget {
   const ConfirmPinPage({
     this.pinCodeArguments = const PinCodeArguments(
-      title: 'Confirm Pin Page',
+      title: '',
       isSessionTimeout: false,
     ),
     super.key,
@@ -53,7 +53,11 @@ class _ConfirmPinPageState extends State<ConfirmPinPage> {
           },
           child: Scaffold(
             appBar: AppBar(
-              title: Text(widget.pinCodeArguments.title),
+              title: Text(
+                widget.pinCodeArguments.title.isEmpty
+                ? context.l10n.libPinCode.confirmPinPage
+                    : widget.pinCodeArguments.title,
+                ),
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
