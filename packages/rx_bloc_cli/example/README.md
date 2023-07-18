@@ -450,11 +450,16 @@ After this is done the event stream exposed by `SseService` can be used by any B
 ## Feature OTP
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
-For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
+For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp) and
+[widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
 
 ## Feature Pin Code
-The `lib_pin_code` brick contains a number of useful widgets that can help you with building pin code screens or workflows for your app.  
-The brick contains widgets for entering and deleting a pin code and biometrics authentication.
+The `lib_pin_code` brick contains a number of useful widgets that can help you with building pin 
+code screens or workflows for your app. The brick contains widgets for entering and deleting a pin 
+code and biometrics authentication. After the pin code is saved, there is a stream listener, which
+starts listening for user inactivity and app lost focus timeout. The default durations can be 
+changed from the `SessionConfig` object, which is in the `__MyMaterialAppState` class. For more
+information please visit [local_session_timeout](https://pub.dev/packages/local_session_timeout)
 
 ## Next Steps
 
