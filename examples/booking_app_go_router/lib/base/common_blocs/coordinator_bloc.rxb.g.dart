@@ -23,7 +23,8 @@ abstract class $CoordinatorBloc extends RxBlocBase
   final _$authenticatedEvent = PublishSubject<bool>();
 
   /// Тhe [Subject] where events sink to by calling [errorLogged]
-  final _$errorLoggedEvent = PublishSubject<_ErrorLoggedEventArgs>();
+  final _$errorLoggedEvent =
+      PublishSubject<({ErrorModel error, String? stackTrace})>();
 
   @override
   void authenticated({required bool isAuthenticated}) =>
@@ -34,7 +35,7 @@ abstract class $CoordinatorBloc extends RxBlocBase
     required ErrorModel error,
     String? stackTrace,
   }) =>
-      _$errorLoggedEvent.add(_ErrorLoggedEventArgs(
+      _$errorLoggedEvent.add((
         error: error,
         stackTrace: stackTrace,
       ));
@@ -54,15 +55,5 @@ abstract class $CoordinatorBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [CoordinatorEvents.errorLogged] event
-class _ErrorLoggedEventArgs {
-  const _ErrorLoggedEventArgs({
-    required this.error,
-    this.stackTrace,
-  });
-
-  final ErrorModel error;
-
-  final String? stackTrace;
-}
+// ignore: unused_element
+typedef _ErrorLoggedEventArgs = ({ErrorModel error, String? stackTrace});

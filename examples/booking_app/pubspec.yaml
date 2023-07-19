@@ -55,10 +55,6 @@ dev_dependencies:
 
 
 dependency_overrides:
-  rflutter_alert:
-    git:
-      url: https://github.com/kent2508/rflutter_alert.git
-      ref: master
   animated_stream_list:
     git:
       url: https://github.com/nilsreichardt/animated-stream-list.git
@@ -67,28 +63,7 @@ dependency_overrides:
     git:
       url: https://github.com/StanevPrime/appbar_textfield.git
       ref: null-safety
-  badges: 3.0.2
-  favorites_advanced_base:
-    path: ../favorites_advanced/favorites_advanced_base
-  flutter_rx_bloc:
-    path: ../../packages/flutter_rx_bloc
-  rx_bloc:
-    path: ../../packages/rx_bloc
-  rx_bloc_generator:
-    path: ../../packages/rx_bloc_generator
-  rx_bloc_list:
-    path: ../../packages/rx_bloc_list
-  rx_bloc_test:
-    path: ../../packages/rx_bloc_test
 
-  skeleton_text:
-    git:
-      url: https://github.com/StanevPrime/Skeleton-Text.git
-      ref: feature/null-safety
-  smooth_star_rating:
-    git:
-      url: https://github.com/bhavin-concetto/smoothratingbar.git
-      ref: dev
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

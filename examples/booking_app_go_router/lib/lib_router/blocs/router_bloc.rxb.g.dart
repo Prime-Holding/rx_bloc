@@ -20,13 +20,14 @@ abstract class $RouterBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [goTo]
-  final _$goToEvent = PublishSubject<_GoToEventArgs>();
+  final _$goToEvent = PublishSubject<({RouteDataModel route, Object? extra})>();
 
   /// Тhe [Subject] where events sink to by calling [goToLocation]
   final _$goToLocationEvent = PublishSubject<String>();
 
   /// Тhe [Subject] where events sink to by calling [pushTo]
-  final _$pushToEvent = PublishSubject<_PushToEventArgs>();
+  final _$pushToEvent =
+      PublishSubject<({RouteDataModel route, Object? extra})>();
 
   /// The state of [errors] implemented in [_mapToErrorsState]
   late final Stream<ErrorModel> _errorsState = _mapToErrorsState();
@@ -37,11 +38,11 @@ abstract class $RouterBloc extends RxBlocBase
 
   @override
   void goTo(
-    RouteData route, {
+    RouteDataModel route, {
     Object? extra,
   }) =>
-      _$goToEvent.add(_GoToEventArgs(
-        route,
+      _$goToEvent.add((
+        route: route,
         extra: extra,
       ));
 
@@ -50,11 +51,11 @@ abstract class $RouterBloc extends RxBlocBase
 
   @override
   void pushTo(
-    RouteData route, {
+    RouteDataModel route, {
     Object? extra,
   }) =>
-      _$pushToEvent.add(_PushToEventArgs(
-        route,
+      _$pushToEvent.add((
+        route: route,
         extra: extra,
       ));
 
@@ -84,28 +85,8 @@ abstract class $RouterBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [RouterBlocEvents.goTo] event
-class _GoToEventArgs {
-  const _GoToEventArgs(
-    this.route, {
-    this.extra,
-  });
+// ignore: unused_element
+typedef _GoToEventArgs = ({RouteDataModel route, Object? extra});
 
-  final RouteData route;
-
-  final Object? extra;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [RouterBlocEvents.pushTo] event
-class _PushToEventArgs {
-  const _PushToEventArgs(
-    this.route, {
-    this.extra,
-  });
-
-  final RouteData route;
-
-  final Object? extra;
-}
+// ignore: unused_element
+typedef _PushToEventArgs = ({RouteDataModel route, Object? extra});

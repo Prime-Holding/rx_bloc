@@ -55,10 +55,10 @@ packages:
     dependency: "direct main"
     description:
       name: badges
-      sha256: "461031a60efbb95276f52107f63d5d45008b5ca1eb7f8ca440cadda9ec2143b0"
+      sha256: "6e7f3ec561ec08f47f912cfe349d4a1707afdc8dda271e17b046aa6d42c89e77"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "3.1.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -378,10 +378,11 @@ packages:
   flutter_rx_bloc:
     dependency: "direct main"
     description:
-      path: "../../packages/flutter_rx_bloc"
-      relative: true
-    source: path
-    version: "6.0.0"
+      name: flutter_rx_bloc
+      sha256: "1c37acd5e22a84de1d87202d86accc6e049b933b00531df81350da6fb718f033"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -715,40 +716,43 @@ packages:
   rflutter_alert:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: c80eee5ffbef4fe05bb34d3366f5bf597f9cc74f
-      url: "https://github.com/kent2508/rflutter_alert.git"
-    source: git
-    version: "2.0.5"
+      name: rflutter_alert
+      sha256: "8ff35e3f9712ba24c746499cfa95bf320385edf38901a1a4eab0fe555867f66c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   rx_bloc:
     dependency: "direct main"
     description:
-      path: "../../packages/rx_bloc"
-      relative: true
-    source: path
-    version: "5.0.0"
+      name: rx_bloc
+      sha256: "22919d1c30b64702c63ff67f0c9a6ca615e43e637022544c6d14f0297fd37afa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
-      path: "../../packages/rx_bloc_generator"
-      relative: true
-    source: path
-    version: "7.0.0"
+      name: rx_bloc_generator
+      sha256: e51d83485ace36e6bf5bb572069a251c316abef0ab65329743dc5a88f4936730
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.2"
   rx_bloc_list:
     dependency: "direct main"
     description:
-      path: "../../packages/rx_bloc_list"
-      relative: true
-    source: path
-    version: "4.0.0"
+      name: rx_bloc_list
+      sha256: "22c8eebe40d3f143ec3f5092f62ba456f3debe084b5063a01d44bdf4c97fd8a7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   rx_bloc_test:
     dependency: "direct dev"
     description:
-      path: "../../packages/rx_bloc_test"
-      relative: true
-    source: path
-    version: "4.0.0"
+      name: rx_bloc_test
+      sha256: "6e5eba2d5b68a131e07a69a7d7792bb945ba17c4d0597fd1c69c15ea1b8024fb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.3"
   rxdart:
     dependency: "direct main"
     description:
@@ -790,28 +794,18 @@ packages:
     source: hosted
     version: "1.0.4"
   skeleton_text:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "."
-      ref: "feature/null-safety"
-      resolved-ref: "1e27de6cf4c9d26cbcd12251efa5824c1c10993d"
-      url: "https://github.com/StanevPrime/Skeleton-Text.git"
-    source: git
+      name: skeleton_text
+      sha256: "6e088723b97ddcccfcce45312ce5e385ed1e5139a57afdf574f753d51eaa77f1"
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.99"
-  smooth_star_rating:
-    dependency: "direct overridden"
-    description:
-      path: "."
-      ref: dev
-      resolved-ref: eb02312f9adc6a40e2488050fb2e58852a163bb8
-      url: "https://github.com/bhavin-concetto/smoothratingbar.git"
-    source: git
-    version: "1.1.1"
   smooth_star_rating_null_safety:
     dependency: transitive
     description:
