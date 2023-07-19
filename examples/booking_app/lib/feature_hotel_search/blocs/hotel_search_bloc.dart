@@ -27,7 +27,7 @@ abstract class HotelSearchBlocEvents {
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: _FilterByCapacityEventArgs(roomCapacity: 0, personCapacity: 0),
+    seed: _FilterByCapacityEventArgs,
   )
   void filterByCapacity({int roomCapacity = 0, int personCapacity = 0});
 
@@ -36,7 +36,7 @@ abstract class HotelSearchBlocEvents {
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: _ReloadEventArgs(reset: true, fullReset: false),
+    seed: _ReloadEventArgs,
   )
   void reload({required bool reset, bool fullReset = false});
 }

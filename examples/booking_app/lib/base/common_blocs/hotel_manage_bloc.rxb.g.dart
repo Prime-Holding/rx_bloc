@@ -23,14 +23,15 @@ abstract class $HotelManageBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [markAsFavorite]
-  final _$markAsFavoriteEvent = PublishSubject<_MarkAsFavoriteEventArgs>();
+  final _$markAsFavoriteEvent =
+      PublishSubject<({Hotel hotel, bool isFavorite})>();
 
   @override
   void markAsFavorite({
     required Hotel hotel,
     required bool isFavorite,
   }) =>
-      _$markAsFavoriteEvent.add(_MarkAsFavoriteEventArgs(
+      _$markAsFavoriteEvent.add((
         hotel: hotel,
         isFavorite: isFavorite,
       ));
@@ -49,15 +50,5 @@ abstract class $HotelManageBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [HotelManageBlocEvents.markAsFavorite] event
-class _MarkAsFavoriteEventArgs {
-  const _MarkAsFavoriteEventArgs({
-    required this.hotel,
-    required this.isFavorite,
-  });
-
-  final Hotel hotel;
-
-  final bool isFavorite;
-}
+// ignore: unused_element
+typedef _MarkAsFavoriteEventArgs = ({Hotel hotel, bool isFavorite});
