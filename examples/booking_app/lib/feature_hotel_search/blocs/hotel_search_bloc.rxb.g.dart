@@ -30,13 +30,15 @@ abstract class $HotelSearchBloc extends RxBlocBase
 
   /// Тhe [Subject] where events sink to by calling [filterByCapacity]
   final _$filterByCapacityEvent =
-      BehaviorSubject<({int roomCapacity, int personCapacity})>();
+      BehaviorSubject<({int roomCapacity, int personCapacity})>.seeded(
+          const (personCapacity: 0, roomCapacity: 0));
 
   /// Тhe [Subject] where events sink to by calling [sortBy]
   final _$sortByEvent = BehaviorSubject<SortBy>.seeded(SortBy.none);
 
   /// Тhe [Subject] where events sink to by calling [reload]
-  final _$reloadEvent = BehaviorSubject<({bool reset, bool fullReset})>();
+  final _$reloadEvent = BehaviorSubject<({bool reset, bool fullReset})>.seeded(
+      const (reset: true, fullReset: false));
 
   /// The state of [dateRangeFilterData] implemented in
   /// [_mapToDateRangeFilterDataState]
