@@ -56,7 +56,7 @@ abstract class PinBlocStates {
   ConnectableStream<bool> get areBiometricsEnabled;
 
   /// Temporary disable biometrics on pin verification process
-  ConnectableStream<bool> get biometricsDisabled;
+  ConnectableStream<void> get biometricsDisabled;
 }
 
 @RxBloc()
@@ -81,7 +81,7 @@ class PinBloc extends $PinBloc {
       StreamController<SessionState>();
 
   @override
-  ConnectableStream<bool> _mapToBiometricsDisabledState() =>
+  ConnectableStream<void> _mapToBiometricsDisabledState() =>
       _$temporaryDisableBiometricsEvent
           .switchMap((disable) => pinBiometricsService
               .temporaryDisableBiometrics(disable)

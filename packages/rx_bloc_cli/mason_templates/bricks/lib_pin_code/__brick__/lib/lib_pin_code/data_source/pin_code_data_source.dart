@@ -41,16 +41,22 @@ class PinCodeDataSource {
   }
 
   Future<void> deleteSavedData() async {
-    final enabledFromBefore = await _sharedPreferences
-        .getString(_areBiometricsEnabledWhileUsingTheApp);
-    final current = await _sharedPreferences.getBool(_areBiometricsEnabled);
-    if ((enabledFromBefore == 'true' && current != true)) {
-      await _sharedPreferences.setString(
-          _areBiometricsEnabledWhileUsingTheApp, current.toString());
-    } else if ((enabledFromBefore == 'false' && current != false)) {
-      await _sharedPreferences.setString(
-          _areBiometricsEnabledWhileUsingTheApp, current.toString());
+  var enabledFromBefore =
+  await _sharedPreferences.getBool(_areBiometricsEnabledWhileUsingTheApp);
+  var current = await _sharedPreferences.getBool(_areBiometricsEnabled);
+
+  if (current != null) {
+    if ((enabledFromBefore == true && current != true)) {
+      await _sharedPreferences.setBool(
+      _areBiometricsEnabledWhileUsingTheApp, current);
+    } else if ((enabledFromBefore == false && current != false)) {
+      await _sharedPreferences.setBool(
+      _areBiometricsEnabledWhileUsingTheApp, current);
     }
+  } else {
+    await _sharedPreferences.remove(_areBiometricsEnabledWhileUsingTheApp);
+  }
+
     await _storage.write(key: _firstPin, value: null);
     await _storage.write(key: _secondPin, value: null);
     await _sharedPreferences.setBool(_isForFirstTime, true);
@@ -125,8 +131,8 @@ class PinCodeDataSource {
             await _storage.write(key: _secondPin, value: null);
             await _sharedPreferences.setBool(_isForFirstTime, true);
             _isChangePin = true;
-            await _sharedPreferences.setString(
-                _areBiometricsEnabledWhileUsingTheApp, 'false');
+            await _sharedPreferences.setBool(
+                _areBiometricsEnabledWhileUsingTheApp, false);
           }
         }
       }

@@ -8,7 +8,7 @@ class PinBiometricsRepository {
 
   final BiometricsLocalDataSource _pinBiometricsLocalDataSource;
 
-  Future<bool> temporaryDisableBiometrics(bool disable) =>
+  Future<void> temporaryDisableBiometrics(bool disable) =>
       (_pinBiometricsLocalDataSource as PinBiometricsLocalDataSource)
           .temporaryDisableBiometrics(disable);
 

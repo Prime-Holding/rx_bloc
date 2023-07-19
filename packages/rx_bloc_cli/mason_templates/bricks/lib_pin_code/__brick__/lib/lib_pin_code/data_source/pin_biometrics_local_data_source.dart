@@ -20,16 +20,9 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
   static const _areBiometricsEnabledWhileUsingTheApp =
       'areBiometricsEnabledWhileUsingTheApp';
 
-  Future<bool> temporaryDisableBiometrics(bool disable) async {
-    if (disable) {
-      await _sharedPreferences.setString(
-          _areBiometricsEnabledWhileUsingTheApp, 'false');
-    } else {
-      await _sharedPreferences.setString(
-          _areBiometricsEnabledWhileUsingTheApp, 'true');
-    }
-    return false;
-  }
+  Future<void> temporaryDisableBiometrics(bool disable) async =>
+    await _sharedPreferences.setBool(
+      _areBiometricsEnabledWhileUsingTheApp, !disable);
 
   @override
   Future<bool> areBiometricsEnabled() async {
@@ -39,19 +32,19 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
       final areBiometricsEnabled =
           await _sharedPreferences.getBool(_areBiometricsEnabled);
       if (areBiometricsEnabled == true) {
-        await _sharedPreferences.setString(
-            _areBiometricsEnabledWhileUsingTheApp, 'true');
+        await _sharedPreferences.setBool(
+        _areBiometricsEnabledWhileUsingTheApp, true);
       } else if (areBiometricsEnabled == false) {
-        await _sharedPreferences.setString(
-            _areBiometricsEnabledWhileUsingTheApp, 'false');
+       await _sharedPreferences.setBool(
+       _areBiometricsEnabledWhileUsingTheApp, false);
       }
       onRestart = false;
     }
 
     final areEnabledBefore = await _sharedPreferences
-        .getString(_areBiometricsEnabledWhileUsingTheApp);
+    .getBool(_areBiometricsEnabledWhileUsingTheApp);
 
-    if (areEnabledBefore == 'true') {
+    if (areEnabledBefore == true) {
       return true;
     }
     return false;
@@ -59,8 +52,8 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
 
   @override
   Future<void> setBiometricsEnabled(bool enable) async {
-    await _sharedPreferences.setString(
-        _areBiometricsEnabledWhileUsingTheApp, enable.toString());
+    await _sharedPreferences.setBool(
+        _areBiometricsEnabledWhileUsingTheApp, enable);
     await _sharedPreferences.setBool(_areBiometricsEnabled, enable);
   }
 }
