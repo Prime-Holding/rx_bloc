@@ -13,19 +13,26 @@ class PinCodeRepository {
 
   final PinCodeDataSource _pinCodeDataSource;
 
-  Future<void> deleteStoredPin() =>
-      _errorMapper.execute(() => _pinCodeDataSource.deleteStoredPin());
+  Future<bool> setBoolValue(String key, bool value) =>
+      _errorMapper.execute(() => _pinCodeDataSource.setBoolValue(key, value));
 
-  Future<void> deleteSavedData() =>
-      _errorMapper.execute(() => _pinCodeDataSource.deleteSavedData());
+  Future<bool?> getBoolValue(String key) =>
+      _errorMapper.execute(() => _pinCodeDataSource.getBoolValue(key));
 
-  Future<bool> setPinCodeType(bool isFromSessionTimeout) => _errorMapper
-      .execute(() => _pinCodeDataSource.setPinCodeType(isFromSessionTimeout));
+  Future<void> writePinToStorage({
+    required String key,
+    required String? value,
+  }) =>
+      _errorMapper.execute(
+          () => _pinCodeDataSource.writePinToStorage(key: key, value: value));
 
-  Future<bool> isPinCodeInSecureStorage() =>
-      _errorMapper.execute(() => _pinCodeDataSource.isPinCodeInSecureStorage());
+  Future<String?> readPinFromStorage({required String key}) => _errorMapper
+      .execute(() => _pinCodeDataSource.readPinFromStorage(key: key));
 
-  Future<bool> checkIsPinCreated() =>
+  Future<bool> removeBoolValue(String key) =>
+      _errorMapper.execute(() => _pinCodeDataSource.removeBoolValue(key));
+
+  Future<String?> checkIsPinCreated() =>
       _errorMapper.execute(() => _pinCodeDataSource.checkIsPinCreated());
 
   Future<String> encryptPinCode(String pinCode) =>
@@ -33,9 +40,6 @@ class PinCodeRepository {
 
   Future<int> getPinLength() =>
       _errorMapper.execute(() => _pinCodeDataSource.getPinLength());
-
-  Future<bool> verifyPinCode(String pinCode) =>
-      _errorMapper.execute(() => _pinCodeDataSource.verifyPinCode(pinCode));
 
   Future<String?> getPinCode() =>
       _errorMapper.execute(() => _pinCodeDataSource.getPinCode());

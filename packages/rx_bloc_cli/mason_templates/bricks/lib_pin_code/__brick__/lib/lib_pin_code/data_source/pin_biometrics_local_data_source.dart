@@ -1,4 +1,4 @@
-{{> licence.dart }}
+// {{> licence.dart }}
 
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import '../../base/data_sources/local/shared_preferences_instance.dart';
@@ -21,28 +21,22 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
       'areBiometricsEnabledWhileUsingTheApp';
 
   Future<void> temporaryDisableBiometrics(bool disable) async =>
-    await _sharedPreferences.setBool(
-      _areBiometricsEnabledWhileUsingTheApp, !disable);
+      await _setBoolValue(_areBiometricsEnabledWhileUsingTheApp, !disable);
 
   @override
   Future<bool> areBiometricsEnabled() async {
     if (onRestart == null) {
-      // If biometrics were saved before while using the app, set the previous
-      // value once
-      final areBiometricsEnabled =
-          await _sharedPreferences.getBool(_areBiometricsEnabled);
+      var areBiometricsEnabled = await _getBoolValue(_areBiometricsEnabled);
       if (areBiometricsEnabled == true) {
-        await _sharedPreferences.setBool(
-        _areBiometricsEnabledWhileUsingTheApp, true);
+        await _setBoolValue(_areBiometricsEnabledWhileUsingTheApp, true);
       } else if (areBiometricsEnabled == false) {
-       await _sharedPreferences.setBool(
-       _areBiometricsEnabledWhileUsingTheApp, false);
+        await _setBoolValue(_areBiometricsEnabledWhileUsingTheApp, false);
       }
       onRestart = false;
     }
 
-    final areEnabledBefore = await _sharedPreferences
-    .getBool(_areBiometricsEnabledWhileUsingTheApp);
+    final areEnabledBefore =
+        await _getBoolValue(_areBiometricsEnabledWhileUsingTheApp);
 
     if (areEnabledBefore == true) {
       return true;
@@ -52,8 +46,13 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
 
   @override
   Future<void> setBiometricsEnabled(bool enable) async {
-    await _sharedPreferences.setBool(
-        _areBiometricsEnabledWhileUsingTheApp, enable);
-    await _sharedPreferences.setBool(_areBiometricsEnabled, enable);
+    await _setBoolValue(_areBiometricsEnabledWhileUsingTheApp, enable);
+    await _setBoolValue(_areBiometricsEnabled, enable);
   }
+
+  Future<bool> _setBoolValue(String key, bool value) async =>
+      await _sharedPreferences.setBool(key, value);
+
+  Future<bool?> _getBoolValue(String key) async =>
+      await _sharedPreferences.getBool(key);
 }
