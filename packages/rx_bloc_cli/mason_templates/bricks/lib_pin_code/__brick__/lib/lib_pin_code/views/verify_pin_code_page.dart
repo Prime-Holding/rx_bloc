@@ -49,9 +49,9 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
             appBar: AppBar(
               title: Text(
                 widget.pinCodeArguments.title.isEmpty
-                ? context.l10n.libPinCode.verifyPinCodePage
+                    ? context.l10n.libPinCode.verifyPinCodePage
                     : widget.pinCodeArguments.title,
-                ),
+              ),
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
@@ -98,13 +98,10 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
 
   Future<void> _isPinCodeVerified(
       bool isPinVerified, BuildContext context) async {
-    if (isPinVerified) {
-      if (widget.pinCodeArguments.isSessionTimeout) {
-        context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
-              isPinCodeConfirmed: true,
-            );
-        return;
-      }
+    if (isPinVerified && widget.pinCodeArguments.isSessionTimeout) {
+      context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
+            isPinCodeConfirmed: true,
+          );
     }
   }
 
@@ -121,12 +118,10 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
     }
   }
 
-  String _translateError(Object error, BuildContext context) {
-    if (error is ErrorWrongPin) {
-      return error.errorMessage;
-    }
-    return context.l10n.libPinCode.translatedError;
-  }
+  String _translateError(Object error, BuildContext context) =>
+      error is ErrorWrongPin
+          ? error.errorMessage
+          : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(
       BiometricsMessage message, BuildContext context) {
@@ -145,4 +140,3 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
     }
   }
 }
-

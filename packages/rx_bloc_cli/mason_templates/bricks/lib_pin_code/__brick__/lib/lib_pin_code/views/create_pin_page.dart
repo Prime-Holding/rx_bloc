@@ -61,9 +61,9 @@ class _CreatePinPageState extends State<CreatePinPage> {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-              widget.pinCodeArguments.title.isEmpty
-              ? context.l10n.libPinCode.createPinPage
-                  : widget.pinCodeArguments.title,
+                widget.pinCodeArguments.title.isEmpty
+                    ? context.l10n.libPinCode.createPinPage
+                    : widget.pinCodeArguments.title,
               ),
             ),
             extendBodyBehindAppBar: true,
@@ -95,16 +95,15 @@ class _CreatePinPageState extends State<CreatePinPage> {
 
   Future<void> _isPinCodeVerified(
       bool isPinVerified, BuildContext context) async {
-    if (isPinVerified) {
-      if (widget.pinCodeArguments.title == context.l10n.libPinCode.createPin) {
-        context.read<RouterBlocType>().events.pushReplace(
-              const ConfirmPinRoute(),
-              extra: PinCodeArguments(
-                title: context.l10n.libPinCode.confirmPin,
-                onReturn: context.read<PinBlocType>().events.checkIsPinCreated,
-              ),
-            );
-      }
+    if (isPinVerified &&
+        widget.pinCodeArguments.title == context.l10n.libPinCode.createPin) {
+      context.read<RouterBlocType>().events.pushReplace(
+            const ConfirmPinRoute(),
+            extra: PinCodeArguments(
+              title: context.l10n.libPinCode.confirmPin,
+              onReturn: context.read<PinBlocType>().events.checkIsPinCreated,
+            ),
+          );
     }
   }
 
@@ -121,12 +120,10 @@ class _CreatePinPageState extends State<CreatePinPage> {
     }
   }
 
-  String _translateError(Object error, BuildContext context) {
-    if (error is ErrorWrongPin) {
-      return error.errorMessage;
-    }
-    return context.l10n.libPinCode.translatedError;
-  }
+  String _translateError(Object error, BuildContext context) =>
+      error is ErrorWrongPin
+          ? error.errorMessage
+          : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(
       BiometricsMessage message, BuildContext context) {

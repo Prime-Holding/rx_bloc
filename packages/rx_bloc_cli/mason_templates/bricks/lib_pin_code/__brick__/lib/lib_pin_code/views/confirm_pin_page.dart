@@ -55,9 +55,9 @@ class _ConfirmPinPageState extends State<ConfirmPinPage> {
             appBar: AppBar(
               title: Text(
                 widget.pinCodeArguments.title.isEmpty
-                ? context.l10n.libPinCode.confirmPinPage
+                    ? context.l10n.libPinCode.confirmPinPage
                     : widget.pinCodeArguments.title,
-                ),
+              ),
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
@@ -113,12 +113,10 @@ class _ConfirmPinPageState extends State<ConfirmPinPage> {
     }
   }
 
-  String _translateError(Object error, BuildContext context) {
-    if (error is ErrorWrongPin) {
-      return error.errorMessage;
-    }
-    return context.l10n.libPinCode.translatedError;
-  }
+  String _translateError(Object error, BuildContext context) =>
+      error is ErrorWrongPin
+          ? error.errorMessage
+          : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(
       BiometricsMessage message, BuildContext context) {
