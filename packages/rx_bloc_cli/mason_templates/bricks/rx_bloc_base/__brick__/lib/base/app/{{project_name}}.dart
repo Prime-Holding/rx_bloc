@@ -105,20 +105,20 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   void _userInactivityListeners() {
     _sessionConfig.stream.listen((timeoutEvent) {
-    if (timeoutEvent == SessionTimeoutState.userInactivityTimeout) {
-      context.read<RouterBlocType>().events.go(
-      const VerifyPinCodeRoute(),
-      extra: const PinCodeArguments(
-      title: 'Enter Pin Code', isSessionTimeout: true),
-      );
-    } else if (timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-      context.read<RouterBlocType>().events.go(
-      const VerifyPinCodeRoute(),
-      extra: const PinCodeArguments(
-      title: 'Enter Pin Code', isSessionTimeout: true),
-      );
-    }
-  });
+      if (timeoutEvent == SessionTimeoutState.userInactivityTimeout) {
+        context.read<RouterBlocType>().events.go(
+              const VerifyPinCodeRoute(),
+              extra: const PinCodeArguments(
+                  title: 'Enter Pin Code', isSessionTimeout: true),
+            );
+      } else if (timeoutEvent == SessionTimeoutState.appFocusTimeout) {
+        context.read<RouterBlocType>().events.go(
+              const VerifyPinCodeRoute(),
+              extra: const PinCodeArguments(
+                  title: 'Enter Pin Code', isSessionTimeout: true),
+            );
+      }
+    });
   }{{/enable_pin_code}}
 
   {{#enable_change_language}}
@@ -195,51 +195,50 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   }
 {{#enable_pin_code}}
   Widget _buildMaterialAppWithPinCode() => RxBlocBuilder<PinBlocType, bool>(
-    state: (bloc) => bloc.states.isPinCreated,
-    builder: (context, isPinCreated, bloc) =>
-    RxBlocBuilder<UserAccountBlocType, bool>(
-    state: (bloc) => bloc.states.loggedIn,
-    builder: (context, loggedIn, bloc) {
-    if (loggedIn.hasData) {
-    if (!loggedIn.data!) {
-    // If user logs out, set stopListening
-    context.read<PinBlocType>().events
-    ..setSessionState(SessionState.stopListening)
-    ..deleteStoredPin();
-    return _buildMaterialApp(context);
-    }
-    if ((loggedIn.data!) &&
-    (isPinCreated.hasData && isPinCreated.data!)) {
-    context
-        .read<PinBlocType>()
-        .events
-        .setSessionState(SessionState.startListening);
+         state: (bloc) => bloc.states.isPinCreated,
+         builder: (context, isPinCreated, bloc) =>
+             RxBlocBuilder<UserAccountBlocType, bool>(
+           state: (bloc) => bloc.states.loggedIn,
+           builder: (context, loggedIn, bloc) {
+             if (loggedIn.hasData) {
+               if (!loggedIn.data!) {
+                 // If user logs out, set stopListening
+                 context.read<PinBlocType>().events
+                   ..setSessionState(SessionState.stopListening)
+                   ..deleteStoredPin();
+                 return _buildMaterialApp(context);
+               }
+               if ((loggedIn.data!) &&
+                   (isPinCreated.hasData && isPinCreated.data!)) {
+                 context
+                     .read<PinBlocType>()
+                     .events
+                     .setSessionState(SessionState.startListening);
 
-    return SessionTimeoutManager(
-    userActivityDebounceDuration: const Duration(seconds: 2),
-    sessionConfig: _sessionConfig,
-    sessionStateStream:
-    context.read<PinBlocType>().states.sessionState,
-    child: _buildMaterialApp(context));
-    }
-    }
-    return _buildMaterialApp(context);
-    },
-    ),
-  );{{/enable_pin_code}}
+                 return SessionTimeoutManager(
+                     userActivityDebounceDuration: const Duration(seconds: 2),
+                     sessionConfig: _sessionConfig,
+                     sessionStateStream:
+                         context.read<PinBlocType>().states.sessionState,
+                     child: _buildMaterialApp(context));
+               }
+             }
+             return _buildMaterialApp(context);
+           },
+         ),
+       );{{/enable_pin_code}}
 
 Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
-    title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
-    theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
-    darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
-    localizationsDelegates: const [
-    I18n.delegate,
-    ...GlobalMaterialLocalizations.delegates,
-    ],
-    supportedLocales: I18n.supportedLocales,
-    locale: _locale,
-    routerConfig: context.read<AppRouter>().router,
-    debugShowCheckedModeBanner: false,
-  );
-
+       title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
+       theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
+       darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
+       localizationsDelegates: const [
+         I18n.delegate,
+         ...GlobalMaterialLocalizations.delegates,
+       ],
+       supportedLocales: I18n.supportedLocales,
+       locale: _locale,
+       routerConfig: context.read<AppRouter>().router,
+       debugShowCheckedModeBanner: false,
+     );
 }

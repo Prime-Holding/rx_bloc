@@ -6,36 +6,40 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../base/common_blocs/coordinator_bloc.dart';{{#enable_feature_deeplinks}}
-import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}
-import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
-import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable_feature_deeplinks}}
+import '../base/common_blocs/coordinator_bloc.dart'; {{#enable_feature_deeplinks}}
+import '../base/models/deep_link_model.dart'; {{/enable_feature_deeplinks}}{{#enable_feature_counter}}
+import '../feature_counter/di/counter_page_with_dependencies.dart'; {{/enable_feature_counter}}
+import '../feature_dashboard/di/dashboard_page_with_dependencies.dart'; {{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
-import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
+import '../feature_enter_message/di/enter_message_with_dependencies.dart'; {{/enable_feature_deeplinks}}
 import '../feature_home/views/home_page.dart';
 import '../feature_login/di/login_page_with_dependencies.dart';
-import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
-import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
+import '../feature_notifications/di/notifications_page_with_dependencies.dart'; {{#enable_feature_otp}}
+import '../feature_otp/di/otp_page_with_dependencies.dart'; {{/enable_feature_otp}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
-import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
-import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}
-import '../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
+import '../feature_splash/services/splash_service.dart'; {{#enable_feature_widget_toolkit}}
+import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart'; {{/enable_feature_widget_toolkit}}
+import '../lib_permissions/services/permissions_service.dart'; {{#enable_pin_code}}
 import '../lib_pin_code/models/pin_code_arguments.dart';
 import '../lib_pin_code/views/confirm_pin_page.dart';
 import '../lib_pin_code/views/create_pin_page.dart';
 import '../lib_pin_code/views/update_pin_page.dart';
-import '../lib_pin_code/views/verify_pin_code_page.dart';{{/enable_pin_code}}
+import '../lib_pin_code/views/verify_pin_code_page.dart'; {{/enable_pin_code}}
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart';
+
 part 'routes/onboarding_routes.dart';
+
 part 'routes/profile_routes.dart';
+
 part 'routes/routes.dart';
+
 part 'routes/showcase_routes.dart';
 
 /// A wrapper class implementing all the navigation logic and providing
@@ -56,13 +60,15 @@ class AppRouter {
   final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
-      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
-{{#enable_feature_otp}}coordinatorBloc.states.isOtpConfirmed,
+  _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
+{{#enable_feature_otp}}
+    coordinatorBloc.states.isOtpConfirmed,
 {{/enable_feature_otp}}{{#enable_pin_code}}
-coordinatorBloc.states.isPinCodeConfirmed,{{/enable_pin_code}}
-);
+    coordinatorBloc.states.isPinCodeConfirmed, {{/enable_pin_code}}
+  );
+
   {{#enable_pin_code}}
-  String? previousLocation;{{/enable_pin_code}}
+  String? previousLocation; {{/enable_pin_code}}
 
   GoRouter get router => _goRouter;
 
@@ -72,57 +78,62 @@ coordinatorBloc.states.isPinCodeConfirmed,{{/enable_pin_code}}
     routes: _appRoutesList(),
     redirect: _pageRedirections,
     refreshListenable: _refreshListener,
-    errorPageBuilder: (context, state) => MaterialPage(
-      key: state.pageKey,
-      child: ErrorPage(error: state.error),
-    ),
+    errorPageBuilder: (context, state) =>
+        MaterialPage(
+          key: state.pageKey,
+          child: ErrorPage(error: state.error),
+        ),
   );
 
-  List<RouteBase> _appRoutesList() => [
+  List<RouteBase> _appRoutesList() =>
+      [
         $splashRoute,
-        $loginRoute,{{#enable_feature_otp}}
-        $otpRoute,{{/enable_feature_otp}}{{#enable_pin_code}}
-        $verifyPinCodeRoute,{{/enable_pin_code}}
+        $loginRoute, {{#enable_feature_otp}}
+        $otpRoute, {{/enable_feature_otp}}{{#enable_pin_code}}
+        $verifyPinCodeRoute, {{/enable_pin_code}}
         ShellRoute(
             navigatorKey: shellNavigatorKey,
-            builder: (context, state, child) => HomePage(
+            builder: (context, state, child) =>
+                HomePage(
                   child: child,
                 ),
             routes: [
-              $dashboardRoute,{{#enable_feature_counter}}
-              $counterRoute,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
-              $widgetToolkitRoute,{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
-              $deepLinksRoute,{{/enable_feature_deeplinks}}
+              $dashboardRoute,
+              {{#enable_feature_counter}}
+              $counterRoute,
+              {{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
+              $widgetToolkitRoute,
+              {{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
+              $deepLinksRoute,
+              {{/enable_feature_deeplinks}}
               $profileRoute,
             ]),
       ];
 
   /// This method contains all redirection logic.
-  FutureOr<String?> _pageRedirections(
-    BuildContext context,
-    GoRouterState state,
-  ) async {
+  FutureOr<String?> _pageRedirections(BuildContext context,
+      GoRouterState state,) async {
     {{#enable_pin_code}}
-      /// TODO Note that, the saved pin code is always deleted after a user
-      /// logs out.
+    /// TODO Note that, the saved pin code is always deleted after a user
+    /// logs out.
 
-      if (state.matchedLocation == const VerifyPinCodeRoute().location &&
-      _refreshListener.isPinCodeConfirmed) {
+    if (state.matchedLocation == const VerifyPinCodeRoute().location &&
+        _refreshListener.isPinCodeConfirmed) {
       if (previousLocation == null) {
-      return const DashboardRoute().location;
+        return const DashboardRoute().location;
       } else if (previousLocation == const UpdatePinRoute().location ||
-      previousLocation == const CreatePinRoute().location){
-      return const ProfileRoute().location;
+          previousLocation == const CreatePinRoute().location) {
+        return const ProfileRoute().location;
       }
       return previousLocation;
-      }
+    }
 
-      if ((state.matchedLocation != const LoginRoute().location) &&
-      (state.matchedLocation != const VerifyPinCodeRoute().location) &&
-      (state.matchedLocation != const ConfirmPinRoute().location) &&
-      (state.matchedLocation != const SplashRoute().location)) {
+    if ((state.matchedLocation != const LoginRoute().location) &&
+        (state.matchedLocation != const VerifyPinCodeRoute().location) &&
+        (state.matchedLocation != const ConfirmPinRoute().location) &&
+        (state.matchedLocation != const SplashRoute().location)) {
       previousLocation = state.matchedLocation;
-    }{{/enable_pin_code}}
+    } {{/enable_pin_code}}
 
     if (_refreshListener.isLoggedIn && state.queryParameters['from'] != null) {
       return state.queryParameters['from'];
@@ -133,10 +144,10 @@ coordinatorBloc.states.isPinCodeConfirmed,{{/enable_pin_code}}
       return const DashboardRoute().location;
     }
     if (_refreshListener.isLoggedIn &&
-      _refreshListener.isPinCodeConfirmed &&
-      state.matchedLocation == const VerifyPinCodeRoute().location) {
+        _refreshListener.isPinCodeConfirmed &&
+        state.matchedLocation == const VerifyPinCodeRoute().location) {
       return const DashboardRoute().location;
-    }{{/enable_pin_code}}
+    } {{/enable_pin_code}}
 {{^enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
@@ -156,26 +167,27 @@ coordinatorBloc.states.isPinCodeConfirmed,{{/enable_pin_code}}
     if (state.matchedLocation == const SplashRoute().location) {
       return null;
     }
-    if (!context.read<SplashService>().isAppInitialized) {
+    if (!context
+        .read<SplashService>()
+        .isAppInitialized) {
       return '${const SplashRoute().location}?from=${state.location}';
     }
 
     final pathInfo =
-        router.routeInformationParser.configuration.findMatch(state.location);
+    router.routeInformationParser.configuration.findMatch(state.location);
 
     final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
 
     final hasPermissions = routeName != null
         ? await context
-            .read<PermissionsService>()
-            .hasPermission(routeName, graceful: true)
+        .read<PermissionsService>()
+        .hasPermission(routeName, graceful: true)
         : true;
 
     if (!_refreshListener.isLoggedIn && !hasPermissions) {
       return '${const LoginRoute().location}?from=${state.location}';
     }
 
-    
     if (!hasPermissions) {
       return const DashboardRoute().location;
     }
@@ -183,46 +195,48 @@ coordinatorBloc.states.isPinCodeConfirmed,{{/enable_pin_code}}
     return null;
   }
 }
+
 class _GoRouterRefreshStream extends ChangeNotifier {
   _GoRouterRefreshStream(Stream<bool> stream,
-{{#enable_feature_otp}} Stream<bool> streamOTP,{{/enable_feature_otp}}
-{{#enable_pin_code}}Stream<bool> streamPinCode,{{/enable_pin_code}}
-) {
+{{#enable_feature_otp}} Stream<bool> streamOTP, {{/enable_feature_otp}}
+{{#enable_pin_code}} Stream<bool> streamPinCode, {{/enable_pin_code}}
+      ) {
     _subscription =
-      stream.listen(
-        (bool isLoggedIn) {
-          this.isLoggedIn = isLoggedIn;
-          notifyListeners();
-        },
-      );
+        stream.listen(
+              (bool isLoggedIn) {
+            this.isLoggedIn = isLoggedIn;
+            notifyListeners();
+          },
+        );
 {{#enable_feature_otp}}
-     _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
-        this.isOtpConfirmed = isOtpConfirmed;
-        notifyListeners();
-      });{{/enable_feature_otp}}
+    _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
+      this.isOtpConfirmed = isOtpConfirmed;
+      notifyListeners();
+    }); {{/enable_feature_otp}}
 {{#enable_pin_code}}
     _subscriptionPinCode = streamPinCode.listen((bool isPinCodeConfirmed) {
-    this.isPinCodeConfirmed = isPinCodeConfirmed;
-    notifyListeners();
-    this.isPinCodeConfirmed = false;
-    });{{/enable_pin_code}}
+      this.isPinCodeConfirmed = isPinCodeConfirmed;
+      notifyListeners();
+      this.isPinCodeConfirmed = false;
+    }); {{/enable_pin_code}}
   }
 
-  late final StreamSubscription<bool> _subscription;{{#enable_feature_otp}}
+  late final StreamSubscription<bool> _subscription; {{#enable_feature_otp}}
   late final StreamSubscription<bool> _subscriptionOtp; {{/enable_feature_otp}}
   {{#enable_pin_code}}
-  late final StreamSubscription<bool>_subscriptionPinCode;{{/enable_pin_code}}
+  late final StreamSubscription<bool>_subscriptionPinCode; {{/enable_pin_code}}
 
   late bool isLoggedIn = false;
+
   {{#enable_feature_otp}}
-  late bool isOtpConfirmed = false;{{/enable_feature_otp}}{{#enable_pin_code}}
-  late bool isPinCodeConfirmed = false;{{/enable_pin_code}}
+  late bool isOtpConfirmed = false; {{/enable_feature_otp}}{{#enable_pin_code}}
+  late bool isPinCodeConfirmed = false; {{/enable_pin_code}}
 
   @override
   void dispose() {
-    _subscription.cancel();{{#enable_feature_otp}}
-    _subscriptionOtp.cancel();{{/enable_feature_otp}}{{#enable_pin_code}}
-    _subscriptionPinCode.cancel();{{/enable_pin_code}}
+    _subscription.cancel(); {{#enable_feature_otp}}
+    _subscriptionOtp.cancel(); {{/enable_feature_otp}}{{#enable_pin_code}}
+    _subscriptionPinCode.cancel(); {{/enable_pin_code}}
     super.dispose();
   }
 }

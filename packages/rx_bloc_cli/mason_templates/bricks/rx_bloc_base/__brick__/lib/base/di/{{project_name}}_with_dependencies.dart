@@ -205,20 +205,20 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),{{/enable_change_language}}
-      Provider<ProfileLocalDataSource>(
-         create: (context) =>
-        ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
-      ),{{#enable_pin_code}}
-      Provider<BiometricsLocalDataSource>(
+        Provider<ProfileLocalDataSource>(
+          create: (context) =>
+              ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+        ),{{#enable_pin_code}}
+        Provider<BiometricsLocalDataSource>(
           create: (context) => PinBiometricsLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),
-      Provider<PinCodeDataSource>(
-      create: (context) => PinCodeDataSource(
-      context.read<SharedPreferencesInstance>(),
-      context.read<FlutterSecureStorage>(),
-      ),
-      ),{{/enable_pin_code}}
+        Provider<PinCodeDataSource>(
+          create: (context) => PinCodeDataSource(
+            context.read<SharedPreferencesInstance>(),
+            context.read<FlutterSecureStorage>(),
+          ),
+        ),{{/enable_pin_code}}
       ];
 
   List<Provider> get _repositories => [
@@ -266,17 +266,17 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read<LanguageLocalDataSource>(),
           ),
         ),{{/enable_change_language}} {{#enable_pin_code}}
-      Provider<PinCodeRepository>(
-      create: (context) => PinCodeRepository(
-      context.read<ErrorMapper>(),
-      context.read<PinCodeDataSource>(),
-      ),
-      ),
-      Provider<PinBiometricsRepository>(
-      create: (context) => PinBiometricsRepository(
-      context.read<BiometricsLocalDataSource>(),
-      ),
-      ),{{/enable_pin_code}}
+        Provider<PinCodeRepository>(
+          create: (context) => PinCodeRepository(
+            context.read<ErrorMapper>(),
+            context.read<PinCodeDataSource>(),
+          ),
+        ),
+        Provider<PinBiometricsRepository>(
+          create: (context) => PinBiometricsRepository(
+            context.read<BiometricsLocalDataSource>(),
+          ),
+        ),{{/enable_pin_code}}
 
       ];
 
@@ -325,14 +325,14 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           ),
         ), {{#enable_pin_code}}
         Provider<PinCodeService>(
-        create: (context) => AppPinCodeService(
-        context.read<PinCodeRepository>(),
-        ),
+          create: (context) => AppPinCodeService(
+            context.read<PinCodeRepository>(),
+          ),
         ),
         Provider<PinBiometricsService>(
-        create: (context) => PinBiometricsService(
-        context.read<PinBiometricsRepository>(),
-        ),
+          create: (context) => PinBiometricsService(
+            context.read<PinBiometricsRepository>(),
+          ),
         ),{{/enable_pin_code}}
       ];
 

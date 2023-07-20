@@ -5,13 +5,13 @@ part of '../router.dart';
     path: RoutesPath.notifications,
   ),{{#enable_pin_code}}
   TypedGoRoute<CreatePinRoute>(
-  path: RoutesPath.createPin,
+    path: RoutesPath.createPin,
   ),
   TypedGoRoute<ConfirmPinRoute>(
-  path: RoutesPath.confirmPin,
+    path: RoutesPath.confirmPin,
   ),
   TypedGoRoute<UpdatePinRoute>(
-  path: RoutesPath.updatePin,
+    path: RoutesPath.updatePin,
   ),{{/enable_pin_code}}
 ])
 @immutable
@@ -48,7 +48,7 @@ class NotificationsRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get routeLocation => location;
-}{{#enable_pin_code}}
+} {{#enable_pin_code}}
 
 @immutable
 class CreatePinRoute extends GoRouteData implements RouteDataModel {
@@ -56,12 +56,12 @@ class CreatePinRoute extends GoRouteData implements RouteDataModel {
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-    MaterialPage(
-    key: state.pageKey,
-    child: CreatePinPage(
-    pinCodeArguments: state.extra as PinCodeArguments,
-    ),
-  );
+      MaterialPage(
+        key: state.pageKey,
+        child: CreatePinPage(
+          pinCodeArguments: state.extra as PinCodeArguments,
+        ),
+      );
 
   @override
   String get permissionName => RouteModel.pinCode.permissionName;
@@ -76,12 +76,12 @@ class ConfirmPinRoute extends GoRouteData implements RouteDataModel {
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-    MaterialPage(
-    key: state.pageKey,
-    child: ConfirmPinPage(
-    pinCodeArguments: state.extra as PinCodeArguments,
-    ),
-  );
+      MaterialPage(
+        key: state.pageKey,
+        child: ConfirmPinPage(
+          pinCodeArguments: state.extra as PinCodeArguments,
+        ),
+      );
 
   @override
   String get permissionName => RouteModel.pinCode.permissionName;
@@ -96,16 +96,16 @@ class UpdatePinRoute extends GoRouteData implements RouteDataModel {
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
-    MaterialPage(
-    key: state.pageKey,
-    child: UpdatePinPage(
-    pinCodeArguments: state.extra as PinCodeArguments,
-  ),
-);
+      MaterialPage(
+        key: state.pageKey,
+        child: UpdatePinPage(
+          pinCodeArguments: state.extra as PinCodeArguments,
+        ),
+      );
 
-@override
-String get permissionName => RouteModel.pinCode.permissionName;
+  @override
+  String get permissionName => RouteModel.pinCode.permissionName;
 
-@override
-String get routeLocation => location;
-}{{/enable_pin_code}}
+  @override
+  String get routeLocation => location;
+} {{/enable_pin_code}}
