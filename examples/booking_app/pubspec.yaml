@@ -30,8 +30,8 @@ dependencies:
     sdk: flutter
   flutter_rx_bloc:
   go_router: ^9.0.3
-  image_picker: ^0.8.6
-  intl: ^0.17.0
+  image_picker: ^1.0.1
+  intl: ^0.18.1
   provider: ^6.0.0
   rflutter_alert: ^2.0.7
   rx_bloc:
