@@ -19,10 +19,10 @@ class PinCodeRepository {
   Future<bool?> getBoolValue(String key) =>
       _errorMapper.execute(() => _pinCodeDataSource.getBoolValue(key));
 
-  Future<void> writePinToStorage({
-    required String key,
-    required String? value,
-  }) =>
+  Future<void> writePinToStorage(
+    String key,
+    String? value,
+  ) =>
       _errorMapper.execute(
           () => _pinCodeDataSource.writePinToStorage(key: key, value: value));
 
@@ -34,9 +34,6 @@ class PinCodeRepository {
 
   Future<String?> checkIsPinCreated() =>
       _errorMapper.execute(() => _pinCodeDataSource.checkIsPinCreated());
-
-  Future<String> encryptPinCode(String pinCode) =>
-      _errorMapper.execute(() => _pinCodeDataSource.encryptPinCode(pinCode));
 
   Future<int> getPinLength() =>
       _errorMapper.execute(() => _pinCodeDataSource.getPinLength());

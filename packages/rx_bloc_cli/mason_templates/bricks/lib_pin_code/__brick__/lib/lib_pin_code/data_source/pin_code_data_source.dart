@@ -17,10 +17,6 @@ class PinCodeDataSource {
   Future<String?> checkIsPinCreated() async =>
       await readPinFromStorage(key: _storedPin);
 
-  Future<String> encryptPinCode(String pinCode) async {
-    return pinCode;
-  }
-
   Future<int> getPinLength() async => 3;
 
   Future<bool> setBoolValue(String key, bool value) async =>

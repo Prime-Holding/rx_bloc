@@ -8,7 +8,8 @@ environment:
 
 dependencies: {{#enable_dev_menu}}
   alice: ^0.3.3 {{/enable_dev_menu}}
-  collection: ^1.17.1
+  collection: ^1.17.1{{#enable_pin_code}}
+  crypto: ^3.0.3{{/enable_pin_code}}
   cupertino_icons: ^1.0.5
   dio: ^5.2.1+1
   equatable: ^2.0.5{{#analytics}}

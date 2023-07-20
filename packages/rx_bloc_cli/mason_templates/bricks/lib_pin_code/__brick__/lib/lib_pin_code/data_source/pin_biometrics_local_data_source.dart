@@ -1,4 +1,4 @@
-// {{> licence.dart }}
+{{> licence.dart }}
 
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import '../../base/data_sources/local/shared_preferences_instance.dart';
@@ -26,7 +26,7 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
   @override
   Future<bool> areBiometricsEnabled() async {
     if (onRestart == null) {
-      var areBiometricsEnabled = await _getBoolValue(_areBiometricsEnabled);
+      final areBiometricsEnabled = await _getBoolValue(_areBiometricsEnabled);
       if (areBiometricsEnabled == true) {
         await _setBoolValue(_areBiometricsEnabledWhileUsingTheApp, true);
       } else if (areBiometricsEnabled == false) {
@@ -35,13 +35,7 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
       onRestart = false;
     }
 
-    final areEnabledBefore =
-        await _getBoolValue(_areBiometricsEnabledWhileUsingTheApp);
-
-    if (areEnabledBefore == true) {
-      return true;
-    }
-    return false;
+    return await _getBoolValue(_areBiometricsEnabledWhileUsingTheApp) ?? false;
   }
 
   @override
