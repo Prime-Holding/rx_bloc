@@ -68,7 +68,7 @@ class _CreatePinPageState extends State<CreatePinPage> {
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.sizeOf(context).height,
               child: Column(
                 children: [
                   Expanded(

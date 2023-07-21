@@ -61,7 +61,7 @@ class _ConfirmPinPageState extends State<ConfirmPinPage> {
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.sizeOf(context).height,
               child: Column(
                 children: [
                   Expanded(

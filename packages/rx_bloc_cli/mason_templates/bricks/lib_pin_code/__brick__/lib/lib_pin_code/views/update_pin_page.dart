@@ -56,7 +56,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.sizeOf(context).height,
               child: Column(
                 children: [
                   Expanded(
