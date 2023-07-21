@@ -120,7 +120,7 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
 
   String _translateError(Object error, BuildContext context) =>
       error is ErrorWrongPin
-          ? error.errorMessage
+          ? context.l10n.libPinCode.wrongConfirmationPin
           : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(

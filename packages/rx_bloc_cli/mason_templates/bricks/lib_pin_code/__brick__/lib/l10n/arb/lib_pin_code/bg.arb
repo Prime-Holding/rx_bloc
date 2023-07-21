@@ -15,5 +15,6 @@
   "verifyPinCodePage": "Верифициране на пин",
   "updatePinPage": "Обновяване на пин",
   "createPinPage": "Създаване на пин",
-  "confirmPinPage": "Подтвърждаване на пин"
+  "confirmPinPage": "Подтвърждаване на пин",
+  "wrongConfirmationPin": "Грешен пин за потвърждаване"
 }

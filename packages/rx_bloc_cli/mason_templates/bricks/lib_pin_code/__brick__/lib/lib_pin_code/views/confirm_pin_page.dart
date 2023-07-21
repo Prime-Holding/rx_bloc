@@ -115,7 +115,7 @@ class _ConfirmPinPageState extends State<ConfirmPinPage> {
 
   String _translateError(Object error, BuildContext context) =>
       error is ErrorWrongPin
-          ? error.errorMessage
+          ? context.l10n.libPinCode.wrongConfirmationPin
           : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(

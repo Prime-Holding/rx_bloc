@@ -15,5 +15,6 @@
   "verifyPinCodePage": "Verify pin code page",
   "updatePinPage": "Update pin page",
   "createPinPage": "Create pin page",
-  "confirmPinPage": "Confirm pin page"
+  "confirmPinPage": "Confirm pin page",
+  "wrongConfirmationPin": "Wrong confirmation pin"
 }
