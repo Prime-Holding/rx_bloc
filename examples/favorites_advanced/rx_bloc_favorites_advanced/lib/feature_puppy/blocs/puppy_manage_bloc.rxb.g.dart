@@ -20,7 +20,8 @@ abstract class $PuppyManageBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [markAsFavorite]
-  final _$markAsFavoriteEvent = PublishSubject<_MarkAsFavoriteEventArgs>();
+  final _$markAsFavoriteEvent =
+      PublishSubject<({Puppy puppy, bool isFavorite})>();
 
   /// Тhe [Subject] where events sink to by calling [setName]
   final _$setNameEvent = PublishSubject<String>();
@@ -66,9 +67,14 @@ abstract class $PuppyManageBloc extends RxBlocBase
   late final Stream<bool> _updateCompleteState = _mapToUpdateCompleteState();
 
   @override
-  void markAsFavorite({required Puppy puppy, required bool isFavorite}) =>
-      _$markAsFavoriteEvent
-          .add(_MarkAsFavoriteEventArgs(puppy: puppy, isFavorite: isFavorite));
+  void markAsFavorite({
+    required Puppy puppy,
+    required bool isFavorite,
+  }) =>
+      _$markAsFavoriteEvent.add((
+        puppy: puppy,
+        isFavorite: isFavorite,
+      ));
 
   @override
   void setName(String newName) => _$setNameEvent.add(newName);
@@ -149,13 +155,5 @@ abstract class $PuppyManageBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [PuppyManageEvents.markAsFavorite] event
-class _MarkAsFavoriteEventArgs {
-  const _MarkAsFavoriteEventArgs(
-      {required this.puppy, required this.isFavorite});
-
-  final Puppy puppy;
-
-  final bool isFavorite;
-}
+// ignore: unused_element
+typedef _MarkAsFavoriteEventArgs = ({Puppy puppy, bool isFavorite});
