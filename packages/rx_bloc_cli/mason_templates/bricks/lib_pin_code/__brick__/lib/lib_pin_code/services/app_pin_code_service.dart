@@ -42,9 +42,10 @@ class AppPinCodeService implements PinCodeService {
   }
 
   Future<void> deleteSavedData() async {
-    var enabledFromBefore = await _pinCodeRepository
+    final enabledFromBefore = await _pinCodeRepository
         .getBoolValue(_areBiometricsEnabledWhileUsingTheApp);
-    var current = await _pinCodeRepository.getBoolValue(_areBiometricsEnabled);
+    final current =
+        await _pinCodeRepository.getBoolValue(_areBiometricsEnabled);
 
     if (current != null) {
       if ((enabledFromBefore == true && current != true)) {
@@ -70,10 +71,8 @@ class AppPinCodeService implements PinCodeService {
     _isChangePin = false;
   }
 
-  Future<bool> setPinCodeType(bool isFromSessionTimeout) async {
-    _isFromSessionTimeout = isFromSessionTimeout;
-    return isFromSessionTimeout;
-  }
+  Future<bool> setPinCodeType(bool isFromSessionTimeout) async =>
+      _isFromSessionTimeout = isFromSessionTimeout;
 
   @override
   Future<bool> isPinCodeInSecureStorage() async {
@@ -84,14 +83,15 @@ class AppPinCodeService implements PinCodeService {
           _isAuthenticatedWithBiometrics, false);
       return false;
     }
-    var storedPin =
+    final storedPin =
         await _pinCodeRepository.readPinFromStorage(key: _storedPin);
     if (storedPin != null) {
       return true;
     }
-    var isFirst = await _pinCodeRepository.getBoolValue(_isForFirstTime); //
-    isFirst = isFirst ?? true;
-    var firstPin = await _pinCodeRepository.readPinFromStorage(key: _firstPin);
+    final isFirst =
+        await _pinCodeRepository.getBoolValue(_isForFirstTime) ?? true;
+    final firstPin =
+        await _pinCodeRepository.readPinFromStorage(key: _firstPin);
     if (isFirst && firstPin == null && !_isForFirstTimeExecuted) {
       await _pinCodeRepository.setBoolValue(_isForFirstTime, true);
       _isForFirstTimeExecuted = true;
@@ -117,26 +117,26 @@ class AppPinCodeService implements PinCodeService {
 
   @override
   Future<bool> verifyPinCode(String pinCode) async {
-    var currentPin =
+    final currentPin =
         await _pinCodeRepository.readPinFromStorage(key: _storedPin);
     final isAuthenticated =
         await _pinCodeRepository.getBoolValue(_isAuthenticatedWithBiometrics);
     if (currentPin == null) {
-// Create Pin process
+      // Create Pin process
       final isFirst =
           await _pinCodeRepository.getBoolValue(_isForFirstTime) ?? false;
       return await _createPin(pinCode, isFirst);
     } else {
       if (_isFromSessionTimeout) {
-// Verify Pin From Inactivity
+        // Verify Pin From Inactivity
         return currentPin == pinCode
             ? true
             : throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
       }
-// Update pin process
+      // Update pin process
       if (isAuthenticated != true) {
         if (_isVerificationPinCorrect == null) {
-          var first =
+          final first =
               await _pinCodeRepository.readPinFromStorage(key: _firstPin);
           if (first == null) {
             await _pinCodeRepository.writePinToStorage(_secondPin, null);
@@ -162,7 +162,7 @@ class AppPinCodeService implements PinCodeService {
       }
       if (isAuthenticated != true) {
         if (firstPin == null && _isVerificationPinProcess) {
-// Verification process - Enter current pin
+          // Verification process - Enter current pin
           if (currentPin == pinCode) {
             _isVerificationPinCorrect = true;
             _isVerificationPinProcess = false;
@@ -174,8 +174,8 @@ class AppPinCodeService implements PinCodeService {
         }
       }
       if (_isChangePin) {
-        var isFirst = await _pinCodeRepository.getBoolValue(_isForFirstTime);
-        isFirst = isFirst ?? true;
+        final isFirst =
+            await _pinCodeRepository.getBoolValue(_isForFirstTime) ?? true;
         if (isFirst) {
           await _pinCodeRepository.setBoolValue(_isForFirstTime, false);
           await _pinCodeRepository.writePinToStorage(_firstPin, pinCode);
