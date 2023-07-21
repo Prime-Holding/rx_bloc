@@ -47,40 +47,34 @@ class _ConfirmPinPageState extends State<ConfirmPinPage> {
 
   @override
   Widget build(BuildContext context) => Builder(
-        builder: (context) => WillPopScope(
-          onWillPop: () async {
-            return true;
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                widget.pinCodeArguments.title.isEmpty
-                    ? context.l10n.libPinCode.confirmPinPage
-                    : widget.pinCodeArguments.title,
-              ),
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: Text(
+              widget.pinCodeArguments.title.isEmpty
+                  ? context.l10n.libPinCode.confirmPinPage
+                  : widget.pinCodeArguments.title,
             ),
-            extendBodyBehindAppBar: true,
-            body: SizedBox(
-              height: MediaQuery.sizeOf(context).height,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PinCodeKeyboard(
-                      mapBiometricMessageToString: (message) =>
-                          _exampleMapMessageToString(message, context),
-                      pinCodeService: context.read<PinCodeService>(),
-                      biometricsLocalDataSource:
-                          context.read<BiometricsLocalDataSource>(),
-                      translateError: (error) =>
-                          _translateError(error, context),
-                      onError: (error, translatedError) =>
-                          _onError(error, translatedError, context),
-                      isPinCodeVerified: (verified) =>
-                          _isPinCodeVerified(verified, context),
-                    ),
+          ),
+          extendBodyBehindAppBar: true,
+          body: SizedBox(
+            height: MediaQuery.sizeOf(context).height,
+            child: Column(
+              children: [
+                Expanded(
+                  child: PinCodeKeyboard(
+                    mapBiometricMessageToString: (message) =>
+                        _exampleMapMessageToString(message, context),
+                    pinCodeService: context.read<PinCodeService>(),
+                    biometricsLocalDataSource:
+                        context.read<BiometricsLocalDataSource>(),
+                    translateError: (error) => _translateError(error, context),
+                    onError: (error, translatedError) =>
+                        _onError(error, translatedError, context),
+                    isPinCodeVerified: (verified) =>
+                        _isPinCodeVerified(verified, context),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

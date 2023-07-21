@@ -92,7 +92,35 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
             ), {{/enable_change_language}}
             SizedBox(
               height: context.designSystem.spacing.xl0,
-            ),
+            ), {{#enable_pin_code}}
+            RxBlocBuilder<PinBlocType, bool>(
+              state: (bloc) => bloc.states.isPinCreated,
+              builder: (context, isPinCreated, bloc) => Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.designSystem.spacing.xl0,
+                ),
+                child: OutlineFillButton(
+                  text: _buildPinButtonText(isPinCreated, context),
+                  onPressed: () {
+                    context.read<PinBlocType>().events.deleteSavedData();
+                    if (isPinCreated.hasData && isPinCreated.data!) {
+                      context.read<RouterBlocType>().events.push(
+                            const UpdatePinRoute(),
+                            extra: PinCodeArguments(
+                                title: context.l10n.libPinCode.enterCurrentPin),
+                          );
+                    } else {
+                      context.read<RouterBlocType>().events.push(
+                            const CreatePinRoute(),
+                            extra: PinCodeArguments(
+                              title: context.l10n.libPinCode.createPin,
+                            ),
+                          );
+                    }
+                  },
+                ),
+              ),
+            ), {{/enable_pin_code}}
             AppErrorModalWidget<ProfileBlocType>(
               errorState: (bloc) => bloc.states.errors,
             ),
@@ -126,38 +154,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-            ), {{#enable_pin_code}}
-            SizedBox(
-              height: context.designSystem.spacing.xl0,
             ),
-            RxBlocBuilder<PinBlocType, bool>(
-              state: (bloc) => bloc.states.isPinCreated,
-              builder: (context, isPinCreated, bloc) => Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: context.designSystem.spacing.xl0,
-                ),
-                child: OutlineFillButton(
-                  text: _buildPinButtonText(isPinCreated, context),
-                  onPressed: () {
-                    context.read<PinBlocType>().events.deleteSavedData();
-                    if (isPinCreated.hasData && isPinCreated.data!) {
-                      context.read<RouterBlocType>().events.push(
-                            const UpdatePinRoute(),
-                            extra: PinCodeArguments(
-                                title: context.l10n.libPinCode.enterCurrentPin),
-                          );
-                    } else {
-                      context.read<RouterBlocType>().events.push(
-                            const CreatePinRoute(),
-                            extra: PinCodeArguments(
-                              title: context.l10n.libPinCode.createPin,
-                            ),
-                          );
-                    }
-                  },
-                ),
-              ),
-            ), {{/enable_pin_code}}
           ],
         ),
       );

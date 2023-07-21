@@ -95,8 +95,7 @@ class _CreatePinPageState extends State<CreatePinPage> {
 
   Future<void> _isPinCodeVerified(
       bool isPinVerified, BuildContext context) async {
-    if (isPinVerified &&
-        widget.pinCodeArguments.title == context.l10n.libPinCode.createPin) {
+    if (isPinVerified) {
       context.read<RouterBlocType>().events.pushReplace(
             const ConfirmPinRoute(),
             extra: PinCodeArguments(
