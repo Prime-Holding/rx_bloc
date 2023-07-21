@@ -50,7 +50,7 @@ class PaginatedPuppiesRepository implements PuppiesRepository {
 
   @override
   Future<XFile?> pickPuppyImage(ImagePickerAction source) =>
-      pickPuppyImage(source);
+      _repository.pickPuppyImage(source);
 
   @override
   Future<Puppy> updatePuppy(String puppyId, Puppy newValue) =>
