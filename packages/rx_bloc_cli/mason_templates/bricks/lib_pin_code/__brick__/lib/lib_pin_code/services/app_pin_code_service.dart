@@ -100,13 +100,8 @@ class AppPinCodeService implements PinCodeService {
     return false;
   }
 
-  Future<bool> checkIsPinCreated() async {
-    final storedPin = await _pinCodeRepository.checkIsPinCreated();
-    if (storedPin != null) {
-      return true;
-    }
-    return false;
-  }
+  Future<bool> checkIsPinCreated() async =>
+      await _pinCodeRepository.checkIsPinCreated() != null;
 
   @override
   Future<String> encryptPinCode(String pinCode) async =>
@@ -125,7 +120,7 @@ class AppPinCodeService implements PinCodeService {
       // Create Pin process
       final isFirst =
           await _pinCodeRepository.getBoolValue(_isForFirstTime) ?? false;
-      return await _createPin(pinCode, isFirst);
+      return _createPin(pinCode, isFirst);
     } else {
       if (_isFromSessionTimeout) {
         // Verify Pin From Inactivity
@@ -134,18 +129,14 @@ class AppPinCodeService implements PinCodeService {
             : throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
       }
       // Update pin process
-      if (isAuthenticated != true) {
-        if (_isVerificationPinCorrect == null) {
-          final first =
-              await _pinCodeRepository.readPinFromStorage(key: _firstPin);
-          if (first == null) {
-            await _pinCodeRepository.writePinToStorage(_secondPin, null);
-            await _pinCodeRepository.setBoolValue(_isForFirstTime, true);
-            _isChangePin = true;
-            await _pinCodeRepository.setBoolValue(
-                _areBiometricsEnabledWhileUsingTheApp, false);
-          }
-        }
+      if (isAuthenticated != true &&
+          _isVerificationPinCorrect == null &&
+          await _pinCodeRepository.readPinFromStorage(key: _firstPin) == null) {
+        await _pinCodeRepository.writePinToStorage(_secondPin, null);
+        await _pinCodeRepository.setBoolValue(_isForFirstTime, true);
+        _isChangePin = true;
+        await _pinCodeRepository.setBoolValue(
+            _areBiometricsEnabledWhileUsingTheApp, false);
       }
       final firstPin =
           await _pinCodeRepository.readPinFromStorage(key: _firstPin);
@@ -160,18 +151,18 @@ class AppPinCodeService implements PinCodeService {
         }
         throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
       }
-      if (isAuthenticated != true) {
-        if (firstPin == null && _isVerificationPinProcess) {
-          // Verification process - Enter current pin
-          if (currentPin == pinCode) {
-            _isVerificationPinCorrect = true;
-            _isVerificationPinProcess = false;
-            return true;
-          }
-          _isVerificationPinCorrect = false;
-          _isVerificationPinProcess = true;
-          throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
+      if (isAuthenticated != true &&
+          firstPin == null &&
+          _isVerificationPinProcess) {
+        // Verification process - Enter current pin
+        if (currentPin == pinCode) {
+          _isVerificationPinCorrect = true;
+          _isVerificationPinProcess = false;
+          return true;
         }
+        _isVerificationPinCorrect = false;
+        _isVerificationPinProcess = true;
+        throw ErrorWrongPin(errorMessage: 'Wrong Confirmation Pin');
       }
       if (_isChangePin) {
         final isFirst =
@@ -181,9 +172,8 @@ class AppPinCodeService implements PinCodeService {
           await _pinCodeRepository.writePinToStorage(_firstPin, pinCode);
           return true;
         }
-        final firstPin =
-            await _pinCodeRepository.readPinFromStorage(key: _firstPin);
-        if (pinCode == firstPin) {
+        if (pinCode ==
+            await _pinCodeRepository.readPinFromStorage(key: _firstPin)) {
           await _pinCodeRepository.writePinToStorage(_secondPin, pinCode);
           await _pinCodeRepository.writePinToStorage(_storedPin, pinCode);
           await _pinCodeRepository.setBoolValue(
@@ -206,9 +196,8 @@ class AppPinCodeService implements PinCodeService {
       await _pinCodeRepository.writePinToStorage(_firstPin, pinCode);
       return true;
     }
-    final firstPin =
-        await _pinCodeRepository.readPinFromStorage(key: _firstPin);
-    if (pinCode == firstPin) {
+    if (pinCode ==
+        await _pinCodeRepository.readPinFromStorage(key: _firstPin)) {
       await _pinCodeRepository.writePinToStorage(_secondPin, pinCode);
       await _pinCodeRepository.writePinToStorage(_storedPin, pinCode);
 
