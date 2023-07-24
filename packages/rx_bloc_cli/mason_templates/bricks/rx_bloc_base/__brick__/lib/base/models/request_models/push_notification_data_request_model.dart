@@ -8,11 +8,12 @@ part 'push_notification_data_request_model.g.dart';
 class PushNotificationDataRequestModel {
   PushNotificationDataRequestModel(this.pushToken);
 
-  final String pushToken;
-
   factory PushNotificationDataRequestModel.fromJson(
           Map<String, dynamic> json) =>
       _$PushNotificationDataRequestModelFromJson(json);
+
+  final String pushToken;
+
   Map<String, dynamic> toJson() =>
       _$PushNotificationDataRequestModelToJson(this);
 }
