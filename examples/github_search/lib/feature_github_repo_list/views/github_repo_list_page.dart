@@ -13,6 +13,7 @@ import '../blocs/github_repo_list_bloc.dart';
 import '../di/github_repo_list_dependencies.dart';
 import '../ui_components/repo_card_widget.dart';
 
+@RoutePage()
 class GithubRepoListPage extends StatelessWidget implements AutoRouteWrapper {
   GithubRepoListPage({
     Key? key,

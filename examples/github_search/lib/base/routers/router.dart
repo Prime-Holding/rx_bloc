@@ -6,19 +6,33 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:auto_route/auto_route.dart';
-
+import 'package:flutter/material.dart';
 import '../../feature_counter/views/counter_page.dart';
 import '../../feature_github_repo_list/views/github_repo_list_page.dart';
 import '../../feature_login/views/login_page.dart';
 import '../../feature_notifications/views/notifications_page.dart';
 
-@MaterialAutoRouter(
-  replaceInRouteName: 'Page,Route',
-  routes: <AutoRoute>[
-    MaterialRoute(page: CounterPage),
-    MaterialRoute(page: LoginPage),
-    MaterialRoute(page: NotificationsPage),
-    MaterialRoute(page: GithubRepoListPage, initial: true),
-  ],
-)
-class $Router {}
+// @MaterialAutoRouter(
+//   replaceInRouteName: 'Page,Route',
+//   routes: <AutoRoute>[
+//     MaterialRoute(page: CounterPage),
+//     MaterialRoute(page: LoginPage),
+//     MaterialRoute(page: NotificationsPage),
+//     MaterialRoute(page: GithubRepoListPage, initial: true),
+//   ],
+// )
+// class $Router {}
+
+part 'router.gr.dart';
+
+@AutoRouterConfig()
+class AppRouter extends _$AppRouter {
+  @override
+  final List<AutoRoute> routes = [
+    /// routes go here
+    MaterialRoute(page: GithubRepoListRoute.page, initial: true),
+    MaterialRoute(page: LoginRoute.page),
+    MaterialRoute(page: NotificationsRoute.page),
+    MaterialRoute(page: CounterRoute.page),
+  ];
+}
