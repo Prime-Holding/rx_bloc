@@ -42,8 +42,8 @@ dependencies: {{#enable_dev_menu}}
   shelf_router: ^1.1.4 # This package is used for the local server (if not used, can be removed)
   shelf_static: ^1.1.2 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
   sign_in_with_apple: ^5.0.0{{/enable_social_logins}}
-  widget_toolkit: ^0.0.1-dev9{{#enable_feature_otp}}
-  widget_toolkit_otp: ^0.0.1-dev4{{/enable_feature_otp}}
+  widget_toolkit: ^0.0.2-dev.1{{#enable_feature_otp}}
+  widget_toolkit_otp: ^0.0.2-dev.1{{/enable_feature_otp}}
 
 dev_dependencies:
   build_runner: ^2.4.6
@@ -103,11 +103,11 @@ r_flutter:
     - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}
     - name: feature_login
-    - name: feature_notifications
+    - name: feature_notifications{{#enable_feature_otp}}
+    - name: feature_otp{{/enable_feature_otp}}
     - name: feature_profile{{#enable_feature_widget_toolkit}}
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field
     - name: lib_router{{#enable_change_language}}
     - name: lib_change_language{{/enable_change_language}}{{#enable_dev_menu}}
-    - name: lib_dev_menu{{/enable_dev_menu}}{{#enable_feature_otp}}
-    - name: feature_otp{{/enable_feature_otp}}
+    - name: lib_dev_menu{{/enable_dev_menu}}
