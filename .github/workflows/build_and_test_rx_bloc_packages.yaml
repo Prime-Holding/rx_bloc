@@ -49,7 +49,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
       - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+        uses: VeryGoodOpenSource/very_good_coverage@v2
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 50
@@ -90,7 +90,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
       - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+        uses: VeryGoodOpenSource/very_good_coverage@v2
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 89
@@ -135,7 +135,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: dart run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
       - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+        uses: VeryGoodOpenSource/very_good_coverage@v2
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
