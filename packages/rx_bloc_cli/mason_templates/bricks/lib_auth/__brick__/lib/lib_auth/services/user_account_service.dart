@@ -92,7 +92,6 @@ class UserAccountService {
     if (!_logoutLocked) {
       _logoutLocked = true;
 
-      // Perform unsubscribe for remote notifications
       try {
         await _pushSubscriptionRepository.unsubscribeForPushNotifications(true);
       } catch (e) {

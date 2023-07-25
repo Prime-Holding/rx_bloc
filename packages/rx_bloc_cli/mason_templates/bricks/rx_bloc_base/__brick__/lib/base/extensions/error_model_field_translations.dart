@@ -19,7 +19,7 @@ extension ErrorModelFieldL10nX<T> on Stream<T> {
 
 class ErrorModelFieldL10n {
   static T translateError<T>(Object error, BuildContext context) {
-    if (error is ErrorUnknown && error.exception is FieldErrorModel<T>) {
+    if (error is UnknownErrorModel && error.exception is FieldErrorModel<T>) {
       throw RxFieldException<T>(
         error: (error.exception as FieldErrorModel<T>).translate(context),
         fieldValue: (error.exception as FieldErrorModel<T>).fieldValue,

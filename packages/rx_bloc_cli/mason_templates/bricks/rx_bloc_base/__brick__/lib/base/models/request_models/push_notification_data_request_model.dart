@@ -13,6 +13,7 @@ class PushNotificationDataRequestModel {
   factory PushNotificationDataRequestModel.fromJson(
           Map<String, dynamic> json) =>
       _$PushNotificationDataRequestModelFromJson(json);
+
   Map<String, dynamic> toJson() =>
       _$PushNotificationDataRequestModelToJson(this);
 }

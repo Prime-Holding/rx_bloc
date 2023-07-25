@@ -1,3 +1,6 @@
+## [2.7.1]
+* Replaced local `ErrorModel`, `GenericErrorModel` and `UnknownErrorModel` with the ones from `widget_toolkit` package
+
 ## [2.7.0]
 * Added parameter `enable-dev-menu` for enabling dev menu (proxy debugging using Alice and Charles)
 
