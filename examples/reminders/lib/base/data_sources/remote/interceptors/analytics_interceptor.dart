@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
@@ -20,17 +19,17 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 /// and collect data for users behaviour.
 /// You should implement one or more methods from the contract.
 class AnalyticsInterceptor extends Interceptor {
-  AnalyticsInterceptor( this.observer );
-  
+  AnalyticsInterceptor(this.observer);
+
   final FirebaseAnalyticsObserver observer;
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) { 
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     observer.analytics.logEvent(name: 'dioError', parameters: {
       'errorType': err.type,
       'errorMessage': err.message,
       'stackTrace': err.stackTrace
-    }); 
+    });
     super.onError(err, handler);
   }
 }

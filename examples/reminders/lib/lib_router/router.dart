@@ -16,6 +16,7 @@ import '../feature_facebook_authentication/views/facebook_login_page.dart';
 import '../feature_navigation/views/navigation_page.dart';
 import '../feature_reminder_list/di/reminder_list_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
+import 'models/route_data_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
@@ -24,31 +25,29 @@ part 'routes/navigation_routes.dart';
 part 'routes/root/login_routes.dart';
 part 'routes/root/splash_routes.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shell');
-
 class AppRouter {
-  AppRouter(this._coordinatorBloc);
+  AppRouter(
+      this.coordinatorBloc, this.rootNavigatorKey, this.shellNavigatorKey);
 
-  final CoordinatorBlocType _coordinatorBloc;
+  final CoordinatorBlocType coordinatorBloc;
+  final GlobalKey<NavigatorState> rootNavigatorKey;
+  final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
-      _GoRouterRefreshStream(_coordinatorBloc.states.isAuthenticated);
+      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated);
 
   GoRouter get router => _goRouter;
 
   late final GoRouter _goRouter = GoRouter(
-    navigatorKey: _rootNavigatorKey,
-    initialLocation: RoutesPath.splash,
+    navigatorKey: rootNavigatorKey,
+    initialLocation: const SplashRoute().location,
     redirect: _pageRedirections,
     refreshListenable: _refreshListener,
     routes: [
       $splashRoute,
       $loginRoute,
       ShellRoute(
-        navigatorKey: _shellNavigatorKey,
+        navigatorKey: shellNavigatorKey,
         builder: (context, state, child) => NavigationPage(
           child: child,
         ),
@@ -70,19 +69,22 @@ class AppRouter {
     BuildContext context,
     GoRouterState state,
   ) async {
-    if (_refreshListener.isLoggedIn && state.queryParams['from'] != null) {
-      return state.queryParams['from'];
+    if (_refreshListener.isLoggedIn &&
+        state.uri.queryParameters['from'] != null) {
+      return state.uri.queryParameters['from'];
     }
-    if (_refreshListener.isLoggedIn && state.subloc == RoutesPath.login) {
+    if (_refreshListener.isLoggedIn &&
+        state.matchedLocation == RoutesPath.login) {
       return RoutesPath.dashboard;
     }
 
-    if (state.subloc == RoutesPath.splash) {
+    if (state.matchedLocation == RoutesPath.splash) {
       return null;
     }
 
-    if (!_refreshListener.isLoggedIn && state.subloc != RoutesPath.login) {
-      return '${RoutesPath.login}?from=${state.location}';
+    if (!_refreshListener.isLoggedIn &&
+        state.matchedLocation != RoutesPath.login) {
+      return '${const LoginRoute().location}?from=${state.uri.toString()}';
     }
 
     return null;

@@ -2,7 +2,7 @@ part of '../../router.dart';
 
 @TypedGoRoute<SplashRoute>(path: RoutesPath.splash)
 @immutable
-class SplashRoute extends GoRouteData implements RouteData {
+class SplashRoute extends GoRouteData implements RouteDataModel {
   const SplashRoute();
 
   @override
@@ -10,7 +10,7 @@ class SplashRoute extends GoRouteData implements RouteData {
       MaterialPage(
         key: state.pageKey,
         child: SplashPageWithDependencies(
-          redirectToLocation: state.queryParams['from'],
+          redirectToLocation: state.uri.queryParameters['from'],
         ),
       );
 

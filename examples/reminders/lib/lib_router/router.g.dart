@@ -6,14 +6,14 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<GoRoute> get $appRoutes => [
+List<RouteBase> get $appRoutes => [
       $dashboardRoute,
       $remindersRoute,
       $loginRoute,
       $splashRoute,
     ];
 
-GoRoute get $dashboardRoute => GoRouteData.$route(
+RouteBase get $dashboardRoute => GoRouteData.$route(
       path: '/dashboard',
       factory: $DashboardRouteExtension._fromState,
     );
@@ -26,12 +26,17 @@ extension $DashboardRouteExtension on DashboardRoute {
         '/dashboard',
       );
 
-  void go(BuildContext context) => context.go(location, extra: this);
+  void go(BuildContext context) => context.go(location);
 
-  void push(BuildContext context) => context.push(location, extra: this);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
-GoRoute get $remindersRoute => GoRouteData.$route(
+RouteBase get $remindersRoute => GoRouteData.$route(
       path: '/reminders',
       factory: $RemindersRouteExtension._fromState,
     );
@@ -44,12 +49,17 @@ extension $RemindersRouteExtension on RemindersRoute {
         '/reminders',
       );
 
-  void go(BuildContext context) => context.go(location, extra: this);
+  void go(BuildContext context) => context.go(location);
 
-  void push(BuildContext context) => context.push(location, extra: this);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
-GoRoute get $loginRoute => GoRouteData.$route(
+RouteBase get $loginRoute => GoRouteData.$route(
       path: '/login',
       factory: $LoginRouteExtension._fromState,
     );
@@ -61,12 +71,17 @@ extension $LoginRouteExtension on LoginRoute {
         '/login',
       );
 
-  void go(BuildContext context) => context.go(location, extra: this);
+  void go(BuildContext context) => context.go(location);
 
-  void push(BuildContext context) => context.push(location, extra: this);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
-GoRoute get $splashRoute => GoRouteData.$route(
+RouteBase get $splashRoute => GoRouteData.$route(
       path: '/splash',
       factory: $SplashRouteExtension._fromState,
     );
@@ -78,7 +93,12 @@ extension $SplashRouteExtension on SplashRoute {
         '/splash',
       );
 
-  void go(BuildContext context) => context.go(location, extra: this);
+  void go(BuildContext context) => context.go(location);
 
-  void push(BuildContext context) => context.push(location, extra: this);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }

@@ -28,12 +28,12 @@ class SplashPage extends StatelessWidget {
             RxBlocBuilder<SplashBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (state, loading, bloc) => loading.isLoading
-                  ? Expanded(
+                  ? const Expanded(
                       child: Center(
                         child: SizedBox(
                           height: 200,
                           child: Column(
-                            children: const [
+                            children: [
                               Image(
                                 image: AssetImage(_logoPath),
                               ),
