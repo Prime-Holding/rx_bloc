@@ -54,7 +54,7 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 50
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v3
         with:
           directory: ${{ matrix.folder }}/coverage
   flutter_packages:
@@ -95,7 +95,7 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 89
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v3
         with:
           directory: ${{ matrix.folder }}/coverage
   packages:
@@ -140,7 +140,7 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v3
         with:
           directory: ${{ matrix.folder }}/coverage
           
