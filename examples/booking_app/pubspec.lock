@@ -378,11 +378,10 @@ packages:
   flutter_rx_bloc:
     dependency: "direct main"
     description:
-      name: flutter_rx_bloc
-      sha256: "1c37acd5e22a84de1d87202d86accc6e049b933b00531df81350da6fb718f033"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.2"
+      path: "../../packages/flutter_rx_bloc"
+      relative: true
+    source: path
+    version: "6.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -724,35 +723,31 @@ packages:
   rx_bloc:
     dependency: "direct main"
     description:
-      name: rx_bloc
-      sha256: "22919d1c30b64702c63ff67f0c9a6ca615e43e637022544c6d14f0297fd37afa"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.1"
+      path: "../../packages/rx_bloc"
+      relative: true
+    source: path
+    version: "5.0.0"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
-      name: rx_bloc_generator
-      sha256: e51d83485ace36e6bf5bb572069a251c316abef0ab65329743dc5a88f4936730
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.2"
+      path: "../../packages/rx_bloc_generator"
+      relative: true
+    source: path
+    version: "7.0.0"
   rx_bloc_list:
     dependency: "direct main"
     description:
-      name: rx_bloc_list
-      sha256: "22c8eebe40d3f143ec3f5092f62ba456f3debe084b5063a01d44bdf4c97fd8a7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.1"
+      path: "../../packages/rx_bloc_list"
+      relative: true
+    source: path
+    version: "4.0.0"
   rx_bloc_test:
     dependency: "direct dev"
     description:
-      name: rx_bloc_test
-      sha256: "6e5eba2d5b68a131e07a69a7d7792bb945ba17c4d0597fd1c69c15ea1b8024fb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.3"
+      path: "../../packages/rx_bloc_test"
+      relative: true
+    source: path
+    version: "4.0.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -992,4 +987,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.0.5 <4.0.0"
-  flutter: ">=3.10.0"
+  flutter: ">=3.3.0"

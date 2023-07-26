@@ -59,6 +59,14 @@ dependency_overrides:
       ref: master
   favorites_advanced_base:
     path: ../favorites_advanced_base
+  rx_bloc:
+    path: ../../../packages/rx_bloc
+  rx_bloc_generator:
+    path: ../../../packages/rx_bloc_generator
+  rx_bloc_list:
+    path: ../../../packages/rx_bloc_list
+  rx_bloc_test:
+    path: ../../../packages/rx_bloc_test
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
