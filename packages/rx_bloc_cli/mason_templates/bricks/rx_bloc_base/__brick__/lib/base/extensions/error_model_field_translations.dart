@@ -2,7 +2,6 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:widget_toolkit/language_picker.dart';
 
 import '../models/errors/error_model.dart';
 import 'error_model_translations.dart';
@@ -19,7 +18,7 @@ extension ErrorModelFieldL10nX<T> on Stream<T> {
 
 class ErrorModelFieldL10n {
   static T translateError<T>(Object error, BuildContext context) {
-    if (error is ErrorUnknown && error.exception is FieldErrorModel<T>) {
+    if (error is UnknownErrorModel && error.exception is FieldErrorModel<T>) {
       throw RxFieldException<T>(
         error: (error.exception as FieldErrorModel<T>).translate(context),
         fieldValue: (error.exception as FieldErrorModel<T>).fieldValue,
