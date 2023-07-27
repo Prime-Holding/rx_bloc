@@ -30,15 +30,15 @@ abstract class $HotelSearchBloc extends RxBlocBase
 
   /// Тhe [Subject] where events sink to by calling [filterByCapacity]
   final _$filterByCapacityEvent =
-      BehaviorSubject<_FilterByCapacityEventArgs>.seeded(
-          const _FilterByCapacityEventArgs(roomCapacity: 0, personCapacity: 0));
+      BehaviorSubject<({int roomCapacity, int personCapacity})>.seeded(
+          const (personCapacity: 0, roomCapacity: 0));
 
   /// Тhe [Subject] where events sink to by calling [sortBy]
   final _$sortByEvent = BehaviorSubject<SortBy>.seeded(SortBy.none);
 
   /// Тhe [Subject] where events sink to by calling [reload]
-  final _$reloadEvent = BehaviorSubject<_ReloadEventArgs>.seeded(
-      const _ReloadEventArgs(reset: true, fullReset: false));
+  final _$reloadEvent = BehaviorSubject<({bool reset, bool fullReset})>.seeded(
+      const (reset: true, fullReset: false));
 
   /// The state of [dateRangeFilterData] implemented in
   /// [_mapToDateRangeFilterDataState]
@@ -65,7 +65,7 @@ abstract class $HotelSearchBloc extends RxBlocBase
     int roomCapacity = 0,
     int personCapacity = 0,
   }) =>
-      _$filterByCapacityEvent.add(_FilterByCapacityEventArgs(
+      _$filterByCapacityEvent.add((
         roomCapacity: roomCapacity,
         personCapacity: personCapacity,
       ));
@@ -78,7 +78,7 @@ abstract class $HotelSearchBloc extends RxBlocBase
     required bool reset,
     bool fullReset = false,
   }) =>
-      _$reloadEvent.add(_ReloadEventArgs(
+      _$reloadEvent.add((
         reset: reset,
         fullReset: fullReset,
       ));
@@ -117,28 +117,8 @@ abstract class $HotelSearchBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [HotelSearchBlocEvents.filterByCapacity] event
-class _FilterByCapacityEventArgs {
-  const _FilterByCapacityEventArgs({
-    this.roomCapacity = 0,
-    this.personCapacity = 0,
-  });
+// ignore: unused_element
+typedef _FilterByCapacityEventArgs = ({int roomCapacity, int personCapacity});
 
-  final int roomCapacity;
-
-  final int personCapacity;
-}
-
-/// Helps providing the arguments in the [Subject.add] for
-/// [HotelSearchBlocEvents.reload] event
-class _ReloadEventArgs {
-  const _ReloadEventArgs({
-    required this.reset,
-    this.fullReset = false,
-  });
-
-  final bool reset;
-
-  final bool fullReset;
-}
+// ignore: unused_element
+typedef _ReloadEventArgs = ({bool reset, bool fullReset});

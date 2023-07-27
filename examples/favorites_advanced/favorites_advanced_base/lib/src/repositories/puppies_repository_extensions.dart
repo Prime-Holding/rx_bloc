@@ -1,21 +1,21 @@
 part of 'puppies_repository.dart';
 
 extension ExtendImagePicker on ImagePicker {
-  Future<PickedFile?> pickPicture({
+  Future<XFile?> pickPicture({
     required ImagePickerAction source,
     CameraDevice preferredCamera = CameraDevice.rear,
   }) async {
-    PickedFile? pickedFile;
+    XFile? pickedFile;
 
     switch (source) {
       case ImagePickerAction.camera:
-        pickedFile = await getImage(
+        pickedFile = (await pickImage(
           source: ImageSource.camera,
-          preferredCameraDevice: preferredCamera,
-        );
+          // preferredCameraDevice: preferredCamera,
+        ));
         break;
       case ImagePickerAction.gallery:
-        pickedFile = await getImage(
+        pickedFile = await pickImage(
           source: ImageSource.gallery,
         );
         break;
@@ -25,7 +25,7 @@ extension ExtendImagePicker on ImagePicker {
       final lostData = await _retrieveLostData();
 
       if (lostData != null && lostData.path.isNotEmpty) {
-        pickedFile = PickedFile(lostData.path);
+        pickedFile = XFile(lostData.path);
       }
     }
 
@@ -36,13 +36,13 @@ extension ExtendImagePicker on ImagePicker {
     return pickedFile;
   }
 
-  Future<PickedFile?> _retrieveLostData() async {
-    final response = await getLostData();
+  Future<XFile?> _retrieveLostData() async {
+    final response = await retrieveLostData();
 
     if (response.file != null && response.type == RetrieveType.image) {
       return response.file;
     }
 
-    return PickedFile('');
+    return XFile('');
   }
 }

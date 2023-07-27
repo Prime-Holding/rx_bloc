@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 
 import '../feature_home/di/home_page_with_dependencies.dart';
 import '../feature_hotel_details/di/hotel_details_with_dependencies.dart';
+import 'models/route_data_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
@@ -32,8 +33,4 @@ class AppRouter {
       ),
     ),
   );
-}
-
-abstract class RouteData {
-  String get routeLocation;
 }

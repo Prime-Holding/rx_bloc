@@ -22,17 +22,12 @@ class RemindersTheme {
     );
     final base = lightModeOn ? ThemeData.light() : ThemeData.dark();
     return base.copyWith(
-      colorScheme: colorScheme.copyWith(
-        secondary: designSystemColor.accentColor,
-      ),
       primaryColor: designSystemColor.primaryColor,
       indicatorColor: designSystemColor.indicatorColor,
       splashColor: designSystemColor.splashColor,
       splashFactory: InkRipple.splashFactory,
       canvasColor: designSystemColor.canvasColor,
-      backgroundColor: designSystemColor.backgroundColor,
       scaffoldBackgroundColor: designSystemColor.scaffoldBackgroundColor,
-      errorColor: designSystemColor.errorColor,
       buttonTheme: ButtonThemeData(
         colorScheme: colorScheme,
         textTheme: ButtonTextTheme.primary,
@@ -48,6 +43,12 @@ class RemindersTheme {
         color: designSystemColor.primaryVariant,
       ),
       iconTheme: _buildIconTheme(base.iconTheme, designSystemColor),
+      colorScheme: colorScheme
+          .copyWith(
+            secondary: designSystemColor.accentColor,
+          )
+          .copyWith(background: designSystemColor.backgroundColor)
+          .copyWith(error: designSystemColor.errorColor),
     );
   }
 
@@ -55,21 +56,21 @@ class RemindersTheme {
       TextTheme base, DesignSystemColors designSystemColor) {
     const fontName = 'WorkSans';
     return base.copyWith(
-      headline1: base.headline1!.copyWith(fontFamily: fontName),
-      headline2: base.headline2!.copyWith(fontFamily: fontName),
-      headline3: base.headline3!.copyWith(fontFamily: fontName),
-      headline4: base.headline4!.copyWith(fontFamily: fontName),
-      headline5: base.headline5!.copyWith(fontFamily: fontName),
-      headline6: base.headline6!.copyWith(fontFamily: fontName),
-      button: base.button!.copyWith(fontFamily: fontName),
-      caption: base.caption!.copyWith(fontFamily: fontName),
-      bodyText1: base.bodyText1!.copyWith(
+      displayLarge: base.displayLarge!.copyWith(fontFamily: fontName),
+      displayMedium: base.displayMedium!.copyWith(fontFamily: fontName),
+      displaySmall: base.displaySmall!.copyWith(fontFamily: fontName),
+      headlineMedium: base.headlineMedium!.copyWith(fontFamily: fontName),
+      headlineSmall: base.headlineSmall!.copyWith(fontFamily: fontName),
+      titleLarge: base.titleLarge!.copyWith(fontFamily: fontName),
+      labelLarge: base.labelLarge!.copyWith(fontFamily: fontName),
+      bodySmall: base.bodySmall!.copyWith(fontFamily: fontName),
+      bodyLarge: base.bodyLarge!.copyWith(
           fontFamily: fontName, color: designSystemColor.bodyTextColor1),
-      bodyText2: base.bodyText2!.copyWith(
+      bodyMedium: base.bodyMedium!.copyWith(
           fontFamily: fontName, color: designSystemColor.bodyTextColor2),
-      subtitle1: base.subtitle1!.copyWith(fontFamily: fontName),
-      subtitle2: base.subtitle2!.copyWith(fontFamily: fontName),
-      overline: base.overline!.copyWith(fontFamily: fontName),
+      titleMedium: base.titleMedium!.copyWith(fontFamily: fontName),
+      titleSmall: base.titleSmall!.copyWith(fontFamily: fontName),
+      labelSmall: base.labelSmall!.copyWith(fontFamily: fontName),
     );
   }
 

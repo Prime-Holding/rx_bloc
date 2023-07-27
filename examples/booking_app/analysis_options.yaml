@@ -16,6 +16,8 @@ linter:
     avoid_returning_null_for_future: true
 
 analyzer:
+  enable-experiment:
+    - records
   exclude:
     - "**/*.rxb.g.dart"
     - "**/*.gr.dart"

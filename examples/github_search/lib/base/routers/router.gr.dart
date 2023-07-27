@@ -1,135 +1,116 @@
-// **************************************************************************
-// AutoRouteGenerator
-// **************************************************************************
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// AutoRouteGenerator
+// AutoRouterGenerator
 // **************************************************************************
-//
+
 // ignore_for_file: type=lint
+// coverage:ignore-file
 
-// ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/material.dart' as _i6;
+part of 'router.dart';
 
-import '../../feature_counter/views/counter_page.dart' as _i1;
-import '../../feature_github_repo_list/views/github_repo_list_page.dart' as _i4;
-import '../../feature_login/views/login_page.dart' as _i2;
-import '../../feature_notifications/views/notifications_page.dart' as _i3;
-
-class Router extends _i5.RootStackRouter {
-  Router([_i6.GlobalKey<_i6.NavigatorState>? navigatorKey])
-      : super(navigatorKey);
+abstract class _$AppRouter extends RootStackRouter {
+  // ignore: unused_element
+  _$AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i5.PageFactory> pagesMap = {
-    CounterRoute.name: (routeData) {
-      return _i5.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: _i5.WrappedRoute(child: const _i1.CounterPage()),
-      );
-    },
-    LoginRoute.name: (routeData) {
-      return _i5.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: _i5.WrappedRoute(child: const _i2.LoginPage()),
-      );
-    },
+  final Map<String, PageFactory> pagesMap = {
     NotificationsRoute.name: (routeData) {
-      return _i5.MaterialPageX<dynamic>(
+      return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i5.WrappedRoute(child: const _i3.NotificationsPage()),
+        child: const NotificationsPage(),
       );
     },
     GithubRepoListRoute.name: (routeData) {
       final args = routeData.argsAs<GithubRepoListRouteArgs>(
           orElse: () => const GithubRepoListRouteArgs());
-      return _i5.MaterialPageX<dynamic>(
+      return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i5.WrappedRoute(child: _i4.GithubRepoListPage(key: args.key)),
+        child: WrappedRoute(child: GithubRepoListPage(key: args.key)),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LoginPage(),
+      );
+    },
+    CounterRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WrappedRoute(child: const CounterPage()),
       );
     },
   };
-
-  @override
-  List<_i5.RouteConfig> get routes => [
-        _i5.RouteConfig(
-          CounterRoute.name,
-          path: '/counter-page',
-        ),
-        _i5.RouteConfig(
-          LoginRoute.name,
-          path: '/login-page',
-        ),
-        _i5.RouteConfig(
-          NotificationsRoute.name,
-          path: '/notifications-page',
-        ),
-        _i5.RouteConfig(
-          GithubRepoListRoute.name,
-          path: '/',
-        ),
-      ];
 }
 
 /// generated route for
-/// [_i1.CounterPage]
-class CounterRoute extends _i5.PageRouteInfo<void> {
-  const CounterRoute()
-      : super(
-          CounterRoute.name,
-          path: '/counter-page',
-        );
-
-  static const String name = 'CounterRoute';
-}
-
-/// generated route for
-/// [_i2.LoginPage]
-class LoginRoute extends _i5.PageRouteInfo<void> {
-  const LoginRoute()
-      : super(
-          LoginRoute.name,
-          path: '/login-page',
-        );
-
-  static const String name = 'LoginRoute';
-}
-
-/// generated route for
-/// [_i3.NotificationsPage]
-class NotificationsRoute extends _i5.PageRouteInfo<void> {
-  const NotificationsRoute()
+/// [NotificationsPage]
+class NotificationsRoute extends PageRouteInfo<void> {
+  const NotificationsRoute({List<PageRouteInfo>? children})
       : super(
           NotificationsRoute.name,
-          path: '/notifications-page',
+          initialChildren: children,
         );
 
   static const String name = 'NotificationsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i4.GithubRepoListPage]
-class GithubRepoListRoute extends _i5.PageRouteInfo<GithubRepoListRouteArgs> {
-  GithubRepoListRoute({_i6.Key? key})
-      : super(
+/// [GithubRepoListPage]
+class GithubRepoListRoute extends PageRouteInfo<GithubRepoListRouteArgs> {
+  GithubRepoListRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           GithubRepoListRoute.name,
-          path: '/',
           args: GithubRepoListRouteArgs(key: key),
+          initialChildren: children,
         );
 
   static const String name = 'GithubRepoListRoute';
+
+  static const PageInfo<GithubRepoListRouteArgs> page =
+      PageInfo<GithubRepoListRouteArgs>(name);
 }
 
 class GithubRepoListRouteArgs {
   const GithubRepoListRouteArgs({this.key});
 
-  final _i6.Key? key;
+  final Key? key;
 
   @override
   String toString() {
     return 'GithubRepoListRouteArgs{key: $key}';
   }
+}
+
+/// generated route for
+/// [LoginPage]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+      : super(
+          LoginRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CounterPage]
+class CounterRoute extends PageRouteInfo<void> {
+  const CounterRoute({List<PageRouteInfo>? children})
+      : super(
+          CounterRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CounterRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

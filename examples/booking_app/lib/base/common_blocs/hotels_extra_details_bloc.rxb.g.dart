@@ -24,15 +24,15 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
 
   /// Тhe [Subject] where events sink to by calling [fetchExtraDetails]
   final _$fetchExtraDetailsEvent =
-      PublishSubject<_FetchExtraDetailsEventArgs>();
+      PublishSubject<({Hotel hotel, bool allProps})>();
 
   @override
   void fetchExtraDetails(
     Hotel hotel, {
     bool allProps = false,
   }) =>
-      _$fetchExtraDetailsEvent.add(_FetchExtraDetailsEventArgs(
-        hotel,
+      _$fetchExtraDetailsEvent.add((
+        hotel: hotel,
         allProps: allProps,
       ));
 
@@ -50,15 +50,5 @@ abstract class $HotelsExtraDetailsBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [HotelsExtraDetailsBlocEvents.fetchExtraDetails] event
-class _FetchExtraDetailsEventArgs {
-  const _FetchExtraDetailsEventArgs(
-    this.hotel, {
-    this.allProps = false,
-  });
-
-  final Hotel hotel;
-
-  final bool allProps;
-}
+// ignore: unused_element
+typedef _FetchExtraDetailsEventArgs = ({Hotel hotel, bool allProps});

@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/l10n.dart';
 import '../di/app_dependencies.dart';
-import '../routers/router.gr.dart' as router;
+import '../routers/router.dart' as router;
 import '../theme/design_system.dart';
 import '../utils/helpers.dart';
 import 'config/app_constants.dart';
@@ -29,7 +29,7 @@ class GithubSearch extends StatelessWidget {
   }) : super(key: key);
 
   final EnvironmentConfig config;
-  final _router = router.Router();
+  final _router = router.AppRouter();
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -44,7 +44,7 @@ class GithubSearch extends StatelessWidget {
 class _MyMaterialApp extends StatefulWidget {
   const _MyMaterialApp(this._router);
 
-  final router.Router _router;
+  final router.AppRouter _router;
 
   @override
   __MyMaterialAppState createState() => __MyMaterialAppState();

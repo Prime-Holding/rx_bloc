@@ -18,6 +18,7 @@ import '../../l10n/l10n.dart';
 import '../blocs/counter_bloc.dart';
 import '../di/counter_dependencies.dart';
 
+@RoutePage()
 class CounterPage extends StatelessWidget implements AutoRouteWrapper {
   // ignore: public_member_api_docs
   const CounterPage({

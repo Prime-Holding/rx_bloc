@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../lib_router/blocs/router_bloc.dart';
+import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/models/routes_path.dart';
 import '../../lib_router/router.dart';
 
@@ -36,15 +37,15 @@ class NavigationPage extends StatelessWidget {
 
   int _toCurrentIndex(BuildContext context) {
     GoRouter router = GoRouter.of(context);
-    final routePath =
-        router.routeInformationParser.matcher.findMatch(router.location);
-    if (routePath.fullpath.startsWith(RoutesPath.reminders)) {
+    final routePath = router.routerDelegate;
+    if (routePath.currentConfiguration.fullPath
+        .startsWith(RoutesPath.reminders)) {
       return 1;
     }
     return 0;
   }
 
-  RouteData _tabFromIndex(int index) {
+  RouteDataModel _tabFromIndex(int index) {
     switch (index) {
       case 0:
         return const DashboardRoute();

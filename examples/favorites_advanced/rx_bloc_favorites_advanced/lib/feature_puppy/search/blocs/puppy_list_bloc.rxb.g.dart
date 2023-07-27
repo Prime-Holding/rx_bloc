@@ -23,15 +23,21 @@ abstract class $PuppyListBloc extends RxBlocBase
   final _$filterEvent = BehaviorSubject<String>.seeded('');
 
   /// Тhe [Subject] where events sink to by calling [reload]
-  final _$reloadEvent = BehaviorSubject<_ReloadEventArgs>.seeded(
-      const _ReloadEventArgs(reset: true, fullReset: false));
+  final _$reloadEvent = BehaviorSubject<({bool reset, bool fullReset})>.seeded(
+      const (reset: true, fullReset: false));
 
   @override
   void filter({required String query}) => _$filterEvent.add(query);
 
   @override
-  void reload({required bool reset, bool fullReset = false}) =>
-      _$reloadEvent.add(_ReloadEventArgs(reset: reset, fullReset: fullReset));
+  void reload({
+    required bool reset,
+    bool fullReset = false,
+  }) =>
+      _$reloadEvent.add((
+        reset: reset,
+        fullReset: fullReset,
+      ));
 
   @override
   PuppyListEvents get events => this;
@@ -48,12 +54,5 @@ abstract class $PuppyListBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [PuppyListEvents.reload] event
-class _ReloadEventArgs {
-  const _ReloadEventArgs({required this.reset, this.fullReset = false});
-
-  final bool reset;
-
-  final bool fullReset;
-}
+// ignore: unused_element
+typedef _ReloadEventArgs = ({bool reset, bool fullReset});

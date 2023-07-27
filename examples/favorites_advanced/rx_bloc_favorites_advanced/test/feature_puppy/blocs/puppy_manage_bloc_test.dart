@@ -54,7 +54,7 @@ void main() {
         await Future.delayed(Stub.pickImageDelay);
 
         when(repositoryMock.pickPuppyImage(ImagePickerAction.camera))
-            .thenAnswer((_) async => PickedFile('camera image'));
+            .thenAnswer((_) async => XFile('camera image'));
 
         bloc.events.setImage(ImagePickerAction.camera);
 
@@ -62,7 +62,7 @@ void main() {
         await Future.delayed(Stub.pickImageDelay);
 
         when(repositoryMock.pickPuppyImage(ImagePickerAction.gallery))
-            .thenAnswer((_) async => PickedFile('gallery image'));
+            .thenAnswer((_) async => XFile('gallery image'));
 
         bloc.events.setImage(ImagePickerAction.gallery);
       },

@@ -99,7 +99,6 @@ extension NavigationItemToWitget on NavigationItem {
               snapshot.hasData && snapshot.data! <= 0
                   ? type.asIcon()!
                   : badges.Badge(
-                      padding: const EdgeInsets.all(3),
                       badgeContent: snapshot.build(
                         (count) => Text(
                           count.toString(),
@@ -109,8 +108,11 @@ extension NavigationItemToWitget on NavigationItem {
                           ),
                         ),
                       ),
-                      badgeColor: Colors.transparent,
-                      elevation: 0,
+                      badgeStyle: const badges.BadgeStyle(
+                        padding: EdgeInsets.all(3),
+                        badgeColor: Colors.transparent,
+                        elevation: 0,
+                      ),
                       child: type.asIcon(),
                     ),
         )

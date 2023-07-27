@@ -73,5 +73,4 @@ class ProfileAvatar extends StatelessWidget {
       );
 
   /// endregion
-
 }
