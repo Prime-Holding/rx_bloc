@@ -21,6 +21,7 @@ abstract class CreatePinBlocEvents {
   /// Check if biometrics are enabled for the app.
   void checkAreBiometricsEnabled();
 
+  /// Disables biometrics while using a page
   void temporaryDisableBiometrics(bool disable);
 }
 

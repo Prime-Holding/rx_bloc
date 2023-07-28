@@ -22,8 +22,10 @@ abstract class UpdateAndVerifyPinBlocEvents {
   /// Check if biometrics are enabled for the app.
   void checkAreBiometricsEnabled();
 
+  /// Disables biometrics while using a page
   void temporaryDisableBiometrics(bool disable);
 
+  /// Changes the state to start or stop listening of user inactivity
   void setSessionState(SessionState state);
 }
 
