@@ -23,7 +23,6 @@ import '../feature_splash/services/splash_service.dart'; {{#enable_feature_widge
 import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart'; {{/enable_feature_widget_toolkit}}
 import '../lib_permissions/services/permissions_service.dart'; {{#enable_pin_code}}
 import '../lib_pin_code/models/pin_code_arguments.dart';
-import '../lib_pin_code/views/confirm_pin_page.dart';
 import '../lib_pin_code/views/create_pin_page.dart';
 import '../lib_pin_code/views/update_pin_page.dart';
 import '../lib_pin_code/views/verify_pin_code_page.dart'; {{/enable_pin_code}}
@@ -130,7 +129,7 @@ class AppRouter {
 
     if ((state.matchedLocation != const LoginRoute().location) &&
         (state.matchedLocation != const VerifyPinCodeRoute().location) &&
-        (state.matchedLocation != const ConfirmPinRoute().location) &&
+        (state.matchedLocation != const CreatePinRoute().location) &&
         (state.matchedLocation != const SplashRoute().location)) {
       previousLocation = state.matchedLocation;
     } {{/enable_pin_code}}

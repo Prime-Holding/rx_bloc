@@ -2,7 +2,9 @@
   "@@locale": "en",
   "createPin": "Create pin code",
   "changePin": "Change pin code",
-  "pinVerifiedMessage": "Pin was verified successfully",
+  "updatePinPage": "Update pin page",
+  "createPinPage": "Create pin page",
+  "pinCreatedMessage": "Pin was created successfully",
   "pinUpdatedMessage": "Pin was updated successfully",
   "confirmPin": "Confirm pin code",
   "enterCurrentPin": "Enter current pin",
@@ -13,8 +15,5 @@
   "biometricsEnabled": "Your biometrics are enabled!",
   "biometricsDisabled": "Your biometrics are disabled!",
   "verifyPinCodePage": "Verify pin code page",
-  "updatePinPage": "Update pin page",
-  "createPinPage": "Create pin page",
-  "confirmPinPage": "Confirm pin page",
   "wrongConfirmationPin": "Wrong confirmation pin"
 }

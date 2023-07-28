@@ -9,9 +9,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
-import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
-import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}
-
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 import '../../feature_splash/services/splash_service.dart';
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
@@ -30,13 +28,15 @@ import '../../lib_change_language/services/app_language_service.dart'; {{/enable
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
-import '../../lib_pin_code/bloc/pin_bloc.dart';
+import '../../lib_pin_code/bloc/create_pin_bloc.dart';
+import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 import '../../lib_pin_code/data_source/pin_biometrics_local_data_source.dart';
 import '../../lib_pin_code/data_source/pin_code_data_source.dart';
 import '../../lib_pin_code/repository/pin_biometrics_repository.dart';
 import '../../lib_pin_code/repository/pin_code_repository.dart';
-import '../../lib_pin_code/services/app_pin_code_service.dart';
-import '../../lib_pin_code/services/pin_biometrics_service.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/services/create_pin_code_service.dart';
+import '../../lib_pin_code/services/pin_biometrics_service.dart';
+import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
@@ -324,8 +324,13 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
           ),
         ), {{#enable_pin_code}}
-        Provider<PinCodeService>(
-          create: (context) => AppPinCodeService(
+        Provider<CreatePinCodeService>(
+          create: (context) => CreatePinCodeService(
+            context.read<PinCodeRepository>(),
+          ),
+        ),
+        Provider<UpdateAndVerifyPinCodeService>(
+          create: (context) => UpdateAndVerifyPinCodeService(
             context.read<PinCodeRepository>(),
           ),
         ),
@@ -361,9 +366,16 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
           ),
         ), {{#enable_pin_code}}
-        RxBlocProvider<PinBlocType>(
-          create: (context) => PinBloc(
-            service: context.read<PinCodeService>(),
+        RxBlocProvider<CreatePinBlocType>(
+          create: (context) => CreatePinBloc(
+            service: context.read<CreatePinCodeService>(),
+            pinBiometricsService: context.read<PinBiometricsService>(),
+            coordinatorBloc: context.read<CoordinatorBlocType>(),
+          ),
+        ),
+        RxBlocProvider<UpdateAndVerifyPinBlocType>(
+          create: (context) => UpdateAndVerifyPinBloc(
+            service: context.read<UpdateAndVerifyPinCodeService>(),
             pinBiometricsService: context.read<PinBiometricsService>(),
             coordinatorBloc: context.read<CoordinatorBlocType>(),
           ),

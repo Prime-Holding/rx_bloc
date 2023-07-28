@@ -2,7 +2,9 @@
   "@@locale": "bg",
   "createPin": "Създай пин код",
   "changePin": "Смени пин код",
-  "pinVerifiedMessage": "Пин кодът е верифициран",
+  "updatePinPage": "Обновяване на пин",
+  "createPinPage": "Създаване на пин",
+  "pinCreatedMessage": "Пин кодът е създаден",
   "pinUpdatedMessage": "Пин кодът е обновен",
   "confirmPin": "Потвърди пин код",
   "enterCurrentPin": "Въведи настоящ пин",
@@ -13,8 +15,5 @@
   "biometricsEnabled": "Биометричната функция е активирана",
   "biometricsDisabled": "Биометричната функция е деактивирана",
   "verifyPinCodePage": "Верифициране на пин",
-  "updatePinPage": "Обновяване на пин",
-  "createPinPage": "Създаване на пин",
-  "confirmPinPage": "Подтвърждаване на пин",
   "wrongConfirmationPin": "Грешен пин за потвърждаване"
 }

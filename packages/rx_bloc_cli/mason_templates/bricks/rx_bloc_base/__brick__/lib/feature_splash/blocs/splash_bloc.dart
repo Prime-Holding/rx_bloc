@@ -1,12 +1,12 @@
 {{> licence.dart }}
 
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rxdart/rxdart.dart';{{#enable_pin_code}}
-import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}
+import 'package:rxdart/rxdart.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../lib_auth/services/auth_service.dart';{{#enable_pin_code}}
-import '../../lib_pin_code/models/pin_code_arguments.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/models/pin_code_arguments.dart';
+import '../../lib_pin_code/services/create_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/splash_service.dart';
@@ -38,7 +38,7 @@ class SplashBloc extends $SplashBloc {
     RouterBlocType navigationBloc,
     SplashService splashService,
     AuthService authService,{{#enable_pin_code}}
-PinCodeService pinCodeService,{{/enable_pin_code}}{
+    CreatePinCodeService pinCodeService,{{/enable_pin_code}}{
     String? redirectLocation,
   })  : _navigationBloc = navigationBloc,
         _splashService = splashService,
@@ -60,7 +60,7 @@ PinCodeService pinCodeService,{{/enable_pin_code}}{
   final SplashService _splashService;
   final AuthService _authService;
   final String? _redirectLocation;{{#enable_pin_code}}
-final PinCodeService _pinCodeService; {{/enable_pin_code}}
+  final CreatePinCodeService _pinCodeService; {{/enable_pin_code}}
 
   Future<void> initializeAppAndNavigate() async {
     await _splashService.initializeApp();

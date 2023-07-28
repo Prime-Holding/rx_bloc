@@ -12,7 +12,7 @@ import '../../base/common_ui_components/app_error_modal_widget.dart'; {{#enable_
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#enable_pin_code}}
-import '../../lib_pin_code/bloc/pin_bloc.dart';
+import '../../lib_pin_code/bloc/create_pin_bloc.dart';
 import '../../lib_pin_code/models/pin_code_arguments.dart'; {{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this); {{#enable_pin_code}}
     context
-        .read<PinBlocType>()
+        .read<CreatePinBlocType>()
         .events
         .checkIsPinCreated(); {{/enable_pin_code}}
     super.initState();
@@ -93,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
             SizedBox(
               height: context.designSystem.spacing.xl0,
             ), {{#enable_pin_code}}
-            RxBlocBuilder<PinBlocType, bool>(
+            RxBlocBuilder<CreatePinBlocType, bool>(
               state: (bloc) => bloc.states.isPinCreated,
               builder: (context, isPinCreated, bloc) => Padding(
                 padding: EdgeInsets.symmetric(
@@ -102,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
                 child: OutlineFillButton(
                   text: _buildPinButtonText(isPinCreated, context),
                   onPressed: () {
-                    context.read<PinBlocType>().events.deleteSavedData();
+                    context.read<CreatePinBlocType>().events.deleteSavedData();
                     if (isPinCreated.hasData && isPinCreated.data!) {
                       context.read<RouterBlocType>().events.push(
                             const UpdatePinRoute(),

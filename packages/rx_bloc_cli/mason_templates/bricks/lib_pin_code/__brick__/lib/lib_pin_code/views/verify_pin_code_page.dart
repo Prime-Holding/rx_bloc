@@ -9,8 +9,9 @@ import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../l10n/l10n.dart';
-import '../bloc/pin_bloc.dart';
+import '../bloc/update_and_verify_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
+import '../services/update_and_verify_pin_code_service.dart';
 
 class VerifyPinCodePage extends StatefulWidget {
   const VerifyPinCodePage({
@@ -31,7 +32,7 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PinBlocType>().events
+      context.read<UpdateAndVerifyPinBlocType>().events
         ..setPinCodeType(widget.pinCodeArguments.isSessionTimeout)
         ..temporaryDisableBiometrics(false);
     });
@@ -42,7 +43,7 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   Widget build(BuildContext context) => Builder(
         builder: (context) => WillPopScope(
           onWillPop: () async {
-            context.read<PinBlocType>().events.deleteSavedData();
+            context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData();
             return true;
           },
           child: Scaffold(
@@ -62,7 +63,10 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
                     child: PinCodeKeyboard(
                       mapBiometricMessageToString: (message) =>
                           _exampleMapMessageToString(message, context),
-                      pinCodeService: context.read<PinCodeService>(),
+                      pinCodeService:
+                          context.read<UpdateAndVerifyPinCodeService>(),
+                      // Comment the line bellow in order not to use biometrics
+                      // authentication
                       biometricsLocalDataSource:
                           context.read<BiometricsLocalDataSource>(),
                       translateError: (error) =>
@@ -87,10 +91,13 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   Future<void> _isAuthenticatedWithBiometrics(
     bool isAuthWithBiometrics,
   ) async {
-    if (isAuthWithBiometrics && widget.pinCodeArguments.isSessionTimeout) {
+    if (isAuthWithBiometrics) {
+      if (widget.pinCodeArguments.isSessionTimeout) {
         context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
               isPinCodeConfirmed: true,
             );
+        return;
+      }
     }
   }
 

@@ -10,8 +10,9 @@ import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../bloc/pin_bloc.dart';
+import '../bloc/update_and_verify_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
+import '../services/update_and_verify_pin_code_service.dart';
 
 class UpdatePinPage extends StatefulWidget {
   const UpdatePinPage({
@@ -32,7 +33,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PinBlocType>().events
+      context.read<UpdateAndVerifyPinBlocType>().events
         ..setPinCodeType(widget.pinCodeArguments.isSessionTimeout)
         ..temporaryDisableBiometrics(true);
     });
@@ -43,7 +44,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
   Widget build(BuildContext context) => Builder(
         builder: (context) => WillPopScope(
           onWillPop: () async {
-            context.read<PinBlocType>().events.deleteSavedData();
+            context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData();
             return true;
           },
           child: Scaffold(
@@ -63,9 +64,8 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
                     child: PinCodeKeyboard(
                       mapBiometricMessageToString: (message) =>
                           _exampleMapMessageToString(message, context),
-                      pinCodeService: context.read<PinCodeService>(),
-                      biometricsLocalDataSource:
-                          context.read<BiometricsLocalDataSource>(),
+                      pinCodeService:
+                          context.read<UpdateAndVerifyPinCodeService>(),
                       translateError: (error) =>
                           _translateError(error, context),
                       onError: (error, translatedError) =>
@@ -94,7 +94,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
       if (widget.pinCodeArguments.title ==
           context.l10n.libPinCode.enterNewPin) {
         return context.read<RouterBlocType>().events.pushReplace(
-            const ConfirmPinRoute(),
+            const UpdatePinRoute(),
             extra: PinCodeArguments(title: context.l10n.libPinCode.confirmPin));
       } else if (widget.pinCodeArguments.title ==
           context.l10n.libPinCode.confirmPin) {

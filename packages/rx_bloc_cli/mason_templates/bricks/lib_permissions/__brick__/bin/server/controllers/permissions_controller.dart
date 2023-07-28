@@ -22,7 +22,9 @@ class PermissionsController extends ApiController {
   Response permissionsHandler(Request request) {
     final headers = request.headers;
     if (!headers.containsKey(AuthenticationService.authHeader)) {
-      return responseBuilder.buildOK(data: {
+      return responseBuilder.buildOK(data: { {{#enable_pin_code}}
+        'CreatePinRoute': false,
+        'UpdatePinRoute': false,{{/enable_pin_code}}
         'DashboardRoute': false,
         'ProfileRoute': false,
         'SplashRoute': true,{{#enable_feature_counter}}
@@ -38,7 +40,9 @@ class PermissionsController extends ApiController {
 
     _authenticationService.isAuthenticated(request);
 
-    return responseBuilder.buildOK(data: {
+    return responseBuilder.buildOK(data: { {{#enable_pin_code}}
+      'CreatePinRoute': true,
+      'UpdatePinRoute': true,{{/enable_pin_code}}
       'DashboardRoute': true,
       'ProfileRoute': true,
       'SplashRoute': true,{{#enable_feature_counter}}

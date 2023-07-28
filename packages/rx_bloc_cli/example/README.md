@@ -454,15 +454,17 @@ For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_
 
 
 ## Feature Pin Code
-The application provides a pin code functionality. Initially there is a create pin button, which 
+The application provides a pin code functionality. Initially there is a create pin button, which
 navigates you to the `CreatePinPage`. There you can enter and then confirm the pin that you chose.
-Then a change pin button is displayed, from you are navigate to the `UpdatePinPage`, where you can 
+Then a change pin button is displayed, from you are navigate to the `UpdatePinPage`, where you can
 enter the current pin and then enter and confirm the new pin. After a pin is created and saved, on
 the `UpdatePinPage` there is a biometrics button, from which you can enable usage of biometrics.
 On app restart, you are navigated to the `VerifyPinPage` where you can either authenticate with a
 pin or with biometrics. There is a session timeout listener, which navigates you to the `VerifyPinPage`
-after a configurable amount of inactivity time and after a configurable amount of time, when the 
+after a configurable amount of inactivity time and after a configurable amount of time, when the
 app has been in background mode.
+For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
+
 
 ## Next Steps
 

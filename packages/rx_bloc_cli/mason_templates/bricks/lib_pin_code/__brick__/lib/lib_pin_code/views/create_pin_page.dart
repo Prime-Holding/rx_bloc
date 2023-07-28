@@ -10,8 +10,9 @@ import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../bloc/pin_bloc.dart';
+import '../bloc/create_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
+import '../services/create_pin_code_service.dart';
 
 class CreatePinPage extends StatefulWidget {
   const CreatePinPage({
@@ -32,10 +33,7 @@ class _CreatePinPageState extends State<CreatePinPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<PinBlocType>()
-          .events
-          .setPinCodeType(widget.pinCodeArguments.isSessionTimeout);
+      context.read<CreatePinBlocType>().events.temporaryDisableBiometrics(true);
     });
     super.initState();
   }
@@ -50,44 +48,32 @@ class _CreatePinPageState extends State<CreatePinPage> {
 
   @override
   Widget build(BuildContext context) => Builder(
-        builder: (context) => WillPopScope(
-          onWillPop: () async {
-            context.read<PinBlocType>().events.deleteSavedData();
-            if (widget.pinCodeArguments.onReturn != null) {
-              widget.pinCodeArguments.onReturn!();
-            }
-            return true;
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                widget.pinCodeArguments.title.isEmpty
-                    ? context.l10n.libPinCode.createPinPage
-                    : widget.pinCodeArguments.title,
-              ),
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: Text(
+              widget.pinCodeArguments.title.isEmpty
+                  ? context.l10n.libPinCode.createPinPage
+                  : widget.pinCodeArguments.title,
             ),
-            extendBodyBehindAppBar: true,
-            body: SizedBox(
-              height: MediaQuery.sizeOf(context).height,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PinCodeKeyboard(
-                      mapBiometricMessageToString: (message) =>
-                          _exampleMapMessageToString(message, context),
-                      pinCodeService: context.read<PinCodeService>(),
-                      biometricsLocalDataSource:
-                          context.read<BiometricsLocalDataSource>(),
-                      translateError: (error) =>
-                          _translateError(error, context),
-                      onError: (error, translatedError) =>
-                          _onError(error, translatedError, context),
-                      isPinCodeVerified: (verified) =>
-                          _isPinCodeVerified(verified, context),
-                    ),
+          ),
+          extendBodyBehindAppBar: true,
+          body: SizedBox(
+            height: MediaQuery.sizeOf(context).height,
+            child: Column(
+              children: [
+                Expanded(
+                  child: PinCodeKeyboard(
+                    mapBiometricMessageToString: (message) =>
+                        _exampleMapMessageToString(message, context),
+                    pinCodeService: context.read<CreatePinCodeService>(),
+                    translateError: (error) => _translateError(error, context),
+                    onError: (error, translatedError) =>
+                        _onError(error, translatedError, context),
+                    isPinCodeVerified: (verified) =>
+                        _isPinCodeVerified(verified, context),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -96,13 +82,26 @@ class _CreatePinPageState extends State<CreatePinPage> {
   Future<void> _isPinCodeVerified(
       bool isPinVerified, BuildContext context) async {
     if (isPinVerified) {
-      context.read<RouterBlocType>().events.pushReplace(
-            const ConfirmPinRoute(),
-            extra: PinCodeArguments(
-              title: context.l10n.libPinCode.confirmPin,
-              onReturn: context.read<PinBlocType>().events.checkIsPinCreated,
-            ),
-          );
+      if (widget.pinCodeArguments.title == context.l10n.libPinCode.createPin) {
+        context.read<RouterBlocType>().events.pushReplace(
+              const CreatePinRoute(),
+              extra: PinCodeArguments(
+                title: context.l10n.libPinCode.confirmPin,
+                onReturn:
+                    context.read<CreatePinBlocType>().events.checkIsPinCreated,
+              ),
+            );
+      } else if (widget.pinCodeArguments.title ==
+          context.l10n.libPinCode.confirmPin) {
+        await showBlurredBottomSheet(
+          context: context,
+          configuration: const ModalConfiguration(safeAreaBottom: false),
+          builder: (context) => MessagePanelWidget(
+            message: context.l10n.libPinCode.pinCreatedMessage,
+            messageState: MessagePanelState.positiveCheck,
+          ),
+        );
+      }
     }
   }
 
@@ -121,7 +120,7 @@ class _CreatePinPageState extends State<CreatePinPage> {
 
   String _translateError(Object error, BuildContext context) =>
       error is ErrorWrongPin
-          ? error.errorMessage
+          ? context.l10n.libPinCode.wrongConfirmationPin
           : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(

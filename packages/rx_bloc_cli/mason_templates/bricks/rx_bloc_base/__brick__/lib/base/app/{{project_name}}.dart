@@ -15,7 +15,8 @@ import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
 import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
-import '../../lib_pin_code/bloc/pin_bloc.dart';
+import '../../lib_pin_code/bloc/create_pin_bloc.dart';
+import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 import '../../lib_pin_code/models/pin_code_arguments.dart';
 import '../../lib_router/blocs/router_bloc.dart';{{/enable_pin_code}}
 import '../../lib_router/router.dart';
@@ -91,13 +92,13 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   {{#enable_pin_code}}
   void _createSessionConfig() {
-    context.read<PinBlocType>().events.deleteSavedData();
+    context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData();
     _sessionConfig = SessionConfig(
-      invalidateSessionForAppLostFocus: const Duration(seconds: 1000),
+      invalidateSessionForAppLostFocus: const Duration(seconds: 60),
       invalidateSessionForUserInactivity: const Duration(seconds: 7),
     );
     context
-        .read<PinBlocType>()
+        .read<UpdateAndVerifyPinBlocType>()
         .events
         .setSessionState(SessionState.startListening);
     _userInactivityListeners();
@@ -194,7 +195,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       return materialApp;
   }
 {{#enable_pin_code}}
-  Widget _buildMaterialAppWithPinCode() => RxBlocBuilder<PinBlocType, bool>(
+  Widget _buildMaterialAppWithPinCode() => RxBlocBuilder<CreatePinBlocType, bool>(
          state: (bloc) => bloc.states.isPinCreated,
          builder: (context, isPinCreated, bloc) =>
              RxBlocBuilder<UserAccountBlocType, bool>(
@@ -203,7 +204,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
              if (loggedIn.hasData) {
                if (!loggedIn.data!) {
                  // If user logs out, set stopListening
-                 context.read<PinBlocType>().events
+                 context.read<UpdateAndVerifyPinBlocType>().events
                    ..setSessionState(SessionState.stopListening)
                    ..deleteStoredPin();
                  return _buildMaterialApp(context);
@@ -211,7 +212,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
                if ((loggedIn.data!) &&
                    (isPinCreated.hasData && isPinCreated.data!)) {
                  context
-                     .read<PinBlocType>()
+                     .read<UpdateAndVerifyPinBlocType>()
                      .events
                      .setSessionState(SessionState.startListening);
 
@@ -219,7 +220,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
                      userActivityDebounceDuration: const Duration(seconds: 2),
                      sessionConfig: _sessionConfig,
                      sessionStateStream:
-                         context.read<PinBlocType>().states.sessionState,
+                         context.read<UpdateAndVerifyPinBlocType>().states.sessionState,
                      child: _buildMaterialApp(context));
                }
              }
