@@ -4,7 +4,7 @@ extension ExceptionToMesssage on Exception {
   String toMessage() {
     final error = this;
 
-    if (error is DioError) {
+    if (error is DioException) {
       return _extractMessageFromDio(error);
     }
 
@@ -12,7 +12,7 @@ extension ExceptionToMesssage on Exception {
   }
 }
 
-String _extractMessageFromDio(DioError error) {
+String _extractMessageFromDio(DioException error) {
   if (error.response?.data is Map<String, dynamic>) {
     String message = error.response?.data['message'] ?? '';
 

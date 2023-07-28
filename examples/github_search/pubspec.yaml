@@ -4,30 +4,30 @@ homepage: https://primeholding.com/
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
-  auto_route: ^5.0.4
-  collection: ^1.17.0
+  auto_route: ^7.7.1
+  collection: ^1.17.1
   cupertino_icons: ^1.0.5
-  dio: ^4.0.6
+  dio: ^5.3.0
   firebase_analytics: ^10.1.0
   firebase_core: ^2.4.1
-  firebase_messaging: ^14.2.1
+  firebase_messaging: ^14.6.4
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications: ^15.1.0+1
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: any
-  flutter_secure_storage: ^7.0.1
-  golden_toolkit: ^0.14.0
-  http: ^0.13.4
+  flutter_secure_storage: ^8.0.0
+  golden_toolkit: ^0.15.0
+  http: ^1.1.0
   intl: ^0.18.0
   json_annotation: ^4.8.0
   json_serializable: ^6.6.0
   provider: ^6.0.3
-  retrofit: ^3.0.1+1
+  retrofit: ^4.0.1
   rx_bloc: any
   rx_bloc_list: any
   rxdart: ^0.27.3
@@ -39,8 +39,8 @@ dependencies:
   shelf_static: ^1.1.1
 
 dev_dependencies:
-  auto_route_generator: ^5.0.3
-  build_runner: ^2.3.0
+  auto_route_generator: ^7.2.0
+  build_runner: ^2.4.6
   # flutter_driver:
   #   sdk: flutter
   flutter_lints: ^2.0.1
@@ -48,7 +48,7 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.3.2
 
-  retrofit_generator: ^4.2.0
+  retrofit_generator: ^7.0.8
   rx_bloc_generator: any
   rx_bloc_test: any
   test: any

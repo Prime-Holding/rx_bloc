@@ -24,7 +24,7 @@ void main() async {
   // Configure global app tools before launching the app
   await configureApp();
 
-  var configuredApp = AppConfig(
+  var configuredApp = const AppConfig(
     config: EnvironmentConfig.prod,
     child: Reminders(config: EnvironmentConfig.prod),
   );

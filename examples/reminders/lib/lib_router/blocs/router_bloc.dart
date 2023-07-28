@@ -9,17 +9,17 @@ import 'package:go_router/go_router.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../router.dart';
+import '../models/route_data_model.dart';
 
 part 'router_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the NavigationBloC.
 abstract class RouterBlocEvents {
-  void goTo(RouteData route, {Object? extra});
+  void goTo(RouteDataModel route, {Object? extra});
 
   void goToLocation(String location);
 
-  void pushTo(RouteData route, {Object? extra});
+  void pushTo(RouteDataModel route, {Object? extra});
 }
 
 /// A contract class containing all states of the NavigationBloC.

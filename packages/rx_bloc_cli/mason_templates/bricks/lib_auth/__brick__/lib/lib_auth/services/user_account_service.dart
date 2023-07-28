@@ -91,7 +91,12 @@ class UserAccountService {
   Future<void> logout() async {
     if (!_logoutLocked) {
       _logoutLocked = true;
-      await _pushSubscriptionRepository.unsubscribeForPushNotifications(true);
+
+      try {
+        await _pushSubscriptionRepository.unsubscribeForPushNotifications(true);
+      } catch (e) {
+        log(e.toString());
+      }
 
       /// Perform user logout
       try {

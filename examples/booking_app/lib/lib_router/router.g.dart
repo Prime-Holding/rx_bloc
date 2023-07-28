@@ -6,11 +6,11 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<GoRoute> get $appRoutes => [
+List<RouteBase> get $appRoutes => [
       $homeRoutes,
     ];
 
-GoRoute get $homeRoutes => GoRouteData.$route(
+RouteBase get $homeRoutes => GoRouteData.$route(
       path: '/:type',
       factory: $HomeRoutesExtension._fromState,
       routes: [
@@ -23,38 +23,48 @@ GoRoute get $homeRoutes => GoRouteData.$route(
 
 extension $HomeRoutesExtension on HomeRoutes {
   static HomeRoutes _fromState(GoRouterState state) => HomeRoutes(
-        _$NavigationItemTypeEnumMap._$fromName(state.params['type']!),
+        _$NavigationItemTypeEnumMap._$fromName(state.pathParameters['type']!),
       );
 
   String get location => GoRouteData.$location(
         '/${Uri.encodeComponent(_$NavigationItemTypeEnumMap[type]!)}',
       );
 
-  void go(BuildContext context) => context.go(location, extra: this);
+  void go(BuildContext context) => context.go(location);
 
-  void push(BuildContext context) => context.push(location, extra: this);
-}
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-extension $HotelDetailsRoutesExtension on HotelDetailsRoutes {
-  static HotelDetailsRoutes _fromState(GoRouterState state) =>
-      HotelDetailsRoutes(
-        _$NavigationItemTypeEnumMap._$fromName(state.params['type']!),
-        state.params['id']!,
-      );
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
-  String get location => GoRouteData.$location(
-        '/${Uri.encodeComponent(_$NavigationItemTypeEnumMap[type]!)}/${Uri.encodeComponent(id)}',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: this);
-
-  void push(BuildContext context) => context.push(location, extra: this);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 const _$NavigationItemTypeEnumMap = {
   NavigationItemType.search: 'search',
   NavigationItemType.favorites: 'favorites',
 };
+
+extension $HotelDetailsRoutesExtension on HotelDetailsRoutes {
+  static HotelDetailsRoutes _fromState(GoRouterState state) =>
+      HotelDetailsRoutes(
+        _$NavigationItemTypeEnumMap._$fromName(state.pathParameters['type']!),
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/${Uri.encodeComponent(_$NavigationItemTypeEnumMap[type]!)}/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
 
 extension<T extends Enum> on Map<T, String> {
   T _$fromName(String value) =>

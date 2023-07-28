@@ -37,7 +37,7 @@ class AnalyticsInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     observer.analytics.logEvent(name: 'dioError', parameters: {
       'errorType': err.type,
       'errorMessage': err.message,

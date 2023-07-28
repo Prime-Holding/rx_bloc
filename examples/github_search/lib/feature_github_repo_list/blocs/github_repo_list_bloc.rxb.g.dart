@@ -23,7 +23,7 @@ abstract class $GithubRepoListBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [loadPage]
-  final _$loadPageEvent = PublishSubject<_LoadPageEventArgs>();
+  final _$loadPageEvent = PublishSubject<({bool reset, bool hardReset})>();
 
   /// Тhe [Subject] where events sink to by calling [filterByQuery]
   final _$filterByQueryEvent = BehaviorSubject<String>.seeded('Flutter');
@@ -43,7 +43,7 @@ abstract class $GithubRepoListBloc extends RxBlocBase
     bool reset = false,
     bool hardReset = false,
   }) =>
-      _$loadPageEvent.add(_LoadPageEventArgs(
+      _$loadPageEvent.add((
         reset: reset,
         hardReset: hardReset,
       ));
@@ -81,15 +81,5 @@ abstract class $GithubRepoListBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [GithubRepoListBlocEvents.loadPage] event
-class _LoadPageEventArgs {
-  const _LoadPageEventArgs({
-    this.reset = false,
-    this.hardReset = false,
-  });
-
-  final bool reset;
-
-  final bool hardReset;
-}
+// ignore: unused_element
+typedef _LoadPageEventArgs = ({bool reset, bool hardReset});

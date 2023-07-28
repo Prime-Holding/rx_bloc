@@ -1,4 +1,3 @@
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 
 import '../interceptors/log_interceptor.dart';
@@ -7,7 +6,7 @@ import '../interceptors/log_interceptor.dart';
 class ApiHttpClient with DioMixin implements Dio {
   ApiHttpClient() {
     options = BaseOptions();
-    httpClientAdapter = DefaultHttpClientAdapter();
+    httpClientAdapter = HttpClientAdapter();
   }
 
   final logInterceptor = createDioEventLogInterceptor('ApiHttpClient');

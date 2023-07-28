@@ -16,7 +16,7 @@ extension ToError on Stream<Exception> {
 
   /// Map DioErrors to present readable custom messages in snack bars
   Stream<Exception> mapFromDio() => map((exception) {
-        if (exception is DioError) {
+        if (exception is DioException) {
           final response = exception.response;
 
           if (response == null) {
