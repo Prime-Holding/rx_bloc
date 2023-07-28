@@ -39,8 +39,7 @@ class CreatePinCodeService implements PinCodeService {
       await _pinCodeRepository.writePinToStorage(_firstPin, pinCode);
       return true;
     }
-    if (pinCode ==
-        await _pinCodeRepository.readPinFromStorage(key: _firstPin)) {
+    if (pinCode == firstPin) {
       await _pinCodeRepository.writePinToStorage(_storedPin, pinCode);
       return true;
     }

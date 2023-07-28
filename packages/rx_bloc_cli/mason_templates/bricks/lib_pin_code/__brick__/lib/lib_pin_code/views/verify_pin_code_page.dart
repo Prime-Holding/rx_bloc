@@ -91,13 +91,10 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   Future<void> _isAuthenticatedWithBiometrics(
     bool isAuthWithBiometrics,
   ) async {
-    if (isAuthWithBiometrics) {
-      if (widget.pinCodeArguments.isSessionTimeout) {
-        context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
-              isPinCodeConfirmed: true,
-            );
-        return;
-      }
+    if (isAuthWithBiometrics && widget.pinCodeArguments.isSessionTimeout) {
+      context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
+            isPinCodeConfirmed: true,
+          );
     }
   }
 

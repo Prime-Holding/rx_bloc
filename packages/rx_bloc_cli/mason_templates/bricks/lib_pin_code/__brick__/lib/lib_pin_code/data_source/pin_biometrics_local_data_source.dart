@@ -15,7 +15,7 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
 
   /// This value is changed, while using the app to stop and start automatic
   /// biometrics authentication
-  bool? _disabled = false;
+  bool _disabled = false;
 
   Future<void> temporaryDisableBiometrics(bool disable) async =>
       _disabled = disable;
@@ -25,16 +25,15 @@ class PinBiometricsLocalDataSource implements BiometricsLocalDataSource {
     if (_disabled == true) {
       return false;
     }
-    final areBiometricsEnabled =
-        await _getBoolValue(_areBiometricsEnabled) ?? false;
+
     _disabled = false;
-    return areBiometricsEnabled;
+    return await _getBoolValue(_areBiometricsEnabled) ?? false;
   }
 
   @override
-  Future<void> setBiometricsEnabled(bool enable) async {
-    await _setBoolValue(_areBiometricsEnabled, enable);
-  }
+  Future<void> setBiometricsEnabled(bool enable) async =>
+      await _setBoolValue(_areBiometricsEnabled, enable);
+
 
   Future<bool> _setBoolValue(String key, bool value) async =>
       await _sharedPreferences.setBool(key, value);
