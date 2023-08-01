@@ -2,7 +2,6 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
-import 'package:widget_toolkit/language_picker.dart';
 
 import '../models/errors/error_model.dart';
 import 'error_model_translations.dart';
