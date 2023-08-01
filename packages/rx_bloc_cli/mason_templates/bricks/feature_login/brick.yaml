@@ -1,0 +1,9 @@
+name: feature_login
+description: Login brick provides a way to log in the app with email and password
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.49 <0.1.0"
+
+vars:

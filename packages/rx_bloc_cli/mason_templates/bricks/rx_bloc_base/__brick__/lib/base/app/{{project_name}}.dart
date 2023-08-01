@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
-import '../../l10n/l10n.dart';
-import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
+import '../../l10n/l10n.dart';{{#has_authentication}}
+import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}}{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
 import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}
 import '../../lib_router/router.dart';
@@ -126,12 +126,12 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           AnalyticsInterceptor(context.read()),{{/analytics}}
     );
 
-    context.read<ApiHttpClient>().configureInterceptors(
+    context.read<ApiHttpClient>().configureInterceptors({{#has_authentication}}
           AuthInterceptor(
             context.read(),
             context.read(),
             context.read(),
-          ),{{#analytics}}
+          ),{{/has_authentication}}{{#analytics}}
           AnalyticsInterceptor(context.read()),{{/analytics}}
         );
   }

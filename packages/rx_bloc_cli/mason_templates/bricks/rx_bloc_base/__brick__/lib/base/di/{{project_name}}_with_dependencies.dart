@@ -10,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../../feature_splash/services/splash_service.dart';
+import '../../feature_splash/services/splash_service.dart';{{#has_authentication}}
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
 import '../../lib_auth/data_sources/local/auth_token_secure_data_source.dart';
@@ -20,7 +20,7 @@ import '../../lib_auth/data_sources/remote/refresh_token_data_source.dart';
 import '../../lib_auth/repositories/auth_repository.dart';
 import '../../lib_auth/services/access_token_service.dart';
 import '../../lib_auth/services/auth_service.dart';
-import '../../lib_auth/services/user_account_service.dart'; {{#enable_change_language}}
+import '../../lib_auth/services/user_account_service.dart';{{/has_authentication}}{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
@@ -151,7 +151,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ),
       ];
 
-  List<Provider> get _dataSources => [
+  List<Provider> get _dataSources => [{{#has_authentication}}
         // Use different data source depending on the platform.
         Provider<AuthTokenDataSource>(
             create: (context) => kIsWeb
@@ -167,7 +167,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read<PlainHttpClient>(),
             baseUrl: widget.config.baseUrl,
           ),
-        ),
+        ),{{/has_authentication}}
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(
             context.read<ApiHttpClient>(),
@@ -202,7 +202,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ),
       ];
 
-  List<Provider> get _repositories => [
+  List<Provider> get _repositories => [{{#has_authentication}}
         Provider<AuthRepository>(
           create: (context) => AuthRepository(
             context.read(),
@@ -210,7 +210,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
             context.read(),
           ),
-        ),
+        ),{{/has_authentication}}
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
             context.read(),
@@ -249,17 +249,17 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ),{{/enable_change_language}}
       ];
 
-  List<Provider> get _services => [
+  List<Provider> get _services => [{{#has_authentication}}
         Provider<AuthService>(
           create: (context) => AuthService(
             context.read(),
           ),
-        ),
+        ),{{/has_authentication}}
         Provider<PermissionsService>(
           create: (context) => PermissionsService(
             context.read(),
           ),
-        ),
+        ),{{#has_authentication}}
         Provider<UserAccountService>(
           create: (context) => UserAccountService(
             context.read(),
@@ -271,7 +271,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => AccessTokenService(
             context.read(),
           ),
-        ),
+        ),{{/has_authentication}}
         Provider<SplashService>(
           create: (context) => SplashService(
             context.read(),
@@ -301,7 +301,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             router: context.read<AppRouter>().router,
             permissionsService: context.read(),
           ),
-        ),
+        ),{{#has_authentication}}
         RxBlocProvider<UserAccountBlocType>(
           create: (context) => UserAccountBloc(
             context.read(),
@@ -309,7 +309,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
             context.read(),
           ),
-        ), {{#enable_change_language}}
+        ),{{/has_authentication}}{{#enable_change_language}}
         RxBlocProvider<ChangeLanguageBlocType>(
           create: (context) => ChangeLanguageBloc(
             languageService: context.read<AppLanguageService>(),

@@ -13,8 +13,9 @@ import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
 import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart';
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
-import '../feature_home/views/home_page.dart';
-import '../feature_login/di/login_page_with_dependencies.dart';
+import '../feature_home/views/home_page.dart';{{#has_authentication}}{{#enable_login}}
+import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}{{^enable_login}}
+import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';
@@ -27,8 +28,8 @@ import 'models/route_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
-part 'router.g.dart';
-part 'routes/onboarding_routes.dart';
+part 'router.g.dart';{{#has_authentication}}
+part 'routes/onboarding_routes.dart';{{/has_authentication}}
 part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
 part 'routes/showcase_routes.dart';
@@ -69,8 +70,8 @@ class AppRouter {
   );
 
   List<RouteBase> _appRoutesList() => [
-        $splashRoute,
-        $loginRoute,{{#enable_feature_otp}}
+        $splashRoute,{{#has_authentication}}
+        $loginRoute,{{/has_authentication}}{{#enable_feature_otp}}
         $otpRoute,{{/enable_feature_otp}}
         ShellRoute(
             navigatorKey: shellNavigatorKey,
@@ -90,16 +91,17 @@ class AppRouter {
   FutureOr<String?> _pageRedirections(
     BuildContext context,
     GoRouterState state,
-  ) async {
+  ) async { {{#has_authentication}}
     if (_refreshListener.isLoggedIn && state.queryParameters['from'] != null) {
       return state.queryParameters['from'];
     }
-{{^enable_feature_otp}}
+    {{^enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
       return const DashboardRoute().location;
-    } {{/enable_feature_otp}}
-{{#enable_feature_otp}}
+    }{{/enable_feature_otp}}
+ 
+    {{#enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
       return const OtpRoute().location;
@@ -109,7 +111,7 @@ class AppRouter {
         state.matchedLocation == const OtpRoute().location) {
       return const DashboardRoute().location;
     }
-{{/enable_feature_otp}}
+    {{/enable_feature_otp}}{{/has_authentication}}
     if (state.matchedLocation == const SplashRoute().location) {
       return null;
     }
@@ -126,11 +128,11 @@ class AppRouter {
         ? await context
             .read<PermissionsService>()
             .hasPermission(routeName, graceful: true)
-        : true;
+        : true; {{#has_authentication}}
 
     if (!_refreshListener.isLoggedIn && !hasPermissions) {
       return '${const LoginRoute().location}?from=${state.location}';
-    }
+    }{{/has_authentication}}
 
     
     if (!hasPermissions) {
