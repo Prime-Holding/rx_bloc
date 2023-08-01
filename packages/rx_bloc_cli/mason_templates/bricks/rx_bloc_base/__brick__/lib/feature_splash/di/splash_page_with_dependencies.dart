@@ -19,8 +19,8 @@ class SplashPageWithDependencies extends StatelessWidget {
         RxBlocProvider<SplashBlocType>(
           create: (context) => SplashBloc(
             context.read(),
-            context.read(),
-            context.read(),{{#enable_pin_code}}
+            context.read(),{{#has_authentication}}
+            context.read(),{{/has_authentication}}{{#enable_pin_code}}
             context.read(),{{/enable_pin_code}}
             redirectLocation: redirectToLocation,
           ),

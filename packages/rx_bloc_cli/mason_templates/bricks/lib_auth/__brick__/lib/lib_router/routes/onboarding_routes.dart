@@ -9,7 +9,7 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const LoginPageWithDependencies(),
+        child: {{#enable_login}}const LoginPageWithDependencies(){{/enable_login}}{{^enable_login}}const LoginPage(){{/enable_login}},
       );
 
   @override

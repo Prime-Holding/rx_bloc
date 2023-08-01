@@ -9,26 +9,26 @@ import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart' as shelf_static;
-
-import 'controllers/authentication_controller.dart';{{#enable_feature_counter}}
+{{#has_authentication}}
+import 'controllers/authentication_controller.dart';{{/has_authentication}}{{#enable_feature_counter}}
 import 'controllers/count_controller.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import 'controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}
 import 'controllers/permissions_controller.dart';
-import 'controllers/push_notifications_controller.dart';
+import 'controllers/push_notifications_controller.dart';{{#has_authentication}}
 import 'repositories/auth_token_repository.dart';
-import 'services/authentication_service.dart';
+import 'services/authentication_service.dart';{{/has_authentication}}
 import 'utils/api_controller.dart';
 
 Future main() async {
   // If the "PORT" environment variable is set, listen to it. Otherwise, 8080.
   // https://cloud.google.com/run/docs/reference/container-contract#port
-  final port = int.parse(Platform.environment['PORT'] ?? '8080');
+  final port = int.parse(Platform.environment['PORT'] ?? '8080');{{#has_authentication}}
 
   final authTokenRepository = AuthTokenRepository();
 
-  final authService = AuthenticationService(authTokenRepository);
+  final authService = AuthenticationService(authTokenRepository);{{/has_authentication}}
 
-  final routeGenerator = await _registerControllers(authService);
+  final routeGenerator = await _registerControllers({{#has_authentication}}authService{{/has_authentication}});
 
   // See https://pub.dev/documentation/shelf/latest/shelf/Cascade-class.html
   final cascade = Cascade()
@@ -41,8 +41,8 @@ Future main() async {
   final pipeline = const Pipeline()
       // See https://pub.dev/documentation/shelf/latest/shelf/logRequests.html
       .addMiddleware(logRequests())
-      .addMiddleware(_delayMiddleware())
-      .addMiddleware(_securedEndpoints(authService))
+      .addMiddleware(_delayMiddleware()){{#has_authentication}}
+      .addMiddleware(_securedEndpoints(authService)){{/has_authentication}}
       .addHandler(cascade.handler);
 
   // See https://pub.dev/documentation/shelf/latest/shelf_io/serve.html
@@ -60,15 +60,15 @@ final _staticHandler = shelf_static.createStaticHandler('bin/server/public',
     defaultDocument: 'index.html');
 
 /// Registers all controllers that provide some kind of API
-Future<RouteGenerator> _registerControllers(
-    AuthenticationService authenticationService) async {
+Future<RouteGenerator> _registerControllers({{#has_authentication}}
+    AuthenticationService authenticationService{{/has_authentication}}) async {
   final generator = RouteGenerator()
   {{#enable_feature_counter}}
     ..addController(CountController())
-  {{/enable_feature_counter}}
-    ..addController(AuthenticationController(authenticationService))
+  {{/enable_feature_counter}}{{#has_authentication}}
+    ..addController(AuthenticationController(authenticationService)){{/has_authentication}}
     ..addController(PushNotificationsController())
-    ..addController(PermissionsController(authenticationService))
+    ..addController(PermissionsController({{#has_authentication}}authenticationService{{/has_authentication}}))
     {{#enable_feature_deeplinks}}
     ..addController(DeepLinksController())
     {{/enable_feature_deeplinks}}
@@ -84,7 +84,7 @@ Middleware _delayMiddleware() => (innerHandler) => (request) => Future.delayed(
         milliseconds: 300,
       ),
       () => innerHandler(request),
-    );
+    );{{#has_authentication}}
 
 
 // Routes requiring authorization
@@ -113,4 +113,4 @@ Middleware _securedEndpoints(AuthenticationService authenticationService) =>
 
       return Future.sync(() => innerHandler(request))
           .then((response) => response);
-    };
+    };{{/has_authentication}}

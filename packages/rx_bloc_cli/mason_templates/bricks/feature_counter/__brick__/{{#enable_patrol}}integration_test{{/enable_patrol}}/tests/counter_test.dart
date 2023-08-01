@@ -3,9 +3,9 @@
 import '../main/configuration/build_app.dart';
 import '../main/configuration/patrol_base_config.dart';
 import '../main/steps_utils/counter_page_steps.dart';
-import '../main/steps_utils/home_page_steps.dart';
+import '../main/steps_utils/home_page_steps.dart';{{#has_authentication}}
 import '../main/steps_utils/login_page_steps.dart';
-import '../main/steps_utils/profile_page_steps.dart';
+import '../main/steps_utils/profile_page_steps.dart';{{/has_authentication}}
 
 void main() {
   final patrolBaseConfig = PatrolBaseConfig();
@@ -17,9 +17,9 @@ void main() {
     ($) async {
       BuildApp app = BuildApp($);
       await app.buildApp();
-
+      {{#has_authentication}}
       //Log in
-      await LoginPageSteps.loginAction($);
+      await LoginPageSteps.loginAction($);{{/has_authentication}}
       {{#enable_feature_otp}}
       //TODO: Implement OTP page steps
       {{/enable_feature_otp}}
@@ -34,9 +34,9 @@ void main() {
       //Show error modal on Decrement
       await CounterPageSteps.showErrorModalSheetDecrement($);
       //Tap reload button and expect same counter value
-      await CounterPageSteps.reloadCounter($);
+      await CounterPageSteps.reloadCounter($);{{#has_authentication}}
       //Logout
-      await ProfilePageSteps.logout($);
+      await ProfilePageSteps.logout($);{{/has_authentication}}
     },
   );
 }

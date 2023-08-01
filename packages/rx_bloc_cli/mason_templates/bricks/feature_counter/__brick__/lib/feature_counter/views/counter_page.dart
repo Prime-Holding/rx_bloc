@@ -9,8 +9,8 @@ import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/common_ui_components/update_button.dart';
 import '../../base/theme/design_system.dart';
 import '../../keys.dart';
-import '../../l10n/l10n.dart';
-import '../../lib_auth/blocs/user_account_bloc.dart';
+import '../../l10n/l10n.dart';{{#has_authentication}}
+import '../../lib_auth/blocs/user_account_bloc.dart';{{/has_authentication}}
 import '../blocs/counter_bloc.dart';
 
 class CounterPage extends StatelessWidget {
@@ -45,10 +45,10 @@ class CounterPage extends StatelessWidget {
               AppErrorModalWidget<CounterBlocType>(
                 key: K.counterError,
                 errorState: (bloc) => bloc.states.errors,
-              ),
+              ),{{#has_authentication}}
               AppErrorModalWidget<UserAccountBlocType>(
                 errorState: (bloc) => bloc.states.errors,
-              ),
+              ),{{/has_authentication}}
             ],
           ),
         ),

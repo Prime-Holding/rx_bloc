@@ -5,9 +5,10 @@ import '../pages/login_page.dart';
 
 class LoginPageSteps {
   static Future<void> loginAction(PatrolTester $) async {
-    LoginPage loginPage = LoginPage($);
+    LoginPage loginPage = LoginPage($);{{#enable_login}}
     await loginPage.setTextEmail('admin@email.com');
     await loginPage.setTextPassword('123456');
-    await loginPage.tapLoginButton();
+    await loginPage.tapLoginButton();{{/enable_login}}{{^enable_login}}
+    // TODO: Implement login steps here{{/enable_login}}
   }
 }

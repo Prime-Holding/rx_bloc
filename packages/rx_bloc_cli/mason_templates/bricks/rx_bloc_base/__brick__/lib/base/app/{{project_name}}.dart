@@ -10,6 +10,8 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:local_session_timeout/local_session_timeout.dart';{{/enable_pin_code}}
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
+import '../../l10n/l10n.dart';{{#has_authentication}}
+import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}}{{#enable_change_language}}
 import '../../l10n/l10n.dart';{{#enable_pin_code}}
 import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
@@ -162,16 +164,16 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           AnalyticsInterceptor(context.read()),{{/analytics}}
     );
 
-    context.read<ApiHttpClient>().configureInterceptors(
+    context.read<ApiHttpClient>().configureInterceptors({{#has_authentication}}
           AuthInterceptor(
             context.read(),
             context.read(),
             context.read(),
-          ),{{#analytics}}
+          ),{{/has_authentication}}{{#analytics}}
           AnalyticsInterceptor(context.read()),{{/analytics}}
         );
   }
-
+{{#enable_dev_menu}}
   @override
   Widget build(BuildContext context) {
     final materialApp = {{^enable_pin_code}} _buildMaterialApp(context);
@@ -189,6 +191,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
       return materialApp;
   }
+{{/enable_dev_menu}}
 {{#enable_pin_code}}
   Widget _buildMaterialAppWithPinCode() =>
       RxBlocBuilder<CreatePinBlocType, bool>(
@@ -227,6 +230,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
          ),
        );{{/enable_pin_code}}
 
+{{^enable_dev_menu}}
 Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
        theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
@@ -240,4 +244,6 @@ Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        routerConfig: context.read<AppRouter>().router,
        debugShowCheckedModeBanner: false,
      );
+
+{{/enable_dev_menu}}
 }

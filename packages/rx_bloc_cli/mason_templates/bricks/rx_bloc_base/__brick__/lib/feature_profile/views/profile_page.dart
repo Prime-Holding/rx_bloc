@@ -18,8 +18,9 @@ import '../../lib_pin_code/models/pin_code_arguments.dart'; {{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/profile_bloc.dart';
-import '../extensions/push_notifications_extensions.dart';
-import '../ui_components/logout_action_button.dart';
+import '../extensions/push_notifications_extensions.dart';{{#has_authentication}}
+import '../ui_components/logout_action_button.dart';{{/has_authentication}}
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -57,11 +58,11 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
+        appBar: AppBar({{#has_authentication}}
           actions: const [
             LogoutActionButton(),
           ],
-        ),
+        {{/has_authentication}}),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,

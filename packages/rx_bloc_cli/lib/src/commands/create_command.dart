@@ -6,6 +6,7 @@ import 'package:mason/mason.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
+import '../templates/feature_login_bundle.dart';
 import '../templates/feature_otp_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
@@ -79,6 +80,12 @@ class CreateCommand extends Command<int> {
         defaultsTo: 'false',
       )
       ..addOption(
+        _featureLoginString,
+        help: 'Enables login feature for the project',
+        allowed: ['true', 'false'],
+        defaultsTo: 'true',
+      )
+      ..addOption(
         _socialLoginsString,
         help: 'Enables social login with Apple, Facebook and Google for the '
             'project',
@@ -120,6 +127,7 @@ class CreateCommand extends Command<int> {
   final _counterString = 'enable-feature-counter';
   final _deepLinkString = 'enable-feature-deeplinks';
   final _widgetToolkitString = 'enable-feature-widget-toolkit';
+  final _featureLoginString = 'enable-login';
   final _socialLoginsString = 'enable-social-logins';
   final _changeLanguageString = 'enable-change-language';
   final _devMenuString = 'enable-dev-menu';
@@ -135,6 +143,7 @@ class CreateCommand extends Command<int> {
   final _libRouterBundle = libRouterBundle;
   final _permissionsBundle = libPermissionsBundle;
   final _libAuthBundle = libAuthBundle;
+  final _featureLoginBundle = featureLoginBundle;
   final _libSocialLoginsBundle = libSocialLoginsBundle;
   final _libChangeLanguageBundle = libChangeLanguageBundle;
   final _libDevMenuBundle = libDevMenuBundle;
@@ -257,6 +266,11 @@ class CreateCommand extends Command<int> {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
+    // Add Feature Login brick to _bundle when needed
+    if (arguments.enableLogin) {
+      _bundle.files.addAll(_featureLoginBundle.files);
+    }
+
     // Add Social Logins brick to _bundle when needed
     if (arguments.enableSocialLogins) {
       _bundle.files.addAll(_libSocialLoginsBundle.files);
@@ -294,8 +308,10 @@ class CreateCommand extends Command<int> {
     _bundle.files.addAll(_libRouterBundle.files);
     //Add lib_permissions to _bundle
     _bundle.files.addAll(_permissionsBundle.files);
-    //Add lib_auth to _bundle
-    _bundle.files.addAll(_libAuthBundle.files);
+    //Add lib_auth to _bundle when needed
+    if (arguments.hasAuthentication) {
+      _bundle.files.addAll(_libAuthBundle.files);
+    }
 
     _logger.info('');
     final fileGenerationProgress = _logger.progress('Bootstrapping');
@@ -312,11 +328,13 @@ class CreateCommand extends Command<int> {
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
+        'enable_login': arguments.enableLogin,
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
         'enable_dev_menu': arguments.enableDevMenu,
         'enable_feature_otp': arguments.enableOtpFeature,
         'enable_patrol': arguments.enablePatrolTests,
+        'has_authentication': arguments.hasAuthentication,
         'realtime_communication': arguments.realtimeCommunicationType !=
             _RealtimeCommunicationType.none,
         'enable_pin_code': arguments.enablePinCode,
@@ -346,6 +364,7 @@ class CreateCommand extends Command<int> {
       enableCounterFeature: _parseEnableCounter(arguments),
       enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
       enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
+      enableLogin: _parseEnableFeatureLogin(arguments),
       enableSocialLogins: _parseEnableSocialLogins(arguments),
       enableChangeLanguage: _parseEnableChangeLanguage(arguments),
       enableDevMenu: _parseEnableDevMenu(arguments),
@@ -413,13 +432,19 @@ class CreateCommand extends Command<int> {
     return analyticsEnabled.toLowerCase() == 'true';
   }
 
-  /// Returns whether the project will be created with counter feature
+  /// Returns whether the project will be created with deeplink feature
   bool _parseEnableDeeplinkFeature(ArgResults arguments) {
     final deeplinkEnabled = arguments[_deepLinkString];
     return deeplinkEnabled.toLowerCase() == 'true';
   }
 
-  /// Returns whether the project will be created with counter feature
+  /// Returns whether the project will be created with login feature
+  bool _parseEnableFeatureLogin(ArgResults arguments) {
+    final featureLoginEnabled = arguments[_featureLoginString];
+    return featureLoginEnabled.toLowerCase() == 'true';
+  }
+
+  /// Returns whether the project will be created with social logins feature
   bool _parseEnableSocialLogins(ArgResults arguments) {
     final socialLoginsEnabled = arguments[_socialLoginsString];
     return socialLoginsEnabled.toLowerCase() == 'true';
@@ -536,6 +561,7 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.enableWidgetToolkitFeature,
     );
+    _usingLog('Feature Login', arguments.enableLogin);
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
@@ -572,6 +598,7 @@ class _CreateCommandArguments {
     required this.enableCounterFeature,
     required this.enableDeeplinkFeature,
     required this.enableWidgetToolkitFeature,
+    required this.enableLogin,
     required this.enableSocialLogins,
     required this.enableChangeLanguage,
     required this.enableDevMenu,
@@ -588,6 +615,7 @@ class _CreateCommandArguments {
   final bool enableCounterFeature;
   final bool enableDeeplinkFeature;
   final bool enableWidgetToolkitFeature;
+  final bool enableLogin;
   final bool enableSocialLogins;
   final bool enableChangeLanguage;
   final bool enableDevMenu;
@@ -595,6 +623,8 @@ class _CreateCommandArguments {
   final bool enablePatrolTests;
   final _RealtimeCommunicationType realtimeCommunicationType;
   final bool enablePinCode;
+
+  bool get hasAuthentication => enableLogin || enableSocialLogins || enableOtpFeature;
 }
 
 enum _RealtimeCommunicationType { none, sse, websocket, grpc }
