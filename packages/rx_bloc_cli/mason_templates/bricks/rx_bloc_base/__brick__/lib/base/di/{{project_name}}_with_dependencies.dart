@@ -215,7 +215,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ),
         Provider<PinCodeDataSource>(
           create: (context) => PinCodeDataSource(
-            context.read<SharedPreferencesInstance>(),
             context.read<FlutterSecureStorage>(),
           ),
         ),{{/enable_pin_code}}

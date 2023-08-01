@@ -35,7 +35,7 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
       await _pinCodeRepository.readPinFromStorage(key: _storedPin) != null;
 
   Future<bool> checkIsPinCreated() async =>
-      await _pinCodeRepository.checkIsPinCreated() != null;
+      await _pinCodeRepository.getPinCode() != null;
 
   @override
   Future<String> encryptPinCode(String pinCode) async =>

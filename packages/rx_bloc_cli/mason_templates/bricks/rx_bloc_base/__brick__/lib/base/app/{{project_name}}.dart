@@ -106,13 +106,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   void _userInactivityListeners() {
     _sessionConfig.stream.listen((timeoutEvent) {
-      if (timeoutEvent == SessionTimeoutState.userInactivityTimeout) {
-        context.read<RouterBlocType>().events.go(
-              const VerifyPinCodeRoute(),
-              extra: const PinCodeArguments(
-                  title: 'Enter Pin Code', isSessionTimeout: true),
-            );
-      } else if (timeoutEvent == SessionTimeoutState.appFocusTimeout) {
+      if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
+          timeoutEvent == SessionTimeoutState.appFocusTimeout) {
         context.read<RouterBlocType>().events.go(
               const VerifyPinCodeRoute(),
               extra: const PinCodeArguments(
@@ -195,7 +190,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       return materialApp;
   }
 {{#enable_pin_code}}
-  Widget _buildMaterialAppWithPinCode() => RxBlocBuilder<CreatePinBlocType, bool>(
+  Widget _buildMaterialAppWithPinCode() =>
+      RxBlocBuilder<CreatePinBlocType, bool>(
          state: (bloc) => bloc.states.isPinCreated,
          builder: (context, isPinCreated, bloc) =>
              RxBlocBuilder<UserAccountBlocType, bool>(
@@ -219,8 +215,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
                  return SessionTimeoutManager(
                      userActivityDebounceDuration: const Duration(seconds: 2),
                      sessionConfig: _sessionConfig,
-                     sessionStateStream:
-                         context.read<UpdateAndVerifyPinBlocType>().states.sessionState,
+                     sessionStateStream: context
+                         .read<UpdateAndVerifyPinBlocType>()
+                         .states
+                         .sessionValue,
                      child: _buildMaterialApp(context));
                }
              }

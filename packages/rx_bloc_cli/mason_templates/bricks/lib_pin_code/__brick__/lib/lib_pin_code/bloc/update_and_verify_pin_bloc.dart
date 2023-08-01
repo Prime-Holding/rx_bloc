@@ -31,10 +31,8 @@ abstract class UpdateAndVerifyPinBlocEvents {
 
 /// A contract class containing all states of the PinCodeBloC.
 abstract class UpdateAndVerifyPinBlocStates {
+  /// This state is passed to the SessionTimeoutManager
   ConnectableStream<SessionState> get sessionValue;
-
-  /// This state to be passed to the SessionTimeoutManager
-  ConnectableStream<SessionState> get sessionState;
 
   ConnectableStream<bool> get pinCodeType;
 
@@ -59,7 +57,6 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
     deletedData.connect().addTo(_compositeSubscription);
     deleteStoredPinData.connect().addTo(_compositeSubscription);
     sessionValue.connect().addTo(_compositeSubscription);
-    sessionState.connect().addTo(_compositeSubscription);
     biometricsDisabled.connect().addTo(_compositeSubscription);
   }
 
@@ -88,10 +85,6 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
           .setResultStateHandler(this)
           .whereSuccess()
           .publish();
-
-  @override
-  ConnectableStream<SessionState> _mapToSessionStateState() =>
-      _sessionStateController.stream.publish();
 
   @override
   ConnectableStream<SessionState> _mapToSessionValueState() =>

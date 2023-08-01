@@ -11,18 +11,17 @@ class CreatePinCodeService implements PinCodeService {
 
   final PinCodeRepository _pinCodeRepository;
 
-  static const _firstPin = 'firstPin';
   static const _storedPin = 'storedPin';
+  String? firstPin ;
 
-  Future<void> deleteSavedData() async =>
-      await _pinCodeRepository.writePinToStorage(_firstPin, null);
+  Future<void> deleteSavedData() async => firstPin = null;
 
   @override
   Future<bool> isPinCodeInSecureStorage() async =>
       await _pinCodeRepository.readPinFromStorage(key: _storedPin) != null;
 
   Future<bool> checkIsPinCreated() async =>
-      await _pinCodeRepository.checkIsPinCreated() != null;
+     await _pinCodeRepository.getPinCode() != null;
 
   @override
   Future<String> encryptPinCode(String pinCode) async =>
@@ -33,10 +32,8 @@ class CreatePinCodeService implements PinCodeService {
 
   @override
   Future<bool> verifyPinCode(String pinCode) async {
-    final firstPin =
-        await _pinCodeRepository.readPinFromStorage(key: _firstPin);
     if (firstPin == null) {
-      await _pinCodeRepository.writePinToStorage(_firstPin, pinCode);
+      firstPin = pinCode;
       return true;
     }
     if (pinCode == firstPin) {

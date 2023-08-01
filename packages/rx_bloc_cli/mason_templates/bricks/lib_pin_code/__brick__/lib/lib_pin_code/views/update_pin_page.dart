@@ -66,6 +66,8 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
                           _exampleMapMessageToString(message, context),
                       pinCodeService:
                           context.read<UpdateAndVerifyPinCodeService>(),
+                      biometricsLocalDataSource:
+                          context.read<BiometricsLocalDataSource>(),
                       translateError: (error) =>
                           _translateError(error, context),
                       onError: (error, translatedError) =>

@@ -31,14 +31,6 @@ class CreatePinPage extends StatefulWidget {
 
 class _CreatePinPageState extends State<CreatePinPage> {
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<CreatePinBlocType>().events.temporaryDisableBiometrics(true);
-    });
-    super.initState();
-  }
-
-  @override
   void dispose() {
     if (widget.pinCodeArguments.onReturn != null) {
       widget.pinCodeArguments.onReturn!();

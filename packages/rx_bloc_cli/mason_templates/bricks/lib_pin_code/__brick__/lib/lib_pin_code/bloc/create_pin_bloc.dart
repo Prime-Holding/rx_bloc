@@ -11,8 +11,7 @@ part 'create_pin_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the PinCodeBloC.
 abstract class CreatePinBlocEvents {
-  /// Event called with true when a pin is created, after the verification
-  /// is successful. It is called with false when [isPinCreated] state is false
+  /// Event called, when a pin is created, after the verification is successful.
   @RxBlocEvent(type: RxBlocEventType.behaviour)
   void checkIsPinCreated();
 
@@ -21,8 +20,6 @@ abstract class CreatePinBlocEvents {
   /// Check if biometrics are enabled for the app.
   void checkAreBiometricsEnabled();
 
-  /// Disables biometrics while using a page
-  void temporaryDisableBiometrics(bool disable);
 }
 
 /// A contract class containing all states of the PinCodeBloC.
@@ -33,8 +30,6 @@ abstract class CreatePinBlocStates {
 
   ConnectableStream<bool> get areBiometricsEnabled;
 
-  /// Temporary disable biometrics on pin verification process
-  ConnectableStream<void> get biometricsDisabled;
 }
 
 @RxBloc()
@@ -45,22 +40,11 @@ class CreatePinBloc extends $CreatePinBloc {
     required this.coordinatorBloc,
   }) {
     deletedData.connect().addTo(_compositeSubscription);
-    biometricsDisabled.connect().addTo(_compositeSubscription);
   }
 
   final CoordinatorBlocType coordinatorBloc;
   final CreatePinCodeService service;
   final PinBiometricsService pinBiometricsService;
-
-  @override
-  ConnectableStream<void> _mapToBiometricsDisabledState() =>
-      _$temporaryDisableBiometricsEvent
-          .switchMap((disable) => pinBiometricsService
-              .temporaryDisableBiometrics(disable)
-              .asResultStream())
-          .setResultStateHandler(this)
-          .whereSuccess()
-          .publish();
 
   @override
   ConnectableStream<bool> _mapToAreBiometricsEnabledState() =>
