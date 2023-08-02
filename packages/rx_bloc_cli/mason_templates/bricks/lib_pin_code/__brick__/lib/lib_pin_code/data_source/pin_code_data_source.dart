@@ -2,8 +2,6 @@
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../base/data_sources/local/shared_preferences_instance.dart';
-
 class PinCodeDataSource {
   PinCodeDataSource(
     this._storage,

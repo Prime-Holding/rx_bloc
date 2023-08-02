@@ -11,10 +11,8 @@ import 'package:local_session_timeout/local_session_timeout.dart';{{/enable_pin_
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
 import '../../l10n/l10n.dart';{{#has_authentication}}
-import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}}{{#enable_change_language}}
-import '../../l10n/l10n.dart';{{#enable_pin_code}}
-import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
-import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart'; {{#enable_change_language}}
+import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}}{{#enable_pin_code}}
+import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}} {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
 import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
 import '../../lib_pin_code/bloc/create_pin_bloc.dart';
@@ -230,7 +228,6 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
          ),
        );{{/enable_pin_code}}
 
-{{^enable_dev_menu}}
 Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        title: '{{#titleCase}}{{project_name}}{{/titleCase}}',
        theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
@@ -245,5 +242,4 @@ Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        debugShowCheckedModeBanner: false,
      );
 
-{{/enable_dev_menu}}
 }

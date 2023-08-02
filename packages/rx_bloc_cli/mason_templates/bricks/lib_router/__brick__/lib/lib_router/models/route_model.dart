@@ -38,12 +38,12 @@ enum RouteModel {
     pathName: RoutesPath.verifyPinCode,
     fullPath: '/verifyPinCode',
     permissionName: RoutePermissions.pinCode,
-  ),{{/enable_pin_code}}{{#has_authentication}},
+  ),{{/enable_pin_code}}{{#has_authentication}}
   login(
     pathName: RoutesPath.login,
     fullPath: '/login',
     permissionName: RoutePermissions.login,
-  ){{/has_authentication}}{{#enable_feature_deeplinks}},
+  ),{{/has_authentication}}{{#enable_feature_deeplinks}}
   enterMessage(
     pathName: RoutesPath.enterMessage,
     fullPath: '/enterMessage',
