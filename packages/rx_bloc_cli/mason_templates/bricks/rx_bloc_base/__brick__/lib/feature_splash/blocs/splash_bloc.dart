@@ -38,8 +38,8 @@ class SplashBloc extends $SplashBloc {
   SplashBloc(
     RouterBlocType navigationBloc,
     SplashService splashService,{{#has_authentication}}
-    AuthService authService,{{/has_authentication}}{{{#enable_pin_code}}
-    CreatePinCodeService pinCodeService,{{/enable_pin_code}}{
+    AuthService authService,{{/has_authentication}}{{#enable_pin_code}}
+    CreatePinCodeService pinCodeService,{{/enable_pin_code}} {
     String? redirectLocation,
   })  : _navigationBloc = navigationBloc,
         _splashService = splashService,{{#has_authentication}}
@@ -68,11 +68,11 @@ class SplashBloc extends $SplashBloc {
 
     if (_redirectLocation != null) {
       _navigationBloc.events.goToLocation(_redirectLocation!);
-    } else { {{#has_authentication}} {{^enable_pin_code}}
+    } else { {{#has_authentication}}
       await _authService.isAuthenticated()
           ? _navigationBloc.events.go(const DashboardRoute())
           : _navigationBloc.events.go(const LoginRoute());{{/has_authentication}}
-      {{/enable_pin_code}}{{^has_authentication}}
+      {{^has_authentication}}
       _navigationBloc.events.go(const DashboardRoute());{{/has_authentication}}
 
       {{#enable_pin_code}}

@@ -20,9 +20,9 @@ import '../feature_notifications/di/notifications_page_with_dependencies.dart';{
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
-import '../feature_splash/services/splash_service.dart'; {{#enable_feature_widget_toolkit}}
-import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart'; {{/enable_feature_widget_toolkit}}
-import '../lib_permissions/services/permissions_service.dart'; {{#enable_pin_code}}
+import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
+import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}
+import '../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
 import '../lib_pin_code/models/pin_code_arguments.dart';
 import '../lib_pin_code/views/create_pin_page.dart';
 import '../lib_pin_code/views/update_pin_page.dart';
@@ -56,10 +56,9 @@ class AppRouter {
   final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
-  _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
-{{#enable_feature_otp}}
-    coordinatorBloc.states.isOtpConfirmed,
-{{/enable_feature_otp}}{{#enable_pin_code}}
+    _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
+  {{#enable_feature_otp}}coordinatorBloc.states.isOtpConfirmed,
+    {{/enable_feature_otp}}{{#enable_pin_code}}
     coordinatorBloc.states.isPinCodeConfirmed, {{/enable_pin_code}}
   );
 
@@ -127,7 +126,12 @@ class AppRouter {
       return state.queryParameters['from'];
     }
     {{^enable_feature_otp}}
-{{#enable_pin_code}}
+      if (_refreshListener.isLoggedIn &&
+      state.matchedLocation == const LoginRoute().location) {
+      return const DashboardRoute().location;
+    }{{/enable_feature_otp}}
+
+    {{#enable_pin_code}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
       return const DashboardRoute().location;
@@ -137,12 +141,10 @@ class AppRouter {
         state.matchedLocation == const VerifyPinCodeRoute().location) {
       return const DashboardRoute().location;
     } {{/enable_pin_code}}
-{{^enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
       return const DashboardRoute().location;
-    }{{/enable_feature_otp}}
-
+    }
     {{#enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
@@ -200,8 +202,7 @@ class _GoRouterRefreshStream extends ChangeNotifier {
     _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
       this.isOtpConfirmed = isOtpConfirmed;
       notifyListeners();
-    }); {{/enable_feature_otp}}
-{{#enable_pin_code}}
+    }); {{/enable_feature_otp}} {{#enable_pin_code}}
     _subscriptionPinCode = streamPinCode.listen((bool isPinCodeConfirmed) {
       this.isPinCodeConfirmed = isPinCodeConfirmed;
       notifyListeners();
@@ -214,8 +215,7 @@ class _GoRouterRefreshStream extends ChangeNotifier {
   {{#enable_pin_code}}
   late final StreamSubscription<bool>_subscriptionPinCode; {{/enable_pin_code}}
 
-  late bool isLoggedIn = false;
-  {{#enable_feature_otp}}
+  late bool isLoggedIn = false; {{#enable_feature_otp}}
   late bool isOtpConfirmed = false; {{/enable_feature_otp}}{{#enable_pin_code}}
   late bool isPinCodeConfirmed = false; {{/enable_pin_code}}
 
