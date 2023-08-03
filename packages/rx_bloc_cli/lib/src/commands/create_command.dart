@@ -20,11 +20,15 @@ import '../templates/patrol_integration_tests_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
-part 'create_command_arguments.dart';
+part '../models/create_command_arguments.dart';
 
-part 'create_command_arguments_provider.dart';
+part '../extensions/args_extensions.dart';
 
-part 'create_command_bundle_provider.dart';
+part '../models/create_command_arguments_provider.dart';
+
+part '../models/create_command_bundle_provider.dart';
+
+part '../models/project_generation_arguments.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
@@ -57,7 +61,7 @@ class CreateCommand extends Command<int> {
   @override
   Future<int> run() async {
     final arguments =
-        _CreateCommandArgumentsProvider(argResults!, this).generate();
+        _CreateCommandArgumentsValueProvider(argResults!, this).generate();
     await _generateViaMasonBundle(arguments);
     await _postGen(arguments);
     return ExitCode.success.code;
@@ -67,7 +71,7 @@ class CreateCommand extends Command<int> {
 
   /// region Code generation
 
-  Future<void> _postGen(_CreateCommandArguments arguments) async {
+  Future<void> _postGen(_ProjectGenerationArguments arguments) async {
     var progress = _logger.progress('dart pub get');
 
     final dartGet = await Process.run(
@@ -116,8 +120,7 @@ class CreateCommand extends Command<int> {
   }
 
   Future<void> _generateViaMasonBundle(
-      _CreateCommandArguments arguments) async {
-
+      _ProjectGenerationArguments arguments) async {
     final bundles = _CreateCommandBundleProvider(arguments).generate();
 
     for (final bundle in bundles) {
@@ -127,7 +130,7 @@ class CreateCommand extends Command<int> {
     // Remove files when they are not needed by the specified features.
     if (!arguments.enableAnalytics) {
       _bundle.files.removeWhere((file) =>
-      file.path ==
+          file.path ==
           'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart');
     }
 
@@ -143,17 +146,17 @@ class CreateCommand extends Command<int> {
         'uses_firebase': arguments.usesFirebase,
         'analytics': arguments.enableAnalytics,
         'push_notifications': arguments.usesPushNotifications,
-        'enable_feature_counter': arguments.enableCounterFeature,
-        'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
-        'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
+        'enable_feature_counter': arguments.enableCounter,
+        'enable_feature_deeplinks': arguments.enableDeeplink,
+        'enable_feature_widget_toolkit': arguments.enableWidgetToolkit,
         'enable_login': arguments.enableLogin,
         'enable_social_logins': arguments.enableSocialLogins,
         'enable_change_language': arguments.enableChangeLanguage,
         'enable_dev_menu': arguments.enableDevMenu,
-        'enable_feature_otp': arguments.enableOtpFeature,
+        'enable_feature_otp': arguments.enableOtp,
         'enable_patrol': arguments.enablePatrolTests,
         'has_authentication': arguments.hasAuthentication,
-        'realtime_communication': arguments.realtimeCommunicationType !=
+        'realtime_communication': arguments.realtimeCommunication !=
             _RealtimeCommunicationType.none,
       },
     );
@@ -174,7 +177,7 @@ class CreateCommand extends Command<int> {
 
   /// Writes an output log with the status of the file generation
   Future<void> _writeOutputLog(
-      int fileCount, _CreateCommandArguments arguments) async {
+      int fileCount, _ProjectGenerationArguments arguments) async {
     final filesGeneratedStr =
         fileCount == 0 ? 'No files generated.' : 'Generated $fileCount file(s)';
 
@@ -191,7 +194,8 @@ class CreateCommand extends Command<int> {
   }
 
   /// Message shown in the output log upon successful generation
-  void _successMessageLog(int fileCount, _CreateCommandArguments arguments) {
+  void _successMessageLog(
+      int fileCount, _ProjectGenerationArguments arguments) {
     if (fileCount < 1) return;
 
     _delayedLog('Generated project with package name: '
@@ -200,21 +204,21 @@ class CreateCommand extends Command<int> {
 
     _usingLog('Firebase Analytics', arguments.enableAnalytics);
     _usingLog('Firebase Push Notifications', true);
-    _usingLog('Feature Counter Showcase', arguments.enableCounterFeature);
-    _usingLog('Feature Deep links Showcase', arguments.enableDeeplinkFeature);
+    _usingLog('Feature Counter Showcase', arguments.enableCounter);
+    _usingLog('Feature Deep links Showcase', arguments.enableDeeplink);
     _usingLog(
       'Feature Widget Toolkit Showcase',
-      arguments.enableWidgetToolkitFeature,
+      arguments.enableWidgetToolkit,
     );
     _usingLog('Feature Login', arguments.enableLogin);
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.enableSocialLogins);
     _usingLog('Enable Change Language', arguments.enableChangeLanguage);
     _usingLog('Dev Menu', arguments.enableDevMenu);
-    _usingLog('OTP Feature', arguments.enableOtpFeature);
+    _usingLog('OTP Feature', arguments.enableOtp);
     _usingLog('Patrol integration tests', arguments.enablePatrolTests);
     _usingLog('Realtime communication',
-        arguments.realtimeCommunicationType != _RealtimeCommunicationType.none);
+        arguments.realtimeCommunication != _RealtimeCommunicationType.none);
   }
 
   /// Shows a delayed log with a success symbol in front of it
@@ -233,4 +237,12 @@ class CreateCommand extends Command<int> {
   /// endregion
 }
 
-enum _RealtimeCommunicationType { none, sse, websocket, grpc }
+enum _RealtimeCommunicationType {
+  none,
+  sse,
+  websocket,
+  grpc;
+
+  @override
+  String toString() => name;
+}

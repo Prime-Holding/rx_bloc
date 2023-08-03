@@ -1,4 +1,4 @@
-part of 'create_command.dart';
+part of '../commands/create_command.dart';
 
 class _CreateCommandBundleProvider {
   _CreateCommandBundleProvider(this.arguments);
@@ -17,7 +17,7 @@ class _CreateCommandBundleProvider {
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
 
-  final _CreateCommandArguments arguments;
+  final _ProjectGenerationArguments arguments;
 
   List<MasonBundle> generate() {
     var bundles = <MasonBundle>[
@@ -26,17 +26,17 @@ class _CreateCommandBundleProvider {
     ];
 
     // Add counter brick to _bundle when needed
-    if (arguments.enableCounterFeature) {
+    if (arguments.enableCounter) {
       bundles.add(_counterBundle);
     }
 
     // Add widget toolkit brick to _bundle when needed
-    if (arguments.enableWidgetToolkitFeature) {
+    if (arguments.enableWidgetToolkit) {
       bundles.add(_widgetToolkitBundle);
     }
 
     // Add deep link brick to _bundle when needed
-    if (arguments.enableDeeplinkFeature) {
+    if (arguments.enableDeeplink) {
       bundles.add(_deepLinkBundle);
     }
 
@@ -59,7 +59,7 @@ class _CreateCommandBundleProvider {
       bundles.add(_patrolIntegrationTestsBundle);
     }
 
-    if (arguments.realtimeCommunicationType !=
+    if (arguments.realtimeCommunication !=
         _RealtimeCommunicationType.none) {
       bundles.add(_libRealtimeCommunicationBundle);
     }
@@ -70,7 +70,7 @@ class _CreateCommandBundleProvider {
     }
 
     // Add feature OTP brick _bundle when needed
-    if (arguments.enableOtpFeature) {
+    if (arguments.enableOtp) {
       bundles.add(_featureOtpBundle);
     }
 
