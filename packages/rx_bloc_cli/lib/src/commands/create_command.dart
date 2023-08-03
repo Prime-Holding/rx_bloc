@@ -22,6 +22,10 @@ import '../utils/git_ignore_creator.dart';
 
 part 'create_command_arguments.dart';
 
+part 'create_command_arguments_provider.dart';
+
+part 'create_command_bundle_provider.dart';
+
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
   /// Allows you to customize the creation of the project by providing
@@ -35,38 +39,12 @@ class CreateCommand extends Command<int> {
   })  : _logger = logger ?? Logger(),
         _bundle = bundle ?? rxBlocBaseBundle,
         _generator = generator ?? MasonGenerator.fromBundle {
-    argParser.addArguments(
-      _Argument.values,
-    );
+    argParser.addArguments(_CommandArgument.values);
   }
-
-  /// bundles
-  final _counterBundle = featureCounterBundle;
-  final _deepLinkBundle = featureDeeplinkBundle;
-  final _widgetToolkitBundle = featureWidgetToolkitBundle;
-  final _libRouterBundle = libRouterBundle;
-  final _permissionsBundle = libPermissionsBundle;
-  final _libAuthBundle = libAuthBundle;
-  final _featureLoginBundle = featureLoginBundle;
-  final _libSocialLoginsBundle = libSocialLoginsBundle;
-  final _libChangeLanguageBundle = libChangeLanguageBundle;
-  final _libDevMenuBundle = libDevMenuBundle;
-  final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
-  final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
-  final _featureOtpBundle = featureOtpBundle;
 
   final Logger _logger;
   final MasonBundle _bundle;
   final Future<MasonGenerator> Function(MasonBundle) _generator;
-
-  /// Regex for package name
-  final RegExp _packageNameRegExp = RegExp('[a-z_][a-z0-9_]*');
-
-  /// Regex for organization name and domain
-  final RegExp _orgNameDomainRegExp =
-      RegExp('^([A-Za-z]{2,6})(\\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))+\$');
-
-  /// endregion
 
   /// region Command requirements
 
@@ -78,8 +56,10 @@ class CreateCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    await _generateViaMasonBundle();
-    await _postGen();
+    final arguments =
+        _CreateCommandArgumentsProvider(argResults!, this).generate();
+    await _generateViaMasonBundle(arguments);
+    await _postGen(arguments);
     return ExitCode.success.code;
   }
 
@@ -87,8 +67,7 @@ class CreateCommand extends Command<int> {
 
   /// region Code generation
 
-  Future<void> _postGen() async {
-    final arguments = _validateAndParseArguments(argResults!);
+  Future<void> _postGen(_CreateCommandArguments arguments) async {
     var progress = _logger.progress('dart pub get');
 
     final dartGet = await Process.run(
@@ -136,79 +115,20 @@ class CreateCommand extends Command<int> {
     }
   }
 
-  Future<void> _generateViaMasonBundle() async {
-    final arguments = _validateAndParseArguments(argResults!);
+  Future<void> _generateViaMasonBundle(
+      _CreateCommandArguments arguments) async {
 
-    final organizationName = arguments.organisation;
-    final orgSeparatorIndex = organizationName.indexOf('.');
-    final orgDomain = organizationName.substring(0, orgSeparatorIndex);
-    final orgName = organizationName.substring(orgSeparatorIndex + 1);
+    final bundles = _CreateCommandBundleProvider(arguments).generate();
 
-    // Whether Firebase is used in the generated project.
-    // Usually `true` because Firebase is used for push notifications.
-    final usesFirebase = arguments.enableAnalytics || true;
+    for (final bundle in bundles) {
+      _bundle.files.addAll(bundle.files);
+    }
 
     // Remove files when they are not needed by the specified features.
     if (!arguments.enableAnalytics) {
       _bundle.files.removeWhere((file) =>
-          file.path ==
+      file.path ==
           'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart');
-    }
-    // Add counter brick to _bundle when needed
-    if (arguments.enableCounterFeature) {
-      _bundle.files.addAll(_counterBundle.files);
-    }
-
-    // Add widget toolkit brick to _bundle when needed
-    if (arguments.enableWidgetToolkitFeature) {
-      _bundle.files.addAll(_widgetToolkitBundle.files);
-    }
-
-    // Add deep link brick to _bundle when needed
-    if (arguments.enableDeeplinkFeature) {
-      _bundle.files.addAll(_deepLinkBundle.files);
-    }
-
-    // Add Feature Login brick to _bundle when needed
-    if (arguments.enableLogin) {
-      _bundle.files.addAll(_featureLoginBundle.files);
-    }
-
-    // Add Social Logins brick to _bundle when needed
-    if (arguments.enableSocialLogins) {
-      _bundle.files.addAll(_libSocialLoginsBundle.files);
-    }
-
-    // Add Change Language brick _bundle when needed
-    if (arguments.enableChangeLanguage) {
-      _bundle.files.addAll(_libChangeLanguageBundle.files);
-    }
-    // Add Patrol tests brick to _bundle when needed
-    if (arguments.enablePatrolTests) {
-      _bundle.files.addAll(_patrolIntegrationTestsBundle.files);
-    }
-
-    if (arguments.realtimeCommunicationType !=
-        _RealtimeCommunicationType.none) {
-      _bundle.files.addAll(_libRealtimeCommunicationBundle.files);
-    }
-
-    // Add Dev Menu brick _bundle when needed
-    if (arguments.enableDevMenu) {
-      _bundle.files.addAll(_libDevMenuBundle.files);
-    }
-    // Add feature OTP brick _bundle when needed
-    if (arguments.enableOtpFeature) {
-      _bundle.files.addAll(_featureOtpBundle.files);
-    }
-
-    //Add lib_route to _bundle
-    _bundle.files.addAll(_libRouterBundle.files);
-    //Add lib_permissions to _bundle
-    _bundle.files.addAll(_permissionsBundle.files);
-    //Add lib_auth to _bundle when needed
-    if (arguments.hasAuthentication) {
-      _bundle.files.addAll(_libAuthBundle.files);
     }
 
     _logger.info('');
@@ -218,11 +138,11 @@ class CreateCommand extends Command<int> {
       DirectoryGeneratorTarget(arguments.outputDirectory),
       vars: {
         'project_name': arguments.projectName,
-        'domain_name': orgDomain,
-        'organization_name': orgName,
-        'uses_firebase': usesFirebase,
+        'domain_name': arguments.organisationDomain,
+        'organization_name': arguments.organisationName,
+        'uses_firebase': arguments.usesFirebase,
         'analytics': arguments.enableAnalytics,
-        'push_notifications': true,
+        'push_notifications': arguments.usesPushNotifications,
         'enable_feature_counter': arguments.enableCounterFeature,
         'enable_feature_deeplinks': arguments.enableDeeplinkFeature,
         'enable_feature_widget_toolkit': arguments.enableWidgetToolkitFeature,
@@ -246,170 +166,6 @@ class CreateCommand extends Command<int> {
     fileGenerationProgress.complete('Bootstrapping done');
 
     await _writeOutputLog(fileCount, arguments);
-  }
-
-  /// endregion
-
-  /// region Argument Parsing
-
-  _CreateCommandArguments _validateAndParseArguments(ArgResults arguments) {
-    return _CreateCommandArguments(
-      projectName: _parseProjectName(arguments),
-      organisation: _parseOrganisation(arguments),
-      enableAnalytics: _parseEnableAnalytics(arguments),
-      outputDirectory: _parseOutputDirectory(arguments),
-      enableCounterFeature: _parseEnableCounter(arguments),
-      enableDeeplinkFeature: _parseEnableDeeplinkFeature(arguments),
-      enableWidgetToolkitFeature: _parseEnableWidgetToolkit(arguments),
-      enableLogin: _parseEnableFeatureLogin(arguments),
-      enableSocialLogins: _parseEnableSocialLogins(arguments),
-      enableChangeLanguage: _parseEnableChangeLanguage(arguments),
-      enableDevMenu: _parseEnableDevMenu(arguments),
-      enableOtpFeature: _parseEnableOtpFeature(arguments),
-      enablePatrolTests: _parseEnablePatrolTests(arguments),
-      realtimeCommunicationType: _parseRealtimeCommunicationType(arguments),
-    );
-  }
-
-  /// Gets the project name.
-  String _parseProjectName(ArgResults arguments) {
-    final projectName = arguments.readOrDefault(_Argument.projectName);
-    _validateProjectName(projectName);
-    return projectName;
-  }
-
-  /// Returns the organization name with domain in front of it
-  String _parseOrganisation(ArgResults arguments) {
-    final value = arguments.readOrDefault(_Argument.organisation);
-    _validateOrganisation(value);
-    return value;
-  }
-
-  /// Gets the directory used for the file generation
-  Directory _parseOutputDirectory(ArgResults arguments) {
-    final rest = arguments.rest;
-    _validateOutputDirectoryArg(rest);
-    return Directory(rest.first);
-  }
-
-  /// Returns whether the project will be created with counter feature
-  bool _parseEnableCounter(ArgResults arguments) {
-    final counterEnabled = arguments.readOrDefault(_Argument.counter);
-    return counterEnabled.toLowerCase() == 'true';
-  }
-
-  /// Return whether the project will be created with patrol integration tests
-  bool _parseEnablePatrolTests(ArgResults arguments) {
-    final patrolEnabled = arguments.readOrDefault(_Argument.patrol);
-    return patrolEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will be created with widget toolkit feature
-  bool _parseEnableWidgetToolkit(ArgResults arguments) {
-    final widgetToolkitEnabled =
-        arguments.readOrDefault(_Argument.widgetToolkit);
-    return widgetToolkitEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will enable change language
-  bool _parseEnableChangeLanguage(ArgResults arguments) {
-    final changeLanguageEnabled =
-        arguments.readOrDefault(_Argument.changeLanguage);
-    return changeLanguageEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will use analytics or not
-  bool _parseEnableAnalytics(ArgResults arguments) {
-    final analyticsEnabled = arguments.readOrDefault(_Argument.analytics);
-    return analyticsEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will be created with deeplink feature
-  bool _parseEnableDeeplinkFeature(ArgResults arguments) {
-    final deeplinkEnabled = arguments.readOrDefault(_Argument.deepLink);
-    return deeplinkEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will be created with login feature
-  bool _parseEnableFeatureLogin(ArgResults arguments) {
-    final featureLoginEnabled = arguments.readOrDefault(_Argument.login);
-    return featureLoginEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will be created with social logins feature
-  bool _parseEnableSocialLogins(ArgResults arguments) {
-    final socialLoginsEnabled = arguments.readOrDefault(_Argument.socialLogins);
-    return socialLoginsEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will be created with dev menu lib
-  bool _parseEnableDevMenu(ArgResults arguments) {
-    final devMenuEnabled = arguments.readOrDefault(_Argument.devMenu);
-    return devMenuEnabled.toLowerCase() == 'true';
-  }
-
-  /// Returns whether the project will be created with otp feature
-  bool _parseEnableOtpFeature(ArgResults arguments) {
-    final otpFeatureEnabled = arguments.readOrDefault(_Argument.otp);
-    return otpFeatureEnabled.toLowerCase() == 'true';
-  }
-
-  _RealtimeCommunicationType _parseRealtimeCommunicationType(
-      ArgResults arguments) {
-    final type = arguments.readOrDefault(_Argument.realtimeCommunication);
-
-    try {
-      return _RealtimeCommunicationType.values
-          .firstWhere((e) => e.name == type);
-    } catch (e) {
-      throw UsageException(
-        'Unexpected value for ${_Argument.realtimeCommunication.name}.',
-        usage,
-      );
-    }
-  }
-
-  /// endregion
-
-  /// region Validation
-
-  void _validateProjectName(String name) {
-    final isValidProjectName = _stringMatchesRegex(_packageNameRegExp, name);
-    if (!isValidProjectName) {
-      throw UsageException(
-        '"$name" is not a valid package name.\n\n'
-        'See https://dart.dev/tools/pub/pubspec#name for more information.',
-        usage,
-      );
-    }
-  }
-
-  void _validateOutputDirectoryArg(List<String> args) {
-    if (args.isEmpty) {
-      throw UsageException(
-        'No option specified for the output directory.',
-        usage,
-      );
-    }
-
-    if (args.length > 1) {
-      throw UsageException('Multiple output directories specified.', usage);
-    }
-  }
-
-  void _validateOrganisation(String orgName) {
-    if (orgName.trim().isEmpty) {
-      throw UsageException('No organisation name specified.', usage);
-    }
-
-    if (!_stringMatchesRegex(_orgNameDomainRegExp, orgName)) {
-      throw UsageException('Invalid organisation name.', usage);
-    }
-  }
-
-  bool _stringMatchesRegex(RegExp regex, String name) {
-    final match = regex.matchAsPrefix(name);
-    return match != null && match.end == name.length;
   }
 
   /// endregion
@@ -475,43 +231,6 @@ class CreateCommand extends Command<int> {
   }
 
   /// endregion
-}
-
-class _CreateCommandArguments {
-  _CreateCommandArguments({
-    required this.projectName,
-    required this.organisation,
-    required this.enableAnalytics,
-    required this.outputDirectory,
-    required this.enableCounterFeature,
-    required this.enableDeeplinkFeature,
-    required this.enableWidgetToolkitFeature,
-    required this.enableLogin,
-    required this.enableSocialLogins,
-    required this.enableChangeLanguage,
-    required this.enableDevMenu,
-    required this.enableOtpFeature,
-    required this.enablePatrolTests,
-    required this.realtimeCommunicationType,
-  });
-
-  final String projectName;
-  final String organisation;
-  final bool enableAnalytics;
-  final Directory outputDirectory;
-  final bool enableCounterFeature;
-  final bool enableDeeplinkFeature;
-  final bool enableWidgetToolkitFeature;
-  final bool enableLogin;
-  final bool enableSocialLogins;
-  final bool enableChangeLanguage;
-  final bool enableDevMenu;
-  final bool enableOtpFeature;
-  final bool enablePatrolTests;
-  final _RealtimeCommunicationType realtimeCommunicationType;
-
-  bool get hasAuthentication =>
-      enableLogin || enableSocialLogins || enableOtpFeature;
 }
 
 enum _RealtimeCommunicationType { none, sse, websocket, grpc }

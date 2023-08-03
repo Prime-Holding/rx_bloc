@@ -1,6 +1,6 @@
 part of 'create_command.dart';
 
-enum _Argument {
+enum _CommandArgument {
   projectName(
     name: 'project-name',
     type: _ArgumentType.string,
@@ -72,7 +72,7 @@ enum _Argument {
     help: 'The widget toolkit showcase feature',
   );
 
-  const _Argument({
+  const _CommandArgument({
     required this.name,
     required this.type,
     this.help,
@@ -85,27 +85,28 @@ enum _Argument {
   final bool mandatory;
 }
 
-extension _NonInteractiveDefault on _Argument {
+extension _NonInteractiveDefault on _CommandArgument {
   String get nonInteractiveDefault => switch (this) {
-        _Argument.projectName => throw UnsupportedError(
+        _CommandArgument.projectName => throw UnsupportedError(
             'You should not require default value for $name'),
-        _Argument.organisation => 'com.example',
-        _Argument.analytics => false.toString(),
-        _Argument.changeLanguage => true.toString(),
-        _Argument.counter => false.toString(),
-        _Argument.deepLink => false.toString(),
-        _Argument.devMenu => false.toString(),
-        _Argument.login => true.toString(),
-        _Argument.otp => false.toString(),
-        _Argument.patrol => false.toString(),
-        _Argument.realtimeCommunication => _RealtimeCommunicationType.none.name,
-        _Argument.socialLogins => false.toString(),
-        _Argument.widgetToolkit => false.toString(),
+        _CommandArgument.organisation => 'com.example',
+        _CommandArgument.analytics => false.toString(),
+        _CommandArgument.changeLanguage => true.toString(),
+        _CommandArgument.counter => false.toString(),
+        _CommandArgument.deepLink => false.toString(),
+        _CommandArgument.devMenu => false.toString(),
+        _CommandArgument.login => true.toString(),
+        _CommandArgument.otp => false.toString(),
+        _CommandArgument.patrol => false.toString(),
+        _CommandArgument.realtimeCommunication =>
+          _RealtimeCommunicationType.none.name,
+        _CommandArgument.socialLogins => false.toString(),
+        _CommandArgument.widgetToolkit => false.toString(),
       };
 }
 
 extension _ArgumentHandler on ArgParser {
-  void addArguments(List<_Argument> arguments) {
+  void addArguments(List<_CommandArgument> arguments) {
     for (final arg in arguments) {
       addOption(
         arg.name,
@@ -135,10 +136,64 @@ enum _ArgumentType {
 }
 
 extension _ReadArgument on ArgResults {
-  String readOrDefault(_Argument arg) =>
+  String readOrDefault(_CommandArgument arg) =>
       _cast(this[arg.name]) ?? arg.nonInteractiveDefault;
 
   T? _cast<T>(x) => x is T ? x : null;
+}
+
+class _CreateCommandArguments {
+  _CreateCommandArguments({
+    required this.projectName,
+    required this.organisation,
+    required this.enableAnalytics,
+    required this.outputDirectory,
+    required this.enableCounterFeature,
+    required this.enableDeeplinkFeature,
+    required this.enableWidgetToolkitFeature,
+    required this.enableLogin,
+    required this.enableSocialLogins,
+    required this.enableChangeLanguage,
+    required this.enableDevMenu,
+    required this.enableOtpFeature,
+    required this.enablePatrolTests,
+    required this.realtimeCommunicationType,
+  });
+
+  final String projectName;
+  final String organisation;
+  final Directory outputDirectory;
+
+  final bool enableAnalytics;
+  final bool enableChangeLanguage;
+  final bool enableCounterFeature;
+  final bool enableDeeplinkFeature;
+  final bool enableDevMenu;
+  final bool enableLogin;
+  final bool enableOtpFeature;
+  final bool enablePatrolTests;
+  final bool enableSocialLogins;
+  final bool enableWidgetToolkitFeature;
+
+  final _RealtimeCommunicationType realtimeCommunicationType;
+
+  bool get hasAuthentication =>
+      enableLogin || enableSocialLogins || enableOtpFeature;
+
+  // Whether Firebase is used in the generated project.
+  // Usually `true` because Firebase is used for push notifications.
+  bool get usesFirebase => enableAnalytics || true;
+
+  bool get usesPushNotifications => true;
+
+  bool get realtimeCommunicationEnabled =>
+      realtimeCommunicationType != _RealtimeCommunicationType.none;
+
+  String get organisationName =>
+      organisation.substring(organisation.indexOf('.') + 1);
+
+  String get organisationDomain =>
+      organisation.substring(0, organisation.indexOf('.'));
 }
 
 /*
