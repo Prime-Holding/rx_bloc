@@ -61,7 +61,8 @@ class CreateCommand extends Command<int> {
   @override
   Future<int> run() async {
     final arguments =
-        _CreateCommandArgumentsValueProvider(argResults!, this).generate();
+        _CreateCommandArgumentsValueProvider(argResults!, this, _logger)
+            .generate();
     await _generateViaMasonBundle(arguments);
     await _postGen(arguments);
     return ExitCode.success.code;
@@ -156,8 +157,8 @@ class CreateCommand extends Command<int> {
         'enable_feature_otp': arguments.enableOtp,
         'enable_patrol': arguments.enablePatrolTests,
         'has_authentication': arguments.hasAuthentication,
-        'realtime_communication': arguments.realtimeCommunication !=
-            _RealtimeCommunicationType.none,
+        'realtime_communication':
+            arguments.realtimeCommunication != _RealtimeCommunicationType.none,
       },
     );
 

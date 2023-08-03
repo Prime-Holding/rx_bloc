@@ -1,9 +1,11 @@
 part of '../commands/create_command.dart';
 
 class _CreateCommandArgumentsValueProvider {
-  _CreateCommandArgumentsValueProvider(this.arguments, this.command);
+  _CreateCommandArgumentsValueProvider(
+      this.arguments, this.command, this._logger);
 
   final ArgResults arguments;
+  final Logger _logger;
   final Command command;
 
   /// Regex for package name
@@ -22,8 +24,10 @@ class _CreateCommandArgumentsValueProvider {
 
   _ProjectGenerationArguments _generateNonInteractive() {
     return _ProjectGenerationArguments(
-      projectName: _parseProjectName(arguments),
-      organisation: _parseOrganisation(arguments),
+      projectName: _parseProjectName(
+          arguments.stringOrDefault(_CommandArgument.projectName)),
+      organisation: _parseOrganisation(
+          arguments.stringOrDefault(_CommandArgument.organisation)),
       outputDirectory: _parseOutputDirectory(arguments),
       enableAnalytics: arguments.boolReadOrDefault(_CommandArgument.analytics),
       enableCounter: arguments.boolReadOrDefault(_CommandArgument.counter),
@@ -43,21 +47,35 @@ class _CreateCommandArgumentsValueProvider {
   }
 
   _ProjectGenerationArguments _generateInteractive() {
-    throw UnimplementedError();
+    return _ProjectGenerationArguments(
+      projectName: _parseProjectName(_readString(_CommandArgument.projectName)),
+      organisation:
+          _parseOrganisation(_readString(_CommandArgument.organisation)),
+      outputDirectory: _parseOutputDirectory(arguments),
+      enableAnalytics: _readBool(_CommandArgument.analytics),
+      enableCounter: _readBool(_CommandArgument.counter),
+      enableDeeplink: _readBool(_CommandArgument.deepLink),
+      enableWidgetToolkit: _readBool(_CommandArgument.widgetToolkit),
+      enableLogin: _readBool(_CommandArgument.login),
+      enableSocialLogins: _readBool(_CommandArgument.socialLogins),
+      enableChangeLanguage: _readBool(_CommandArgument.changeLanguage),
+      enableDevMenu: _readBool(_CommandArgument.devMenu),
+      enableOtp: _readBool(_CommandArgument.otp),
+      enablePatrolTests: _readBool(_CommandArgument.patrol),
+      realtimeCommunication: _readRealtimeCommunication(),
+    );
   }
 
   /// Gets the project name.
-  String _parseProjectName(ArgResults arguments) {
-    final projectName = arguments.stringOrDefault(_CommandArgument.projectName);
+  String _parseProjectName(String projectName) {
     _validateProjectName(projectName);
     return projectName;
   }
 
   /// Returns the organization name with domain in front of it
-  String _parseOrganisation(ArgResults arguments) {
-    final value = arguments.stringOrDefault(_CommandArgument.organisation);
-    _validateOrganisation(value);
-    return value;
+  String _parseOrganisation(String organisation) {
+    _validateOrganisation(organisation);
+    return organisation;
   }
 
   /// Gets the directory used for the file generation
@@ -76,6 +94,23 @@ class _CreateCommandArgumentsValueProvider {
         command.usage,
       );
     }
+  }
+
+  bool _readBool(_CommandArgument arg) {
+    assert(arg.type == _ArgumentType.boolean);
+    return _logger.confirm(arg.prompt, defaultValue: arg.defaultValue as bool);
+  }
+
+  String _readString(_CommandArgument arg) {
+    assert(arg.type == _ArgumentType.string);
+    return _logger.prompt(arg.prompt, defaultValue: arg.defaultValue);
+  }
+
+  _RealtimeCommunicationType _readRealtimeCommunication() {
+    final arg = _CommandArgument.realtimeCommunication;
+    final text = _logger.prompt(arg.prompt, defaultValue: arg.defaultValue);
+    return _RealtimeCommunicationType.values
+        .firstWhere((element) => element.name == text);
   }
 
   /// endregion
@@ -123,4 +158,30 @@ class _CreateCommandArgumentsValueProvider {
   }
 
   /// endregion}
+}
+
+extension _PromptTextProvider on _CommandArgument {
+  String get prompt => switch (this) {
+        _CommandArgument.projectName => 'Project name',
+        _CommandArgument.organisation => 'Organization name',
+        _CommandArgument.analytics => 'Enable analytics',
+        _CommandArgument.changeLanguage => 'Enable change language',
+        _CommandArgument.counter => 'Enable counter showcase',
+        _CommandArgument.deepLink => 'Enable deeplink',
+        _CommandArgument.devMenu => 'Enable dev menu',
+        _CommandArgument.login => 'Enable login',
+        _CommandArgument.otp => 'Enable OTP authentication',
+        _CommandArgument.patrol => 'Enable Patrol integration tests',
+        _CommandArgument.realtimeCommunication =>
+          'Select realtime communication type [${_OptionsProvider.options}]',
+        _CommandArgument.socialLogins => 'Enable social logins',
+        _CommandArgument.widgetToolkit => 'Enable widget toolkit showcase',
+        _CommandArgument.interactive => throw UnsupportedError(
+            'This option is not supported for interactive input'),
+      };
+}
+
+extension _OptionsProvider on _RealtimeCommunicationType {
+  static String get options =>
+      _RealtimeCommunicationType.values.map((e) => e.toString()).join(' | ');
 }

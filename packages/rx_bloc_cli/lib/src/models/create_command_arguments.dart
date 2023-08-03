@@ -124,7 +124,7 @@ extension _NonInteractiveDefault on _CommandArgument {
           _checked(_RealtimeCommunicationType.none),
         _CommandArgument.socialLogins => _checked(false),
         _CommandArgument.widgetToolkit => _checked(false),
-        _CommandArgument.interactive => _checked(false),
+        _CommandArgument.interactive => _checked(true),
       };
 
   Object _checked(Object value) {
