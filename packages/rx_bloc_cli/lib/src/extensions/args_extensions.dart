@@ -14,30 +14,129 @@ extension _ArgumentHandler on ArgParser {
   }
 }
 
-extension _ReadArgument on ArgResults {
-  bool get isInteractiveConfigurationEnabled =>
-      boolReadOrDefault(_CommandArgument.interactive);
+extension _ArgResultsSpecificValues on ArgResults {
+  bool get isInteractiveConfigurationEnabled => readBool(
+        _CommandArgument.interactive.name,
+        _CommandArgument.interactive.defaultValue.cast(),
+      );
 
-  String stringOrDefault(_CommandArgument arg) {
-    assert(arg.type == _ArgumentType.string, '');
-    return _readOrDefault(arg);
+  Directory get outputDirectory {
+    final args = rest;
+
+    if (args.isEmpty) {
+      throw Exception('No option specified for the output directory.');
+    }
+    if (args.length > 1) {
+      throw Exception('Multiple output directories specified.');
+    }
+    return Directory(args.first);
   }
 
-  bool boolReadOrDefault(_CommandArgument arg) {
-    assert(arg.type == _ArgumentType.boolean, '');
-    final enabled = _readOrDefault(arg).toLowerCase() == true.toString();
-    return enabled;
+  String readString(String name, String defaultsTo) =>
+      this[name] is String ? this[name] as String : defaultsTo;
+
+  bool readBool(String name, bool defaultsTo) =>
+      readString(name, defaultsTo.toString()).toLowerCase() == true.toString();
+}
+
+abstract class _CommandArgsReader {
+  T read<T extends Object>(
+    _CommandArgument argument, [
+    T Function(T)? validate,
+  ]);
+}
+
+final class _CommandArgsLogReader implements _CommandArgsReader {
+  _CommandArgsLogReader(this._logger);
+
+  final Logger _logger;
+
+  @override
+  T read<T extends Object>(
+    _CommandArgument argument, [
+    T Function(T)? validate,
+  ]) {
+    if (!argument.allowsInteractiveInput) {
+      throw UnsupportedError('${argument.name} can\'t be used interactively');
+    }
+    switch (argument.type) {
+      case _ArgumentType.string:
+        final value = _readString(argument).cast<T>();
+        return (validate != null) ? validate(value) : value;
+      case _ArgumentType.boolean:
+        final value = _readBool(argument).cast<T>();
+        return (validate != null) ? validate(value) : value;
+      case _ArgumentType.realTimeCommunicationEnum:
+        final value = _readRealtimeCommunicationEnum(argument).cast<T>();
+        return (validate != null) ? validate(value) : value;
+    }
   }
 
-  _RealtimeCommunicationType get realTimeCommunicationType {
-    final arg = _CommandArgument.realtimeCommunication;
-    assert(arg.type == _ArgumentType.realTimeCommunicationEnum, '');
-    return _RealtimeCommunicationType.values
-        .firstWhere((element) => element.name == _readOrDefault(arg));
+  String _readString(_CommandArgument argument) => _logger.prompt(
+        argument.prompt,
+        defaultValue: argument.defaultValue,
+      );
+
+  bool _readBool(_CommandArgument argument) => _logger.confirm(
+        argument.prompt,
+        defaultValue: argument.defaultValue.cast(),
+      );
+
+  _RealtimeCommunicationType _readRealtimeCommunicationEnum(
+    _CommandArgument argument,
+  ) =>
+      _RealtimeCommunicationType.parse(_logger.prompt(
+        argument.prompt,
+        defaultValue: argument.defaultValue,
+      ));
+}
+
+final class _CommandArgsResultsReader implements _CommandArgsReader {
+  _CommandArgsResultsReader(this._argResults);
+
+  final ArgResults _argResults;
+
+  @override
+  T read<T extends Object>(
+    _CommandArgument argument, [
+    T Function(T)? validate,
+  ]) {
+    if (!argument.allowsInteractiveInput) {
+      throw UnsupportedError('${argument.name} can\'t be used interactively');
+    }
+    switch (argument.type) {
+      case _ArgumentType.string:
+        final value = _readString(argument).cast<T>();
+        return (validate != null) ? validate(value) : value;
+      case _ArgumentType.boolean:
+        final value = _readBool(argument).cast<T>();
+        return (validate != null) ? validate(value) : value;
+      case _ArgumentType.realTimeCommunicationEnum:
+        final value = _readRealtimeCommunicationEnum(argument).cast<T>();
+        return (validate != null) ? validate(value) : value;
+    }
   }
 
-  String _readOrDefault(_CommandArgument arg) =>
-      _cast(this[arg.name]) ?? arg.defaultValue.toString();
+  String _readString(_CommandArgument argument) => _argResults.readString(
+        argument.name,
+        argument.defaultValue.cast(),
+      );
 
-  T? _cast<T>(dynamic value) => value is T ? value : null;
+  bool _readBool(_CommandArgument argument) => _argResults.readBool(
+        argument.name,
+        argument.defaultValue.cast(),
+      );
+
+  _RealtimeCommunicationType _readRealtimeCommunicationEnum(
+    _CommandArgument arg,
+  ) {
+    return _RealtimeCommunicationType.parse(_argResults.readString(
+      arg.name,
+      arg.defaultValue.cast(),
+    ));
+  }
+}
+
+extension _CastObject on Object {
+  T cast<T extends Object>() => this as T;
 }

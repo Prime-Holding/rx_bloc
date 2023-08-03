@@ -30,6 +30,8 @@ part '../models/create_command_bundle_provider.dart';
 
 part '../models/project_generation_arguments.dart';
 
+part '../models/realtime_communication_type.dart';
+
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
   /// Allows you to customize the creation of the project by providing
@@ -61,7 +63,7 @@ class CreateCommand extends Command<int> {
   @override
   Future<int> run() async {
     final arguments =
-        _CreateCommandArgumentsValueProvider(argResults!, this, _logger)
+        _CreateCommandArgumentsValueProvider(argResults!, _logger)
             .generate();
     await _generateViaMasonBundle(arguments);
     await _postGen(arguments);
@@ -236,14 +238,4 @@ class CreateCommand extends Command<int> {
   }
 
   /// endregion
-}
-
-enum _RealtimeCommunicationType {
-  none,
-  sse,
-  websocket,
-  grpc;
-
-  @override
-  String toString() => name;
 }

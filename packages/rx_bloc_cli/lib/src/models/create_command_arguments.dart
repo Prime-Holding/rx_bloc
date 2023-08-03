@@ -76,6 +76,7 @@ enum _CommandArgument {
     name: 'interactive',
     type: _ArgumentType.boolean,
     help: 'Allows to select the included features interactively',
+    allowsInteractiveInput: false,
   );
 
   const _CommandArgument({
@@ -83,12 +84,14 @@ enum _CommandArgument {
     required this.type,
     this.help,
     this.mandatory = false,
+    this.allowsInteractiveInput = true,
   });
 
   final String name;
   final _ArgumentType type;
   final String? help;
   final bool mandatory;
+  final bool allowsInteractiveInput;
 }
 
 /// Specifies all types supported by _CommandArgument
@@ -98,48 +101,51 @@ enum _ArgumentType {
   boolean,
   realTimeCommunicationEnum;
 
+  /// Allowed values for each type
   Iterable<String>? get allowed => switch (this) {
         _ArgumentType.string => null,
         _ArgumentType.boolean => [true, false].map((e) => e.toString()),
         _ArgumentType.realTimeCommunicationEnum =>
           _RealtimeCommunicationType.values.map((e) => e.toString()),
       };
+
+  /// Checks if the type corresponds to the provided value's type
+  bool matches(Object value) => switch (this) {
+        _ArgumentType.string => value is String,
+        _ArgumentType.boolean => value is bool,
+        _ArgumentType.realTimeCommunicationEnum =>
+          value is _RealtimeCommunicationType,
+      };
 }
 
 /// Default values for each _CommandArgument
 /// Used as fallback values for project generation
 extension _NonInteractiveDefault on _CommandArgument {
-  Object get defaultValue => switch (this) {
-        _CommandArgument.projectName => _checked(''),
-        _CommandArgument.organisation => _checked('com.example'),
-        _CommandArgument.analytics => _checked(false),
-        _CommandArgument.changeLanguage => _checked(true),
-        _CommandArgument.counter => _checked(false),
-        _CommandArgument.deepLink => _checked(false),
-        _CommandArgument.devMenu => _checked(false),
-        _CommandArgument.login => _checked(true),
-        _CommandArgument.otp => _checked(false),
-        _CommandArgument.patrol => _checked(false),
+  Object get defaultValue => _withCheck(switch (this) {
+        _CommandArgument.projectName => '',
+        _CommandArgument.organisation => 'com.example',
+        _CommandArgument.analytics => false,
+        _CommandArgument.changeLanguage => true,
+        _CommandArgument.counter => false,
+        _CommandArgument.deepLink => false,
+        _CommandArgument.devMenu => false,
+        _CommandArgument.login => true,
+        _CommandArgument.otp => false,
+        _CommandArgument.patrol => false,
         _CommandArgument.realtimeCommunication =>
-          _checked(_RealtimeCommunicationType.none),
-        _CommandArgument.socialLogins => _checked(false),
-        _CommandArgument.widgetToolkit => _checked(false),
-        _CommandArgument.interactive => _checked(true),
-      };
+          _RealtimeCommunicationType.none,
+        _CommandArgument.socialLogins => false,
+        _CommandArgument.widgetToolkit => false,
+        _CommandArgument.interactive => true,
+      });
 
-  Object _checked(Object value) {
+  /// Verifies:
+  /// - no default value is provided for mandatory arguments
+  /// - the provided value type matches the expected type
+  Object _withCheck(Object value) {
     // Mandatory arguments should not have default value
     assert(!mandatory, 'You should not require default value for $name');
-
-    // The _CommandArgument type should match the provided value type
-    switch (type) {
-      case _ArgumentType.string:
-        assert(value is String, '');
-      case _ArgumentType.boolean:
-        assert(value is bool, '');
-      case _ArgumentType.realTimeCommunicationEnum:
-        assert(value is _RealtimeCommunicationType, '');
-    }
+    assert(type.matches(value), 'The provided value does not match $type');
 
     return value;
   }
