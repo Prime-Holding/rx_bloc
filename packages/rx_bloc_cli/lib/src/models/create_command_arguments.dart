@@ -76,7 +76,6 @@ enum _CommandArgument {
     name: 'interactive',
     type: _ArgumentType.boolean,
     help: 'Allows to select the included features interactively',
-    allowsInteractiveInput: false,
   );
 
   const _CommandArgument({
@@ -84,14 +83,12 @@ enum _CommandArgument {
     required this.type,
     this.help,
     this.mandatory = false,
-    this.allowsInteractiveInput = true,
   });
 
   final String name;
   final _ArgumentType type;
   final String? help;
   final bool mandatory;
-  final bool allowsInteractiveInput;
 }
 
 /// Specifies all types supported by _CommandArgument
@@ -149,4 +146,24 @@ extension _NonInteractiveDefault on _CommandArgument {
 
     return value;
   }
+}
+
+extension _PromptTextProvider on _CommandArgument {
+  String? get prompt => switch (this) {
+        _CommandArgument.projectName => 'Project name:',
+        _CommandArgument.organisation => 'Organization name:',
+        _CommandArgument.analytics => 'Enable analytics:',
+        _CommandArgument.changeLanguage => 'Enable change language:',
+        _CommandArgument.counter => 'Enable counter showcase:',
+        _CommandArgument.deepLink => 'Enable deeplink:',
+        _CommandArgument.devMenu => 'Enable dev menu:',
+        _CommandArgument.login => 'Enable login:',
+        _CommandArgument.otp => 'Enable OTP authentication:',
+        _CommandArgument.patrol => 'Enable Patrol integration tests:',
+        _CommandArgument.realtimeCommunication =>
+          'Select realtime communication type [ ${_RealtimeCommunicationType.options} ]:',
+        _CommandArgument.socialLogins => 'Enable social logins:',
+        _CommandArgument.widgetToolkit => 'Enable widget toolkit showcase:',
+        _CommandArgument.interactive => null,
+      };
 }

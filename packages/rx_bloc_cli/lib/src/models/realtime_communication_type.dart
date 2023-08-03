@@ -13,6 +13,9 @@ enum _RealtimeCommunicationType {
     _RealtimeCommunicationType.sse,
   ];
 
+  static String get options =>
+      _RealtimeCommunicationType.supported.map((e) => e.toString()).join(' | ');
+
   static _RealtimeCommunicationType parse(String value) =>
       _RealtimeCommunicationType.values.firstWhere(
         (element) => element.name == value,

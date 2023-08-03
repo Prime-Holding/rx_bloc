@@ -22,7 +22,9 @@ import '../utils/git_ignore_creator.dart';
 
 part '../models/create_command_arguments.dart';
 
-part '../extensions/args_extensions.dart';
+part '../extensions/arg_results_extensions.dart';
+
+part '../extensions/object_extensions.dart';
 
 part '../models/create_command_arguments_provider.dart';
 
@@ -31,6 +33,10 @@ part '../models/create_command_bundle_provider.dart';
 part '../models/project_generation_arguments.dart';
 
 part '../models/realtime_communication_type.dart';
+
+part '../models/command_arguments_reader.dart';
+
+part '../extensions/arg_parser_extensions.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {

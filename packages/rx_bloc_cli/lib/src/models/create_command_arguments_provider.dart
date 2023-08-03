@@ -1,25 +1,33 @@
 part of '../commands/create_command.dart';
 
 class _CreateCommandArgumentsValueProvider {
-  _CreateCommandArgumentsValueProvider(this.arguments, this._logger);
+  _CreateCommandArgumentsValueProvider(ArgResults arguments, Logger logger)
+      : _outputDirectory = arguments.outputDirectory,
+        _reader = arguments.isInteractiveConfigurationEnabled
+            ? _LogReader(logger)
+            : _ArgResultsReader(arguments);
 
-  final ArgResults arguments;
-  final Logger _logger;
+  final Directory _outputDirectory;
+  final _CommandArgumentsReader _reader;
 
   /// endregion
 
   _ProjectGenerationArguments generate() {
-    final interactive = arguments.isInteractiveConfigurationEnabled;
-    final reader = interactive
-        ? _CommandArgsLogReader(_logger)
-        : _CommandArgsResultsReader(arguments);
+    final read = _reader.read;
 
-    final read = reader.read;
+    final projectName = read(
+      _CommandArgument.projectName,
+      validation: _validateProjectName,
+    );
+    final organisation = read(
+      _CommandArgument.organisation,
+      validation: _validateOrganisation,
+    );
 
     return _ProjectGenerationArguments(
-      outputDirectory: arguments.outputDirectory,
-      projectName: read(_CommandArgument.projectName, _validateProjectName),
-      organisation: read(_CommandArgument.organisation, _validateOrganisation),
+      outputDirectory: _outputDirectory,
+      projectName: projectName,
+      organisation: organisation,
       enableAnalytics: read(_CommandArgument.analytics),
       enableCounter: read(_CommandArgument.counter),
       enableDeeplink: read(_CommandArgument.deepLink),
@@ -63,30 +71,4 @@ class _CreateCommandArgumentsValueProvider {
     final match = regex.matchAsPrefix(name);
     return match != null && match.end == name.length;
   }
-}
-
-extension _PromptTextProvider on _CommandArgument {
-  String get prompt => switch (this) {
-        _CommandArgument.projectName => 'Project name:',
-        _CommandArgument.organisation => 'Organization name:',
-        _CommandArgument.analytics => 'Enable analytics:',
-        _CommandArgument.changeLanguage => 'Enable change language:',
-        _CommandArgument.counter => 'Enable counter showcase:',
-        _CommandArgument.deepLink => 'Enable deeplink:',
-        _CommandArgument.devMenu => 'Enable dev menu:',
-        _CommandArgument.login => 'Enable login:',
-        _CommandArgument.otp => 'Enable OTP authentication:',
-        _CommandArgument.patrol => 'Enable Patrol integration tests:',
-        _CommandArgument.realtimeCommunication =>
-          'Select realtime communication type [ ${_OptionsProvider.options} ]:',
-        _CommandArgument.socialLogins => 'Enable social logins:',
-        _CommandArgument.widgetToolkit => 'Enable widget toolkit showcase:',
-        _CommandArgument.interactive => throw UnsupportedError(
-            'This option is not supported for interactive input'),
-      };
-}
-
-extension _OptionsProvider on _RealtimeCommunicationType {
-  static String get options =>
-      _RealtimeCommunicationType.values.map((e) => e.toString()).join(' | ');
 }
