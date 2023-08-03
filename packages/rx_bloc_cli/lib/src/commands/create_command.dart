@@ -20,6 +20,8 @@ import '../templates/patrol_integration_tests_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
+part 'create_command_arguments.dart';
+
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
   /// Allows you to customize the creation of the project by providing
@@ -33,83 +35,9 @@ class CreateCommand extends Command<int> {
   })  : _logger = logger ?? Logger(),
         _bundle = bundle ?? rxBlocBaseBundle,
         _generator = generator ?? MasonGenerator.fromBundle {
-    argParser
-      ..addOption(
-        _projectNameString,
-        help: 'The project name for this new Flutter project. This must be a '
-            'valid dart package name. If no project name is supplied, '
-            'the name of the directory is used as the project name.',
-        mandatory: true,
-      )
-      ..addOption(
-        _organisationString,
-        help: 'The organisation name.',
-        defaultsTo: 'com.example',
-      )
-      ..addOption(
-        _counterString,
-        help: 'The counter showcase feature',
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _widgetToolkitString,
-        help: 'The widget toolkit showcase feature',
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _deepLinkString,
-        help: 'The deeplink showcase feature',
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _changeLanguageString,
-        help: 'Enables change language',
-        defaultsTo: 'true',
-      )
-      ..addOption(
-        _analyticsString,
-        help: 'Enables Firebase analytics for the project',
-        allowed: ['true', 'false'],
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _devMenuString,
-        help: 'Enables Dev Menu for the project',
-        allowed: ['true', 'false'],
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _featureLoginString,
-        help: 'Enables login feature for the project',
-        allowed: ['true', 'false'],
-        defaultsTo: 'true',
-      )
-      ..addOption(
-        _socialLoginsString,
-        help: 'Enables social login with Apple, Facebook and Google for the '
-            'project',
-        allowed: ['true', 'false'],
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _patrolTestsString,
-        help: 'Enables Patrol integration tests for the project',
-        allowed: ['true', 'false'],
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _otpFeatureString,
-        help: 'Enables OTP feature for the project',
-        allowed: ['true', 'false'],
-        defaultsTo: 'false',
-      )
-      ..addOption(
-        _realtimeCommunicationString,
-        help: 'Enables realtime communication facilities like SSE, WebSocket '
-            'or gRPC',
-        allowed: ['none', 'sse'],
-        defaultsTo: 'none',
-      );
+    argParser.addArguments(
+      _Argument.values,
+    );
   }
 
   /// region Fields
@@ -599,7 +527,8 @@ class _CreateCommandArguments {
   final bool enablePatrolTests;
   final _RealtimeCommunicationType realtimeCommunicationType;
 
-  bool get hasAuthentication => enableLogin || enableSocialLogins || enableOtpFeature;
+  bool get hasAuthentication =>
+      enableLogin || enableSocialLogins || enableOtpFeature;
 }
 
 enum _RealtimeCommunicationType { none, sse, websocket, grpc }
