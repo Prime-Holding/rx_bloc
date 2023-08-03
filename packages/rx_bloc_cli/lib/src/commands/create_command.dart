@@ -40,22 +40,6 @@ class CreateCommand extends Command<int> {
     );
   }
 
-  /// region Fields
-
-  final _projectNameString = 'project-name';
-  final _organisationString = 'organisation';
-  final _analyticsString = 'enable-analytics';
-  final _counterString = 'enable-feature-counter';
-  final _deepLinkString = 'enable-feature-deeplinks';
-  final _widgetToolkitString = 'enable-feature-widget-toolkit';
-  final _featureLoginString = 'enable-login';
-  final _socialLoginsString = 'enable-social-logins';
-  final _changeLanguageString = 'enable-change-language';
-  final _devMenuString = 'enable-dev-menu';
-  final _patrolTestsString = 'enable-patrol';
-  final _realtimeCommunicationString = 'realtime-communication';
-  final _otpFeatureString = 'enable-otp';
-
   /// bundles
   final _counterBundle = featureCounterBundle;
   final _deepLinkBundle = featureDeeplinkBundle;
@@ -289,14 +273,14 @@ class CreateCommand extends Command<int> {
 
   /// Gets the project name.
   String _parseProjectName(ArgResults arguments) {
-    final projectName = arguments[_projectNameString] as String;
+    final projectName = arguments.readOrDefault(_Argument.projectName);
     _validateProjectName(projectName);
     return projectName;
   }
 
   /// Returns the organization name with domain in front of it
   String _parseOrganisation(ArgResults arguments) {
-    final value = (arguments[_organisationString] ?? '') as String;
+    final value = arguments.readOrDefault(_Argument.organisation);
     _validateOrganisation(value);
     return value;
   }
@@ -310,80 +294,79 @@ class CreateCommand extends Command<int> {
 
   /// Returns whether the project will be created with counter feature
   bool _parseEnableCounter(ArgResults arguments) {
-    final counterEnabled = arguments[_counterString];
+    final counterEnabled = arguments.readOrDefault(_Argument.counter);
     return counterEnabled.toLowerCase() == 'true';
   }
 
   /// Return whether the project will be created with patrol integration tests
   bool _parseEnablePatrolTests(ArgResults arguments) {
-    final patrolEnabled = arguments[_patrolTestsString];
+    final patrolEnabled = arguments.readOrDefault(_Argument.patrol);
     return patrolEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with widget toolkit feature
   bool _parseEnableWidgetToolkit(ArgResults arguments) {
-    final widgetToolkitEnabled = arguments[_widgetToolkitString];
+    final widgetToolkitEnabled =
+        arguments.readOrDefault(_Argument.widgetToolkit);
     return widgetToolkitEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will enable change language
   bool _parseEnableChangeLanguage(ArgResults arguments) {
-    final changeLanguageEnabled = arguments[_changeLanguageString];
+    final changeLanguageEnabled =
+        arguments.readOrDefault(_Argument.changeLanguage);
     return changeLanguageEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will use analytics or not
   bool _parseEnableAnalytics(ArgResults arguments) {
-    final analyticsEnabled = arguments[_analyticsString];
+    final analyticsEnabled = arguments.readOrDefault(_Argument.analytics);
     return analyticsEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with deeplink feature
   bool _parseEnableDeeplinkFeature(ArgResults arguments) {
-    final deeplinkEnabled = arguments[_deepLinkString];
+    final deeplinkEnabled = arguments.readOrDefault(_Argument.deepLink);
     return deeplinkEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with login feature
   bool _parseEnableFeatureLogin(ArgResults arguments) {
-    final featureLoginEnabled = arguments[_featureLoginString];
+    final featureLoginEnabled = arguments.readOrDefault(_Argument.login);
     return featureLoginEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with social logins feature
   bool _parseEnableSocialLogins(ArgResults arguments) {
-    final socialLoginsEnabled = arguments[_socialLoginsString];
+    final socialLoginsEnabled = arguments.readOrDefault(_Argument.socialLogins);
     return socialLoginsEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with dev menu lib
   bool _parseEnableDevMenu(ArgResults arguments) {
-    final devMenuEnabled = arguments[_devMenuString];
+    final devMenuEnabled = arguments.readOrDefault(_Argument.devMenu);
     return devMenuEnabled.toLowerCase() == 'true';
   }
 
   /// Returns whether the project will be created with otp feature
   bool _parseEnableOtpFeature(ArgResults arguments) {
-    final otpFeatureEnabled = arguments[_otpFeatureString];
+    final otpFeatureEnabled = arguments.readOrDefault(_Argument.otp);
     return otpFeatureEnabled.toLowerCase() == 'true';
   }
 
-  _RealtimeCommunicationType _parseRealtimeCommunicationType(arguments) {
-    final type = arguments[_realtimeCommunicationString] as String;
+  _RealtimeCommunicationType _parseRealtimeCommunicationType(
+      ArgResults arguments) {
+    final type = arguments.readOrDefault(_Argument.realtimeCommunication);
 
-    switch (type.toLowerCase()) {
-      case 'sse':
-        return _RealtimeCommunicationType.sse;
-      case 'websocket':
-        return _RealtimeCommunicationType.websocket;
-      case 'grpc':
-        return _RealtimeCommunicationType.grpc;
-      case 'none':
-        return _RealtimeCommunicationType.none;
+    try {
+      return _RealtimeCommunicationType.values
+          .firstWhere((e) => e.name == type);
+    } catch (e) {
+      throw UsageException(
+        'Unexpected value for ${_Argument.realtimeCommunication.name}.',
+        usage,
+      );
     }
-
-    throw UsageException(
-        'Unexpected value for parameter $_realtimeCommunicationString.', usage);
   }
 
   /// endregion

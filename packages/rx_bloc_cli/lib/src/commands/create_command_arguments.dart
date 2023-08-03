@@ -86,8 +86,9 @@ enum _Argument {
 }
 
 extension _NonInteractiveDefault on _Argument {
-  String? get nonInteractiveDefault => switch (this) {
-        _Argument.projectName => null,
+  String get nonInteractiveDefault => switch (this) {
+        _Argument.projectName => throw UnsupportedError(
+            'You should not require default value for $name'),
         _Argument.organisation => 'com.example',
         _Argument.analytics => false.toString(),
         _Argument.changeLanguage => true.toString(),
@@ -132,6 +133,14 @@ enum _ArgumentType {
           ),
       };
 }
+
+extension _ReadArgument on ArgResults {
+  String readOrDefault(_Argument arg) =>
+      _cast(this[arg.name]) ?? arg.nonInteractiveDefault;
+
+  T? _cast<T>(x) => x is T ? x : null;
+}
+
 /*
 _Argument.projectName
 _Argument.organisation
