@@ -5,4 +5,7 @@ class CommandUsageException implements Exception {
 
   /// Message property
   final String message;
+
+  @override
+  String toString() => message;
 }

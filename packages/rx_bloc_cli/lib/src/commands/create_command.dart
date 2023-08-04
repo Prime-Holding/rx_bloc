@@ -68,8 +68,7 @@ class CreateCommand extends Command<int> {
     try {
       return argumentsProvider.readGeneratorArguments();
     } catch (e) {
-      if (e is! CommandUsageException) rethrow;
-      throw UsageException(e.message, usage);
+      throw UsageException(e.toString(), usage);
     }
   }
 

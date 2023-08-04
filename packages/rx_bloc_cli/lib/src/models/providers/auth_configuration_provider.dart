@@ -18,7 +18,7 @@ class _AuthConfigurationProvider {
     final otpEnabled = _reader.read<bool>(CommandArguments.otp);
 
     if (otpEnabled && !(loginEnabled || socialLoginsEnabled)) {
-      // Modify feature or throw exception
+      // Modify feature flag or throw exception
       _logger.warn('Login enabled, due to OTP feature requirement');
       loginEnabled = true;
     }
