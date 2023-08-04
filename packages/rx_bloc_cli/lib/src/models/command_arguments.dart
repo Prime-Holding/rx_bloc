@@ -11,7 +11,6 @@ enum CommandArguments {
         'the name of the directory is used as the project name.',
     mandatory: true,
   ),
-
   /// Organisation name
   organisation(
     name: 'organisation',
@@ -153,16 +152,13 @@ enum ArgumentType {
       };
 }
 
-/// Placeholder value. Can be used for mandatory arguments default.
-final _placeholder = Object();
-
 /// Default values for each _CommandArgument
 /// Used as fallback values for project generation
 extension NonInteractiveDefault on CommandArguments {
   /// Default value for CommandArgument.
   /// Checks if CommandArgument is mandatory or types mismatch
   Object get defaultValue => _withCheck(switch (this) {
-        CommandArguments.projectName => _placeholder,
+        CommandArguments.projectName => '',
         CommandArguments.organisation => 'com.example',
         CommandArguments.analytics => false,
         CommandArguments.changeLanguage => true,

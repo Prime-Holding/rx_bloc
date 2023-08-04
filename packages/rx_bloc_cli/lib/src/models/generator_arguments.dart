@@ -6,22 +6,22 @@ class GeneratorArguments {
   GeneratorArguments({
     required this.projectName,
     required this.organisation,
-    required this.enableAnalytics,
+    required this.analyticsEnabled,
     required this.outputDirectory,
-    required this.enableCounter,
-    required this.enableDeeplink,
-    required this.enableWidgetToolkit,
-    required this.enableLogin,
-    required this.enableSocialLogins,
-    required this.enableChangeLanguage,
-    required this.enableDevMenu,
-    required this.enableOtp,
-    required this.enablePatrolTests,
+    required this.counterEnabled,
+    required this.deeplinksEnabled,
+    required this.widgetToolkitEnabled,
+    required this.loginEnabled,
+    required this.socialLoginsEnabled,
+    required this.changeLanguageEnabled,
+    required this.devMenuEnabled,
+    required this.otpEnabled,
+    required this.patrolTestsEnabled,
     required this.hasAuthentication,
     required this.usesFirebase,
     required this.organisationName,
     required this.organisationDomain,
-    required this.usesPushNotifications,
+    required this.pushNotificationsEnabled,
     required this.realtimeCommunicationEnabled,
   });
 
@@ -37,31 +37,31 @@ class GeneratorArguments {
   final String organisationDomain;
 
   /// Analytics
-  final bool enableAnalytics;
+  final bool analyticsEnabled;
   /// Change language
-  final bool enableChangeLanguage;
+  final bool changeLanguageEnabled;
   /// Counter showcase
-  final bool enableCounter;
+  final bool counterEnabled;
   /// Deep links
-  final bool enableDeeplink;
+  final bool deeplinksEnabled;
   /// Dev menu
-  final bool enableDevMenu;
+  final bool devMenuEnabled;
   /// Login
-  final bool enableLogin;
+  final bool loginEnabled;
   /// OTP
-  final bool enableOtp;
+  final bool otpEnabled;
   /// Patrol tests
-  final bool enablePatrolTests;
+  final bool patrolTestsEnabled;
   /// Social logins
-  final bool enableSocialLogins;
+  final bool socialLoginsEnabled;
   /// Widget toolkit showcase
-  final bool enableWidgetToolkit;
+  final bool widgetToolkitEnabled;
   /// Authentication
   final bool hasAuthentication;
   /// Firebase
   final bool usesFirebase;
   /// Push notifications
-  final bool usesPushNotifications;
+  final bool pushNotificationsEnabled;
   /// Real time communication
   final bool realtimeCommunicationEnabled;
 }

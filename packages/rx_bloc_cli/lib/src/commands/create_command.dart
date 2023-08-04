@@ -6,27 +6,13 @@ import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 
 import '../extensions/arg_parser_extensions.dart';
 import '../extensions/arg_results_extensions.dart';
+import '../models/bundle_generator.dart';
 import '../models/command_arguments.dart';
 import '../models/command_arguments_reader.dart';
-import '../models/generator_arguments_provider.dart';
 import '../models/generator_arguments.dart';
-import '../templates/feature_counter_bundle.dart';
-import '../templates/feature_deeplink_bundle.dart';
-import '../templates/feature_login_bundle.dart';
-import '../templates/feature_otp_bundle.dart';
-import '../templates/feature_widget_toolkit_bundle.dart';
-import '../templates/lib_auth_bundle.dart';
-import '../templates/lib_change_language_bundle.dart';
-import '../templates/lib_dev_menu_bundle.dart';
-import '../templates/lib_permissions_bundle.dart';
-import '../templates/lib_realtime_communication_bundle.dart';
-import '../templates/lib_router_bundle.dart';
-import '../templates/lib_social_logins_bundle.dart';
-import '../templates/patrol_integration_tests_bundle.dart';
+import '../models/generator_arguments_provider.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
-
-part '../models/create_command_bundle_provider.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
@@ -39,13 +25,13 @@ class CreateCommand extends Command<int> {
     MasonBundle? bundle,
     Future<MasonGenerator> Function(MasonBundle)? generator,
   })  : _logger = logger ?? Logger(),
-        _bundle = bundle ?? rxBlocBaseBundle,
+        _bundleGenerator = BundleGenerator(bundle ?? rxBlocBaseBundle),
         _generator = generator ?? MasonGenerator.fromBundle {
     argParser.addCommandArguments(CommandArguments.values);
   }
 
   final Logger _logger;
-  final MasonBundle _bundle;
+  final BundleGenerator _bundleGenerator;
   final Future<MasonGenerator> Function(MasonBundle) _generator;
 
   /// region Command requirements
@@ -58,9 +44,9 @@ class CreateCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    final arguments = _readCommandArguments();
+    final arguments = _readGeneratorArguments();
     await _generateViaMasonBundle(arguments);
-    await _postGen(arguments);
+    await _postGen(arguments.outputDirectory);
     return ExitCode.success.code;
   }
 
@@ -68,32 +54,70 @@ class CreateCommand extends Command<int> {
 
   /// region Code generation
 
-  GeneratorArguments _readCommandArguments() {
+  GeneratorArguments _readGeneratorArguments() {
     final arguments = argResults!;
-    final interactive = arguments.interactiveConfigurationEnabled;
-    final reader =
-        interactive ? LoggerReader(_logger) : ArgResultsReader(arguments);
-    final provider = GeneratorArgumentsProvider(
-      arguments.outputDirectory,
-      _logger,
-      reader,
-    );
+    final outputDirectory = arguments.outputDirectory;
+    final reader = arguments.interactiveConfigurationEnabled
+        ? LoggerReader(_logger)
+        : ArgResultsReader(arguments);
+
+    final argumentsProvider =
+        GeneratorArgumentsProvider(outputDirectory, reader, _logger);
 
     try {
-      return provider.readGeneratorArguments();
+      return argumentsProvider.readGeneratorArguments();
     } catch (e) {
       if (e is! CommandUsageException) rethrow;
       throw UsageException(e.message, usage);
     }
   }
 
-  Future<void> _postGen(GeneratorArguments arguments) async {
+  Future<void> _generateViaMasonBundle(GeneratorArguments arguments) async {
+    final bundle = _bundleGenerator.generate(arguments);
+
+    _logger.info('');
+    final fileGenerationProgress = _logger.progress('Bootstrapping');
+    final generator = await _generator(bundle);
+    var generatedFiles = await generator.generate(
+      DirectoryGeneratorTarget(arguments.outputDirectory),
+      vars: {
+        'project_name': arguments.projectName,
+        'domain_name': arguments.organisationDomain,
+        'organization_name': arguments.organisationName,
+        'uses_firebase': arguments.usesFirebase,
+        'analytics': arguments.analyticsEnabled,
+        'push_notifications': arguments.pushNotificationsEnabled,
+        'enable_feature_counter': arguments.counterEnabled,
+        'enable_feature_deeplinks': arguments.deeplinksEnabled,
+        'enable_feature_widget_toolkit': arguments.widgetToolkitEnabled,
+        'enable_login': arguments.loginEnabled,
+        'enable_social_logins': arguments.socialLoginsEnabled,
+        'enable_change_language': arguments.changeLanguageEnabled,
+        'enable_dev_menu': arguments.devMenuEnabled,
+        'enable_feature_otp': arguments.otpEnabled,
+        'enable_patrol': arguments.patrolTestsEnabled,
+        'has_authentication': arguments.hasAuthentication,
+        'realtime_communication': arguments.realtimeCommunicationEnabled,
+      },
+    );
+
+    // Manually create gitignore.
+    GitIgnoreCreator.generate(arguments.outputDirectory.path);
+
+    final fileCount = generatedFiles.length + 1;
+
+    fileGenerationProgress.complete('Bootstrapping done');
+
+    await _writeOutputLog(fileCount, arguments);
+  }
+
+  Future<void> _postGen(Directory outputDirectory) async {
     var progress = _logger.progress('dart pub get');
 
     final dartGet = await Process.run(
       'dart',
       ['pub', 'get'],
-      workingDirectory: arguments.outputDirectory.path,
+      workingDirectory: outputDirectory.path,
     );
 
     _progressFinish(dartGet, progress);
@@ -109,7 +133,7 @@ class CreateCommand extends Command<int> {
         'build_runner',
         'build',
       ],
-      workingDirectory: arguments.outputDirectory.path,
+      workingDirectory: outputDirectory.path,
     );
 
     _progressFinish(buildRunner, progress);
@@ -121,7 +145,7 @@ class CreateCommand extends Command<int> {
     final format = await Process.run(
       'dart',
       ['format', '.'],
-      workingDirectory: arguments.outputDirectory.path,
+      workingDirectory: outputDirectory.path,
     );
 
     _progressFinish(format, progress);
@@ -133,57 +157,6 @@ class CreateCommand extends Command<int> {
     } else {
       progress.complete();
     }
-  }
-
-  Future<void> _generateViaMasonBundle(
-      GeneratorArguments arguments) async {
-    final bundles = _CreateCommandBundleProvider(arguments).generate();
-
-    for (final bundle in bundles) {
-      _bundle.files.addAll(bundle.files);
-    }
-
-    // Remove files when they are not needed by the specified features.
-    if (!arguments.enableAnalytics) {
-      _bundle.files.removeWhere((file) =>
-          file.path ==
-          'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart');
-    }
-
-    _logger.info('');
-    final fileGenerationProgress = _logger.progress('Bootstrapping');
-    final generator = await _generator(_bundle);
-    var generatedFiles = await generator.generate(
-      DirectoryGeneratorTarget(arguments.outputDirectory),
-      vars: {
-        'project_name': arguments.projectName,
-        'domain_name': arguments.organisationDomain,
-        'organization_name': arguments.organisationName,
-        'uses_firebase': arguments.usesFirebase,
-        'analytics': arguments.enableAnalytics,
-        'push_notifications': arguments.usesPushNotifications,
-        'enable_feature_counter': arguments.enableCounter,
-        'enable_feature_deeplinks': arguments.enableDeeplink,
-        'enable_feature_widget_toolkit': arguments.enableWidgetToolkit,
-        'enable_login': arguments.enableLogin,
-        'enable_social_logins': arguments.enableSocialLogins,
-        'enable_change_language': arguments.enableChangeLanguage,
-        'enable_dev_menu': arguments.enableDevMenu,
-        'enable_feature_otp': arguments.enableOtp,
-        'enable_patrol': arguments.enablePatrolTests,
-        'has_authentication': arguments.hasAuthentication,
-        'realtime_communication': arguments.realtimeCommunicationEnabled,
-      },
-    );
-
-    // Manually create gitignore.
-    GitIgnoreCreator.generate(arguments.outputDirectory.path);
-
-    final fileCount = generatedFiles.length + 1;
-
-    fileGenerationProgress.complete('Bootstrapping done');
-
-    await _writeOutputLog(fileCount, arguments);
   }
 
   /// endregion
@@ -216,21 +189,21 @@ class CreateCommand extends Command<int> {
         // ignore: lines_longer_than_80_chars
         '${lightCyan.wrap('${arguments.organisation}.${arguments.projectName}')}');
 
-    _usingLog('Firebase Analytics', arguments.enableAnalytics);
+    _usingLog('Firebase Analytics', arguments.analyticsEnabled);
     _usingLog('Firebase Push Notifications', true);
-    _usingLog('Feature Counter Showcase', arguments.enableCounter);
-    _usingLog('Feature Deep links Showcase', arguments.enableDeeplink);
+    _usingLog('Feature Counter Showcase', arguments.counterEnabled);
+    _usingLog('Feature Deep links Showcase', arguments.deeplinksEnabled);
     _usingLog(
       'Feature Widget Toolkit Showcase',
-      arguments.enableWidgetToolkit,
+      arguments.widgetToolkitEnabled,
     );
-    _usingLog('Feature Login', arguments.enableLogin);
+    _usingLog('Feature Login', arguments.loginEnabled);
     _usingLog('Social Logins [Apple, Google, Facebook]',
-        arguments.enableSocialLogins);
-    _usingLog('Enable Change Language', arguments.enableChangeLanguage);
-    _usingLog('Dev Menu', arguments.enableDevMenu);
-    _usingLog('OTP Feature', arguments.enableOtp);
-    _usingLog('Patrol integration tests', arguments.enablePatrolTests);
+        arguments.socialLoginsEnabled);
+    _usingLog('Enable Change Language', arguments.changeLanguageEnabled);
+    _usingLog('Dev Menu', arguments.devMenuEnabled);
+    _usingLog('OTP Feature', arguments.otpEnabled);
+    _usingLog('Patrol integration tests', arguments.patrolTestsEnabled);
     _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
   }
 

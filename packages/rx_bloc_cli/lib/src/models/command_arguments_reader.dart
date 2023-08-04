@@ -115,6 +115,6 @@ final class ArgResultsReader extends BaseCommandArgumentsReader {
   ) =>
       RealtimeCommunicationType.parse(_argResults.readString(
         argument.name,
-        defaultValue: argument.defaultValue.cast(),
+        defaultValue: argument.defaultValue.toString(),
       ));
 }

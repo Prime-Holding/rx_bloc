@@ -11,16 +11,16 @@ import 'command_arguments_reader.dart';
 /// The class responsible for transforming command arguments
 /// to arguments that contain all the necessary data for project generation.
 class GeneratorArgumentsProvider {
-  /// Constructor
+  /// Constructor with output directory, reader an logger parameters
   const GeneratorArgumentsProvider(
     this._outputDirectory,
-    this._logger,
     this._reader,
+    this._logger,
   );
 
   final Directory _outputDirectory;
-  final Logger _logger;
   final CommandArgumentsReader _reader;
+  final Logger _logger;
 
   /// Reads project generation arguments from provided reader source
   /// Performs necessary input validations
@@ -63,17 +63,10 @@ class GeneratorArgumentsProvider {
     final authenticationEnabled =
         loginEnabled || socialLoginsEnabled || otpEnabled;
 
-
     // Analytics, Push Notifications, Firebase
     final analyticsEnabled = _reader.read<bool>(CommandArguments.analytics);
     final pushNotificationsEnabled = true;
     final usesFirebase = true;
-
-    // Realtime communication
-    final realtimeCommunication = _reader.read<RealtimeCommunicationType>(
-        CommandArguments.realtimeCommunication);
-    final realtimeCommunicationEnabled =
-        realtimeCommunication != RealtimeCommunicationType.none;
 
     // Deep links
     final deepLinkEnabled = _reader.read<bool>(CommandArguments.deepLink);
@@ -95,26 +88,32 @@ class GeneratorArgumentsProvider {
     final widgetToolkitShowcaseEnabled =
         _reader.read<bool>(CommandArguments.widgetToolkit);
 
+    // Realtime communication
+    final realtimeCommunication = _reader.read<RealtimeCommunicationType>(
+        CommandArguments.realtimeCommunication);
+    final realtimeCommunicationEnabled =
+        realtimeCommunication != RealtimeCommunicationType.none;
+
     return GeneratorArguments(
       outputDirectory: _outputDirectory,
       projectName: projectName,
       organisation: organisation,
       organisationName: organisationName,
       organisationDomain: organisationDomain,
-      enableLogin: loginEnabled,
-      enableSocialLogins: socialLoginsEnabled,
-      enableOtp: otpEnabled,
+      loginEnabled: loginEnabled,
+      socialLoginsEnabled: socialLoginsEnabled,
+      otpEnabled: otpEnabled,
       hasAuthentication: authenticationEnabled,
-      enableAnalytics: analyticsEnabled,
-      enableDeeplink: deepLinkEnabled,
-      enableChangeLanguage: changeLanguageEnabled,
-      enableDevMenu: devMenuEnabled,
-      usesPushNotifications: pushNotificationsEnabled,
+      analyticsEnabled: analyticsEnabled,
+      deeplinksEnabled: deepLinkEnabled,
+      changeLanguageEnabled: changeLanguageEnabled,
+      devMenuEnabled: devMenuEnabled,
+      pushNotificationsEnabled: pushNotificationsEnabled,
       usesFirebase: usesFirebase,
       realtimeCommunicationEnabled: realtimeCommunicationEnabled,
-      enablePatrolTests: patrolTestsEnabled,
-      enableCounter: counterShowcaseEnabled,
-      enableWidgetToolkit: widgetToolkitShowcaseEnabled,
+      patrolTestsEnabled: patrolTestsEnabled,
+      counterEnabled: counterShowcaseEnabled,
+      widgetToolkitEnabled: widgetToolkitShowcaseEnabled,
     );
   }
 
