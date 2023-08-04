@@ -7,9 +7,6 @@ class PinBiometricsService {
 
   final PinBiometricsRepository _pinBiometricsRepository;
 
-  Future<void> temporaryDisableBiometrics(bool disable) =>
-      _pinBiometricsRepository.temporaryDisableBiometrics(disable);
-
   Future<bool> areBiometricsEnabled() =>
       _pinBiometricsRepository.areBiometricsEnabled();
 

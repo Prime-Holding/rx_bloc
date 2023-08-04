@@ -13,6 +13,7 @@ part 'update_and_verify_pin_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the PinCodeBloC.
 abstract class UpdateAndVerifyPinBlocEvents {
+  /// Sets whether the pin code is from user inactivity
   void setPinCodeType(bool isFromSessionTimeout);
 
   void deleteSavedData();
@@ -23,7 +24,7 @@ abstract class UpdateAndVerifyPinBlocEvents {
   void checkAreBiometricsEnabled();
 
   /// Disables biometrics while using a page
-  void temporaryDisableBiometrics(bool disable);
+  void setBiometricsEnabled(bool enabled);
 
   /// Changes the state to start or stop listening of user inactivity
   void setSessionState(SessionState state);
@@ -43,7 +44,7 @@ abstract class UpdateAndVerifyPinBlocStates {
   ConnectableStream<bool> get areBiometricsEnabled;
 
   /// Temporary disable biometrics on pin verification process
-  ConnectableStream<void> get biometricsDisabled;
+  ConnectableStream<void> get biometricsEnabled;
 }
 
 @RxBloc()
@@ -57,7 +58,7 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
     deletedData.connect().addTo(_compositeSubscription);
     deleteStoredPinData.connect().addTo(_compositeSubscription);
     sessionValue.connect().addTo(_compositeSubscription);
-    biometricsDisabled.connect().addTo(_compositeSubscription);
+    biometricsEnabled.connect().addTo(_compositeSubscription);
   }
 
   final CoordinatorBlocType coordinatorBloc;
@@ -67,10 +68,10 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
       StreamController<SessionState>();
 
   @override
-  ConnectableStream<void> _mapToBiometricsDisabledState() =>
-      _$temporaryDisableBiometricsEvent
-          .switchMap((disable) => pinBiometricsService
-              .temporaryDisableBiometrics(disable)
+  ConnectableStream<void> _mapToBiometricsEnabledState() =>
+      _$setBiometricsEnabledEvent
+          .switchMap((enable) => pinBiometricsService
+              .setBiometricsEnabled(enable)
               .asResultStream())
           .setResultStateHandler(this)
           .whereSuccess()

@@ -35,7 +35,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UpdateAndVerifyPinBlocType>().events
         ..setPinCodeType(widget.pinCodeArguments.isSessionTimeout)
-        ..temporaryDisableBiometrics(true);
+        ..setBiometricsEnabled(false);
     });
     super.initState();
   }

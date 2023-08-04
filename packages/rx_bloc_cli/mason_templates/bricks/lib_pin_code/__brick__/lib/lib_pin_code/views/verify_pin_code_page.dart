@@ -33,8 +33,7 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UpdateAndVerifyPinBlocType>().events
-        ..setPinCodeType(widget.pinCodeArguments.isSessionTimeout)
-        ..temporaryDisableBiometrics(false);
+        .setPinCodeType(widget.pinCodeArguments.isSessionTimeout);
     });
     super.initState();
   }
