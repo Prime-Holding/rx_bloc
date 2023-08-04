@@ -1,9 +1,9 @@
 import 'dart:io';
 
 /// Arguments used when generating the project. Derived from CLI input.
-class ProjectGenerationArguments {
+class GeneratorArguments {
   /// Project generation arguments constructor
-  ProjectGenerationArguments({
+  GeneratorArguments({
     required this.projectName,
     required this.organisation,
     required this.enableAnalytics,
@@ -64,6 +64,4 @@ class ProjectGenerationArguments {
   final bool usesPushNotifications;
   /// Real time communication
   final bool realtimeCommunicationEnabled;
-
-
 }

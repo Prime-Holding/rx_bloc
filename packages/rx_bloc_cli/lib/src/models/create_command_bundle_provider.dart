@@ -17,7 +17,7 @@ class _CreateCommandBundleProvider {
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
 
-  final ProjectGenerationArguments arguments;
+  final GeneratorArguments arguments;
 
   List<MasonBundle> generate() {
     var bundles = <MasonBundle>[

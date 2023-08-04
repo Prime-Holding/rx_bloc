@@ -2,10 +2,13 @@
 enum RealtimeCommunicationType {
   /// None
   none,
+
   /// SSE
   sse,
+
   /// Websocket
   websocket,
+
   /// GRPC
   grpc;
 

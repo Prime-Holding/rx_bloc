@@ -160,7 +160,7 @@ final _placeholder = Object();
 /// Used as fallback values for project generation
 extension NonInteractiveDefault on CommandArguments {
   /// Default value for CommandArgument.
-  /// Throws if CommandArgument is mandatory or types mismatch
+  /// Checks if CommandArgument is mandatory or types mismatch
   Object get defaultValue => _withCheck(switch (this) {
         CommandArguments.projectName => _placeholder,
         CommandArguments.organisation => 'com.example',

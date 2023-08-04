@@ -1,5 +1,6 @@
 import 'package:args/args.dart';
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 
 import '../extensions/arg_results_extensions.dart';
 import '../extensions/object_extensions.dart';
@@ -23,7 +24,8 @@ abstract class BaseCommandArgumentsReader implements CommandArgumentsReader {
     T Function(T)? validation,
   }) {
     if (!isSupported(argument)) {
-      throw UnsupportedError('${argument.name} can\'t be used interactively');
+      throw CommandUsageException(
+          '${argument.name} can\'t be used interactively');
     }
 
     switch (argument.type) {

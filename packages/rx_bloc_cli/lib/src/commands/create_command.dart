@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 
 import '../extensions/arg_parser_extensions.dart';
 import '../extensions/arg_results_extensions.dart';
 import '../models/command_arguments.dart';
 import '../models/command_arguments_reader.dart';
-import '../models/create_command_arguments_provider.dart';
-import '../models/project_generation_arguments.dart';
+import '../models/generator_arguments_provider.dart';
+import '../models/generator_arguments.dart';
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_login_bundle.dart';
@@ -67,30 +68,26 @@ class CreateCommand extends Command<int> {
 
   /// region Code generation
 
-  ProjectGenerationArguments _readCommandArguments() {
+  GeneratorArguments _readCommandArguments() {
     final arguments = argResults!;
     final interactive = arguments.interactiveConfigurationEnabled;
     final reader =
         interactive ? LoggerReader(_logger) : ArgResultsReader(arguments);
-    final provider = ProjectGenerationArgumentsProvider(
+    final provider = GeneratorArgumentsProvider(
       arguments.outputDirectory,
       _logger,
       reader,
     );
 
     try {
-      return provider.readProjectGenerationArguments();
+      return provider.readGeneratorArguments();
     } catch (e) {
-      if (e is! Exception) rethrow;
-
-      throw UsageException(
-        '', // TODO: ADD
-        usage,
-      );
+      if (e is! CommandUsageException) rethrow;
+      throw UsageException(e.message, usage);
     }
   }
 
-  Future<void> _postGen(ProjectGenerationArguments arguments) async {
+  Future<void> _postGen(GeneratorArguments arguments) async {
     var progress = _logger.progress('dart pub get');
 
     final dartGet = await Process.run(
@@ -139,7 +136,7 @@ class CreateCommand extends Command<int> {
   }
 
   Future<void> _generateViaMasonBundle(
-      ProjectGenerationArguments arguments) async {
+      GeneratorArguments arguments) async {
     final bundles = _CreateCommandBundleProvider(arguments).generate();
 
     for (final bundle in bundles) {
@@ -195,7 +192,7 @@ class CreateCommand extends Command<int> {
 
   /// Writes an output log with the status of the file generation
   Future<void> _writeOutputLog(
-      int fileCount, ProjectGenerationArguments arguments) async {
+      int fileCount, GeneratorArguments arguments) async {
     final filesGeneratedStr =
         fileCount == 0 ? 'No files generated.' : 'Generated $fileCount file(s)';
 
@@ -212,7 +209,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Message shown in the output log upon successful generation
-  void _successMessageLog(int fileCount, ProjectGenerationArguments arguments) {
+  void _successMessageLog(int fileCount, GeneratorArguments arguments) {
     if (fileCount < 1) return;
 
     _delayedLog('Generated project with package name: '

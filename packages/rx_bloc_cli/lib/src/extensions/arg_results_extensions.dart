@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:rx_bloc_cli/src/extensions/object_extensions.dart';
+import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 
 import '../models/command_arguments.dart';
 
@@ -23,10 +24,11 @@ extension ArgumentsValueReader on ArgResults {
     final remainingArguments = rest;
 
     if (remainingArguments.isEmpty) {
-      throw Exception('No option specified for the output directory.');
+      throw CommandUsageException(
+          'No option specified for the output directory.');
     }
     if (remainingArguments.length > 1) {
-      throw Exception('Multiple output directories specified.');
+      throw CommandUsageException('Multiple output directories specified.');
     }
 
     return Directory(remainingArguments.first);
