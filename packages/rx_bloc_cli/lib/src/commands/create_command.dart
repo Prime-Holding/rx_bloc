@@ -1,9 +1,14 @@
 import 'dart:io';
 
-import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 
+import '../extensions/arg_parser_extensions.dart';
+import '../extensions/arg_results_extensions.dart';
+import '../models/command_arguments.dart';
+import '../models/command_arguments_reader.dart';
+import '../models/create_command_arguments_provider.dart';
+import '../models/project_generation_arguments.dart';
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_login_bundle.dart';
@@ -20,23 +25,7 @@ import '../templates/patrol_integration_tests_bundle.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
-part '../models/create_command_arguments.dart';
-
-part '../extensions/arg_results_extensions.dart';
-
-part '../extensions/object_extensions.dart';
-
-part '../models/create_command_arguments_provider.dart';
-
 part '../models/create_command_bundle_provider.dart';
-
-part '../models/project_generation_arguments.dart';
-
-part '../models/realtime_communication_type.dart';
-
-part '../models/command_arguments_reader.dart';
-
-part '../extensions/arg_parser_extensions.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
 class CreateCommand extends Command<int> {
@@ -51,7 +40,7 @@ class CreateCommand extends Command<int> {
   })  : _logger = logger ?? Logger(),
         _bundle = bundle ?? rxBlocBaseBundle,
         _generator = generator ?? MasonGenerator.fromBundle {
-    argParser.addArguments(_CommandArgument.values);
+    argParser.addCommandArguments(CommandArguments.values);
   }
 
   final Logger _logger;
@@ -68,9 +57,7 @@ class CreateCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    final arguments =
-        _CreateCommandArgumentsValueProvider(argResults!, _logger)
-            .generate();
+    final arguments = _readCommandArguments();
     await _generateViaMasonBundle(arguments);
     await _postGen(arguments);
     return ExitCode.success.code;
@@ -80,7 +67,30 @@ class CreateCommand extends Command<int> {
 
   /// region Code generation
 
-  Future<void> _postGen(_ProjectGenerationArguments arguments) async {
+  ProjectGenerationArguments _readCommandArguments() {
+    final arguments = argResults!;
+    final interactive = arguments.interactiveConfigurationEnabled;
+    final reader =
+        interactive ? LoggerReader(_logger) : ArgResultsReader(arguments);
+    final provider = ProjectGenerationArgumentsProvider(
+      arguments.outputDirectory,
+      _logger,
+      reader,
+    );
+
+    try {
+      return provider.readProjectGenerationArguments();
+    } catch (e) {
+      if (e is! Exception) rethrow;
+
+      throw UsageException(
+        '', // TODO: ADD
+        usage,
+      );
+    }
+  }
+
+  Future<void> _postGen(ProjectGenerationArguments arguments) async {
     var progress = _logger.progress('dart pub get');
 
     final dartGet = await Process.run(
@@ -129,7 +139,7 @@ class CreateCommand extends Command<int> {
   }
 
   Future<void> _generateViaMasonBundle(
-      _ProjectGenerationArguments arguments) async {
+      ProjectGenerationArguments arguments) async {
     final bundles = _CreateCommandBundleProvider(arguments).generate();
 
     for (final bundle in bundles) {
@@ -165,8 +175,7 @@ class CreateCommand extends Command<int> {
         'enable_feature_otp': arguments.enableOtp,
         'enable_patrol': arguments.enablePatrolTests,
         'has_authentication': arguments.hasAuthentication,
-        'realtime_communication':
-            arguments.realtimeCommunication != _RealtimeCommunicationType.none,
+        'realtime_communication': arguments.realtimeCommunicationEnabled,
       },
     );
 
@@ -186,7 +195,7 @@ class CreateCommand extends Command<int> {
 
   /// Writes an output log with the status of the file generation
   Future<void> _writeOutputLog(
-      int fileCount, _ProjectGenerationArguments arguments) async {
+      int fileCount, ProjectGenerationArguments arguments) async {
     final filesGeneratedStr =
         fileCount == 0 ? 'No files generated.' : 'Generated $fileCount file(s)';
 
@@ -203,8 +212,7 @@ class CreateCommand extends Command<int> {
   }
 
   /// Message shown in the output log upon successful generation
-  void _successMessageLog(
-      int fileCount, _ProjectGenerationArguments arguments) {
+  void _successMessageLog(int fileCount, ProjectGenerationArguments arguments) {
     if (fileCount < 1) return;
 
     _delayedLog('Generated project with package name: '
@@ -226,8 +234,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Dev Menu', arguments.enableDevMenu);
     _usingLog('OTP Feature', arguments.enableOtp);
     _usingLog('Patrol integration tests', arguments.enablePatrolTests);
-    _usingLog('Realtime communication',
-        arguments.realtimeCommunication != _RealtimeCommunicationType.none);
+    _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
   }
 
   /// Shows a delayed log with a success symbol in front of it

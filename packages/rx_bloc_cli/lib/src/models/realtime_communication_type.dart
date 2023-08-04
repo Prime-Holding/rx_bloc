@@ -1,23 +1,23 @@
-part of '../commands/create_command.dart';
-
 /// Available options for realtime communication
-enum _RealtimeCommunicationType {
+enum RealtimeCommunicationType {
+  /// None
   none,
+  /// SSE
   sse,
+  /// Websocket
   websocket,
+  /// GRPC
   grpc;
 
   /// Options that are currently supported by RxBlocCLI
-  static List<_RealtimeCommunicationType> supported = [
-    _RealtimeCommunicationType.none,
-    _RealtimeCommunicationType.sse,
+  static List<RealtimeCommunicationType> supported = [
+    RealtimeCommunicationType.none,
+    RealtimeCommunicationType.sse,
   ];
 
-  static String get options =>
-      _RealtimeCommunicationType.supported.map((e) => e.toString()).join(' | ');
-
-  static _RealtimeCommunicationType parse(String value) =>
-      _RealtimeCommunicationType.values.firstWhere(
+  /// Parse enum from String
+  static RealtimeCommunicationType parse(String value) =>
+      RealtimeCommunicationType.values.firstWhere(
         (element) => element.name == value,
       );
 

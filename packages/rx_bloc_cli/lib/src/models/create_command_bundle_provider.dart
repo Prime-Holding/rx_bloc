@@ -17,7 +17,7 @@ class _CreateCommandBundleProvider {
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
 
-  final _ProjectGenerationArguments arguments;
+  final ProjectGenerationArguments arguments;
 
   List<MasonBundle> generate() {
     var bundles = <MasonBundle>[
@@ -59,8 +59,7 @@ class _CreateCommandBundleProvider {
       bundles.add(_patrolIntegrationTestsBundle);
     }
 
-    if (arguments.realtimeCommunication !=
-        _RealtimeCommunicationType.none) {
+    if (arguments.realtimeCommunicationEnabled) {
       bundles.add(_libRealtimeCommunicationBundle);
     }
 

@@ -1,14 +1,17 @@
-part of '../commands/create_command.dart';
+import 'package:args/args.dart';
+
+import '../models/command_arguments.dart';
 
 /// Adds the provided _CommandArguments as command options
-extension _ArgumentHandler on ArgParser {
-  void addArguments(List<_CommandArgument> arguments) {
-    for (final arg in arguments) {
+extension ArgumentHandler on ArgParser {
+  /// Adds a list of CommandArguments as ArgParser options
+  void addCommandArguments(List<CommandArguments> arguments) {
+    for (final argument in arguments) {
       addOption(
-        arg.name,
-        help: arg.help,
-        allowed: arg.type.allowed,
-        mandatory: arg.mandatory,
+        argument.name,
+        help: argument.help,
+        allowed: argument.type.allowed,
+        mandatory: argument.mandatory,
       );
     }
   }
