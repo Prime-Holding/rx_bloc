@@ -8,9 +8,10 @@ import '../extensions/arg_parser_extensions.dart';
 import '../extensions/arg_results_extensions.dart';
 import '../models/bundle_generator.dart';
 import '../models/command_arguments.dart';
-import '../models/command_arguments_reader.dart';
 import '../models/generator_arguments.dart';
 import '../models/generator_arguments_provider.dart';
+import '../models/readers/interactive_arguments_reader.dart';
+import '../models/readers/non_interactive_arguments_reader.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/git_ignore_creator.dart';
 
@@ -58,8 +59,8 @@ class CreateCommand extends Command<int> {
     final arguments = argResults!;
     final outputDirectory = arguments.outputDirectory;
     final reader = arguments.interactiveConfigurationEnabled
-        ? LoggerReader(_logger)
-        : ArgResultsReader(arguments);
+        ? InteractiveArgumentsReader(_logger)
+        : NonInteractiveArgumentsReader(arguments);
 
     final argumentsProvider =
         GeneratorArgumentsProvider(outputDirectory, reader, _logger);

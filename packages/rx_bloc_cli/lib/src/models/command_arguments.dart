@@ -181,7 +181,3 @@ enum ArgumentType {
           RealtimeCommunicationType.values.map((e) => e.toString()),
       };
 }
-
-/// Utility method for converting RealtimeCommunicationType options to prompt
-String _rtcSupportedOptions() =>
-    RealtimeCommunicationType.supported.map((e) => e.toString()).join(' | ');
