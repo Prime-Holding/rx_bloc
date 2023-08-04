@@ -63,18 +63,19 @@ final class LoggerReader extends BaseCommandArgumentsReader {
   final Logger _logger;
 
   @override
-  bool isSupported(CommandArguments argument) => argument.prompt != null;
+  bool isSupported(CommandArguments argument) =>
+      argument.supportsInteractiveInput;
 
   @override
   String readString(CommandArguments argument) => _logger.prompt(
         argument.prompt,
-        defaultValue: argument.defaultValue,
+        defaultValue: argument.defaultsTo,
       );
 
   @override
   bool readBool(CommandArguments argument) => _logger.confirm(
         argument.prompt,
-        defaultValue: argument.defaultValue.cast(),
+        defaultValue: argument.defaultsTo.cast(),
       );
 
   @override
@@ -83,7 +84,7 @@ final class LoggerReader extends BaseCommandArgumentsReader {
   ) =>
       RealtimeCommunicationType.parse(_logger.prompt(
         argument.prompt,
-        defaultValue: argument.defaultValue,
+        defaultValue: argument.defaultsTo,
       ));
 }
 
@@ -100,13 +101,13 @@ final class ArgResultsReader extends BaseCommandArgumentsReader {
   @override
   String readString(CommandArguments argument) => _argResults.readString(
         argument.name,
-        defaultValue: argument.defaultValue.cast(),
+        defaultValue: argument.defaultsTo.cast(),
       );
 
   @override
   bool readBool(CommandArguments argument) => _argResults.readBool(
         argument.name,
-        defaultValue: argument.defaultValue.cast(),
+        defaultValue: argument.defaultsTo.cast(),
       );
 
   @override
@@ -115,6 +116,6 @@ final class ArgResultsReader extends BaseCommandArgumentsReader {
   ) =>
       RealtimeCommunicationType.parse(_argResults.readString(
         argument.name,
-        defaultValue: argument.defaultValue.toString(),
+        defaultValue: argument.defaultsTo.toString(),
       ));
 }

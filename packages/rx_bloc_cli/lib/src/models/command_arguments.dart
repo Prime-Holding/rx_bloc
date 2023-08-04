@@ -6,15 +6,20 @@ enum CommandArguments {
   projectName(
     name: 'project-name',
     type: ArgumentType.string,
+    defaultsTo: '',
+    prompt: 'Project name:',
     help: 'The project name for this new Flutter project. This must be a '
         'valid dart package name. If no project name is supplied, '
         'the name of the directory is used as the project name.',
     mandatory: true,
   ),
+
   /// Organisation name
   organisation(
     name: 'organisation',
     type: ArgumentType.string,
+    defaultsTo: 'com.example',
+    prompt: 'Organization name:',
     help: 'The organisation name.',
   ),
 
@@ -22,6 +27,8 @@ enum CommandArguments {
   analytics(
     name: 'enable-analytics',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable analytics:',
     help: 'Enables Firebase analytics for the project',
   ),
 
@@ -29,6 +36,8 @@ enum CommandArguments {
   changeLanguage(
     name: 'enable-change-language',
     type: ArgumentType.boolean,
+    defaultsTo: true,
+    prompt: 'Enable change language:',
     help: 'Enables change language',
   ),
 
@@ -36,6 +45,8 @@ enum CommandArguments {
   counter(
     name: 'enable-feature-counter',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable counter showcase:',
     help: 'The counter showcase feature',
   ),
 
@@ -43,6 +54,8 @@ enum CommandArguments {
   deepLink(
     name: 'enable-feature-deeplinks',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable deeplink:',
     help: 'The deeplink showcase feature',
   ),
 
@@ -50,6 +63,8 @@ enum CommandArguments {
   devMenu(
     name: 'enable-dev-menu',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable dev menu:',
     help: 'Enables Dev Menu for the project',
   ),
 
@@ -57,6 +72,8 @@ enum CommandArguments {
   login(
     name: 'enable-login',
     type: ArgumentType.boolean,
+    defaultsTo: true,
+    prompt: 'Enable login:',
     help: 'Enables login feature for the project',
   ),
 
@@ -64,6 +81,8 @@ enum CommandArguments {
   otp(
     name: 'enable-otp',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable OTP authentication:',
     help: 'Enables OTP feature for the project',
   ),
 
@@ -71,6 +90,8 @@ enum CommandArguments {
   patrol(
     name: 'enable-patrol',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable Patrol integration tests:',
     help: 'Enables Patrol integration tests for the project',
   ),
 
@@ -78,6 +99,8 @@ enum CommandArguments {
   realtimeCommunication(
     name: 'realtime-communication',
     type: ArgumentType.realTimeCommunicationEnum,
+    defaultsTo: RealtimeCommunicationType.none,
+    prompt: 'Select realtime communication type:',
     help: 'Enables realtime communication facilities like SSE, WebSocket '
         'or gRPC',
   ),
@@ -86,6 +109,8 @@ enum CommandArguments {
   socialLogins(
     name: 'enable-social-logins',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable social logins:',
     help: 'Enables social login with Apple, Facebook and Google for the '
         'project',
   ),
@@ -94,6 +119,8 @@ enum CommandArguments {
   widgetToolkit(
     name: 'enable-feature-widget-toolkit',
     type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable widget toolkit showcase:',
     help: 'The widget toolkit showcase feature',
   ),
 
@@ -101,12 +128,15 @@ enum CommandArguments {
   interactive(
     name: 'interactive',
     type: ArgumentType.boolean,
+    defaultsTo: true,
     help: 'Allows to select the included features interactively',
   );
 
   const CommandArguments({
     required this.name,
     required this.type,
+    required this.defaultsTo,
+    this.prompt,
     this.help,
     this.mandatory = false,
   });
@@ -122,6 +152,14 @@ enum CommandArguments {
 
   /// The command argument marked as mandatory or optional
   final bool mandatory;
+
+  /// Default value for the argument
+  final Object defaultsTo;
+
+  /// Interactive prompt
+  final String? prompt;
+
+  bool get supportsInteractiveInput => prompt != null;
 }
 
 /// Types supported by CommandArguments. Used to enforce input restrictions.
@@ -141,69 +179,6 @@ enum ArgumentType {
         ArgumentType.boolean => [true, false].map((e) => e.toString()),
         ArgumentType.realTimeCommunicationEnum =>
           RealtimeCommunicationType.values.map((e) => e.toString()),
-      };
-
-  /// Checks if the provided Object value is of the expected type
-  bool matchesTypeOf(Object value) => switch (this) {
-        ArgumentType.string => value is String,
-        ArgumentType.boolean => value is bool,
-        ArgumentType.realTimeCommunicationEnum =>
-          value is RealtimeCommunicationType,
-      };
-}
-
-/// Default values for each _CommandArgument
-/// Used as fallback values for project generation
-extension NonInteractiveDefault on CommandArguments {
-  /// Default value for CommandArgument.
-  /// Checks if CommandArgument is mandatory or types mismatch
-  Object get defaultValue => _withCheck(switch (this) {
-        CommandArguments.projectName => '',
-        CommandArguments.organisation => 'com.example',
-        CommandArguments.analytics => false,
-        CommandArguments.changeLanguage => true,
-        CommandArguments.counter => false,
-        CommandArguments.deepLink => false,
-        CommandArguments.devMenu => false,
-        CommandArguments.login => true,
-        CommandArguments.otp => false,
-        CommandArguments.patrol => false,
-        CommandArguments.realtimeCommunication =>
-          RealtimeCommunicationType.none,
-        CommandArguments.socialLogins => false,
-        CommandArguments.widgetToolkit => false,
-        CommandArguments.interactive => true,
-      });
-
-  /// Verifies:
-  /// - no default value is provided for mandatory arguments
-  /// - the provided value type matches the expected type
-  Object _withCheck(Object value) {
-    assert(!mandatory, 'You should not require a default value for $name');
-    assert(type.matchesTypeOf(value), 'Type mismatch for $value and $type');
-    return value;
-  }
-}
-
-/// Interactive prompts for user input
-extension PromptTextProvider on CommandArguments {
-  /// Text displayed when selecting features interactively
-  String? get prompt => switch (this) {
-        CommandArguments.projectName => 'Project name:',
-        CommandArguments.organisation => 'Organization name:',
-        CommandArguments.analytics => 'Enable analytics:',
-        CommandArguments.changeLanguage => 'Enable change language:',
-        CommandArguments.counter => 'Enable counter showcase:',
-        CommandArguments.deepLink => 'Enable deeplink:',
-        CommandArguments.devMenu => 'Enable dev menu:',
-        CommandArguments.login => 'Enable login:',
-        CommandArguments.otp => 'Enable OTP authentication:',
-        CommandArguments.patrol => 'Enable Patrol integration tests:',
-        CommandArguments.realtimeCommunication =>
-          'Select realtime communication type [ ${_rtcSupportedOptions()} ]:',
-        CommandArguments.socialLogins => 'Enable social logins:',
-        CommandArguments.widgetToolkit => 'Enable widget toolkit showcase:',
-        CommandArguments.interactive => null,
       };
 }
 

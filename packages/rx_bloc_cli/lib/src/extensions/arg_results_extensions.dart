@@ -14,7 +14,7 @@ extension ArgumentsValueReader on ArgResults {
     assert(CommandArguments.interactive.type == ArgumentType.boolean);
     return readBool(
       CommandArguments.interactive.name,
-      defaultValue: CommandArguments.interactive.defaultValue.cast(),
+      defaultValue: CommandArguments.interactive.defaultsTo.cast(),
     );
   }
 
