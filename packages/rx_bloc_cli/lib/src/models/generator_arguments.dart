@@ -1,67 +1,112 @@
 import 'dart:io';
 
+import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
+import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
+import 'package:rx_bloc_cli/src/models/configurations/project_configuration.dart';
+
 /// Arguments used when generating the project. Derived from CLI input.
-class GeneratorArguments {
+class GeneratorArguments
+    implements ProjectConfiguration, AuthConfiguration, FeatureConfiguration {
   /// Project generation arguments constructor
   GeneratorArguments({
-    required this.projectName,
-    required this.organisation,
-    required this.analyticsEnabled,
     required this.outputDirectory,
-    required this.counterEnabled,
-    required this.deeplinksEnabled,
-    required this.widgetToolkitEnabled,
-    required this.loginEnabled,
-    required this.socialLoginsEnabled,
-    required this.changeLanguageEnabled,
-    required this.devMenuEnabled,
-    required this.otpEnabled,
-    required this.patrolTestsEnabled,
-    required this.hasAuthentication,
-    required this.usesFirebase,
-    required this.organisationName,
-    required this.organisationDomain,
-    required this.pushNotificationsEnabled,
-    required this.realtimeCommunicationEnabled,
-  });
+    required ProjectConfiguration projectConfiguration,
+    required AuthConfiguration authConfiguration,
+    required FeatureConfiguration featureConfiguration,
+  })  : _projectConfiguration = projectConfiguration,
+        _authConfiguration = authConfiguration,
+        _featureConfiguration = featureConfiguration;
 
-  /// Project name
-  final String projectName;
-  /// Organisation
-  final String organisation;
+  final ProjectConfiguration _projectConfiguration;
+  final AuthConfiguration _authConfiguration;
+  final FeatureConfiguration _featureConfiguration;
+
   /// Output directory
   final Directory outputDirectory;
+
+  /// region Project Configuration
+
+  /// Project name
+  @override
+  String get projectName => _projectConfiguration.projectName;
+
+  /// Organisation
+  @override
+  String get organisation => _projectConfiguration.organisation;
+
   /// Organisation name
-  final String organisationName;
+  @override
+  String get organisationName => _projectConfiguration.organisationName;
+
   /// Organisation domain
-  final String organisationDomain;
+  @override
+  String get organisationDomain => _projectConfiguration.organisationDomain;
+
+  /// endregion
+
+  /// region Auth Configuration
+
+  /// Login
+  @override
+  bool get loginEnabled => _authConfiguration.loginEnabled;
+
+  /// OTP
+  @override
+  bool get otpEnabled => _authConfiguration.otpEnabled;
+
+  /// Social logins
+  @override
+  bool get socialLoginsEnabled => _authConfiguration.socialLoginsEnabled;
+
+  /// Authentication
+  @override
+  bool get authenticationEnabled => _authConfiguration.authenticationEnabled;
+
+  /// endregion Auth Configuration
+
+  /// region Feature Configuration
 
   /// Analytics
-  final bool analyticsEnabled;
+  @override
+  bool get analyticsEnabled => _featureConfiguration.analyticsEnabled;
+
   /// Change language
-  final bool changeLanguageEnabled;
+  @override
+  bool get changeLanguageEnabled => _featureConfiguration.changeLanguageEnabled;
+
   /// Counter showcase
-  final bool counterEnabled;
+  @override
+  bool get counterEnabled => _featureConfiguration.counterEnabled;
+
   /// Deep links
-  final bool deeplinksEnabled;
+  @override
+  bool get deepLinkEnabled => _featureConfiguration.deepLinkEnabled;
+
   /// Dev menu
-  final bool devMenuEnabled;
-  /// Login
-  final bool loginEnabled;
-  /// OTP
-  final bool otpEnabled;
+  @override
+  bool get devMenuEnabled => _featureConfiguration.devMenuEnabled;
+
   /// Patrol tests
-  final bool patrolTestsEnabled;
-  /// Social logins
-  final bool socialLoginsEnabled;
+  @override
+  bool get patrolTestsEnabled => _featureConfiguration.patrolTestsEnabled;
+
   /// Widget toolkit showcase
-  final bool widgetToolkitEnabled;
-  /// Authentication
-  final bool hasAuthentication;
+  @override
+  bool get widgetToolkitEnabled => _featureConfiguration.widgetToolkitEnabled;
+
   /// Firebase
-  final bool usesFirebase;
+  @override
+  bool get usesFirebase => _featureConfiguration.usesFirebase;
+
   /// Push notifications
-  final bool pushNotificationsEnabled;
+  @override
+  bool get pushNotificationsEnabled =>
+      _featureConfiguration.pushNotificationsEnabled;
+
   /// Real time communication
-  final bool realtimeCommunicationEnabled;
+  @override
+  bool get realtimeCommunicationEnabled =>
+      _featureConfiguration.realtimeCommunicationEnabled;
+
+  /// endregion
 }

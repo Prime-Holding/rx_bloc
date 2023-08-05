@@ -53,7 +53,7 @@ class BundleGenerator {
     }
 
     // Add deep link brick to _bundle when needed
-    if (arguments.deeplinksEnabled) {
+    if (arguments.deepLinkEnabled) {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
@@ -94,7 +94,7 @@ class BundleGenerator {
     //Add lib_permissions to _bundle
     _bundle.files.addAll(_permissionsBundle.files);
     //Add lib_auth to _bundle when needed
-    if (arguments.hasAuthentication) {
+    if (arguments.authenticationEnabled) {
       _bundle.files.addAll(_libAuthBundle.files);
     }
 

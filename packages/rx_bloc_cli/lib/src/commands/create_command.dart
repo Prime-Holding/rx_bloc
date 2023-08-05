@@ -87,7 +87,7 @@ class CreateCommand extends Command<int> {
         'analytics': arguments.analyticsEnabled,
         'push_notifications': arguments.pushNotificationsEnabled,
         'enable_feature_counter': arguments.counterEnabled,
-        'enable_feature_deeplinks': arguments.deeplinksEnabled,
+        'enable_feature_deeplinks': arguments.deepLinkEnabled,
         'enable_feature_widget_toolkit': arguments.widgetToolkitEnabled,
         'enable_login': arguments.loginEnabled,
         'enable_social_logins': arguments.socialLoginsEnabled,
@@ -95,7 +95,7 @@ class CreateCommand extends Command<int> {
         'enable_dev_menu': arguments.devMenuEnabled,
         'enable_feature_otp': arguments.otpEnabled,
         'enable_patrol': arguments.patrolTestsEnabled,
-        'has_authentication': arguments.hasAuthentication,
+        'has_authentication': arguments.authenticationEnabled,
         'realtime_communication': arguments.realtimeCommunicationEnabled,
       },
     );
@@ -191,7 +191,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Firebase Analytics', arguments.analyticsEnabled);
     _usingLog('Firebase Push Notifications', true);
     _usingLog('Feature Counter Showcase', arguments.counterEnabled);
-    _usingLog('Feature Deep links Showcase', arguments.deeplinksEnabled);
+    _usingLog('Feature Deep links Showcase', arguments.deepLinkEnabled);
     _usingLog(
       'Feature Widget Toolkit Showcase',
       arguments.widgetToolkitEnabled,

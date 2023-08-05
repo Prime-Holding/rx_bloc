@@ -6,7 +6,7 @@ class _AuthConfigurationProvider {
   final CommandArgumentsReader _reader;
   final Logger _logger;
 
-  _AuthConfiguration read() {
+  AuthConfiguration read() {
     // Login
     var loginEnabled = _reader.read<bool>(CommandArguments.login);
 
@@ -23,25 +23,10 @@ class _AuthConfigurationProvider {
       loginEnabled = true;
     }
 
-    return _AuthConfiguration(
+    return AuthConfiguration(
       loginEnabled: loginEnabled,
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
     );
   }
-}
-
-class _AuthConfiguration {
-  _AuthConfiguration({
-    required this.loginEnabled,
-    required this.socialLoginsEnabled,
-    required this.otpEnabled,
-  });
-
-  final bool loginEnabled;
-  final bool socialLoginsEnabled;
-  final bool otpEnabled;
-
-  bool get authenticationEnabled =>
-      loginEnabled || socialLoginsEnabled || otpEnabled;
 }
