@@ -55,17 +55,17 @@ class CreateCommand extends Command<int> {
   /// region Code generation
 
   GeneratorArguments _readGeneratorArguments() {
-    final arguments = argResults!;
-    final outputDirectory = arguments.outputDirectory;
-    final reader = arguments.interactiveConfigurationEnabled
+    final parsedArgumentResults = argResults!;
+    final outputDirectory = parsedArgumentResults.outputDirectory;
+    final reader = parsedArgumentResults.interactiveConfigurationEnabled
         ? InteractiveArgumentsReader(_logger)
-        : NonInteractiveArgumentsReader(arguments);
+        : NonInteractiveArgumentsReader(parsedArgumentResults);
 
-    final argumentsProvider =
+    final generatorArgumentsProvider =
         GeneratorArgumentsProvider(outputDirectory, reader, _logger);
 
     try {
-      return argumentsProvider.readGeneratorArguments();
+      return generatorArgumentsProvider.readGeneratorArguments();
     } catch (e) {
       throw UsageException(e.toString(), usage);
     }

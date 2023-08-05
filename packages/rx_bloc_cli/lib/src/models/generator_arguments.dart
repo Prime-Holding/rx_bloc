@@ -62,7 +62,7 @@ class GeneratorArguments
   @override
   bool get authenticationEnabled => _authConfiguration.authenticationEnabled;
 
-  /// endregion Auth Configuration
+  /// endregion
 
   /// region Feature Configuration
 

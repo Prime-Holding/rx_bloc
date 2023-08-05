@@ -2,9 +2,9 @@ import 'package:rx_bloc_cli/src/extensions/string_extensions.dart';
 
 import '../errors/command_usage_exception.dart';
 
-/// Contains configuration data for the project
+/// Project Configuration
 class ProjectConfiguration {
-  /// Constructor with projectName and organisation parameters
+  /// ProjectConfiguration constructor
   ProjectConfiguration({
     required this.projectName,
     required this.organisation,

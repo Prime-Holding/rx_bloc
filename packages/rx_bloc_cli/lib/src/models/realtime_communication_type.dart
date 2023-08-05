@@ -19,10 +19,14 @@ enum RealtimeCommunicationType {
   ];
 
   /// Parse enum from String
-  static RealtimeCommunicationType parse(String value) =>
-      RealtimeCommunicationType.values.firstWhere(
-        (element) => element.name == value,
-      );
+  static RealtimeCommunicationType parse(String value) {
+    try {
+      return RealtimeCommunicationType.supportedOptions
+          .firstWhere((element) => element.name == value);
+    } catch (_) {
+      throw UnsupportedError('$value is not valid realtime communication type');
+    }
+  }
 
   @override
   String toString() => name;
