@@ -1,6 +1,5 @@
 import 'package:mason/mason.dart';
 
-import '../../extensions/object_extensions.dart';
 import '../command_arguments.dart';
 import '../realtime_communication_type.dart';
 import 'command_arguments_reader.dart';

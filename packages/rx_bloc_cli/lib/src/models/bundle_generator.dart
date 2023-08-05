@@ -36,9 +36,9 @@ class BundleGenerator {
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
 
-  /// Generates a list of bundles based on the specified arguments
+  /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
-    // Remove files when they are not needed by the specified features.
+    // Remove files when they are not needed by the specified features
     if (!arguments.analyticsEnabled) {
       _bundle.files.removeWhere((file) => file.path == _analyticsFilePath);
     }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:rx_bloc_cli/src/extensions/string_extensions.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 
 import '../models/command_arguments.dart';
@@ -34,8 +35,5 @@ extension ArgumentsValueReader on ArgResults {
       this[name] is String ? this[name] as String : null;
 
   /// Reads a boolean from the parsed values
-  bool? readBool(String name) {
-    final option = readString(name);
-    return (option != null) ? option.toLowerCase() == true.toString() : null;
-  }
+  bool? readBool(String name) => readString(name)?.toBool();
 }

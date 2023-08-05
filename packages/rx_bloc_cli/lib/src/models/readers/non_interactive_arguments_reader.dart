@@ -1,7 +1,6 @@
 import 'package:args/args.dart';
 
 import '../../extensions/arg_results_extensions.dart';
-import '../../extensions/object_extensions.dart';
 import '../command_arguments.dart';
 import '../realtime_communication_type.dart';
 import 'command_arguments_reader.dart';
