@@ -6,12 +6,11 @@ enum CommandArguments {
   projectName(
     name: 'project-name',
     type: ArgumentType.string,
-    defaultsTo: '',
+    defaultsTo: null,
     prompt: 'Project name:',
     help: 'The project name for this new Flutter project. This must be a '
         'valid dart package name. If no project name is supplied, '
         'the name of the directory is used as the project name.',
-    mandatory: true,
   ),
 
   /// Organisation name
@@ -138,7 +137,6 @@ enum CommandArguments {
     required this.defaultsTo,
     this.prompt,
     this.help,
-    this.mandatory = false,
   });
 
   /// The command argument name
@@ -150,16 +148,30 @@ enum CommandArguments {
   /// The command argument help information
   final String? help;
 
-  /// The command argument marked as mandatory or optional
-  final bool mandatory;
-
   /// Default value for the argument
-  final Object defaultsTo;
+  final Object? defaultsTo;
 
   /// Interactive prompt
   final String? prompt;
 
+  /// Indicates whether the command is supposed to be read interactively
   bool get supportsInteractiveInput => prompt != null;
+
+  /// Indicates whether the argument is mandatory or can be defaulted
+  bool get mandatory => defaultsTo == null;
+
+  /// Returns the default value for the argument cast to a specific type
+  /// Throws if no default value is present or type is mismatched
+  T defaultValue<T extends Object>() {
+    final value = defaultsTo;
+    if (value == null) {
+      throw UnsupportedError('$name is mandatory.');
+    }
+    if (value is! T) {
+      throw TypeError();
+    }
+    return value;
+  }
 }
 
 /// Types supported by CommandArguments. Used to enforce input restrictions.

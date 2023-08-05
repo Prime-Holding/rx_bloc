@@ -13,7 +13,7 @@ enum RealtimeCommunicationType {
   grpc;
 
   /// Options that are currently supported by RxBlocCLI
-  static List<RealtimeCommunicationType> supported = [
+  static List<RealtimeCommunicationType> supportedOptions = [
     RealtimeCommunicationType.none,
     RealtimeCommunicationType.sse,
   ];

@@ -23,10 +23,9 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
       );
 
   @override
-  bool readBool(CommandArguments argument) => _logger.confirm(
-        argument.prompt,
-        defaultValue: argument.defaultsTo.cast(),
-      );
+  bool readBool(CommandArguments argument) => argument.mandatory
+      ? _logger.confirm(argument.prompt)
+      : _logger.confirm(argument.prompt, defaultValue: argument.defaultValue());
 
   @override
   RealtimeCommunicationType readRealtimeCommunicationEnum(
@@ -39,5 +38,6 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
 }
 
 /// Utility method for converting RealtimeCommunicationType options to prompt
-String _rtcSupportedOptions() =>
-    RealtimeCommunicationType.supported.map((e) => e.toString()).join(' | ');
+String _rtcSupportedOptions() => RealtimeCommunicationType.supportedOptions
+    .map((e) => e.toString())
+    .join(' | ');

@@ -2,7 +2,7 @@ import 'package:args/args.dart';
 
 import '../models/command_arguments.dart';
 
-/// Adds the provided _CommandArguments as command options
+/// Utility methods for CommandArguments handling
 extension ArgumentHandler on ArgParser {
   /// Adds a list of CommandArguments as ArgParser options
   void addCommandArguments(List<CommandArguments> arguments) {

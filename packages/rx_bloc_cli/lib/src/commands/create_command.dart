@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
-import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 
 import '../extensions/arg_parser_extensions.dart';
 import '../extensions/arg_results_extensions.dart';

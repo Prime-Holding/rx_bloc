@@ -19,7 +19,7 @@ abstract class BaseCommandArgumentsReader implements CommandArgumentsReader {
     T Function(T)? validation,
   }) {
     if (!isSupported(argument)) {
-      throw UnsupportedError('${argument.name} can\'t be used interactively');
+      throw UnsupportedError('${argument.name} option is not supported!');
     }
 
     // If no validation is provided just return the value
@@ -35,16 +35,16 @@ abstract class BaseCommandArgumentsReader implements CommandArgumentsReader {
     }
   }
 
-  /// Defines whether the provided argument can be read
+  /// Returns whether the provided argument can be read
   bool isSupported(CommandArguments argument);
 
-  /// Reads a String value or provides a default value
+  /// Reads a String value
   String readString(CommandArguments argument);
 
-  /// Reads a bool value or provides a default value
+  /// Reads a bool value
   bool readBool(CommandArguments argument);
 
-  /// Reads a RealtimeCommunicationType value or provides a default value
+  /// Reads a RealtimeCommunicationType value
   RealtimeCommunicationType readRealtimeCommunicationEnum(
       CommandArguments argument);
 }
