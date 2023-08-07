@@ -30,7 +30,7 @@ class ProjectConfiguration {
 extension ProjectConfigurationValidations on ProjectConfiguration {
   /// Validates the provided project name
   static String validateProjectName(String name) {
-    final projectNameRegex = '[a-z_][a-z0-9_]*';
+    final projectNameRegex = r'[a-z_][a-z0-9_]*';
     if (!name.matches(regex: projectNameRegex)) {
       throw CommandUsageException(
         '"$name" is not a valid package name.\n\n'
@@ -43,7 +43,7 @@ extension ProjectConfigurationValidations on ProjectConfiguration {
   /// Validates the provided organisation
   static String validateOrganisation(String orgName) {
     final organisationRegex =
-        '^([A-Za-z]{2,6})(\\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))+\$';
+        r'^([A-Za-z]{2,6})(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))+\$';
     if (orgName.trim().isEmpty) {
       throw CommandUsageException('No organisation name specified.');
     }

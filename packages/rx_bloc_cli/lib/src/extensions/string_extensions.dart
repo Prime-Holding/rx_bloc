@@ -8,5 +8,5 @@ extension StringExtensions on String {
   }
 
   /// Converts the string to boolean value
-  bool toBool() => toLowerCase() == true.toString();
+  bool toBool() => bool.parse(this, caseSensitive: false);
 }
