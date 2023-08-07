@@ -43,7 +43,7 @@ extension ProjectConfigurationValidations on ProjectConfiguration {
   /// Validates the provided organisation
   static String validateOrganisation(String orgName) {
     final organisationRegex =
-        r'^([A-Za-z]{2,6})(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))+\$';
+        r'^([A-Za-z]{2,6})(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))+$';
     if (orgName.trim().isEmpty) {
       throw CommandUsageException('No organisation name specified.');
     }

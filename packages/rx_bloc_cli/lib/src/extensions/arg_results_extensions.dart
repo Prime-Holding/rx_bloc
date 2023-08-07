@@ -11,8 +11,7 @@ extension ArgumentsValueReader on ArgResults {
   /// Returns a boolean value indicating whether the command is run with
   /// `--interactive=true`
   bool get interactiveConfigurationEnabled =>
-      readBool(CommandArguments.interactive.name) ??
-      CommandArguments.interactive.defaultValue();
+      readBool(CommandArguments.interactive);
 
   /// Returns the provided output directory from the remaining arguments (rest)
   /// Throws if no output directory or multiple output directories are specified
@@ -31,9 +30,10 @@ extension ArgumentsValueReader on ArgResults {
   }
 
   /// Reads a string from the parsed values
-  String? readString(String name) =>
-      this[name] is String ? this[name] as String : null;
+  String readString(CommandArguments argument) => this[argument.name] is String
+      ? this[argument.name] as String
+      : argument.defaultValue();
 
   /// Reads a boolean from the parsed values
-  bool? readBool(String name) => readString(name)?.toBool();
+  bool readBool(CommandArguments argument) => readString(argument).toBool();
 }
