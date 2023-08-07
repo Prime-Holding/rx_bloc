@@ -32,7 +32,7 @@ extension ArgumentsValueReader on ArgResults {
   /// Reads a string from the parsed values
   String readString(CommandArguments argument) => this[argument.name] is String
       ? this[argument.name] as String
-      : argument.defaultValue();
+      : argument.defaultValue().toString();
 
   /// Reads a boolean from the parsed values
   bool readBool(CommandArguments argument) => readString(argument).toBool();
