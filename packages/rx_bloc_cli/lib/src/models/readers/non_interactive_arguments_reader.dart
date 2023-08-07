@@ -17,17 +17,14 @@ final class NonInteractiveArgumentsReader extends BaseCommandArgumentsReader {
 
   @override
   String readString(CommandArguments argument) =>
-      _argResults.readString(argument.name) ?? argument.defaultValue();
+      _argResults.readString(argument);
 
   @override
-  bool readBool(CommandArguments argument) =>
-      _argResults.readBool(argument.name) ?? argument.defaultValue();
+  bool readBool(CommandArguments argument) => _argResults.readBool(argument);
 
   @override
   RealtimeCommunicationType readRealtimeCommunicationEnum(
     CommandArguments argument,
   ) =>
-      RealtimeCommunicationType.parse(
-        _argResults.readString(argument.name) ?? argument.defaultValue(),
-      );
+      RealtimeCommunicationType.parse(_argResults.readString(argument));
 }
