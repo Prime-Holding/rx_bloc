@@ -24,30 +24,23 @@ void main() {
   group('test non_interactive_argument_reader readString', () {
     test('should return value for mandatory argument', () {
       final argument = CommandArguments.projectName;
-      when(argResults.readString(argument.name)).thenReturn('testapp');
+      when(argResults[argument.name]).thenReturn('testapp');
 
       expect(sut.readString(argument), equals('testapp'));
     });
 
     test('should return value for optional argument', () {
       final argument = CommandArguments.organisation;
-      when(argResults.readString(argument.name)).thenReturn('com.example');
+      when(argResults[argument.name]).thenReturn('com.example');
 
       expect(sut.readString(argument), equals('com.example'));
     });
   });
 
   group('test non_interactive_argument_reader readBool', () {
-    test('should return value for madatory argument', () {
-      final argument = CommandArguments.projectName;
-      when(argResults.readBool(argument.name)).thenReturn(false);
-
-      expect(() => sut.readBool(argument), throwsA(isA<UnsupportedError>()));
-    });
-
     test('should return value for optional argument', () {
       final argument = CommandArguments.otp;
-      when(argResults.readString(argument.name)).thenReturn(true.toString());
+      when(argResults[argument.name]).thenReturn(true.toString());
 
       expect(sut.readBool(argument), isTrue);
     });
@@ -56,7 +49,7 @@ void main() {
   group('test non_interactive_argument_reader readRealtimeCommunicationEnum',
       () {
     test('should return value for correct argument', () {
-      when(argResults.readString(CommandArguments.realtimeCommunication.name))
+      when(argResults[CommandArguments.realtimeCommunication.name])
           .thenReturn('none');
       final value = sut.readRealtimeCommunicationEnum(
           CommandArguments.realtimeCommunication);
@@ -66,7 +59,7 @@ void main() {
     test('should throw error for incorrect argument', () {
       final wrongCommandArgument = CommandArguments.otp;
       expect(() => sut.readRealtimeCommunicationEnum(wrongCommandArgument),
-          throwsA(isA<TypeError>()));
+          throwsUnsupportedError);
     });
   });
 
@@ -81,21 +74,21 @@ void main() {
   group('test non_interactive_argument_reader read', () {
     test('should return handle string arguments correctly', () {
       final argument = CommandArguments.organisation;
-      when(argResults.readString(argument.name)).thenReturn('com.example');
+      when(argResults.readString(argument)).thenReturn('com.example');
       expect(sut.read<String>(argument), equals('com.example'));
       expect(() => sut.read<int>(argument), throwsA(isA<TypeError>()));
     });
 
     test('should return handle bool arguments correctly', () {
       final argument = CommandArguments.otp;
-      when(argResults.readString(argument.name)).thenReturn(true.toString());
+      when(argResults.readString(argument)).thenReturn(true.toString());
       expect(sut.read<bool>(argument), isTrue);
       expect(() => sut.read<int>(argument), throwsA(isA<TypeError>()));
     });
 
     test('should return handle realtime communication arguments correctly', () {
       final argument = CommandArguments.realtimeCommunication;
-      when(argResults.readString(argument.name)).thenReturn('none');
+      when(argResults.readString(argument)).thenReturn('none');
       expect(sut.read<RealtimeCommunicationType>(argument),
           RealtimeCommunicationType.none);
       expect(() => sut.read<int>(argument), throwsA(isA<TypeError>()));
@@ -103,7 +96,7 @@ void main() {
 
     test('should execute validation if provided', () {
       final argument = CommandArguments.organisation;
-      when(argResults.readString(argument.name)).thenReturn('com.example');
+      when(argResults.readString(argument)).thenReturn('com.example');
 
       var executed = false;
 
