@@ -42,5 +42,6 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-patrol true ^
 --realtime-communication sse ^
 --enable-otp true ^
+--interactive false ^
 example/test_app ^
 & cd example/test_app
