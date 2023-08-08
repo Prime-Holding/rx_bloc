@@ -4,6 +4,7 @@ import 'package:mason/mason.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments.dart';
+import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments_provider.dart';
 import 'package:rx_bloc_cli/src/models/readers/command_arguments_reader.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
@@ -33,7 +34,10 @@ void main() {
       final argument = invocation.positionalArguments.first;
 
       if (argument is CommandArguments) {
-        return argumentValues[argument.name] as String;
+        final validation = _extractValidation<String>(invocation);
+        final value = argumentValues[argument.name] as String;
+
+        return validation != null ? validation(value) : value;
       }
 
       throw UnsupportedError('No dummy builder for $invocation');
@@ -43,7 +47,10 @@ void main() {
       final argument = invocation.positionalArguments.first;
 
       if (argument is CommandArguments) {
-        return argumentValues[argument.name] as bool;
+        final validation = _extractValidation<bool>(invocation);
+        final value = argumentValues[argument.name] as bool;
+
+        return validation != null ? validation(value) : value;
       }
 
       throw UnsupportedError('No dummy builder for $invocation');
@@ -70,6 +77,18 @@ void main() {
       expect(() => sut.readGeneratorArguments(), returnsNormally);
     });
 
+    test('should throw error if projectName is invalid', () {
+      configure(Stub.invalidProjectName);
+      expect(() => sut.readGeneratorArguments(),
+          throwsA(isA<CommandUsageException>()));
+    });
+
+    test('should throw error if organisation is invalid', () {
+      configure(Stub.invalidOrganisation);
+      expect(() => sut.readGeneratorArguments(),
+          throwsA(isA<CommandUsageException>()));
+    });
+
     test('should return updated values if configuration is not valid', () {
       configure(Stub.invalidAuthConfiguration);
 
@@ -82,4 +101,9 @@ void main() {
       verify(logger.warn(any)).called(1);
     });
   });
+}
+
+T Function(T)? _extractValidation<T extends Object>(Invocation invocation) {
+  return invocation.namedArguments[const Symbol(
+      'validation')] as T Function(T)?;
 }
