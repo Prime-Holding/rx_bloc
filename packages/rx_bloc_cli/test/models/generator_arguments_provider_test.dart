@@ -4,7 +4,6 @@ import 'package:mason/mason.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments.dart';
-import 'package:rx_bloc_cli/src/models/configurations/project_configuration.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments_provider.dart';
 import 'package:rx_bloc_cli/src/models/readers/command_arguments_reader.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
@@ -63,12 +62,24 @@ void main() {
 
   void configure(Map<String, Object> values) {
     argumentValues = values;
-  };
+  }
 
   group('test generator_arguments_provider read', () {
     test('should return generator_arguments with valid configuration', () {
       configure(Stub.defaultValues);
       expect(() => sut.readGeneratorArguments(), returnsNormally);
+    });
+
+    test('should return updated values if configuration is not valid', () {
+      configure(Stub.invalidAuthConfiguration);
+
+      verifyNever(logger.warn(any));
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.otpEnabled, isTrue);
+      expect(generatorArguments.loginEnabled, isTrue);
+
+      verify(logger.warn(any)).called(1);
     });
   });
 }
