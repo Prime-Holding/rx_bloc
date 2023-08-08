@@ -30,10 +30,13 @@ void main() {
     logger = MockLogger();
     sut = GeneratorArgumentsProvider(outputDirectory, reader, logger);
 
-    provideDummyBuilder<String>((parent, invocation) {
-      final argument = invocation.positionalArguments.first;
+    final readSymbol = const Symbol('read');
 
-      if (argument is CommandArguments) {
+    provideDummyBuilder<String>((parent, invocation) {
+      if (invocation.memberName == readSymbol) {
+        final argument =
+            invocation.positionalArguments.first as CommandArguments;
+
         final validation = _extractValidation<String>(invocation);
         final value = argumentValues[argument.name] as String;
 
@@ -44,9 +47,10 @@ void main() {
     });
 
     provideDummyBuilder<bool>((parent, invocation) {
-      final argument = invocation.positionalArguments.first;
+      if (invocation.memberName == readSymbol) {
+        final argument =
+            invocation.positionalArguments.first as CommandArguments;
 
-      if (argument is CommandArguments) {
         final validation = _extractValidation<bool>(invocation);
         final value = argumentValues[argument.name] as bool;
 
@@ -57,10 +61,16 @@ void main() {
     });
 
     provideDummyBuilder<RealtimeCommunicationType>((parent, invocation) {
-      final argument = invocation.positionalArguments.first;
+      if (invocation.memberName == readSymbol) {
+        final argument =
+            invocation.positionalArguments.first as CommandArguments;
 
-      if (argument is CommandArguments) {
-        return argumentValues[argument.name] as RealtimeCommunicationType;
+        final validation =
+            _extractValidation<RealtimeCommunicationType>(invocation);
+        final value =
+            argumentValues[argument.name] as RealtimeCommunicationType;
+
+        return validation != null ? validation(value) : value;
       }
 
       throw UnsupportedError('No dummy builder for $invocation');
@@ -104,6 +114,6 @@ void main() {
 }
 
 T Function(T)? _extractValidation<T extends Object>(Invocation invocation) {
-  return invocation.namedArguments[const Symbol(
-      'validation')] as T Function(T)?;
+  final validationSymbol = const Symbol('validation');
+  return invocation.namedArguments[validationSymbol] as T Function(T)?;
 }

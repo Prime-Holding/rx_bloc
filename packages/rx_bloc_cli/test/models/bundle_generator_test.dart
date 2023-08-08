@@ -22,37 +22,24 @@ void main() {
   late BundleGenerator sut;
 
   late MasonBundle _baseBundle;
-  late MasonBundle _counter;
-  late MasonBundle _deepLink;
-  late MasonBundle _login;
-  late MasonBundle _otp;
-  late MasonBundle _widgetToolkit;
-  late MasonBundle _libAuth;
-  late MasonBundle _libChangeLanguage;
-  late MasonBundle _libDevMenu;
-  late MasonBundle _libPermissions;
-  late MasonBundle _libRouter;
-  late MasonBundle _libSocialLogins;
-  late MasonBundle _patrol;
-  late MasonBundle _libRealtimeCommunication;
+
+  final _counter = featureCounterBundle;
+  final _deepLink = featureDeeplinkBundle;
+  final _login = featureLoginBundle;
+  final _otp = featureOtpBundle;
+  final _widgetToolkit = featureWidgetToolkitBundle;
+  final _libAuth = libAuthBundle;
+  final _libChangeLanguage = libChangeLanguageBundle;
+  final _libDevMenu = libDevMenuBundle;
+  final _libPermissions = libPermissionsBundle;
+  final _libRouter = libRouterBundle;
+  final _libSocialLogins = libSocialLoginsBundle;
+  final _patrol = patrolIntegrationTestsBundle;
+  final _libRealtimeCommunication = libRealtimeCommunicationBundle;
 
   setUp(() {
+    // Copy the base bundle to avoid polluted state between tests
     _baseBundle = rxBlocBaseBundle.copy();
-    _counter = featureCounterBundle.copy();
-    _deepLink = featureDeeplinkBundle.copy();
-    _login = featureLoginBundle.copy();
-    _otp = featureOtpBundle.copy();
-    _widgetToolkit = featureWidgetToolkitBundle.copy();
-    _libAuth = libAuthBundle.copy();
-    _libChangeLanguage = libChangeLanguageBundle.copy();
-    _libDevMenu = libDevMenuBundle.copy();
-    _libPermissions = libPermissionsBundle.copy();
-    _libRouter = libRouterBundle.copy();
-    _libSocialLogins = libSocialLoginsBundle.copy();
-    _patrol = patrolIntegrationTestsBundle.copy();
-    _libRealtimeCommunication = libRealtimeCommunicationBundle.copy();
-
-
     sut = BundleGenerator(_baseBundle);
   });
 
