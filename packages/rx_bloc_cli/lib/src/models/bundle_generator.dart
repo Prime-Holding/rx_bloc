@@ -41,7 +41,7 @@ class BundleGenerator {
     // Remove files when they are not needed by the specified features
     if (!arguments.analyticsEnabled) {
       _bundle.files.removeWhere(
-          (file) => file.path == ExcludedFilePaths.analyticsFilePath);
+          (file) => file.path == BundleFilePaths.analyticsFilePath);
     }
     // Add counter brick to _bundle when needed
     if (arguments.counterEnabled) {
@@ -104,7 +104,7 @@ class BundleGenerator {
 }
 
 /// Excluded file paths
-extension ExcludedFilePaths on BundleGenerator {
+extension BundleFilePaths on BundleGenerator {
   /// Analytics file path
   static const analyticsFilePath =
       'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart';
