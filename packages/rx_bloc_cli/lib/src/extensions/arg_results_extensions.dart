@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:rx_bloc_cli/src/extensions/string_extensions.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
+import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 
 import '../models/command_arguments.dart';
 
@@ -30,10 +31,20 @@ extension ArgumentsValueReader on ArgResults {
   }
 
   /// Reads a string from the parsed values
-  String readString(CommandArguments argument) => this[argument.name] is String
-      ? this[argument.name] as String
-      : argument.defaultValue().toString();
+  String readString(CommandArguments argument) =>
+      (this[argument.name] as String?) ?? argument.defaultValue();
 
   /// Reads a boolean from the parsed values
-  bool readBool(CommandArguments argument) => readString(argument).toBool();
+  bool readBool(CommandArguments argument) =>
+      (this[argument.name] as String?)?.toBool() ?? argument.defaultValue();
+
+  /// Reads a realtime communication type from the parsed values
+  RealtimeCommunicationType readRealtimeCommunicationType(
+      CommandArguments argument) {
+    final value = this[argument.name] as String?;
+
+    return (value != null)
+        ? RealtimeCommunicationType.parse(value)
+        : argument.defaultValue();
+  }
 }

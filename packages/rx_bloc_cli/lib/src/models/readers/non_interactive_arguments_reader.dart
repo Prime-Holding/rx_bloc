@@ -26,5 +26,5 @@ final class NonInteractiveArgumentsReader extends BaseCommandArgumentsReader {
   RealtimeCommunicationType readRealtimeCommunicationEnum(
     CommandArguments argument,
   ) =>
-      RealtimeCommunicationType.parse(_argResults.readString(argument));
+      _argResults.readRealtimeCommunicationType(argument);
 }
