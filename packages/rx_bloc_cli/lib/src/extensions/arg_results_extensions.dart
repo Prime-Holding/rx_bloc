@@ -31,16 +31,31 @@ extension ArgumentsValueReader on ArgResults {
   }
 
   /// Reads a string from the parsed values
-  String readString(CommandArguments argument) =>
-      (this[argument.name] as String?) ?? argument.defaultValue();
+  String readString(CommandArguments argument) {
+    if (argument.type != ArgumentType.string) {
+      throw UnsupportedError(
+          '${argument.name} is not of type String');
+    }
+    return (this[argument.name] as String?) ?? argument.defaultValue();
+  }
 
   /// Reads a boolean from the parsed values
-  bool readBool(CommandArguments argument) =>
-      (this[argument.name] as String?)?.toBool() ?? argument.defaultValue();
+  bool readBool(CommandArguments argument) {
+    if (argument.type != ArgumentType.boolean) {
+      throw UnsupportedError(
+          '${argument.name} is not of type bool');
+    }
+    return (this[argument.name] as String?)?.toBool() ??
+        argument.defaultValue();
+  }
 
   /// Reads a realtime communication type from the parsed values
   RealtimeCommunicationType readRealtimeCommunicationType(
       CommandArguments argument) {
+    if (argument.type != ArgumentType.realTimeCommunicationEnum) {
+      throw UnsupportedError(
+          '${argument.name} is not of type RealtimeEnumType');
+    }
     final value = this[argument.name] as String?;
 
     return (value != null)

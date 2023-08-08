@@ -58,7 +58,7 @@ void main() {
     test('should throw error for incorrect argument', () {
       final wrongCommandArgument = CommandArguments.otp;
       expect(() => sut.readRealtimeCommunicationEnum(wrongCommandArgument),
-          throwsA(isA<TypeError>()));
+          throwsUnsupportedError);
     });
   });
 
