@@ -128,7 +128,7 @@ void main() {
       expect(files.intersection(widgetToolkitFiles), isEmpty);
 
       final counterFiles = _counter.filePaths;
-      expect(files.intersection(counterFiles), equals(['{{~ licence.dart }}']));
+      expect(files.intersection(counterFiles), equals([Stub.licenseFileName]));
 
       final deepLinkFiles = _deepLink.filePaths;
       expect(files.intersection(deepLinkFiles), isEmpty);

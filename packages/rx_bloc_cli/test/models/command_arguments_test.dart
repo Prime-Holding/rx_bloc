@@ -2,20 +2,22 @@ import 'package:rx_bloc_cli/src/models/command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 import 'package:test/test.dart';
 
+import '../stub.dart';
+
 void main() {
   List<CommandArguments> optionalCommandArguments() {
-    final mandatoryArguments = [
+    final mandatoryArguments = {
       CommandArguments.projectName,
-    ];
+    };
     return CommandArguments.values
         .where((argument) => !mandatoryArguments.contains(argument))
         .toList();
   }
 
   List<CommandArguments> interactiveCommandArguments() {
-    final nonInteractiveArguments = [
+    final nonInteractiveArguments = {
       CommandArguments.interactive,
-    ];
+    };
     return CommandArguments.values
         .where((argument) => !nonInteractiveArguments.contains(argument))
         .toList();
@@ -58,8 +60,8 @@ void main() {
     test('should have the correct default value', () {
       expect(() => CommandArguments.projectName.defaultValue(),
           throwsUnsupportedError);
-      expect(
-          CommandArguments.organisation.defaultValue(), equals('com.example'));
+      expect(CommandArguments.organisation.defaultValue(),
+          equals(Stub.defaultOrganisation));
       expect(CommandArguments.analytics.defaultValue(), isFalse);
       expect(CommandArguments.changeLanguage.defaultValue(), isTrue);
       expect(CommandArguments.counter.defaultValue(), isFalse);

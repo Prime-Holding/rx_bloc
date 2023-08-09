@@ -10,6 +10,21 @@ import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 final class Stub {
   Stub._();
 
+  static const projectName = 'testapp';
+  static const empty = '';
+  static const invalidProjectNameCapitalLetter = 'Testapp';
+  static const invalidProjectNameDigit = '1testapp';
+
+  static const organisation = 'com.primeholding';
+  static const defaultOrganisation = 'com.example';
+  static const organisationName = 'primeholding';
+  static const organisationDomain = 'com';
+  static const invalidOrganisation = 'c.example';
+
+  static const incorrectRealtimeCommunicationCase = 'incorrect_case';
+
+  static const licenseFileName = '{{~ licence.dart }}';
+
   static Map<String, Object> get defaultValues {
     var map = <String, Object>{
       CommandArguments.projectName.name: 'testapp',
@@ -24,13 +39,13 @@ final class Stub {
     return map;
   }
 
-  static Map<String, Object> get invalidProjectName =>
+  static Map<String, Object> get invalidProjectNameValues =>
       Map.from(Stub.defaultValues)..[CommandArguments.projectName.name] = '';
 
-  static Map<String, Object> get invalidOrganisation =>
+  static Map<String, Object> get invalidOrganisationValues =>
       Map.from(Stub.defaultValues)..[CommandArguments.organisation.name] = '';
 
-  static Map<String, Object> get invalidAuthConfiguration =>
+  static Map<String, Object> get invalidAuthConfigurationValues =>
       Map.from(Stub.defaultValues)
         ..[CommandArguments.login.name] = false
         ..[CommandArguments.socialLogins.name] = false

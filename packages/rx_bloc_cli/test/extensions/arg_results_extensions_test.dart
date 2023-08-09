@@ -27,9 +27,7 @@ void main() {
     });
 
     test('should throw exception if no value available', () {
-      final value = CommandArguments.interactive.defaultValue<bool>();
       when(sut[CommandArguments.interactive.name]).thenReturn(null);
-
       expect(
           () => sut.interactiveConfigurationEnabled, throwsA(isA<TypeError>()));
     });

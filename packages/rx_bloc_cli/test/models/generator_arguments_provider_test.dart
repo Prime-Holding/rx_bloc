@@ -63,19 +63,19 @@ void main() {
     });
 
     test('should throw error if projectName is invalid', () {
-      configureArgumentValues(Stub.invalidProjectName);
+      configureArgumentValues(Stub.invalidProjectNameValues);
       expect(() => sut.readGeneratorArguments(),
           throwsA(isA<CommandUsageException>()));
     });
 
     test('should throw error if organisation is invalid', () {
-      configureArgumentValues(Stub.invalidOrganisation);
+      configureArgumentValues(Stub.invalidOrganisationValues);
       expect(() => sut.readGeneratorArguments(),
           throwsA(isA<CommandUsageException>()));
     });
 
     test('should return updated values if configuration is not valid', () {
-      configureArgumentValues(Stub.invalidAuthConfiguration);
+      configureArgumentValues(Stub.invalidAuthConfigurationValues);
 
       verifyNever(logger.warn(any));
       final generatorArguments = sut.readGeneratorArguments();

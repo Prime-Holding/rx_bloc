@@ -6,6 +6,7 @@ import 'package:rx_bloc_cli/src/models/readers/non_interactive_arguments_reader.
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 import 'package:test/test.dart';
 
+import '../../stub.dart';
 import 'non_interactive_arguments_reader_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -23,16 +24,16 @@ void main() {
   group('test non_interactive_argument_reader readString', () {
     test('should return value for mandatory argument', () {
       final argument = CommandArguments.projectName;
-      when(argResults[argument.name]).thenReturn('testapp');
+      when(argResults[argument.name]).thenReturn(Stub.projectName);
 
-      expect(sut.readString(argument), equals('testapp'));
+      expect(sut.readString(argument), equals(Stub.projectName));
     });
 
     test('should return value for optional argument', () {
       final argument = CommandArguments.organisation;
-      when(argResults[argument.name]).thenReturn('com.example');
+      when(argResults[argument.name]).thenReturn(Stub.organisation);
 
-      expect(sut.readString(argument), equals('com.example'));
+      expect(sut.readString(argument), equals(Stub.organisation));
     });
   });
 
@@ -73,8 +74,8 @@ void main() {
   group('test non_interactive_argument_reader read', () {
     test('should return handle string arguments correctly', () {
       final argument = CommandArguments.organisation;
-      when(argResults[argument.name]).thenReturn('com.example');
-      expect(sut.read<String>(argument), equals('com.example'));
+      when(argResults[argument.name]).thenReturn(Stub.organisation);
+      expect(sut.read<String>(argument), equals(Stub.organisation));
       expect(() => sut.read<int>(argument), throwsA(isA<TypeError>()));
     });
 
@@ -96,7 +97,7 @@ void main() {
 
     test('should execute validation if provided', () {
       final argument = CommandArguments.organisation;
-      when(argResults[argument.name]).thenReturn('com.example');
+      when(argResults[argument.name]).thenReturn(Stub.organisation);
 
       var executed = false;
 

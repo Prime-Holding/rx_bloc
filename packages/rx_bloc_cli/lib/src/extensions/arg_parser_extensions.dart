@@ -1,5 +1,4 @@
 import 'package:args/args.dart';
-import 'package:rx_bloc_cli/src/extensions/object_extensions.dart';
 
 import '../models/command_arguments.dart';
 

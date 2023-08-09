@@ -11,15 +11,4 @@ void main() {
       expect('c.example'.matches(regex: regex), isFalse);
     });
   });
-
-  group('test string_extensions toBool', () {
-    test('handles regular expressions as expected', () {
-      expect('true'.toBool(), isTrue);
-      expect('True'.toBool(), isTrue);
-      expect('TRUE'.toBool(), isTrue);
-      expect('tRuE'.toBool(), isTrue);
-
-      expect('false'.toBool(), isFalse);
-    });
-  });
 }

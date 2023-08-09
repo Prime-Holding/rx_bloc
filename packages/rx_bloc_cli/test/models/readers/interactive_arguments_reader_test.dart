@@ -6,6 +6,7 @@ import 'package:rx_bloc_cli/src/models/readers/interactive_arguments_reader.dart
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 import 'package:test/test.dart';
 
+import '../../stub.dart';
 import 'interactive_arguments_reader_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -23,9 +24,9 @@ void main() {
   group('test interactive_argument_reader readString', () {
     test('should return value for mandatory argument', () {
       final argument = CommandArguments.projectName;
-      when(logger.prompt(argument.prompt)).thenReturn('testapp');
+      when(logger.prompt(argument.prompt)).thenReturn(Stub.projectName);
 
-      expect(sut.readString(argument), equals('testapp'));
+      expect(sut.readString(argument), equals(Stub.projectName));
     });
 
     test('should return value for optional argument', () {
@@ -64,7 +65,7 @@ void main() {
     test('should return value for correct argument', () {
       when(logger.prompt(any,
               defaultValue: CommandArguments.realtimeCommunication.defaultsTo))
-          .thenReturn('none');
+          .thenReturn(RealtimeCommunicationType.none.name);
       final value = sut.readRealtimeCommunicationEnum(
           CommandArguments.realtimeCommunication);
       expect(value, equals(RealtimeCommunicationType.none));
@@ -81,7 +82,7 @@ void main() {
     test('should throw error for incorrectly provided value', () {
       when(logger.prompt(any,
               defaultValue: CommandArguments.realtimeCommunication.defaultsTo))
-          .thenReturn('incorrect_case');
+          .thenReturn(Stub.incorrectRealtimeCommunicationCase);
 
       final argument = CommandArguments.realtimeCommunication;
       expect(
@@ -109,8 +110,8 @@ void main() {
     test('should return handle string arguments correctly', () {
       final argument = CommandArguments.organisation;
       when(logger.prompt(any, defaultValue: argument.defaultsTo))
-          .thenReturn('com.example');
-      expect(sut.read<String>(argument), equals('com.example'));
+          .thenReturn(Stub.organisation);
+      expect(sut.read<String>(argument), equals(Stub.organisation));
       expect(() => sut.read<int>(argument), throwsA(isA<TypeError>()));
     });
 
@@ -125,7 +126,7 @@ void main() {
     test('should return handle realtime communication arguments correctly', () {
       final argument = CommandArguments.realtimeCommunication;
       when(logger.prompt(any, defaultValue: argument.defaultsTo))
-          .thenReturn('none');
+          .thenReturn(RealtimeCommunicationType.none.name);
       expect(sut.read<RealtimeCommunicationType>(argument),
           RealtimeCommunicationType.none);
       expect(() => sut.read<int>(argument), throwsA(isA<TypeError>()));
@@ -134,7 +135,7 @@ void main() {
     test('should execute validation if provided', () {
       final argument = CommandArguments.organisation;
       when(logger.prompt(any, defaultValue: argument.defaultsTo))
-          .thenReturn('com.example');
+          .thenReturn(argument.defaultValue());
 
       var executed = false;
 

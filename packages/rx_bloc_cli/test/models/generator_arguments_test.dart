@@ -6,6 +6,8 @@ import 'package:rx_bloc_cli/src/models/configurations/project_configuration.dart
 import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
 import 'package:test/test.dart';
 
+import '../stub.dart';
+
 void main() {
   late Directory outputDirectory;
   late ProjectConfiguration projectConfiguration;
@@ -16,8 +18,8 @@ void main() {
   setUp(() {
     outputDirectory = Directory('directory_path');
     projectConfiguration = ProjectConfiguration(
-      projectName: 'testapp',
-      organisation: 'com.example',
+      projectName: Stub.projectName,
+      organisation: Stub.defaultOrganisation,
     );
     authConfiguration = AuthConfiguration(
       loginEnabled: true,
