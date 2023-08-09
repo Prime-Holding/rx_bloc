@@ -24,83 +24,58 @@ void main() {
   late GeneratorArgumentsProvider sut;
   late Map<String, Object> argumentValues;
 
+  T buildDummyValues<T extends Object>(Object parent, Invocation invocation) {
+    final readSymbol = const Symbol('read');
+    final validationSymbol = const Symbol('validation');
+
+    if (invocation.memberName == readSymbol) {
+      final argument = invocation.positionalArguments.first as CommandArguments;
+      final validation =
+          invocation.namedArguments[validationSymbol] as T Function(T)?;
+      final value = argumentValues[argument.name] as T;
+
+      return validation != null ? validation(value) : value;
+    }
+
+    throw UnsupportedError('No dummy builder for $invocation');
+  }
+
   setUp(() {
     outputDirectory = Directory('directory_path');
     reader = MockCommandArgumentsReader();
     logger = MockLogger();
     sut = GeneratorArgumentsProvider(outputDirectory, reader, logger);
 
-    final readSymbol = const Symbol('read');
-
-    provideDummyBuilder<String>((parent, invocation) {
-      if (invocation.memberName == readSymbol) {
-        final argument =
-            invocation.positionalArguments.first as CommandArguments;
-
-        final validation = _extractValidation<String>(invocation);
-        final value = argumentValues[argument.name] as String;
-
-        return validation != null ? validation(value) : value;
-      }
-
-      throw UnsupportedError('No dummy builder for $invocation');
-    });
-
-    provideDummyBuilder<bool>((parent, invocation) {
-      if (invocation.memberName == readSymbol) {
-        final argument =
-            invocation.positionalArguments.first as CommandArguments;
-
-        final validation = _extractValidation<bool>(invocation);
-        final value = argumentValues[argument.name] as bool;
-
-        return validation != null ? validation(value) : value;
-      }
-
-      throw UnsupportedError('No dummy builder for $invocation');
-    });
-
-    provideDummyBuilder<RealtimeCommunicationType>((parent, invocation) {
-      if (invocation.memberName == readSymbol) {
-        final argument =
-            invocation.positionalArguments.first as CommandArguments;
-
-        final validation =
-            _extractValidation<RealtimeCommunicationType>(invocation);
-        final value =
-            argumentValues[argument.name] as RealtimeCommunicationType;
-
-        return validation != null ? validation(value) : value;
-      }
-
-      throw UnsupportedError('No dummy builder for $invocation');
-    });
+    // Each supported type must have a dummy builder
+    provideDummyBuilder<String>(buildDummyValues);
+    provideDummyBuilder<bool>(buildDummyValues);
+    provideDummyBuilder<RealtimeCommunicationType>(buildDummyValues);
   });
 
-  void configure(Map<String, Object> values) {
+  void configureArgumentValues(Map<String, Object> values) {
     argumentValues = values;
   }
 
   group('test generator_arguments_provider read', () {
     test('should return generator_arguments with valid configuration', () {
-      configure(Stub.defaultValues);
+      configureArgumentValues(Stub.defaultValues);
       expect(() => sut.readGeneratorArguments(), returnsNormally);
     });
 
     test('should throw error if projectName is invalid', () {
-      configure(Stub.invalidProjectName);
+      configureArgumentValues(Stub.invalidProjectName);
       expect(() => sut.readGeneratorArguments(),
           throwsA(isA<CommandUsageException>()));
     });
 
     test('should throw error if organisation is invalid', () {
-      configure(Stub.invalidOrganisation);
+      configureArgumentValues(Stub.invalidOrganisation);
       expect(() => sut.readGeneratorArguments(),
           throwsA(isA<CommandUsageException>()));
     });
 
     test('should return updated values if configuration is not valid', () {
-      configure(Stub.invalidAuthConfiguration);
+      configureArgumentValues(Stub.invalidAuthConfiguration);
 
       verifyNever(logger.warn(any));
       final generatorArguments = sut.readGeneratorArguments();
@@ -111,9 +86,4 @@ void main() {
       verify(logger.warn(any)).called(1);
     });
   });
-}
-
-T Function(T)? _extractValidation<T extends Object>(Invocation invocation) {
-  final validationSymbol = const Symbol('validation');
-  return invocation.namedArguments[validationSymbol] as T Function(T)?;
 }
