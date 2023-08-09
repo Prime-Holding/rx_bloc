@@ -21,6 +21,12 @@ void main() {
         .toList();
   }
 
+  List<CommandArguments> booleanCommandArguments() {
+    return CommandArguments.values
+        .where((argument) => argument.type == ArgumentType.boolean)
+        .toList();
+  }
+
   group('test command_arguments', () {
     test('should have the correct argument type', () {
       expect(CommandArguments.projectName.type, equals(ArgumentType.string));
@@ -100,16 +106,21 @@ void main() {
       final arguments = CommandArguments.values;
       expect(arguments.every((arg) => arg.hasValidHelpMessage), isTrue);
     });
+
+    test('should have default value if bool', () {
+      final arguments = booleanCommandArguments();
+      expect(() => arguments.every((arg) => arg.defaultValue<bool>()),
+          returnsNormally);
+    });
   });
 
   group('test argument_type enum', () {
     test('should have correct allowed values', () {
-      final allowedBoolean = [true, false].map((e) => e.toString());
       final allowedRealtimeCommunication =
           RealtimeCommunicationType.supportedOptions.map((e) => e.name);
 
       expect(ArgumentType.string.allowed, isNull);
-      expect(ArgumentType.boolean.allowed, equals(allowedBoolean));
+      expect(ArgumentType.boolean.allowed, isNull);
       expect(ArgumentType.realTimeCommunicationEnum.allowed,
           equals(allowedRealtimeCommunication));
     });

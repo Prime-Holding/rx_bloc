@@ -39,7 +39,7 @@ void main() {
   group('test non_interactive_argument_reader readBool', () {
     test('should return value for optional argument', () {
       final argument = CommandArguments.otp;
-      when(argResults[argument.name]).thenReturn(true.toString());
+      when(argResults[argument.name]).thenReturn(true);
 
       expect(sut.readBool(argument), isTrue);
     });
@@ -80,7 +80,7 @@ void main() {
 
     test('should return handle bool arguments correctly', () {
       final argument = CommandArguments.otp;
-      when(argResults[argument.name]).thenReturn(true.toString());
+      when(argResults[argument.name]).thenReturn(true);
       expect(sut.read<bool>(argument), isTrue);
       expect(() => sut.read<int>(argument), throwsA(isA<TypeError>()));
     });

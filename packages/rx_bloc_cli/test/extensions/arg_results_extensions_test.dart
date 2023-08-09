@@ -21,16 +21,17 @@ void main() {
   group('test arg_results interactiveConfigurationEnabled', () {
     test('should return provided value if present', () {
       final value = !CommandArguments.interactive.defaultValue<bool>();
-      when(sut[CommandArguments.interactive.name]).thenReturn(value.toString());
+      when(sut[CommandArguments.interactive.name]).thenReturn(value);
 
       expect(sut.interactiveConfigurationEnabled, equals(value));
     });
 
-    test('should return default value if no value provided', () {
+    test('should throw exception if no value available', () {
       final value = CommandArguments.interactive.defaultValue<bool>();
       when(sut[CommandArguments.interactive.name]).thenReturn(null);
 
-      expect(sut.interactiveConfigurationEnabled, equals(value));
+      expect(
+          () => sut.interactiveConfigurationEnabled, throwsA(isA<TypeError>()));
     });
   });
 
@@ -71,13 +72,9 @@ void main() {
   group('test arg_results readBool', () {
     test('should return bool for the correct type', () {
       final enableLogin = CommandArguments.login;
-      final enableSocialLogins = CommandArguments.socialLogins;
-      when(sut[enableLogin.name]).thenReturn('false');
-      when(sut[enableSocialLogins.name]).thenReturn(null);
+      when(sut[enableLogin.name]).thenReturn(false);
 
       expect(sut.readBool(enableLogin), isFalse);
-      expect(
-          sut.readBool(enableSocialLogins), enableSocialLogins.defaultValue());
     });
 
     test('should throw error for incorrect type', () {

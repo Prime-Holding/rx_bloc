@@ -1,3 +1,18 @@
+## [3.0.0]
+Contains breaking changes
+* Migrated command parameters from options to flags
+```sh
+# < 3.0.0
+--enable-login=true
+--enable-social-logins=false
+# = 3.0.0
+--enable-login
+--no-enable-social-logins
+```
+* Updated project dependencies
+* Added interactive configuration flag (enabled by default)
+* Login with email can be enabled or disabled (enabled by default)
+
 ## [2.7.1]
 * Replaced local `ErrorModel`, `GenericErrorModel` and `UnknownErrorModel` with the ones from `widget_toolkit` package
 

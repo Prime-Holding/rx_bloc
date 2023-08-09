@@ -38,10 +38,22 @@ void main() {
           mandatory: anyNamed('mandatory'),
         ),
       );
+      verifyNever(
+        sut.addFlag(
+          any,
+          help: anyNamed('help'),
+          defaultsTo: anyNamed('defaultsTo'),
+          negatable: true,
+        ),
+      );
 
       final arguments = CommandArguments.values;
       sut.addCommandArguments(arguments);
 
+      final expectedAddOptionCalls =
+          arguments.where((arg) => arg.type != ArgumentType.boolean).length;
+      final expectedAddFlagCalls =
+          arguments.where((arg) => arg.type == ArgumentType.boolean).length;
       verify(
         sut.addOption(
           any,
@@ -50,7 +62,15 @@ void main() {
           allowed: anyNamed('allowed'),
           mandatory: anyNamed('mandatory'),
         ),
-      ).called(arguments.length);
+      ).called(expectedAddOptionCalls);
+      verify(
+        sut.addFlag(
+          any,
+          help: anyNamed('help'),
+          defaultsTo: anyNamed('defaultsTo'),
+          negatable: true,
+        ),
+      ).called(expectedAddFlagCalls);
     });
   });
 }

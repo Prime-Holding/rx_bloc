@@ -188,7 +188,7 @@ enum ArgumentType {
   /// Allowed values for each supported type
   Iterable<String>? get allowed => switch (this) {
         ArgumentType.string => null,
-        ArgumentType.boolean => [true, false].map((e) => e.toString()),
+        ArgumentType.boolean => null,
         ArgumentType.realTimeCommunicationEnum =>
           RealtimeCommunicationType.supportedOptions.map((e) => e.toString()),
       };
