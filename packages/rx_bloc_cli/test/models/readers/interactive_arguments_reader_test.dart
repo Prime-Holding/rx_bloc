@@ -31,27 +31,32 @@ void main() {
     test('should return value for optional argument', () {
       final argument = CommandArguments.organisation;
       when(logger.prompt(argument.prompt, defaultValue: argument.defaultsTo))
-          .thenReturn('com.example');
+          .thenReturn(argument.defaultValue());
 
-      expect(sut.readString(argument), equals('com.example'));
+      expect(sut.readString(argument), equals(argument.defaultValue()));
+    });
+
+    test('should throw exception if wrong type is provided', () {
+      final argument = CommandArguments.login;
+
+      expect(() => sut.readString(argument), throwsUnsupportedError);
     });
   });
 
   group('test interactive_argument_reader readBool', () {
-    test('should return value for madatory argument', () {
-      final argument = CommandArguments.projectName;
-      when(logger.confirm(argument.prompt)).thenReturn(false);
-
-      expect(sut.readBool(argument), isFalse);
-    });
-
-    test('should return value for optional argument', () {
+    test('should return value for argument', () {
       final argument = CommandArguments.otp;
       when(logger.confirm(argument.prompt,
               defaultValue: argument.defaultValue()))
           .thenReturn(true);
 
       expect(sut.readBool(argument), isTrue);
+    });
+
+    test('should throw exception if wrong type is provided', () {
+      final argument = CommandArguments.realtimeCommunication;
+
+      expect(() => sut.readBool(argument), throwsUnsupportedError);
     });
   });
 
@@ -65,14 +70,24 @@ void main() {
       expect(value, equals(RealtimeCommunicationType.none));
     });
 
-    test('should throw error for incorrect argument', () {
+    test('should throw error for incorrect argument type', () {
+      final argument = CommandArguments.organisation;
+      expect(
+        () => sut.readRealtimeCommunicationEnum(argument),
+        throwsUnsupportedError,
+      );
+    });
+
+    test('should throw error for incorrectly provided value', () {
       when(logger.prompt(any,
               defaultValue: CommandArguments.realtimeCommunication.defaultsTo))
-          .thenReturn('none');
+          .thenReturn('incorrect_case');
 
-      final wrongCommandArgument = CommandArguments.otp;
-      expect(() => sut.readRealtimeCommunicationEnum(wrongCommandArgument),
-          throwsA(isA<UnsupportedError>()));
+      final argument = CommandArguments.realtimeCommunication;
+      expect(
+        () => sut.readRealtimeCommunicationEnum(argument),
+        throwsUnsupportedError,
+      );
     });
   });
 

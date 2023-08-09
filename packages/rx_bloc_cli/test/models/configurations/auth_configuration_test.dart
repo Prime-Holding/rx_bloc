@@ -5,7 +5,7 @@ void main() {
   late AuthConfiguration sut;
 
   group('test auth_configuration', () {
-    test('should have authentication enabled if anything else is enabled', () {
+    test('should have authentication enabled if any property is enabled', () {
       sut = AuthConfiguration(
         loginEnabled: true,
         socialLoginsEnabled: false,

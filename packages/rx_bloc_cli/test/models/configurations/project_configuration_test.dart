@@ -12,8 +12,8 @@ void main() {
         organisation: 'com.primeholding',
       );
 
-      expect(sut.organisationName, 'primeholding');
-      expect(sut.organisationDomain, 'com');
+      expect(sut.organisationName, equals('primeholding'));
+      expect(sut.organisationDomain, equals('com'));
     });
   });
 
@@ -21,15 +21,18 @@ void main() {
     test('should validate project name', () {
       final validate = ProjectConfigurationValidations.validateProjectName;
 
-      expect(validate('valid_name'), equals('valid_name'));
-      expect(() => validate('INVALID_NAME'),
-          throwsA(isA<CommandUsageException>()));
+      expect(validate('testapp'), equals('testapp'));
+
+      expect(() => validate(''), throwsA(isA<CommandUsageException>()));
+      expect(() => validate('Testapp'), throwsA(isA<CommandUsageException>()));
+      expect(() => validate('1testapp'), throwsA(isA<CommandUsageException>()));
     });
 
     test('should validate organisation', () {
       final validate = ProjectConfigurationValidations.validateOrganisation;
 
       expect(validate('com.organisation'), equals('com.organisation'));
+
       expect(() => validate(''), throwsA(isA<CommandUsageException>()));
       expect(() => validate('c'), throwsA(isA<CommandUsageException>()));
       expect(() => validate('c.org'), throwsA(isA<CommandUsageException>()));
