@@ -104,7 +104,6 @@ jobs:
         folder:
           [
             "packages/rx_bloc",
-            "packages/rx_bloc_cli",
             "packages/rx_bloc_test",
             "packages/rx_bloc_generator",
           ]
@@ -144,9 +143,55 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           directory: ${{ matrix.folder }}/coverage
+  cli_packages:
+    strategy:
+      matrix:
+        folder:
+          [
+            "packages/rx_bloc_cli",
+          ]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - run: dart --version
+      - run: flutter --version 
+      - name: Install Dependencies
+        working-directory: ${{ matrix.folder }}
+        run: dart pub get
+      - name: Compile Bundles
+        working-directory: ${{ matrix.folder }}
+        run: bash bin/compile_bundles.sh
+      - name: Analyze
+        working-directory: ${{ matrix.folder }}
+        run: flutter analyze lib
+      - name: Run tests
+        working-directory: ${{ matrix.folder }}
+        run: |
+          if [ -d "test" ]; then
+            dart test --coverage=coverage --exclude-tags=not-tests
+          fi
+      - name: Format coverage
+        working-directory: ${{ matrix.folder }}
+        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+      - name: Remove unnecessary files
+        working-directory: ${{ matrix.folder }}
+        run: dart run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v2
+        with:
+          path: "${{ matrix.folder }}/coverage/lcov.info"
+          min_coverage: 67
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ${{ matrix.folder }}/coverage
           
   build:
-    needs: [examples, packages, flutter_packages]
+    needs: [examples, packages, flutter_packages, cli_packages]
     runs-on: ubuntu-latest
     steps:
       - name: noop
