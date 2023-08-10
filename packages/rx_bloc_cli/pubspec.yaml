@@ -15,6 +15,7 @@ dependencies:
   path: ^1.8.3
 
 dev_dependencies:
+  clean_coverage: ^0.0.3
   build_runner: ^2.4.6
   mason_cli: ^0.1.0-dev.51
   mockito: ^5.4.2
