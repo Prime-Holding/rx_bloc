@@ -104,6 +104,7 @@ jobs:
         folder:
           [
             "packages/rx_bloc",
+            "packages/rx_bloc_cli",
             "packages/rx_bloc_test",
             "packages/rx_bloc_generator",
           ]
