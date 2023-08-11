@@ -1,5 +1,6 @@
 part of '../router.dart';
 
+{{#has_authentication}}
 @TypedGoRoute<LoginRoute>(path: RoutesPath.login)
 @immutable
 class LoginRoute extends GoRouteData implements RouteDataModel {
@@ -17,8 +18,7 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get routeLocation => location;
-}
-{{#enable_feature_otp}}
+}{{/has_authentication}}{{#enable_feature_otp}}
 
 @TypedGoRoute<OtpRoute>(path: RoutesPath.otpRoute)
 @immutable

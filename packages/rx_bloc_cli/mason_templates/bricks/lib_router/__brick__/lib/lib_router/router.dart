@@ -44,12 +44,10 @@ class AppRouter {
   AppRouter({
     required this.coordinatorBloc,
     required this.rootNavigatorKey,
-    required this.shellNavigatorKey,
   });
 
   final CoordinatorBlocType coordinatorBloc;
   final GlobalKey<NavigatorState> rootNavigatorKey;
-  final GlobalKey<NavigatorState> shellNavigatorKey;
 
   late final _GoRouterRefreshStream _refreshListener =
       _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
@@ -60,7 +58,7 @@ class AppRouter {
   late final GoRouter _goRouter = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: const SplashRoute().location,
-    routes: _appRoutesList(),
+    routes: $appRoutes,
     redirect: _pageRedirections,
     refreshListenable: _refreshListener,
     errorPageBuilder: (context, state) => MaterialPage(
@@ -69,31 +67,13 @@ class AppRouter {
     ),
   );
 
-  List<RouteBase> _appRoutesList() => [
-        $splashRoute,{{#has_authentication}}
-        $loginRoute,{{/has_authentication}}{{#enable_feature_otp}}
-        $otpRoute,{{/enable_feature_otp}}
-        ShellRoute(
-            navigatorKey: shellNavigatorKey,
-            builder: (context, state, child) => HomePage(
-                  child: child,
-                ),
-            routes: [
-              $dashboardRoute,{{#enable_feature_counter}}
-              $counterRoute,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
-              $widgetToolkitRoute,{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
-              $deepLinksRoute,{{/enable_feature_deeplinks}}
-              $profileRoute,
-            ]),
-      ];
-
   /// This method contains all redirection logic.
   FutureOr<String?> _pageRedirections(
     BuildContext context,
     GoRouterState state,
   ) async { {{#has_authentication}}
-    if (_refreshListener.isLoggedIn && state.queryParameters['from'] != null) {
-      return state.queryParameters['from'];
+    if (_refreshListener.isLoggedIn && state.uri.queryParameters['from'] != null) {
+      return state.uri.queryParameters['from'];
     }
     {{^enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
@@ -116,11 +96,11 @@ class AppRouter {
       return null;
     }
     if (!context.read<SplashService>().isAppInitialized) {
-      return '${const SplashRoute().location}?from=${state.location}';
+      return '${const SplashRoute().location}?from=${state.uri.toString()}';
     }
 
     final pathInfo =
-        router.routeInformationParser.configuration.findMatch(state.location);
+        router.routeInformationParser.configuration.findMatch(state.uri.toString());
 
     final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
 
@@ -131,7 +111,7 @@ class AppRouter {
         : true; {{#has_authentication}}
 
     if (!_refreshListener.isLoggedIn && !hasPermissions) {
-      return '${const LoginRoute().location}?from=${state.location}';
+      return '${const LoginRoute().location}?from=${state.uri.toString()}';
     }{{/has_authentication}}
 
     
