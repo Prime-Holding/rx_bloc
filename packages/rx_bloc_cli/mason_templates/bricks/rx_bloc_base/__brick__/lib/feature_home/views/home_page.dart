@@ -134,17 +134,18 @@ class BranchContainer extends StatelessWidget {
       return Stack(
         children: children.mapIndexed(
           (int index, Widget navigator) {
+            final isCurrentIndex = index == currentIndex;
             return Opacity(
-              opacity: index == currentIndex ? 1 : 0,
+              opacity: isCurrentIndex ? 1 : 0,
               child: IgnorePointer(
-                ignoring: index != currentIndex,
+                ignoring: !isCurrentIndex,
                 child: TickerMode(
-                  enabled: index == currentIndex,
+                  enabled: isCurrentIndex,
                   child: navigator,
-                ),
               ),
-            );
-          },
+            ),
+          );
+        },
       ).toList());
-   }
+    }
 }

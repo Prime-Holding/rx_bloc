@@ -10,14 +10,14 @@ dependencies: {{#enable_dev_menu}}
   alice: ^0.3.3 {{/enable_dev_menu}}
   collection: ^1.17.1
   cupertino_icons: ^1.0.5
-  dio: ^5.2.1+1
+  dio: ^5.3.2
   equatable: ^2.0.5{{#analytics}}
-  firebase_analytics: ^10.4.3{{/analytics}}{{#uses_firebase}}
-  firebase_core: ^2.14.0{{/uses_firebase}}{{#push_notifications}}
-  firebase_messaging: ^14.6.4{{/push_notifications}}
+  firebase_analytics: ^10.4.4{{/analytics}}{{#uses_firebase}}
+  firebase_core: ^2.15.0{{/uses_firebase}}{{#push_notifications}}
+  firebase_messaging: ^14.6.5{{/push_notifications}}
   flutter:
     sdk: flutter{{#enable_social_logins}}
-  flutter_facebook_auth: ^6.0.0{{/enable_social_logins}}
+  flutter_facebook_auth: ^6.0.1{{/enable_social_logins}}
   flutter_local_notifications: ^15.1.0+1
   flutter_localizations:
     sdk: flutter
@@ -37,7 +37,7 @@ dependencies: {{#enable_dev_menu}}
   rx_bloc: ^5.0.0
   rx_bloc_list: ^4.0.0
   rxdart: ^0.27.7
-  shared_preferences: ^2.1.2
+  shared_preferences: ^2.2.0
   shelf: ^1.4.1 # This package is used for the local server (if not used, can be removed)
   shelf_router: ^1.1.4 # This package is used for the local server (if not used, can be removed)
   shelf_static: ^1.1.2 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
@@ -53,11 +53,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^2.3.0
-  json_serializable: ^6.7.0
+  json_serializable: ^6.7.1
   mockito: ^5.4.2 {{#enable_patrol}}
-  patrol: ^2.0.3 {{/enable_patrol}}
+  patrol: ^2.2.2 {{/enable_patrol}}
   r_flutter: 0.9.0
-  retrofit_generator: ^7.0.7
+  retrofit_generator: ^7.0.8
   rx_bloc_generator: ^7.0.0
   rx_bloc_test: ^4.0.0
   test: any {{#enable_patrol}}
