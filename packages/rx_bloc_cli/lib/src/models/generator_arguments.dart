@@ -54,6 +54,9 @@ class GeneratorArguments
   @override
   bool get otpEnabled => _authConfiguration.otpEnabled;
 
+  @override
+  bool get pinCodeEnabled => _authConfiguration.pinCodeEnabled;
+
   /// Social logins
   @override
   bool get socialLoginsEnabled => _authConfiguration.socialLoginsEnabled;

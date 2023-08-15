@@ -1,4 +1,5 @@
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
@@ -35,6 +36,7 @@ class BundleGenerator {
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
+  final _libPinCodeBundle = libPinCodeBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
@@ -87,6 +89,10 @@ class BundleGenerator {
     // Add feature OTP brick _bundle when needed
     if (arguments.otpEnabled) {
       _bundle.files.addAll(_featureOtpBundle.files);
+    }
+
+    if (arguments.pinCodeEnabled) {
+      _bundle.files.addAll(_libPinCodeBundle.files);
     }
 
     //Add lib_route to _bundle

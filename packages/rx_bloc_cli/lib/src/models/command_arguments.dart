@@ -85,6 +85,15 @@ enum CommandArguments {
     help: 'Enables OTP feature for the project',
   ),
 
+  /// Pin Code authentication
+  pinCode(
+    name: 'enable-pin-code',
+    type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable Pin Code authentication:',
+    help: 'Enables Pin Code feature for the project',
+  ),
+
   /// Patrol
   patrol(
     name: 'enable-patrol',
