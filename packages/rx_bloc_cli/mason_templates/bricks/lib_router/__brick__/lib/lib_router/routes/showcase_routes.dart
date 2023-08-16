@@ -1,7 +1,11 @@
 part of '../router.dart';
 
 {{#enable_feature_counter}}
-@TypedGoRoute<CounterRoute>(path: RoutesPath.counter)
+@immutable
+class CounterBranchData extends StatefulShellBranchData {
+  const CounterBranchData();
+}
+
 @immutable
 class CounterRoute extends GoRouteData implements RouteDataModel {
   const CounterRoute();
@@ -22,7 +26,11 @@ class CounterRoute extends GoRouteData implements RouteDataModel {
 {{/enable_feature_counter}}
 
 {{#enable_feature_widget_toolkit}}
-@TypedGoRoute<WidgetToolkitRoute>(path: RoutesPath.widgetToolkit)
+@immutable
+class WidgetToolkitBranchData extends StatefulShellBranchData {
+  const WidgetToolkitBranchData();
+}
+
 @immutable
 class WidgetToolkitRoute extends GoRouteData implements RouteDataModel {
   const WidgetToolkitRoute();
@@ -43,17 +51,11 @@ class WidgetToolkitRoute extends GoRouteData implements RouteDataModel {
 {{/enable_feature_widget_toolkit}}
 
 {{#enable_feature_deeplinks}}
-@TypedGoRoute<DeepLinksRoute>(
-  path: RoutesPath.deepLinks,
-  routes: <TypedGoRoute<GoRouteData>>[
-    TypedGoRoute<DeepLinkDetailsRoute>(
-      path: RoutesPath.deepLinkDetails,
-    ),
-    TypedGoRoute<EnterMessageRoute>(
-      path: RoutesPath.enterMessage,
-    ),
-  ],
-)
+@immutable
+class DeepLinkBranchData extends StatefulShellBranchData {
+  const DeepLinkBranchData();
+}
+
 @immutable
 class DeepLinksRoute extends GoRouteData implements RouteDataModel {
   const DeepLinksRoute();
