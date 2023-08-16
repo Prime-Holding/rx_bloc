@@ -40,7 +40,8 @@ class BundleGenerator {
   MasonBundle generate(GeneratorArguments arguments) {
     // Remove files when they are not needed by the specified features
     if (!arguments.analyticsEnabled) {
-      _bundle.files.removeWhere((file) => file.path == _analyticsFilePath);
+      _bundle.files.removeWhere(
+          (file) => file.path == BundleFilePaths.analyticsFilePath);
     }
     // Add counter brick to _bundle when needed
     if (arguments.counterEnabled) {
@@ -102,5 +103,9 @@ class BundleGenerator {
   }
 }
 
-final _analyticsFilePath =
-    'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart';
+/// Excluded file paths
+extension BundleFilePaths on BundleGenerator {
+  /// Analytics file path
+  static const analyticsFilePath =
+      'lib/base/data_sources/remote/interceptors/analytics_interceptor.dart';
+}
