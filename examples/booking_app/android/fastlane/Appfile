@@ -1,0 +1,7 @@
+package_name("com.primeholding.booking_app") # e.g. com.krausefx.app
+
+# Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+# Do not check it the specified file into any public source control repositories!
+json_key_file("")
+
+# For more info check out the following link: https://docs.flutter.dev/deployment/cd#fastlane

@@ -1,0 +1,463 @@
+require 'yaml'
+
+environments = ['development', 'staging', 'production']
+
+flavor_map = {
+    'development' => 'dev',
+    'staging' => 'staging'
+    'production' => 'prod'
+}
+
+target_map = {
+    'development' => 'lib/main_dev.dart',
+    'staging' => 'lib/main_staging.dart',
+    'production' => 'lib/main.dart'
+}
+
+bundle_id_map = {
+    'development' => 'com.primeholding.booking_app.dev',
+    'staging' => 'com.primeholding.booking_app.staging',
+    'production' => 'com.primeholding.booking_app'
+}
+
+provisioning_profile_map = {
+    'development' => 'BookingApp Mobile Dev Distribution',
+    'staging' => 'BookingApp Mobile Staging Distribution',
+    'production' => 'BookingApp Mobile Production Distribution'
+}
+
+firebase_app_id_map = {
+    'development' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+    'staging' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+    'production' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+}
+
+keychain_path = Dir.getwd + '/devops/credentials/booking-app-distribution.keychain'
+
+desc "Clones the credentials repository into devops/credentials.
+Expected environment variables:
+  - bamboo_mobile_distribution_repository_access_secret"
+private_lane :fetch_credentials do
+    ensure_env_vars(
+        env_vars: ['bamboo_mobile_distribution_repository_access_secret']
+    )
+
+    token = ENV["bamboo_mobile_distribution_repository_access_secret"]
+
+    Dir.chdir("../devops") do
+        unless Dir.exist?('credentials')
+            sh(
+                "git \
+                    -c http.sslVerify=false \
+                    -c http.extraHeader='Authorization: Bearer #{token}' \
+                    clone \
+                    https://primeholding.booking-app.com:8443/scm/mobile-ext/mobile-application-distribution.git \
+                    credentials"
+            )
+        end
+    end
+end
+
+desc "Generate code using flutter's build_runner package"
+private_lane :generate_code do
+    Dir.chdir('../apps/booking-app') do
+        sh('bin/build_runner_build.sh')
+    end
+end
+
+private_lane :set_platform do |options|
+    if options[:platform] == 'android'
+        self.runner.current_platform = :android
+    elsif options[:platform] == 'ios'
+        self.runner.current_platform = :ios
+    else
+        UI.user_error!('Unknown platform, expected values: android, ios')
+    end
+end
+
+private_lane :ensure_build_environment do |options|
+    unless environments.include?(options[:environment]) then
+        UI.user_error!("unexpected value for parameter 'environment', " +
+            "must be one of: development, staging, production")
+    end
+end
+
+private_lane :write_deployment_properties do |options|
+    Dir.chdir('../devops/artifacts') do
+        File.open('deployment.yaml', 'w') do |f|     
+            f.write("MOBILE_DEPLOYMENT_TARGET_PLATFORM: #{options[:platform]}\n")
+            f.write("MOBILE_DEPLOYMENT_ENVIRONMENT: #{options[:environment]}\n")
+            f.write("MOBILE_DEPLOYMENT_APPLICATION_ID: #{options[:application_id]}\n")
+            f.write("MOBILE_DEPLOYMENT_BUILD_NAME: #{options[:build_name]}\n")
+            f.write("MOBILE_DEPLOYMENT_BUILD_NUMBER: #{options[:build_number]}\n")
+        end
+    end
+end
+
+desc "Start an automatic build from Bamboo
+Expected Bamboo variables:
+    - bamboo.mobile.distribution.encryption.password
+    - bamboo.mobile.distribution.repository.access.secret
+    - bamboo.TagBuildTriggerReason.tagName
+Expected input parameters:
+    - platform: string (android, ios)
+Example:
+    fastlane build_bamboo platform:android"
+lane :build_bamboo do |options|
+    ensure_env_vars(
+        env_vars: ['bamboo_TagBuildTriggerReason_tagName']
+    )
+
+    pieces = ENV['bamboo_TagBuildTriggerReason_tagName'].split('-')
+
+    unless pieces.length == 3
+        UI.user_error!('unexpected version control tag value')
+    end
+
+    build_name = pieces[0]
+    build_number = pieces[1]
+    environment = pieces[2]
+
+    build_custom(
+        platform: options[:platform],
+        build_name: build_name,
+        build_number: build_number,
+        environment: environment
+    )
+end
+
+desc "Start a custom build
+Expected environment variables:
+    - bamboo_mobile_distribution_encryption_password
+    - bamboo_mobile_distribution_repository_access_secret
+Expected input parameters:
+    - platform: string (android, ios)
+    - build_name: string (1.2.0)
+    - build_number: integer (121)
+    - environment: string (development, sit, uat, production)
+Example:
+    fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:staging"
+lane :build_custom do |options|
+    environment = options[:environment]
+
+    ensure_build_environment(environment: environment)
+    set_platform(platform: options[:platform])
+
+    generate_code()
+    fetch_credentials()
+    install_credentials()
+
+    Dir.chdir('../devops') do
+        Dir.mkdir('artifacts') unless Dir.exist?('artifacts')
+        Pathname.new('artifacts').children.each { |p| p.rmtree }
+    end
+
+    begin
+        build(
+            environment: environment,
+            build_name: options[:build_name],
+            build_number: options[:build_number]
+        )
+
+        write_deployment_properties(
+            environment: environment,
+            platform: options[:platform],
+            application_id: bundle_id_map[environment],
+            build_name: options[:build_name],
+            build_number: options[:build_number]
+        )
+    ensure
+        post_build_clean_up()
+    end
+end
+
+platform :android do
+    desc "Decode credentials for Android build and deployment
+    Expected environment variables:
+      - bamboo_mobile_distribution_encryption_password
+    Creates the following environment variables:
+      - ANDROID_KEYSTORE_PATH
+      - ANDROID_KEYSTORE_ALIAS
+      - ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD
+      - ANDROID_KEYSTORE_PASSWORD"
+    private_lane :install_credentials do
+        ensure_env_vars(
+            env_vars: ['bamboo_mobile_distribution_encryption_password']
+        )
+
+        Dir.chdir("../devops/credentials") do
+            sh("./decode.sh android")
+            keystore_alias_file_path = Dir.getwd + "/decoded/android/keyAlias.txt"
+            keystore_key_password_file_path = Dir.getwd + "/decoded/android/keyPassword.txt"
+            keystore_password_file_path = Dir.getwd + "/decoded/android/storePassword.txt"
+            puts('Creating Android build environment variables')
+            ENV["ANDROID_KEYSTORE_PATH"] = Dir.getwd + "/decoded/android/android.jks"
+            ENV["ANDROID_KEYSTORE_ALIAS"] = File.read(keystore_alias_file_path).strip
+            ENV["ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD"] = File.read(keystore_key_password_file_path).strip
+            ENV["ANDROID_KEYSTORE_PASSWORD"] = File.read(keystore_password_file_path).strip
+        end
+    end
+
+    desc 'Build the mobile application for Android'
+    private_lane :build do |options|
+        Dir.chdir("../apps/booking-app") do
+            sh(
+                "flutter",
+                "build",
+                "appbundle",
+                "--obfuscate",
+                "--split-debug-info=../../devops/artifacts/",
+                "--build-name=" + options[:build_name],
+                "--build-number=" + options[:build_number],
+                "--flavor=" + flavor_map[options[:environment]],
+                "--target=" + target_map[options[:environment]]
+            )
+
+            sh(
+                "mv",
+                "build/app/outputs/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
+                "../../devops/artifacts/"
+            )
+        end
+    end
+
+    desc 'Clean up temporary build files'
+    private_lane :post_build_clean_up do
+        # nothing to do here for Android
+    end
+
+    desc 'Deploy the app to google play store'
+    private_lane :deploy_platform do |options|
+        Dir.chdir('../credentials') do
+            sh('./decode.sh deploy_android')
+        end
+
+        version_name = "#{options[:build_number]} (#{options[:build_name]}-#{options[:environment]})"
+
+        upload_to_play_store(
+            package_name: options[:application_id],
+            release_status: 'draft',
+            track: 'internal',
+            version_name: version_name,
+            json_key: File.expand_path('../credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
+            aab: File.expand_path("app-#{options[:environment]}-release.aab"),
+            skip_upload_changelogs: true,
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_metadata: true
+        )
+    end
+
+    desc 'Deploy the debug symbols to firebase'
+    private_lane :deploy_debug_symbols_platform do |options|
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-arm.symbols")
+        )
+
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-arm64.symbols")
+        )
+
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-x64.symbols")
+        )
+    end
+end
+
+platform :ios do
+    desc 'Decode credentials for iOS build and deployment
+    Expected environment variables:
+      - bamboo_mobile_distribution_encryption_password'
+    private_lane :install_credentials do
+        ensure_env_vars(
+            env_vars: [
+                'bamboo_mobile_distribution_encryption_password',
+            ]
+        )
+
+        Dir.chdir('../devops/credentials') do
+            sh('./decode.sh ios')
+
+            basedir = Dir.getwd + '/decoded/ios/'
+
+            certificate_password_file_path = basedir + 'distributionCertificatePassword.txt'
+            keychain_password_file_path = basedir + 'keychainPassword.txt'
+            certificate_password = File.read(certificate_password_file_path).strip
+            keychain_password = File.read(keychain_password_file_path).strip
+
+            create_keychain(
+                path: keychain_path,
+                password: keychain_password,
+                default_keychain: true
+            )
+
+            unlock_keychain(
+                path: keychain_path,
+                password: keychain_password
+            )
+
+            import_certificate(
+                certificate_path: basedir + 'booking_app_distribution.p12',
+                certificate_password: certificate_password,
+                keychain_path: keychain_path,
+                keychain_password: keychain_password
+            )
+
+            install_provisioning_profile(path: basedir + 'BookingApp_Mobile_Dev_Distribution.mobileprovision')
+            install_provisioning_profile(path: basedir + 'BookingApp_Mobile_Staging_Distribution.mobileprovision')
+            install_provisioning_profile(path: basedir + 'BookingApp_Mobile_Production_Distribution.mobileprovision')
+        end
+    end
+
+    desc 'Build the mobile application for iOS'
+    private_lane :build do |options|
+        Dir.chdir('../apps/booking-app') do
+            sh(
+                'flutter',
+                'build',
+                'ios',
+                '--obfuscate',
+                '--no-codesign',
+                '--split-debug-info=../../devops/artifacts',
+                '--build-name=' + options[:build_name],
+                '--build-number=' + options[:build_number],
+                '--flavor=' + flavor_map[options[:environment]],
+                '--target=' + target_map[options[:environment]]
+            )
+
+            MY_APP_ID = bundle_id_map[options[:environment]]
+            MY_PROFILE = provisioning_profile_map[options[:environment]]
+            MY_TEAM = 'ZNE622G954'
+
+            settings_to_override = {
+                :BUNDLE_IDENTIFIER => MY_APP_ID,
+                :PROVISIONING_PROFILE_SPECIFIER => MY_PROFILE,
+                :DEVELOPMENT_TEAM => MY_TEAM
+            }
+
+            gym(
+                workspace: 'booking-app/ios/Runner.xcworkspace',
+                scheme: flavor_map[options[:environment]],
+                xcargs: settings_to_override,
+                output_directory: '../devops/artifacts',
+                export_method: 'app-store',
+                export_options: {
+                    manageAppVersionAndBuildNumber: false,
+                    provisioningProfiles: {
+                        MY_APP_ID => MY_PROFILE
+                    }
+                }
+            )
+        end
+    end
+
+    desc 'Clean up temporary build files'
+    private_lane :post_build_clean_up do
+        delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
+    end
+
+    desc 'Deploy the app to apple testflight'
+    private_lane :deploy_platform do |options|
+        Dir.chdir('../credentials') do
+            sh('./decode.sh deploy_ios')
+        end
+
+        api_key = app_store_connect_api_key(
+            key_id: 'AAAAAAAAAA',
+            issuer_id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey_AAAAAAAAAA.p8'),
+        )
+    
+        upload_to_testflight(
+            api_key: api_key,
+            skip_waiting_for_build_processing: true,
+            ipa: File.expand_path('Runner.ipa'),
+        )
+    end
+
+    desc 'Deploy the debug symbols to firebase'
+    private_lane :deploy_debug_symbols_platform do |options|
+        # TODO: this should work with flutter 3.12.0+
+        # https://github.com/firebase/flutterfire/issues/10994#issuecomment-1609931401
+
+        sh(
+            'firebase',
+            'crashlytics:symbols:upload',
+            '--app=' + options[:firebase_application_id],
+            'app.ios-arm64.symbols'
+        )
+
+        # TODO: upload dSYM
+    end
+end
+
+desc 'Deploy the build artifacts to the environment specified in deployment.yaml
+Expected environment variables:
+    - bamboo_mobile_distribution_encryption_password
+    - bamboo_mobile_distribution_repository_access_secret'
+lane :deploy do
+    fetch_credentials()
+
+    Dir.chdir('../devops/artifacts') do
+        properties = YAML.load_file('deployment.yaml')
+
+        set_platform(platform: properties['MOBILE_DEPLOYMENT_TARGET_PLATFORM'])
+        ensure_build_environment(environment: properties['MOBILE_DEPLOYMENT_ENVIRONMENT'])
+
+        deploy_platform(
+            environment: properties['MOBILE_DEPLOYMENT_ENVIRONMENT'],
+            application_id: properties['MOBILE_DEPLOYMENT_APPLICATION_ID'],
+            build_name: properties['MOBILE_DEPLOYMENT_BUILD_NAME'],
+            build_number: properties['MOBILE_DEPLOYMENT_BUILD_NUMBER']
+        )
+    end
+end
+
+desc 'Deploy the debug symbols to firebase
+Expected environment variables:
+    - bamboo_mobile_distribution_encryption_password
+    - bamboo_mobile_distribution_repository_access_secret'
+lane :deploy_debug_symbols do
+    fetch_credentials()
+
+    Dir.chdir('../devops/credentials') do
+        sh('./decode.sh firebase')
+
+        firebase_token_file_path = Dir.getwd + '/decoded/firebase/firebaseToken.txt'
+        ENV['FIREBASE_TOKEN'] = File.read(firebase_token_file_path).strip
+    end
+
+    Dir.chdir('../devops/artifacts') do
+        properties = YAML.load_file('deployment.yaml')
+        platform = properties['MOBILE_DEPLOYMENT_TARGET_PLATFORM']
+        environment = properties['MOBILE_DEPLOYMENT_ENVIRONMENT']
+
+        set_platform(platform: platform)
+        ensure_build_environment(environment: environment)
+
+        firebase_application_id = firebase_app_id_map[environment][platform]
+
+        deploy_debug_symbols_platform(
+            environment: environment,
+            firebase_application_id: firebase_application_id,
+        )
+    end
+end
