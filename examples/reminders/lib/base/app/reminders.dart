@@ -30,10 +30,8 @@ class Reminders extends StatelessWidget {
   final EnvironmentConfig config;
 
   @override
-  Widget build(BuildContext context) => MultiProvider(
-        providers: AppDependencies.of(context, config).providers,
-        child: _MyMaterialApp(config),
-      );
+  Widget build(BuildContext context) =>
+      AppDependencies.of(context, config, _MyMaterialApp(config));
 }
 
 /// Wrapper around the MaterialApp widget to provide additional functionality
@@ -56,10 +54,11 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     if (widget._config != EnvironmentConfig.dev) {
       _addInterceptors();
     }
-
-    goRouter = AppRouter(
-      context.read<CoordinatorBlocType>(),
-    ).router;
+    final rootNavigatorKey = GlobalKey<NavigatorState>();
+    final shellNavigatorKey = GlobalKey<NavigatorState>();
+    goRouter = AppRouter(context.read<CoordinatorBlocType>(), rootNavigatorKey,
+            shellNavigatorKey)
+        .router;
 
     super.initState();
   }

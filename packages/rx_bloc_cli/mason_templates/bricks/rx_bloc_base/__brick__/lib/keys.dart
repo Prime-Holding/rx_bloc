@@ -4,10 +4,10 @@ typedef K = Keys;
 
 class Keys {
   const Keys();
-
+  {{#enable_login}}
   static const loginButton = Key('loginButton');
   static const loginEmail = Key('loginEmail');
-  static const loginPassword = Key('loginPassword');
+  static const loginPassword = Key('loginPassword');{{/enable_login}}
   static const bottomNavigationBar = Key('bottomNavigationBar');
   {{#enable_feature_counter}}
   static const counterCount = Key('counterCount');

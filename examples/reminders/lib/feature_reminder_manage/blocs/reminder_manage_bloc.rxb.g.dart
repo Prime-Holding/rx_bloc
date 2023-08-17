@@ -29,7 +29,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
   final _$setNameEvent = BehaviorSubject<String>.seeded('');
 
   /// Тhe [Subject] where events sink to by calling [create]
-  final _$createEvent = PublishSubject<_CreateEventArgs>();
+  final _$createEvent = PublishSubject<({DateTime dueDate, bool complete})>();
 
   /// Тhe [Subject] where events sink to by calling [delete]
   final _$deleteEvent = PublishSubject<ReminderModel>();
@@ -66,7 +66,7 @@ abstract class $ReminderManageBloc extends RxBlocBase
     required DateTime dueDate,
     required bool complete,
   }) =>
-      _$createEvent.add(_CreateEventArgs(
+      _$createEvent.add((
         dueDate: dueDate,
         complete: complete,
       ));
@@ -121,15 +121,5 @@ abstract class $ReminderManageBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [ReminderManageBlocEvents.create] event
-class _CreateEventArgs {
-  const _CreateEventArgs({
-    required this.dueDate,
-    required this.complete,
-  });
-
-  final DateTime dueDate;
-
-  final bool complete;
-}
+// ignore: unused_element
+typedef _CreateEventArgs = ({DateTime dueDate, bool complete});

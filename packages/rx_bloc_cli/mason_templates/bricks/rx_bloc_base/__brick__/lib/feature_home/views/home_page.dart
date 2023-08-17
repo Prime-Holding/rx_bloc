@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -15,28 +16,33 @@ import '../../lib_router/router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
-    required this.child,
-    Key? key,
-  }) : super(key: key);
+    required this.currentIndex,
+    required this.branchNavigators,
+    required this.onNavigationItemSelected,
+    super.key,
+  });
 
-  final Widget child;
+  final int currentIndex;
+  final List<Widget> branchNavigators;
+  final void Function(int) onNavigationItemSelected;
 
   @override
   Widget build(BuildContext context) {
     final list = navItemsList(context);
-    GoRouter router = GoRouter.of(context);
     return Scaffold(
       body: RxBlocListener<RouterBlocType, ErrorModel>(
         state: (bloc) => bloc.states.errors,
         listener: (context, state) => _onError(context, state),
-        child: child,
+        child: BranchContainer(
+          currentIndex: currentIndex,
+          children: branchNavigators,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         key: K.bottomNavigationBar,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _getCurrentIndex(list, router),
-        onTap: (index) =>
-            context.read<RouterBlocType>().events.go(list[index].route),
+        currentIndex: currentIndex,
+        onTap: onNavigationItemSelected,
         items: list
             .map(
               (item) => BottomNavigationBarItem(
@@ -47,15 +53,6 @@ class HomePage extends StatelessWidget {
             .toList(),
       ),
     );
-  }
-
-  int _getCurrentIndex(List<NavMenuItem> list, GoRouter router) {
-    var index = list.indexWhere((item) {
-      final routePath =
-          router.routeInformationParser.matcher.findMatch(router.location);
-      return routePath.fullPath.startsWith(item.routePath);
-    });
-    return index.isNegative ? 0 : index;
   }
 
   List<NavMenuItem> navItemsList(BuildContext context) => [
@@ -120,4 +117,35 @@ class NavMenuItem {
   final Icon icon;
   final RouteDataModel route;
   final String routePath;
+}
+
+class BranchContainer extends StatelessWidget {
+  const BranchContainer({
+    super.key,
+    required this.currentIndex,
+    required this.children,
+    });
+
+    final int currentIndex;
+    final List<Widget> children;
+
+    @override
+    Widget build(BuildContext context) {
+      return Stack(
+        children: children.mapIndexed(
+          (int index, Widget navigator) {
+            final isCurrentIndex = index == currentIndex;
+            return Opacity(
+              opacity: isCurrentIndex ? 1 : 0,
+              child: IgnorePointer(
+                ignoring: !isCurrentIndex,
+                child: TickerMode(
+                  enabled: isCurrentIndex,
+                  child: navigator,
+              ),
+            ),
+          );
+        },
+      ).toList());
+    }
 }

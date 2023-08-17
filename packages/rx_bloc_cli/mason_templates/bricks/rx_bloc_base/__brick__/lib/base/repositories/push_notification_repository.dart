@@ -68,10 +68,10 @@ class PushNotificationRepository {
       .execute(() => _localDataSource.setNotificationsSubscribed(subscribed));
 
   Future<bool> notificationsSubscribed() =>
-      _errorMapper.execute(() => _localDataSource.notificationsSubscribed());
+      _errorMapper.execute(_localDataSource.notificationsSubscribed);
 
   Future<bool> notificationsEnabledUser() =>
-      _errorMapper.execute(() => _localDataSource.notificationsEnabled());
+      _errorMapper.execute(_localDataSource.notificationsEnabled);
 
   Future<void> _setNotificationsEnabledUser(bool enabled) => _errorMapper
       .execute(() => _localDataSource.setNotificationsEnabled(enabled));
@@ -107,7 +107,7 @@ class PushNotificationRepository {
     final token = await getToken();
     if (token != null) {
       final requestModel = PushNotificationDataRequestModel(token);
-      return await _errorMapper.execute(() => action(requestModel));
+      return await _errorMapper.execute(() async => action(requestModel));
     }
   }
 }

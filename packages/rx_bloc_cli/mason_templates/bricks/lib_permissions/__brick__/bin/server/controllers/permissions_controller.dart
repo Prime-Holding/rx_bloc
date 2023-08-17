@@ -1,14 +1,14 @@
 {{> licence.dart }}
 
 import 'package:shelf/shelf.dart';
-
-import '../services/authentication_service.dart';
+{{#has_authentication}}
+import '../services/authentication_service.dart';{{/has_authentication}}
 import '../utils/api_controller.dart';
 
 class PermissionsController extends ApiController {
-  PermissionsController(this._authenticationService);
+  PermissionsController({{#has_authentication}}this._authenticationService{{/has_authentication}});{{#has_authentication}}
 
-  final AuthenticationService _authenticationService;
+  final AuthenticationService _authenticationService;{{/has_authentication}}
 
   @override
   void registerRequests(WrappedRouter router) {
@@ -19,7 +19,7 @@ class PermissionsController extends ApiController {
     );
   }
 
-  Response permissionsHandler(Request request) {
+  Response permissionsHandler(Request request) { {{#has_authentication}}
     final headers = request.headers;
     if (!headers.containsKey(AuthenticationService.authHeader)) {
       return responseBuilder.buildOK(data: {
@@ -36,7 +36,7 @@ class PermissionsController extends ApiController {
       });
     }
 
-    _authenticationService.isAuthenticated(request);
+    _authenticationService.isAuthenticated(request);{{/has_authentication}}
 
     return responseBuilder.buildOK(data: {
       'DashboardRoute': true,
@@ -44,8 +44,8 @@ class PermissionsController extends ApiController {
       'SplashRoute': true,{{#enable_feature_counter}}
       'CounterRoute': true,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
       'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
-      'NotificationsRoute': true,
-      'LoginRoute': true,{{#enable_feature_deeplinks}}
+      'NotificationsRoute': true,{{#has_authentication}}
+      'LoginRoute': true,{{/has_authentication}}{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,
       'DeepLinkDetailsRoute': true,{{/enable_feature_deeplinks}}

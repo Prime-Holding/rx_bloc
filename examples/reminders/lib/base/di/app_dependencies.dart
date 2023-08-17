@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
+import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
@@ -24,31 +25,52 @@ import '../repositories/reminders_repository.dart';
 import '../services/firebase_service.dart';
 import '../services/reminders_service.dart';
 
-class AppDependencies {
-  AppDependencies._(this.context, this.config);
+class AppDependencies extends StatefulWidget {
+  const AppDependencies._(this.context, this.config, this.child);
 
   factory AppDependencies.of(
-          BuildContext context, EnvironmentConfig envConfig) =>
+          BuildContext context, EnvironmentConfig envConfig, Widget child) =>
       _instance != null
           ? _instance!
-          : _instance = AppDependencies._(context, envConfig);
+          : _instance = AppDependencies._(context, envConfig, child);
 
   static AppDependencies? _instance;
 
   final BuildContext context;
   final EnvironmentConfig config;
+  final Widget child;
+  @override
+  State<AppDependencies> createState() => _AppDependenciesState();
+}
 
-  /// List of all providers used throughout the app
-  List<SingleChildWidget> get providers => [
-        ..._analytics,
-        ..._httpClients,
-        ..._dataStorages,
-        ..._dataSources,
-        ..._repositories,
-        ..._services,
-        ..._blocs,
-        ..._interceptors,
-      ];
+class _AppDependenciesState extends State<AppDependencies> {
+  late GlobalKey<NavigatorState> rootNavigatorKey;
+
+  late GlobalKey<NavigatorState> shellNavigatorKey;
+
+  @override
+  void initState() {
+    super.initState();
+    rootNavigatorKey = GlobalKey<NavigatorState>();
+    shellNavigatorKey = GlobalKey<NavigatorState>();
+  }
+
+  @override
+  Widget build(BuildContext context) => MultiProvider(
+        /// List of all providers used throughout the app
+        providers: [
+          ..._analytics,
+          ..._appRouter,
+          ..._httpClients,
+          ..._dataStorages,
+          ..._dataSources,
+          ..._repositories,
+          ..._services,
+          ..._blocs,
+          ..._interceptors,
+        ],
+        child: widget.child,
+      );
 
   List<Provider> get _analytics => [
         Provider<FirebaseAnalytics>(
@@ -57,6 +79,16 @@ class AppDependencies {
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
         ),
+      ];
+
+  List<Provider> get _appRouter => [
+        Provider<AppRouter>(
+          create: (context) => AppRouter(
+            context.read(),
+            rootNavigatorKey,
+            shellNavigatorKey,
+          ),
+        )
       ];
 
   List<Provider> get _httpClients => [

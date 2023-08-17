@@ -28,8 +28,3 @@ class AppRouter {
     ),
   );
 }
-
-abstract class RouteData {
-  String get permissionName;
-  String get routeLocation;
-}

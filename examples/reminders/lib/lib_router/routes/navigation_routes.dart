@@ -2,7 +2,7 @@ part of '../router.dart';
 
 @TypedGoRoute<DashboardRoute>(path: RoutesPath.dashboard)
 @immutable
-class DashboardRoute extends GoRouteData implements RouteData {
+class DashboardRoute extends GoRouteData implements RouteDataModel {
   const DashboardRoute();
 
   @override
@@ -18,7 +18,7 @@ class DashboardRoute extends GoRouteData implements RouteData {
 
 @TypedGoRoute<RemindersRoute>(path: RoutesPath.reminders)
 @immutable
-class RemindersRoute extends GoRouteData implements RouteData {
+class RemindersRoute extends GoRouteData implements RouteDataModel {
   const RemindersRoute();
 
   @override

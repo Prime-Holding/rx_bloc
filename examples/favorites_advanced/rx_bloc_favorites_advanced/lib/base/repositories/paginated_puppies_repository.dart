@@ -49,8 +49,8 @@ class PaginatedPuppiesRepository implements PuppiesRepository {
       _repository.fetchFullEntities(ids);
 
   @override
-  Future<PickedFile?> pickPuppyImage(ImagePickerAction source) =>
-      pickPuppyImage(source);
+  Future<XFile?> pickPuppyImage(ImagePickerAction source) =>
+      _repository.pickPuppyImage(source);
 
   @override
   Future<Puppy> updatePuppy(String puppyId, Puppy newValue) =>

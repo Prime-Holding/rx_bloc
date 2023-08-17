@@ -1,3 +1,25 @@
+## [3.0.0]
+Contains breaking changes
+* Migrated command parameters from options to flags
+```sh
+# < 3.0.0
+--enable-login=true
+--enable-social-logins=false
+# = 3.0.0
+--enable-login
+--no-enable-social-logins
+```
+* `EnvironmentConfig` is transformed to enchanced enum
+* `ErrorModel`, `GenericErrorModel`, `UnknownErrorModel` are moved to `widget_toolkit`'s models
+* Updated project dependencies
+* Added interactive configuration flag `--interactive` (enabled by default)
+* Login with email can be enabled with flag `--enable-login` (enabled by default)
+* OTP can be enabled  with flag `--enable-otp` (disabled by default)
+* Improve notifications infrastructure
+
+## [2.7.1]
+* Replaced local `ErrorModel`, `GenericErrorModel` and `UnknownErrorModel` with the ones from `widget_toolkit` package
+
 ## [2.7.0]
 * Added parameter `enable-dev-menu` for enabling dev menu (proxy debugging using Alice and Charles)
 

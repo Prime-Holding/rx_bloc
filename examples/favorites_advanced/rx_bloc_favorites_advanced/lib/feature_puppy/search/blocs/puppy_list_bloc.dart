@@ -20,7 +20,7 @@ abstract class PuppyListEvents {
 
   @RxBlocEvent(
     type: RxBlocEventType.behaviour,
-    seed: _ReloadEventArgs(reset: true, fullReset: false),
+    seed: (reset: true, fullReset: false),
   )
   void reload({required bool reset, bool fullReset = false});
 }

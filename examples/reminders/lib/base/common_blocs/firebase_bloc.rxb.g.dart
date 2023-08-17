@@ -20,7 +20,7 @@ abstract class $FirebaseBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [logIn]
-  final _$logInEvent = PublishSubject<_LogInEventArgs>();
+  final _$logInEvent = PublishSubject<({bool anonymous, bool setToFalse})>();
 
   /// Тhe [Subject] where events sink to by calling [checkIfUserIsLoggedIn]
   final _$checkIfUserIsLoggedInEvent = PublishSubject<void>();
@@ -54,7 +54,7 @@ abstract class $FirebaseBloc extends RxBlocBase
     bool anonymous = false,
     bool setToFalse = false,
   }) =>
-      _$logInEvent.add(_LogInEventArgs(
+      _$logInEvent.add((
         anonymous: anonymous,
         setToFalse: setToFalse,
       ));
@@ -116,15 +116,5 @@ abstract class $FirebaseBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [FirebaseBlocEvents.logIn] event
-class _LogInEventArgs {
-  const _LogInEventArgs({
-    this.anonymous = false,
-    this.setToFalse = false,
-  });
-
-  final bool anonymous;
-
-  final bool setToFalse;
-}
+// ignore: unused_element
+typedef _LogInEventArgs = ({bool anonymous, bool setToFalse});

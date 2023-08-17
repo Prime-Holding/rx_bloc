@@ -33,12 +33,12 @@ enum RouteModel {
     pathName: RoutesPath.notifications,
     fullPath: '/notifications',
     permissionName: RoutePermissions.notifications,
-  ),
+  ){{#has_authentication}},
   login(
     pathName: RoutesPath.login,
     fullPath: '/login',
     permissionName: RoutePermissions.login,
-  ){{#enable_feature_deeplinks}},
+  ){{/has_authentication}}{{#enable_feature_deeplinks}},
   enterMessage(
     pathName: RoutesPath.enterMessage,
     fullPath: '/enterMessage',

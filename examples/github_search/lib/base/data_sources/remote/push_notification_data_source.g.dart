@@ -21,7 +21,8 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   String? baseUrl;
 
   @override
-  Future<void> subscribePushToken(pushToken) async {
+  Future<void> subscribePushToken(
+      PushNotificationDataRequestModel pushToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -38,12 +39,16 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
           queryParameters: queryParameters,
           data: _data,
         )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    return null;
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
   }
 
   @override
-  Future<void> unsubscribePushToken(pushToken) async {
+  Future<void> unsubscribePushToken(
+      PushNotificationDataRequestModel pushToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -60,12 +65,15 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
           queryParameters: queryParameters,
           data: _data,
         )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    return null;
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
   }
 
   @override
-  Future<void> sendPushMessage(message) async {
+  Future<void> sendPushMessage(PushMessageRequestModel message) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -82,8 +90,11 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
           queryParameters: queryParameters,
           data: _data,
         )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    return null;
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
@@ -97,5 +108,22 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
       }
     }
     return requestOptions;
+  }
+
+  String _combineBaseUrls(
+    String dioBaseUrl,
+    String? baseUrl,
+  ) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
+      return dioBaseUrl;
+    }
+
+    final url = Uri.parse(baseUrl);
+
+    if (url.isAbsolute) {
+      return url.toString();
+    }
+
+    return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }

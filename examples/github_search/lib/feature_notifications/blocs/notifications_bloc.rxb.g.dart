@@ -27,7 +27,8 @@ abstract class $NotificationsBloc extends RxBlocBase
   final _$requestNotificationPermissionsEvent = PublishSubject<void>();
 
   /// Тhe [Subject] where events sink to by calling [sendMessage]
-  final _$sendMessageEvent = PublishSubject<_SendMessageEventArgs>();
+  final _$sendMessageEvent =
+      PublishSubject<({String message, String? title, int? delay})>();
 
   /// The state of [permissionsAuthorized] implemented in
   /// [_mapToPermissionsAuthorizedState]
@@ -44,8 +45,8 @@ abstract class $NotificationsBloc extends RxBlocBase
     String? title,
     int? delay,
   }) =>
-      _$sendMessageEvent.add(_SendMessageEventArgs(
-        message,
+      _$sendMessageEvent.add((
+        message: message,
         title: title,
         delay: delay,
       ));
@@ -70,18 +71,5 @@ abstract class $NotificationsBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [NotificationsBlocEvents.sendMessage] event
-class _SendMessageEventArgs {
-  const _SendMessageEventArgs(
-    this.message, {
-    this.title,
-    this.delay,
-  });
-
-  final String message;
-
-  final String? title;
-
-  final int? delay;
-}
+// ignore: unused_element
+typedef _SendMessageEventArgs = ({String message, String? title, int? delay});

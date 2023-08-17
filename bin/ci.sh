@@ -2,6 +2,7 @@
 
 CURRENT_DIR=$(pwd)
 cd packages/rx_bloc && bin/ci.sh && cd "$CURRENT_DIR" || exit
+cd packages/rx_bloc_cli && bin/ci.sh && cd "$CURRENT_DIR" || exit
 cd packages/rx_bloc_generator && bin/ci.sh && cd "$CURRENT_DIR" || exit
 cd packages/rx_bloc_test && bin/ci.sh && cd "$CURRENT_DIR" || exit
 

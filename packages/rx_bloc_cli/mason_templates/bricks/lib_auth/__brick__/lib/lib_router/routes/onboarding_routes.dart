@@ -1,5 +1,6 @@
 part of '../router.dart';
 
+{{#has_authentication}}
 @TypedGoRoute<LoginRoute>(path: RoutesPath.login)
 @immutable
 class LoginRoute extends GoRouteData implements RouteDataModel {
@@ -9,7 +10,7 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const LoginPageWithDependencies(),
+        child: {{#enable_login}}const LoginPageWithDependencies(){{/enable_login}}{{^enable_login}}const LoginPage(){{/enable_login}},
       );
 
   @override
@@ -17,8 +18,7 @@ class LoginRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get routeLocation => location;
-}
-{{#enable_feature_otp}}
+}{{/has_authentication}}{{#enable_feature_otp}}
 
 @TypedGoRoute<OtpRoute>(path: RoutesPath.otpRoute)
 @immutable
