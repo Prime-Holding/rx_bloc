@@ -9,9 +9,12 @@ Contains breaking changes
 --enable-login
 --no-enable-social-logins
 ```
+* `EnvironmentConfig` is transformed to enchanced enum
+* `ErrorModel`, `GenericErrorModel`, `UnknownErrorModel` are moved to `widget_toolkit`'s models
 * Updated project dependencies
-* Added interactive configuration flag (enabled by default)
-* Login with email can be enabled or disabled (enabled by default)
+* Added interactive configuration flag `--interactive` (enabled by default)
+* Login with email can be enabled with flag `--enable-login` (enabled by default)
+* OTP can be enabled  with flag `--enable-otp` (disabled by default)
 
 ## [2.7.1]
 * Replaced local `ErrorModel`, `GenericErrorModel` and `UnknownErrorModel` with the ones from `widget_toolkit` package
