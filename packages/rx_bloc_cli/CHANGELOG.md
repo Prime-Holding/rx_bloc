@@ -15,6 +15,7 @@ Contains breaking changes
 * Added interactive configuration flag `--interactive` (enabled by default)
 * Login with email can be enabled with flag `--enable-login` (enabled by default)
 * OTP can be enabled  with flag `--enable-otp` (disabled by default)
+* Improve notifications infrastructure
 
 ## [2.7.1]
 * Replaced local `ErrorModel`, `GenericErrorModel` and `UnknownErrorModel` with the ones from `widget_toolkit` package
