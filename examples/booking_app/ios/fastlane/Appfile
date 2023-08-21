@@ -1,8 +1,0 @@
-app_identifier("com.primeholding.booking_app") # The bundle identifier of your app
-apple_id("david.djordjevic@primeholding.com") # Your Apple Developer Portal username
-
-team_id("ZNE622G954") # Developer Portal Team ID
-itc_team_id("118704216") # App Store Connect Team ID
-
-# For more information about the Appfile, see: https://docs.fastlane.tools/advanced/#appfile
-# For more info check out the following link: https://docs.flutter.dev/deployment/cd#fastlane

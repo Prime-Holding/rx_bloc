@@ -1,0 +1,1 @@
+fastlane build_custom environment:development platform:android

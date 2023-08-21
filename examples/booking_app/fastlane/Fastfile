@@ -4,7 +4,7 @@ environments = ['development', 'staging', 'production']
 
 flavor_map = {
     'development' => 'dev',
-    'staging' => 'staging'
+    'staging' => 'staging',
     'production' => 'prod'
 }
 
@@ -47,29 +47,29 @@ desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
   - bamboo_mobile_distribution_repository_access_secret"
 private_lane :fetch_credentials do
-    ensure_env_vars(
-        env_vars: ['bamboo_mobile_distribution_repository_access_secret']
-    )
+    #ensure_env_vars(
+    #    env_vars: ['bamboo_mobile_distribution_repository_access_secret']
+    #)
+    # No additional creds should be considered if public repo
+    #token = ENV["bamboo_mobile_distribution_repository_access_secret"]
 
-    token = ENV["bamboo_mobile_distribution_repository_access_secret"]
-
-    Dir.chdir("../devops") do
-        unless Dir.exist?('credentials')
-            sh(
-                "git \
-                    -c http.sslVerify=false \
-                    -c http.extraHeader='Authorization: Bearer #{token}' \
-                    clone \
-                    https://primeholding.booking-app.com:8443/scm/mobile-ext/mobile-application-distribution.git \
-                    credentials"
-            )
-        end
-    end
+    #Dir.chdir("../devops") do
+    #    unless Dir.exist?('credentials')
+    #        sh(
+    #            "git \
+    #                -c http.sslVerify=false \
+    #                -c http.extraHeader='Authorization: Bearer #{token}' \
+    #                clone \
+    #                https://github.com/Prime-Holding/rx_bloc/tree/fecfb6d8543bf915403e23b6ebf18203e986a911/examples/booking_app \
+    #                credentials"
+    #        )
+    #    end
+    #end
 end
 
 desc "Generate code using flutter's build_runner package"
 private_lane :generate_code do
-    Dir.chdir('../apps/booking-app') do
+    Dir.chdir('..') do
         sh('bin/build_runner_build.sh')
     end
 end
@@ -190,9 +190,9 @@ platform :android do
       - ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD
       - ANDROID_KEYSTORE_PASSWORD"
     private_lane :install_credentials do
-        ensure_env_vars(
-            env_vars: ['bamboo_mobile_distribution_encryption_password']
-        )
+        #ensure_env_vars(
+        #    env_vars: ['bamboo_mobile_distribution_encryption_password']
+        #)
 
         Dir.chdir("../devops/credentials") do
             sh("./decode.sh android")
@@ -209,7 +209,7 @@ platform :android do
 
     desc 'Build the mobile application for Android'
     private_lane :build do |options|
-        Dir.chdir("../apps/booking-app") do
+        Dir.chdir("..") do
             sh(
                 "flutter",
                 "build",
@@ -329,7 +329,7 @@ platform :ios do
 
     desc 'Build the mobile application for iOS'
     private_lane :build do |options|
-        Dir.chdir('../apps/booking-app') do
+        Dir.chdir('..') do
             sh(
                 'flutter',
                 'build',
