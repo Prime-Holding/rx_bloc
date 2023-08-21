@@ -20,7 +20,7 @@ abstract class $TestBloc extends RxBlocBase
   final _compositeSubscription = CompositeSubscription();
 
   /// Тhe [Subject] where events sink to by calling [setLoading]
-  final _$setLoadingEvent = PublishSubject<_SetLoadingEventArgs>();
+  final _$setLoadingEvent = PublishSubject<({bool isLoading, String tag})>();
 
   /// The state of [isLoadingWithTag] implemented in
   /// [_mapToIsLoadingWithTagState]
@@ -28,8 +28,14 @@ abstract class $TestBloc extends RxBlocBase
       _mapToIsLoadingWithTagState();
 
   @override
-  void setLoading(bool isLoading, {String tag = ''}) =>
-      _$setLoadingEvent.add(_SetLoadingEventArgs(isLoading, tag: tag));
+  void setLoading(
+    bool isLoading, {
+    String tag = '',
+  }) =>
+      _$setLoadingEvent.add((
+        isLoading: isLoading,
+        tag: tag,
+      ));
 
   @override
   Stream<LoadingWithTag> get isLoadingWithTag => _isLoadingWithTagState;
@@ -50,12 +56,5 @@ abstract class $TestBloc extends RxBlocBase
   }
 }
 
-/// Helps providing the arguments in the [Subject.add] for
-/// [TestBlocEvents.setLoading] event
-class _SetLoadingEventArgs {
-  const _SetLoadingEventArgs(this.isLoading, {this.tag = ''});
-
-  final bool isLoading;
-
-  final String tag;
-}
+// ignore: unused_element
+typedef _SetLoadingEventArgs = ({bool isLoading, String tag});
