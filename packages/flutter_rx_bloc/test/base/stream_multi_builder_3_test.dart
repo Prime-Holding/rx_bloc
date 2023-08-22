@@ -41,18 +41,19 @@ void main() {
       final key = GlobalKey();
       final controller1 = StreamController<String>();
       final controller2 = StreamController<String>();
+      final controller3 = StreamController<String>();
       await tester.pumpWidget(StreamMultiBuilder3<String, String, String>(
         key: key,
         stream1: controller1.stream,
         stream2: controller2.stream,
-        stream3: null,
+        stream3: controller3.stream,
         builder: snapshotText,
       ));
       expect(
           find.text(
             'AsyncSnapshot<String>(ConnectionState.waiting, null, null, null)',
           ),
-          findsNWidgets(2));
+          findsNWidgets(3));
       await tester.pumpWidget(StreamMultiBuilder3<String, String, String>(
         key: key,
         builder: snapshotText,
@@ -103,24 +104,28 @@ void main() {
       final key = GlobalKey();
       final controller1 = StreamController<String>();
       final controller2 = StreamController<String>();
+      final controller3 = StreamController<String>();
       await tester.pumpWidget(StreamMultiBuilder3<String, String, String>(
         key: key,
         stream1: controller1.stream,
         stream2: controller2.stream,
-        stream3: null,
+        stream3: controller3.stream,
         builder: snapshotText,
       ));
       expect(
           find.text(
             'AsyncSnapshot<String>(ConnectionState.waiting, null, null, null)',
           ),
-          findsNWidgets(2));
+          findsNWidgets(3));
       controller1
         ..add('1-1')
         ..add('2-1');
       controller2
         ..add('1-2')
         ..add('2-2');
+      controller3
+        ..add('1-3')
+        ..add('2-3');
       await eventFiring(tester);
       expect(
         find.text(
@@ -132,22 +137,32 @@ void main() {
             'AsyncSnapshot<String>(ConnectionState.active, 2-2, null, null)'),
         findsOneWidget,
       );
+      expect(
+        find.text(
+            'AsyncSnapshot<String>(ConnectionState.active, 2-3, null, null)'),
+        findsOneWidget,
+      );
       controller1
         ..add('3-1')
         ..addError('bad', StackTrace.fromString('trace'));
       controller2
         ..add('3-2')
         ..addError('bad', StackTrace.fromString('trace'));
+      controller3
+        ..add('3-3')
+        ..addError('bad', StackTrace.fromString('trace'));
       await eventFiring(tester);
       expect(
           find.text(
             'AsyncSnapshot<String>(ConnectionState.active, null, bad, trace)',
           ),
-          findsNWidgets(2));
+          findsNWidgets(3));
       controller1.add('4-1');
       controller2.add('4-2');
+      controller3.add('4-3');
       unawaited(controller1.close());
       unawaited(controller2.close());
+      unawaited(controller3.close());
       await eventFiring(tester);
       expect(
           find.text(
@@ -157,18 +172,24 @@ void main() {
           find.text(
               'AsyncSnapshot<String>(ConnectionState.done, 4-2, null, null)'),
           findsOneWidget);
+      expect(
+          find.text(
+              'AsyncSnapshot<String>(ConnectionState.done, 4-3, null, null)'),
+          findsOneWidget);
     });
     testWidgets('runs the builder using given initial data',
         (WidgetTester tester) async {
       final controller1 = StreamController<String>();
       final controller2 = StreamController<String>();
+      final controller3 = StreamController<String>();
       await tester.pumpWidget(StreamMultiBuilder3<String, String, String>(
         stream1: controller1.stream,
         stream2: controller2.stream,
-        stream3: null,
+        stream3: controller3.stream,
         builder: snapshotText,
         initialData1: 'I-1',
         initialData2: 'I-2',
+        initialData3: 'I-3',
       ));
       expect(
           find.text(
@@ -178,6 +199,11 @@ void main() {
       expect(
           find.text(
             'AsyncSnapshot<String>(ConnectionState.waiting, I-2, null, null)',
+          ),
+          findsOneWidget);
+      expect(
+          find.text(
+            'AsyncSnapshot<String>(ConnectionState.waiting, I-3, null, null)',
           ),
           findsOneWidget);
     });
@@ -192,6 +218,7 @@ void main() {
         builder: snapshotText,
         initialData1: 'I-1',
         initialData2: 'I-2',
+        initialData3: 'I-3',
       ));
       expect(
           find.text(
@@ -201,16 +228,22 @@ void main() {
           find.text(
               'AsyncSnapshot<String>(ConnectionState.none, I-2, null, null)'),
           findsOneWidget);
+      expect(
+          find.text(
+              'AsyncSnapshot<String>(ConnectionState.none, I-3, null, null)'),
+          findsOneWidget);
       final controller1 = StreamController<String>();
       final controller2 = StreamController<String>();
+      final controller3 = StreamController<String>();
       await tester.pumpWidget(StreamMultiBuilder3<String, String, String>(
         key: key,
         stream1: controller1.stream,
         stream2: controller2.stream,
-        stream3: null,
+        stream3: controller3.stream,
         builder: snapshotText,
         initialData1: 'Ignored-1',
         initialData2: 'Ignored-2',
+        initialData3: 'Ignored-2',
       ));
       expect(
           find.text(
@@ -248,16 +281,20 @@ void main() {
       final key = GlobalKey();
       final controller1 = StreamController<String>();
       final controller2 = StreamController<String>();
+      final controller3 = StreamController<String>();
       await tester.pumpWidget(StringCollector(
         key: key,
         stream1: controller1.stream,
         stream2: controller2.stream,
+        stream3: controller3.stream,
       ));
       expect(find.text('conn-1'), findsOneWidget);
       expect(find.text('conn-2'), findsOneWidget);
+      expect(find.text('conn-3'), findsOneWidget);
       await tester.pumpWidget(StringCollector(key: key));
       expect(find.text('conn-1, disc-1'), findsOneWidget);
       expect(find.text('conn-2, disc-2'), findsOneWidget);
+      expect(find.text('conn-3, disc-3'), findsOneWidget);
     });
     testWidgets('gracefully handles transition to other stream',
         (WidgetTester tester) async {
@@ -278,11 +315,12 @@ void main() {
       final key = GlobalKey();
       final controller1 = StreamController<String>();
       final controller2 = StreamController<String>();
+      final controller3 = StreamController<String>();
       await tester.pumpWidget(StringCollector(
         key: key,
         stream1: controller1.stream,
         stream2: controller2.stream,
-        stream3: null,
+        stream3: controller3.stream,
       ));
       controller1
         ..add('1-1')
@@ -292,8 +330,13 @@ void main() {
         ..add('1-2')
         ..addError('bad-2', StackTrace.fromString('trace-2'))
         ..add('2-2');
+      controller3
+        ..add('1-3')
+        ..addError('bad-3', StackTrace.fromString('trace-3'))
+        ..add('2-3');
       unawaited(controller1.close());
       unawaited(controller2.close());
+      unawaited(controller3.close());
       await eventFiring(tester);
       expect(
         find.text(
@@ -306,6 +349,13 @@ void main() {
         find.text(
           'conn-2, data-2:1-2, error-2:bad-2 '
           'stackTrace:trace-2, data-2:2-2, done-2',
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          'conn-3, data-3:1-3, error-3:bad-3 '
+          'stackTrace:trace-3, data-3:2-3, done-3',
         ),
         findsOneWidget,
       );
