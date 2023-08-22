@@ -82,6 +82,7 @@ void main() {
 
       expect(generatorArguments.otpEnabled, isTrue);
       expect(generatorArguments.loginEnabled, isTrue);
+      expect(generatorArguments.pinCodeEnabled, isFalse);
 
       verify(logger.warn(any)).called(1);
     });

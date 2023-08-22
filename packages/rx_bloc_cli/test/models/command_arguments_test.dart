@@ -41,6 +41,7 @@ void main() {
       expect(CommandArguments.devMenu.type, equals(ArgumentType.boolean));
       expect(CommandArguments.login.type, equals(ArgumentType.boolean));
       expect(CommandArguments.otp.type, equals(ArgumentType.boolean));
+      expect(CommandArguments.pinCode.type, equals(ArgumentType.boolean));
       expect(CommandArguments.patrol.type, equals(ArgumentType.boolean));
       expect(CommandArguments.realtimeCommunication.type,
           equals(ArgumentType.realTimeCommunicationEnum));
@@ -69,6 +70,7 @@ void main() {
       expect(CommandArguments.devMenu.defaultValue(), isFalse);
       expect(CommandArguments.login.defaultValue(), isTrue);
       expect(CommandArguments.otp.defaultValue(), isFalse);
+      expect(CommandArguments.pinCode.defaultValue(), isFalse);
       expect(CommandArguments.patrol.defaultValue(), isFalse);
       expect(CommandArguments.realtimeCommunication.defaultValue(),
           equals(RealtimeCommunicationType.none));
