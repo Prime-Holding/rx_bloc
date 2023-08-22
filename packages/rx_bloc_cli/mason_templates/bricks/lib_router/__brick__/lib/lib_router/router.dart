@@ -101,8 +101,9 @@ class AppRouter {
         (state.matchedLocation != const SplashRoute().location)) {
       previousLocation = state.matchedLocation;
     } {{/enable_pin_code}} {{#has_authentication}}
-    if (_refreshListener.isLoggedIn && state.queryParameters['from'] != null) {
-      return state.queryParameters['from'];//todo add aftet state .uri.
+    if (_refreshListener.isLoggedIn &&
+        state.uri.queryParameters['from'] != null) {
+      return state.uri.queryParameters['from'];
     }
     {{^enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
