@@ -47,6 +47,7 @@ dev_dependencies:
   quiver: ^3.0.1+1
   rx_bloc_generator: ^7.0.0
   rx_bloc_test: ^4.0.0
+  test: ^1.24.3
 
 dependency_overrides:
   animated_stream_list:

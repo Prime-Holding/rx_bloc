@@ -199,6 +199,6 @@ enum ArgumentType {
         ArgumentType.string => null,
         ArgumentType.boolean => null,
         ArgumentType.realTimeCommunicationEnum =>
-          RealtimeCommunicationType.values.map((e) => e.toString()),
+          RealtimeCommunicationType.supportedOptions.map((e) => e.toString()),
       };
 }

@@ -1,16 +1,10 @@
 part of '../router.dart';
 
-@TypedGoRoute<ProfileRoute>(path: RoutesPath.profile, routes: [
-  TypedGoRoute<NotificationsRoute>(
-    path: RoutesPath.notifications,
-  ),{{#enable_pin_code}}
-  TypedGoRoute<CreatePinRoute>(
-    path: RoutesPath.createPin,
-  ),
-  TypedGoRoute<UpdatePinRoute>(
-    path: RoutesPath.updatePin,
-  ),{{/enable_pin_code}}
-])
+@immutable
+class ProfileBranchData extends StatefulShellBranchData {
+  const ProfileBranchData();
+}
+
 @immutable
 class ProfileRoute extends GoRouteData implements RouteDataModel {
   const ProfileRoute();
