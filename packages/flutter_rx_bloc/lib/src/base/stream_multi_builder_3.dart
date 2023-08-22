@@ -83,7 +83,7 @@ class _StreamMultiBuilderBase3State<T1, T2, T3, S1, S2, S3>
   void initState() {
     super.initState();
 
-    // Set initial state
+    // Setup initial state
     _subscriptionContainer1.summary = widget.streamContainer1.initial();
     _subscriptionContainer2.summary = widget.streamContainer2.initial();
     _subscriptionContainer3.summary = widget.streamContainer3.initial();
