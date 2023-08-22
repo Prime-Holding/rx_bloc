@@ -8,14 +8,14 @@ class StreamMultiBuilder3<T1, T2, T3> extends _StreamMultiBuilderBase3<T1, T2,
     T3, AsyncSnapshot<T1>, AsyncSnapshot<T2>, AsyncSnapshot<T3>> {
   /// Constructor accepting streams and initial data values
   StreamMultiBuilder3({
-    super.key,
-    T1? initialData1,
-    T2? initialData2,
-    T3? initialData3,
     required Stream<T1>? stream1,
     required Stream<T2>? stream2,
     required Stream<T3>? stream3,
     required this.builder,
+    super.key,
+    T1? initialData1,
+    T2? initialData2,
+    T3? initialData3,
   }) : super(
           streamContainer1: _StreamContainer(
             stream: stream1,
@@ -51,10 +51,10 @@ class StreamMultiBuilder3<T1, T2, T3> extends _StreamMultiBuilderBase3<T1, T2,
 abstract class _StreamMultiBuilderBase3<T1, T2, T3, S1, S2, S3>
     extends StatefulWidget {
   const _StreamMultiBuilderBase3({
-    super.key,
     required this.streamContainer1,
     required this.streamContainer2,
     required this.streamContainer3,
+    super.key,
   });
 
   final _StreamContainerBase<T1, S1> streamContainer1;
@@ -146,16 +146,13 @@ class _StreamContainer<T> extends _StreamContainerBase<T, AsyncSnapshot<T>> {
       current.inState(ConnectionState.waiting);
 
   @override
-  AsyncSnapshot<T> afterData(AsyncSnapshot<T> current, T data) {
-    return AsyncSnapshot<T>.withData(ConnectionState.active, data);
-  }
+  AsyncSnapshot<T> afterData(AsyncSnapshot<T> current, T data) =>
+      AsyncSnapshot<T>.withData(ConnectionState.active, data);
 
   @override
   AsyncSnapshot<T> afterError(
-      AsyncSnapshot<T> current, Object error, StackTrace stackTrace) {
-    return AsyncSnapshot<T>.withError(
-        ConnectionState.active, error, stackTrace);
-  }
+          AsyncSnapshot<T> current, Object error, StackTrace stackTrace) =>
+      AsyncSnapshot<T>.withError(ConnectionState.active, error, stackTrace);
 
   @override
   AsyncSnapshot<T> afterDone(AsyncSnapshot<T> current) =>

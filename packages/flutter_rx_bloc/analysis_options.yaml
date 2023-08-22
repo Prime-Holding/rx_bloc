@@ -9,6 +9,7 @@ analyzer:
 linter:
   rules:
     - public_member_api_docs
+    - always_put_required_named_parameters_first
     - annotate_overrides
     - avoid_empty_else
     - avoid_function_literals_in_foreach_calls
@@ -53,6 +54,7 @@ linter:
     - prefer_const_constructors
     - prefer_contains
     - prefer_equal_for_default_values
+    - prefer_expression_function_bodies
     - prefer_final_fields
     - prefer_initializing_formals
     - prefer_interpolation_to_compose_strings

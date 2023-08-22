@@ -7,11 +7,23 @@ This package is built to work with [rx_bloc](https://pub.dev/packages/rx_bloc) a
 
 ## Bloc Widgets
 
-**RxBlocBuilder** is a Flutter widget which requires a `RxBloc`, a `builder` and a `state`  function. `RxBlocBuilder` handles building the widget in response to new states. `RxBlocBuilder` is very similar to `StreamBuilder` but has a more simple API to reduce the amount of boilerplate code needed. 
+**RxBlocBuilder** is a Flutter widget that requires a `RxBloc`, a `builder` and a `state`  function. `RxBlocBuilder` handles building the widget in response to new states. `RxBlocBuilder` is very similar to `StreamBuilder` but has a more simple API to reduce the amount of boilerplate code needed. 
 
 * The `builder` function will potentially be called many times and should be a [pure function](https://en.wikipedia.org/wiki/Pure_function) that returns a widget in response to the state.
 * The `state` function determines which exact state of the bloc will be used. 
 * If the `bloc` parameter is omitted, `RxBlocBuilder` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
+
+**RxBlocMultiBuilder2** is a Flutter widget that requires a `RxBloc`, a `builder`, a `state1` and a `state2` functions. `RxBlocMultiBuilder2` handles building the widget in response to new states. `RxBlocMultiBuilder2` is very similar to `StreamBuilder` but has a more simple API to reduce the amount of boilerplate code needed.
+
+* The `builder` function will potentially be called many times and should be a [pure function](https://en.wikipedia.org/wiki/Pure_function) that returns a widget in response to the state.
+* The `state1` and `state2` functions determine which states of the bloc will be used.
+* If the `bloc` parameter is omitted, `RxBlocMultiBuilder2` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
+
+**RxBlocMultiBuilder3** is a Flutter widget that requires a `RxBloc`, a `builder`, a `state1`, `state2` and a `state3` functions. `RxBlocMultiBuilder3` handles building the widget in response to new states. `RxBlocMultiBuilder3` is very similar to `StreamBuilder` but has a more simple API to reduce the amount of boilerplate code needed.
+
+* The `builder` function will potentially be called many times and should be a [pure function](https://en.wikipedia.org/wiki/Pure_function) that returns a widget in response to the state.
+* The `state1`, `state2` and `state3` functions determine which states of the bloc will be used.
+* If the `bloc` parameter is omitted, `RxBlocMultiBuilder3` will automatically perform a lookup using `RxBlocProvider` and the current `BuildContext`.
 
 See `RxBlocListener` if you want to "do" anything in response to state changes such as navigation, showing a dialog, etc...
 
@@ -21,6 +33,27 @@ RxBlocBuilder<NewsBlocType, List<News>>( // At the first placeholder define what
   state: (bloc) => bloc.states.news, // Determine which exact state of the bloc will be used for building the widget below. 
   builder: (context, state, bloc) {
     // return widget here based on BlocA's state
+  }
+)
+```
+
+```dart
+RxBlocMultiBuilder2<NewsBlocType, List<BreakingNews>, List<News>>( // At the first placeholder define what bloc you need, after that define what type will be the states you want to listen to. They need to match the type of the streams in the state functions below.
+  state1: (bloc) => bloc.states.breakingNews, // Determine which exact states of the bloc will be used for building the widget below. 
+  state2: (bloc) => bloc.states.news,
+  builder: (context, breakingNews, news, bloc) {
+    // return widget here based on the Bloc's states
+  }
+)
+```
+
+```dart
+RxBlocMultiBuilder3<NewsBlocType, List<BreakingNews>, List<News>, List<TopStory>>( // At the first placeholder define what bloc you need, after that define what type will be the states you want to listen to. They need to match the type of the streams in the state functions below.
+  state1: (bloc) => bloc.states.breakingNews, // Determine which exact states of the bloc will be used for building the widget below. 
+  state2: (bloc) => bloc.states.news,
+  state3: (bloc) => bloc.states.topStories,
+  builder: (context, breakingNews, news, topStories, bloc) {
+    // return widget here based on the Bloc's states
   }
 )
 ```
