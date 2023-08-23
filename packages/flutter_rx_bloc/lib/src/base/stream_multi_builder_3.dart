@@ -32,7 +32,7 @@ class StreamMultiBuilder3<T1, T2, T3> extends _StreamMultiBuilderBase3<T1, T2,
         );
 
   /// Builder
-  final _AsyncWidgetBuilder<T1, T2, T3> builder;
+  final AsyncWidgetBuilder<T1, T2, T3> builder;
 
   @override
   Widget build(
@@ -239,9 +239,9 @@ class _StreamSubscriptionContainer<T, S> {
 
 /// endregion
 
-/// region _AsyncWidgetBuilder and _StateUpdateFunction
+/// region AsyncWidgetBuilder and _StateUpdateFunction
 
-typedef _AsyncWidgetBuilder<T1, T2, T3> = Widget Function(
+typedef AsyncWidgetBuilder<T1, T2, T3> = Widget Function(
   BuildContext context,
   AsyncSnapshot<T1> snapshot1,
   AsyncSnapshot<T2> snapshot2,
