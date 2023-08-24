@@ -9,35 +9,35 @@ import '../main/steps_utils/login_page_steps.dart';
 import '../main/steps_utils/profile_page_steps.dart';{{/has_authentication}}
 
 void main() {
-final patrolBaseConfig = PatrolBaseConfig();
-patrolBaseConfig.patrol(
-'Test flow of user login in, navigating to counter page,'
-'incrementing counter and expecting appropriate states,'
-'decrementing counter and expecting appropriate states,'
-'and navigating to the profile page and logging out',
-($) async {
-BuildApp app = BuildApp($);
-await app.buildApp();
-{{#has_authentication}}
-//Log in
-await LoginPageSteps.loginAction($);{{/has_authentication}}
-{{#enable_feature_otp}}
-await OtpPageSteps.otpAction($);
-{{/enable_feature_otp}}
-//Navigate to counter page
-await HomePageSteps.navigateToCounterPage($);
-//Increment counter 5 times
-await CounterPageSteps.incrementAction($);
-//Show error modal on increment
-await CounterPageSteps.showErrorModalSheetIncrement($);
-//Decrement counter 5 times
-await CounterPageSteps.decrementAction($);
-//Show error modal on Decrement
-await CounterPageSteps.showErrorModalSheetDecrement($);
-//Tap reload button and expect same counter value
-await CounterPageSteps.reloadCounter($);{{#has_authentication}}
-//Logout
-await ProfilePageSteps.logout($);{{/has_authentication}}
-},
-);
+  final patrolBaseConfig = PatrolBaseConfig();
+    patrolBaseConfig.patrol(
+      'Test flow of user login in, navigating to counter page,'
+      'incrementing counter and expecting appropriate states,'
+      'decrementing counter and expecting appropriate states,'
+      'and navigating to the profile page and logging out',
+      ($) async {
+      BuildApp app = BuildApp($);
+      await app.buildApp();
+      {{#has_authentication}}
+      //Log in
+      await LoginPageSteps.loginAction($);{{/has_authentication}}
+      {{#enable_feature_otp}}
+      await OtpPageSteps.otpAction($);
+      {{/enable_feature_otp}}
+      //Navigate to counter page
+      await HomePageSteps.navigateToCounterPage($);
+      //Increment counter 5 times
+      await CounterPageSteps.incrementAction($);
+      //Show error modal on increment
+      await CounterPageSteps.showErrorModalSheetIncrement($);
+      //Decrement counter 5 times
+      await CounterPageSteps.decrementAction($);
+      //Show error modal on Decrement
+      await CounterPageSteps.showErrorModalSheetDecrement($);
+      //Tap reload button and expect same counter value
+      await CounterPageSteps.reloadCounter($);{{#has_authentication}}
+      //Logout
+      await ProfilePageSteps.logout($);{{/has_authentication}}
+    },
+  );
 }
