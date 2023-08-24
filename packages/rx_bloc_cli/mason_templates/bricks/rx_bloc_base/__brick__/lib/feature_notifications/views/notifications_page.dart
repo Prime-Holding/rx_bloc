@@ -9,7 +9,6 @@ import 'package:widget_toolkit/ui_components.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/notification_model.dart';
-import '../../base/utils/helpers.dart';
 import '../../lib_router/router.dart';
 import '../blocs/notifications_bloc.dart';
 

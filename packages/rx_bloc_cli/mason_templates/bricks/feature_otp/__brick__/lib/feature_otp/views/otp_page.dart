@@ -41,7 +41,7 @@ class OtpPage extends StatelessWidget {
                             TextStyle(color: context.designSystem.colors.gray),
                       ),
                       const SizedBox(height: 8),
-                      const SmsCodeField(),
+                      const SmsCodeField(key: K.otpInput),
                       const SizedBox(height: 8),
                       const ValidityWidget(),
                     ],
