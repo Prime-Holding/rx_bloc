@@ -1,0 +1,22 @@
+# Ignore files
+flutter_app_mobile_distribution_encryption_password.txt
+
+# Ignored directories
+artifacts/
+decoded/
+
+# Android files
+android/*.jks
+android/*.txt
+android/*.json
+
+# iOS files
+ios/*.p8
+ios/*.p12
+ios/*.mobileprovision
+ios/*.txt
+ios/*.json
+
+# Firebase files
+firebase/*.txt
+firebase/*.json

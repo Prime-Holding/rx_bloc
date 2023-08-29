@@ -1,1 +1,1 @@
-fastlane build_custom environment:development platform:android
+fastlane build_custom environment:development platform:android build_name:1.0.0 build_number:1

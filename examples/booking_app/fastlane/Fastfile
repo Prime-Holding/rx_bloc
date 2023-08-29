@@ -41,6 +41,8 @@ firebase_app_id_map = {
     },
 }
 
+apple_team_id = 'ZNE622G954'
+
 keychain_path = Dir.getwd + '/devops/credentials/booking-app-distribution.keychain'
 
 desc "Clones the credentials repository into devops/credentials.
@@ -92,7 +94,7 @@ private_lane :ensure_build_environment do |options|
 end
 
 private_lane :write_deployment_properties do |options|
-    Dir.chdir('fastlane/devops/artifacts') do
+    Dir.chdir('../devops/artifacts') do
         File.open('deployment.yaml', 'w') do |f|     
             f.write("MOBILE_DEPLOYMENT_TARGET_PLATFORM: #{options[:platform]}\n")
             f.write("MOBILE_DEPLOYMENT_ENVIRONMENT: #{options[:environment]}\n")
@@ -194,17 +196,17 @@ platform :android do
         #    env_vars: ['bamboo_mobile_distribution_encryption_password']
         #)
 
-        #Dir.chdir("../devops/credentials") do
-        #    sh("./decode.sh android")
-        #    keystore_alias_file_path = Dir.getwd + "/decoded/android/keyAlias.txt"
-        #    keystore_key_password_file_path = Dir.getwd + "/decoded/android/keyPassword.txt"
-        #    keystore_password_file_path = Dir.getwd + "/decoded/android/storePassword.txt"
-        #    puts('Creating Android build environment variables')
-        #    ENV["ANDROID_KEYSTORE_PATH"] = Dir.getwd + "/decoded/android/android.jks"
-        #    ENV["ANDROID_KEYSTORE_ALIAS"] = File.read(keystore_alias_file_path).strip
-        #    ENV["ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD"] = File.read(keystore_key_password_file_path).strip
-        #    ENV["ANDROID_KEYSTORE_PASSWORD"] = File.read(keystore_password_file_path).strip
-        #end
+        Dir.chdir("../devops/credentials") do
+            sh("./decode.sh android")
+            keystore_alias_file_path = Dir.getwd + "/decoded/android/keyAlias.txt"
+            keystore_key_password_file_path = Dir.getwd + "/decoded/android/keyPassword.txt"
+            keystore_password_file_path = Dir.getwd + "/decoded/android/storePassword.txt"
+            puts('Creating Android build environment variables')
+            ENV["ANDROID_KEYSTORE_PATH"] = Dir.getwd + "/decoded/android/android.jks"
+            ENV["ANDROID_KEYSTORE_ALIAS"] = File.read(keystore_alias_file_path).strip
+            ENV["ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD"] = File.read(keystore_key_password_file_path).strip
+            ENV["ANDROID_KEYSTORE_PASSWORD"] = File.read(keystore_password_file_path).strip
+        end
     end
 
     desc 'Build the mobile application for Android'
@@ -216,9 +218,9 @@ platform :android do
                 "build",
                 "appbundle",
                # "--obfuscate",
-               # "--split-debug-info=fastlane/devops/artifacts/",
-               # "--build-name=" + options[:build_name],
-               # "--build-number=" + options[:build_number],
+               # "--split-debug-info=../devops/artifacts/",
+                "--build-name=" + options[:build_name],
+                "--build-number=" + options[:build_number],
                 "--flavor=" + flavor_map[options[:environment]],
                 "--target=" + target_map[options[:environment]]
             )
@@ -226,7 +228,7 @@ platform :android do
             sh(
                 "mv",
                 "build/app/outputs/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
-                "fastlane/devops/artifacts/"
+                "../devops/artifacts/"
             )
         end
     end
@@ -338,7 +340,7 @@ platform :ios do
                 'ios',
                 '--obfuscate',
                 '--no-codesign',
-                '--split-debug-info=fastlane/devops/artifacts',
+                '--split-debug-info=../devops/artifacts',
                 '--build-name=' + options[:build_name],
                 '--build-number=' + options[:build_number],
                 '--flavor=' + flavor_map[options[:environment]],
@@ -347,7 +349,7 @@ platform :ios do
 
             MY_APP_ID = bundle_id_map[options[:environment]]
             MY_PROFILE = provisioning_profile_map[options[:environment]]
-            MY_TEAM = 'ZNE622G954'
+            MY_TEAM = apple_team_id
 
             settings_to_override = {
                 :BUNDLE_IDENTIFIER => MY_APP_ID,
@@ -359,7 +361,7 @@ platform :ios do
                 workspace: 'booking-app/ios/Runner.xcworkspace',
                 scheme: flavor_map[options[:environment]],
                 xcargs: settings_to_override,
-                output_directory: 'fastlane/devops/artifacts',
+                output_directory: '../devops/artifacts',
                 export_method: 'app-store',
                 export_options: {
                     manageAppVersionAndBuildNumber: false,
@@ -418,7 +420,7 @@ Expected environment variables:
 lane :deploy do
     fetch_credentials()
 
-    Dir.chdir('fastlane/devops/artifacts') do
+    Dir.chdir('../devops/artifacts') do
         properties = YAML.load_file('deployment.yaml')
 
         set_platform(platform: properties['MOBILE_DEPLOYMENT_TARGET_PLATFORM'])
@@ -440,14 +442,14 @@ Expected environment variables:
 lane :deploy_debug_symbols do
     fetch_credentials()
 
-    Dir.chdir('fastlane/devops/credentials') do
+    Dir.chdir('../devops/credentials') do
         sh('./decode.sh firebase')
 
         firebase_token_file_path = Dir.getwd + '/decoded/firebase/firebaseToken.txt'
         ENV['FIREBASE_TOKEN'] = File.read(firebase_token_file_path).strip
     end
 
-    Dir.chdir('fastlane/devops/artifacts') do
+    Dir.chdir('../devops/artifacts') do
         properties = YAML.load_file('deployment.yaml')
         platform = properties['MOBILE_DEPLOYMENT_TARGET_PLATFORM']
         environment = properties['MOBILE_DEPLOYMENT_ENVIRONMENT']
