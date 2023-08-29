@@ -9,6 +9,7 @@ Both the encryption and decryption script expect an environment variable contain
 export flutter_app_mobile_distribution_encryption_password=<PASSWORD>
 ```
 
+_Note: To list all currently available environment variables, use `printenv` from your console._
 
 ### Updating The Credentials
 

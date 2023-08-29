@@ -139,7 +139,7 @@ end
 
 desc "Start a custom build
 Expected environment variables:
-    - bamboo_mobile_distribution_encryption_password
+    - flutter_app_mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret
 Expected input parameters:
     - platform: string (android, ios)
@@ -149,6 +149,7 @@ Expected input parameters:
 Example:
     fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:staging"
 lane :build_custom do |options|
+    sh("pwd")
     environment = options[:environment]
 
     ensure_build_environment(environment: environment)
@@ -158,7 +159,7 @@ lane :build_custom do |options|
     fetch_credentials()
     install_credentials()
 
-    Dir.chdir('./devops') do
+    Dir.chdir('../devops') do
         Dir.mkdir('artifacts') unless Dir.exist?('artifacts')
         Pathname.new('artifacts').children.each { |p| p.rmtree }
     end
@@ -185,22 +186,23 @@ end
 platform :android do
     desc "Decode credentials for Android build and deployment
     Expected environment variables:
-      - bamboo_mobile_distribution_encryption_password
+      - flutter_app_mobile_distribution_encryption_password
     Creates the following environment variables:
       - ANDROID_KEYSTORE_PATH
       - ANDROID_KEYSTORE_ALIAS
       - ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD
       - ANDROID_KEYSTORE_PASSWORD"
     private_lane :install_credentials do
-        #ensure_env_vars(
-        #    env_vars: ['bamboo_mobile_distribution_encryption_password']
-        #)
+        ensure_env_vars(
+            env_vars: ['flutter_app_mobile_distribution_encryption_password']
+        )
 
-        Dir.chdir("../devops/credentials") do
+        Dir.chdir("../devops/") do
             sh("./decode.sh android")
             keystore_alias_file_path = Dir.getwd + "/decoded/android/keyAlias.txt"
             keystore_key_password_file_path = Dir.getwd + "/decoded/android/keyPassword.txt"
             keystore_password_file_path = Dir.getwd + "/decoded/android/storePassword.txt"
+
             puts('Creating Android build environment variables')
             ENV["ANDROID_KEYSTORE_PATH"] = Dir.getwd + "/decoded/android/android.jks"
             ENV["ANDROID_KEYSTORE_ALIAS"] = File.read(keystore_alias_file_path).strip
@@ -217,8 +219,8 @@ platform :android do
                 "flutter",
                 "build",
                 "appbundle",
-               # "--obfuscate",
-               # "--split-debug-info=../devops/artifacts/",
+                "--obfuscate",
+                "--split-debug-info=./devops/artifacts/",
                 "--build-name=" + options[:build_name],
                 "--build-number=" + options[:build_number],
                 "--flavor=" + flavor_map[options[:environment]],
@@ -228,7 +230,7 @@ platform :android do
             sh(
                 "mv",
                 "build/app/outputs/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
-                "../devops/artifacts/"
+                "./devops/artifacts/"
             )
         end
     end
@@ -289,11 +291,11 @@ end
 platform :ios do
     desc 'Decode credentials for iOS build and deployment
     Expected environment variables:
-      - bamboo_mobile_distribution_encryption_password'
+      - flutter_app_mobile_distribution_encryption_password'
     private_lane :install_credentials do
         ensure_env_vars(
             env_vars: [
-                'bamboo_mobile_distribution_encryption_password',
+                'flutter_app_mobile_distribution_encryption_password',
             ]
         )
 
@@ -415,7 +417,7 @@ end
 
 desc 'Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
-    - bamboo_mobile_distribution_encryption_password
+    - flutter_app_mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret'
 lane :deploy do
     fetch_credentials()
@@ -437,7 +439,7 @@ end
 
 desc 'Deploy the debug symbols to firebase
 Expected environment variables:
-    - bamboo_mobile_distribution_encryption_password
+    - flutter_app_mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret'
 lane :deploy_debug_symbols do
     fetch_credentials()
