@@ -1,6 +1,6 @@
 ## Mobile Application Distribution Credentials
 
-This repository contains signing certificates, key stores and provisioning profiles needed for distribution of the Booking App mobile application for Android and iOS.
+This repository contains signing certificates, key stores and provisioning profiles needed for distribution of the mobile application for Android and iOS.
 The credential files are encrypted using `openssl` with a password.
 
 Both the encryption and decryption script expect an environment variable containing the credential encryption password. It can be set like this:
@@ -29,3 +29,4 @@ To decode the credentials run the decoding script and pass the credential type a
 ```sh
 ./decode.sh android
 ```
+

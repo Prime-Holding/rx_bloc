@@ -1,7 +1,7 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-production.xcconfig"
 #include "Generated.xcconfig"
 
-FLUTTER_BUILD_MODE=debug
+FLUTTER_BUILD_MODE=release
 ENVIRONMENT_PLIST = environments/production/production.plist
 APP_DISPLAY_NAME = Booking App
 CF_BUNDLE_URL_NAME=booking_app.primeholding.com

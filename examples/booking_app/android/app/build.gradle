@@ -70,10 +70,15 @@ android {
             applicationIdSuffix ""
             versionNameSuffix ""
         }
-        staging {
+        sit {
             dimension "default"
-            applicationIdSuffix ".stag"
-            versionNameSuffix "-stag"
+            applicationIdSuffix ".sit"
+            versionNameSuffix "-sit"
+        }
+        uat {
+            dimension "default"
+            applicationIdSuffix ".uat"
+            versionNameSuffix "-uat"
         }
         development {
             dimension "default"

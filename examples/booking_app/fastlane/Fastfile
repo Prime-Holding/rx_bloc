@@ -1,28 +1,32 @@
 require 'yaml'
 
-environments = ['development', 'staging', 'production']
+environments = ['development', 'sit', 'uat', 'production']
 
 flavor_map = {
     'development' => 'development',
-    'staging' => 'staging',
+    'sit' => 'sit',
+    'uat' => 'uat',
     'production' => 'production'
 }
 
 target_map = {
     'development' => 'lib/main_dev.dart',
-    'staging' => 'lib/main_staging.dart',
+    'sit' => 'lib/main_sit.dart',
+    'uat' => 'lib/main_uat.dart',
     'production' => 'lib/main.dart'
 }
 
 bundle_id_map = {
     'development' => 'com.primeholding.booking_app.dev',
-    'staging' => 'com.primeholding.booking_app.staging',
+    'sit' => 'com.primeholding.booking_app.sit',
+    'uat' => 'com.primeholding.booking_app.uat',
     'production' => 'com.primeholding.booking_app'
 }
 
 provisioning_profile_map = {
     'development' => 'BookingApp Mobile Dev Distribution',
-    'staging' => 'BookingApp Mobile Staging Distribution',
+    'sit' => 'BookingApp Mobile SIT Distribution',
+    'uat' => 'BookingApp Mobile UAT Distribution',
     'production' => 'BookingApp Mobile Production Distribution'
 }
 
@@ -31,7 +35,11 @@ firebase_app_id_map = {
         'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
         'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
     },
-    'staging' => {
+    'sit' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+    'uat' => {
         'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
         'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
     },
@@ -41,9 +49,19 @@ firebase_app_id_map = {
     },
 }
 
+keychain_path = Dir.getwd + '/devops/credentials/booking-app-distribution.keychain'
+
+### iOS Variables
+
+# Apple Team ID associated with your Apple account
+# https://developer.apple.com/forums/thread/77563?answerId=661344022#661344022
 apple_team_id = 'ZNE622G954'
 
-keychain_path = Dir.getwd + '/devops/credentials/booking-app-distribution.keychain'
+# The ID of the private App Store Connect Api Key
+# https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
+app_store_connect_api_key_id = 'AAAAAAAAAA'
+
+##################### Lanes #####################
 
 desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
@@ -52,6 +70,7 @@ private_lane :fetch_credentials do
     #ensure_env_vars(
     #    env_vars: ['bamboo_mobile_distribution_repository_access_secret']
     #)
+
     # No additional creds should be considered if public repo
     #token = ENV["bamboo_mobile_distribution_repository_access_secret"]
 
@@ -89,7 +108,7 @@ end
 private_lane :ensure_build_environment do |options|
     unless environments.include?(options[:environment]) then
         UI.user_error!("unexpected value for parameter 'environment', " +
-            "must be one of: development, staging, production")
+            "must be one of: development, sit, uat, production")
     end
 end
 
@@ -147,9 +166,8 @@ Expected input parameters:
     - build_number: integer (121)
     - environment: string (development, sit, uat, production)
 Example:
-    fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:staging"
+    fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:uat"
 lane :build_custom do |options|
-    sh("pwd")
     environment = options[:environment]
 
     ensure_build_environment(environment: environment)
@@ -242,19 +260,18 @@ platform :android do
 
     desc 'Deploy the app to google play store'
     private_lane :deploy_platform do |options|
-        #Dir.chdir('../credentials') do
+        #Dir.chdir('../android') do
         #    sh('./decode.sh deploy_android')
         #end
 
         version_name = "#{options[:build_number]} (#{options[:build_name]}-#{options[:environment]})"
-        puts('version: ' + version_name)
 
         #upload_to_play_store(
         #    package_name: options[:application_id],
         #    release_status: 'draft',
         #    track: 'internal',
         #    version_name: version_name,
-        #    json_key: File.expand_path('../credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
+        #    json_key: File.expand_path('../decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
         #    aab: File.expand_path("app-#{options[:environment]}-release.aab"),
         #    skip_upload_changelogs: true,
         #    skip_upload_images: true,
@@ -328,7 +345,8 @@ platform :ios do
             )
 
             install_provisioning_profile(path: basedir + 'BookingApp_Mobile_Dev_Distribution.mobileprovision')
-            install_provisioning_profile(path: basedir + 'BookingApp_Mobile_Staging_Distribution.mobileprovision')
+            install_provisioning_profile(path: basedir + 'BookingApp_Mobile_SIT_Distribution.mobileprovision')
+            install_provisioning_profile(path: basedir + 'BookingApp_Mobile_UAT_Distribution.mobileprovision')
             install_provisioning_profile(path: basedir + 'BookingApp_Mobile_Production_Distribution.mobileprovision')
         end
     end
@@ -382,14 +400,14 @@ platform :ios do
 
     desc 'Deploy the app to apple testflight'
     private_lane :deploy_platform do |options|
-        Dir.chdir('../credentials') do
+        Dir.chdir('../ios') do
             sh('./decode.sh deploy_ios')
         end
 
         api_key = app_store_connect_api_key(
-            key_id: 'AAAAAAAAAA',
+            key_id: app_store_connect_api_key_id,
             issuer_id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey_AAAAAAAAAA.p8'),
+            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey_'+app_store_connect_api_key_id+'.p8'),
         )
     
         upload_to_testflight(

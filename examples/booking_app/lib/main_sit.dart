@@ -7,5 +7,5 @@ void main() async => await setupAndRunApp(
       (config) => MyApp(
         config: config,
       ),
-      environment: EnvironmentConfig.staging,
+      environment: EnvironmentConfig.sit,
     );
