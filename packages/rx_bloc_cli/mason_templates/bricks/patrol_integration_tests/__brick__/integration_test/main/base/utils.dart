@@ -3,7 +3,7 @@
 import 'package:patrol/patrol.dart';
 
 abstract class Utils {
-  late PatrolTester $;
+  late PatrolIntegrationTester $;
 
   Utils(this.$);
 

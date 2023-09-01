@@ -1,12 +1,24 @@
 {{> licence.dart }}
 
+{{#push_notifications}}
+import 'package:widget_toolkit/ui_components.dart';
+{{/push_notifications}}
 import '../configuration/build_app.dart';
 import '../pages/home_page.dart';
 
 class ProfilePageSteps {
-  static Future<void> logout(PatrolTester $) async {
+  static Future<void> logout(PatrolIntegrationTester $) async {
     HomePage homePage = HomePage($);
     final profilePage = await homePage.tapBtnProfilePage();
+
+    {{#push_notifications}}
+        // This is used to allow the integration test to pass
+        // for a newly generated project without valid Firebase credentials
+        // TODO: Remove when project is configured properly
+        if ($(MessagePanelWidget).visible) {
+            await $(SmallButton).tap();
+        }
+        {{/push_notifications}}
 
     await profilePage.tapBtnLogout();
   }

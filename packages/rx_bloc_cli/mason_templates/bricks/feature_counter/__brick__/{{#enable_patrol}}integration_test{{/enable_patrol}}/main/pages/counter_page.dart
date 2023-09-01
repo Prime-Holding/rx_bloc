@@ -7,7 +7,7 @@ import '../base/base_page.dart';
 import '../configuration/build_app.dart';
 
 class CounterPage extends BasePage {
-  CounterPage(PatrolTester $) : super($);
+  CounterPage(PatrolIntegrationTester $) : super($);
 
   PatrolFinder get locCountText => $(K.counterCount);
   PatrolFinder get locBtnError => $(SmallButton);

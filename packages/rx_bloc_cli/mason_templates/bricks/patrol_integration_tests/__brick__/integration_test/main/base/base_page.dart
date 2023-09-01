@@ -6,7 +6,7 @@ import 'package:patrol/patrol.dart';
 import '../configuration/config_params.dart';
 
 abstract class BasePage {
-  late PatrolTester $;
+  late PatrolIntegrationTester $;
 
   BasePage(this.$);
 

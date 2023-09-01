@@ -14,7 +14,7 @@ export 'package:patrol/patrol.dart';
 const String env = String.fromEnvironment('flavor');
 
 class BuildApp {
-  late PatrolTester $;
+  late PatrolIntegrationTester $;
 
   BuildApp(this.$);
 
