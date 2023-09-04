@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.primeholding.booking_app">
+    package="com.primeholding.bookingAppSample">
    <application
         android:label="booking_app"
         android:icon="@mipmap/ic_launcher">

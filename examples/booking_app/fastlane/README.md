@@ -45,7 +45,7 @@ Expected input parameters:
     - build_number: integer (121)
     - environment: string (development, sit, uat, production)
 Example:
-    fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:staging
+    fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:uat
 
 ### deploy
 

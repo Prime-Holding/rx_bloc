@@ -45,8 +45,6 @@ fi
 if [ $1 == 'ios' ]; then
     mkdir -p ./decoded/ios
     decode ./ios/bookingapp_distribution.p12.enc ./decoded/ios/bookingapp_distribution.p12
-    decode ./ios/BookingApp_Mobile_Dev_Distribution.mobileprovision.enc ./decoded/ios/BookingApp_Mobile_Dev_Distribution.mobileprovision
-    decode ./ios/BookingApp_Mobile_Staging_Distribution.mobileprovision.enc ./decoded/ios/BookingApp_Mobile_Staging_Distribution.mobileprovision
     decode ./ios/BookingApp_Mobile_Production_Distribution.mobileprovision.enc ./decoded/ios/BookingApp_Mobile_Production_Distribution.mobileprovision
     decode ./ios/distributionCertificatePassword.txt.enc ./decoded/ios/distributionCertificatePassword.txt
     decode ./ios/keychainPassword.txt.enc ./decoded/ios/keychainPassword.txt
