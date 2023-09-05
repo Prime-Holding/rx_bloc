@@ -148,7 +148,7 @@ end
 
 desc "Start a custom build
 Expected environment variables:
-    - flutter_app_mobile_distribution_encryption_password
+    - mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret
 Expected input parameters:
     - platform: string (android, ios)
@@ -194,7 +194,7 @@ end
 platform :android do
     desc "Decode credentials for Android build and deployment
     Expected environment variables:
-      - flutter_app_mobile_distribution_encryption_password
+      - mobile_distribution_encryption_password
     Creates the following environment variables:
       - ANDROID_KEYSTORE_PATH
       - ANDROID_KEYSTORE_ALIAS
@@ -202,10 +202,10 @@ platform :android do
       - ANDROID_KEYSTORE_PASSWORD"
     private_lane :install_credentials do
         ensure_env_vars(
-            env_vars: ['flutter_app_mobile_distribution_encryption_password']
+            env_vars: ['mobile_distribution_encryption_password']
         )
 
-        Dir.chdir("../devops/") do
+        Dir.chdir("../devops/credentials") do
             sh("./decode.sh android")
             keystore_alias_file_path = Dir.getwd + "/decoded/android/keyAlias.txt"
             keystore_key_password_file_path = Dir.getwd + "/decoded/android/keyPassword.txt"
@@ -221,7 +221,6 @@ platform :android do
 
     desc 'Build the mobile application for Android'
     private_lane :build do |options|
-        sh("ls")
         Dir.chdir("..") do
 
             sh(
@@ -229,7 +228,7 @@ platform :android do
                 "build",
                 "appbundle",
                 "--obfuscate",
-                "--split-debug-info=./devops/artifacts/",
+                "--split-debug-info=devops/artifacts/",
                 "--build-name=" + options[:build_name],
                 "--build-number=" + options[:build_number],
                 "--flavor=" + flavor_map[options[:environment]],
@@ -239,7 +238,7 @@ platform :android do
             sh(
                 "mv",
                 "build/app/outputs/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
-                "./devops/artifacts/"
+                "devops/artifacts/"
             )
         end
     end
@@ -251,7 +250,7 @@ platform :android do
 
     desc 'Deploy the app to google play store'
     private_lane :deploy_platform do |options|
-        #Dir.chdir('../android') do
+        #Dir.chdir('../credentials/android') do
         #    sh('./decode.sh deploy_android')
         #end
 
@@ -299,15 +298,15 @@ end
 platform :ios do
     desc 'Decode credentials for iOS build and deployment
     Expected environment variables:
-      - flutter_app_mobile_distribution_encryption_password'
+      - mobile_distribution_encryption_password'
     private_lane :install_credentials do
         ensure_env_vars(
             env_vars: [
-                'flutter_app_mobile_distribution_encryption_password',
+                'mobile_distribution_encryption_password',
             ]
         )
 
-        Dir.chdir('../devops/') do
+        Dir.chdir('../devops/credentials') do
             sh('./decode.sh ios')
 
             basedir = Dir.getwd + '/decoded/ios/'
@@ -394,7 +393,7 @@ platform :ios do
 
     desc 'Deploy the app to apple testflight'
     private_lane :deploy_platform do |options|
-        Dir.chdir('../ios') do
+        Dir.chdir('../credentials/ios') do
             sh('./decode.sh deploy_ios')
         end
 
@@ -431,7 +430,7 @@ end
 
 desc 'Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
-    - flutter_app_mobile_distribution_encryption_password
+    - mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret'
 lane :deploy do
     fetch_credentials()
@@ -453,7 +452,7 @@ end
 
 desc 'Deploy the debug symbols to firebase
 Expected environment variables:
-    - flutter_app_mobile_distribution_encryption_password
+    - mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret'
 lane :deploy_debug_symbols do
     fetch_credentials()

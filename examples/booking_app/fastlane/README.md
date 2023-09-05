@@ -37,7 +37,7 @@ Example:
 
 Start a custom build
 Expected environment variables:
-    - flutter_app_mobile_distribution_encryption_password
+    - mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret
 Expected input parameters:
     - platform: string (android, ios)
@@ -55,7 +55,7 @@ Example:
 
 Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
-    - flutter_app_mobile_distribution_encryption_password
+    - mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret
 
 ### deploy_debug_symbols
@@ -66,7 +66,7 @@ Expected environment variables:
 
 Deploy the debug symbols to firebase
 Expected environment variables:
-    - flutter_app_mobile_distribution_encryption_password
+    - mobile_distribution_encryption_password
     - bamboo_mobile_distribution_repository_access_secret
 
 ----
