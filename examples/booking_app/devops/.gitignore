@@ -1,27 +1,13 @@
 # Ignored files
-
-# This file contains the password for the flutter_app_mobile_distribution_encryption_password
-# environment variable and should not be checked in source control. If you are storing your
-# password in a different file, don't forget to include that file here.
-flutter_app_mobile_distribution_encryption_password.txt
+.DS_Store
+*.jks
+*.txt
+*.p8
+*.p12
+*.mobileprovision
+*.json
 
 # Ignored directories
 credentials/
 artifacts/
 decoded/
-
-# Android files
-android/*.jks
-android/*.txt
-android/*.json
-
-# iOS files
-ios/*.p8
-ios/*.p12
-ios/*.mobileprovision
-ios/*.txt
-ios/*.json
-
-# Firebase files
-firebase/*.txt
-firebase/*.json

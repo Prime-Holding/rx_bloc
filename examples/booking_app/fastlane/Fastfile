@@ -24,10 +24,10 @@ bundle_id_map = {
 }
 
 provisioning_profile_map = {
-    'development' => 'BookingApp Mobile Dev Distribution',
-    'sit' => 'BookingApp Mobile SIT Distribution',
-    'uat' => 'BookingApp Mobile UAT Distribution',
-    'production' => 'BookingApp Mobile Production Distribution'
+    'development' => 'Booking App DEV Distribution',
+    'sit' => 'Booking App SIT Distribution',
+    'uat' => 'Booking App UAT Distribution',
+    'production' => 'Booking App Production Distribution'
 }
 
 firebase_app_id_map = {
@@ -221,6 +221,7 @@ platform :android do
 
     desc 'Build the mobile application for Android'
     private_lane :build do |options|
+        sh("ls")
         Dir.chdir("..") do
 
             sh(
