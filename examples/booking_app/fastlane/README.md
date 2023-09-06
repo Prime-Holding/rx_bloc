@@ -13,21 +13,21 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-### build_bamboo
+### build_flutter_app
 
 ```sh
-[bundle exec] fastlane build_bamboo
+[bundle exec] fastlane build_flutter_app
 ```
 
-Start an automatic build from Bamboo
-Expected Bamboo variables:
-    - bamboo.mobile.distribution.encryption.password
-    - bamboo.mobile.distribution.repository.access.secret
-    - bamboo.TagBuildTriggerReason.tagName
+Start an automatic build
+Expected environment variables:
+    - mobile_distribution_encryption_password
+    - mobile_distribution_repository_access_secret
+    - TagBuildTriggerReason_tagName
 Expected input parameters:
     - platform: string (android, ios)
 Example:
-    fastlane build_bamboo platform:android
+    fastlane build_flutter_app platform:android
 
 ### build_custom
 
@@ -38,7 +38,7 @@ Example:
 Start a custom build
 Expected environment variables:
     - mobile_distribution_encryption_password
-    - bamboo_mobile_distribution_repository_access_secret
+    - mobile_distribution_repository_access_secret
 Expected input parameters:
     - platform: string (android, ios)
     - build_name: string (1.2.0)
@@ -56,7 +56,7 @@ Example:
 Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
     - mobile_distribution_encryption_password
-    - bamboo_mobile_distribution_repository_access_secret
+    - mobile_distribution_repository_access_secret
 
 ### deploy_debug_symbols
 
@@ -67,7 +67,7 @@ Expected environment variables:
 Deploy the debug symbols to firebase
 Expected environment variables:
     - mobile_distribution_encryption_password
-    - bamboo_mobile_distribution_repository_access_secret
+    - mobile_distribution_repository_access_secret
 
 ----
 

@@ -55,14 +55,13 @@ keychain_path = Dir.getwd + '/devops/booking-app-distribution.keychain'
 
 desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
-  - bamboo_mobile_distribution_repository_access_secret"
+  - mobile_distribution_repository_access_secret"
 private_lane :fetch_credentials do
     #ensure_env_vars(
-    #    env_vars: ['bamboo_mobile_distribution_repository_access_secret']
+    #    env_vars: ['mobile_distribution_repository_access_secret']
     #)
 
-    # No additional creds should be considered if public repo
-    #token = ENV["bamboo_mobile_distribution_repository_access_secret"]
+    #token = ENV["mobile_distribution_repository_access_secret"]
 
     #Dir.chdir("../devops") do
     #    unless Dir.exist?('credentials')
@@ -114,21 +113,21 @@ private_lane :write_deployment_properties do |options|
     end
 end
 
-desc "Start an automatic build from Bamboo
-Expected Bamboo variables:
-    - bamboo.mobile.distribution.encryption.password
-    - bamboo.mobile.distribution.repository.access.secret
-    - bamboo.TagBuildTriggerReason.tagName
+desc "Start an automatic build
+Expected environment variables:
+    - mobile_distribution_encryption_password
+    - mobile_distribution_repository_access_secret
+    - TagBuildTriggerReason_tagName
 Expected input parameters:
     - platform: string (android, ios)
 Example:
-    fastlane build_bamboo platform:android"
-lane :build_bamboo do |options|
+    fastlane build_flutter_app platform:android"
+lane :build_flutter_app do |options|
     ensure_env_vars(
-        env_vars: ['bamboo_TagBuildTriggerReason_tagName']
+        env_vars: ['TagBuildTriggerReason_tagName']
     )
 
-    pieces = ENV['bamboo_TagBuildTriggerReason_tagName'].split('-')
+    pieces = ENV['TagBuildTriggerReason_tagName'].split('-')
 
     unless pieces.length == 3
         UI.user_error!('unexpected version control tag value')
@@ -149,7 +148,7 @@ end
 desc "Start a custom build
 Expected environment variables:
     - mobile_distribution_encryption_password
-    - bamboo_mobile_distribution_repository_access_secret
+    - mobile_distribution_repository_access_secret
 Expected input parameters:
     - platform: string (android, ios)
     - build_name: string (1.2.0)
@@ -250,48 +249,48 @@ platform :android do
 
     desc 'Deploy the app to google play store'
     private_lane :deploy_platform do |options|
-        #Dir.chdir('../credentials/android') do
-        #    sh('./decode.sh deploy_android')
-        #end
+        Dir.chdir('../devops/credentials') do
+            sh('./decode.sh deploy_android')
+        end
 
         version_name = "#{options[:build_number]} (#{options[:build_name]}-#{options[:environment]})"
 
-        #upload_to_play_store(
-        #    package_name: options[:application_id],
-        #    release_status: 'draft',
-        #    track: 'internal',
-        #    version_name: version_name,
-        #    json_key: File.expand_path('../decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
-        #    aab: File.expand_path("app-#{options[:environment]}-release.aab"),
-        #    skip_upload_changelogs: true,
-        #    skip_upload_images: true,
-        #    skip_upload_screenshots: true,
-        #    skip_upload_metadata: true
-        #)
+        upload_to_play_store(
+            package_name: options[:application_id],
+            release_status: 'draft',
+            track: 'internal',
+            version_name: version_name,
+            json_key: File.expand_path('../devops/credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
+            aab: File.expand_path("app-#{options[:environment]}-release.aab"),
+            skip_upload_changelogs: true,
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_metadata: true
+        )
     end
 
     desc 'Deploy the debug symbols to firebase'
     private_lane :deploy_debug_symbols_platform do |options|
-        #sh(
-        #    "firebase",
-        #    "crashlytics:symbols:upload",
-        #    "--app=" + options[:firebase_application_id],
-        #    File.expand_path("app.android-arm.symbols")
-        #)
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-arm.symbols")
+        )
 
-        #sh(
-        #    "firebase",
-        #    "crashlytics:symbols:upload",
-        #    "--app=" + options[:firebase_application_id],
-        #    File.expand_path("app.android-arm64.symbols")
-        #)
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-arm64.symbols")
+        )
 
-        #sh(
-        #    "firebase",
-        #    "crashlytics:symbols:upload",
-        #    "--app=" + options[:firebase_application_id],
-        #    File.expand_path("app.android-x64.symbols")
-        #)
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-x64.symbols")
+        )
     end
 end
 
@@ -350,7 +349,7 @@ platform :ios do
                 'ios',
                 '--obfuscate',
                 '--no-codesign',
-                '--split-debug-info=../devops/artifacts',
+                '--split-debug-info=devops/artifacts',
                 '--build-name=' + options[:build_name],
                 '--build-number=' + options[:build_number],
                 '--flavor=' + flavor_map[options[:environment]],
@@ -402,7 +401,7 @@ platform :ios do
             # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
             key_id: 'BX5CP94DHB',
             issuer_id: '69a6de93-4129-47e3-e053-5b8c7c11a4d1',
-            key_filepath: File.expand_path('devops/decoded/ios/AuthKey_BX5CP94DHB.p8'),
+            key_filepath: File.expand_path('devops/credentials/decoded/ios/AuthKey_BX5CP94DHB.p8'),
         )
     
         upload_to_testflight(
@@ -431,7 +430,7 @@ end
 desc 'Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
     - mobile_distribution_encryption_password
-    - bamboo_mobile_distribution_repository_access_secret'
+    - mobile_distribution_repository_access_secret'
 lane :deploy do
     fetch_credentials()
 
@@ -453,11 +452,11 @@ end
 desc 'Deploy the debug symbols to firebase
 Expected environment variables:
     - mobile_distribution_encryption_password
-    - bamboo_mobile_distribution_repository_access_secret'
+    - mobile_distribution_repository_access_secret'
 lane :deploy_debug_symbols do
     fetch_credentials()
 
-    Dir.chdir('../devops/') do
+    Dir.chdir('../devops/credentials/') do
         sh('./decode.sh firebase')
 
         firebase_token_file_path = Dir.getwd + '/decoded/firebase/firebaseToken.txt'
