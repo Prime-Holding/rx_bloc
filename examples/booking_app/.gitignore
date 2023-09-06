@@ -52,4 +52,4 @@ app.*.map.json
 **/fastlane/Preview.html
 **/fastlane/screenshots
 **/fastlane/test_output
-
+**/fastlane/devops/

@@ -49,7 +49,7 @@ firebase_app_id_map = {
     },
 }
 
-keychain_path = Dir.getwd + '/devops/booking-app-distribution.keychain'
+keychain_path = Dir.getwd + '/devops/credentials/booking-app-distribution.keychain'
 
 ##################### Lanes #####################
 
@@ -166,7 +166,7 @@ lane :build_custom do |options|
     fetch_credentials()
     install_credentials()
 
-    Dir.chdir('../devops') do
+    Dir.chdir('../devops/') do
         Dir.mkdir('artifacts') unless Dir.exist?('artifacts')
         Pathname.new('artifacts').children.each { |p| p.rmtree }
     end
@@ -227,7 +227,7 @@ platform :android do
                 "build",
                 "appbundle",
                 "--obfuscate",
-                "--split-debug-info=devops/artifacts/",
+                "--split-debug-info=../devops/artifacts/",
                 "--build-name=" + options[:build_name],
                 "--build-number=" + options[:build_number],
                 "--flavor=" + flavor_map[options[:environment]],
@@ -318,7 +318,6 @@ platform :ios do
             create_keychain(
                 path: keychain_path,
                 password: keychain_password,
-                timeout: 10000,
                 default_keychain: true
             )
 
@@ -350,7 +349,7 @@ platform :ios do
                 'ios',
                 '--obfuscate',
                 '--no-codesign',
-                '--split-debug-info=devops/artifacts',
+                '--split-debug-info=../devops/artifacts',
                 '--build-name=' + options[:build_name],
                 '--build-number=' + options[:build_number],
                 '--flavor=' + flavor_map[options[:environment]],
