@@ -38,7 +38,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.primeholding.booking_app"
+        applicationId "com.primeholding.bookingAppSample"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()

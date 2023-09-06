@@ -318,6 +318,7 @@ platform :ios do
             create_keychain(
                 path: keychain_path,
                 password: keychain_password,
+                timeout: 10000,
                 default_keychain: true
             )
 
@@ -373,7 +374,7 @@ platform :ios do
                 workspace: 'booking_app/ios/Runner.xcworkspace',
                 scheme: flavor_map[options[:environment]],
                 xcargs: settings_to_override,
-                output_directory: 'devops/artifacts',
+                output_directory: 'booking_app/devops/artifacts',
                 export_method: 'app-store',
                 export_options: {
                     manageAppVersionAndBuildNumber: false,
