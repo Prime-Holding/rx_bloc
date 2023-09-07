@@ -51,10 +51,10 @@ import 'rx_bloc_provider.dart';
 class RxMultiBlocProvider extends StatelessWidget {
   /// {@macro rxmultiblocprovider}
   const RxMultiBlocProvider({
-    Key? key,
     required this.providers,
     required this.child,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The [RxBlocProvider] list which is converted into a tree
   /// of [RxBlocProvider] widgets.
@@ -72,10 +72,8 @@ class RxMultiBlocProvider extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: providers,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => MultiProvider(
+        providers: providers,
+        child: child,
+      );
 }
