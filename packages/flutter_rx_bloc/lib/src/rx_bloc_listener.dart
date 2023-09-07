@@ -91,9 +91,9 @@ class RxBlocListener<B extends RxBlocTypeBase, S>
     extends RxBlocListenerBase<B, S> {
   /// {@macro RxBlocListener}
   const RxBlocListener({
-    Key? key,
     required RxBlocWidgetListener<S> listener,
     required Stream<S> Function(B) state,
+    Key? key,
     B? bloc,
     RxBlocListenerCondition<S>? condition,
     Function(BuildContext, S?)? onWaiting,

@@ -9,6 +9,7 @@ analyzer:
 linter:
   rules:
     - public_member_api_docs
+    - always_put_required_named_parameters_first
     - annotate_overrides
     - avoid_empty_else
     - avoid_function_literals_in_foreach_calls
@@ -24,6 +25,7 @@ linter:
     - camel_case_types
     - cancel_subscriptions
     - cascade_invocations
+    - collection_methods_unrelated_type
     - comment_references
     - constant_identifier_names
     - control_flow_in_finally
@@ -33,10 +35,8 @@ linter:
     - empty_statements
     - hash_and_equals
     - implementation_imports
-    - iterable_contains_unrelated_type
     - library_names
     - library_prefixes
-    - list_remove_unrelated_type
     - lines_longer_than_80_chars
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
@@ -54,6 +54,7 @@ linter:
     - prefer_const_constructors
     - prefer_contains
     - prefer_equal_for_default_values
+    - prefer_expression_function_bodies
     - prefer_final_fields
     - prefer_initializing_formals
     - prefer_interpolation_to_compose_strings

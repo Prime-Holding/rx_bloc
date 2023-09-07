@@ -1,3 +1,6 @@
+## [6.1.0]
+* Introduce `RxBlocMultiBuilder2` and `RxBlocMultiBuilder3`
+
 ## [6.0.0] - July 12, 2023
 * Dart `3.0` Required
 * Update `rx_bloc` to use version `5.0.0`

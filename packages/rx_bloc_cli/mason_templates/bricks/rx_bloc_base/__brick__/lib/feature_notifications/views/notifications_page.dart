@@ -9,7 +9,6 @@ import 'package:widget_toolkit/ui_components.dart';
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/notification_model.dart';
-import '../../base/utils/helpers.dart' as helpers;
 import '../../lib_router/router.dart';
 import '../blocs/notifications_bloc.dart';
 
@@ -126,7 +125,7 @@ class NotificationsPage extends StatelessWidget {
                         if (authorized) return;
 
                         // If not authorized, show a dialog popup
-                        await helpers.showAdaptiveDialog(
+                        await showAdaptiveDialog(
                           context: context,
                           builder: (context) => AlertDialog(
                             content: Text(

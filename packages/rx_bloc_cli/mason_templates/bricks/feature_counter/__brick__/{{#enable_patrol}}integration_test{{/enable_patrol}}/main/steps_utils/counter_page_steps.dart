@@ -4,7 +4,7 @@ import '../configuration/build_app.dart';
 import '../pages/counter_page.dart';
 
 class CounterPageSteps {
-  static Future<void> incrementAction(PatrolTester $) async {
+  static Future<void> incrementAction(PatrolIntegrationTester $) async {
     CounterPage counterPage = CounterPage($);
     await $.pumpAndSettle();
     for (int i = 1; i <= 5; i++) {
@@ -15,7 +15,7 @@ class CounterPageSteps {
     }
   }
 
-  static Future<void> decrementAction(PatrolTester $) async {
+  static Future<void> decrementAction(PatrolIntegrationTester $) async {
     CounterPage counterPage = CounterPage($);
     await $.pumpAndSettle();
     for (int i = 5; i > 0; i--) {
@@ -25,7 +25,7 @@ class CounterPageSteps {
     }
   }
 
-  static Future<void> showErrorModalSheetIncrement(PatrolTester $) async {
+  static Future<void> showErrorModalSheetIncrement(PatrolIntegrationTester $) async {
     CounterPage counterPage = CounterPage($);
     await counterPage.tapBtnIncrement();
     await $.pumpAndSettle();
@@ -34,7 +34,7 @@ class CounterPageSteps {
     await counterPage.tapBtnError();
   }
 
-  static Future<void> showErrorModalSheetDecrement(PatrolTester $) async {
+  static Future<void> showErrorModalSheetDecrement(PatrolIntegrationTester $) async {
     CounterPage counterPage = CounterPage($);
     await counterPage.tapBtnDecrement();
     await $.pumpAndSettle();
@@ -43,7 +43,7 @@ class CounterPageSteps {
     await counterPage.tapBtnError();
   }
 
-  static Future<void> reloadCounter(PatrolTester $) async {
+  static Future<void> reloadCounter(PatrolIntegrationTester $) async {
     CounterPage counterPage = CounterPage($);
     await counterPage.tapBtnReload();
     expect(await counterPage.isTextCountDisplayed(), true);
