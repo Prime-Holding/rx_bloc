@@ -118,12 +118,11 @@ class RxBlocProvider<T extends RxBlocTypeBase>
   }
 
   @override
-  Widget buildWithChild(BuildContext context, Widget? child) {
-    return InheritedProvider<T>(
-      create: _create,
-      dispose: _dispose,
-      lazy: lazy,
-      child: child,
-    );
-  }
+  Widget buildWithChild(BuildContext context, Widget? child) =>
+      InheritedProvider<T>(
+        create: _create,
+        dispose: _dispose,
+        lazy: lazy,
+        child: child,
+      );
 }
