@@ -124,6 +124,9 @@ class GeneratorArgumentsProvider {
     // Patrol tests
     final patrolTestsEnabled = _reader.read<bool>(CommandArguments.patrol);
 
+    // Auth matrix
+    final authMatrixEnabled = _reader.read<bool>(CommandArguments.patrol);
+
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
       counterEnabled: counterEnabled,
@@ -134,6 +137,7 @@ class GeneratorArgumentsProvider {
       deepLinkEnabled: deepLinkEnabled,
       devMenuEnabled: devMenuEnabled,
       patrolTestsEnabled: patrolTestsEnabled,
+      authMatrixEnabled: authMatrixEnabled,
     );
   }
 

@@ -108,5 +108,8 @@ class GeneratorArguments
   bool get realtimeCommunicationEnabled =>
       _featureConfiguration.realtimeCommunicationEnabled;
 
+  @override
+  bool get authMatrixEnabled => _featureConfiguration.authMatrixEnabled;
+
   /// endregion
 }

@@ -1,4 +1,5 @@
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/templates/lib_auth_matrix_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
@@ -35,6 +36,7 @@ class BundleGenerator {
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
+  final _libAuthMatrix = libAuthMatrixBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
@@ -97,6 +99,10 @@ class BundleGenerator {
     //Add lib_auth to _bundle when needed
     if (arguments.authenticationEnabled) {
       _bundle.files.addAll(_libAuthBundle.files);
+    }
+    //Add lib_auth_matrix to _bundle when needed
+    if (arguments.authMatrixEnabled) {
+      _bundle.files.addAll(_libAuthMatrix.files);
     }
 
     return _bundle;

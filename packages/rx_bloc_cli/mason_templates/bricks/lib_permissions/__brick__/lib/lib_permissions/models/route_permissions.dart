@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
-class RoutePermissions {
+class RoutePermissions { {{#enable_auth_matrix}}
+  static const authMatrix = 'AuthMatrixRoute';{{/enable_auth_matrix}}
   static const dashboard = 'DashboardRoute';
   static const profile = 'ProfileRoute';
   static const splash = 'SplashRoute';{{#enable_feature_counter}}

@@ -97,6 +97,7 @@ class CreateCommand extends Command<int> {
         'enable_patrol': arguments.patrolTestsEnabled,
         'has_authentication': arguments.authenticationEnabled,
         'realtime_communication': arguments.realtimeCommunicationEnabled,
+        'enable_auth_matrix': arguments.authMatrixEnabled,
       },
     );
 
@@ -204,6 +205,7 @@ class CreateCommand extends Command<int> {
     _usingLog('OTP Feature', arguments.otpEnabled);
     _usingLog('Patrol integration tests', arguments.patrolTestsEnabled);
     _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
+    _usingLog('Auth matrix', arguments.authMatrixEnabled);
   }
 
   /// Shows a delayed log with a success symbol in front of it

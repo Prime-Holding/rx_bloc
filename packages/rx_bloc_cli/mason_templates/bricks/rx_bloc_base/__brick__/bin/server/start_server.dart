@@ -9,13 +9,16 @@ import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart' as shelf_static;
-{{#has_authentication}}
+{{#enable_auth_matrix}}
+import 'controllers/auth_matrix_controller.dart';{{/enable_auth_matrix}}{{#has_authentication}}
 import 'controllers/authentication_controller.dart';{{/has_authentication}}{{#enable_feature_counter}}
 import 'controllers/count_controller.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import 'controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}
 import 'controllers/permissions_controller.dart';
-import 'controllers/push_notifications_controller.dart';{{#has_authentication}}
-import 'repositories/auth_token_repository.dart';
+import 'controllers/push_notifications_controller.dart';{{#enable_auth_matrix}}
+import 'repositories/auth_matrix_repository.dart';{{/enable_auth_matrix}}{{#has_authentication}}
+import 'repositories/auth_token_repository.dart';{{/has_authentication}}{{#enable_auth_matrix}}
+import 'services/auth_matrix_service.dart';{{/enable_auth_matrix}}{{#has_authentication}}
 import 'services/authentication_service.dart';{{/has_authentication}}
 import 'utils/api_controller.dart';
 
@@ -27,8 +30,13 @@ Future main() async {
   final authTokenRepository = AuthTokenRepository();
 
   final authService = AuthenticationService(authTokenRepository);{{/has_authentication}}
+  {{#enable_auth_matrix}}
+  final authMatrixRepository = AuthMatrixRepository();
+  
+  final authMatrixService = AuthMatrixService(authMatrixRepository);{{/enable_auth_matrix}}
 
-  final routeGenerator = await _registerControllers({{#has_authentication}}authService{{/has_authentication}});
+
+  final routeGenerator = await _registerControllers({{#has_authentication}}authService,{{/has_authentication}}{{#enable_auth_matrix}}authMatrixService,{{/enable_auth_matrix}});
 
   // See https://pub.dev/documentation/shelf/latest/shelf/Cascade-class.html
   final cascade = Cascade()
@@ -61,7 +69,9 @@ final _staticHandler = shelf_static.createStaticHandler('bin/server/public',
 
 /// Registers all controllers that provide some kind of API
 Future<RouteGenerator> _registerControllers({{#has_authentication}}
-    AuthenticationService authenticationService{{/has_authentication}}) async {
+    AuthenticationService authenticationService,{{/has_authentication}}
+    {{#enable_auth_matrix}}AuthMatrixService authMatrixService,{{/enable_auth_matrix}}
+    ) async {
   final generator = RouteGenerator()
   {{#enable_feature_counter}}
     ..addController(CountController())
@@ -71,7 +81,9 @@ Future<RouteGenerator> _registerControllers({{#has_authentication}}
     ..addController(PermissionsController({{#has_authentication}}authenticationService{{/has_authentication}}))
     {{#enable_feature_deeplinks}}
     ..addController(DeepLinksController())
-    {{/enable_feature_deeplinks}}
+    {{/enable_feature_deeplinks}}{{#enable_auth_matrix}}
+    ..addController(AuthMatrixController(authMatrixService))
+    {{/enable_auth_matrix}}
     ;
 
   /// TODO: Add your controllers here
@@ -94,7 +106,11 @@ List<String> securedRoutes = [
   'api/count/increment',
   'api/count/decrement',
   'api/user/push-notification-subscriptions',
-  'api/send-push-message',
+  'api/send-push-message',{{#enable_auth_matrix}}
+  'api/authMatrix/actions/pinOnly',
+  'api/authMatrix/actions/pinAndOtp',
+  'api/authMatrix/<transactionId>',
+  'api/authMatrix/actions/cancel',{{/enable_auth_matrix}}
 ];
 
 Middleware _securedEndpoints(AuthenticationService authenticationService) =>

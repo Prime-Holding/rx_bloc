@@ -36,6 +36,7 @@ void main() {
       deepLinkEnabled: true,
       devMenuEnabled: true,
       patrolTestsEnabled: true,
+      authMatrixEnabled: true,
     );
     sut = GeneratorArguments(
       outputDirectory: outputDirectory,

@@ -16,6 +16,7 @@ dart run rx_bloc_cli create \
   --enable-patrol \
   --realtime-communication=sse \
   --enable-otp \
+  --enable-auth-matrix \
   --no-interactive \
   example/test_app
 

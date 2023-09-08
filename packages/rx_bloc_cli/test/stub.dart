@@ -72,6 +72,7 @@ final class Stub {
       deepLinkEnabled: true,
       widgetToolkitEnabled: true,
       realtimeCommunicationEnabled: true,
+      authMatrixEnabled: true,
     ),
   );
 
@@ -98,6 +99,7 @@ final class Stub {
       realtimeCommunicationEnabled:
           CommandArguments.realtimeCommunication.defaultValue() !=
               RealtimeCommunicationType.none,
+      authMatrixEnabled: CommandArguments.authMatrix.defaultValue(),
     ),
   );
 }

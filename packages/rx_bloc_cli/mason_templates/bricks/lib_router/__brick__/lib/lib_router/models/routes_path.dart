@@ -1,6 +1,9 @@
 {{> licence.dart }}
 
-class RoutesPath {
+class RoutesPath { {{#enable_auth_matrix}}
+  static const authMatrix = '/authMatrix';
+  static const authMatrixPinBiometrics = 'authMatrixPinBiometrics';
+  static const authMatrixOtp = 'authMatrixOtp';{{/enable_auth_matrix}}
   static const dashboard = '/dashboard';
   static const profile = '/profile';
   static const splash = '/splash';{{#enable_feature_counter}}
