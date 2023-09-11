@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 part of '../router.dart';
 
 @immutable

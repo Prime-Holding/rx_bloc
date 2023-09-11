@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'auth_matrix_action_type.dart';

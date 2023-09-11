@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'auth_matrix_cancel_model.g.dart';

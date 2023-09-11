@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:uuid/uuid.dart';
 
 import '../models/auth_matrix/auth_matrix_action_type.dart';

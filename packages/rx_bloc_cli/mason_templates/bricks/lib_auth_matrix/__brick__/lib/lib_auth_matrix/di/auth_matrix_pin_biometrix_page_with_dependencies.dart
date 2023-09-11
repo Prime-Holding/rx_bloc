@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';

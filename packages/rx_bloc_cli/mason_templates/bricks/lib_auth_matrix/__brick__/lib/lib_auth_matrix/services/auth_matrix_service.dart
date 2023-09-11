@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';

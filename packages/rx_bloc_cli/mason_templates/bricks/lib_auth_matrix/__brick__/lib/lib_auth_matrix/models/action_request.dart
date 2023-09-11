@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'auth_matrix_action_type.dart';
 
 abstract class ActionRequest {

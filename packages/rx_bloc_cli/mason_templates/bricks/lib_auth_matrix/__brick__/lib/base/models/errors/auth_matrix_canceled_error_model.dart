@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 part of 'error_model.dart';
 
 class AuthMatrixCanceledErrorModel extends ErrorModel

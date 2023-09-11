@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../models/auth_matrix/auth_matrix_action_type.dart';
 import '../models/auth_matrix/auth_matrix_response_model.dart';
 import '../repositories/auth_matrix_repository.dart';

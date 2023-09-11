@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 enum AuthMatrixStatus {
   unknown,
   inProgress,

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../data_source/remote/auth_matrix_data_source.dart';
 import '../models/action_request.dart';
