@@ -125,7 +125,7 @@ class GeneratorArgumentsProvider {
     final patrolTestsEnabled = _reader.read<bool>(CommandArguments.patrol);
 
     // Auth matrix
-    final authMatrixEnabled = _reader.read<bool>(CommandArguments.patrol);
+    final authMatrixEnabled = _reader.read<bool>(CommandArguments.authMatrix);
 
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,

@@ -22,7 +22,8 @@ class PermissionsController extends ApiController {
   Response permissionsHandler(Request request) { {{#has_authentication}}
     final headers = request.headers;
     if (!headers.containsKey(AuthenticationService.authHeader)) {
-      return responseBuilder.buildOK(data: {
+      return responseBuilder.buildOK(data: { {{#enable_feature_auth_matrix}}
+        'AuthMatrixRoute': true,{{/enable_feature_auth_matrix}}
         'DashboardRoute': false,
         'ProfileRoute': false,
         'SplashRoute': true,{{#enable_feature_counter}}
@@ -38,7 +39,8 @@ class PermissionsController extends ApiController {
 
     _authenticationService.isAuthenticated(request);{{/has_authentication}}
 
-    return responseBuilder.buildOK(data: {
+    return responseBuilder.buildOK(data: { {{#enable_feature_auth_matrix}}
+      'AuthMatrixRoute': true,{{/enable_feature_auth_matrix}}
       'DashboardRoute': true,
       'ProfileRoute': true,
       'SplashRoute': true,{{#enable_feature_counter}}

@@ -57,7 +57,7 @@ class AuthMatrixPage extends StatelessWidget {
                           ? bloc.events.submitPinBiometrics
                           : null,
                       text: context.l10n.featureAuthMatrix.pinBiometrics,
-                      state: textFieldValue.data != null
+                      state: textFieldValue.hasData
                           ? ButtonStateModel.enabled
                           : ButtonStateModel.disabled,
                     ),
@@ -69,7 +69,7 @@ class AuthMatrixPage extends StatelessWidget {
                           ? bloc.events.submitOtp
                           : null,
                       text: context.l10n.featureAuthMatrix.otp,
-                      state: textFieldValue.data != null
+                      state: textFieldValue.hasData
                           ? ButtonStateModel.enabled
                           : ButtonStateModel.disabled,
                     ),

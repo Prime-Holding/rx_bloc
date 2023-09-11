@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../bloc/pin_otp_bloc.dart';
 import '../models/auth_matrix_response.dart';
 
-import '../views/auth_matrix_otp.dart';
+import '../views/auth_matrix_otp_page.dart';
 
 class AuthMatrixOtpPageWithDependencies extends StatelessWidget {
   const AuthMatrixOtpPageWithDependencies({
