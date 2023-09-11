@@ -14,10 +14,13 @@ part 'auth_matrix_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the AuthMatrixBloC.
 abstract class AuthMatrixBlocEvents {
+  /// Event triggered when the user taps on the submit pin/biometrics button
   void submitPinBiometrics();
 
+  /// Event triggered when the user taps on the submit otp button
   void submitOtp();
 
+  /// Event triggered when the user types in the text field
   @RxBlocEvent(type: RxBlocEventType.behaviour)
   void userData(String value);
 }
@@ -30,8 +33,10 @@ abstract class AuthMatrixBlocStates {
   /// The error state
   Stream<ErrorModel> get errors;
 
+  ///State that emits when the user successfully completes the auth matrix flow
   Stream<void> get response;
 
+  ///State of the text field
   Stream<String?> get textFieldValue;
 }
 

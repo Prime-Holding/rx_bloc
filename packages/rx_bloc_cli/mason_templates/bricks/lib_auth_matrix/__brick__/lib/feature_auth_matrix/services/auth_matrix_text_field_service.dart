@@ -5,6 +5,7 @@ import 'package:widget_toolkit/text_field_dialog.dart';
 import '../../assets.dart';
 import '../../base/models/errors/error_model.dart';
 
+/// Service used to validate the [TextFieldDialog]
 class AuthMatrixTextFieldService extends TextFieldValidator<String> {
   static const int minLengthRequired = 2;
 

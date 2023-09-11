@@ -10,6 +10,7 @@ part 'pin_otp_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the PinOtpBloC.
 abstract class PinOtpBlocEvents {
+  /// Event triggered when the cancels the auth matrix flow
   void cancelAuthMatrix(
       AuthMatrixResponse authMatrixResponse, String endToEndId);
 }

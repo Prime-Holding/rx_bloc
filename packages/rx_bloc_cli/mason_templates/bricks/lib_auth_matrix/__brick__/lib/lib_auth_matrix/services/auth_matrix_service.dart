@@ -15,6 +15,7 @@ import '../models/auth_matrix_response.dart';
 import '../models/auth_matrix_verify.dart';
 import '../repositories/auth_matrix_repository.dart';
 
+/// Service that handles the auth matrix flow,
 class AuthMatrixService implements SmsCodeService, PinCodeService {
   AuthMatrixService(
     this._authMatrixRepository,
@@ -29,8 +30,11 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
   String _endToEndId = '';
   String _userData = '';
 
+  ///Function used to generate the end to end id
   String generateEndToEndId() => const Uuid().v4();
 
+  ///Function used to initialise the auth matrix flow, 
+  ///and navigate to the correct screen based on the server response
   Future<void> initialiseAuthMatrixFlow({
     required ActionRequest payload,
     required String userData,
@@ -52,6 +56,8 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
     return;
   }
 
+  ///Function used to navigate the user to the correct screen
+  /// based on the server response
   Future<void> _navigateFunction(
       AuthMatrixResponse response, String endToEndId) async {
     switch (response.authZ) {
@@ -72,6 +78,8 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
     }
   }
 
+  ///Function used to verify the auth matrix flow
+  ///Adds the response to the [_flowEvents] stream
   Future<void> verifyAuthMethod(
     AuthMatrixResponse authMatrixResponse,
     String endToEndId,
@@ -100,6 +108,8 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
     );
   }
 
+  ///Function used to cancel the auth matrix flow
+  ///Adds the error to the [_flowEvents] stream
   Future<void> cancelAuthMatrix(
     String endToEndId,
     String transactionId,
@@ -114,8 +124,8 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
     _flowEvents.close();
   }
 
-  ///OTP
   @override
+  ///Function used to verify auth method once the user enters the OTP code
   Future<dynamic> confirmPhoneCode(String code) async {
     await verifyAuthMethod(_flowEvents.value, _endToEndId, _userData, code);
     return true;
@@ -142,8 +152,8 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
   @override
   Future<int> getCodeLength() async => 4;
 
-  ///PIN
   @override
+  ///Function used to verify auth method once the user enters the pin/biometrics code
   Future<bool> verifyPinCode(String pinCode) async {
     await verifyAuthMethod(_flowEvents.value, _endToEndId, _userData, pinCode);
     return true;
