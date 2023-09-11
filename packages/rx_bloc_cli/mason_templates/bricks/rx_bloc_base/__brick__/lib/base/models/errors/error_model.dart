@@ -3,7 +3,7 @@
 import 'package:widget_toolkit/models.dart'
     show ErrorModel, L10nErrorKeyProvider;
 
-import '../../../assets.dart' show I18nErrorKeys,{{#enable_auth_matrix}}I18nFeatureAuthMatrixKeys{{/enable_auth_matrix}};
+import '../../../assets.dart' show I18nErrorKeys {{#enable_auth_matrix}},I18nFeatureAuthMatrixKeys{{/enable_auth_matrix}};
 
 export 'package:widget_toolkit/models.dart'
     show ErrorModel, UnknownErrorModel, GenericErrorModel, L10nErrorKeyProvider;
