@@ -1,4 +1,5 @@
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 
 import '../command_arguments.dart';
 import '../realtime_communication_type.dart';
@@ -34,9 +35,20 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
         '${argument.prompt} [ ${_rtcSupportedOptions()} ]',
         defaultValue: argument.defaultsTo,
       ));
+
+  @override
+  CICDType readCICDEnum(CommandArguments argument) =>
+      CICDType.parse(_logger.prompt(
+        '${argument.prompt} [ ${_cicdSupportedOptions()} ]',
+        defaultValue: argument.defaultsTo,
+      ));
 }
 
 /// Utility method for converting RealtimeCommunicationType options to prompt
 String _rtcSupportedOptions() => RealtimeCommunicationType.supportedOptions
     .map((e) => e.toString())
     .join(' | ');
+
+/// Utility method for converting CICDType options to prompt
+String _cicdSupportedOptions() =>
+    CICDType.supportedOptions.map((e) => e.toString()).join(' | ');
