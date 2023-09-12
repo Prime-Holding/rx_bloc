@@ -1,3 +1,6 @@
+## [5.0.1]
+* Export ErrorWithTag model outside of rx_bloc
+
 ## [5.0.0]
 * Dart `3.0` Required
 * **Breaking changes**
