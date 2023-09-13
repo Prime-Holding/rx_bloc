@@ -11,3 +11,9 @@ vars:
   project_name:
     type: string
     description: Name of the project
+  organization_name:
+    type: string
+    description: The organization under which the project is registered
+  domain_name:
+    type: string
+    description: The domain of the app

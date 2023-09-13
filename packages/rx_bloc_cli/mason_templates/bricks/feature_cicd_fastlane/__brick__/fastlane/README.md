@@ -23,7 +23,7 @@ Start an automatic build
 Expected environment variables:
     - mobile_distribution_encryption_password
     - mobile_distribution_repository_access_secret
-    - TagBuildTriggerReason_tagName
+    - tag_build_trigger_reason_tag_name
 Expected input parameters:
     - platform: string (android, ios)
 Example:
