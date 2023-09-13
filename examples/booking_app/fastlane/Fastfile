@@ -67,10 +67,8 @@ private_lane :fetch_credentials do
         unless Dir.exist?('credentials')
             sh(
                 "git \
-                    -c http.sslVerify=false \
-                    -c http.extraHeader='Authorization: Bearer #{token}' \
                     clone \
-                    https://github.com/Prime-Holding/booking-app-distribuition.git
+                    https://#{token}@github.com/Prime-Holding/booking-app-distribuition.git \
                     credentials"
             )
         end
