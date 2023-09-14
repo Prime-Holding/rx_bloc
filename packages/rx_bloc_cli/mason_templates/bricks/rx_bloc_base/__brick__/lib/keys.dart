@@ -20,4 +20,7 @@ class Keys {
   static const counterReload = Key('counterReload');
   static const counterError = Key('counterErrorKey');
 {{/enable_feature_counter}}
+  {{#enable_feature_otp}}
+  static const otpInput = Key('otpInputKey');
+  {{/enable_feature_otp}}
 }

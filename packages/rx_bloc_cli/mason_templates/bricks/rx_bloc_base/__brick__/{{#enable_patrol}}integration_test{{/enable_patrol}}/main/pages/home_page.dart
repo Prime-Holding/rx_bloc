@@ -7,7 +7,7 @@ import '../configuration/build_app.dart';{{#has_authentication}}
 import 'profile_page.dart';{{/has_authentication}}
 
 class HomePage extends BasePage {
-  HomePage(PatrolTester $) : super($);
+  HomePage(PatrolIntegrationTester $) : super($);
 
   {{#enable_feature_counter}}
   PatrolFinder get locBtnCounterPage => $(Icons.calculate);{{/enable_feature_counter}}{{#has_authentication}}
@@ -15,10 +15,12 @@ class HomePage extends BasePage {
 
   Future<void> tapBtnCounterPage() async {
     await $(locBtnCounterPage).tap();
+    await $.pumpAndSettle();
   }{{/enable_feature_counter}}{{#has_authentication}}
 
   Future<ProfilePage> tapBtnProfilePage() async {
     await $(locBtnProfilePage).tap();
+    await $.pumpAndSettle();
     return ProfilePage($);
   }{{/has_authentication}}
 }

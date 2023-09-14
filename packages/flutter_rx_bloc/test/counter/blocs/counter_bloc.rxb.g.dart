@@ -1,57 +1,63 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// Generator: RxBlocGeneratorForAnnotation
+// **************************************************************************
+
 part of 'counter_bloc.dart';
 
-/// The code below will be automatically generated
-/// for you by `rx_bloc_generator`.
-///
-/// This generated class usually resides in [file-name].rxb.g.dart.
-/// Find more info at https://pub.dev/packages/rx_bloc_generator.
-
-/// ********************GENERATED CODE**************************************
-/// CounterBlocType class used for bloc event and state access from widgets
+/// Used as a contractor for the bloc, events and states classes
+/// {@nodoc}
 abstract class CounterBlocType extends RxBlocTypeBase {
-  // ignore: public_member_api_docs
   CounterBlocEvents get events;
-
-  // ignore: public_member_api_docs
   CounterBlocStates get states;
 }
 
-/// $CounterBloc class - extended by the CounterBloc bloc
+/// [$CounterBloc] extended by the [CounterBloc]
+/// {@nodoc}
 abstract class $CounterBloc extends RxBlocBase
     implements CounterBlocEvents, CounterBlocStates, CounterBlocType {
+  final _compositeSubscription = CompositeSubscription();
+
+  /// Тhe [Subject] where events sink to by calling [setCount]
   final _$setCountEvent = PublishSubject<int>();
+
+  /// Тhe [Subject] where events sink to by calling [setLoading]
+  final _$setLoadingEvent = PublishSubject<void>();
+
+  /// Тhe [Subject] where events sink to by calling [setError]
+  final _$setErrorEvent = PublishSubject<Exception>();
+
+  /// The state of [count] implemented in [_mapToCountState]
+  late final Stream<Result<int>> _countState = _mapToCountState();
+
+  /// The state of [isLoading] implemented in [_mapToIsLoadingState]
+  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
+
+  /// The state of [errors] implemented in [_mapToErrorsState]
+  late final Stream<String> _errorsState = _mapToErrorsState();
 
   @override
   void setCount(int count) => _$setCountEvent.add(count);
 
-  final _$setLoadingEvent = PublishSubject<void>();
-
   @override
   void setLoading() => _$setLoadingEvent.add(null);
-
-  final _$setErrorEvent = PublishSubject<Exception>();
 
   @override
   void setError(Exception error) => _$setErrorEvent.add(error);
 
-  late final Stream<Result<int>> _countState = _mapToCountState();
-
   @override
   Stream<Result<int>> get count => _countState;
-
-  Stream<Result<int>> _mapToCountState();
-
-  late final Stream<bool> _isLoadingState = _mapToIsLoadingState();
 
   @override
   Stream<bool> get isLoading => _isLoadingState;
 
-  Stream<bool> _mapToIsLoadingState();
-
-  late final Stream<String> _errorsState = _mapToErrorsState();
-
   @override
   Stream<String> get errors => _errorsState;
+
+  Stream<Result<int>> _mapToCountState();
+
+  Stream<bool> _mapToIsLoadingState();
 
   Stream<String> _mapToErrorsState();
 
@@ -61,9 +67,6 @@ abstract class $CounterBloc extends RxBlocBase
   @override
   CounterBlocStates get states => this;
 
-  final _compositeSubscription = CompositeSubscription();
-
-  /// Dispose of all the opened streams when the bloc is closed.
   @override
   void dispose() {
     _$setCountEvent.close();
@@ -73,5 +76,3 @@ abstract class $CounterBloc extends RxBlocBase
     super.dispose();
   }
 }
-
-/// ********************GENERATED CODE END**************************************

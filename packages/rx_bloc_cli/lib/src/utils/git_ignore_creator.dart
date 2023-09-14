@@ -47,7 +47,6 @@ String _projectGitIgnore = '''
 .buildlog/
 .history
 .svn/
-pubspec.lock
 
 # IntelliJ related
 *.iml

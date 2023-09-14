@@ -6,7 +6,4 @@ extension StringExtensions on String {
     final match = regExp.matchAsPrefix(this);
     return match != null && match.end == length;
   }
-
-  /// Converts the string to boolean value
-  bool toBool() => bool.parse(this, caseSensitive: false);
 }

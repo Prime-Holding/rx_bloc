@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skeleton_text/skeleton_text.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SkeletonText extends StatelessWidget {
   const SkeletonText({
@@ -42,8 +42,10 @@ class SkeletonText extends StatelessWidget {
           );
   }
 
-  SkeletonAnimation _buildSkeleton() {
-    return SkeletonAnimation(
+  Widget _buildSkeleton() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[400]!,
       child: Container(
         width: double.infinity,
         height: height,

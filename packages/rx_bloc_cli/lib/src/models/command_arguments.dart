@@ -204,7 +204,8 @@ enum ArgumentType {
         ArgumentType.string => null,
         ArgumentType.boolean => null,
         ArgumentType.realTimeCommunicationEnum =>
-          RealtimeCommunicationType.values.map((e) => e.toString()),
-        ArgumentType.cicdTypeEnum => CICDType.values.map((e) => e.toString()),
+          RealtimeCommunicationType.supportedOptions.map((e) => e.toString()),
+        ArgumentType.cicdTypeEnum =>
+          CICDType.supportedOptions.map((e) => e.toString()),
       };
 }

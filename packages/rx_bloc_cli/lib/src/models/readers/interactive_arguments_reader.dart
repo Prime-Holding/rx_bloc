@@ -17,31 +17,64 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
       argument.supportsInteractiveInput;
 
   @override
-  String readString(CommandArguments argument) => _logger.prompt(
-        argument.prompt,
-        defaultValue: argument.defaultsTo,
+  String readString(CommandArguments argument) {
+    if (argument.type != ArgumentType.string) {
+      throw UnsupportedError(
+        '"${argument.name}" can not be read as String. '
+        'Please find a suitable read method for "${argument.type.name}"',
       );
+    }
+    return _logger.prompt(
+      argument.prompt,
+      defaultValue: argument.defaultsTo,
+    );
+  }
 
   @override
-  bool readBool(CommandArguments argument) => argument.mandatory
-      ? _logger.confirm(argument.prompt)
-      : _logger.confirm(argument.prompt, defaultValue: argument.defaultValue());
+  bool readBool(CommandArguments argument) {
+    if (argument.type != ArgumentType.boolean) {
+      throw UnsupportedError(
+        '"${argument.name}" can not be read as bool. '
+        'Please find a suitable read method for "${argument.type.name}"',
+      );
+    }
+    return _logger.confirm(
+      argument.prompt,
+      defaultValue: argument.defaultValue(),
+    );
+  }
 
   @override
   RealtimeCommunicationType readRealtimeCommunicationEnum(
     CommandArguments argument,
-  ) =>
-      RealtimeCommunicationType.parse(_logger.prompt(
-        '${argument.prompt} [ ${_rtcSupportedOptions()} ]',
-        defaultValue: argument.defaultsTo,
-      ));
+  ) {
+    if (argument.type != ArgumentType.realTimeCommunicationEnum) {
+      throw UnsupportedError(
+        '"${argument.name}" can not be read as RealtimeCommunicationType. '
+        'Please find a suitable read method for "${argument.type.name}"',
+      );
+    }
+    final prompt = '${argument.prompt} [ ${_rtcSupportedOptions()} ]';
+    return RealtimeCommunicationType.parse(_logger.prompt(
+      prompt,
+      defaultValue: argument.defaultsTo,
+    ));
+  }
 
   @override
-  CICDType readCICDEnum(CommandArguments argument) =>
-      CICDType.parse(_logger.prompt(
-        '${argument.prompt} [ ${_cicdSupportedOptions()} ]',
-        defaultValue: argument.defaultsTo,
-      ));
+  CICDType readCICDEnum(CommandArguments argument) {
+    if (argument.type != ArgumentType.cicdTypeEnum) {
+      throw UnsupportedError(
+        '"${argument.name}" can not be read as CICDType. '
+        'Please find a suitable read method for "${argument.type.name}"',
+      );
+    }
+    final prompt = '${argument.prompt} [ ${_cicdSupportedOptions()} ]';
+    return CICDType.parse(_logger.prompt(
+      prompt,
+      defaultValue: argument.defaultsTo,
+    ));
+  }
 }
 
 /// Utility method for converting RealtimeCommunicationType options to prompt
