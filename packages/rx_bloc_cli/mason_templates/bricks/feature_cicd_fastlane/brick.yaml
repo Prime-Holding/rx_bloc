@@ -17,3 +17,6 @@ vars:
   domain_name:
     type: string
     description: The domain of the app
+  cicd:
+    type: boolean
+    description: The type of enabled ci/cd option

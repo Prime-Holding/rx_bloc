@@ -1,3 +1,6 @@
+## [3.1.0]
+* Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none` )
+
 ## [3.0.0]
 Contains breaking changes
 * Migrated command parameters from options to flags

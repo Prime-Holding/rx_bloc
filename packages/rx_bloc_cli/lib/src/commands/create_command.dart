@@ -97,7 +97,7 @@ class CreateCommand extends Command<int> {
         'enable_patrol': arguments.patrolTestsEnabled,
         'has_authentication': arguments.authenticationEnabled,
         'realtime_communication': arguments.realtimeCommunicationEnabled,
-        'cicd:': arguments.cicdEnabled,
+        'cicd': arguments.cicdEnabled,
       },
     );
 
