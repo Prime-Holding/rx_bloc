@@ -15,20 +15,28 @@ class FeatureConfiguration {
 
   /// Analytics
   final bool analyticsEnabled;
+
   /// Push notifications
   final bool pushNotificationsEnabled;
+
   /// Realtime communication
   final bool realtimeCommunicationEnabled;
+
   /// Deep links
   final bool deepLinkEnabled;
+
   /// Change language
   final bool changeLanguageEnabled;
+
   /// Counter
   final bool counterEnabled;
+
   /// Widget toolkit
   final bool widgetToolkitEnabled;
+
   /// Dev menu
   final bool devMenuEnabled;
+
   /// Patrol tests
   final bool patrolTestsEnabled;
 
