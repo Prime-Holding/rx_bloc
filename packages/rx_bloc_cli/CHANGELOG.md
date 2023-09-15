@@ -1,5 +1,9 @@
 ## [3.1.0]
-* Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none` )
+* Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none`)
+
+## [3.0.1]
+* Generated project now uses the adaptive dialog introduced in Flutter `3.13.0`
+* Fixed integration test showcase when OTP feature is enabled
 
 ## [3.0.0]
 Contains breaking changes
