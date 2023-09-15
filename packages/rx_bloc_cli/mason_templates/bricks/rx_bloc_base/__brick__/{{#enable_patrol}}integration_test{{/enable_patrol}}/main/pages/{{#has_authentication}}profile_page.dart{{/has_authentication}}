@@ -6,7 +6,7 @@ import '../base/base_page.dart';
 import '../configuration/build_app.dart';
 
 class ProfilePage extends BasePage {
-  ProfilePage(PatrolTester $) : super($);
+  ProfilePage(PatrolIntegrationTester $) : super($);
 
   final Finder locBtnLogout = find.byIcon(Icons.logout);
 

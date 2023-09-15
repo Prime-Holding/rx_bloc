@@ -1,0 +1,11 @@
+{{> licence.dart }}
+
+import '../configuration/build_app.dart';
+import '../pages/otp_page.dart';
+
+class OtpPageSteps {
+    static Future<void> otpAction(PatrolIntegrationTester $) async {
+        OtpPage otpPage = OtpPage($);
+        await otpPage.enterOtpCode('0000');
+    }
+}

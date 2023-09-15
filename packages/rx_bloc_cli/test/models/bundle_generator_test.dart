@@ -86,8 +86,7 @@ void main() {
       final patrolFiles = _patrol.filePaths;
       expect(files.intersection(patrolFiles), equals(patrolFiles));
 
-      final realtimeCommunicationFiles =
-          _libRealtimeCommunication.filePaths;
+      final realtimeCommunicationFiles = _libRealtimeCommunication.filePaths;
       expect(files.intersection(realtimeCommunicationFiles),
           equals(realtimeCommunicationFiles));
 
@@ -142,8 +141,7 @@ void main() {
       final patrolFiles = _patrol.filePaths;
       expect(files.intersection(patrolFiles), isEmpty);
 
-      final realtimeCommunicationFiles =
-          _libRealtimeCommunication.filePaths;
+      final realtimeCommunicationFiles = _libRealtimeCommunication.filePaths;
       expect(files.intersection(realtimeCommunicationFiles), isEmpty);
 
       expect(
