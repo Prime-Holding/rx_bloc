@@ -34,7 +34,8 @@ Before you start working on your app, make sure you familiarize yourself with th
 |----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `lib/main.dart`                              | The production flavour of the app.                                                                                                                    |
 | `lib/main_dev.dart`                          | The development flavour of the app.                                                                                                                   |
-| `lib/main_staging.dart`                      | The staging flavour of the app.                                                                                                                       |
+| `lib/main_sit.dart`                          | The SIT flavour of the app.                                                                                                                           |
+| `lib/main_uat.dart`                          | The UAT flavour of the app.                                                                                                                           |
 | `lib/base/`                                  | Common code used on more than one **feature** in the project.                                                                                         |
 | `lib/base/app/`                              | The root of the application and Environment configuration.                                                                                            |
 | `lib/base/common_blocs/`                     | Generally available [BLoCs][rx_bloc_info_lnk]                                                                                                         |
