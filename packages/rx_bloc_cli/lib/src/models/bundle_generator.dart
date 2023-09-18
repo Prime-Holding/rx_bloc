@@ -1,6 +1,6 @@
 import 'package:mason/mason.dart';
-import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_cicd_fastlane_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';

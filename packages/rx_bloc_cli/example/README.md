@@ -19,9 +19,9 @@
 15. [Patrol integration tests](#patrol-integration-tests)
 16. [Realtime communication](#realtime-communication)
 17. [Feature OTP](#feature-otp) 
-18. [CI/CD](#cicd)
+18. [CI/CD](#cicd) 
 19. [Pin Code](#pin-code)
-20.[Next Steps](#next-steps)
+20. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -65,7 +65,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
 | `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
 | `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
-| `lib/lib_pin_code`   
+| `lib/lib_pin_code`    
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
@@ -509,6 +509,6 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
 [go_to_location]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
 [go_router_pop]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pop.html
-[go_router_push_replacement]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pushReplacement.html
 [fastlane_lnk]: https://docs.fastlane.tools/
 [booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app
+[go_router_push_replacement]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pushReplacement.html
