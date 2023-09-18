@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
@@ -129,6 +130,10 @@ class GeneratorArgumentsProvider {
     // Patrol tests
     final patrolTestsEnabled = _reader.read<bool>(CommandArguments.patrol);
 
+    // CI/CD
+    final cicdType = _reader.read<CICDType>(CommandArguments.cicd);
+    final cicdEnabled = cicdType != CICDType.none;
+
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
       counterEnabled: counterEnabled,
@@ -139,6 +144,7 @@ class GeneratorArgumentsProvider {
       deepLinkEnabled: deepLinkEnabled,
       devMenuEnabled: devMenuEnabled,
       patrolTestsEnabled: patrolTestsEnabled,
+      cicdEnabled: cicdEnabled,
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 import 'package:test/test.dart';
@@ -143,6 +144,8 @@ extension _MatchType on ArgumentType {
         return value is bool;
       case ArgumentType.realTimeCommunicationEnum:
         return value is RealtimeCommunicationType;
+      case ArgumentType.cicdTypeEnum:
+        return value is CICDType;
     }
   }
 }

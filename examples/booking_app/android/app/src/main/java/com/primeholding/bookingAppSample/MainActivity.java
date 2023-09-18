@@ -1,4 +1,4 @@
-package com.primeholding.booking_app;
+package com.primeholding.bookingAppSample;
 
 import io.flutter.embedding.android.FlutterActivity;
 

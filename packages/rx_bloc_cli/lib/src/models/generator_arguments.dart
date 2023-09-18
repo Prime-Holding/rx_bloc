@@ -112,5 +112,9 @@ class GeneratorArguments
   bool get realtimeCommunicationEnabled =>
       _featureConfiguration.realtimeCommunicationEnabled;
 
+  /// CI/CD
+  @override
+  bool get cicdEnabled => _featureConfiguration.cicdEnabled;
+
   /// endregion
 }

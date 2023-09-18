@@ -1,0 +1,13 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-development.xcconfig"
+#include "Generated.xcconfig"
+
+
+ENVIRONMENT_PLIST = environments/development/development.plist
+APP_DISPLAY_NAME = Booking App DEV
+bundle_suffix=.dev
+CF_BUNDLE_URL_NAME=booking_app.dev.primeholding.com
+CF_BUNDLE_URL_SCHEME=primeholdingdevscheme
+FB_APP_ID=
+FB_CLIENT_TOKEN=
+FB_APP_NAME=
+GOOGLE_REVERSED_CLIENT_ID=

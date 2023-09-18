@@ -29,6 +29,12 @@ class BookingAppFileComparator extends LocalFileComparator {
     return result.passed || result.diffPercent <= _kGoldenDiffTolerance;
   }
 
+  @override
+  Future<void> update(Uri golden, Uint8List imageBytes) {
+    final uri = Uri.parse(golden.pathSegments.last);
+    return super.update(uri, imageBytes);
+  }
+
   static String _getTestFile(String fileName) {
     final baseDir =
         (goldenFileComparator as LocalFileComparator).basedir.path.split('/');
