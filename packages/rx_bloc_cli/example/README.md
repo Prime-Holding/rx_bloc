@@ -18,8 +18,9 @@
 14. [Dev Menu](#dev-menu)
 15. [Patrol integration tests](#patrol-integration-tests)
 16. [Realtime communication](#realtime-communication)
-17. [Feature OTP](#feature-otp)
-18. [Next Steps](#next-steps)
+17. [Feature OTP](#feature-otp) 
+18. [CI/CD](#cicd)
+19. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -442,9 +443,17 @@ Register the classes into the DI system and configure the SSE endpoint by passin
 After this is done the event stream exposed by `SseService` can be used by any BLoC.
 
 ## Feature OTP
+
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
+
+
+## CI/CD
+
+The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
+
+For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
 
 ## Next Steps
 
@@ -481,3 +490,5 @@ For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_
 [go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
 [go_to_location]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
 [go_router_pop]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pop.html
+[fastlane_lnk]: https://docs.fastlane.tools/
+[booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app

@@ -36,6 +36,7 @@ void main() {
       deepLinkEnabled: true,
       devMenuEnabled: true,
       patrolTestsEnabled: true,
+      cicdEnabled: true,
     );
     sut = GeneratorArguments(
       outputDirectory: outputDirectory,
@@ -79,6 +80,7 @@ void main() {
           equals(featureConfiguration.realtimeCommunicationEnabled));
       expect(sut.widgetToolkitEnabled,
           equals(featureConfiguration.widgetToolkitEnabled));
+      expect(sut.cicdEnabled, equals(featureConfiguration.cicdEnabled));
     });
   });
 }

@@ -2,19 +2,41 @@ import 'dart:io';
 
 // ignore_for_file: unused_local_variable
 
+/// Enum used to make a distinction between different types of generated
+/// gitignore files.
+enum GitignoreType {
+  /// Gitignore placed at the project root level
+  project,
+
+  /// Gitignore placed inside the devops directory
+  devops;
+
+  /// Contents of the gitignore file
+  String get fileContents => switch (this) {
+        GitignoreType.project => _projectGitIgnore,
+        GitignoreType.devops => _devopsGitIgnore,
+      };
+}
+
 /// Used for creation of .gitignore files
 class GitIgnoreCreator {
   /// Default constructor of the git ignore file creator
   GitIgnoreCreator();
 
   /// Generates a .gitignore file at the specified path
-  static void generate(String path) {
+  static void generate(
+    String path, {
+    GitignoreType gitignore = GitignoreType.project,
+  }) {
     final file = File('$path/.gitignore')
-      ..writeAsStringSync(_gitIgnoreContents);
+      ..writeAsStringSync(
+        gitignore.fileContents,
+      );
   }
 }
 
-String _gitIgnoreContents = '''
+/// GitIgnore placed at the root of the project
+String _projectGitIgnore = '''
 # Miscellaneous
 *.class
 *.log
@@ -101,4 +123,20 @@ lib/env_variable.g.dart
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+''';
+
+final _devopsGitIgnore = '''
+# Ignored files
+.DS_Store
+*.jks
+*.txt
+*.p8
+*.p12
+*.mobileprovision
+*.json
+
+# Ignored directories
+credentials/
+artifacts/
+decoded/
 ''';

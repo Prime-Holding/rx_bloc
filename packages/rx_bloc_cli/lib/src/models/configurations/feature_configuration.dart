@@ -11,6 +11,7 @@ class FeatureConfiguration {
     required this.deepLinkEnabled,
     required this.devMenuEnabled,
     required this.patrolTestsEnabled,
+    required this.cicdEnabled,
   });
 
   /// Analytics
@@ -39,6 +40,9 @@ class FeatureConfiguration {
 
   /// Patrol tests
   final bool patrolTestsEnabled;
+
+  /// CICD
+  final bool cicdEnabled;
 
   /// Uses Firebase
   bool get usesFirebase => analyticsEnabled || pushNotificationsEnabled;
