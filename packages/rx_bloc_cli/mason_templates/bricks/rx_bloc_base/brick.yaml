@@ -17,3 +17,4 @@ vars:
   - enable_social_logins
   - enable_change_language
   - enable_patrol
+  - cicd
