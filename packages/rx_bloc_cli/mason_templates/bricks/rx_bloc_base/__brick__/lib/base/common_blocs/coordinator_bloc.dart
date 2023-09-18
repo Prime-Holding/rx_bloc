@@ -40,7 +40,6 @@ abstract class CoordinatorStates {
   @RxBlocIgnoreState()
   Stream<bool> get isPinCodeConfirmed;
 
-  @RxBlocIgnoreState()
   Stream<void> get deleteStoredPinOnLogout;
 
   @RxBlocIgnoreState()
@@ -65,7 +64,7 @@ class CoordinatorBloc extends $CoordinatorBloc {
   _$pinCodeConfirmedEvent.startWith(false);
 
   @override
-  Stream<void> get deleteStoredPinOnLogout => _$deleteStoredPinEvent;
+  Stream<void> _mapToDeleteStoredPinOnLogoutState() =>_$deleteStoredPinEvent;
 
   @override
   Stream<void> get checkIsPinCreatedOnLogout =>

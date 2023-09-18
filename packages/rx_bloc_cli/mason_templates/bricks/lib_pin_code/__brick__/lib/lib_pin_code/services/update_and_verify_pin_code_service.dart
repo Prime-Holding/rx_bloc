@@ -49,9 +49,7 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
     final currentPin =
         await _pinCodeRepository.readPinFromStorage(key: _storedPin);
     if (_isFromSessionTimeout) {
-      return currentPin == pinCode
-          ? true
-          : throw ErrorWrongPin(errorMessage: '');
+      return currentPin == pinCode ? true : false;
     }
     final firstPin =
         await _pinCodeRepository.readPinFromStorage(key: _firstPin);
@@ -60,7 +58,7 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
         await _pinCodeRepository.writePinToStorage(_storedPin, pinCode);
         return true;
       }
-      throw ErrorWrongPin(errorMessage: '');
+      return false;
     }
     if (firstPin == null && _isVerificationPinProcess) {
       if (currentPin == pinCode) {
@@ -68,7 +66,7 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
         return true;
       }
       _isVerificationPinProcess = true;
-      throw ErrorWrongPin(errorMessage: '');
+      return false;
     }
     await _pinCodeRepository.writePinToStorage(_firstPin, pinCode);
     return true;

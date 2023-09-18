@@ -72,8 +72,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
                           _translateError(error, context),
                       onError: (error, translatedError) =>
                           _onError(error, translatedError, context),
-                      isPinCodeVerified: (verified) =>
-                          _isPinCodeVerified(verified, context),
+                      onAuthenticated: () => _isPinCodeVerified(context),
                     ),
                   ),
                 ],
@@ -83,32 +82,27 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
         ),
       );
 
-  Future<void> _isPinCodeVerified(
-      bool isPinVerified, BuildContext context) async {
-    if (isPinVerified) {
-      if (widget.pinCodeArguments.title ==
-          context.l10n.libPinCode.enterCurrentPin) {
-        return context.read<RouterBlocType>().events.pushReplace(
-            const UpdatePinRoute(),
-            extra:
-                PinCodeArguments(title: context.l10n.libPinCode.enterNewPin));
-      }
-      if (widget.pinCodeArguments.title ==
-          context.l10n.libPinCode.enterNewPin) {
-        return context.read<RouterBlocType>().events.pushReplace(
-            const UpdatePinRoute(),
-            extra: PinCodeArguments(title: context.l10n.libPinCode.confirmPin));
-      } else if (widget.pinCodeArguments.title ==
-          context.l10n.libPinCode.confirmPin) {
-        await showBlurredBottomSheet(
-          context: context,
-          configuration: const ModalConfiguration(safeAreaBottom: false),
-          builder: (context) => MessagePanelWidget(
-            message: context.l10n.libPinCode.pinUpdatedMessage,
-            messageState: MessagePanelState.positiveCheck,
-          ),
-        );
-      }
+  Future<void> _isPinCodeVerified(BuildContext context) async {
+    if (widget.pinCodeArguments.title ==
+        context.l10n.libPinCode.enterCurrentPin) {
+      return context.read<RouterBlocType>().events.pushReplace(
+          const UpdatePinRoute(),
+          extra: PinCodeArguments(title: context.l10n.libPinCode.enterNewPin));
+    }
+    if (widget.pinCodeArguments.title == context.l10n.libPinCode.enterNewPin) {
+      return context.read<RouterBlocType>().events.pushReplace(
+          const UpdatePinRoute(),
+          extra: PinCodeArguments(title: context.l10n.libPinCode.confirmPin));
+    } else if (widget.pinCodeArguments.title ==
+        context.l10n.libPinCode.confirmPin) {
+      await showBlurredBottomSheet(
+        context: context,
+        configuration: const ModalConfiguration(safeAreaBottom: false),
+        builder: (context) => MessagePanelWidget(
+          message: context.l10n.libPinCode.pinUpdatedMessage,
+          messageState: MessagePanelState.positiveCheck,
+        ),
+      );
     }
   }
 

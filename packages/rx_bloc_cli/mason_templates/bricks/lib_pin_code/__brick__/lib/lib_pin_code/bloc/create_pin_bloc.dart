@@ -1,6 +1,5 @@
 {{> licence.dart }}
 
-import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
@@ -24,9 +23,11 @@ abstract class CreatePinBlocEvents {
 
 /// A contract class containing all states of the PinCodeBloC.
 abstract class CreatePinBlocStates {
-  Stream<bool> get isPinCreated;
+  ConnectableStream<bool> get isPinCreated;
 
   ConnectableStream<void> get deletedData;
+
+  ConnectableStream<bool> get deleteStoredPinData;
 
   ConnectableStream<bool> get areBiometricsEnabled;
 
@@ -40,6 +41,8 @@ class CreatePinBloc extends $CreatePinBloc {
     required this.coordinatorBloc,
   }) {
     deletedData.connect().addTo(_compositeSubscription);
+    isPinCreated.connect().addTo(_compositeSubscription);
+    deleteStoredPinData.connect().addTo(_compositeSubscription);
   }
 
   final CoordinatorBlocType coordinatorBloc;
@@ -56,18 +59,27 @@ class CreatePinBloc extends $CreatePinBloc {
           .publish();
 
   @override
-  Stream<bool> _mapToIsPinCreatedState() => Rx.merge([
+  ConnectableStream<bool> _mapToIsPinCreatedState() => Rx.merge([
         _$checkIsPinCreatedEvent,
         coordinatorBloc.states.checkIsPinCreatedOnLogout
       ])
           .startWith(null)
           .switchMap((_) => service.checkIsPinCreated().asResultStream())
           .setResultStateHandler(this)
-          .whereSuccess();
+          .whereSuccess()
+          .publish();
 
   @override
   ConnectableStream<void> _mapToDeletedDataState() => _$deleteSavedDataEvent
       .switchMap((_) => service.deleteSavedData().asResultStream())
+      .setResultStateHandler(this)
+      .whereSuccess()
+      .publish();
+
+  @override
+  ConnectableStream<bool> _mapToDeleteStoredPinDataState() =>
+  coordinatorBloc.states.deleteStoredPinOnLogout
+      .switchMap((_) => service.deleteStoredPin().asResultStream())
       .setResultStateHandler(this)
       .whereSuccess()
       .publish();

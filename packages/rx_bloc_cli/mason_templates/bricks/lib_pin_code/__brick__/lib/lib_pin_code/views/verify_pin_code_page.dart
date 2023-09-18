@@ -32,8 +32,10 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<UpdateAndVerifyPinBlocType>().events
-        .setPinCodeType(widget.pinCodeArguments.isSessionTimeout);
+      context
+          .read<UpdateAndVerifyPinBlocType>()
+          .events
+          .setPinCodeType(widget.pinCodeArguments.isSessionTimeout);
     });
     super.initState();
   }
@@ -64,20 +66,15 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
                           _exampleMapMessageToString(message, context),
                       pinCodeService:
                           context.read<UpdateAndVerifyPinCodeService>(),
-                      // Comment the line bellow in order not to use biometrics
-                      // authentication
+// Comment the line bellow in order not to use biometrics
+// authentication
                       biometricsLocalDataSource:
                           context.read<BiometricsLocalDataSource>(),
                       translateError: (error) =>
                           _translateError(error, context),
                       onError: (error, translatedError) =>
                           _onError(error, translatedError, context),
-                      isPinCodeVerified: (verified) =>
-                          _isPinCodeVerified(verified, context),
-                      isAuthenticatedWithBiometrics: (isAuthWithBiometrics) =>
-                          _isAuthenticatedWithBiometrics(
-                        isAuthWithBiometrics,
-                      ),
+                      onAuthenticated: () => _isPinCodeVerified(context),
                     ),
                   ),
                 ],
@@ -87,19 +84,8 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
         ),
       );
 
-  Future<void> _isAuthenticatedWithBiometrics(
-    bool isAuthWithBiometrics,
-  ) async {
-    if (isAuthWithBiometrics && widget.pinCodeArguments.isSessionTimeout) {
-      context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
-            isPinCodeConfirmed: true,
-          );
-    }
-  }
-
-  Future<void> _isPinCodeVerified(
-      bool isPinVerified, BuildContext context) async {
-    if (isPinVerified && widget.pinCodeArguments.isSessionTimeout) {
+  Future<void> _isPinCodeVerified(BuildContext context) async {
+    if (widget.pinCodeArguments.isSessionTimeout) {
       context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
             isPinCodeConfirmed: true,
           );

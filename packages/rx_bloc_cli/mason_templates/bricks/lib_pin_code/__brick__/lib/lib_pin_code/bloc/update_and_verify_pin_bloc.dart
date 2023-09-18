@@ -18,8 +18,6 @@ abstract class UpdateAndVerifyPinBlocEvents {
 
   void deleteSavedData();
 
-  void deleteStoredPin();
-
   /// Check if biometrics are enabled for the app.
   void checkAreBiometricsEnabled();
 
@@ -80,7 +78,6 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
   @override
   ConnectableStream<void> _mapToDeleteStoredPinDataState() => Rx.merge([
         coordinatorBloc.states.deleteStoredPinOnLogout,
-        _$deleteStoredPinEvent
       ])
           .switchMap((_) => service.deleteStoredPin().asResultStream())
           .setResultStateHandler(this)

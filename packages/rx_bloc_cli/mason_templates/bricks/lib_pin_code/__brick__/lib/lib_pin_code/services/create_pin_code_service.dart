@@ -16,9 +16,18 @@ class CreatePinCodeService implements PinCodeService {
 
   Future<void> deleteSavedData() async => firstPin = null;
 
+  Future<bool> deleteStoredPin() async {
+    await _pinCodeRepository.writePinToStorage(_storedPin, null);
+    return await getPinCode() == null;
+  }
+
   @override
-  Future<bool> isPinCodeInSecureStorage() async =>
-      await _pinCodeRepository.readPinFromStorage(key: _storedPin) != null;
+  Future<bool> isPinCodeInSecureStorage() async {
+    if (firstPin != null) {
+      return true;
+    }
+    return null != await _pinCodeRepository.readPinFromStorage(key: _storedPin);
+  }
 
   Future<bool> checkIsPinCreated() async =>
       await _pinCodeRepository.getPinCode() != null;

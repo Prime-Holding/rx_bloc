@@ -66,9 +66,11 @@ class UserAccountBloc extends $UserAccountBloc {
         _authService.isAuthenticated().asStream(),
       ]){{#enable_pin_code}}
       .doOnData((isUserLoggedIn) {
+        if(isUserLoggedIn){
+          _coordinatorBloc.events.checkIsPinCreated();
+        }
         if (!isUserLoggedIn) {
           _coordinatorBloc.events.deleteStoredPin();
-          _coordinatorBloc.events.checkIsPinCreated();
         }
       }){{/enable_pin_code}}
      .publishReplay(maxSize: 1);

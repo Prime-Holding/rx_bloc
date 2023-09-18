@@ -201,9 +201,9 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
              if (loggedIn.hasData) {
                if (!loggedIn.data!) {
                  // If user logs out, set stopListening
-                 context.read<UpdateAndVerifyPinBlocType>().events
-                   ..setSessionState(SessionState.stopListening)
-                   ..deleteStoredPin();
+                 context.read<UpdateAndVerifyPinBlocType>()
+                        .events
+                        .setSessionState(SessionState.stopListening);
                  return _buildMaterialApp(context);
                }
                if ((loggedIn.data!) &&

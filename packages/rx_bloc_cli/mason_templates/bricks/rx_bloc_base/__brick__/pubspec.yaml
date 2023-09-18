@@ -24,7 +24,7 @@ dependencies: {{#enable_dev_menu}}
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^6.0.0
-  flutter_secure_storage: ^8.0.0{{#enable_social_logins}}
+  flutter_secure_storage: ^9.0.0{{#enable_social_logins}}
   flutter_svg: ^2.0.7{{/enable_social_logins}}
   go_router: ^10.0.0
   golden_toolkit: ^0.15.0{{#enable_social_logins}}
