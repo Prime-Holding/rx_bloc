@@ -18,8 +18,9 @@
 14. [Dev Menu](#dev-menu){{/enable_dev_menu}}{{#enable_patrol}}
 15. [Patrol integration tests](#patrol-integration-tests){{/enable_patrol}}{{#realtime_communication}}
 16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{#enable_feature_otp}}
-17. [Feature OTP](#feature-otp){{/enable_feature_otp}}
-18. [Next Steps](#next-steps)
+17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#enable_auth_matrix}}
+18. [Auth Matrix](#auth-matrix){{/enable_auth_matrix}}
+19. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -445,6 +446,10 @@ After this is done the event stream exposed by `SseService` can be used by any B
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
+{{#enable_auth_matrix}}
+## Auth Matrix
+The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
+{{/enable_auth_matrix}}
 
 ## Next Steps
 

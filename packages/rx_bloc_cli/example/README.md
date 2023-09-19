@@ -19,7 +19,8 @@
 15. [Patrol integration tests](#patrol-integration-tests)
 16. [Realtime communication](#realtime-communication)
 17. [Feature OTP](#feature-otp)
-18. [Next Steps](#next-steps)
+18. [Auth Matrix](#auth-matrix)
+19. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -418,9 +419,6 @@ Alice is working right out of the box.
 `Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
 
-
-
-
 ## Patrol Integration Tests
 
 The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
@@ -431,9 +429,7 @@ This package enables applications to use native automation features
 
 #### Running the Tests
 
-To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
-
-
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio.
 
 ## Realtime Communication
 
@@ -445,6 +441,9 @@ After this is done the event stream exposed by `SseService` can be used by any B
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
+
+## Auth Matrix
+The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
 
 ## Next Steps
 

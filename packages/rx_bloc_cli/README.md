@@ -44,6 +44,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]realtime-communication`        |                   `none`                    |           Enables realtime communication facilities for SSE. Values: none, sse.           |
 | `--[no-]enable-dev-menu`               |                   `true`                    |                Enables dev menu to easily access proxy debugging services.                |
 | `--[no-]enable-otp`                    |                   `false`                   |          Enables OTP feature that can help with building sms/pin code workflows.          |
+| `--[no-]enable-auth-matrix`            |                   `false`                   |                 Enables Auth Matrix feature functionality for the project.                |
 | `--[no-]interactive`                   |                   `false`                   |   Enables interactive project generation flow flags are read from command line prompts    |
 
 
