@@ -80,10 +80,10 @@ class GeneratorArgumentsProvider {
     // Pin Code
     final pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
 
-    if (otpEnabled &&
-        !(loginEnabled || socialLoginsEnabled || pinCodeEnabled)) {
+    if ((otpEnabled || pinCodeEnabled) &&
+        !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
-      _logger.warn('Login enabled, due to OTP feature requirement');
+      _logger.warn('Login enabled, due to OTP/PIN feature requirement');
       loginEnabled = true;
     }
 

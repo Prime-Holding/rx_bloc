@@ -77,7 +77,7 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
 
   @override
   ConnectableStream<void> _mapToDeleteStoredPinDataState() => Rx.merge([
-        coordinatorBloc.states.deleteStoredPinOnLogout,
+        coordinatorBloc.states.userLogOut,
       ])
           .switchMap((_) => service.deleteStoredPin().asResultStream())
           .setResultStateHandler(this)

@@ -11,6 +11,11 @@ extension CoordinatorBinderExtensions on Stream<bool> {
         ),
       ); {{#enable_pin_code}}
 
+  Stream<bool> emitLoggedOutToCoordinator(CoordinatorBlocType coordinator) =>
+      doOnData(
+        (isAuthenticated) => coordinator.events.userLoggedOut(),
+      );
+
   Stream<bool> emitPinCodeConfirmedToCoordinator(
           CoordinatorBlocType coordinator) =>
       doOnData((isPinCodeConfirmed) {

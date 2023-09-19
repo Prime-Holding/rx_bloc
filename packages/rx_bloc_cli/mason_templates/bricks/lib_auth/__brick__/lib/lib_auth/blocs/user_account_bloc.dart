@@ -49,6 +49,7 @@ class UserAccountBloc extends $UserAccountBloc {
         .whereSuccess()
         .emitAuthenticatedToCoordinator(_coordinatorBloc){{#enable_feature_otp}}
         .emitOtpConfirmedToCoordinator(_coordinatorBloc){{/enable_feature_otp}}{{#enable_pin_code}}
+        .emitLoggedOutToCoordinator(_coordinatorBloc)
         .emitPinCodeConfirmedToCoordinator(_coordinatorBloc){{/enable_pin_code}}
         .doOnData((_) => _routerBloc.events.go(const LoginRoute()))
         .listen(null)
@@ -67,10 +68,7 @@ class UserAccountBloc extends $UserAccountBloc {
       ]){{#enable_pin_code}}
       .doOnData((isUserLoggedIn) {
         if(isUserLoggedIn){
-          _coordinatorBloc.events.checkIsPinCreated();
-        }
-        if (!isUserLoggedIn) {
-          _coordinatorBloc.events.deleteStoredPin();
+          _coordinatorBloc.events.checkUserLoggedIn();
         }
       }){{/enable_pin_code}}
      .publishReplay(maxSize: 1);

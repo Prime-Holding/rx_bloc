@@ -19,9 +19,9 @@ abstract class CoordinatorEvents {
 
   void pinCodeConfirmed({required bool isPinCodeConfirmed});
 
-  void deleteStoredPin();
+  void userLoggedOut();
 
-  void checkIsPinCreated();{{/enable_pin_code}}
+  void checkUserLoggedIn();{{/enable_pin_code}}
 
   void errorLogged({
     required ErrorModel error,
@@ -40,10 +40,10 @@ abstract class CoordinatorStates {
   @RxBlocIgnoreState()
   Stream<bool> get isPinCodeConfirmed;
 
-  Stream<void> get deleteStoredPinOnLogout;
+  Stream<void> get userLogOut;
 
   @RxBlocIgnoreState()
-  Stream<void> get checkIsPinCreatedOnLogout;{{/enable_pin_code}}
+  Stream<void> get userLoggedIn;{{/enable_pin_code}}
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -64,10 +64,9 @@ class CoordinatorBloc extends $CoordinatorBloc {
   _$pinCodeConfirmedEvent.startWith(false);
 
   @override
-  Stream<void> _mapToDeleteStoredPinOnLogoutState() =>_$deleteStoredPinEvent;
+  Stream<void> _mapToUserLogOutState() => _$userLoggedOutEvent;
 
   @override
-  Stream<void> get checkIsPinCreatedOnLogout =>
-  _$checkIsPinCreatedEvent; {{/enable_pin_code}}
+  Stream<void> get userLoggedIn => _$checkUserLoggedInEvent; {{/enable_pin_code}}
 
 }

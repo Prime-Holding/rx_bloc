@@ -61,7 +61,7 @@ class CreatePinBloc extends $CreatePinBloc {
   @override
   ConnectableStream<bool> _mapToIsPinCreatedState() => Rx.merge([
         _$checkIsPinCreatedEvent,
-        coordinatorBloc.states.checkIsPinCreatedOnLogout
+        coordinatorBloc.states.userLoggedIn
       ])
           .startWith(null)
           .switchMap((_) => service.checkIsPinCreated().asResultStream())
@@ -78,7 +78,7 @@ class CreatePinBloc extends $CreatePinBloc {
 
   @override
   ConnectableStream<bool> _mapToDeleteStoredPinDataState() =>
-  coordinatorBloc.states.deleteStoredPinOnLogout
+  coordinatorBloc.states.userLogOut
       .switchMap((_) => service.deleteStoredPin().asResultStream())
       .setResultStateHandler(this)
       .whereSuccess()
