@@ -1,4 +1,5 @@
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/templates/feature_cicd_fastlane_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
@@ -37,6 +38,7 @@ class BundleGenerator {
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
   final _libAuthMatrix = libAuthMatrixBundle;
+  final _featureCICDFastlaneBundle = featureCicdFastlaneBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
@@ -100,11 +102,14 @@ class BundleGenerator {
     if (arguments.authenticationEnabled) {
       _bundle.files.addAll(_libAuthBundle.files);
     }
+    // Add ci/cd files
+    if (arguments.cicdEnabled) {
+      _bundle.files.addAll(_featureCICDFastlaneBundle.files);
+    }
     //Add lib_auth_matrix to _bundle when needed
     if (arguments.authMatrixEnabled) {
       _bundle.files.addAll(_libAuthMatrix.files);
     }
-
     return _bundle;
   }
 }

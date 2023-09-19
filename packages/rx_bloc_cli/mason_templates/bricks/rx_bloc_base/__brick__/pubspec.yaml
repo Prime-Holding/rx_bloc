@@ -5,6 +5,7 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
+  flutter: '>=3.13.0 <4.0.0'
 
 dependencies: {{#enable_dev_menu}}
   alice: ^0.3.3 {{/enable_dev_menu}}

@@ -1,3 +1,5 @@
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
+
 import 'realtime_communication_type.dart';
 
 /// The command arguments that the RxBlocCli package supports
@@ -104,6 +106,15 @@ enum CommandArguments {
         'or gRPC',
   ),
 
+  /// CI/CD
+  cicd(
+    name: 'cicd',
+    type: ArgumentType.cicdTypeEnum,
+    defaultsTo: CICDType.fastlane,
+    prompt: 'Select ci/cd type:',
+    help: 'Provides a template for setting up ci/cd for your project',
+  ),
+
   /// Social logins
   socialLogins(
     name: 'enable-social-logins',
@@ -192,7 +203,10 @@ enum ArgumentType {
   boolean,
 
   /// Custom type: RealtimeCommunicationEnum
-  realTimeCommunicationEnum;
+  realTimeCommunicationEnum,
+
+  /// Custom type: cicdTypeEnum
+  cicdTypeEnum;
 
   /// Allowed values for each supported type
   Iterable<String>? get allowed => switch (this) {
@@ -200,5 +214,7 @@ enum ArgumentType {
         ArgumentType.boolean => null,
         ArgumentType.realTimeCommunicationEnum =>
           RealtimeCommunicationType.supportedOptions.map((e) => e.toString()),
+        ArgumentType.cicdTypeEnum =>
+          CICDType.supportedOptions.map((e) => e.toString()),
       };
 }

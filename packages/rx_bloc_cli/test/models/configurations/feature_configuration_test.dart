@@ -18,6 +18,7 @@ void main() {
         deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
+        cicdEnabled: false,
         authMatrixEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
@@ -32,6 +33,7 @@ void main() {
         deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
+        cicdEnabled: false,
         authMatrixEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
@@ -46,6 +48,7 @@ void main() {
         deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
+        cicdEnabled: false,
         authMatrixEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
@@ -60,6 +63,7 @@ void main() {
         deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
+        cicdEnabled: false,
         authMatrixEnabled: false,
       );
       expect(sut.usesFirebase, isFalse);

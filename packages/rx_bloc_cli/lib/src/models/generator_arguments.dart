@@ -108,6 +108,11 @@ class GeneratorArguments
   bool get realtimeCommunicationEnabled =>
       _featureConfiguration.realtimeCommunicationEnabled;
 
+  /// CI/CD
+  @override
+  bool get cicdEnabled => _featureConfiguration.cicdEnabled;
+
+  ///Auth matrix
   @override
   bool get authMatrixEnabled => _featureConfiguration.authMatrixEnabled;
 

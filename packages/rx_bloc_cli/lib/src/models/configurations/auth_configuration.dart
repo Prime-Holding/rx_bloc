@@ -9,8 +9,10 @@ class AuthConfiguration {
 
   /// Login with email enabled
   final bool loginEnabled;
+
   /// Social logins enabled
   final bool socialLoginsEnabled;
+
   /// OTP authentication enabled
   final bool otpEnabled;
 

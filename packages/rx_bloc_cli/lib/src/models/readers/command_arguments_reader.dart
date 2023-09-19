@@ -1,3 +1,5 @@
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
+
 import '../../extensions/object_extensions.dart';
 import '../command_arguments.dart';
 import '../realtime_communication_type.dart';
@@ -32,6 +34,8 @@ abstract class BaseCommandArgumentsReader implements CommandArgumentsReader {
         return validate(readBool(argument).cast());
       case ArgumentType.realTimeCommunicationEnum:
         return validate(readRealtimeCommunicationEnum(argument).cast());
+      case ArgumentType.cicdTypeEnum:
+        return validate(readCICDEnum(argument).cast());
     }
   }
 
@@ -47,4 +51,7 @@ abstract class BaseCommandArgumentsReader implements CommandArgumentsReader {
   /// Reads a RealtimeCommunicationType value
   RealtimeCommunicationType readRealtimeCommunicationEnum(
       CommandArguments argument);
+
+  /// Reads a CICDEnum value
+  CICDType readCICDEnum(CommandArguments argument);
 }

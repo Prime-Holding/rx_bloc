@@ -18,9 +18,10 @@
 14. [Dev Menu](#dev-menu){{/enable_dev_menu}}{{#enable_patrol}}
 15. [Patrol integration tests](#patrol-integration-tests){{/enable_patrol}}{{#realtime_communication}}
 16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{#enable_feature_otp}}
-17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#enable_auth_matrix}}
-18. [Auth Matrix](#auth-matrix){{/enable_auth_matrix}}
-19. [Next Steps](#next-steps)
+17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#cicd}}
+18. [CI/CD](#cicd){{/cicd}}{{#enable_auth_matrix}}
+19. [Auth Matrix](#auth-matrix){{/enable_auth_matrix}}
+20. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -443,6 +444,7 @@ Register the classes into the DI system and configure the SSE endpoint by passin
 After this is done the event stream exposed by `SseService` can be used by any BLoC.{{/realtime_communication}}
 
 ## Feature OTP
+
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
@@ -450,6 +452,13 @@ For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_
 ## Auth Matrix
 The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
 {{/enable_auth_matrix}}
+
+{{#cicd}}
+## CI/CD
+
+The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
+
+For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].{{/cicd}}
 
 ## Next Steps
 
@@ -486,3 +495,5 @@ The `lib_auth_matrix` brick contains classes, repositories, datasources and widg
 [go_router_go]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
 [go_to_location]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
 [go_router_pop]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pop.html
+[fastlane_lnk]: https://docs.fastlane.tools/
+[booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app
