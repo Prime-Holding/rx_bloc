@@ -13,6 +13,9 @@ part 'update_and_verify_pin_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the PinCodeBloC.
 abstract class UpdateAndVerifyPinBlocEvents {
+  @RxBlocEvent(type: RxBlocEventType.behaviour)
+  void checkIsPinUpdated();
+
   /// Sets whether the pin code is from user inactivity
   void setPinCodeType(bool isFromSessionTimeout);
 
@@ -30,6 +33,8 @@ abstract class UpdateAndVerifyPinBlocEvents {
 
 /// A contract class containing all states of the PinCodeBloC.
 abstract class UpdateAndVerifyPinBlocStates {
+  ConnectableStream<void> get isPinUpdated;
+
   /// This state is passed to the SessionTimeoutManager
   ConnectableStream<SessionState> get sessionValue;
 
@@ -57,6 +62,7 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
     deleteStoredPinData.connect().addTo(_compositeSubscription);
     sessionValue.connect().addTo(_compositeSubscription);
     biometricsEnabled.connect().addTo(_compositeSubscription);
+    isPinUpdated.connect().addTo(_compositeSubscription);
   }
 
   final CoordinatorBlocType coordinatorBloc;
@@ -119,4 +125,8 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
     _sessionStateController.close();
     super.dispose();
   }
+
+  @override
+  ConnectableStream<void> _mapToIsPinUpdatedState() =>
+      _$checkIsPinUpdatedEvent.publish();
 }

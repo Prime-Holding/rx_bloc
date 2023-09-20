@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/models.dart';
 import 'package:widget_toolkit/ui_components.dart';
@@ -75,6 +76,15 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
                       onAuthenticated: () => _isPinCodeVerified(context),
                     ),
                   ),
+                  RxBlocListener<UpdateAndVerifyPinBlocType, void>(
+                    state: (bloc) => bloc.states.isPinUpdated,
+                    listener: (context, isCreated) {
+                      context
+                          .read<RouterBlocType>()
+                          .events
+                          .go(const ProfileRoute());
+                    },
+                  ),
                 ],
               ),
             ),
@@ -95,14 +105,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
           extra: PinCodeArguments(title: context.l10n.libPinCode.confirmPin));
     } else if (widget.pinCodeArguments.title ==
         context.l10n.libPinCode.confirmPin) {
-      await showBlurredBottomSheet(
-        context: context,
-        configuration: const ModalConfiguration(safeAreaBottom: false),
-        builder: (context) => MessagePanelWidget(
-          message: context.l10n.libPinCode.pinUpdatedMessage,
-          messageState: MessagePanelState.positiveCheck,
-        ),
-      );
+      context.read<UpdateAndVerifyPinBlocType>().events.checkIsPinUpdated();
     }
   }
 

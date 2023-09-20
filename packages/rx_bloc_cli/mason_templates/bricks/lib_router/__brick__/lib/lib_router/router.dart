@@ -47,11 +47,11 @@ part 'routes/showcase_routes.dart';
 class AppRouter {
   AppRouter({
     required this.coordinatorBloc,
-    required this.rootNavigatorKey,
   });
 
   final CoordinatorBlocType coordinatorBloc;
-  final GlobalKey<NavigatorState> rootNavigatorKey;
+  static final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>();
 
   late final _GoRouterRefreshStream _refreshListener =
     _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,

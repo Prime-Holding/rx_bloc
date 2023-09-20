@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/models.dart';
 import 'package:widget_toolkit/ui_components.dart';
@@ -55,14 +56,25 @@ class _CreatePinPageState extends State<CreatePinPage> {
               children: [
                 Expanded(
                   child: PinCodeKeyboard(
-                      mapBiometricMessageToString: (message) =>
-                          _exampleMapMessageToString(message, context),
-                      pinCodeService: context.read<CreatePinCodeService>(),
-                      translateError: (error) =>
-                          _translateError(error, context),
-                      onError: (error, translatedError) =>
-                          _onError(error, translatedError, context),
-                      onAuthenticated: () => _isPinCodeVerified(context)),
+                    mapBiometricMessageToString: (message) =>
+                        _exampleMapMessageToString(message, context),
+                    pinCodeService: context.read<CreatePinCodeService>(),
+                    translateError: (error) => _translateError(error, context),
+                    onError: (error, translatedError) =>
+                        _onError(error, translatedError, context),
+                    onAuthenticated: () => _isPinCodeVerified(context),
+                  ),
+                ),
+                RxBlocListener<CreatePinBlocType, bool>(
+                  state: (bloc) => bloc.states.isPinCreated,
+                  listener: (context, isCreated) {
+                    if (isCreated) {
+                      context
+                          .read<RouterBlocType>()
+                          .events
+                          .go(const ProfileRoute());
+                    }
+                  },
                 ),
               ],
             ),
@@ -82,14 +94,7 @@ class _CreatePinPageState extends State<CreatePinPage> {
           );
     } else if (widget.pinCodeArguments.title ==
         context.l10n.libPinCode.confirmPin) {
-      await showBlurredBottomSheet(
-        context: context,
-        configuration: const ModalConfiguration(safeAreaBottom: false),
-        builder: (context) => MessagePanelWidget(
-          message: context.l10n.libPinCode.pinCreatedMessage,
-          messageState: MessagePanelState.positiveCheck,
-        ),
-      );
+      context.read<CreatePinBlocType>().events.checkIsPinCreated();
     }
   }
 

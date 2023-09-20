@@ -49,7 +49,7 @@ class CreatePinCodeService implements PinCodeService {
       await _pinCodeRepository.writePinToStorage(_storedPin, pinCode);
       return true;
     }
-    throw ErrorWrongPin(errorMessage: '');
+    return false;
   }
 
   @override

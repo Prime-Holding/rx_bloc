@@ -164,6 +164,38 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
                 ),
               ),
             ),
+            RxBlocListener<CreatePinBlocType, bool>(
+              state: (bloc) => bloc.states.isPinCreated,
+              condition: (previous, current) =>
+                  previous != current && current == true,
+              listener: (context, isCreated) async {
+                if (isCreated) {
+                  await showBlurredBottomSheet(
+                    context: context,
+                    configuration:
+                        const ModalConfiguration(safeAreaBottom: false),
+                    builder: (context) => MessagePanelWidget(
+                      message: context.l10n.libPinCode.pinCreatedMessage,
+                      messageState: MessagePanelState.positiveCheck,
+                    ),
+                  );
+                }
+              },
+             ),
+             RxBlocListener<UpdateAndVerifyPinBlocType, void>(
+               state: (bloc) => bloc.states.isPinUpdated,
+               listener: (context, isCreated) async {
+                 await showBlurredBottomSheet(
+                   context: context,
+                   configuration:
+                       const ModalConfiguration(safeAreaBottom: false),
+                   builder: (context) => MessagePanelWidget(
+                     message: context.l10n.libPinCode.pinUpdatedMessage,
+                     messageState: MessagePanelState.positiveCheck,
+                   ),
+                 );
+               },
+             ),
           ],
         ),
       );

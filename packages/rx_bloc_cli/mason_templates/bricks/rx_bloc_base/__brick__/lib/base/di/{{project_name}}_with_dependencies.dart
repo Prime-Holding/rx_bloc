@@ -73,12 +73,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatefulWidget {
 }
 
 class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{project_name.pascalCase()}}WithDependencies> {
-  late GlobalKey<NavigatorState> rootNavigatorKey;
 
   @override
   void initState() {
     super.initState();
-    rootNavigatorKey = GlobalKey<NavigatorState>();
   }
 
   @override
@@ -109,7 +107,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
   SingleChildWidget get _appRouter => Provider<AppRouter>(
         create: (context) => AppRouter(
           coordinatorBloc: context.read(),
-          rootNavigatorKey: rootNavigatorKey,
         ),
       );
 

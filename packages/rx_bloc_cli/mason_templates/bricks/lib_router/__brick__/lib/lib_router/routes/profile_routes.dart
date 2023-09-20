@@ -45,6 +45,9 @@ class NotificationsRoute extends GoRouteData implements RouteDataModel {
 class CreatePinRoute extends GoRouteData implements RouteDataModel {
   const CreatePinRoute();
 
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
@@ -64,6 +67,9 @@ class CreatePinRoute extends GoRouteData implements RouteDataModel {
 @immutable
 class UpdatePinRoute extends GoRouteData implements RouteDataModel {
   const UpdatePinRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>

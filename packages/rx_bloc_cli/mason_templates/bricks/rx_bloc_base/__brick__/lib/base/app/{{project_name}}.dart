@@ -182,7 +182,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
       if (EnvironmentConfig.enableDevMenu) {
         return AppDevMenuGestureDetector.withDependencies(
           context,
-          context.read<AppRouter>().rootNavigatorKey,
+          AppRouter.rootNavigatorKey,
           child: materialApp,
         );
       }{{/enable_dev_menu}}
