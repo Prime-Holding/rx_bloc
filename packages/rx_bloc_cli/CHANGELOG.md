@@ -1,5 +1,6 @@
 ## [3.1.0]
 * Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none`)
+* Introduce two new flavors (`sit` and `uat`) and remove `staging` flavor
 
 ## [3.0.1]
 * Generated project now uses the adaptive dialog introduced in Flutter `3.13.0`

@@ -46,9 +46,7 @@ class CreateCommand extends Command<int> {
   Future<int> run() async {
     final arguments = _readGeneratorArguments();
     await _generateViaMasonBundle(arguments);
-
-    /// TODO: Uncomment this after ios work is done
-    //await _postGen(arguments.outputDirectory);
+    await _postGen(arguments.outputDirectory);
     return ExitCode.success.code;
   }
 
