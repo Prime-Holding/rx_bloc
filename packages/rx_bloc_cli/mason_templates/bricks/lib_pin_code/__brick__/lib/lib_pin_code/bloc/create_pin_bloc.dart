@@ -11,7 +11,6 @@ part 'create_pin_bloc.rxb.g.dart';
 /// A contract class containing all events of the PinCodeBloC.
 abstract class CreatePinBlocEvents {
   /// Event called, when a pin is created, after the verification is successful.
-  @RxBlocEvent(type: RxBlocEventType.behaviour)
   void checkIsPinCreated();
 
   void deleteSavedData();
