@@ -65,7 +65,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
 | `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
 | `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
-| `lib/lib_pin_code`    
+| `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.

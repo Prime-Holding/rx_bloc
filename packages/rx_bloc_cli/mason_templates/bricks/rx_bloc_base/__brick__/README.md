@@ -64,8 +64,8 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |{{#enable_dev_menu}}  
 | `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |{{/enable_dev_menu}}{{#enable_feature_otp}}
-| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |{{/enable_feature_otp}}
-| `lib/lib_pin_code`    
+| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |{{/enable_feature_otp}} {{#enable_pin_code}}
+| `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |{{/enable_pin_code}}
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
