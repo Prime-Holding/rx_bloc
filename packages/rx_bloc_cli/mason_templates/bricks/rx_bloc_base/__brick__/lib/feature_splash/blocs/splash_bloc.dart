@@ -68,10 +68,11 @@ class SplashBloc extends $SplashBloc {
 
     if (_redirectLocation != null) {
       _navigationBloc.events.goToLocation(_redirectLocation!);
-    } else { {{#has_authentication}}
+    } else { {{#has_authentication}} {{^enable_pin_code}}
       await _authService.isAuthenticated()
           ? _navigationBloc.events.go(const DashboardRoute())
-          : _navigationBloc.events.go(const LoginRoute());{{/has_authentication}}
+          : _navigationBloc.events.go(const LoginRoute());
+      {{/enable_pin_code}}{{/has_authentication}}
       {{^has_authentication}}
       _navigationBloc.events.go(const DashboardRoute());{{/has_authentication}}
 

@@ -44,6 +44,9 @@ class OtpRoute extends GoRouteData implements RouteDataModel {
 class VerifyPinCodeRoute extends GoRouteData implements RouteDataModel {
   const VerifyPinCodeRoute();
 
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(

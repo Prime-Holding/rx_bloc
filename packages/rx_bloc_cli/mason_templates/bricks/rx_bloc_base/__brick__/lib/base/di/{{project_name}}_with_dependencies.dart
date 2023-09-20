@@ -363,7 +363,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         RxBlocProvider<CreatePinBlocType>(
           create: (context) => CreatePinBloc(
             service: context.read<CreatePinCodeService>(),
-            pinBiometricsService: context.read<PinBiometricsService>(),
             coordinatorBloc: context.read<CoordinatorBlocType>(),
           ),
         ),
