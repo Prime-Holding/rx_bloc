@@ -82,9 +82,8 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
           .publish();
 
   @override
-  ConnectableStream<void> _mapToDeleteStoredPinDataState() => Rx.merge([
-        coordinatorBloc.states.userLogOut,
-      ])
+  ConnectableStream<void> _mapToDeleteStoredPinDataState() =>
+      coordinatorBloc.states.userLogOut
           .switchMap((_) => service.deleteStoredPin().asResultStream())
           .setResultStateHandler(this)
           .whereSuccess()
@@ -121,12 +120,12 @@ class UpdateAndVerifyPinBloc extends $UpdateAndVerifyPinBloc {
       .publish();
 
   @override
+  ConnectableStream<void> _mapToIsPinUpdatedState() =>
+      _$checkIsPinUpdatedEvent.publish();
+
+  @override
   void dispose() {
     _sessionStateController.close();
     super.dispose();
   }
-
-  @override
-  ConnectableStream<void> _mapToIsPinUpdatedState() =>
-      _$checkIsPinUpdatedEvent.publish();
 }
