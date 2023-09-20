@@ -93,7 +93,7 @@ class BundleGenerator {
     if (arguments.otpEnabled) {
       _bundle.files.addAll(_featureOtpBundle.files);
     }
-
+    // Add PIN code brick _bundle when needed
     if (arguments.pinCodeEnabled) {
       _bundle.files.addAll(_libPinCodeBundle.files);
     }

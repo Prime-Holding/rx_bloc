@@ -20,7 +20,7 @@
 16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{#enable_feature_otp}}
 17. [Feature OTP](#feature-otp){{/enable_feature_otp}} {{#cicd}}
 18. [CI/CD](#cicd){{/cicd}} {{#enable_pin_code}}
-19. [Pin Code](#pin-code){{/enable_pin_code}}
+19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}
 20. [Next Steps](#next-steps)
 
 ## Getting started

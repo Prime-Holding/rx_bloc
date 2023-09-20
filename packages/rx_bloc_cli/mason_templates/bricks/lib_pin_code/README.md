@@ -1,4 +1,7 @@
-# lib_change_language
+# lib_pin_code
+
+The `lib_pin_code` brick contains a number of useful widgets that can help you with building 
+pin code with biometrics screens or workflows for your app.
 
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 
