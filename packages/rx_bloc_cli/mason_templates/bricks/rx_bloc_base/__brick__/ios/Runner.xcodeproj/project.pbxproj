@@ -12,7 +12,6 @@
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		883A015D266A473D003AE298 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 883A015C266A473D003AE298 /* GoogleService-Info.plist */; };
 		88463D8F2628C7FE0073536C /* development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 88463D8E2628C7FE0073536C /* development.xcconfig */; };
-		88463D972628CBF50073536C /* staging.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 88463D962628CBF50073536C /* staging.xcconfig */; };
 		88463D992628CC260073536C /* production.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 88463D982628CC260073536C /* production.xcconfig */; };
         888E668026666C4D006075A7 /* environments in Resources */ = {isa = PBXBuildFile; fileRef = 888E667F26666C4D006075A7 /* environments */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -53,7 +52,6 @@
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		883A015C266A473D003AE298 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		88463D8E2628C7FE0073536C /* development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = development.xcconfig; path = Flutter/development.xcconfig; sourceTree = "<group>"; };
-		88463D962628CBF50073536C /* staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = staging.xcconfig; path = Flutter/staging.xcconfig; sourceTree = "<group>"; };
 		88463D982628CC260073536C /* production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = production.xcconfig; path = Flutter/production.xcconfig; sourceTree = "<group>"; };
         888E667F26666C4D006075A7 /* environments */ = {isa = PBXFileReference; lastKnownFileType = folder; path = environments; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -93,7 +91,6 @@
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
 				9740EEB31CF90195004384FC /* Generated.xcconfig */,
 				88463D8E2628C7FE0073536C /* development.xcconfig */,
-				88463D962628CBF50073536C /* staging.xcconfig */,
 				88463D982628CC260073536C /* production.xcconfig */,
 			);
 			name = Flutter;
@@ -230,7 +227,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88463D972628CBF50073536C /* staging.xcconfig in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				883A015D266A473D003AE298 /* GoogleService-Info.plist in Resources */,
 				88463D992628CC260073536C /* production.xcconfig in Resources */,
@@ -689,236 +685,6 @@
 			};
 			name = "Release-development";
 		};
-		88463D9A2628CC630073536C /* Debug-staging */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "environments/staging/staging-dev.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug-staging";
-		};
-		88463D9B2628CC630073536C /* Debug-staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88463D962628CBF50073536C /* staging.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGNING_ALLOWED = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				ENABLE_BITCODE = NO;
-				ENVIRONMENT_PLIST = "environments/staging/staging-debug.plist";
-				INFOPLIST_FILE = Runner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = {{domain_name}}.{{organization_name}}.{{project_name}};
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = "Debug-staging";
-		};
-		88463D9C2628CC770073536C /* Release-staging */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "environments/staging/staging-prod.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-staging";
-		};
-		88463D9D2628CC770073536C /* Release-staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88463D962628CBF50073536C /* staging.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGNING_ALLOWED = NO;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				ENABLE_BITCODE = NO;
-				ENVIRONMENT_PLIST = "environments/staging/staging-release.plist";
-				INFOPLIST_FILE = Runner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = {{domain_name}}.{{organization_name}}.{{project_name}};
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = "Release-staging";
-		};
-		88463D9E2628CC860073536C /* Profile-staging */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "environments/staging/staging-dev.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Profile-staging";
-		};
-		88463D9F2628CC860073536C /* Profile-staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88463D962628CBF50073536C /* staging.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGNING_ALLOWED = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				ENABLE_BITCODE = NO;
-				ENVIRONMENT_PLIST = "environments/staging/staging-debug.plist";
-				INFOPLIST_FILE = Runner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = {{domain_name}}.{{organization_name}}.{{project_name}};
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = "Profile-staging";
-		};
 		88463DA02628CCC20073536C /* Debug-production */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1355,32 +1121,6 @@
             };
             name = "Debug-production";
         };
-        ADA94A9A29FD24A700C9021B /* Debug-staging */ = {
-            isa = XCBuildConfiguration;
-            buildSettings = {
-                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-                CLANG_ENABLE_OBJC_WEAK = YES;
-                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-                CODE_SIGN_STYLE = Automatic;
-                CURRENT_PROJECT_VERSION = 1;
-                GCC_C_LANGUAGE_STANDARD = gnu11;
-                GENERATE_INFOPLIST_FILE = YES;
-                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-                MARKETING_VERSION = 1.0;
-                MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-                MTL_FAST_MATH = YES;
-                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
-                PRODUCT_NAME = "$(TARGET_NAME)";
-                SWIFT_EMIT_LOC_STRINGS = NO;
-                TARGETED_DEVICE_FAMILY = "1,2";
-                TEST_TARGET_NAME = Runner;
-            };
-            name = "Debug-staging";
-        };
         ADA94A9B29FD24A700C9021B /* Debug-development */ = {
             isa = XCBuildConfiguration;
             buildSettings = {
@@ -1457,31 +1197,6 @@
             };
             name = "Release-production";
         };
-        ADA94A9E29FD24A700C9021B /* Release-staging */ = {
-            isa = XCBuildConfiguration;
-            buildSettings = {
-                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-                CLANG_ENABLE_OBJC_WEAK = YES;
-                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-                CODE_SIGN_STYLE = Automatic;
-                CURRENT_PROJECT_VERSION = 1;
-                GCC_C_LANGUAGE_STANDARD = gnu11;
-                GENERATE_INFOPLIST_FILE = YES;
-                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-                MARKETING_VERSION = 1.0;
-                MTL_FAST_MATH = YES;
-                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
-                PRODUCT_NAME = "$(TARGET_NAME)";
-                SWIFT_EMIT_LOC_STRINGS = NO;
-                TARGETED_DEVICE_FAMILY = "1,2";
-                TEST_TARGET_NAME = Runner;
-            };
-            name = "Release-staging";
-        };
         ADA94A9F29FD24A700C9021B /* Release-development */ = {
             isa = XCBuildConfiguration;
             buildSettings = {
@@ -1557,31 +1272,6 @@
             };
             name = "Profile-production";
         };
-        ADA94AA229FD24A700C9021B /* Profile-staging */ = {
-            isa = XCBuildConfiguration;
-            buildSettings = {
-                ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-                CLANG_ENABLE_OBJC_WEAK = YES;
-                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-                CODE_SIGN_STYLE = Automatic;
-                CURRENT_PROJECT_VERSION = 1;
-                GCC_C_LANGUAGE_STANDARD = gnu11;
-                GENERATE_INFOPLIST_FILE = YES;
-                IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-                MARKETING_VERSION = 1.0;
-                MTL_FAST_MATH = YES;
-                PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.RunnerUITests;
-                PRODUCT_NAME = "$(TARGET_NAME)";
-                SWIFT_EMIT_LOC_STRINGS = NO;
-                TARGETED_DEVICE_FAMILY = "1,2";
-                TEST_TARGET_NAME = Runner;
-            };
-            name = "Profile-staging";
-        };
         ADA94AA329FD24A700C9021B /* Profile-development */ = {
             isa = XCBuildConfiguration;
             buildSettings = {
@@ -1615,15 +1305,12 @@
 			buildConfigurations = (
 				97C147031CF9000F007C117D /* Debug */,
 				88463DA02628CCC20073536C /* Debug-production */,
-				88463D9A2628CC630073536C /* Debug-staging */,
 				88463D902628CA0E0073536C /* Debug-development */,
 				97C147041CF9000F007C117D /* Release */,
 				88463DA22628CCE90073536C /* Release-production */,
-				88463D9C2628CC770073536C /* Release-staging */,
 				88463D942628CB0F0073536C /* Release-development */,
 				249021D3217E4FDB00AE95B9 /* Profile */,
 				88463DA42628CCF90073536C /* Profile-production */,
-				88463D9E2628CC860073536C /* Profile-staging */,
 				88463D922628CA6F0073536C /* Profile-development */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1634,15 +1321,12 @@
 			buildConfigurations = (
 				97C147061CF9000F007C117D /* Debug */,
 				88463DA12628CCC20073536C /* Debug-production */,
-				88463D9B2628CC630073536C /* Debug-staging */,
 				88463D912628CA0E0073536C /* Debug-development */,
 				97C147071CF9000F007C117D /* Release */,
 				88463DA32628CCE90073536C /* Release-production */,
-				88463D9D2628CC770073536C /* Release-staging */,
 				88463D952628CB0F0073536C /* Release-development */,
 				249021D4217E4FDB00AE95B9 /* Profile */,
 				88463DA52628CCF90073536C /* Profile-production */,
-				88463D9F2628CC860073536C /* Profile-staging */,
 				88463D932628CA6F0073536C /* Profile-development */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1653,15 +1337,12 @@
             buildConfigurations = (
                 ADA94A9829FD24A700C9021B /* Debug */,
                 ADA94A9929FD24A700C9021B /* Debug-production */,
-                ADA94A9A29FD24A700C9021B /* Debug-staging */,
                 ADA94A9B29FD24A700C9021B /* Debug-development */,
                 ADA94A9C29FD24A700C9021B /* Release */,
                 ADA94A9D29FD24A700C9021B /* Release-production */,
-                ADA94A9E29FD24A700C9021B /* Release-staging */,
                 ADA94A9F29FD24A700C9021B /* Release-development */,
                 ADA94AA029FD24A700C9021B /* Profile */,
                 ADA94AA129FD24A700C9021B /* Profile-production */,
-                ADA94AA229FD24A700C9021B /* Profile-staging */,
                 ADA94AA329FD24A700C9021B /* Profile-development */,
             );
             defaultConfigurationIsVisible = 0;
