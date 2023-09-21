@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run E2E test - stg" type="ShConfigurationType">
+  <configuration default="false" name="Run E2E test - uat" type="ShConfigurationType">
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
-    <option name="SCRIPT_PATH" value="$PROJECT_DIR$/bin/run_e2e_test_stg.sh" />
+    <option name="SCRIPT_PATH" value="$PROJECT_DIR$/bin/run_e2e_test_uat.sh" />
     <option name="SCRIPT_OPTIONS" value="" />
     <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
     <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />

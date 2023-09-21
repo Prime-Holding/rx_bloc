@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SIT" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define=&quot;ENABLE_DEV_MENU=true&quot;" />
+    <option name="buildFlavor" value="sit" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main_sit.dart" />
+    <method v="2" />
+  </configuration>
+</component>

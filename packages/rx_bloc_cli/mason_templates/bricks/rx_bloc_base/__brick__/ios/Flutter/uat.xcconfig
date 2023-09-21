@@ -1,0 +1,13 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-uat.xcconfig"
+#include "Generated.xcconfig"
+
+ENVIRONMENT_PLIST = environments/uat/uat.plist
+APP_DISPLAY_NAME = {{#titleCase}}{{project_name}}{{/titleCase}} UAT
+bundle_suffix=.uat
+CF_BUNDLE_URL_NAME={{project_name}}uat.{{organization_name}}.{{domain_name}}
+CF_BUNDLE_URL_SCHEME={{organization_name}}uatscheme
+{{#enable_social_logins}}FB_APP_ID=
+FB_CLIENT_TOKEN=
+FB_APP_NAME=
+GOOGLE_REVERSED_CLIENT_ID=
+{{/enable_social_logins}}

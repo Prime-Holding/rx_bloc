@@ -4,10 +4,10 @@ import 'base/app/config/environment_config.dart';
 import 'base/app/initialization/app_setup.dart';
 import 'base/app/{{project_name}}.dart';
 
-/// Main entry point for the staging environment
+/// Main entry point for the SIT environment
 void main() async => await setupAndRunApp(
       (config) => {{project_name.pascalCase()}}(
         config: config,
       ),
-      environment: EnvironmentConfig.staging,
+      environment: EnvironmentConfig.sit,
     );

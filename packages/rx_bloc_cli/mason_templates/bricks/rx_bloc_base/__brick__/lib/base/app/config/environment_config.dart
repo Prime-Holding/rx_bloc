@@ -9,7 +9,11 @@ enum EnvironmentConfig {
     androidEmulatorBaseApiUrl: 'http://10.0.2.2:8080',
     iosSimulatorBaseApiUrl: 'http://0.0.0.0:8080'),
 
-  staging(
+  sit(
+    androidEmulatorBaseApiUrl: 'http://10.0.2.2:8080',
+    iosSimulatorBaseApiUrl: 'http://0.0.0.0:8080'),
+
+  uat(
     androidEmulatorBaseApiUrl: 'http://10.0.2.2:8080',
     iosSimulatorBaseApiUrl: 'http://0.0.0.0:8080'),
 
