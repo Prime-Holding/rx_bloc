@@ -1,4 +1,4 @@
-#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-staging.xcconfig"
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-sit.xcconfig"
 #include "Generated.xcconfig"
 
 ENVIRONMENT_PLIST = environments/sit/sit.plist
