@@ -35,7 +35,8 @@ Before you start working on your app, make sure you familiarize yourself with th
 |----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `lib/main.dart`                              | The production flavour of the app.                                                                                                                    |
 | `lib/main_dev.dart`                          | The development flavour of the app.                                                                                                                   |
-| `lib/main_staging.dart`                      | The staging flavour of the app.                                                                                                                       |
+| `lib/main_sit.dart`                          | The SIT flavour of the app.                                                                                                                           |
+| `lib/main_uat.dart`                          | The UAT flavour of the app.                                                                                                                           |
 | `lib/base/`                                  | Common code used on more than one **feature** in the project.                                                                                         |
 | `lib/base/app/`                              | The root of the application and Environment configuration.                                                                                            |
 | `lib/base/common_blocs/`                     | Generally available [BLoCs][rx_bloc_info_lnk]                                                                                                         |
@@ -64,7 +65,9 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
 | `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
-| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   | 
+| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
+| `fastlane/`                                  | [Fastlane][fastlane_lnk] directory containing Fastfile configuration                                                                                  |
+| `devops/`                                    | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts,...)                                         |
 | `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |
 ## Architecture
 
@@ -141,9 +144,14 @@ Production
 xcrun simctl openurl booted primeholdingscheme://testapp.primeholding.com/deepLinks/1
 ```
 
-Staging
+UAT
 ```
-xcrun simctl openurl booted primeholdingstagscheme://testappstag.primeholding.com/deepLinks/1
+xcrun simctl openurl booted primeholdinguatscheme://testappuat.primeholding.com/deepLinks/1
+```
+
+SIT
+```
+xcrun simctl openurl booted primeholdingsitscheme://testappsit.primeholding.com/deepLinks/1
 ```
 
 Development
@@ -270,7 +278,7 @@ Before you start using analytics, you need to add platform specific configuratio
 
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
-*Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.stag` is appended to the package name when using `staging` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
+*Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.sit` or `.uat` is appended to the package name when using `SIT` or `UAT` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
 
 ## Http client
 
@@ -421,7 +429,7 @@ As a good use case, you can wrap your page widget with this widget so you are ab
 By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
-`Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
+`Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
 
 

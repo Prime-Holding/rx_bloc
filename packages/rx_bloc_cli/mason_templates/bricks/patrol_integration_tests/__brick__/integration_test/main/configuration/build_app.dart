@@ -5,7 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
 import 'package:{{project_name}}/main.dart' as app;
 import 'package:{{project_name}}/main_dev.dart' as app_dev;
-import 'package:{{project_name}}/main_staging.dart' as app_staging;
+import 'package:{{project_name}}/main_sit.dart' as app_sit;
+import 'package:{{project_name}}/main_uat.dart' as app_uat;
 
 export 'package:flutter/foundation.dart';
 export 'package:flutter_test/flutter_test.dart';
@@ -27,8 +28,11 @@ class BuildApp {
       case 'development':
         app_dev.main();
         break;
-      case 'staging':
-        app_staging.main();
+      case 'sit':
+        app_sit.main();
+        break;
+      case 'uat':
+        app_uat.main();
         break;
       default:
         app.main();

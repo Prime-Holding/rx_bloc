@@ -23,7 +23,7 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug-staging"
+      buildConfiguration = "Debug-uat"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
@@ -36,22 +36,22 @@
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <Testables> {{#enable_patrol}}
-          <TestableReference
-             skipped = "NO"
-             parallelizable = "YES">
-             <BuildableReference
-                BuildableIdentifier = "primary"
-                BlueprintIdentifier = "ADA94A8F29FD24A700C9021B"
-                BuildableName = "RunnerUITests.xctest"
-                BlueprintName = "RunnerUITests"
-                ReferencedContainer = "container:Runner.xcodeproj">
-             </BuildableReference>
-          </TestableReference> {{/enable_patrol}}
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ADA94A8F29FD24A700C9021B"
+               BuildableName = "RunnerUITests.xctest"
+               BlueprintName = "RunnerUITests"
+               ReferencedContainer = "container:Runner.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug-staging"
+      buildConfiguration = "Debug-uat"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -72,7 +72,7 @@
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Profile-staging"
+      buildConfiguration = "Profile-uat"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -92,7 +92,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release-staging"
+      buildConfiguration = "Release-uat"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
