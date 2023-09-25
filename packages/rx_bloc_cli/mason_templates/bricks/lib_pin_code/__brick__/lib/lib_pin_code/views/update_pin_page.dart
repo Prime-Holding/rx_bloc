@@ -68,7 +68,9 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
                       pinCodeService:
                           context.read<UpdateAndVerifyPinCodeService>(),
                       biometricsLocalDataSource:
-                          context.read<BiometricsLocalDataSource>(),
+                          widget.pinCodeArguments.showBiometricsButton
+                              ? context.read<BiometricsLocalDataSource>()
+                              : null,
                       translateError: (error) =>
                           _translateError(error, context),
                       onError: (error, translatedError) =>
