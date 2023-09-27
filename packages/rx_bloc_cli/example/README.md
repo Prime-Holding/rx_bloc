@@ -433,6 +433,9 @@ Alice is working right out of the box.
 `Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
 
+
+
+
 ## Patrol Integration Tests
 
 The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
@@ -443,7 +446,9 @@ This package enables applications to use native automation features
 
 #### Running the Tests
 
-To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio.
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
+
+
 
 ## Realtime Communication
 
@@ -457,11 +462,17 @@ The `feature_otp` brick contains a number of useful widgets that can help you wi
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 
+## Auth Matrix
+The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
+
+
+
 ## CI/CD
 
 The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
 
 For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
+
 
 ## Feature Pin Code
 The application provides a pin code functionality. Initially there is a create pin button, which
@@ -475,8 +486,6 @@ after a configurable amount of inactivity time and after a configurable amount o
 app has been in background mode.
 For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
 
-## Auth Matrix
-The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
 
 ## Next Steps
 

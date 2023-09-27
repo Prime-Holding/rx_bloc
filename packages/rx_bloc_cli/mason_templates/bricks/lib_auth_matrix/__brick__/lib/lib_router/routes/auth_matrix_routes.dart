@@ -31,7 +31,7 @@ class AuthMatrixOtpRoute extends GoRouteData implements RouteDataModel {
     this.endToEndId,
   );
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      TestappWithDependencies.rootNavigatorKey;
+      AppRouter.rootNavigatorKey;
   final String endToEndId;
 
   @override
@@ -57,9 +57,9 @@ class AuthMatrixPinBiometricsRoute extends GoRouteData
   const AuthMatrixPinBiometricsRoute(
     this.endToEndId,
   );
-
+  
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      TestappWithDependencies.rootNavigatorKey;
+      AppRouter.rootNavigatorKey;
   final String endToEndId;
 
   @override

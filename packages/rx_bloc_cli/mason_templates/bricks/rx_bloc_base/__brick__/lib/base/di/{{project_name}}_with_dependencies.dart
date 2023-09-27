@@ -72,18 +72,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   final Widget child;
 
   @override
-  State<{{project_name.pascalCase()}}WithDependencies> createState() =>
-      _{{project_name.pascalCase()}}WithDependenciesState();
-}
-
-class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{project_name.pascalCase()}}WithDependencies> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) => MultiProvider(
     /// List of all providers used throughout the app
     providers: [

@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../base/common_blocs/coordinator_bloc.dart';{{#enable_auth_matrix}}
-import '../base/di/testapp_with_dependencies.dart';{{/enable_auth_matrix}}{{#enable_feature_deeplinks}}
+import '../base/common_blocs/coordinator_bloc.dart';{{#enable_feature_deeplinks}}
 import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}{{#enable_auth_matrix}}
 import '../feature_auth_matrix/di/auth_matrix_page_with_dependencies.dart';{{/enable_auth_matrix}}
 import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
