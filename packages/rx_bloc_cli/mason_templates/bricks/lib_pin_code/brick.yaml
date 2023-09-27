@@ -1,0 +1,8 @@
+name: lib_pin_code
+description: Brick that can help you with building pin code workflows for your app.
+
+version: 0.1.0+1
+environment:
+  mason: ">=0.1.0-dev.47 <0.1.0"
+
+vars:

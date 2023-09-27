@@ -45,7 +45,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-dev-menu`               |                   `true`                    |                Enables dev menu to easily access proxy debugging services.                |
 | `--[no-]enable-otp`                    |                   `false`                   |          Enables OTP feature that can help with building sms/pin code workflows.          |
 | `--[no-]interactive`                   |                   `false`                   |   Enables interactive project generation flow flags are read from command line prompts    |
-
+| `--[no-]enable-pin-code`               |                   `true`                    | Enables pin code feature with biometrics, that can help with building pin code workflows. |
 
 ### What's Included? 📦
 

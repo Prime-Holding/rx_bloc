@@ -19,8 +19,9 @@
 15. [Patrol integration tests](#patrol-integration-tests)
 16. [Realtime communication](#realtime-communication)
 17. [Feature OTP](#feature-otp) 
-18. [CI/CD](#cicd)
-19. [Next Steps](#next-steps)
+18. [CI/CD](#cicd) 
+19. [Feature Pin Code](#feature-pin-code)
+20. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -67,7 +68,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
 | `fastlane/`                                  | [Fastlane][fastlane_lnk] directory containing Fastfile configuration                                                                                  |
 | `devops/`                                    | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts,...)                                         |
-
+| `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
@@ -83,7 +84,8 @@ You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically d
 
 
 The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc` so that every route can be protected if needed.
-You can [push][go_router_push], [pop][go_router_pop], [goToLocation][go_to_location] or [go][go_router_go] as follows
+You can [push][go_router_push], [pop][go_router_pop], [goToLocation][go_to_location] 
+[push_replacement][go_router_push_replacement] or [go][go_router_go] as follows
 
 ```
 context.read<RouterBlocType>().events.push(MyNewRoute())
@@ -97,6 +99,9 @@ context.read<RouterBlocType>().events.pop(Object())
 context.read<RouterBlocType>().events.goToLocation('Location')
 ```
 
+```
+context.read<RouterBlocType>().events.pushReplacement(MyNewRoute())
+```
 or
 
 ```
@@ -463,6 +468,20 @@ The project comes preconfigured with [Fastlane][fastlane_lnk] which allows build
 
 For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
 
+
+## Feature Pin Code
+The application provides a pin code functionality. Initially there is a create pin button, which
+navigates you to the `CreatePinPage`. There you can enter and then confirm the pin that you chose.
+Then a change pin button is displayed, from you are navigate to the `UpdatePinPage`, where you can
+enter the current pin and then enter and confirm the new pin. After a pin is created and saved, on
+the `UpdatePinPage` there is a biometrics button, from which you can enable usage of biometrics.
+On app restart, you are navigated to the `VerifyPinPage` where you can either authenticate with a
+pin or with biometrics. There is a session timeout listener, which navigates you to the `VerifyPinPage`
+after a configurable amount of inactivity time and after a configurable amount of time, when the
+app has been in background mode.
+For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
+
+
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.
@@ -500,3 +519,4 @@ For more information on how to configure your Fastfile, please check out [this e
 [go_router_pop]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pop.html
 [fastlane_lnk]: https://docs.fastlane.tools/
 [booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app
+[go_router_push_replacement]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pushReplacement.html

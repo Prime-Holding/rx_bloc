@@ -2,7 +2,10 @@
 
 class RoutesPath {
   static const dashboard = '/dashboard';
-  static const profile = '/profile';
+  static const profile = '/profile';{{#enable_pin_code}}
+  static const verifyPinCode = '/verifyPinCode';
+  static const createPin = 'createPin';
+  static const updatePin = 'updatePin';{{/enable_pin_code}}
   static const splash = '/splash';{{#enable_feature_counter}}
   static const counter = '/counter';{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
   static const widgetToolkit = '/widget-toolkit';{{/enable_feature_widget_toolkit}}{{#enable_feature_otp}}

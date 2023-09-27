@@ -10,6 +10,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_change_language ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_dev_menu ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/patrol_integration_tests ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_pin_code ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_realtime_communication ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_otp ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_cicd_fastlane ^
@@ -25,6 +26,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y lib_dev_menu_bundle.dart lib\src\templates\ ^
 & move /Y lib_change_language_bundle.dart lib\src\templates\ ^
 & move /Y patrol_integration_tests_bundle.dart lib\src\templates\ ^
+& move /Y lib_pin_code_bundle.dart lib\src\templates\ ^
 & move /Y lib_realtime_communication_bundle.dart lib\src\templates\ ^
 & move /Y feature_otp_bundle.dart lib\src\templates\ ^
 & move /Y feature_cicd_fastlane_bundle.dart lib\src\templates\ ^
@@ -44,6 +46,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-patrol ^
 --realtime-communication sse ^
 --enable-otp ^
+--enable-pin-code ^
 --cicd fastlane \
 --no-interactive ^
 example/test_app ^

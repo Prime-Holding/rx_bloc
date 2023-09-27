@@ -5,7 +5,9 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';{{#has_authentication}}
-import '../../lib_auth/services/auth_service.dart';{{/has_authentication}}
+import '../../lib_auth/services/auth_service.dart';{{/has_authentication}}{{#enable_pin_code}}
+import '../../lib_pin_code/models/pin_code_arguments.dart';
+import '../../lib_pin_code/services/create_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../services/splash_service.dart';
@@ -36,11 +38,13 @@ class SplashBloc extends $SplashBloc {
   SplashBloc(
     RouterBlocType navigationBloc,
     SplashService splashService,{{#has_authentication}}
-    AuthService authService,{{/has_authentication}} {
+    AuthService authService,{{/has_authentication}}{{#enable_pin_code}}
+    CreatePinCodeService pinCodeService,{{/enable_pin_code}} {
     String? redirectLocation,
   })  : _navigationBloc = navigationBloc,
         _splashService = splashService,{{#has_authentication}}
-        _authService = authService,{{/has_authentication}}
+        _authService = authService,{{/has_authentication}}{{#enable_pin_code}}
+        _pinCodeService = pinCodeService,{{/enable_pin_code}}
         _redirectLocation = redirectLocation {
     errors.connect().addTo(_compositeSubscription);
     _$initializeAppEvent
@@ -56,18 +60,33 @@ class SplashBloc extends $SplashBloc {
   final RouterBlocType _navigationBloc;
   final SplashService _splashService;{{#has_authentication}}
   final AuthService _authService;{{/has_authentication}}
-  final String? _redirectLocation;
+  final String? _redirectLocation;{{#enable_pin_code}}
+  final CreatePinCodeService _pinCodeService; {{/enable_pin_code}}
 
   Future<void> initializeAppAndNavigate() async {
     await _splashService.initializeApp();
 
     if (_redirectLocation != null) {
       _navigationBloc.events.goToLocation(_redirectLocation!);
-    } else { {{#has_authentication}}
+    } else { {{#has_authentication}} {{^enable_pin_code}}
       await _authService.isAuthenticated()
           ? _navigationBloc.events.go(const DashboardRoute())
-          : _navigationBloc.events.go(const LoginRoute());{{/has_authentication}}{{^has_authentication}}
+          : _navigationBloc.events.go(const LoginRoute());
+      {{/enable_pin_code}}{{/has_authentication}}
+      {{^has_authentication}}
       _navigationBloc.events.go(const DashboardRoute());{{/has_authentication}}
+
+      {{#enable_pin_code}}
+      if (await _authService.isAuthenticated()) {
+        if(await _pinCodeService.isPinCodeInSecureStorage()) {
+          return _navigationBloc.events.go(const VerifyPinCodeRoute(),
+            extra: const PinCodeArguments(
+            title: 'Enter Pin Code', isSessionTimeout: true));
+        }
+
+        return _navigationBloc.events.go(const DashboardRoute());
+      }
+      return _navigationBloc.events.go(const LoginRoute());{{/enable_pin_code}}
     }
   }
 

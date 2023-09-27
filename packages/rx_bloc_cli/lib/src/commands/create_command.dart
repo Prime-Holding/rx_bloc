@@ -97,6 +97,7 @@ class CreateCommand extends Command<int> {
         'enable_patrol': arguments.patrolTestsEnabled,
         'has_authentication': arguments.authenticationEnabled,
         'realtime_communication': arguments.realtimeCommunicationEnabled,
+        'enable_pin_code': arguments.pinCodeEnabled,
         'cicd': arguments.cicdEnabled,
       },
     );
@@ -214,6 +215,7 @@ class CreateCommand extends Command<int> {
     _usingLog('OTP Feature', arguments.otpEnabled);
     _usingLog('Patrol integration tests', arguments.patrolTestsEnabled);
     _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
+    _usingLog('Pin Code', arguments.pinCodeEnabled);
     _usingLog('CI/CD', arguments.cicdEnabled);
   }
 

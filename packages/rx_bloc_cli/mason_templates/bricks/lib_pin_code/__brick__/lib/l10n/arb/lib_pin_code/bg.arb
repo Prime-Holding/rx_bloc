@@ -1,0 +1,19 @@
+{
+  "@@locale": "bg",
+  "createPin": "Създай пин код",
+  "changePin": "Смени пин код",
+  "updatePinPage": "Обновяване на пин",
+  "createPinPage": "Създаване на пин",
+  "pinCreatedMessage": "Пин кодът е създаден",
+  "pinUpdatedMessage": "Пин кодът е обновен",
+  "confirmPin": "Потвърди пин код",
+  "enterCurrentPin": "Въведи настоящ пин",
+  "enterNewPin": "Въведи нов пин",
+  "translatedError": "Преведена грешка",
+  "biometricsNotSetup": "За да използвате биометрика, трябва да я активирате от настройките на устройството!",
+  "biometricsNotSupported": "Устройството Ви няма функция да използва биометрична автентикация",
+  "biometricsEnabled": "Биометричната функция е активирана",
+  "biometricsDisabled": "Биометричната функция е деактивирана",
+  "verifyPinCodePage": "Верифициране на пин",
+  "wrongConfirmationPin": "Грешен пин за потвърждаване"
+}

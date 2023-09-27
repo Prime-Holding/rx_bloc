@@ -14,7 +14,7 @@ import 'readers/command_arguments_reader.dart';
 /// The class responsible for transforming command arguments
 /// to arguments that contain all the necessary data for project generation.
 class GeneratorArgumentsProvider {
-  /// Constructor with output directory, reader an logger parameters
+  /// Constructor with output directory, reader and logger parameters
   GeneratorArgumentsProvider(
     this._outputDirectory,
     this._reader,
@@ -77,9 +77,13 @@ class GeneratorArgumentsProvider {
     // OTP
     final otpEnabled = _reader.read<bool>(CommandArguments.otp);
 
-    if (otpEnabled && !(loginEnabled || socialLoginsEnabled)) {
+    // Pin Code
+    final pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
+
+    if ((otpEnabled || pinCodeEnabled) &&
+        !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
-      _logger.warn('Login enabled, due to OTP feature requirement');
+      _logger.warn('Login enabled, due to OTP/PIN feature requirement');
       loginEnabled = true;
     }
 
@@ -87,6 +91,7 @@ class GeneratorArgumentsProvider {
       loginEnabled: loginEnabled,
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
+      pinCodeEnabled: pinCodeEnabled,
     );
   }
 
