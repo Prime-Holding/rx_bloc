@@ -12,7 +12,6 @@ class FeatureConfiguration {
     required this.devMenuEnabled,
     required this.patrolTestsEnabled,
     required this.cicdEnabled,
-    required this.authMatrixEnabled,
   });
 
   /// Analytics
@@ -47,7 +46,4 @@ class FeatureConfiguration {
 
   /// Uses Firebase
   bool get usesFirebase => analyticsEnabled || pushNotificationsEnabled;
-
-  /// Auth matrix
-  final bool authMatrixEnabled;
 }

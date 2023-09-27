@@ -75,11 +75,26 @@ class GeneratorArgumentsProvider {
         _reader.read<bool>(CommandArguments.socialLogins);
 
     // OTP
-    final otpEnabled = _reader.read<bool>(CommandArguments.otp);
+    var otpEnabled = _reader.read<bool>(CommandArguments.otp);
 
     // Pin Code
-    final pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
+    var pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
 
+    // Auth matrix
+    final authMatrixEnabled = _reader.read<bool>(CommandArguments.authMatrix);
+
+    if (authMatrixEnabled && !otpEnabled) {
+      _logger.warn('Otp enabled, due to Auth Matrix feature requirement');
+      otpEnabled = true;
+    }
+    if (authMatrixEnabled && !pinCodeEnabled) {
+      _logger.warn('Pin code enabled, due to Auth Matrix feature requirement');
+      pinCodeEnabled = true;
+    }
+    if (authMatrixEnabled && !loginEnabled) {
+      _logger.warn('Login enabled, due to Auth Matrix feature requirement');
+      loginEnabled = true;
+    }
     if ((otpEnabled || pinCodeEnabled) &&
         !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
@@ -92,6 +107,7 @@ class GeneratorArgumentsProvider {
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
       pinCodeEnabled: pinCodeEnabled,
+      authMatrixEnabled: authMatrixEnabled,
     );
   }
 
@@ -134,9 +150,6 @@ class GeneratorArgumentsProvider {
     final cicdType = _reader.read<CICDType>(CommandArguments.cicd);
     final cicdEnabled = cicdType != CICDType.none;
 
-    // Auth matrix
-    final authMatrixEnabled = _reader.read<bool>(CommandArguments.authMatrix);
-
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
       counterEnabled: counterEnabled,
@@ -148,7 +161,6 @@ class GeneratorArgumentsProvider {
       devMenuEnabled: devMenuEnabled,
       patrolTestsEnabled: patrolTestsEnabled,
       cicdEnabled: cicdEnabled,
-      authMatrixEnabled: authMatrixEnabled,
     );
   }
 

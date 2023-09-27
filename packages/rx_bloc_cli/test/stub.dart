@@ -63,6 +63,7 @@ final class Stub {
       socialLoginsEnabled: true,
       otpEnabled: true,
       pinCodeEnabled: true,
+      authMatrixEnabled: true,
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: true,
@@ -75,7 +76,6 @@ final class Stub {
       widgetToolkitEnabled: true,
       realtimeCommunicationEnabled: true,
       cicdEnabled: true,
-      authMatrixEnabled: true,
     ),
   );
 
@@ -90,6 +90,7 @@ final class Stub {
       socialLoginsEnabled: CommandArguments.socialLogins.defaultValue(),
       otpEnabled: CommandArguments.otp.defaultValue(),
       pinCodeEnabled: CommandArguments.pinCode.defaultValue(),
+      authMatrixEnabled: CommandArguments.authMatrix.defaultValue(),
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: CommandArguments.analytics.defaultValue(),
@@ -104,7 +105,6 @@ final class Stub {
           CommandArguments.realtimeCommunication.defaultValue() !=
               RealtimeCommunicationType.none,
       cicdEnabled: CommandArguments.cicd.defaultValue() != CICDType.none,
-      authMatrixEnabled: CommandArguments.authMatrix.defaultValue(),
     ),
   );
 }
