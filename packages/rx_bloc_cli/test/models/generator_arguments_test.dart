@@ -25,6 +25,7 @@ void main() {
       loginEnabled: true,
       socialLoginsEnabled: true,
       otpEnabled: true,
+      pinCodeEnabled: true,
     );
     featureConfiguration = FeatureConfiguration(
       changeLanguageEnabled: true,
@@ -62,6 +63,7 @@ void main() {
       expect(sut.socialLoginsEnabled,
           equals(authConfiguration.socialLoginsEnabled));
       expect(sut.otpEnabled, equals(authConfiguration.otpEnabled));
+      expect(sut.pinCodeEnabled, equals(authConfiguration.pinCodeEnabled));
       expect(sut.authenticationEnabled,
           equals(authConfiguration.authenticationEnabled));
 

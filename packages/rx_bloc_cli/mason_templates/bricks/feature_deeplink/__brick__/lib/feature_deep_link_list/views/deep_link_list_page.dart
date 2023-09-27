@@ -92,7 +92,7 @@ class DeepLinkListPage extends StatelessWidget {
     String message,
   ) =>
       showBlurredBottomSheet(
-        context: context.read<AppRouter>().rootNavigatorKey.currentContext ??
+        context: AppRouter.rootNavigatorKey.currentContext ??
             context,
         builder: (BuildContext context) => MessagePanelWidget(
           message: message,

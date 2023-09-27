@@ -27,7 +27,11 @@ import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/e
 import '../lib_auth_matrix/di/auth_matrix_otp_page_with_dependencies.dart';
 import '../lib_auth_matrix/di/auth_matrix_pin_biometrix_page_with_dependencies.dart';
 import '../lib_auth_matrix/models/auth_matrix_response.dart';{{/enable_auth_matrix}}
-import '../lib_permissions/services/permissions_service.dart';
+import '../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
+import '../lib_pin_code/models/pin_code_arguments.dart';
+import '../lib_pin_code/views/create_pin_page.dart';
+import '../lib_pin_code/views/update_pin_page.dart';
+import '../lib_pin_code/views/verify_pin_code_page.dart'; {{/enable_pin_code}}
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
 import 'models/routes_path.dart';
@@ -49,15 +53,21 @@ part 'routes/showcase_routes.dart';
 class AppRouter {
   AppRouter({
     required this.coordinatorBloc,
-    required this.rootNavigatorKey,
   });
 
   final CoordinatorBlocType coordinatorBloc;
-  final GlobalKey<NavigatorState> rootNavigatorKey;
+  static final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>();
 
   late final _GoRouterRefreshStream _refreshListener =
-      _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
-{{#enable_feature_otp}}coordinatorBloc.states.isOtpConfirmed {{/enable_feature_otp}});
+    _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated,
+  {{#enable_feature_otp}}coordinatorBloc.states.isOtpConfirmed,
+    {{/enable_feature_otp}}{{#enable_pin_code}}
+    coordinatorBloc.states.isPinCodeConfirmed, {{/enable_pin_code}}
+  );
+
+  {{#enable_pin_code}}
+  String? previousLocation; {{/enable_pin_code}}
 
   GoRouter get router => _goRouter;
 
@@ -74,11 +84,31 @@ class AppRouter {
   );
 
   /// This method contains all redirection logic.
-  FutureOr<String?> _pageRedirections(
-    BuildContext context,
-    GoRouterState state,
-  ) async { {{#has_authentication}}
-    if (_refreshListener.isLoggedIn && state.uri.queryParameters['from'] != null) {
+  FutureOr<String?> _pageRedirections(BuildContext context,
+      GoRouterState state,) async {
+    {{#enable_pin_code}}
+    /// TODO Note that, the saved pin code is always deleted after a user
+    /// logs out.
+
+    if (state.matchedLocation == const VerifyPinCodeRoute().location &&
+        _refreshListener.isPinCodeConfirmed) {
+      if (previousLocation == null) {
+        return const DashboardRoute().location;
+      } else if (previousLocation == const UpdatePinRoute().location ||
+          previousLocation == const CreatePinRoute().location) {
+        return const ProfileRoute().location;
+      }
+      return previousLocation;
+    }
+
+    if ((state.matchedLocation != const LoginRoute().location) &&
+        (state.matchedLocation != const VerifyPinCodeRoute().location) &&
+        (state.matchedLocation != const CreatePinRoute().location) &&
+        (state.matchedLocation != const SplashRoute().location)) {
+      previousLocation = state.matchedLocation;
+    } {{/enable_pin_code}} {{#has_authentication}}
+    if (_refreshListener.isLoggedIn &&
+        state.uri.queryParameters['from'] != null) {
       return state.uri.queryParameters['from'];
     }
     {{^enable_feature_otp}}
@@ -86,7 +116,21 @@ class AppRouter {
         state.matchedLocation == const LoginRoute().location) {
       return const DashboardRoute().location;
     }{{/enable_feature_otp}}
- 
+
+    {{#enable_pin_code}}
+    if (_refreshListener.isLoggedIn &&
+        state.matchedLocation == const LoginRoute().location) {
+      return const DashboardRoute().location;
+    }
+    if (_refreshListener.isLoggedIn &&
+        _refreshListener.isPinCodeConfirmed &&
+        state.matchedLocation == const VerifyPinCodeRoute().location) {
+      return const DashboardRoute().location;
+    } {{/enable_pin_code}}
+    if (_refreshListener.isLoggedIn &&
+        state.matchedLocation == const LoginRoute().location) {
+      return const DashboardRoute().location;
+    }
     {{#enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
@@ -130,7 +174,9 @@ class AppRouter {
 }
 class _GoRouterRefreshStream extends ChangeNotifier {
   _GoRouterRefreshStream(Stream<bool> stream,
-{{#enable_feature_otp}} Stream<bool> streamOTP{{/enable_feature_otp}}) {
+{{#enable_feature_otp}} Stream<bool> streamOTP, {{/enable_feature_otp}}
+{{#enable_pin_code}} Stream<bool> streamPinCode, {{/enable_pin_code}}
+      ) {
     _subscription =
       stream.listen(
         (bool isLoggedIn) {
@@ -139,22 +185,31 @@ class _GoRouterRefreshStream extends ChangeNotifier {
         },
       );
 {{#enable_feature_otp}}
-     _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
-        this.isOtpConfirmed = isOtpConfirmed;
-        notifyListeners();
-      });{{/enable_feature_otp}}
+    _subscriptionOtp = streamOTP.listen((bool isOtpConfirmed) {
+      this.isOtpConfirmed = isOtpConfirmed;
+      notifyListeners();
+    }); {{/enable_feature_otp}} {{#enable_pin_code}}
+    _subscriptionPinCode = streamPinCode.listen((bool isPinCodeConfirmed) {
+      this.isPinCodeConfirmed = isPinCodeConfirmed;
+      notifyListeners();
+      this.isPinCodeConfirmed = false;
+    }); {{/enable_pin_code}}
   }
 
   late final StreamSubscription<bool> _subscription;{{#enable_feature_otp}}
   late final StreamSubscription<bool> _subscriptionOtp; {{/enable_feature_otp}}
-  late bool isLoggedIn = false;
-  {{#enable_feature_otp}}
-  late bool isOtpConfirmed = false;{{/enable_feature_otp}}
+  {{#enable_pin_code}}
+  late final StreamSubscription<bool>_subscriptionPinCode; {{/enable_pin_code}}
+
+  late bool isLoggedIn = false; {{#enable_feature_otp}}
+  late bool isOtpConfirmed = false; {{/enable_feature_otp}}{{#enable_pin_code}}
+  late bool isPinCodeConfirmed = false; {{/enable_pin_code}}
+
   @override
   void dispose() {
-
-    _subscription.cancel();{{#enable_feature_otp}}
-    _subscriptionOtp.cancel();{{/enable_feature_otp}}
+    _subscription.cancel(); {{#enable_feature_otp}}
+    _subscriptionOtp.cancel(); {{/enable_feature_otp}}{{#enable_pin_code}}
+    _subscriptionPinCode.cancel(); {{/enable_pin_code}}
     super.dispose();
   }
 }

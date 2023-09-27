@@ -39,4 +39,50 @@ class NotificationsRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get routeLocation => location;
+} {{#enable_pin_code}}
+
+@immutable
+class CreatePinRoute extends GoRouteData implements RouteDataModel {
+  const CreatePinRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: CreatePinPage(
+          pinCodeArguments: state.extra as PinCodeArguments,
+        ),
+      );
+
+  @override
+  String get permissionName => RouteModel.pinCode.permissionName;
+
+  @override
+  String get routeLocation => location;
 }
+
+@immutable
+class UpdatePinRoute extends GoRouteData implements RouteDataModel {
+  const UpdatePinRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: UpdatePinPage(
+          pinCodeArguments: state.extra as PinCodeArguments,
+        ),
+      );
+
+  @override
+  String get permissionName => RouteModel.pinCode.permissionName;
+
+  @override
+  String get routeLocation => location;
+} {{/enable_pin_code}}

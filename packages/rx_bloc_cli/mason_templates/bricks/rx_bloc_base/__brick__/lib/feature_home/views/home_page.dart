@@ -3,7 +3,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
@@ -104,7 +103,7 @@ class HomePage extends StatelessWidget {
 
   void _onError(BuildContext context, ErrorModel errorModel) =>
       showBlurredBottomSheet(
-        context: context.read<AppRouter>().rootNavigatorKey.currentContext ??
+        context: AppRouter.rootNavigatorKey.currentContext ??
             context,
         builder: (BuildContext context) => MessagePanelWidget(
           message: errorModel.translate(context),

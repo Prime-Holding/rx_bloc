@@ -46,7 +46,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-otp`                    |                   `false`                   |          Enables OTP feature that can help with building sms/pin code workflows.          |
 | `--[no-]enable-auth-matrix`            |                   `false`                   |                 Enables Auth Matrix feature functionality for the project.                |
 | `--[no-]interactive`                   |                   `false`                   |   Enables interactive project generation flow flags are read from command line prompts    |
-
+| `--[no-]enable-pin-code`               |                   `true`                    | Enables pin code feature with biometrics, that can help with building pin code workflows. |
 
 ### What's Included? 📦
 

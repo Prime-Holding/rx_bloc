@@ -20,8 +20,9 @@
 16. [Realtime communication](#realtime-communication)
 17. [Feature OTP](#feature-otp)
 18. [CI/CD](#cicd)
-19. [Auth Matrix](#auth-matrix)
-20. [Next Steps](#next-steps)
+19. [Feature Pin Code](#feature-pin-code)
+20. [Auth Matrix](#auth-matrix)
+21. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -35,7 +36,8 @@ Before you start working on your app, make sure you familiarize yourself with th
 |----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `lib/main.dart`                              | The production flavour of the app.                                                                                                                    |
 | `lib/main_dev.dart`                          | The development flavour of the app.                                                                                                                   |
-| `lib/main_staging.dart`                      | The staging flavour of the app.                                                                                                                       |
+| `lib/main_sit.dart`                          | The SIT flavour of the app.                                                                                                                           |
+| `lib/main_uat.dart`                          | The UAT flavour of the app.                                                                                                                           |
 | `lib/base/`                                  | Common code used on more than one **feature** in the project.                                                                                         |
 | `lib/base/app/`                              | The root of the application and Environment configuration.                                                                                            |
 | `lib/base/common_blocs/`                     | Generally available [BLoCs][rx_bloc_info_lnk]                                                                                                         |
@@ -65,7 +67,9 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
 | `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
 | `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
-
+| `fastlane/`                                  | [Fastlane][fastlane_lnk] directory containing Fastfile configuration                                                                                  |
+| `devops/`                                    | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts,...)                                         |
+| `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
@@ -81,7 +85,8 @@ You can use the [IntelliJ RxBloC Plugin][intellij_plugin], which automatically d
 
 
 The navigation is handled by the business layer `lib/lib_router/bloc/router_bloc` so that every route can be protected if needed.
-You can [push][go_router_push], [pop][go_router_pop], [goToLocation][go_to_location] or [go][go_router_go] as follows
+You can [push][go_router_push], [pop][go_router_pop], [goToLocation][go_to_location] 
+[push_replacement][go_router_push_replacement] or [go][go_router_go] as follows
 
 ```
 context.read<RouterBlocType>().events.push(MyNewRoute())
@@ -95,6 +100,9 @@ context.read<RouterBlocType>().events.pop(Object())
 context.read<RouterBlocType>().events.goToLocation('Location')
 ```
 
+```
+context.read<RouterBlocType>().events.pushReplacement(MyNewRoute())
+```
 or
 
 ```
@@ -137,9 +145,14 @@ Production
 xcrun simctl openurl booted primeholdingscheme://testapp.primeholding.com/deepLinks/1
 ```
 
-Staging
+UAT
 ```
-xcrun simctl openurl booted primeholdingstagscheme://testappstag.primeholding.com/deepLinks/1
+xcrun simctl openurl booted primeholdinguatscheme://testappuat.primeholding.com/deepLinks/1
+```
+
+SIT
+```
+xcrun simctl openurl booted primeholdingsitscheme://testappsit.primeholding.com/deepLinks/1
 ```
 
 Development
@@ -266,7 +279,7 @@ Before you start using analytics, you need to add platform specific configuratio
 
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
-*Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.stag` is appended to the package name when using `staging` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
+*Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.sit` or `.uat` is appended to the package name when using `SIT` or `UAT` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
 
 ## Http client
 
@@ -417,7 +430,7 @@ As a good use case, you can wrap your page widget with this widget so you are ab
 By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
-`Note:` To disable dev menu you only need to edit run configuration (Development or Staging) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
+`Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
 
 ## Patrol Integration Tests
@@ -449,6 +462,18 @@ For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_
 The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
 
 For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
+
+## Feature Pin Code
+The application provides a pin code functionality. Initially there is a create pin button, which
+navigates you to the `CreatePinPage`. There you can enter and then confirm the pin that you chose.
+Then a change pin button is displayed, from you are navigate to the `UpdatePinPage`, where you can
+enter the current pin and then enter and confirm the new pin. After a pin is created and saved, on
+the `UpdatePinPage` there is a biometrics button, from which you can enable usage of biometrics.
+On app restart, you are navigated to the `VerifyPinPage` where you can either authenticate with a
+pin or with biometrics. There is a session timeout listener, which navigates you to the `VerifyPinPage`
+after a configurable amount of inactivity time and after a configurable amount of time, when the
+app has been in background mode.
+For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
 
 ## Auth Matrix
 The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
@@ -490,3 +515,4 @@ The `lib_auth_matrix` brick contains classes, repositories, datasources and widg
 [go_router_pop]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pop.html
 [fastlane_lnk]: https://docs.fastlane.tools/
 [booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app
+[go_router_push_replacement]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pushReplacement.html

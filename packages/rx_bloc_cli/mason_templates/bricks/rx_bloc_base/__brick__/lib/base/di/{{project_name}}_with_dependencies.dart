@@ -8,7 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
+import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
 import '../../feature_splash/services/splash_service.dart';{{#has_authentication}}
 import '../../lib_auth/blocs/user_account_bloc.dart';
@@ -30,7 +31,16 @@ import '../../lib_change_language/repositories/language_repository.dart';
 import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
-import '../../lib_permissions/services/permissions_service.dart';
+import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
+import '../../lib_pin_code/bloc/create_pin_bloc.dart';
+import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
+import '../../lib_pin_code/data_source/pin_biometrics_local_data_source.dart';
+import '../../lib_pin_code/data_source/pin_code_data_source.dart';
+import '../../lib_pin_code/repository/pin_biometrics_repository.dart';
+import '../../lib_pin_code/repository/pin_code_repository.dart';
+import '../../lib_pin_code/services/create_pin_code_service.dart';
+import '../../lib_pin_code/services/pin_biometrics_service.dart';
+import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_router/services/router_service.dart';
@@ -61,10 +71,17 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   final EnvironmentConfig config;
   final Widget child;
 
-  static final GlobalKey<NavigatorState> rootNavigatorKey =
-      GlobalKey<NavigatorState>();
-  static final GlobalKey<NavigatorState> shellNavigatorKey =
-      GlobalKey<NavigatorState>();
+  @override
+  State<{{project_name.pascalCase()}}WithDependencies> createState() =>
+      _{{project_name.pascalCase()}}WithDependenciesState();
+}
+
+class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{project_name.pascalCase()}}WithDependencies> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -94,7 +111,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   SingleChildWidget get _appRouter => Provider<AppRouter>(
         create: (context) => AppRouter(
           coordinatorBloc: context.read(),
-          rootNavigatorKey: rootNavigatorKey,
         ),
       );
 
@@ -191,7 +207,16 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         Provider<ProfileLocalDataSource>(
           create: (context) =>
               ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
-        ),{{#enable_auth_matrix}}
+        ),{{#enable_pin_code}}
+        Provider<BiometricsLocalDataSource>(
+          create: (context) => PinBiometricsLocalDataSource(
+          context.read<SharedPreferencesInstance>()),
+        ),
+        Provider<PinCodeDataSource>(
+          create: (context) => PinCodeDataSource(
+            context.read<FlutterSecureStorage>(),
+          ),
+        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
          Provider<AuthMatrixDataSource>(
           create: (context) => AuthMatrixDataSource(
             context.read<ApiHttpClient>(),
@@ -243,13 +268,25 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ErrorMapper>(),
             context.read<LanguageLocalDataSource>(),
           ),
-        ),{{/enable_change_language}}{{#enable_auth_matrix}}
+        ),{{/enable_change_language}} {{#enable_pin_code}}
+        Provider<PinCodeRepository>(
+          create: (context) => PinCodeRepository(
+            context.read<ErrorMapper>(),
+            context.read<PinCodeDataSource>(),
+          ),
+        ),
+        Provider<PinBiometricsRepository>(
+          create: (context) => PinBiometricsRepository(
+            context.read<BiometricsLocalDataSource>(),
+          ),
+        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
         Provider<AuthMatrixRepository>(
           create: (context) => AuthMatrixRepository(
             context.read(),
             context.read<ErrorMapper>(),
           ),
         ),{{/enable_auth_matrix}}
+
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -301,8 +338,22 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PushNotificationsService(
             context.read(),
           ),
+        ), {{#enable_pin_code}}
+        Provider<CreatePinCodeService>(
+          create: (context) => CreatePinCodeService(
+            context.read<PinCodeRepository>(),
+          ),
         ),
-        {{#enable_auth_matrix}}
+        Provider<UpdateAndVerifyPinCodeService>(
+          create: (context) => UpdateAndVerifyPinCodeService(
+            context.read<PinCodeRepository>(),
+          ),
+        ),
+        Provider<PinBiometricsService>(
+          create: (context) => PinBiometricsService(
+            context.read<PinBiometricsRepository>(),
+          ),
+        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
          Provider<AuthMatrixService>(
           create: (context) => AuthMatrixService(
             context.read<AuthMatrixRepository>(),
@@ -336,6 +387,19 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PushNotificationsBloc(
             context.read(),
           ),
+        ), {{#enable_pin_code}}
+        RxBlocProvider<CreatePinBlocType>(
+          create: (context) => CreatePinBloc(
+            service: context.read<CreatePinCodeService>(),
+            coordinatorBloc: context.read<CoordinatorBlocType>(),
+          ),
         ),
+        RxBlocProvider<UpdateAndVerifyPinBlocType>(
+          create: (context) => UpdateAndVerifyPinBloc(
+            service: context.read<UpdateAndVerifyPinCodeService>(),
+            pinBiometricsService: context.read<PinBiometricsService>(),
+            coordinatorBloc: context.read<CoordinatorBlocType>(),
+          ),
+        ),{{/enable_pin_code}}
       ];
 }

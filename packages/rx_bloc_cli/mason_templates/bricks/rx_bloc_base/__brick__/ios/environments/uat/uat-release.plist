@@ -26,12 +26,6 @@
     <false/>
     <key>LSRequiresIPhoneOS</key>
     <true/>
-    <key>NSBonjourServices</key>
-    <array>
-        <string>_dartobservatory._tcp</string>
-    </array>
-    <key>NSLocalNetworkUsageDescription</key>
-    <string>Allow Flutter tools on your computer to connect and debug your application. This prompt will not appear on release builds.</string>
     <key>UIBackgroundModes</key>
     <array>
         <string>fetch</string>
@@ -56,11 +50,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	{{#enable_social_logins}}
+    {{#enable_social_logins}}
         <key>CFBundleURLSchemes</key>
         <array>
         <string>fb$(FB_APP_ID)</string>
-        <string>$(GOOGLE_REVERSED_CLIENT_ID)</string>
         </array>
         <key>FacebookAppID</key>
             <string>$(FB_APP_ID)</string>
@@ -72,7 +65,6 @@
             <array>
               <string>fbapi</string>
               <string>fb-messenger-share-api</string>
-            </array>
-        {{/enable_social_logins}}
+            </array>{{/enable_social_logins}}
 </dict>
 </plist>

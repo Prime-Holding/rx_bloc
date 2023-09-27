@@ -9,6 +9,7 @@ import 'package:rx_bloc_cli/src/templates/lib_auth_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_change_language_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_dev_menu_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_realtime_communication_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_router_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_social_logins_bundle.dart';
@@ -36,6 +37,7 @@ void main() {
   final _libSocialLogins = libSocialLoginsBundle;
   final _patrol = patrolIntegrationTestsBundle;
   final _libRealtimeCommunication = libRealtimeCommunicationBundle;
+  final _pinCode = libPinCodeBundle;
 
   setUp(() {
     // Copy the base bundle to avoid polluted state between tests
@@ -59,6 +61,9 @@ void main() {
 
       final otpFiles = _otp.filePaths;
       expect(files.intersection(otpFiles), equals(otpFiles));
+
+      final pinCodeFiles = _pinCode.filePaths;
+      expect(files.intersection(pinCodeFiles), equals(pinCodeFiles));
 
       final widgetToolkitFiles = _widgetToolkit.filePaths;
       expect(

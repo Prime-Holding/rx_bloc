@@ -75,7 +75,13 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
           routes: [
             TypedGoRoute<NotificationsRoute>(
               path: RoutesPath.notifications,
+            ),{{#enable_pin_code}}
+            TypedGoRoute<CreatePinRoute>(
+              path: RoutesPath.createPin,
             ),
+            TypedGoRoute<UpdatePinRoute>(
+              path: RoutesPath.updatePin,
+            ),{{/enable_pin_code}}
           ],
         ),
       ],
