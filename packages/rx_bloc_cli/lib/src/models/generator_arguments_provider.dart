@@ -91,10 +91,6 @@ class GeneratorArgumentsProvider {
       _logger.warn('Pin code enabled, due to Auth Matrix feature requirement');
       pinCodeEnabled = true;
     }
-    if (authMatrixEnabled && !loginEnabled) {
-      _logger.warn('Login enabled, due to Auth Matrix feature requirement');
-      loginEnabled = true;
-    }
     if ((otpEnabled || pinCodeEnabled) &&
         !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
