@@ -316,7 +316,7 @@ platform :ios do
             create_keychain(
                 path: keychain_path,
                 password: keychain_password,
-                default_keychain: false
+                default_keychain: true
             )
 
             unlock_keychain(
