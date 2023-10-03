@@ -97,13 +97,24 @@ class CreateCommand extends Command<int> {
         'enable_patrol': arguments.patrolTestsEnabled,
         'has_authentication': arguments.authenticationEnabled,
         'realtime_communication': arguments.realtimeCommunicationEnabled,
+        'enable_pin_code': arguments.pinCodeEnabled,
+        'cicd': arguments.cicdEnabled,
       },
     );
 
-    // Manually create gitignore.
+    // Manually create project gitignore
     GitIgnoreCreator.generate(arguments.outputDirectory.path);
 
-    final fileCount = generatedFiles.length + 1;
+    var fileCount = generatedFiles.length + 1;
+
+    // Manually create devops gitignore
+    if (arguments.cicdEnabled) {
+      GitIgnoreCreator.generate(
+        '${arguments.outputDirectory.path}/devops',
+        gitignore: GitignoreType.devops,
+      );
+      fileCount++;
+    }
 
     fileGenerationProgress.complete('Bootstrapping done');
 
@@ -204,6 +215,8 @@ class CreateCommand extends Command<int> {
     _usingLog('OTP Feature', arguments.otpEnabled);
     _usingLog('Patrol integration tests', arguments.patrolTestsEnabled);
     _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
+    _usingLog('Pin Code', arguments.pinCodeEnabled);
+    _usingLog('CI/CD', arguments.cicdEnabled);
   }
 
   /// Shows a delayed log with a success symbol in front of it

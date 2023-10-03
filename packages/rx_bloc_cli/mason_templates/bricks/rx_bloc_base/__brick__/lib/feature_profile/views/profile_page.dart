@@ -1,4 +1,4 @@
-{{> licence.dart }}
+ {{> licence.dart }}
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
@@ -8,10 +8,13 @@ import 'package:widget_toolkit/models.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/app_error_modal_widget.dart';{{#enable_change_language}}
+import '../../base/common_ui_components/app_error_modal_widget.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
-import '../../lib_change_language/ui_components/language_picker_button.dart';{{/enable_change_language}}
+import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#enable_pin_code}}
+import '../../lib_pin_code/bloc/create_pin_bloc.dart';
+import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
+import '../../lib_pin_code/models/pin_code_arguments.dart'; {{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/profile_bloc.dart';
@@ -31,7 +34,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this); {{#enable_pin_code}}
+    context
+        .read<CreatePinBlocType>()
+        .events
+        .checkIsPinCreated(); {{/enable_pin_code}}
     super.initState();
   }
 
@@ -48,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
       context.read<ProfileBlocType>().events.loadNotificationsSettings();
     }
   }
-  
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar({{#has_authentication}}
@@ -74,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
             ),
             SizedBox(
               height: context.designSystem.spacing.xl0,
-            ),{{#enable_change_language}}
+            ), {{#enable_change_language}}
             LanguagePickerButton(
               onChanged: (language) => context
                   .read<ChangeLanguageBlocType>()
@@ -84,10 +91,45 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
               buttonText:
                   context.l10n.featureProfile.profilePageChangeLanguageButton,
               translate: (model) => model.asText(context),
-            ),{{/enable_change_language}}
-             SizedBox(
+            ), {{/enable_change_language}}
+            SizedBox(
               height: context.designSystem.spacing.xl0,
-            ),
+            ), {{#enable_pin_code}}
+            RxBlocBuilder<CreatePinBlocType, bool>(
+              state: (bloc) => bloc.states.isPinCreated,
+              builder: (context, isPinCreated, bloc) => Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.designSystem.spacing.xl0,
+                ),
+                child: OutlineFillButton(
+                  text: _buildPinButtonText(isPinCreated, context),
+                  onPressed: () {
+                    if (isPinCreated.hasData && isPinCreated.data!) {
+                      context
+                          .read<UpdateAndVerifyPinBlocType>()
+                          .events
+                          .deleteSavedData();
+                      context.read<RouterBlocType>().events.push(
+                            const UpdatePinRoute(),
+                            extra: PinCodeArguments(
+                                title: context.l10n.libPinCode.enterCurrentPin),
+                          );
+                    } else {
+                      context
+                          .read<CreatePinBlocType>()
+                          .events
+                          .deleteSavedData();
+                      context.read<RouterBlocType>().events.push(
+                            const CreatePinRoute(),
+                            extra: PinCodeArguments(
+                              title: context.l10n.libPinCode.createPin,
+                            ),
+                          );
+                   }
+                 },
+                ),
+              ),
+            ), {{/enable_pin_code}}
             AppErrorModalWidget<ProfileBlocType>(
               errorState: (bloc) => bloc.states.errors,
             ),
@@ -122,10 +164,55 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
                 ),
               ),
             ),
+            RxBlocListener<CreatePinBlocType, bool>(
+              state: (bloc) => bloc.states.isPinCreated,
+              condition: (previous, current) =>
+                  previous != current && current == true,
+              listener: (context, isCreated) async {
+                if (isCreated) {
+                  await showBlurredBottomSheet(
+                    context: context,
+                    configuration:
+                        const ModalConfiguration(safeAreaBottom: false),
+                    builder: (context) => MessagePanelWidget(
+                      message: context.l10n.libPinCode.pinCreatedMessage,
+                      messageState: MessagePanelState.positiveCheck,
+                    ),
+                  );
+                }
+              },
+             ),
+             RxBlocListener<UpdateAndVerifyPinBlocType, void>(
+               state: (bloc) => bloc.states.isPinUpdated,
+               listener: (context, isCreated) async {
+                 await showBlurredBottomSheet(
+                   context: context,
+                   configuration:
+                       const ModalConfiguration(safeAreaBottom: false),
+                   builder: (context) => MessagePanelWidget(
+                     message: context.l10n.libPinCode.pinUpdatedMessage,
+                     messageState: MessagePanelState.positiveCheck,
+                   ),
+                 );
+               },
+             ),
           ],
         ),
       );
+
+  {{#enable_pin_code}}
+  String _buildPinButtonText(
+      AsyncSnapshot<bool> isPinCreated, BuildContext context) {
+    if (isPinCreated.hasData) {
+      if (isPinCreated.data!) {
+        return context.l10n.libPinCode.changePin;
+      }
+      return context.l10n.libPinCode.createPin;
+    }
+    return context.l10n.libPinCode.createPin;
+  } {{/enable_pin_code}}
 }
+
 extension _StringX on String {
   bool get isLoadingSubscription =>
       this == ProfileBloc.tagNotificationUnsubscribe ||

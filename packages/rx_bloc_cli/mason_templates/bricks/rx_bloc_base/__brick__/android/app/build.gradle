@@ -77,13 +77,20 @@ android {
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
             resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
         }
-        staging {
+        uat {
             dimension "default"
-            applicationIdSuffix ".stag"
-            versionNameSuffix "-stag"{{#enable_social_logins}}
+            applicationIdSuffix ".uat"
+            versionNameSuffix "-uat"{{#enable_social_logins}}
             resValue "string", "facebook_app_id", "insert_facebook_app_id"
             resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
-        }        
+        }
+        sit {
+            dimension "default"
+            applicationIdSuffix ".sit"
+            versionNameSuffix "-sit"{{#enable_social_logins}}
+            resValue "string", "facebook_app_id", "insert_facebook_app_id"
+            resValue "string", "facebook_client_token", "insert_client_token"{{/enable_social_logins}}
+        }
         development {
             dimension "default"
             applicationIdSuffix ".dev"

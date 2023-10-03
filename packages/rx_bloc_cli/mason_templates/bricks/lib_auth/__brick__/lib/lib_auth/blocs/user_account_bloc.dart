@@ -48,7 +48,9 @@ class UserAccountBloc extends $UserAccountBloc {
         .setResultStateHandler(this)
         .whereSuccess()
         .emitAuthenticatedToCoordinator(_coordinatorBloc){{#enable_feature_otp}}
-        .emitOtpConfirmedToCoordinator(_coordinatorBloc){{/enable_feature_otp}}
+        .emitOtpConfirmedToCoordinator(_coordinatorBloc){{/enable_feature_otp}}{{#enable_pin_code}}
+        .emitLoggedOutToCoordinator(_coordinatorBloc)
+        .emitPinCodeConfirmedToCoordinator(_coordinatorBloc){{/enable_pin_code}}
         .doOnData((_) => _routerBloc.events.go(const LoginRoute()))
         .listen(null)
         .addTo(_compositeSubscription);
@@ -63,7 +65,13 @@ class UserAccountBloc extends $UserAccountBloc {
   ConnectableStream<bool> _mapToLoggedInState() => Rx.merge([
         _coordinatorBloc.states.isAuthenticated,
         _authService.isAuthenticated().asStream(),
-      ]).publishReplay(maxSize: 1);
+      ]){{#enable_pin_code}}
+      .doOnData((isUserLoggedIn) {
+        if(isUserLoggedIn){
+          _coordinatorBloc.events.checkUserLoggedIn();
+        }
+      }){{/enable_pin_code}}
+     .publishReplay(maxSize: 1);
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

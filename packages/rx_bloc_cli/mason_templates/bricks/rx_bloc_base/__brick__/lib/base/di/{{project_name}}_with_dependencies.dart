@@ -8,7 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
+import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
 import '../../feature_splash/services/splash_service.dart';{{#has_authentication}}
 import '../../lib_auth/blocs/user_account_bloc.dart';
@@ -27,7 +28,16 @@ import '../../lib_change_language/repositories/language_repository.dart';
 import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
-import '../../lib_permissions/services/permissions_service.dart';
+import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
+import '../../lib_pin_code/bloc/create_pin_bloc.dart';
+import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
+import '../../lib_pin_code/data_source/pin_biometrics_local_data_source.dart';
+import '../../lib_pin_code/data_source/pin_code_data_source.dart';
+import '../../lib_pin_code/repository/pin_biometrics_repository.dart';
+import '../../lib_pin_code/repository/pin_code_repository.dart';
+import '../../lib_pin_code/services/create_pin_code_service.dart';
+import '../../lib_pin_code/services/pin_biometrics_service.dart';
+import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
@@ -63,12 +73,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatefulWidget {
 }
 
 class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{project_name.pascalCase()}}WithDependencies> {
-  late GlobalKey<NavigatorState> rootNavigatorKey;
 
   @override
   void initState() {
     super.initState();
-    rootNavigatorKey = GlobalKey<NavigatorState>();
   }
 
   @override
@@ -99,7 +107,6 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
   SingleChildWidget get _appRouter => Provider<AppRouter>(
         create: (context) => AppRouter(
           coordinatorBloc: context.read(),
-          rootNavigatorKey: rootNavigatorKey,
         ),
       );
 
@@ -196,7 +203,16 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<ProfileLocalDataSource>(
           create: (context) =>
               ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+        ),{{#enable_pin_code}}
+        Provider<BiometricsLocalDataSource>(
+          create: (context) => PinBiometricsLocalDataSource(
+          context.read<SharedPreferencesInstance>()),
         ),
+        Provider<PinCodeDataSource>(
+          create: (context) => PinCodeDataSource(
+            context.read<FlutterSecureStorage>(),
+          ),
+        ),{{/enable_pin_code}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -243,7 +259,19 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read<ErrorMapper>(),
             context.read<LanguageLocalDataSource>(),
           ),
-        ),{{/enable_change_language}}
+        ),{{/enable_change_language}} {{#enable_pin_code}}
+        Provider<PinCodeRepository>(
+          create: (context) => PinCodeRepository(
+            context.read<ErrorMapper>(),
+            context.read<PinCodeDataSource>(),
+          ),
+        ),
+        Provider<PinBiometricsRepository>(
+          create: (context) => PinBiometricsRepository(
+            context.read<BiometricsLocalDataSource>(),
+          ),
+        ),{{/enable_pin_code}}
+
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -289,7 +317,22 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => PushNotificationsService(
             context.read(),
           ),
+        ), {{#enable_pin_code}}
+        Provider<CreatePinCodeService>(
+          create: (context) => CreatePinCodeService(
+            context.read<PinCodeRepository>(),
+          ),
         ),
+        Provider<UpdateAndVerifyPinCodeService>(
+          create: (context) => UpdateAndVerifyPinCodeService(
+            context.read<PinCodeRepository>(),
+          ),
+        ),
+        Provider<PinBiometricsService>(
+          create: (context) => PinBiometricsService(
+            context.read<PinBiometricsRepository>(),
+          ),
+        ),{{/enable_pin_code}}
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -316,6 +359,19 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => PushNotificationsBloc(
             context.read(),
           ),
+        ), {{#enable_pin_code}}
+        RxBlocProvider<CreatePinBlocType>(
+          create: (context) => CreatePinBloc(
+            service: context.read<CreatePinCodeService>(),
+            coordinatorBloc: context.read<CoordinatorBlocType>(),
+          ),
         ),
+        RxBlocProvider<UpdateAndVerifyPinBlocType>(
+          create: (context) => UpdateAndVerifyPinBloc(
+            service: context.read<UpdateAndVerifyPinCodeService>(),
+            pinBiometricsService: context.read<PinBiometricsService>(),
+            coordinatorBloc: context.read<CoordinatorBlocType>(),
+          ),
+        ),{{/enable_pin_code}}
       ];
 }

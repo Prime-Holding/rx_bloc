@@ -34,7 +34,7 @@ class AppDevMenuGestureDetector extends StatefulWidget {
         child: AppDevMenuGestureDetector(
           onDevMenuPresented: () {
             showAppDevMenuBottomSheet(
-              context.read<AppRouter>().rootNavigatorKey.currentContext!,
+              AppRouter.rootNavigatorKey.currentContext!,
             );
           },
           navigatorKey: navigatorKey,

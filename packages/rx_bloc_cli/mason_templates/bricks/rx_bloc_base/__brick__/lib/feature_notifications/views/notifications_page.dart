@@ -24,8 +24,8 @@ class NotificationsPage extends StatelessWidget {
             IconButton(
               onPressed: () => showBlurredBottomSheet(
                 context:
-                    context.read<AppRouter>().rootNavigatorKey.currentContext ??
-                        context,
+                    AppRouter.rootNavigatorKey.currentContext ??
+                            context,
                 builder: (BuildContext context) => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

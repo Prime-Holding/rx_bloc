@@ -1,3 +1,8 @@
+## [3.1.0]
+* Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none`)
+* Added PIN code as an option under the flag `--enable-pin-code`
+* Introduce two new flavors (`sit` and `uat`) and remove `staging` flavor
+
 ## [3.0.1]
 * Generated project now uses the adaptive dialog introduced in Flutter `3.13.0`
 * Fixed integration test showcase when OTP feature is enabled

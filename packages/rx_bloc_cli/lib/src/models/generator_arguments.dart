@@ -54,6 +54,10 @@ class GeneratorArguments
   @override
   bool get otpEnabled => _authConfiguration.otpEnabled;
 
+  /// Pin Code
+  @override
+  bool get pinCodeEnabled => _authConfiguration.pinCodeEnabled;
+
   /// Social logins
   @override
   bool get socialLoginsEnabled => _authConfiguration.socialLoginsEnabled;
@@ -107,6 +111,10 @@ class GeneratorArguments
   @override
   bool get realtimeCommunicationEnabled =>
       _featureConfiguration.realtimeCommunicationEnabled;
+
+  /// CI/CD
+  @override
+  bool get cicdEnabled => _featureConfiguration.cicdEnabled;
 
   /// endregion
 }

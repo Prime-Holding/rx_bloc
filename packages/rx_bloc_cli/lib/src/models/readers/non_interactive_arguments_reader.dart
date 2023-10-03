@@ -1,4 +1,5 @@
 import 'package:args/args.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 
 import '../../extensions/arg_results_extensions.dart';
 import '../command_arguments.dart';
@@ -27,4 +28,8 @@ final class NonInteractiveArgumentsReader extends BaseCommandArgumentsReader {
     CommandArguments argument,
   ) =>
       _argResults.readRealtimeCommunicationType(argument);
+
+  @override
+  CICDType readCICDEnum(CommandArguments argument) =>
+      _argResults.readCICDEnum(argument);
 }

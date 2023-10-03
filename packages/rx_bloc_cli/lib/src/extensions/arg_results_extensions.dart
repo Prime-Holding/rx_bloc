@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 
@@ -57,5 +58,15 @@ extension ArgumentsValueReader on ArgResults {
     return (value != null)
         ? RealtimeCommunicationType.parse(value)
         : argument.defaultValue();
+  }
+
+  /// Reads a CI/CD type from the parsed values
+  CICDType readCICDEnum(CommandArguments argument) {
+    if (argument.type != ArgumentType.cicdTypeEnum) {
+      throw UnsupportedError('${argument.name} is not of type CICDType');
+    }
+    final value = this[argument.name] as String?;
+
+    return (value != null) ? CICDType.parse(value) : argument.defaultValue();
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:mason/mason.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments_provider.dart';
@@ -50,6 +51,7 @@ void main() {
     provideDummyBuilder<String>(buildDummyValues);
     provideDummyBuilder<bool>(buildDummyValues);
     provideDummyBuilder<RealtimeCommunicationType>(buildDummyValues);
+    provideDummyBuilder<CICDType>(buildDummyValues);
   });
 
   void configureArgumentValues(Map<String, Object> values) {
@@ -82,6 +84,7 @@ void main() {
 
       expect(generatorArguments.otpEnabled, isTrue);
       expect(generatorArguments.loginEnabled, isTrue);
+      expect(generatorArguments.pinCodeEnabled, isFalse);
 
       verify(logger.warn(any)).called(1);
     });

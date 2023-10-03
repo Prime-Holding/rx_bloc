@@ -9,7 +9,20 @@ extension CoordinatorBinderExtensions on Stream<bool> {
         (isAuthenticated) => coordinator.events.authenticated(
           isAuthenticated: isAuthenticated,
         ),
+      ); {{#enable_pin_code}}
+
+  Stream<bool> emitLoggedOutToCoordinator(CoordinatorBlocType coordinator) =>
+      doOnData(
+        (isAuthenticated) => coordinator.events.userLoggedOut(),
       );
+
+  Stream<bool> emitPinCodeConfirmedToCoordinator(
+          CoordinatorBlocType coordinator) =>
+      doOnData((isPinCodeConfirmed) {
+        return coordinator.events.pinCodeConfirmed(
+          isPinCodeConfirmed: isPinCodeConfirmed,
+        );
+      });{{/enable_pin_code}}
 }
 
 {{#enable_feature_otp}}

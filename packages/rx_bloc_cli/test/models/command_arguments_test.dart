@@ -1,3 +1,4 @@
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 import 'package:test/test.dart';
@@ -41,6 +42,7 @@ void main() {
       expect(CommandArguments.devMenu.type, equals(ArgumentType.boolean));
       expect(CommandArguments.login.type, equals(ArgumentType.boolean));
       expect(CommandArguments.otp.type, equals(ArgumentType.boolean));
+      expect(CommandArguments.pinCode.type, equals(ArgumentType.boolean));
       expect(CommandArguments.patrol.type, equals(ArgumentType.boolean));
       expect(CommandArguments.realtimeCommunication.type,
           equals(ArgumentType.realTimeCommunicationEnum));
@@ -69,6 +71,7 @@ void main() {
       expect(CommandArguments.devMenu.defaultValue(), isFalse);
       expect(CommandArguments.login.defaultValue(), isTrue);
       expect(CommandArguments.otp.defaultValue(), isFalse);
+      expect(CommandArguments.pinCode.defaultValue(), isFalse);
       expect(CommandArguments.patrol.defaultValue(), isFalse);
       expect(CommandArguments.realtimeCommunication.defaultValue(),
           equals(RealtimeCommunicationType.none));
@@ -141,6 +144,8 @@ extension _MatchType on ArgumentType {
         return value is bool;
       case ArgumentType.realTimeCommunicationEnum:
         return value is RealtimeCommunicationType;
+      case ArgumentType.cicdTypeEnum:
+        return value is CICDType;
     }
   }
 }

@@ -38,4 +38,27 @@ class OtpRoute extends GoRouteData implements RouteDataModel {
   @override
   String get routeLocation => location;
 }
-{{/enable_feature_otp}}
+{{/enable_feature_otp}}{{#enable_pin_code}}
+@TypedGoRoute<VerifyPinCodeRoute>(path: RoutesPath.verifyPinCode)
+@immutable
+class VerifyPinCodeRoute extends GoRouteData implements RouteDataModel {
+  const VerifyPinCodeRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: VerifyPinCodePage(
+          pinCodeArguments: state.extra as PinCodeArguments,
+        ),
+      );
+
+  @override
+  String get permissionName => RouteModel.dashboard.permissionName;
+
+  @override
+  String get routeLocation => location;
+}{{/enable_pin_code}}

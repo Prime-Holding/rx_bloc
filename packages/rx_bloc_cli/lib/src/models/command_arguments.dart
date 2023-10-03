@@ -1,3 +1,5 @@
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
+
 import 'realtime_communication_type.dart';
 
 /// The command arguments that the RxBlocCli package supports
@@ -85,6 +87,15 @@ enum CommandArguments {
     help: 'Enables OTP feature for the project',
   ),
 
+  /// Pin Code authentication
+  pinCode(
+    name: 'enable-pin-code',
+    type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable Pin Code authentication:',
+    help: 'Enables Pin Code feature for the project',
+  ),
+
   /// Patrol
   patrol(
     name: 'enable-patrol',
@@ -102,6 +113,15 @@ enum CommandArguments {
     prompt: 'Select realtime communication type:',
     help: 'Enables realtime communication facilities like SSE, WebSocket '
         'or gRPC',
+  ),
+
+  /// CI/CD
+  cicd(
+    name: 'cicd',
+    type: ArgumentType.cicdTypeEnum,
+    defaultsTo: CICDType.fastlane,
+    prompt: 'Select ci/cd type:',
+    help: 'Provides a template for setting up ci/cd for your project',
   ),
 
   /// Social logins
@@ -183,7 +203,10 @@ enum ArgumentType {
   boolean,
 
   /// Custom type: RealtimeCommunicationEnum
-  realTimeCommunicationEnum;
+  realTimeCommunicationEnum,
+
+  /// Custom type: cicdTypeEnum
+  cicdTypeEnum;
 
   /// Allowed values for each supported type
   Iterable<String>? get allowed => switch (this) {
@@ -191,5 +214,7 @@ enum ArgumentType {
         ArgumentType.boolean => null,
         ArgumentType.realTimeCommunicationEnum =>
           RealtimeCommunicationType.supportedOptions.map((e) => e.toString()),
+        ArgumentType.cicdTypeEnum =>
+          CICDType.supportedOptions.map((e) => e.toString()),
       };
 }

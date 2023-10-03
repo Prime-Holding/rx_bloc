@@ -16,6 +16,8 @@ dart run rx_bloc_cli create \
   --enable-patrol \
   --realtime-communication=sse \
   --enable-otp \
+  --cicd=fastlane \
+  --enable-pin-code \
   --no-interactive \
   example/test_app
 

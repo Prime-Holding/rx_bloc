@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
@@ -61,6 +62,7 @@ final class Stub {
       loginEnabled: true,
       socialLoginsEnabled: true,
       otpEnabled: true,
+      pinCodeEnabled: true,
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: true,
@@ -72,6 +74,7 @@ final class Stub {
       deepLinkEnabled: true,
       widgetToolkitEnabled: true,
       realtimeCommunicationEnabled: true,
+      cicdEnabled: true,
     ),
   );
 
@@ -85,6 +88,7 @@ final class Stub {
       loginEnabled: CommandArguments.login.defaultValue(),
       socialLoginsEnabled: CommandArguments.socialLogins.defaultValue(),
       otpEnabled: CommandArguments.otp.defaultValue(),
+      pinCodeEnabled: CommandArguments.pinCode.defaultValue(),
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: CommandArguments.analytics.defaultValue(),
@@ -98,6 +102,7 @@ final class Stub {
       realtimeCommunicationEnabled:
           CommandArguments.realtimeCommunication.defaultValue() !=
               RealtimeCommunicationType.none,
+      cicdEnabled: CommandArguments.cicd.defaultValue() != CICDType.none,
     ),
   );
 }

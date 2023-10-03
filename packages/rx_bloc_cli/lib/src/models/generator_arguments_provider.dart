@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:mason/mason.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
@@ -13,7 +14,7 @@ import 'readers/command_arguments_reader.dart';
 /// The class responsible for transforming command arguments
 /// to arguments that contain all the necessary data for project generation.
 class GeneratorArgumentsProvider {
-  /// Constructor with output directory, reader an logger parameters
+  /// Constructor with output directory, reader and logger parameters
   GeneratorArgumentsProvider(
     this._outputDirectory,
     this._reader,
@@ -76,9 +77,13 @@ class GeneratorArgumentsProvider {
     // OTP
     final otpEnabled = _reader.read<bool>(CommandArguments.otp);
 
-    if (otpEnabled && !(loginEnabled || socialLoginsEnabled)) {
+    // Pin Code
+    final pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
+
+    if ((otpEnabled || pinCodeEnabled) &&
+        !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
-      _logger.warn('Login enabled, due to OTP feature requirement');
+      _logger.warn('Login enabled, due to OTP/PIN feature requirement');
       loginEnabled = true;
     }
 
@@ -86,6 +91,7 @@ class GeneratorArgumentsProvider {
       loginEnabled: loginEnabled,
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
+      pinCodeEnabled: pinCodeEnabled,
     );
   }
 
@@ -124,6 +130,10 @@ class GeneratorArgumentsProvider {
     // Patrol tests
     final patrolTestsEnabled = _reader.read<bool>(CommandArguments.patrol);
 
+    // CI/CD
+    final cicdType = _reader.read<CICDType>(CommandArguments.cicd);
+    final cicdEnabled = cicdType != CICDType.none;
+
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
       counterEnabled: counterEnabled,
@@ -134,6 +144,7 @@ class GeneratorArgumentsProvider {
       deepLinkEnabled: deepLinkEnabled,
       devMenuEnabled: devMenuEnabled,
       patrolTestsEnabled: patrolTestsEnabled,
+      cicdEnabled: cicdEnabled,
     );
   }
 

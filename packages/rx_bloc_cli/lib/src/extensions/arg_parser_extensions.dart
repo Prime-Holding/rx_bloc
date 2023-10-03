@@ -23,6 +23,12 @@ extension ArgumentHandler on ArgParser {
             defaultsTo: argument.defaultValue(),
             negatable: true,
           );
+        case ArgumentType.cicdTypeEnum:
+          addOption(
+            argument.name,
+            help: argument.help,
+            allowed: argument.type.allowed,
+          );
       }
     }
   }

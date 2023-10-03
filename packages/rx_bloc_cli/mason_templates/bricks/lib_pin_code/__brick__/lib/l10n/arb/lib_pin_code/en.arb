@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "createPin": "Create pin code",
+  "changePin": "Change pin code",
+  "updatePinPage": "Update pin page",
+  "createPinPage": "Create pin page",
+  "pinCreatedMessage": "Pin was created successfully",
+  "pinUpdatedMessage": "Pin was updated successfully",
+  "confirmPin": "Confirm pin code",
+  "enterCurrentPin": "Enter current pin",
+  "enterNewPin": "Enter new pin",
+  "translatedError": "translated error",
+  "biometricsNotSetup": "To use biometrics, you need to turn it on in your device settings!",
+  "biometricsNotSupported": "You don't have biometric feature on your device!",
+  "biometricsEnabled": "Your biometrics are enabled!",
+  "biometricsDisabled": "Your biometrics are disabled!",
+  "verifyPinCodePage": "Verify pin code page",
+  "wrongConfirmationPin": "Wrong confirmation pin"
+}
