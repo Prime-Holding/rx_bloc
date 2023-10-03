@@ -171,12 +171,12 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
           AnalyticsInterceptor(context.read()),{{/analytics}}
         );
   }
-{{#enable_dev_menu}}
+
   @override
   Widget build(BuildContext context) {
-    final materialApp = {{^enable_pin_code}} _buildMaterialApp(context);
-    {{/enable_pin_code}}{{#enable_pin_code}}
-      _buildMaterialAppWithPinCode(); {{/enable_pin_code}}
+    final materialApp = 
+    {{^enable_pin_code}} _buildMaterialApp(context);{{/enable_pin_code}}
+    {{#enable_pin_code}} _buildMaterialAppWithPinCode(); {{/enable_pin_code}}
 
       {{#enable_dev_menu}}
       if (EnvironmentConfig.enableDevMenu) {
@@ -189,7 +189,6 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
       return materialApp;
   }
-{{/enable_dev_menu}}
 {{#enable_pin_code}}
   Widget _buildMaterialAppWithPinCode() =>
       RxBlocBuilder<CreatePinBlocType, bool>(
