@@ -47,7 +47,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --realtime-communication sse ^
 --enable-otp ^
 --enable-pin-code ^
---cicd fastlane \
+--cicd fastlane ^
 --no-interactive ^
 example/test_app ^
 & cd example/test_app
