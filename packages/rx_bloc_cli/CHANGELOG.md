@@ -1,3 +1,6 @@
+## [3.1.1]
+* Fix generated project not properly building when `pin_code` is disabled
+
 ## [3.1.0]
 * Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none`)
 * Added PIN code as an option under the flag `--enable-pin-code`
