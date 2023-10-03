@@ -16,6 +16,7 @@ class AuthConfiguration {
 
   /// OTP authentication enabled
   final bool otpEnabled;
+
   /// Pin Code authentication enabled
   final bool pinCodeEnabled;
 
