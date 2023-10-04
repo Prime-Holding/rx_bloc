@@ -470,6 +470,7 @@ For more information on how to configure your Fastfile, please check out [this e
 
 {{#enable_pin_code}}
 ## Feature Pin Code
+
 The application provides a pin code functionality. Initially there is a create pin button, which
 navigates you to the `CreatePinPage`. There you can enter and then confirm the pin that you chose.
 Then a change pin button is displayed, from you are navigate to the `UpdatePinPage`, where you can
