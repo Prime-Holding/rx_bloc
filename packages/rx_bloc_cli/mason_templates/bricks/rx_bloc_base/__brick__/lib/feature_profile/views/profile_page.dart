@@ -163,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-            ),
+            ),{{#enable_pin_code}}
             RxBlocListener<CreatePinBlocType, bool>(
               state: (bloc) => bloc.states.isPinCreated,
               condition: (previous, current) =>
@@ -196,6 +196,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
                  );
                },
              ),
+             {{/enable_pin_code}}
           ],
         ),
       );
