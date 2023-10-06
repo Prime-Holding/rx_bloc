@@ -1,5 +1,6 @@
 ## [3.2.0]
 * Update generated project dependencies
+* Make `AppBar` on pin code screen transparent
 
 ## [3.1.1]
 * Fix generated project not properly building when `pin_code` is disabled
