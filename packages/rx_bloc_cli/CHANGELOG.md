@@ -1,3 +1,7 @@
+## [3.1.2]
+* Update generated project dependencies
+* Fix OTP screen not showing on login
+
 ## [3.1.1]
 * Fix generated project not properly building when `pin_code` is disabled
 
