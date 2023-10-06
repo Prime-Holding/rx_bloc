@@ -31,6 +31,7 @@ class AuthMatrixPinBiometricsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(context.l10n.featureAuthMatrix.pinBiometrics),
+            forceMaterialTransparency: true,
           ),
           extendBodyBehindAppBar: true,
           body: SizedBox(

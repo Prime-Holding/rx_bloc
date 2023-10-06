@@ -15,7 +15,7 @@ import '../models/auth_matrix_response.dart';
 import '../models/auth_matrix_verify.dart';
 import '../repositories/auth_matrix_repository.dart';
 
-/// Service that handles the auth matrix flow,
+/// Service that handles the auth matrix flow
 class AuthMatrixService implements SmsCodeService, PinCodeService {
   AuthMatrixService(
     this._authMatrixRepository,
@@ -33,7 +33,7 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
   ///Function used to generate the end to end id
   String generateEndToEndId() => const Uuid().v4();
 
-  ///Function used to initialise the auth matrix flow, 
+  ///Function used to initialise the auth matrix flow,
   ///and navigate to the correct screen based on the server response
   Future<void> initialiseAuthMatrixFlow({
     required ActionRequest payload,
@@ -44,16 +44,8 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
     _endToEndId = payload.endToEndId;
     _userData = userData;
     await for (AuthMatrixResponse response in _flowEvents) {
-      switch (response.authZ) {
-        case AuthMatrixActionType.none:
-          _routerService.pop();
-          return;
-        case AuthMatrixActionType.pinAndOtp:
-        case AuthMatrixActionType.pinOnly:
-          await _navigateFunction(response, payload.endToEndId);
-      }
+      await _navigateFunction(response, payload.endToEndId);
     }
-    return;
   }
 
   ///Function used to navigate the user to the correct screen
@@ -74,7 +66,7 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
             ),
             response);
       case AuthMatrixActionType.none:
-        break;
+        _routerService.pop();
     }
   }
 
@@ -132,10 +124,10 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
   }
 
   @override
-  Future<String> getFullPhoneNumber() async => '+38164 1234567';
+  Future<String> getFullPhoneNumber() async => '+1234567890';
 
   @override
-  Future<String> updatePhoneNumber(String newNumber) async => '+38164 1234567';
+  Future<String> updatePhoneNumber(String newNumber) async => '+1234567890';
 
   @override
   Future<bool> sendConfirmationSms(String usersPhoneNumber) async {
