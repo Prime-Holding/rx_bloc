@@ -105,26 +105,20 @@ class AppRouter {
         state.uri.queryParameters['from'] != null) {
       return state.uri.queryParameters['from'];
     }
+
+    {{#enable_pin_code}}
+    if (_refreshListener.isLoggedIn &&
+        _refreshListener.isPinCodeConfirmed &&
+        state.matchedLocation == const VerifyPinCodeRoute().location) {
+      return const DashboardRoute().location;
+    } {{/enable_pin_code}}
+
     {{^enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
       return const DashboardRoute().location;
     }{{/enable_feature_otp}}
 
-    {{#enable_pin_code}}
-    if (_refreshListener.isLoggedIn &&
-        state.matchedLocation == const LoginRoute().location) {
-      return const DashboardRoute().location;
-    }
-    if (_refreshListener.isLoggedIn &&
-        _refreshListener.isPinCodeConfirmed &&
-        state.matchedLocation == const VerifyPinCodeRoute().location) {
-      return const DashboardRoute().location;
-    } {{/enable_pin_code}}
-    if (_refreshListener.isLoggedIn &&
-        state.matchedLocation == const LoginRoute().location) {
-      return const DashboardRoute().location;
-    }
     {{#enable_feature_otp}}
     if (_refreshListener.isLoggedIn &&
         state.matchedLocation == const LoginRoute().location) {
