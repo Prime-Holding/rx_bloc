@@ -89,8 +89,11 @@ class AuthMatrixController extends ApiController {
     var params = await request.bodyFromFormData();
 
     String? code;
-    if (params['payload']['code'] == '0000' ||
-        params['payload']['code'] == '111') {
+    print(params['action']);
+    if (params['action'] == 'PinOnly' && params['payload']['code'] == '1111') {
+      code = params['payload']['code'];
+    } else if (params['action'] == 'PinAndOtp' &&
+        params['payload']['code'] == '0000') {
       code = params['payload']['code'];
     } else {
       _authMatrixService.authMatrixCancel(
@@ -100,7 +103,7 @@ class AuthMatrixController extends ApiController {
     }
     throwIfEmpty(
       code,
-      ForbiddenException('Otp code incorrect'),
+      ForbiddenException('Pin/Otp code incorrect'),
     );
 
     return responseBuilder.buildOK(

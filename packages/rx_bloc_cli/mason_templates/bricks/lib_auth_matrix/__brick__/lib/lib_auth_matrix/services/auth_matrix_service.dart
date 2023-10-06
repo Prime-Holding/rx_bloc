@@ -44,30 +44,25 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
     _endToEndId = payload.endToEndId;
     _userData = userData;
     await for (AuthMatrixResponse response in _flowEvents) {
-      await _navigateFunction(response, payload.endToEndId);
+      switch (response.authZ) {
+        case AuthMatrixActionType.pinOnly:
+          await _routerService.go(
+              AuthMatrixPinBiometricsRoute(
+                payload.endToEndId,
+              ),
+              response);
+        case AuthMatrixActionType.pinAndOtp:
+          await _routerService.go(
+              AuthMatrixOtpRoute(
+                payload.endToEndId,
+              ),
+              response);
+        case AuthMatrixActionType.none:
+          _routerService.pop();
+          return;
+      }
     }
-  }
-
-  ///Function used to navigate the user to the correct screen
-  /// based on the server response
-  Future<void> _navigateFunction(
-      AuthMatrixResponse response, String endToEndId) async {
-    switch (response.authZ) {
-      case AuthMatrixActionType.pinOnly:
-        await _routerService.go(
-            AuthMatrixPinBiometricsRoute(
-              endToEndId,
-            ),
-            response);
-      case AuthMatrixActionType.pinAndOtp:
-        await _routerService.go(
-            AuthMatrixOtpRoute(
-              endToEndId,
-            ),
-            response);
-      case AuthMatrixActionType.none:
-        _routerService.pop();
-    }
+    return;
   }
 
   ///Function used to verify the auth matrix flow
@@ -152,10 +147,10 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
   }
 
   @override
-  Future<String?> getPinCode() => Future.value('000');
+  Future<String?> getPinCode() => Future.value('1111');
 
   @override
-  Future<int> getPinLength() => Future.value(3);
+  Future<int> getPinLength() => Future.value(4);
 
   @override
   Future<bool> isPinCodeInSecureStorage() => Future.value(true);
