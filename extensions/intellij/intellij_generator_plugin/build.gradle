@@ -22,6 +22,7 @@ apply plugin: 'idea'
 intellij {
     version '2017.3'
     updateSinceUntilBuild false
+    plugins = ['com.intellij.java']
 }
 
 repositories {
