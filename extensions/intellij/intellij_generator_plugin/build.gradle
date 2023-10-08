@@ -20,7 +20,7 @@ apply plugin: 'idea'
 //targetCompatibility = 1.8
 
 intellij {
-    version '2017.3'
+    version '2022.3'
     updateSinceUntilBuild false
     plugins = ['com.intellij.java']
 }
