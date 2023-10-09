@@ -33,12 +33,12 @@
     </description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="145.0"/>
+    <idea-version since-build="162.426.1"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-    <depends>com.intellij.modules.lang</depends>
-    <depends>com.intellij.modules.java</depends>
+<!--    <depends>com.intellij.modules.lang</depends>-->
+<!--    <depends>com.intellij.modules.java</depends>-->
 
     <actions>
         <action

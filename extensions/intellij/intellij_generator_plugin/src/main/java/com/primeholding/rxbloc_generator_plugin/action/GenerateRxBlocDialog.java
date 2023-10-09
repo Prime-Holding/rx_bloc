@@ -17,7 +17,7 @@ public class GenerateRxBlocDialog extends DialogWrapper {
     private JComboBox<String> routingIntegrationSelection;
 
     public GenerateRxBlocDialog(final Listener listener, boolean hideAutoRoute) {
-        super(null);
+        super(false);
         this.listener = listener;
         if (hideAutoRoute) {
             routingIntegration.setVisible(false);
@@ -30,7 +30,7 @@ public class GenerateRxBlocDialog extends DialogWrapper {
     }
 
     public GenerateRxBlocDialog(final Listener listener) {
-        super(null);
+        super(false);
         this.listener = listener;
         init();
     }

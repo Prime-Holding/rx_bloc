@@ -15,7 +15,7 @@ public class GenerateRxListBlocDialog extends DialogWrapper {
     private JPanel contentPanel;
 
     public GenerateRxListBlocDialog(final Listener listener) {
-        super(null);
+        super(false);
         this.listener = listener;
         init();
         setTitle("Create RxBloc List");

@@ -1,6 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.ui;
 
-import com.android.annotations.Nullable;
+
 import com.intellij.openapi.ui.DialogWrapper;
 
 import javax.swing.*;
@@ -19,7 +19,6 @@ public class ChooseDialog extends DialogWrapper {
         init();
     }
 
-    @Nullable
     @Override
     protected JComponent createCenterPanel() {
         JPanel dialogPanel = new JPanel(new BorderLayout());

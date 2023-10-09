@@ -1,6 +1,6 @@
 package com.primeholding.rxbloc_generator_plugin.ui;
 
-import com.android.annotations.Nullable;
+
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBList;
@@ -32,8 +32,7 @@ public class ChooseBlocsDialog extends DialogWrapper {
         setModal(true);
         init();
     }
-
-    @Nullable
+    
     @Override
     protected JComponent createCenterPanel() {
         JPanel dialogPanel = new JPanel(new BorderLayout(0, 5));

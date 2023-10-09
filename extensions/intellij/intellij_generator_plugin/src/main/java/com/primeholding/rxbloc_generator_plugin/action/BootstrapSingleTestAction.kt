@@ -3,7 +3,8 @@ package com.primeholding.rxbloc_generator_plugin.action
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DataKeys
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -22,9 +23,9 @@ class BootstrapSingleTestAction : AnAction() {
 
     private var project: Project? = null
 
-    override fun update(e: AnActionEvent?) {
+     override fun update(e: AnActionEvent) {
         super.update(e)
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e.dataContext.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)
         var isVisible = false
 
         var file: VirtualFile?
@@ -61,44 +62,42 @@ class BootstrapSingleTestAction : AnAction() {
         e?.presentation?.isVisible = isVisible
     }
 
-    override fun actionPerformed(e: AnActionEvent?) {
+    override fun actionPerformed(e: AnActionEvent) {
 
-        project = e?.project
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        project = e.project
+        val files = e.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
         var file: VirtualFile?
 
-        if (e != null) {
-            WriteCommandAction.runWriteCommandAction(e.project!!) {
-                CommandProcessor.getInstance().executeCommand(
-                    e.project!!, {
-                        for (i in 0..files?.size!!) {
-                            file = files[i]
-                            if (!file!!.isDirectory) {
-                                if (isBlocFile(file)) {
-                                    generateBloc(file!!, e.project!!)
-                                    break
-                                }
+        WriteCommandAction.runWriteCommandAction(e.project!!) {
+            CommandProcessor.getInstance().executeCommand(
+                e.project!!, {
+                    for (i in 0..files?.size!!) {
+                        file = files[i]
+                        if (!file!!.isDirectory) {
+                            if (isBlocFile(file)) {
+                                generateBloc(file!!, e.project!!)
+                                break
+                            }
 
-                                if (isServiceFile(file)) {
-                                    generateService(file!!, e.project!!)
-                                    break
-                                }
+                            if (isServiceFile(file)) {
+                                generateService(file!!, e.project!!)
+                                break
+                            }
 
-                                if (isRepositoryFile(file)) {
-                                    generateRepository(file!!, e.project!!)
-                                    break
-                                }
+                            if (isRepositoryFile(file)) {
+                                generateRepository(file!!, e.project!!)
+                                break
+                            }
 
-                                if (isUIFile(file)) {
-                                    generateGoldenTest(file!!, e.project!!)
-                                    break
-                                }
+                            if (isUIFile(file)) {
+                                generateGoldenTest(file!!, e.project!!)
+                                break
                             }
                         }
-                    }, "Bootstrap Single Test", null
-                )
-            }
+                    }
+                }, "Bootstrap Single Test", null
+            )
         }
     }
 

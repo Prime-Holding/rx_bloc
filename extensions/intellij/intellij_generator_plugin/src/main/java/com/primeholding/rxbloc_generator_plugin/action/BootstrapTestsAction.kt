@@ -2,7 +2,7 @@ package com.primeholding.rxbloc_generator_plugin.action
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DataKeys
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
@@ -15,9 +15,9 @@ import com.primeholding.rxbloc_generator_plugin.ui.ChooseBlocsDialog
 
 
 class BootstrapTestsAction : AnAction() {
-    override fun update(e: AnActionEvent?) {
+    override fun update(e: AnActionEvent) {
         super.update(e)
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         var isVisible = false
 
         val numberFiles = (files?.size ?: 0)
@@ -38,6 +38,7 @@ class BootstrapTestsAction : AnAction() {
         }
         e?.presentation?.isVisible = isVisible
     }
+
 
     private fun isBlocFolder(file: VirtualFile): Boolean {
         // is folder
@@ -72,14 +73,14 @@ class BootstrapTestsAction : AnAction() {
         return false
     }
 
-    override fun actionPerformed(e: AnActionEvent?) {
+     override fun actionPerformed(e: AnActionEvent) {
 
         val allowedPrefixes = listOf("feature_", "lib_")
 
-        e?.project?.basePath?.let { baseDir ->
+        e.project?.basePath?.let { baseDir ->
 
             var isShowDialog = false
-            val files = e.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+            val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
 
             val potentialBlocFolders = mutableListOf<VirtualFile>()
