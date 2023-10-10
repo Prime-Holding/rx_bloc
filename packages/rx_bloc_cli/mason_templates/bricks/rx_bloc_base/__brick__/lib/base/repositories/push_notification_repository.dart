@@ -62,7 +62,11 @@ class PushNotificationRepository {
       });
 
   Future<String?> getToken({String? vapidKey}) => _errorMapper
-      .execute(() => _firebaseMessaging.getToken(vapidKey: vapidKey));
+          .execute(() => _firebaseMessaging.getToken(vapidKey: vapidKey))
+          .onError((error, stackTrace) {
+        log(error.toString());
+        return null;
+      });
 
   Future<void> _setNotificationSubscribed(bool subscribed) => _errorMapper
       .execute(() => _localDataSource.setNotificationsSubscribed(subscribed));
