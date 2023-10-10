@@ -46,7 +46,8 @@ class CreateCommand extends Command<int> {
   Future<int> run() async {
     final arguments = _readGeneratorArguments();
     await _generateViaMasonBundle(arguments);
-    await _postGen(arguments.outputDirectory);
+    // TODO: Restore this line after implementation is done
+    //await _postGen(arguments.outputDirectory);
     return ExitCode.success.code;
   }
 
@@ -99,6 +100,7 @@ class CreateCommand extends Command<int> {
         'realtime_communication': arguments.realtimeCommunicationEnabled,
         'enable_pin_code': arguments.pinCodeEnabled,
         'cicd': arguments.cicdEnabled,
+        'cicd_github': arguments.cicdGithubEnabled,
       },
     );
 

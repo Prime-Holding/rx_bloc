@@ -38,6 +38,7 @@ void main() {
       devMenuEnabled: true,
       patrolTestsEnabled: true,
       cicdEnabled: true,
+      cicdGithubEnabled: true,
     );
     sut = GeneratorArguments(
       outputDirectory: outputDirectory,
@@ -83,6 +84,8 @@ void main() {
       expect(sut.widgetToolkitEnabled,
           equals(featureConfiguration.widgetToolkitEnabled));
       expect(sut.cicdEnabled, equals(featureConfiguration.cicdEnabled));
+      expect(sut.cicdGithubEnabled,
+          equals(featureConfiguration.cicdGithubEnabled));
     });
   });
 }

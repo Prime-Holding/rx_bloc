@@ -112,9 +112,17 @@ class GeneratorArguments
   bool get realtimeCommunicationEnabled =>
       _featureConfiguration.realtimeCommunicationEnabled;
 
-  /// CI/CD
+  /// endregion
+
+  /// region CI/CD
+
+  /// CI/CD fastlane only
   @override
   bool get cicdEnabled => _featureConfiguration.cicdEnabled;
+
+  /// CI/CD Github
+  @override
+  bool get cicdGithubEnabled => _featureConfiguration.cicdGithubEnabled;
 
   /// endregion
 }

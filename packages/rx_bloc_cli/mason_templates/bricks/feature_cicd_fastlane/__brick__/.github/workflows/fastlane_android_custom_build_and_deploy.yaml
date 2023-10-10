@@ -1,0 +1,83 @@
+name: "Custom build and deploy Android app"
+
+on:
+  workflow_call:
+    inputs:
+      build_name:
+        type: string
+        required: true
+        description: 'The version of the app (example: 1.0.0)'
+      build_number:
+        type: string
+        required: true
+        description: 'The build number of the app'
+      project_path:
+        type: string
+        default: ''
+        required: false
+        description: 'The location of the flutter project within the repository'
+      flutter_version:
+        type: string
+        default: ''
+        required: false
+        description: 'The flutter version used to build the project'
+      flavor:
+        type: string
+        default: 'production'
+        description: 'The app environment used to build the app'
+        required: false
+      publish_to_store:
+        type: boolean
+        default: false
+        description: 'Should the app be published to the Google play store'
+        required: false
+    secrets:
+      mobile_distribution_encryption_password:
+        required: true
+      mobile_distribution_repository_access_secret:
+        required: true
+
+jobs:
+  build_android_app:
+    defaults:
+      run:
+        working-directory: ${{ inputs.project_path }}
+    runs-on: ubuntu-latest
+    env:
+      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter_version }}
+          channel: "stable"
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+      - name: Setup Ruby env
+        uses: ruby/setup-ruby@v1.138.0
+        with:
+           ruby-version: 2.6.10
+           bundler-cache: true
+      - name: Configure Ruby
+        run: |
+          bundle install
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-linux
+      - name: Build android app
+        run: |
+          bundle exec fastlane build_custom platform:android environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
+      - name: Prepare app bundle for publishing
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-${{ inputs.flavor }}-release.aab
+          path: "${{ inputs.project_path }}/devops/artifacts/app-${{ inputs.flavor }}-release.aab"
+      - name: Upload deployment config
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-deployment.yaml
+          path: "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+      - name: Deploy app
+        if: ${{ inputs.publish_to_store }}
+        run: |
+          bundle exec fastlane deploy

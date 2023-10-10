@@ -75,6 +75,7 @@ final class Stub {
       widgetToolkitEnabled: true,
       realtimeCommunicationEnabled: true,
       cicdEnabled: true,
+      cicdGithubEnabled: true,
     ),
   );
 
@@ -103,6 +104,8 @@ final class Stub {
           CommandArguments.realtimeCommunication.defaultValue() !=
               RealtimeCommunicationType.none,
       cicdEnabled: CommandArguments.cicd.defaultValue() != CICDType.none,
+      cicdGithubEnabled:
+          CommandArguments.cicd.defaultValue() == CICDType.github,
     ),
   );
 }

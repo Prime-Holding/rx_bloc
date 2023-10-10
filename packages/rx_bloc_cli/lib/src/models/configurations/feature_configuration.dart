@@ -12,6 +12,7 @@ class FeatureConfiguration {
     required this.devMenuEnabled,
     required this.patrolTestsEnabled,
     required this.cicdEnabled,
+    required this.cicdGithubEnabled,
   });
 
   /// Analytics
@@ -41,9 +42,12 @@ class FeatureConfiguration {
   /// Patrol tests
   final bool patrolTestsEnabled;
 
-  /// CICD
-  final bool cicdEnabled;
-
   /// Uses Firebase
   bool get usesFirebase => analyticsEnabled || pushNotificationsEnabled;
+
+  /// CI/CD config
+  final bool cicdEnabled;
+
+  /// CI/CD Github
+  final bool cicdGithubEnabled;
 }
