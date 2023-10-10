@@ -44,8 +44,8 @@ jobs:
         working-directory: ${{ inputs.project_path }}
     runs-on: macos-latest
     env:
-      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+      mobile_distribution_encryption_password: ${{ secrets.mobile_distribution_encryption_password }}
+      mobile_distribution_repository_access_secret: ${{ secrets.mobile_distribution_repository_access_secret }}
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
