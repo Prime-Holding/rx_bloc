@@ -10,9 +10,9 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.generator.RxTestGeneratorBase
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
 import com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithIntentionAction
@@ -147,7 +147,7 @@ class BootstrapSingleTestAction : AnAction() {
                 return null
             }
 
-            VfsTestUtil.overwriteTestData(destinationFile, value)
+            FileUtil.writeToFile(File(destinationFile), value)
             return VfsUtil.findFileByIoFile(File(destinationFile), true)
         }
         return null
@@ -326,17 +326,21 @@ class BootstrapSingleTestAction : AnAction() {
 
                 return
             }
-            val newFile = VfsTestUtil.createFile(
-                Utils.baseDir(project.basePath!!),
+
+            val virtualFile = Utils.baseDir(project.basePath!!);
+
+            FileUtil.writeToFile(File(
+                virtualFile.path),
                 newFilePath
             )
+
             BootstrapTestsAction.writeBlockTest(
-                newFile,
+                virtualFile,
                 bloc,
                 projectName = Utils.baseDir(project.basePath!!).name,
                 includeDiMocks = true
             )
-            FileEditorManager.getInstance(project).openFile(newFile, false)
+            FileEditorManager.getInstance(project).openFile(virtualFile, false)
         }
     }
 

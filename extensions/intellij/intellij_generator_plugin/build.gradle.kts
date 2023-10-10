@@ -14,14 +14,20 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.2.2")
-    type.set("IC") // Target IDE Platform
+    // Same IntelliJ IDEA version (2019.1.4) as target 3.5 Android Studio:
+    version.set("191.8026.42")
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    // Use IntelliJ IDEA CE because it's the basis of the IntelliJ Platform:
+    type.set("IC")
+
+    // Require the Android plugin (Gradle will choose the correct version):
+    plugins.set(listOf("android", "com.intellij.modules.androidstudio"))
 }
+
 
 dependencies {
     implementation("com.fleshgrinder.kotlin:case-format:0.2.0")
+    testCompileOnly("org.mockito:mockito-core:2.7.5")
 }
 
 tasks {
@@ -32,6 +38,12 @@ tasks {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    runIde {
+        // Absolute path to installed target 3.5 Android Studio to use as
+        // IDE Development Instance (the "Contents" directory is macOS specific):
+        ideDir.set(file("/Applications/Android Studio.app/Contents"))
     }
 
     patchPluginXml {
