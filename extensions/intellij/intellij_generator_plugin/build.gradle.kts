@@ -21,7 +21,7 @@ intellij {
     type.set("IC")
 
     // Require the Android plugin (Gradle will choose the correct version):
-    plugins.set(listOf("android", "com.intellij.modules.androidstudio"))
+    plugins.set(listOf("android"))
 }
 
 
