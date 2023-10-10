@@ -26,8 +26,8 @@ jobs:
       build_name: 1.0.0
       build_number: 1
     secrets:
-      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+      mobile_distribution_encryption_password: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      mobile_distribution_repository_access_secret: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
   
   build_ios_app:
     uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
@@ -36,6 +36,6 @@ jobs:
       build_name: 1.0.0
       build_number: 1
     secrets:
-      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+      mobile_distribution_encryption_password: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      mobile_distribution_repository_access_secret: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
 
