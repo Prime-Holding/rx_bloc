@@ -1,5 +1,7 @@
 {{> licence.dart }}
 
+import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../assets.dart';

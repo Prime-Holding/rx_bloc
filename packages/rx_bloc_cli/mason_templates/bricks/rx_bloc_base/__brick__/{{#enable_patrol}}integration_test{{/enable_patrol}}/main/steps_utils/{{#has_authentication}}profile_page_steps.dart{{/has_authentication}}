@@ -1,8 +1,5 @@
 {{> licence.dart }}
 
-{{#push_notifications}}
-import 'package:widget_toolkit/ui_components.dart';
-{{/push_notifications}}
 import '../configuration/build_app.dart';
 import '../pages/home_page.dart';
 
