@@ -15,6 +15,7 @@ import '../templates/lib_realtime_communication_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
 import '../templates/patrol_integration_tests_bundle.dart';
+import '../templates/lib_analytics_bundle.dart';
 import 'generator_arguments.dart';
 
 /// Generates MasonBundle with required files
@@ -39,13 +40,16 @@ class BundleGenerator {
   final _featureOtpBundle = featureOtpBundle;
   final _featureCICDFastlaneBundle = featureCicdFastlaneBundle;
   final _libPinCodeBundle = libPinCodeBundle;
+  final _libAnalyticsBundle = libAnalyticsBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
     // Remove files when they are not needed by the specified features
-    if (!arguments.analyticsEnabled) {
+    if (arguments.analyticsEnabled) {
+      _bundle.files.addAll(_libAnalyticsBundle.files);
+    } else {
       _bundle.files.removeWhere(
-          (file) => file.path == BundleFilePaths.analyticsFilePath);
+              (file) => file.path == BundleFilePaths.analyticsFilePath);
     }
     // Add counter brick to _bundle when needed
     if (arguments.counterEnabled) {
