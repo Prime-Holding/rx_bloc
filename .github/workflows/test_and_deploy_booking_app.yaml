@@ -1,4 +1,4 @@
-name: "Test and deploy Booking app"
+name: "Test and build Booking app"
 
 # Define events when this workflow is triggered
 on:
@@ -19,23 +19,23 @@ on:
 
 # Example of a fastlane custom build
 jobs:
-  #build_android_app:
-    #uses: ./.github/workflows/fastlane_android_custom_build_and_deploy.yaml
-    #with:
-      #project_path: "examples/booking_app"
-      #build_name: 1.0.0
-      #build_number: 1
-    #secrets:
-      #mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      #mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+  build_android_app:
+    uses: ./.github/workflows/fastlane_android_custom_build_and_deploy.yaml
+    with:
+      project_path: "examples/booking_app"
+      build_name: 1.0.0
+      build_number: 1
+    secrets:
+      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
   
-  #build_ios_app:
-    #uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
-    #with:
-      #project_path: "examples/booking_app"
-      #build_name: 1.0.0
-      #build_number: 1
-    #secrets:
-      #mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      #mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+  build_ios_app:
+    uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
+    with:
+      project_path: "examples/booking_app"
+      build_name: 1.0.0
+      build_number: 1
+    secrets:
+      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
 
