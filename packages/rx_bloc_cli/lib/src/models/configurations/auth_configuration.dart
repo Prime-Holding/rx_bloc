@@ -6,6 +6,7 @@ class AuthConfiguration {
     required this.socialLoginsEnabled,
     required this.otpEnabled,
     required this.pinCodeEnabled,
+    required this.authMatrixEnabled,
   });
 
   /// Login with email enabled
@@ -20,7 +21,14 @@ class AuthConfiguration {
   /// Pin Code authentication enabled
   final bool pinCodeEnabled;
 
+  /// Auth Matrix enabled
+  final bool authMatrixEnabled;
+
   /// Authentication enabled
   bool get authenticationEnabled =>
-      loginEnabled || socialLoginsEnabled || otpEnabled || pinCodeEnabled;
+      loginEnabled ||
+      socialLoginsEnabled ||
+      otpEnabled ||
+      pinCodeEnabled ||
+      authMatrixEnabled;
 }

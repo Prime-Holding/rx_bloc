@@ -4,6 +4,13 @@ import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
 enum RouteModel {
+  {{#enable_auth_matrix}}
+    authMatrix(
+    pathName: RoutesPath.authMatrix,
+    fullPath: '/authMatrix',
+    permissionName: RoutePermissions.authMatrix,
+  ),
+  {{/enable_auth_matrix}}
   dashboard(
     pathName: RoutesPath.dashboard,
     fullPath: '/dashboard',
