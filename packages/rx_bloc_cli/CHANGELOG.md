@@ -1,4 +1,5 @@
 ## [3.2.0]
+* Added Auth Matrix as an option under the flag `--enable-auth-matrix`
 * Make `AppBar` on pin code screen transparent
 * Update generated project dependencies
 
