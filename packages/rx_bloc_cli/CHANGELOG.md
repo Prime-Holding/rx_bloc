@@ -1,5 +1,10 @@
 ## [3.2.0]
+* Make `AppBar` on pin code screen transparent
 * Update generated project dependencies
+
+## [3.1.2]
+* Update generated project dependencies
+* Fix OTP screen not showing on login
 
 ## [3.1.1]
 * Fix generated project not properly building when `pin_code` is disabled

@@ -7,11 +7,12 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
 import com.primeholding.rxbloc_generator_plugin.ui.ChooseBlocsDialog
+import java.io.File
 
 
 class BootstrapTestsAction : AnAction() {
@@ -205,7 +206,7 @@ class BootstrapTestsAction : AnAction() {
         val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocMockGenerator(
             name = bloc.file.name.replace(".dart", ""), projectName = projectName, bloc = bloc
         )
-        VfsTestUtil.overwriteTestData(testFile.path, test.generate())
+        FileUtil.writeToFile(File(testFile.path), test.generate())
     }
 
     companion object {
@@ -214,14 +215,14 @@ class BootstrapTestsAction : AnAction() {
             val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocGoldenGenerator(
                 name = bloc.file.name.replace(".dart", ""), projectName = projectName, bloc = bloc
             )
-            VfsTestUtil.overwriteTestData(testFile.path, test.generate())
+            FileUtil.writeToFile(File(testFile.path), test.generate())
         }
 
         fun writeTestFactory(testFile: VirtualFile, bloc: TestableClass, projectName: String) {
             val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocFactoryGenerator(
                 name = bloc.file.name.replace(".dart", ""), projectName = projectName, bloc = bloc
             )
-            VfsTestUtil.overwriteTestData(testFile.path, test.generate())
+            FileUtil.writeToFile(File(testFile.path), test.generate())
 
         }
 
@@ -237,7 +238,7 @@ class BootstrapTestsAction : AnAction() {
                 bloc = bloc,
                 includeDiMocks = includeDiMocks
             )
-            VfsTestUtil.overwriteTestData(testFile.path, test.generate())
+            FileUtil.writeToFile(File(testFile.path), test.generate())
         }
 
     }

@@ -54,6 +54,7 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
                     ? context.l10n.libPinCode.verifyPinCodePage
                     : widget.pinCodeArguments.title,
               ),
+            forceMaterialTransparency: true,
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
