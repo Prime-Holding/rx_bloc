@@ -1,4 +1,5 @@
 ## [3.2.0]
+* Make `AppBar` on pin code screen transparent
 * Update generated project dependencies
 
 ## [3.1.2]

@@ -46,6 +46,7 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
 
   @override
   Future<bool> verifyPinCode(String pinCode) async {
+    await Future.delayed(const Duration(seconds: 1));
     final currentPin =
         await _pinCodeRepository.readPinFromStorage(key: _storedPin);
     if (_isFromSessionTimeout) {
