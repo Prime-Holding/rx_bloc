@@ -143,6 +143,15 @@ enum CommandArguments {
     help: 'The widget toolkit showcase feature',
   ),
 
+  /// Auth Matrix
+  authMatrix(
+    name: 'enable-auth-matrix',
+    type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enabled auth matrix:',
+    help: 'Enables auth matrix feature for the project',
+  ),
+
   /// Interactive input
   interactive(
     name: 'interactive',

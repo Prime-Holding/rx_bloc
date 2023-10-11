@@ -18,3 +18,4 @@ vars:
   - enable_change_language
   - enable_patrol
   - cicd
+  - enable_auth_matrix

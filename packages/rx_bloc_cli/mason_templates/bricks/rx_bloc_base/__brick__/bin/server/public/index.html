@@ -50,6 +50,12 @@
   <br/>
   <li><a href="/api/user/push-notification-subscriptions">[POST] /api/user/push-notification-subscriptions</a></li>
   <li><a href="/api/user/push-notification-subscriptions">[DELETE] /api/user/push-notification-subscriptions</a></li>
+  {{#enable_auth_matrix}}
+  <br/>
+  <li><a href="/api/authMatrix/actions/pinOnly">[POST] /api/authMatrix/actions/pinOnly</a></li>
+  <li><a href="/api/authMatrix/actions/pinAndOtp">[POST] /api/authMatrix/actions/pinAndOtp</a></li>
+  <li><a href="/api/authMatrix/<transactionId>">[POST] /api/authMatrix/actions/a12b3c4d-123a-1a23-a123-1a23b45c6d7e</a></li>
+  <li><a href="/api/authMatrix/actions/cancel">[DELETE] /api/authMatrix/actions/cancel</a></li>{{/enable_auth_matrix}}
 </ul>
 
 </body>

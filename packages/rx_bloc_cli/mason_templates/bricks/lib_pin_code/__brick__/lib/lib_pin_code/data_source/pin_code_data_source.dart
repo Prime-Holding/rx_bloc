@@ -10,7 +10,7 @@ class PinCodeDataSource {
   final FlutterSecureStorage _storage;
   static const _storedPin = 'storedPin';
 
-  Future<int> getPinLength() async => 3;
+  Future<int> getPinLength() async => 4;
 
   Future<void> writePinToStorage({
     required String key,

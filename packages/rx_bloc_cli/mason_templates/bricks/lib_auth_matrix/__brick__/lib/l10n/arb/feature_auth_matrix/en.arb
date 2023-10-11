@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "pinBiometrics":"Pin Biometrics",
+  "otp":"OTP and Pin",
+  "authMatrixSuccess":"Successfully finished the action",
+  "authMatrixCancel":"Auth matrix canceled",
+  "authMatrixAppBarTitle":"Feature Auth Matrix",
+  "fieldMessageLabel" : "Message",
+  "fieldHintMessage" : "Enter your message",
+  "fillButtonText": "Save"
+}

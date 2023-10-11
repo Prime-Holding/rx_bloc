@@ -1,0 +1,11 @@
+{
+  "@@locale": "bg",
+  "pinBiometrics":"Биометричен PIN",
+  "otp":"OTP и PIN ",
+  "authMatrixSuccess":"Успешно завършено действие",
+  "authMatrixCancel":"Отмяна на удостоверяването на матрицата",
+  "authMatrixAppBarTitle":"Матрица за удостоверяване на функции",
+  "fieldMessageLabel" : "Съобщение",
+  "fieldHintMessage" : "Въведете вашето съобщение",
+  "fillButtonText": "Запази"
+}

@@ -99,6 +99,7 @@ class CreateCommand extends Command<int> {
         'realtime_communication': arguments.realtimeCommunicationEnabled,
         'enable_pin_code': arguments.pinCodeEnabled,
         'cicd': arguments.cicdEnabled,
+        'enable_auth_matrix': arguments.authMatrixEnabled,
       },
     );
 
@@ -217,6 +218,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
     _usingLog('Pin Code', arguments.pinCodeEnabled);
     _usingLog('CI/CD', arguments.cicdEnabled);
+    _usingLog('Auth matrix', arguments.authMatrixEnabled);
   }
 
   /// Shows a delayed log with a success symbol in front of it
