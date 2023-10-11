@@ -5,12 +5,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 
-class FirebaseRepository {
+class AnalyticsRepository {
   final ErrorMapper _errorMapper;
   final FirebaseCrashlytics _crashlytics;
   final FirebaseAnalytics _analytics;
 
-  FirebaseRepository(this._errorMapper, this._crashlytics, this._analytics);
+  AnalyticsRepository(this._errorMapper, this._crashlytics, this._analytics);
 
   Future<void> setUserIdentifier(String identifier) async {
     await _crashlytics.setUserIdentifier(identifier);

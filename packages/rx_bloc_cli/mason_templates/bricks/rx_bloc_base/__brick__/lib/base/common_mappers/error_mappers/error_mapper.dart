@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
+{{#analytics}}
+import '../../../lib_analytics/models/log_event_model.dart';
+{{/analytics}}
 import '../../common_blocs/coordinator_bloc.dart';
 import '../../extensions/error_model_extensions.dart';
 import '../../models/errors/error_model.dart';

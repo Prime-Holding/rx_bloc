@@ -3,6 +3,9 @@ part of 'error_mapper.dart';
 extension _DioErrorMapper on DioException {
   static const String kConnectionRefusedError = 'Connection refused';
   ErrorModel asErrorModel() {
+    {{#analytics}}
+    final errorLogDetails = _mapToErrorLogDetails(); // TODO: Handle details
+    {{/analytics}}
     if (type == DioExceptionType.badResponse && response != null) {
       if (response!.statusCode == 500) {
         try {
@@ -42,4 +45,36 @@ extension _DioErrorMapper on DioException {
 
     return NetworkErrorModel();
   }
+
+  {{#analytics}}
+  Map<String, String> _mapToErrorLogDetails() {
+    final endpoint = '${requestOptions.baseUrl}${requestOptions.path}';
+
+    //request headers
+    final contentType =
+        requestOptions.headers[HttpHeaders.contentTypeHeader] ?? '';
+
+    //response headers
+    final responseContentType =
+        response?.headers[HttpHeaders.contentTypeHeader] ?? '';
+
+    final responseBody = response?.data ?? '';
+    final statusCode = response?.statusCode.toString() ?? '';
+
+    final Map<String, dynamic> requestHeaders = {
+      'content-type': contentType,
+    };
+    final Map<String, dynamic> responseHeaders = {
+      'content-type': responseContentType,
+    };
+
+    return {
+      kErrorLogEndpoint: endpoint,
+      kErrorLogStatusCode: statusCode,
+      kErrorLogRequestHeaders: requestHeaders.toString(),
+      kErrorLogResponseHeaders: responseHeaders.toString(),
+      kErrorLogResponseBody: responseBody.toString(),
+    };
+  }
+  {{/analytics}}
 }
