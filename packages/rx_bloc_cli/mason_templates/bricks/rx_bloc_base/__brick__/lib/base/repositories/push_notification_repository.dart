@@ -92,7 +92,7 @@ class PushNotificationRepository {
       await notificationsEnabledUser() && await areNotificationsEnabledDevice();
 
   Future<void> subscribeForPushNotifications() async {
-    final deviceNotificationsEnabled = await areNotificationsEnabled();
+    final deviceNotificationsEnabled = await areNotificationsEnabledDevice();
     if (deviceNotificationsEnabled) {
       await _setNotificationSubscribed(true);
       await _performAction(_pushDataSource.subscribePushToken);
