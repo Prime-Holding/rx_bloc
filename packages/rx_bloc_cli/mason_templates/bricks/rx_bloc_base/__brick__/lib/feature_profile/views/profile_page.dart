@@ -31,10 +31,10 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this); {{#enable_pin_code}}
+     context.read<ProfileBlocType>().events.loadNotificationsSettings(); {{#enable_pin_code}}
     context
         .read<CreatePinBlocType>()
         .events
@@ -44,16 +44,7 @@ class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      context.read<ProfileBlocType>().events.loadNotificationsSettings();
-    }
   }
 
   @override
