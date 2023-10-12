@@ -50,23 +50,9 @@ part 'routes/showcase_routes.dart';
 /// specific page if the `isAuthenticated` state changes (It can be used with
 /// some other global state change as well).
 class AppRouter {
-  {{^analytics}}
   AppRouter({
     required this.coordinatorBloc,
   });
-  {{/analytics}}
-  {{#analytics}}
-  AppRouter({
-    required this.coordinatorBloc,
-  }) {
-    _goRouter.routeInformationProvider.addListener(() async {
-      await Future.delayed(const Duration(milliseconds: 50));
-      coordinatorBloc.events.navigationChanged(
-        _goRouter.routeInformationProvider.value.uri.path,
-      );
-    });
-  }
-  {{/analytics}}
 
   final CoordinatorBlocType coordinatorBloc;
   static final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -88,13 +74,24 @@ class AppRouter {
     navigatorKey: rootNavigatorKey,
     initialLocation: const SplashRoute().location,
     routes: $appRoutes,
-    redirect: _pageRedirections,
+    redirect: {{^analytics}}_pageRedirections{{/analytics}}{{#analytics}}_pageRedirectionsWithAnalytics{{/analytics}},
     refreshListenable: _refreshListener,
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,
       child: ErrorPage(error: state.error),
     ),
-  );
+  );{{#analytics}}
+
+  /// Analytics
+  FutureOr<String?> _pageRedirectionsWithAnalytics(
+    BuildContext context,
+    GoRouterState state,
+  ) async {
+    final redirectLocation = await _pageRedirections(context, state);
+    coordinatorBloc.events
+        .navigationChanged(redirectLocation ?? state.uri.path);
+    return redirectLocation;
+  }{{/analytics}}
 
   /// This method contains all redirection logic.
   FutureOr<String?> _pageRedirections(BuildContext context,
