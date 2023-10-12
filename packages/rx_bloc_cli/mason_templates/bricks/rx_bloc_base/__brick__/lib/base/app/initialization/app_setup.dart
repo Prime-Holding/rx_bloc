@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 {{#uses_firebase}}
-import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#push_notifications}}
+import 'package:firebase_core/firebase_core.dart';{{/uses_firebase}}{{#analytics}}
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';{{/analytics}}{{#push_notifications}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';{{/push_notifications}}
 import 'package:flutter/material.dart';
@@ -40,12 +41,12 @@ Future configureApp(EnvironmentConfig envConfig) async {
           projectId: 'projectId',
         ),
       ));
-  await _setupNotifications();
-
+  await _setupNotifications();{{#analytics}}
+  await _setupCrashlytics();{{/analytics}}
   // TODO: Add your own code that is going to be run before the actual app
 }
-
 {{#push_notifications}}
+
 /// Configures Firebase notifications
 Future<void> _setupNotifications() async {
   // TODO: Request permissions for iOS or Web
@@ -63,4 +64,16 @@ Future<void> _setupNotifications() async {
   // terminated, you need to pass a callback to onBackgroundMessage method
   FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
 }
-{{/push_notifications}}
+{{/push_notifications}}{{#analytics}}
+
+Future<void> _setupCrashlytics() async {
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+}
+{{/analytics}}
