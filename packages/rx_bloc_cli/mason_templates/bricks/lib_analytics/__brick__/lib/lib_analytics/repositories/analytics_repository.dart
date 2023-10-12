@@ -23,14 +23,14 @@ class AnalyticsRepository {
   }
 
   Future<void> recordError(
-      dynamic exception,
-      StackTrace? stack, {
-        Map<String, String>? errorLogDetails,
-        dynamic reason,
-        Iterable<Object> information = const [],
-        bool? printDetails,
-        bool fatal = false,
-      }) async {
+    dynamic exception,
+    StackTrace? stack, {
+    Map<String, String>? errorLogDetails,
+    dynamic reason,
+    Iterable<Object> information = const [],
+    bool? printDetails,
+    bool fatal = false,
+  }) async {
     if (errorLogDetails != null) {
       //add keys to crashlytics
       for (var entry in errorLogDetails.entries) {
@@ -53,7 +53,7 @@ class AnalyticsRepository {
     Map<String, String>? parameters,
   }) =>
       _errorMapper.execute(
-            () => _analytics.logEvent(
+        () => _analytics.logEvent(
           name: eventName,
           parameters: parameters,
         ),

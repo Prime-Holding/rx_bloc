@@ -16,11 +16,11 @@ abstract class AnalyticsBlocStates {}
 @RxBloc()
 class AnalyticsBloc extends $AnalyticsBloc {
   AnalyticsBloc(
-      CoordinatorBlocType coordinator,
-      AnalyticsService service,
-      ) {
+    CoordinatorBlocType coordinator,
+    AnalyticsService service,
+  ) {
     coordinator.states.errorLogEvent.listen(
-          (event) {
+      (event) {
         service.recordError(
           event.error,
           StackTrace.fromString(

@@ -7,6 +7,7 @@ import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_login_bundle.dart';
 import '../templates/feature_otp_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
+import '../templates/lib_analytics_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
 import '../templates/lib_auth_matrix_bundle.dart';
 import '../templates/lib_change_language_bundle.dart';
@@ -16,7 +17,6 @@ import '../templates/lib_realtime_communication_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
 import '../templates/patrol_integration_tests_bundle.dart';
-import '../templates/lib_analytics_bundle.dart';
 import 'generator_arguments.dart';
 
 /// Generates MasonBundle with required files
@@ -51,7 +51,7 @@ class BundleGenerator {
       _bundle.files.addAll(_libAnalyticsBundle.files);
     } else {
       _bundle.files.removeWhere(
-              (file) => file.path == BundleFilePaths.analyticsFilePath);
+          (file) => file.path == BundleFilePaths.analyticsFilePath);
     }
     // Add counter brick to _bundle when needed
     if (arguments.counterEnabled) {

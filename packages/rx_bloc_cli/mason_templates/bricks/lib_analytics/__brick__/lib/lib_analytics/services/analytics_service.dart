@@ -8,10 +8,10 @@ class AnalyticsService {
   final AnalyticsRepository _repository;
 
   Future<void> recordError(
-      dynamic exception,
-      StackTrace? stack,
-      Map<String, String>? errorLogDetails,
-      ) =>
+    dynamic exception,
+    StackTrace? stack,
+    Map<String, String>? errorLogDetails,
+  ) =>
       _repository.recordError(
         exception,
         stack,

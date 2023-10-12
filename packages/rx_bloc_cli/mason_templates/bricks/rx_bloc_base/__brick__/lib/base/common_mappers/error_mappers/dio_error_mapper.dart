@@ -4,7 +4,7 @@ extension _DioErrorMapper on DioException {
   static const String kConnectionRefusedError = 'Connection refused';
   ErrorModel asErrorModel() {
     {{#analytics}}
-    final errorLogDetails = _mapToErrorLogDetails(); // TODO: Handle details
+    final _ = _mapToErrorLogDetails(); // TODO: Handle details
     {{/analytics}}
     if (type == DioExceptionType.badResponse && response != null) {
       if (response!.statusCode == 500) {
