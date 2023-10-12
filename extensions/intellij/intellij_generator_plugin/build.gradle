@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '3.0.2'
+version '3.0.3'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -53,6 +53,9 @@ jacocoTestReport {
 patchPluginXml {
     changeNotes """
      <ul>
+     <li>
+     v.3.0.3 - Fix incompatibility issues with Android Studio Giraffe
+     </li>
       <li>
      v.3.0.2 - separate state mock initialization
      </li>

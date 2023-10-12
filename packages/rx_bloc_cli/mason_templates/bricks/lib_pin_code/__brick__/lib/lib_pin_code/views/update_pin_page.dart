@@ -55,6 +55,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
                     ? context.l10n.libPinCode.updatePinPage
                     : widget.pinCodeArguments.title,
               ),
+            forceMaterialTransparency: true,
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(

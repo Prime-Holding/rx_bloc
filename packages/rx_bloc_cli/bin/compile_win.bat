@@ -15,6 +15,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_otp ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_cicd_fastlane ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_analytics ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_auth_matrix ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y feature_counter_bundle.dart lib\src\templates\ ^
 & move /Y feature_deeplink_bundle.dart lib\src\templates\ ^
@@ -32,6 +33,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 & move /Y feature_otp_bundle.dart lib\src\templates\ ^
 & move /Y feature_cicd_fastlane_bundle.dart lib\src\templates\ ^
 & move /Y lib_analytics_bundle.dart lib\src\templates\ ^
+& move /Y lib_auth_matrix_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\test_app\ ^
 & dart pub global activate -s path . --overwrite ^
 & rx_bloc_cli create ^
@@ -48,8 +50,9 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_base ^
 --enable-patrol ^
 --realtime-communication sse ^
 --enable-otp ^
---enable-pin-code ^
 --cicd fastlane ^
+--cicd fastlane ^
+--enable-pin-code ^
 --no-interactive ^
 example/test_app ^
 & cd example/test_app

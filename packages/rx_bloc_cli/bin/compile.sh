@@ -18,6 +18,7 @@ dart run rx_bloc_cli create \
   --enable-otp \
   --cicd=fastlane \
   --enable-pin-code \
+  --enable-auth-matrix \
   --no-interactive \
   example/test_app
 
