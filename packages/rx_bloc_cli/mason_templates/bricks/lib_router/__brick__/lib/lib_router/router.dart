@@ -50,9 +50,23 @@ part 'routes/showcase_routes.dart';
 /// specific page if the `isAuthenticated` state changes (It can be used with
 /// some other global state change as well).
 class AppRouter {
+  {{^analytics}}
   AppRouter({
     required this.coordinatorBloc,
   });
+  {{/analytics}}
+  {{#analytics}}
+  AppRouter({
+    required this.coordinatorBloc,
+  }) {
+    _goRouter.routeInformationProvider.addListener(() async {
+      await Future.delayed(const Duration(milliseconds: 50));
+      coordinatorBloc.events.navigationChanged(
+        _goRouter.routeInformationProvider.value.uri.path,
+      );
+    });
+  }
+  {{/analytics}}
 
   final CoordinatorBlocType coordinatorBloc;
   static final GlobalKey<NavigatorState> rootNavigatorKey =

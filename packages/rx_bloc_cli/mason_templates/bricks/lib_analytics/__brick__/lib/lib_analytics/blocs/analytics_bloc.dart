@@ -29,6 +29,13 @@ class AnalyticsBloc extends $AnalyticsBloc {
         );
       },
     ).addTo(_compositeSubscription);
+
+    coordinator.states.navigationChange.listen((url) {
+      service.logEvent(eventName: 'screen_view', parameters: {
+        'firebase_screen': url,
+        'firebase_screen_class': '',
+      });
+    }).addTo(_compositeSubscription);
   }
 
   String _getFileName(ErrorModel error) =>

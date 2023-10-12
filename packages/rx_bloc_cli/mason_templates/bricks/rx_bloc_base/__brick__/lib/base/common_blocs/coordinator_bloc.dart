@@ -30,6 +30,10 @@ abstract class CoordinatorEvents {
     required ErrorModel error,
     String? stackTrace,
   });
+
+  {{#analytics}}
+  void navigationChanged(String location);
+  {{/analytics}}
 }
 
 abstract class CoordinatorStates {
@@ -49,6 +53,9 @@ abstract class CoordinatorStates {
   Stream<void> get userLoggedIn;{{/enable_pin_code}}
 
   {{#analytics}}
+  @RxBlocIgnoreState()
+  Stream<String> get navigationChange;
+
   Stream<LogEventModel> get errorLogEvent;
   {{/analytics}}
 }
@@ -77,6 +84,9 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<void> get userLoggedIn => _$checkUserLoggedInEvent; {{/enable_pin_code}}
 
   {{#analytics}}
+  @override
+  Stream<String> get navigationChange => _$navigationChangedEvent;
+
   @override
   Stream<LogEventModel> _mapToErrorLogEventState() =>
     _$errorLoggedEvent.map((e) => LogEventModel(

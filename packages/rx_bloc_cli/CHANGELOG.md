@@ -1,3 +1,6 @@
+## [3.3.0]
+* Updates to `analytics` feature - added crash reporting support and screen view logging
+
 ## [3.2.0]
 * Added Auth Matrix as an option under the flag `--enable-auth-matrix`
 * Make `AppBar` on pin code screen transparent
