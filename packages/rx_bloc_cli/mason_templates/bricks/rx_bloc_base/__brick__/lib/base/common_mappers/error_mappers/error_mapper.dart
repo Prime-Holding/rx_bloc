@@ -126,9 +126,7 @@ class ErrorMapper implements ErrorMapperInterface {
         error: errorObj,
         stackTrace: stackTrace?.toString() ?? '',
       );
-    }
-
-    if (errorObj is Exception) {
+    } else if (errorObj is Exception) {
       log('Exception', error: errorObj, stackTrace: stackTrace);
       _coordinator.events.errorLogged(
         error: _mapExceptionToBusinessError(errorObj),

@@ -5,10 +5,10 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/errors/error_model.dart';
 {{#analytics}}
 import '../../lib_analytics/models/log_event_model.dart';
 {{/analytics}}
+import '../models/errors/error_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
 

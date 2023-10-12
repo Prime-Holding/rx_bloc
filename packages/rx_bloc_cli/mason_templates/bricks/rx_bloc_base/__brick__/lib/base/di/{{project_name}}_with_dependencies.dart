@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 {{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +12,13 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
-import '../../feature_splash/services/splash_service.dart';{{#has_authentication}}
+import '../../feature_splash/services/splash_service.dart';
+{{#analytics}}
+import '../../lib_analytics/blocs/analytics_bloc.dart';
+import '../../lib_analytics/repositories/analytics_repository.dart';
+import '../../lib_analytics/services/analytics_service.dart';
+{{/analytics}}
+{{#has_authentication}}
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
 import '../../lib_auth/data_sources/local/auth_token_secure_data_source.dart';
@@ -109,6 +116,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
         ),
+        Provider<FirebaseCrashlytics>(create: (context) => FirebaseCrashlytics.instance),
       ];
   {{/analytics}}
 
@@ -274,7 +282,15 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ErrorMapper>(),
           ),
         ),{{/enable_auth_matrix}}
-
+        {{#analytics}}
+        Provider<AnalyticsRepository>(
+          create: (context) => AnalyticsRepository(
+            context.read<ErrorMapper>(),
+            context.read<FirebaseCrashlytics>(),
+            context.read<FirebaseAnalytics>(),
+          ),
+        ),
+        {{/analytics}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -297,7 +313,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         Provider<UserAccountService>(
           create: (context) => UserAccountService(
             context.read(),
-            context.read(),
+            context.read(),{{#analytics}}
+            context.read(),{{/analytics}}
             context.read(),
           ),
         ),
@@ -349,6 +366,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           ),
           dispose: (context, value) => value.dispose(),
         ),{{/enable_auth_matrix}}
+        {{#analytics}}
+        Provider<AnalyticsService>(
+          create: (context) => AnalyticsService(
+            context.read(),
+          ),
+        ),
+        {{/analytics}}
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -389,5 +413,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             coordinatorBloc: context.read<CoordinatorBlocType>(),
           ),
         ),{{/enable_pin_code}}
+        {{#analytics}}
+        RxBlocProvider<AnalyticsBlocType>(
+          create: (context) => AnalyticsBloc(
+            context.read(),
+            context.read(),
+          ),
+        ),
+        {{/analytics}}
       ];
 }
