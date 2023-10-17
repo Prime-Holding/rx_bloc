@@ -66,6 +66,10 @@ class GeneratorArguments
   @override
   bool get authenticationEnabled => _authConfiguration.authenticationEnabled;
 
+  ///Auth matrix
+  @override
+  bool get authMatrixEnabled => _authConfiguration.authMatrixEnabled;
+
   /// endregion
 
   /// region Feature Configuration

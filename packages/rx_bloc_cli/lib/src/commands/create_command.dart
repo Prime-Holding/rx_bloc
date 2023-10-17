@@ -100,6 +100,7 @@ class CreateCommand extends Command<int> {
         'enable_pin_code': arguments.pinCodeEnabled,
         'cicd': arguments.cicdEnabled,
         'cicd_github': arguments.cicdGithubEnabled,
+        'enable_auth_matrix': arguments.authMatrixEnabled,
       },
     );
 
@@ -200,7 +201,7 @@ class CreateCommand extends Command<int> {
         // ignore: lines_longer_than_80_chars
         '${lightCyan.wrap('${arguments.organisation}.${arguments.projectName}')}');
 
-    _usingLog('Firebase Analytics', arguments.analyticsEnabled);
+    _usingLog('Firebase Analytics and Crashlytics', arguments.analyticsEnabled);
     _usingLog('Firebase Push Notifications', true);
     _usingLog('Feature Counter Showcase', arguments.counterEnabled);
     _usingLog('Feature Deep links Showcase', arguments.deepLinkEnabled);
@@ -218,6 +219,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
     _usingLog('Pin Code', arguments.pinCodeEnabled);
     _usingLog('CI/CD', arguments.cicdEnabled);
+    _usingLog('Auth matrix', arguments.authMatrixEnabled);
   }
 
   /// Shows a delayed log with a success symbol in front of it

@@ -85,6 +85,14 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.deepLinks,
         ),
         {{/enable_feature_deeplinks}}
+        {{#enable_auth_matrix}}
+        NavMenuItem(
+          title: context.l10n.featureAuthMatrix.authMatrixAppBarTitle,
+          icon: context.designSystem.icons.pin,
+          route: const FeatureAuthMatrixRoute(),
+          routePath: RoutesPath.authMatrix,
+        ),
+        {{/enable_auth_matrix}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,

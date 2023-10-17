@@ -9,9 +9,9 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.testFramework.VfsTestUtil
 import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog.RoutingIntegration
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocFeatureGeneratorFactory
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
@@ -140,11 +140,11 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
 
             if (file.exists()) {
                 val text = file.readText()
-                VfsTestUtil.overwriteTestData(filePath, "${text}${newRoute}")
+                FileUtil.writeToFile(File(filePath), "${text}${newRoute}")
             } else {
                 partRoutes = "part 'routes/routes.dart';"
-                VfsTestUtil.overwriteTestData(
-                    filePath,
+                FileUtil.writeToFile(File(
+                    filePath),
                     """
 part of '../router.dart';
 
@@ -164,7 +164,7 @@ $newRoute""".trimIndent()
             val router = File(routerPath)
             if (router.exists()) {
                 val text = editRouter(router.readText(), subPart, name, partRoutes)
-                VfsTestUtil.overwriteTestData(routerPath, text)
+                FileUtil.writeToFile(File(routerPath), text)
             }
 
 
@@ -173,14 +173,14 @@ $newRoute""".trimIndent()
             file = File(filePath)
             if (file.exists()) {
                 val text = editRoutesPath(File(file.path).readText(), featureFieldCase)
-                VfsTestUtil.overwriteTestData(file.path, text)
+                FileUtil.writeToFile(File(file.path), text)
             }
             filePath =
                 "${it.basePath}${File.separator}lib${File.separator}lib_router${File.separator}models${File.separator}route_model.dart"
             file = File(filePath)
             if (file.exists()) {
                 val text = editRouteModel(File(file.path).readText(), featureFieldCase)
-                VfsTestUtil.overwriteTestData(file.path, text)
+                FileUtil.writeToFile(File(file.path), text)
             }
 
             filePath =
@@ -188,7 +188,7 @@ $newRoute""".trimIndent()
             file = File(filePath)
             if (file.exists()) {
                 val text = editRoutePermissions(File(file.path).readText(), featureFieldCase, featureCamelCase)
-                VfsTestUtil.overwriteTestData(file.path, text)
+                FileUtil.writeToFile(File(file.path), text)
             }
 
             filePath =
@@ -196,7 +196,7 @@ $newRoute""".trimIndent()
             file = File(filePath)
             if (file.exists()) {
                 val text = editPermissionsController(File(file.path).readText(), featureCamelCase)
-                VfsTestUtil.overwriteTestData(file.path, text)
+                FileUtil.writeToFile(File(file.path), text)
             }
         }
     }
@@ -275,7 +275,7 @@ class ${featureCamelCase}Route extends GoRouteData implements RouteDataModel {
         }
 
         val file = directory.createChildData(this, fileName)
-        VfsTestUtil.overwriteTestData(file.path, fixSubPaths(generator.generate(), directory.parent))
+        FileUtil.writeToFile(File(file.path), fixSubPaths(generator.generate(), directory.parent))
         return file
     }
 

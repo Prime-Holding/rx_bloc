@@ -48,6 +48,7 @@ class _CreatePinPageState extends State<CreatePinPage> {
                   ? context.l10n.libPinCode.createPinPage
                   : widget.pinCodeArguments.title,
             ),
+            forceMaterialTransparency: true,
           ),
           extendBodyBehindAppBar: true,
           body: SizedBox(

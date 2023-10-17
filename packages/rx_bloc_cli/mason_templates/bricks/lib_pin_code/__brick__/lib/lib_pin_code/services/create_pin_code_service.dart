@@ -41,6 +41,7 @@ class CreatePinCodeService implements PinCodeService {
 
   @override
   Future<bool> verifyPinCode(String pinCode) async {
+    await Future.delayed(const Duration(seconds: 1));
     if (firstPin == null) {
       firstPin = pinCode;
       return true;

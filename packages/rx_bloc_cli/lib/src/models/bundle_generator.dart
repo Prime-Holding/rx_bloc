@@ -7,7 +7,9 @@ import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_login_bundle.dart';
 import '../templates/feature_otp_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
+import '../templates/lib_analytics_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
+import '../templates/lib_auth_matrix_bundle.dart';
 import '../templates/lib_change_language_bundle.dart';
 import '../templates/lib_dev_menu_bundle.dart';
 import '../templates/lib_permissions_bundle.dart';
@@ -37,13 +39,17 @@ class BundleGenerator {
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
+  final _libAuthMatrix = libAuthMatrixBundle;
   final _featureCICDFastlaneBundle = featureCicdFastlaneBundle;
   final _libPinCodeBundle = libPinCodeBundle;
+  final _libAnalyticsBundle = libAnalyticsBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
     // Remove files when they are not needed by the specified features
-    if (!arguments.analyticsEnabled) {
+    if (arguments.analyticsEnabled) {
+      _bundle.files.addAll(_libAnalyticsBundle.files);
+    } else {
       _bundle.files.removeWhere(
           (file) => file.path == BundleFilePaths.analyticsFilePath);
     }
@@ -106,12 +112,14 @@ class BundleGenerator {
     if (arguments.authenticationEnabled) {
       _bundle.files.addAll(_libAuthBundle.files);
     }
-
     // Add ci/cd files
     if (arguments.cicdEnabled) {
       _bundle.files.addAll(_featureCICDFastlaneBundle.files);
     }
-
+    //Add lib_auth_matrix to _bundle when needed
+    if (arguments.authMatrixEnabled) {
+      _bundle.files.addAll(_libAuthMatrix.files);
+    }
     return _bundle;
   }
 }

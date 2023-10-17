@@ -75,11 +75,22 @@ class GeneratorArgumentsProvider {
         _reader.read<bool>(CommandArguments.socialLogins);
 
     // OTP
-    final otpEnabled = _reader.read<bool>(CommandArguments.otp);
+    var otpEnabled = _reader.read<bool>(CommandArguments.otp);
 
     // Pin Code
-    final pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
+    var pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
 
+    // Auth matrix
+    final authMatrixEnabled = _reader.read<bool>(CommandArguments.authMatrix);
+
+    if (authMatrixEnabled && !otpEnabled) {
+      _logger.warn('Otp enabled, due to Auth Matrix feature requirement');
+      otpEnabled = true;
+    }
+    if (authMatrixEnabled && !pinCodeEnabled) {
+      _logger.warn('Pin code enabled, due to Auth Matrix feature requirement');
+      pinCodeEnabled = true;
+    }
     if ((otpEnabled || pinCodeEnabled) &&
         !(loginEnabled || socialLoginsEnabled)) {
       // Modify feature flag or throw exception
@@ -92,6 +103,7 @@ class GeneratorArgumentsProvider {
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
       pinCodeEnabled: pinCodeEnabled,
+      authMatrixEnabled: authMatrixEnabled,
     );
   }
 

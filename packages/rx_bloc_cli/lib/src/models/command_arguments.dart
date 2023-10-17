@@ -30,7 +30,7 @@ enum CommandArguments {
     type: ArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable analytics:',
-    help: 'Enables Firebase analytics for the project',
+    help: 'Enables Firebase Analytics and Crashlytics for the project',
   ),
 
   /// Change language
@@ -141,6 +141,15 @@ enum CommandArguments {
     defaultsTo: false,
     prompt: 'Enable widget toolkit showcase:',
     help: 'The widget toolkit showcase feature',
+  ),
+
+  /// Auth Matrix
+  authMatrix(
+    name: 'enable-auth-matrix',
+    type: ArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enabled auth matrix:',
+    help: 'Enables auth matrix feature for the project',
   ),
 
   /// Interactive input

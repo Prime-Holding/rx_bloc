@@ -1,7 +1,8 @@
 {{> licence.dart }}
 
 {{#analytics}}
-import 'package:firebase_analytics/firebase_analytics.dart';{{/analytics}}
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';{{/analytics}}
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +12,13 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';{{#enable_pin_code}}
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
-import '../../feature_splash/services/splash_service.dart';{{#has_authentication}}
+import '../../feature_splash/services/splash_service.dart';
+{{#analytics}}
+import '../../lib_analytics/blocs/analytics_bloc.dart';
+import '../../lib_analytics/repositories/analytics_repository.dart';
+import '../../lib_analytics/services/analytics_service.dart';
+{{/analytics}}
+{{#has_authentication}}
 import '../../lib_auth/blocs/user_account_bloc.dart';
 import '../../lib_auth/data_sources/local/auth_token_data_source.dart';
 import '../../lib_auth/data_sources/local/auth_token_secure_data_source.dart';
@@ -21,7 +28,10 @@ import '../../lib_auth/data_sources/remote/refresh_token_data_source.dart';
 import '../../lib_auth/repositories/auth_repository.dart';
 import '../../lib_auth/services/access_token_service.dart';
 import '../../lib_auth/services/auth_service.dart';
-import '../../lib_auth/services/user_account_service.dart';{{/has_authentication}}{{#enable_change_language}}
+import '../../lib_auth/services/user_account_service.dart';{{/has_authentication}}{{#enable_auth_matrix}}
+import '../../lib_auth_matrix/data_source/remote/auth_matrix_data_source.dart';
+import '../../lib_auth_matrix/repositories/auth_matrix_repository.dart';
+import '../../lib_auth_matrix/services/auth_matrix_service.dart';{{/enable_auth_matrix}}{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
@@ -40,6 +50,7 @@ import '../../lib_pin_code/services/pin_biometrics_service.dart';
 import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
+import '../../lib_router/services/router_service.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
@@ -57,7 +68,7 @@ import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#e
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';
 
-class {{project_name.pascalCase()}}WithDependencies extends StatefulWidget {
+class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   const {{project_name.pascalCase()}}WithDependencies({
       required this.config,
       required this.child,
@@ -66,18 +77,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatefulWidget {
 
   final EnvironmentConfig config;
   final Widget child;
-
-  @override
-  State<{{project_name.pascalCase()}}WithDependencies> createState() =>
-      _{{project_name.pascalCase()}}WithDependenciesState();
-}
-
-class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{project_name.pascalCase()}}WithDependencies> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -95,7 +94,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         ..._services,
         ..._blocs,
       ],
-      child: widget.child,
+      child: child,
     );
 
   List<SingleChildWidget> get _coordinator => [
@@ -117,11 +116,12 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) =>
               FirebaseAnalyticsObserver(analytics: context.read()),
         ),
+        Provider<FirebaseCrashlytics>(create: (context) => FirebaseCrashlytics.instance),
       ];
   {{/analytics}}
 
   List<Provider> get _environment => [
-        Provider<EnvironmentConfig>.value(value: widget.config),
+        Provider<EnvironmentConfig>.value(value: config),
       ];
 
   List<Provider> get _mappers => [
@@ -139,7 +139,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<ApiHttpClient>(
           create: (context) {
             final client = ApiHttpClient()
-              ..options.baseUrl = widget.config.baseUrl;
+              ..options.baseUrl = config.baseUrl;
             return client;
           },
         ),
@@ -169,7 +169,7 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
         Provider<RefreshTokenDataSource>(
           create: (context) => RefreshTokenDataSource(
             context.read<PlainHttpClient>(),
-            baseUrl: widget.config.baseUrl,
+            baseUrl: config.baseUrl,
           ),
         ),{{/has_authentication}}
         Provider<PushNotificationsDataSource>(
@@ -212,7 +212,12 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => PinCodeDataSource(
             context.read<FlutterSecureStorage>(),
           ),
-        ),{{/enable_pin_code}}
+        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
+         Provider<AuthMatrixDataSource>(
+          create: (context) => AuthMatrixDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),{{/enable_auth_matrix}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -270,8 +275,22 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => PinBiometricsRepository(
             context.read<BiometricsLocalDataSource>(),
           ),
-        ),{{/enable_pin_code}}
-
+        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
+        Provider<AuthMatrixRepository>(
+          create: (context) => AuthMatrixRepository(
+            context.read(),
+            context.read<ErrorMapper>(),
+          ),
+        ),{{/enable_auth_matrix}}
+        {{#analytics}}
+        Provider<AnalyticsRepository>(
+          create: (context) => AnalyticsRepository(
+            context.read<ErrorMapper>(),
+            context.read<FirebaseCrashlytics>(),
+            context.read<FirebaseAnalytics>(),
+          ),
+        ),
+        {{/analytics}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -285,10 +304,17 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             context.read(),
           ),
         ),{{#has_authentication}}
+        Provider<RouterService>(
+          create: (context) => RouterService(
+            context.read<AppRouter>().router,
+            context.read(),
+          ),
+        ),
         Provider<UserAccountService>(
           create: (context) => UserAccountService(
             context.read(),
-            context.read(),
+            context.read(),{{#analytics}}
+            context.read(),{{/analytics}}
             context.read(),
           ),
         ),
@@ -332,7 +358,21 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
           create: (context) => PinBiometricsService(
             context.read<PinBiometricsRepository>(),
           ),
-        ),{{/enable_pin_code}}
+        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
+         Provider<AuthMatrixService>(
+          create: (context) => AuthMatrixService(
+            context.read<AuthMatrixRepository>(),
+            context.read<RouterService>(),
+          ),
+          dispose: (context, value) => value.dispose(),
+        ),{{/enable_auth_matrix}}
+        {{#analytics}}
+        Provider<AnalyticsService>(
+          create: (context) => AnalyticsService(
+            context.read(),
+          ),
+        ),
+        {{/analytics}}
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -373,5 +413,13 @@ class _{{project_name.pascalCase()}}WithDependenciesState extends State<{{projec
             coordinatorBloc: context.read<CoordinatorBlocType>(),
           ),
         ),{{/enable_pin_code}}
+        {{#analytics}}
+        RxBlocProvider<AnalyticsBlocType>(
+          create: (context) => AnalyticsBloc(
+            context.read(),
+            context.read(),
+          ),
+        ),
+        {{/analytics}}
       ];
 }

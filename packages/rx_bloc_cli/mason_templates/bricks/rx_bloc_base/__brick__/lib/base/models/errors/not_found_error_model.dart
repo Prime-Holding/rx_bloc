@@ -1,7 +1,10 @@
 part of 'error_model.dart';
 
 class NotFoundErrorModel extends ErrorModel {
-  NotFoundErrorModel({this.message});
+  NotFoundErrorModel({
+    this.message,
+    Map<String, String>? errorLogDetails,
+  }) : super(errorLogDetails);
 
   final String? message;
 
