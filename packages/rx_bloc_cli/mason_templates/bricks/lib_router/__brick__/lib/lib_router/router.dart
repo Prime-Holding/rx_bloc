@@ -74,13 +74,24 @@ class AppRouter {
     navigatorKey: rootNavigatorKey,
     initialLocation: const SplashRoute().location,
     routes: $appRoutes,
-    redirect: _pageRedirections,
+    redirect: {{^analytics}}_pageRedirections{{/analytics}}{{#analytics}}_pageRedirectionsWithAnalytics{{/analytics}},
     refreshListenable: _refreshListener,
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,
       child: ErrorPage(error: state.error),
     ),
-  );
+  );{{#analytics}}
+
+  /// Analytics
+  FutureOr<String?> _pageRedirectionsWithAnalytics(
+    BuildContext context,
+    GoRouterState state,
+  ) async {
+    final redirectLocation = await _pageRedirections(context, state);
+    coordinatorBloc.events
+        .navigationChanged(redirectLocation ?? state.uri.path);
+    return redirectLocation;
+  }{{/analytics}}
 
   /// This method contains all redirection logic.
   FutureOr<String?> _pageRedirections(BuildContext context,

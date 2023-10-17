@@ -7,6 +7,7 @@ import '../templates/feature_deeplink_bundle.dart';
 import '../templates/feature_login_bundle.dart';
 import '../templates/feature_otp_bundle.dart';
 import '../templates/feature_widget_toolkit_bundle.dart';
+import '../templates/lib_analytics_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
 import '../templates/lib_auth_matrix_bundle.dart';
 import '../templates/lib_change_language_bundle.dart';
@@ -41,11 +42,14 @@ class BundleGenerator {
   final _libAuthMatrix = libAuthMatrixBundle;
   final _featureCICDFastlaneBundle = featureCicdFastlaneBundle;
   final _libPinCodeBundle = libPinCodeBundle;
+  final _libAnalyticsBundle = libAnalyticsBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
     // Remove files when they are not needed by the specified features
-    if (!arguments.analyticsEnabled) {
+    if (arguments.analyticsEnabled) {
+      _bundle.files.addAll(_libAnalyticsBundle.files);
+    } else {
       _bundle.files.removeWhere(
           (file) => file.path == BundleFilePaths.analyticsFilePath);
     }

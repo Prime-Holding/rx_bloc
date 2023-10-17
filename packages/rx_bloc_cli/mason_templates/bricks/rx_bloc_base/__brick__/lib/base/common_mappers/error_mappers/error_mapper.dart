@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
+{{#analytics}}
+import '../../../lib_analytics/models/log_event_model.dart';
+{{/analytics}}
 import '../../common_blocs/coordinator_bloc.dart';
 import '../../extensions/error_model_extensions.dart';
 import '../../models/errors/error_model.dart';
@@ -123,9 +126,7 @@ class ErrorMapper implements ErrorMapperInterface {
         error: errorObj,
         stackTrace: stackTrace?.toString() ?? '',
       );
-    }
-
-    if (errorObj is Exception) {
+    } else if (errorObj is Exception) {
       log('Exception', error: errorObj, stackTrace: stackTrace);
       _coordinator.events.errorLogged(
         error: _mapExceptionToBusinessError(errorObj),

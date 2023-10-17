@@ -30,7 +30,7 @@ enum CommandArguments {
     type: ArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable analytics:',
-    help: 'Enables Firebase analytics for the project',
+    help: 'Enables Firebase Analytics and Crashlytics for the project',
   ),
 
   /// Change language

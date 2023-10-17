@@ -33,7 +33,7 @@ Create a new project at the given directory with lots of already set-up features
 |----------------------------------------|:-------------------------------------------:|:-----------------------------------------------------------------------------------------:|
 | `--project-name`                       | Name of directory where the project resides |  The project name for this new Flutter project. This must be a valid dart package name.   |
 | `--organisation`                       |                `com.example`                |                                   The organisation name                                   |
-| `--[no-]enable-analytics`              |                   `false`                   |                        Enables Firebase analytics for the project                         |
+| `--[no-]enable-analytics`              |                   `false`                   |                Enables Firebase Analytics and Crashlytics for the project                 |
 | `--[no-]enable-feature-counter`        |                   `false`                   |                          Enables Counter feature for the project                          |
 | `--[no-]enable-feature-deeplinks`      |                   `false`                   |                     Enables Deep Links showcase flow for the project                      |
 | `--[no-]enable-feature-widget-toolkit` |                   `false`                   |              Enables widget_toolkit package showcase feature for the project              |
@@ -44,7 +44,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]realtime-communication`        |                   `none`                    |           Enables realtime communication facilities for SSE. Values: none, sse.           |
 | `--[no-]enable-dev-menu`               |                   `true`                    |                Enables dev menu to easily access proxy debugging services.                |
 | `--[no-]enable-otp`                    |                   `false`                   |          Enables OTP feature that can help with building sms/pin code workflows.          |
-| `--[no-]enable-auth-matrix`            |                   `false`                   |                 Enables Auth Matrix feature functionality for the project.                |
+| `--[no-]enable-auth-matrix`            |                   `false`                   |                Enables Auth Matrix feature functionality for the project.                 |
 | `--[no-]interactive`                   |                   `false`                   |   Enables interactive project generation flow flags are read from command line prompts    |
 | `--[no-]enable-pin-code`               |                   `false`                   | Enables pin code feature with biometrics, that can help with building pin code workflows. |
 
