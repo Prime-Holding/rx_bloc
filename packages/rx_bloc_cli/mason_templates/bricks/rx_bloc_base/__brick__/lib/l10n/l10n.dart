@@ -2,10 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../assets.dart';
-
-export  '../assets.dart' show I18n;
+import '{{project_name}}_app_i18n.dart';
 
 extension AppLocalizationsX on BuildContext {
-  I18n get l10n => I18n.of(this);
+  AppI18n get l10n => AppI18n.of(this);
 }

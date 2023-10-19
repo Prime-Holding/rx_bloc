@@ -1,3 +1,6 @@
+## [3.3.0]
+* Added remote translation lookup for localizations
+
 ## [3.2.0]
 * Added Auth Matrix as an option under the flag `--enable-auth-matrix`
 * Make `AppBar` on pin code screen transparent

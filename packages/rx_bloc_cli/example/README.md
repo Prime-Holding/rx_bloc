@@ -268,6 +268,8 @@ If there are new keys added to the main translation file they can be propagated 
 
 Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey` or `context.l10n.featureName.someTranslationKey`.
 
+Localization lookups are also supported. That means that you can request any remote localizations from a dedicated translations endpoint at app start. Grabbing any remote localization for existing features will replace the local translations with new ones.
+
 ## Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
@@ -325,8 +327,9 @@ Some of the important paths are:
 | `bin/server/controllers/` | All controllers are located here |
 | `bin/server/models/` | Data models are placed here |
 | `bin/server/repositories/` | Repositories that are used by the controllers reside here |
+| `bin/server/di/` | All server related dependencies are registered here |
 
-*Note:* When creating a new controller, make sure you also register it inside the `_registerControllers()` method in `start_server.dart`.
+*Note:* When creating a new controller, make sure you also register it inside the `ServerDependencies.registerControllers` method in `server_dependencies.dart`. Respectively, register any dependencies in the `ServerDependencies.registerDependencies` in the same file.
 
 ## Push notifications
 
