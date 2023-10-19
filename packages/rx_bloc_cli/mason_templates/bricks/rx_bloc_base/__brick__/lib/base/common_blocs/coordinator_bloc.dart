@@ -5,6 +5,9 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+{{#analytics}}
+import '../../lib_analytics/models/log_event_model.dart';
+{{/analytics}}
 import '../models/errors/error_model.dart';
 
 part 'coordinator_bloc.rxb.g.dart';
@@ -27,6 +30,10 @@ abstract class CoordinatorEvents {
     required ErrorModel error,
     String? stackTrace,
   });
+
+  {{#analytics}}
+  void navigationChanged(String location);
+  {{/analytics}}
 }
 
 abstract class CoordinatorStates {
@@ -44,6 +51,13 @@ abstract class CoordinatorStates {
 
   @RxBlocIgnoreState()
   Stream<void> get userLoggedIn;{{/enable_pin_code}}
+
+  {{#analytics}}
+  @RxBlocIgnoreState()
+  Stream<String> get navigationChange;
+
+  Stream<LogEventModel> get errorLogEvent;
+  {{/analytics}}
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -68,5 +82,17 @@ class CoordinatorBloc extends $CoordinatorBloc {
 
   @override
   Stream<void> get userLoggedIn => _$checkUserLoggedInEvent; {{/enable_pin_code}}
+
+  {{#analytics}}
+  @override
+  Stream<String> get navigationChange => _$navigationChangedEvent;
+
+  @override
+  Stream<LogEventModel> _mapToErrorLogEventState() =>
+    _$errorLoggedEvent.map((e) => LogEventModel(
+      error: e.error,
+      stackTrace: e.stackTrace,
+    ));
+  {{/analytics}}
 
 }
