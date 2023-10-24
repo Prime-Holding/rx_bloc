@@ -1,4 +1,6 @@
-import '../models/i18n/i18n_models.dart';
+{{> licence.dart }}
+
+import '../models/i18n_models.dart';
 import '../repositories/translations_repository.dart';
 
 class TranslationsService {
@@ -12,7 +14,7 @@ class TranslationsService {
       translations = await _repository.getTranslations();
     }
 
-    return translations!;
+    return translations;
   }
 
   /// Load translations

@@ -268,7 +268,38 @@ If there are new keys added to the main translation file they can be propagated 
 
 Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey` or `context.l10n.featureName.someTranslationKey`.
 
+#### Remote localization lookup
+
 Localization lookups are also supported. That means that you can request any remote localizations from a dedicated translations endpoint at app start. Grabbing any remote localization for existing features will replace the local translations with new ones.
+
+The endpoint retrieving the updated translations should return an object containing key-value pairs (under the `translations` key) where the key is the language code, while the value is a translation file object containing values to be overwritten.
+
+Example response:
+```json
+{
+   "translations":{
+      "en":{
+         "_ok":"Okay",
+         "login___logIn":"Login via email"
+      },
+      "bg":{
+         "_ok":"ok",
+         "login___logIn":"Вход с имейл"
+      }
+   }
+}
+```
+
+One thing to note is that the keys in the translations follow a naming scheme which consists of three parts: the feature name, separator and the translation key. The feature name by default represents the feature under which the translations are categorized followed by two underscores. It is optional and if omitted, the key overrides are placed within the main translations. The separator is a character used to separate the feature name and the translation key. The translation key is the key within the specified feature used in the app.
+
+Example:
+```
+Translations feature: feature_notifications
+Feature name: notifications__
+Separator: _
+Translation key: ok
+Full translation key (feature name+separator+translation key): notifications___ok
+```
 
 ## Analytics
 

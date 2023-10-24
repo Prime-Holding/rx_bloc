@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
-import '../../base/common_services/translations_service.dart';
 import '../../lib_permissions/services/permissions_service.dart';
+import '../../lib_translations/services/translations_service.dart';
 
 class SplashService {
   SplashService(

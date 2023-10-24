@@ -51,27 +51,23 @@ import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_router/services/router_service.dart';
+import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
 import '../common_services/push_notifications_service.dart';
-import '../common_services/translations_service.dart';
 import '../data_sources/local/profile_local_data_source.dart';
-import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/local/translations_local_data_source.dart';
-import '../data_sources/remote/translations_remote_data_source.dart';{{#enable_feature_counter}}
+import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';
-import '../data_sources/remote/translations_remote_data_source.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';
-import '../repositories/translations_repository.dart';
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   const {{project_name.pascalCase()}}WithDependencies({
@@ -94,6 +90,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ..._mappers,
         ..._httpClients,
         ..._dataStorages,
+        ..._libs,
         ..._dataSources,
         ..._repositories,
         ..._services,
@@ -160,6 +157,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
+  List<SingleChildWidget> get _libs => [
+    ...TranslationsDependencies.from(baseUrl: config.baseUrl).providers,
+  ];
+
   List<Provider> get _dataSources => [{{#has_authentication}}
         // Use different data source depending on the platform.
         Provider<AuthTokenDataSource>(
@@ -177,12 +178,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             baseUrl: config.baseUrl,
           ),
         ),{{/has_authentication}}
-        Provider<TranslationsDataSource>(
-          create: (context) => TranslationsRemoteDataSource(
-            context.read<ApiHttpClient>(),
-            baseUrl: config.baseUrl,
-          ),
-        ),
         Provider<PushNotificationsDataSource>(
           create: (context) => PushNotificationsDataSource(
             context.read<ApiHttpClient>(),
@@ -240,10 +235,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),{{/has_authentication}}
-        Provider<TranslationsRepository>(
-          create: (context) =>
-            TranslationsRepository(context.read(), context.read()),
-        ),
         Provider<PushNotificationRepository>(
           create: (context) => PushNotificationRepository(
             context.read(),
@@ -314,9 +305,6 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),{{/has_authentication}}
-        Provider<TranslationsService>(
-          create: (context) => TranslationsService(context.read()),
-        ),
         Provider<PermissionsService>(
           create: (context) => PermissionsService(
             context.read(),

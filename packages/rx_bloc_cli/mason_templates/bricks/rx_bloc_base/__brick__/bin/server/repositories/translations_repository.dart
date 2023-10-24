@@ -9,7 +9,7 @@ class TranslationsRepository {
     {
        "en":{
           "_ok":"Okay",
-          "login___logIn" : "Login by email"
+          "login___logIn" : "Login via email"
        },
        "bg":{
           "_ok":"ok",

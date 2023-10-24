@@ -11,8 +11,8 @@ import 'package:local_session_timeout/local_session_timeout.dart';{{/enable_pin_
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
 
-import '../../assets.dart';{{#analytics}}
-import '../../l10n/{{project_name}}_app_i18n.dart';
+import '../../assets.dart';
+import '../../l10n/{{project_name}}_app_i18n.dart';{{#analytics}}
 import '../../lib_analytics/blocs/analytics_bloc.dart';{{/analytics}}{{#has_authentication}}{{#enable_pin_code}}
 import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}} {{#enable_change_language}}
@@ -41,8 +41,8 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
     this.config = EnvironmentConfig.production,
 {{#enable_dev_menu}}
     this.createDevMenuInstance,{{/enable_dev_menu}}
-  Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final EnvironmentConfig config;
 {{#enable_dev_menu}}

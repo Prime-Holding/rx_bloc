@@ -87,12 +87,12 @@ class AppI18nLookup extends I18nLookup {
   I18nErrorLookup createErrorLookup() => AppI18nErrorLookup();
 
   @override
-  I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();
+  I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();{{#enable_login}}
 
   @override
   I18nFeatureLoginLookup createFeatureLoginLookup() => AppI18nLoginLookup();
 
-  {{#enable_auth_matrix}}
+{{/enable_login}}{{#enable_auth_matrix}}
   @override
   I18nFeatureAuthMatrixLookup createFeatureAuthMatrixLookup() =>
       AppI18nAuthMatrixLookup(); {{/enable_auth_matrix}} {{#enable_feature_counter}}
