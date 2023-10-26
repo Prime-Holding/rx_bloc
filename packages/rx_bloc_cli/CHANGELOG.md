@@ -1,5 +1,6 @@
 ## [3.3.0]
 * Added Github as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, none`)
+* Added remote translation lookup for localizations
 * Updates to `analytics` feature - added crash reporting support and screen view logging
 
 ## [3.2.0]
