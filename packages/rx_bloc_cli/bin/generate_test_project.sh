@@ -64,17 +64,17 @@ fi
 if [ $1 == "without_showcase_features" ]; then
   # Generated project uses all features enabled except for showcase features
   generate --enable-analytics \
-  --enable-feature-deeplinks \
-  --enable-patrol \
-  --realtime-communication=sse \
-  --cicd=fastlane \
-  --no-enable-feature-counter \
-  --no-enable-dev-menu \
-  --no-enable-feature-widget-toolkit \
-  --no-enable-login \
-  --no-enable-social-logins \
-  --no-enable-change-language \
-  --no-enable-pin-code \
-  --no-enable-otp \
-  --no-enable-auth-matrix
-fi 
+    --enable-login \
+    --enable-social-logins \
+    --enable-change-language \
+    --enable-dev-menu \
+    --enable-patrol \
+    --realtime-communication=sse \
+    --enable-otp \
+    --cicd=fastlane \
+    --enable-pin-code \
+    --enable-auth-matrix \
+    --no-enable-feature-counter \
+    --no-enable-feature-widget-toolkit \
+    --no-enable-feature-deeplinks
+fi
