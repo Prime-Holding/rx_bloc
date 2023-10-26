@@ -51,6 +51,7 @@ import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_router/services/router_service.dart';
+import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
@@ -89,6 +90,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ..._mappers,
         ..._httpClients,
         ..._dataStorages,
+        ..._libs,
         ..._dataSources,
         ..._repositories,
         ..._services,
@@ -154,6 +156,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (_) => FirebaseMessaging.instance,
         ),
       ];
+
+  List<SingleChildWidget> get _libs => [
+    ...TranslationsDependencies.from(baseUrl: config.baseUrl).providers,
+  ];
 
   List<Provider> get _dataSources => [{{#has_authentication}}
         // Use different data source depending on the platform.
@@ -325,7 +331,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),{{/has_authentication}}
         Provider<SplashService>(
           create: (context) => SplashService(
-            context.read(),
+          context.read(),
+          context.read(),
           ),
         ),
         {{#enable_feature_deeplinks}}
