@@ -13,15 +13,15 @@
 9. [Design system](#design-system)
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
-12. [Push notifications](#push-notifications)
-13. [Social Logins](#social-logins-library)
-14. [Dev Menu](#dev-menu)
-15. [Patrol integration tests](#patrol-integration-tests)
-16. [Realtime communication](#realtime-communication)
-17. [Feature OTP](#feature-otp)
-18. [CI/CD](#cicd)
-19. [Feature Pin Code](#feature-pin-code)
-20. [Auth Matrix](#auth-matrix)
+12. [Push notifications](#push-notifications){{#enable_social_logins}}
+13. [Social Logins](#social-logins-library){{/enable_social_logins}}{{#enable_dev_menu}}
+14. [Dev Menu](#dev-menu){{/enable_dev_menu}}{{#enable_patrol}}
+15. [Patrol integration tests](#patrol-integration-tests){{/enable_patrol}}{{#realtime_communication}}
+16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{#enable_feature_otp}}
+17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#cicd}}
+18. [CI/CD](#cicd){{/cicd}}{{#enable_pin_code}}
+19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_auth_matrix}}
+20. [Auth Matrix](#auth-matrix){{/enable_auth_matrix}}
 21. [Next Steps](#next-steps)
 
 ## Getting started
@@ -60,16 +60,16 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
 | `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
 | `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
-| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |
-| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |
+| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |{{#enable_social_logins}}
+| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |{{/enable_social_logins}}
 | `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
 | `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
-| `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
-| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
+| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |{{#enable_dev_menu}}  
+| `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |{{/enable_dev_menu}}{{#enable_feature_otp}}
+| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |{{/enable_feature_otp}}{{#cicd}}
 | `fastlane/`                                  | [Fastlane][fastlane_lnk] directory containing Fastfile configuration                                                                                  |
-| `devops/`                                    | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts,...)                                         |
-| `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |
+| `devops/`                                    | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts,...)                                         |{{/cicd}}{{#enable_pin_code}}
+| `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |{{/enable_pin_code}}
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
@@ -129,10 +129,10 @@ Example:
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>testapp.primeholding.com</string>
+        <string>{{project_name}}.{{organization_name}}.{{domain_name}}</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>primeholdingscheme</string>
+        <string>{{organization_name}}scheme</string>
         </array>
         </dict>
     </array>
@@ -142,22 +142,22 @@ You can test the deep-links on iOS simulator by executing the following command
 
 Production
 ```
-xcrun simctl openurl booted primeholdingscheme://testapp.primeholding.com/deepLinks/1
+xcrun simctl openurl booted {{organization_name}}scheme://{{project_name}}.{{organization_name}}.{{domain_name}}/deepLinks/1
 ```
 
 UAT
 ```
-xcrun simctl openurl booted primeholdinguatscheme://testappuat.primeholding.com/deepLinks/1
+xcrun simctl openurl booted {{organization_name}}uatscheme://{{project_name}}uat.{{organization_name}}.{{domain_name}}/deepLinks/1
 ```
 
 SIT
 ```
-xcrun simctl openurl booted primeholdingsitscheme://testappsit.primeholding.com/deepLinks/1
+xcrun simctl openurl booted {{organization_name}}sitscheme://{{project_name}}sit.{{organization_name}}.{{domain_name}}/deepLinks/1
 ```
 
 Development
 ```
-xcrun simctl openurl booted primeholdingdevscheme://testappdev.primeholding.com/deepLinks/1
+xcrun simctl openurl booted {{organization_name}}devscheme://{{project_name}}dev.{{organization_name}}.{{domain_name}}/deepLinks/1
 ```
 
 `Android`
@@ -338,7 +338,7 @@ In order to make the notifications work on your target platform, make sure you f
 
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
-
+{{#enable_social_logins}}
 ## Social Logins Library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
@@ -396,9 +396,9 @@ productFlavors{
 - for Android ***minSdkVersion*** must be at least 21.
 
 All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
+{{/enable_social_logins}}
 
-
-
+{{#enable_dev_menu}}
 
 ## Dev Menu
 
@@ -432,10 +432,10 @@ Alice is working right out of the box.
 
 `Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
+{{/enable_dev_menu}}
 
 
-
-
+{{#enable_patrol}}
 ## Patrol Integration Tests
 
 The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
@@ -447,33 +447,46 @@ This package enables applications to use native automation features
 #### Running the Tests
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
+{{/enable_patrol}}
 
-
-
+{{#realtime_communication}}
 ## Realtime Communication
 
 Provides base datasource, repository, service and utility classes for establishing a SSE connection.
 Register the classes into the DI system and configure the SSE endpoint by passing it as a parameter to `SseRemoteDataSource`.
-After this is done the event stream exposed by `SseService` can be used by any BLoC.
+After this is done the event stream exposed by `SseService` can be used by any BLoC.{{/realtime_communication}}
 
 ## Feature OTP
 
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
-
+{{#enable_auth_matrix}}
 ## Auth Matrix
 The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
+{{/enable_auth_matrix}}
 
-
-
+{{#cicd}}
 ## CI/CD
 
 The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
 
-For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
+For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].{{/cicd}}
+{{#cicd_github}
+The generated project contains two reusable github workflows (one for building the iOS app and one for the android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository. To trigger the pipeline, a tag with the following format has to be pushed:
 
+`{optional_prefix_text_ending_with_a_dash_sign-}{flavor}-v{build_name}+{build_number}`
 
+For example, either of the following names will trigger an android and iOS build:
+```
+development-v1.2.3+45
+my_awesome_app-production-v1.22.333+4444
+```
+
+After the apps are successfully built and signed, the artefacts can be downloaded from the completed github action from the Actions tab.
+{{/cicd_github}
+
+{{#enable_pin_code}}
 ## Feature Pin Code
 
 The application provides a pin code functionality. Initially there is a create pin button, which
@@ -486,7 +499,7 @@ pin or with biometrics. There is a session timeout listener, which navigates you
 after a configurable amount of inactivity time and after a configurable amount of time, when the
 app has been in background mode.
 For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
-
+{{/enable_pin_code}}
 
 ## Next Steps
 

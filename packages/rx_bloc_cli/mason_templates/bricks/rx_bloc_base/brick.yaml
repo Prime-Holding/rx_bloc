@@ -17,5 +17,6 @@ vars:
   - enable_social_logins
   - enable_change_language
   - enable_patrol
-  - cicd
   - enable_auth_matrix
+  - cicd
+  - cicd_github
