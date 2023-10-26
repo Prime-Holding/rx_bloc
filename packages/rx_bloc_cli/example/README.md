@@ -270,7 +270,7 @@ Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In 
 
 #### Remote localization lookup
 
-Localization lookups are also supported. That means that you can request any remote localizations from a dedicated translations endpoint at app start. Grabbing any remote localization for existing features will replace the local translations with new ones.
+Localization lookups are also supported. That means that you can request any remote localizations from a dedicated translations endpoint at app start (by default, all remote localizations are fetched during the splash screen). Grabbing any remote localization for existing features will replace the local translations with new ones.
 
 The endpoint retrieving the updated translations should return an object containing key-value pairs (under the `translations` key) where the key is the language code, while the value is a translation file object containing values to be overwritten.
 
