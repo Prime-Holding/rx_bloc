@@ -507,6 +507,20 @@ The project comes preconfigured with [Fastlane][fastlane_lnk] which allows build
 
 For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
 
+The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository. To trigger the pipeline, a tag with the following format has to be pushed:
+
+```
+{optional_prefix_text_ending_with_a_dash_sign-}{flavor}-v{build_name}+{build_number}
+```
+
+For example, the following tag name will trigger an Android and iOS build:
+```
+development-v1.2.3+45
+```
+
+After the apps are successfully built and signed, the artefacts can be downloaded from the completed github action from the Actions tab.
+
+
 
 ## Feature Pin Code
 

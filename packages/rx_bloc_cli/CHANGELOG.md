@@ -1,4 +1,5 @@
 ## [3.3.0]
+* Added Github as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, none`)
 * Added remote translation lookup for localizations
 * Updates to `analytics` feature - added crash reporting support and screen view logging
 
@@ -15,7 +16,7 @@
 * Fix generated project not properly building when `pin_code` is disabled
 
 ## [3.1.0]
-* Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none`)
+* Added Fastlane as a CI/CD option under the flag `--cicd` (`fastlane` (default), `none`)
 * Added PIN code as an option under the flag `--enable-pin-code`
 * Introduce two new flavors (`sit` and `uat`) and remove `staging` flavor
 

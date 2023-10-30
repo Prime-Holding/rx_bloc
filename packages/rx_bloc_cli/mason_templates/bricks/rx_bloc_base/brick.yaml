@@ -18,8 +18,9 @@ vars:
   - enable_change_language
   - enable_patrol
   - enable_auth_matrix
+  - cicd
+  - cicd_github
   - enable_pin_code
   - enable_dev_menu
   - enable_feature_otp
-  - cicd
   - has_authentication

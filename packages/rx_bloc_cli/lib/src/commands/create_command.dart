@@ -99,6 +99,7 @@ class CreateCommand extends Command<int> {
         'realtime_communication': arguments.realtimeCommunicationEnabled,
         'enable_pin_code': arguments.pinCodeEnabled,
         'cicd': arguments.cicdEnabled,
+        'cicd_github': arguments.cicdGithubEnabled,
         'enable_auth_matrix': arguments.authMatrixEnabled,
       },
     );

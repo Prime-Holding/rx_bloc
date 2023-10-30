@@ -19,6 +19,7 @@ void main() {
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
+        cicdGithubEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -33,6 +34,7 @@ void main() {
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
+        cicdGithubEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -47,6 +49,7 @@ void main() {
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
+        cicdGithubEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -61,6 +64,7 @@ void main() {
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
+        cicdGithubEnabled: false,
       );
       expect(sut.usesFirebase, isFalse);
     });
