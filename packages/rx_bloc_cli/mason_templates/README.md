@@ -115,7 +115,7 @@ vars:
   # ...
 ```
 
-Update `compile.sh`, `compile_bundles.sh` and `compile_win.bat` with the newly included argument. 
+Update `generate_test_project.sh`, `compile_bundles.sh` and `compile_win.bat` with the newly included argument.
 
 The supported argument types are listed in the `ArgumentType` enum. 
 
