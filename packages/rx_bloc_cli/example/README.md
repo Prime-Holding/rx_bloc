@@ -377,7 +377,6 @@ In order to make the notifications work on your target platform, make sure you f
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
 
-
 #### Apple Authentication
 It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package.  
 In order to make it work, fulfill the requirements described in its [documentation](https://pub.dev/documentation/sign_in_with_apple/latest/).
@@ -429,10 +428,7 @@ productFlavors{
 - for iOS in ***Podfile*** platform must be at least 12
 - for Android ***minSdkVersion*** must be at least 21.
 
-All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
-
-
-
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro). 
 
 ## Dev Menu
 
@@ -466,10 +462,6 @@ Alice is working right out of the box.
 
 `Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
 
-
-
-
-
 ## Patrol Integration Tests
 
 The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
@@ -480,9 +472,7 @@ This package enables applications to use native automation features
 
 #### Running the Tests
 
-To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
-
-
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio
 
 ## Realtime Communication
 
@@ -497,15 +487,16 @@ The brick contains widgets for entering pin codes, pasting them, resend logic an
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 
 ## Auth Matrix
+
 The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
-
-
 
 ## CI/CD
 
 The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
 
 For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
+
+#### Github
 
 The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository. To trigger the pipeline, a tag with the following format has to be pushed:
 
@@ -519,8 +510,6 @@ development-v1.2.3+45
 ```
 
 After the apps are successfully built and signed, the artefacts can be downloaded from the completed github action from the Actions tab.
-
-
 
 ## Feature Pin Code
 
