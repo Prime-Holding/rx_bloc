@@ -249,7 +249,7 @@ platform :android do
 
     desc 'Deploy the app to google play store'
     private_lane :deploy_platform do |options|
-        Dir.chdir('../devops/credentials') do
+        Dir.chdir('../credentials') do
             sh('./decode.sh deploy_android')
         end
 
@@ -260,7 +260,7 @@ platform :android do
             release_status: 'draft',
             track: 'internal',
             version_name: version_name,
-            json_key: File.expand_path('../devops/credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
+            json_key: File.expand_path('../credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
             aab: File.expand_path("app-#{options[:environment]}-release.aab"),
             skip_upload_changelogs: true,
             skip_upload_images: true,
@@ -392,7 +392,7 @@ platform :ios do
 
     desc 'Deploy the app to apple testflight'
     private_lane :deploy_platform do |options|
-        Dir.chdir('../credentials/ios') do
+        Dir.chdir('../credentials') do
             sh('./decode.sh deploy_ios')
         end
 
@@ -401,9 +401,9 @@ platform :ios do
             # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
             key_id: '',
             issuer_id: '',
-            key_filepath: File.expand_path('devops/credentials/decoded/ios/AuthKey_XX0XX00XXX.p8'),
+            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey_XX0XX00XXX.p8'),
         )
-    
+
         upload_to_testflight(
             api_key: api_key,
             skip_waiting_for_build_processing: true,
