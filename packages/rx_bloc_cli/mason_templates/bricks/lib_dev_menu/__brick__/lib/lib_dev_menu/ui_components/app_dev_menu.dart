@@ -17,8 +17,8 @@ class AppDevMenuGestureDetector extends StatefulWidget {
     required this.child,
     required this.onDevMenuPresented,
     required this.navigatorKey,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
   final VoidCallback onDevMenuPresented;

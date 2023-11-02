@@ -22,7 +22,7 @@ import 'social_login_button.dart';
 /// If an error occur a modal sheet with message will be shown. For custom error
 /// handling provide [onError] callback.
 class FacebookLoginWidget extends StatelessWidget {
-  const FacebookLoginWidget({Key? key}) : super(key: key);
+  const FacebookLoginWidget({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

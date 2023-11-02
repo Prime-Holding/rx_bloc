@@ -6,7 +6,7 @@ import 'package:{{project_name}}/keys.dart';
 import '../base/base_page.dart';
 
 class LoginPage extends BasePage {
-  LoginPage(PatrolIntegrationTester $) : super($);{{#enable_login}}
+  LoginPage(super.$);{{#enable_login}}
 
   Future<void> setTextEmail(String email) async {
     await $(K.loginEmail).enterText(email);

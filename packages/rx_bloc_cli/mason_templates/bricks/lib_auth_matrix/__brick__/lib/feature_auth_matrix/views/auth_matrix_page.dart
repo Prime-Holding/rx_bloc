@@ -12,9 +12,7 @@ import '../../lib_auth_matrix/bloc/auth_matrix_bloc.dart';
 import '../services/auth_matrix_text_field_service.dart';
 
 class AuthMatrixPage extends StatelessWidget {
-  const AuthMatrixPage({
-    Key? key,
-  }) : super(key: key);
+  const AuthMatrixPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

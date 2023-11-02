@@ -6,17 +6,17 @@ import '../theme/design_system.dart';
 import 'app_loading_indicator.dart';
 
 class ActionButton extends StatelessWidget {
-  /// Default constructor
+  /// Default constructor for the action button
   const ActionButton({
     required this.icon,
     required this.onPressed,
     this.tooltip = '',
     this.loading = false,
     this.heroTag,
-    Key? key,
     this.appLoadingIndicatorKey,
     this.floatingActionButtonKey,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// Loading flag that shows a loading indicator
   final bool loading;

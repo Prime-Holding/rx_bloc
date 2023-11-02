@@ -10,7 +10,7 @@ import '../services/login_validator_service.dart';
 import '../views/login_page.dart';
 
 class LoginPageWithDependencies extends StatelessWidget {
-  const LoginPageWithDependencies({Key? key}) : super(key: key);
+  const LoginPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

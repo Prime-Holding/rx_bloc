@@ -7,7 +7,7 @@ import '../services/dashboard_service.dart';
 import '../views/dashboard_page.dart';
 
 class DashboardPageWithDependencies extends StatelessWidget {
-  const DashboardPageWithDependencies({Key? key}) : super(key: key);
+  const DashboardPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

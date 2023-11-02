@@ -11,8 +11,8 @@ class AppLoadingIndicator extends StatelessWidget {
     this.size,
     this.strokeWidth,
     this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Alignment? alignment;
   final EdgeInsets? padding;

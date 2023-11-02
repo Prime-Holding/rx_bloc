@@ -9,7 +9,7 @@ import '../services/notifications_service.dart';
 import '../views/notifications_page.dart';
 
 class NotificationsPageWithDependencies extends StatelessWidget {
-  const NotificationsPageWithDependencies({Key? key}) : super(key: key);
+  const NotificationsPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

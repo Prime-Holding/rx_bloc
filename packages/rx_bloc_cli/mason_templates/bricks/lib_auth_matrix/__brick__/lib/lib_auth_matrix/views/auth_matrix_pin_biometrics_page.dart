@@ -12,10 +12,11 @@ import '../services/auth_matrix_service.dart';
 
 class AuthMatrixPinBiometricsPage extends StatelessWidget {
   const AuthMatrixPinBiometricsPage({
-    super.key,
     required this.response,
     required this.endToEndId,
+    super.key,
   });
+
   final AuthMatrixResponse response;
   final String endToEndId;
 

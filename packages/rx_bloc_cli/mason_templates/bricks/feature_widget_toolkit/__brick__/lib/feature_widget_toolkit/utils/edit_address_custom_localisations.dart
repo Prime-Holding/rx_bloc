@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:widget_toolkit/edit_address.dart';
 
 import '../../app_extensions.dart';
 
 class EditAddressCustomLocalisations extends EditAddressLocalizedStrings {
-  EditAddressCustomLocalisations(BuildContext context) : super(context);
+  EditAddressCustomLocalisations(super.context);
 
   @override
   String get countrySearchPickerTitle =>

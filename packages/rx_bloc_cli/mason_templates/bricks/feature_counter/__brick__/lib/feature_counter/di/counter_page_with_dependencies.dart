@@ -9,7 +9,7 @@ import '../services/counter_service.dart';
 import '../views/counter_page.dart';
 
 class CounterPageWithDependencies extends StatelessWidget {
-  const CounterPageWithDependencies({Key? key}) : super(key: key);
+  const CounterPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

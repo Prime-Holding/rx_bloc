@@ -17,9 +17,7 @@ import '../blocs/deep_link_list_bloc.dart';
 import '../ui_components/enter_message_button.dart';
 
 class DeepLinkListPage extends StatelessWidget {
-  const DeepLinkListPage({
-    Key? key,
-  }) : super(key: key);
+  const DeepLinkListPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

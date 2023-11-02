@@ -15,8 +15,8 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
     extends StatelessWidget {
   const AppErrorModalWidget({
     required this.errorState,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ErrorStateCallback<BlocType> errorState;
 

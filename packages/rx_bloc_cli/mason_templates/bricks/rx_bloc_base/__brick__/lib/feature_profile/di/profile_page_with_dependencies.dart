@@ -7,7 +7,7 @@ import '../blocs/profile_bloc.dart';
 import '../views/profile_page.dart';
 
 class ProfilePageWithDependencies extends StatelessWidget {
-  const ProfilePageWithDependencies({Key? key}) : super(key: key);
+  const ProfilePageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

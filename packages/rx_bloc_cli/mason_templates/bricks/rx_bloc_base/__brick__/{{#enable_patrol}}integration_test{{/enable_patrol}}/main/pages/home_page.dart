@@ -7,7 +7,7 @@ import '../configuration/build_app.dart';{{#has_authentication}}
 import 'profile_page.dart';{{/has_authentication}}
 
 class HomePage extends BasePage {
-  HomePage(PatrolIntegrationTester $) : super($);
+  HomePage(super.$);
 
   {{#enable_feature_counter}}
   PatrolFinder get locBtnCounterPage => $(Icons.calculate);{{/enable_feature_counter}}{{#has_authentication}}

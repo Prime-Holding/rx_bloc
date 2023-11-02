@@ -8,7 +8,7 @@ import '../blocs/deep_link_list_bloc.dart';
 import '../views/deep_link_list_page.dart';
 
 class DeepLinkListPageWithDependencies extends StatelessWidget {
-  const DeepLinkListPageWithDependencies({Key? key}) : super(key: key);
+  const DeepLinkListPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(
