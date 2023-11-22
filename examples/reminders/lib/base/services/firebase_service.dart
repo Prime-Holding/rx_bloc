@@ -13,13 +13,13 @@ class FirebaseService {
   /// the operation was successful or not
   Future<bool> logIn(bool anonymous) => _repository.logIn(anonymous);
 
-  /// Logs out the current user
+  /// Logs out the current user, if any
   Future<bool> logOut() async {
     await _repository.logOut();
     return true;
   }
 
-  /// Returns the current user. Returns null if the user is not logged in
+  /// Returns the currently logged-in user or null if none
   Stream<User?> get currentUser => _repository.currentUser;
 
   /// Checks if the user is logged in and returns true if so

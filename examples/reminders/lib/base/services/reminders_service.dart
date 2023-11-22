@@ -34,7 +34,8 @@ class RemindersService {
   /// Deletes a reminder with the provided [id]
   Future<void> delete(String id) => _repository.delete(id);
 
-  /// Updates an existing reminder
+  /// Updates an existing reminder and returns a pair containing both the new
+  /// and old one
   Future<ReminderPair> update(ReminderModel model) => _repository.update(model);
 
   /// Returns the number of complete reminders

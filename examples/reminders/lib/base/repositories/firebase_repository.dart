@@ -14,12 +14,12 @@ class FirebaseRepository {
   /// the operation was successful or not
   Future<bool> logIn(bool anonymous) => _dataSource.logIn(anonymous);
 
-  /// Logs out the current user
+  /// Logs out the current user, clearing the session
   Future<void> logOut() => _dataSource.logOut();
 
-  /// Returns the current user
+  /// Returns the currently logged-in user, if any
   Stream<User?> get currentUser => _dataSource.currentUser;
 
-  /// Checks if the user is logged in
+  /// Checks if the user is logged in and returns true if so
   Future<bool> isUserLoggedIn() => _dataSource.isUserLoggedIn();
 }

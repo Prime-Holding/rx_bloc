@@ -11,7 +11,7 @@ class RemindersRepository {
 
   final RemindersDataSource _dataSource;
 
-  /// Returns a list of all reminders
+  /// Returns a list of all reminders from the given data source
   Future<PaginatedList<ReminderModel>> getAll(
     ReminderModelRequest? request,
   ) async {
@@ -23,7 +23,8 @@ class RemindersRepository {
     );
   }
 
-  /// Returns a list of all reminders for the dashboard
+  /// Returns a list of all reminders for the dashboard from the given
+  /// data source
   Future<PaginatedList<ReminderModel>> getAllDashboard(
     ReminderModelRequest? request,
   ) async {
@@ -35,7 +36,7 @@ class RemindersRepository {
     );
   }
 
-  /// Creates a new reminder
+  /// Creates a fresh reminder and returns it
   Future<ReminderModel> create({
     required String title,
     required DateTime dueDate,

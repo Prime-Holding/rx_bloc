@@ -52,7 +52,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return false;
   }
 
-  /// Returns the id of the logged in user or null if the user is not logged in
+  /// Returns the id of the logged in user or null if no user is logged in
   Future<String?> _getAuthorIdOrNull() async {
     var user = await _storage.read(key: _authorId);
     if (user == _anonymous) {
@@ -61,7 +61,9 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return user;
   }
 
-  /// Creates a new reminder
+  /// Creates a new reminder in a Firebase database, using the provided title,
+  /// dueDate, and complete status, and returns a ReminderModel object
+  /// representing the newly created reminder.
   @override
   Future<ReminderModel> create({
     required String title,
@@ -90,7 +92,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return reminder;
   }
 
-  /// Deletes a reminder by providing its id
+  /// Deletes a reminder from the Firebase database by providing its id
   @override
   Future<void> delete(String id) async {
     await _remindersReference.doc(id).delete();
@@ -134,7 +136,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     );
   }
 
-  /// Returns a list of all reminders
+  /// Returns a list of all reminders from the Firebase database for the
+  /// currently logged in user
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     // Get the userId from local storage
@@ -166,7 +169,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     );
   }
 
-  /// Returns number of complete reminders
+  /// Returns the number of complete reminders from the Firebase database
   @override
   Future<int> getCompleteCount() async {
     final userId = await _getAuthorIdOrNull();
@@ -176,7 +179,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return snapshot.count;
   }
 
-  /// Returns number of incomplete reminders
+  /// Returns the number of incomplete reminders from the Firebase database
   @override
   Future<int> getIncompleteCount() async {
     final userId = await _getAuthorIdOrNull();
@@ -208,7 +211,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     }
   }
 
-  /// Logs out the current user
+  /// Logs out the current user and clears any references to them
   Future<void> logOut() async {
     try {
       await Future.wait([
@@ -223,7 +226,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     }
   }
 
-  /// Updates an existing reminder
+  /// Updates an existing reminder in the Firebase database, returning it
+  /// afterwards
   @override
   Future<ReminderPair> update(ReminderModel updatedModel) async {
     // Fetch the reminder model before its updating for comparison
@@ -250,7 +254,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return ReminderPair(updated: updatedModel, old: oldReminderModel);
   }
 
-  /// Returns a filtered query for the reminders collection
+  /// Constructs and returns a Firebase query based on the provided
+  /// ReminderModelRequest and userId, filtering and sorting the results
   Query getFirebaseFilteredQuery(
       ReminderModelRequest? request, String? userId) {
     Query query = _remindersReference;
