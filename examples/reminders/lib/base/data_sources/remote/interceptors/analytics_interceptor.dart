@@ -23,6 +23,7 @@ class AnalyticsInterceptor extends Interceptor {
 
   final FirebaseAnalyticsObserver observer;
 
+  /// Method called once an error occurs during a request/response
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     observer.analytics.logEvent(name: 'dioError', parameters: {
