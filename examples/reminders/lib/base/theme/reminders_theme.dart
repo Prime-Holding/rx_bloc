@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import './design_system.dart';
 import './design_system/design_system_colors.dart';
 
+/// The app specific theme
 class RemindersTheme {
+  /// Builds the theme based on the provided [designSystem]
   static ThemeData buildTheme(DesignSystem designSystem) {
     final designSystemColor = designSystem.colors;
     final lightModeOn = designSystemColor.brightness == Brightness.light;

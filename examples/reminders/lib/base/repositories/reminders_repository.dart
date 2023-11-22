@@ -3,12 +3,15 @@ import 'package:rx_bloc_list/models.dart';
 import '../data_sources/remote/reminders_data_source.dart';
 import '../models/reminder/reminder_model.dart';
 
+/// Repository handling all the reminders related (CRUD) operations
 class RemindersRepository {
+  /// Constructor taking in a [RemindersDataSource] as a data source
   RemindersRepository({required RemindersDataSource dataSource})
       : _dataSource = dataSource;
 
   final RemindersDataSource _dataSource;
 
+  /// Returns a list of all reminders
   Future<PaginatedList<ReminderModel>> getAll(
     ReminderModelRequest? request,
   ) async {
@@ -20,6 +23,7 @@ class RemindersRepository {
     );
   }
 
+  /// Returns a list of all reminders for the dashboard
   Future<PaginatedList<ReminderModel>> getAllDashboard(
     ReminderModelRequest? request,
   ) async {
@@ -31,6 +35,7 @@ class RemindersRepository {
     );
   }
 
+  /// Creates a new reminder
   Future<ReminderModel> create({
     required String title,
     required DateTime dueDate,
@@ -42,12 +47,15 @@ class RemindersRepository {
         complete: complete,
       );
 
+  /// Deletes a reminder by its id
   Future<void> delete(String id) => _dataSource.delete(id);
 
-  Future<ReminderPair> update(ReminderModel model) =>
-      _dataSource.update(model);
+  /// Updates an existing reminder
+  Future<ReminderPair> update(ReminderModel model) => _dataSource.update(model);
 
+  /// Returns the number of completed reminders
   Future<int> getCompleteCount() => _dataSource.getCompleteCount();
 
+  /// Returns the number of incomplete reminders
   Future<int> getIncompleteCount() => _dataSource.getIncompleteCount();
 }

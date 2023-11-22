@@ -8,7 +8,9 @@ import '../../models/reminder/reminder_model.dart';
 import '../../models/reminder/reminder_model_firebase_request_date.dart';
 import 'reminders_data_source.dart';
 
+/// Reminders data source using Firebase as a backend
 class RemindersFirebaseDataSource implements RemindersDataSource {
+  /// Default constructor for the [RemindersFirebaseDataSource]
   RemindersFirebaseDataSource() {
     _remindersReference = _fireStore.collection(_reminders);
   }
@@ -22,8 +24,10 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   /// Stores the list of reminders
   late CollectionReference _remindersReference;
 
+  /// Stores the id of the logged in user
   late String? _loggedInUid;
 
+  /// Returns the current user
   Stream<User?> get currentUser => _auth.authStateChanges();
 
   var _remindersCollectionLength = 0;
@@ -39,6 +43,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   static const _title = 'title';
   static const _loginFailed = 'The login failed';
 
+  /// Returns true if the user is logged in, false otherwise
   Future<bool> isUserLoggedIn() async {
     var user = await _storage.read(key: _authorId);
     if (user != null) {
@@ -47,6 +52,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return false;
   }
 
+  /// Returns the id of the logged in user or null if the user is not logged in
   Future<String?> _getAuthorIdOrNull() async {
     var user = await _storage.read(key: _authorId);
     if (user == _anonymous) {
@@ -55,6 +61,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return user;
   }
 
+  /// Creates a new reminder
   @override
   Future<ReminderModel> create({
     required String title,
@@ -83,11 +90,13 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return reminder;
   }
 
+  /// Deletes a reminder by providing its id
   @override
   Future<void> delete(String id) async {
     await _remindersReference.doc(id).delete();
   }
 
+  /// Returns the number of reminders
   Future<int> _getRemindersCollectionLength() async {
     var userId = await _getAuthorIdOrNull();
     Query query = getFirebaseFilteredQuery(null, userId);
@@ -95,6 +104,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return snapshot.count;
   }
 
+  /// Returns a list of all reminders for the dashboard
   @override
   Future<ReminderListResponse> getAllDashboard(
       ReminderModelRequest? request) async {
@@ -124,6 +134,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     );
   }
 
+  /// Returns a list of all reminders
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     // Get the userId from local storage
@@ -155,6 +166,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     );
   }
 
+  /// Returns number of complete reminders
   @override
   Future<int> getCompleteCount() async {
     final userId = await _getAuthorIdOrNull();
@@ -164,6 +176,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return snapshot.count;
   }
 
+  /// Returns number of incomplete reminders
   @override
   Future<int> getIncompleteCount() async {
     final userId = await _getAuthorIdOrNull();
@@ -173,6 +186,8 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return snapshot.count;
   }
 
+  /// Logs in the user with Facebook. Returns true if the login was successful,
+  /// false otherwise
   Future<bool> _loginWithFacebook() async {
     // Trigger the sign-in flow
     final facebookLoginResult = await _facebookLogin.login();
@@ -193,6 +208,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     }
   }
 
+  /// Logs out the current user
   Future<void> logOut() async {
     try {
       await Future.wait([
@@ -207,6 +223,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     }
   }
 
+  /// Updates an existing reminder
   @override
   Future<ReminderPair> update(ReminderModel updatedModel) async {
     // Fetch the reminder model before its updating for comparison
@@ -233,6 +250,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return ReminderPair(updated: updatedModel, old: oldReminderModel);
   }
 
+  /// Returns a filtered query for the reminders collection
   Query getFirebaseFilteredQuery(
       ReminderModelRequest? request, String? userId) {
     Query query = _remindersReference;
@@ -273,6 +291,9 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     return query;
   }
 
+  /// Performs a login. If `anonymous` is true, the user will be logged in
+  /// anonymously, otherwise the user will be logged in with Facebook.
+  /// Returns true if the login was successful, false otherwise
   Future<bool> logIn(bool anonymous) async {
     if (anonymous) {
       _loggedInUid = _anonymous;
@@ -329,7 +350,9 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
   }
 }
 
+/// Extension methods on the List<QueryDocumentSnapshot> type
 extension FireBaseCollection on List<QueryDocumentSnapshot<Object?>> {
+  /// Converts a list of [QueryDocumentSnapshot] to a list of [ReminderModel]
   List<ReminderModel> asReminderList() => map(
         (docs) => ReminderModel.fromJson(
             docs.data() as Map<String, dynamic>, docs.id),
