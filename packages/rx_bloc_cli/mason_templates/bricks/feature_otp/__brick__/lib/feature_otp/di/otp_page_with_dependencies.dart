@@ -6,7 +6,7 @@ import '../services/custom_sms_code_service.dart';
 import '../views/otp_page.dart';
 
 class OtpPageWithDependencies extends StatelessWidget {
-  const OtpPageWithDependencies({Key? key}) : super(key: key);
+  const OtpPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

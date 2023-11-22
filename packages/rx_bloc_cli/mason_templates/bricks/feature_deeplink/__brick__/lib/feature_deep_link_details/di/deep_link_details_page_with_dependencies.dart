@@ -13,8 +13,8 @@ class DeepLinkDetailsWithDependencies extends StatelessWidget {
   const DeepLinkDetailsWithDependencies({
     required this.deepLinkId,
     this.deepLink,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String deepLinkId;
   final DeepLinkModel? deepLink;

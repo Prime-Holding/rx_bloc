@@ -13,7 +13,7 @@ import '../../lib_social_logins/ui_components/google_login_widget.dart';{{/enabl
 import '../ui_components/login_form.dart';{{/enable_login}}
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

@@ -49,30 +49,35 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         returnValue: <String, _i4.Option>{},
         returnValueForMissingStub: <String, _i4.Option>{},
       ) as Map<String, _i4.Option>);
+
   @override
   Map<String, _i2.ArgParser> get commands => (super.noSuchMethod(
         Invocation.getter(#commands),
         returnValue: <String, _i2.ArgParser>{},
         returnValueForMissingStub: <String, _i2.ArgParser>{},
       ) as Map<String, _i2.ArgParser>);
+
   @override
   bool get allowTrailingOptions => (super.noSuchMethod(
         Invocation.getter(#allowTrailingOptions),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
+
   @override
   bool get allowsAnything => (super.noSuchMethod(
         Invocation.getter(#allowsAnything),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
+
   @override
   String get usage => (super.noSuchMethod(
         Invocation.getter(#usage),
         returnValue: '',
         returnValueForMissingStub: '',
       ) as String);
+
   @override
   _i2.ArgParser addCommand(
     String? name, [
@@ -107,6 +112,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
           ),
         ),
       ) as _i2.ArgParser);
+
   @override
   void addFlag(
     String? name, {
@@ -134,6 +140,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void addOption(
     String? name, {
@@ -167,6 +174,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void addMultiOption(
     String? name, {
@@ -200,6 +208,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void addSeparator(String? text) => super.noSuchMethod(
         Invocation.method(
@@ -208,6 +217,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i3.ArgResults parse(Iterable<String>? args) => (super.noSuchMethod(
         Invocation.method(
@@ -229,6 +239,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
           ),
         ),
       ) as _i3.ArgResults);
+
   @override
   dynamic defaultFor(String? option) => super.noSuchMethod(
         Invocation.method(
@@ -237,6 +248,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   dynamic getDefault(String? option) => super.noSuchMethod(
         Invocation.method(
@@ -245,6 +257,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i4.Option? findByAbbreviation(String? abbr) => (super.noSuchMethod(
         Invocation.method(
@@ -253,6 +266,7 @@ class MockArgParser extends _i1.Mock implements _i2.ArgParser {
         ),
         returnValueForMissingStub: null,
       ) as _i4.Option?);
+
   @override
   _i4.Option? findByNameOrAlias(String? name) => (super.noSuchMethod(
         Invocation.method(

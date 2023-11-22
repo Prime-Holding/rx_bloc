@@ -7,8 +7,8 @@ import '../../l10n/l10n.dart';
 class ErrorPage extends StatelessWidget {
   const ErrorPage({
     this.error,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Exception? error;
 

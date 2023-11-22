@@ -11,8 +11,8 @@ class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({
     required this.error,
     required this.onTabRetry,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Exception error;
   final Function() onTabRetry;

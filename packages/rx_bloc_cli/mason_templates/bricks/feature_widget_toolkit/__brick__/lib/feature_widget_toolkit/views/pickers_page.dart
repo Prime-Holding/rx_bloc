@@ -16,7 +16,10 @@ import '../ui_components/update_state_on_selection.dart';
 import '../ui_components/widget_section.dart';
 
 class PickersPage extends StatelessWidget {
-  const PickersPage({required this.pageController, Key? key}) : super(key: key);
+  const PickersPage({
+    required this.pageController,
+    super.key,
+  });
 
   final PageController pageController;
 

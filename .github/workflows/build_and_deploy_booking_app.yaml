@@ -1,4 +1,4 @@
-name: "Test and build Booking app"
+name: "Build and deploy Booking app"
 
 on:
   push:
@@ -34,10 +34,12 @@ jobs:
     needs: app_version_extraction
     uses: ./.github/workflows/fastlane_android_custom_build_and_deploy.yaml
     with:
+      flutter_version: "3.13.9"
       project_path: "examples/booking_app"
       build_name: ${{ needs.app_version_extraction.outputs.build_name }}
       build_number: ${{ needs.app_version_extraction.outputs.build_number }}
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
+      publish_to_store: false
     secrets:
       mobile_distribution_encryption_password: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
       mobile_distribution_repository_access_secret: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
@@ -46,10 +48,12 @@ jobs:
     needs: app_version_extraction
     uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
     with:
+      flutter_version: "3.13.9"
       project_path: "examples/booking_app"
       build_name: ${{ needs.app_version_extraction.outputs.build_name }}
       build_number: ${{ needs.app_version_extraction.outputs.build_number }}
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
+      publish_to_store: false
     secrets:
       mobile_distribution_encryption_password: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
       mobile_distribution_repository_access_secret: ${{ secrets.BOOKING_MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}

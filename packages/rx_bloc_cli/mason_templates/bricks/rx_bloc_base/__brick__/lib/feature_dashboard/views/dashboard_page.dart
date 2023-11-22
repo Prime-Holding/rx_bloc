@@ -7,9 +7,7 @@ import '../../base/models/errors/error_model.dart';
 import '../blocs/dashboard_bloc.dart';
 
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({
-    Key? key,
-  }) : super(key: key);
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

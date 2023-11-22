@@ -9,8 +9,10 @@ import '../ui_components/widget_section.dart';
 import '../utils/utils.dart';
 
 class CommonComponentsPage extends StatelessWidget {
-  const CommonComponentsPage({required this.pageController, Key? key})
-      : super(key: key);
+  const CommonComponentsPage({
+    required this.pageController,
+    super.key,
+  });
 
   final PageController pageController;
   static const String _imageUrl =

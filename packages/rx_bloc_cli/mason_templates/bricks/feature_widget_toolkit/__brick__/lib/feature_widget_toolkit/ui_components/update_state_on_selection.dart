@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import '../../l10n/l10n.dart';
 
 class UpdateStateOnSelection<T> extends StatefulWidget {
-  const UpdateStateOnSelection(
-      {required this.builder, this.getString, Key? key})
-      : super(key: key);
+  const UpdateStateOnSelection({
+    required this.builder,
+    this.getString,
+    super.key,
+  });
 
   final Widget Function(
       List<T> data, void Function(List<T> newData) updateState) builder;
@@ -62,8 +64,7 @@ class _UpdateStateOnSelectionState<T> extends State<UpdateStateOnSelection<T>> {
                               '${widget.getString?.call(e) ?? e.toString()} ',
                               style: const TextStyle(fontSize: 10),
                             ),
-                      )
-                          .toList(),
+                          ),
                     ],
                   ),
                 ),

@@ -10,7 +10,7 @@ import '../services/auth_matrix_text_field_service.dart';
 import '../views/auth_matrix_page.dart';
 
 class AuthMatrixPageWithDependencies extends StatelessWidget {
-  const AuthMatrixPageWithDependencies({Key? key}) : super(key: key);
+  const AuthMatrixPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(

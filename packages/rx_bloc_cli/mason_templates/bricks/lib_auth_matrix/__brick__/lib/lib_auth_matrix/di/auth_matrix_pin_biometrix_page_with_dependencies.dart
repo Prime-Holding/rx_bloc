@@ -10,10 +10,10 @@ import '../views/auth_matrix_pin_biometrics_page.dart';
 
 class AuthMatrixPinBiometricsPageWithDependencies extends StatelessWidget {
   const AuthMatrixPinBiometricsPageWithDependencies({
-    Key? key,
     required this.response,
     required this.endToEndId,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AuthMatrixResponse response;
   final String endToEndId;

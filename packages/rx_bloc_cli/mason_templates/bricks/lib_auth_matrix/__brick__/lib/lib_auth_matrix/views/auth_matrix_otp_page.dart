@@ -14,10 +14,10 @@ import '../services/auth_matrix_service.dart';
 
 class AuthMatrixOtpPage extends StatelessWidget {
   const AuthMatrixOtpPage({
-    Key? key,
     required this.response,
     required this.endToEndId,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AuthMatrixResponse response;
   final String endToEndId;

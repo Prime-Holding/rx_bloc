@@ -13,8 +13,8 @@ import '../blocs/deep_link_details_bloc.dart';
 class DeepLinkDetailsPage extends StatelessWidget {
   const DeepLinkDetailsPage({
     required this.deepLinkId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String deepLinkId;
 

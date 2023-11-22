@@ -10,7 +10,7 @@ import '../../base/extensions/async_snapshot_extensions.dart';
 import '../../lib_auth/blocs/user_account_bloc.dart';
 
 class LogoutActionButton extends StatelessWidget {
-  const LogoutActionButton({Key? key}) : super(key: key);
+  const LogoutActionButton({super.key});
 
   @override
   Widget build(BuildContext context) =>

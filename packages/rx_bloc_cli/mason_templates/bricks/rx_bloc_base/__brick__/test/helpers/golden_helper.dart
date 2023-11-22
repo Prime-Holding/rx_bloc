@@ -90,7 +90,7 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
       tester,
       builder,
       localizations: const [
-        I18n.delegate,
+        AppI18n.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
       localeOverrides: I18n.supportedLocales,

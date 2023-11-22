@@ -12,9 +12,7 @@ import '../blocs/enter_message_bloc.dart';
 import '../services/enter_message_field_service.dart';
 
 class EnterMessagePage extends StatelessWidget {
-  const EnterMessagePage({
-    Key? key,
-  }) : super(key: key);
+  const EnterMessagePage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

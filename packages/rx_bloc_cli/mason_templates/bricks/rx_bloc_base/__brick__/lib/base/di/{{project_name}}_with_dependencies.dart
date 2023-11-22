@@ -73,8 +73,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   const {{project_name.pascalCase()}}WithDependencies({
       required this.config,
       required this.child,
-      Key? key,
-    }) : super(key: key);
+      super.key,
+  });
 
   final EnvironmentConfig config;
   final Widget child;

@@ -10,8 +10,8 @@ import '../blocs/deep_link_list_bloc.dart';
 class EnterMessageButton extends StatelessWidget {
   const EnterMessageButton({
     required this.isActive,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool isActive;
 

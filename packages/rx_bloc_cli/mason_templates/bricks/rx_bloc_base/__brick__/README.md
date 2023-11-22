@@ -377,7 +377,6 @@ In order to make the notifications work on your target platform, make sure you f
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
 
-
 #### Apple Authentication
 It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package.  
 In order to make it work, fulfill the requirements described in its [documentation](https://pub.dev/documentation/sign_in_with_apple/latest/).
@@ -429,11 +428,8 @@ productFlavors{
 - for iOS in ***Podfile*** platform must be at least 12
 - for Android ***minSdkVersion*** must be at least 21.
 
-All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
-{{/enable_social_logins}}
-
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro). {{/enable_social_logins}}
 {{#enable_dev_menu}}
-
 ## Dev Menu
 
 Dev menu brick is a useful feature when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
@@ -464,11 +460,7 @@ As a good use case, you can wrap your page widget with this widget so you are ab
 By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
-`Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
-
-{{/enable_dev_menu}}
-
-
+`Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.{{/enable_dev_menu}}
 {{#enable_patrol}}
 ## Patrol Integration Tests
 
@@ -480,9 +472,7 @@ This package enables applications to use native automation features
 
 #### Running the Tests
 
-To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
-{{/enable_patrol}}
-
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio{{/enable_patrol}}
 {{#realtime_communication}}
 ## Realtime Communication
 
@@ -497,9 +487,8 @@ The brick contains widgets for entering pin codes, pasting them, resend logic an
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 {{#enable_auth_matrix}}
 ## Auth Matrix
-The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
-{{/enable_auth_matrix}}
 
+The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.{{/enable_auth_matrix}}
 {{#cicd}}
 ## CI/CD
 
@@ -507,6 +496,8 @@ The project comes preconfigured with [Fastlane][fastlane_lnk] which allows build
 
 For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].{{/cicd}}
 {{#cicd_github}}
+#### Github
+
 The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository. To trigger the pipeline, a tag with the following format has to be pushed:
 
 ```
@@ -518,9 +509,7 @@ For example, the following tag name will trigger an Android and iOS build:
 development-v1.2.3+45
 ```
 
-After the apps are successfully built and signed, the artefacts can be downloaded from the completed github action from the Actions tab.
-{{/cicd_github}}
-
+After the apps are successfully built and signed, the artefacts can be downloaded from the completed github action from the Actions tab.{{/cicd_github}}
 {{#enable_pin_code}}
 ## Feature Pin Code
 

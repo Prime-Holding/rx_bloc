@@ -27,18 +27,21 @@ class MockArgResults extends _i1.Mock implements _i2.ArgResults {
         returnValue: <String>[],
         returnValueForMissingStub: <String>[],
       ) as List<String>);
+
   @override
   List<String> get arguments => (super.noSuchMethod(
         Invocation.getter(#arguments),
         returnValue: <String>[],
         returnValueForMissingStub: <String>[],
       ) as List<String>);
+
   @override
   Iterable<String> get options => (super.noSuchMethod(
         Invocation.getter(#options),
         returnValue: <String>[],
         returnValueForMissingStub: <String>[],
       ) as Iterable<String>);
+
   @override
   dynamic operator [](String? name) => super.noSuchMethod(
         Invocation.method(
@@ -47,6 +50,7 @@ class MockArgResults extends _i1.Mock implements _i2.ArgResults {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   bool wasParsed(String? name) => (super.noSuchMethod(
         Invocation.method(
