@@ -11,6 +11,9 @@ import '../blocs/reminder_list_bloc.dart';
 import '../ui_components/reminder_list_view.dart';
 import 'add_reminder_dialog.dart';
 
+/// Page presenting a list of reminders from which the user can pick and manage
+/// existing and create new reminders. From the list, you can mark individual
+/// reminders as complete or incomplete, or delete them.
 class ReminderListPage extends StatelessWidget {
   const ReminderListPage({super.key});
 

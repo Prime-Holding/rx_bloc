@@ -7,6 +7,8 @@ import '../../base/common_blocs/firebase_bloc.dart';
 import '../ui_components/login_button.dart';
 import '../ui_components/login_text.dart';
 
+/// Login page presented to the user. Provides two options for login: login as
+/// anonymous or with facebook.
 class FacebookLoginPage extends StatefulWidget {
   const FacebookLoginPage({super.key});
 

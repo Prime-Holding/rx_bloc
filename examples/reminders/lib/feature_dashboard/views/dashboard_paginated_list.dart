@@ -8,6 +8,8 @@ import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../blocs/dashboard_bloc.dart';
 
+/// Widget managing the paginated list of reminders along functionalities such
+/// as pull to refresh and loading states
 class DashboardPaginatedList extends StatelessWidget {
   const DashboardPaginatedList({super.key});
 
