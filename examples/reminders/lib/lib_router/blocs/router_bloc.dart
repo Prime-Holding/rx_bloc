@@ -15,10 +15,18 @@ part 'router_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the NavigationBloC.
 abstract class RouterBlocEvents {
+  /// Event used to navigate to a specific route with some optional extra data.
+  /// A [RouteDataModel] is necessary to navigate to the desired destination.
+  /// Behaves as replace operation on the navigaton stack.
   void goTo(RouteDataModel route, {Object? extra});
 
+  /// Event used to navigate to a specific route by providing its locationPath.
+  /// Behaves as replace operation on the navigaton stack.
   void goToLocation(String location);
 
+  /// Event used to push a specific route with some optional extra data on top
+  /// of the navigation stack.
+  /// Behaves as push operation on the navigaton stack.
   void pushTo(RouteDataModel route, {Object? extra});
 }
 
@@ -27,6 +35,7 @@ abstract class RouterBlocStates {
   /// The error state
   Stream<String> get errors;
 
+  /// State containing the current navigation path
   ConnectableStream<void> get navigationPath;
 }
 
