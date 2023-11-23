@@ -8,6 +8,8 @@
 part of 'coordinator_bloc.dart';
 
 extension CoordinatorBinderExtensions on Stream<Result<bool>> {
+  /// Conveneince method to emit the authentication state to the coordinator
+  /// bloc once it has been signaled that the user has logged in
   Stream<bool> emitLoggedInToCoordinator(CoordinatorBlocType coordinator) =>
       whereSuccess().where((hasLoggedIn) => hasLoggedIn).doOnData(
             (hasLoggedIn) => coordinator.events.authenticated(
@@ -15,6 +17,8 @@ extension CoordinatorBinderExtensions on Stream<Result<bool>> {
             ),
           );
 
+  /// Conveneince method to emit the authentication state to the coordinator
+  /// bloc once it has been signaled that the user has logged out
   Stream<bool> emitLoggedOutToCoordinator(CoordinatorBlocType coordinator) =>
       whereSuccess().where((hasLoggedOut) => hasLoggedOut).doOnData(
             (hasLoggedOut) => coordinator.events.authenticated(

@@ -1,5 +1,6 @@
 part of '../router.dart';
 
+/// Route used for navigating to the dashboard page
 @TypedGoRoute<DashboardRoute>(path: RoutesPath.dashboard)
 @immutable
 class DashboardRoute extends GoRouteData implements RouteDataModel {
@@ -16,6 +17,7 @@ class DashboardRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
+/// Route used for navigating to the page containing a list of reminders
 @TypedGoRoute<RemindersRoute>(path: RoutesPath.reminders)
 @immutable
 class RemindersRoute extends GoRouteData implements RouteDataModel {

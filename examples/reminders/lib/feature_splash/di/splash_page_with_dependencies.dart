@@ -5,12 +5,15 @@ import 'package:provider/provider.dart';
 import '../blocs/splash_bloc.dart';
 import '../views/splash_page.dart';
 
+/// A widget which provides the [SplashPage] with the necessary dependencies
+/// injected in the widget tree.
 class SplashPageWithDependencies extends StatelessWidget {
   const SplashPageWithDependencies({
     this.redirectToLocation,
     Key? key,
   }) : super(key: key);
 
+  /// The location to redirect to after the splash screen has been displayed
   final String? redirectToLocation;
 
   List<RxBlocProvider> get _blocs => [

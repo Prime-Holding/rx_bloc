@@ -18,32 +18,48 @@ import '../models/updated_counters.dart';
 part 'coordinator_bloc.rxb.g.dart';
 part 'coordinator_bloc_extensions.dart';
 
+/// A contract class containing all events of the CoordinatorBloc.
 // ignore: one_member_abstracts
 abstract class CoordinatorEvents {
+  /// Sets the authentication state of the app
   void authenticated({required bool isAuthenticated});
 
+  /// Event used to notify the coordinator that a reminder was deleted
   void reminderDeleted(Result<ReminderModel> reminderResult);
 
+  /// Event used to notify the coordinator that a reminder was created
   void reminderCreated(Result<ReminderModel> reminderResult);
 
+  /// Event used to notify the coordinator that a reminder was updated
   void reminderUpdated(Result<ReminderPair> reminderPairResult);
 
+  /// Event used to notify the coordinator that the counters for the complete
+  /// and incomplete reminders were updated
   void updateCounters(UpdatedCounters counters);
 }
 
+/// A contract class containing all states of the CoordinatorBloc.
 abstract class CoordinatorStates {
   @RxBlocIgnoreState()
   Stream<bool> get isAuthenticated;
 
+  /// State emitting whenever a reminder is deleted, providing access to the
+  /// deleted reminder
   @RxBlocIgnoreState()
   Stream<Result<ReminderModel>> get onReminderDeleted;
 
+  /// State emitting whenever a reminder is updated, providing access to both
+  /// the updated reminder and the old reminder
   @RxBlocIgnoreState()
   Stream<Result<ReminderPair>> get onReminderUpdated;
 
+  /// State emitting whenever a reminder is created, providing access to the
+  /// newly created reminder
   @RxBlocIgnoreState()
   Stream<Result<ReminderModel>> get onReminderCreated;
 
+  /// State emitting whenever the counters for the complete and incomplete
+  /// reminders are updated
   @RxBlocIgnoreState()
   Stream<UpdatedCounters> get onCountersUpdated;
 }
