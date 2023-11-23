@@ -6,6 +6,7 @@ import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 import '../models/dashboard_model.dart';
 
+/// Service used to facilitate managing and fetching dashboard related data
 class DashboardService {
   DashboardService(this._remindersService);
 

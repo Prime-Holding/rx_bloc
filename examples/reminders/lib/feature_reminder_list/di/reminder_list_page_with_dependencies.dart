@@ -6,6 +6,8 @@ import '../blocs/reminder_list_bloc.dart';
 import '../services/reminder_list_service.dart';
 import '../views/reminder_list_page.dart';
 
+/// A widget which provides the [ReminderListPage] with the necessary
+/// dependencies injected in the widget tree (such as services and blocs)
 class ReminderListPageWithDependencies extends StatelessWidget {
   const ReminderListPageWithDependencies({Key? key}) : super(key: key);
 

@@ -15,8 +15,12 @@ part 'dashboard_bloc_extensions.dart';
 
 /// A contract class containing all events of the DashboardBloC.
 abstract class DashboardBlocEvents {
+  /// Event initiating the fetching of the dashboard data, optionally allowing
+  /// silent data retrieval if [silently] is set to true
   void fetchDashboardData([bool silently = false]);
 
+  /// Event initiating the fetching of the dashboard data in a paginated manner,
+  /// allowing for silent data retrieval
   void fetchDataPaginated({required bool silently});
 }
 
@@ -28,8 +32,11 @@ abstract class DashboardBlocStates {
   /// The error state
   Stream<String> get errors;
 
+  /// State containing the number of complete and incomplete reminders
   Stream<Result<DashboardCountersModel>> get dashboardCounters;
 
+  /// State containing a list of reminders which can be used to fetch data in a
+  /// paginated manner
   Stream<PaginatedList<ReminderModel>> get reminderModels;
 
   /// Returns when the data refreshing has completed

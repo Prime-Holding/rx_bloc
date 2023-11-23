@@ -5,10 +5,12 @@ part of 'dashboard_bloc.dart';
 extension _DashboardExtension on DashboardBloc {}
 
 extension _ToError on Stream<Exception> {
+  /// Maps the exception to a presentable string
   Stream<String> toMessage() => map((errorState) => errorState.toString());
 }
 
 extension ResultStreamExtensions on Stream<Result<DashboardCountersModel>> {
+  /// Convenience method which waits for the loading state of the bloc to finish
   Future<void> waitToLoad() async {
     await firstWhere((resultModel) => resultModel is ResultLoading);
     await firstWhere((resultModel) => resultModel is! ResultLoading);
@@ -16,6 +18,8 @@ extension ResultStreamExtensions on Stream<Result<DashboardCountersModel>> {
 }
 
 extension DashboardBlocStreamExtensions on Stream<bool> {
+  /// Retrieves the dashboard data from the repository and converts it to a
+  /// Result<DashboardCountersModel> stream
   Stream<Result<DashboardCountersModel>> fetchDashboardData(
     DashboardService dashboardService,
   ) =>

@@ -6,6 +6,8 @@ import '../blocs/dashboard_bloc.dart';
 import '../services/dashboard_service.dart';
 import '../views/dashboard_page.dart';
 
+/// A widget which provides the [DashboardPage] with the necessary dependencies
+/// injected in the widget tree (such as services and blocs)
 class DashboardPageWithDependencies extends StatelessWidget {
   const DashboardPageWithDependencies({Key? key}) : super(key: key);
 
