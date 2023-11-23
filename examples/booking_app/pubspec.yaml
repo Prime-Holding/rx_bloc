@@ -1,6 +1,7 @@
 name: booking_app
 description: A new Flutter project.
 version: 1.0.0+8
+publish_to: none
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
