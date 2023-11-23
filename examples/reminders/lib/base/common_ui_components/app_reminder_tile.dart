@@ -6,6 +6,11 @@ import '../../app_extensions.dart';
 import '../models/reminder/reminder_model.dart';
 import 'app_divider.dart';
 
+/// Widget that displays a reminder in a list, with a checkbox to mark it as
+/// complete or incomplete, a text field to edit the title, and a button to
+/// select the due date. The reminder can also be deleted by swiping it to the
+/// left or right.
+/// The widget is intended to be used in a list of reminders.
 class AppReminderTile extends StatefulWidget {
   const AppReminderTile({
     required this.reminder,
@@ -18,12 +23,25 @@ class AppReminderTile extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
+  /// The reminder model to display
   final ReminderModel reminder;
+
+  /// Callback to be called when the title of the reminder is changed
   final ValueChanged<String>? onTitleChanged;
+
+  /// Callback to be called when the due date of the reminder is changed
   final ValueChanged<DateTime>? onDueDateChanged;
+
+  /// Callback to be called when the complete status of the reminder is changed
   final ValueChanged<bool>? onCompleteChanged;
+
+  /// Callback to be called when the reminder is deleted
   final VoidCallback? onDeletePressed;
+
+  /// Flag indicating whether the reminder is the first in the list
   final bool isFirst;
+
+  /// Flag indicating whether the reminder is the last in the list
   final bool isLast;
 
   @override

@@ -25,9 +25,12 @@ import '../repositories/reminders_repository.dart';
 import '../services/firebase_service.dart';
 import '../services/reminders_service.dart';
 
+/// Global dependencies used throughout the app
 class AppDependencies extends StatefulWidget {
   const AppDependencies._(this.context, this.config, this.child);
 
+  /// Factory constructor facilitating the retrieval of the [AppDependencies]
+  /// instance. If the singleton instance doesn't exist, one is created first.
   factory AppDependencies.of(
           BuildContext context, EnvironmentConfig envConfig, Widget child) =>
       _instance != null

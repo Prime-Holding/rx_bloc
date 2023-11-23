@@ -7,6 +7,8 @@
 
 import 'package:flutter/material.dart';
 
+/// Page presenting an error message once the user tries to navigate to
+/// a non-existent page or an error happens along the way
 class ErrorPage extends StatelessWidget {
   const ErrorPage({
     this.error,

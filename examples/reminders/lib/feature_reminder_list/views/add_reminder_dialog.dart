@@ -9,6 +9,10 @@ import '../../app_extensions.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
+/// Dialog used to create a new reminder. It contains an editable form with
+/// allows you to specify a name and a due date field when creating a new
+/// reminder. Upon successful creation, the dialog is closed and the reminder
+/// list is updated.
 class AddReminderDialog extends StatefulWidget {
   const AddReminderDialog({super.key});
 

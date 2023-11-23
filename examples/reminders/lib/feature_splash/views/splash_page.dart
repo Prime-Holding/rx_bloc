@@ -12,10 +12,9 @@ import '../../base/common_ui_components/app_error_widget.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
 import '../blocs/splash_bloc.dart';
 
+/// Splash page presented when the app is launched
 class SplashPage extends StatelessWidget {
-  const SplashPage({
-    Key? key,
-  }) : super(key: key);
+  const SplashPage({super.key});
 
   static const _logoPath = 'assets/images/prime_logo.jpeg';
 

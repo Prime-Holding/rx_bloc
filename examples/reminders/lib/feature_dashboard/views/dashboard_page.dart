@@ -14,6 +14,8 @@ import '../blocs/dashboard_bloc.dart';
 import '../models/dashboard_model.dart';
 import 'dashboard_paginated_list.dart';
 
+/// Dashboard page presenting the number of complete and incomplete reminders
+/// along with a paginated list of incomplete overdue reminders
 class DashboardPage extends StatelessWidget {
   DashboardPage({
     super.key,
