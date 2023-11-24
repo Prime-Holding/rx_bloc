@@ -41,9 +41,8 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   Widget build(BuildContext context) =>
       RxBlocBuilder<PuppyManageBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, isLoading, _) => WillPopScope(
-          onWillPop: () =>
-              isLoading.data! ? Future.value(false) : Future.value(true),
+        builder: (context, isLoading, _) => PopScope(
+          canPop: isLoading.data! ? false : true,
           child: RxUnfocuser(
             child: RxBlocBuilder<PuppyManageBlocType, bool>(
               state: (bloc) => bloc.states.isSaveEnabled,
