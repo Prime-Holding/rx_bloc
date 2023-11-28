@@ -1,3 +1,7 @@
+## [7.1.0] - December 1, 2023
+* Support Flutter `3.16`
+* Update dependencies and bump analyzer constraints to `>=6.0.0 <7.0.0` 
+
 ## [7.0.0] - July 12, 2023
 * Dart `3.0` Required
 * _[BREAKING CHANGE]_ Version >=7.0.0 introduces a change by generating named record instead of event arguments class.

@@ -28,7 +28,6 @@ class DevMenuDependencies {
           create: (context) => Alice(
             showNotification: true,
             showInspectorOnShake: false,
-            darkTheme: false,
             maxCallsCount: 1000,
           ),
         )

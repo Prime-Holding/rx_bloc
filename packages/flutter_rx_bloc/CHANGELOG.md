@@ -1,3 +1,6 @@
+## [6.2.0]
+* Update `rx_bloc` to use version `5.1.0`
+
 ## [6.1.0]
 * Introduce `RxBlocMultiBuilder2` and `RxBlocMultiBuilder3`
 
