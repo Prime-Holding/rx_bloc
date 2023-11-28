@@ -18,5 +18,5 @@ dependencies:
 dev_dependencies:
   clean_coverage: ^0.0.3
   coverage: ^1.6.3
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
   mockito: ^5.4.2

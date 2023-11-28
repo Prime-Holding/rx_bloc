@@ -18,10 +18,10 @@ dependencies:
 
 
 dev_dependencies:
-  build_runner: ^2.4.5
+  build_runner: ^2.4.6
   clean_coverage: ^0.0.3
-  coverage: ^1.6.3
-  flutter_lints: ^2.0.1
+  coverage: ^1.7.1
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
   rx_bloc_generator: ^7.0.0
