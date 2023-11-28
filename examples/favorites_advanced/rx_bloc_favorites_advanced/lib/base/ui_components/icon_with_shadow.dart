@@ -6,8 +6,8 @@ class IconWithShadow extends StatelessWidget {
     this.icon,
     this.iconColor = ColorStyles.white,
     this.shadowColor = ColorStyles.shadow,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final IconData? icon;
   final Color iconColor;

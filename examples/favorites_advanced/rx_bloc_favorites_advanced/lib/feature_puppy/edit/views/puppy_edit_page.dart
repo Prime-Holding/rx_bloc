@@ -14,9 +14,8 @@ part 'puppy_edit_providers.dart';
 class PuppyEditPage extends StatefulWidget {
   const PuppyEditPage({
     required Puppy? puppy,
-    Key? key,
-  })  : _puppy = puppy,
-        super(key: key);
+    super.key,
+  })  : _puppy = puppy;
 
   static Page page({required Puppy? puppy}) => MaterialPage(
         child: RxMultiBlocProvider(

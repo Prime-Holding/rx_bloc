@@ -11,8 +11,8 @@ import 'puppy_details_app_bar.dart';
 class PuppyDetails extends StatelessWidget {
   const PuppyDetails({
     required this.puppy,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Puppy puppy;
 

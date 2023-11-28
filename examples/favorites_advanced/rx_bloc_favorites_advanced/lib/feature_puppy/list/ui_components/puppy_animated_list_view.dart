@@ -1,4 +1,4 @@
-import 'package:animated_stream_list/animated_stream_list.dart';
+import 'package:animated_stream_list_nullsafety/animated_stream_list.dart';
 import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +12,9 @@ class PuppyAnimatedListView extends StatelessWidget {
   const PuppyAnimatedListView({
     required Stream<List<Puppy>> puppyList,
     Function(Puppy)? onPuppyPressed,
-    Key? key,
+    super.key,
   })  : _puppyList = puppyList,
-        _onPuppyPressed = onPuppyPressed,
-        super(key: key);
+        _onPuppyPressed = onPuppyPressed;
 
   final Function(Puppy)? _onPuppyPressed;
   final Stream<List<Puppy>> _puppyList;

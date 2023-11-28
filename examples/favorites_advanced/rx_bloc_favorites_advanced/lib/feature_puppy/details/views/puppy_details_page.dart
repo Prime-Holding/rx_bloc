@@ -13,9 +13,8 @@ part 'puppy_details_providers.dart';
 class PuppyDetailsPage extends StatelessWidget {
   const PuppyDetailsPage({
     required Puppy puppy,
-    Key? key,
-  })  : _puppy = puppy,
-        super(key: key);
+    super.key,
+  })  : _puppy = puppy;
 
   static Page page({required Puppy puppy}) => MaterialPage(
         child: RxMultiBlocProvider(

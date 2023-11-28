@@ -44,8 +44,8 @@ List<Page> onGeneratePuppyPages(PuppyFlowState state, List<Page> pages) {
 class PuppyFlow extends StatelessWidget {
   const PuppyFlow({
     required this.puppy,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   static Route<PuppyFlowState> route({required Puppy puppy}) =>
       MaterialPageRoute(builder: (_) => PuppyFlow(puppy: puppy));

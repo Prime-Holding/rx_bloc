@@ -19,7 +19,7 @@ import '../blocs/navigation_bar_bloc.dart';
 part 'home_providers.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   static Widget page() => RxMultiBlocProvider(
         providers: _getProviders(),
