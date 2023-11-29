@@ -1,7 +1,3 @@
-## [5.1.0]
-* Support Flutter `3.16` 
-* Updated dependencies
-
 ## [5.0.0]
 * Dart `3.0` Required
 * **Breaking changes**

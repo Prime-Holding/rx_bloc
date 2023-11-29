@@ -25,7 +25,7 @@ dependencies: {{#enable_dev_menu}}
   flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: ^6.1.0
+  flutter_rx_bloc: ^6.0.0
   flutter_secure_storage: ^9.0.0{{#enable_social_logins}}
   flutter_svg: ^2.0.7{{/enable_social_logins}}
   go_router: ^12.1.1
@@ -38,8 +38,8 @@ dependencies: {{#enable_dev_menu}}
   local_session_timeout: ^2.3.1{{/enable_pin_code}}
   provider: ^6.0.5
   retrofit: ^4.0.2
-  rx_bloc: ^5.1.0
-  rx_bloc_list: ^4.1.0
+  rx_bloc: ^5.0.0
+  rx_bloc_list: ^4.0.0
   rxdart: ^0.27.7
   shared_preferences: ^2.2.1
   shelf: ^1.4.1 # This package is used for the local server (if not used, can be removed)
@@ -67,7 +67,7 @@ dev_dependencies:
   r_flutter: 0.9.0
   retrofit_generator: ^8.0.4
   rx_bloc_generator: ^7.1.0
-  rx_bloc_test: ^4.1.0
+  rx_bloc_test: ^4.0.0
   test: any {{#enable_patrol}}
 
 patrol:
