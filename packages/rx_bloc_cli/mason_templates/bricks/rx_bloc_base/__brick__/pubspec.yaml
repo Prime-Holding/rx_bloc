@@ -79,15 +79,6 @@ patrol:
     bundle_id: {{domain_name}}.{{organization_name}}.{{project_name}}
     app_name: {{project_name}} {{/enable_patrol}}
 
-
-  {{#enable_dev_menu}}
-dependency_overrides:
-  alice:
-    git:
-      url: https://github.com/Prime-Holding/alice.git
-      ref: master
-{{/enable_dev_menu}}
-
 flutter:
   uses-material-design: true
   assets:
