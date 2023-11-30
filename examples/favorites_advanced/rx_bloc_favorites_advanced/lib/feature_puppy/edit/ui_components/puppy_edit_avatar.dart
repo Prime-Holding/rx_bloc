@@ -6,8 +6,8 @@ class PuppyEditAvatar extends StatelessWidget {
     required this.heroTag,
     required this.imgPath,
     required this.pickImage,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String heroTag;
   final String imgPath;

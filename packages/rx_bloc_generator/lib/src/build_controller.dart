@@ -1,4 +1,4 @@
-part of rx_bloc_generator;
+part of '../rx_bloc_generator.dart';
 
 /// Validates the main bloc file and provides the generator the needed data
 class _BuildController {
@@ -69,7 +69,7 @@ class _BuildController {
           .where((MethodElement method) => method.isUsingRecord)
           .map((MethodElement method) {
         return method.argsRecord.typeDef().toDartCodeString();
-      }).toList()
+      })
     ].forEach(output.writeln);
 
     return output.toString();

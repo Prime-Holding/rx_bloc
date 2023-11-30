@@ -7,10 +7,9 @@ class PuppyEditAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PuppyEditAppBar({
     required bool enabled,
     void Function()? onSavePressed,
-    Key? key,
+    super.key,
   })  : _enabled = enabled,
-        _onSavePressed = onSavePressed,
-        super(key: key);
+        _onSavePressed = onSavePressed;
 
   final bool _enabled;
   final void Function()? _onSavePressed;

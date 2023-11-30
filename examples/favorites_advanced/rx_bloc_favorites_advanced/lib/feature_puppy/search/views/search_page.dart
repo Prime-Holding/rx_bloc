@@ -11,7 +11,7 @@ import '../../blocs/puppy_manage_bloc.dart';
 import '../blocs/puppy_list_bloc.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context) => SafeArea(

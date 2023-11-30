@@ -137,8 +137,8 @@ class RxPaginatedBuilder<B extends RxBlocTypeBase, T> extends StatefulWidget {
     this.scrollThreshold = 100.0,
     this.enableOnBottomScrolledCallback = true,
     this.bloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// RxPaginatedBuilder constructor with refresh indicator.
   /// An addition to the default constructor is the requirement for the
