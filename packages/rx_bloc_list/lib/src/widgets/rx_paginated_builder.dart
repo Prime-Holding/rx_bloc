@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
@@ -230,6 +231,8 @@ class RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
     extends State<RxPaginatedBuilder<B, T>> {
   bool _isScrolled = false;
 
+  ScrollDirection _scrollDirection = ScrollDirection.idle;
+
   @override
   Widget build(BuildContext context) {
     final bloc = RxBlocProvider.of<B>(context);
@@ -283,27 +286,30 @@ class RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
     B bloc,
     AsyncSnapshot<PaginatedList<T>> snapshot,
   ) {
+    if (scrollInfo is UserScrollNotification) {
+      _scrollDirection = scrollInfo.direction;
+    }
+
     // Handle case when scrolling through or stopped scrolling through
-    if (widget.onScrolled != null) {
-      if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == 0) {
-        final isScrolled = scrollInfo.metrics.pixels > 0;
-        if (isScrolled != _isScrolled && widget.onScrolled != null) {
-          _isScrolled = isScrolled;
-          widget.onScrolled!(isScrolled);
-        }
+    if (widget.onScrolled != null && scrollInfo.depth == 0) {
+      final isScrolled = scrollInfo.metrics.pixels > 0;
+      if (isScrolled != _isScrolled) {
+        _isScrolled = isScrolled;
+        widget.onScrolled!(isScrolled);
       }
     }
 
     // Handle case when bottom of screen reached and onBottomScrolled called
     if (widget.enableOnBottomScrolledCallback &&
-        scrollInfo.metrics.axis == Axis.vertical &&
-        scrollInfo.metrics.maxScrollExtent - scrollInfo.metrics.pixels <=
+        _scrollDirection == ScrollDirection.reverse &&
+        scrollInfo.depth == 0 &&
+        scrollInfo.metrics.maxScrollExtent - scrollInfo.metrics.pixels <
             widget.scrollThreshold &&
         snapshot.hasData &&
         snapshot.data!.hasNextPage) {
       widget.onBottomScrolled(bloc);
     }
-
+    // Return true to cancel the notification bubbling.
     return true;
   }
 }
