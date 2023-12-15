@@ -1,5 +1,8 @@
+## [3.x.x]
+* Update the build_custom fastlane task so that if the environment variables do not exist the user will be prompted to enter their values.
+
 ## [3.3.0]
-* Added Github as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, none`)
+* Added Github as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `none`)
 * Added remote translation lookup for localizations
 * Updates to `analytics` feature - added crash reporting support and screen view logging
 * Update generated project dependencies 
