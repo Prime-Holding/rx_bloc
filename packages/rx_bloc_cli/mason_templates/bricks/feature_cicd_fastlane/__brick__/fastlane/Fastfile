@@ -51,7 +51,18 @@ firebase_app_id_map = {
 
 keychain_path = Dir.getwd + '/devops/credentials/{{project_name.paramCase()}}-keychain.keychain'
 
-##################### Lanes #####################
+private_lane :setup_environment_variable do |options|
+    value = ''
+    loop do
+        value = prompt(
+            text: "Enter a value for #{options[:name]}: ",
+            secure_text: true
+        )
+        break if value.strip.length > 0
+    end
+
+    ENV[options[:name]] = value
+end
 
 desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
@@ -146,7 +157,7 @@ lane :build_flutter_app do |options|
 end
 
 desc "Start a custom build
-Expected environment variables:
+If the following environment variables are not set the task will prompt the user to enter them:
     - mobile_distribution_encryption_password
     - mobile_distribution_repository_access_secret
 Expected input parameters:
@@ -158,10 +169,17 @@ Example:
     fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:uat"
 lane :build_custom do |options|
     environment = options[:environment]
-
     ensure_build_environment(environment: environment)
-    set_platform(platform: options[:platform])
 
+    if ENV['mobile_distribution_repository_access_secret'] == nil
+        setup_environment_variable(name: 'mobile_distribution_repository_access_secret')
+    end
+
+    if ENV['mobile_distribution_encryption_password'] == nil
+        setup_environment_variable(name: 'mobile_distribution_encryption_password')
+    end
+
+    set_platform(platform: options[:platform])
     generate_code()
     fetch_credentials()
     install_credentials()

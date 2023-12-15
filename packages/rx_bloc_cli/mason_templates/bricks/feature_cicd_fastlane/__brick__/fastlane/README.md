@@ -36,7 +36,7 @@ Example:
 ```
 
 Start a custom build
-Expected environment variables:
+If the following environment variables are not set the task will prompt the user to enter them:
     - mobile_distribution_encryption_password
     - mobile_distribution_repository_access_secret
 Expected input parameters:
