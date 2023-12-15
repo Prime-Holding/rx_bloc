@@ -306,7 +306,8 @@ class RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
         scrollInfo.metrics.maxScrollExtent - scrollInfo.metrics.pixels <
             widget.scrollThreshold &&
         snapshot.hasData &&
-        snapshot.data!.hasNextPage) {
+        snapshot.data!.hasNextPage &&
+        !snapshot.isLoading) {
       widget.onBottomScrolled(bloc);
     }
     // Return true to cancel the notification bubbling.
