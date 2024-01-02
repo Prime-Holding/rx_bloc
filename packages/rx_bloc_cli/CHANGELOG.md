@@ -1,5 +1,6 @@
 ## [3.3.1]
-* Update the build_custom fastlane task so that if the required environment variables do not exist the user will be prompted to enter their values.
+* Update the build_custom fastlane task so that if the required environment variables do not exist the user will be prompted to enter their values
+* Convert the expected fastlane environment variables to uppercase
 
 ## [3.3.0]
 * Added Github as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `none`)
