@@ -450,6 +450,14 @@ Expected environment variables:
     - mobile_distribution_encryption_password
     - mobile_distribution_repository_access_secret'
 lane :deploy do
+    if ENV['mobile_distribution_repository_access_secret'] == nil
+        setup_environment_variable(name: 'mobile_distribution_repository_access_secret')
+    end
+
+    if ENV['mobile_distribution_encryption_password'] == nil
+        setup_environment_variable(name: 'mobile_distribution_encryption_password')
+    end
+
     fetch_credentials()
 
     Dir.chdir('../devops/artifacts') do
@@ -472,6 +480,14 @@ Expected environment variables:
     - mobile_distribution_encryption_password
     - mobile_distribution_repository_access_secret'
 lane :deploy_debug_symbols do
+    if ENV['mobile_distribution_repository_access_secret'] == nil
+        setup_environment_variable(name: 'mobile_distribution_repository_access_secret')
+    end
+
+    if ENV['mobile_distribution_encryption_password'] == nil
+        setup_environment_variable(name: 'mobile_distribution_encryption_password')
+    end
+
     fetch_credentials()
 
     Dir.chdir('../devops/credentials/') do
