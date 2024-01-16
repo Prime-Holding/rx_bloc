@@ -9,21 +9,28 @@
       "request": "launch",
       "type": "dart",
       "program": "lib/main_dev.dart",
-      "args": [ "--flavor", "development", "--target", "lib/main_dev.dart" ]
+      "args": [ "--flavor", "dev", "--target", "lib/main_dev.dart" ]
     },
     {
-      "name": "stag",
+      "name": "sit",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main_staging.dart",
-      "args": ["--flavor", "staging", "--target", "lib/main_staging.dart"]
+      "program": "lib/main_sit.dart",
+      "args": ["--flavor", "sit", "--target", "lib/main_sit.dart"]
+    },
+    {
+      "name": "uat",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_uat.dart",
+      "args": ["--flavor", "uat", "--target", "lib/main_uat.dart"]
     },
     {
       "name": "prod",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main.dart",
-      "args": ["--flavor", "production", "--target", "lib/main.dart"]
+      "program": "lib/main_prod.dart",
+      "args": ["--flavor", "prod", "--target", "lib/main_prod.dart"]
     },
     {
       "name": "Generate goldens",

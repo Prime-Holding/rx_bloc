@@ -164,7 +164,7 @@ class UserBloc extends $UserBloc {
   final _paginatedList = BehaviorSubject<PaginatedList<User>>.seeded(
     PaginatedList<User>(
       list: [],
-      pageSize: 50,
+      pageSize: 5,
     ),
   );
 

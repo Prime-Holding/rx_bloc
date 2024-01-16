@@ -1,0 +1,64 @@
+app:
+  android:
+    flavorDimensions: "environment"
+
+flavors:
+
+  dev:
+    app:
+      name: {{project_name.sentenceCase()}} Dev
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      customConfig:
+        versionNameSuffix: "\"-dev\""
+        applicationIdSuffix: "\".dev\""
+      firebase:
+        config: "android/environments/development/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.dev
+      firebase:
+        config: "ios/environments/development/firebase/GoogleService-Info.plist"
+
+  sit:
+    app:
+      name: {{project_name.sentenceCase()}} SIT
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      customConfig:
+        versionNameSuffix: "\"-sit\""
+        applicationIdSuffix: "\".sit\""
+      firebase:
+        config: "android/environments/sit/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.sit
+      firebase:
+        config: "ios/environments/sit/firebase/GoogleService-Info.plist"
+
+  uat:
+    app:
+      name: {{project_name.sentenceCase()}} UAT
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      customConfig:
+        versionNameSuffix: "\"-uat\""
+        applicationIdSuffix: "\".uat\""
+      firebase:
+        config: "android/environments/uat/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.uat
+      firebase:
+        config: "ios/environments/uat/firebase/GoogleService-Info.plist"
+
+  prod:
+    app:
+      name: {{project_name.sentenceCase()}}
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      firebase:
+        config: "android/environments/production/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      firebase:
+        config: "ios/environments/production/firebase/GoogleService-Info.plist"
+
+ide: idea

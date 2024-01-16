@@ -3,7 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:{{project_name}}/main.dart' as app;
+import 'package:{{project_name}}/main_prod.dart' as app;
 import 'package:{{project_name}}/main_dev.dart' as app_dev;
 import 'package:{{project_name}}/main_sit.dart' as app_sit;
 import 'package:{{project_name}}/main_uat.dart' as app_uat;

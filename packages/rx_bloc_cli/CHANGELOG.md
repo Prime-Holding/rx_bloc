@@ -1,3 +1,6 @@
+## [3.4.0]
+* Add changes here
+
 ## [3.3.1]
 * Update the build_custom fastlane task so that if the required environment variables do not exist the user will be prompted to enter their values
 * Convert the expected fastlane environment variables to uppercase
