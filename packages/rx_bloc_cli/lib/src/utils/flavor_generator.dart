@@ -7,44 +7,42 @@ import '../templates/rx_bloc_flavor_config_bundle.dart';
 
 /// Utility class containing logic for flavor generation
 class FlavorGenerator {
+  /// Flavor generation default constructor
+  FlavorGenerator(this.generator);
+
+  /// Generator function used to build the mason generator from its bundle
+  final Future<MasonGenerator> Function(MasonBundle) generator;
+
   /// Generates flavor config and uses it to add flavors to project
-  static Future<void> addFlavors(
-    Future<MasonGenerator> Function(MasonBundle) generator,
-    GeneratorArguments args,
-  ) async {
+  Future<void> addFlavors(GeneratorArguments args) async {
     await _generateFlavorConfig(generator, args);
-
-    final addFlavorizr = await Process.run(
-      'flutter',
-      [
-        'pub',
-        'add',
-        'flutter_flavorizr',
-      ],
-      workingDirectory: args.outputDirectory.path,
-    );
-
-    final dartGet = await Process.run(
-      'dart',
-      ['pub', 'get'],
-      workingDirectory: args.outputDirectory.path,
-    );
+    await _addFlavorizrToProject(args.outputDirectory.path);
 
     final runFlavorizr = await Process.run(
       'flutter',
-      [
-        'pub',
-        'run',
-        'flutter_flavorizr',
-      ],
+      ['pub', 'run', 'flutter_flavorizr'],
       workingDirectory: args.outputDirectory.path,
     );
+
+    if (Platform.isMacOS) {
+      // Add Firebase build script to the xcode project. This should only work
+      // when run on MacOS, due to the XCode commands being available only there
+      final addFirebaseBuildScript = await Process.run(
+        'ruby',
+        [
+          'setup_scripts/add_firebase_build_phase.rb',
+          'ios/Runner.xcodeproj',
+          'setup_scripts/firebase_build_script.sh',
+        ],
+        workingDirectory: args.outputDirectory.path,
+      );
+    }
   }
 
   ///region Helper functions
 
   /// Generates config file used to define flavors
-  static Future<void> _generateFlavorConfig(
+  Future<void> _generateFlavorConfig(
     Future<MasonGenerator> Function(MasonBundle) generator,
     GeneratorArguments arguments,
   ) async {
@@ -57,6 +55,16 @@ class FlavorGenerator {
         'organization_name': arguments.organisationName,
       },
     );
+  }
+
+  /// Adds flavorizr to generated project so we can apply new flavors
+  Future<void> _addFlavorizrToProject(String outputDir) async {
+    await Process.run(
+      'flutter',
+      ['pub', 'add', 'flutter_flavorizr'],
+      workingDirectory: outputDir,
+    );
+    await Process.run('dart', ['pub', 'get'], workingDirectory: outputDir);
   }
 
   /// endregion

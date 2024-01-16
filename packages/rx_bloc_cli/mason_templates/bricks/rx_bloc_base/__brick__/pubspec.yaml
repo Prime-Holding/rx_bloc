@@ -57,7 +57,6 @@ dev_dependencies:
   # flutter_driver:
   #   sdk: flutter
   copy_with_extension_gen: ^5.0.4
-  flutter_flavorizr: ^2.2.1
   flutter_lints: any
   flutter_test:
     sdk: flutter

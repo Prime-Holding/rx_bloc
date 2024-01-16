@@ -13,6 +13,7 @@ import '../models/generator_arguments_provider.dart';
 import '../models/readers/interactive_arguments_reader.dart';
 import '../models/readers/non_interactive_arguments_reader.dart';
 import '../templates/rx_bloc_base_bundle.dart';
+import '../utils/file_cleanup.dart';
 import '../utils/flavor_generator.dart';
 import '../utils/git_ignore_creator.dart';
 
@@ -70,7 +71,8 @@ class CreateCommand extends Command<int> {
       ],
     );
 
-    await FlavorGenerator.addFlavors(_generator, args);
+    final flavorGen = FlavorGenerator(_generator);
+    await flavorGen.addFlavors(args);
   }
 
   GeneratorArguments _readGeneratorArguments() {
@@ -184,22 +186,7 @@ class CreateCommand extends Command<int> {
 
     _progressFinish(format, progress);
 
-    await _fileCleanup(outputDirectory);
-  }
-
-  /// Remove any generated files that are not needed (files created through the
-  /// `flutter create` command or when adding flavors)
-  Future<void> _fileCleanup(Directory outputDirectory) async {
-    const filesToRemove = [
-      'test/widget_test.dart',
-      'lib/main.dart',
-    ];
-
-    for (var path in filesToRemove) {
-      try {
-        await File('${outputDirectory.absolute.path}/$path').delete();
-      } catch (_) {}
-    }
+    await FileCleanup.postGenerationCleanup(outputDirectory);
   }
 
   /// endregion
