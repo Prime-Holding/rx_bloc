@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../base/common_ui_components/app_progress_indicator.dart';
 
+/// Custom outlined button used on the login page. Displays a text inside it
+/// when [loading] is set to false, or a loading indicator otherwise.
+/// Has a customizable [color] property which sets the color of the outline of
+/// the button and the [text] as well.
 class LoginButton extends StatelessWidget {
   const LoginButton({
     required this.color,
@@ -11,9 +15,16 @@ class LoginButton extends StatelessWidget {
     super.key,
   });
 
+  /// The color of the button outline and the text
   final Color color;
+
+  /// The text to be presented when the button is not in its loading state
   final String text;
+
+  /// Callback triggered once the button has been pressed
   final VoidCallback onPressed;
+
+  /// Flag indicating whether or not the button is loading
   final bool loading;
 
   @override

@@ -10,8 +10,13 @@ import '../../base/common_ui_components/app_reminder_tile.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 
+/// Group enum indicating what kind of reminders there are in relation to
+/// their due date
 enum Group { overdue, today, thisMonth, inFuture }
 
+/// Widget that displays a scrollable, grouped list of reminders, with each
+/// reminder being an AppReminderTile, and the list is capable of auto-scrolling
+/// to a specific reminder based on its provided id
 class ReminderListScrollView extends StatefulWidget {
   const ReminderListScrollView({
     required this.remindersList,

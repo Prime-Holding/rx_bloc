@@ -1,3 +1,14 @@
+## [3.3.1]
+* Update the build_custom fastlane task so that if the required environment variables do not exist the user will be prompted to enter their values
+* Convert the expected fastlane environment variables to uppercase
+* Apply c4model (Component Diagram) specifics to the Architectural Diagram 
+
+## [3.3.0]
+* Added Github as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `none`)
+* Added remote translation lookup for localizations
+* Updates to `analytics` feature - added crash reporting support and screen view logging
+* Update generated project dependencies 
+
 ## [3.2.0]
 * Added Auth Matrix as an option under the flag `--enable-auth-matrix`
 * Make `AppBar` on pin code screen transparent
@@ -11,7 +22,7 @@
 * Fix generated project not properly building when `pin_code` is disabled
 
 ## [3.1.0]
-* Added Fastlane as a CI/CD option under the flag `--cicd` (fastlane` (default), `none`)
+* Added Fastlane as a CI/CD option under the flag `--cicd` (`fastlane` (default), `none`)
 * Added PIN code as an option under the flag `--enable-pin-code`
 * Introduce two new flavors (`sit` and `uat`) and remove `staging` flavor
 

@@ -1,4 +1,4 @@
-part of rx_bloc_generator;
+part of '../../rx_bloc_generator.dart';
 
 /// Supported types of streams
 class _BlocEventStreamTypes {

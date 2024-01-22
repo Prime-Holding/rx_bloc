@@ -65,12 +65,14 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
           Invocation.getter(#theme),
         ),
       ) as _i2.LogTheme);
+
   @override
   _i2.Level get level => (super.noSuchMethod(
         Invocation.getter(#level),
         returnValue: _i2.Level.verbose,
         returnValueForMissingStub: _i2.Level.verbose,
       ) as _i2.Level);
+
   @override
   set level(_i2.Level? _level) => super.noSuchMethod(
         Invocation.setter(
@@ -79,6 +81,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i2.ProgressOptions get progressOptions => (super.noSuchMethod(
         Invocation.getter(#progressOptions),
@@ -91,6 +94,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
           Invocation.getter(#progressOptions),
         ),
       ) as _i2.ProgressOptions);
+
   @override
   set progressOptions(_i2.ProgressOptions? _progressOptions) =>
       super.noSuchMethod(
@@ -100,6 +104,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void flush([void Function(String?)? print]) => super.noSuchMethod(
         Invocation.method(
@@ -108,6 +113,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void write(String? message) => super.noSuchMethod(
         Invocation.method(
@@ -116,6 +122,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void info(
     String? message, {
@@ -129,6 +136,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void delayed(String? message) => super.noSuchMethod(
         Invocation.method(
@@ -137,6 +145,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i2.Progress progress(
     String? message, {
@@ -165,6 +174,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
           ),
         ),
       ) as _i2.Progress);
+
   @override
   void err(
     String? message, {
@@ -178,6 +188,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void alert(
     String? message, {
@@ -191,6 +202,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void detail(
     String? message, {
@@ -204,6 +216,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void warn(
     String? message, {
@@ -221,6 +234,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void success(
     String? message, {
@@ -234,6 +248,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   String prompt(
     String? message, {
@@ -252,6 +267,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         returnValue: '',
         returnValueForMissingStub: '',
       ) as String);
+
   @override
   List<String> promptAny(
     String? message, {
@@ -266,6 +282,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         returnValue: <String>[],
         returnValueForMissingStub: <String>[],
       ) as List<String>);
+
   @override
   bool confirm(
     String? message, {
@@ -280,6 +297,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
+
   @override
   T chooseOne<T extends Object?>(
     String? message, {
@@ -322,6 +340,7 @@ class MockLogger extends _i1.Mock implements _i2.Logger {
           ),
         ),
       ) as T);
+
   @override
   List<T> chooseAny<T extends Object?>(
     String? message, {

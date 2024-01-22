@@ -14,9 +14,8 @@ part 'puppy_edit_providers.dart';
 class PuppyEditPage extends StatefulWidget {
   const PuppyEditPage({
     required Puppy? puppy,
-    Key? key,
-  })  : _puppy = puppy,
-        super(key: key);
+    super.key,
+  })  : _puppy = puppy;
 
   static Page page({required Puppy? puppy}) => MaterialPage(
         child: RxMultiBlocProvider(
@@ -41,9 +40,8 @@ class _PuppyEditPageState extends State<PuppyEditPage> {
   Widget build(BuildContext context) =>
       RxBlocBuilder<PuppyManageBlocType, bool>(
         state: (bloc) => bloc.states.isLoading,
-        builder: (context, isLoading, _) => WillPopScope(
-          onWillPop: () =>
-              isLoading.data! ? Future.value(false) : Future.value(true),
+        builder: (context, isLoading, _) => PopScope(
+          canPop: isLoading.data! ? false : true,
           child: RxUnfocuser(
             child: RxBlocBuilder<PuppyManageBlocType, bool>(
               state: (bloc) => bloc.states.isSaveEnabled,

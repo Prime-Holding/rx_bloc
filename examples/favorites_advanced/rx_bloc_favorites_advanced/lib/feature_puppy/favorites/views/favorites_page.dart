@@ -10,7 +10,7 @@ import '../../list/ui_components/puppy_animated_list_view.dart';
 import '../blocs/favorite_puppies_bloc.dart';
 
 class FavoritesPage extends StatelessWidget {
-  const FavoritesPage({Key? key}) : super(key: key);
+  const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) => Column(

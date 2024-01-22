@@ -10,9 +10,7 @@ import '../services/enter_message_field_service.dart';
 import '../views/enter_message_page.dart';
 
 class EnterMessageWithDependencies extends StatelessWidget {
-  const EnterMessageWithDependencies({
-    Key? key,
-  }) : super(key: key);
+  const EnterMessageWithDependencies({super.key});
 
   List<SingleChildWidget> get _services => [
     Provider<EnterMessageFieldService>(

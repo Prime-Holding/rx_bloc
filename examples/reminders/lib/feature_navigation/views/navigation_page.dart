@@ -7,6 +7,8 @@ import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/models/routes_path.dart';
 import '../../lib_router/router.dart';
 
+/// Widget wrapping the bottom navigation bar, allowing the user to navigate
+/// between the dashboard and the reminders list
 class NavigationPage extends StatelessWidget {
   const NavigationPage({
     required this.child,

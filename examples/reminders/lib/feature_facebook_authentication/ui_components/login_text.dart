@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Wrapper widget around the [Text] used on the login page
 class LoginText extends StatelessWidget {
   const LoginText({required this.text, super.key});
 

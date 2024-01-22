@@ -99,6 +99,7 @@ class CreateCommand extends Command<int> {
         'realtime_communication': arguments.realtimeCommunicationEnabled,
         'enable_pin_code': arguments.pinCodeEnabled,
         'cicd': arguments.cicdEnabled,
+        'cicd_github': arguments.cicdGithubEnabled,
         'enable_auth_matrix': arguments.authMatrixEnabled,
       },
     );
@@ -200,8 +201,8 @@ class CreateCommand extends Command<int> {
         // ignore: lines_longer_than_80_chars
         '${lightCyan.wrap('${arguments.organisation}.${arguments.projectName}')}');
 
-    _usingLog('Firebase Analytics', arguments.analyticsEnabled);
     _usingLog('Firebase Push Notifications', true);
+    _usingLog('Firebase Analytics and Crashlytics', arguments.analyticsEnabled);
     _usingLog('Feature Counter Showcase', arguments.counterEnabled);
     _usingLog('Feature Deep links Showcase', arguments.deepLinkEnabled);
     _usingLog(

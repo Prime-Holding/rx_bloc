@@ -51,17 +51,28 @@ firebase_app_id_map = {
 
 keychain_path = Dir.getwd + '/devops/credentials/{{project_name.paramCase()}}-keychain.keychain'
 
-##################### Lanes #####################
+private_lane :setup_environment_variable do |options|
+    value = ''
+    loop do
+        value = prompt(
+            text: "Enter a value for #{options[:name]}: ",
+            secure_text: true
+        )
+        break if value.strip.length > 0
+    end
+
+    ENV[options[:name]] = value
+end
 
 desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
-  - mobile_distribution_repository_access_secret"
+  - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET"
 private_lane :fetch_credentials do
     ensure_env_vars(
-        env_vars: ['mobile_distribution_repository_access_secret']
+        env_vars: ['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET']
     )
 
-    token = ENV["mobile_distribution_repository_access_secret"]
+    token = ENV["MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET"]
 
     Dir.chdir("../devops") do
         unless Dir.exist?('credentials')
@@ -115,8 +126,8 @@ end
 
 desc "Start an automatic build
 Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
     - tag_build_trigger_reason_tag_name
 Expected input parameters:
     - platform: string (android, ios)
@@ -146,9 +157,9 @@ lane :build_flutter_app do |options|
 end
 
 desc "Start a custom build
-Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret
+If the following environment variables are not set the task will prompt the user to enter them:
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
 Expected input parameters:
     - platform: string (android, ios)
     - build_name: string (1.2.0)
@@ -158,10 +169,17 @@ Example:
     fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:uat"
 lane :build_custom do |options|
     environment = options[:environment]
-
     ensure_build_environment(environment: environment)
-    set_platform(platform: options[:platform])
 
+    if ENV['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET')
+    end
+
+    if ENV['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD')
+    end
+
+    set_platform(platform: options[:platform])
     generate_code()
     fetch_credentials()
     install_credentials()
@@ -193,7 +211,7 @@ end
 platform :android do
     desc "Decode credentials for Android build and deployment
     Expected environment variables:
-      - mobile_distribution_encryption_password
+      - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
     Creates the following environment variables:
       - ANDROID_KEYSTORE_PATH
       - ANDROID_KEYSTORE_ALIAS
@@ -201,7 +219,7 @@ platform :android do
       - ANDROID_KEYSTORE_PASSWORD"
     private_lane :install_credentials do
         ensure_env_vars(
-            env_vars: ['mobile_distribution_encryption_password']
+            env_vars: ['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD']
         )
 
         Dir.chdir("../devops/credentials") do
@@ -249,7 +267,7 @@ platform :android do
 
     desc 'Deploy the app to google play store'
     private_lane :deploy_platform do |options|
-        Dir.chdir('../devops/credentials') do
+        Dir.chdir('../credentials') do
             sh('./decode.sh deploy_android')
         end
 
@@ -260,7 +278,7 @@ platform :android do
             release_status: 'draft',
             track: 'internal',
             version_name: version_name,
-            json_key: File.expand_path('../devops/credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
+            json_key: File.expand_path('../credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
             aab: File.expand_path("app-#{options[:environment]}-release.aab"),
             skip_upload_changelogs: true,
             skip_upload_images: true,
@@ -297,11 +315,11 @@ end
 platform :ios do
     desc 'Decode credentials for iOS build and deployment
     Expected environment variables:
-      - mobile_distribution_encryption_password'
+      - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'
     private_lane :install_credentials do
         ensure_env_vars(
             env_vars: [
-                'mobile_distribution_encryption_password',
+                'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD',
             ]
         )
 
@@ -392,7 +410,7 @@ platform :ios do
 
     desc 'Deploy the app to apple testflight'
     private_lane :deploy_platform do |options|
-        Dir.chdir('../credentials/ios') do
+        Dir.chdir('../credentials') do
             sh('./decode.sh deploy_ios')
         end
 
@@ -401,9 +419,9 @@ platform :ios do
             # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
             key_id: '',
             issuer_id: '',
-            key_filepath: File.expand_path('devops/credentials/decoded/ios/AuthKey_XX0XX00XXX.p8'),
+            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey_XX0XX00XXX.p8'),
         )
-    
+
         upload_to_testflight(
             api_key: api_key,
             skip_waiting_for_build_processing: true,
@@ -429,9 +447,17 @@ end
 
 desc 'Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret'
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'
 lane :deploy do
+    if ENV['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET')
+    end
+
+    if ENV['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD')
+    end
+
     fetch_credentials()
 
     Dir.chdir('../devops/artifacts') do
@@ -451,9 +477,17 @@ end
 
 desc 'Deploy the debug symbols to firebase
 Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret'
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'
 lane :deploy_debug_symbols do
+    if ENV['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET')
+    end
+
+    if ENV['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD')
+    end
+
     fetch_credentials()
 
     Dir.chdir('../devops/credentials/') do

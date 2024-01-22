@@ -145,6 +145,7 @@ class GeneratorArgumentsProvider {
     // CI/CD
     final cicdType = _reader.read<CICDType>(CommandArguments.cicd);
     final cicdEnabled = cicdType != CICDType.none;
+    final cicdGithubEnabled = cicdType == CICDType.github;
 
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
@@ -157,6 +158,7 @@ class GeneratorArgumentsProvider {
       devMenuEnabled: devMenuEnabled,
       patrolTestsEnabled: patrolTestsEnabled,
       cicdEnabled: cicdEnabled,
+      cicdGithubEnabled: cicdGithubEnabled,
     );
   }
 

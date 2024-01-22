@@ -3,8 +3,10 @@
 import 'package:flutter/widgets.dart';
 
 class LoadingStateSwitcher extends StatefulWidget {
-  const LoadingStateSwitcher({required this.builder, Key? key})
-      : super(key: key);
+  const LoadingStateSwitcher({
+    required this.builder,
+    super.key,
+  });
 
   final Widget Function(bool isDataLoading, void Function(bool value)) builder;
 

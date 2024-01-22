@@ -25,9 +25,13 @@ part 'routes/navigation_routes.dart';
 part 'routes/root/login_routes.dart';
 part 'routes/root/splash_routes.dart';
 
+/// The app's main router used to navigate between pages
 class AppRouter {
   AppRouter(
-      this.coordinatorBloc, this.rootNavigatorKey, this.shellNavigatorKey);
+    this.coordinatorBloc,
+    this.rootNavigatorKey,
+    this.shellNavigatorKey,
+  );
 
   final CoordinatorBlocType coordinatorBloc;
   final GlobalKey<NavigatorState> rootNavigatorKey;
@@ -36,6 +40,7 @@ class AppRouter {
   late final _GoRouterRefreshStream _refreshListener =
       _GoRouterRefreshStream(coordinatorBloc.states.isAuthenticated);
 
+  /// Exposes the [GoRouter] instance used for the app's main navigation
   GoRouter get router => _goRouter;
 
   late final GoRouter _goRouter = GoRouter(
@@ -111,6 +116,7 @@ class _GoRouterRefreshStream extends ChangeNotifier {
   }
 }
 
+/// Contract containing data about a app navigation route
 abstract class RouteData {
   String get routeLocation;
 }

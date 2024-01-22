@@ -6,11 +6,13 @@ import '../../base/models/reminder/reminder_model.dart';
 import '../../base/services/reminders_service.dart';
 import '../models/dashboard_model.dart';
 
+/// Service used to facilitate managing and fetching dashboard related data
 class DashboardService {
   DashboardService(this._remindersService);
 
   final RemindersService _remindersService;
 
+  /// Fetches the next page of reminders for the dashboard
   Future<PaginatedList<ReminderModel>> getDashboardPaginated(
       BehaviorSubject<PaginatedList<ReminderModel>> paginatedList) async {
     final request = ReminderModelRequest(
@@ -25,6 +27,8 @@ class DashboardService {
     return list;
   }
 
+  /// Fetches the dashboard counters model containing details about the number
+  /// of complete and incomplete reminders
   Future<DashboardCountersModel> getDashboardModel() async {
     final data = await Future.wait([
       _remindersService.getCompleteCount(),
@@ -40,6 +44,11 @@ class DashboardService {
     );
   }
 
+  /// Determines how a reminder should be managed based on its due date and
+  /// completion status. If the reminder's due date is within a certain range
+  /// and it is not complete, it should be merged; if it is complete or its due
+  /// date is not within the range, it should be removed. Returns the
+  /// appropriate [ManageOperation] for the reminder.
   Future<ManageOperation> getManageOperation(
       Identifiable model, List<ReminderModel> _) async {
     final dateRange = _getDateRange();
@@ -61,6 +70,8 @@ class DashboardService {
         from: DateTime.now().subtract(const Duration(days: 10)),
       );
 
+  /// Returns a new dashboard counters model with updated number of complete and
+  /// incomplete reminders based on the [counterOperation] that was performed
   DashboardCountersModel getCountersModelFromCounterOperation({
     required DashboardCountersModel dashboardCounters,
     required CounterOperation counterOperation,
@@ -75,6 +86,8 @@ class DashboardService {
 }
 
 extension _DashboardModelX on DashboardCountersModel {
+  /// Method used to recalculate the number of incomplete reminders based on
+  /// the [counterOperation] that was performed
   int recalculateIncompleteWithCounterOperation(
     CounterOperation counterOperation,
   ) {
@@ -94,6 +107,8 @@ extension _DashboardModelX on DashboardCountersModel {
     }
   }
 
+  /// Method used to recalculate the number of complete reminders based on
+  /// the [counterOperation] that was performed
   int recalculateCompleteWithCounterOperation(
     CounterOperation counterOperation,
   ) {

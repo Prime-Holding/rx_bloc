@@ -5,6 +5,9 @@ import 'dart:developer';
 import '../../assets.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/repositories/push_notification_repository.dart';
+{{#analytics}}
+import '../../lib_analytics/repositories/analytics_repository.dart';
+{{/analytics}}
 import '../../lib_permissions/services/permissions_service.dart';
 import '../models/auth_token_model.dart';
 import '../repositories/auth_repository.dart';
@@ -12,12 +15,16 @@ import '../repositories/auth_repository.dart';
 class UserAccountService {
   UserAccountService(
     this._authRepository,
-    this._pushSubscriptionRepository,
+    this._pushSubscriptionRepository,{{#analytics}}
+    this._analyticsRepository,{{/analytics}}
     this._permissionsService,
   );
 
   final AuthRepository _authRepository;
   final PushNotificationRepository _pushSubscriptionRepository;
+  {{#analytics}}
+  final AnalyticsRepository _analyticsRepository;
+  {{/analytics}}
   final PermissionsService _permissionsService;
 
   bool _logoutLocked = false;
@@ -47,6 +54,11 @@ class UserAccountService {
 
     /// Load permissions
     await loadPermissions();
+
+    {{#analytics}}
+    // Set user data
+    await _analyticsRepository.setUserIdentifier('logged_in_user_id');
+    {{/analytics}}
   }
 
   /// After successful login saves the auth `token` and `refresh token` to
@@ -108,6 +120,11 @@ class UserAccountService {
       /// Clear locally stored auth data
       await _authRepository.clearAuthData();
 
+      {{#analytics}}
+      // Clear analytics identifiers
+      await _analyticsRepository.logout();
+
+      {{/analytics}}
       /// Reload user permissions
       await loadPermissions();
 

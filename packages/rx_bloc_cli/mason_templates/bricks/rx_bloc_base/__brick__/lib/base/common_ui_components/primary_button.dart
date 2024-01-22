@@ -11,8 +11,8 @@ class PrimaryButton extends StatelessWidget {
     this.child,
     this.isLoading = false,
     this.loadingIndicatorSize = 20,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool isLoading;
   final Widget? child;

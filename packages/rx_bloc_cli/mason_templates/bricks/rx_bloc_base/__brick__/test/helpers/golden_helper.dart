@@ -4,9 +4,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
+import 'package:{{project_name}}/assets.dart';
 import 'package:{{project_name}}/base/theme/design_system.dart';
 import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
-import 'package:{{project_name}}/l10n/l10n.dart';
+import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';
 
 import 'models/labeled_device_builder.dart';
 import 'models/scenario.dart';
@@ -89,7 +90,7 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
       tester,
       builder,
       localizations: const [
-        I18n.delegate,
+        AppI18n.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
       localeOverrides: I18n.supportedLocales,

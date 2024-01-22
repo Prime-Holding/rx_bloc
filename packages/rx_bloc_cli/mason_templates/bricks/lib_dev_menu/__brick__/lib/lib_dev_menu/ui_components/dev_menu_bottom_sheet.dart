@@ -23,7 +23,7 @@ void showAppDevMenuBottomSheet(BuildContext context) => showBlurredBottomSheet(
     );
 
 class _DevMenuWidget extends StatefulWidget {
-  const _DevMenuWidget({Key? key}) : super(key: key);
+  const _DevMenuWidget();
 
   @override
   State<StatefulWidget> createState() => _DevMenuState();

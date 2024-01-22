@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Widget that displays an error message and a button to retry an action.
 class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({
     required this.error,

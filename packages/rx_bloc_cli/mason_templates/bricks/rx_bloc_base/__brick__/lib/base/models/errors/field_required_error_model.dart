@@ -4,7 +4,8 @@ class FieldRequiredErrorModel<T> extends ErrorModel {
   FieldRequiredErrorModel({
     required this.fieldKey,
     required this.fieldValue,
-  });
+    Map<String, String>? errorLogDetails,
+  }) : super(errorLogDetails);
 
   /// The translatable field key.
   final String fieldKey;

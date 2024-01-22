@@ -9,10 +9,9 @@ class UpdateButton extends StatelessWidget {
   const UpdateButton({
     required bool isActive,
     required VoidCallback onPressed,
-    Key? key,
+    super.key,
   })  : _isActive = isActive,
-        _onPressed = onPressed,
-        super(key: key);
+        _onPressed = onPressed;
 
   final VoidCallback _onPressed;
 

@@ -1,0 +1,55 @@
+name: "Build and deploy app"
+
+on:
+  push:
+    tags:
+      - '*-v[0-9]+.[0-9]+.[0-9]+\+[0-9]+' # Example: production-v1.2.3+45 or my_awesome_tag_name-development-v1.2.3+45
+
+jobs:
+  app_version_extraction:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Extract build name and number from tag
+          id: extraction
+          run: |
+            TAGNAME=$(echo "${GITHUB_REF#refs/tags/*}")
+
+            VERSION=$(echo $TAGNAME | rev | cut -d "v" -f 1 | rev)
+            BUILD_NAME=$(echo $VERSION | cut -d "+" -f 1)
+            BUILD_NUMBER=$(echo $VERSION | cut -d "+" -f 2-)
+
+            NAMEWITHENV=$(echo $TAGNAME | rev | cut -d "-" -f 2- | rev)
+            FLAVOR=$(echo $NAMEWITHENV | rev | cut -d "-" -f 1 | rev)
+
+            # Export the variables, so they are visible in other jobs
+            echo "build_name=${BUILD_NAME}" >> $GITHUB_OUTPUT
+            echo "build_number=${BUILD_NUMBER}" >> $GITHUB_OUTPUT
+            echo "flavor=${FLAVOR}" >> $GITHUB_OUTPUT
+      outputs:
+        build_name: ${{ steps.extraction.outputs.build_name }}
+        build_number: ${{ steps.extraction.outputs.build_number }}
+        flavor: ${{ steps.extraction.outputs.flavor }}
+
+  build_android_app:
+    needs: app_version_extraction
+    uses: ./.github/workflows/fastlane_android_custom_build_and_deploy.yaml
+    with:
+      build_name: ${{ needs.app_version_extraction.outputs.build_name }}
+      build_number: ${{ needs.app_version_extraction.outputs.build_number }}
+      flavor: ${{ needs.app_version_extraction.outputs.flavor }}
+      publish_to_store: false
+    secrets:
+      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+  
+  build_ios_app:
+    needs: app_version_extraction
+    uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
+    with:
+      build_name: ${{ needs.app_version_extraction.outputs.build_name }}
+      build_number: ${{ needs.app_version_extraction.outputs.build_number }}
+      flavor: ${{ needs.app_version_extraction.outputs.flavor }}
+      publish_to_store: false
+    secrets:
+      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}

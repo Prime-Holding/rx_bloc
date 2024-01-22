@@ -1,4 +1,4 @@
-part of rx_bloc_generator;
+part of '../../rx_bloc_generator.dart';
 
 // Generates the 'events' and 'states' getter methods
 class _StaticStateGetterMethod implements _BuilderContract {

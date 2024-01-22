@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/primary_button.dart';
-import '../../base/utils/helpers.dart';
 import '../blocs/notifications_bloc.dart';
 
 @RoutePage()

@@ -1,5 +1,6 @@
 part of '../../router.dart';
 
+/// Route used for navigating to the login page
 @TypedGoRoute<LoginRoute>(path: RoutesPath.login)
 @immutable
 class LoginRoute extends GoRouteData implements RouteDataModel {

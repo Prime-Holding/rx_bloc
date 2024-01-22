@@ -1,5 +1,6 @@
 part of '../../router.dart';
 
+/// Route used for navigating to the splash page
 @TypedGoRoute<SplashRoute>(path: RoutesPath.splash)
 @immutable
 class SplashRoute extends GoRouteData implements RouteDataModel {

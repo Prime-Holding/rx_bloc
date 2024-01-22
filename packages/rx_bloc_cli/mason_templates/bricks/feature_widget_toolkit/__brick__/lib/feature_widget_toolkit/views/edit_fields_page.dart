@@ -11,8 +11,10 @@ import '../ui_components/widget_section.dart';
 import '../utils/edit_address_custom_localisations.dart';
 
 class EditFieldsPage extends StatelessWidget {
-  const EditFieldsPage({required this.pageController, Key? key})
-      : super(key: key);
+  const EditFieldsPage({
+    required this.pageController,
+    super.key,
+  });
 
   final PageController pageController;
 

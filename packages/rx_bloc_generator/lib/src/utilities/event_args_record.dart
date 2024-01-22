@@ -1,4 +1,4 @@
-part of rx_bloc_generator;
+part of '../../rx_bloc_generator.dart';
 
 class _EventArgsRecord {
   const _EventArgsRecord(this.method);

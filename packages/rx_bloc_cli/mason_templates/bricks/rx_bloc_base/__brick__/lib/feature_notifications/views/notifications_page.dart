@@ -13,7 +13,7 @@ import '../../lib_router/router.dart';
 import '../blocs/notifications_bloc.dart';
 
 class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({Key? key}) : super(key: key);
+  const NotificationsPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

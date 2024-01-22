@@ -49,7 +49,7 @@ void runGoldenTests(
   for (final db in deviceBuilders) {
     //test each DeviceBuilder in both light mode and dark mode
     for (final theme in Themes.values) {
-      final themeName = describeEnum(theme);
+      final themeName = theme.name;
       final directory = '${themeName}_theme';
 
       testGoldens('$db - $themeName', (tester) async {

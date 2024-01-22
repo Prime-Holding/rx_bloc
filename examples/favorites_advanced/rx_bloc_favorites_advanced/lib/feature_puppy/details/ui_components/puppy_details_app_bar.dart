@@ -11,9 +11,8 @@ class PuppyDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const PuppyDetailsAppBar({
     required Puppy puppy,
-    Key? key,
-  })  : _puppy = puppy,
-        super(key: key);
+    super.key,
+  })  : _puppy = puppy;
 
   final Puppy _puppy;
 

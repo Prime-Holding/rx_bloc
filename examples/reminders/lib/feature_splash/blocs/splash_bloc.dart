@@ -9,6 +9,7 @@ part 'splash_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the SplashBloC.
 abstract class SplashBlocEvents {
+  /// Event used to initialize the app specific components
   void initializeApp();
 }
 

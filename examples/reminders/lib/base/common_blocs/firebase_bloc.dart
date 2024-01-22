@@ -10,10 +10,13 @@ part 'firebase_bloc_extensions.dart';
 
 /// A contract class containing all events of the FirebaseBloC.
 abstract class FirebaseBlocEvents {
+  /// Event used to initiate the login process
   void logIn({bool anonymous = false, bool setToFalse = false});
 
+  /// Event used to check if there is a currently logged in user
   void checkIfUserIsLoggedIn();
 
+  /// Event used to initiate the logout process for the currently logged in user
   void logOut();
 }
 
@@ -25,14 +28,21 @@ abstract class FirebaseBlocStates {
   /// The error state
   Stream<String> get errors;
 
+  /// State containing the currently logged in user, if any
   Stream<User?> get currentUserData;
 
+  /// State indicating whether there is currently a user logged in
   Stream<bool> get isUserLoggedIn;
 
+  /// State indicating whether currently the user is logged out
   Stream<bool> get userLoggedOut;
 
+  /// State emitting true when the user has successfully logged in. Triggered
+  /// by the [logIn] event.
   ConnectableStream<bool> get loggedIn;
 
+  /// State emitting true when the user has successfully logged out. Triggered
+  /// by the [logOut] event.
   ConnectableStream<bool> get loggedOut;
 }
 

@@ -14,8 +14,8 @@ class PopupBuilder<T> extends StatelessWidget {
     this.onCanceled,
     this.tooltip = '',
     this.tooltipEnabled = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// List of [PopupMenuEntry] items that will be built.
   final List<PopupMenuEntry<T>> items;

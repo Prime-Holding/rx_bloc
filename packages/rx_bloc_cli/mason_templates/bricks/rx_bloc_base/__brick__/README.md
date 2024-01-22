@@ -74,7 +74,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
 
-<img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.jpg" alt="Rx Bloc Architecture"></img>
+<img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/mason_templates/bricks/rx_bloc_base/__brick__/docs/app_architecture.png" alt="Rx Bloc Architecture"></img>
 
 ## Routing
 
@@ -268,6 +268,39 @@ If there are new keys added to the main translation file they can be propagated 
 
 Upon rebuild, your translations are auto-generated inside `lib/assets.dart`. In order to use them, you need to import the `l10n.dart` file from `lib/l10n/l10n.dart` and then access the translations from your BuildContext via `context.l10n.someTranslationKey` or `context.l10n.featureName.someTranslationKey`.
 
+#### Remote localization lookup
+
+Localization lookups are also supported. That means that you can request any remote localizations from a dedicated translations endpoint at app start (by default, all remote localizations are fetched during the splash screen). Grabbing any remote localization for existing features will replace the local translations with new ones.
+
+The endpoint retrieving the updated translations should return an object containing key-value pairs (under the `translations` key) where the key is the language code, while the value is a translation file object containing values to be overwritten.
+
+Example response:
+```json
+{
+   "translations":{
+      "en":{
+         "_ok":"Okay",
+         "login___logIn":"Login via email"
+      },
+      "bg":{
+         "_ok":"ok",
+         "login___logIn":"Вход с имейл"
+      }
+   }
+}
+```
+
+One thing to note is that the keys in the translations follow a naming scheme which consists of three parts: the feature name, separator and the translation key. The feature name by default represents the feature under which the translations are categorized followed by two underscores. It is optional and if omitted, the key overrides are placed within the main translations. The separator is a character used to separate the feature name and the translation key. The translation key is the key within the specified feature used in the app.
+
+Example:
+```
+Translations feature: feature_notifications
+Feature name: notifications__
+Separator: _
+Translation key: ok
+Full translation key (feature name+separator+translation key): notifications___ok
+```
+
 ## Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
@@ -325,8 +358,9 @@ Some of the important paths are:
 | `bin/server/controllers/` | All controllers are located here |
 | `bin/server/models/` | Data models are placed here |
 | `bin/server/repositories/` | Repositories that are used by the controllers reside here |
+| `bin/server/di/` | All server related dependencies are registered here |
 
-*Note:* When creating a new controller, make sure you also register it inside the `_registerControllers()` method in `start_server.dart`.
+*Note:* When creating a new controller, make sure you also register it inside the `ServerDependencies.registerControllers` method in `server_dependencies.dart`. Respectively, register any dependencies in the `ServerDependencies.registerDependencies` in the same file.
 
 ## Push notifications
 
@@ -342,7 +376,6 @@ In order to make the notifications work on your target platform, make sure you f
 ## Social Logins Library
 
 Allows you to authenticate users in your app with Apple, Google and Facebook.
-
 
 #### Apple Authentication
 It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package.  
@@ -395,11 +428,8 @@ productFlavors{
 - for iOS in ***Podfile*** platform must be at least 12
 - for Android ***minSdkVersion*** must be at least 21.
 
-All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro).
-{{/enable_social_logins}}
-
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro). {{/enable_social_logins}}
 {{#enable_dev_menu}}
-
 ## Dev Menu
 
 Dev menu brick is a useful feature when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
@@ -430,11 +460,7 @@ As a good use case, you can wrap your page widget with this widget so you are ab
 By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
-`Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
-
-{{/enable_dev_menu}}
-
-
+`Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.{{/enable_dev_menu}}
 {{#enable_patrol}}
 ## Patrol Integration Tests
 
@@ -446,9 +472,7 @@ This package enables applications to use native automation features
 
 #### Running the Tests
 
-To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio 
-{{/enable_patrol}}
-
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio{{/enable_patrol}}
 {{#realtime_communication}}
 ## Realtime Communication
 
@@ -463,16 +487,29 @@ The brick contains widgets for entering pin codes, pasting them, resend logic an
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 {{#enable_auth_matrix}}
 ## Auth Matrix
-The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.
-{{/enable_auth_matrix}}
 
+The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.{{/enable_auth_matrix}}
 {{#cicd}}
 ## CI/CD
 
 The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
 
 For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].{{/cicd}}
+{{#cicd_github}}
+#### Github
 
+The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository. To trigger the pipeline, a tag with the following format has to be pushed:
+
+```
+{optional_prefix_text_ending_with_a_dash_sign-}{flavor}-v{build_name}+{build_number}
+```
+
+For example, the following tag name will trigger an Android and iOS build:
+```
+development-v1.2.3+45
+```
+
+After the apps are successfully built and signed, the artefacts can be downloaded from the completed github action from the Actions tab.{{/cicd_github}}
 {{#enable_pin_code}}
 ## Feature Pin Code
 

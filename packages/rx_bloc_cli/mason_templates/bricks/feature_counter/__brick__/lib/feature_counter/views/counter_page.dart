@@ -14,9 +14,7 @@ import '../../lib_auth/blocs/user_account_bloc.dart';{{/has_authentication}}
 import '../blocs/counter_bloc.dart';
 
 class CounterPage extends StatelessWidget {
-  const CounterPage({
-    Key? key,
-  }) : super(key: key);
+  const CounterPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

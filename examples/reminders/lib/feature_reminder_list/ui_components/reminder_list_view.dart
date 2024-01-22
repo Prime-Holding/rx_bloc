@@ -4,14 +4,18 @@ import 'package:rx_bloc_list/rx_bloc_list.dart';
 import '../../base/common_ui_components/app_progress_indicator.dart';
 import '../../base/models/reminder/reminder_model.dart';
 import '../blocs/reminder_list_bloc.dart';
-import 'scroll_to_index_widget.dart';
+import 'reminder_list_scroll_view.dart';
 
+/// Widget that uses a RxPaginatedBuilder to create a paginated list of
+/// reminders, with refresh functionality and different views for success,
+/// loading, and error states
 class ReminderListView extends StatelessWidget {
   const ReminderListView({
     this.createdReminderId,
     super.key,
   });
 
+  /// The id of the reminder that was just created to be scrolled to
   final String? createdReminderId;
 
   @override

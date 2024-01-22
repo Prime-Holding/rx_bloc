@@ -1,4 +1,4 @@
-part of rx_bloc_generator;
+part of '../../rx_bloc_generator.dart';
 
 /// Generates the type class for the blocClass
 ///

@@ -14,8 +14,8 @@ import '../blocs/login_bloc.dart';
 class LoginForm extends StatefulWidget {
   const LoginForm({
     this.title = 'Enter your login credentials',
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
 

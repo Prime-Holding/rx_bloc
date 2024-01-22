@@ -19,4 +19,7 @@ vars:
     description: The domain of the app
   cicd:
     type: boolean
-    description: The type of enabled ci/cd option
+    description: Whether or not the ci/cd is enabled
+  cicd_github:
+    type: boolean
+    description: Flag enabling the github ci/cd implementation

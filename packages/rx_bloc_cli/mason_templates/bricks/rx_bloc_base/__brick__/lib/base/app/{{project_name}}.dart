@@ -10,7 +10,10 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:local_session_timeout/local_session_timeout.dart';{{/enable_pin_code}}
 import 'package:provider/provider.dart'; {{#enable_change_language}}
 import 'package:widget_toolkit/language_picker.dart'; {{/enable_change_language}}
-import '../../l10n/l10n.dart';{{#has_authentication}}{{#enable_pin_code}}
+
+import '../../assets.dart';
+import '../../l10n/{{project_name}}_app_i18n.dart';{{#analytics}}
+import '../../lib_analytics/blocs/analytics_bloc.dart';{{/analytics}}{{#has_authentication}}{{#enable_pin_code}}
 import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}} {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
@@ -38,8 +41,8 @@ class {{project_name.pascalCase()}} extends StatelessWidget {
     this.config = EnvironmentConfig.production,
 {{#enable_dev_menu}}
     this.createDevMenuInstance,{{/enable_dev_menu}}
-  Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final EnvironmentConfig config;
 {{#enable_dev_menu}}
@@ -77,6 +80,10 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   {{#enable_change_language}}
   late StreamSubscription<LanguageModel> _languageSubscription; {{/enable_change_language}}{{#enable_pin_code}}
   late SessionConfig _sessionConfig;{{/enable_pin_code}}
+  {{#analytics}}
+  // ignore: unused_field
+  late AnalyticsBlocType _analyticsBloc;
+  {{/analytics}}
 
   @override
   void initState() {
@@ -86,6 +93,9 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     {{#enable_change_language}}
     _updateLocale(); {{/enable_change_language}} {{#push_notifications}}
     _configureFCM(); {{/push_notifications}}
+    {{#analytics}}
+    _configureAnalyticsAndCrashlytics();
+    {{/analytics}}
     _configureInterceptors();
     super.initState();
   }
@@ -155,7 +165,15 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         .listen((message) => onForegroundMessage(context, message));
     FirebaseMessaging.onMessageOpenedApp
         .listen((message) => onMessageOpenedFromBackground(context, message));
-  }{{/push_notifications}}
+  }{{/push_notifications}}{{#analytics}}
+
+  void _configureAnalyticsAndCrashlytics() {
+    // Currently we only need to have a reference to an analytics bloc instance
+    // since it's not exposing any events or states and all operations
+    // are performed through its internal subscriptions.
+    _analyticsBloc = context.read();
+  }
+  {{/analytics}}
 
   void _configureInterceptors() {
     context.read<PlainHttpClient>().configureInterceptors({{#analytics}}
@@ -232,7 +250,7 @@ Widget _buildMaterialApp(BuildContext context) => MaterialApp.router(
        theme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light()),
        darkTheme: {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
        localizationsDelegates: const [
-         I18n.delegate,
+         AppI18n.delegate,
          ...GlobalMaterialLocalizations.delegates,
        ],
        supportedLocales: I18n.supportedLocales,

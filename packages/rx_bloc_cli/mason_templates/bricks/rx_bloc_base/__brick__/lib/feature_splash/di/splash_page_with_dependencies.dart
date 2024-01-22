@@ -10,8 +10,8 @@ import '../views/splash_page.dart';
 class SplashPageWithDependencies extends StatelessWidget {
   const SplashPageWithDependencies({
     this.redirectToLocation,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String? redirectToLocation;
 
