@@ -1,7 +1,5 @@
 require 'xcodeproj'
 
-# This script will only work on MacOS as any XCode related commands aren't available elsewhere
-
 if ARGV.length != 2
   puts 'We need exactly two arguments'
   exit

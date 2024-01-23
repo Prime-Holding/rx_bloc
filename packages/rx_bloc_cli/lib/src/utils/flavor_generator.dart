@@ -24,19 +24,15 @@ class FlavorGenerator {
       workingDirectory: args.outputDirectory.path,
     );
 
-    if (Platform.isMacOS) {
-      // Add Firebase build script to the xcode project. This should only work
-      // when run on MacOS, due to the XCode commands being available only there
-      final addFirebaseBuildScript = await Process.run(
-        'ruby',
-        [
-          'setup_scripts/add_firebase_build_phase.rb',
-          'ios/Runner.xcodeproj',
-          'setup_scripts/firebase_build_script.sh',
-        ],
-        workingDirectory: args.outputDirectory.path,
-      );
-    }
+    final addFirebaseBuildScript = await Process.run(
+      'ruby',
+      [
+        'setup_scripts/add_firebase_build_phase.rb',
+        'ios/Runner.xcodeproj',
+        'setup_scripts/firebase_build_script.sh',
+      ],
+      workingDirectory: args.outputDirectory.path,
+    );
   }
 
   ///region Helper functions

@@ -12,6 +12,7 @@ import '../models/generator_arguments.dart';
 import '../models/generator_arguments_provider.dart';
 import '../models/readers/interactive_arguments_reader.dart';
 import '../models/readers/non_interactive_arguments_reader.dart';
+import '../processors/common/generated_files_processor.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/file_cleanup.dart';
 import '../utils/flavor_generator.dart';
@@ -63,16 +64,19 @@ class CreateCommand extends Command<int> {
 
   /// Generates the basic flutter project
   Future<void> _preGen(GeneratorArguments args) async {
+    // Generate empty flutter project
     final createFlutterProject = await Process.run(
       'flutter',
-      [
-        'create',
-        args.outputDirectory.path,
-      ],
+      ['create', args.outputDirectory.path],
     );
 
+    // Setup flavors
     final flavorGen = FlavorGenerator(_generator);
     await flavorGen.addFlavors(args);
+
+    // Modify contents of specified generated files
+    final processor = GeneratedFilesProcessor(args);
+    await processor.execute();
   }
 
   GeneratorArguments _readGeneratorArguments() {
