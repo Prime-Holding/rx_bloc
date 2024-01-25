@@ -64,19 +64,27 @@ class CreateCommand extends Command<int> {
 
   /// Generates the basic flutter project
   Future<void> _preGen(GeneratorArguments args) async {
+    final _baseCreation = _logger.progress('Generating base project');
+
     // Generate empty flutter project
     final createFlutterProject = await Process.run(
       'flutter',
       ['create', args.outputDirectory.path],
     );
 
+    _baseCreation.update('Adding flavors');
+
     // Setup flavors
     final flavorGen = FlavorGenerator(_generator);
     await flavorGen.addFlavors(args);
 
+    _baseCreation.update('Applying changes to base project');
+
     // Modify contents of specified generated files
     final processor = GeneratedFilesProcessor(args);
     await processor.execute();
+
+    _baseCreation.complete('Generated base project');
   }
 
   GeneratorArguments _readGeneratorArguments() {

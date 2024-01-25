@@ -5,6 +5,9 @@ import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/string_processor.dart';
 
 import '../../models/generator_arguments.dart';
+import '../android/android_build_gradle_processor.dart';
+import '../android/android_manifest_processor.dart';
+import '../ios/ios_plist_processor.dart';
 
 /// Class managing and processing several generated files
 class GeneratedFilesProcessor {
@@ -19,7 +22,13 @@ class GeneratedFilesProcessor {
 
   /// List of (path,processor) tuples for processing generated files
   List<(String, StringProcessor)> get _processors => [
-        ('android/app/build.gradle', AppBuildGradleProcessor()),
+        ('android/app/build.gradle', AppBuildGradleProcessor(args)),
+        ('android/build.gradle', AndroidBuildGradleProcessor(args)),
+        (
+          'android/app/src/main/AndroidManifest.xml',
+          AndroidManifestProcessor(args),
+        ),
+        ('ios/Runner/Info.plist', IOSPlistProcessor(args)),
       ];
 
   /// Method processing generated files at given output directory
