@@ -1,13 +1,12 @@
-import 'dart:io';
-
 import 'package:rx_bloc_cli/src/processors/android/app_build_gradle_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/string_processor.dart';
+import 'package:rx_bloc_cli/src/processors/ios/flutter_xcconfig_file_processor.dart';
 
 import '../../models/generator_arguments.dart';
 import '../android/android_build_gradle_processor.dart';
 import '../android/android_manifest_processor.dart';
-import '../ios/ios_plist_processor.dart';
+import '../ios/ios_runner_project_processor.dart';
 
 /// Class managing and processing several generated files
 class GeneratedFilesProcessor {
@@ -28,7 +27,11 @@ class GeneratedFilesProcessor {
           'android/app/src/main/AndroidManifest.xml',
           AndroidManifestProcessor(args),
         ),
-        ('ios/Runner/Info.plist', IOSPlistProcessor(args)),
+        (
+          'ios/Runner.xcodeproj/project.pbxproj',
+          IOSRunnerProjectProcessor(args),
+        ),
+        ..._buildIOSFlutterXCConfigFileProcessorTargets(),
       ];
 
   /// Method processing generated files at given output directory
@@ -40,4 +43,33 @@ class GeneratedFilesProcessor {
       )..execute();
     }
   }
+
+  /// region Private methods
+
+  /// Builds a list of target files to process. The files are xcconfig files
+  /// located within the ios/Flutter directory
+  List<(String, StringProcessor)>
+      _buildIOSFlutterXCConfigFileProcessorTargets() => [
+            'devDebug',
+            'devProfile',
+            'devRelease',
+            'prodDebug',
+            'prodProfile',
+            'prodRelease',
+            'sitDebug',
+            'sitProfile',
+            'sitRelease',
+            'uatDebug',
+            'uatProfile',
+            'uatRelease',
+          ]
+              .map(
+                (file) => (
+                  'ios/Flutter/$file.xcconfig',
+                  FlutterXCConfigFileProcessor(args, file),
+                ),
+              )
+              .toList();
+
+  /// endregion
 }
