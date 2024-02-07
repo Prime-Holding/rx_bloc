@@ -6,6 +6,7 @@ class FileCleanup {
     'lib/pages/',
     '.tmp/',
     'setup_scripts/',
+    'android/environments/',
   ];
   static final _filesToRemove = [
     'test/widget_test.dart',

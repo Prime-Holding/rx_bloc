@@ -69,7 +69,14 @@ class CreateCommand extends Command<int> {
     // Generate empty flutter project
     await Process.run(
       'flutter',
-      ['create', args.outputDirectory.path],
+      [
+        'create',
+        '--project-name',
+        args.projectName,
+        '--org',
+        '${args.organisationDomain}.${args.organisationName}',
+        args.outputDirectory.path,
+      ],
     );
 
     _baseCreation.update('Adding flavors');

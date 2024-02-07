@@ -60,7 +60,8 @@ class FlavorGenerator {
       ['pub', 'add', 'flutter_flavorizr'],
       workingDirectory: outputDir,
     );
-    await Process.run('dart', ['pub', 'get'], workingDirectory: outputDir);
+
+    await Process.run('flutter', ['pub', 'get'], workingDirectory: outputDir);
   }
 
   /// endregion

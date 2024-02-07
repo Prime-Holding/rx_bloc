@@ -1,5 +1,5 @@
 ## [3.4.0]
-* Add changes here
+* Updates to the way the project is being generated: now the project is generated using the `flutter create` command, building on top of the default generated files
 
 ## [3.3.1]
 * Update the build_custom fastlane task so that if the required environment variables do not exist the user will be prompted to enter their values
