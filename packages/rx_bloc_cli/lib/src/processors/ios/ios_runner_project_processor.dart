@@ -1,6 +1,6 @@
 import 'package:rx_bloc_cli/src/extensions/string_buffer_extensions.dart';
 
-import '../common/string_processor.dart';
+import '../common/abstract_processors.dart';
 
 /// String processor used for processing the iOS project file located at:
 /// ios/Runner.xcodeproj/project.pbxproj
@@ -12,9 +12,9 @@ class IOSRunnerProjectProcessor extends StringProcessor {
       '${args.organisationDomain}.${args.organisationName}.${args.projectName}';
 
   @override
-  String execute(String? input) {
+  String execute() {
     if (input == null) return '';
-    final buffer = StringBuffer(input);
+    final buffer = StringBuffer(input!);
 
     _replaceValues(buffer);
 

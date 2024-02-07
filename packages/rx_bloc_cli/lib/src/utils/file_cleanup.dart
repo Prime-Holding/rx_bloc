@@ -1,6 +1,6 @@
 import 'dart:io';
 
-/// Helper class used for cleaning up any redundant files after
+/// Helper class used for cleaning up any redundant files after generation phase
 class FileCleanup {
   static final _dirsToRemove = [
     'lib/pages/',
@@ -14,6 +14,7 @@ class FileCleanup {
     'lib/flavors.dart',
     'assets.tmp.zip',
     'flavorizr.yaml',
+    '.idea/runConfigurations/main_dart.xml',
   ];
 
   static List<String> get _itemsToRemove => [

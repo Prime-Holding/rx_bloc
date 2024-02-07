@@ -1,6 +1,6 @@
 import 'package:rx_bloc_cli/src/extensions/string_buffer_extensions.dart';
 
-import '../common/string_processor.dart';
+import '../common/abstract_processors.dart';
 
 /// String processor used for processing android/build.gradle file
 class AndroidBuildGradleProcessor extends StringProcessor {
@@ -8,9 +8,9 @@ class AndroidBuildGradleProcessor extends StringProcessor {
   AndroidBuildGradleProcessor(super.args);
 
   @override
-  String execute(String? input) {
+  String execute() {
     if (input == null) return '';
-    final buffer = StringBuffer(input);
+    final buffer = StringBuffer(input!);
 
     if (args.analyticsEnabled) {
       _applyAnalyticsOptions(buffer);

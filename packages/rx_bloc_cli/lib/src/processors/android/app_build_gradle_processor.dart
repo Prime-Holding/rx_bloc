@@ -1,7 +1,7 @@
 import 'package:rx_bloc_cli/src/extensions/string_buffer_extensions.dart';
 import 'package:rx_bloc_cli/src/rx_bloc_cli_constants.dart';
 
-import '../common/string_processor.dart';
+import '../common/abstract_processors.dart';
 
 /// String processor used for processing android/app/build.gradle file
 class AppBuildGradleProcessor extends StringProcessor {
@@ -13,9 +13,9 @@ class AppBuildGradleProcessor extends StringProcessor {
       '${args.organisationDomain}.${args.organisationName}.${args.projectName}';
 
   @override
-  String execute(String? input) {
+  String execute() {
     if (input == null) return '';
-    final buffer = StringBuffer(input);
+    final buffer = StringBuffer(input!);
 
     _modifyValues(buffer);
     _addKeyPropertiesConfig(buffer);

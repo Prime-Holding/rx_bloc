@@ -18,13 +18,13 @@ class FlavorGenerator {
     await _generateFlavorConfig(generator, args);
     await _addFlavorizrToProject(args.outputDirectory.path);
 
-    final runFlavorizr = await Process.run(
+    await Process.run(
       'flutter',
       ['pub', 'run', 'flutter_flavorizr'],
       workingDirectory: args.outputDirectory.path,
     );
 
-    final addFirebaseBuildScript = await Process.run(
+    await Process.run(
       'ruby',
       [
         'setup_scripts/add_firebase_build_phase.rb',
@@ -43,7 +43,7 @@ class FlavorGenerator {
     GeneratorArguments arguments,
   ) async {
     final _bundle = await generator(rxBlocFlavorConfigBundle);
-    var generatedFiles = await _bundle.generate(
+    await _bundle.generate(
       DirectoryGeneratorTarget(arguments.outputDirectory),
       vars: {
         'project_name': arguments.projectName,

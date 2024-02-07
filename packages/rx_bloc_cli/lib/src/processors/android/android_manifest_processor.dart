@@ -2,7 +2,7 @@ import 'package:rx_bloc_cli/src/extensions/string_extensions.dart';
 import 'package:rx_bloc_cli/src/extensions/xml_extensions.dart';
 import 'package:xml/xml.dart';
 
-import '../common/string_processor.dart';
+import '../common/abstract_processors.dart';
 
 /// String processor used for processing of the AndroidManifest file located at:
 /// {project_root}/android/app/src/main/AndroidManifest.xml
@@ -14,9 +14,9 @@ class AndroidManifestProcessor extends StringProcessor {
       '${args.organisationDomain}.${args.organisationName}.${args.projectName}';
 
   @override
-  String execute(String? input) {
+  String execute() {
     if (input == null) return '';
-    final xmlDoc = XmlDocument.parse(input);
+    final xmlDoc = XmlDocument.parse(input!);
 
     _setupMissingNodes(xmlDoc);
     _addDeepLinkingSupport(xmlDoc);

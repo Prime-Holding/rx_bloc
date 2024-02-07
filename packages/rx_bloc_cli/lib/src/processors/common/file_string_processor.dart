@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:rx_bloc_cli/src/processors/common/string_processor.dart';
+import 'abstract_processors.dart';
 
 /// Processor handling a string from given file and writes it back into a file
 /// with provided path
@@ -22,8 +22,11 @@ class FileStringProcessor {
 
   /// Method used to process and write the contents back
   void execute() {
-    final contents = file.readAsStringSync();
-    final result = processor.execute(contents);
-    file.writeAsStringSync(result);
+    try {
+      final contents = file.readAsStringSync();
+      processor.input = contents;
+      final result = processor.execute();
+      file.writeAsStringSync(result);
+    } catch (_) {}
   }
 }

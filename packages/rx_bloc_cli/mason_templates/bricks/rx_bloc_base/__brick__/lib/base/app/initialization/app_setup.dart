@@ -31,14 +31,17 @@ Future<void> setupAndRunApp(
 /// such as Firebase or background handlers can be configured here.
 Future configureApp(EnvironmentConfig envConfig) async {
   // TODO: Use flutterfire_cli to create the firebase_options.dart file
-  //  containing the actual configuration values.
-  //  https://firebase.google.com/docs/flutter/setup
+  // containing the actual configuration values.
+  // https://firebase.google.com/docs/flutter/setup
+  //
+  // Below is a minimal configuration of the firebase config to make the project
+  // work out of the box. Please replace it with your own values.
   await safeRun(() => Firebase.initializeApp(
         options: const FirebaseOptions(
-          apiKey: 'apiKey',
-          appId: 'appId',
-          messagingSenderId: 'messagingSenderId',
-          projectId: 'projectId',
+          apiKey: 'AAaaAaAAaa0aa0AA_aAAA0a0a0a0AaOaAaA0aAA',
+          appId: '1:0123456789012:ios:a00000000a0000a0000a0a',
+          messagingSenderId: 'replace_me',
+          projectId: 'replace_me',
         ),
       ));
   await _setupNotifications();{{#analytics}}

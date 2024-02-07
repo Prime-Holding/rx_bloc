@@ -1,12 +1,13 @@
 import 'package:rx_bloc_cli/src/processors/android/app_build_gradle_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
-import 'package:rx_bloc_cli/src/processors/common/string_processor.dart';
+
 import 'package:rx_bloc_cli/src/processors/ios/flutter_xcconfig_file_processor.dart';
 
 import '../../models/generator_arguments.dart';
 import '../android/android_build_gradle_processor.dart';
 import '../android/android_manifest_processor.dart';
 import '../ios/ios_runner_project_processor.dart';
+import 'abstract_processors.dart';
 
 /// Class managing and processing several generated files
 class GeneratedFilesProcessor {

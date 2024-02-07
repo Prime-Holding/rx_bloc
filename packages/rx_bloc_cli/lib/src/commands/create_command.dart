@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
-import 'package:rx_bloc_cli/src/templates/rx_bloc_flavor_config_bundle.dart';
 
 import '../extensions/arg_parser_extensions.dart';
 import '../extensions/arg_results_extensions.dart';
@@ -12,6 +11,7 @@ import '../models/generator_arguments.dart';
 import '../models/generator_arguments_provider.dart';
 import '../models/readers/interactive_arguments_reader.dart';
 import '../models/readers/non_interactive_arguments_reader.dart';
+import '../processors/common/generated_files_post_processor.dart';
 import '../processors/common/generated_files_processor.dart';
 import '../templates/rx_bloc_base_bundle.dart';
 import '../utils/file_cleanup.dart';
@@ -54,7 +54,7 @@ class CreateCommand extends Command<int> {
     final arguments = _readGeneratorArguments();
     await _preGen(arguments);
     await _generateViaMasonBundle(arguments);
-    await _postGen(arguments.outputDirectory);
+    await _postGen(arguments);
     return ExitCode.success.code;
   }
 
@@ -67,7 +67,7 @@ class CreateCommand extends Command<int> {
     final _baseCreation = _logger.progress('Generating base project');
 
     // Generate empty flutter project
-    final createFlutterProject = await Process.run(
+    await Process.run(
       'flutter',
       ['create', args.outputDirectory.path],
     );
@@ -139,10 +139,7 @@ class CreateCommand extends Command<int> {
           },
     );
 
-    // Manually create project gitignore
-    GitIgnoreCreator.generate(arguments.outputDirectory.path);
-
-    var fileCount = generatedFiles.length + 1;
+    var fileCount = generatedFiles.length;
 
     // Manually create devops gitignore
     if (arguments.cicdEnabled) {
@@ -159,11 +156,13 @@ class CreateCommand extends Command<int> {
   }
 
   /// Runs any dart/flutter specific post-gen commands
-  Future<void> _postGen(Directory outputDirectory) async {
-    var progress = _logger.progress('dart pub get');
+  Future<void> _postGen(GeneratorArguments args) async {
+    final outputDirectory = args.outputDirectory;
+
+    var progress = _logger.progress('flutter pub get');
 
     final dartGet = await Process.run(
-      'dart',
+      'flutter',
       ['pub', 'get'],
       workingDirectory: outputDirectory.path,
     );
@@ -171,15 +170,21 @@ class CreateCommand extends Command<int> {
     _progressFinish(dartGet, progress);
 
     progress = _logger.progress(
-      'dart run build_runner build',
+      'flutter pub run build_runner build',
     );
 
+    // Modify contents of specified generated files
+    final postProcessor = GeneratedFilesPostProcessor(args);
+    await postProcessor.execute();
+
     final buildRunner = await Process.run(
-      'dart',
+      'flutter',
       [
+        'pub',
         'run',
         'build_runner',
         'build',
+        '--delete-conflicting-outputs',
       ],
       workingDirectory: outputDirectory.path,
     );
@@ -197,6 +202,9 @@ class CreateCommand extends Command<int> {
     );
 
     _progressFinish(format, progress);
+
+    // Manually create project gitignore after everything is generated
+    GitIgnoreCreator.generate(args.outputDirectory.path);
 
     await FileCleanup.postGenerationCleanup(outputDirectory);
   }

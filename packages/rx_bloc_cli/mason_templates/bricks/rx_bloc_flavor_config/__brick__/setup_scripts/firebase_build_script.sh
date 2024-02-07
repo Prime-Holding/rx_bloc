@@ -1,22 +1,24 @@
-if [ \"${CONFIGURATION}\" == \"Debug-production\" ] || [ \"${CONFIGURATION}\" == \"Release-production\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then
-cp -r \"${PROJECT_DIR}/environments/production/firebase/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"
+# Copies appropriate Firebase configuration files based on the current run configuration
 
-echo \"Production plist copied\"
-elif [ \"${CONFIGURATION}\" == \"Debug-sit\" ] || [ \"${CONFIGURATION}\" == \"Release-sit\" ]; then
+if [ "${CONFIGURATION}" == "Debug-prod" ] || [ "${CONFIGURATION}" == "Release-prod" ] || [ "${CONFIGURATION}" == "Release" ]; then
+cp -r "${PROJECT_DIR}/environments/production/firebase/GoogleService-Info.plist" "${PROJECT_DIR}/Runner/GoogleService-Info.plist"
 
-cp -r \"${PROJECT_DIR}/environments/sit/firebase/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"
+echo "Production plist copied"
+elif [ "${CONFIGURATION}" == "Debug-sit" ] || [ "${CONFIGURATION}" == "Release-sit" ]; then
 
-echo \"SIT plist copied\"
+cp -r "${PROJECT_DIR}/environments/sit/firebase/GoogleService-Info.plist" "${PROJECT_DIR}/Runner/GoogleService-Info.plist"
 
-elif [ \"${CONFIGURATION}\" == \"Debug-uat\" ] || [ \"${CONFIGURATION}\" == \"Release-uat\" ]; then
+echo "SIT plist copied"
 
-cp -r \"${PROJECT_DIR}/environments/uat/firebase/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"
+elif [ "${CONFIGURATION}" == "Debug-uat" ] || [ "${CONFIGURATION}" == "Release-uat" ]; then
 
-echo \"UAT plist copied\"
+cp -r "${PROJECT_DIR}/environments/uat/firebase/GoogleService-Info.plist" "${PROJECT_DIR}/Runner/GoogleService-Info.plist"
 
-elif [ \"${CONFIGURATION}\" == \"Debug-development\" ] || [ \"${CONFIGURATION}\" == \"Release-development\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then
+echo "UAT plist copied"
 
-cp -r \"${PROJECT_DIR}/environments/development/firebase/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"
+elif [ "${CONFIGURATION}" == "Debug-dev" ] || [ "${CONFIGURATION}" == "Release-dev" ] || [ "${CONFIGURATION}" == "Debug" ]; then
 
-echo \"Development plist copied\"
+cp -r "${PROJECT_DIR}/environments/development/firebase/GoogleService-Info.plist" "${PROJECT_DIR}/Runner/GoogleService-Info.plist"
+
+echo "Development plist copied"
 fi
