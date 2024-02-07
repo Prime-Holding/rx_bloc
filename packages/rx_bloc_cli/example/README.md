@@ -8,7 +8,7 @@
    * [Access Control List](#access-control-list)
 5. [Adding a new feature](#adding-a-new-feature)
 6. [Localization](#localization)
-7. [Analytics](#analytics)
+7. [Firebase Analytics](#analytics)
 8. [Http client](#http-client)
 9. [Design system](#design-system)
 10. [Golden tests](#golden-tests)
@@ -301,18 +301,22 @@ Translation key: ok
 Full translation key (feature name+separator+translation key): notifications___ok
 ```
 
-## Analytics
+## Firebase Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
 
 Before you start using analytics, you need to add platform specific configurations:
 1. The `iOS` configuration files can be found at `ios/environments/[flavor]]/firebase/GoogleService-Info.plist`
-2. For `Android` the configuration files are located at `android/environments/[flavor]/google-services.json`
+2. For `Android` the configuration files are located at `android/app/src/[flavor]/google-services.json`
 3. All `Web` analytics configurations can be found inside `lib/base/app/config/firebase_web_config.js`
 
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
+After replacing the Firebase config files with your own, the next step is to configure your app to use the appropriate Firebase options. To do that, you need to provide the `Firebase.initializeApp` method (within the `configureApp` function located inside the `{project_root}/lib/base/app/initialization/app_setup.dart` file) with the desired configuration.
+
 *Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.sit` or `.uat` is appended to the package name when using `SIT` or `UAT` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
+
+*Note 2*: The app comes with a pre-generated configuration allowing the project to be launched out-of-the-box and should be replaced with your own configuration (see [Firebase setup][firebase_setup_lnk] for more details).
 
 ## Http client
 
@@ -464,10 +468,10 @@ Alice is working right out of the box.
 
 ## Patrol Integration Tests
 
-The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
 Patrol allows developers to use native automation and custom finders to write integration tests faster.
+The application comes with partial integration of the [patrol][patrol_pub_lnk] package Android and iOS. Before running the tests, make sure you've [integrated patrol with native side][patrol_native_integration_lnk] of your project.
 
-To run patrol integration tests install [patrol_cli](https://pub.dev/packages/patrol_cli) package. 
+To run patrol integration tests install [patrol_cli][patrol_cli_pub_lnk] package. 
 This package enables applications to use native automation features
 
 #### Running the Tests
@@ -539,6 +543,7 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [firebase_configs_lnk]: https://support.google.com/firebase/answer/7015592
+[firebase_setup_lnk]: https://firebase.google.com/docs/flutter/setup
 [design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
 [golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
 [golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
@@ -563,3 +568,6 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [fastlane_lnk]: https://docs.fastlane.tools/
 [booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app
 [go_router_push_replacement]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pushReplacement.html
+[patrol_pub_lnk]: https://pub.dev/packages/patrol
+[patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
+[patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
