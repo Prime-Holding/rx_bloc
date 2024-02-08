@@ -1,3 +1,6 @@
+## [6.1.1]
+* Fixes an issue where RxTextFormFieldBuilder suffixIcon was not centered on text fields with smaller height
+
 ## [6.1.0]
 * Introduce `RxBlocMultiBuilder2` and `RxBlocMultiBuilder3`
 
