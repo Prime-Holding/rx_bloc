@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -54,7 +53,7 @@ void runGoldenTests(
   for (final db in deviceBuilders) {
     //test each DeviceBuilder in both light mode and dark mode
     for (final theme in Themes.values) {
-      final themeName = describeEnum(theme);
+      final themeName = theme.name;
       final directory = '${themeName}_theme';
 
       testGoldens('$db - $themeName', (tester) async {
