@@ -4,14 +4,14 @@ app:
 
 flavors:
 
-  dev:
+  development:
     app:
       name: {{project_name.sentenceCase()}} Dev
     android:
       applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
       customConfig:
-        versionNameSuffix: "\"-dev\""
-        applicationIdSuffix: "\".dev\""
+        versionNameSuffix: "\"-development\""
+        applicationIdSuffix: "\".development\""
       resValues:
         facebook_app_id:
           type: "string"
@@ -22,7 +22,7 @@ flavors:
       firebase:
         config: "android/environments/development/google-services.json"
     ios:
-      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.dev
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.development
       buildSettings:
         INFOPLIST_FILE: "environments/development/development.plist"
         CODE_SIGN_ENTITLEMENTS: "environments/development/development-dev.entitlements"
@@ -79,7 +79,7 @@ flavors:
       firebase:
         config: "ios/environments/uat/firebase/GoogleService-Info.plist"
 
-  prod:
+  production:
     app:
       name: {{project_name.sentenceCase()}}
     android:

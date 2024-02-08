@@ -1,5 +1,6 @@
 import 'package:rx_bloc_cli/src/extensions/string_buffer_extensions.dart';
 
+import '../../rx_bloc_cli_constants.dart';
 import '../common/abstract_processors.dart';
 
 /// String processor used for processing an iOS XCConfig file in the flutter
@@ -20,6 +21,7 @@ class FlutterXCConfigFileProcessor extends StringProcessor {
     final buffer = StringBuffer(input!);
 
     _insertMissingHeaders(buffer);
+    _updateConfigValues(buffer);
 
     return buffer.toString();
   }
@@ -27,8 +29,7 @@ class FlutterXCConfigFileProcessor extends StringProcessor {
   /// region Private methods
 
   (String, String) _separateFlavorAndBuildMode() {
-    const modes = ['Debug', 'Profile', 'Release'];
-    final mode = modes.firstWhere(configType.contains);
+    final mode = kIOSBuildModes.firstWhere(configType.contains);
     final flavor = configType.replaceAll(mode, '');
     return (flavor, mode);
   }
@@ -45,6 +46,26 @@ class FlutterXCConfigFileProcessor extends StringProcessor {
     }
 
     buffer.insertAt(0, '$headerImport$configSection.xcconfig"\n');
+  }
+
+  void _replaceFlutterTarget(
+    StringBuffer buffer,
+    String oldName,
+    String newName,
+  ) {
+    const pattern = 'FLUTTER_TARGET=lib/main_###.dart';
+    if (buffer.nthIndexOf(pattern.replaceAll('###', oldName)) < 0) return;
+
+    final replacement = buffer.toString().replaceAll(
+        pattern.replaceAll('###', oldName), pattern.replaceAll('###', newName));
+    buffer
+      ..clear()
+      ..write(replacement);
+  }
+
+  void _updateConfigValues(StringBuffer buffer) {
+    _replaceFlutterTarget(buffer, 'development', 'dev');
+    _replaceFlutterTarget(buffer, 'production', 'prod');
   }
 
   /// endregion

@@ -9,13 +9,15 @@ class FileCleanup {
     'android/environments/',
   ];
   static final _filesToRemove = [
+    '.idea/runConfigurations/main_dart.xml',
     'test/widget_test.dart',
     'lib/main.dart',
+    'lib/main_development.dart',
+    'lib/main_production.dart',
     'lib/app.dart',
     'lib/flavors.dart',
-    'assets.tmp.zip',
     'flavorizr.yaml',
-    '.idea/runConfigurations/main_dart.xml',
+    'assets.tmp.zip',
   ];
 
   static List<String> get _itemsToRemove => [

@@ -13,11 +13,11 @@ target_map = {
     'development' => 'lib/main_dev.dart',
     'sit' => 'lib/main_sit.dart',
     'uat' => 'lib/main_uat.dart',
-    'production' => 'lib/main.dart'
+    'production' => 'lib/main_prod.dart'
 }
 
 bundle_id_map = {
-    'development' => '{{domain_name}}.{{organization_name}}.{{project_name}}.dev',
+    'development' => '{{domain_name}}.{{organization_name}}.{{project_name}}.development',
     'sit' => '{{domain_name}}.{{organization_name}}.{{project_name}}.sit',
     'uat' => '{{domain_name}}.{{organization_name}}.{{project_name}}.uat',
     'production' => '{{domain_name}}.{{organization_name}}.{{project_name}}'

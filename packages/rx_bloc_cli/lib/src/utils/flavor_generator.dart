@@ -35,6 +35,14 @@ class FlavorGenerator {
     );
   }
 
+  /// Retrieves flavors used for the given generator configuration
+  static Set<String> getFlavors(GeneratorArguments args) => {
+        'production',
+        'development',
+        'sit',
+        'uat',
+      };
+
   ///region Helper functions
 
   /// Generates config file used to define flavors

@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>{{domain_name}}.{{organization_name}}.{{project_name}}.dev</string>
+	<string>{{domain_name}}.{{organization_name}}.{{project_name}}.development</string>
 	<key>PROJECT_ID</key>
 	<string>{{project_name}}</string>
 	<key>STORAGE_BUCKET</key>

@@ -9,3 +9,6 @@ const kAndroidTargetSDKVersion = 34;
 
 /// Generated project's Android Min SDK version
 const kAndroidMinSDKVersion = 22;
+
+/// Different build modes of the flavor
+const kIOSBuildModes = ['Debug', 'Profile', 'Release'];
