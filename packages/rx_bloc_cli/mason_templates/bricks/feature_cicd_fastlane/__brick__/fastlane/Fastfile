@@ -10,10 +10,10 @@ flavor_map = {
 }
 
 target_map = {
-    'development' => 'lib/main_dev.dart',
+    'development' => 'lib/main_development.dart',
     'sit' => 'lib/main_sit.dart',
     'uat' => 'lib/main_uat.dart',
-    'production' => 'lib/main_prod.dart'
+    'production' => 'lib/main_production.dart'
 }
 
 bundle_id_map = {

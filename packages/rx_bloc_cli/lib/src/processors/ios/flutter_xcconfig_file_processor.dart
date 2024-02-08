@@ -21,7 +21,6 @@ class FlutterXCConfigFileProcessor extends StringProcessor {
     final buffer = StringBuffer(input!);
 
     _insertMissingHeaders(buffer);
-    _updateConfigValues(buffer);
 
     return buffer.toString();
   }
@@ -46,26 +45,6 @@ class FlutterXCConfigFileProcessor extends StringProcessor {
     }
 
     buffer.insertAt(0, '$headerImport$configSection.xcconfig"\n');
-  }
-
-  void _replaceFlutterTarget(
-    StringBuffer buffer,
-    String oldName,
-    String newName,
-  ) {
-    const pattern = 'FLUTTER_TARGET=lib/main_###.dart';
-    if (buffer.nthIndexOf(pattern.replaceAll('###', oldName)) < 0) return;
-
-    final replacement = buffer.toString().replaceAll(
-        pattern.replaceAll('###', oldName), pattern.replaceAll('###', newName));
-    buffer
-      ..clear()
-      ..write(replacement);
-  }
-
-  void _updateConfigValues(StringBuffer buffer) {
-    _replaceFlutterTarget(buffer, 'development', 'dev');
-    _replaceFlutterTarget(buffer, 'production', 'prod');
   }
 
   /// endregion

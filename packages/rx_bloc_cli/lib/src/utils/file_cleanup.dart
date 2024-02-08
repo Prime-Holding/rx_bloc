@@ -12,8 +12,6 @@ class FileCleanup {
     '.idea/runConfigurations/main_dart.xml',
     'test/widget_test.dart',
     'lib/main.dart',
-    'lib/main_development.dart',
-    'lib/main_production.dart',
     'lib/app.dart',
     'lib/flavors.dart',
     'flavorizr.yaml',

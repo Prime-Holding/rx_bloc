@@ -40,7 +40,10 @@ class PodfileProcessor extends StringProcessor {
   void _updateProjectRunnerModes(StringBuffer buffer) {
     const runnerConfigs = "project 'Runner'";
     const runnerConfigsComment =
-        '# Map each flavor configuration to a build mode\n';
+        '# Each build configurations consist of the mode in which it is'
+        ' launched and the flavor name.\n# Each configuration maps to either'
+        ' the release or debug mode. The release mode has any associated \n#'
+        ' debug symbols stripped from the generated application file.\n';
     final index = buffer.nthIndexOf('}',
             start: buffer.nthIndexOf(
               '{',

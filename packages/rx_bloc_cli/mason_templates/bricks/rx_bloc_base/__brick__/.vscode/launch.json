@@ -8,8 +8,8 @@
       "name": "development",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main_dev.dart",
-      "args": [ "--flavor", "development", "--target", "lib/main_dev.dart" ]
+      "program": "lib/main_development.dart",
+      "args": [ "--flavor", "development", "--target", "lib/main_development.dart" ]
     },
     {
       "name": "sit",
@@ -29,8 +29,8 @@
       "name": "production",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main_prod.dart",
-      "args": ["--flavor", "production", "--target", "lib/main_prod.dart"]
+      "program": "lib/main_production.dart",
+      "args": ["--flavor", "production", "--target", "lib/main_production.dart"]
     },
     {
       "name": "Generate goldens",

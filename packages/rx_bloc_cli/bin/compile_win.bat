@@ -36,7 +36,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_flavor_co
 & move /Y feature_cicd_fastlane_bundle.dart lib\src\templates\ ^
 & move /Y lib_analytics_bundle.dart lib\src\templates\ ^
 & move /Y lib_auth_matrix_bundle.dart lib\src\templates\ ^
-& rmdir /s/q example\test_app\ ^
+& rmdir /s/q example\testapp\ ^
 & dart pub global activate -s path . --overwrite ^
 & rx_bloc_cli create ^
 --organisation com.primeholding ^
@@ -55,5 +55,5 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_flavor_co
 --enable-pin-code ^
 --cicd fastlane ^
 --no-interactive ^
-example/test_app ^
-& cd example/test_app
+example/testapp ^
+& cd example/testapp
