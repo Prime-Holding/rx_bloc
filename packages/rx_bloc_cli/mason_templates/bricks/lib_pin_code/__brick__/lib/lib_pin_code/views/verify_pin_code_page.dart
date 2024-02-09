@@ -42,11 +42,12 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
 
   @override
   Widget build(BuildContext context) => Builder(
-        builder: (context) => WillPopScope(
-          onWillPop: () async {
-            context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData();
-            return true;
-          },
+        builder: (context) => PopScope(
+        canPop: true,
+        onPopInvoked: (didPop) => context
+            .read<UpdateAndVerifyPinBlocType>()
+            .events
+            .deleteSavedData(),
           child: Scaffold(
             appBar: AppBar(
               title: Text(

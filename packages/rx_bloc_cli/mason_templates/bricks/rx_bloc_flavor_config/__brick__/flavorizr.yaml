@@ -1,0 +1,104 @@
+app:
+  android:
+    flavorDimensions: "environment"
+
+flavors:
+
+  development:
+    app:
+      name: {{project_name.sentenceCase()}} Dev
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      customConfig:
+        versionNameSuffix: "\"-development\""
+        applicationIdSuffix: "\".development\""
+      resValues:
+        facebook_app_id:
+          type: "string"
+          value: "insert_facebook_app_id"
+        facebook_client_token:
+          type: "string"
+          value: "insert_client_token"
+      firebase:
+        config: "android/environments/development/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.development
+      buildSettings:
+        INFOPLIST_FILE: "environments/development/development.plist"
+        CODE_SIGN_ENTITLEMENTS: "environments/development/development-dev.entitlements"
+      firebase:
+        config: "ios/environments/development/firebase/GoogleService-Info.plist"
+
+  sit:
+    app:
+      name: {{project_name.sentenceCase()}} SIT
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      customConfig:
+        versionNameSuffix: "\"-sit\""
+        applicationIdSuffix: "\".sit\""
+      resValues:
+        facebook_app_id:
+          type: "string"
+          value: "insert_facebook_app_id"
+        facebook_client_token:
+          type: "string"
+          value: "insert_client_token"
+      firebase:
+        config: "android/environments/sit/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.sit
+      buildSettings:
+        INFOPLIST_FILE: "environments/sit/sit.plist"
+        CODE_SIGN_ENTITLEMENTS: "environments/sit/sit-dev.entitlements"
+      firebase:
+        config: "ios/environments/sit/firebase/GoogleService-Info.plist"
+
+  uat:
+    app:
+      name: {{project_name.sentenceCase()}} UAT
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      customConfig:
+        versionNameSuffix: "\"-uat\""
+        applicationIdSuffix: "\".uat\""
+      resValues:
+        facebook_app_id:
+          type: "string"
+          value: "insert_facebook_app_id"
+        facebook_client_token:
+          type: "string"
+          value: "insert_client_token"
+      firebase:
+        config: "android/environments/uat/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}.uat
+      buildSettings:
+        INFOPLIST_FILE: "environments/uat/uat.plist"
+        CODE_SIGN_ENTITLEMENTS: "environments/uat/uat-dev.entitlements"
+      firebase:
+        config: "ios/environments/uat/firebase/GoogleService-Info.plist"
+
+  production:
+    app:
+      name: {{project_name.sentenceCase()}}
+    android:
+      applicationId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      resValues:
+        facebook_app_id:
+          type: "string"
+          value: "insert_facebook_app_id"
+        facebook_client_token:
+          type: "string"
+          value: "insert_client_token"
+      firebase:
+        config: "android/environments/production/google-services.json"
+    ios:
+      bundleId: {{domain_name}}.{{organization_name}}.{{project_name}}
+      buildSettings:
+        INFOPLIST_FILE: "environments/production/production.plist"
+        CODE_SIGN_ENTITLEMENTS: "environments/production/production-dev.entitlements"
+      firebase:
+        config: "ios/environments/production/firebase/GoogleService-Info.plist"
+
+ide: vscode

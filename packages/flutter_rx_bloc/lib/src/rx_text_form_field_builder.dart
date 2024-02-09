@@ -283,12 +283,9 @@ class RxTextFormFieldBuilderState<B extends RxBlocTypeBase>
                     _isTextObscured = !_isTextObscured;
                   });
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: _isTextObscured
-                      ? widget.decorationData.iconVisibility
-                      : widget.decorationData.iconVisibilityOff,
-                ),
+                child: _isTextObscured
+                    ? widget.decorationData.iconVisibility
+                    : widget.decorationData.iconVisibilityOff,
               )
             : null,
         errorText: showError ? error : null,

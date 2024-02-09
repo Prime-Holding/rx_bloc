@@ -8,7 +8,7 @@
    * [Access Control List](#access-control-list)
 5. [Adding a new feature](#adding-a-new-feature)
 6. [Localization](#localization)
-7. [Analytics](#analytics)
+7. [Firebase Analytics](#analytics)
 8. [Http client](#http-client)
 9. [Design system](#design-system)
 10. [Golden tests](#golden-tests)
@@ -31,45 +31,54 @@ Before you start working on your app, make sure you familiarize yourself with th
 *Note:* The app contains features that request data from API endpoints hosted on a local server. For the app to function properly, make sure the local server is up and running. For more info, check out the [server topic](#server).
 
 ## Project structure
+| Classes and Libraries                            | Description                                                                                                   |
+|---------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| **Application-Specific Classes**                  |                                                                                                               |
+| lib/base/app                                  | The root widget used in the application entry points (main.dart, main_sit.dart, etc.)                         |
+| lib/base/app/config                           | Environment-specific configurations and application-specific constants.                                      |
+| lib/base/app/initialization                   | Initialization of Firebase, Push Notifications, Preferred Orientation, etc.                                    |
+| lib/base/data_sources/local                   | Application-wide local data sources, such as shared preferences, secured storage, etc.                                  |
+| lib/base/data_sources/remote                  | Application-wide remote data sources such as APIs. Here is placed all retrofit code.                                    |
+| lib/base/theme/design_system                  | A catalog of colors, gradients, images (light and dark mode), and spacing used in the Flutter theme and widgets.        |
+| lib/base/common_mappers 	                  | Application-wide mappers, responsible for mapping DTOs to business models such as Dio error mapper, platform error mapper, etc. |
+| lib/base/common_ui_components                 | Application-wide reusable widgets (buttons, controls, list tiles, etc.)                                                |
+| lib/base/data_sources/remote/interceptors	  | Custom interceptors that can monitor, rewrite, and retry calls.                                                 |
+| lib/base/data_sources/remote/http_clinets     | Application-wide HTTP clients.                                                                                        |
+| lib/base/common_blocs                         | Generic purpose BLoC classes used in more than one feature.                                                    |
+| lib/base/common_services                      | Generic purpose service classes used in more than one feature.                                                 |
+| lib/base/repositories                         | Repository classes of the application.                                                                        |
+| lib/base/models                               | Business model classes of the application.                                                                        |
+| lib/base/extensions                           | Application-specific utility functions.                                                                      |
+| lib/base/di                                   | Application-wide dependency injection. All classes (BLoC, services, repositories, design system, config and data sources) are accessible from within each feature or project library. |
+| **Library-Specific Classes**                     |                                                                                                               |
+| lib/library_{name}                             | Library-specific UI components.                                                                               |
+| lib/library_{name}/models                      | Business models representing the success and error state of this library.                                      |
+| lib/library_{name}/blocs                       | Business Logic Component that manages the library-specific state.                                              |
+| lib/library_{name}/services                    | Pure Dart classes responsible for domain-specific business logic of this library.                              |
+| lib/library_{name}/repositories                | Pure Dart classes responsible for data provisioning regardless of the data source of this library.             |
+| lib/library_{name}/data_sources                | Classes responsible for storing and retrieving data of this library.                                           |
+| `Note:`                                           | A library may, or may not contain all components described above based on its needs. This structure should be treated as a guideline.                                            |
+| **Feature-Specific Classes**                     |                                                                                                               |
+| lib/feature_{name}                             | Feature-specific UI components.                                                                              |
+| lib/feature_{name}/models                      | Business models representing the success and error state of this feature.                                      |
+| lib/feature_{name}/blocs                       | Business Logic Component that manages the feature-specific state.                                              |
+| lib/feature_{name}/services                    | Pure Dart classes responsible for domain-specific business logic of this feature.                              |
+| `Note:`                                           | A feature may, or may not contain models based on its needs.                                                  |
+| **Application-Specific Libraries**               |                                                                                                               |
+| lib/lib_auth                                    | The OAuth2 (JWT) based authentication and token management library.                                           |
+| lib/lib_social_logins                           | Authentication with Apple, Google and Facebook library.                                                        |
+| lib/lib_permissions                             | The ACL based library that handles all the in-app routes and custom actions as well.                           |
+| lib/lib_router                                  | Generally available router related classes. The main router of the app is lib/lib_router/routers/router.dart.  |
+| lib/lib_router/routes                           | Declarations of all nested pages in the application are located here.                                          |
+| lib/lib_dev_menu                                | A library that helps application debugging by easily set and access proxy debugging services Charles and Alice. |
+| lib/lib_pin_code                                | Contains a number of useful widgets that can help you with building pin code with biometrics screens.           |
+| **Pre-Built Features**                          |                                                                                                               |
+| lib/feature_otp                                 | Contains a number of useful widgets that can help you with building SMS/pin code screens or workflows for your app. |
+| **DevOps**                                     |                                                                                                               |
+| fastlane                                       | Fastlane directory containing Fastfile configuration.                                                        |
+| devops                                         | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts, etc.). |
 
-| Path                                         | Contains                                                                                                                                              |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `lib/main.dart`                              | The production flavour of the app.                                                                                                                    |
-| `lib/main_dev.dart`                          | The development flavour of the app.                                                                                                                   |
-| `lib/main_sit.dart`                          | The SIT flavour of the app.                                                                                                                           |
-| `lib/main_uat.dart`                          | The UAT flavour of the app.                                                                                                                           |
-| `lib/base/`                                  | Common code used on more than one **feature** in the project.                                                                                         |
-| `lib/base/app/`                              | The root of the application and Environment configuration.                                                                                            |
-| `lib/base/common_blocs/`                     | Generally available [BLoCs][rx_bloc_info_lnk]                                                                                                         |
-| `lib/base/common_mappers/`                   | Generally available Mappers                                                                                                                           |
-| `lib/base/common_services/`                  | Generally available Services                                                                                                                          |
-| `lib/base/common_ui_components/`             | Generally available Reusable widgets (buttons, controls etc)                                                                                          |
-| `lib/base/data_sources/local/`               | Generally available local data sources, such as shared preferences, secured storage etc.                                                              |
-| `lib/base/data_sources/remote/`              | Generally available remote data sources such as APIs. Here is placed all [retrofit][retrofit_lnk] code.                                               |
-| `lib/base/data_sources/remote/interceptors/` | Custom interceptors that can monitor, rewrite, and retry calls.                                                                                       |
-| `lib/base/data_sources/remote/http_clinets/` | Generally available http clients                                                                                                                      |
-| `lib/base/di/`                               | Application dependencies, available in the whole app                                                                                                  |
-| `lib/base/extensions/`                       | Generally available [extension methods][extension_methods_lnk]                                                                                        |
-| `lib/base/models/`                           | The business models used in the application                                                                                                           |
-| `lib/base/repositories/`                     | Generally available repositories used to fetch and persist models                                                                                     |
-| `lib/base/theme/`                            | The custom theme of the app                                                                                                                           |
-| `lib/base/utils/`                            | Generally available utils                                                                                                                             |
-| `lib/feature_X/`                             | Feature related classes                                                                                                                               |
-| `lib/feature_X/blocs`                        | Feature related [BLoCs][rx_bloc_info_lnk]                                                                                                             |
-| `lib/feature_X/di`                           | Feature related dependencies                                                                                                                          |
-| `lib/feature_X/services/`                    | Feature related Services                                                                                                                              |
-| `lib/feature_X/ui_components/`               | Feature related custom widgets                                                                                                                        |
-| `lib/feature_X/views/`                       | Feature related pages and forms                                                                                                                       |
-| `lib/lib_auth/`                              | The OAuth2 (JWT) based authentication and token management library                                                                                    |
-| `lib/lib_social_logins/`                     | Authentication with Apple, Google and Facebook library                                                                                                |
-| `lib/lib_permissions/`                       | The ACL based library that handles all the in-app routes and custom actions as well.                                                                  |
-| `lib/lib_router/`                            | Generally available [router][gorouter_lnk] related classes. The main [router][gorouter_usage_lnk] of the app is `lib/lib_router/routers/router.dart`. |
-| `lib/lib_router/routes`                      | Declarations of all nested pages in the application are located here                                                                                  |  
-| `lib/lib_dev_menu`                           | A useful feature when it comes to debugging your app by easily set and access proxy debugging services Charles and Alice.                             |
-| `lib/feature_otp`                            | Contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.                                   |
-| `fastlane/`                                  | [Fastlane][fastlane_lnk] directory containing Fastfile configuration                                                                                  |
-| `devops/`                                    | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts,...)                                         |
-| `lib/lib_pin_code`                           | Contains a number of useful widgets that can help you with building pin code with biometrics screens                                                  |
+
 ## Architecture
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
@@ -157,7 +166,7 @@ xcrun simctl openurl booted primeholdingsitscheme://testappsit.primeholding.com/
 
 Development
 ```
-xcrun simctl openurl booted primeholdingdevscheme://testappdev.primeholding.com/deepLinks/1
+xcrun simctl openurl booted primeholdingdevscheme://testappdevelopment.primeholding.com/deepLinks/1
 ```
 
 `Android`
@@ -301,7 +310,7 @@ Translation key: ok
 Full translation key (feature name+separator+translation key): notifications___ok
 ```
 
-## Analytics
+## Firebase Analytics
 
 [Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
 
@@ -312,7 +321,11 @@ Before you start using analytics, you need to add platform specific configuratio
 
 Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
 
-*Note*: When ran as `development` flavor, `.dev` is appended to the package name. Likewise, `.sit` or `.uat` is appended to the package name when using `SIT` or `UAT` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.dev` for the `dev` environment).
+After replacing the Firebase config files with your own, the next step is to configure your app to use the appropriate Firebase options. To do that, you need to provide the `Firebase.initializeApp` method (within the `configureApp` function located inside the `{project_root}/lib/base/app/initialization/app_setup.dart` file) with the desired configuration.
+
+*Note*: When ran as `development` flavor, `.development` is appended to the package name. Likewise, `.sit` or `.uat` is appended to the package name when using `SIT` or `UAT` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.development` for the `devevelopment` environment).
+
+*Note 2*: The app comes with a pre-generated configuration allowing the project to be launched out-of-the-box and should be replaced with your own configuration (see [Firebase setup][firebase_setup_lnk] for more details).
 
 ## Http client
 
@@ -464,10 +477,10 @@ Alice is working right out of the box.
 
 ## Patrol Integration Tests
 
-The application comes with [patrol](https://pub.dev/packages/patrol) package preconfigured for both Android and iOS.
 Patrol allows developers to use native automation and custom finders to write integration tests faster.
+The application comes with partial integration of the [patrol][patrol_pub_lnk] package Android and iOS. Before running the tests, make sure you've [integrated patrol with native side][patrol_native_integration_lnk] of your project.
 
-To run patrol integration tests install [patrol_cli](https://pub.dev/packages/patrol_cli) package. 
+To run patrol integration tests install [patrol_cli][patrol_cli_pub_lnk] package. 
 This package enables applications to use native automation features
 
 #### Running the Tests
@@ -539,6 +552,7 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [localization_lnk]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [firebase_analytics_lnk]: https://pub.dev/packages/firebase_analytics
 [firebase_configs_lnk]: https://support.google.com/firebase/answer/7015592
+[firebase_setup_lnk]: https://firebase.google.com/docs/flutter/setup
 [design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
 [golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
 [golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
@@ -563,3 +577,6 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [fastlane_lnk]: https://docs.fastlane.tools/
 [booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app
 [go_router_push_replacement]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pushReplacement.html
+[patrol_pub_lnk]: https://pub.dev/packages/patrol
+[patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
+[patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
