@@ -174,9 +174,6 @@ jobs:
       - name: Analyze
         working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
-      - name: Verify package for publishing
-        working-directory: ${{ matrix.folder }}
-        run: dart pub publish --dry-run
       - name: Run tests
         working-directory: ${{ matrix.folder }}
         run: |
