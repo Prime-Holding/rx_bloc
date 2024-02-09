@@ -1,0 +1,9 @@
+name: rx_bloc_flavor_config
+description: Rx Bloc Flavor Config
+version: 0.0.1+1
+environment:
+  mason: ">=0.1.0-dev <0.1.0"
+vars:
+  - project_name
+  - organization_name
+  - domain_name

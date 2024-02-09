@@ -11,7 +11,11 @@ import '../models/generator_arguments.dart';
 import '../models/generator_arguments_provider.dart';
 import '../models/readers/interactive_arguments_reader.dart';
 import '../models/readers/non_interactive_arguments_reader.dart';
+import '../processors/common/generated_files_post_processor.dart';
+import '../processors/common/generated_files_processor.dart';
 import '../templates/rx_bloc_base_bundle.dart';
+import '../utils/file_cleanup.dart';
+import '../utils/flavor_generator.dart';
 import '../utils/git_ignore_creator.dart';
 
 /// CreateCommand is a custom command that helps you create a new project.
@@ -24,8 +28,10 @@ class CreateCommand extends Command<int> {
     Logger? logger,
     MasonBundle? bundle,
     Future<MasonGenerator> Function(MasonBundle)? generator,
+    Map<String, dynamic>? vars,
   })  : _logger = logger ?? Logger(),
         _bundleGenerator = BundleGenerator(bundle ?? rxBlocBaseBundle),
+        _vars = vars,
         _generator = generator ?? MasonGenerator.fromBundle {
     argParser.addCommandArguments(CommandArguments.values);
   }
@@ -33,6 +39,7 @@ class CreateCommand extends Command<int> {
   final Logger _logger;
   final BundleGenerator _bundleGenerator;
   final Future<MasonGenerator> Function(MasonBundle) _generator;
+  final Map<String, dynamic>? _vars;
 
   /// region Command requirements
 
@@ -45,14 +52,47 @@ class CreateCommand extends Command<int> {
   @override
   Future<int> run() async {
     final arguments = _readGeneratorArguments();
+    await _preGen(arguments);
     await _generateViaMasonBundle(arguments);
-    await _postGen(arguments.outputDirectory);
+    await _postGen(arguments);
     return ExitCode.success.code;
   }
 
   /// endregion
 
   /// region Code generation
+
+  /// Generates the basic flutter project
+  Future<void> _preGen(GeneratorArguments args) async {
+    final _baseCreation = _logger.progress('Generating base project');
+
+    // Generate empty flutter project
+    await Process.run(
+      'flutter',
+      [
+        'create',
+        '--project-name',
+        args.projectName,
+        '--org',
+        '${args.organisationDomain}.${args.organisationName}',
+        args.outputDirectory.path,
+      ],
+    );
+
+    _baseCreation.update('Adding flavors');
+
+    // Setup flavors
+    final flavorGen = FlavorGenerator(_generator);
+    await flavorGen.addFlavors(args);
+
+    _baseCreation.update('Applying changes to base project');
+
+    // Modify contents of specified generated files
+    final processor = GeneratedFilesProcessor(args);
+    await processor.execute();
+
+    _baseCreation.complete('Generated base project');
+  }
 
   GeneratorArguments _readGeneratorArguments() {
     final parsedArgumentResults = argResults!;
@@ -71,6 +111,7 @@ class CreateCommand extends Command<int> {
     }
   }
 
+  /// Generates necessary project files from mason template
   Future<void> _generateViaMasonBundle(GeneratorArguments arguments) async {
     final bundle = _bundleGenerator.generate(arguments);
 
@@ -79,35 +120,33 @@ class CreateCommand extends Command<int> {
     final generator = await _generator(bundle);
     var generatedFiles = await generator.generate(
       DirectoryGeneratorTarget(arguments.outputDirectory),
-      vars: {
-        'project_name': arguments.projectName,
-        'domain_name': arguments.organisationDomain,
-        'organization_name': arguments.organisationName,
-        'uses_firebase': arguments.usesFirebase,
-        'analytics': arguments.analyticsEnabled,
-        'push_notifications': arguments.pushNotificationsEnabled,
-        'enable_feature_counter': arguments.counterEnabled,
-        'enable_feature_deeplinks': arguments.deepLinkEnabled,
-        'enable_feature_widget_toolkit': arguments.widgetToolkitEnabled,
-        'enable_login': arguments.loginEnabled,
-        'enable_social_logins': arguments.socialLoginsEnabled,
-        'enable_change_language': arguments.changeLanguageEnabled,
-        'enable_dev_menu': arguments.devMenuEnabled,
-        'enable_feature_otp': arguments.otpEnabled,
-        'enable_patrol': arguments.patrolTestsEnabled,
-        'has_authentication': arguments.authenticationEnabled,
-        'realtime_communication': arguments.realtimeCommunicationEnabled,
-        'enable_pin_code': arguments.pinCodeEnabled,
-        'cicd': arguments.cicdEnabled,
-        'cicd_github': arguments.cicdGithubEnabled,
-        'enable_auth_matrix': arguments.authMatrixEnabled,
-      },
+      vars: _vars ??
+          {
+            'project_name': arguments.projectName,
+            'domain_name': arguments.organisationDomain,
+            'organization_name': arguments.organisationName,
+            'uses_firebase': arguments.usesFirebase,
+            'analytics': arguments.analyticsEnabled,
+            'push_notifications': arguments.pushNotificationsEnabled,
+            'enable_feature_counter': arguments.counterEnabled,
+            'enable_feature_deeplinks': arguments.deepLinkEnabled,
+            'enable_feature_widget_toolkit': arguments.widgetToolkitEnabled,
+            'enable_login': arguments.loginEnabled,
+            'enable_social_logins': arguments.socialLoginsEnabled,
+            'enable_change_language': arguments.changeLanguageEnabled,
+            'enable_dev_menu': arguments.devMenuEnabled,
+            'enable_feature_otp': arguments.otpEnabled,
+            'enable_patrol': arguments.patrolTestsEnabled,
+            'has_authentication': arguments.authenticationEnabled,
+            'realtime_communication': arguments.realtimeCommunicationEnabled,
+            'enable_pin_code': arguments.pinCodeEnabled,
+            'cicd': arguments.cicdEnabled,
+            'cicd_github': arguments.cicdGithubEnabled,
+            'enable_auth_matrix': arguments.authMatrixEnabled,
+          },
     );
 
-    // Manually create project gitignore
-    GitIgnoreCreator.generate(arguments.outputDirectory.path);
-
-    var fileCount = generatedFiles.length + 1;
+    var fileCount = generatedFiles.length;
 
     // Manually create devops gitignore
     if (arguments.cicdEnabled) {
@@ -123,11 +162,14 @@ class CreateCommand extends Command<int> {
     await _writeOutputLog(fileCount, arguments);
   }
 
-  Future<void> _postGen(Directory outputDirectory) async {
-    var progress = _logger.progress('dart pub get');
+  /// Runs any dart/flutter specific post-gen commands
+  Future<void> _postGen(GeneratorArguments args) async {
+    final outputDirectory = args.outputDirectory;
+
+    var progress = _logger.progress('flutter pub get');
 
     final dartGet = await Process.run(
-      'dart',
+      'flutter',
       ['pub', 'get'],
       workingDirectory: outputDirectory.path,
     );
@@ -135,15 +177,21 @@ class CreateCommand extends Command<int> {
     _progressFinish(dartGet, progress);
 
     progress = _logger.progress(
-      'dart run build_runner build',
+      'flutter pub run build_runner build',
     );
 
+    // Modify contents of specified generated files
+    final postProcessor = GeneratedFilesPostProcessor(args);
+    await postProcessor.execute();
+
     final buildRunner = await Process.run(
-      'dart',
+      'flutter',
       [
+        'pub',
         'run',
         'build_runner',
         'build',
+        '--delete-conflicting-outputs',
       ],
       workingDirectory: outputDirectory.path,
     );
@@ -161,7 +209,16 @@ class CreateCommand extends Command<int> {
     );
 
     _progressFinish(format, progress);
+
+    // Manually create project gitignore after everything is generated
+    GitIgnoreCreator.generate(args.outputDirectory.path);
+
+    await FileCleanup.postGenerationCleanup(outputDirectory);
   }
+
+  /// endregion
+
+  /// region Output logging
 
   void _progressFinish(ProcessResult result, Progress progress) {
     if (result.stderr.toString().trim().isNotEmpty) {
@@ -170,10 +227,6 @@ class CreateCommand extends Command<int> {
       progress.complete();
     }
   }
-
-  /// endregion
-
-  /// region Output logging
 
   /// Writes an output log with the status of the file generation
   Future<void> _writeOutputLog(

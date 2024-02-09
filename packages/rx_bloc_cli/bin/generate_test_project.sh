@@ -10,7 +10,7 @@ if [ $# != 1 ]; then
 fi
 
 function generate(){
-  dirname="test_app"
+  dirname="testapp"
   rm -rf example/$dirname
   dart run $(dirname "$0")/rx_bloc_cli.dart create \
    --no-interactive \

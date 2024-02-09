@@ -23,14 +23,12 @@ class AuthMatrixOtpPage extends StatelessWidget {
   final String endToEndId;
 
   @override
-  Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          context
-              .read<PinOtpBlocType>()
-              .events
-              .cancelAuthMatrix(response, endToEndId);
-          return true;
-        },
+  Widget build(BuildContext context) => PopScope(
+        canPop: true,
+        onPopInvoked: (didPop) => context
+            .read<PinOtpBlocType>()
+            .events
+            .cancelAuthMatrix(response, endToEndId),
         child: Scaffold(
           appBar: AppBar(
             title: Text(context.l10n.featureOtp.otpPageTitle),
