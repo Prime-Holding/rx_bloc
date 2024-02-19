@@ -136,6 +136,16 @@ void main() {
       expect(list.isNextPageLoading, equals(false));
     });
 
+    test('Next page not loading when perform pull to refresh', () {
+      final list = PaginatedList(
+        list: emptyListData,
+        pageSize: pageSize,
+        isLoading: true,
+      );
+      list.reset();
+      expect(list.isNextPageLoading, equals(false));
+    });
+
     test('Next page loading when there is data', () {
       final list = PaginatedList(
         list: List.generate(listSize, (index) => index),

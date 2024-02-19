@@ -101,7 +101,8 @@ class PaginatedList<E> extends ListBase<E> {
   bool get isInitialLoading => isLoading && list.isEmpty && !_isInitialized;
 
   /// Getter for telling us whether we are loading a new page.
-  bool get isNextPageLoading => isLoading && list.isNotEmpty;
+  bool get isNextPageLoading =>
+      isLoading && list.isNotEmpty && _backupList.isEmpty;
 
   @override
   E operator [](int index) => list[index];
