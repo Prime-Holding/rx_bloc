@@ -18,12 +18,14 @@ part of '../../rx_bloc_generator.dart';
 /// }
 ///
 class _BlocClass implements _BuilderContract {
-  const _BlocClass(this.className,
-      this.blocTypeClassName,
-      this.eventClassName,
-      this.stateClassName,
-      this.eventsMethods,
-      this.statesFields,);
+  const _BlocClass(
+    this.className,
+    this.blocTypeClassName,
+    this.eventClassName,
+    this.stateClassName,
+    this.eventsMethods,
+    this.statesFields,
+  );
 
   final String className;
 
@@ -38,13 +40,11 @@ class _BlocClass implements _BuilderContract {
   final List<FieldElement> statesFields;
 
   @override
-  Class build() =>
-      Class(
-            (b) =>
-        b
+  Class build() => Class(
+        (b) => b
           ..docs.addAll(<String>[
             '/// [$className] extended by the [${className.substring(1)}]',
-            '/// {@nodoc}',
+            '/// @nodoc',
           ])
           ..abstract = true
           ..name = className
@@ -79,10 +79,8 @@ class _BlocClass implements _BuilderContract {
               // Example:
               // Stream<int> get {stateName} =>
               //      _{stateName}State ??= _mapTo{StateName}State();
-              ...statesFields
-                  .map(
-                      (FieldElement field) =>
-                      _StateGetterMethod(field).build()),
+              ...statesFields.map(
+                  (FieldElement field) => _StateGetterMethod(field).build()),
 
               // Example:
               // Stream<int> _mapTo{StateName}State();

@@ -13,14 +13,14 @@ part 'test_utilities.dart';
 part of 'rx_bloc_test.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class CounterBlocType extends RxBlocTypeBase {
   CounterBlocEvents get events;
   CounterBlocStates get states;
 }
 
 /// [$CounterBloc] extended by the [CounterBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $CounterBloc extends RxBlocBase
     implements CounterBlocEvents, CounterBlocStates, CounterBlocType {
   final _compositeSubscription = CompositeSubscription();
