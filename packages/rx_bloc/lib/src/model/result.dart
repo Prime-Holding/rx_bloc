@@ -44,7 +44,7 @@ class ResultLoading<T> implements Result<T> {
   ResultLoading._({this.tag = ''});
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return other is ResultLoading<T> && other.tag == tag;
   }
 
@@ -71,7 +71,7 @@ class ResultSuccess<T> implements Result<T> {
   final T data;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     if (other is! ResultSuccess<T>) {
       return false;
     }
@@ -114,7 +114,7 @@ class ResultError<T> implements Result<T> {
   final Exception error;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return other is ResultError<T> &&
         other.tag == tag &&
         other.error.toString() == error.toString();

@@ -7,14 +7,14 @@
 part of 'multiple_states_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class MultipleStatesBlocType extends RxBlocTypeBase {
   MultipleStatesBlocEvents get events;
   MultipleStatesBlocStates get states;
 }
 
 /// [$MultipleStatesBloc] extended by the [MultipleStatesBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $MultipleStatesBloc extends RxBlocBase
     implements
         MultipleStatesBlocEvents,

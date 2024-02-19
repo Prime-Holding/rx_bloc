@@ -7,14 +7,14 @@
 part of 'details_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class DetailsBlocType extends RxBlocTypeBase {
   DetailsBlocEvents get events;
   DetailsBlocStates get states;
 }
 
 /// [$DetailsBloc] extended by the [DetailsBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $DetailsBloc extends RxBlocBase
     implements DetailsBlocEvents, DetailsBlocStates, DetailsBlocType {
   final _compositeSubscription = CompositeSubscription();
