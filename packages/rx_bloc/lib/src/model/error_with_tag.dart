@@ -25,7 +25,7 @@ class ErrorWithTag {
   String toString() => '{loading: exception, tag: $tag}';
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     if (other is! ErrorWithTag) {
       return false;
     }

@@ -1,4 +1,4 @@
-## [4.0.1] December 11, 2023
+## [4.0.1] February 20, 2023
 * Fix paginated list scroll events call
 
 ## [4.0.0] July 12, 2023

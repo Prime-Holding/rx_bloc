@@ -1,3 +1,6 @@
+## [3.4.1]
+* Update generated projects to support latest flutter version (`3.19`)
+
 ## [3.4.0]
 * Use `flutter create` to generate the native iOS and Android directories to ensure compatibility in the future
 

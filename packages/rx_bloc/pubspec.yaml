@@ -10,16 +10,16 @@ environment:
 
 dependencies:
   collection: ^1.17.1
-  meta: ^1.9.1
+  meta: ^1.11.0
   rxdart: ^0.27.7
 
 dev_dependencies:
   clean_coverage: ^0.0.3
-  coverage: ^1.6.3
+  coverage: ^1.7.2
   flutter_lints: ^3.0.1
-  mockito: ^5.4.2
+  mockito: ^5.4.4
   quiver: ^3.2.1
-  test: ^1.24.1
+  test: ^1.25.2
 
 screenshots:
   - description: "RxBloc Slogan"
