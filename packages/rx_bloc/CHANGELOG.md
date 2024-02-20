@@ -1,6 +1,7 @@
 ## [5.0.1]
 * Support Flutter `3.19`
 * Export ErrorWithTag model outside of rx_bloc
+* Update `meta` to use version `1.11.0`
 
 ## [5.0.0]
 * Dart `3.0` Required

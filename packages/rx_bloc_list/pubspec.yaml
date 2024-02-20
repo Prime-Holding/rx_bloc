@@ -12,7 +12,7 @@ dependencies:
   collection: ^1.17.1
   flutter:
     sdk: flutter
-  flutter_rx_bloc: ^6.1.1
+  flutter_rx_bloc: ^6.1.0
   rx_bloc: ^5.0.1
   rxdart: ^0.27.7
 
