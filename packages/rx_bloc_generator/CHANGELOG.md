@@ -1,3 +1,6 @@
+## [7.2.0] - February 20, 2024
+* Support Flutter `3.19`
+
 ## [7.1.0] - December 1, 2023
 * Support Flutter `3.16`
 * Update dependencies and bump analyzer constraints to `>=6.0.0 <7.0.0` 

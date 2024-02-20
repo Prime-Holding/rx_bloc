@@ -17,7 +17,7 @@ class LoadingWithTag {
   String toString() => '{loading: $loading, tag: $tag}';
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     if (other is! LoadingWithTag) {
       return false;
     }

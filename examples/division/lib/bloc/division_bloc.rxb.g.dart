@@ -7,14 +7,14 @@
 part of 'division_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class DivisionBlocType extends RxBlocTypeBase {
   DivisionBlocEvents get events;
   DivisionBlocStates get states;
 }
 
 /// [$DivisionBloc] extended by the [DivisionBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $DivisionBloc extends RxBlocBase
     implements DivisionBlocEvents, DivisionBlocStates, DivisionBlocType {
   final _compositeSubscription = CompositeSubscription();

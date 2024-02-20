@@ -268,7 +268,7 @@ class UserRepository {
 // **************************************************************************
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class UserBlocType extends RxBlocTypeBase {
   /// Events of the bloc
   UserBlocEvents get events;
@@ -278,7 +278,7 @@ abstract class UserBlocType extends RxBlocTypeBase {
 }
 
 /// [$UserBloc] extended by the [UserBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $UserBloc extends RxBlocBase
     implements UserBlocEvents, UserBlocStates, UserBlocType {
   final _compositeSubscription = CompositeSubscription();

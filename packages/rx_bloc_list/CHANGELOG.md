@@ -1,3 +1,6 @@
+## [4.0.1] February 20, 2023
+* Fix paginated list scroll events call
+
 ## [4.0.0] July 12, 2023
 * Dart `3.0` Required
 * Updated `flutter_rx_bloc` to use version `6.0.0`
