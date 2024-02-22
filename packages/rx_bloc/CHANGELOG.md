@@ -1,3 +1,6 @@
+## [5.0.2]
+* Fixes and improvements
+
 ## [5.0.1]
 * Support Flutter `3.19`
 * Export ErrorWithTag model outside of rx_bloc
