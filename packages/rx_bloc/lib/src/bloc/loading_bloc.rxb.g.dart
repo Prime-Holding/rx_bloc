@@ -7,7 +7,7 @@
 part of 'loading_bloc.dart';
 
 /// LoadingBlocType class used for bloc event and state access from widgets
-/// {@nodoc}
+/// @nodoc
 abstract class LoadingBlocType extends RxBlocTypeBase {
   LoadingBlocEvents get events;
 
@@ -15,7 +15,7 @@ abstract class LoadingBlocType extends RxBlocTypeBase {
 }
 
 /// $LoadingBloc class - extended by the LoadingBloc bloc
-/// {@nodoc}
+/// @nodoc
 abstract class $LoadingBloc
     implements LoadingBlocEvents, LoadingBlocStates, LoadingBlocType {
   ///region Events
