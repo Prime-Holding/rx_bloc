@@ -1,3 +1,6 @@
+## [5.0.3]
+* Lower the meta package requirement from ^1.11.0 to ^1.10.0
+  
 ## [5.0.2]
 * Fixes and improvements
 
