@@ -5,7 +5,7 @@ import '../models/command_arguments/create_command_arguments.dart';
 /// Utility methods for CommandArguments handling
 extension ArgumentHandler on ArgParser {
   /// Adds a list of CommandArguments as ArgParser options
-  void addCommandArguments(List<CreateCommandArguments> arguments) {
+  void addCreateCommandArguments(List<CreateCommandArguments> arguments) {
     for (final argument in arguments) {
       switch (argument.type) {
         case CreateCommandArgumentType.string:

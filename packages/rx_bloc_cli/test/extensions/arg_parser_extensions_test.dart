@@ -48,7 +48,7 @@ void main() {
       );
 
       final arguments = CreateCommandArguments.values;
-      sut.addCommandArguments(arguments);
+      sut.addCreateCommandArguments(arguments);
 
       final expectedAddOptionCalls = arguments
           .where((arg) => arg.type != CreateCommandArgumentType.boolean)

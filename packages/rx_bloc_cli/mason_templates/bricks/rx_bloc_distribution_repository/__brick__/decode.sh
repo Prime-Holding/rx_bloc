@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Update file names to match your own
+ANDROID_SERVICE_ACCOUNT_KEY=service_account_key.json
+IOS_DISTRIBUTION_CERTIFICATE_P12=distribution_certificate.p12
+IOS_AUTH_KEY_P8=AuthKey_12345678.p8
+IOS_PROVISION_PROFILES=( Your_Dev_Provisioning_Profile.mobileprovision Your_Production_Provisioning_Profile.mobileprovision  )
+
 set -e
 
 USAGE="Usage: decode.sh android|ios|deploy_android|deploy_ios|firebase"
@@ -39,24 +45,27 @@ fi
 
 if [ $1 == 'deploy_android' ]; then
     mkdir -p ./decoded/android
-    decode ./android/service_account_key.json.enc ./decoded/android/service_account_key.json
+    decode ./android/$ANDROID_SERVICE_ACCOUNT_KEY.enc ./decoded/android/$ANDROID_SERVICE_ACCOUNT_KEY
 fi
 
 if [ $1 == 'ios' ]; then
     mkdir -p ./decoded/ios
-    decode ./ios/distribution_certificate.p12.enc ./decoded/ios/distribution_certificate.p12
-    # decode ./ios/Provisioning_Profile_Production.mobileprovision.enc ./decoded/ios/Provisioning_Profile_Production.mobileprovision
-
+    decode ./ios/$IOS_DISTRIBUTION_CERTIFICATE_P12.enc ./decoded/ios/$IOS_DISTRIBUTION_CERTIFICATE_P12
     decode ./ios/distributionCertificatePassword.txt.enc ./decoded/ios/distributionCertificatePassword.txt
     decode ./ios/keychainPassword.txt.enc ./decoded/ios/keychainPassword.txt
+
+    # Decode the provisioning profiles
+    for file in "${IOS_PROVISION_PROFILES[@]}"; do
+      decode "./ios/$file.enc" "./decoded/ios/$file"
+    done
 fi
 
 if [ $1 == 'deploy_ios' ]; then
     mkdir -p ./decoded/ios
-    decode ./ios/AuthKey_12345678.p8.enc ./decoded/ios/AuthKey_12345678.p8
+    decode ./ios/$IOS_AUTH_KEY_P8.enc ./decoded/ios/$IOS_AUTH_KEY_P8
 fi
 
 if [ $1 == 'firebase' ]; then
     mkdir -p ./decoded/firebase
-    # decode ./firebase/firebaseToken.txt.enc ./decoded/firebase/firebaseToken.txt
+    decode ./firebase/firebaseToken.txt.enc ./decoded/firebase/firebaseToken.txt
 fi
