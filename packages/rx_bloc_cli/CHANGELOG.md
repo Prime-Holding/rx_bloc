@@ -1,3 +1,6 @@
+## [3.5.0]
+* Introduce `create_distribution` command
+
 ## [3.4.1]
 * Update generated projects to support latest flutter version (`3.19`)
 

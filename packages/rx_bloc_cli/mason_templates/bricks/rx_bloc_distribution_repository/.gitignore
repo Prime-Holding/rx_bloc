@@ -1,44 +1,3 @@
-import 'dart:io';
-
-/// Enum used to make a distinction between different types of generated
-/// gitignore files.
-enum GitignoreType {
-  /// Gitignore placed at the project root level
-  project,
-
-  /// Gitignore placed inside the devops directory
-  devops,
-
-  /// Gitignore placed inside the distribution repo directory
-  distributionRepo;
-
-  /// Contents of the gitignore file
-  String get fileContents => switch (this) {
-        GitignoreType.project => _projectGitIgnore,
-        GitignoreType.devops => _devopsGitIgnore,
-        GitignoreType.distributionRepo => _distributionRepoGitIgnore,
-      };
-}
-
-/// Used for creation of .gitignore files
-class GitIgnoreCreator {
-  /// Default constructor of the git ignore file creator
-  GitIgnoreCreator();
-
-  /// Generates a .gitignore file at the specified path
-  static void generate(
-    String path, {
-    GitignoreType gitignore = GitignoreType.project,
-  }) {
-    File('$path/.gitignore')
-      ..writeAsStringSync(
-        gitignore.fileContents,
-      );
-  }
-}
-
-/// GitIgnore placed at the root of the project
-String _projectGitIgnore = '''
 # Miscellaneous
 *.class
 *.log
@@ -49,12 +8,16 @@ String _projectGitIgnore = '''
 .buildlog/
 .history
 .svn/
+pubspec.lock
 
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
-.idea/
+/__brick__/.idea/*
+!/__brick__/.idea/runConfigurations
+
+!/__brick__/.vscode
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -65,11 +28,10 @@ String _projectGitIgnore = '''
 .pub-cache/
 .pub/
 /build/
-.fvm/
+integration_test/test_bundle.dart
 
-# Generated code
+# Web related
 lib/generated_plugin_registrant.dart
-lib/assets.dart
 
 # Symbolication related
 app.*.symbols
@@ -125,33 +87,4 @@ lib/env_variable.g.dart
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
-''';
-
-final _devopsGitIgnore = '''
-# Ignored files
-.DS_Store
-*.jks
-*.txt
-*.p8
-*.p12
-*.mobileprovision
-*.json
-
-# Ignored directories
-credentials/
-artifacts/
-decoded/
-''';
-
-final _distributionRepoGitIgnore = '''
-/decoded
-
-.DS_Store
-
-*.jks
-*.txt
-*.p8
-*.p12
-*.mobileprovision
-*.json
-''';
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

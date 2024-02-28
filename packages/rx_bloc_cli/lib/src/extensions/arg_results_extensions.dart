@@ -5,14 +5,14 @@ import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 
-import '../models/command_arguments.dart';
+import '../models/command_arguments/create_command_arguments.dart';
 
 /// Provides an API to read values specific for RxBlocCLI from ArgResults
 extension ArgumentsValueReader on ArgResults {
   /// Returns a boolean value indicating whether the command is run with
   /// `--interactive=true`
   bool get interactiveConfigurationEnabled =>
-      readBool(CommandArguments.interactive);
+      readBool(CreateCommandArguments.interactive);
 
   /// Returns the provided output directory from the remaining arguments (rest)
   /// Throws if no output directory or multiple output directories are specified
@@ -31,16 +31,16 @@ extension ArgumentsValueReader on ArgResults {
   }
 
   /// Reads a string from the parsed values
-  String readString(CommandArguments argument) {
-    if (argument.type != ArgumentType.string) {
+  String readString(CreateCommandArguments argument) {
+    if (argument.type != CreateCommandArgumentType.string) {
       throw UnsupportedError('${argument.name} is not of type String');
     }
     return (this[argument.name] as String?) ?? argument.defaultValue();
   }
 
   /// Reads a boolean from the parsed values
-  bool readBool(CommandArguments argument) {
-    if (argument.type != ArgumentType.boolean) {
+  bool readBool(CreateCommandArguments argument) {
+    if (argument.type != CreateCommandArgumentType.boolean) {
       throw UnsupportedError('${argument.name} is not of type bool');
     }
     return this[argument.name] as bool;
@@ -48,8 +48,8 @@ extension ArgumentsValueReader on ArgResults {
 
   /// Reads a realtime communication type from the parsed values
   RealtimeCommunicationType readRealtimeCommunicationType(
-      CommandArguments argument) {
-    if (argument.type != ArgumentType.realTimeCommunicationEnum) {
+      CreateCommandArguments argument) {
+    if (argument.type != CreateCommandArgumentType.realTimeCommunicationEnum) {
       throw UnsupportedError(
           '${argument.name} is not of type RealtimeCommunicationType');
     }
@@ -61,8 +61,8 @@ extension ArgumentsValueReader on ArgResults {
   }
 
   /// Reads a CI/CD type from the parsed values
-  CICDType readCICDEnum(CommandArguments argument) {
-    if (argument.type != ArgumentType.cicdTypeEnum) {
+  CICDType readCICDEnum(CreateCommandArguments argument) {
+    if (argument.type != CreateCommandArgumentType.cicdTypeEnum) {
       throw UnsupportedError('${argument.name} is not of type CICDType');
     }
     final value = this[argument.name] as String?;
