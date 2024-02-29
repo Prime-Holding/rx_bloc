@@ -15,19 +15,35 @@ _Note: To list all currently available environment variables, use `printenv` fro
 
 ### Preparing The Credentials
 
-Once generated, there will be two directories for credentials and files: one for `android` and one for `ios`.
+Within the generated content, there are two directories each containing platform specific files for signing and distribution of the app. 
+Out of the box things are configured to work with default names, so make sure you rename your files to match the names described below.
 
-Within the `android` directory, there are several pre-generated files: `keyAlias.txt`, `keyPassword.txt` and `storePassword.txt`.
-Replace their contents with the respective values for the android keystore `alias` and passwords for `key` and `store`.
-Also, make sure the directory contains the keystore file (`android.jks`) used for signing the apk/app bundle file.
+Within the `android` directory, make sure you have the following files:
+- [`android.jks`][keystore_creation_android]: keystore file used for signing the android app
+- `keyAlias.txt`: file containing the alias used in the keystore file
+- `keyPassword.txt`: file containing the key password used in the keystore file
+- `storePassword.txt`: file containing the store password used in the keystore file
+- [`service_account_key.json`][service_account_android]: service account key file for publishing the app to Google Play
 
-Within the `ios` directory, out of the box there are the following files pre-generated: `keychainPassword.txt` and `distributionCertificatePassword.txt`.
-Make sure to replace the contents of the `keychainPassword.txt` with the password that will be used for the keychain storing the certificates and files.
-The same way, replace the contents of the `distributionCertificatePassword.txt` which houses the password of the password protected certificate (`.p12`) used for iOS distribution.
+Within the `ios` directory, make sure you have the following files:
+- Provisioning profiles for each supported flavor (`<FLAVOR_NAME>_Provisioning_Profile.mobileprovision`)
+- `keychainPassword.txt`: file containing the password used for the local keychain
+- [`distribution_certificate.p12`][distribution_certificate_p12_ios]: iOS certificate for distributing the app
+- `distributionCertificatePassword.txt`: file containing the password used for the `.p12` certificate file
+- [`auth_key.p8`][auth_key_ios]: auth key file for publishing the app to the App Store
+
+_Note: Optionally, you can keep the original names of the files (provisioning profiles, certificates, keystore, ...). 
+In such case, be sure to rename the assigned values within the `decode.sh` script and your projects `Fastfile`._
+
+_Note 2: You can quickly create a new `android.jks` keystore file using the following command:_
+
+```
+keytool -genkey -v -keyalg RSA -keysize 2048 -validity 10000 -keystore android.jks -alias {alias_name} -keypass {key_password} -storepass {store_password}
+```
 
 ### Updating The Credentials
 
-To update an existing file or add a new credential file to the repo, for example an android keystore
+To update an existing file or add a new credentials file to the repo, for example an android keystore
 for development environment, first add the file (`android_dev.jks`) to the `android` folder.
 Then run the encryption script like this:
 
@@ -48,3 +64,9 @@ It will create a new folder called `decoded` and place the decoded files there.
 ./decode.sh android
 ```
 
+---
+
+[keystore_creation_android]: https://developer.android.com/studio/publish/app-signing#generate-key
+[service_account_android]: https://docs.fastlane.tools/actions/upload_to_play_store/#setup
+[auth_key_ios]: https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
+[distribution_certificate_p12_ios]: https://support.magplus.com/hc/en-us/articles/203808748-iOS-Creating-a-Distribution-Certificate-and-p12-File
