@@ -17,9 +17,9 @@ _Note: To list all currently available environment variables, use `printenv` fro
 
 Once generated, there will be two directories for credentials and files: one for `android` and one for `ios`.
 
-Within the `android` directory, there are several pre-generated files: `keyAlias.txt`, `keyPassword` and `storePassword`.
+Within the `android` directory, there are several pre-generated files: `keyAlias.txt`, `keyPassword.txt` and `storePassword.txt`.
 Replace their contents with the respective values for the android keystore `alias` and passwords for `key` and `store`.
-Also, make sure the directory contains the keystore file (`android.jsk`) used for signing the apk/app bundle file.
+Also, make sure the directory contains the keystore file (`android.jks`) used for signing the apk/app bundle file.
 
 Within the `ios` directory, out of the box there are the following files pre-generated: `keychainPassword.txt` and `distributionCertificatePassword.txt`.
 Make sure to replace the contents of the `keychainPassword.txt` with the password that will be used for the keychain storing the certificates and files.

@@ -1,5 +1,5 @@
 ## [3.5.0]
-* Introduce `create_distribution` command
+* Introduce `create_distribution` command for bootstrapping repositories for distribution files and passwords
 
 ## [3.4.1]
 * Update generated projects to support latest flutter version (`3.19`)
