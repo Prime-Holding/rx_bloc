@@ -69,6 +69,5 @@ class CreateDistributionCommand extends Command<int> {
       ..info('${lightGreen.wrap('✓')} Generated $numOfFiles files.')
       ..info('')
       ..delayed('');
-    ;
   }
 }
