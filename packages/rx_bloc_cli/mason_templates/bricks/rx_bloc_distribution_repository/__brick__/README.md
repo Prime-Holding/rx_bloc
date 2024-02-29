@@ -15,8 +15,8 @@ _Note: To list all currently available environment variables, use `printenv` fro
 
 ### Preparing The Credentials
 
-Within the generated content, there are two directories each containing platform specific files for signing and distribution of the app. 
-Out of the box things are configured to work with default names, so make sure you rename your files to match the names described below.
+Within the generated content, there are two directories each containing platform specific files for signing and distribution of the app.
+The scripts are pre-configured to function with a set of default values. Please make sure the file names are matching the ones described below.
 
 Within the `android` directory, make sure you have the following files:
 - [`android.jks`][keystore_creation_android]: keystore file used for signing the android app
