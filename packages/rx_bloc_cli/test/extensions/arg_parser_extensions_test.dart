@@ -2,7 +2,7 @@ import 'package:args/args.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_cli/src/extensions/arg_parser_extensions.dart';
-import 'package:rx_bloc_cli/src/models/command_arguments.dart';
+import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:test/test.dart';
 
 import 'arg_parser_extensions_test.mocks.dart';
@@ -47,13 +47,15 @@ void main() {
         ),
       );
 
-      final arguments = CommandArguments.values;
-      sut.addCommandArguments(arguments);
+      final arguments = CreateCommandArguments.values;
+      sut.addCreateCommandArguments(arguments);
 
-      final expectedAddOptionCalls =
-          arguments.where((arg) => arg.type != ArgumentType.boolean).length;
-      final expectedAddFlagCalls =
-          arguments.where((arg) => arg.type == ArgumentType.boolean).length;
+      final expectedAddOptionCalls = arguments
+          .where((arg) => arg.type != CreateCommandArgumentType.boolean)
+          .length;
+      final expectedAddFlagCalls = arguments
+          .where((arg) => arg.type == CreateCommandArgumentType.boolean)
+          .length;
       verify(
         sut.addOption(
           any,

@@ -3,6 +3,7 @@ import 'package:args/command_runner.dart';
 import 'package:mason/mason.dart';
 
 import 'commands/create_command.dart';
+import 'commands/create_distribution_command.dart';
 import 'rx_bloc_cli_constants.dart';
 import 'rx_bloc_command_exception.dart';
 
@@ -20,6 +21,7 @@ class RxBlocCommandRunner extends CommandRunner<int> {
       help: 'Print the current version.',
     );
     addCommand(CreateCommand(logger: _logger));
+    addCommand(CreateDistributionCommand(logger: _logger));
   }
 
   final Logger _logger;

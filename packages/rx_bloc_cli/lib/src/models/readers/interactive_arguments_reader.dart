@@ -1,7 +1,7 @@
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 
-import '../command_arguments.dart';
+import '../command_arguments/create_command_arguments.dart';
 import '../realtime_communication_type.dart';
 import 'command_arguments_reader.dart';
 
@@ -13,12 +13,12 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
   final Logger _logger;
 
   @override
-  bool isSupported(CommandArguments argument) =>
+  bool isSupported(CreateCommandArguments argument) =>
       argument.supportsInteractiveInput;
 
   @override
-  String readString(CommandArguments argument) {
-    if (argument.type != ArgumentType.string) {
+  String readString(CreateCommandArguments argument) {
+    if (argument.type != CreateCommandArgumentType.string) {
       throw UnsupportedError(
         '"${argument.name}" can not be read as String. '
         'Please find a suitable read method for "${argument.type.name}"',
@@ -31,8 +31,8 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
   }
 
   @override
-  bool readBool(CommandArguments argument) {
-    if (argument.type != ArgumentType.boolean) {
+  bool readBool(CreateCommandArguments argument) {
+    if (argument.type != CreateCommandArgumentType.boolean) {
       throw UnsupportedError(
         '"${argument.name}" can not be read as bool. '
         'Please find a suitable read method for "${argument.type.name}"',
@@ -46,9 +46,9 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
 
   @override
   RealtimeCommunicationType readRealtimeCommunicationEnum(
-    CommandArguments argument,
+    CreateCommandArguments argument,
   ) {
-    if (argument.type != ArgumentType.realTimeCommunicationEnum) {
+    if (argument.type != CreateCommandArgumentType.realTimeCommunicationEnum) {
       throw UnsupportedError(
         '"${argument.name}" can not be read as RealtimeCommunicationType. '
         'Please find a suitable read method for "${argument.type.name}"',
@@ -62,8 +62,8 @@ final class InteractiveArgumentsReader extends BaseCommandArgumentsReader {
   }
 
   @override
-  CICDType readCICDEnum(CommandArguments argument) {
-    if (argument.type != ArgumentType.cicdTypeEnum) {
+  CICDType readCICDEnum(CreateCommandArguments argument) {
+    if (argument.type != CreateCommandArgumentType.cicdTypeEnum) {
       throw UnsupportedError(
         '"${argument.name}" can not be read as CICDType. '
         'Please find a suitable read method for "${argument.type.name}"',

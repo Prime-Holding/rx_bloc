@@ -4,7 +4,7 @@ import 'package:mason/mason.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
-import 'package:rx_bloc_cli/src/models/command_arguments.dart';
+import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments_provider.dart';
 import 'package:rx_bloc_cli/src/models/readers/command_arguments_reader.dart';
@@ -30,7 +30,8 @@ void main() {
     final validationSymbol = const Symbol('validation');
 
     if (invocation.memberName == readSymbol) {
-      final argument = invocation.positionalArguments.first as CommandArguments;
+      final argument =
+          invocation.positionalArguments.first as CreateCommandArguments;
       final validation =
           invocation.namedArguments[validationSymbol] as T Function(T)?;
       final value = argumentValues[argument.name] as T;

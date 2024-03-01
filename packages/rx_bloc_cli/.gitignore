@@ -77,6 +77,10 @@ build/
 
 
 # rx_bloc_cli related stuf
+lib/src/templates
+
+# Generated test directories
 example/test_app
 example/testapp
-lib/src/templates
+example/distribution_repo
+

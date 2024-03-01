@@ -1,13 +1,13 @@
 import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 
-import 'realtime_communication_type.dart';
+import '../realtime_communication_type.dart';
 
 /// The command arguments that the RxBlocCli package supports
-enum CommandArguments {
+enum CreateCommandArguments {
   /// Project name
   projectName(
     name: 'project-name',
-    type: ArgumentType.string,
+    type: CreateCommandArgumentType.string,
     defaultsTo: null,
     prompt: 'Project name:',
     help: 'The project name for this new Flutter project. This must be a '
@@ -18,7 +18,7 @@ enum CommandArguments {
   /// Organisation name
   organisation(
     name: 'organisation',
-    type: ArgumentType.string,
+    type: CreateCommandArgumentType.string,
     defaultsTo: 'com.example',
     prompt: 'Organization name:',
     help: 'The organisation name.',
@@ -27,7 +27,7 @@ enum CommandArguments {
   /// Analytics
   analytics(
     name: 'enable-analytics',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable analytics:',
     help: 'Enables Firebase Analytics and Crashlytics for the project',
@@ -36,7 +36,7 @@ enum CommandArguments {
   /// Change language
   changeLanguage(
     name: 'enable-change-language',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: true,
     prompt: 'Enable change language:',
     help: 'Enables change language',
@@ -45,7 +45,7 @@ enum CommandArguments {
   /// Counter showcase
   counter(
     name: 'enable-feature-counter',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable counter showcase:',
     help: 'The counter showcase feature',
@@ -54,7 +54,7 @@ enum CommandArguments {
   /// Deep links
   deepLink(
     name: 'enable-feature-deeplinks',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable deeplink:',
     help: 'The deeplink showcase feature',
@@ -63,7 +63,7 @@ enum CommandArguments {
   /// Dev menu
   devMenu(
     name: 'enable-dev-menu',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable dev menu:',
     help: 'Enables Dev Menu for the project',
@@ -72,7 +72,7 @@ enum CommandArguments {
   /// Login
   login(
     name: 'enable-login',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: true,
     prompt: 'Enable login:',
     help: 'Enables login feature for the project',
@@ -81,7 +81,7 @@ enum CommandArguments {
   /// OTP authentication
   otp(
     name: 'enable-otp',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable OTP authentication:',
     help: 'Enables OTP feature for the project',
@@ -90,7 +90,7 @@ enum CommandArguments {
   /// Pin Code authentication
   pinCode(
     name: 'enable-pin-code',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable Pin Code authentication:',
     help: 'Enables Pin Code feature for the project',
@@ -99,7 +99,7 @@ enum CommandArguments {
   /// Patrol
   patrol(
     name: 'enable-patrol',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable Patrol integration tests:',
     help: 'Enables Patrol integration tests for the project',
@@ -108,7 +108,7 @@ enum CommandArguments {
   /// Real-time communication
   realtimeCommunication(
     name: 'realtime-communication',
-    type: ArgumentType.realTimeCommunicationEnum,
+    type: CreateCommandArgumentType.realTimeCommunicationEnum,
     defaultsTo: RealtimeCommunicationType.none,
     prompt: 'Select realtime communication type:',
     help: 'Enables realtime communication facilities like SSE, WebSocket '
@@ -118,7 +118,7 @@ enum CommandArguments {
   /// CI/CD
   cicd(
     name: 'cicd',
-    type: ArgumentType.cicdTypeEnum,
+    type: CreateCommandArgumentType.cicdTypeEnum,
     defaultsTo: CICDType.fastlane,
     prompt: 'Select ci/cd type:',
     help: 'Provides a template for setting up ci/cd for your project',
@@ -127,7 +127,7 @@ enum CommandArguments {
   /// Social logins
   socialLogins(
     name: 'enable-social-logins',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable social logins:',
     help: 'Enables social login with Apple, Facebook and Google for the '
@@ -137,7 +137,7 @@ enum CommandArguments {
   /// Widget toolkit showcase
   widgetToolkit(
     name: 'enable-feature-widget-toolkit',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enable widget toolkit showcase:',
     help: 'The widget toolkit showcase feature',
@@ -146,7 +146,7 @@ enum CommandArguments {
   /// Auth Matrix
   authMatrix(
     name: 'enable-auth-matrix',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enabled auth matrix:',
     help: 'Enables auth matrix feature for the project',
@@ -155,12 +155,12 @@ enum CommandArguments {
   /// Interactive input
   interactive(
     name: 'interactive',
-    type: ArgumentType.boolean,
+    type: CreateCommandArgumentType.boolean,
     defaultsTo: true,
     help: 'Allows to select the included features interactively',
   );
 
-  const CommandArguments({
+  const CreateCommandArguments({
     required this.name,
     required this.type,
     required this.defaultsTo,
@@ -172,7 +172,7 @@ enum CommandArguments {
   final String name;
 
   /// The command argument type
-  final ArgumentType type;
+  final CreateCommandArgumentType type;
 
   /// The command argument help information
   final String? help;
@@ -204,7 +204,7 @@ enum CommandArguments {
 }
 
 /// Types supported by CommandArguments. Used to enforce input restrictions.
-enum ArgumentType {
+enum CreateCommandArgumentType {
   /// String type
   string,
 
@@ -219,11 +219,11 @@ enum ArgumentType {
 
   /// Allowed values for each supported type
   Iterable<String>? get allowed => switch (this) {
-        ArgumentType.string => null,
-        ArgumentType.boolean => null,
-        ArgumentType.realTimeCommunicationEnum =>
+        CreateCommandArgumentType.string => null,
+        CreateCommandArgumentType.boolean => null,
+        CreateCommandArgumentType.realTimeCommunicationEnum =>
           RealtimeCommunicationType.supportedOptions.map((e) => e.toString()),
-        ArgumentType.cicdTypeEnum =>
+        CreateCommandArgumentType.cicdTypeEnum =>
           CICDType.supportedOptions.map((e) => e.toString()),
       };
 }

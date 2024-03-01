@@ -1,14 +1,14 @@
 import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 
 import '../../extensions/object_extensions.dart';
-import '../command_arguments.dart';
+import '../command_arguments/create_command_arguments.dart';
 import '../realtime_communication_type.dart';
 
 /// Defines the main interface for reading command arguments
 abstract class CommandArgumentsReader {
   /// Reads a value and optionally performs validation for the value
   T read<T extends Object>(
-    CommandArguments argument, {
+    CreateCommandArguments argument, {
     T Function(T)? validation,
   });
 }
@@ -17,7 +17,7 @@ abstract class CommandArgumentsReader {
 abstract class BaseCommandArgumentsReader implements CommandArgumentsReader {
   @override
   T read<T extends Object>(
-    CommandArguments argument, {
+    CreateCommandArguments argument, {
     T Function(T)? validation,
   }) {
     if (!isSupported(argument)) {
@@ -28,30 +28,30 @@ abstract class BaseCommandArgumentsReader implements CommandArgumentsReader {
     final validate = validation ?? ((value) => value);
 
     switch (argument.type) {
-      case ArgumentType.string:
+      case CreateCommandArgumentType.string:
         return validate(readString(argument).cast());
-      case ArgumentType.boolean:
+      case CreateCommandArgumentType.boolean:
         return validate(readBool(argument).cast());
-      case ArgumentType.realTimeCommunicationEnum:
+      case CreateCommandArgumentType.realTimeCommunicationEnum:
         return validate(readRealtimeCommunicationEnum(argument).cast());
-      case ArgumentType.cicdTypeEnum:
+      case CreateCommandArgumentType.cicdTypeEnum:
         return validate(readCICDEnum(argument).cast());
     }
   }
 
   /// Returns whether the provided argument can be read
-  bool isSupported(CommandArguments argument);
+  bool isSupported(CreateCommandArguments argument);
 
   /// Reads a String value
-  String readString(CommandArguments argument);
+  String readString(CreateCommandArguments argument);
 
   /// Reads a bool value
-  bool readBool(CommandArguments argument);
+  bool readBool(CreateCommandArguments argument);
 
   /// Reads a RealtimeCommunicationType value
   RealtimeCommunicationType readRealtimeCommunicationEnum(
-      CommandArguments argument);
+      CreateCommandArguments argument);
 
   /// Reads a CICDEnum value
-  CICDType readCICDEnum(CommandArguments argument);
+  CICDType readCICDEnum(CreateCommandArguments argument);
 }
