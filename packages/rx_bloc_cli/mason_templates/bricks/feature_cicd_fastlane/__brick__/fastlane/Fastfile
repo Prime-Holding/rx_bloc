@@ -1,7 +1,7 @@
 require 'yaml'
 
 # Apple Team ID associated with your Apple account
-# https://developer.apple.com/forums/thread/77563?answerId=661344022#661344022
+https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/
 APPLE_DEVELOPMENT_TEAM = ''
 
 # The ID of the private App Store Connect Api Key
