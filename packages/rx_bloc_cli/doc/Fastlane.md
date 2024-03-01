@@ -32,9 +32,24 @@ Optionally, if you want to deploy to Google Play directly after the app has been
 
 _Note: For an in-depth guide on how to setup a service account and assign it a key, please check the [setup section of Uploading to Play Store][android_service_key_creation] provided by Fastlane._
 
-#### Repo structure:
+#### Distribution repository:
 
-* Update documentation to match newly created create_distribution command *
+Create a new Github repository used for storing files and credentials for distribution of your app. 
+Clone the repository and open the directory in the terminal. 
+Using the [rx_bloc_cli][rx_bloc_cli_link] package, execute the following command:
+
+```
+rx_bloc_cli create_distribution .
+```
+
+The `create_distribution` command will populate the directory with the file structure required for things to work.
+Within the `android` and `ios` directories, paste the previously downloaded files and rename them accordingly. 
+The generated `README` file contains details on how to name the files, if additional help is needed.
+
+You may also need to set the `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD` variable in your terminal. 
+This password will be used for encrypting/decrypting your files within the newly created repository.
+
+Before committing any changes, make sure you encrypt all the files using the `encode.sh` script.
 
 #### Fastfile amendments:
 
@@ -42,7 +57,6 @@ _Note: For an in-depth guide on how to setup a service account and assign it a k
 * Adjustments of provisioning_profile_map *
 * Changes to fetch_credentials repo fetching *
 * Changes to iOS specifics: TeamID , references to certificates/files *
-* Changes to Android specifics: references to keystore/files *
 
 #### Running commands locally:
 
@@ -62,6 +76,7 @@ Fastfile and Gemfile use ruby under the hood.
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/
+[rx_bloc_cli_link]: https://pub.dev/packages/rx_bloc_cli
 [ios_auth_key_creation]: https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
 [android_service_key_creation]: https://docs.fastlane.tools/actions/upload_to_play_store/#setup
 [google_play_developer_api]: https://console.developers.google.com/apis/api/androidpublisher.googleapis.com/?hl=en

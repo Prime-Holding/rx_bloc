@@ -1,5 +1,14 @@
 require 'yaml'
 
+# Apple Team ID associated with your Apple account
+# https://developer.apple.com/forums/thread/77563?answerId=661344022#661344022
+APPLE_DEVELOPMENT_TEAM = ''
+
+# The ID of the private App Store Connect Api Key
+# https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
+IOS_P8_AUTH_KEY_ID, = ''
+IOS_P8_AUTH_KEY_ISSUER_ID = ''
+
 environments = ['development', 'sit', 'uat', 'production']
 
 flavor_map = {
@@ -278,7 +287,7 @@ platform :android do
             release_status: 'draft',
             track: 'internal',
             version_name: version_name,
-            json_key: File.expand_path('../credentials/decoded/android/pc-api-XXXXXXXXXXXXXXXXXXX-XXX-XXXXXXXXXXXX.json'),
+            json_key: File.expand_path('../credentials/decoded/android/service_account_key.json'),
             aab: File.expand_path("app-#{options[:environment]}-release.aab"),
             skip_upload_changelogs: true,
             skip_upload_images: true,
@@ -345,16 +354,16 @@ platform :ios do
             )
 
             import_certificate(
-                certificate_path: basedir + '{{project_name.snakeCase()}}_distribution.p12',
+                certificate_path: basedir + 'distribution_certificate.p12',
                 certificate_password: certificate_password,
                 keychain_path: keychain_path,
                 keychain_password: keychain_password
             )
 
-            #install_provisioning_profile(path: basedir + '{{project_name.pascalCase()}}_Dev_Distribution.mobileprovision')
-            #install_provisioning_profile(path: basedir + '{{project_name.pascalCase()}}_SIT_Distribution.mobileprovision')
-            #install_provisioning_profile(path: basedir + '{{project_name.pascalCase()}}_UAT_Distribution.mobileprovision')
-            install_provisioning_profile(path: basedir + '{{project_name.pascalCase()}}_Production_Distribution.mobileprovision')
+            #install_provisioning_profile(path: basedir + 'Development_Provisioning_Profile.mobileprovision')
+            #install_provisioning_profile(path: basedir + 'SIT_Provisioning_Profile.mobileprovision')
+            #install_provisioning_profile(path: basedir + 'UAT_Provisioning_Profile.mobileprovision')
+            install_provisioning_profile(path: basedir + 'Production_Provisioning_Profile.mobileprovision')
         end
     end
 
@@ -377,14 +386,10 @@ platform :ios do
             MY_APP_ID = bundle_id_map[options[:environment]]
             MY_PROFILE = provisioning_profile_map[options[:environment]]
 
-            # Apple Team ID associated with your Apple account
-            # https://developer.apple.com/forums/thread/77563?answerId=661344022#661344022
-            MY_TEAM = ''
-
             settings_to_override = {
                 :BUNDLE_IDENTIFIER => MY_APP_ID,
                 :PROVISIONING_PROFILE_SPECIFIER => MY_PROFILE,
-                :DEVELOPMENT_TEAM => MY_TEAM
+                :DEVELOPMENT_TEAM => APPLE_DEVELOPMENT_TEAM
             }
 
             gym(
@@ -417,9 +422,9 @@ platform :ios do
         api_key = app_store_connect_api_key(
             # The ID of the private App Store Connect Api Key
             # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
-            key_id: '',
-            issuer_id: '',
-            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey_XX0XX00XXX.p8'),
+            key_id: IOS_P8_AUTH_KEY_ID,
+            issuer_id: IOS_P8_AUTH_KEY_ISSUER_ID,
+            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey.p8'),
         )
 
         upload_to_testflight(
@@ -431,9 +436,6 @@ platform :ios do
 
     desc 'Deploy the debug symbols to firebase'
     private_lane :deploy_debug_symbols_platform do |options|
-        # TODO: this should work with flutter 3.12.0+
-        # https://github.com/firebase/flutterfire/issues/10994#issuecomment-1609931401
-
         sh(
             'firebase',
             'crashlytics:symbols:upload',
