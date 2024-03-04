@@ -41,15 +41,38 @@ Inside the `fetch_credentials` private lane, replace the repository url with the
 The url should be in the format allowing repository cloning using access tokens.
 Check [this article][clone_github_repo_with_access_token] on how to setup and clone a github repository using an access token.
 
+Make sure that the `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` variable is present in your environment.
+If not, set its value to be the value of the access token used for cloning of the distribution repository.
+
 #### Running commands locally:
 
 Before running the commands, make sure you have Ruby and [Fastlane][fastlane_link] installed on your system. 
 Fastfile and Gemfile use ruby under the hood.
 
-* Commands to run fastlane locally *
+In order to run a local build of the android/ios app, execute the following command:
+
+```
+fastlane build_custom platform:<supported_platform> build_name:<build_version> build_number:<build_number> environment:<flavor>
+```
+
+where you need to provide the following details:
+- supported_platform : ios, android
+- flavor: development, sit, uat, production
+- build_version: the actual app version (example: 1.2.0)
+- build_number: the incremental build number
+
+After the build has finished successfully, a `deployment.yaml` file will be generated along the platform specific artifacts. 
+The `deployment.yaml` contains necessary details used for deploying the app.
+
+To manually deploy the generated artifacts, use the following command:
+
+```
+fastlane deploy
+```
+
+For more details on that and other commands, as well as their arguments, please check out the `{project_root}/fastlane/README.md` file.
 
 #### Github secrets:
-
 
 * Retrieving github token*
 * Setting up github secrets *
