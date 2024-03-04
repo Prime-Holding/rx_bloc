@@ -507,7 +507,8 @@ The `lib_auth_matrix` brick contains classes, repositories, datasources and widg
 
 The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
 
-For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].
+For more information, please check out the [detailed guide][rx_bloc_cli_fastlane_setup_lnk] on how to configure your Fastfile.
+Additionally, you can check a concrete implementation in [this example][booking_app_lnk].
 
 #### Github
 
@@ -580,3 +581,4 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
+[rx_bloc_cli_fastlane_setup_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/feat/fastfile-documentation/packages/rx_bloc_cli/doc/Fastlane.md
