@@ -1,6 +1,6 @@
 ## Fastlane
 
-### Distribution repository:
+### Distribution repository
 
 Create a new Github repository used for storing files and credentials for distribution of your app.
 Clone the repository and open the directory in the terminal.
@@ -19,7 +19,7 @@ This password will be used for encrypting/decrypting your files within the newly
 
 Before committing any changes, make sure you encrypt all the files using the `encode.sh` script.
 
-### Fastfile amendments:
+### Fastfile amendments
 
 Inside the `{project_root}/fastlane/Fastfile`, you need to make changes to some variables in order for the configuration to work.
 
@@ -44,7 +44,26 @@ Check [this article][clone_github_repo_with_access_token] on how to setup and cl
 Make sure that the `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` variable is present in your environment.
 If not, set its value to be the value of the access token used for cloning of the distribution repository.
 
-### Running commands locally:
+### Github pipeline
+
+The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository.
+
+If you haven't created an access token for your distribution repository in Github [using this guide][clone_github_repo_with_access_token], do so and take note of it.
+
+Access the `Actions secrets and variables` within the settings page of your Github repository.
+There you should define two repository secrets with the same values as in the local environments:
+- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+
+Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app but does not deploy it.
+If you want to deploy your app after the build succeeds, change the `publish_to_store` variable within the `build_android_app`/`build_ios_app` jobs to `true` and commit the new changes.
+
+Once the apps are successfully built and signed, the `deployment.yaml` and the artifacts can be downloaded from the completed Github action from the Actions tab.
+
+In order to trigger a new build, push a new tag to the repository in one of the following formats:
+`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`
+
+### Local distribution
 
 Before running the commands, make sure you have Ruby and [Fastlane][fastlane_link] installed on your system.
 Fastfile and Gemfile use ruby under the hood.
@@ -71,23 +90,6 @@ fastlane deploy
 ```
 
 For more details on that and other commands, as well as their arguments, please check out the `{project_root}/fastlane/README.md` file.
-
-### Github pipeline:
-
-If you haven't created an access token for your distribution repository in Github [using this guide][clone_github_repo_with_access_token], do so and take note of it.
-
-Access the `Actions secrets and variables` within the settings page of your Github repository.
-There you should define two repository secrets with the same values as in the local environments:
-- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
-- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository 
-
-Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app but does not deploy it.
-If you want to deploy your app after the build succeeds, change the `publish_to_store` variable within the `build_android_app`/`build_ios_app` jobs to `true` and commit the new changes.
-
-Once the build is done, the `deployment.yaml` and the build artifacts will be available to be downloaded from Github.
-
-In order to trigger a new build, push a new tag to the repository in one of the following formats:
-`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`
 
 ---
 
