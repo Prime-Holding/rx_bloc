@@ -7,3 +7,6 @@ $(dirname "$0")/generate_test_project.sh all_enabled
 
 # Copy the readme file one level up so that it is visible on the pub.dev page
 cp example/testapp/README.md example/
+
+mkdir example/docs
+cp example/testapp/docs/continuous_delivery.md example/docs/
