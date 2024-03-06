@@ -14,8 +14,8 @@ set -e
 USAGE="Usage: decode.sh android|ios|deploy_android|deploy_ios|firebase"
 CREDENTIAL_TYPES=('android' 'ios' 'deploy_android' 'deploy_ios' 'firebase')
 
-if [ -z ${mobile_distribution_encryption_password+x} ]; then
-    echo "Error: the mobile_distribution_encryption_password environment variable is not set"
+if [ -z ${MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD+x} ]; then
+    echo "Error: the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD environment variable is not set"
     exit 1
 fi
 
@@ -35,7 +35,7 @@ function decode() {
         -pbkdf2 \
         -in $1 \
         -out $2 \
-        -pass env:mobile_distribution_encryption_password
+        -pass env:MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
 }
 
 if [ $1 == 'android' ]; then

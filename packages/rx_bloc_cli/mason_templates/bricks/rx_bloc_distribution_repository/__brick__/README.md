@@ -8,7 +8,7 @@ Both the encryption and decryption script expect an environment variable contain
 It can be set using the following command:
 
 ```sh
-export mobile_distribution_encryption_password=<PASSWORD>
+export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=<PASSWORD>
 ```
 
 _Note: To list all currently available environment variables, use `printenv` from your console._

@@ -2,9 +2,9 @@
 
 set -e
 
-if [ -z ${mobile_distribution_encryption_password+x} ];
+if [ -z ${MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD+x} ];
 then
-    echo "Error: the mobile_distribution_encryption_password environment variable is not set"
+    echo "Error: the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD environment variable is not set"
     exit 1
 fi
 
@@ -21,4 +21,4 @@ openssl enc \
     -salt \
     -in $1 \
     -out $1.enc \
-    -pass env:mobile_distribution_encryption_password
+    -pass env:MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD

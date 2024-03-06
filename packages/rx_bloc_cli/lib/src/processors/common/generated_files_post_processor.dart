@@ -1,3 +1,4 @@
+import 'package:rx_bloc_cli/src/processors/cicd/github_workflow_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 
 import 'package:rx_bloc_cli/src/processors/ios/podfile_processor.dart';
@@ -23,6 +24,18 @@ class GeneratedFilesPostProcessor {
   List<(String, StringProcessor)> get _fileStringProcessors => [
         ('ios/Podfile', PodfileProcessor(args)),
         ('.idea/workspace.xml', IdeaWorkspaceProcessor(args)),
+        (
+          '.github/workflows/build_and_deploy_app.yaml',
+          GithubWorkflowProcessor(args)
+        ),
+        (
+          '.github/workflows/fastlane_android_custom_build_and_deploy.yaml',
+          GithubWorkflowProcessor(args)
+        ),
+        (
+          '.github/workflows/fastlane_ios_custom_build_and_deploy.yaml',
+          GithubWorkflowProcessor(args)
+        ),
       ];
 
   List<VoidProcessor> get _voidProcessors => [
