@@ -6,7 +6,7 @@ import 'package:mason/mason.dart';
 import '../extensions/arg_parser_extensions.dart';
 import '../extensions/arg_results_extensions.dart';
 import '../models/bundle_generator.dart';
-import '../models/command_arguments.dart';
+import '../models/command_arguments/create_command_arguments.dart';
 import '../models/generator_arguments.dart';
 import '../models/generator_arguments_provider.dart';
 import '../models/readers/interactive_arguments_reader.dart';
@@ -33,7 +33,7 @@ class CreateCommand extends Command<int> {
         _bundleGenerator = BundleGenerator(bundle ?? rxBlocBaseBundle),
         _vars = vars,
         _generator = generator ?? MasonGenerator.fromBundle {
-    argParser.addCommandArguments(CommandArguments.values);
+    argParser.addCreateCommandArguments(CreateCommandArguments.values);
   }
 
   final Logger _logger;
@@ -230,7 +230,9 @@ class CreateCommand extends Command<int> {
 
   /// Writes an output log with the status of the file generation
   Future<void> _writeOutputLog(
-      int fileCount, GeneratorArguments arguments) async {
+    int fileCount,
+    GeneratorArguments arguments,
+  ) async {
     final filesGeneratedStr =
         fileCount == 0 ? 'No files generated.' : 'Generated $fileCount file(s)';
 

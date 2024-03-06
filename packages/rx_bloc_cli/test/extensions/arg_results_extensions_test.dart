@@ -2,7 +2,7 @@ import 'package:args/args.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_cli/src/extensions/arg_results_extensions.dart';
-import 'package:rx_bloc_cli/src/models/command_arguments.dart';
+import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 import 'package:test/test.dart';
@@ -20,14 +20,14 @@ void main() {
 
   group('test arg_results interactiveConfigurationEnabled', () {
     test('should return provided value if present', () {
-      final value = !CommandArguments.interactive.defaultValue<bool>();
-      when(sut[CommandArguments.interactive.name]).thenReturn(value);
+      final value = !CreateCommandArguments.interactive.defaultValue<bool>();
+      when(sut[CreateCommandArguments.interactive.name]).thenReturn(value);
 
       expect(sut.interactiveConfigurationEnabled, equals(value));
     });
 
     test('should throw exception if no value available', () {
-      when(sut[CommandArguments.interactive.name]).thenReturn(null);
+      when(sut[CreateCommandArguments.interactive.name]).thenReturn(null);
       expect(
           () => sut.interactiveConfigurationEnabled, throwsA(isA<TypeError>()));
     });
@@ -52,8 +52,8 @@ void main() {
 
   group('test arg_results readString', () {
     test('should return string for the correct type', () {
-      final projectName = CommandArguments.projectName;
-      final organisation = CommandArguments.organisation;
+      final projectName = CreateCommandArguments.projectName;
+      final organisation = CreateCommandArguments.organisation;
       when(sut[projectName.name]).thenReturn('testapp');
       when(sut[organisation.name]).thenReturn(null);
 
@@ -62,28 +62,29 @@ void main() {
     });
 
     test('should throw error for incorrect type', () {
-      expect(
-          () => sut.readString(CommandArguments.otp), throwsUnsupportedError);
+      expect(() => sut.readString(CreateCommandArguments.otp),
+          throwsUnsupportedError);
     });
   });
 
   group('test arg_results readBool', () {
     test('should return bool for the correct type', () {
-      final enableLogin = CommandArguments.login;
+      final enableLogin = CreateCommandArguments.login;
       when(sut[enableLogin.name]).thenReturn(false);
 
       expect(sut.readBool(enableLogin), isFalse);
     });
 
     test('should throw error for incorrect type', () {
-      expect(() => sut.readBool(CommandArguments.projectName),
+      expect(() => sut.readBool(CreateCommandArguments.projectName),
           throwsUnsupportedError);
     });
   });
 
   group('test arg_results readRealtimeCommunicationType', () {
     test('should return RealtimeCommunicationType for the correct type', () {
-      final realtimeCommunication = CommandArguments.realtimeCommunication;
+      final realtimeCommunication =
+          CreateCommandArguments.realtimeCommunication;
       when(sut[realtimeCommunication.name])
           .thenReturn(RealtimeCommunicationType.sse.name);
 
@@ -97,7 +98,8 @@ void main() {
 
     test('should throw error for incorrect type', () {
       expect(
-          () => sut.readRealtimeCommunicationType(CommandArguments.projectName),
+          () => sut.readRealtimeCommunicationType(
+              CreateCommandArguments.projectName),
           throwsUnsupportedError);
     });
   });

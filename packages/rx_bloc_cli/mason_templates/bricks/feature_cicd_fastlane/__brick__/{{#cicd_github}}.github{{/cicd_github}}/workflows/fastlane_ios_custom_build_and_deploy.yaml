@@ -1,5 +1,5 @@
 name: "Custom build and deploy iOS app"
-
+# {{/}}
 on:
   workflow_call:
     inputs:
@@ -82,4 +82,3 @@ jobs:
         if: ${{ inputs.publish_to_store }}
         run: |
           bundle exec fastlane deploy
-

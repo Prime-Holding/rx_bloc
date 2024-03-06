@@ -1,3 +1,7 @@
+## [3.5.0]
+* Introduce the rx_bloc_cli create_distribution command, which bootstraps a project containing encryption scripts, certificates and provisioning profiles needed for iOS and Android application distribution. Heavily inspired by the https://codesigning.guide/
+* Added `continuous_delivery.md` guide for setting up project specific CD
+
 ## [3.4.1]
 * Update generated projects to support latest flutter version (`3.19`)
 

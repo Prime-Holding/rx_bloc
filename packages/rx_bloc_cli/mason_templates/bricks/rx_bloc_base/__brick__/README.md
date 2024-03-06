@@ -505,24 +505,12 @@ The `lib_auth_matrix` brick contains classes, repositories, datasources and widg
 {{#cicd}}
 ## CI/CD
 
-The project comes preconfigured with [Fastlane][fastlane_lnk] which allows building and deploying of android and iOS apps. All the necessary code can be found inside the `{app_directory}/fastlane/Fastfile` file. You may need to configure additional project related settings before it can run successfully (such as certificates, credentials, provisioning profiles, team id,...).
+The project comes preconfigured with a CI/CD solution which allows automated building and deploying of android and iOS apps.
+The solution is using [Fastlane][fastlane_lnk] under the hood (check `{app_directory}/fastlane/Fastfile` for more info).
 
-For more information on how to configure your Fastfile, please check out [this example][booking_app_lnk].{{/cicd}}
-{{#cicd_github}}
-#### Github
-
-The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository. To trigger the pipeline, a tag with the following format has to be pushed:
-
-```
-{optional_prefix_text_ending_with_a_dash_sign-}{flavor}-v{build_name}+{build_number}
-```
-
-For example, the following tag name will trigger an Android and iOS build:
-```
-development-v1.2.3+45
-```
-
-After the apps are successfully built and signed, the artefacts can be downloaded from the completed github action from the Actions tab.{{/cicd_github}}
+Before running the actual CD pipeline, you may need first to configure your project specific files and credentials. 
+For more information, please check out the [detailed guide][rx_bloc_cli_cd_setup_lnk] on how to configure your Fastfile.
+Additionally, you can check a concrete implementation in [this example][booking_app_lnk].{{/cicd}}
 {{#enable_pin_code}}
 ## Feature Pin Code
 
@@ -580,3 +568,4 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
+[rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md

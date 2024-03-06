@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
-import 'package:rx_bloc_cli/src/models/command_arguments.dart';
+import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/project_configuration.dart';
@@ -28,10 +28,10 @@ final class Stub {
 
   static Map<String, Object> get defaultValues {
     var map = <String, Object>{
-      CommandArguments.projectName.name: 'testapp',
+      CreateCommandArguments.projectName.name: 'testapp',
     };
 
-    for (final argument in CommandArguments.values) {
+    for (final argument in CreateCommandArguments.values) {
       if (!argument.mandatory) {
         map[argument.name] = argument.defaultValue();
       }
@@ -41,22 +41,24 @@ final class Stub {
   }
 
   static Map<String, Object> get invalidProjectNameValues =>
-      Map.from(Stub.defaultValues)..[CommandArguments.projectName.name] = '';
+      Map.from(Stub.defaultValues)
+        ..[CreateCommandArguments.projectName.name] = '';
 
   static Map<String, Object> get invalidOrganisationValues =>
-      Map.from(Stub.defaultValues)..[CommandArguments.organisation.name] = '';
+      Map.from(Stub.defaultValues)
+        ..[CreateCommandArguments.organisation.name] = '';
 
   static Map<String, Object> get invalidAuthConfigurationValues =>
       Map.from(Stub.defaultValues)
-        ..[CommandArguments.login.name] = false
-        ..[CommandArguments.socialLogins.name] = false
-        ..[CommandArguments.otp.name] = true;
+        ..[CreateCommandArguments.login.name] = false
+        ..[CreateCommandArguments.socialLogins.name] = false
+        ..[CreateCommandArguments.otp.name] = true;
 
   static final generatorArgumentsAllEnabled = GeneratorArguments(
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(
       projectName: 'testapp',
-      organisation: CommandArguments.organisation.defaultValue(),
+      organisation: CreateCommandArguments.organisation.defaultValue(),
     ),
     authConfiguration: AuthConfiguration(
       loginEnabled: true,
@@ -84,30 +86,31 @@ final class Stub {
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(
       projectName: 'testapp',
-      organisation: CommandArguments.organisation.defaultValue(),
+      organisation: CreateCommandArguments.organisation.defaultValue(),
     ),
     authConfiguration: AuthConfiguration(
-      loginEnabled: CommandArguments.login.defaultValue(),
-      socialLoginsEnabled: CommandArguments.socialLogins.defaultValue(),
-      otpEnabled: CommandArguments.otp.defaultValue(),
-      pinCodeEnabled: CommandArguments.pinCode.defaultValue(),
-      authMatrixEnabled: CommandArguments.authMatrix.defaultValue(),
+      loginEnabled: CreateCommandArguments.login.defaultValue(),
+      socialLoginsEnabled: CreateCommandArguments.socialLogins.defaultValue(),
+      otpEnabled: CreateCommandArguments.otp.defaultValue(),
+      pinCodeEnabled: CreateCommandArguments.pinCode.defaultValue(),
+      authMatrixEnabled: CreateCommandArguments.authMatrix.defaultValue(),
     ),
     featureConfiguration: FeatureConfiguration(
-      analyticsEnabled: CommandArguments.analytics.defaultValue(),
+      analyticsEnabled: CreateCommandArguments.analytics.defaultValue(),
       pushNotificationsEnabled: true,
-      changeLanguageEnabled: CommandArguments.changeLanguage.defaultValue(),
-      counterEnabled: CommandArguments.counter.defaultValue(),
-      patrolTestsEnabled: CommandArguments.patrol.defaultValue(),
-      devMenuEnabled: CommandArguments.devMenu.defaultValue(),
-      deepLinkEnabled: CommandArguments.deepLink.defaultValue(),
-      widgetToolkitEnabled: CommandArguments.widgetToolkit.defaultValue(),
+      changeLanguageEnabled:
+          CreateCommandArguments.changeLanguage.defaultValue(),
+      counterEnabled: CreateCommandArguments.counter.defaultValue(),
+      patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
+      devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
+      deepLinkEnabled: CreateCommandArguments.deepLink.defaultValue(),
+      widgetToolkitEnabled: CreateCommandArguments.widgetToolkit.defaultValue(),
       realtimeCommunicationEnabled:
-          CommandArguments.realtimeCommunication.defaultValue() !=
+          CreateCommandArguments.realtimeCommunication.defaultValue() !=
               RealtimeCommunicationType.none,
-      cicdEnabled: CommandArguments.cicd.defaultValue() != CICDType.none,
+      cicdEnabled: CreateCommandArguments.cicd.defaultValue() != CICDType.none,
       cicdGithubEnabled:
-          CommandArguments.cicd.defaultValue() == CICDType.github,
+          CreateCommandArguments.cicd.defaultValue() == CICDType.github,
     ),
   );
 }

@@ -7,7 +7,7 @@ import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart
 import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 
-import 'command_arguments.dart';
+import 'command_arguments/create_command_arguments.dart';
 import 'configurations/project_configuration.dart';
 import 'readers/command_arguments_reader.dart';
 
@@ -46,13 +46,13 @@ class GeneratorArgumentsProvider {
   ProjectConfiguration _readProjectConfiguration() {
     // Project name
     final projectName = _reader.read<String>(
-      CommandArguments.projectName,
+      CreateCommandArguments.projectName,
       validation: ProjectConfigurationValidations.validateProjectName,
     );
 
     // Organisation
     final organisation = _reader.read(
-      CommandArguments.organisation,
+      CreateCommandArguments.organisation,
       validation: ProjectConfigurationValidations.validateOrganisation,
     );
 
@@ -68,20 +68,21 @@ class GeneratorArgumentsProvider {
 
   AuthConfiguration _readAuthConfiguration() {
     // Login
-    var loginEnabled = _reader.read<bool>(CommandArguments.login);
+    var loginEnabled = _reader.read<bool>(CreateCommandArguments.login);
 
     // Social Logins
     final socialLoginsEnabled =
-        _reader.read<bool>(CommandArguments.socialLogins);
+        _reader.read<bool>(CreateCommandArguments.socialLogins);
 
     // OTP
-    var otpEnabled = _reader.read<bool>(CommandArguments.otp);
+    var otpEnabled = _reader.read<bool>(CreateCommandArguments.otp);
 
     // Pin Code
-    var pinCodeEnabled = _reader.read<bool>(CommandArguments.pinCode);
+    var pinCodeEnabled = _reader.read<bool>(CreateCommandArguments.pinCode);
 
     // Auth matrix
-    final authMatrixEnabled = _reader.read<bool>(CommandArguments.authMatrix);
+    final authMatrixEnabled =
+        _reader.read<bool>(CreateCommandArguments.authMatrix);
 
     if (authMatrixEnabled && !otpEnabled) {
       _logger.warn('Otp enabled, due to Auth Matrix feature requirement');
@@ -114,36 +115,38 @@ class GeneratorArgumentsProvider {
   FeatureConfiguration _readFeatureConfiguration() {
     // Change language
     final changeLanguageEnabled =
-        _reader.read<bool>(CommandArguments.changeLanguage);
+        _reader.read<bool>(CreateCommandArguments.changeLanguage);
 
     // Counter
-    final counterEnabled = _reader.read<bool>(CommandArguments.counter);
+    final counterEnabled = _reader.read<bool>(CreateCommandArguments.counter);
 
     // Widget toolkit
     final widgetToolkitEnabled =
-        _reader.read<bool>(CommandArguments.widgetToolkit);
+        _reader.read<bool>(CreateCommandArguments.widgetToolkit);
 
     // Analytics, Push Notifications, Firebase
-    final analyticsEnabled = _reader.read<bool>(CommandArguments.analytics);
+    final analyticsEnabled =
+        _reader.read<bool>(CreateCommandArguments.analytics);
     final pushNotificationsEnabled = true;
 
     // Realtime communication
     final realtimeCommunication = _reader.read<RealtimeCommunicationType>(
-        CommandArguments.realtimeCommunication);
+        CreateCommandArguments.realtimeCommunication);
     final realtimeCommunicationEnabled =
         realtimeCommunication != RealtimeCommunicationType.none;
 
     // Deep links
-    final deepLinkEnabled = _reader.read<bool>(CommandArguments.deepLink);
+    final deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
 
     // Dev menu
-    final devMenuEnabled = _reader.read<bool>(CommandArguments.devMenu);
+    final devMenuEnabled = _reader.read<bool>(CreateCommandArguments.devMenu);
 
     // Patrol tests
-    final patrolTestsEnabled = _reader.read<bool>(CommandArguments.patrol);
+    final patrolTestsEnabled =
+        _reader.read<bool>(CreateCommandArguments.patrol);
 
     // CI/CD
-    final cicdType = _reader.read<CICDType>(CommandArguments.cicd);
+    final cicdType = _reader.read<CICDType>(CreateCommandArguments.cicd);
     final cicdEnabled = cicdType != CICDType.none;
     final cicdGithubEnabled = cicdType == CICDType.github;
 

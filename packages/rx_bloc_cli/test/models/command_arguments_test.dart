@@ -1,58 +1,71 @@
 import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
-import 'package:rx_bloc_cli/src/models/command_arguments.dart';
+import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 import 'package:test/test.dart';
 
 import '../stub.dart';
 
 void main() {
-  List<CommandArguments> optionalCommandArguments() {
+  List<CreateCommandArguments> optionalCommandArguments() {
     final mandatoryArguments = {
-      CommandArguments.projectName,
+      CreateCommandArguments.projectName,
     };
-    return CommandArguments.values
+    return CreateCommandArguments.values
         .where((argument) => !mandatoryArguments.contains(argument))
         .toList();
   }
 
-  List<CommandArguments> interactiveCommandArguments() {
+  List<CreateCommandArguments> interactiveCommandArguments() {
     final nonInteractiveArguments = {
-      CommandArguments.interactive,
+      CreateCommandArguments.interactive,
     };
-    return CommandArguments.values
+    return CreateCommandArguments.values
         .where((argument) => !nonInteractiveArguments.contains(argument))
         .toList();
   }
 
-  List<CommandArguments> booleanCommandArguments() {
-    return CommandArguments.values
-        .where((argument) => argument.type == ArgumentType.boolean)
+  List<CreateCommandArguments> booleanCommandArguments() {
+    return CreateCommandArguments.values
+        .where((argument) => argument.type == CreateCommandArgumentType.boolean)
         .toList();
   }
 
   group('test command_arguments', () {
     test('should have the correct argument type', () {
-      expect(CommandArguments.projectName.type, equals(ArgumentType.string));
-      expect(CommandArguments.organisation.type, equals(ArgumentType.string));
-      expect(CommandArguments.analytics.type, equals(ArgumentType.boolean));
-      expect(
-          CommandArguments.changeLanguage.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.counter.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.deepLink.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.devMenu.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.login.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.otp.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.pinCode.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.patrol.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.realtimeCommunication.type,
-          equals(ArgumentType.realTimeCommunicationEnum));
-      expect(CommandArguments.socialLogins.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.widgetToolkit.type, equals(ArgumentType.boolean));
-      expect(CommandArguments.interactive.type, equals(ArgumentType.boolean));
+      expect(CreateCommandArguments.projectName.type,
+          equals(CreateCommandArgumentType.string));
+      expect(CreateCommandArguments.organisation.type,
+          equals(CreateCommandArgumentType.string));
+      expect(CreateCommandArguments.analytics.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.changeLanguage.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.counter.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.deepLink.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.devMenu.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.login.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.otp.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.pinCode.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.patrol.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.realtimeCommunication.type,
+          equals(CreateCommandArgumentType.realTimeCommunicationEnum));
+      expect(CreateCommandArguments.socialLogins.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.widgetToolkit.type,
+          equals(CreateCommandArgumentType.boolean));
+      expect(CreateCommandArguments.interactive.type,
+          equals(CreateCommandArgumentType.boolean));
     });
 
     test('should have the correct default value type', () {
-      for (final argument in CommandArguments.values) {
+      for (final argument in CreateCommandArguments.values) {
         if (!argument.mandatory) {
           expect(argument.hasMatchingTypeAndDefault, isTrue);
         }
@@ -60,30 +73,30 @@ void main() {
     });
 
     test('should have the correct default value', () {
-      expect(() => CommandArguments.projectName.defaultValue(),
+      expect(() => CreateCommandArguments.projectName.defaultValue(),
           throwsUnsupportedError);
-      expect(CommandArguments.organisation.defaultValue(),
+      expect(CreateCommandArguments.organisation.defaultValue(),
           equals(Stub.defaultOrganisation));
-      expect(CommandArguments.analytics.defaultValue(), isFalse);
-      expect(CommandArguments.changeLanguage.defaultValue(), isTrue);
-      expect(CommandArguments.counter.defaultValue(), isFalse);
-      expect(CommandArguments.deepLink.defaultValue(), isFalse);
-      expect(CommandArguments.devMenu.defaultValue(), isFalse);
-      expect(CommandArguments.login.defaultValue(), isTrue);
-      expect(CommandArguments.otp.defaultValue(), isFalse);
-      expect(CommandArguments.pinCode.defaultValue(), isFalse);
-      expect(CommandArguments.patrol.defaultValue(), isFalse);
-      expect(CommandArguments.realtimeCommunication.defaultValue(),
+      expect(CreateCommandArguments.analytics.defaultValue(), isFalse);
+      expect(CreateCommandArguments.changeLanguage.defaultValue(), isTrue);
+      expect(CreateCommandArguments.counter.defaultValue(), isFalse);
+      expect(CreateCommandArguments.deepLink.defaultValue(), isFalse);
+      expect(CreateCommandArguments.devMenu.defaultValue(), isFalse);
+      expect(CreateCommandArguments.login.defaultValue(), isTrue);
+      expect(CreateCommandArguments.otp.defaultValue(), isFalse);
+      expect(CreateCommandArguments.pinCode.defaultValue(), isFalse);
+      expect(CreateCommandArguments.patrol.defaultValue(), isFalse);
+      expect(CreateCommandArguments.realtimeCommunication.defaultValue(),
           equals(RealtimeCommunicationType.none));
-      expect(CommandArguments.socialLogins.defaultValue(), isFalse);
-      expect(CommandArguments.widgetToolkit.defaultValue(), isFalse);
-      expect(CommandArguments.interactive.defaultValue(), isTrue);
+      expect(CreateCommandArguments.socialLogins.defaultValue(), isFalse);
+      expect(CreateCommandArguments.widgetToolkit.defaultValue(), isFalse);
+      expect(CreateCommandArguments.interactive.defaultValue(), isTrue);
     });
 
     test('should only cast default value to correct type', () {
-      expect(() => CommandArguments.interactive.defaultValue<bool>(),
+      expect(() => CreateCommandArguments.interactive.defaultValue<bool>(),
           returnsNormally);
-      expect(() => CommandArguments.interactive.defaultValue<String>(),
+      expect(() => CreateCommandArguments.interactive.defaultValue<String>(),
           throwsA(isA<TypeError>()));
     });
 
@@ -108,7 +121,7 @@ void main() {
     });
 
     test('should have help message', () {
-      final arguments = CommandArguments.values;
+      final arguments = CreateCommandArguments.values;
       expect(arguments.every((arg) => arg.hasValidHelpMessage), isTrue);
     });
 
@@ -124,33 +137,33 @@ void main() {
       final allowedRealtimeCommunication =
           RealtimeCommunicationType.supportedOptions.map((e) => e.name);
 
-      expect(ArgumentType.string.allowed, isNull);
-      expect(ArgumentType.boolean.allowed, isNull);
-      expect(ArgumentType.realTimeCommunicationEnum.allowed,
+      expect(CreateCommandArgumentType.string.allowed, isNull);
+      expect(CreateCommandArgumentType.boolean.allowed, isNull);
+      expect(CreateCommandArgumentType.realTimeCommunicationEnum.allowed,
           equals(allowedRealtimeCommunication));
     });
   });
 }
 
-extension _MatchType on ArgumentType {
+extension _MatchType on CreateCommandArgumentType {
   bool matches(Object? value) {
     if (value == null) {
       return false;
     }
     switch (this) {
-      case ArgumentType.string:
+      case CreateCommandArgumentType.string:
         return value is String;
-      case ArgumentType.boolean:
+      case CreateCommandArgumentType.boolean:
         return value is bool;
-      case ArgumentType.realTimeCommunicationEnum:
+      case CreateCommandArgumentType.realTimeCommunicationEnum:
         return value is RealtimeCommunicationType;
-      case ArgumentType.cicdTypeEnum:
+      case CreateCommandArgumentType.cicdTypeEnum:
         return value is CICDType;
     }
   }
 }
 
-extension _MatchTypeDefault on CommandArguments {
+extension _MatchTypeDefault on CreateCommandArguments {
   bool get hasMatchingTypeAndDefault => type.matches(defaultsTo);
 
   bool get hasValidHelpMessage => (help != null && help!.isNotEmpty);

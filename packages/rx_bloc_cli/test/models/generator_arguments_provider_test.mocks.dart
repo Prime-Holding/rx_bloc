@@ -6,7 +6,8 @@
 import 'package:mason_logger/mason_logger.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i5;
-import 'package:rx_bloc_cli/src/models/command_arguments.dart' as _i4;
+import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart'
+    as _i4;
 import 'package:rx_bloc_cli/src/models/readers/command_arguments_reader.dart'
     as _i3;
 
@@ -59,7 +60,7 @@ class MockCommandArgumentsReader extends _i1.Mock
     implements _i3.CommandArgumentsReader {
   @override
   T read<T extends Object>(
-    _i4.CommandArguments? argument, {
+    _i4.CreateCommandArguments? argument, {
     T Function(T)? validation,
   }) =>
       (super.noSuchMethod(
