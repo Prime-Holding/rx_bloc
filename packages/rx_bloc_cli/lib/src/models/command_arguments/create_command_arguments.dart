@@ -119,7 +119,7 @@ enum CreateCommandArguments {
   cicd(
     name: 'cicd',
     type: CreateCommandArgumentType.cicdTypeEnum,
-    defaultsTo: CICDType.github,
+    defaultsTo: CICDType.fastlane,
     prompt: 'Select ci/cd type:',
     help: 'Provides a template for setting up ci/cd for your project',
   ),

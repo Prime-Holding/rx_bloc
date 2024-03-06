@@ -17,6 +17,10 @@ Within the `android` and `ios` directories, paste the previously downloaded file
 You should also set the `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD` variable in your terminal.
 This password will be used for encrypting/decrypting your files within the newly created repository.
 
+```
+export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=<PASSWORD>
+```
+
 Before committing any changes, make sure you encrypt all the files using the `encode.sh` script.
 
 ### Fastfile amendments
@@ -30,19 +34,25 @@ Take that value and paste it into the `IOS_P8_AUTH_KEY_ID` variable.
 
 The value of the `IOS_P8_AUTH_KEY_ISSUER_ID` variable is the value retrieved from the `contentProviderPublicId` key within [this page][apple_issuer_id_details].
 If more than one `contentProviderPublicId` with different values is present, make sure to use the one from the appropriate organization account name.
-
+{{#analytics}}
 For each of the supported flavors, prepare one or more firebase projects (based on your projects requirements).
-Once each firebase project is configured, copy the app id of both Android and iOS configuration.
-Update values for each supported flavor in the `firebase_app_id_map` dictionary.
-
-For the iOS project, update the provisioning profile names for each flavor inside the `provisioning_profile_map` to match the names of individual provisioning profiles defined in the [Apple Developer Console][apple_provisioning_profiles_list].
+Once each firebase project is configured, go to the `General` tab in the `Project settings` of your project in the Firebase Console.
+Under `Your apps` section, copy the app id of both Android and iOS configuration by selecting the respective apps.
+Update values for each supported flavor in the `firebase_app_id_map` dictionary within the `Fastfile`.
+{{/analytics}}
+For the iOS project, update the provisioning profile names for each flavor inside the `provisioning_profile_map` dictionary.
+Each key in the dictionary represents the flavor name, while the values are names of individual provisioning profiles defined in the [Apple Developer Console][apple_provisioning_profiles_list].
 
 Inside the `fetch_credentials` private lane, replace the repository url with the one matching your distribution repository.
 The url should be in the format allowing repository cloning using access tokens.
 Check [this article][clone_github_repo_with_access_token] on how to setup and clone a github repository using an access token.
 
-Make sure that the `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` variable is present in your environment.
+Make sure that the `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` variable is present in your local environment.
 If not, set its value to be the value of the access token used for cloning of the distribution repository.
+
+```
+export MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET=<PASSWORD>
+```
 
 ### Github pipeline
 
@@ -56,9 +66,15 @@ There you should define two repository secrets with the same values as in the lo
 - `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 
 Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app but does not deploy it.
-If you want to deploy your app after the build succeeds, change the `publish_to_store` variable within the `build_android_app`/`build_ios_app` jobs to `true` and commit the new changes.
+If you want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `true` and commit the new changes.
 
-Once the apps are successfully built and signed, the `deployment.yaml` and the artifacts can be downloaded from the completed Github action from the Actions tab.
+The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners. 
+All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
+
+Once the apps are successfully built and signed, a `deployment.yaml` file along with the platform specific artifacts (`.aab` for Android, `.ipa` for iOS) will be generated. 
+The `deployment.yaml` contains necessary details used for deploying the app. 
+The `deployment.yaml` and the artifacts can be downloaded from the completed Github action from the Actions tab. 
+In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below. 
 
 In order to trigger a new build, push a new tag to the repository in one of the following formats:
 `production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`
@@ -81,7 +97,6 @@ where you need to provide the following details:
 - build_number: the incremental build number
 
 After the build has finished successfully, a `deployment.yaml` file will be generated along the platform specific artifacts.
-The `deployment.yaml` contains necessary details used for deploying the app.
 
 To manually deploy the generated artifacts, use the following command:
 
@@ -104,3 +119,4 @@ For more details on that and other commands, as well as their arguments, please 
 [apple_issuer_id_details]: https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/user/detail
 [apple_provisioning_profiles_list]: https://developer.apple.com/account/resources/profiles/list
 [clone_github_repo_with_access_token]: https://kettan007.medium.com/how-to-clone-a-git-repository-using-personal-access-token-a-step-by-step-guide-ab7b54d4ef83
+[github_actions_usage_limits]: https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits

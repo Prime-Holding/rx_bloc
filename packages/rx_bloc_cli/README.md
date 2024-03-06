@@ -47,7 +47,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-auth-matrix`            |                   `false`                   |                      Enables Auth Matrix feature functionality for the project.                      |
 | `--[no-]interactive`                   |                   `false`                   |         Enables interactive project generation flow flags are read from command line prompts         |
 | `--[no-]enable-pin-code`               |                   `false`                   |      Enables pin code feature with biometrics, that can help with building pin code workflows.       |
-| `--cicd`                               |                  `github`                   | Provides a template for setting up ci/cd for your project. Available options: none, fastlane, github |
+| `--cicd`                               |                 `fastlane`                  | Provides a template for setting up ci/cd for your project. Available options: none, fastlane, github |
 
 ### What's Included? 📦
 

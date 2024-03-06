@@ -2,6 +2,8 @@
 
 . $(dirname "$0")/compile_bundles.sh
 rm -rf example/testapp
+rm -rf example/docs
+
 mkdir example/testapp
 $(dirname "$0")/generate_test_project.sh all_enabled
 
