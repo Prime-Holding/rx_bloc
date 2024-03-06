@@ -47,13 +47,6 @@ Inside the `fetch_credentials` private lane, replace the repository url with the
 The url should be in the format allowing repository cloning using access tokens.
 Check [this article][clone_github_repo_with_access_token] on how to setup and clone a github repository using an access token.
 
-Make sure that the `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` variable is present in your local environment.
-If not, set its value to be the value of the access token used for cloning of the distribution repository.
-
-```
-export MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET=<PASSWORD>
-```
-
 ### Github pipeline
 
 The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository.
@@ -83,6 +76,13 @@ In order to trigger a new build, push a new tag to the repository in one of the 
 
 Before running the commands, make sure you have Ruby and [Fastlane][fastlane_link] installed on your system.
 Fastfile and Gemfile use ruby under the hood.
+
+Make sure that the `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` variable is present in your local environment.
+If not, set its value to be the value of the access token used for cloning of the distribution repository.
+
+```
+export MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET=<PASSWORD>
+```
 
 In order to run a local build of the android/ios app, execute the following command:
 
