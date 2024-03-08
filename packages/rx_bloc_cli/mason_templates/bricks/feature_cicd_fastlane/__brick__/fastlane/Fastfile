@@ -9,6 +9,12 @@ APPLE_DEVELOPMENT_TEAM = ''
 IOS_P8_AUTH_KEY_ID, = ''
 IOS_P8_AUTH_KEY_ISSUER_ID = ''
 
+# The name of the directory in which the project is located
+PROJECT_DIRECTORY_NAME={{project_name}}
+
+# The url of the distribution repository (without http(s) prefix)
+REPOSITORY_URL='github.com/{{organization_name}}/{{project_name.paramCase()}}-distribuition.git'
+
 environments = ['development', 'sit', 'uat', 'production']
 
 flavor_map = {
@@ -30,6 +36,13 @@ bundle_id_map = {
     'sit' => '{{domain_name}}.{{organization_name}}.{{project_name}}.sit',
     'uat' => '{{domain_name}}.{{organization_name}}.{{project_name}}.uat',
     'production' => '{{domain_name}}.{{organization_name}}.{{project_name}}'
+}
+
+provisioning_profile_file_name_map = {
+    'development' => 'development_provisioning_profile.mobileprovision',
+    'sit' => 'sit_provisioning_profile.mobileprovision',
+    'uat' => 'uat_provisioning_profile.mobileprovision',
+    'production' => 'production_provisioning_profile.mobileprovision'
 }
 
 provisioning_profile_map = {
@@ -73,6 +86,15 @@ private_lane :setup_environment_variable do |options|
     ENV[options[:name]] = value
 end
 
+def is_ci_cd_machine()
+    # https://adamj.eu/tech/2020/03/09/detect-if-your-tests-are-running-on-ci/
+    env_names = [ "CI", "GITHUB_ACTIONS", "TF_BUILD", "bamboo.buildKey", "GITLAB_CI", "BUILD_ID" ]
+    env_names.each do |str|
+        return true if ENV[str]!=nil
+      end
+    return false
+end
+
 desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
   - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET"
@@ -90,7 +112,7 @@ private_lane :fetch_credentials do
             sh(
                 "git \
                     clone \
-                    https://#{token}@github.com/{{organization_name}}/{{project_name.paramCase()}}-distribuition.git \
+                    https://#{token}@#{REPOSITORY_URL} \
                     credentials"
             )
         end
@@ -191,7 +213,7 @@ lane :build_custom do |options|
     set_platform(platform: options[:platform])
     generate_code()
     fetch_credentials()
-    install_credentials()
+    install_credentials(environment: environment)
 
     Dir.chdir('../devops/') do
         Dir.mkdir('artifacts') unless Dir.exist?('artifacts')
@@ -226,16 +248,16 @@ platform :android do
       - ANDROID_KEYSTORE_ALIAS
       - ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD
       - ANDROID_KEYSTORE_PASSWORD"
-    private_lane :install_credentials do
+    private_lane :install_credentials do |options|
         ensure_env_vars(
             env_vars: ['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD']
         )
 
         Dir.chdir("../devops/credentials") do
             sh("./decode.sh android")
-            keystore_alias_file_path = Dir.getwd + "/decoded/android/keyAlias.txt"
-            keystore_key_password_file_path = Dir.getwd + "/decoded/android/keyPassword.txt"
-            keystore_password_file_path = Dir.getwd + "/decoded/android/storePassword.txt"
+            keystore_alias_file_path = Dir.getwd + "/decoded/android/key_alias.txt"
+            keystore_key_password_file_path = Dir.getwd + "/decoded/android/key_password.txt"
+            keystore_password_file_path = Dir.getwd + "/decoded/android/store_password.txt"
 
             puts('Creating Android build environment variables')
             ENV["ANDROID_KEYSTORE_PATH"] = Dir.getwd + "/decoded/android/android.jks"
@@ -325,7 +347,7 @@ platform :ios do
     desc 'Decode credentials for iOS build and deployment
     Expected environment variables:
       - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'
-    private_lane :install_credentials do
+    private_lane :install_credentials do |options|
         ensure_env_vars(
             env_vars: [
                 'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD',
@@ -337,15 +359,15 @@ platform :ios do
 
             basedir = Dir.getwd + '/decoded/ios/'
 
-            certificate_password_file_path = basedir + 'distributionCertificatePassword.txt'
-            keychain_password_file_path = basedir + 'keychainPassword.txt'
+            certificate_password_file_path = basedir + 'distribution_certificate_password.txt'
+            keychain_password_file_path = basedir + 'keychain_password.txt'
             certificate_password = File.read(certificate_password_file_path).strip
             keychain_password = File.read(keychain_password_file_path).strip
 
             create_keychain(
                 path: keychain_path,
                 password: keychain_password,
-                default_keychain: true
+                default_keychain: is_ci_cd_machine()
             )
 
             unlock_keychain(
@@ -360,10 +382,8 @@ platform :ios do
                 keychain_password: keychain_password
             )
 
-            #install_provisioning_profile(path: basedir + 'Development_Provisioning_Profile.mobileprovision')
-            #install_provisioning_profile(path: basedir + 'SIT_Provisioning_Profile.mobileprovision')
-            #install_provisioning_profile(path: basedir + 'UAT_Provisioning_Profile.mobileprovision')
-            install_provisioning_profile(path: basedir + 'Production_Provisioning_Profile.mobileprovision')
+            flavor = flavor_map[options[:environment]]
+            install_provisioning_profile(path: basedir + provisioning_profile_file_name_map[flavor])
         end
     end
 
@@ -393,10 +413,10 @@ platform :ios do
             }
 
             gym(
-                workspace: '{{project_name}}/ios/Runner.xcworkspace',
+                workspace: PROJECT_DIRECTORY_NAME+'/ios/Runner.xcworkspace',
                 scheme: flavor_map[options[:environment]],
                 xcargs: settings_to_override,
-                output_directory: '{{project_name}}/devops/artifacts',
+                output_directory: PROJECT_DIRECTORY_NAME+'/devops/artifacts',
                 export_method: 'app-store',
                 export_options: {
                     manageAppVersionAndBuildNumber: false,
@@ -410,7 +430,9 @@ platform :ios do
 
     desc 'Clean up temporary build files'
     private_lane :post_build_clean_up do
-        delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
+        if is_ci_cd_machine()==true
+            delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
+        end
     end
 
     desc 'Deploy the app to apple testflight'
@@ -424,7 +446,7 @@ platform :ios do
             # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
             key_id: IOS_P8_AUTH_KEY_ID,
             issuer_id: IOS_P8_AUTH_KEY_ISSUER_ID,
-            key_filepath: File.expand_path('../credentials/decoded/ios/AuthKey.p8'),
+            key_filepath: File.expand_path('../credentials/decoded/ios/auth_key.p8'),
         )
 
         upload_to_testflight(
@@ -495,7 +517,7 @@ lane :deploy_debug_symbols do
     Dir.chdir('../devops/credentials/') do
         sh('./decode.sh firebase')
 
-        firebase_token_file_path = Dir.getwd + '/decoded/firebase/firebaseToken.txt'
+        firebase_token_file_path = Dir.getwd + '/decoded/firebase/firebase_token.txt'
         ENV['FIREBASE_TOKEN'] = File.read(firebase_token_file_path).strip
     end
 
