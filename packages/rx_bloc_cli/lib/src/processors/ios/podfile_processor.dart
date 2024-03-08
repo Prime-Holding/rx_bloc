@@ -23,6 +23,7 @@ class PodfileProcessor extends StringProcessor {
 
     _updateGlobalIOSPlatform(buffer);
     _updateProjectRunnerModes(buffer);
+    _addDeploymentTargets(buffer);
 
     return buffer.toString();
   }
@@ -53,6 +54,17 @@ class PodfileProcessor extends StringProcessor {
     buffer
       ..insertAt(index, _buildConfigForSelectedFlavors())
       ..insertBefore(runnerConfigs, runnerConfigsComment);
+  }
+
+  void _addDeploymentTargets(StringBuffer buffer) {
+    const additionalBuildSettingsConfig =
+        'flutter_additional_ios_build_settings(target)';
+    const deploymentTargetsConfig = '''\n
+    target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
+''';
+    buffer.insertAfter(additionalBuildSettingsConfig, deploymentTargetsConfig);
   }
 
   String _buildConfigForSelectedFlavors() =>
