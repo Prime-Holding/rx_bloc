@@ -13,7 +13,7 @@ IOS_P8_AUTH_KEY_ISSUER_ID = ''
 PROJECT_DIRECTORY_NAME={{project_name}}
 
 # The url of the distribution repository (without http(s) prefix)
-REPOSITORY_URL='github.com/{{organization_name}}/{{project_name.paramCase()}}-distribuition.git'
+DISTRIBUTION_REPOSITORY_URL='github.com/{{organization_name}}/{{project_name.paramCase()}}-distribuition.git'
 
 environments = ['development', 'sit', 'uat', 'production']
 
@@ -112,7 +112,7 @@ private_lane :fetch_credentials do
             sh(
                 "git \
                     clone \
-                    https://#{token}@#{REPOSITORY_URL} \
+                    https://#{token}@#{DISTRIBUTION_REPOSITORY_URL} \
                     credentials"
             )
         end
