@@ -1,5 +1,6 @@
 import 'package:rx_bloc_cli/src/processors/cicd/github_workflow_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
+import 'package:rx_bloc_cli/src/processors/common/shell_script_processor.dart';
 
 import 'package:rx_bloc_cli/src/processors/ios/podfile_processor.dart';
 
@@ -19,6 +20,18 @@ class GeneratedFilesPostProcessor {
 
   /// Output directory of generated project
   String get _outputDirectory => args.outputDirectory.path;
+
+  /// Currently generated shell scripts
+  static const _shellScripts = [
+    'bin/build_runner_build.sh',
+    'bin/build_runner_watch.sh',
+    'bin/generate_goldens.sh',
+    'bin/run_e2e_test_dev.sh',
+    'bin/run_e2e_test_sit.sh',
+    'bin/run_e2e_test_uat.sh',
+    'bin/run_e2e_test_prod.sh',
+    'bin/start_server.sh',
+  ];
 
   /// List of (path,processor) tuples for processing generated files
   List<(String, StringProcessor)> get _fileStringProcessors => [
@@ -40,6 +53,7 @@ class GeneratedFilesPostProcessor {
 
   List<VoidProcessor> get _voidProcessors => [
         XCodeFileRegistrant(args),
+        ShellScriptProcessor(args, scripts: _shellScripts),
       ];
 
   /// Method processing generated files at given output directory

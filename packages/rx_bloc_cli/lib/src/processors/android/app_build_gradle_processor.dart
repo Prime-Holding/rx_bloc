@@ -27,9 +27,7 @@ class AppBuildGradleProcessor extends StringProcessor {
       // if social login is not enabled, remove the entries.
       _removeSocialLogins(buffer);
     }
-    if (args.analyticsEnabled) {
-      _applyAnalyticsOptions(buffer);
-    }
+
     if (args.patrolTestsEnabled) {
       _applyPatrolToDefaultConfig(buffer);
       _applyTestOptions(buffer);
@@ -165,14 +163,6 @@ if (keystorePropertiesFile.exists()) {
       ..insertBefore('defaultConfig', content)
       ..replaceRange(buffer.nthIndexOf('testOptions') - 4,
           buffer.nthIndexOf('testOptions'), '');
-  }
-
-  void _applyAnalyticsOptions(StringBuffer buffer) {
-    // Analytics plugin should be added at the bottom of the file, so it is
-    // okay if we write to it directly
-    buffer
-      ..write('\n')
-      ..write("apply plugin: 'com.google.firebase.crashlytics'");
   }
 
   void _removeSocialLogins(StringBuffer buffer) {
