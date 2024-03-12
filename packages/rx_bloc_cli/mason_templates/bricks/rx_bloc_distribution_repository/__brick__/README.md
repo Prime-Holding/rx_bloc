@@ -20,16 +20,16 @@ The scripts are pre-configured to function with a set of default values. Please 
 
 Within the `android` directory, make sure you have the following files:
 - [`android.jks`][keystore_creation_android]: keystore file used for signing the android app
-- `keyAlias.txt`: file containing the alias used in the keystore file
-- `keyPassword.txt`: file containing the key password used in the keystore file
-- `storePassword.txt`: file containing the store password used in the keystore file
+- `key_alias.txt`: file containing the alias used in the keystore file
+- `key_password.txt`: file containing the key password used in the keystore file
+- `store_password.txt`: file containing the store password used in the keystore file
 - [`service_account_key.json`][service_account_android]: service account key file for publishing the app to Google Play
 
 Within the `ios` directory, make sure you have the following files:
-- Provisioning profiles for each supported flavor (`<FLAVOR_NAME>_Provisioning_Profile.mobileprovision`)
-- `keychainPassword.txt`: file containing the password used for the local keychain
+- Provisioning profiles for each supported flavor (`<FLAVOR_NAME>_provisioning_profile.mobileprovision`)
+- `keychain_password.txt`: file containing the password used for the local keychain
 - [`distribution_certificate.p12`][distribution_certificate_p12_ios]: iOS certificate for distributing the app
-- `distributionCertificatePassword.txt`: file containing the password used for the `.p12` certificate file
+- `distribution_certificate_password.txt`: file containing the password used for the `.p12` certificate file
 - [`auth_key.p8`][auth_key_ios]: auth key file for publishing the app to the App Store
 
 _Note: Optionally, you can keep the original names of the files (provisioning profiles, certificates, keystore, ...). 

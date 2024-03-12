@@ -39,10 +39,13 @@ class CreateDistributionCommand extends Command<int> {
   Future<int> run() async {
     final args = argResults!;
     await _generateBundle(args.outputDirectory);
+    await _postGeneration(args.outputDirectory);
     return ExitCode.success.code;
   }
 
   /// endregion
+
+  /// region Private methods
 
   Future<void> _generateBundle(Directory outputDir) async {
     final generator = await _generator(_bundle);
@@ -70,4 +73,26 @@ class CreateDistributionCommand extends Command<int> {
       ..info('')
       ..delayed('');
   }
+
+  Future<void> _postGeneration(Directory outputDirectory) async {
+    final scripts = ['encode.sh', 'decode.sh'];
+
+    for (var script in scripts) {
+      await _updateShellScriptExecutePermission(
+        '${outputDirectory.absolute.path}/$script',
+      );
+    }
+  }
+
+  Future<void> _updateShellScriptExecutePermission(String filePath) async {
+    await Process.run(
+      'chmod',
+      [
+        '+x',
+        filePath,
+      ],
+    );
+  }
+
+  /// endregion
 }
