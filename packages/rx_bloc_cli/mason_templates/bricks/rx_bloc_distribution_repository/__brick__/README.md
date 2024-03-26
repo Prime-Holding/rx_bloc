@@ -5,11 +5,6 @@ distribution of the mobile application for Android and iOS.
 The credential files are encrypted using `openssl` with a password.
 
 Both the encryption and decryption script expect an environment variable containing the credential encryption password.
-It can be set using the following command:
-
-```sh
-export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=<PASSWORD>
-```
 
 _Note: To list all currently available environment variables, use `printenv` from your console._
 

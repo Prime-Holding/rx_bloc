@@ -2,16 +2,18 @@
 
 set -e
 
-if [ -z ${MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD+x} ];
-then
-    echo "Error: the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD environment variable is not set"
-    exit 1
-fi
-
 if [ -z "$1" ]
 then
     echo "No argument supplied"
     exit 2
+fi
+
+if [ -z "$MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD" ]; then
+    echo "Enter the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD encryption value: "
+    stty -echo
+    read -r PASS
+    stty echo
+    export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=$PASS
 fi
 
 openssl enc \

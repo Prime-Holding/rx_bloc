@@ -14,12 +14,8 @@ The `create_distribution` command will populate the directory with the file stru
 The generated `README` file contains steps on where to download and how to name the required files.
 Within the `android` and `ios` directories, paste the previously downloaded files and rename them accordingly.
 
-You should also set the `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD` variable in your terminal.
-This password will be used for encrypting/decrypting your files within the newly created repository.
-
-```
-export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=<PASSWORD>
-```
+Make sure that the `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD` environment variable is present.
+This variable will be used for encrypting/decrypting your files within the newly created repository.
 
 Before committing any changes, make sure you encrypt all the files using the `encode.sh` script.
 

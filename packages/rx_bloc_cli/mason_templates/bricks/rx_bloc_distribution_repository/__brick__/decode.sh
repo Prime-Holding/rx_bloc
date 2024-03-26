@@ -14,17 +14,23 @@ set -e
 USAGE="Usage: decode.sh android|ios|deploy_android|deploy_ios|firebase"
 CREDENTIAL_TYPES=('android' 'ios' 'deploy_android' 'deploy_ios' 'firebase')
 
-if [ -z ${MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD+x} ]; then
-    echo "Error: the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD environment variable is not set"
-    exit 1
-fi
-
 if (( $# != 1 )); then
     echo $USAGE && exit 2
 fi
 
 if ! echo "${CREDENTIAL_TYPES[@]}" | grep -qw "$1"; then
     echo $USAGE && exit 3
+fi
+
+if [ -z ${MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD+x} ]; then
+    echo "Error: the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD environment variable is not set"
+    exit 1
+fi
+
+if [ -z "$MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD" ]; then
+    echo "Enter the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD decryption value: "
+    read -r -s PASS
+    export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=$PASS
 fi
 
 function decode() {
