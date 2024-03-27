@@ -21,9 +21,9 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Start an automatic build
 Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret
-    - TagBuildTriggerReason_tagName
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
+    - tag_build_trigger_reason_tag_name
 Expected input parameters:
     - platform: string (android, ios)
 Example:
@@ -36,9 +36,9 @@ Example:
 ```
 
 Start a custom build
-Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret
+If the following environment variables are not set the task will prompt the user to enter them:
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
 Expected input parameters:
     - platform: string (android, ios)
     - build_name: string (1.2.0)
@@ -55,8 +55,8 @@ Example:
 
 Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
 
 ### deploy_debug_symbols
 
@@ -66,8 +66,8 @@ Expected environment variables:
 
 Deploy the debug symbols to firebase
 Expected environment variables:
-    - mobile_distribution_encryption_password
-    - mobile_distribution_repository_access_secret
+    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
 
 ----
 

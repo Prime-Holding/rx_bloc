@@ -1,3 +1,6 @@
+## [3.5.2]
+* Documentation and stability improvements
+
 ## [3.5.1]
 * Stability improvements
 

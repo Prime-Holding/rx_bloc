@@ -14,13 +14,6 @@ The `create_distribution` command will populate the directory with the file stru
 The generated `README` file contains steps on where to download and how to name the required files.
 Within the `android` and `ios` directories, paste the previously downloaded files and rename them accordingly.
 
-You should also set the `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD` variable in your terminal.
-This password will be used for encrypting/decrypting your files within the newly created repository.
-
-```
-export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=<PASSWORD>
-```
-
 Before committing any changes, make sure you encrypt all the files using the `encode.sh` script.
 
 ### Project & Fastfile amendments
@@ -62,13 +55,6 @@ In case you've named your provisioning profiles differently, make sure to update
 Inside the `fetch_credentials` private lane, replace the repository url with the one matching your distribution repository.
 The url should be in the format allowing repository cloning using access tokens.
 Check [this article][clone_github_repo_with_access_token] on how to setup and clone a github repository using an access token.
-
-Make sure that the `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` variable is present in your local environment.
-If not, set its value to be the value of the access token used for cloning of the distribution repository.
-
-```
-export MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET=<PASSWORD>
-```
 
 ### Github pipeline
 
