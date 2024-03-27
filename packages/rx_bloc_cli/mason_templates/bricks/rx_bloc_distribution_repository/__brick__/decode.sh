@@ -22,11 +22,6 @@ if ! echo "${CREDENTIAL_TYPES[@]}" | grep -qw "$1"; then
     echo $USAGE && exit 3
 fi
 
-if [ -z ${MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD+x} ]; then
-    echo "Error: the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD environment variable is not set"
-    exit 1
-fi
-
 if [ -z "$MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD" ]; then
     echo "Enter the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD decryption value: "
     read -r -s PASS
