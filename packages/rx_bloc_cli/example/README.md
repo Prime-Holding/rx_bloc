@@ -83,7 +83,7 @@ Before you start working on your app, make sure you familiarize yourself with th
 
 For in-depth review of the following architecture watch [this][architecture_overview] presentation.
 
-<img src="docs/app_architecture.png" alt="Rx Bloc Architecture"></img>
+<img src="https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/example/docs/app_architecture.png" alt="Rx Bloc Architecture"></img>
 
 ## Routing
 
