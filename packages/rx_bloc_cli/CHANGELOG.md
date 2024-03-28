@@ -1,7 +1,7 @@
 ## [3.5.2]
 * Updated architecture diagram
 * Updated CD documentation
-* Security improvements scripts generated with the `create_distribution` command
+* Security improvements to scripts generated with the `create_distribution` command
 
 ## [3.5.1]
 * Stability improvements
