@@ -1,12 +1,13 @@
 ## [3.5.2]
 * Updated architecture diagram
-* Stability improvements
+* Updated CD documentation
+* Security improvements scripts generated with the `create_distribution` command
 
 ## [3.5.1]
 * Stability improvements
 
 ## [3.5.0]
-* Introduce the rx_bloc_cli create_distribution command, which bootstraps a project containing encryption scripts, certificates and provisioning profiles needed for iOS and Android application distribution. Heavily inspired by the https://codesigning.guide/
+* Introduce the rx_bloc_cli `create_distribution` command, which bootstraps a project containing encryption scripts, certificates and provisioning profiles needed for iOS and Android application distribution. Heavily inspired by the https://codesigning.guide/
 * Added `continuous_delivery.md` guide for setting up project specific CD
 
 ## [3.4.1]
