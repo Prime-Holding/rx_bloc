@@ -1,5 +1,6 @@
 ## [3.5.2]
-* Documentation and stability improvements
+* Updated architecture diagram
+* Stability improvements
 
 ## [3.5.1]
 * Stability improvements
