@@ -1,6 +1,6 @@
 
-importScripts("https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
 
 ///TODO: Make sure you replace this configuration with your own
 // If using flavors, you need to manually replace this config before launching the app

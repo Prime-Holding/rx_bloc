@@ -11,8 +11,19 @@ const firebaseConfigDev = {
     measurementId: "replace_me",
 }
 
-/// Firebase web configuration for staging environment
-const firebaseConfigStag = {
+/// Firebase web configuration for SIT environment
+const firebaseConfigSIT = {
+    apiKey: "replace_me",
+    authDomain: "replace_me",
+    projectId: "replace_me",
+    storageBucket: "replace_me",
+    messagingSenderId: "replace_me",
+    appId: "replace_me",
+    measurementId: "replace_me",
+}
+
+/// Firebase web configuration for UAT environment
+const firebaseConfigUAT = {
     apiKey: "replace_me",
     authDomain: "replace_me",
     projectId: "replace_me",

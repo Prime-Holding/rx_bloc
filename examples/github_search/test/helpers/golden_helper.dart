@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:github_search/base/theme/design_system.dart';
-import 'package:github_search/l10n/l10n.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+
+import 'package:githubsearch/assets.dart';
+import 'package:githubsearch/base/theme/design_system.dart';
+import 'package:githubsearch/base/theme/githubsearch_theme.dart';
+import 'package:githubsearch/l10n/githubsearch_app_i18n.dart';
 
 import 'models/labeled_device_builder.dart';
 import 'models/scenario.dart';
@@ -86,13 +89,13 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
       tester,
       builder,
       localizations: const [
-        AppLocalizations.delegate,
+        AppI18n.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
-      localeOverrides: AppLocalizations.supportedLocales,
+      localeOverrides: I18n.supportedLocales,
       theme: theme == Themes.light
-          ? DesignSystem.fromBrightness(Brightness.light).theme
-          : DesignSystem.fromBrightness(Brightness.dark).theme,
+          ? GithubsearchTheme.buildTheme(DesignSystem.light())
+          : GithubsearchTheme.buildTheme(DesignSystem.dark()),
     );
 
 /// Wraps a [DeviceBuilder] in a [materialAppWrapper] using any of the

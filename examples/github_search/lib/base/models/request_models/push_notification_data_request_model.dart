@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -18,6 +18,7 @@ class PushNotificationDataRequestModel {
   factory PushNotificationDataRequestModel.fromJson(
           Map<String, dynamic> json) =>
       _$PushNotificationDataRequestModelFromJson(json);
+
   Map<String, dynamic> toJson() =>
       _$PushNotificationDataRequestModelToJson(this);
 }

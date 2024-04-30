@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -8,18 +8,46 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-
+import 'package:flutter/material.dart';
 import '../../utils/helpers.dart';
+import '../config/environment_config.dart';
 import 'firebase_messaging_callbacks.dart';
 
-/// Configures application tools and packages before running the app. Services
-/// such as Firebase or background handlers can be defined here.
-Future configureApp() async {
-  // TODO: Add Firebase credentials for used environments
-  // That is for development, staging and production for Android, iOS and Web
-  await safeRun(() => Firebase.initializeApp());
-  await _setupNotifications();
+/// This is the main entry point of the app which performs any setups before
+/// running the app.
+Future<void> setupAndRunApp(
+  Widget Function(EnvironmentConfig) appBuilder, {
+  required EnvironmentConfig environment,
+}) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Configure global app tools before launching the app
+  await configureApp(environment);
 
+  // Build the widget
+  final appWidget = appBuilder(environment);
+
+  // Finally run the widget
+  runApp(appWidget);
+}
+
+/// Configures application tools and packages before running the app. Services
+/// such as Firebase or background handlers can be configured here.
+Future configureApp(EnvironmentConfig envConfig) async {
+  // TODO: Use flutterfire_cli to create the firebase_options.dart file
+  // containing the actual configuration values.
+  // https://firebase.google.com/docs/flutter/setup
+  //
+  // Below is a minimal configuration of the firebase config to make the project
+  // work out of the box. Please replace it with your own values.
+  await safeRun(() => Firebase.initializeApp(
+        options: const FirebaseOptions(
+          apiKey: 'AAaaAaAAaa0aa0AA_aAAA0a0a0a0AaOaAaA0aAA',
+          appId: '1:0123456789012:ios:a00000000a0000a0000a0a',
+          messagingSenderId: 'replace_me',
+          projectId: 'replace_me',
+        ),
+      ));
+  await _setupNotifications();
   // TODO: Add your own code that is going to be run before the actual app
 }
 

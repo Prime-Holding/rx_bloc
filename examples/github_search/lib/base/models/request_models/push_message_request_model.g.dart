@@ -11,7 +11,9 @@ PushMessageRequestModel _$PushMessageRequestModelFromJson(
     PushMessageRequestModel(
       message: json['message'] as String,
       title: json['title'] as String?,
-      delay: json['delay'] as int? ?? 0,
+      delay: (json['delay'] as num?)?.toInt() ?? 0,
+      data: json['data'] as Map<String, dynamic>?,
+      pushToken: json['pushToken'] as String?,
     );
 
 Map<String, dynamic> _$PushMessageRequestModelToJson(
@@ -20,4 +22,6 @@ Map<String, dynamic> _$PushMessageRequestModelToJson(
       'title': instance.title,
       'message': instance.message,
       'delay': instance.delay,
+      'data': instance.data,
+      'pushToken': instance.pushToken,
     };

@@ -1,0 +1,14 @@
+{
+  "@@locale": "en",
+  "notificationPageTitle" : "Notification sample",
+  "notificationsPermissionsDenied" : "Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings.",
+  "notificationPermissionRequestText" : "Request notification permissions",
+  "notificationShowText" : "Show notification",
+  "notificationShowDelayedText" : "Show notification after 5 seconds",
+  "notificationShowRedirectingText":"Show redirecting notification",
+  "notificationsPageDescription" : "In order to receive push notifications on your device, you need first to grant access to them. This applies for iOS and Web, as the permissions on Android are granted upfront.",
+  "notificationsPageConfig" : "When Firebase Cloud Messaging (FCM) is initialized, a FCM token is generated for the device. You can use this token to receive notifications while the app is in foreground, background or even terminated.",
+  "notificationsMessage": "This is a notification!",
+  "notificationsDelayed": "This is a delayed notification!",
+  "notificationRedirecing":"This is a redirecting notification"
+}
