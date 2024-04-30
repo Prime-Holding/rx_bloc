@@ -16,7 +16,7 @@
     "english" : "English",
     "bulgarian" : "Bulgarian",
     "changeLanguage" : "Change Language",
-    "search": "Github търсачка",
+    "search": "Github search",
     "searchHint": "Tap on the search icon to search",
     "selectedItem": "Selected item {item}"
 }

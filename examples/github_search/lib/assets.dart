@@ -370,7 +370,7 @@ class I18n {
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">en</td>
-  ///     <td>"Github търсачка"</td>
+  ///     <td>"Github search"</td>
   ///   </tr>
   ///   <tr>
   ///     <td style="width:60px;">bg</td>
@@ -2005,7 +2005,7 @@ class I18nLookup_en extends I18nLookup {
 
   @override
   String get search {
-    return "Github търсачка";
+    return "Github search";
   }
 
   @override
@@ -2492,7 +2492,7 @@ class Fonts {
 }
 
 class Assets {
-  /// ![](file:///Users/georgistanev/Projects/sandbox/githubsearch/assets/images/.git_keep)
+  /// ![](file:///Users/georgistanev/Projects/rx_bloc/examples/github_search/assets/images/.git_keep)
   static const String gitKeep = "assets/images/.git_keep";
 }
 
