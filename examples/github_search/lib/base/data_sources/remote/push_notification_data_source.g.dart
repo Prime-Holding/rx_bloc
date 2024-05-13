@@ -12,9 +12,7 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   _PushNotificationsDataSource(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'http://0.0.0.0:8080';
-  }
+  });
 
   final Dio _dio;
 
@@ -23,7 +21,7 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   @override
   Future<void> subscribePushToken(
       PushNotificationDataRequestModel pushToken) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -49,7 +47,7 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
   @override
   Future<void> unsubscribePushToken(
       PushNotificationDataRequestModel pushToken) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -74,7 +72,7 @@ class _PushNotificationsDataSource implements PushNotificationsDataSource {
 
   @override
   Future<void> sendPushMessage(PushMessageRequestModel message) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};

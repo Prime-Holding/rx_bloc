@@ -1,0 +1,14 @@
+{
+  "@@locale": "bg",
+  "notificationPageTitle": "Примерно известие",
+  "notificationsPermissionsDenied" : "Изглежда, че сте отказали известия на това устройство. За да можем да показваме известия, те трябва да бъдат активирани ръчно от настройките на устройството.",
+  "notificationPermissionRequestText" : "Искане на разрешения за уведомяване",
+  "notificationShowText": "Показване на известие",
+  "notificationShowDelayedText": "Показване на известие след 5 секунди",
+  "notificationShowRedirectingText":"Показване на известие за пренасочване",
+  "notificationsPageDescription" : "За да получавате насочени известия на вашето устройство, първо трябва да предоставите достъп до тях. Това важи за iOS и уеб, тъй като разрешенията за Android се предоставят предварително.",
+  "notificationsPageConfig" : "Когато Firebase Cloud Messaging (FCM) се инициализира, FCM токен се генерира за устройството. Можете да използвате този токен, за да получавате известия, докато приложението е на преден план, на заден план или дори прекратено.",
+  "notificationsMessage": "Това е нотификация!",
+  "notificationsDelayed": "Това е забавена нотификация!",
+  "notificationRedirecing":"This is a redirecting notification"
+}

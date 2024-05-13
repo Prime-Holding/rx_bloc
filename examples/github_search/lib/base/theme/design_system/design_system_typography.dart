@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -10,136 +10,79 @@ import 'package:flutter/material.dart';
 import 'design_system_colors.dart';
 
 class DesignSystemTypography {
-  DesignSystemTypography._create(DesignSystemColors designSystemColor) {
-    _designSystemColor = designSystemColor;
-  }
+  DesignSystemTypography.withColor(DesignSystemColors designSystemColor)
+      : _designSystemColor = designSystemColor;
 
-  factory DesignSystemTypography.withColor(
-          DesignSystemColors designSystemColor) =>
-      DesignSystemTypography._create(designSystemColor);
+  final DesignSystemColors _designSystemColor;
 
-  late DesignSystemColors _designSystemColor;
+  // Material design typography:
+  // https://material.io/design/typography/the-type-system.html#type-scale
 
-  /// Material design typography:
-  /// https://material.io/design/typography/the-type-system.html#type-scale
+  // Keep the general purpose styles declared as 'const'. If not possible then
+  // declare them as late final properties.
 
-  final FontWeight _medium = FontWeight.w500;
-  final FontWeight _regular = FontWeight.w400;
-  final FontWeight _light = FontWeight.w300;
+  final bold30 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 30.0);
 
-  TextStyle get headline1 => TextStyle(
-        fontWeight: _light,
-        fontSize: 96,
-        color: _designSystemColor.headline1,
-        letterSpacing: -1.5,
-      );
+  final h1Med26 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 26.0);
 
-  TextStyle get headline2 => TextStyle(
-        fontWeight: _light,
-        fontSize: 60,
-        color: _designSystemColor.headline2,
-        letterSpacing: -0.5,
-      );
+  final h1Bold24 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 24.0);
 
-  TextStyle get headline3 => TextStyle(
-        fontWeight: _regular,
-        fontSize: 48,
-        color: _designSystemColor.headline3,
-        letterSpacing: 0,
-      );
+  final h1Bold20 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 20.0);
 
-  TextStyle get headline4 => TextStyle(
-        fontWeight: _regular,
-        fontSize: 34,
-        color: _designSystemColor.headline4,
-        letterSpacing: 0.25,
-      );
+  final h1Reg20 = const TextStyle(
+      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
 
-  TextStyle get headline5 => TextStyle(
-        fontWeight: _regular,
-        fontSize: 24,
-        color: _designSystemColor.headline5,
-        letterSpacing: 0,
-      );
+  final h1bold24 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 24.0);
 
-  TextStyle get headline6 => TextStyle(
-        fontWeight: _medium,
-        fontSize: 20,
-        color: _designSystemColor.headline6,
-        letterSpacing: 0.15,
-      );
+  final h1Bold18 = const TextStyle(
+      fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 18.0);
 
-  TextStyle get subtitle1 => TextStyle(
-        fontWeight: _regular,
-        fontSize: 16,
-        color: _designSystemColor.subtitleColor1,
-        letterSpacing: 0.15,
-      );
+  final h2ExtraBold18 = const TextStyle(
+      fontWeight: FontWeight.w800, fontStyle: FontStyle.normal, fontSize: 18.0);
 
-  TextStyle get subtitle2 => TextStyle(
-        fontWeight: _medium,
-        fontSize: 14,
-        color: _designSystemColor.subtitleColor2,
-        letterSpacing: 0.1,
-      );
+  final h2Med18 = const TextStyle(
+      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 18.0);
 
-  TextStyle get bodyText1 => TextStyle(
-        fontWeight: _regular,
-        fontSize: 16,
-        color: _designSystemColor.bodyTextColor1,
-        letterSpacing: 0.5,
-      );
+  final h2Med18Italic = const TextStyle(
+      fontWeight: FontWeight.w500, fontStyle: FontStyle.italic, fontSize: 18.0);
 
-  TextStyle get bodyText2 => TextStyle(
-        fontWeight: _regular,
-        fontSize: 14,
-        color: _designSystemColor.bodyTextColor2,
-        letterSpacing: 0.25,
-      );
+  final h2Med16 = const TextStyle(
+      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 16.0);
 
-  TextStyle get buttonMain => TextStyle(
-        fontWeight: _medium,
-        color: _designSystemColor.secondaryColor,
-        fontSize: 14,
-        letterSpacing: 1.25,
-      );
+  final h2Semibold17 = const TextStyle(
+      fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: 17.0);
 
-  TextStyle get appBarTitle => TextStyle(
-        color: _designSystemColor.appTitleColor,
-      );
+  final h2Semibold16 = const TextStyle(
+      fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: 16.0);
 
-  TextStyle get chipTitle => TextStyle(
-        color: _designSystemColor.chipTitleColor,
-      );
+  final h2Reg16 = const TextStyle(
+      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0);
 
-  TextStyle get alertPrimaryTitle => TextStyle(
-        fontSize: 18,
-        color: _designSystemColor.alertPrimaryTitleColor,
-      );
+  final h3Med13 = const TextStyle(
+      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 13.0);
 
-  TextStyle get alertSecondaryTitle => TextStyle(
-        fontSize: 18,
-        color: _designSystemColor.alertSecondaryTitleColor,
-      );
+  final h3Med14 = const TextStyle(
+      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 14.0);
 
-  /// UI component typography
+  final h3Reg14 = const TextStyle(
+      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 14.0);
 
-  TextStyle get outlinedButtonText => TextStyle(
-        fontWeight: _medium,
-        color: _designSystemColor.outlinedButtonTextColor,
-        fontSize: 14,
-      );
+  final h3Reg13 = const TextStyle(
+      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0);
+
+  final h1Reg12 = const TextStyle(
+      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 12.0);
+
+  final h3Med11 = const TextStyle(
+      fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 11.0);
 
   /// App specific typography
 
-  TextStyle get counterTitle => TextStyle(
-        fontSize: 12,
-        color: _designSystemColor.secondaryIconColor,
-      );
-
-  TextStyle get fadedButtonText => TextStyle(
-        fontWeight: _medium,
-        color: _designSystemColor.reverseBackgroundColor.withOpacity(0.6),
-        fontSize: 14,
-      );
+  late final fadedButtonText =
+      h3Med14.copyWith(color: _designSystemColor.black);
 }

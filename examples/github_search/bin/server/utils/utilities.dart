@@ -1,7 +1,16 @@
+// Copyright (c) 2023, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'dart:math';
 
 import 'package:shelf/shelf.dart';
 
+import 'api_controller.dart';
+import 'dependency_injector.dart';
 import 'response_builder.dart';
 import 'server_exceptions.dart';
 
@@ -57,3 +66,24 @@ Handler buildSafeHandler(Function callback, ResponseBuilder responseBuilder) =>
 String generateRandomString([int charsNum = 64]) =>
     String.fromCharCodes(Iterable.generate(
         charsNum, (_) => _chars.codeUnitAt(_random.nextInt(_chars.length))));
+
+/// Helper method for easily configuring dependencies and routes
+Future<({RouteGenerator routeGenerator, DependencyInjector di})>
+    configureRoutesAndDependencies(
+  Future<void> Function(RouteGenerator routeGenerator, DependencyInjector)
+      controllerBuilder,
+  Future<void> Function(DependencyInjector)? dependencyBuilder,
+) async {
+  // Generate dependencies (if any)
+  final di = DependencyInjector();
+  if (dependencyBuilder != null) {
+    await dependencyBuilder.call(di);
+  }
+
+  // Now generate routes
+  final rg = RouteGenerator();
+  await controllerBuilder(rg, di);
+
+  // Return record with given generated values
+  return (routeGenerator: rg, di: di);
+}

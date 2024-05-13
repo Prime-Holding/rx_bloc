@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -6,12 +6,9 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter/widgets.dart';
-// ignore_for_file: directives_ordering
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'githubsearch_app_i18n.dart';
 
 extension AppLocalizationsX on BuildContext {
-  AppLocalizations get l10n => AppLocalizations.of(this)!;
+  AppI18n get l10n => AppI18n.of(this);
 }

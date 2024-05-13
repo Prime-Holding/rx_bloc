@@ -10,24 +10,25 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart' as shelf_static;
 
-import 'controllers/authentication_controller.dart';
-import 'controllers/count_controller.dart';
-import 'controllers/push_notifications_controller.dart';
-import 'utils/api_controller.dart';
+import 'di/server_dependencies.dart';
+import 'utils/utilities.dart';
 
 Future main() async {
   // If the "PORT" environment variable is set, listen to it. Otherwise, 8080.
   // https://cloud.google.com/run/docs/reference/container-contract#port
   final port = int.parse(Platform.environment['PORT'] ?? '8080');
 
-  final routeGenerator = await _registerControllers();
+  final config = await configureRoutesAndDependencies(
+    ServerDependencies.registerControllers,
+    ServerDependencies.registerDependencies,
+  );
 
   // See https://pub.dev/documentation/shelf/latest/shelf/Cascade-class.html
   final cascade = Cascade()
       // First, serve files from the 'public' directory
       .add(_staticHandler)
       // If a corresponding file is not found, send requests to a `Router`
-      .add(routeGenerator.generateRoutes());
+      .add(config.routeGenerator.generateRoutes().call);
 
   // See https://pub.dev/documentation/shelf/latest/shelf/Pipeline-class.html
   final pipeline = const Pipeline()
@@ -49,18 +50,6 @@ Future main() async {
 // Serve files from the file system.
 final _staticHandler = shelf_static.createStaticHandler('bin/server/public',
     defaultDocument: 'index.html');
-
-/// Registers all controllers that provide some kind of API
-Future<RouteGenerator> _registerControllers() async {
-  final generator = RouteGenerator()
-    ..addController(CountController())
-    ..addController(AuthenticationController())
-    ..addController(PushNotificationsController());
-
-  /// TODO: Add your controllers here
-
-  return generator;
-}
 
 Middleware _delayMiddleware() => (innerHandler) => (request) => Future.delayed(
       const Duration(

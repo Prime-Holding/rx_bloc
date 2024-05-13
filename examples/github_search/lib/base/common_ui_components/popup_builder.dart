@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -19,8 +19,8 @@ class PopupBuilder<T> extends StatelessWidget {
     this.onCanceled,
     this.tooltip = '',
     this.tooltipEnabled = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// List of [PopupMenuEntry] items that will be built.
   final List<PopupMenuEntry<T>> items;

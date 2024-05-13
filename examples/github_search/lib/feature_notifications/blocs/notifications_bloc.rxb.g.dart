@@ -7,14 +7,14 @@
 part of 'notifications_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class NotificationsBlocType extends RxBlocTypeBase {
   NotificationsBlocEvents get events;
   NotificationsBlocStates get states;
 }
 
 /// [$NotificationsBloc] extended by the [NotificationsBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $NotificationsBloc extends RxBlocBase
     implements
         NotificationsBlocEvents,
@@ -27,8 +27,13 @@ abstract class $NotificationsBloc extends RxBlocBase
   final _$requestNotificationPermissionsEvent = PublishSubject<void>();
 
   /// Тhe [Subject] where events sink to by calling [sendMessage]
-  final _$sendMessageEvent =
-      PublishSubject<({String message, String? title, int? delay})>();
+  final _$sendMessageEvent = PublishSubject<
+      ({
+        String message,
+        String? title,
+        int? delay,
+        Map<String, Object?>? data
+      })>();
 
   /// The state of [permissionsAuthorized] implemented in
   /// [_mapToPermissionsAuthorizedState]
@@ -44,11 +49,13 @@ abstract class $NotificationsBloc extends RxBlocBase
     String message, {
     String? title,
     int? delay,
+    Map<String, Object?>? data,
   }) =>
       _$sendMessageEvent.add((
         message: message,
         title: title,
         delay: delay,
+        data: data,
       ));
 
   @override
@@ -72,4 +79,9 @@ abstract class $NotificationsBloc extends RxBlocBase
 }
 
 // ignore: unused_element
-typedef _SendMessageEventArgs = ({String message, String? title, int? delay});
+typedef _SendMessageEventArgs = ({
+  String message,
+  String? title,
+  int? delay,
+  Map<String, Object?>? data
+});

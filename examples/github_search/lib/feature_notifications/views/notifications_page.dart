@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -9,34 +9,48 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/primary_button.dart';
+import '../../base/common_ui_components/custom_app_bar.dart';
+import '../../base/models/notification_model.dart';
+import '../../lib_router/router.dart';
 import '../blocs/notifications_bloc.dart';
 
-@RoutePage()
 class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({Key? key}) : super(key: key);
+  const NotificationsPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(
-            context.l10n.notificationPageTitle,
-          ),
+        appBar: customAppBar(
+          context,
+          title: context.l10n.featureNotifications.notificationPageTitle,
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: IconButton(
-                onPressed: () => showAdaptiveDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    backgroundColor: Colors.transparent,
-                    child: _buildInfoCard(context),
-                  ),
+            IconButton(
+              onPressed: () => showBlurredBottomSheet(
+                context: AppRouter.rootNavigatorKey.currentContext ?? context,
+                builder: (BuildContext context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      context.l10n.featureNotifications
+                          .notificationsPageDescription,
+                      textAlign: TextAlign.center,
+                    ),
+                    const Divider(
+                      height: 30,
+                      thickness: 2,
+                      indent: 120,
+                      endIndent: 120,
+                    ),
+                    Text(
+                      context.l10n.featureNotifications.notificationsPageConfig,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                icon: Icon(context.designSystem.icons.info),
               ),
+              icon: Icon(context.designSystem.icons.info),
             ),
           ],
         ),
@@ -47,54 +61,85 @@ class NotificationsPage extends StatelessWidget {
             ),
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.designSystem.spacing.xs1,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _buildButton(
-                      context,
-                      context.l10n.notificationPermissionRequestText,
-                      () => context
+                    OutlineFillButton(
+                      text: context.l10n.featureNotifications
+                          .notificationPermissionRequestText,
+                      onPressed: () => context
                           .read<NotificationsBlocType>()
                           .events
                           .requestNotificationPermissions(),
                     ),
-                    _buildButton(
-                      context,
-                      context.l10n.notificationShowText,
-                      () => context
-                          .read<NotificationsBlocType>()
-                          .events
-                          .sendMessage('This is a notification!'),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: context.designSystem.spacing.s,
+                      ),
+                      child: OutlineFillButton(
+                        text: context
+                            .l10n.featureNotifications.notificationShowText,
+                        onPressed: () => context
+                            .read<NotificationsBlocType>()
+                            .events
+                            .sendMessage(context.l10n.featureNotifications
+                                .notificationsMessage),
+                      ),
                     ),
-                    _buildButton(
-                      context,
-                      context.l10n.notificationShowDelayedText,
-                      () => context
+                    OutlineFillButton(
+                      text: context.l10n.featureNotifications
+                          .notificationShowDelayedText,
+                      onPressed: () => context
                           .read<NotificationsBlocType>()
                           .events
                           .sendMessage(
-                            'This is a delayed notification!',
+                            context
+                                .l10n.featureNotifications.notificationsDelayed,
                             delay: 5,
                           ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: context.designSystem.spacing.s,
+                      ),
+                      child: OutlineFillButton(
+                        text: context.l10n.featureNotifications
+                            .notificationShowRedirectingText,
+                        onPressed: () => context
+                            .read<NotificationsBlocType>()
+                            .events
+                            .sendMessage(
+                                context.l10n.featureNotifications
+                                    .notificationRedirecing,
+                                delay: 5,
+                                data: NotificationModel(
+                                  type: NotificationModelType.dashboard,
+                                  id: '1',
+                                ).toJson()),
+                      ),
+                    ),
                     RxBlocListener<NotificationsBlocType, bool>(
                       state: (bloc) => bloc.states.permissionsAuthorized,
-                      condition: (_, authorized) => !authorized,
-                      listener: (context, authorized) async {
+                      listener: (ctx, authorized) async {
+                        if (authorized) return;
+
                         // If not authorized, show a dialog popup
                         await showAdaptiveDialog(
                           context: context,
                           builder: (context) => AlertDialog(
                             content: Text(
-                              context.l10n.notificationsPermissionsDenied,
+                              context.l10n.featureNotifications
+                                  .notificationsPermissionsDenied,
                               textAlign: TextAlign.center,
                             ),
                             actions: <Widget>[
                               Center(
                                 child: TextButton(
-                                  onPressed: () => context.router.pop(),
+                                  onPressed: () => context.pop(),
                                   child: Text(
                                     context.l10n.ok,
                                     style: context.designSystem.typography
@@ -114,67 +159,4 @@ class NotificationsPage extends StatelessWidget {
           ),
         ),
       );
-
-  /// region Builders
-
-  Widget _buildButton(
-    BuildContext context,
-    String label, [
-    Function()? onPressed,
-  ]) =>
-      Center(
-        child: SizedBox(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-            child: PrimaryButton(
-              onPressed: () => onPressed?.call(),
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ),
-      );
-
-  Widget _buildInfoCard(BuildContext context) => Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 8,
-        child: Container(
-          width: MediaQuery.of(context).size.width / (kIsWeb ? 3 : 1),
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                context.l10n.notificationsPageDescription,
-                textAlign: TextAlign.center,
-              ),
-              const Divider(
-                height: 30,
-                thickness: 2,
-                indent: 120,
-                endIndent: 120,
-              ),
-              Text(
-                context.l10n.notificationsPageConfig,
-                textAlign: TextAlign.center,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: TextButton(
-                  onPressed: () => context.router.pop(),
-                  child: Text(context.l10n.close),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-
-  /// endregion
 }
