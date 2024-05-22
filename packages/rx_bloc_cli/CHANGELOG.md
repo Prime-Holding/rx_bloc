@@ -1,3 +1,6 @@
+## [3.5.3]
+* Improvements and bugfixes to generated projects
+
 ## [3.5.2]
 * Updated architecture diagram
 * Updated CD documentation

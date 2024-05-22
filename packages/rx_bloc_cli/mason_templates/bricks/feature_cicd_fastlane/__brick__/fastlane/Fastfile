@@ -6,11 +6,11 @@ APPLE_DEVELOPMENT_TEAM = ''
 
 # The ID of the private App Store Connect Api Key
 # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
-IOS_P8_AUTH_KEY_ID, = ''
+IOS_P8_AUTH_KEY_ID = ''
 IOS_P8_AUTH_KEY_ISSUER_ID = ''
 
 # The name of the directory in which the project is located
-PROJECT_DIRECTORY_NAME={{project_name}}
+PROJECT_DIRECTORY_NAME='{{project_name}}'
 
 # The url of the distribution repository (without http(s) prefix)
 DISTRIBUTION_REPOSITORY_URL='github.com/{{organization_name}}/{{project_name.paramCase()}}-distribuition.git'
