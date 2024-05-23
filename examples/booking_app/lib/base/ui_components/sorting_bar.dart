@@ -32,7 +32,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
             child: Container(
               height: 24,
               decoration: BoxDecoration(
-                color: HotelAppTheme.buildLightTheme().colorScheme.background,
+                color: HotelAppTheme.buildLightTheme().colorScheme.surface,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.2),
@@ -44,7 +44,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
             ),
           ),
           Container(
-            color: HotelAppTheme.buildLightTheme().colorScheme.background,
+            color: HotelAppTheme.buildLightTheme().colorScheme.surface,
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
