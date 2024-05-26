@@ -40,14 +40,14 @@ class {{project_name.pascalCase()}}Theme {
       iconTheme: _buildIconTheme(baseTheme.iconTheme, designSystemColor),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
-        isLightTheme ? WidgetToolkitTheme.light : WidgetToolkitTheme.dark,
-        isLightTheme ? ItemPickerTheme.light : ItemPickerTheme.dark,
-        isLightTheme ? SearchPickerTheme.light : SearchPickerTheme.dark,
-        isLightTheme ? TextFieldDialogTheme.light : TextFieldDialogTheme.dark,
-        isLightTheme ? EditAddressTheme.light : EditAddressTheme.dark,
-        isLightTheme ? LanguagePickerTheme.light : LanguagePickerTheme.dark,{{#enable_feature_otp}}
-        isLightTheme ? SmsCodeTheme.light : SmsCodeTheme.dark,{{/enable_feature_otp}}{{#enable_pin_code}}
-        isLightTheme ? PinCodeTheme.light : PinCodeTheme.dark,{{/enable_pin_code}}
+        isLightTheme ? WidgetToolkitTheme.light() : WidgetToolkitTheme.dark(),
+        isLightTheme ? ItemPickerTheme.light() : ItemPickerTheme.dark(),
+        isLightTheme ? SearchPickerTheme.light() : SearchPickerTheme.dark(),
+        isLightTheme ? TextFieldDialogTheme.light() : TextFieldDialogTheme.dark(),
+        isLightTheme ? EditAddressTheme.light() : EditAddressTheme.dark(),
+        isLightTheme ? LanguagePickerTheme.light() : LanguagePickerTheme.dark(),{{#enable_feature_otp}}
+        isLightTheme ? SmsCodeTheme.light() : SmsCodeTheme.dark(),{{/enable_feature_otp}}{{#enable_pin_code}}
+        isLightTheme ? PinCodeTheme.light() : PinCodeTheme.dark(),{{/enable_pin_code}}
       ],
       // Override any material widget themes here if needed.
     );
