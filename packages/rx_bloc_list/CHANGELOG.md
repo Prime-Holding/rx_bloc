@@ -1,3 +1,6 @@
+## [4.0.2] May 22, 2023
+* Fix the RxPaginatedBuilder `bloc` parameter
+
 ## [4.0.1] February 20, 2023
 * Fix paginated list scroll events call
 

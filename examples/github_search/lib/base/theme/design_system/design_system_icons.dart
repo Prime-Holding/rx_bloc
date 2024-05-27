@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -7,18 +7,39 @@
 
 import 'package:flutter/material.dart';
 
-class DesignSystemIcon {
-  IconData get arrowBack => Icons.arrow_back;
+@immutable
+class DesignSystemIcons {
+  DesignSystemIcons();
 
-  IconData get plusSign => Icons.add;
+  final arrowBack = Icons.arrow_back;
 
-  IconData get minusSign => Icons.remove;
+  final plusSign = Icons.add;
 
-  IconData get reload => Icons.update;
+  final minusSign = Icons.remove;
 
-  IconData get info => Icons.info;
+  final search = Icons.search;
 
-  IconData get login => Icons.login;
+  final reload = Icons.update;
 
-  IconData get avatar => Icons.person;
+  final info = Icons.info;
+
+  final login = Icons.login;
+
+  final avatar = Icons.person;
+
+  final message = Icons.message;
+
+  final Icon calculateIcon = _getIcon(Icons.calculate);
+
+  final Icon listIcon = _getIcon(Icons.list);
+
+  final Icon accountIcon = _getIcon(Icons.account_box);
+
+  final Icon logoutIcon = _getIcon(Icons.logout);
+
+  final Icon linkIcon = _getIcon(Icons.link);
+
+  final Icon dashboard = _getIcon(Icons.dashboard);
+
+  static Icon _getIcon(IconData iconData) => Icon(iconData);
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -16,8 +16,7 @@ FlutterLocalNotificationsPlugin? _notificationsPlugin;
 const _maxImportanceChannel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  description:
-      'This channel is used for important notifications.', // description
+  description: 'This channel is used for important notifications.',
   importance: Importance.max,
 );
 

@@ -7,14 +7,14 @@
 part of 'splash_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class SplashBlocType extends RxBlocTypeBase {
   SplashBlocEvents get events;
   SplashBlocStates get states;
 }
 
 /// [$SplashBloc] extended by the [SplashBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $SplashBloc extends RxBlocBase
     implements SplashBlocEvents, SplashBlocStates, SplashBlocType {
   final _compositeSubscription = CompositeSubscription();

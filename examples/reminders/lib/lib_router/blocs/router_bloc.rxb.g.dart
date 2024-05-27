@@ -7,14 +7,14 @@
 part of 'router_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class RouterBlocType extends RxBlocTypeBase {
   RouterBlocEvents get events;
   RouterBlocStates get states;
 }
 
 /// [$RouterBloc] extended by the [RouterBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $RouterBloc extends RxBlocBase
     implements RouterBlocEvents, RouterBlocStates, RouterBlocType {
   final _compositeSubscription = CompositeSubscription();

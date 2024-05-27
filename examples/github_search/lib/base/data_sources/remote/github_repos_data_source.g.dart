@@ -25,13 +25,13 @@ class _GithubReposDataSource implements GithubReposDataSource {
     required String query,
     int page = 1,
   }) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'q': query,
       r'page': page,
     };
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GithubReposResponse>(Options(
       method: 'GET',

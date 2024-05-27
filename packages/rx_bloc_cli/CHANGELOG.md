@@ -1,3 +1,6 @@
+## [3.5.3]
+* Updated `widget_toolkit` dependencies in generated project
+
 ## [3.5.2]
 * Updated architecture diagram
 * Updated CD documentation

@@ -1,3 +1,10 @@
+// Copyright (c) 2023, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -7,7 +14,6 @@ import '../config.dart';
 import '../repositories/push_token_repository.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
-import 'authentication_controller.dart';
 
 // ignore_for_file: cascade_invocations
 // ignore_for_file: lines_longer_than_80_chars
@@ -35,10 +41,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _registerPushHandler(Request request) async {
-    controllers
-        .getController<AuthenticationController>()
-        ?.isAuthenticated(request);
-
     final params = await request.bodyFromFormData();
     final pushToken = params['pushToken'];
 
@@ -53,10 +55,6 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _unregisterPushHandler(Request request) async {
-    controllers
-        .getController<AuthenticationController>()
-        ?.isAuthenticated(request);
-
     final params = await request.bodyFromFormData();
     final pushToken = params['pushToken'];
 
@@ -71,13 +69,11 @@ class PushNotificationsController extends ApiController {
   }
 
   Future<Response> _broadcastPushHandler(Request request) async {
-    controllers
-        .getController<AuthenticationController>()
-        ?.isAuthenticated(request);
-
     final params = await request.bodyFromFormData();
     final title = params['title'];
     final message = params['message'];
+    final data = params['data'];
+    final pushToken = params['pushToken'];
 
     final delayParam = params['delay'];
     final delay = delayParam != null && (delayParam is int)
@@ -88,9 +84,12 @@ class PushNotificationsController extends ApiController {
       message,
       BadRequestException('Push message can not be empty.'),
     );
+    if (!(_pushTokens.tokens.any((element) => element.token == pushToken))) {
+      throw NotFoundException('Notifications disabled by the user');
+    }
 
     Future.delayed(Duration(seconds: delay),
-        () async => _sendMessage(title: title, message: message));
+        () async => _sendMessage(title: title, message: message, data: data));
 
     return responseBuilder.buildOK();
   }

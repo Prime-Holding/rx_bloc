@@ -1,3 +1,10 @@
+// Copyright (c) 2023, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
@@ -66,10 +73,10 @@ class RouteGenerator {
   /// and returns a Response, which is triggered once a url was not found.
   shelf_router.Router generateRoutes({shelf.Handler? routeNotFoundHandler}) {
     final router = _buildRouter(routeNotFoundHandler);
-    final wrapperRouter = WrappedRouter(router, _responseBuilder);
+    final wrappedRouter = WrappedRouter(router, _responseBuilder);
 
     for (final controller in _controllers._controllers) {
-      controller.registerRequests(wrapperRouter);
+      controller.registerRequests(wrappedRouter);
     }
 
     return router;
@@ -133,8 +140,8 @@ class WrappedRouter {
     String path,
     Function(shelf.Request) callback,
   ) {
-    final callback0 = buildSafeHandler(callback, _responseBuilder);
-    _registerCallback(type, path, callback0);
+    final newCallback = buildSafeHandler(callback, _responseBuilder);
+    _registerCallback(type, path, newCallback);
   }
 
   /// Adds a new request to the router that contains a parameter as part of the
@@ -150,8 +157,8 @@ class WrappedRouter {
     String path,
     Function(shelf.Request, String) callback,
   ) {
-    final callback0 = _buildSafeHandlerParam(callback, _responseBuilder);
-    _registerCallback(type, path, callback0);
+    final newCallback = _buildSafeHandlerParam(callback, _responseBuilder);
+    _registerCallback(type, path, newCallback);
   }
 
   /// Builds a wrapper around the callback with a parameter which helps easily

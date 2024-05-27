@@ -1,12 +1,11 @@
 {{> licence.dart }}
 
-import 'package:patrol/patrol.dart';
 import 'package:{{project_name}}/keys.dart';
 
 import '../base/base_page.dart';
 
 class OtpPage extends BasePage {
-    OtpPage(PatrolIntegrationTester $) : super($);
+    OtpPage(super.$);
 
     Future<void> enterOtpCode(String code) async {
         await $(K.otpInput).enterText(code);

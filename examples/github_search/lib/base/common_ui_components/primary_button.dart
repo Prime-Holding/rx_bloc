@@ -1,6 +1,14 @@
+// Copyright (c) 2023, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'package:flutter/material.dart';
 
 import '../theme/design_system.dart';
+import 'app_loading_indicator.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -8,8 +16,8 @@ class PrimaryButton extends StatelessWidget {
     this.child,
     this.isLoading = false,
     this.loadingIndicatorSize = 20,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool isLoading;
   final Widget? child;
@@ -26,9 +34,9 @@ class PrimaryButton extends StatelessWidget {
       ? SizedBox(
           width: loadingIndicatorSize,
           height: loadingIndicatorSize,
-          child: CircularProgressIndicator.adaptive(
-            backgroundColor:
-                context.designSystem.colors.progressIndicatorBackgroundColor,
+          child: AppLoadingIndicator.textButtonValue(
+            context,
+            color: context.designSystem.colors.progressIndicatorBackgroundColor,
           ),
         )
       : child ?? const SizedBox();
