@@ -7,14 +7,14 @@
 part of 'firebase_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class FirebaseBlocType extends RxBlocTypeBase {
   FirebaseBlocEvents get events;
   FirebaseBlocStates get states;
 }
 
 /// [$FirebaseBloc] extended by the [FirebaseBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $FirebaseBloc extends RxBlocBase
     implements FirebaseBlocEvents, FirebaseBlocStates, FirebaseBlocType {
   final _compositeSubscription = CompositeSubscription();

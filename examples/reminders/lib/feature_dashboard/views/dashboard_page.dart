@@ -137,8 +137,8 @@ class DashboardStats extends StatelessWidget {
   const DashboardStats({
     required this.incompleteCount,
     required this.completeCount,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int incompleteCount;
   final int completeCount;
@@ -173,8 +173,8 @@ class DashboardStatItem extends StatelessWidget {
   const DashboardStatItem({
     required this.count,
     required this.label,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int count;
   final String label;

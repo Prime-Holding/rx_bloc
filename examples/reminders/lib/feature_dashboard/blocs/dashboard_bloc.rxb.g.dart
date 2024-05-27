@@ -7,14 +7,14 @@
 part of 'dashboard_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class DashboardBlocType extends RxBlocTypeBase {
   DashboardBlocEvents get events;
   DashboardBlocStates get states;
 }
 
 /// [$DashboardBloc] extended by the [DashboardBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $DashboardBloc extends RxBlocBase
     implements DashboardBlocEvents, DashboardBlocStates, DashboardBlocType {
   final _compositeSubscription = CompositeSubscription();
