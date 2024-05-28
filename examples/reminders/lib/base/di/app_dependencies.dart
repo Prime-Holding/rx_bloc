@@ -12,14 +12,18 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:realm/realm.dart';
+import 'package:uuid/uuid.dart' as uuid;
 
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
+import '../data_sources/realm_reminders_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
+import '../models/reminder/reminder_realm_model.dart';
 import '../repositories/firebase_repository.dart';
 import '../repositories/reminders_repository.dart';
 import '../services/firebase_service.dart';
@@ -50,12 +54,22 @@ class _AppDependenciesState extends State<AppDependencies> {
   late GlobalKey<NavigatorState> rootNavigatorKey;
 
   late GlobalKey<NavigatorState> shellNavigatorKey;
+  final _storage = const FlutterSecureStorage();
+  final config = Configuration.local([ReminderRealmModel.schema]);
+  late final Realm _realm;
 
   @override
   void initState() {
     super.initState();
     rootNavigatorKey = GlobalKey<NavigatorState>();
     shellNavigatorKey = GlobalKey<NavigatorState>();
+    _realm = Realm(config);
+  }
+
+  @override
+  void dispose() {
+    _realm.close();
+    super.dispose();
   }
 
   @override
@@ -106,14 +120,23 @@ class _AppDependenciesState extends State<AppDependencies> {
   /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
         Provider<RemindersFirebaseDataSource>(
-          create: (context) => RemindersFirebaseDataSource(),
+          create: (context) => RemindersFirebaseDataSource(
+            _storage,
+          ),
+        ),
+        Provider<RealmRemindersDataSource>(
+          create: (context) => RealmRemindersDataSource(
+            _realm,
+            const uuid.Uuid(),
+            _storage,
+          ),
         ),
       ];
 
   List<Provider> get _repositories => [
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            dataSource: RemindersFirebaseDataSource(),
+            dataSource: context.read<RealmRemindersDataSource>(),
           ),
         ),
         Provider<FirebaseRepository>(
