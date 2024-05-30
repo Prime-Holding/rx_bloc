@@ -96,6 +96,24 @@ android {
             resValue "string", "fb_login_protocol_scheme", "fb1726327217729448"
             resValue "string", "facebook_client_token", "e1cb2550d07d09b93fecaa010706ca9a"
         }
+        cloud {
+            dimension "default"
+            applicationIdSuffix ".cloud"
+            versionNameSuffix "-cloud"
+            resValue "string", "app_name", "reminders-app-cloud"
+            resValue "string", "facebook_app_id", "111"
+            resValue "string", "fb_login_protocol_scheme", "fb222"
+            resValue "string", "facebook_client_token", "e1a2c3"
+        }
+        local {
+            dimension "default"
+            applicationIdSuffix ".local"
+            versionNameSuffix "-local"
+            resValue "string", "app_name", "reminders-app-local"
+            resValue "string", "facebook_app_id", "111"
+            resValue "string", "fb_login_protocol_scheme", "fb222"
+            resValue "string", "facebook_client_token", "e1a2c3"
+        }
     }
 
     buildTypes {

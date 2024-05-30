@@ -16,7 +16,7 @@ class ReminderRealmModel extends _ReminderRealmModel
     bool complete, {
     String? authorId,
   }) {
-    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, '_id', id);
     RealmObjectBase.set(this, 'title', title);
     RealmObjectBase.set(this, 'dueDate', dueDate);
     RealmObjectBase.set(this, 'complete', complete);
@@ -26,9 +26,9 @@ class ReminderRealmModel extends _ReminderRealmModel
   ReminderRealmModel._();
 
   @override
-  String get id => RealmObjectBase.get<String>(this, 'id') as String;
+  String get id => RealmObjectBase.get<String>(this, '_id') as String;
   @override
-  set id(String value) => RealmObjectBase.set(this, 'id', value);
+  set id(String value) => RealmObjectBase.set(this, '_id', value);
 
   @override
   String get title => RealmObjectBase.get<String>(this, 'title') as String;
@@ -67,7 +67,7 @@ class ReminderRealmModel extends _ReminderRealmModel
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      'id': id.toEJson(),
+      '_id': id.toEJson(),
       'title': title.toEJson(),
       'dueDate': dueDate.toEJson(),
       'complete': complete.toEJson(),
@@ -79,7 +79,7 @@ class ReminderRealmModel extends _ReminderRealmModel
   static ReminderRealmModel _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
-        'id': EJsonValue id,
+        '_id': EJsonValue id,
         'title': EJsonValue title,
         'dueDate': EJsonValue dueDate,
         'complete': EJsonValue complete,
@@ -101,7 +101,8 @@ class ReminderRealmModel extends _ReminderRealmModel
     register(_toEJson, _fromEJson);
     return SchemaObject(
         ObjectType.realmObject, ReminderRealmModel, 'ReminderRealmModel', [
-      SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
+      SchemaProperty('id', RealmPropertyType.string,
+          mapTo: '_id', primaryKey: true),
       SchemaProperty('title', RealmPropertyType.string),
       SchemaProperty('dueDate', RealmPropertyType.timestamp),
       SchemaProperty('complete', RealmPropertyType.bool),

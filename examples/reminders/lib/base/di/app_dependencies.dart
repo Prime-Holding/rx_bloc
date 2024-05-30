@@ -5,6 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +22,7 @@ import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
-import '../data_sources/realm_reminders_data_source.dart';
+import '../data_sources/local/realm_reminders_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
 import '../models/reminder/reminder_realm_model.dart';
@@ -55,15 +57,22 @@ class _AppDependenciesState extends State<AppDependencies> {
 
   late GlobalKey<NavigatorState> shellNavigatorKey;
   final _storage = const FlutterSecureStorage();
-  final config = Configuration.local([ReminderRealmModel.schema]);
+  final _uuid = const uuid.Uuid();
+
+  late final Configuration realmConfig;
   late final Realm _realm;
+  late final User _user;
 
   @override
   void initState() {
     super.initState();
     rootNavigatorKey = GlobalKey<NavigatorState>();
     shellNavigatorKey = GlobalKey<NavigatorState>();
-    _realm = Realm(config);
+
+    (widget.config.environment == EnvironmentType.cloud ||
+            widget.config.environment == EnvironmentType.local)
+        ? initRealm()
+        : null;
   }
 
   @override
@@ -127,7 +136,7 @@ class _AppDependenciesState extends State<AppDependencies> {
         Provider<RealmRemindersDataSource>(
           create: (context) => RealmRemindersDataSource(
             _realm,
-            const uuid.Uuid(),
+            _uuid,
             _storage,
           ),
         ),
@@ -136,7 +145,10 @@ class _AppDependenciesState extends State<AppDependencies> {
   List<Provider> get _repositories => [
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            dataSource: context.read<RealmRemindersDataSource>(),
+            dataSource: (widget.config.environment == EnvironmentType.cloud ||
+                    widget.config.environment == EnvironmentType.local)
+                ? context.read<RealmRemindersDataSource>()
+                : context.read<RemindersFirebaseDataSource>(),
           ),
         ),
         Provider<FirebaseRepository>(
@@ -183,4 +195,28 @@ class _AppDependenciesState extends State<AppDependencies> {
           create: (context) => AnalyticsInterceptor(context.read()),
         ),
       ];
+
+  Future<void> initRealm() async {
+    final encryptionKey = List<int>.generate(64, (i) => Random().nextInt(256));
+    if (widget.config == EnvironmentConfig.cloud) {
+      final app = App(AppConfiguration('remindersservice-rlxovpu'));
+      _user = await app.logIn(Credentials.anonymous());
+      realmConfig = Configuration.flexibleSync(
+        _user,
+        [ReminderRealmModel.schema],
+        encryptionKey: encryptionKey,
+      );
+      _realm = Realm(realmConfig);
+      _realm.subscriptions.update((mutableSubscriptions) {
+        mutableSubscriptions.add(_realm.all<ReminderRealmModel>());
+      });
+      await _realm.subscriptions.waitForSynchronization();
+    } else {
+      realmConfig = Configuration.local(
+        [ReminderRealmModel.schema],
+        encryptionKey: encryptionKey,
+      );
+      _realm = Realm(realmConfig);
+    }
+  }
 }
