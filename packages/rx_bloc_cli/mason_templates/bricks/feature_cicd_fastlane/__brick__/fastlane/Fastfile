@@ -6,17 +6,19 @@ APPLE_DEVELOPMENT_TEAM = ''
 
 # The ID of the private App Store Connect Api Key
 # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
-IOS_P8_AUTH_KEY_ID, = ''
+IOS_P8_AUTH_KEY_ID = ''
 IOS_P8_AUTH_KEY_ISSUER_ID = ''
 
-# The name of the directory in which the project is located
-PROJECT_DIRECTORY_NAME={{project_name}}
+# The path of the directory in which the project is located
+PROJECT_DIRECTORY_PATH='.'
 
 # The url of the distribution repository (without http(s) prefix)
 DISTRIBUTION_REPOSITORY_URL='github.com/{{organization_name}}/{{project_name.paramCase()}}-distribuition.git'
 
+# List of available environments
 environments = ['development', 'sit', 'uat', 'production']
 
+# Mapping of flavors to their symbolic representation used throughout this file
 flavor_map = {
     'development' => 'development',
     'sit' => 'sit',
@@ -24,6 +26,7 @@ flavor_map = {
     'production' => 'production'
 }
 
+# Mapping of flavor to target dart file containing the entry point of the app.
 target_map = {
     'development' => 'lib/main_development.dart',
     'sit' => 'lib/main_sit.dart',
@@ -31,6 +34,7 @@ target_map = {
     'production' => 'lib/main_production.dart'
 }
 
+# Mapping of flavor to flavor specific bundle id
 bundle_id_map = {
     'development' => '{{domain_name}}.{{organization_name}}.{{project_name}}.development',
     'sit' => '{{domain_name}}.{{organization_name}}.{{project_name}}.sit',
@@ -38,6 +42,17 @@ bundle_id_map = {
     'production' => '{{domain_name}}.{{organization_name}}.{{project_name}}'
 }
 
+# Mapping of flavor to name of the provisioning profile for that flavor.
+# Accepted values are the name of the profile (when created on developer.apple.com) or the UUID of
+# the provisioning profile
+provisioning_profile_name_map = {
+    'development' => '',
+    'sit' => '',
+    'uat' => '',
+    'production' => ''
+}
+
+# Mapping of flavor to provisioning profile file name used as a convention in this file
 provisioning_profile_file_name_map = {
     'development' => 'development_provisioning_profile.mobileprovision',
     'sit' => 'sit_provisioning_profile.mobileprovision',
@@ -45,13 +60,7 @@ provisioning_profile_file_name_map = {
     'production' => 'production_provisioning_profile.mobileprovision'
 }
 
-provisioning_profile_map = {
-    'development' => '{{project_name.titleCase()}} DEV Distribution',
-    'sit' => '{{project_name.titleCase()}} SIT Distribution',
-    'uat' => '{{project_name.titleCase()}} UAT Distribution',
-    'production' => '{{project_name.titleCase()}} Production Distribution'
-}
-
+# Mapping of flavor to firebase app id configuration for supported platforms
 firebase_app_id_map = {
     'development' => {
         'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
@@ -71,7 +80,10 @@ firebase_app_id_map = {
     },
 }
 
+# Path of local keychain created in case it doesn't exist
 keychain_path = Dir.getwd + '/devops/credentials/{{project_name.paramCase()}}-keychain.keychain'
+
+# ----------------------------------------------------------------------------------------------- #
 
 private_lane :setup_environment_variable do |options|
     value = ''
@@ -254,7 +266,7 @@ platform :android do
         )
 
         Dir.chdir("../devops/credentials") do
-            sh("./decode.sh android")
+            sh("./crypt.sh decode android")
             keystore_alias_file_path = Dir.getwd + "/decoded/android/key_alias.txt"
             keystore_key_password_file_path = Dir.getwd + "/decoded/android/key_password.txt"
             keystore_password_file_path = Dir.getwd + "/decoded/android/store_password.txt"
@@ -299,7 +311,7 @@ platform :android do
     desc 'Deploy the app to google play store'
     private_lane :deploy_platform do |options|
         Dir.chdir('../credentials') do
-            sh('./decode.sh deploy_android')
+            sh('./crypt.sh decode deploy_android')
         end
 
         version_name = "#{options[:build_number]} (#{options[:build_name]}-#{options[:environment]})"
@@ -355,7 +367,7 @@ platform :ios do
         )
 
         Dir.chdir('../devops/credentials') do
-            sh('./decode.sh ios')
+            sh('./crypt.sh decode ios')
 
             basedir = Dir.getwd + '/decoded/ios/'
 
@@ -404,7 +416,7 @@ platform :ios do
             )
 
             MY_APP_ID = bundle_id_map[options[:environment]]
-            MY_PROFILE = provisioning_profile_map[options[:environment]]
+            MY_PROFILE = provisioning_profile_name_map[options[:environment]]
 
             settings_to_override = {
                 :BUNDLE_IDENTIFIER => MY_APP_ID,
@@ -413,10 +425,10 @@ platform :ios do
             }
 
             gym(
-                workspace: PROJECT_DIRECTORY_NAME+'/ios/Runner.xcworkspace',
+                workspace: PROJECT_DIRECTORY_PATH+'/ios/Runner.xcworkspace',
                 scheme: flavor_map[options[:environment]],
                 xcargs: settings_to_override,
-                output_directory: PROJECT_DIRECTORY_NAME+'/devops/artifacts',
+                output_directory: PROJECT_DIRECTORY_PATH+'/devops/artifacts',
                 export_method: 'app-store',
                 export_options: {
                     manageAppVersionAndBuildNumber: false,
@@ -438,7 +450,7 @@ platform :ios do
     desc 'Deploy the app to apple testflight'
     private_lane :deploy_platform do |options|
         Dir.chdir('../credentials') do
-            sh('./decode.sh deploy_ios')
+            sh('./crypt.sh decode deploy_ios')
         end
 
         api_key = app_store_connect_api_key(
@@ -515,7 +527,7 @@ lane :deploy_debug_symbols do
     fetch_credentials()
 
     Dir.chdir('../devops/credentials/') do
-        sh('./decode.sh firebase')
+        sh('./crypt.sh decode firebase')
 
         firebase_token_file_path = Dir.getwd + '/decoded/firebase/firebase_token.txt'
         ENV['FIREBASE_TOKEN'] = File.read(firebase_token_file_path).strip

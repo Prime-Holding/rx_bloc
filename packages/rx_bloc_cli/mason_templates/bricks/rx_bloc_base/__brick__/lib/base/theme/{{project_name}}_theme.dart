@@ -26,7 +26,7 @@ class {{project_name.pascalCase()}}Theme {
 
     final colorScheme = baseColorScheme.copyWith(
       primary: designSystemColor.primaryColor,
-      background: designSystemColor.backgroundColor,
+      surface: designSystemColor.backgroundColor,
       error: designSystemColor.errorColor,
     );
 
