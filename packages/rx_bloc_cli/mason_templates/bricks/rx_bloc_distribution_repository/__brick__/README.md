@@ -10,6 +10,9 @@ Any regular file encrypted with this password will have an `.enc` extension (whi
 
 _Note: To list all currently available environment variables, use `printenv` from your console._
 
+_Note 2: To get more details on commands and parameters used for encrypting/decrypting files, 
+use the following command in the root of the directory: `./crypt.sh help`._
+
 ### Preparing The Credentials
 
 Within the generated content, there are two directories each containing platform specific files for signing and distribution of the app.
@@ -50,7 +53,7 @@ for development environment, first add the file (`android_dev.jks`) to the `andr
 Then run the encryption script like this:
 
 ```sh
-./crypto.sh encode file ./android/android_dev.jks
+./crypt.sh encode file ./android/android_dev.jks
 ```
 
 This will create a `android/android_dev.jks.enc` file which can be committed to the repository.
@@ -63,7 +66,7 @@ Supported values are: `file`, `android`, `ios`, `deploy_android`, `deploy_ios`, 
 It will create a new folder called `decoded` and place the decoded files there.
 
 ```sh
-./crypto.sh decode android
+./crypt.sh decode android
 ```
 
 ---

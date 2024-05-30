@@ -76,7 +76,7 @@ class CreateDistributionCommand extends Command<int> {
 
   Future<void> _postGeneration(Directory outputDirectory) async {
     await _updateShellScriptExecutePermission(
-      '${outputDirectory.absolute.path}/crypto.sh',
+      '${outputDirectory.absolute.path}/crypt.sh',
     );
   }
 

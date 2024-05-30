@@ -129,8 +129,40 @@ function eod_firebase() {
     fi
 }
 
+function display_help() {
+    echo "Usage: $0 <command> <mode> [arguments]"
+    echo
+    echo "Available commands:"
+    echo "encode - encrypts one or more files outputing them in .enc format"
+    echo "decode - decrypts one or more files with the .enc format"
+    echo "help   - displays this message"
+    echo
+    echo "Available modes:"
+    echo "file           - encrypts/decrypts a single file"
+    echo "android        - encrypts/decrypts android related files for building/signing"
+    echo "ios            - encrypts/decrypts ios related files for building/signing"
+    echo "deploy_android - encrypts/decrypts android related files for deployment"
+    echo "deploy_ios     - encrypts/decrypts ios related files for deployment"
+    echo "firebase       - encrypts/decrypts any firebase related files"
+    echo "all            - encrypts/decrypts all distribution files within the directories"
+    echo
+    echo "Examples:"
+    echo "  $0 encode file <input_file>"
+    echo "  $0 decode file <input_file> <output_file>"
+    echo "  $0 encode android"
+    echo "  $0 decode android"
+    echo "  $0 encode all"
+    echo "  $0 decode all"
+}
+
 ##########################
- 
+
+# Display help if command is 'help' or no command is provided
+if [ "$CMD" = "help" ] || [ -z "$CMD" ] || [ $# = 1 ]; then
+    display_help
+    exit 0
+fi
+
 # Check for argument count
 if (( $# < 2 )); then
     echo "Usage: encode|decode <mode> [arguments] . Available modes: $MODES_STR" && exit 2
