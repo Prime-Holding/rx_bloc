@@ -44,8 +44,8 @@ jobs:
         working-directory: ${{ inputs.project_path }}
     runs-on: ubuntu-latest
     env:
-      mobile_distribution_encryption_password: ${{ secrets.mobile_distribution_encryption_password }}
-      mobile_distribution_repository_access_secret: ${{ secrets.mobile_distribution_repository_access_secret }}
+      MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
+      MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
@@ -55,7 +55,7 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - name: Setup Ruby env
-        uses: ruby/setup-ruby@v1.138.0
+        uses: ruby/setup-ruby@v1.176.0
         with:
            ruby-version: 3.1.0
            bundler-cache: true

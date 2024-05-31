@@ -1,5 +1,6 @@
 ## [3.5.3]
 * Updated `widget_toolkit` dependencies in generated project
+* Improvements and bugfixes to generated projects
 
 ## [3.5.2]
 * Updated architecture diagram

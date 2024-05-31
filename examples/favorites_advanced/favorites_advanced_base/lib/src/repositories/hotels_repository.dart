@@ -1,10 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:favorites_advanced_base/core.dart';
-import 'package:favorites_advanced_base/src/models/hotel_search_filters.dart';
 import 'package:flutter/material.dart';
 
-import '../models/hotel.dart';
-import 'connectivity_repository.dart';
 
 class HotelsRepository {
   HotelsRepository(

@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
 import '../../core.dart';
-import '../../models.dart';
 
 class HotelHeader extends StatelessWidget {
   const HotelHeader({
@@ -19,7 +18,7 @@ class HotelHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: HotelAppTheme.buildLightTheme().backgroundColor,
+      color: HotelAppTheme.buildLightTheme().colorScheme.surface,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +60,7 @@ class HotelHeader extends StatelessWidget {
                           const SizedBox(width: 4),
                           if (hotel.displayDist != null)
                             Icon(
-                              FontAwesomeIcons.mapMarkerAlt,
+                              FontAwesomeIcons.locationDot,
                               size: 12,
                               color:
                                   HotelAppTheme.buildLightTheme().primaryColor,
