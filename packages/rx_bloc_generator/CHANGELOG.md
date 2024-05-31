@@ -1,3 +1,6 @@
+## [7.2.1] - May 31, 2024
+* Support Flutter `3.22`
+
 ## [7.2.0] - February 20, 2024
 * Support Flutter `3.19`
 
