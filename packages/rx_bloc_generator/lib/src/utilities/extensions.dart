@@ -199,5 +199,6 @@ extension _ListParameterElementClone on Iterable<ParameterElement> {
 }
 
 extension _ParameterElementToString on ParameterElement {
+  // ignore: deprecated_member_use
   String getTypeDisplayName() => type.getDisplayString(withNullability: true);
 }
