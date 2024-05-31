@@ -49,7 +49,38 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-pin-code`               |                   `false`                   |      Enables pin code feature with biometrics, that can help with building pin code workflows.       |
 | `--cicd`                               |                 `fastlane`                  | Provides a template for setting up ci/cd for your project. Available options: none, fastlane, github |
 
-### What's Included? 📦
+### `$ rx_bloc_cli create_distribution`
+
+Usage:
+
+```sh
+rx_bloc_cli create_distribution <output_dir>
+```
+
+Creates a new distribution project for all your deployment and testing credentials, provisioning profiles, certificates, etc.
+
+
+### `$ rx_bloc_cli --help`
+
+See the complete list of commands and usage information.
+
+```sh
+Rx Bloc Command Line Interface
+
+Usage: rx_bloc_cli <command> [arguments]
+
+Global options:
+-h, --help       Print this usage information.
+-v, --version    Print the current version.
+
+Available commands:
+  create				Creates a new project in the specified directory.
+  create_distribution	Creates a new distribution project in the specified directory.
+
+Run "rx_bloc_cli help <command>" for more information about a command.
+```
+
+## What's Included? 📦
 
 Out of the box, a Rx Bloc CLI created projects includes:
 
@@ -77,24 +108,6 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ---
 
-### `$ rx_bloc_cli --help`
-
-See the complete list of commands and usage information.
-
-```sh
-Rx Bloc Command Line Interface
-
-Usage: rx_bloc_cli <command> [arguments]
-
-Global options:
--h, --help       Print this usage information.
--v, --version    Print the current version.
-
-Available commands:
-  create   Creates a new project in the specified directory.
-
-Run "rx_bloc_cli help <command>" for more information about a command.
-```
 ## Extendability
 
 Rx Bloc Command Line Interface supports [extendability] with the help of mason templates

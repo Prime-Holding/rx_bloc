@@ -3,6 +3,7 @@
 ### Distribution repository
 
 Create a new Github repository used for storing files and credentials for distribution of your app.
+Since the repository contains confidential files, make sure to mark it as __private__ upon creation.
 Clone the repository and open the directory in the terminal.
 Using the [rx_bloc_cli][rx_bloc_cli_link] package, execute the following command:
 
@@ -14,7 +15,7 @@ The `create_distribution` command will populate the directory with the file stru
 The generated `README` file contains steps on where to download and how to name the required files.
 Within the `android` and `ios` directories, paste the previously downloaded files and rename them accordingly.
 
-Before committing any changes, make sure you encrypt all the files using the `encode.sh` script.
+Before committing any changes, make sure you encrypt all the files using the `./crypto.sh encode all` command.
 
 ### Project & Fastfile amendments
 
@@ -34,13 +35,11 @@ Replace the value of the `APPLE_DEVELOPMENT_TEAM` variable with your own [Apple 
 When downloading the `.p8` auth key, the file name should have the following format: `AuthKey_{KEY_ID}.p8` where the `KEY_ID` is your unique id.
 Take that value and paste it into the `IOS_P8_AUTH_KEY_ID` variable.
 
-The value of the `IOS_P8_AUTH_KEY_ISSUER_ID` variable is the value retrieved from the `contentProviderPublicId` key within [this page][apple_issuer_id_details].
-If more than one `contentProviderPublicId` with different values is present, make sure to use the one from the appropriate organization account name.
+The value of the `IOS_P8_AUTH_KEY_ISSUER_ID` variable can be retrieved from the [this page][apple_issuer_id_details] on App Store Connect.
+Have in mind that in order to see the `Issuer ID` option on the linked page, you need to have at least the `Admin` role assigned to your apple account.
 
-Update the `PROJECT_DIRECTORY_NAME` variable with the name of the root directory in which the project is located.
-
-Copy the url of the distribution repository and paste it inside the `DISTRIBUTION_REPOSITORY_URL` variable. 
-Make sure you include the url without the `http://` and `https://` prefixes, as this path will be combined with the distribution repository access token. 
+Copy the url of the distribution repository and paste it inside the `DISTRIBUTION_REPOSITORY_URL` variable.
+Make sure you include the url without the `http://` and `https://` prefixes, as this path will be combined with the distribution repository access token.
 As for an example repo url `https://github.com/Prime-Holding/rx_bloc.git`, the `DISTRIBUTION_REPOSITORY_URL` would have the following value: `github.com/Prime-Holding/rx_bloc.git`  
 {{#analytics}}
 For each of the supported flavors, prepare one or more firebase projects (based on your projects requirements).
@@ -48,7 +47,7 @@ Once each firebase project is configured, go to the `General` tab in the `Projec
 Under `Your apps` section, copy the app id of both Android and iOS configuration by selecting the respective apps.
 Update values for each supported flavor in the `firebase_app_id_map` dictionary within the `Fastfile`.
 {{/analytics}}
-For the iOS project, update the provisioning profile names for each flavor inside the `provisioning_profile_map` dictionary.
+For the iOS project, update the provisioning profile names for each flavor inside the `provisioning_profile_name_map` dictionary.
 Each key in the dictionary represents the flavor name, while the values are names of individual provisioning profiles defined in the [Apple Developer Console][apple_provisioning_profiles_list].
 In case you've named your provisioning profiles differently, make sure to update the values with the proper file names within the `provisioning_profile_file_name_map` dictionary.
 
@@ -70,15 +69,15 @@ There you should define two repository secrets with the same values as in the lo
 Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app but does not deploy it.
 If you want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `true` and commit the new changes.
 
-The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners. 
+The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners.
 All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
 
-Once the apps are successfully built and signed, a `deployment.yaml` file along with the platform specific artifacts (`.aab` for Android, `.ipa` for iOS) will be generated. 
-The `deployment.yaml` contains necessary details used for deploying the app. 
-The `deployment.yaml` and the artifacts can be downloaded from the completed Github action from the Actions tab. 
-In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below. 
+Once the apps are successfully built and signed, a `deployment.yaml` file along with the platform specific artifacts (`.aab` for Android, `.ipa` for iOS) will be generated.
+The `deployment.yaml` contains necessary details used for deploying the app.
+The `deployment.yaml` and the artifacts can be downloaded from the completed Github action from the Actions tab.
+In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below.
 
-_Note: Once the github build is successfully done, two deployment files will be available: `android-deployment.yaml` and `ios-deployment.yaml`. 
+_Note: Once the github build is successfully done, two deployment files will be available: `android-deployment.yaml` and `ios-deployment.yaml`.
 Before you manually distribute artifacts for respective platforms, make sure to rename the deployment files to `deployment.yaml`._
 
 In order to trigger a new build, push a new tag to the repository in one of the following formats:
@@ -121,7 +120,7 @@ For more details on that and other commands, as well as their arguments, please 
 [android_service_key_creation]: https://docs.fastlane.tools/actions/upload_to_play_store/#setup
 [google_play_developer_api]: https://console.developers.google.com/apis/api/androidpublisher.googleapis.com/?hl=en
 [apple_development_team_id]: https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/
-[apple_issuer_id_details]: https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/user/detail
+[apple_issuer_id_details]: https://appstoreconnect.apple.com/access/integrations/api
 [apple_provisioning_profiles_list]: https://developer.apple.com/account/resources/profiles/list
 [clone_github_repo_with_access_token]: https://kettan007.medium.com/how-to-clone-a-git-repository-using-personal-access-token-a-step-by-step-guide-ab7b54d4ef83
 [github_actions_usage_limits]: https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits

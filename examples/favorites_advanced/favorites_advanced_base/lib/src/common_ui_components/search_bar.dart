@@ -20,7 +20,7 @@ class HotelSearchBar extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color:
-                        HotelAppTheme.buildLightTheme().colorScheme.background,
+                        HotelAppTheme.buildLightTheme().colorScheme.surface,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(38.0),
                     ),

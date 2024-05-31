@@ -505,12 +505,12 @@ The `lib_auth_matrix` brick contains classes, repositories, datasources and widg
 {{#cicd}}
 ## CI/CD
 
-The project comes preconfigured with a CI/CD solution which allows automated building and deploying of android and iOS apps.
+The project comes preconfigured with a CI/CD solution which allows automated builds and deployments of android and iOS apps.
 The solution is using [Fastlane][fastlane_lnk] under the hood (check `{app_directory}/fastlane/Fastfile` for more info).
 
 Before running the actual CD pipeline, you may need first to configure your project specific files and credentials. 
 For more information, please check out the [detailed guide][rx_bloc_cli_cd_setup_lnk] on how to configure your Fastfile.
-Additionally, you can check a concrete implementation in [this example][booking_app_lnk].{{/cicd}}
+Additionally, you can check an actual implementation in [this example][booking_app_lnk].{{/cicd}}
 {{#enable_pin_code}}
 ## Feature Pin Code
 
@@ -563,7 +563,7 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [go_to_location]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/go.html
 [go_router_pop]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pop.html
 [fastlane_lnk]: https://docs.fastlane.tools/
-[booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/booking_app
+[booking_app_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/develop/examples/booking_app/fastlane/Fastfile
 [go_router_push_replacement]: https://pub.dev/documentation/go_router/latest/go_router/GoRouterHelper/pushReplacement.html
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
