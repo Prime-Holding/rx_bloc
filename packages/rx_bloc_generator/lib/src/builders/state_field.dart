@@ -1,5 +1,4 @@
 part of '../../rx_bloc_generator.dart';
-// ignore_for_file: deprecated_member_use
 
 /// A mapper that converts a [FieldElement] into an event [Field]
 class _StateField implements _BuilderContract {
@@ -19,6 +18,7 @@ class _StateField implements _BuilderContract {
             ]
           ])
           ..type = refer(
+            // ignore: deprecated_member_use
             'late final ${field.type.getDisplayString(withNullability: true)}',
           )
           ..assignment = refer(field.stateMethodName).newInstance([]).code

@@ -1,5 +1,4 @@
 part of '../../rx_bloc_generator.dart';
-// ignore_for_file: deprecated_member_use
 
 /// A mapper that converts a [MethodElement] into an event [Method]
 class _StateGetterMethod implements _BuilderContract {
@@ -13,6 +12,7 @@ class _StateGetterMethod implements _BuilderContract {
           ..docs.addAll(['']) // A new line
           ..type = MethodType.getter
           ..annotations.add(refer('override'))
+          // ignore: deprecated_member_use
           ..returns = refer(field.type.getDisplayString(withNullability: true))
           ..name = field.name
           ..lambda = true
