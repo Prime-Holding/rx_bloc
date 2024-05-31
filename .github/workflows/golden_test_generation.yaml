@@ -1,9 +1,6 @@
 name: "Golden test generation"
 
 on:
-  push:
-    tags:
-      - 'golden-gen'
   workflow_dispatch:
     inputs:
       package:
