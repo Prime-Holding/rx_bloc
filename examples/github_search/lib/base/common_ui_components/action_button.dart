@@ -1,19 +1,27 @@
+// Copyright (c) 2023, Prime Holding JSC
+// https://www.primeholding.com
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'package:flutter/material.dart';
+
 import '../theme/design_system.dart';
+import 'app_loading_indicator.dart';
 
 class ActionButton extends StatelessWidget {
-  /// Default constructor
+  /// Default constructor for the action button
   const ActionButton({
     required this.icon,
     required this.onPressed,
-    this.disabled = false,
     this.tooltip = '',
     this.loading = false,
-    Key? key,
-  }) : super(key: key);
-
-  /// The button disable state, which removes the [onPress] and sets a color
-  final bool disabled;
+    this.heroTag,
+    this.appLoadingIndicatorKey,
+    this.floatingActionButtonKey,
+    super.key,
+  });
 
   /// Loading flag that shows a loading indicator
   final bool loading;
@@ -24,25 +32,35 @@ class ActionButton extends StatelessWidget {
   /// The icon to display. The available icons are described in [Icons].
   final Icon icon;
 
+  final Object? heroTag;
+
   /// The callback that is called when the button is tapped or
   /// otherwise activated.
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+
+  final Key? appLoadingIndicatorKey;
+  final Key? floatingActionButtonKey;
 
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: CircularProgressIndicator(),
+      return Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: context.designSystem.spacing.xs1,
+        ),
+        child: AppLoadingIndicator.innerCircleValue(
+            context, appLoadingIndicatorKey),
       );
     }
 
     return FloatingActionButton(
-      backgroundColor: disabled
+      key: floatingActionButtonKey,
+      backgroundColor: onPressed == null
           ? context.designSystem.colors.inactiveButtonColor
           : context.designSystem.colors.activeButtonColor,
-      onPressed: !disabled ? onPressed : null,
+      onPressed: onPressed,
       tooltip: tooltip,
+      heroTag: heroTag,
       child: icon,
     );
   }

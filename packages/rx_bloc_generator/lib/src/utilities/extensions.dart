@@ -94,13 +94,11 @@ extension _EventMethodElement on MethodElement {
       _rxBlocEventAnnotation?.computeConstantValue();
 
   /// Provides the [RxBlocEvent] annotation as [ElementAnnotation] if exists
-  ElementAnnotation? get _rxBlocEventAnnotation => _eventAnnotation
-              ?.computeConstantValue()
-              ?.type
-              ?.getDisplayString(withNullability: true) ==
-          (RxBlocEvent).toString()
-      ? _eventAnnotation
-      : null;
+  ElementAnnotation? get _rxBlocEventAnnotation =>
+      _eventAnnotation?.computeConstantValue()?.type?.getDisplayString() ==
+              (RxBlocEvent).toString()
+          ? _eventAnnotation
+          : null;
 
   /// Is the event stream type a BehaviorSubject
   bool get isBehavior =>
@@ -117,7 +115,7 @@ extension _EventMethodElement on MethodElement {
     }
     return parameters.isNotEmpty
         // The only parameter's type
-        ? parameters.first.type.getDisplayString(withNullability: true)
+        ? parameters.first.type.getDisplayString()
         // Default type
         : 'void';
   }
@@ -195,5 +193,5 @@ extension _ListParameterElementClone on Iterable<ParameterElement> {
 }
 
 extension _ParameterElementToString on ParameterElement {
-  String getTypeDisplayName() => type.getDisplayString(withNullability: true);
+  String getTypeDisplayName() => type.getDisplayString();
 }

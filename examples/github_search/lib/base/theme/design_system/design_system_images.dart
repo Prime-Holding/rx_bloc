@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -7,8 +7,11 @@
 
 import 'package:flutter/material.dart';
 
+@immutable
 class DesignSystemImages {
-  final imagePath = 'assets/images';
+  const DesignSystemImages.dark();
+  const DesignSystemImages.light();
 
-  AssetImage get testImage => AssetImage('$imagePath/testImage.png');
+  static const imagePath = 'assets/images';
+  final testImage = const AssetImage('$imagePath/testImage.png');
 }

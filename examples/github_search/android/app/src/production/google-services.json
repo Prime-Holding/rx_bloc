@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "Make sure you add your own Firebase production config.",
         "android_client_info": {
-          "package_name": "com.example.github_search"
+          "package_name": "com.primeholding.githubsearch"
         }
       },
       "oauth_client": [

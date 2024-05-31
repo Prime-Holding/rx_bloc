@@ -37,7 +37,7 @@ jobs:
       build_name: ${{ needs.app_version_extraction.outputs.build_name }}
       build_number: ${{ needs.app_version_extraction.outputs.build_number }}
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
-      publish_to_store: false
+      publish_to_store: true
     secrets:
       mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
       mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
@@ -49,7 +49,7 @@ jobs:
       build_name: ${{ needs.app_version_extraction.outputs.build_name }}
       build_number: ${{ needs.app_version_extraction.outputs.build_number }}
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
-      publish_to_store: false
+      publish_to_store: true
     secrets:
       mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
       mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}

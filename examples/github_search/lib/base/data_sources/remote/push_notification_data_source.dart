@@ -1,4 +1,4 @@
-// Copyright (c) 2021, Prime Holding JSC
+// Copyright (c) 2023, Prime Holding JSC
 // https://www.primeholding.com
 //
 // Use of this source code is governed by an MIT-style
@@ -13,7 +13,7 @@ import '../../models/request_models/push_notification_data_request_model.dart';
 
 part 'push_notification_data_source.g.dart';
 
-@RestApi(baseUrl: 'http://0.0.0.0:8080')
+@RestApi()
 abstract class PushNotificationsDataSource {
   factory PushNotificationsDataSource(Dio dio, {String baseUrl}) =
       _PushNotificationsDataSource;

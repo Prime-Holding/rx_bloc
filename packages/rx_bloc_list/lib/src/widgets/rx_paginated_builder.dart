@@ -235,7 +235,7 @@ class RxPaginatedBuilderState<B extends RxBlocTypeBase, T>
 
   @override
   Widget build(BuildContext context) {
-    final bloc = RxBlocProvider.of<B>(context);
+    final bloc = widget.bloc ?? RxBlocProvider.of<B>(context);
 
     return RxBlocBuilder<B, PaginatedList<T>>(
       bloc: bloc,

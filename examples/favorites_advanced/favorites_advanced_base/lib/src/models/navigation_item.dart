@@ -10,7 +10,7 @@ class NavigationItem {
   final bool isSelected;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     if (other is NavigationItem) {
       return type == other.type && isSelected == other.isSelected;
     }

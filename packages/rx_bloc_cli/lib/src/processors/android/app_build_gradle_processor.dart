@@ -46,6 +46,7 @@ class AppBuildGradleProcessor extends StringProcessor {
   }) {
     void _replaceVal(String content, String replacement) {
       final start = buffer.nthIndexOf(content);
+      if (start < 0) return;
       final end = start + content.length;
       buffer.replaceRange(start, end, replacement);
     }
@@ -58,6 +59,7 @@ class AppBuildGradleProcessor extends StringProcessor {
       final sIndex = buffer.nthIndexOf('"',
               start: buffer.nthIndexOf(content, start: start)) +
           1;
+      if (sIndex < 0) return;
       final eIndex = buffer.nthIndexOf('"', start: sIndex);
       buffer.replaceRange(sIndex, eIndex, replacement);
     }
@@ -76,6 +78,7 @@ class AppBuildGradleProcessor extends StringProcessor {
 
   void _adjustBuildTypesAndSigningConfigs(StringBuffer buffer) {
     final sIndex = buffer.nthIndexOf('buildTypes') - 4;
+    if (sIndex < 0) return;
     final eIndex = buffer.nthIndexOf('}', n: 2, start: sIndex) + 1;
 
     const content = '''
@@ -127,6 +130,7 @@ if (keystorePropertiesFile.exists()) {
 
   void _buildDependenciesList(StringBuffer buffer) {
     final sIndex = buffer.nthIndexOf('dependencies');
+    if (sIndex < 0) return;
     final eIndex = buffer.nthIndexOf('}', start: sIndex) + 1;
 
     var content = 'dependencies {\n';
@@ -142,6 +146,7 @@ if (keystorePropertiesFile.exists()) {
   void _applyPatrolToDefaultConfig(StringBuffer buffer) {
     var (sIndex, eIndex) =
         buffer.getGradleSectionLastLineRange('defaultConfig');
+    if (sIndex < 0) return;
     final content = '''
     \n$_tabSpace${_tabSpace}testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
     ${_tabSpace}testInstrumentationRunnerArguments clearPackageData: "true"
@@ -149,6 +154,7 @@ if (keystorePropertiesFile.exists()) {
     buffer.insertAt(sIndex, content);
 
     (sIndex, eIndex) = buffer.getGradleSectionLastLineRange('defaultConfig');
+    if (sIndex < 0) return;
     buffer.replaceRange(sIndex, eIndex, '');
   }
 

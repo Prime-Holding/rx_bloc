@@ -94,7 +94,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
             ),
           ],
           body: Container(
-            color: HotelAppTheme.buildLightTheme().colorScheme.background,
+            color: HotelAppTheme.buildLightTheme().colorScheme.surface,
             child: RxPaginatedBuilder<HotelSearchBlocType,
                 Hotel>.withRefreshIndicator(
               onBottomScrolled: (bloc) => bloc.events.reload(reset: false),
