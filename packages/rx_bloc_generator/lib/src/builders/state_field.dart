@@ -1,4 +1,5 @@
 part of '../../rx_bloc_generator.dart';
+// ignore_for_file: deprecated_member_use
 
 /// A mapper that converts a [FieldElement] into an event [Field]
 class _StateField implements _BuilderContract {
