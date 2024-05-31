@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "942907959183",
+    "project_id": "reminders-app-prod",
+    "storage_bucket": "reminders-app-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942907959183:android:f96a57bb70ffcb8b924dfa",
+        "android_client_info": {
+          "package_name": "com.primeholding.reminderspoc.local"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942907959183-13agqr9i4l7fuq1lv5i7sh8bfkj9lrrh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWSsB5z3o5M8kqGyzT-jTetUE1nJlXRrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942907959183-13agqr9i4l7fuq1lv5i7sh8bfkj9lrrh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

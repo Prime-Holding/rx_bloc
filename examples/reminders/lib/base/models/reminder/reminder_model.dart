@@ -1,4 +1,3 @@
-import 'package:objectbox/objectbox.dart';
 import 'package:rx_bloc_list/models.dart';
 
 enum ReminderModelRequestSort {
@@ -35,12 +34,11 @@ class ReminderModelRequest {
 }
 
 class ReminderModelRequestData {
-  ReminderModelRequestData({
-    required this.title,
-    required this.dueDate,
-    required this.complete,
-    this.authorId,
-  });
+  ReminderModelRequestData(
+      {required this.title,
+      required this.dueDate,
+      required this.complete,
+      this.authorId});
 
   final String title;
   final DateTime dueDate;
@@ -55,50 +53,6 @@ class ReminderModelRequestData {
       'authorId': authorId,
     };
   }
-}
-
-@Entity()
-@Sync()
-class ObjectBoxReminderModel extends ReminderModel implements Identifiable {
-  ObjectBoxReminderModel({
-    this.index = 0,
-    required super.title,
-    required super.dueDate,
-    required super.complete,
-    super.authorId,
-  }) : super(
-          id: index.toString(),
-        );
-
-  @Id()
-  int index;
-
-  @override
-  @Property()
-  String get title => super.title;
-
-  @override
-  @Property()
-  DateTime get dueDate => super.dueDate;
-
-  @override
-  @Property()
-  bool get complete => super.complete;
-
-  @override
-  @Property()
-  String? get authorId => super.authorId;
-
-  @override
-  @Property()
-  String get id => super.id;
-
-  @override
-  bool isEqualToIdentifiable(Identifiable other) =>
-      identical(this, other) ||
-      other is ObjectBoxReminderModel &&
-          runtimeType == other.runtimeType &&
-          index == other.index;
 }
 
 class ReminderModel extends ReminderModelRequestData implements Identifiable {

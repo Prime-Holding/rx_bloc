@@ -840,7 +840,7 @@ packages:
       path: "../../packages/rx_bloc_list"
       relative: true
     source: path
-    version: "4.0.1"
+    version: "4.0.2"
   rx_bloc_test:
     dependency: "direct dev"
     description:
