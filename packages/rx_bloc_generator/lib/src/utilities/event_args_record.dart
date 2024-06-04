@@ -52,7 +52,8 @@ class _EventArgsRecord {
 
     var namedArguments = <String, Reference>{};
     for (var param in params) {
-      namedArguments[param.name] = invocation ? refer(param.name) : refer(param.getTypeDisplayName());
+      namedArguments[param.name] =
+          invocation ? refer(param.name) : refer(param.getTypeDisplayName());
     }
 
     return namedArguments;

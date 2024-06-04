@@ -10,9 +10,9 @@ part of 'translations_remote_data_source.dart';
 
 class _TranslationsRemoteDataSource implements TranslationsRemoteDataSource {
   _TranslationsRemoteDataSource(
-      this._dio, {
-        this.baseUrl,
-      });
+    this._dio, {
+    this.baseUrl,
+  });
 
   final Dio _dio;
 
@@ -30,15 +30,15 @@ class _TranslationsRemoteDataSource implements TranslationsRemoteDataSource {
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-      _dio.options,
-      '/api/v1/nomenclatures/translations',
-      queryParameters: queryParameters,
-      data: _data,
-    )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .compose(
+              _dio.options,
+              '/api/v1/nomenclatures/translations',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value =
-    _result.data == null ? null : I18nSections.fromJson(_result.data!);
+        _result.data == null ? null : I18nSections.fromJson(_result.data!);
     return value;
   }
 

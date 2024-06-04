@@ -12,7 +12,7 @@ import 'package:test/test.dart';
     '*/\n'
     '')
 @RxBloc()
-class CounterBloc {  }
+class CounterBloc {}
 
 /// A contract class containing all events.
 abstract class TypoCounterBlocEveTyponts {}
