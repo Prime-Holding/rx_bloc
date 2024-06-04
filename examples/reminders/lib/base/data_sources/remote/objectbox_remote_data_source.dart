@@ -18,6 +18,7 @@ class ObjectboxCloud extends RemindersDataSource {
   static const _anonymous = 'anonymous';
 
   ObjectboxCloud._initCloud(this._store, this._storage) {
+    //TODO: Add sync server IP
     _remindersBox = _store.box<ObjectBoxCloudReminderModel>();
     final syncServerIp = Platform.isAndroid ? '10.0.2.2' : '127.0.0.1';
     final syncClient =
