@@ -1,4 +1,4 @@
-name: "Golden test generation"
+name: "Golden test generation - Examples"
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
         required: true
         type: choice
         options:
-        - examples/booking_app
+        - booking_app
 
 jobs:
   package:
@@ -23,16 +23,16 @@ jobs:
       - run: dart --version
       - run: flutter --version 
       - name: Install Dependencies
-        working-directory: "${{ inputs.package }}"
+        working-directory: "examples/${{ inputs.package }}"
         run: dart pub get
       - name: Analyze
-        working-directory: "${{ inputs.package }}"
+        working-directory: "examples/${{ inputs.package }}"
         run: flutter analyze lib
       - name: Generate golden files
-        working-directory: "${{ inputs.package }}"
+        working-directory: "examples/${{ inputs.package }}"
         run: flutter test --update-goldens
       - name: Upload test directory
         uses: actions/upload-artifact@v3
         with:
           name: "${{ inputs.package }}_tests"
-          path: "${{ inputs.package }}/test/"
+          path: "examples/${{ inputs.package }}/test/"
