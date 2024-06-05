@@ -18,9 +18,9 @@ import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
-import '../data_sources/local/objectbox_local_data_source.dart' as local;
+import '../data_sources/local/objectbox_local_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
-import '../data_sources/remote/objectbox_remote_data_source.dart' as cloud;
+import '../data_sources/remote/objectbox_remote_data_source.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
 import '../repositories/firebase_repository.dart';
 import '../repositories/reminders_repository.dart';
@@ -50,26 +50,13 @@ class AppDependencies extends StatefulWidget {
 
 class _AppDependenciesState extends State<AppDependencies> {
   late GlobalKey<NavigatorState> rootNavigatorKey;
-
   late GlobalKey<NavigatorState> shellNavigatorKey;
-  late final objectBox;
-  //late final  objectBox;
-  final _storage = const FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
     rootNavigatorKey = GlobalKey<NavigatorState>();
     shellNavigatorKey = GlobalKey<NavigatorState>();
-    _initObjectBox();
-  }
-
-  Future<void> _initObjectBox() async {
-    if (widget.config.environment == EnvironmentType.cloud) {
-      objectBox = await cloud.ObjectboxCloud.init(_storage);
-    } else if (widget.config.environment == EnvironmentType.local) {
-      objectBox = await local.ObjectBoxLocal.init(_storage);
-    }
   }
 
   @override
@@ -113,7 +100,8 @@ class _AppDependenciesState extends State<AppDependencies> {
       ];
 
   List<SingleChildWidget> get _dataStorages => [
-        Provider<FlutterSecureStorage>(create: (context) => _storage),
+        Provider<FlutterSecureStorage>(
+            create: (context) => const FlutterSecureStorage()),
       ];
 
   /// Use different data source regarding of if it is running in web ot not
@@ -123,11 +111,17 @@ class _AppDependenciesState extends State<AppDependencies> {
             context.read<FlutterSecureStorage>(),
           ),
         ),
-        Provider<local.ObjectBoxLocal>(
-          create: (context) => objectBox,
+        Provider<ObjectBoxLocal>(
+          create: (context) => ObjectBoxLocal.getInstance(
+            context.read<FlutterSecureStorage>(),
+            widget.config,
+          ),
         ),
-        Provider<cloud.ObjectboxCloud>(
-          create: (context) => objectBox,
+        Provider<ObjectboxCloud>(
+          create: (context) => ObjectboxCloud.getInstance(
+            context.read<FlutterSecureStorage>(),
+            widget.config,
+          ),
         ),
       ];
 
@@ -135,9 +129,9 @@ class _AppDependenciesState extends State<AppDependencies> {
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
             dataSource: widget.config.environment == EnvironmentType.cloud
-                ? context.read<cloud.ObjectboxCloud>()
+                ? context.read<ObjectboxCloud>()
                 : widget.config.environment == EnvironmentType.local
-                    ? context.read<local.ObjectBoxLocal>()
+                    ? context.read<ObjectBoxLocal>()
                     : context.read<RemindersFirebaseDataSource>(),
           ),
         ),

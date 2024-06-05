@@ -1,28 +1,41 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../objectbox.g.dart';
 
+import '../../app/config/environment_config.dart';
 import '../../models/reminder/objectbox_reminder_model.dart';
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 import '../remote/reminders_data_source.dart';
 
 class ObjectBoxLocal extends RemindersDataSource {
-  final Store _store;
-
-  late final Box<ObjectBoxLocalReminderModel> _remindersBox;
+  final Future<Box<ObjectBoxLocalReminderModel>> _remindersBox;
   final FlutterSecureStorage _storage;
 
   static const _authorId = 'authorId';
   static const _anonymous = 'anonymous';
 
-  ObjectBoxLocal._initLocal(this._store, this._storage) {
-    _remindersBox = Box<ObjectBoxLocalReminderModel>(_store);
+  static ObjectBoxLocal? _instance;
+
+  ObjectBoxLocal._init(this._storage, this._remindersBox);
+
+  static ObjectBoxLocal getInstance(
+    FlutterSecureStorage storage,
+    EnvironmentConfig env,
+  ) {
+    if (_instance == null) {
+      final store = openStore();
+      final remindersBox = _initCloud(env, store);
+      _instance = ObjectBoxLocal._init(storage, remindersBox);
+    }
+    return _instance!;
   }
 
-  static Future<ObjectBoxLocal> init(FlutterSecureStorage storage) async {
-    final store = await openStore();
+  static Future<Box<ObjectBoxLocalReminderModel>> _initCloud(
+      EnvironmentConfig config, Future<Store> openStore) async {
+    var store = await openStore;
+    var reminderBox = store.box<ObjectBoxLocalReminderModel>();
 
-    return ObjectBoxLocal._initLocal(store, storage);
+    return reminderBox;
   }
 
   @override
@@ -38,25 +51,21 @@ class ObjectBoxLocal extends RemindersDataSource {
       complete: complete,
       authorId: authorId,
     );
-    try {
-      _remindersBox.put(reminder);
-    } catch (e) {
-      print(e);
-    }
 
+    (await _remindersBox).put(reminder);
     return reminder;
   }
 
   @override
   Future<void> delete(String id) async {
-    _remindersBox.remove(int.parse(id));
+    (await _remindersBox).remove(int.parse(id));
   }
 
   ///Return all reminders from the ObjectBox database
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     final authorId = await _getAuthorIdOrNull();
-    final result = _remindersBox
+    final result = (await _remindersBox)
         .query(getCondition(request, authorId))
         .order(ObjectBoxLocalReminderModel_.dueDate,
             flags: getOrder(request?.sort))
@@ -70,7 +79,7 @@ class ObjectBoxLocal extends RemindersDataSource {
   Future<ReminderListResponse> getAllDashboard(
       ReminderModelRequest? request) async {
     final authorId = await _getAuthorIdOrNull();
-    final result = _remindersBox
+    final result = (await _remindersBox)
         .query(getCondition(request, authorId))
         .order(ObjectBoxLocalReminderModel_.authorId,
             flags: getOrder(request?.sort))
@@ -80,23 +89,23 @@ class ObjectBoxLocal extends RemindersDataSource {
   }
 
   @override
-  Future<int> getCompleteCount() async =>
-      (_remindersBox.query(ObjectBoxLocalReminderModel_.complete.equals(true)))
-          .build()
-          .find()
-          .length;
+  Future<int> getCompleteCount() async => (await _remindersBox)
+      .query(ObjectBoxLocalReminderModel_.complete.equals(true))
+      .build()
+      .find()
+      .length;
 
   @override
-  Future<int> getIncompleteCount() async =>
-      (_remindersBox.query(ObjectBoxLocalReminderModel_.complete.equals(false)))
-          .build()
-          .find()
-          .length;
+  Future<int> getIncompleteCount() async => (await _remindersBox)
+      .query(ObjectBoxLocalReminderModel_.complete.equals(false))
+      .build()
+      .find()
+      .length;
 
   @override
   Future<ReminderPair> update(ReminderModel updatedModel) async {
-    var oldModel = _remindersBox.get(int.parse(updatedModel.id));
-    final newModel = _remindersBox.put(
+    var oldModel = (await _remindersBox).get(int.parse(updatedModel.id));
+    final newModel = (await _remindersBox).put(
       ObjectBoxLocalReminderModel(
           index: int.parse(updatedModel.id),
           title: updatedModel.title,

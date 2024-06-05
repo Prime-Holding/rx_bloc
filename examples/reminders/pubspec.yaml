@@ -31,7 +31,7 @@ dependencies:
   objectbox: ^4.0.0
   objectbox_sync_flutter_libs: ^4.0.0
   provider: ^6.1.2
-  rx_bloc: null
+  rx_bloc: ^5.0.3
   rx_bloc_list: ^4.0.1
   rxdart: ^0.27.7
   scroll_to_index: ^3.0.1

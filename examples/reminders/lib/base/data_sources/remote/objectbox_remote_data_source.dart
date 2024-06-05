@@ -3,32 +3,46 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../objectbox.g.dart';
 
+import '../../app/config/environment_config.dart';
 import '../../models/reminder/objectbox_reminder_model.dart';
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 import '../remote/reminders_data_source.dart';
 
 class ObjectboxCloud extends RemindersDataSource {
-  final Store _store;
-
-  late final Box<ObjectBoxCloudReminderModel> _remindersBox;
+  final Future<Box<ObjectBoxCloudReminderModel>> _remindersBox;
   final FlutterSecureStorage _storage;
 
   static const _authorId = 'authorId';
   static const _anonymous = 'anonymous';
 
-  ObjectboxCloud._initCloud(this._store, this._storage) {
-    //TODO: Add sync server IP
-    _remindersBox = _store.box<ObjectBoxCloudReminderModel>();
-    final syncServerIp = Platform.isAndroid ? '10.0.2.2' : '127.0.0.1';
-    final syncClient =
-        Sync.client(_store, 'ws://$syncServerIp:9999', SyncCredentials.none());
-    syncClient.start();
+  static ObjectboxCloud? _instance;
+
+  ObjectboxCloud._init(this._storage, this._remindersBox);
+
+  static ObjectboxCloud getInstance(
+    FlutterSecureStorage storage,
+    EnvironmentConfig env,
+  ) {
+    if (_instance == null) {
+      final store = openStore();
+      final remindersBox = _initCloud(env, store);
+      _instance = ObjectboxCloud._init(storage, remindersBox);
+    }
+    return _instance!;
   }
 
-  static Future<ObjectboxCloud> init(FlutterSecureStorage storage) async {
-    final store = await openStore();
-    return ObjectboxCloud._initCloud(store, storage);
+  static Future<Box<ObjectBoxCloudReminderModel>> _initCloud(
+      EnvironmentConfig config, Future<Store> openStore) async {
+    var store = await openStore;
+    var reminderBox = store.box<ObjectBoxCloudReminderModel>();
+    //TODO: Add sync client IP
+    final syncServerIp = Platform.isAndroid ? '10.0.2.2' : '127.0.0.1';
+    final syncClient =
+        Sync.client(store, 'ws://$syncServerIp:9999', SyncCredentials.none());
+    syncClient.start();
+
+    return reminderBox;
   }
 
   @override
@@ -44,25 +58,21 @@ class ObjectboxCloud extends RemindersDataSource {
       complete: complete,
       authorId: authorId,
     );
-    try {
-      _remindersBox.put(reminder);
-    } catch (e) {
-      print(e);
-    }
+    (await _remindersBox).put(reminder);
 
     return reminder;
   }
 
   @override
   Future<void> delete(String id) async {
-    _remindersBox.remove(int.parse(id));
+    (await _remindersBox).remove(int.parse(id));
   }
 
   ///Return all reminders from the ObjectBox database
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     final authorId = await _getAuthorIdOrNull();
-    final result = _remindersBox
+    final result = (await _remindersBox)
         .query(getCondition(request, authorId))
         .order(ObjectBoxCloudReminderModel_.dueDate,
             flags: getOrder(request?.sort))
@@ -76,7 +86,7 @@ class ObjectboxCloud extends RemindersDataSource {
   Future<ReminderListResponse> getAllDashboard(
       ReminderModelRequest? request) async {
     final authorId = await _getAuthorIdOrNull();
-    final result = _remindersBox
+    final result = (await _remindersBox)
         .query(getCondition(request, authorId))
         .order(ObjectBoxCloudReminderModel_.authorId,
             flags: getOrder(request?.sort))
@@ -86,23 +96,23 @@ class ObjectboxCloud extends RemindersDataSource {
   }
 
   @override
-  Future<int> getCompleteCount() async =>
-      (_remindersBox.query(ObjectBoxCloudReminderModel_.complete.equals(true)))
-          .build()
-          .find()
-          .length;
+  Future<int> getCompleteCount() async => (await _remindersBox)
+      .query(ObjectBoxCloudReminderModel_.complete.equals(true))
+      .build()
+      .find()
+      .length;
 
   @override
-  Future<int> getIncompleteCount() async =>
-      (_remindersBox.query(ObjectBoxCloudReminderModel_.complete.equals(false)))
-          .build()
-          .find()
-          .length;
+  Future<int> getIncompleteCount() async => (await _remindersBox)
+      .query(ObjectBoxCloudReminderModel_.complete.equals(false))
+      .build()
+      .find()
+      .length;
 
   @override
   Future<ReminderPair> update(ReminderModel updatedModel) async {
-    var oldModel = _remindersBox.get(int.parse(updatedModel.id));
-    final newModel = _remindersBox.put(
+    var oldModel = (await _remindersBox).get(int.parse(updatedModel.id));
+    final newModel = (await _remindersBox).put(
       ObjectBoxCloudReminderModel(
           index: int.parse(updatedModel.id),
           title: updatedModel.title,
