@@ -19,7 +19,7 @@ dependencies:
   flutter_facebook_auth: ^7.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc: null
+  flutter_rx_bloc: ^6.1.1
   flutter_secure_storage: ^9.2.2
   flutter_slidable: ^3.1.0
   flutter_sticky_header: ^0.6.5
