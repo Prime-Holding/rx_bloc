@@ -5,8 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
@@ -14,8 +12,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:realm/realm.dart';
-import 'package:uuid/uuid.dart' as uuid;
+import 'package:uuid/uuid.dart';
 
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../../lib_router/router.dart';
@@ -25,7 +22,6 @@ import '../common_blocs/firebase_bloc.dart';
 import '../data_sources/local/realm_reminders_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
-import '../models/reminder/reminder_realm_model.dart';
 import '../repositories/firebase_repository.dart';
 import '../repositories/reminders_repository.dart';
 import '../services/firebase_service.dart';
@@ -56,28 +52,16 @@ class _AppDependenciesState extends State<AppDependencies> {
   late GlobalKey<NavigatorState> rootNavigatorKey;
 
   late GlobalKey<NavigatorState> shellNavigatorKey;
-  final _storage = const FlutterSecureStorage();
-  final _uuid = const uuid.Uuid();
-
-  late final Configuration realmConfig;
-  late final Realm _realm;
-  late final User _user;
 
   @override
   void initState() {
     super.initState();
     rootNavigatorKey = GlobalKey<NavigatorState>();
     shellNavigatorKey = GlobalKey<NavigatorState>();
-
-    (widget.config.environment == EnvironmentType.cloud ||
-            widget.config.environment == EnvironmentType.local)
-        ? initRealm()
-        : null;
   }
 
   @override
   void dispose() {
-    _realm.close();
     super.dispose();
   }
 
@@ -130,14 +114,14 @@ class _AppDependenciesState extends State<AppDependencies> {
   List<Provider> get _dataSources => [
         Provider<RemindersFirebaseDataSource>(
           create: (context) => RemindersFirebaseDataSource(
-            _storage,
+            context.read<FlutterSecureStorage>(),
           ),
         ),
         Provider<RealmRemindersDataSource>(
-          create: (context) => RealmRemindersDataSource(
-            _realm,
-            _uuid,
-            _storage,
+          create: (context) => RealmRemindersDataSource.getInstance(
+            context.read<FlutterSecureStorage>(),
+            widget.config,
+            const Uuid(),
           ),
         ),
       ];
@@ -195,28 +179,4 @@ class _AppDependenciesState extends State<AppDependencies> {
           create: (context) => AnalyticsInterceptor(context.read()),
         ),
       ];
-
-  Future<void> initRealm() async {
-    final encryptionKey = List<int>.generate(64, (i) => Random().nextInt(256));
-    if (widget.config == EnvironmentConfig.cloud) {
-      final app = App(AppConfiguration('remindersservice-rlxovpu'));
-      _user = await app.logIn(Credentials.anonymous());
-      realmConfig = Configuration.flexibleSync(
-        _user,
-        [ReminderRealmModel.schema],
-        encryptionKey: encryptionKey,
-      );
-      _realm = Realm(realmConfig);
-      _realm.subscriptions.update((mutableSubscriptions) {
-        mutableSubscriptions.add(_realm.all<ReminderRealmModel>());
-      });
-      await _realm.subscriptions.waitForSynchronization();
-    } else {
-      realmConfig = Configuration.local(
-        [ReminderRealmModel.schema],
-        encryptionKey: encryptionKey,
-      );
-      _realm = Realm(realmConfig);
-    }
-  }
 }

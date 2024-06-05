@@ -1,21 +1,58 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:realm/realm.dart';
-import 'package:uuid/uuid.dart' as uuid;
+import 'package:realm/realm.dart' hide Uuid;
+import 'package:uuid/uuid.dart';
 
+import '../../app/config/app_constants.dart';
+import '../../app/config/environment_config.dart';
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 import '../../models/reminder/reminder_realm_model.dart';
 import '../remote/reminders_data_source.dart';
 
 class RealmRemindersDataSource extends RemindersDataSource {
-  final Realm _realm;
-  final uuid.Uuid _uuid;
+  final Uuid _uuid;
+  final Future<Realm> _realm;
   final FlutterSecureStorage _storage;
 
   static const _authorId = 'authorId';
   static const _anonymous = 'anonymous';
 
-  RealmRemindersDataSource(this._realm, this._uuid, this._storage);
+  static RealmRemindersDataSource? _instance;
+
+  RealmRemindersDataSource._init(this._realm, this._uuid, this._storage);
+  static RealmRemindersDataSource getInstance(
+      FlutterSecureStorage storage, EnvironmentConfig evn, Uuid uuid) {
+    if (_instance == null) {
+      final realm = _initRealm(evn);
+      _instance = RealmRemindersDataSource._init(realm, uuid, storage);
+    }
+    return _instance!;
+  }
+
+  static Future<Realm> _initRealm(EnvironmentConfig config) async {
+    if (config == EnvironmentConfig.cloud) {
+      final app = App(AppConfiguration('remindersservice-rlxovpu'));
+      final user = await app.logIn(Credentials.anonymous());
+      final realmConfig = Configuration.flexibleSync(
+        user,
+        [ReminderRealmModel.schema],
+        encryptionKey: encryptionKey,
+      );
+
+      var realm = Realm(realmConfig);
+      realm.subscriptions.update((mutableSubscriptions) {
+        mutableSubscriptions.add(realm.all<ReminderRealmModel>());
+      });
+      await realm.subscriptions.waitForSynchronization();
+      return realm;
+    } else {
+      final realmConfig = Configuration.local(
+        [ReminderRealmModel.schema],
+        encryptionKey: encryptionKey,
+      );
+      return Realm(realmConfig);
+    }
+  }
 
   @override
   Future<ReminderModel> create(
@@ -23,6 +60,7 @@ class RealmRemindersDataSource extends RemindersDataSource {
       required DateTime dueDate,
       required bool complete}) async {
     final authorId = await _getAuthorIdOrNull();
+    final realm = await _realm;
     final reminder = ReminderRealmModel(
       _uuid.v4(),
       title,
@@ -30,18 +68,19 @@ class RealmRemindersDataSource extends RemindersDataSource {
       complete,
       authorId: authorId,
     );
-    _realm.write(() {
-      _realm.add(reminder);
+    realm.write(() {
+      realm.add(reminder);
     });
     return reminder.toReminderModel();
   }
 
   @override
   Future<void> delete(String id) async {
-    final reminder = _realm.find<ReminderRealmModel>(id);
+    final realm = await _realm;
+    final reminder = realm.find<ReminderRealmModel>(id);
     if (reminder != null) {
-      _realm.write(() {
-        _realm.delete(reminder);
+      realm.write(() {
+        realm.delete(reminder);
       });
     }
   }
@@ -49,15 +88,7 @@ class RealmRemindersDataSource extends RemindersDataSource {
   @override
   Future<ReminderListResponse> getAll(ReminderModelRequest? request) async {
     final authorId = await _getAuthorIdOrNull();
-    final realmReminderModels = _realm.query<ReminderRealmModel>(
-      getSortQuery(request, authorId),
-    );
-    if (request?.filterByDueDateRange != null) {
-      realmReminderModels.query(r'dueDate >= $0 AND dueDate <= $1', [
-        request!.filterByDueDateRange!.from,
-        request.filterByDueDateRange!.to
-      ]);
-    }
+    final realmReminderModels = await getSortQuery(request, authorId);
     final reminderModels = realmReminderModels
         .map((realmModel) => realmModel.toReminderModel())
         .toList();
@@ -69,67 +100,65 @@ class RealmRemindersDataSource extends RemindersDataSource {
   Future<ReminderListResponse> getAllDashboard(
       ReminderModelRequest? request) async {
     final authorId = await _getAuthorIdOrNull();
-    final realmReminderModels = _realm.query<ReminderRealmModel>(
-      getSortQuery(request, authorId),
-    );
-    if (request?.filterByDueDateRange != null) {
-      realmReminderModels.query(r'dueDate >= $0 AND dueDate <= $1', [
-        request!.filterByDueDateRange!.from,
-        request.filterByDueDateRange!.to
-      ]);
-    }
+    final realmReminderModels = await getSortQuery(request, authorId);
     final reminderModels = realmReminderModels
         .map((realmModel) => realmModel.toReminderModel())
         .toList();
     return ReminderListResponse(items: reminderModels);
   }
 
-  String getSortQuery(ReminderModelRequest? request, String? authorId) {
-    // Base query string for authorId
-    String query = 'authorId == $authorId';
-
-    // Filter by completion status if provided
-    if (request?.complete != null) {
-      query += ' AND complete == ${request?.complete}';
-    }
-
+  Future<RealmResults<ReminderRealmModel>> getSortQuery(
+      ReminderModelRequest? request, String? authorId) async {
+    final realm = await _realm;
+    String sort = 'dueDate DESC';
     // Sort the results
-    String sort = '';
     if (request?.sort != null) {
       switch (request?.sort) {
-        case ReminderModelRequestSort.dueDateDesc:
+        case ReminderModelRequestSort.dueDateDesc || null:
           sort = 'dueDate DESC';
           break;
         case ReminderModelRequestSort.dueDateAsc:
           sort = 'dueDate ASC';
           break;
-        case null:
-          sort = 'dueDate DESC';
       }
     }
 
-    // Append sorting to query
-    if (sort.isNotEmpty) {
-      query += ' SORT($sort)';
+    RealmResults<ReminderRealmModel> realmReminderModels =
+        realm.query<ReminderRealmModel>(
+      'authorId == \$0 SORT($sort)',
+      [authorId],
+    );
+
+    if (request?.complete != null) {
+      realmReminderModels
+          .query(r'complete == $0', [request!.complete ?? false]);
     }
 
-    return query;
+    if (request?.filterByDueDateRange != null) {
+      realmReminderModels.query(r'dueDate >= $0 AND dueDate <= $1', [
+        request!.filterByDueDateRange!.from,
+        request.filterByDueDateRange!.to
+      ]);
+    }
+
+    return realmReminderModels;
   }
 
   @override
-  Future<int> getCompleteCount() async =>
-      _realm.query<ReminderRealmModel>(r'complete == $0', [true]).length;
+  Future<int> getCompleteCount() async => (await _realm)
+      .query<ReminderRealmModel>(r'complete == $0', [true]).length;
 
   @override
-  Future<int> getIncompleteCount() async =>
-      _realm.query<ReminderRealmModel>(r'complete == $0', [false]).length;
+  Future<int> getIncompleteCount() async => (await _realm)
+      .query<ReminderRealmModel>(r'complete == $0', [false]).length;
 
   @override
   Future<ReminderPair> update(ReminderModel updatedModel) async {
-    final existingReminder = _realm.find<ReminderRealmModel>(updatedModel.id);
+    final realm = await _realm;
+    final existingReminder = realm.find<ReminderRealmModel>(updatedModel.id);
     if (existingReminder != null) {
       final oldModel = existingReminder.freeze().toReminderModel();
-      _realm.write(() {
+      realm.write(() {
         existingReminder.title = updatedModel.title;
         existingReminder.dueDate = updatedModel.dueDate;
         existingReminder.complete = updatedModel.complete;
