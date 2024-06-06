@@ -111,18 +111,20 @@ class _AppDependenciesState extends State<AppDependencies> {
             context.read<FlutterSecureStorage>(),
           ),
         ),
-        Provider<ObjectBoxLocal>(
-          create: (context) => ObjectBoxLocal.getInstance(
-            context.read<FlutterSecureStorage>(),
-            widget.config,
+        if (widget.config.environment == EnvironmentType.local)
+          Provider<ObjectBoxLocal>(
+            create: (context) => ObjectBoxLocal.getInstance(
+              context.read<FlutterSecureStorage>(),
+              widget.config,
+            ),
           ),
-        ),
-        Provider<ObjectboxCloud>(
-          create: (context) => ObjectboxCloud.getInstance(
-            context.read<FlutterSecureStorage>(),
-            widget.config,
+        if (widget.config.environment == EnvironmentType.cloud)
+          Provider<ObjectboxCloud>(
+            create: (context) => ObjectboxCloud.getInstance(
+              context.read<FlutterSecureStorage>(),
+              widget.config,
+            ),
           ),
-        ),
       ];
 
   List<Provider> get _repositories => [
