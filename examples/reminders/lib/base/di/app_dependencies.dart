@@ -61,11 +61,6 @@ class _AppDependenciesState extends State<AppDependencies> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) => MultiProvider(
         /// List of all providers used throughout the app
         providers: [
@@ -117,13 +112,15 @@ class _AppDependenciesState extends State<AppDependencies> {
             context.read<FlutterSecureStorage>(),
           ),
         ),
-        Provider<RealmRemindersDataSource>(
-          create: (context) => RealmRemindersDataSource.getInstance(
-            context.read<FlutterSecureStorage>(),
-            widget.config,
-            const Uuid(),
+        if ((widget.config.environment == EnvironmentType.cloud ||
+            widget.config.environment == EnvironmentType.local))
+          Provider<RealmRemindersDataSource>(
+            create: (context) => RealmRemindersDataSource.getInstance(
+              context.read<FlutterSecureStorage>(),
+              widget.config,
+              const Uuid(),
+            ),
           ),
-        ),
       ];
 
   List<Provider> get _repositories => [
