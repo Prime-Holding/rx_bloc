@@ -10,7 +10,8 @@ import '../../base/models/errors/error_model.dart';
 import '../../base/models/todo_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../services/todo_management_service.dart';
+
+import '../services/todo_manage_service.dart';
 import '../services/todo_validator_service.dart';
 
 part 'todo_management_bloc.rxb.g.dart';
@@ -68,9 +69,9 @@ class TodoManagementBloc extends $TodoManagementBloc {
     this._id,
     TodoModel? initialTodo,
     this._listService,
-    this._managementService,
-    this._coordinatorBloc,
+    this._todoManageService,
     this._validatorService,
+    this._coordinatorBloc,
     this._routerBloc,
   ) {
     onTodoSaved.connect().addTo(_compositeSubscription);
@@ -88,8 +89,8 @@ class TodoManagementBloc extends $TodoManagementBloc {
         .addTo(_compositeSubscription);
   }
 
+  final TodoManageService _todoManageService;
   final TodoListService _listService;
-  final TodoManagementService _managementService;
   final TodoValidatorService _validatorService;
   final CoordinatorBlocType _coordinatorBloc;
   final RouterBlocType _routerBloc;
@@ -132,7 +133,7 @@ class TodoManagementBloc extends $TodoManagementBloc {
           (_, todo) => todo)
       .whereNotNull()
       .switchMap(
-        (todo) => _managementService.addOrUpdate(todo).asResultStream(),
+        (todo) => _todoManageService.addOrUpdate(todo).asResultStream(),
       )
       .setResultStateHandler(this)
       .doOnData(_coordinatorBloc.events.todoAddedOrUpdated)

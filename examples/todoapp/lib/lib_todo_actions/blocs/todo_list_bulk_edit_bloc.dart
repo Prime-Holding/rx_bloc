@@ -6,6 +6,7 @@ import '../../base/common_services/todo_list_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../models/bulk_action.dart';
+import '../services/todo_actions_service.dart';
 
 part 'todo_list_bulk_edit_bloc.rxb.g.dart';
 
@@ -40,23 +41,28 @@ abstract class TodoListBulkEditBlocStates {
 
 @RxBloc()
 class TodoListBulkEditBloc extends $TodoListBulkEditBloc {
-  TodoListBulkEditBloc(this._todoListService, this._coordinatorBloc);
+  TodoListBulkEditBloc(
+    this._todoActionsService,
+    this._todoListService,
+    this._coordinatorBloc,
+  );
 
+  final TodoActionsService _todoActionsService;
   final TodoListService _todoListService;
   final CoordinatorBlocType _coordinatorBloc;
 
   @override
   Stream<List<BulkActionModel>> _mapToBulkActionsState() => Rx.merge([
         _$clearCompletedEvent.switchMap(
-          (_) => _todoListService.deleteCompleted().asResultStream(),
+          (_) => _todoActionsService.deleteCompleted().asResultStream(),
         ),
         _$markAllCompletedEvent.switchMap(
-          (_) => _todoListService
+          (_) => _todoActionsService
               .updateCompletedForAll(completed: true)
               .asResultStream(),
         ),
         _$markAllIncompleteEvent.switchMap(
-          (_) => _todoListService
+          (_) => _todoActionsService
               .updateCompletedForAll(completed: false)
               .asResultStream(),
         )
@@ -67,11 +73,11 @@ class TodoListBulkEditBloc extends $TodoListBulkEditBloc {
           .whereSuccess()
           .map(
             (todoList) => [
-              if (!_todoListService.areAllCompleted(todoList))
+              if (!_todoActionsService.areAllCompleted(todoList))
                 BulkActionModel.markAllComplete,
-              if (!_todoListService.areAllIncomplete(todoList))
+              if (!_todoActionsService.areAllIncomplete(todoList))
                 BulkActionModel.markAllIncomplete,
-              if (_todoListService.hasCompleted(todoList))
+              if (_todoActionsService.hasCompleted(todoList))
                 BulkActionModel.clearCompleted,
             ],
           );

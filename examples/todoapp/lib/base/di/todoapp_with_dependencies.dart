@@ -20,6 +20,7 @@ import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
+import '../../lib_todo_actions/services/todo_actions_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
@@ -182,6 +183,9 @@ class TodoappWithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
+        Provider<TodoActionsService>(
+          create: (context) => TodoActionsService(context.read()),
+        )
       ];
 
   List<SingleChildWidget> get _blocs => [

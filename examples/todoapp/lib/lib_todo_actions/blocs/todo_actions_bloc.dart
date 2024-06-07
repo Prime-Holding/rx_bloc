@@ -7,6 +7,7 @@ import '../../base/models/todo_model.dart';
 
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
+import '../services/todo_actions_service.dart';
 
 part 'todo_actions_bloc.rxb.g.dart';
 
@@ -37,7 +38,7 @@ abstract class TodoActionsBlocStates {
 @RxBloc()
 class TodoActionsBloc extends $TodoActionsBloc {
   TodoActionsBloc(
-    this._todoListService,
+    this._todoActionsService,
     this._coordinatorBloc,
     this._routerBloc,
   ) {
@@ -45,14 +46,15 @@ class TodoActionsBloc extends $TodoActionsBloc {
     onUpdateCompleted.connect().addTo(_compositeSubscription);
   }
 
-  final TodoListService _todoListService;
+  final TodoActionsService _todoActionsService;
+
   final CoordinatorBlocType _coordinatorBloc;
   final RouterBlocType _routerBloc;
 
   @override
   ConnectableStream<TodoModel> _mapToOnTodoDeletedState() => _$deleteEvent
       .switchMap(
-        (id) => _todoListService.deleteTodoById(id).asResultStream(),
+        (id) => _todoActionsService.deleteTodoById(id).asResultStream(),
       )
       .setResultStateHandler(this)
       .doOnData((todoResult) => _coordinatorBloc.events.todoDeleted(todoResult))
@@ -63,7 +65,7 @@ class TodoActionsBloc extends $TodoActionsBloc {
   @override
   ConnectableStream<TodoModel> _mapToOnUpdateCompletedState() =>
       _$updateCompletedByIdEvent
-          .switchMap((args) => _todoListService
+          .switchMap((args) => _todoActionsService
               .updateCompletedById(args.id, args.completed)
               .asResultStream())
           .setResultStateHandler(this)

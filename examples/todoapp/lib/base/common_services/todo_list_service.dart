@@ -8,25 +8,12 @@ class TodoListService {
 
   final TodoListRepository _repository;
 
+  /// Fetches all todos.
+  ///
+  /// The todos are sorted by their creation date.
   Future<List<TodoModel>> fetchTodoList() => _repository.fetchAllTodos().then(
         (list) => list.sortByCreatedAt(),
       );
-
-  Future<List<TodoModel>> updateCompletedForAll({required bool completed}) =>
-      _repository.updateCompletedForAll(completed);
-
-  Future<TodoModel> updateCompletedById(String id, bool completed) =>
-      _repository.updateCompletedById(id, completed);
-
-  Future<List<TodoModel>> deleteCompleted() => _repository.deleteCompleted();
-
-  /// Deletes the todo.
-  ///
-  /// Throws a [NotFoundErrorModel] if the todo does not exist.
-  Future<TodoModel> deleteTodoById(String id) async {
-    final todo = _repository.fetchTodoById(id);
-    return await _repository.deleteById(id).then((_) => todo);
-  }
 
   /// Fetches a todo by its [id].
   ///
@@ -39,6 +26,12 @@ class TodoListService {
     return fetchTodoById(id);
   }
 
+  /// Filters the [todos] based on the [filter].
+  ///
+  /// Returns a list of the filtered todos.
+  /// If the [filter] is [TodosFilterModel.all], all todos will be returned.
+  /// If the [filter] is [TodosFilterModel.incomplete], only the incomplete todos will be returned.
+  /// If the [filter] is [TodosFilterModel.completed], only the completed todos will be returned.
   List<TodoModel> filterTodos(List<TodoModel> todos, TodosFilterModel filter) {
     switch (filter) {
       case TodosFilterModel.all:
@@ -49,13 +42,4 @@ class TodoListService {
         return todos.where((todo) => todo.completed).toList();
     }
   }
-
-  bool areAllCompleted(List<TodoModel> todos) =>
-      todos.every((todo) => todo.completed);
-
-  bool areAllIncomplete(List<TodoModel> todos) =>
-      todos.every((todo) => !todo.completed);
-
-  bool hasCompleted(List<TodoModel> todos) =>
-      todos.any((todo) => todo.completed);
 }

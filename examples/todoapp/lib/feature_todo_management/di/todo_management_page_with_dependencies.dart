@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../base/models/todo_model.dart';
 import '../blocs/todo_management_bloc.dart';
-import '../services/todo_management_service.dart';
+import '../services/todo_manage_service.dart';
 import '../services/todo_validator_service.dart';
 import '../views/todo_management_page.dart';
 
@@ -32,10 +32,8 @@ class TodoManagementPageWithDependencies extends StatelessWidget {
       );
 
   List<Provider> get _services => [
-        Provider<TodoManagementService>(
-          create: (context) => TodoManagementService(
-            context.read(),
-          ),
+        Provider<TodoManageService>(
+          create: (context) => TodoManageService(context.read()),
         ),
         Provider<TodoValidatorService>(
           create: (context) => TodoValidatorService(),
