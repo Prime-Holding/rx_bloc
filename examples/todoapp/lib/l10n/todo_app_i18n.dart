@@ -9,8 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '../assets.dart';
-import 'network_lookup/deep_link_lookup.dart';
-import 'network_lookup/enter_message_lookup.dart';
 import 'network_lookup/error_lookup.dart';
 import 'network_lookup/field_lookup.dart';
 import 'network_lookup/lib_dev_menu_lookup.dart';
@@ -85,14 +83,6 @@ class AppI18nLookup extends I18nLookup {
 
   @override
   I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();
-
-  @override
-  I18nFeatureDeepLinkLookup createFeatureDeepLinkLookup() =>
-      AppI18nDeepLinkLookup();
-
-  @override
-  I18nFeatureEnterMessageLookup createFeatureEnterMessageLookup() =>
-      AppI18nEnterMessageLookup();
 
   @override
   I18nFeatureNotificationsLookup createFeatureNotificationsLookup() =>

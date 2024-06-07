@@ -6,7 +6,7 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:todoapp/assets.dart';
 import 'package:todoapp/base/theme/design_system.dart';
 import 'package:todoapp/base/theme/todoapp_theme.dart';
-import 'package:todoapp/l10n/todoapp_app_i18n.dart';
+import 'package:todoapp/l10n/todo_app_i18n.dart';
 
 import 'models/labeled_device_builder.dart';
 import 'models/scenario.dart';

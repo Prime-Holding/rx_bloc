@@ -11,6 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../models/notification_model.dart';
+
 part 'push_notifications_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the PushNotificationsBloC.
@@ -35,7 +36,9 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
       _$tapOnEventEvent.asyncMap<void>((event) {
     switch (event.type) {
       case NotificationModelType.dashboard:
-        return _routerBloc.events.go(const DashboardRoute());
+        return _routerBloc.events.go(const TodoListRoute());
+      default:
+        null;
     }
   }).publish();
 }

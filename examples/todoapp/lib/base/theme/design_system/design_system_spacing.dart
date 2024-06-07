@@ -40,5 +40,6 @@ class DesignSystemSpacing {
   final double xxxxl4 = 120;
   final double xxxxl41 = 130;
   final double xxxxl42 = 140;
+  final double xxxxl200 = 200;
   final double xxxxl300 = 300;
 }

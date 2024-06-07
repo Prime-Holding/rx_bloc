@@ -18,7 +18,7 @@ class NotificationModel with EquatableMixin {
   });
 
   @JsonKey(unknownEnumValue: NotificationModelType.dashboard)
-  final NotificationModelType type;
+  final NotificationModelType? type;
 
   final String? id;
 
@@ -35,6 +35,9 @@ class NotificationModel with EquatableMixin {
 }
 
 enum NotificationModelType {
+  @JsonValue('Profile')
+  profile,
+
   @JsonValue('Dashboard')
   dashboard,
 }

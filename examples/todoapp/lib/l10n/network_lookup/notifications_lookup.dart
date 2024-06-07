@@ -6,7 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import '../../assets.dart';
-import '../todoapp_app_i18n.dart';
+import '../todo_app_i18n.dart';
 import 'util.dart';
 
 class AppI18nNotificationsLookup extends I18nFeatureNotificationsLookup {

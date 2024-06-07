@@ -12,7 +12,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../assets.dart';
-import '../../l10n/todoapp_app_i18n.dart';
+
+import '../../l10n/todo_app_i18n.dart';
 import '../../lib_dev_menu/ui_components/app_dev_menu.dart';
 import '../../lib_router/router.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
