@@ -1,0 +1,18 @@
+{
+    "@@locale": "en",
+    "reload": "Reload",
+    "dashboard": "Dashboard",
+    "ok" : "OK",
+    "close" : "Close",
+    "errorState" : "Error occurred",
+    "loadingState" : "Loading...",
+    "resetPassword" : "Reset password",
+    "pageWithResult" : "Enter message",
+    "tryAgain" : "Try again",
+    "confirm" : "Confirm",
+    "submit" : "Submit",
+    "navProfile" : "Profile",
+    "english" : "English",
+    "bulgarian" : "Bulgarian",
+    "changeLanguage" : "Change Language"
+}
