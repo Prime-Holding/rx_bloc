@@ -1,5 +1,5 @@
 ## [7.2.2]
-* Update dependencies and bump analyzer constraints to ^6.5.0
+* Fix compiling issue caused by the analyzer version `6.5.0`
 
 ## [7.2.1]
 * Support Flutter `3.22`
