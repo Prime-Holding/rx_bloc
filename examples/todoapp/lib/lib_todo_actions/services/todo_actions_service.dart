@@ -10,7 +10,7 @@ class TodoActionsService {
   ///
   /// Throws a [NotFoundErrorModel] if the todo does not exist.
   Future<TodoModel> deleteTodoById(String id) async {
-    final todo = _repository.fetchTodoById(id);
+    final todo = await _repository.fetchTodoById(id);
     return await _repository.deleteById(id).then((_) => todo);
   }
 
