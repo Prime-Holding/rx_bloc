@@ -2,7 +2,6 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
-import '../../base/common_services/todo_list_service.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../models/bulk_action.dart';
@@ -43,12 +42,11 @@ abstract class TodoListBulkEditBlocStates {
 class TodoListBulkEditBloc extends $TodoListBulkEditBloc {
   TodoListBulkEditBloc(
     this._todoActionsService,
-    this._todoListService,
     this._coordinatorBloc,
   );
 
   final TodoActionsService _todoActionsService;
-  final TodoListService _todoListService;
+
   final CoordinatorBlocType _coordinatorBloc;
 
   @override

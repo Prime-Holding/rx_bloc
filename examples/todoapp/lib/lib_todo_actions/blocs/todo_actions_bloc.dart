@@ -2,7 +2,6 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
-import '../../base/common_services/todo_list_service.dart';
 import '../../base/models/todo_model.dart';
 
 import '../../lib_router/blocs/router_bloc.dart';
