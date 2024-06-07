@@ -10,20 +10,11 @@ import '../../base/common_services/todo_list_service.dart';
 import '../../base/models/todo_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../services/todo_details_service.dart';
 
 part 'todo_details_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the TodoDetailsBloC.
 abstract class TodoDetailsBlocEvents {
-  /// Delete the todo
-  ///
-  /// Side effects:
-  ///  - Navigates to the previous page
-  ///  - Notifies the [CoordinatorBloc] that the todo was deleted
-  ///  - Notifies the [RouterBloc] to navigate to the [TodoListRoute]
-  void delete();
-
   /// Notifies the [RouterBloc] to navigate to the [TodoUpdateRoute]
   void manage();
 
@@ -42,9 +33,6 @@ abstract class TodoDetailsBlocStates {
   /// The todo state of the todo details page
   ConnectableStream<TodoModel> get todo;
 
-  /// The state of the todo after it was deleted
-  ConnectableStream<TodoModel> get onTodoDeleted;
-
   /// The state of the routing event
   ConnectableStream<void> get onRouting;
 }
@@ -54,17 +42,14 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
   TodoDetailsBloc(
     this._todoId,
     this._initialTodo,
-    this._todoDetailsService,
     this._todoListService,
     this._coordinatorBloc,
     this._routerBloc,
   ) {
-    onTodoDeleted.connect().addTo(_compositeSubscription);
     onRouting.connect().addTo(_compositeSubscription);
     todo.connect().addTo(_compositeSubscription);
   }
 
-  final TodoDetailsService _todoDetailsService;
   final TodoListService _todoListService;
   final CoordinatorBlocType _coordinatorBloc;
   final TodoModel? _initialTodo;
@@ -86,17 +71,6 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
             .whereSuccess()
             .where((updatedTodo) => _todoId == updatedTodo.id)
       ]).publish();
-
-  @override
-  ConnectableStream<TodoModel> _mapToOnTodoDeletedState() => _$deleteEvent
-      .withLatestFrom(todo, (_, latestTodo) => latestTodo)
-      .switchMap(
-          (todo) => _todoDetailsService.deleteTodo(todo).asResultStream())
-      .setResultStateHandler(this)
-      .doOnData((todoResult) => _coordinatorBloc.events.todoDeleted(todoResult))
-      .whereSuccess()
-      .doOnData((todo) => _routerBloc.events.go(const TodoListRoute()))
-      .publish();
 
   @override
   ConnectableStream<void> _mapToOnRoutingState() => _$manageEvent

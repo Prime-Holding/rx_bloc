@@ -17,12 +17,6 @@ abstract class TodoListBlocEvents {
   /// This event will trigger the fetching and its result can will be emitted to the [TodoListBlocStates.todoList].
   void fetchTodoList();
 
-  /// Updates the completed status of a todo by its [id].
-  ///
-  /// This event will trigger the update of the completed status of a
-  /// todo and [TodoListBlocStates.todoList] will emit the updated list.
-  void updateCompletedById(String id, bool completed);
-
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: TodosFilterModel.all)
   void applyFilter(TodosFilterModel filter);
 }
@@ -76,15 +70,6 @@ class TodoListBloc extends $TodoListBloc {
         .mergeWith([_coordinatorBloc.states.onTodoListChanged])
         .bind(_todoResult)
         .addTo(_compositeSubscription);
-
-    _$updateCompletedByIdEvent
-        .switchMap((args) => _todoListService
-            .updateCompletedById(args.id, args.completed)
-            .asResultStream())
-        .setResultStateHandler(this)
-        // Emits the updated todo list to the [CoordinatorBloc]
-        .listen(_coordinatorBloc.events.todoAddedOrUpdated)
-        .addTo(_compositeSubscription);
   }
 
   final TodoListService _todoListService;
@@ -95,10 +80,11 @@ class TodoListBloc extends $TodoListBloc {
 
   @override
   Stream<Result<List<TodoModel>>> _mapToTodoListState() => Rx.combineLatest2(
-      _todoResult,
-      _$applyFilterEvent,
-      (listResult, filter) => listResult
-          .mapResult((list) => _todoListService.filterTodos(list, filter)));
+          _todoResult,
+          _$applyFilterEvent,
+          (listResult, filter) => listResult
+              .mapResult((list) => _todoListService.filterTodos(list, filter)))
+      .shareReplay(maxSize: 1);
 
   @override
   Stream<TodosFilterModel> get filter => _$applyFilterEvent;

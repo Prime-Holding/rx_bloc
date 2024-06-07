@@ -66,21 +66,21 @@ abstract class TodoManagementBlocStates {
 class TodoManagementBloc extends $TodoManagementBloc {
   TodoManagementBloc(
     this._id,
-    this._initialTodo,
+    TodoModel? initialTodo,
     this._listService,
     this._managementService,
     this._coordinatorBloc,
     this._validatorService,
     this._routerBloc,
   ) {
-    // onTodoSaved.connect().addTo(_compositeSubscription);
+    onTodoSaved.connect().addTo(_compositeSubscription);
 
     _$fetchTodoEvent
         .startWith(null)
         .mapTo(_id)
         .whereNotNull()
         .switchMap(
-          (id) => _listService.fetchTodoById(id, _initialTodo).asResultStream(),
+          (id) => _listService.fetchTodoById(id, initialTodo).asResultStream(),
         )
         .setResultStateHandler(this)
         .whereSuccess()
@@ -97,9 +97,6 @@ class TodoManagementBloc extends $TodoManagementBloc {
   /// The id of the todo.
   /// If the id is not null, the todo is being edited otherwise it is being created.
   final String? _id;
-
-  /// The todo model. If the todo is being edited, the model is fetched from the server.
-  final TodoModel? _initialTodo;
 
   final _todoSubject = BehaviorSubject<TodoModel>.seeded(TodoModel.empty());
 

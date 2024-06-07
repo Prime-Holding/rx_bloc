@@ -20,6 +20,14 @@ class TodoListService {
 
   Future<List<TodoModel>> deleteCompleted() => _repository.deleteCompleted();
 
+  /// Deletes the todo.
+  ///
+  /// Throws a [NotFoundErrorModel] if the todo does not exist.
+  Future<TodoModel> deleteTodoById(String id) async {
+    final todo = _repository.fetchTodoById(id);
+    return await _repository.deleteById(id).then((_) => todo);
+  }
+
   /// Fetches a todo by its [id].
   ///
   /// If the [todo] is not null, it will be returned.
