@@ -11,6 +11,7 @@ class _StateMethod implements _BuilderContract {
         (b) => b
           ..docs.addAll(['']) // A new line
           ..returns = refer(
+            //ignore: deprecated_member_use
             field.type.getDisplayString(withNullability: true),
           )
           ..name = field.stateMethodName,

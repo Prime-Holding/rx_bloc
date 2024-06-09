@@ -97,6 +97,7 @@ extension _EventMethodElement on MethodElement {
   ElementAnnotation? get _rxBlocEventAnnotation => _eventAnnotation
               ?.computeConstantValue()
               ?.type
+              //ignore: deprecated_member_use
               ?.getDisplayString(withNullability: true) ==
           (RxBlocEvent).toString()
       ? _eventAnnotation
@@ -117,6 +118,7 @@ extension _EventMethodElement on MethodElement {
     }
     return parameters.isNotEmpty
         // The only parameter's type
+        //ignore: deprecated_member_use
         ? parameters.first.type.getDisplayString(withNullability: true)
         // Default type
         : 'void';
@@ -195,5 +197,6 @@ extension _ListParameterElementClone on Iterable<ParameterElement> {
 }
 
 extension _ParameterElementToString on ParameterElement {
+  //ignore: deprecated_member_use
   String getTypeDisplayName() => type.getDisplayString(withNullability: true);
 }
