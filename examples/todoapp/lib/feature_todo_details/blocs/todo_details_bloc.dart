@@ -16,7 +16,7 @@ part 'todo_details_bloc.rxb.g.dart';
 /// A contract class containing all events of the TodoDetailsBloC.
 abstract class TodoDetailsBlocEvents {
   /// Notifies the [RouterBloc] to navigate to the [TodoUpdateRoute]
-  void manage();
+  void updateTodo();
 
   /// Fetch the todo
   void fetchTodo();
@@ -73,7 +73,7 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
       ]).publish();
 
   @override
-  ConnectableStream<void> _mapToOnRoutingState() => _$manageEvent
+  ConnectableStream<void> _mapToOnRoutingState() => _$updateTodoEvent
       .withLatestFrom(todo, (_, todo) => todo)
       .doOnData(
         (todo) => _routerBloc.events.go(TodoUpdateRoute(todo.id!), extra: todo),

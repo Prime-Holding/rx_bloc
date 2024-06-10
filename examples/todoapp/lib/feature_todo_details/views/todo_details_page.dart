@@ -43,7 +43,7 @@ class TodoDetailsPage extends StatelessWidget {
             visible:
                 !(isLoadingSnapshot.hasData && isLoadingSnapshot.requireData),
             child: FloatingActionButton(
-              onPressed: bloc.events.manage,
+              onPressed: bloc.events.updateTodo,
               shape: const OvalBorder(),
               child: context.designSystem.icons.edit,
             ),
