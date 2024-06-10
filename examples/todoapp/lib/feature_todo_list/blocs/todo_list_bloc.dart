@@ -92,7 +92,9 @@ class TodoListBloc extends $TodoListBloc {
   /// Disposes of all streams to prevent memory leaks
   @override
   void dispose() {
-    _todoResult.close();
+    if(!_todoResult.isClosed) {
+      _todoResult.close();
+    }
     super.dispose();
   }
 }

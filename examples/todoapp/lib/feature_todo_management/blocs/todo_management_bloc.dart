@@ -10,7 +10,6 @@ import '../../base/models/errors/error_model.dart';
 import '../../base/models/todo_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-
 import '../services/todo_manage_service.dart';
 import '../services/todo_validator_service.dart';
 
@@ -156,7 +155,9 @@ class TodoManagementBloc extends $TodoManagementBloc {
 
   @override
   void dispose() {
-    _todoSubject.close();
+    if (!_todoSubject.isClosed) {
+      _todoSubject.close();
+    }
     super.dispose();
   }
 }
