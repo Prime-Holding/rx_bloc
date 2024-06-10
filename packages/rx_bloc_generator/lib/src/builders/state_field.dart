@@ -18,7 +18,8 @@ class _StateField implements _BuilderContract {
             ]
           ])
           ..type = refer(
-            'late final ${field.type.getDisplayString()}',
+            //ignore: deprecated_member_use
+            'late final ${field.type.getDisplayString(withNullability: true)}',
           )
           ..assignment = refer(field.stateMethodName).newInstance([]).code
           ..name = field.stateFieldName,
