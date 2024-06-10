@@ -12,7 +12,8 @@ class _StateGetterMethod implements _BuilderContract {
           ..docs.addAll(['']) // A new line
           ..type = MethodType.getter
           ..annotations.add(refer('override'))
-          ..returns = refer(field.type.getDisplayString())
+          //ignore: deprecated_member_use
+          ..returns = refer(field.type.getDisplayString(withNullability: true))
           ..name = field.name
           ..lambda = true
           ..body = refer(field.stateFieldName).code,
