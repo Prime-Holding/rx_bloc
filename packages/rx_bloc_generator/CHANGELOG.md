@@ -1,14 +1,17 @@
-## [7.2.1] - May 31, 2024
+## [7.2.2]
+* Fix compiling issue caused by the analyzer version `6.5.0`
+
+## [7.2.1]
 * Support Flutter `3.22`
 
-## [7.2.0] - February 20, 2024
+## [7.2.0]
 * Support Flutter `3.19`
 
-## [7.1.0] - December 1, 2023
+## [7.1.0]
 * Support Flutter `3.16`
 * Update dependencies and bump analyzer constraints to `>=6.0.0 <7.0.0` 
 
-## [7.0.0] - July 12, 2023
+## [7.0.0]
 * Dart `3.0` Required
 * _[BREAKING CHANGE]_ Version >=7.0.0 introduces a change by generating named record instead of event arguments class.
 ```dart
@@ -22,45 +25,45 @@ void subtract(int a, int b);
   ```
 * Update dependencies
 
-## [6.0.2] - April 7, 2023
+## [6.0.2]
 * Update dependencies
 
-## [6.0.1] - January 27, 2023
+## [6.0.1]
 * Drop upper version requirement for the analyzer dependency
 * Update `rx_bloc` to use version `4.0.0`
 
-## [6.0.0] - July 28, 2022
+## [6.0.0]
 * Update dependencies
 * _[BREAKING CHANGE]_ Update analyzer to `">=3.0.0 <=5.0.0"`
 * Add support for generic blocs (Thanks [jld3103](https://github.com/jld3103) for the contribution)
 
-## [5.1.1] - December 24, 2021
+## [5.1.1]
 * Update dependencies 
 
-## [5.1.0] - September 24, 2021
+## [5.1.0] 
 * Support Flutter `2.5`
 * Update `rxdart` to use version `0.27.2`
 
-## [5.0.1] - September 22, 2021
+## [5.0.1] 
 * Allow generating behaviour subject events without a seed
 
-## [5.0.0] - May 21, 2021
+## [5.0.0] 
 * Support Flutter `2.2`
 * Update `rxdart` to use version `0.27.0`
 
-## [4.0.0] - April 28, 2021
+## [4.0.0] 
 * Upgraded (`null-safety`) dependencies
 
-## [3.0.2] - April 05, 2021
+## [3.0.2] 
 * Added type to the BehaviorSubject with seed value, Example: `final _$reloadEvent = BehaviorSubject<bool>.seeded(null);`
 
-## [3.0.1] - March 22, 2021
+## [3.0.1] 
 * Dependencies clean-up
 
-## [3.0.0] - March 10, 2021
+## [3.0.0]
 * Migrated to Flutter `2.0` and Dart `2.12` (null-safety).
 
-## [2.0.0] - February 12, 2021
+## [2.0.0] 
 * Support events with optional parameter and enum default value
 * Support events with named parameter and a default value
 * Support events with positional and optional parameters at the same time
@@ -80,45 +83,45 @@ void subtract(int a, int b);
  * Stability improvements
  * Improved error handling
 
-## [1.0.1] - December 08, 2020
+## [1.0.1] 
 * Stability improvements
 
-## [1.0.0] - December 02, 2020
+## [1.0.0] 
 * Consolidated rx_bloc ecosystem [in one repository](https://github.com/Prime-Holding/rx_bloc)
 * Removed flutter dependency
 * Applied strict static code analysis
 * Fixes and improvements
 
-## [0.2.1] - May 5, 2020
+## [0.2.1] 
 * Updated package dependencies
 * Reorganized package
 
-## [0.2.0] - May 5, 2020
+## [0.2.0]
 
 * Improved error handling and displaying:
   Error messages are logged in the console with an [ERROR] tag and a red color for easier noticing
 * Events (and seeds using the @RxBlocEvent annotation) support multiple parameters
 
-## [0.1.3] - April 7, 2020
+## [0.1.3] 
 
 * Updated package dependencies
 
-## [0.1.2] - March 19, 2020
+## [0.1.2]
 
 * Fixed generation of `part of` 
 * Updated `rx_bloc` package to `0.2.0`
 
-## [0.1.1] - March 16, 2020
+## [0.1.1]
 
 * Fixed conflicting outputs with other builders
 
-## [0.1.0] - March 14, 2020
+## [0.1.0] 
 
 * Implemented @RxBlocEvent annotation
 * Generated event subjects and mappers are now private to the BloC
 * Updated README file
 * Updated rx_bloc dependency
 
-## [0.0.1] - Jan 16, 2020
+## [0.0.1] 
 
 * Initial release
