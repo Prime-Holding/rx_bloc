@@ -33,12 +33,14 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
   final RouterBlocType _routerBloc;
 
   late final ConnectableStream<void> _onRedirectingNotification =
-      _$tapOnEventEvent.asyncMap<void>((event) {
+      _$tapOnEventEvent.doOnData((event) {
     switch (event.type) {
-      case NotificationModelType.dashboard:
-        return _routerBloc.events.go(const TodoListRoute());
-      default:
-        null;
+      case NotificationModelType.todoList:
+        _routerBloc.events.go(const TodoListRoute());
+        break;
+      case NotificationModelType.todoDetails:
+        _routerBloc.events.go(TodoDetailsRoute(id: event.id ?? ''));
+        break;
     }
   }).publish();
 }

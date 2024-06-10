@@ -17,9 +17,10 @@ class TodoListService {
 
   /// Fetches a todo by its [id].
   ///
-  /// If the [todo] is not null, it will be returned.
+  /// If the [todo] is not null, it will be returned for lazy-loading purposes.
+  /// Otherwise, the todo will be fetched from the repository.
   Future<TodoModel> fetchTodoById(String id, [TodoModel? todo]) async {
-    if (todo != null) {
+    if (todo != null && todo.id == id) {
       return todo;
     }
 

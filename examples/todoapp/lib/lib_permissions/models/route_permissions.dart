@@ -11,8 +11,5 @@ class RoutePermissions {
   static const todoManagement = 'TodoManagementRoute';
   static const stats = 'StatsRoute';
   static const todoList = 'TodoListRoute';
-  static const profile = 'ProfileRoute';
   static const splash = 'SplashRoute';
-  static const notifications = 'NotificationsRoute';
-  static const login = 'LoginRoute';
 }

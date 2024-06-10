@@ -16,35 +16,3 @@ extension CoordinatorBinderExtensions on Stream<bool> {
         ),
       );
 }
-
-extension CoordinatingTodoLists on CoordinatorBlocType {
-  /// Merge the following events with the value of the given [subject]
-  /// and emits the result as a new event.
-  ///
-  /// Supported events:
-  /// - reminder update [CoordinatorStates.onTodoAddedOrUpdated]
-  /// - reminder delete [CoordinatorStates.onTodoDeleted]
-  ///
-  /// Based on the result of the callback [onAddOrUpdateOperation] the updated task
-  /// will/will not be removed/merged from value of the provided [subject].
-  ///
-  /// Based on the result of the callback [onDeleteOperation] the deleted task
-  /// will be deleted from the value of the provided [subject].
-
-  Stream<ManagedList<TodoModel>> mapTodoManageEventsWithLatestFrom(
-    Stream<List<TodoModel>> todoList, {
-    required OperationCallback<TodoModel> operationCallback,
-  }) =>
-      Rx.merge([
-        states.onTodoAddedOrUpdated
-            .whereSuccess()
-            .withLatestFromIdentifiableList(
-              todoList,
-              operationCallback: operationCallback,
-            ),
-        states.onTodoDeleted.whereSuccess().withLatestFromIdentifiableList(
-              todoList,
-              operationCallback: operationCallback,
-            ),
-      ]);
-}

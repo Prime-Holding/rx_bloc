@@ -16,11 +16,39 @@ class TodoModel with EquatableMixin implements Identifiable {
   TodoModel({
     required this.id,
     required this.title,
+    required this.createdAt,
     this.description = '',
     this.completed = false,
-    required this.createdAt,
   });
 
+  /// The unique identifier of the todo
+  /// If the todo is not persisted yet, the id is null
+  final String? id;
+
+  /// The title of the todo
+  ///
+  /// The title is required and must not be null
+  final String title;
+
+  /// The description of the todo
+  ///
+  /// The description is optional and can be null
+  /// The default value is an empty string
+  final String description;
+
+  /// The creation date of the todo
+  ///
+  /// The creation date is required and must not be null
+  /// The default value is false
+  final bool completed;
+
+  /// The completion status of the todo
+  ///
+  /// The completion status is required and must not be null
+  /// The default value is false
+  final int createdAt;
+
+  /// Creates a copy of the current todo with the provided changes
   TodoModel copyWith({
     String? id,
     String? title,
@@ -36,10 +64,8 @@ class TodoModel with EquatableMixin implements Identifiable {
         createdAt: createdAt ?? this.createdAt,
       );
 
-  TodoModel copyFrom({
-    required TodoModel todo,
-  }) =>
-      TodoModel(
+  /// Creates a copy of the current todo with the provided changes
+  TodoModel copyFrom({required TodoModel todo}) => TodoModel(
         id: todo.id ?? id,
         title: todo.title,
         description: todo.description,
@@ -55,6 +81,7 @@ class TodoModel with EquatableMixin implements Identifiable {
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
 
+  /// Creates a new todo with the provided title, description, and completion status
   factory TodoModel.from({
     required String title,
     required String description,
@@ -67,16 +94,6 @@ class TodoModel with EquatableMixin implements Identifiable {
         completed: false,
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
-
-  final String? id;
-
-  final String title;
-
-  final String description;
-
-  final bool completed;
-
-  final int createdAt;
 
   factory TodoModel.fromJson(Map<String, dynamic> json) =>
       _$TodoModelFromJson(json);
