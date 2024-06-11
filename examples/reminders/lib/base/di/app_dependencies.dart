@@ -12,12 +12,14 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../feature_reminder_manage/blocs/reminder_manage_bloc.dart';
 import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
+import '../data_sources/local/realm_reminders_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
 import '../repositories/firebase_repository.dart';
@@ -106,14 +108,28 @@ class _AppDependenciesState extends State<AppDependencies> {
   /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
         Provider<RemindersFirebaseDataSource>(
-          create: (context) => RemindersFirebaseDataSource(),
+          create: (context) => RemindersFirebaseDataSource(
+            context.read<FlutterSecureStorage>(),
+          ),
         ),
+        if ((widget.config.environment == EnvironmentType.cloud ||
+            widget.config.environment == EnvironmentType.local))
+          Provider<RealmRemindersDataSource>(
+            create: (context) => RealmRemindersDataSource.getInstance(
+              context.read<FlutterSecureStorage>(),
+              widget.config,
+              const Uuid(),
+            ),
+          ),
       ];
 
   List<Provider> get _repositories => [
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            dataSource: RemindersFirebaseDataSource(),
+            dataSource: (widget.config.environment == EnvironmentType.cloud ||
+                    widget.config.environment == EnvironmentType.local)
+                ? context.read<RealmRemindersDataSource>()
+                : context.read<RemindersFirebaseDataSource>(),
           ),
         ),
         Provider<FirebaseRepository>(

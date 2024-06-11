@@ -7,14 +7,14 @@
 part of 'reminder_manage_bloc.dart';
 
 /// Used as a contractor for the bloc, events and states classes
-/// {@nodoc}
+/// @nodoc
 abstract class ReminderManageBlocType extends RxBlocTypeBase {
   ReminderManageBlocEvents get events;
   ReminderManageBlocStates get states;
 }
 
 /// [$ReminderManageBloc] extended by the [ReminderManageBloc]
-/// {@nodoc}
+/// @nodoc
 abstract class $ReminderManageBloc extends RxBlocBase
     implements
         ReminderManageBlocEvents,

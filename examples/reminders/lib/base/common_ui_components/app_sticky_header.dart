@@ -9,8 +9,8 @@ class AppStickyHeader extends StatelessWidget {
   const AppStickyHeader({
     required this.text,
     this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String text;
   final Color? color;
