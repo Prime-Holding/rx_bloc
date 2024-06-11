@@ -22,14 +22,9 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(3, 5073431356059942661),
       name: 'ObjectBoxCloudReminderModel',
-      lastPropertyId: const obx_int.IdUid(5, 3404449034033841616),
+      lastPropertyId: const obx_int.IdUid(6, 2903017206342281118),
       flags: 2,
       properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 3444953711556838306),
-            name: 'index',
-            type: 6,
-            flags: 1),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(2, 8636039410795037220),
             name: 'title',
@@ -49,21 +44,21 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(5, 3404449034033841616),
             name: 'authorId',
             type: 9,
-            flags: 0)
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 2903017206342281118),
+            name: 'id',
+            type: 6,
+            flags: 1)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
       id: const obx_int.IdUid(4, 3923103457451115400),
       name: 'ObjectBoxLocalReminderModel',
-      lastPropertyId: const obx_int.IdUid(5, 8826805672823262198),
+      lastPropertyId: const obx_int.IdUid(6, 7107527801219823654),
       flags: 0,
       properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 8491232530041573340),
-            name: 'index',
-            type: 6,
-            flags: 1),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(2, 184902116288926108),
             name: 'title',
@@ -83,7 +78,12 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(5, 8826805672823262198),
             name: 'authorId',
             type: 9,
-            flags: 0)
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 7107527801219823654),
+            name: 'id',
+            type: 6,
+            flags: 1)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
@@ -147,7 +147,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         8361210094754472464,
         727637531375526485,
         7142258782237825573,
-        7466992192639670698
+        7466992192639670698,
+        8491232530041573340,
+        3444953711556838306
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -160,29 +162,29 @@ obx_int.ModelDefinition getObjectBoxModel() {
             model: _entities[0],
             toOneRelations: (ObjectBoxCloudReminderModel object) => [],
             toManyRelations: (ObjectBoxCloudReminderModel object) => {},
-            getId: (ObjectBoxCloudReminderModel object) => object.index,
+            getId: (ObjectBoxCloudReminderModel object) => object.id,
             setId: (ObjectBoxCloudReminderModel object, int id) {
-              object.index = id;
+              object.id = id;
             },
             objectToFB: (ObjectBoxCloudReminderModel object, fb.Builder fbb) {
               final titleOffset = fbb.writeString(object.title);
               final authorIdOffset = object.authorId == null
                   ? null
                   : fbb.writeString(object.authorId!);
-              fbb.startTable(6);
-              fbb.addInt64(0, object.index);
+              fbb.startTable(7);
               fbb.addOffset(1, titleOffset);
               fbb.addInt64(2, object.dueDate.millisecondsSinceEpoch);
               fbb.addBool(3, object.complete);
               fbb.addOffset(4, authorIdOffset);
+              fbb.addInt64(5, object.id);
               fbb.finish(fbb.endTable());
-              return object.index;
+              return object.id;
             },
             objectFromFB: (obx.Store store, ByteData fbData) {
               final buffer = fb.BufferContext(fbData);
               final rootOffset = buffer.derefObject(0);
-              final indexParam =
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+              final idParam =
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
               final titleParam = const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, '');
               final dueDateParam = DateTime.fromMillisecondsSinceEpoch(
@@ -193,7 +195,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
                   const fb.StringReader(asciiOptimization: true)
                       .vTableGetNullable(buffer, rootOffset, 12);
               final object = ObjectBoxCloudReminderModel(
-                  index: indexParam,
+                  id: idParam,
                   title: titleParam,
                   dueDate: dueDateParam,
                   complete: completeParam,
@@ -206,29 +208,29 @@ obx_int.ModelDefinition getObjectBoxModel() {
             model: _entities[1],
             toOneRelations: (ObjectBoxLocalReminderModel object) => [],
             toManyRelations: (ObjectBoxLocalReminderModel object) => {},
-            getId: (ObjectBoxLocalReminderModel object) => object.index,
+            getId: (ObjectBoxLocalReminderModel object) => object.id,
             setId: (ObjectBoxLocalReminderModel object, int id) {
-              object.index = id;
+              object.id = id;
             },
             objectToFB: (ObjectBoxLocalReminderModel object, fb.Builder fbb) {
               final titleOffset = fbb.writeString(object.title);
               final authorIdOffset = object.authorId == null
                   ? null
                   : fbb.writeString(object.authorId!);
-              fbb.startTable(6);
-              fbb.addInt64(0, object.index);
+              fbb.startTable(7);
               fbb.addOffset(1, titleOffset);
               fbb.addInt64(2, object.dueDate.millisecondsSinceEpoch);
               fbb.addBool(3, object.complete);
               fbb.addOffset(4, authorIdOffset);
+              fbb.addInt64(5, object.id);
               fbb.finish(fbb.endTable());
-              return object.index;
+              return object.id;
             },
             objectFromFB: (obx.Store store, ByteData fbData) {
               final buffer = fb.BufferContext(fbData);
               final rootOffset = buffer.derefObject(0);
-              final indexParam =
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+              final idParam =
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
               final titleParam = const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, '');
               final dueDateParam = DateTime.fromMillisecondsSinceEpoch(
@@ -239,7 +241,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
                   const fb.StringReader(asciiOptimization: true)
                       .vTableGetNullable(buffer, rootOffset, 12);
               final object = ObjectBoxLocalReminderModel(
-                  index: indexParam,
+                  id: idParam,
                   title: titleParam,
                   dueDate: dueDateParam,
                   complete: completeParam,
@@ -254,46 +256,46 @@ obx_int.ModelDefinition getObjectBoxModel() {
 
 /// [ObjectBoxCloudReminderModel] entity fields to define ObjectBox queries.
 class ObjectBoxCloudReminderModel_ {
-  /// See [ObjectBoxCloudReminderModel.index].
-  static final index = obx.QueryIntegerProperty<ObjectBoxCloudReminderModel>(
-      _entities[0].properties[0]);
-
   /// See [ObjectBoxCloudReminderModel.title].
   static final title = obx.QueryStringProperty<ObjectBoxCloudReminderModel>(
-      _entities[0].properties[1]);
+      _entities[0].properties[0]);
 
   /// See [ObjectBoxCloudReminderModel.dueDate].
   static final dueDate = obx.QueryDateProperty<ObjectBoxCloudReminderModel>(
-      _entities[0].properties[2]);
+      _entities[0].properties[1]);
 
   /// See [ObjectBoxCloudReminderModel.complete].
   static final complete = obx.QueryBooleanProperty<ObjectBoxCloudReminderModel>(
-      _entities[0].properties[3]);
+      _entities[0].properties[2]);
 
   /// See [ObjectBoxCloudReminderModel.authorId].
   static final authorId = obx.QueryStringProperty<ObjectBoxCloudReminderModel>(
+      _entities[0].properties[3]);
+
+  /// See [ObjectBoxCloudReminderModel.id].
+  static final id = obx.QueryIntegerProperty<ObjectBoxCloudReminderModel>(
       _entities[0].properties[4]);
 }
 
 /// [ObjectBoxLocalReminderModel] entity fields to define ObjectBox queries.
 class ObjectBoxLocalReminderModel_ {
-  /// See [ObjectBoxLocalReminderModel.index].
-  static final index = obx.QueryIntegerProperty<ObjectBoxLocalReminderModel>(
-      _entities[1].properties[0]);
-
   /// See [ObjectBoxLocalReminderModel.title].
   static final title = obx.QueryStringProperty<ObjectBoxLocalReminderModel>(
-      _entities[1].properties[1]);
+      _entities[1].properties[0]);
 
   /// See [ObjectBoxLocalReminderModel.dueDate].
   static final dueDate = obx.QueryDateProperty<ObjectBoxLocalReminderModel>(
-      _entities[1].properties[2]);
+      _entities[1].properties[1]);
 
   /// See [ObjectBoxLocalReminderModel.complete].
   static final complete = obx.QueryBooleanProperty<ObjectBoxLocalReminderModel>(
-      _entities[1].properties[3]);
+      _entities[1].properties[2]);
 
   /// See [ObjectBoxLocalReminderModel.authorId].
   static final authorId = obx.QueryStringProperty<ObjectBoxLocalReminderModel>(
+      _entities[1].properties[3]);
+
+  /// See [ObjectBoxLocalReminderModel.id].
+  static final id = obx.QueryIntegerProperty<ObjectBoxLocalReminderModel>(
       _entities[1].properties[4]);
 }

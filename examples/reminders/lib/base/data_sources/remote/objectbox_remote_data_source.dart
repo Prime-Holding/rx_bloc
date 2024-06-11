@@ -60,7 +60,7 @@ class ObjectboxCloud extends RemindersDataSource {
     );
     (await _remindersBox).put(reminder);
 
-    return reminder;
+    return reminder.toReminderModel();
   }
 
   @override
@@ -78,7 +78,8 @@ class ObjectboxCloud extends RemindersDataSource {
             flags: getOrder(request?.sort))
         .build()
         .find();
-    return ReminderListResponse(items: result, totalCount: result.length);
+    final items = result.map((e) => e.toReminderModel()).toList();
+    return ReminderListResponse(items: items);
   }
 
   ///Return only the incomplete reminders that are before the current date
@@ -92,7 +93,8 @@ class ObjectboxCloud extends RemindersDataSource {
             flags: getOrder(request?.sort))
         .build()
         .find();
-    return ReminderListResponse(items: result);
+    final items = result.map((e) => e.toReminderModel()).toList();
+    return ReminderListResponse(items: items);
   }
 
   @override
@@ -112,28 +114,23 @@ class ObjectboxCloud extends RemindersDataSource {
   @override
   Future<ReminderPair> update(ReminderModel updatedModel) async {
     var oldModel = (await _remindersBox).get(int.parse(updatedModel.id));
-    final newModel = (await _remindersBox).put(
-      ObjectBoxCloudReminderModel(
-          index: int.parse(updatedModel.id),
-          title: updatedModel.title,
-          dueDate: updatedModel.dueDate,
-          complete: updatedModel.complete,
-          authorId: updatedModel.authorId),
-    );
+    if (oldModel == null) {
+      throw Exception('Old model not found');
+    }
+    final oldModelId = int.tryParse(updatedModel.id);
+    if (oldModelId == null) {
+      throw Exception('Old model id is not a number');
+    }
+    (await _remindersBox).put(updatedModel.toReminderObjectboxLocalModel(
+      oldModelId,
+      updatedModel.title,
+      updatedModel.dueDate,
+      updatedModel.complete,
+      updatedModel.authorId,
+    ));
     return ReminderPair(
-      old: ObjectBoxCloudReminderModel(
-        index: newModel,
-        title: oldModel?.title ?? '',
-        dueDate: oldModel?.dueDate ?? DateTime.now(),
-        complete: oldModel?.complete ?? false,
-        authorId: oldModel?.authorId,
-      ),
-      updated: ObjectBoxCloudReminderModel(
-          index: newModel,
-          title: updatedModel.title,
-          dueDate: updatedModel.dueDate,
-          complete: updatedModel.complete,
-          authorId: updatedModel.authorId),
+      old: oldModel.toReminderModel(),
+      updated: updatedModel,
     );
   }
 
@@ -182,5 +179,30 @@ class ObjectboxCloud extends RemindersDataSource {
       }
     }
     return order;
+  }
+}
+
+extension ReminderModelMapper on ReminderModel {
+  ObjectBoxCloudReminderModel toReminderObjectboxLocalModel(
+      int id, String title, DateTime dueDate, bool complete, String? authorId) {
+    return ObjectBoxCloudReminderModel(
+      id: id,
+      title: title,
+      dueDate: dueDate,
+      complete: complete,
+      authorId: authorId,
+    );
+  }
+}
+
+extension ReminderRealmModelMapper on ObjectBoxCloudReminderModel {
+  ReminderModel toReminderModel() {
+    return ReminderModel(
+      id: id.toString(),
+      title: title,
+      dueDate: dueDate,
+      complete: complete,
+      authorId: authorId,
+    );
   }
 }
