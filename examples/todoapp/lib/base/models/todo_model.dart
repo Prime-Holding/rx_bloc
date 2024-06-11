@@ -61,11 +61,11 @@ class TodoModel with EquatableMixin implements Identifiable {
     TodoModel? todo,
   }) =>
       TodoModel(
-        id: null,
+        id: todo?.id ,
         title: title,
-        description: '',
-        completed: false,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
+        description: description,
+        completed: todo?.completed ?? false,
+        createdAt: todo?.createdAt ?? DateTime.now().millisecondsSinceEpoch,
       );
 
   final String? id;
