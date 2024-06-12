@@ -4,6 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/common_services/todo_list_service.dart';
+import '../../base/extensions/subject_extensions.dart';
 import '../../base/extensions/todo_list_extensions.dart';
 import '../../base/models/todo_model.dart';
 import '../../base/models/todos_filter_model.dart';
@@ -92,7 +93,7 @@ class TodoListBloc extends $TodoListBloc {
   /// Disposes of all streams to prevent memory leaks
   @override
   void dispose() {
-    _todoResult.close();
+    _todoResult.closeSafely();
     super.dispose();
   }
 }

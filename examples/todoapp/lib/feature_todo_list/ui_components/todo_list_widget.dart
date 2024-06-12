@@ -37,6 +37,7 @@ class TodoListWidget extends StatelessWidget {
             ),
         child: TodoWidget(
           todo: todos[index],
+          descriptionMaxLines: 1,
           onChanged: (todo, isChecked) {
             if (todo.id != null) {
               context

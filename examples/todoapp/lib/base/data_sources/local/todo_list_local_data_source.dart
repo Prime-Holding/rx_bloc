@@ -20,12 +20,12 @@ import 'shared_preferences_instance.dart';
 class TodoListDataSource {
   TodoListDataSource(this._sharedPreferences);
 
-  static const _todoList = 'todoList';
+  static const _todoListPreferencesKey = 'todoList';
 
   final SharedPreferencesInstance _sharedPreferences;
 
   Future<List<TodoModel>> fetchAllTodos() async {
-    var listJson = await _sharedPreferences.getString(_todoList);
+    var listJson = await _sharedPreferences.getString(_todoListPreferencesKey);
     List<TodoModel> result = List<TodoModel>.empty(growable: true);
 
     if (listJson != null && listJson.isNotEmpty) {
@@ -38,7 +38,7 @@ class TodoListDataSource {
   }
 
   Future<TodoModel> addOrUpdateTodo(TodoModel todo) async {
-    var listJson = await _sharedPreferences.getString(_todoList);
+    var listJson = await _sharedPreferences.getString(_todoListPreferencesKey);
     List<TodoModel> todos = [];
 
     if (listJson != null && listJson.isNotEmpty) {
@@ -59,13 +59,13 @@ class TodoListDataSource {
       todos.insert(0, todo);
     }
 
-    await _sharedPreferences.setString(_todoList, jsonEncode(todos));
+    await _sharedPreferences.setString(_todoListPreferencesKey, jsonEncode(todos));
 
     return todo;
   }
 
   Future<TodoModel> updateCompletedById(String id, bool completed) async {
-    var listJson = await _sharedPreferences.getString(_todoList);
+    var listJson = await _sharedPreferences.getString(_todoListPreferencesKey);
 
     if (listJson != null && listJson.isNotEmpty) {
       List<dynamic> parsedListJson = jsonDecode(listJson);
@@ -76,7 +76,7 @@ class TodoListDataSource {
       if (index >= 0) {
         todos[index] = todos[index].copyWith(completed: completed);
 
-        await _sharedPreferences.setString(_todoList, jsonEncode(todos));
+        await _sharedPreferences.setString(_todoListPreferencesKey, jsonEncode(todos));
 
         return todos[index];
       }
@@ -88,7 +88,7 @@ class TodoListDataSource {
   }
 
   Future<List<TodoModel>> updateCompletedForAll(bool completed) async {
-    var listJson = await _sharedPreferences.getString(_todoList);
+    var listJson = await _sharedPreferences.getString(_todoListPreferencesKey);
 
     if (listJson?.isNotEmpty ?? true) {
       List<dynamic> parsedListJson = jsonDecode(listJson!);
@@ -98,7 +98,7 @@ class TodoListDataSource {
       todos.forEachIndexed(
           (index, todo) => todos[index] = todo.copyWith(completed: completed));
 
-      await _sharedPreferences.setString(_todoList, jsonEncode(todos));
+      await _sharedPreferences.setString(_todoListPreferencesKey, jsonEncode(todos));
 
       return todos;
     }
@@ -107,7 +107,7 @@ class TodoListDataSource {
   }
 
   Future<List<TodoModel>> deleteCompleted() async {
-    var listJson = await _sharedPreferences.getString(_todoList);
+    var listJson = await _sharedPreferences.getString(_todoListPreferencesKey);
 
     if (listJson?.isNotEmpty ?? true) {
       List<dynamic> parsedListJson = jsonDecode(listJson!);
@@ -117,9 +117,9 @@ class TodoListDataSource {
       todos.removeWhere((element) => element.completed == true);
 
       if (todos.isEmpty) {
-        await _sharedPreferences.remove(_todoList);
+        await _sharedPreferences.remove(_todoListPreferencesKey);
       } else {
-        await _sharedPreferences.setString(_todoList, jsonEncode(todos));
+        await _sharedPreferences.setString(_todoListPreferencesKey, jsonEncode(todos));
       }
 
       return todos;
@@ -129,7 +129,7 @@ class TodoListDataSource {
   }
 
   Future<void> deleteById(String id) async {
-    var listJson = await _sharedPreferences.getString(_todoList);
+    var listJson = await _sharedPreferences.getString(_todoListPreferencesKey);
 
     if (listJson?.isNotEmpty ?? true) {
       List<dynamic> parsedListJson = jsonDecode(listJson!);
@@ -143,12 +143,12 @@ class TodoListDataSource {
         }
       }
 
-      unawaited(_sharedPreferences.setString(_todoList, jsonEncode(todos)));
+      unawaited(_sharedPreferences.setString(_todoListPreferencesKey, jsonEncode(todos)));
     }
   }
 
   Future<TodoModel> fetchTodoById(String id) async {
-    var listJson = await _sharedPreferences.getString(_todoList);
+    var listJson = await _sharedPreferences.getString(_todoListPreferencesKey);
     TodoModel? result;
 
     if (listJson?.isNotEmpty ?? true) {

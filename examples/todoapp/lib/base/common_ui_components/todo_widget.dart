@@ -8,10 +8,12 @@ class TodoWidget extends StatelessWidget {
     super.key,
     required this.todo,
     this.onChanged,
+    this.descriptionMaxLines,
   });
 
   final TodoModel todo;
   final Function(TodoModel todo, bool? isChecked)? onChanged;
+  final int? descriptionMaxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class TodoWidget extends StatelessWidget {
               style: context.designSystem.typography.h2Med16,
               todo.title,
             ),
-            if (todo.description.isNotEmpty) Text(todo.description),
+            if (todo.description.isNotEmpty) Text(todo.description, maxLines: descriptionMaxLines,),
           ],
         ),
       ],

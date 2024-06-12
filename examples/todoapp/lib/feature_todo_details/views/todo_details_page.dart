@@ -5,9 +5,11 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_bar_title.dart';
-import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/app_error_widget.dart';
+import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/common_ui_components/todo_widget.dart';
 import '../../base/extensions/async_snapshot_extensions.dart';
+import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/todo_model.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
 import '../blocs/todo_details_bloc.dart';
@@ -43,7 +45,7 @@ class TodoDetailsPage extends StatelessWidget {
             visible:
                 !(isLoadingSnapshot.hasData && isLoadingSnapshot.requireData),
             child: FloatingActionButton(
-              onPressed: bloc.events.manage,
+              onPressed: bloc.events.updateTodo,
               shape: const OvalBorder(),
               child: context.designSystem.icons.edit,
             ),
@@ -51,31 +53,33 @@ class TodoDetailsPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            RxBlocBuilder<TodoDetailsBlocType, TodoModel>(
+            RxResultBuilder<TodoDetailsBlocType, TodoModel>(
               state: (bloc) => bloc.states.todo,
-              builder: (context, todoSnapshot, bloc) {
-                if (todoSnapshot.hasData) {
-                  return TodoWidget(
-                    todo: todoSnapshot.data!,
-                    onChanged: (todo, isChecked) {
-                      final todoId = todo.id;
+              buildSuccess: (context, todo, bloc) => TodoWidget(
+                todo: todo,
+                onChanged: (todo, isChecked) {
+                  final todoId = todo.id;
 
-                      if (todoId != null) {
-                        context
-                            .read<TodoActionsBlocType>()
-                            .events
-                            .updateCompletedById(todo.id!, isChecked!);
-                      }
-                    },
-                  );
-                }
-
-                return Text(context.l10n.noData);
-              },
+                  if (todoId != null) {
+                    context
+                        .read<TodoActionsBlocType>()
+                        .events
+                        .updateCompletedById(todo.id!, isChecked!);
+                  }
+                },
+              ),
+              buildError: (context, error, bloc) => Padding(
+                padding: EdgeInsets.only(top: context.designSystem.spacing.l),
+                child: Center(
+                  child: AppErrorWidget(
+                    error: error.asErrorModel(),
+                    onTabRetry: () => bloc.events.fetchTodo(),
+                  ),
+                ),
+              ),
+              buildLoading: (context, bloc) =>
+                  const Center(child: AppLoadingIndicator()),
             ),
-            AppErrorModalWidget<TodoDetailsBlocType>(
-              errorState: (bloc) => bloc.states.errors,
-            )
           ],
         ),
       );

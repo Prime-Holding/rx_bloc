@@ -16,7 +16,7 @@ part 'todo_details_bloc.rxb.g.dart';
 /// A contract class containing all events of the TodoDetailsBloC.
 abstract class TodoDetailsBlocEvents {
   /// Notifies the [RouterBloc] to navigate to the [TodoUpdateRoute]
-  void manage();
+  void updateTodo();
 
   /// Fetch the todo
   void fetchTodo();
@@ -31,7 +31,7 @@ abstract class TodoDetailsBlocStates {
   Stream<ErrorModel> get errors;
 
   /// The todo state of the todo details page
-  ConnectableStream<TodoModel> get todo;
+  ConnectableStream<Result<TodoModel>> get todo;
 
   /// The state of the routing event
   ConnectableStream<void> get onRouting;
@@ -57,7 +57,7 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
   final RouterBlocType _routerBloc;
 
   @override
-  ConnectableStream<TodoModel> _mapToTodoState() => _$fetchTodoEvent
+  ConnectableStream<Result<TodoModel>> _mapToTodoState() => _$fetchTodoEvent
           .startWith(null)
           .switchMap(
             (_) => _todoListService
@@ -65,16 +65,17 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
                 .asResultStream(),
           )
           .setResultStateHandler(this)
-          .whereSuccess()
           .mergeWith([
         _coordinatorBloc.states.onTodoAddedOrUpdated
             .whereSuccess()
             .where((updatedTodo) => _todoId == updatedTodo.id)
+            .mapToResult()
       ]).publish();
 
   @override
-  ConnectableStream<void> _mapToOnRoutingState() => _$manageEvent
+  ConnectableStream<void> _mapToOnRoutingState() => _$updateTodoEvent
       .withLatestFrom(todo, (_, todo) => todo)
+      .whereSuccess()
       .doOnData(
         (todo) => _routerBloc.events.go(TodoUpdateRoute(todo.id!), extra: todo),
       )
