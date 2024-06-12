@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../base/extensions/error_model_extensions.dart';
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../../base/common_services/todo_list_service.dart';
+import '../../base/extensions/subject_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/todo_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
@@ -155,9 +156,7 @@ class TodoManagementBloc extends $TodoManagementBloc {
 
   @override
   void dispose() {
-    if (!_todoSubject.isClosed) {
-      _todoSubject.close();
-    }
+    _todoSubject.closeSafely();
     super.dispose();
   }
 }

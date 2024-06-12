@@ -68,18 +68,14 @@ class TodoDetailsPage extends StatelessWidget {
                   }
                 },
               ),
-              buildError: (context, error, bloc) => Column(
-                children: [
-                  SizedBox(
-                    height: context.designSystem.spacing.l,
+              buildError: (context, error, bloc) => Padding(
+                padding: EdgeInsets.only(top: context.designSystem.spacing.l),
+                child: Center(
+                  child: AppErrorWidget(
+                    error: error.asErrorModel(),
+                    onTabRetry: () => bloc.events.fetchTodo(),
                   ),
-                  Center(
-                    child: AppErrorWidget(
-                      error: error.asErrorModel(),
-                      onTabRetry: () => bloc.events.fetchTodo(),
-                    ),
-                  ),
-                ],
+                ),
               ),
               buildLoading: (context, bloc) =>
                   const Center(child: AppLoadingIndicator()),
