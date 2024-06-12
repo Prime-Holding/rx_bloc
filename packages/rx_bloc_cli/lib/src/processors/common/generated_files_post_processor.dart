@@ -1,10 +1,11 @@
-import 'package:rx_bloc_cli/src/processors/cicd/github_workflow_processor.dart';
+
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/shell_script_processor.dart';
 
 import 'package:rx_bloc_cli/src/processors/ios/podfile_processor.dart';
 
 import '../../models/generator_arguments.dart';
+import '../cicd/ci_cd_config_file_processor.dart';
 import '../ide/idea_workspace_processor.dart';
 import '../ios/xcode_file_registrant.dart';
 import 'abstract_processors.dart';

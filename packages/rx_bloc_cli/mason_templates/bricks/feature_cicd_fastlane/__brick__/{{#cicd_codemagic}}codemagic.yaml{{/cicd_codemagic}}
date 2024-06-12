@@ -17,9 +17,10 @@ definitions:
   cached: &cached
     cache_paths:
       - $HOME/.gradle/caches
-      - $FLUTTER_ROOT/.pub-cache
       - $HOME/Library/Caches/CocoaPods
-      - $CM_BUILD_DIR/node_modules
+      - $FCI_BUILD_DIR/ios/Pods
+      - $FCI_BUILD_DIR/android/.gradle
+      - $FLUTTER_ROOT
   inputs: &inputs
     publish_to_store:
       description: "Publish to store"
