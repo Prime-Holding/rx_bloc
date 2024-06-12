@@ -79,6 +79,7 @@ final class Stub {
       realtimeCommunicationEnabled: true,
       cicdEnabled: true,
       cicdGithubEnabled: true,
+      cicdCodemagicEnabled: true,
     ),
   );
 
@@ -99,18 +100,21 @@ final class Stub {
       analyticsEnabled: CreateCommandArguments.analytics.defaultValue(),
       pushNotificationsEnabled: true,
       changeLanguageEnabled:
-          CreateCommandArguments.changeLanguage.defaultValue(),
+      CreateCommandArguments.changeLanguage.defaultValue(),
       counterEnabled: CreateCommandArguments.counter.defaultValue(),
       patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
       devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
       deepLinkEnabled: CreateCommandArguments.deepLink.defaultValue(),
       widgetToolkitEnabled: CreateCommandArguments.widgetToolkit.defaultValue(),
       realtimeCommunicationEnabled:
-          CreateCommandArguments.realtimeCommunication.defaultValue() !=
-              RealtimeCommunicationType.none,
+      CreateCommandArguments.realtimeCommunication.defaultValue() !=
+          RealtimeCommunicationType.none,
       cicdEnabled: CreateCommandArguments.cicd.defaultValue() != CICDType.none,
       cicdGithubEnabled:
-          CreateCommandArguments.cicd.defaultValue() == CICDType.github,
+      CreateCommandArguments.cicd.defaultValue() == CICDType.github,
+      cicdCodemagicEnabled:
+      CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
+
     ),
   );
 }

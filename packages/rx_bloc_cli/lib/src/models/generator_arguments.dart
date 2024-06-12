@@ -128,5 +128,9 @@ class GeneratorArguments
   @override
   bool get cicdGithubEnabled => _featureConfiguration.cicdGithubEnabled;
 
+  /// CI/CD Codemagic
+  @override
+  bool get cicdCodemagicEnabled => _featureConfiguration.cicdCodemagicEnabled;
+
   /// endregion
 }

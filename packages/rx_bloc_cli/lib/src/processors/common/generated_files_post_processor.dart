@@ -39,15 +39,19 @@ class GeneratedFilesPostProcessor {
         ('.idea/workspace.xml', IdeaWorkspaceProcessor(args)),
         (
           '.github/workflows/build_and_deploy_app.yaml',
-          GithubWorkflowProcessor(args)
+          CICDConfigFileProcessor(args)
         ),
         (
           '.github/workflows/fastlane_android_custom_build_and_deploy.yaml',
-          GithubWorkflowProcessor(args)
+          CICDConfigFileProcessor(args)
         ),
         (
           '.github/workflows/fastlane_ios_custom_build_and_deploy.yaml',
-          GithubWorkflowProcessor(args)
+          CICDConfigFileProcessor(args)
+        ),
+        (
+        'codemagic.yaml',
+        CICDConfigFileProcessor(args)
         ),
       ];
 

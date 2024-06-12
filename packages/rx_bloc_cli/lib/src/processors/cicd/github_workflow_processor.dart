@@ -1,9 +1,9 @@
 import '../common/abstract_processors.dart';
 
 /// String processor used for processing github workflow files (.yaml)
-class GithubWorkflowProcessor extends StringProcessor {
+class CICDConfigFileProcessor extends StringProcessor {
   /// Github Workflow processor constructor
-  GithubWorkflowProcessor(super.args);
+  CICDConfigFileProcessor(super.args);
 
   @override
   String execute() {

@@ -38,7 +38,7 @@ if [ $1 == "all_enabled" ]; then
   --enable-patrol \
   --realtime-communication=sse \
   --enable-otp \
-  --cicd=github \
+  --cicd=codemagic \
   --enable-pin-code \
   --enable-auth-matrix
 fi 
