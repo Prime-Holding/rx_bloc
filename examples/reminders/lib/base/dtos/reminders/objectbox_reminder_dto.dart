@@ -1,8 +1,8 @@
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class ObjectBoxLocalReminderModel {
-  ObjectBoxLocalReminderModel({
+class ObjectBoxLocalReminderDto {
+  ObjectBoxLocalReminderDto({
     this.id = 0,
     required this.title,
     required this.dueDate,
@@ -20,8 +20,8 @@ class ObjectBoxLocalReminderModel {
 
 @Entity()
 @Sync()
-class ObjectBoxCloudReminderModel {
-  ObjectBoxCloudReminderModel({
+class ObjectBoxCloudReminderDto {
+  ObjectBoxCloudReminderDto({
     this.id = 0,
     required this.title,
     required this.dueDate,

@@ -2,13 +2,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../objectbox.g.dart';
 
 import '../../app/config/environment_config.dart';
-import '../../models/reminder/objectbox_reminder_model.dart';
+import '../../common_mappers/reminder_model_mapper.dart';
+import '../../dtos/reminders/objectbox_reminder_dto.dart';
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 import '../remote/reminders_data_source.dart';
 
 class ObjectBoxLocal extends RemindersDataSource {
-  final Future<Box<ObjectBoxLocalReminderModel>> _remindersBox;
+  final Future<Box<ObjectBoxLocalReminderDto>> _remindersBox;
   final FlutterSecureStorage _storage;
 
   static const _authorId = 'authorId';
@@ -30,10 +31,10 @@ class ObjectBoxLocal extends RemindersDataSource {
     return _instance!;
   }
 
-  static Future<Box<ObjectBoxLocalReminderModel>> _initCloud(
+  static Future<Box<ObjectBoxLocalReminderDto>> _initCloud(
       EnvironmentConfig config, Future<Store> openStore) async {
     var store = await openStore;
-    var reminderBox = store.box<ObjectBoxLocalReminderModel>();
+    var reminderBox = store.box<ObjectBoxLocalReminderDto>();
 
     return reminderBox;
   }
@@ -45,7 +46,7 @@ class ObjectBoxLocal extends RemindersDataSource {
       required bool complete}) async {
     var authorId = await _getAuthorIdOrNull();
 
-    final reminder = ObjectBoxLocalReminderModel(
+    final reminder = ObjectBoxLocalReminderDto(
       title: title,
       dueDate: dueDate,
       complete: complete,
@@ -67,7 +68,7 @@ class ObjectBoxLocal extends RemindersDataSource {
     final authorId = await _getAuthorIdOrNull();
     final result = (await _remindersBox)
         .query(getCondition(request, authorId))
-        .order(ObjectBoxLocalReminderModel_.dueDate,
+        .order(ObjectBoxLocalReminderDto_.dueDate,
             flags: getOrder(request?.sort))
         .build()
         .find();
@@ -82,7 +83,7 @@ class ObjectBoxLocal extends RemindersDataSource {
     final authorId = await _getAuthorIdOrNull();
     final result = (await _remindersBox)
         .query(getCondition(request, authorId))
-        .order(ObjectBoxLocalReminderModel_.authorId,
+        .order(ObjectBoxLocalReminderDto_.authorId,
             flags: getOrder(request?.sort))
         .build()
         .find();
@@ -92,14 +93,14 @@ class ObjectBoxLocal extends RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async => (await _remindersBox)
-      .query(ObjectBoxLocalReminderModel_.complete.equals(true))
+      .query(ObjectBoxLocalReminderDto_.complete.equals(true))
       .build()
       .find()
       .length;
 
   @override
   Future<int> getIncompleteCount() async => (await _remindersBox)
-      .query(ObjectBoxLocalReminderModel_.complete.equals(false))
+      .query(ObjectBoxLocalReminderDto_.complete.equals(false))
       .build()
       .find()
       .length;
@@ -114,13 +115,8 @@ class ObjectBoxLocal extends RemindersDataSource {
     if (oldModelId == null) {
       throw Exception('Old model id is not a number');
     }
-    (await _remindersBox).put(updatedModel.toReminderObjectboxLocalModel(
-      oldModelId,
-      updatedModel.title,
-      updatedModel.dueDate,
-      updatedModel.complete,
-      updatedModel.authorId,
-    ));
+    (await _remindersBox)
+        .put(updatedModel.toReminderObjectboxLocalDto(oldModelId));
 
     return ReminderPair(
       old: oldModel.toReminderModel(),
@@ -137,9 +133,9 @@ class ObjectBoxLocal extends RemindersDataSource {
     return user;
   }
 
-  Condition<ObjectBoxLocalReminderModel> getCondition(
+  Condition<ObjectBoxLocalReminderDto> getCondition(
       ReminderModelRequest? request, String? authorId) {
-    Condition<ObjectBoxLocalReminderModel>? condition;
+    Condition<ObjectBoxLocalReminderDto>? condition;
     DateTime from;
     DateTime to;
 
@@ -151,14 +147,14 @@ class ObjectBoxLocal extends RemindersDataSource {
       to = DateTime.now().add(const Duration(days: 365));
     }
     condition = ((authorId == null
-        ? ObjectBoxLocalReminderModel_.authorId.isNull()
-        : ObjectBoxLocalReminderModel_.authorId.equals(authorId)));
+        ? ObjectBoxLocalReminderDto_.authorId.isNull()
+        : ObjectBoxLocalReminderDto_.authorId.equals(authorId)));
     if (request?.complete != null) {
-      condition.and(
-          ObjectBoxLocalReminderModel_.complete.equals(request!.complete!));
+      condition
+          .and(ObjectBoxLocalReminderDto_.complete.equals(request!.complete!));
     }
 
-    condition.and(ObjectBoxLocalReminderModel_.dueDate.betweenDate(from, to));
+    condition.and(ObjectBoxLocalReminderDto_.dueDate.betweenDate(from, to));
     return condition;
   }
 
@@ -173,30 +169,5 @@ class ObjectBoxLocal extends RemindersDataSource {
       }
     }
     return order;
-  }
-}
-
-extension ReminderModelMapper on ReminderModel {
-  ObjectBoxLocalReminderModel toReminderObjectboxLocalModel(
-      int id, String title, DateTime dueDate, bool complete, String? authorId) {
-    return ObjectBoxLocalReminderModel(
-      id: id,
-      title: title,
-      dueDate: dueDate,
-      complete: complete,
-      authorId: authorId,
-    );
-  }
-}
-
-extension ReminderRealmModelMapper on ObjectBoxLocalReminderModel {
-  ReminderModel toReminderModel() {
-    return ReminderModel(
-      id: id.toString(),
-      title: title,
-      dueDate: dueDate,
-      complete: complete,
-      authorId: authorId,
-    );
   }
 }

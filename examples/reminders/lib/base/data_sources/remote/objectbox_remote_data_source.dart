@@ -4,13 +4,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../objectbox.g.dart';
 
 import '../../app/config/environment_config.dart';
-import '../../models/reminder/objectbox_reminder_model.dart';
+import '../../common_mappers/reminder_model_mapper.dart';
+import '../../dtos/reminders/objectbox_reminder_dto.dart';
 import '../../models/reminder/reminder_list_response.dart';
 import '../../models/reminder/reminder_model.dart';
 import '../remote/reminders_data_source.dart';
 
 class ObjectboxCloud extends RemindersDataSource {
-  final Future<Box<ObjectBoxCloudReminderModel>> _remindersBox;
+  final Future<Box<ObjectBoxCloudReminderDto>> _remindersBox;
   final FlutterSecureStorage _storage;
 
   static const _authorId = 'authorId';
@@ -32,10 +33,10 @@ class ObjectboxCloud extends RemindersDataSource {
     return _instance!;
   }
 
-  static Future<Box<ObjectBoxCloudReminderModel>> _initCloud(
+  static Future<Box<ObjectBoxCloudReminderDto>> _initCloud(
       EnvironmentConfig config, Future<Store> openStore) async {
     var store = await openStore;
-    var reminderBox = store.box<ObjectBoxCloudReminderModel>();
+    var reminderBox = store.box<ObjectBoxCloudReminderDto>();
     //TODO: Add sync client IP
     final syncServerIp = Platform.isAndroid ? '10.0.2.2' : '127.0.0.1';
     final syncClient =
@@ -52,7 +53,7 @@ class ObjectboxCloud extends RemindersDataSource {
       required bool complete}) async {
     var authorId = await _getAuthorIdOrNull();
 
-    final reminder = ObjectBoxCloudReminderModel(
+    final reminder = ObjectBoxCloudReminderDto(
       title: title,
       dueDate: dueDate,
       complete: complete,
@@ -74,7 +75,7 @@ class ObjectboxCloud extends RemindersDataSource {
     final authorId = await _getAuthorIdOrNull();
     final result = (await _remindersBox)
         .query(getCondition(request, authorId))
-        .order(ObjectBoxCloudReminderModel_.dueDate,
+        .order(ObjectBoxCloudReminderDto_.dueDate,
             flags: getOrder(request?.sort))
         .build()
         .find();
@@ -89,7 +90,7 @@ class ObjectboxCloud extends RemindersDataSource {
     final authorId = await _getAuthorIdOrNull();
     final result = (await _remindersBox)
         .query(getCondition(request, authorId))
-        .order(ObjectBoxCloudReminderModel_.authorId,
+        .order(ObjectBoxCloudReminderDto_.authorId,
             flags: getOrder(request?.sort))
         .build()
         .find();
@@ -99,14 +100,14 @@ class ObjectboxCloud extends RemindersDataSource {
 
   @override
   Future<int> getCompleteCount() async => (await _remindersBox)
-      .query(ObjectBoxCloudReminderModel_.complete.equals(true))
+      .query(ObjectBoxCloudReminderDto_.complete.equals(true))
       .build()
       .find()
       .length;
 
   @override
   Future<int> getIncompleteCount() async => (await _remindersBox)
-      .query(ObjectBoxCloudReminderModel_.complete.equals(false))
+      .query(ObjectBoxCloudReminderDto_.complete.equals(false))
       .build()
       .find()
       .length;
@@ -121,13 +122,8 @@ class ObjectboxCloud extends RemindersDataSource {
     if (oldModelId == null) {
       throw Exception('Old model id is not a number');
     }
-    (await _remindersBox).put(updatedModel.toReminderObjectboxLocalModel(
-      oldModelId,
-      updatedModel.title,
-      updatedModel.dueDate,
-      updatedModel.complete,
-      updatedModel.authorId,
-    ));
+    (await _remindersBox)
+        .put(updatedModel.toReminderObjectboxCloudDto(oldModelId));
     return ReminderPair(
       old: oldModel.toReminderModel(),
       updated: updatedModel,
@@ -143,9 +139,9 @@ class ObjectboxCloud extends RemindersDataSource {
     return user;
   }
 
-  Condition<ObjectBoxCloudReminderModel> getCondition(
+  Condition<ObjectBoxCloudReminderDto> getCondition(
       ReminderModelRequest? request, String? authorId) {
-    Condition<ObjectBoxCloudReminderModel>? condition;
+    Condition<ObjectBoxCloudReminderDto>? condition;
     DateTime from;
     DateTime to;
 
@@ -157,14 +153,14 @@ class ObjectboxCloud extends RemindersDataSource {
       to = DateTime.now().add(const Duration(days: 365));
     }
     condition = ((authorId == null
-        ? ObjectBoxCloudReminderModel_.authorId.isNull()
-        : ObjectBoxCloudReminderModel_.authorId.equals(authorId)));
+        ? ObjectBoxCloudReminderDto_.authorId.isNull()
+        : ObjectBoxCloudReminderDto_.authorId.equals(authorId)));
     if (request?.complete != null) {
-      condition.and(
-          ObjectBoxCloudReminderModel_.complete.equals(request!.complete!));
+      condition
+          .and(ObjectBoxCloudReminderDto_.complete.equals(request!.complete!));
     }
 
-    condition.and(ObjectBoxCloudReminderModel_.dueDate.betweenDate(from, to));
+    condition.and(ObjectBoxCloudReminderDto_.dueDate.betweenDate(from, to));
     return condition;
   }
 
@@ -179,30 +175,5 @@ class ObjectboxCloud extends RemindersDataSource {
       }
     }
     return order;
-  }
-}
-
-extension ReminderModelMapper on ReminderModel {
-  ObjectBoxCloudReminderModel toReminderObjectboxLocalModel(
-      int id, String title, DateTime dueDate, bool complete, String? authorId) {
-    return ObjectBoxCloudReminderModel(
-      id: id,
-      title: title,
-      dueDate: dueDate,
-      complete: complete,
-      authorId: authorId,
-    );
-  }
-}
-
-extension ReminderRealmModelMapper on ObjectBoxCloudReminderModel {
-  ReminderModel toReminderModel() {
-    return ReminderModel(
-      id: id.toString(),
-      title: title,
-      dueDate: dueDate,
-      complete: complete,
-      authorId: authorId,
-    );
   }
 }
