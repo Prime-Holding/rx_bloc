@@ -6,7 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 /// Enum containing all the possible environments
-enum EnvironmentType { dev, staging, prod }
+enum EnvironmentType { dev, staging, prod, local, cloud }
 
 /// Environment configuration that enables you to get define and reuse
 /// environment specific properties (such as API endpoints, server secrets, ...)
@@ -39,6 +39,18 @@ class EnvironmentConfig {
   /// The production environment
   static const EnvironmentConfig prod = EnvironmentConfig._(
     environment: EnvironmentType.prod,
+    baseApiUrl: 'http://0.0.0.0:8080',
+  );
+
+  /// The Cloud environment
+  static const EnvironmentConfig cloud = EnvironmentConfig._(
+    environment: EnvironmentType.cloud,
+    baseApiUrl: 'http://0.0.0.0:8080',
+  );
+
+  /// The local environment
+  static const EnvironmentConfig local = EnvironmentConfig._(
+    environment: EnvironmentType.local,
     baseApiUrl: 'http://0.0.0.0:8080',
   );
 

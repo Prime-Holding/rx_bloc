@@ -18,7 +18,9 @@ import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
+import '../data_sources/local/objectbox_local_data_source.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
+import '../data_sources/remote/objectbox_remote_data_source.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
 import '../repositories/firebase_repository.dart';
 import '../repositories/reminders_repository.dart';
@@ -48,7 +50,6 @@ class AppDependencies extends StatefulWidget {
 
 class _AppDependenciesState extends State<AppDependencies> {
   late GlobalKey<NavigatorState> rootNavigatorKey;
-
   late GlobalKey<NavigatorState> shellNavigatorKey;
 
   @override
@@ -106,14 +107,34 @@ class _AppDependenciesState extends State<AppDependencies> {
   /// Use different data source regarding of if it is running in web ot not
   List<Provider> get _dataSources => [
         Provider<RemindersFirebaseDataSource>(
-          create: (context) => RemindersFirebaseDataSource(),
+          create: (context) => RemindersFirebaseDataSource(
+            context.read<FlutterSecureStorage>(),
+          ),
         ),
+        if (widget.config.environment == EnvironmentType.local)
+          Provider<ObjectBoxLocal>(
+            create: (context) => ObjectBoxLocal.getInstance(
+              context.read<FlutterSecureStorage>(),
+              widget.config,
+            ),
+          ),
+        if (widget.config.environment == EnvironmentType.cloud)
+          Provider<ObjectboxCloud>(
+            create: (context) => ObjectboxCloud.getInstance(
+              context.read<FlutterSecureStorage>(),
+              widget.config,
+            ),
+          ),
       ];
 
   List<Provider> get _repositories => [
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            dataSource: RemindersFirebaseDataSource(),
+            dataSource: widget.config.environment == EnvironmentType.cloud
+                ? context.read<ObjectboxCloud>()
+                : widget.config.environment == EnvironmentType.local
+                    ? context.read<ObjectBoxLocal>()
+                    : context.read<RemindersFirebaseDataSource>(),
           ),
         ),
         Provider<FirebaseRepository>(

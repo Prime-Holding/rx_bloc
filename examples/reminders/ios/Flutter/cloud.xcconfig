@@ -1,0 +1,7 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-cloud.xcconfig"
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_cloud.dart
+ENVIRONMENT_PLIST = environments/cloud/cloud.plist
+APP_DISPLAY_NAME = Reminders CLOUD
+bundle_suffix=.cloud

@@ -34,12 +34,11 @@ class ReminderModelRequest {
 }
 
 class ReminderModelRequestData {
-  ReminderModelRequestData({
-    required this.title,
-    required this.dueDate,
-    required this.complete,
-    this.authorId,
-  });
+  ReminderModelRequestData(
+      {required this.title,
+      required this.dueDate,
+      required this.complete,
+      this.authorId});
 
   final String title;
   final DateTime dueDate;
@@ -59,15 +58,11 @@ class ReminderModelRequestData {
 class ReminderModel extends ReminderModelRequestData implements Identifiable {
   ReminderModel({
     required this.id,
-    required title,
-    required dueDate,
-    required complete,
-    authorId,
-  }) : super(
-            title: title,
-            dueDate: dueDate,
-            complete: complete,
-            authorId: authorId);
+    required super.title,
+    required super.dueDate,
+    required super.complete,
+    super.authorId,
+  });
 
   final String id;
 
