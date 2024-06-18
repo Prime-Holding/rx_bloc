@@ -93,17 +93,25 @@ Once you connect your repository with Codemagic and add your app, you'll be pres
 Under the `Environment variables` tab, define two `secure` environment variables assigned to the `secret` group with the following name:
 - `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
 - `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CM_API_TOKEN`: token used for accessing Codemagic artifacts through the API
 
 After that, you can start a build from the `Build tag` option by selecting a previously created tag and the workflow.
 Since the defined workflows are treated like separate jobs, you may need to start two workflows when building your app:
 one for building and deploying the Android app and another one for the iOS app.
 
-Both workflows use a `mac_mini_m1` instance by default. 
+In case any of the builds fails but the artifacts are available, you can publish them using the `Deploy app` workflow. 
+Select the workflow in the `Build branch` option. Two new fields will appear asking for a url to the Codemagic build artifacts:
+- `Build artifact (.ipa or .abb)`: direct link to the build artifact (`.ipa` for iOS build, `.aab` for Android build) 
+- `The deployment.yaml file`: direct link to the `deployment.yaml` file containing the build configuration
+
+All workflows use a `mac_mini_m1` instance by default. 
 Different instances and build minutes can be found under the [pricing page][codemagic_pricing] and [available instance types][codemagic_instance_types].
 
 Once a codemagic build has succeeded, besides the respective artifacts (`.ipa`,`.aab`) there will be a `deployment.yaml` uploaded.
 The `deployment.yaml` contains necessary details used for deploying the app.
 In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below.
+
+_Note: The Codemagic API token can be found in the [Codemagic UI under the `Teams` option][codemagic_api_token_location]._
 
 ### Local distribution
 
@@ -148,3 +156,4 @@ For more details on that and other commands, as well as their arguments, please 
 [github_actions_usage_limits]: https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits
 [codemagic_pricing]: https://codemagic.io/pricing/
 [codemagic_instance_types]: https://docs.codemagic.io/yaml-basic-configuration/yaml-getting-started/#instance-type
+[codemagic_api_token_location]: https://docs.codemagic.io/rest-api/codemagic-rest-api/#authentication

@@ -3,6 +3,8 @@ definitions:
     instance_type: mac_mini_m1
     max_build_duration: 100
   environment: &environment
+    groups:
+      - secret
     flutter: stable
     xcode: latest
     cocoapods: default
@@ -15,96 +17,118 @@ definitions:
   cached: &cached
     cache_paths:
       - $HOME/.gradle/caches
+      - $FLUTTER_ROOT
       - $HOME/Library/Caches/CocoaPods
       - $FCI_BUILD_DIR/ios/Pods
       - $FCI_BUILD_DIR/android/.gradle
-      - $FLUTTER_ROOT
   inputs: &inputs
-    publish_to_store:
-      description: "Publish to store"
-      type: boolean
-      default: true
+    build_artifact:
+      description: "Build artifact (.ipa or .abb)"
+      type: string
+    deployment_config:
+      description: "The deployment.yaml file"
+      type: string
   scripts:
     - &fetch_tag_details
-      name: Fetch tag details
-      script: |
-        TAGNAME=$(git describe --tags $(git rev-list --tags --max-count=1))
-        
-        VERSION=$(echo $TAGNAME | rev | cut -d "v" -f 1 | rev)
-        BUILD_NAME=$(echo $VERSION | cut -d "+" -f 1)
-        BUILD_NUMBER=$(echo $VERSION | cut -d "+" -f 2-)
-        
-        NAMEWITHENV=$(echo $TAGNAME | rev | cut -d "-" -f 2- | rev)
-        FLAVOR=$(echo $NAMEWITHENV | rev | cut -d "-" -f 1 | rev)
-        
-        # Export the variables, so they are visible in other jobs # {{/}}
-        echo "build_name=${BUILD_NAME}" >> $CM_ENV
-        echo "build_number=${BUILD_NUMBER}" >> $CM_ENV
-        echo "flavor=${FLAVOR}" >> $CM_ENV
+        name: Fetch tag details
+        script: |
+          TAGNAME=$(git describe --tags $(git rev-list --tags --max-count=1))
+
+          VERSION=$(echo $TAGNAME | rev | cut -d "v" -f 1 | rev)
+          BUILD_NAME=$(echo $VERSION | cut -d "+" -f 1)
+          BUILD_NUMBER=$(echo $VERSION | cut -d "+" -f 2-)
+
+          NAMEWITHENV=$(echo $TAGNAME | rev | cut -d "-" -f 2- | rev)
+          FLAVOR=$(echo $NAMEWITHENV | rev | cut -d "-" -f 1 | rev)
+
+          # Export the variables, so they are visible in other jobs
+          echo "build_name=${BUILD_NAME}" >> $CM_ENV
+          echo "build_number=${BUILD_NUMBER}" >> $CM_ENV
+          echo "flavor=${FLAVOR}" >> $CM_ENV
     - &configure_bundle
-      name: Configure Bundle
-      script: |
-        bundle install
-        bundle lock --add-platform ruby
-        bundle lock --add-platform x86_64-darwin21
+        name: Configure Bundle
+        script: |
+          bundle install
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-darwin21
     - &build_android_app
-      name: Build android app
-      script: |
-        bundle exec fastlane build_custom platform:android environment:$flavor build_name:$build_name build_number:$build_number
+        name: Build android app
+        script: |
+          bundle exec fastlane build_custom platform:android environment:$flavor build_name:$build_name build_number:$build_number
     - &build_ios_app
-      name: Build iOS app
-      script: |
-        bundle exec fastlane build_custom platform:ios environment:$flavor build_name:$build_name build_number:$build_number
+        name: Build iOS app
+        script: |
+          bundle exec fastlane build_custom platform:ios environment:$flavor build_name:$build_name build_number:$build_number
+    - &download_artifacts
+        name: Download artifacts
+        script: |
+          URLS=("${{ inputs.deployment_config }}" "${{ inputs.build_artifact }}")
+          TARGET_DIR="devops/artifacts"
+          mkdir -p $TARGET_DIR && cd $TARGET_DIR
+          for URL in "${URLS[@]}"; do
+            fileName=$(curl -H "Authorization: Bearer $CM_API_TOKEN" -w "%{filename_effective}" -L "$URL" -O)
+            if [[ "$fileName" == *"-artifacts"* ]]; then
+              newFileName=$(echo "$fileName" | sed 's/-artifacts//')
+              mv "$fileName" "$newFileName"
+            fi
+          done
     - &deploy_app
-      name: Deploy app
-      script: |
-        if [ ${{ inputs.publish_to_store }} ]; then
+        name: Deploy app
+        script: |
           bundle exec fastlane deploy
-        fi
   artifacts:
     - &ipa devops/artifacts/*.ipa
     - &apk devops/artifacts/*.apk
     - &aab devops/artifacts/*.aab
     - &yaml devops/artifacts/*.yaml
 
-workflows:
-  build_and_deploy_android:
-    name: Build and deploy Android app
-    <<: *instance_mac_pro
-    inputs:
-      <<: *inputs
-    environment:
-      <<: *environment
-    triggering:
-      <<: *triggers
-    cache:
-      <<: *cached
-    artifacts:
-      - *apk
-      - *aab
-      - *yaml
-    scripts:
-      - *fetch_tag_details
-      - *configure_bundle
-      - *build_android_app
-      - *deploy_app
 
-  build_and_deploy_ios:
-    name: Build and deploy iOS app
-    <<: *instance_mac_pro
-    inputs:
-      <<: *inputs
-    environment:
-      <<: *environment
-    triggering:
-      <<: *triggers
-    cache:
-      <<: *cached
-    artifacts:
-      - *ipa
-      - *yaml
-    scripts:
-      - *fetch_tag_details
-      - *configure_bundle
-      - *build_ios_app
-      - *deploy_app
+workflows:
+    build_android_app:
+      name: Build Android app
+      <<: *instance_mac_pro
+      environment:
+        <<: *environment
+      triggering:
+        <<: *triggers
+      cache:
+        <<: *cached
+      artifacts:
+        - *apk
+        - *aab
+        - *yaml
+      scripts:
+        - *fetch_tag_details
+        - *configure_bundle
+        - *build_android_app
+
+    build_ios_app:
+      name: Build iOS app
+      <<: *instance_mac_pro
+      environment:
+        <<: *environment
+      triggering:
+        <<: *triggers
+      cache:
+        <<: *cached
+      artifacts:
+        - *ipa
+        - *yaml
+      scripts:
+        - *fetch_tag_details
+        - *configure_bundle
+        - *build_ios_app
+
+    deploy_app:
+      name: Deploy app
+      <<: *instance_mac_pro
+      inputs:
+        <<: *inputs
+      environment:
+        <<: *environment
+      scripts:
+        - *configure_bundle
+        - *download_artifacts
+      publishing:
+        scripts:
+          - *deploy_app
