@@ -54,7 +54,7 @@ In case you've named your provisioning profiles differently, make sure to update
 Inside the `fetch_credentials` private lane, replace the repository url with the one matching your distribution repository.
 The url should be in the format allowing repository cloning using access tokens.
 Check [this article][clone_github_repo_with_access_token] on how to setup and clone a github repository using an access token.
-
+{{#cicd_github}}
 ### Github pipeline
 
 If created with the `--cicd=github` flag, the generated project contains two reusable github workflows 
@@ -83,7 +83,8 @@ Before you manually distribute artifacts for respective platforms, make sure to 
 
 In order to trigger a new build, push a new tag to the repository in one of the following formats:
 `production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`
-
+{{/cicd_github}}
+{{#cicd_codemagic}}
 ### Codemagic pipeline
 
 If the project was generated with the `--cicd=codemagic` flag, a `codemagic.yaml` file is created within the root of the project.
@@ -112,7 +113,7 @@ The `deployment.yaml` contains necessary details used for deploying the app.
 In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below.
 
 _Note: The Codemagic API token can be found in the [Codemagic UI under the `Teams` option][codemagic_api_token_location]._
-
+{{/cicd_codemagic}}
 ### Local distribution
 
 Before running the commands, make sure you have Ruby and [Fastlane][fastlane_link] installed on your system.
