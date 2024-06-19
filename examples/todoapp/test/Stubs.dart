@@ -9,7 +9,8 @@ class Stubs {
     completed: false,
   );
 
-  static final todoUncompletedUpdated = todoUncompleted.copyWith(title: 'new');
+  static final todoUncompletedUpdated =
+      todoUncompleted.copyWith(id: '2', title: 'new');
 
   static final todoCompleted = TodoModel.empty().copyWith(
     id: '1',
@@ -19,6 +20,15 @@ class Stubs {
   );
 
   static final todoEmpty = TodoModel.empty();
+
+  static final todoListEmpty = List<TodoModel>.empty();
+
+  static final todoList = List<TodoModel>.from([
+    todoUncompleted,
+    todoCompleted,
+    todoUncompleted.copyWith(id: '3'),
+    todoCompleted.copyWith(id: '4')
+  ]);
 
   static final notFoundError = NotFoundErrorModel();
 }
