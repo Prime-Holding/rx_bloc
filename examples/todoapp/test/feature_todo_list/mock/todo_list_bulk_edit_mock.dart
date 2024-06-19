@@ -18,21 +18,11 @@ TodoListBulkEditBlocType todoListBulkEditMockFactory() {
   when(blocMock.events).thenReturn(eventsMock);
   when(blocMock.states).thenReturn(statesMock);
 
-  /*
-  final bulkActionsState = bulkActions != null
-      ? 
-      : const Stream<List<BulkActionModel>>.empty();*/
-
   when(statesMock.bulkActions).thenAnswer((_) => Stream.value([
-    BulkActionModel.markAllComplete,
-    BulkActionModel.markAllIncomplete,
-    BulkActionModel.clearCompleted,
-  ]));
-
-
-
-
-
+        BulkActionModel.markAllComplete,
+        BulkActionModel.markAllIncomplete,
+        BulkActionModel.clearCompleted,
+      ]));
 
   return blocMock;
 }
