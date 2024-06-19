@@ -43,7 +43,7 @@ void main() {
         (_) => Stream.value(Result.success(Stubs.todoUncompletedUpdated)));
   }
 
-  TodoDetailsBloc todoDetailsBloc([String? todoId, TodoModel? initialTodo]) =>
+  TodoDetailsBloc buildTodoDetailsBloc([String? todoId, TodoModel? initialTodo]) =>
       TodoDetailsBloc(
         todoId ?? '',
         initialTodo,
@@ -70,7 +70,7 @@ void main() {
         'test todo_details_bloc_dart state isLoading',
         build: () async {
           _defineWhen();
-          return todoDetailsBloc();
+          return buildTodoDetailsBloc();
         },
         act: (bloc) async {},
         state: (bloc) => bloc.states.isLoading,
@@ -82,7 +82,7 @@ void main() {
         'test todo_details_bloc_dart state errors',
         build: () async {
           _defineWhen(null);
-          return todoDetailsBloc(null);
+          return buildTodoDetailsBloc(null);
         },
         act: (bloc) async {},
         state: (bloc) => bloc.states.errors,
@@ -96,7 +96,7 @@ void main() {
         'test todo_details_bloc_dart state todo',
         build: () async {
           _defineWhen(Stubs.todoUncompleted.id);
-          return todoDetailsBloc(Stubs.todoUncompleted.id);
+          return buildTodoDetailsBloc(Stubs.todoUncompleted.id);
         },
         act: (bloc) async {},
         state: (bloc) => bloc.states.todo,
