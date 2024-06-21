@@ -10,7 +10,7 @@ class Stubs {
   );
 
   static final todoUncompletedUpdated =
-      todoUncompleted.copyWith(id: '2', title: 'new');
+      todoUncompleted.copyWith(id: '2', title: 'new uncompleted');
 
   static final todoCompleted = TodoModel.empty().copyWith(
     id: '1',
@@ -22,6 +22,8 @@ class Stubs {
   static final todoEmpty = TodoModel.empty();
 
   static final todoListEmpty = List<TodoModel>.empty();
+
+  static const shortTitle = 'sh';
 
   static final todoList = List<TodoModel>.from([
     todoUncompleted,
