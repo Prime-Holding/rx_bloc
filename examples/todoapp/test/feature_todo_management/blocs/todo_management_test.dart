@@ -11,7 +11,6 @@ import 'package:todoapp/feature_todo_management/services/todo_validator_service.
 import 'package:todoapp/lib_router/blocs/router_bloc.dart';
 
 import '../../Stubs.dart';
-import '../mock/todo_management_mock.mocks.dart';
 import 'todo_management_test.mocks.dart';
 
 @GenerateMocks([
@@ -33,12 +32,10 @@ void main() {
   late CoordinatorBlocType _coordinatorBloc;
   late CoordinatorEvents _coordinatorBlocEvents;
   late CoordinatorStates _coordinatorBlocStates;
-  late TodoManagementBlocEvents _todoManagementBlocEvents;
-  late TodoManagementBlocStates _todoManagementBlocStates;
   late RouterBlocType _routerBloc;
 
-  void _defineWhen({String? todoId, String? title, String? description}) {
-    when(_listService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
+  void _defineWhen({String? todoId, String? title, String? description, TodoModel? todoModel}) {
+    when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
         return Future.value(Stubs.todoUncompleted);
       }
@@ -46,10 +43,10 @@ void main() {
       return Future.error(Stubs.notFoundError);
     });
 
-    if (title != null) {
+    /*if (title != null) {
       when(_todoManagementBlocStates.showError).thenAnswer((_) => Stream.value(
               true));
-    }
+    }*/
 
     when(_todoManageService.addOrUpdate(Stubs.todoEmpty
             .copyWith(title: title, description: description ?? '')))
@@ -98,8 +95,9 @@ void main() {
     _routerBloc = MockRouterBlocType();
     _coordinatorBlocStates = MockCoordinatorStates();
     _coordinatorBlocEvents = MockCoordinatorEvents();
+    /*
     _todoManagementBlocEvents = MockTodoManagementBlocEvents();
-    _todoManagementBlocStates = MockTodoManagementBlocStates();
+    _todoManagementBlocStates = MockTodoManagementBlocStates();*/
 
     when(_coordinatorBloc.states).thenReturn(_coordinatorBlocStates);
     when(_coordinatorBloc.events).thenReturn(_coordinatorBlocEvents);
@@ -111,8 +109,8 @@ void main() {
         build: () async {
           _defineWhen(
               todoId: Stubs.todoUncompleted.id,
-              title: Stubs.todoUncompleted.title);
-          return todoManagementBloc(todoId: Stubs.todoUncompleted.id);
+              title: Stubs.todoUncompleted.title, todoModel: Stubs.todoUncompleted);
+          return todoManagementBloc(todoId: Stubs.todoUncompleted.id, initialTodo: Stubs.todoUncompleted);
         },
         act: (bloc) async {
           bloc.events.setTitle(Stubs.todoUncompleted.title);
