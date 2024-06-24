@@ -114,6 +114,7 @@ class TodoManagementBloc extends $TodoManagementBloc {
         _todoSubject,
         (title, todo) => title ?? todo.title,
       )
+          .skip(1)
           .map((title) => _validatorService.validateTitle(title))
           .shareReplay(maxSize: 1);
 

@@ -1,3 +1,4 @@
+import 'package:todoapp/assets.dart';
 import 'package:todoapp/base/models/errors/error_model.dart';
 import 'package:todoapp/base/models/todo_model.dart';
 import 'package:todoapp/feature_statistics/models/todo_stats_model.dart';
@@ -33,8 +34,13 @@ class Stubs {
     todoCompleted.copyWith(id: '4')
   ]);
 
-  static final todoListStatistics = TodoStatsModel(completed: 2, incomplete: 2);
-  static final todoListStatisticsEmpty = TodoStatsModel(completed: 0, incomplete: 0);
+  static const todoListStatistics = TodoStatsModel(completed: 2, incomplete: 2);
+  static const todoListStatisticsEmpty = TodoStatsModel(completed: 0, incomplete: 0);
 
   static final notFoundError = NotFoundErrorModel();
+
+  static final fieldRequiredError = FieldRequiredErrorModel(
+    fieldKey: I18nFieldKeys.title,
+    fieldValue: '',
+  );
 }

@@ -8,8 +8,6 @@ import 'package:todoapp/feature_todo_management/views/todo_management_page.dart'
 
 import '../mock/todo_management_mock.dart';
 
-
-/// Change the parameters according the the needs of the test
 Widget todoManagementFactory({
   String? title,
   String? description,

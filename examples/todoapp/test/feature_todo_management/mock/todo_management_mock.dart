@@ -29,12 +29,12 @@ TodoManagementBlocType todoManagementMockFactory({
   when(blocMock.states).thenReturn(statesMock);
 
   final titleState = title != null
-      ? title.length >= 3
-          ? Stream.value(title).shareReplay(maxSize: 1)
-          : Stream<String>.error(FieldErrorModel(
+      ? showError != null && showError == true
+          ? Stream<String>.error(FieldErrorModel(
               errorKey: I18nErrorKeys.tooShort,
               fieldValue: title,
             )).shareReplay(maxSize: 1)
+          : Stream.value(title).shareReplay(maxSize: 1)
       : const Stream<String>.empty();
 
   final descriptionState = description != null

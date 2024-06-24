@@ -1,9 +1,9 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:todoapp/base/models/errors/error_model.dart';
 
-import '../../Stubs.dart';
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
+import '../../stubs.dart';
 import '../factory/todo_details_factory.dart';
 
 void main() {
@@ -15,7 +15,7 @@ void main() {
         widget: todoDetailsFactory(todo: Result.success(Stubs.todoUncompleted)),
         scenario: Scenario(name: 'todo_details_success')),
     generateDeviceBuilder(
-        widget: todoDetailsFactory(todo: Result.loading()), //loading
+        widget: todoDetailsFactory(todo: Result.loading()),
         scenario: Scenario(name: 'todo_details_loading')),
     generateDeviceBuilder(
         widget: todoDetailsFactory(

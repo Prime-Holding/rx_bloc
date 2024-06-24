@@ -24,7 +24,7 @@ class TodoListService {
       return todo;
     }
 
-    return fetchTodoById(id);
+    return _repository.fetchTodoById(id);
   }
 
   /// Filters the [todos] based on the [filter].

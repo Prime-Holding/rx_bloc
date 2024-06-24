@@ -37,9 +37,11 @@ class TodoListPage extends StatelessWidget {
         body: RxResultBuilder<TodoListBlocType, List<TodoModel>>(
           state: (bloc) => bloc.states.todoList,
           buildSuccess: (context, list, bloc) => TodoListWidget(todos: list),
-          buildError: (context, exception, bloc) => AppErrorWidget(
-            error: exception,
-            onTabRetry: () => bloc.events.fetchTodoList(),
+          buildError: (context, exception, bloc) => Center(
+            child: AppErrorWidget(
+              error: exception,
+              onTabRetry: () => bloc.events.fetchTodoList(),
+            ),
           ),
           buildLoading: (context, bloc) => Center(
             child: AppLoadingIndicator.taskValue(

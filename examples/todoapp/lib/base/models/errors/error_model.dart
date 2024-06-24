@@ -5,6 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:equatable/equatable.dart';
 import 'package:widget_toolkit/models.dart' as wt_models;
 import 'package:widget_toolkit/models.dart' show L10nErrorKeyProvider;
 

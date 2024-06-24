@@ -1,9 +1,9 @@
 import 'package:todoapp/assets.dart';
 import 'package:todoapp/base/models/errors/error_model.dart';
 
-import '../../Stubs.dart';
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
+import '../../stubs.dart';
 import '../factory/todo_management_factory.dart';
 
 void main() {

@@ -4,30 +4,24 @@ import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:todoapp/base/common_blocs/coordinator_bloc.dart';
+import 'package:todoapp/base/models/todo_model.dart';
 import 'package:todoapp/feature_statistics/blocs/statistics_bloc.dart';
 import 'package:todoapp/feature_statistics/models/todo_stats_model.dart';
 import 'package:todoapp/feature_statistics/services/statistics_service.dart';
 
-import '../../Stubs.dart';
-import 'statistics_test.mocks.dart';
+import '../../base/common_blocs/coordinator_bloc_mock.dart';
+import '../../stubs.dart';
 
 @GenerateMocks([
-  CoordinatorBlocType,
-  CoordinatorEvents,
-  CoordinatorStates,
   StatisticsService,
 ])
 void main() {
   late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorEvents _coordinatorEvents;
   late CoordinatorStates _coordinatorStates;
   late StatisticsService _service;
 
-  void _defineWhen() {
-    when(_coordinatorStates.onTodoListChanged)
-        .thenAnswer((_) => Stream.value(Result.success(Stubs.todoList)));
-    when(_service.calculateStats(Stubs.todoList))
-        .thenAnswer((_) => Stubs.todoListStatistics);
+  void _defineWhen(List<TodoModel> todoList, TodoStatsModel todoStatistics) {
+    when(_coordinatorStates.onTodoListChanged).thenAnswer((_) => Stream.value(Result.success(todoList)));
   }
 
   StatisticsBloc statisticsBloc() => StatisticsBloc(
@@ -35,24 +29,21 @@ void main() {
         _service,
       );
   setUp(() {
-    _coordinatorBloc = MockCoordinatorBlocType();
-    _service = MockStatisticsService();
-    _coordinatorStates = MockCoordinatorStates();
-    _coordinatorEvents = MockCoordinatorEvents();
-
-    when(_coordinatorBloc.states).thenReturn(_coordinatorStates);
-    when(_coordinatorBloc.events).thenReturn(_coordinatorEvents);
+    _service = StatisticsService();
+    _coordinatorStates = coordinatorStatesMockFactory();
+    _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorStates);
   });
 
   group('test statistics_bloc_dart state todosStats', () {
     rxBlocTest<StatisticsBlocType, TodoStatsModel>(
         'test statistics_bloc_dart state todosStats',
         build: () async {
-          _defineWhen();
+          _defineWhen(Stubs.todoList, Stubs.todoListStatistics);
           return statisticsBloc();
         },
         act: (bloc) async {
-          _coordinatorBloc.events.todoListChanged(Result.success(Stubs.todoList));
+          _coordinatorBloc.events
+              .todoListChanged(Result.success(Stubs.todoList));
         },
         state: (bloc) => bloc.states.todosStats,
         expect: [Stubs.todoListStatistics]);

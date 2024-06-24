@@ -9,19 +9,16 @@ import 'package:todoapp/base/models/todo_model.dart';
 import 'package:todoapp/base/models/todos_filter_model.dart';
 import 'package:todoapp/feature_todo_list/blocs/todo_list_bloc.dart';
 
-import '../../Stubs.dart';
+import '../../base/common_blocs/coordinator_bloc_mock.dart';
+import '../../stubs.dart';
 import 'todo_list_test.mocks.dart';
 
 @GenerateMocks([
   TodoListService,
-  CoordinatorBlocType,
-  CoordinatorEvents,
-  CoordinatorStates,
 ])
 void main() {
   late TodoListService _todoListService;
   late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorEvents _coordinatorBlocEvents;
   late CoordinatorStates _coordinatorBlocStates;
 
   void _defineWhen() {
@@ -60,15 +57,16 @@ void main() {
       );
   setUp(() {
     _todoListService = MockTodoListService();
-    _coordinatorBloc = MockCoordinatorBlocType();
-    _coordinatorBlocStates = MockCoordinatorStates();
-    _coordinatorBlocEvents = MockCoordinatorEvents();
+
+    _coordinatorBlocStates = coordinatorStatesMockFactory();
+
+    _coordinatorBloc =
+        coordinatorBlocMockFactory(states: _coordinatorBlocStates);
 
     when(_coordinatorBloc.states).thenReturn(_coordinatorBlocStates);
-    when(_coordinatorBloc.events).thenReturn(_coordinatorBlocEvents);
   });
 
-  group('test todo_list_bloc_dart state todoList', () {
+  group('test todo_list_bloc_dart state filtered todo list', () {
     rxBlocTest<TodoListBlocType, Result<List<TodoModel>>>(
         'test todo_list_bloc_dart state todoList',
         build: () async {
@@ -82,9 +80,7 @@ void main() {
           Result.loading(),
           Result.success(Stubs.todoList)
         ]);
-  });
 
-  group('test todo_list_bloc_dart state filter', () {
     rxBlocTest<TodoListBlocType, TodosFilterModel>(
         'test todo_list_bloc_dart state filter',
         build: () async {
