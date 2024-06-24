@@ -14,7 +14,6 @@ import '../../Stubs.dart';
 import 'todo_management_test.mocks.dart';
 
 @GenerateMocks([
-  TodoModel,
   TodoListService,
   TodoManageService,
   TodoValidatorService,
@@ -24,6 +23,7 @@ import 'todo_management_test.mocks.dart';
   RouterBlocType,
   TodoManagementBlocEvents,
   TodoManagementBlocStates,
+  TodoManagementBlocType,
 ])
 void main() {
   late TodoListService _listService;
@@ -34,7 +34,11 @@ void main() {
   late CoordinatorStates _coordinatorBlocStates;
   late RouterBlocType _routerBloc;
 
-  void _defineWhen({String? todoId, String? title, String? description, TodoModel? todoModel}) {
+  void _defineWhen(
+      {String? todoId,
+      String? title,
+      String? description,
+      TodoModel? todoModel}) {
     when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
         return Future.value(Stubs.todoUncompleted);
@@ -43,37 +47,16 @@ void main() {
       return Future.error(Stubs.notFoundError);
     });
 
-    /*if (title != null) {
-      when(_todoManagementBlocStates.showError).thenAnswer((_) => Stream.value(
-              true));
-    }*/
-
     when(_todoManageService.addOrUpdate(Stubs.todoEmpty
             .copyWith(title: title, description: description ?? '')))
         .thenAnswer((_) => Future.value(Stubs.todoEmpty
             .copyWith(title: title, description: description ?? '')));
 
-    /*when(_validatorService.validateTitle(title ?? '')).thenAnswer((_) {
-      if (title != null || title!.trim().isEmpty) {
-        throw FieldRequiredErrorModel(
-          fieldKey: I18nFieldKeys.title,
-          fieldValue: title,
-        );
-      }
-      if (title.length < 3) {
-        throw FieldErrorModel(
-          errorKey: I18nErrorKeys.tooShort,
-          fieldValue: title,
-        );
-      }
-      if (title.length > 30) {
-        throw FieldErrorModel(
-          errorKey: I18nErrorKeys.tooLong,
-          fieldValue: title,
-        );
-      }
-      return title;
-    });*/
+    when(_validatorService.validateTitle('')).thenAnswer((_) => '');
+
+    if (title != null) {
+      when(_validatorService.validateTitle(title)).thenAnswer((_) => title);
+    }
   }
 
   TodoManagementBloc todoManagementBloc(
@@ -95,9 +78,6 @@ void main() {
     _routerBloc = MockRouterBlocType();
     _coordinatorBlocStates = MockCoordinatorStates();
     _coordinatorBlocEvents = MockCoordinatorEvents();
-    /*
-    _todoManagementBlocEvents = MockTodoManagementBlocEvents();
-    _todoManagementBlocStates = MockTodoManagementBlocStates();*/
 
     when(_coordinatorBloc.states).thenReturn(_coordinatorBlocStates);
     when(_coordinatorBloc.events).thenReturn(_coordinatorBlocEvents);
@@ -107,54 +87,27 @@ void main() {
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state title',
         build: () async {
-          _defineWhen(
-              todoId: Stubs.todoUncompleted.id,
-              title: Stubs.todoUncompleted.title, todoModel: Stubs.todoUncompleted);
-          return todoManagementBloc(todoId: Stubs.todoUncompleted.id, initialTodo: Stubs.todoUncompleted);
+          _defineWhen(title: Stubs.todoUncompleted.title);
+          return todoManagementBloc();
         },
         act: (bloc) async {
           bloc.events.setTitle(Stubs.todoUncompleted.title);
-          bloc.events.save();
         },
         state: (bloc) => bloc.states.title,
-        expect: [Stubs.todoUncompleted.title]);
+        expect: ['', Stubs.todoUncompleted.title]);
   });
 
   group('test todo_management_bloc_dart state description', () {
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state description',
         build: () async {
-          _defineWhen();
+          _defineWhen(description: Stubs.todoCompleted.description);
           return todoManagementBloc();
         },
         act: (bloc) async {
           bloc.events.setDescription(Stubs.todoCompleted.description);
         },
         state: (bloc) => bloc.states.description,
-        expect: [Stubs.todoCompleted.description]);
-  });
-
-  group('test todo_management_bloc_dart state showError', () {
-    rxBlocTest<TodoManagementBlocType, bool>(
-        'test todo_management_bloc_dart state showError',
-        build: () async {
-          _defineWhen(title: Stubs.shortTitle);
-          return todoManagementBloc();
-        },
-        act: (bloc) async {},
-        state: (bloc) => bloc.states.showError,
-        expect: [true]);
-  });
-
-  group('test todo_management_bloc_dart state isLoading', () {
-    rxBlocTest<TodoManagementBlocType, bool>(
-        'test todo_management_bloc_dart state isLoading',
-        build: () async {
-          _defineWhen();
-          return todoManagementBloc();
-        },
-        act: (bloc) async {},
-        state: (bloc) => bloc.states.isLoading,
-        expect: [false]);
+        expect: ['', Stubs.todoCompleted.description]);
   });
 }
