@@ -5,13 +5,13 @@ import 'package:provider/provider.dart';
 import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../../lib_todo_actions/di/app_todo_list_bulk_edit_popup_menu_button_with_dependencies.dart';
+import '../../lib_todo_actions/ui_components/app_todo_list_bulk_edit_popup_menu_button.dart';
 import '../blocs/statistics_bloc.dart';
 import '../models/todo_stats_model.dart';
 import '../ui_components/statistics_list_widget.dart';
 
-class StatsPage extends StatelessWidget {
-  const StatsPage({
+class StatisticsPage extends StatelessWidget {
+  const StatisticsPage({
     super.key,
   });
 
@@ -20,7 +20,7 @@ class StatsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(context.l10n.todos),
           actions: const [
-            AppTodoListBulkEditPopupMenuButtonWithDependencies(),
+            AppTodoListBulkEditPopupMenuButton(),
           ],
         ),
         floatingActionButton: FloatingActionButton(

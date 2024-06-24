@@ -1,5 +1,6 @@
 import 'package:todoapp/base/models/errors/error_model.dart';
 import 'package:todoapp/base/models/todo_model.dart';
+import 'package:todoapp/feature_statistics/models/todo_stats_model.dart';
 
 class Stubs {
   static final todoUncompleted = TodoModel.empty().copyWith(
@@ -31,6 +32,9 @@ class Stubs {
     todoUncompleted.copyWith(id: '3'),
     todoCompleted.copyWith(id: '4')
   ]);
+
+  static final todoListStatistics = TodoStatsModel(completed: 2, incomplete: 2);
+  static final todoListStatisticsEmpty = TodoStatsModel(completed: 0, incomplete: 0);
 
   static final notFoundError = NotFoundErrorModel();
 }

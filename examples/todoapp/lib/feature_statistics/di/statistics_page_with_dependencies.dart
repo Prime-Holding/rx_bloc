@@ -15,7 +15,7 @@ class StatisticsPageWithDependencies extends StatelessWidget {
           ..._services,
           ..._blocs,
         ],
-        child: const StatsPage(),
+        child: const StatisticsPage(),
       );
 
   List<Provider> get _services => [

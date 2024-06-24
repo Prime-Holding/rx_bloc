@@ -9,7 +9,7 @@ import 'package:todoapp/feature_todo_list/views/todo_list_page.dart';
 import 'package:todoapp/lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
 import 'package:todoapp/lib_todo_actions/models/bulk_action.dart';
 
-import '../mock/todo_list_bulk_edit_mock.dart';
+import '../../lib_todo_actions/mock/todo_list_bulk_edit_mock.dart';
 import '../mock/todo_list_mock.dart';
 
 /// Change the parameters according the the needs of the test
