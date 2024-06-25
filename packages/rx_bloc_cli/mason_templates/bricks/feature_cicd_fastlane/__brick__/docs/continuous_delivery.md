@@ -114,7 +114,7 @@ In case of deploying the apps to the respective stores manually using the downlo
 
 _Note: The Codemagic API token can be found in the [Codemagic UI under the `Teams` option][codemagic_api_token_location]._
 
-_Note 2: The Codemagic API token (`CM_API_TOKEN`) is only required for the `deploy_app` Codemagic workflow.
+_Note 2: The Codemagic API token (`CM_API_TOKEN`) is only required for the `deploy_app` Codemagic workflow, for access to internal build artifacts.
 This `secure` environment variable can be omitted upon the Codemagic project setup, if the mentioned workflow is not used._
 {{/cicd_codemagic}}
 ### Local distribution
