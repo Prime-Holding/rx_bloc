@@ -1,5 +1,5 @@
 /// Indicates the version of the package
-const rxBlocCliPackageVersion = '3.5.3';
+const rxBlocCliPackageVersion = '3.6.0';
 
 /// Generated project's Android Compile SDK version
 const kAndroidCompileSDKVersion = 34;

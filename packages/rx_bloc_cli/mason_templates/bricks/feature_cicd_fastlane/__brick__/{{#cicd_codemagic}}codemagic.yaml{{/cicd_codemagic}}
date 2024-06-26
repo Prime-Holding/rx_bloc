@@ -1,0 +1,183 @@
+definitions: # {{/}}
+  instance_mac_pro: &instance_mac_pro
+    instance_type: mac_mini_m1
+    max_build_duration: 100
+  environment: &environment
+    groups:
+      - secret
+    flutter: stable
+    xcode: latest
+    cocoapods: default
+  triggers: &triggers
+    events:
+      - tag
+    tag_patterns:
+      - pattern: '*-v[0-9]+.[0-9]+.[0-9]+\+[0-9]+'
+        include: true
+  cached: &cached
+    cache_paths:
+      - $HOME/.gradle/caches
+      - $FLUTTER_ROOT
+      - $HOME/Library/Caches/CocoaPods
+      - $FCI_BUILD_DIR/ios/Pods
+      - $FCI_BUILD_DIR/android/.gradle
+  inputs: &inputs
+    build_artifact:
+      description: "Build artifact (.ipa or .abb)"
+      type: string
+    deployment_config:
+      description: "The deployment.yaml file"
+      type: string
+  scripts:
+    - &fetch_tag_details
+        name: Fetch tag details
+        script: |
+          TAGNAME=$(git describe --tags $(git rev-list --tags --max-count=1))
+
+          VERSION=$(echo $TAGNAME | rev | cut -d "v" -f 1 | rev)
+          BUILD_NAME=$(echo $VERSION | cut -d "+" -f 1)
+          BUILD_NUMBER=$(echo $VERSION | cut -d "+" -f 2-)
+
+          NAMEWITHENV=$(echo $TAGNAME | rev | cut -d "-" -f 2- | rev)
+          FLAVOR=$(echo $NAMEWITHENV | rev | cut -d "-" -f 1 | rev)
+
+          # Export the variables, so they are visible in other jobs
+          echo "build_name=${BUILD_NAME}" >> $CM_ENV
+          echo "build_number=${BUILD_NUMBER}" >> $CM_ENV
+          echo "flavor=${FLAVOR}" >> $CM_ENV
+    - &configure_bundle
+        name: Configure Bundle
+        script: |
+          bundle install
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-darwin21
+    - &build_android_app
+        name: Build android app
+        script: |
+          bundle exec fastlane build_custom platform:android environment:$flavor build_name:$build_name build_number:$build_number
+    - &build_ios_app
+        name: Build iOS app
+        script: |
+          bundle exec fastlane build_custom platform:ios environment:$flavor build_name:$build_name build_number:$build_number
+    - &download_artifacts
+        name: Download artifacts
+        script: |
+          URLS=("${{ inputs.deployment_config }}" "${{ inputs.build_artifact }}")
+          TARGET_DIR="devops/artifacts"
+          mkdir -p $TARGET_DIR && cd $TARGET_DIR
+          for URL in "${URLS[@]}"; do
+            fileName=$(curl -H "Authorization: Bearer $CM_API_TOKEN" -w "%{filename_effective}" -L "$URL" -O)
+            if [[ "$fileName" == *"-artifacts"* ]]; then
+              newFileName=$(echo "$fileName" | sed 's/-artifacts//')
+              mv "$fileName" "$newFileName"
+            elif [[ "$fileName" == *".yaml"* ]]; then
+              mv "$fileName" "deployment.yaml"
+            fi
+          done
+    - &deploy_app
+        name: Deploy app
+        script: |
+          bundle exec fastlane deploy
+    - &backup_files_android
+      name: Backup Android artifacts
+      script: |
+        mkdir -p "devops/backup/"
+        mv "devops/artifacts/deployment.yaml" "devops/backup/android_deployment.yaml"
+        file_ext=("aab" "apk")
+        for ext in "${file_ext[@]}"; do
+            find "devops/artifacts" -type f -name "*.$ext" -exec cp {} "devops/backup/" \;
+        done
+    - &backup_files_ios
+      name: Backup iOS artifacts
+      script: |
+        mkdir -p "devops/backup/"
+        mv "devops/artifacts/deployment.yaml" "devops/backup/ios_deployment.yaml"
+        file_ext=("ipa")
+        for ext in "${file_ext[@]}"; do
+            find "devops/artifacts" -type f -name "*.$ext" -exec cp {} "devops/backup/" \;
+        done
+    - &restore_backup
+      name: Restore backed up artifacts
+      script: |
+        src_path="devops/backup"
+        dst_path="devops/artifacts"
+        mkdir -p "$dst_path"
+        rm -rf "$dst_path"/*
+        cp -r "$src_path"/* "$dst_path"
+        rm -rf "$src_path"
+  artifacts:
+    - &ipa devops/artifacts/*.ipa
+    - &apk devops/artifacts/*.apk
+    - &aab devops/artifacts/*.aab
+    - &yaml devops/artifacts/*.yaml
+
+workflows:
+    build_and_deploy:
+      name: Build and deploy iOS and Android apps
+      <<: *instance_mac_pro
+      environment:
+        <<: *environment
+      artifacts:
+        - *ipa
+        - *aab
+        - *apk
+        - *yaml
+      scripts:
+        - *fetch_tag_details
+        - *configure_bundle
+        - *build_android_app
+        - *deploy_app
+        - *backup_files_android
+        - *build_ios_app
+        - *deploy_app
+        - *backup_files_ios
+        - *restore_backup
+
+    build_android_app:
+      name: Build Android app
+      <<: *instance_mac_pro
+      environment:
+        <<: *environment
+      triggering:
+        <<: *triggers
+      cache:
+        <<: *cached
+      artifacts:
+        - *apk
+        - *aab
+        - *yaml
+      scripts:
+        - *fetch_tag_details
+        - *configure_bundle
+        - *build_android_app
+
+    build_ios_app:
+      name: Build iOS app
+      <<: *instance_mac_pro
+      environment:
+        <<: *environment
+      triggering:
+        <<: *triggers
+      cache:
+        <<: *cached
+      artifacts:
+        - *ipa
+        - *yaml
+      scripts:
+        - *fetch_tag_details
+        - *configure_bundle
+        - *build_ios_app
+
+    deploy_app:
+      name: Deploy iOS or Android app
+      <<: *instance_mac_pro
+      inputs:
+        <<: *inputs
+      environment:
+        <<: *environment
+      scripts:
+        - *configure_bundle
+        - *download_artifacts
+      publishing:
+        scripts:
+          - *deploy_app

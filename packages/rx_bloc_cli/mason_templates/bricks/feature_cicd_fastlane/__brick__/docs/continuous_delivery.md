@@ -54,10 +54,11 @@ In case you've named your provisioning profiles differently, make sure to update
 Inside the `fetch_credentials` private lane, replace the repository url with the one matching your distribution repository.
 The url should be in the format allowing repository cloning using access tokens.
 Check [this article][clone_github_repo_with_access_token] on how to setup and clone a github repository using an access token.
-
+{{#cicd_github}}
 ### Github pipeline
 
-The generated project contains two reusable github workflows (one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository.
+If created with the `--cicd=github` flag, the generated project contains two reusable github workflows 
+(one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository.
 
 If you haven't created an access token for your distribution repository in Github [using this guide][clone_github_repo_with_access_token], do so and take note of it.
 
@@ -66,8 +67,8 @@ There you should define two repository secrets with the same values as in the lo
 - `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
 - `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 
-Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app but does not deploy it.
-If you want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `true` and commit the new changes.
+Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app and deploys it to the respective stores.
+If you do not want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `false` and commit the new changes.
 
 The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners.
 All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
@@ -82,7 +83,40 @@ Before you manually distribute artifacts for respective platforms, make sure to 
 
 In order to trigger a new build, push a new tag to the repository in one of the following formats:
 `production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`
+{{/cicd_github}}
+{{#cicd_codemagic}}
+### Codemagic pipeline
 
+If the project was generated with the `--cicd=codemagic` flag, a `codemagic.yaml` file is created within the root of the project.
+This file contains preconfigured workflows for building and deployment of the Android and iOS app.
+
+Once you connect your repository with Codemagic and add your app, you'll be presented with the project settings.
+Under the `Environment variables` tab, define two `secure` environment variables assigned to the `secret` group with the following name:
+- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CM_API_TOKEN`: token used for accessing Codemagic artifacts through the API
+
+After that, you can start a build from the `Build tag` option by selecting a previously created tag and the workflow.
+Since the defined workflows are treated like separate jobs, you may need to start two workflows when building your app:
+one for building and deploying the Android app and another one for the iOS app.
+
+In case any of the builds fails but the artifacts are available, you can publish them using the `Deploy app` workflow. 
+Select the workflow in the `Build branch` option. Two new fields will appear asking for a url to the Codemagic build artifacts:
+- `Build artifact (.ipa or .abb)`: direct link to the build artifact (`.ipa` for iOS build, `.aab` for Android build) 
+- `The deployment.yaml file`: direct link to the `deployment.yaml` file containing the build configuration
+
+All workflows use a `mac_mini_m1` instance by default. 
+Different instances and build minutes can be found under the [pricing page][codemagic_pricing] and [available instance types][codemagic_instance_types].
+
+Once a codemagic build has succeeded, besides the respective artifacts (`.ipa`,`.aab`) there will be a `deployment.yaml` uploaded.
+The `deployment.yaml` contains necessary details used for deploying the app.
+In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below.
+
+_Note: The Codemagic API token can be found in the [Codemagic UI under the `Teams` option][codemagic_api_token_location]._
+
+_Note 2: The Codemagic API token (`CM_API_TOKEN`) is only required for the `deploy_app` Codemagic workflow, for access to internal build artifacts.
+This `secure` environment variable can be omitted upon the Codemagic project setup, if the mentioned workflow is not used._
+{{/cicd_codemagic}}
 ### Local distribution
 
 Before running the commands, make sure you have Ruby and [Fastlane][fastlane_link] installed on your system.
@@ -124,3 +158,6 @@ For more details on that and other commands, as well as their arguments, please 
 [apple_provisioning_profiles_list]: https://developer.apple.com/account/resources/profiles/list
 [clone_github_repo_with_access_token]: https://kettan007.medium.com/how-to-clone-a-git-repository-using-personal-access-token-a-step-by-step-guide-ab7b54d4ef83
 [github_actions_usage_limits]: https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits
+[codemagic_pricing]: https://codemagic.io/pricing/
+[codemagic_instance_types]: https://docs.codemagic.io/yaml-basic-configuration/yaml-getting-started/#instance-type
+[codemagic_api_token_location]: https://docs.codemagic.io/rest-api/codemagic-rest-api/#authentication

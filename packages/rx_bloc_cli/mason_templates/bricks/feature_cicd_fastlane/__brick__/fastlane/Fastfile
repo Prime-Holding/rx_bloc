@@ -417,6 +417,7 @@ platform :ios do
 
             MY_APP_ID = bundle_id_map[options[:environment]]
             MY_PROFILE = provisioning_profile_name_map[options[:environment]]
+            PROJECT_PATH_ABS = Dir.chdir(PROJECT_DIRECTORY_PATH) { Dir.getwd }
 
             settings_to_override = {
                 :BUNDLE_IDENTIFIER => MY_APP_ID,
@@ -425,10 +426,10 @@ platform :ios do
             }
 
             gym(
-                workspace: PROJECT_DIRECTORY_PATH+'/ios/Runner.xcworkspace',
+                workspace: PROJECT_PATH_ABS+'/ios/Runner.xcworkspace',
                 scheme: flavor_map[options[:environment]],
                 xcargs: settings_to_override,
-                output_directory: PROJECT_DIRECTORY_PATH+'/devops/artifacts',
+                output_directory: PROJECT_PATH_ABS+'/devops/artifacts',
                 export_method: 'app-store',
                 export_options: {
                     manageAppVersionAndBuildNumber: false,

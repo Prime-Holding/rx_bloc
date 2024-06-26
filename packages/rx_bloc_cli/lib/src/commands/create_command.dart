@@ -142,6 +142,7 @@ class CreateCommand extends Command<int> {
             'enable_pin_code': arguments.pinCodeEnabled,
             'cicd': arguments.cicdEnabled,
             'cicd_github': arguments.cicdGithubEnabled,
+            'cicd_codemagic': arguments.cicdCodemagicEnabled,
             'enable_auth_matrix': arguments.authMatrixEnabled,
           },
     );
