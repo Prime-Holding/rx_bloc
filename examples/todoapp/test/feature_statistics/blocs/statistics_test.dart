@@ -20,7 +20,7 @@ void main() {
   late CoordinatorStates _coordinatorStates;
   late StatisticsService _service;
 
-  void _defineWhen(List<TodoModel> todoList, TodoStatsModel todoStatistics) {
+  void _defineWhen(List<TodoModel> todoList) {
     when(_coordinatorStates.onTodoListChanged).thenAnswer((_) => Stream.value(Result.success(todoList)));
   }
 
@@ -38,7 +38,7 @@ void main() {
     rxBlocTest<StatisticsBlocType, TodoStatsModel>(
         'test statistics_bloc_dart state todosStats',
         build: () async {
-          _defineWhen(Stubs.todoList, Stubs.todoListStatistics);
+          _defineWhen(Stubs.todoList);
           return statisticsBloc();
         },
         act: (bloc) async {
