@@ -82,7 +82,7 @@ _Note: Once the github build is successfully done, two deployment files will be 
 Before you manually distribute artifacts for respective platforms, make sure to rename the deployment files to `deployment.yaml`._
 
 In order to trigger a new build, push a new tag to the repository in one of the following formats:
-`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`
+`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`.
 {{/cicd_github}}
 {{#cicd_codemagic}}
 ### Codemagic pipeline
@@ -97,10 +97,21 @@ Under the `Environment variables` tab, define two `secure` environment variables
 - `CM_API_TOKEN`: token used for accessing Codemagic artifacts through the API
 
 After that, you can start a build from the `Build tag` option by selecting a previously created tag and the workflow.
-Since the defined workflows are treated like separate jobs, you may need to start two workflows when building your app:
-one for building and deploying the Android app and another one for the iOS app.
 
-In case any of the builds fails but the artifacts are available, you can publish them using the `Deploy app` workflow. 
+There are several workflows you can use:
+- build_and_deploy: Builds and deploys iOS and Android app
+- build_android_app: Builds Android app and produces artifacts (`.aab` and `deployment.yaml`)
+- build_ios_app: Builds iOS app and produces artifacts (`.ipa` and `deployment.yaml`)
+- deploy_app: Deploys previously built artifacts
+
+The `build_and_deploy`,`build_android_app` and `build_ios_app` workflows are used to build the app
+(and deploy it in the case of the `build_and_deploy` workflow). 
+To start a build, select the `Build tag` option and choose one of the previously mentioned workflows.
+Select a previously created tag for which you want to build the app.
+The tag name should be named in one of the following formats:
+`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`.
+
+In case any of the builds fails but the artifacts are available, you can publish them using the `deploy_app` workflow. 
 Select the workflow in the `Build branch` option. Two new fields will appear asking for a url to the Codemagic build artifacts:
 - `Build artifact (.ipa or .abb)`: direct link to the build artifact (`.ipa` for iOS build, `.aab` for Android build) 
 - `The deployment.yaml file`: direct link to the `deployment.yaml` file containing the build configuration
