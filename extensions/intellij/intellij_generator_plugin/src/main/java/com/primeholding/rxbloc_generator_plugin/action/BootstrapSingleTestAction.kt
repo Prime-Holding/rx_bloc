@@ -24,7 +24,7 @@ class BootstrapSingleTestAction : AnAction() {
 
     override fun update(e: AnActionEvent?) {
         super.update(e)
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         var isVisible = false
 
         var file: VirtualFile?
@@ -64,7 +64,7 @@ class BootstrapSingleTestAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent?) {
 
         project = e?.project
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
         var file: VirtualFile?
 
