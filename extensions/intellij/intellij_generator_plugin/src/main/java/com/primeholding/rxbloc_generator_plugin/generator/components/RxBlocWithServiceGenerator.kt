@@ -5,7 +5,7 @@ package com.primeholding.rxbloc_generator_plugin.generator.components
 import com.google.common.io.CharStreams
 import com.primeholding.rxbloc_generator_plugin.generator.RxBlocGeneratorBase
 import com.primeholding.rxbloc_generator_plugin.generator.RxGeneratorBase
-import org.apache.commons.lang.text.StrSubstitutor
+import org.apache.commons.text.StringSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
@@ -39,7 +39,7 @@ class RxBlocWithServiceGenerator(
     override fun contextDirectoryName(): String = "services"
 
     override fun generate(): String {
-        val substitute = StrSubstitutor(templateValues)
+        val substitute = StringSubstitutor(templateValues)
         return substitute.replace(templateString)
     }
 }
