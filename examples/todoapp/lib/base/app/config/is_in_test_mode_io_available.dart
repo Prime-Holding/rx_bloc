@@ -1,3 +1,3 @@
 import 'dart:io';
 
-bool isInTestModePlatformSpecific = Platform.environment.containsKey('FLUTTER_TEST');
+bool isInTestMode = Platform.environment.containsKey('FLUTTER_TEST');

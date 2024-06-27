@@ -1,1 +1,1 @@
-const bool isInTestModePlatformSpecific = false;
+const bool isInTestMode = false;
