@@ -47,7 +47,7 @@ dependencies: {{#enable_dev_menu}}
   shelf_static: ^1.1.2 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
   sign_in_with_apple: ^5.0.0{{/enable_social_logins}}{{#enable_auth_matrix}}
   uuid: ^4.2.1{{/enable_auth_matrix}}
-  widget_toolkit: ^0.0.2 {{#enable_pin_code}}
+  widget_toolkit: ^0.1.0 {{#enable_pin_code}}
   widget_toolkit_biometrics: ^0.0.2 {{/enable_pin_code}} {{#enable_feature_otp}}
   widget_toolkit_otp: ^0.0.2{{/enable_feature_otp}}{{#enable_pin_code}}
   widget_toolkit_pin: ^0.0.2{{/enable_pin_code}}

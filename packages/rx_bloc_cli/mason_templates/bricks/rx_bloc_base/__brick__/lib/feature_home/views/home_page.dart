@@ -39,6 +39,7 @@ class HomePage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         key: K.bottomNavigationBar,
+        backgroundColor: context.designSystem.colors.backgroundColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: onNavigationItemSelected,

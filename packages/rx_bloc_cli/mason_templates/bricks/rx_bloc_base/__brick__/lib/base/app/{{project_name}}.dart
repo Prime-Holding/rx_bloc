@@ -17,7 +17,7 @@ import '../../lib_analytics/blocs/analytics_bloc.dart';{{/analytics}}{{#has_auth
 import '../../lib_auth/blocs/user_account_bloc.dart';{{/enable_pin_code}}
 import '../../lib_auth/data_sources/remote/interceptors/auth_interceptor.dart';{{/has_authentication}} {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';{{/enable_change_language}}{{#enable_dev_menu}}
-import '../../lib_dev_menu/ui_components/app_dev_menu.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
+import '../../lib_dev_menu/ui_components/app_dev_menu_gesture_detector_with_dependencies.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
 import '../../lib_pin_code/bloc/create_pin_bloc.dart';
 import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 import '../../lib_pin_code/models/pin_code_arguments.dart';
@@ -198,9 +198,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
       {{#enable_dev_menu}}
       if (EnvironmentConfig.enableDevMenu) {
-        return AppDevMenuGestureDetector.withDependencies(
-          context,
-          AppRouter.rootNavigatorKey,
+        return AppDevMenuGestureDetectorWithDependencies(
+          navigatorKey: AppRouter.rootNavigatorKey,
           child: materialApp,
         );
       }{{/enable_dev_menu}}

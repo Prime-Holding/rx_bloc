@@ -25,7 +25,7 @@ class CommonComponentsPage extends StatelessWidget {
             WidgetSection(
               description:
                   context.l10n.featureWidgetToolkit.openUrlWidgetLaunchURLLink,
-              child: OpenUrlWidget.withDependencies(
+              child: OpenUrlWidgetWithDependencies(
                 url: context.l10n.featureWidgetToolkit.primeHoldingUrl,
                 translateError: translateError,
                 child: Text(
@@ -41,7 +41,7 @@ class CommonComponentsPage extends StatelessWidget {
             WidgetSection(
               description: context
                   .l10n.featureWidgetToolkit.openUrlWidgetCallAPhoneNumber,
-              child: OpenUrlWidget.withDependencies(
+              child: OpenUrlWidgetWithDependencies(
                 url: context.l10n.featureWidgetToolkit.phoneNumber,
                 uriType: UriType.telephone,
                 translateError: translateError,
