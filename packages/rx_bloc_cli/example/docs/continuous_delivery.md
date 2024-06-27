@@ -15,7 +15,7 @@ The `create_distribution` command will populate the directory with the file stru
 The generated `README` file contains steps on where to download and how to name the required files.
 Within the `android` and `ios` directories, paste the previously downloaded files and rename them accordingly.
 
-Before committing any changes, make sure you encrypt all the files using the `./crypto.sh encode all` command.
+Before committing any changes, make sure you encrypt all the files using the `./crypt.sh encode all` command.
 
 ### Project & Fastfile amendments
 
@@ -70,6 +70,15 @@ There you should define two repository secrets with the same values as in the lo
 Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app and deploys it to the respective stores.
 If you do not want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `false` and commit the new changes.
 
+In order to trigger a new build, push a new tag to the repository in one of the following formats:
+`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`.
+
+Make sure you name the tag properly. The tag should contain the following parts in the specified order:
+- (optional) custom tag name ending in a dash (`-`) 
+- flavor name (`develop`,`sit`,`uat`,`production`) ending in a dash (`-`)
+- build version prefixed with a `v`
+- build number prefixed with a `+`
+
 The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners.
 All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
 
@@ -78,11 +87,9 @@ The `deployment.yaml` contains necessary details used for deploying the app.
 The `deployment.yaml` and the artifacts can be downloaded from the completed Github action from the Actions tab.
 In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below.
 
-_Note: Once the github build is successfully done, two deployment files will be available: `android-deployment.yaml` and `ios-deployment.yaml`.
-Before you manually distribute artifacts for respective platforms, make sure to rename the deployment files to `deployment.yaml`._
+> [!NOTE]
+> Once the github build is successfully done, two deployment files will be available: `android-deployment.yaml` and `ios-deployment.yaml`. Before you manually distribute artifacts for respective platforms, make sure to rename the deployment files to `deployment.yaml`.
 
-In order to trigger a new build, push a new tag to the repository in one of the following formats:
-`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`
 
 
 ### Local distribution
