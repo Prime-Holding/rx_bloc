@@ -47,7 +47,7 @@ void main() {
     when(_todoManageService.addOrUpdate(Stubs.todoEmpty
             .copyWith(title: title, description: description)))
         .thenAnswer((_) => Future.value(Stubs.todoEmpty
-            .copyWith(title: title, description: description)));
+            .copyWith(title: title, description: description  )));
   }
 
   TodoManagementBloc todoManagementBloc(
