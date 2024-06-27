@@ -34,7 +34,7 @@ void main() {
   void _defineWhen(
       {String? todoId,
       String? title,
-      String? description,
+      String? description = '',
       TodoModel? todoModel}) {
     when(_listService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
@@ -45,9 +45,9 @@ void main() {
     });
 
     when(_todoManageService.addOrUpdate(Stubs.todoEmpty
-            .copyWith(title: title, description: description ?? '')))
+            .copyWith(title: title, description: description)))
         .thenAnswer((_) => Future.value(Stubs.todoEmpty
-            .copyWith(title: title, description: description ?? '')));
+            .copyWith(title: title, description: description)));
   }
 
   TodoManagementBloc todoManagementBloc(

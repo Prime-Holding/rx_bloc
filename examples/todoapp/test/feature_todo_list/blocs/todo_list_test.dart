@@ -21,34 +21,39 @@ void main() {
   late CoordinatorBlocType _coordinatorBloc;
   late CoordinatorStates _coordinatorBlocStates;
 
-  void _defineWhen() {
+  void _defineWhen(
+      {List<TodoModel>? todoList,
+      TodoModel? updatedTodo,
+      TodoModel? deletedModel,
+      List<TodoModel>? changedTodoList}) {
+    todoList ??= Stubs.todoList;
+    updatedTodo ??= Stubs.todoUncompletedUpdated;
+    deletedModel ??= Stubs.todoUncompleted;
+    changedTodoList ??= Stubs.todoListEmpty;
+
     when(_todoListService.fetchTodoList())
-        .thenAnswer((_) => Future.value(Stubs.todoList));
+        .thenAnswer((_) => Future.value(todoList));
 
     when(_todoListService.filterTodos([], TodosFilterModel.all))
         .thenAnswer((_) => []);
 
-    when(_todoListService.filterTodos(Stubs.todoList, TodosFilterModel.all))
-        .thenAnswer((_) => Stubs.todoList);
+    when(_todoListService.filterTodos(todoList, TodosFilterModel.all))
+        .thenAnswer((_) => todoList!);
 
-    when(_todoListService.filterTodos(
-            Stubs.todoList, TodosFilterModel.completed))
-        .thenAnswer(
-            (_) => Stubs.todoList.where((todo) => todo.completed).toList());
+    when(_todoListService.filterTodos(todoList, TodosFilterModel.completed))
+        .thenAnswer((_) => todoList!.where((todo) => todo.completed).toList());
 
-    when(_todoListService.filterTodos(
-            Stubs.todoList, TodosFilterModel.incomplete))
-        .thenAnswer(
-            (_) => Stubs.todoList.where((todo) => !todo.completed).toList());
+    when(_todoListService.filterTodos(todoList, TodosFilterModel.incomplete))
+        .thenAnswer((_) => todoList!.where((todo) => !todo.completed).toList());
 
-    when(_coordinatorBlocStates.onTodoAddedOrUpdated).thenAnswer(
-        (_) => Stream.value(Result.success(Stubs.todoUncompletedUpdated)));
+    when(_coordinatorBlocStates.onTodoAddedOrUpdated)
+        .thenAnswer((_) => Stream.value(Result.success(updatedTodo!)));
 
-    when(_coordinatorBlocStates.onTodoDeleted)
-        .thenAnswer((_) => Stream.value(Result.success(Stubs.todoUncompleted)));
+    when(_coordinatorBlocStates.onTodoDeleted).thenAnswer((_) =>
+        Stream.value(Result.success(deletedModel!)));
 
-    when(_coordinatorBlocStates.onTodoListChanged)
-        .thenAnswer((_) => Stream.value(Result.success(Stubs.todoListEmpty)));
+    when(_coordinatorBlocStates.onTodoListChanged).thenAnswer((_) =>
+        Stream.value(Result.success(changedTodoList!)));
   }
 
   TodoListBloc todoListBloc() => TodoListBloc(
@@ -70,7 +75,8 @@ void main() {
     rxBlocTest<TodoListBlocType, Result<List<TodoModel>>>(
         'test todo_list_bloc_dart state todoList',
         build: () async {
-          _defineWhen();
+          _defineWhen(
+              todoList: Stubs.todoList);
           return todoListBloc();
         },
         act: (bloc) async {},
