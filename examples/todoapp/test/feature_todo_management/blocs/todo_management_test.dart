@@ -44,10 +44,10 @@ void main() {
       return Future.error(Stubs.notFoundError);
     });
 
-    when(_todoManageService.addOrUpdate(Stubs.todoEmpty
-            .copyWith(title: title, description: description)))
-        .thenAnswer((_) => Future.value(Stubs.todoEmpty
-            .copyWith(title: title, description: description  )));
+    when(_todoManageService.addOrUpdate(
+            Stubs.todoEmpty.copyWith(title: title, description: description)))
+        .thenAnswer((_) => Future.value(
+            Stubs.todoEmpty.copyWith(title: title, description: description)));
   }
 
   TodoManagementBloc todoManagementBloc(
@@ -80,6 +80,18 @@ void main() {
         },
         state: (bloc) => bloc.states.title,
         expect: [Stubs.todoUncompleted.title]);
+
+    rxBlocTest<TodoManagementBlocType, String>(
+        'test todo_management_bloc_dart state invalid title',
+        build: () async {
+          _defineWhen(title: Stubs.shortTitle);
+          return todoManagementBloc();
+        },
+        act: (bloc) async {
+          bloc.events.setTitle(Stubs.shortTitle);
+        },
+        state: (bloc) => bloc.states.title,
+        expect: [throwsA(isException)]);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state description',
