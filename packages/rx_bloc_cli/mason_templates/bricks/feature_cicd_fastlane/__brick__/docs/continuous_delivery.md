@@ -108,7 +108,7 @@ Under the `Environment variables` tab, define `secure` environment variables ass
 > The Codemagic API token can be found in the [Codemagic UI under the `Teams` option][codemagic_api_token_location].
 
 > [!NOTE]
-> The Codemagic API token (`CM_API_TOKEN`) is only required for the `deploy_app` Codemagic workflow, for access to internal build artifacts. This `secure` environment variable can be omitted upon the Codemagic project setup, if the mentioned workflow is not used.
+> The Codemagic API token (`CM_API_TOKEN`) is only required for the `deploy_app` workflow, for access to internal build artifacts from Codemagic. This `secure` environment variable can be omitted upon the Codemagic project setup, if the mentioned workflow is not used.
 
 After that, you can start a build from the `Build tag` option by selecting a previously created tag and the workflow.
 
@@ -133,8 +133,8 @@ Make sure you name the tag properly. The tag should contain the following parts 
 
 In case any of the builds fails but the artifacts are available, you can publish them using the `deploy_app` workflow. 
 Select the workflow in the `Build branch` option. Two new fields will appear asking for a url to the Codemagic build artifacts:
-- `Build artifact (.ipa or .abb)`: direct link to the build artifact (`.ipa` for iOS build, `.aab` for Android build) 
-- `The deployment.yaml file`: direct link to the `deployment.yaml` file containing the build configuration
+- `Build artifact URL (.ipa or .abb)`: direct link to the build artifact (`.ipa` for iOS build, `.aab` for Android build) 
+- `Deployment config URL (deployment.yaml)`: direct link to the `deployment.yaml` file containing the build configuration
 
 All workflows use a `mac_mini_m1` instance by default. 
 Different instances and build minutes can be found under the [pricing page][codemagic_pricing] and [available instance types][codemagic_instance_types].
