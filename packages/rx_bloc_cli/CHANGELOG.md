@@ -1,3 +1,6 @@
+## [3.6.0]
+* Added [Codemagic](https://codemagic.io/start/) as a CI/CD option under the flag --cicd (`fastlane` (default), `github`, `codemagic`, `none`)
+
 ## [3.5.3]
 * Updated `widget_toolkit` dependencies in generated project
 * Improvements and bugfixes to generated projects

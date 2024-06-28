@@ -71,6 +71,10 @@ String _projectGitIgnore = '''
 lib/generated_plugin_registrant.dart
 lib/assets.dart
 
+# Devops files and directories
+devops/artifacts/**
+devops/backup/**
+
 # Symbolication related
 app.*.symbols
 
