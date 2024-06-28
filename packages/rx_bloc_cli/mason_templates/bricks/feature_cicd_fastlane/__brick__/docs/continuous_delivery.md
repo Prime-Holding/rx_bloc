@@ -98,6 +98,7 @@ If the project was generated with the `--cicd=codemagic` flag, a `codemagic.yaml
 This file contains preconfigured workflows for building and deployment of the Android and iOS app.
 
 Once you connect your repository with Codemagic and add your app, you'll be presented with the project settings.
+In order to make use of the `codemagic.yaml` workflows, first you need to `Switch to YAML configuration` if presented by the Workflow Editor once the Codemagic project is accessed.
 Under the `Environment variables` tab, define `secure` environment variables assigned to the `secret` group with the following name:
 - `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
 - `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
