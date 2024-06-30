@@ -3,7 +3,7 @@
 package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
-import org.apache.commons.lang.text.StrSubstitutor
+import org.apache.commons.text.StringSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
@@ -55,7 +55,7 @@ abstract class RxBlocGeneratorBase(
     }
 
     override fun generate(): String {
-        val substitute = StrSubstitutor(templateValues)
+        val substitute = StringSubstitutor(templateValues)
         return substitute.replace(templateString)
     }
 

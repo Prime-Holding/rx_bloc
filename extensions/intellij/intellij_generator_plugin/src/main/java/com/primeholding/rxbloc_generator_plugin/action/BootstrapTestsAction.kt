@@ -2,7 +2,7 @@ package com.primeholding.rxbloc_generator_plugin.action
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DataKeys
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
@@ -18,7 +18,7 @@ import java.io.File
 class BootstrapTestsAction : AnAction() {
     override fun update(e: AnActionEvent?) {
         super.update(e)
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         var isVisible = false
 
         val numberFiles = (files?.size ?: 0)
@@ -80,7 +80,7 @@ class BootstrapTestsAction : AnAction() {
         e?.project?.basePath?.let { baseDir ->
 
             var isShowDialog = false
-            val files = e.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+            val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
 
             val potentialBlocFolders = mutableListOf<VirtualFile>()
