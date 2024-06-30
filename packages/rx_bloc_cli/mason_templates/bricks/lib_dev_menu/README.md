@@ -14,22 +14,20 @@ The `AppDevMenuGestureDetector` widget is a widget that is listening for user in
 
 The widget is dependent on the `DevMenuBloc` which is an essential part of the system. The `DevMenuBloc` contains the necessary logic for registering and emitting stream events after a specific number of taps has been made. By default that number is 5 taps, but a custom number can be specified (by setting the `maxTaps` value when instantiating the bloc). The `DevMenuDependencies.from` factory can be used to define all necessary dependencies which can be accessed from the `providers` field.
 
-The `AppDevMenuGestureDetector` widget comes with a static method called `AppDevMenuGestureDetector.withDependencies` which allows you to easily and on-the-go define a widget with the necessary dependencies. It will instantiate and properly nest a child widget within a MultiProvider for you. The hitbox of the `child` widget will be used to trigger any interactions within the bloc.
+Besides the `AppDevMenuGestureDetector` widget, you can also use the  `AppDevMenuGestureDetectorWithDependencies` which allows you to easily and on-the-go define a widget with the necessary dependencies. It will instantiate and properly nest a child widget within a MultiProvider for you. The hitbox of the `child` widget will be used to trigger any interactions within the bloc.
 
 As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page. By default whole app is wrapped so you are able to access DevMenu from any page.
 
 ```dart
-  AppDevMenuGestureDetector.withDependencies(
-    context,
-    navKey!,
+  AppDevMenuGestureDetector(
+    navigatorKey: navKey!,
     child: materialApp,
-      onDevMenuPresented: () {
+    onDevMenuPresented: () {
       showAppDevMenuBottomSheet(
         context.read<AppRouter>().rootNavigatorKey.currentContext!,
       );
     },
   );
-
 ```
 
 ### `showAppDevMenuBottomSheet`

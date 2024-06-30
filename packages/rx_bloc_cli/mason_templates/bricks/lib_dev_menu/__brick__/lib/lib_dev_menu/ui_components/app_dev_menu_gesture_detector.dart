@@ -7,10 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../../base/data_sources/remote/http_clients/plain_http_client.dart';
-import '../../lib_router/router.dart';
 import '../blocs/dev_menu_bloc.dart';
-import '../di/dev_menu_dependencies.dart';
-import 'dev_menu_bottom_sheet.dart';
 
 class AppDevMenuGestureDetector extends StatefulWidget {
   const AppDevMenuGestureDetector({
@@ -23,24 +20,6 @@ class AppDevMenuGestureDetector extends StatefulWidget {
   final Widget child;
   final VoidCallback onDevMenuPresented;
   final GlobalKey<NavigatorState>? navigatorKey;
-
-  static Widget withDependencies(
-    BuildContext context,
-    GlobalKey<NavigatorState> navigatorKey, {
-    required Widget child,
-  }) =>
-      MultiProvider(
-        providers: DevMenuDependencies.from(context).providers,
-        child: AppDevMenuGestureDetector(
-          onDevMenuPresented: () {
-            showAppDevMenuBottomSheet(
-              AppRouter.rootNavigatorKey.currentContext!,
-            );
-          },
-          navigatorKey: navigatorKey,
-          child: child,
-        ),
-      );
 
   @override
   State<AppDevMenuGestureDetector> createState() =>
