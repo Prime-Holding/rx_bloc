@@ -38,7 +38,7 @@ on:
         required: true
 
 jobs:
-  build_iOS_app:
+  build_ios:
     defaults:
       run:
         working-directory: ${{ inputs.project_path }}
@@ -46,6 +46,7 @@ jobs:
     env:
       MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
       MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
+      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
@@ -57,8 +58,8 @@ jobs:
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
-           ruby-version: 3.1.0
-           bundler-cache: true
+          ruby-version: 3.1.0
+          bundler-cache: true
       - name: Configure Ruby
         run: |
           bundle install
@@ -78,7 +79,35 @@ jobs:
         with:
           name: ios-deployment.yaml
           path: "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
-      - name: Deploy app
-        if: ${{ inputs.publish_to_store }}
+
+  deploy_to_test_flight:
+    if: ${{ inputs.publish_to_store }}
+    needs: build_ios
+    defaults:
+      run:
+        working-directory: ${{ inputs.project_path }}
+    runs-on: ubuntu-latest
+    env:
+      MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
+      MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
+      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          merge-multiple: true
+          path: "${{ inputs.project_path }}/devops/artifacts/"
+      - name: Setup Ruby env
+        uses: ruby/setup-ruby@v1.176.0
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Configure Ruby
         run: |
-          bundle exec fastlane deploy
+          bundle install
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-linux
+      - name: Publish to Test Flight
+        run: bundle exec fastlane deploy
