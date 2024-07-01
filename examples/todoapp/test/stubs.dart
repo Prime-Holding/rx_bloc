@@ -1,4 +1,3 @@
-import 'package:todoapp/assets.dart';
 import 'package:todoapp/base/models/errors/error_model.dart';
 import 'package:todoapp/base/models/todo_model.dart';
 import 'package:todoapp/feature_statistics/models/todo_stats_model.dart';
@@ -38,9 +37,4 @@ class Stubs {
   static const todoListStatisticsEmpty = TodoStatsModel(completed: 0, incomplete: 0);
 
   static final notFoundError = NotFoundErrorModel();
-
-  static final fieldRequiredError = FieldRequiredErrorModel(
-    fieldKey: I18nFieldKeys.title,
-    fieldValue: '',
-  );
 }

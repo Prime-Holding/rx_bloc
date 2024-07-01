@@ -91,7 +91,7 @@ void main() {
           bloc.events.setTitle(Stubs.shortTitle);
         },
         state: (bloc) => bloc.states.title,
-        expect: [throwsA(isException)]);
+        expect: [emitsError(isA<FieldErrorModel>())]);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state description',
