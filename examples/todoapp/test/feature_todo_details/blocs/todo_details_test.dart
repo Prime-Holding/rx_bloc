@@ -8,27 +8,21 @@ import 'package:todoapp/base/common_services/todo_list_service.dart';
 import 'package:todoapp/base/models/errors/error_model.dart';
 import 'package:todoapp/base/models/todo_model.dart';
 import 'package:todoapp/feature_todo_details/blocs/todo_details_bloc.dart';
-import 'package:todoapp/lib_router/blocs/router_bloc.dart';
 
-import '../../Stubs.dart';
-import '../../base/common_blocs/router_bloc_mock.mocks.dart';
+import '../../base/common_blocs/coordinator_bloc_mock.dart';
+import '../../base/common_blocs/router_bloc_mock.dart';
+import '../../stubs.dart';
 import 'todo_details_test.mocks.dart';
 
 @GenerateMocks([
   TodoModel,
   TodoListService,
-  CoordinatorBlocType,
-  CoordinatorEvents,
-  CoordinatorStates,
   TodoDetailsBlocType
 ])
 void main() {
   late TodoListService _todoListService;
   late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorEvents _coordinatorBlocEvents;
   late CoordinatorStates _coordinatorBlocStates;
-  late RouterBlocType _routerBloc;
-  late RouterBlocEvents _routerBlocEvents;
 
   void _defineWhen([String? todoId]) {
     when(_todoListService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
@@ -49,20 +43,14 @@ void main() {
         initialTodo,
         _todoListService,
         _coordinatorBloc,
-        _routerBloc,
+        routerBlocMockFactory(),
       );
 
   setUp(() {
     _todoListService = MockTodoListService();
-    _coordinatorBloc = MockCoordinatorBlocType();
-    _coordinatorBlocStates = MockCoordinatorStates();
-    _coordinatorBlocEvents = MockCoordinatorEvents();
-    _routerBlocEvents = MockRouterBlocEvents();
-    _routerBloc = MockRouterBlocType();
 
-    when(_coordinatorBloc.states).thenReturn(_coordinatorBlocStates);
-    when(_coordinatorBloc.events).thenReturn(_coordinatorBlocEvents);
-    when(_routerBloc.events).thenReturn(_routerBlocEvents);
+    _coordinatorBlocStates = coordinatorStatesMockFactory();
+    _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorBlocStates);
   });
 
   group('test todo_details_bloc_dart state isLoading', () {

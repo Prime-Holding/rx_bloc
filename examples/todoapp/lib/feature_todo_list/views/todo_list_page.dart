@@ -8,7 +8,6 @@ import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/models/todo_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-
 import '../../lib_todo_actions/di/app_todo_list_bulk_edit_popup_menu_button_with_dependencies.dart';
 import '../blocs/todo_list_bloc.dart';
 import '../ui_components/todo_list_widget.dart';
@@ -38,9 +37,11 @@ class TodoListPage extends StatelessWidget {
         body: RxResultBuilder<TodoListBlocType, List<TodoModel>>(
           state: (bloc) => bloc.states.todoList,
           buildSuccess: (context, list, bloc) => TodoListWidget(todos: list),
-          buildError: (context, exception, bloc) => AppErrorWidget(
-            error: exception,
-            onTabRetry: () => bloc.events.fetchTodoList(),
+          buildError: (context, exception, bloc) => Center(
+            child: AppErrorWidget(
+              error: exception,
+              onTabRetry: () => bloc.events.fetchTodoList(),
+            ),
           ),
           buildLoading: (context, bloc) => Center(
             child: AppLoadingIndicator.taskValue(

@@ -5,14 +5,13 @@ import 'package:provider/provider.dart';
 import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-
 import '../../lib_todo_actions/di/app_todo_list_bulk_edit_popup_menu_button_with_dependencies.dart';
-import '../blocs/stats_bloc.dart';
+import '../blocs/statistics_bloc.dart';
 import '../models/todo_stats_model.dart';
 import '../ui_components/statistics_list_widget.dart';
 
-class StatsPage extends StatelessWidget {
-  const StatsPage({
+class StatisticsPage extends StatelessWidget {
+  const StatisticsPage({
     super.key,
   });
 
@@ -30,7 +29,7 @@ class StatsPage extends StatelessWidget {
           shape: const OvalBorder(),
           child: context.designSystem.icons.add,
         ),
-        body: RxBlocBuilder<StatsBlocType, TodoStatsModel>(
+        body: RxBlocBuilder<StatisticsBlocType, TodoStatsModel>(
             state: (bloc) => bloc.states.todosStats,
             builder: (context, snapshot, bloc) => StatsWidget(
                   completedCount: snapshot.data?.completed.toString(),

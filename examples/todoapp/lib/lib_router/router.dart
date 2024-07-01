@@ -13,11 +13,10 @@ import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';
 import '../base/models/todo_model.dart';
-
 import '../feature_home/views/home_page.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';
-import '../feature_statistics/di/stats_page_with_dependencies.dart';
+import '../feature_statistics/di/statistics_page_with_dependencies.dart';
 import '../feature_todo_details/di/todo_details_page_with_dependencies.dart';
 import '../feature_todo_list/di/todo_list_page_with_dependencies.dart';
 import '../feature_todo_management/di/todo_management_page_with_dependencies.dart';

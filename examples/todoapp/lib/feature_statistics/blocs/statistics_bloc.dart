@@ -3,14 +3,14 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
 import '../models/todo_stats_model.dart';
-import '../services/stats_service.dart';
+import '../services/statistics_service.dart';
 
-part 'stats_bloc.rxb.g.dart';
+part 'statistics_bloc.rxb.g.dart';
 
-abstract class StatsBlocEvents {}
+abstract class StatisticsBlocEvents {}
 
 /// A contract class containing all states of the StatsBloC.
-abstract class StatsBlocStates {
+abstract class StatisticsBlocStates {
   /// The statistics of the todos.
   ///
   /// This state will be updated whenever the statistics of the todos change.
@@ -18,10 +18,10 @@ abstract class StatsBlocStates {
 }
 
 @RxBloc()
-class StatsBloc extends $StatsBloc {
-  StatsBloc(this._coordinatorBloc, this._service);
+class StatisticsBloc extends $StatisticsBloc {
+  StatisticsBloc(this._coordinatorBloc, this._service);
 
-  final StatsService _service;
+  final StatisticsService _service;
   final CoordinatorBlocType _coordinatorBloc;
 
   @override

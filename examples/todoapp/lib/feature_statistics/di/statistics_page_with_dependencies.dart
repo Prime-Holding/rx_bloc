@@ -2,12 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../blocs/stats_bloc.dart';
-import '../services/stats_service.dart';
+import '../blocs/statistics_bloc.dart';
+import '../services/statistics_service.dart';
 import '../views/statistics_page.dart';
 
-class StatsPageWithDependencies extends StatelessWidget {
-  const StatsPageWithDependencies({super.key});
+class StatisticsPageWithDependencies extends StatelessWidget {
+  const StatisticsPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -15,18 +15,18 @@ class StatsPageWithDependencies extends StatelessWidget {
           ..._services,
           ..._blocs,
         ],
-        child: const StatsPage(),
+        child: const StatisticsPage(),
       );
 
   List<Provider> get _services => [
-        Provider<StatsService>(
-          create: (context) => StatsService(),
+        Provider<StatisticsService>(
+          create: (context) => StatisticsService(),
         ),
       ];
 
   List<RxBlocProvider> get _blocs => [
-        RxBlocProvider<StatsBlocType>(
-          create: (context) => StatsBloc(
+        RxBlocProvider<StatisticsBlocType>(
+          create: (context) => StatisticsBloc(
             context.read(),
             context.read(),
           ),

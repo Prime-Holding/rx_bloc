@@ -1,7 +1,7 @@
 import '../../base/models/todo_model.dart';
 import '../models/todo_stats_model.dart';
 
-class StatsService {
+class StatisticsService {
   /// Calculates the statistics of the todos.
   ///
   /// The statistics include the number of completed and incomplete todos.
