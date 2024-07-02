@@ -71,12 +71,12 @@ jobs:
           bundle exec fastlane build_custom platform:android environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
       - name: Prepare config
         run: mv "${{ inputs.project_path }}/devops/artifacts/deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/android-deployment.yaml"
-      - name: Prepare app bundle for publishing
+      - name: Upload artifact - .aab
         uses: actions/upload-artifact@v4
         with:
           name: app-${{ inputs.flavor }}-release.aab
           path: "${{ inputs.project_path }}/devops/artifacts/app-${{ inputs.flavor }}-release.aab"
-      - name: Upload deployment config
+      - name: Upload artifact - deployment config
         uses: actions/upload-artifact@v4
         with:
           name: android-deployment.yaml

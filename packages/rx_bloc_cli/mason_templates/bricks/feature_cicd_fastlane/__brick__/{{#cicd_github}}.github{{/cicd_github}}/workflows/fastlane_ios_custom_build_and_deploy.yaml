@@ -72,12 +72,12 @@ jobs:
           bundle exec fastlane build_custom platform:ios environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
       - name: Prepare config
         run: mv "${{ inputs.project_path }}/devops/artifacts/deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml"
-      - name: Prepare app bundle for publishing
+      - name: Upload artifact - .ipa
         uses: actions/upload-artifact@v4
         with:
           name: app-${{ inputs.flavor }}-release.ipa
           path: "${{ inputs.project_path }}/devops/artifacts/Runner.ipa"
-      - name: Upload deployment config
+      - name: Upload artifact - deployment config
         uses: actions/upload-artifact@v4
         with:
           name: ios-deployment.yaml
