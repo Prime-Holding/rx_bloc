@@ -38,7 +38,7 @@ on:
         required: true
 
 jobs:
-  build_android_app:
+  build_android:
     defaults:
       run:
         working-directory: ${{ inputs.project_path }}
@@ -46,6 +46,7 @@ jobs:
     env:
       MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
       MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
+      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
@@ -53,12 +54,13 @@ jobs:
           flutter-version: ${{ inputs.flutter_version }}
           channel: "stable"
           cache: true
-          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
-           ruby-version: 3.1.0
-           bundler-cache: true
+          ruby-version: 3.1.0
+          bundler-cache: true
       - name: Configure Ruby
         run: |
           bundle install
@@ -67,17 +69,48 @@ jobs:
       - name: Build android app
         run: |
           bundle exec fastlane build_custom platform:android environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
-      - name: Prepare app bundle for publishing
-        uses: actions/upload-artifact@v3
+      - name: Prepare config
+        run: mv "${{ inputs.project_path }}/devops/artifacts/deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/android-deployment.yaml"
+      - name: Upload artifact - .aab
+        uses: actions/upload-artifact@v4
         with:
           name: app-${{ inputs.flavor }}-release.aab
           path: "${{ inputs.project_path }}/devops/artifacts/app-${{ inputs.flavor }}-release.aab"
-      - name: Upload deployment config
-        uses: actions/upload-artifact@v3
+      - name: Upload artifact - deployment config
+        uses: actions/upload-artifact@v4
         with:
           name: android-deployment.yaml
-          path: "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
-      - name: Deploy app
-        if: ${{ inputs.publish_to_store }}
+          path: "${{ inputs.project_path }}/devops/artifacts/android-deployment.yaml"
+
+  deploy_to_google_play:
+    if: ${{ inputs.publish_to_store }}
+    needs: build_android
+    defaults:
+      run:
+        working-directory: ${{ inputs.project_path }}
+    runs-on: ubuntu-latest
+    env:
+      MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
+      MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
+      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: "${{ inputs.project_path }}/devops/artifacts/"
+          merge-multiple: true
+      - name: Rename config
+        run: mv "${{ inputs.project_path }}/devops/artifacts/android-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+      - name: Setup Ruby env
+        uses: ruby/setup-ruby@v1.176.0
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Configure Ruby
         run: |
-          bundle exec fastlane deploy
+          bundle install
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-linux
+      - name: Publish to Google Play
+        run: bundle exec fastlane deploy

@@ -1,3 +1,6 @@
+## [3.6.1]
+* Updated Github workflow files generated with the `github` cicd flag
+
 ## [3.6.0]
 * Added [Codemagic](https://codemagic.io/start/) as a CI/CD option under the flag --cicd (`fastlane` (default), `github`, `codemagic`, `none`)
 
