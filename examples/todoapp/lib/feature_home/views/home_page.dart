@@ -61,16 +61,16 @@ class HomePage extends StatelessWidget {
 
   List<NavMenuItem> navItemsList(BuildContext context) => [
         NavMenuItem(
-          title: context.l10n.dashboard,
-          icon: context.designSystem.icons.dashboard,
-          route: const DashboardRoute(),
-          routePath: RoutesPath.dashboard,
+          title: context.l10n.todos,
+          icon: context.designSystem.icons.todos,
+          route: const TodoListRoute(),
+          routePath: RoutesPath.todoList,
         ),
         NavMenuItem(
-          title: context.l10n.dashboard,
-          icon: context.designSystem.icons.dashboard,
-          route: const DashboardRoute(),
-          routePath: RoutesPath.dashboard,
+          title: context.l10n.stats,
+          icon: context.designSystem.icons.stats,
+          route: const StatsRoute(),
+          routePath: RoutesPath.stats,
         ),
       ];
 

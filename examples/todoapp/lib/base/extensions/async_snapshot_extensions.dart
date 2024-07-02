@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter/material.dart';
+import 'package:widget_toolkit/ui_components.dart';
 
 import '../theme/design_system.dart';
 
@@ -17,4 +18,8 @@ extension AsyncSnapshotLoadingState on AsyncSnapshot<bool> {
   Color getButtonColor(BuildContext context) => isLoading
       ? context.designSystem.colors.inactiveButtonColor
       : context.designSystem.colors.activeButtonColor;
+
+  ButtonStateModel get buttonStateModel => hasData && requireData == true
+      ? ButtonStateModel.loading
+      : ButtonStateModel.enabled;
 }

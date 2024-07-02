@@ -1,6 +1,6 @@
 part of 'error_model.dart';
 
-class FieldRequiredErrorModel<T> extends ErrorModel {
+class FieldRequiredErrorModel<T> extends ErrorModel with EquatableMixin {
   FieldRequiredErrorModel({
     required this.fieldKey,
     required this.fieldValue,
@@ -15,4 +15,10 @@ class FieldRequiredErrorModel<T> extends ErrorModel {
   @override
   String toString() =>
       'FieldRequiredError. Key: $fieldKey. Value: $fieldValue.';
+
+  @override
+  List<Object?> get props => [fieldKey, fieldValue];
+
+  @override
+  bool? get stringify => true;
 }

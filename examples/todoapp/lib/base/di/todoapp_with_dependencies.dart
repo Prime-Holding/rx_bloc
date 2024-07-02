@@ -13,27 +13,28 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../feature_splash/services/splash_service.dart';
-
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
+import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
+import '../../lib_todo_actions/services/todo_actions_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../common_services/deep_link_service.dart';
 import '../common_services/push_notifications_service.dart';
+import '../common_services/todo_list_service.dart';
 import '../data_sources/local/profile_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/remote/deep_link_remote_data_source.dart';
+import '../data_sources/local/todo_list_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
-import '../repositories/deep_link_repository.dart';
 import '../repositories/push_notification_repository.dart';
+import '../repositories/todo_list_repository.dart';
 
 class TodoappWithDependencies extends StatelessWidget {
   const TodoappWithDependencies({
@@ -125,14 +126,13 @@ class TodoappWithDependencies extends StatelessWidget {
             context.read<ApiHttpClient>(),
           ),
         ),
-        Provider<DeepLinkRemoteDataSource>(
-          create: (context) => DeepLinkRemoteDataSource(
-            context.read<ApiHttpClient>(),
-          ),
-        ),
         Provider<ProfileLocalDataSource>(
           create: (context) =>
               ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+        ),
+        Provider<TodoListDataSource>(
+          create: (context) =>
+              TodoListDataSource(context.read<SharedPreferencesInstance>()),
         ),
       ];
 
@@ -151,8 +151,8 @@ class TodoappWithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        Provider<DeepLinkRepository>(
-          create: (context) => DeepLinkRepository(
+        Provider<TodoListRepository>(
+          create: (context) => TodoListRepository(
             context.read(),
             context.read(),
           ),
@@ -171,16 +171,19 @@ class TodoappWithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        Provider<DeepLinkService>(
-          create: (context) => DeepLinkService(
-            context.read(),
-          ),
-        ),
         Provider<PushNotificationsService>(
           create: (context) => PushNotificationsService(
             context.read(),
           ),
         ),
+        Provider<TodoListService>(
+          create: (context) => TodoListService(
+            context.read(),
+          ),
+        ),
+        Provider<TodoActionsService>(
+          create: (context) => TodoActionsService(context.read()),
+        )
       ];
 
   List<SingleChildWidget> get _blocs => [
@@ -188,6 +191,13 @@ class TodoappWithDependencies extends StatelessWidget {
           create: (context) => RouterBloc(
             router: context.read<AppRouter>().router,
             permissionsService: context.read(),
+          ),
+        ),
+        Provider<TodoActionsBlocType>(
+          create: (context) => TodoActionsBloc(
+            context.read(),
+            context.read(),
+            context.read(),
           ),
         ),
         RxBlocProvider<PushNotificationsBlocType>(

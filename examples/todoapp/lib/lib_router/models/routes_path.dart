@@ -6,11 +6,13 @@
 // https://opensource.org/licenses/MIT.
 
 class RoutesPath {
-  static const dashboard = '/dashboard';
-  static const profile = '/profile';
   static const splash = '/splash';
-  static const notifications = 'notifications';
-  static const enterMessage = 'enterMessage';
-  static const deepLinks = '/deepLinks';
-  static const deepLinkDetails = ':id';
+
+  static const stats = '/stats';
+
+  // TODO-related paths
+  static const todoList = '/todo-list';
+  static const todoCreate = '/todo-list/create';
+  static const todoDetails = 'details/:id';
+  static const todoUpdate = 'update';
 }

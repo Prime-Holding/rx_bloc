@@ -37,7 +37,21 @@ class DesignSystemIcons {
 
   final Icon linkIcon = _getIcon(Icons.link);
 
-  final Icon dashboard = _getIcon(Icons.dashboard);
+  final Icon todos = _getIcon(Icons.list);
+
+  final Icon stats = _getIcon(Icons.show_chart);
+
+  final Icon filter = _getIcon(Icons.filter_list);
+
+  final Icon menu = _getIcon(Icons.more_horiz);
+
+  final Icon add = _getIcon(Icons.add);
+
+  final Icon updateConfirm = _getIcon(Icons.check);
+
+  final Icon delete = _getIcon(Icons.delete);
+
+  final Icon edit = _getIcon(Icons.edit);
 
   static Icon _getIcon(IconData iconData) => Icon(iconData);
 }

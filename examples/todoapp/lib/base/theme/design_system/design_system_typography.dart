@@ -30,6 +30,9 @@ class DesignSystemTypography {
   final h1Bold24 = const TextStyle(
       fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 24.0);
 
+  final h1Med22 = const TextStyle(
+      fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: 22.0);
+
   final h1Bold20 = const TextStyle(
       fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: 20.0);
 

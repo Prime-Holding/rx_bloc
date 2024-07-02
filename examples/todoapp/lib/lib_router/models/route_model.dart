@@ -9,21 +9,36 @@ import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
 enum RouteModel {
-  dashboard(
-    pathName: RoutesPath.dashboard,
-    fullPath: '/dashboard',
-    permissionName: RoutePermissions.dashboard,
+  todoDetails(
+    pathName: RoutesPath.todoDetails,
+    fullPath: '/todo-list/details/:id',
+    permissionName: RoutePermissions.todoDetails,
+  ),
+  todoCreate(
+    pathName: RoutesPath.todoCreate,
+    fullPath: '/todo-list/create',
+    permissionName: RoutePermissions.todoManagement,
+  ),
+  todoUpdate(
+    pathName: RoutesPath.todoUpdate,
+    fullPath: '/todo-list/details/:id/update',
+    permissionName: RoutePermissions.todoManagement,
+  ),
+  stats(
+    pathName: RoutesPath.stats,
+    fullPath: '/stats',
+    permissionName: RoutePermissions.stats,
+  ),
+  todoList(
+    pathName: RoutesPath.todoList,
+    fullPath: '/todo-list',
+    permissionName: RoutePermissions.todoList,
   ),
 
   splash(
     pathName: RoutesPath.splash,
     fullPath: '/splash',
     permissionName: RoutePermissions.splash,
-  ),
-  notifications(
-    pathName: RoutesPath.notifications,
-    fullPath: '/notifications',
-    permissionName: RoutePermissions.notifications,
   );
 
   final String pathName;
