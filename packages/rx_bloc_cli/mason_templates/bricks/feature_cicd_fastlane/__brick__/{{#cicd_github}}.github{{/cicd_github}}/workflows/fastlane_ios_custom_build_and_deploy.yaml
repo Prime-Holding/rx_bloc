@@ -48,13 +48,16 @@ jobs:
       MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
       BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ inputs.flutter_version }}
           channel: "stable"
           cache: true
-          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+          pub-cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
@@ -69,16 +72,18 @@ jobs:
       - name: Build iOS app
         run: |
           bundle exec fastlane build_custom platform:ios environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
+      - name: Prepare config
+        run: mv "${{ inputs.project_path }}/devops/artifacts/deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml"
       - name: Prepare app bundle for publishing
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-${{ inputs.flavor }}-release.ipa
           path: "${{ inputs.project_path }}/devops/artifacts/Runner.ipa"
       - name: Upload deployment config
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ios-deployment.yaml
-          path: "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+          path: "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml"
 
   deploy_to_test_flight:
     if: ${{ inputs.publish_to_store }}
@@ -86,19 +91,20 @@ jobs:
     defaults:
       run:
         working-directory: ${{ inputs.project_path }}
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
       MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
       BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          merge-multiple: true
           path: "${{ inputs.project_path }}/devops/artifacts/"
+          merge-multiple: true
+      - name: Rename config
+        run: mv "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
@@ -108,6 +114,6 @@ jobs:
         run: |
           bundle install
           bundle lock --add-platform ruby
-          bundle lock --add-platform x86_64-linux
+          bundle lock --add-platform x86_64-darwin21
       - name: Publish to Test Flight
         run: bundle exec fastlane deploy
