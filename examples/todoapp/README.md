@@ -295,23 +295,6 @@ Translation key: ok
 Full translation key (feature name+separator+translation key): notifications___ok
 ```
 
-## Firebase Analytics
-
-[Firebase analytics][firebase_analytics_lnk] track how your app is used. Analytics are available for iOS, Android and Web and support flavors.
-
-Before you start using analytics, you need to add platform specific configurations:
-1. The `iOS` configuration files can be found at `ios/environments/[flavor]]/firebase/GoogleService-Info.plist`
-2. For `Android` the configuration files are located at `android/app/src/[flavor]/google-services.json`
-3. All `Web` analytics configurations can be found inside `lib/base/app/config/firebase_web_config.js`
-
-Every flavor represents a separate Firebase project that will be used for app tracking. For each flavor, based on the targeted platforms you'll have to download the [configuration files][firebase_configs_lnk] and place them in the appropriate location mentioned above.
-
-After replacing the Firebase config files with your own, the next step is to configure your app to use the appropriate Firebase options. To do that, you need to provide the `Firebase.initializeApp` method (within the `configureApp` function located inside the `{project_root}/lib/base/app/initialization/app_setup.dart` file) with the desired configuration.
-
-*Note*: When ran as `development` flavor, `.development` is appended to the package name. Likewise, `.sit` or `.uat` is appended to the package name when using `SIT` or `UAT` flavor. If using separate analytics for different flavors, make sure you specify the full package name with the correct extension (for instance: `com.companyname.projectname.development` for the `devevelopment` environment).
-
-*Note 2*: The app comes with a pre-generated configuration allowing the project to be launched out-of-the-box and should be replaced with your own configuration (see [Firebase setup][firebase_setup_lnk] for more details).
-
 ## Http client
 
 Your project has integrated HTTP-client, using [dio][dio_lnk] and [retrofit][retrofit_lnk]. That helps you to easily communicate with remote APIs and use interceptors, global configuration, form fata, request cancellation, file downloading, timeout etc.
@@ -339,38 +322,6 @@ Due to the way fonts are loaded in tests, any custom fonts you intend to golden 
 In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
 
 <div id="server"/>
-
-## Server
-
-Your app comes with a small preconfigured local server (written in Dart) that you can use for testing purposes or even expand it. It is built using [shelf][shelf_lnk], [shelf_router][shelf_router_lnk] and [shelf_static][shelf_static_lnk]. The server comes with several out-of-the-box APIs that work with the generated app.
-
-In order to run the server locally, make sure to run `bin/start_server.sh`. The server should be running on `http://0.0.0.0:8080`, if not configured otherwise.
-
-Some of the important paths are:
-
-| Path | Contains |
-| :------------ | :------------ |
-| `bin/server/` | The root directory of the server |
-| `bin/server/start_server.dart` | The main entry point of the server app |
-| `bin/server/config.dart` | All server-related configurations and secrets are located here |
-| `bin/server/controllers/` | All controllers are located here |
-| `bin/server/models/` | Data models are placed here |
-| `bin/server/repositories/` | Repositories that are used by the controllers reside here |
-| `bin/server/di/` | All server related dependencies are registered here |
-
-*Note:* When creating a new controller, make sure you also register it inside the `ServerDependencies.registerControllers` method in `server_dependencies.dart`. Respectively, register any dependencies in the `ServerDependencies.registerDependencies` in the same file.
-
-## Push notifications
-
-[Firebase Cloud Messaging (FCM)][fcm_lnk] allows your integrating push notifications in your very own app. You can receive notifications while the app is in the foreground, background or even terminated. It even allows for event callbacks customizations, such when the app is opened via a notification from a specific state. All customizable callbacks can be found inside `lib/base/app/initialization/firebase_messaging_callbacks.dart`.
-
-In order to make the notifications work on your target platform, make sure you first add the config file in the proper location (as described in the [**Analytic**](#analytics) section). For Web you also need to specify the `vapid` key inside `lib/base/app/config/app_constants.dart` and manually add the firebase web configuration to `web/firebase-messaging-sw.js`(for more info refer to [this link][fcm_web_config_ref]).
-
-*Note:* On Android, FCM doesn't display heads-up notifications (notifications when the app is in foreground) by default. To display them while in app, we use a custom package called [flutter_local_notifications ][flutter_local_notifications_lnk]. This package also provides a way of customizing your notification icon which you can find at the `android/src/main/res/drawable` directory (supported types are `.png` and `.xml`).
-
-*Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
-
-
 
 ## Dev Menu
 
@@ -403,14 +354,6 @@ By default after you trigger  `AppDevMenuGestureDetector` you only need to add y
 Alice is working right out of the box.
 
 `Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
-
-
-
-## Feature OTP
-
-The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
-The brick contains widgets for entering pin codes, pasting them, resend logic and more.
-For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 
 
 
