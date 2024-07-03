@@ -52,7 +52,7 @@ abstract class $DivisionBloc extends RxBlocBase
 /// Helps providing the arguments in the [Subject.add] for
 /// [DivisionBlocEvents.divideNumbers] event
 class DivideNumbersEventArgs {
-  DivideNumbersEventArgs(this.a, this.b);
+  const DivideNumbersEventArgs(this.a, this.b);
 
   final String? a;
 
