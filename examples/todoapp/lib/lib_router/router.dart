@@ -12,11 +12,14 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';
-
-import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';
+import '../base/models/todo_model.dart';
 import '../feature_home/views/home_page.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';
+import '../feature_statistics/di/statistics_page_with_dependencies.dart';
+import '../feature_todo_details/di/todo_details_page_with_dependencies.dart';
+import '../feature_todo_list/di/todo_list_page_with_dependencies.dart';
+import '../feature_todo_management/di/todo_management_page_with_dependencies.dart';
 import '../lib_permissions/services/permissions_service.dart';
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
@@ -25,6 +28,7 @@ import 'views/error_page.dart';
 
 part 'router.g.dart';
 part 'routes/routes.dart';
+part 'routes/showcase_routes.dart';
 
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].
@@ -49,7 +53,7 @@ class AppRouter {
 
   late final GoRouter _goRouter = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: const SplashRoute().location,
+    initialLocation: const TodoListRoute().location,
     routes: $appRoutes,
     redirect: _pageRedirections,
     refreshListenable: _refreshListener,
@@ -83,7 +87,7 @@ class AppRouter {
         : true;
 
     if (!hasPermissions) {
-      return const DashboardRoute().location;
+      return const TodoListRoute().location;
     }
 
     return null;

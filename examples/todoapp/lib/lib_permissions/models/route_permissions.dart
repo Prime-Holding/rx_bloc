@@ -6,7 +6,10 @@
 // https://opensource.org/licenses/MIT.
 
 class RoutePermissions {
-  static const dashboard = 'DashboardRoute';
+  static const home = 'HomeRoute';
+  static const todoDetails = 'TodoDetailsRoute';
+  static const todoManagement = 'TodoManagementRoute';
+  static const stats = 'StatsRoute';
+  static const todoList = 'TodoListRoute';
   static const splash = 'SplashRoute';
-  static const notifications = 'NotificationsRoute';
 }

@@ -10,7 +10,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// This class is using as wrapper of SharedPreferences to avoid async
-/// instance in todoapp_with_dependencies.dart
+/// instance in todo_with_dependencies.dart
 class SharedPreferencesInstance {
   Future<SharedPreferences> get _instance => SharedPreferences.getInstance();
 

@@ -6,7 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import '../../lib_translations/services/translations_service.dart';
-import '../todoapp_app_i18n.dart';
+import '../todo_app_i18n.dart';
 
 String? getFromNetwork(
   String screen,

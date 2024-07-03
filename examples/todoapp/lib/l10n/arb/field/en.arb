@@ -1,5 +1,7 @@
 {
   "@@locale": "en",
   "email": "Email",
-  "password": "Password"
+  "password": "Password",
+  "title": "Title",
+  "description": "Description"
 }
