@@ -35,6 +35,24 @@ void main() {
           Result.success(Stubs.todoUncompleted),
         ]);
 
+    rxBlocTest<CoordinatorBlocType, bool>(
+        'test coordinator_bloc_dart state  onTodoAddedOrUpdated',
+        build: () async {
+          _defineWhen();
+          return coordinatorBloc();
+        },
+        act: (bloc) async {
+          bloc.events.authenticated(isAuthenticated: true);
+          bloc.events.authenticated(isAuthenticated: false);
+          bloc.events.authenticated(isAuthenticated: true);
+        },
+        state: (bloc) => bloc.states.isAuthenticated,
+        expect: [
+          true,
+          false,
+          true,
+        ]);
+
     rxBlocTest<CoordinatorBlocType, Result<TodoModel>>(
         'test coordinator_bloc_dart state  onTodoDeleted',
         build: () async {
