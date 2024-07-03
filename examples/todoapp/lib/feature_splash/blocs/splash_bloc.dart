@@ -63,7 +63,7 @@ class SplashBloc extends $SplashBloc {
     await _splashService.initializeApp();
 
     if (_redirectLocation != null) {
-      _navigationBloc.events.goToLocation(_redirectLocation!);
+      _navigationBloc.events.goToLocation(_redirectLocation);
     } else {
       _navigationBloc.events.go(const TodoListRoute());
     }
