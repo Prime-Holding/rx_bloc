@@ -9,6 +9,7 @@ on:
         type: choice
         options:
         - booking_app
+        - todoapp
 
 jobs:
   package:
