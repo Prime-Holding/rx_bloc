@@ -22,6 +22,7 @@ jobs:
             "examples/booking_app",
             "examples/counter",
             "examples/division",
+            "examples/todoapp",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
           ]
       fail-fast: false
