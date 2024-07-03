@@ -7,13 +7,17 @@ enum CICDType {
   fastlane,
 
   /// Github
-  github;
+  github,
+
+  /// Codemagic
+  codemagic;
 
   /// Options that are currently supported by RxBlocCLI
   static List<CICDType> supportedOptions = [
     CICDType.none,
     CICDType.fastlane,
     CICDType.github,
+    CICDType.codemagic,
   ];
 
   /// Parse enum from String
