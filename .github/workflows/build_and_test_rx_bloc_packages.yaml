@@ -51,7 +51,7 @@ jobs:
           fi
       - name: Remove unnecessary files
         working-directory: ${{ matrix.folder }}
-        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**/models/**','lib/assets.dart','lib/keys.dart','lib/base/theme/design_system.dart','lib/keys.dart','**rxb.g.dart' coverage/lcov.info
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','lib/assets.dart','lib/keys.dart','lib/base/theme/design_system.dart','lib/keys.dart','**rxb.g.dart' coverage/lcov.info
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v2
         with:
