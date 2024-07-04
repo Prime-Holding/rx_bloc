@@ -1,6 +1,6 @@
 part of 'division_bloc.dart';
 
-extension _DivideNumbersEventArgsMappers on Stream<DivideNumbersEventArgs> {
+extension _DivideNumbersEventArgsMappers on Stream<_DivideNumbersEventArgs> {
   Stream<Result<String>> calculateAndFormat(CalculatorRepository repository) =>
       switchMap(
         (args) => repository.calculate(args.a!, args.b!).asResultStream(),
