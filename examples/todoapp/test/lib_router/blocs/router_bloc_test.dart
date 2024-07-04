@@ -21,9 +21,9 @@ void main() {
   late CoordinatorBlocType _coordinatorBloc;
   late CoordinatorStates _coordinatorStates;
 
-  void _defineWhen() {
-    when(_coordinatorStates.isAuthenticated)
-        .thenAnswer((_) => Stream.value(true));
+  void _defineWhen({bool shouldThrowError = false}) {
+    when(_coordinatorStates.isAuthenticated).thenAnswer(
+        (_) => shouldThrowError ? Stream.error(Error()) : Stream.value(true));
   }
 
   setUp(() {
@@ -44,6 +44,39 @@ void main() {
         return routerBloc();
       },
       act: (bloc) async => bloc.events.goToLocation('/'),
+      state: (bloc) => bloc.states.navigationPath,
+      expect: [isA<void>()],
+    );
+
+    rxBlocTest(
+      'test router_bloc state navigationPath push',
+      build: () async {
+        _defineWhen();
+        return routerBloc();
+      },
+      act: (bloc) async => bloc.events.push(Stubs.homePageRoute),
+      state: (bloc) => bloc.states.navigationPath,
+      expect: [],
+    );
+
+    rxBlocTest(
+      'test router_bloc state navigationPath pop',
+      build: () async {
+        _defineWhen();
+        return routerBloc();
+      },
+      act: (bloc) async => bloc.events.pop(),
+      state: (bloc) => bloc.states.navigationPath,
+      expect: [isA<void>()],
+    );
+
+    rxBlocTest(
+      'test router_bloc state navigationPath pushReplace',
+      build: () async {
+        _defineWhen();
+        return routerBloc();
+      },
+      act: (bloc) async => bloc.events.pushReplace(Stubs.homePageRoute),
       state: (bloc) => bloc.states.navigationPath,
       expect: [],
     );
