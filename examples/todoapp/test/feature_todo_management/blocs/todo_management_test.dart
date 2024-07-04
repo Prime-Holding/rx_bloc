@@ -36,7 +36,6 @@ void main() {
       String? title,
       String? description = '',
       TodoModel? todoModel}) {
-    print('is todo id ${todoModel?.id}');
     when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
         return Future.value(todoModel);
