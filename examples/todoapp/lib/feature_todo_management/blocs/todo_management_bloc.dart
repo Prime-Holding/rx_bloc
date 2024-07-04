@@ -125,7 +125,10 @@ class TodoManagementBloc extends $TodoManagementBloc {
           Rx.combineLatest3<String, String, TodoModel?, TodoModel?>(
             title,
             description,
-            _todoSubject,
+            // The initial state is empty todo so we need to skip the values
+            //  until the todo that needs to be updated is fetched.
+            // If the initial id is null then the empty todo is not skipped.
+            _todoSubject.skipWhile((todo) => todo.id != _id),
             (title, description, todo) => TodoModel.from(
               title: title,
               description: description,

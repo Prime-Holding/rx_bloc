@@ -36,7 +36,8 @@ void main() {
       String? title,
       String? description = '',
       TodoModel? todoModel}) {
-    when(_listService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
+    print('is todo id ${todoModel?.id}');
+    when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
         return Future.value(todoModel);
       }
@@ -44,10 +45,10 @@ void main() {
       return Future.error(Stubs.notFoundError);
     });
 
-    when(_todoManageService.addOrUpdate(
-            Stubs.todoEmpty.copyWith(title: title, description: description)))
-        .thenAnswer((_) => Future.value(
-            Stubs.todoEmpty.copyWith(title: title, description: description)));
+    when(_todoManageService.addOrUpdate((todoModel ?? Stubs.todoEmpty)
+            .copyWith(title: title, description: description)))
+        .thenAnswer((_) => Future.value((todoModel ?? Stubs.todoEmpty)
+            .copyWith(title: title, description: description)));
   }
 
   TodoManagementBloc todoManagementBloc(
@@ -119,4 +120,25 @@ void main() {
           Stubs.notFoundError,
         ]);
   });
+
+  /*group('test todo_management_bloc_dart state onTodoSaved', () {
+    rxBlocTest<TodoManagementBlocType, TodoModel>(
+        'test todo_management_bloc_dart state onTodoSaved',
+        build: () async {
+          _defineWhen(
+              todoId: Stubs.todoUncompleted.id,
+              todoModel: Stubs.todoUncompleted);
+          return todoManagementBloc(
+              todoId: Stubs.todoUncompleted.id,
+              initialTodo: Stubs.todoUncompleted);
+        },
+        act: (bloc) async {
+          bloc.events.setTitle(Stubs.todoUncompletedUpdated.title);
+          bloc.events.save();
+        },
+        state: (bloc) => bloc.states.onTodoSaved,
+        expect: [
+          Stubs.todoUncompletedUpdated,
+        ]);
+  });*/
 }
