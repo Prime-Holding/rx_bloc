@@ -1,5 +1,7 @@
 ## Fastlane
 
+![Diagram][cicd_diagram]
+
 ### Distribution repository
 
 Create a new Github repository used for storing files and credentials for distribution of your app.
@@ -173,6 +175,7 @@ For more details on that and other commands, as well as their arguments, please 
 
 ---
 
+[cicd_diagram]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/asset/cicd_diagram.png
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/

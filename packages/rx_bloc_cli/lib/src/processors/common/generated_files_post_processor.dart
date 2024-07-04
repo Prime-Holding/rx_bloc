@@ -1,4 +1,3 @@
-
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/shell_script_processor.dart';
 
@@ -42,6 +41,7 @@ class GeneratedFilesPostProcessor {
           '.github/workflows/build_and_deploy_app.yaml',
           CICDConfigFileProcessor(args)
         ),
+        ('.github/workflows/run_app_tests.yaml', CICDConfigFileProcessor(args)),
         (
           '.github/workflows/fastlane_android_custom_build_and_deploy.yaml',
           CICDConfigFileProcessor(args)
@@ -50,10 +50,7 @@ class GeneratedFilesPostProcessor {
           '.github/workflows/fastlane_ios_custom_build_and_deploy.yaml',
           CICDConfigFileProcessor(args)
         ),
-        (
-        'codemagic.yaml',
-        CICDConfigFileProcessor(args)
-        ),
+        ('codemagic.yaml', CICDConfigFileProcessor(args)),
       ];
 
   List<VoidProcessor> get _voidProcessors => [
