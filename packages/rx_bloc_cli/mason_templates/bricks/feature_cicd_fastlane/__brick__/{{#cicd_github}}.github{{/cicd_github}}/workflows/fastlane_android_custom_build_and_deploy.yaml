@@ -53,9 +53,6 @@ jobs:
         with:
           flutter-version: ${{ inputs.flutter_version }}
           channel: "stable"
-          cache: true
-          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}"
-          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:

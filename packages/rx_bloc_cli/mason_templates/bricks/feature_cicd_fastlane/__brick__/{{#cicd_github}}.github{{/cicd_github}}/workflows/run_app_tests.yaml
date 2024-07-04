@@ -21,7 +21,8 @@ jobs:
         with:
           channel: "stable"
           cache: true
-          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
       - run: dart --version
       - run: flutter --version
       - name: Install Dependencies
