@@ -1,25 +1,21 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:todoapp/base/common_blocs/coordinator_bloc.dart';
-import 'package:todoapp/base/common_mappers/error_mappers/error_mapper.dart';
-import 'package:todoapp/lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
-import 'package:todoapp/lib_permissions/repositories/permissions_repository.dart';
 import 'package:todoapp/lib_permissions/services/permissions_service.dart';
 import 'package:todoapp/lib_router/blocs/router_bloc.dart';
 import 'package:todoapp/lib_router/router.dart';
 
 import '../../base/common_blocs/coordinator_bloc_mock.dart';
 import '../../stubs.dart';
+import 'router_bloc_test.mocks.dart';
 
-@GenerateMocks([
-  AppRouter,
-])
+@GenerateMocks([AppRouter, PermissionsService])
 void main() {
   late CoordinatorBlocType _coordinatorBloc;
   late CoordinatorStates _coordinatorStates;
+  late PermissionsService _permissionsService;
 
   void _defineWhen({bool shouldThrowError = false}) {
     when(_coordinatorStates.isAuthenticated).thenAnswer(
@@ -29,12 +25,12 @@ void main() {
   setUp(() {
     _coordinatorStates = coordinatorStatesMockFactory();
     _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorStates);
+    _permissionsService = MockPermissionsService();
   });
 
   RouterBloc routerBloc() => RouterBloc(
       router: AppRouter(coordinatorBloc: _coordinatorBloc).router,
-      permissionsService: PermissionsService(PermissionsRepository(
-          ErrorMapper(_coordinatorBloc), PermissionsRemoteDataSource(Dio()))));
+      permissionsService: _permissionsService);
 
   group('test router_bloc state navigationPath', () {
     rxBlocTest(
