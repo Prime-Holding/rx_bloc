@@ -15,10 +15,8 @@ dependencies:
   dio: ^5.3.3
   equatable: ^2.0.5
   firebase_core: ^3.1.1
-  firebase_messaging: ^15.0.2
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^17.2.1
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^6.1.1
@@ -79,8 +77,6 @@ r_flutter:
     - name: error
     - name: feature_deep_link
     - name: feature_enter_message
-    - name: feature_notifications
-    - name: feature_profile
     - name: field 
     - name: lib_dev_menu
     - name: lib_router

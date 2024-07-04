@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/repositories/push_notification_repository.dart';
 import '../blocs/dev_menu_bloc.dart';
 
 void showAppDevMenuBottomSheet(BuildContext context) => showBlurredBottomSheet(
@@ -54,19 +53,6 @@ class _DevMenuState extends State<_DevMenuWidget> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              FutureBuilder<String?>(
-                future: context.read<PushNotificationRepository>().getToken(),
-                builder: (context, snapshot) => snapshot.data != null
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(context.l10n.libDevMenu.token),
-                          SelectableText(snapshot.data!),
-                          SizedBox(height: context.designSystem.spacing.m),
-                        ],
-                      )
-                    : const SizedBox(),
-              ),
               Text(context.l10n.libDevMenu.enterIPAddress),
               SizedBox(height: context.designSystem.spacing.m),
               Text(context.l10n.libDevMenu.restartApp),
