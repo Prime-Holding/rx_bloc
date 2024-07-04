@@ -34,7 +34,7 @@ void main() {
   void _defineWhen(
       {String? todoId,
       String? title,
-      String? description = '',
+      String? description,
       TodoModel? todoModel}) {
     when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
@@ -120,24 +120,26 @@ void main() {
         ]);
   });
 
-  /*group('test todo_management_bloc_dart state onTodoSaved', () {
-    rxBlocTest<TodoManagementBlocType, TodoModel>(
+  group('test todo_management_bloc_dart state onTodoSaved', () {
+    rxBlocFakeAsyncTest<TodoManagementBlocType, TodoModel>(
         'test todo_management_bloc_dart state onTodoSaved',
-        build: () async {
+        build: () {
           _defineWhen(
               todoId: Stubs.todoUncompleted.id,
-              todoModel: Stubs.todoUncompleted);
+              todoModel: Stubs.todoUncompleted,
+              title: Stubs.todoUncompletedUpdated.title);
           return todoManagementBloc(
               todoId: Stubs.todoUncompleted.id,
               initialTodo: Stubs.todoUncompleted);
         },
-        act: (bloc) async {
+        act: (bloc, fakeAsync) async {
           bloc.events.setTitle(Stubs.todoUncompletedUpdated.title);
+          fakeAsync.elapse(const Duration(milliseconds: 1));
           bloc.events.save();
         },
         state: (bloc) => bloc.states.onTodoSaved,
         expect: [
           Stubs.todoUncompletedUpdated,
         ]);
-  });*/
+  });
 }
