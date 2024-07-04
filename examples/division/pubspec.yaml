@@ -10,14 +10,14 @@ dependencies:
   flutter:
     sdk: flutter
 
-  rxdart:
-  rx_bloc:
-  flutter_rx_bloc:
+  rxdart: ^0.27.7
+  rx_bloc: ^5.0.3
+  flutter_rx_bloc: ^6.1.1
 
 dev_dependencies:
-  rx_bloc_generator:
-  build_runner:
-  rx_bloc_test:
+  rx_bloc_generator: ^7.2.2
+  build_runner: ^2.4.11
+  rx_bloc_test: ^4.0.0
   flutter_test:
     sdk: flutter
   clean_coverage: ^0.0.3
