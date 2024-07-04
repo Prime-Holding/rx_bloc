@@ -11,7 +11,10 @@ import '../../base/common_blocs/coordinator_bloc_mock.dart';
 import '../../stubs.dart';
 import 'router_bloc_test.mocks.dart';
 
-@GenerateMocks([AppRouter, PermissionsService])
+@GenerateMocks([
+  AppRouter,
+  PermissionsService,
+])
 void main() {
   late CoordinatorBlocType _coordinatorBloc;
   late CoordinatorStates _coordinatorStates;

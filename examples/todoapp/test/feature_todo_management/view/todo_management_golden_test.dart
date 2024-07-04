@@ -12,12 +12,12 @@ void main() {
         widget: todoManagementFactory(),
         scenario: Scenario(name: 'todo_management_empty')),
     generateDeviceBuilder(
-        widget: todoManagementFactory(onTodoSaved: Stubs.todoUncompleted),
+        widget: todoManagementFactory(onTodoSaved: Stubs.todoIncomplete),
         scenario: Scenario(name: 'todo_management_success')),
     generateDeviceBuilder(
         widget: todoManagementFactory(
-            title: Stubs.todoUncompleted.title,
-            description: Stubs.todoUncompleted.description),
+            title: Stubs.todoIncomplete.title,
+            description: Stubs.todoIncomplete.description),
         scenario: Scenario(name: 'todo_management_edit')),
     generateDeviceBuilder(
         widget: todoManagementFactory(isLoading: true),
@@ -26,7 +26,7 @@ void main() {
         widget: todoManagementFactory(
             errors: FieldRequiredErrorModel(
           fieldKey: I18nFieldKeys.title,
-          fieldValue: Stubs.todoUncompleted.title,
+          fieldValue: Stubs.todoIncomplete.title,
         )),
         scenario: Scenario(name: 'todo_management_global_error')),
     generateDeviceBuilder(

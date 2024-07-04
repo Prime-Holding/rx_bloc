@@ -12,7 +12,7 @@ void main() {
         widget: todoDetailsFactory(todo: Result.success(Stubs.todoEmpty)),
         scenario: Scenario(name: 'todo_details_empty')),
     generateDeviceBuilder(
-        widget: todoDetailsFactory(todo: Result.success(Stubs.todoUncompleted)),
+        widget: todoDetailsFactory(todo: Result.success(Stubs.todoIncomplete)),
         scenario: Scenario(name: 'todo_details_success')),
     generateDeviceBuilder(
         widget: todoDetailsFactory(todo: Result.loading()),

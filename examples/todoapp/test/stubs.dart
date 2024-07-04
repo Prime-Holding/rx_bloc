@@ -4,7 +4,7 @@ import 'package:todoapp/feature_statistics/models/todo_stats_model.dart';
 import 'package:todoapp/lib_router/router.dart';
 
 class Stubs {
-  static final todoUncompleted = TodoModel.empty().copyWith(
+  static final todoIncomplete = TodoModel.empty().copyWith(
     id: '1',
     title: 'test title',
     description: 'test description',
@@ -12,7 +12,7 @@ class Stubs {
   );
 
   static final todoUncompletedUpdated =
-      todoUncompleted.copyWith(title: 'new uncompleted');
+      todoIncomplete.copyWith(title: 'new uncompleted');
 
   static final todoCompleted = TodoModel.empty().copyWith(
     id: '1',
@@ -32,10 +32,24 @@ class Stubs {
   static const validTitle = 'test title';
 
   static final todoList = List<TodoModel>.from([
-    todoUncompleted,
+    todoIncomplete,
     todoCompleted,
-    todoUncompleted.copyWith(id: '3'),
+    todoIncomplete.copyWith(id: '3'),
     todoCompleted.copyWith(id: '4')
+  ]);
+
+  static final todoListAllCompleted = List<TodoModel>.from([
+    todoCompleted,
+    todoCompleted.copyWith(id: '2'),
+    todoCompleted.copyWith(id: '3'),
+    todoCompleted.copyWith(id: '4')
+  ]);
+
+  static final todoListAllIncomplete = List<TodoModel>.from([
+    todoIncomplete,
+    todoIncomplete.copyWith(id: '2'),
+    todoIncomplete.copyWith(id: '3'),
+    todoIncomplete.copyWith(id: '4')
   ]);
 
   static const todoListStatistics = TodoStatsModel(completed: 2, incomplete: 2);

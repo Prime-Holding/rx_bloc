@@ -26,13 +26,13 @@ void main() {
         act: (bloc) async {
           bloc.events.todoAddedOrUpdated(Result.loading());
           bloc.events.todoAddedOrUpdated(Result.success(Stubs.todoCompleted));
-          bloc.events.todoAddedOrUpdated(Result.success(Stubs.todoUncompleted));
+          bloc.events.todoAddedOrUpdated(Result.success(Stubs.todoIncomplete));
         },
         state: (bloc) => bloc.states.onTodoAddedOrUpdated,
         expect: [
           Result.loading(),
           Result.success(Stubs.todoCompleted),
-          Result.success(Stubs.todoUncompleted),
+          Result.success(Stubs.todoIncomplete),
         ]);
 
     rxBlocTest<CoordinatorBlocType, bool>(
@@ -62,13 +62,13 @@ void main() {
         act: (bloc) async {
           bloc.events.todoDeleted(Result.loading());
           bloc.events.todoDeleted(Result.success(Stubs.todoCompleted));
-          bloc.events.todoDeleted(Result.success(Stubs.todoUncompleted));
+          bloc.events.todoDeleted(Result.success(Stubs.todoIncomplete));
         },
         state: (bloc) => bloc.states.onTodoDeleted,
         expect: [
           Result.loading(),
           Result.success(Stubs.todoCompleted),
-          Result.success(Stubs.todoUncompleted),
+          Result.success(Stubs.todoIncomplete),
         ]);
 
     rxBlocTest<CoordinatorBlocType, Result<List<TodoModel>>>(

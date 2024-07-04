@@ -72,14 +72,14 @@ void main() {
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state title',
         build: () async {
-          _defineWhen(title: Stubs.todoUncompleted.title);
+          _defineWhen(title: Stubs.todoIncomplete.title);
           return todoManagementBloc();
         },
         act: (bloc) async {
-          bloc.events.setTitle(Stubs.todoUncompleted.title);
+          bloc.events.setTitle(Stubs.todoIncomplete.title);
         },
         state: (bloc) => bloc.states.title,
-        expect: [Stubs.todoUncompleted.title]);
+        expect: [Stubs.todoIncomplete.title]);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state invalid title',
@@ -125,12 +125,12 @@ void main() {
         'test todo_management_bloc_dart state onTodoSaved',
         build: () {
           _defineWhen(
-              todoId: Stubs.todoUncompleted.id,
-              todoModel: Stubs.todoUncompleted,
+              todoId: Stubs.todoIncomplete.id,
+              todoModel: Stubs.todoIncomplete,
               title: Stubs.todoUncompletedUpdated.title);
           return todoManagementBloc(
-              todoId: Stubs.todoUncompleted.id,
-              initialTodo: Stubs.todoUncompleted);
+              todoId: Stubs.todoIncomplete.id,
+              initialTodo: Stubs.todoIncomplete);
         },
         act: (bloc, fakeAsync) async {
           bloc.events.setTitle(Stubs.todoUncompletedUpdated.title);
