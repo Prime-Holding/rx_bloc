@@ -27,6 +27,10 @@ class Stubs {
 
   static const shortTitle = 'sh';
 
+  static const longTitle = 'long title 123456789012345678901234567890';
+
+  static const validTitle = 'test title';
+
   static final todoList = List<TodoModel>.from([
     todoUncompleted,
     todoCompleted,
