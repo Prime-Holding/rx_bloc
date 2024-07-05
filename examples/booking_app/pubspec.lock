@@ -749,7 +749,7 @@ packages:
       path: "../../packages/rx_bloc_generator"
       relative: true
     source: path
-    version: "7.2.0"
+    version: "7.2.2"
   rx_bloc_list:
     dependency: "direct main"
     description:

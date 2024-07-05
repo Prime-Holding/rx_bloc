@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -23,9 +22,7 @@ import '../../lib_todo_actions/services/todo_actions_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
-import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../common_services/push_notifications_service.dart';
 import '../common_services/todo_list_service.dart';
 import '../data_sources/local/profile_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
@@ -33,7 +30,6 @@ import '../data_sources/local/todo_list_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
-import '../repositories/push_notification_repository.dart';
 import '../repositories/todo_list_repository.dart';
 
 class TodoappWithDependencies extends StatelessWidget {
@@ -106,9 +102,6 @@ class TodoappWithDependencies extends StatelessWidget {
             create: (context) => SharedPreferencesInstance()),
         Provider<FlutterSecureStorage>(
             create: (context) => const FlutterSecureStorage()),
-        Provider<FirebaseMessaging>(
-          create: (_) => FirebaseMessaging.instance,
-        ),
       ];
 
   List<SingleChildWidget> get _libs => [
@@ -137,14 +130,6 @@ class TodoappWithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _repositories => [
-        Provider<PushNotificationRepository>(
-          create: (context) => PushNotificationRepository(
-            context.read(),
-            context.read(),
-            context.read(),
-            context.read(),
-          ),
-        ),
         Provider<PermissionsRepository>(
           create: (context) => PermissionsRepository(
             context.read(),
@@ -171,11 +156,6 @@ class TodoappWithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        Provider<PushNotificationsService>(
-          create: (context) => PushNotificationsService(
-            context.read(),
-          ),
-        ),
         Provider<TodoListService>(
           create: (context) => TodoListService(
             context.read(),
@@ -197,11 +177,6 @@ class TodoappWithDependencies extends StatelessWidget {
           create: (context) => TodoActionsBloc(
             context.read(),
             context.read(),
-            context.read(),
-          ),
-        ),
-        RxBlocProvider<PushNotificationsBlocType>(
-          create: (context) => PushNotificationsBloc(
             context.read(),
           ),
         ),

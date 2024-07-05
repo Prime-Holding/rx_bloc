@@ -13,8 +13,6 @@ import 'network_lookup/error_lookup.dart';
 import 'network_lookup/field_lookup.dart';
 import 'network_lookup/lib_dev_menu_lookup.dart';
 import 'network_lookup/lib_router_lookup.dart';
-import 'network_lookup/notifications_lookup.dart';
-import 'network_lookup/profile_lookup.dart';
 import 'network_lookup/util.dart';
 
 class AppI18n extends I18n {
@@ -83,14 +81,6 @@ class AppI18nLookup extends I18nLookup {
 
   @override
   I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();
-
-  @override
-  I18nFeatureNotificationsLookup createFeatureNotificationsLookup() =>
-      AppI18nNotificationsLookup();
-
-  @override
-  I18nFeatureProfileLookup createFeatureProfileLookup() =>
-      AppI18nProfileLookup();
 
   @override
   I18nLibDevMenuLookup createLibDevMenuLookup() => AppI18nLibDevMenuLookup();

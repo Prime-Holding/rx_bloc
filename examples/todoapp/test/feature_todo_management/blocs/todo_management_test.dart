@@ -34,9 +34,9 @@ void main() {
   void _defineWhen(
       {String? todoId,
       String? title,
-      String? description = '',
+      String? description,
       TodoModel? todoModel}) {
-    when(_listService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
+    when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
         return Future.value(todoModel);
       }
@@ -44,10 +44,10 @@ void main() {
       return Future.error(Stubs.notFoundError);
     });
 
-    when(_todoManageService.addOrUpdate(
-            Stubs.todoEmpty.copyWith(title: title, description: description)))
-        .thenAnswer((_) => Future.value(
-            Stubs.todoEmpty.copyWith(title: title, description: description)));
+    when(_todoManageService.addOrUpdate((todoModel ?? Stubs.todoEmpty)
+            .copyWith(title: title, description: description)))
+        .thenAnswer((_) => Future.value((todoModel ?? Stubs.todoEmpty)
+            .copyWith(title: title, description: description)));
   }
 
   TodoManagementBloc todoManagementBloc(
@@ -72,14 +72,14 @@ void main() {
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state title',
         build: () async {
-          _defineWhen(title: Stubs.todoUncompleted.title);
+          _defineWhen(title: Stubs.todoIncomplete.title);
           return todoManagementBloc();
         },
         act: (bloc) async {
-          bloc.events.setTitle(Stubs.todoUncompleted.title);
+          bloc.events.setTitle(Stubs.todoIncomplete.title);
         },
         state: (bloc) => bloc.states.title,
-        expect: [Stubs.todoUncompleted.title]);
+        expect: [Stubs.todoIncomplete.title]);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state invalid title',
@@ -117,6 +117,29 @@ void main() {
         state: (bloc) => bloc.states.errors,
         expect: [
           Stubs.notFoundError,
+        ]);
+  });
+
+  group('test todo_management_bloc_dart state onTodoSaved', () {
+    rxBlocFakeAsyncTest<TodoManagementBlocType, TodoModel>(
+        'test todo_management_bloc_dart state onTodoSaved',
+        build: () {
+          _defineWhen(
+              todoId: Stubs.todoIncomplete.id,
+              todoModel: Stubs.todoIncomplete,
+              title: Stubs.todoUncompletedUpdated.title);
+          return todoManagementBloc(
+              todoId: Stubs.todoIncomplete.id,
+              initialTodo: Stubs.todoIncomplete);
+        },
+        act: (bloc, fakeAsync) async {
+          bloc.events.setTitle(Stubs.todoUncompletedUpdated.title);
+          fakeAsync.elapse(const Duration(milliseconds: 1));
+          bloc.events.save();
+        },
+        state: (bloc) => bloc.states.onTodoSaved,
+        expect: [
+          Stubs.todoUncompletedUpdated,
         ]);
   });
 }

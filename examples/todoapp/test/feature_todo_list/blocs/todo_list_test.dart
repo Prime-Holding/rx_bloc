@@ -28,7 +28,7 @@ void main() {
       List<TodoModel>? changedTodoList}) {
     todoList ??= Stubs.todoList;
     updatedTodo ??= Stubs.todoUncompletedUpdated;
-    deletedModel ??= Stubs.todoUncompleted;
+    deletedModel ??= Stubs.todoIncomplete;
     changedTodoList ??= Stubs.todoListEmpty;
 
     when(_todoListService.fetchTodoList())

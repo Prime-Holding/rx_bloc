@@ -27,7 +27,7 @@ void main() {
   void _defineWhen([String? todoId]) {
     when(_todoListService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
-        return Future.value(Stubs.todoUncompleted);
+        return Future.value(Stubs.todoIncomplete);
       }
 
       return Future.error(Stubs.notFoundError);
@@ -83,14 +83,14 @@ void main() {
     rxBlocTest<TodoDetailsBlocType, Result<TodoModel>>(
         'test todo_details_bloc_dart state todo',
         build: () async {
-          _defineWhen(Stubs.todoUncompleted.id);
-          return buildTodoDetailsBloc(Stubs.todoUncompleted.id);
+          _defineWhen(Stubs.todoIncomplete.id);
+          return buildTodoDetailsBloc(Stubs.todoIncomplete.id);
         },
         act: (bloc) async {},
         state: (bloc) => bloc.states.todo,
         expect: [
           Result.loading(),
-          Result.success(Stubs.todoUncompleted),
+          Result.success(Stubs.todoIncomplete),
         ]);
   });
 }
