@@ -1,5 +1,7 @@
 ## Fastlane
 
+![Diagram][cicd_diagram]
+
 ### Distribution repository
 
 Create a new Github repository used for storing files and credentials for distribution of your app.
@@ -79,7 +81,7 @@ Make sure you name the tag properly. The tag should contain the following parts 
 - build version prefixed with a `v`
 - build number prefixed with a `+`
 
-The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners.
+The `build_and_deploy_android` job is ran on `ubuntu-latest` runners, while the `build_and_deploy_ios` job uses `macos-latest` runners.
 All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
 
 Once the apps are successfully built and signed, a `deployment.yaml` file along with the platform specific artifacts (`.aab` for Android, `.ipa` for iOS) will be generated.
@@ -173,6 +175,7 @@ For more details on that and other commands, as well as their arguments, please 
 
 ---
 
+[cicd_diagram]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/asset/cicd_diagram.png
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/

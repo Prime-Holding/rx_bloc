@@ -8,8 +8,9 @@ part 'division_bloc_extensions.dart';
 abstract class DivisionBlocEvents {
   // Event that we use for number division
   @RxBlocEvent(
-      type: RxBlocEventType.behaviour,
-      seed: DivideNumbersEventArgs('1.0', '1.0'))
+    type: RxBlocEventType.behaviour,
+    seed: (a: '10', b: '2'),
+  )
   void divideNumbers(String? a, String? b);
 }
 
