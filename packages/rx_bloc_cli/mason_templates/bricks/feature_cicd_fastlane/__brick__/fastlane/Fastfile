@@ -305,7 +305,10 @@ platform :android do
 
     desc 'Clean up temporary build files'
     private_lane :post_build_clean_up do
-        # nothing to do here for Android
+        # Remove any credentials
+        Dir.chdir("../devops/") do
+            sh("rm -rf credentials/")
+        end
     end
 
     desc 'Deploy the app to google play store'
@@ -443,6 +446,11 @@ platform :ios do
 
     desc 'Clean up temporary build files'
     private_lane :post_build_clean_up do
+        # Remove any credentials
+        Dir.chdir("../devops/") do
+            sh("rm -rf credentials/")
+        end
+
         if is_ci_cd_machine()==true
             delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
         end
@@ -510,6 +518,11 @@ lane :deploy do
             build_number: properties['MOBILE_DEPLOYMENT_BUILD_NUMBER']
         )
     end
+
+    # Remove any credentials (post deploy)
+    Dir.chdir("../devops/") do
+        sh("rm -rf credentials/")
+    end
 end
 
 desc 'Deploy the debug symbols to firebase
@@ -548,5 +561,10 @@ lane :deploy_debug_symbols do
             environment: environment,
             firebase_application_id: firebase_application_id,
         )
+    end
+
+    # Remove any credentials (post deploy)
+    Dir.chdir("../devops/") do
+        sh("rm -rf credentials/")
     end
 end
