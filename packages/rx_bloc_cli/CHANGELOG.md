@@ -1,3 +1,7 @@
+## [3.6.2]
+* Updated names and caching strategies of github workflows to match it's usage
+* Fastfile: credentials are now removed after a build/deployment is complete
+
 ## [3.6.1]
 * Updated Github workflow files generated with the `github` cicd flag
 

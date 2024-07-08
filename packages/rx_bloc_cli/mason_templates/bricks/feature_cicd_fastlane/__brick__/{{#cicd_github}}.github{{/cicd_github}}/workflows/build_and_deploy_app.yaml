@@ -30,7 +30,7 @@ jobs:
         build_number: ${{ steps.extraction.outputs.build_number }}
         flavor: ${{ steps.extraction.outputs.flavor }}
 
-  build_android_app:
+  build_and_deploy_android:
     needs: app_version_extraction
     uses: ./.github/workflows/fastlane_android_custom_build_and_deploy.yaml
     with:
@@ -42,7 +42,7 @@ jobs:
       mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
       mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
   
-  build_ios_app:
+  build_and_deploy_ios:
     needs: app_version_extraction
     uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
     with:
