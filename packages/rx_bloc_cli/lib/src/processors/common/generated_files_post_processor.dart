@@ -43,11 +43,11 @@ class GeneratedFilesPostProcessor {
         ),
         ('.github/workflows/run_app_tests.yaml', CICDConfigFileProcessor(args)),
         (
-          '.github/workflows/fastlane_android_custom_build_and_deploy.yaml',
+          '.github/workflows/build_and_deploy_android_app.yaml',
           CICDConfigFileProcessor(args)
         ),
         (
-          '.github/workflows/fastlane_ios_custom_build_and_deploy.yaml',
+          '.github/workflows/build_and_deploy_ios_app.yaml',
           CICDConfigFileProcessor(args)
         ),
         ('codemagic.yaml', CICDConfigFileProcessor(args)),
