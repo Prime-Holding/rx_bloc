@@ -24,7 +24,6 @@ import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_services/todo_list_service.dart';
-import '../data_sources/local/profile_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/local/todo_list_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
@@ -118,10 +117,6 @@ class TodoappWithDependencies extends StatelessWidget {
           create: (context) => PermissionsRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),
-        Provider<ProfileLocalDataSource>(
-          create: (context) =>
-              ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
         ),
         Provider<TodoListDataSource>(
           create: (context) =>
