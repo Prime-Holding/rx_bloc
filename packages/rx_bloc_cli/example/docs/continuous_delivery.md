@@ -123,7 +123,7 @@ For more details on that and other commands, as well as their arguments, please 
 
 ---
 
-[cicd_diagram]: https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/example/docs/cicd_dialog.png
+[cicd_diagram]: https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/example/docs/cicd_diagram.png
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/
