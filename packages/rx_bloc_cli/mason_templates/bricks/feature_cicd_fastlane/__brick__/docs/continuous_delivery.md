@@ -66,8 +66,8 @@ If you haven't created an access token for your distribution repository in Githu
 
 Access the `Actions secrets and variables` within the settings page of your Github repository.
 There you should define two repository secrets with the same values as in the local environments:
-- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
-- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CREDENTIAL_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `CREDENTIAL_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 
 Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app and deploys it to the respective stores.
 If you do not want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `false` and commit the new changes.
@@ -102,8 +102,8 @@ This file contains preconfigured workflows for building and deployment of the An
 Once you connect your repository with Codemagic and add your app, you'll be presented with the project settings.
 In order to make use of the `codemagic.yaml` workflows, first you need to `Switch to YAML configuration` if presented by the Workflow Editor once the Codemagic project is accessed.
 Under the `Environment variables` tab, define `secure` environment variables assigned to the `secret` group with the following name:
-- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
-- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CREDENTIAL_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `CREDENTIAL_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 - `CM_API_TOKEN`: token used for accessing Codemagic artifacts through the API
 
 > [!NOTE]

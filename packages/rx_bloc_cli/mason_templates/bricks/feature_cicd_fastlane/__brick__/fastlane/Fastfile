@@ -109,13 +109,13 @@ end
 
 desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
-  - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET"
+  - CREDENTIAL_REPOSITORY_ACCESS_SECRET"
 private_lane :fetch_credentials do
     ensure_env_vars(
-        env_vars: ['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET']
+        env_vars: ['CREDENTIAL_REPOSITORY_ACCESS_SECRET']
     )
 
-    token = ENV["MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET"]
+    token = ENV["CREDENTIAL_REPOSITORY_ACCESS_SECRET"]
 
     Dir.chdir("../devops") do
         unless Dir.exist?('credentials')
@@ -169,8 +169,8 @@ end
 
 desc "Start an automatic build
 Expected environment variables:
-    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
-    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET
     - tag_build_trigger_reason_tag_name
 Expected input parameters:
     - platform: string (android, ios)
@@ -201,8 +201,8 @@ end
 
 desc "Start a custom build
 If the following environment variables are not set the task will prompt the user to enter them:
-    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
-    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET
 Expected input parameters:
     - platform: string (android, ios)
     - build_name: string (1.2.0)
@@ -214,12 +214,12 @@ lane :build_custom do |options|
     environment = options[:environment]
     ensure_build_environment(environment: environment)
 
-    if ENV['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'] == nil
-        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET')
+    if ENV['CREDENTIAL_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_REPOSITORY_ACCESS_SECRET')
     end
 
-    if ENV['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'] == nil
-        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD')
+    if ENV['CREDENTIAL_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_ENCRYPTION_PASSWORD')
     end
 
     set_platform(platform: options[:platform])
@@ -254,7 +254,7 @@ end
 platform :android do
     desc "Decode credentials for Android build and deployment
     Expected environment variables:
-      - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+      - CREDENTIAL_ENCRYPTION_PASSWORD
     Creates the following environment variables:
       - ANDROID_KEYSTORE_PATH
       - ANDROID_KEYSTORE_ALIAS
@@ -262,7 +262,7 @@ platform :android do
       - ANDROID_KEYSTORE_PASSWORD"
     private_lane :install_credentials do |options|
         ensure_env_vars(
-            env_vars: ['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD']
+            env_vars: ['CREDENTIAL_ENCRYPTION_PASSWORD']
         )
 
         Dir.chdir("../devops/credentials") do
@@ -361,11 +361,11 @@ end
 platform :ios do
     desc 'Decode credentials for iOS build and deployment
     Expected environment variables:
-      - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'
+      - CREDENTIAL_ENCRYPTION_PASSWORD'
     private_lane :install_credentials do |options|
         ensure_env_vars(
             env_vars: [
-                'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD',
+                'CREDENTIAL_ENCRYPTION_PASSWORD',
             ]
         )
 
@@ -492,15 +492,15 @@ end
 
 desc 'Deploy the build artifacts to the environment specified in deployment.yaml
 Expected environment variables:
-    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
-    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET'
 lane :deploy do
-    if ENV['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'] == nil
-        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET')
+    if ENV['CREDENTIAL_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_REPOSITORY_ACCESS_SECRET')
     end
 
-    if ENV['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'] == nil
-        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD')
+    if ENV['CREDENTIAL_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_ENCRYPTION_PASSWORD')
     end
 
     fetch_credentials()
@@ -527,15 +527,15 @@ end
 
 desc 'Deploy the debug symbols to firebase
 Expected environment variables:
-    - MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
-    - MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET'
 lane :deploy_debug_symbols do
-    if ENV['MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET'] == nil
-        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET')
+    if ENV['CREDENTIAL_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_REPOSITORY_ACCESS_SECRET')
     end
 
-    if ENV['MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD'] == nil
-        setup_environment_variable(name: 'MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD')
+    if ENV['CREDENTIAL_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_ENCRYPTION_PASSWORD')
     end
 
     fetch_credentials()
