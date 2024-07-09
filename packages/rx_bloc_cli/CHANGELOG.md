@@ -1,3 +1,9 @@
+## [3.7.0]
+### Breaking change:
+Updated environment variable names used in CI/CD functionality:
+- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD` -> `CREDENTIAL_ENCRYPTION_PASSWORD`
+- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET` -> `CREDENTIAL_REPOSITORY_ACCESS_SECRET`
+
 ## [3.6.2]
 * Updated names and caching strategies of github workflows to match it's usage
 * Fastfile: credentials are now removed after a build/deployment is complete
