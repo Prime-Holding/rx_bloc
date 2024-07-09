@@ -5,7 +5,7 @@ distribution of the mobile application for Android and iOS.
 The credential files are encrypted using `openssl` with a password.
 
 When running the script commands for encryption and decryption, a password will be expected to encrypt/decrypt the file(s). 
-That password is stored as an environment variable (`MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`) and if not present, the user will be asked to enter it.
+That password is stored as an environment variable (`CREDENTIAL_ENCRYPTION_PASSWORD`) and if not present, the user will be asked to enter it.
 Any regular file encrypted with this password will have an `.enc` extension (which should be committed to source control).
 
 _Note: To list all currently available environment variables, use `printenv` from your console._

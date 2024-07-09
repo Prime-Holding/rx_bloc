@@ -39,9 +39,9 @@ jobs:
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
       publish_to_store: true
     secrets:
-      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
-  
+      credential_encryption_password: ${{ secrets.CREDENTIAL_ENCRYPTION_PASSWORD }}
+      credential_repository_access_secret: ${{ secrets.CREDENTIAL_REPOSITORY_ACCESS_SECRET }}
+
   build_and_deploy_ios:
     needs: app_version_extraction
     uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
@@ -51,5 +51,5 @@ jobs:
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
       publish_to_store: true
     secrets:
-      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+      credential_encryption_password: ${{ secrets.CREDENTIAL_ENCRYPTION_PASSWORD }}
+      credential_repository_access_secret: ${{ secrets.CREDENTIAL_REPOSITORY_ACCESS_SECRET }}

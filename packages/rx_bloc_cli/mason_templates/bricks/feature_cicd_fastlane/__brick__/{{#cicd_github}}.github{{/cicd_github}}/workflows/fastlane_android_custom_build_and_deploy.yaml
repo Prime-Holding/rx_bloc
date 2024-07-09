@@ -32,9 +32,9 @@ on:
         description: 'Should the app be published to the Google play store'
         required: false
     secrets:
-      mobile_distribution_encryption_password:
+      credential_encryption_password:
         required: true
-      mobile_distribution_repository_access_secret:
+      credential_repository_access_secret:
         required: true
 
 jobs:
@@ -44,8 +44,8 @@ jobs:
         working-directory: ${{ inputs.project_path }}
     runs-on: ubuntu-latest
     env:
-      MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
-      MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
+      CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
+      CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
       BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
       - uses: actions/checkout@v3
@@ -87,8 +87,8 @@ jobs:
         working-directory: ${{ inputs.project_path }}
     runs-on: ubuntu-latest
     env:
-      MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD: ${{ secrets.mobile_distribution_encryption_password }}
-      MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET: ${{ secrets.mobile_distribution_repository_access_secret }}
+      CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
+      CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
       BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
       - uses: actions/checkout@v4
