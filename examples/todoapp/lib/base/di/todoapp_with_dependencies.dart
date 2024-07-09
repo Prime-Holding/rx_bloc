@@ -28,7 +28,6 @@ import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/local/todo_list_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';
 import '../repositories/todo_list_repository.dart';
 
 class TodoappWithDependencies extends StatelessWidget {
@@ -108,11 +107,6 @@ class TodoappWithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _dataSources => [
-        Provider<PushNotificationsDataSource>(
-          create: (context) => PushNotificationsDataSource(
-            context.read<ApiHttpClient>(),
-          ),
-        ),
         Provider<PermissionsRemoteDataSource>(
           create: (context) => PermissionsRemoteDataSource(
             context.read<ApiHttpClient>(),

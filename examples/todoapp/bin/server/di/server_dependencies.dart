@@ -5,9 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import '../controllers/deep_links_controller.dart';
 import '../controllers/permissions_controller.dart';
-import '../controllers/push_notifications_controller.dart';
 import '../controllers/translations_controller.dart';
 import '../repositories/translations_repository.dart';
 import '../utils/api_controller.dart';
@@ -28,9 +26,7 @@ class ServerDependencies {
   ) async {
     routeGenerator
       ..addController(TranslationsController(di.get()))
-      ..addController(PushNotificationsController())
-      ..addController(PermissionsController())
-      ..addController(DeepLinksController());
+      ..addController(PermissionsController());
 
     /// TODO: Add your controllers here
   }
