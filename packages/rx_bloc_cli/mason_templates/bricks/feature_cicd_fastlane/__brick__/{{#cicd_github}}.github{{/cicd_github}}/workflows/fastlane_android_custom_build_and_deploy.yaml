@@ -63,7 +63,7 @@ jobs:
           bundle install
           bundle lock --add-platform ruby
           bundle lock --add-platform x86_64-linux
-      - name: Build android app
+      - name: Build and sign Android app
         run: |
           bundle exec fastlane build_custom platform:android environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
       - name: Prepare config

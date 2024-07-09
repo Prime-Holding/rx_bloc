@@ -64,7 +64,7 @@ jobs:
           bundle lock --add-platform ruby
           bundle lock --add-platform x86_64-darwin21
           bundle exec gem install cocoapods
-      - name: Build iOS app
+      - name: Build and sign iOS app
         run: |
           bundle exec fastlane build_custom platform:ios environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
       - name: Prepare config
