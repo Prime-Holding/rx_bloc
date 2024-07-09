@@ -75,8 +75,6 @@ r_flutter:
   intl: lib/l10n/arb/en.arb
   intl_features:
     - name: error
-    - name: feature_deep_link
-    - name: feature_enter_message
     - name: field 
     - name: lib_dev_menu
     - name: lib_router

@@ -28,7 +28,6 @@ import 'views/error_page.dart';
 
 part 'router.g.dart';
 part 'routes/routes.dart';
-part 'routes/showcase_routes.dart';
 
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].
