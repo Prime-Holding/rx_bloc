@@ -13,3 +13,4 @@ cp example/testapp/README.md example/
 mkdir example/docs
 cp example/testapp/docs/continuous_delivery.md example/docs/
 cp example/testapp/docs/app_architecture.png example/docs/
+cp example/testapp/docs/cicd_diagram.png example/docs/

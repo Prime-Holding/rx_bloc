@@ -66,8 +66,8 @@ If you haven't created an access token for your distribution repository in Githu
 
 Access the `Actions secrets and variables` within the settings page of your Github repository.
 There you should define two repository secrets with the same values as in the local environments:
-- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
-- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CREDENTIAL_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `CREDENTIAL_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 
 Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app and deploys it to the respective stores.
 If you do not want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `false` and commit the new changes.
@@ -123,7 +123,7 @@ For more details on that and other commands, as well as their arguments, please 
 
 ---
 
-[cicd_diagram]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/asset/cicd_diagram.png
+[cicd_diagram]: https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/example/docs/cicd_diagram.png
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/
