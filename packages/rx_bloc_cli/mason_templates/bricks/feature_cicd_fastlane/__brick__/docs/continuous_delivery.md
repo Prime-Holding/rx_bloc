@@ -175,7 +175,7 @@ For more details on that and other commands, as well as their arguments, please 
 
 ---
 
-[cicd_diagram]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/doc/asset/cicd_diagram.png
+[cicd_diagram]: https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/doc/assets/cicd_diagram.png?raw=true
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/
