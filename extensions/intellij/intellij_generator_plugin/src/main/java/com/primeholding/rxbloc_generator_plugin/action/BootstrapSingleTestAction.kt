@@ -3,7 +3,7 @@ package com.primeholding.rxbloc_generator_plugin.action
 import com.fleshgrinder.extensions.kotlin.toLowerCamelCase
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DataKeys
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -24,7 +24,7 @@ class BootstrapSingleTestAction : AnAction() {
 
     override fun update(e: AnActionEvent?) {
         super.update(e)
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
         var isVisible = false
 
         var file: VirtualFile?
@@ -64,7 +64,7 @@ class BootstrapSingleTestAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent?) {
 
         project = e?.project
-        val files = e?.dataContext?.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
         var file: VirtualFile?
 

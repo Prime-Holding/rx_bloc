@@ -63,7 +63,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
             val presentation = e.presentation
 
 
-            val files = e.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+            val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
             val isVisible = files != null && files.size == 1 && files[0].isDirectory
 
             presentation.isEnabled = isVisible
@@ -78,7 +78,7 @@ class GenerateRxBlocFeatureAction : AnAction(), GenerateRxBlocDialog.Listener {
     ) {
         val project = CommonDataKeys.PROJECT.getData(dataContext)
         //contextually selected folders
-        val files = event.dataContext.getData(DataKeys.VIRTUAL_FILE_ARRAY)
+        val files = event.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
 
 

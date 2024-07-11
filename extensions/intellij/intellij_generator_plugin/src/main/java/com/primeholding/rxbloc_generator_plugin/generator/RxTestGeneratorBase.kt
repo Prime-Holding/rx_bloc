@@ -9,7 +9,7 @@ import com.google.common.io.CharStreams
 import com.intellij.openapi.vfs.VirtualFile
 import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
-import org.apache.commons.lang.text.StrSubstitutor
+import org.apache.commons.text.StringSubstitutor
 import java.io.File
 import java.io.InputStreamReader
 import java.lang.RuntimeException
@@ -420,7 +420,7 @@ abstract class RxTestGeneratorBase(
     }
 
     override fun generate(): String {
-        val substitutor = StrSubstitutor(templateValues)
+        val substitutor = StringSubstitutor(templateValues)
         return substitutor.replace(templateString)
     }
 
