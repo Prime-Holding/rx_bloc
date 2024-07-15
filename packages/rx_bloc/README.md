@@ -186,7 +186,7 @@ class HomePage extends StatelessWidget {
 - [Github search][github_search_example_line_ref] - a feature-rich list view including infinity-scroll and pull-to-refresh functionalities.
 - [Counter][counter_bloc_sample_lnk] - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
 - [Division][division_sample_lnk] - Division sample
-- [Todo App][todo_sample_lnk] - A todo app that solves various tech challenges such as: Content lazy loading, various widget_toolkit components, List filtering, Coordinator BLoC, Inter-feature communication, Complete error handling and more.
+- [Todo App][todo_sample_lnk] - A todo app that solves various tech challenges such as: Various widget_toolkit components, List filtering, Inter-feature communication, Complete error handling and more.
 
   
 
