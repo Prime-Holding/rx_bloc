@@ -23,6 +23,7 @@ jobs:
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
+            "examples/todoapp",
           ]
       fail-fast: false
     runs-on: ubuntu-latest

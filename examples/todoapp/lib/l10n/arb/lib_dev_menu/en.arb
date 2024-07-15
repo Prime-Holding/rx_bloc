@@ -1,0 +1,9 @@
+{
+  "@@locale": "en",
+  "token": "Push notification token",
+  "enterIPAddress": "Please, enter the IP address of the computer from your local network - where you have the Software for Proxying Charles started.",
+  "restartApp": "After you save the IP, to apply the change, please restart your application!",
+  "save": "Save",
+  "proxy": "proxy",
+  "runInterceptor": "Run HTTP Interceptor"
+}
