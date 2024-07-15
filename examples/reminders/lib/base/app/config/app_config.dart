@@ -6,10 +6,10 @@ import 'environment_config.dart';
 class AppConfig extends InheritedWidget {
   /// AppConfig constructor taking in the [config] and a [child] widget
   const AppConfig({
-    this.config = EnvironmentConfig.prod,
-    required Widget child,
-    Key? key,
-  }) : super(child: child, key: key);
+    this.config = EnvironmentConfig.production,
+    required super.child,
+    super.key,
+  });
 
   /// The current environment configuration
   final EnvironmentConfig config;

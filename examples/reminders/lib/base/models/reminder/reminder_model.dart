@@ -1,10 +1,14 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:rx_bloc_list/models.dart';
+
+part 'reminder_model.g.dart';
 
 enum ReminderModelRequestSort {
   dueDateDesc,
   dueDateAsc,
 }
 
+@JsonSerializable()
 class DueDateRange {
   DueDateRange({
     required this.from,
@@ -13,8 +17,13 @@ class DueDateRange {
 
   final DateTime from;
   final DateTime to;
+  Map<String, dynamic> toJson() => _$DueDateRangeToJson(this);
+
+  factory DueDateRange.fromJson(Map<String, dynamic> json) =>
+      _$DueDateRangeFromJson(json);
 }
 
+@JsonSerializable()
 class ReminderModelRequest {
   ReminderModelRequest({
     this.filterByDueDateRange,
@@ -31,8 +40,14 @@ class ReminderModelRequest {
 
   /// When fetching from the dashboard page, set complete to false
   final bool? complete;
+
+  Map<String, dynamic> toJson() => _$ReminderModelRequestToJson(this);
+
+  factory ReminderModelRequest.fromJson(Map<String, dynamic> json) =>
+      _$ReminderModelRequestFromJson(json);
 }
 
+@JsonSerializable()
 class ReminderModelRequestData {
   ReminderModelRequestData({
     required this.title,
@@ -46,30 +61,29 @@ class ReminderModelRequestData {
   final bool complete;
   final String? authorId;
 
-  Map<String, Object?> toJson() {
-    return {
-      'title': title,
-      'dueDate': dueDate,
-      'complete': complete,
-      'authorId': authorId,
-    };
-  }
+  Map<String, dynamic> toJson() => _$ReminderModelRequestDataToJson(this);
+
+  factory ReminderModelRequestData.fromJson(Map<String, dynamic> json) =>
+      _$ReminderModelRequestDataFromJson(json);
 }
 
+@JsonSerializable()
 class ReminderModel extends ReminderModelRequestData implements Identifiable {
   ReminderModel({
     required this.id,
-    required title,
-    required dueDate,
-    required complete,
+    required super.title,
+    required super.dueDate,
+    required super.complete,
     authorId,
-  }) : super(
-            title: title,
-            dueDate: dueDate,
-            complete: complete,
-            authorId: authorId);
+  });
 
   final String id;
+  @override
+  Map<String, dynamic> toJson() => _$ReminderModelToJson(this);
+
+  @override
+  factory ReminderModel.fromJson(Map<String, dynamic> json) =>
+      _$ReminderModelFromJson(json);
 
   factory ReminderModel.fromIndex(int index) => ReminderModel(
         id: index.toString(),
@@ -117,15 +131,6 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
         authorId: authorId ?? this.authorId,
       );
 
-  ReminderModel.fromJson(Map<String, dynamic> json, String id)
-      : this(
-          id: id,
-          title: json['title'] as String,
-          dueDate: json['dueDate'].toDate(),
-          complete: json['complete'] as bool,
-          authorId: json['authorId'] as String?,
-        );
-
   @override
   bool isEqualToIdentifiable(Identifiable other) =>
       identical(this, other) ||
@@ -134,10 +139,16 @@ class ReminderModel extends ReminderModelRequestData implements Identifiable {
           id == other.id;
 }
 
+@JsonSerializable()
 class ReminderPair {
   ReminderPair({required this.updated, required this.old});
 
   final ReminderModel updated;
 
   final ReminderModel old;
+
+  Map<String, dynamic> toJson() => _$ReminderPairToJson(this);
+
+  factory ReminderPair.fromJson(Map<String, dynamic> json) =>
+      _$ReminderPairFromJson(json);
 }

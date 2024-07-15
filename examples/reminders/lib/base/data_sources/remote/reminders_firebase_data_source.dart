@@ -103,7 +103,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     var userId = await _getAuthorIdOrNull();
     Query query = getFirebaseFilteredQuery(null, userId);
     final snapshot = await query.count().get();
-    return snapshot.count;
+    return snapshot.count!;
   }
 
   /// Returns a list of all reminders for the dashboard
@@ -171,22 +171,22 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 
   /// Returns the number of complete reminders from the Firebase database
   @override
-  Future<int> getCompleteCount() async {
+  Future<String> getCompleteCount() async {
     final userId = await _getAuthorIdOrNull();
     final request = ReminderModelRequest(complete: true);
     var query = getFirebaseFilteredQuery(request, userId);
     final snapshot = await query.count().get();
-    return snapshot.count;
+    return snapshot.count!.toString();
   }
 
   /// Returns the number of incomplete reminders from the Firebase database
   @override
-  Future<int> getIncompleteCount() async {
+  Future<String> getIncompleteCount() async {
     final userId = await _getAuthorIdOrNull();
     final request = ReminderModelRequest(complete: false);
     var query = getFirebaseFilteredQuery(request, userId);
     final snapshot = await query.count().get();
-    return snapshot.count;
+    return snapshot.count!.toString();
   }
 
   /// Logs in the user with Facebook. Returns true if the login was successful,
@@ -359,7 +359,6 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
 extension FireBaseCollection on List<QueryDocumentSnapshot<Object?>> {
   /// Converts a list of [QueryDocumentSnapshot] to a list of [ReminderModel]
   List<ReminderModel> asReminderList() => map(
-        (docs) => ReminderModel.fromJson(
-            docs.data() as Map<String, dynamic>, docs.id),
+        (docs) => ReminderModel.fromJson(docs.data() as Map<String, dynamic>),
       ).toList();
 }

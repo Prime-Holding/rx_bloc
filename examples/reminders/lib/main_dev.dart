@@ -24,8 +24,8 @@ void main() async {
   await configureApp();
 
   var configuredApp = const AppConfig(
-    config: EnvironmentConfig.dev,
-    child: Reminders(config: EnvironmentConfig.dev),
+    config: EnvironmentConfig.development,
+    child: Reminders(config: EnvironmentConfig.development),
   );
   runApp(configuredApp);
 }

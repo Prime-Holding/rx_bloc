@@ -18,8 +18,10 @@ import '../../lib_router/router.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/firebase_bloc.dart';
+import '../data_sources/remote/api_http_client.dart';
 import '../data_sources/remote/interceptors/analytics_interceptor.dart';
 import '../data_sources/remote/reminders_firebase_data_source.dart';
+import '../data_sources/remote/reminders_rest_data_source.dart';
 import '../repositories/firebase_repository.dart';
 import '../repositories/reminders_repository.dart';
 import '../services/firebase_service.dart';
@@ -96,6 +98,13 @@ class _AppDependenciesState extends State<AppDependencies> {
 
   List<Provider> get _httpClients => [
         Provider<Dio>(create: (context) => Dio()),
+        Provider<ApiHttpClient>(
+          create: (context) {
+            final client = ApiHttpClient()
+              ..options.baseUrl = widget.config.baseUrl;
+            return client;
+          },
+        ),
       ];
 
   List<SingleChildWidget> get _dataStorages => [
@@ -108,12 +117,17 @@ class _AppDependenciesState extends State<AppDependencies> {
         Provider<RemindersFirebaseDataSource>(
           create: (context) => RemindersFirebaseDataSource(),
         ),
+        Provider<RemindersRestDataSource>(
+          create: (context) => RemindersRestDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        )
       ];
 
   List<Provider> get _repositories => [
         Provider<RemindersRepository>(
           create: (context) => RemindersRepository(
-            dataSource: RemindersFirebaseDataSource(),
+            dataSource: context.read<RemindersRestDataSource>(),
           ),
         ),
         Provider<FirebaseRepository>(

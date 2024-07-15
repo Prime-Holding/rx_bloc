@@ -23,7 +23,7 @@ import 'config/environment_config.dart';
 /// This widget is the root of your application.
 class Reminders extends StatelessWidget {
   const Reminders({
-    this.config = EnvironmentConfig.prod,
+    this.config = EnvironmentConfig.production,
     Key? key,
   }) : super(key: key);
 
@@ -51,7 +51,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   @override
   void initState() {
-    if (widget._config != EnvironmentConfig.dev) {
+    if (widget._config != EnvironmentConfig.development) {
       _addInterceptors();
     }
     final rootNavigatorKey = GlobalKey<NavigatorState>();

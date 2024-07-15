@@ -4,10 +4,10 @@ import '../../models/reminder/reminder_model.dart';
 /// Contract used to define any behaviour related to handling reminders
 abstract class RemindersDataSource {
   /// Returns the number of completed reminders
-  Future<int> getCompleteCount();
+  Future<String> getCompleteCount();
 
   /// Returns the number of incomplete reminders
-  Future<int> getIncompleteCount();
+  Future<String> getIncompleteCount();
 
   /// Returns a list of all reminders
   Future<ReminderListResponse> getAll(ReminderModelRequest? request);

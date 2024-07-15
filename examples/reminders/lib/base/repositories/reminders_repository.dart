@@ -55,8 +55,14 @@ class RemindersRepository {
   Future<ReminderPair> update(ReminderModel model) => _dataSource.update(model);
 
   /// Returns the number of completed reminders
-  Future<int> getCompleteCount() => _dataSource.getCompleteCount();
+  Future<int> getCompleteCount() async {
+    final completeCount = await _dataSource.getCompleteCount();
+    return int.parse(completeCount);
+  }
 
   /// Returns the number of incomplete reminders
-  Future<int> getIncompleteCount() => _dataSource.getIncompleteCount();
+  Future<int> getIncompleteCount() async {
+    final incompleteCount = await _dataSource.getIncompleteCount();
+    return int.parse(incompleteCount);
+  }
 }
