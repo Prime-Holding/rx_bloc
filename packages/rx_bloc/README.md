@@ -186,6 +186,7 @@ class HomePage extends StatelessWidget {
 - [Github search][github_search_example_line_ref] - a feature-rich list view including infinity-scroll and pull-to-refresh functionalities.
 - [Counter][counter_bloc_sample_lnk] - an example of how to create a `CounterBloc` to implement an advanced Flutter Counter app.
 - [Division][division_sample_lnk] - Division sample
+- [Todo App][todo_sample_lnk] - A todo app that solves various tech challenges such as: Various widget_toolkit components, List filtering, Inter-feature communication, Complete error handling and more.
 
   
 
@@ -228,6 +229,7 @@ class HomePage extends StatelessWidget {
 [rx_bloc_provider_lnk]: https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html
 [rx_bloc_builder_lnk]: https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocBuilder-class.html
 [booking_app_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/booking_app
+[todo_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/todoapp
 [favourites_advanced_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/favorites_advanced
 [counter_bloc_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/counter
 [division_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/division
