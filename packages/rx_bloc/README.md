@@ -229,7 +229,7 @@ class HomePage extends StatelessWidget {
 [rx_bloc_provider_lnk]: https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocProvider-class.html
 [rx_bloc_builder_lnk]: https://pub.dev/documentation/flutter_rx_bloc/latest/flutter_rx_bloc/RxBlocBuilder-class.html
 [booking_app_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/booking_app
-[todo_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/develop/examples/todoapp
+[todo_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/todoapp
 [favourites_advanced_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/favorites_advanced
 [counter_bloc_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/counter
 [division_sample_lnk]: https://github.com/Prime-Holding/rx_bloc/tree/master/examples/division
