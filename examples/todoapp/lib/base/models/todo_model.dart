@@ -7,8 +7,8 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+// ignore: implementation_imports
 import 'package:rx_bloc_list/src/models/identifiable.dart';
-
 part 'todo_model.g.dart';
 
 @JsonSerializable()
