@@ -7,7 +7,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:rx_bloc_list/models.dart';
+import 'package:rx_bloc_list/src/models/identifiable.dart';
 
 part 'todo_model.g.dart';
 
@@ -88,7 +88,7 @@ class TodoModel with EquatableMixin implements Identifiable {
     TodoModel? todo,
   }) =>
       TodoModel(
-        id: todo?.id ,
+        id: todo?.id,
         title: title,
         description: description,
         completed: todo?.completed ?? false,
