@@ -1,6 +1,6 @@
 ### Smart Widgets dependencies for Golden Tests
 
-In golden tests we want to mock the BLoCs to be able to test all UI states.Using reusable smart widgets that have their own dependency injection will make golden tests to fail. To fix this issue we need to build the smart widgets without injecting the required components during the test. This is why we added `isInTestMode` in `app_constants.dart`.
+In golden tests we want to mock the BLoCs to be able to test all UI states. By using smart widgets that manage their dependencies, golden tests could fail. To fix this issue we need to build the smart widgets without injecting the required components during the test. This is why we added `isInTestMode` in `app_constants.dart`.
 
 To use it in custom widgets with their own dependency injection you can follow this example:
 ```
