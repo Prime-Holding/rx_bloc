@@ -27,8 +27,9 @@ class AppTodoListBulkEditPopupMenuButtonWithDependencies {
     }
 }
 ```
-IMPORTANT: you should import `isInTestMode` from [app_constants.dart]!
-Since we don't want to add dependency on `universal_io/io.dart`, because we want to avoid the additional maintenance cost, we check if `dart.library.io` is available to determine if we are running a test or other environment.
+> [!CAUTION]
+> You should import `isInTestMode` from [app_constants.dart]!
+> Since we don't want to add dependency on `universal_io/io.dart`, because we want to avoid the additional maintenance cost, we check if `dart.library.io` is available to determine if we are running a test or other environment.
 
 *app_constants.dart*
 ```
