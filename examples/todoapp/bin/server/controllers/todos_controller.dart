@@ -46,7 +46,7 @@ class TodosController extends ApiController {
     );
     router.addRequest(
       RequestType.DELETE,
-      '/api/v1/todos',
+      '/api/v1/todos/completed',
       deleteCompletedHandler,
     );
     router.addRequest(
