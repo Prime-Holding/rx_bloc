@@ -7,7 +7,6 @@
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:todoapp/base/models/todo_model.dart';
 
 import '../services/todos_service.dart';
 import '../utils/api_controller.dart';
@@ -22,37 +21,42 @@ class TodosController extends ApiController {
   void registerRequests(WrappedRouter router) {
     router.addRequest(
       RequestType.GET,
-      '/api/todos',
+      '/api/v1/todos',
       getAllTodosHandler,
     );
     router.addRequest(
       RequestType.POST,
-      '/api/todos',
-      addOrUpdateTodoHandler,
+      '/api/v1/todos',
+      addTodoHandler,
     );
     router.addRequest(
-      RequestType.GET,
-      '/api/todoUpdate/<id>',
+      RequestType.PUT,
+      '/api/v1/todos/<id>',
+      updateTodoByIdHandler,
+    );
+    router.addRequest(
+      RequestType.PATCH,
+      '/api/v1/todos/<id>',
       updateCompletedByIdHandler,
     );
     router.addRequest(
       RequestType.PATCH,
-      '/api/todos',
+      '/api/v1/todos',
       updateCompletedForAll,
     );
     router.addRequest(
       RequestType.DELETE,
-      '/api/todos',
+      '/api/v1/todos',
       deleteCompletedHandler,
     );
     router.addRequest(
       RequestType.DELETE,
-      '/api/todos/<id>',
+      '/api/v1/todos/<id>',
       deleteByIdHandler,
     );
     router.addRequest(
       RequestType.GET,
-      '/api/todoGet/<id>',
+      '/api/v1/todos/<id>',
       fetchTodoByIdHandler,
     );
   }
@@ -72,20 +76,25 @@ class TodosController extends ApiController {
     return responseBuilder.buildOK(data: todos.toJson());
   }
 
-  Future<Response> addOrUpdateTodoHandler(Request request) async {
+  Future<Response> updateTodoByIdHandler(Request request) async {
     final params = await request.bodyFromFormData();
-    final todoFromParams = params['todo'] != null
-        ? TodoModel.fromJson(params['todo'])
-        : TodoModel.empty();
-    //check if the request body is empty
+    final title = params['title'];
+    final description = params['description'];
+    throwIfEmpty(params['id'], BadRequestException('id is required'));
+    final todo = todosService.updateTodoById(params['id'], title, description);
+    return responseBuilder.buildOK(data: todo.toJson());
+  }
+
+  Future<Response> addTodoHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+
     throwIfEmpty(
         params['title'], BadRequestException('Request title is empty'));
-    final todoFromRequest = TodoModel.from(
-      title: params['title']!,
-      description: params['description'] ?? '',
-      todo: todoFromParams,
+
+    final todo = todosService.addTodo(
+      params['title']!,
+      params['description'],
     );
-    final todo = todosService.addOrUpdateReminder(todoFromRequest);
     return responseBuilder.buildOK(data: todo.toJson());
   }
 
@@ -109,7 +118,7 @@ class TodosController extends ApiController {
 
     todosService.deleteById(todoId!);
 
-    return Response.ok('Todo with id $todoId has been deleted');
+    return Response(204);
   }
 
   Future<Response> fetchTodoByIdHandler(Request request) async {

@@ -20,20 +20,31 @@ class TodosRepository {
 
   TodoModelList fetchAllTodos() => TodoModelList(todos: _todos);
 
-  TodoModel addOrUpdateTodo(TodoModel todo) {
-    final index = _todos.indexWhere((element) => element.id == todo.id);
-    if (todo.id == null) {
-      todo = todo.copyWith(id: uuid.v4());
-    }
-    if (index >= 0) {
-      _todos[index] = todo;
-    } else {
-      _todos.insert(0, todo);
-    }
+  TodoModel addTodo(String title, String? description) {
+    // final index = _todos.indexWhere((element) => element.id == todo.id);
+    final todo = TodoModel.from(title: title, description: description ?? '');
+    _todos.insert(0, todo);
     return todo;
   }
 
-  TodoModel updateCompletedById(String id) {
+  TodoModel updateTodoById(String id, String title, String? description) {
+    if (_todos.isNotEmpty) {
+      final index = _todos.indexWhere((element) => element.id == id);
+      if (index >= 0) {
+        _todos[index] = _todos[index].copyWith(
+          title: title,
+          description: description,
+        );
+
+        return _todos[index];
+      }
+    }
+
+    throw Exception(
+        'Unable to update Todo, because todo with id  = $id cannot be found!');
+  }
+
+  TodoModel updateCompletedById(String id, ) {
     if (_todos.isNotEmpty) {
       final index = _todos.indexWhere((element) => element.id == id);
       if (index >= 0) {
