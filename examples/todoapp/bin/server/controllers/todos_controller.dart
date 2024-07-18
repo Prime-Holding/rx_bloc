@@ -31,7 +31,7 @@ class TodosController extends ApiController {
     // Handler to add a new todo
     router.addRequest(
       RequestType.POST,
-      '/api/v1/todos/add',
+      '/api/v1/todos',
       addTodoHandler,
     );
     // Handler to update a todo by its ID
