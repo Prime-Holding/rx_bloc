@@ -5,6 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:convert';
+
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
@@ -73,7 +75,8 @@ class TodosController extends ApiController {
   /// Handles GET requests to fetch all todos.
   Future<Response> getAllTodosHandler(Request request) async {
     final allTodos = todosService.fetchAllTodos();
-    return responseBuilder.buildOK(data: allTodos.toJson());
+    final todoList = jsonEncode(allTodos.map((obj) => obj.toJson()).toList());
+    return Response.ok(todoList);
   }
 
   /// Handles PATCH requests to update the completion status for all todos.
@@ -84,7 +87,8 @@ class TodosController extends ApiController {
       throw BadRequestException('completed is required');
     }
     final todos = todosService.updateCompletedForAll(completed);
-    return responseBuilder.buildOK(data: todos.toJson());
+    final todoList = jsonEncode(todos.map((obj) => obj.toJson()).toList());
+    return Response.ok(todoList);
   }
 
   /// Handles PUT requests to update a todo by its ID.
@@ -123,7 +127,9 @@ class TodosController extends ApiController {
   /// Handles DELETE requests to remove all completed todos.
   Future<Response> deleteCompletedHandler(Request request) async {
     final todos = todosService.deleteCompleted();
-    return responseBuilder.buildOK(data: todos.toJson());
+    final todoList = jsonEncode(todos.map((obj) => obj.toJson()).toList());
+
+    return Response.ok(todoList);
   }
 
   /// Handles DELETE requests to remove a todo by its ID.

@@ -8,8 +8,6 @@
 import 'package:collection/collection.dart';
 import 'package:todoapp/base/models/todo_model.dart';
 
-import '../models/todo_model_list.dart';
-
 class TodosRepository {
   TodosRepository();
 
@@ -17,7 +15,7 @@ class TodosRepository {
   final List<TodoModel> _todos = [];
 
   // Fetches all todos from the list of todos
-  TodoModelList fetchAllTodos() => TodoModelList(todos: _todos);
+  List<TodoModel> fetchAllTodos() => _todos;
 
   // Add a new todo to the list of todos
   TodoModel addTodo(String title, String? description) {
@@ -63,23 +61,23 @@ class TodosRepository {
   }
 
   // Update the completed status of all todos to true or false
-  TodoModelList updateCompletedForAll(bool completed) {
+  List<TodoModel> updateCompletedForAll(bool completed) {
     if (_todos.isNotEmpty) {
       _todos.forEachIndexed(
           (index, todo) => _todos[index] = todo.copyWith(completed: completed));
-      return TodoModelList(todos: _todos);
+      return _todos;
     }
 
     throw Exception('No todos in the local data storage!');
   }
 
   // Delete all completed todos
-  TodoModelList deleteCompleted() {
+  List<TodoModel> deleteCompleted() {
     var listJson = _todos;
     if (listJson.isNotEmpty) {
       _todos.removeWhere((element) => element.completed == true);
 
-      return TodoModelList(todos: _todos);
+      return _todos;
     }
 
     throw Exception('No _todos in the local data storage!');

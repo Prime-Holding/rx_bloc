@@ -1,6 +1,5 @@
 import 'package:todoapp/base/models/todo_model.dart';
 
-import '../models/todo_model_list.dart';
 import '../repositories/todos_repository.dart';
 
 class TodosService {
@@ -8,7 +7,7 @@ class TodosService {
   TodosService(this.todoRepository);
 
   // Fetches all todos from the repository
-  TodoModelList fetchAllTodos() => todoRepository.fetchAllTodos();
+  List<TodoModel> fetchAllTodos() => todoRepository.fetchAllTodos();
 
   // Add a new todo to the repository
   TodoModel addTodo(String title, String? description) =>
@@ -23,11 +22,11 @@ class TodosService {
       todoRepository.updateCompletedById(id);
 
   // Update the completed status of all todos to true or false in the repository
-  TodoModelList updateCompletedForAll(bool completed) =>
+  List<TodoModel> updateCompletedForAll(bool completed) =>
       todoRepository.updateCompletedForAll(completed);
 
   // Delete all completed todos from the repository
-  TodoModelList deleteCompleted() => todoRepository.deleteCompleted();
+  List<TodoModel> deleteCompleted() => todoRepository.deleteCompleted();
 
   // Delete a todo by its id from the repository
   void deleteById(String id) => todoRepository.deleteById(id);
