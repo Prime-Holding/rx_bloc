@@ -5,6 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:uuid/uuid.dart';
+
 import '../controllers/permissions_controller.dart';
 import '../controllers/todos_controller.dart';
 import '../controllers/translations_controller.dart';
@@ -18,7 +20,8 @@ class ServerDependencies {
   /// Registers all dependencies used for the controllers
   static Future<void> registerDependencies(DependencyInjector di) async {
     di.register(TranslationsRepository());
-    di.register(TodosRepository());
+    di.register(const Uuid());
+    di.register(TodosRepository(di.get<Uuid>()));
     di.register(TodosService(di.get<TodosRepository>()));
 
     /// TODO: Add your dependencies here

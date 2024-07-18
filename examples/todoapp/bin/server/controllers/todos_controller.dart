@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:todoapp/base/models/todo_model.dart';
 
 import '../services/todos_service.dart';
 import '../utils/api_controller.dart';
@@ -76,7 +77,7 @@ class TodosController extends ApiController {
   Future<Response> getAllTodosHandler(Request request) async {
     final allTodos = todosService.fetchAllTodos();
     final todoList = jsonEncode(allTodos.map((obj) => obj.toJson()).toList());
-    return Response.ok(todoList);
+    return Response.ok(todoList, headers: {'content-type': 'application/json'});
   }
 
   /// Handles PATCH requests to update the completion status for all todos.
@@ -88,16 +89,15 @@ class TodosController extends ApiController {
     }
     final todos = todosService.updateCompletedForAll(completed);
     final todoList = jsonEncode(todos.map((obj) => obj.toJson()).toList());
-    return Response.ok(todoList);
+    return Response.ok(todoList, headers: {'content-type': 'application/json'});
   }
 
   /// Handles PUT requests to update a todo by its ID.
   Future<Response> updateTodoByIdHandler(Request request) async {
     final params = await request.bodyFromFormData();
-    final title = params['title'];
-    final description = params['description'];
+    final todoFromRequest = TodoModel.fromJson(params);
     throwIfEmpty(params['id'], BadRequestException('id is required'));
-    final todo = todosService.updateTodoById(params['id'], title, description);
+    final todo = todosService.updateTodoById(todoFromRequest);
     return responseBuilder.buildOK(data: todo.toJson());
   }
 
@@ -117,10 +117,14 @@ class TodosController extends ApiController {
 
   /// Handles PATCH requests to update the completion status of a todo by its ID.
   Future<Response> updateCompletedByIdHandler(Request request) async {
+    final params = await request.bodyFromFormData();
     final todoId = request.params['id'];
-
+    final completed = params['completed'];
+    if (completed == null) {
+      throw BadRequestException('completed is required');
+    }
     throwIfEmpty(todoId, BadRequestException('id is required'));
-    final todo = todosService.updateCompletedById(todoId!);
+    final todo = todosService.updateCompletedById(todoId!, completed);
     return responseBuilder.buildOK(data: todo.toJson());
   }
 
@@ -129,7 +133,7 @@ class TodosController extends ApiController {
     final todos = todosService.deleteCompleted();
     final todoList = jsonEncode(todos.map((obj) => obj.toJson()).toList());
 
-    return Response.ok(todoList);
+    return Response.ok(todoList, headers: {'content-type': 'application/json'});
   }
 
   /// Handles DELETE requests to remove a todo by its ID.

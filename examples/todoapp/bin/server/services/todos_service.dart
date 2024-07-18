@@ -14,12 +14,12 @@ class TodosService {
       todoRepository.addTodo(title, description);
 
   // Update a todo by its id in the repository
-  TodoModel updateTodoById(String id, String title, String? description) =>
-      todoRepository.updateTodoById(id, title, description);
+  TodoModel updateTodoById(TodoModel todo) =>
+      todoRepository.updateTodoById(todo);
 
   // Update the completed status of a todo by its id in the repository
-  TodoModel updateCompletedById(String id) =>
-      todoRepository.updateCompletedById(id);
+  TodoModel updateCompletedById(String id, bool completed) =>
+      todoRepository.updateCompletedById(id, completed);
 
   // Update the completed status of all todos to true or false in the repository
   List<TodoModel> updateCompletedForAll(bool completed) =>

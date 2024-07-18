@@ -7,10 +7,12 @@
 
 import 'package:collection/collection.dart';
 import 'package:todoapp/base/models/todo_model.dart';
+import 'package:uuid/uuid.dart';
 
 class TodosRepository {
-  TodosRepository();
+  TodosRepository(this._uuid);
 
+  final Uuid _uuid;
   // The list of todos
   final List<TodoModel> _todos = [];
 
@@ -19,19 +21,24 @@ class TodosRepository {
 
   // Add a new todo to the list of todos
   TodoModel addTodo(String title, String? description) {
-    final todo = TodoModel.from(title: title, description: description ?? '');
+    final todo = TodoModel(
+      id: _uuid.v4(),
+      title: title,
+      description: description ?? '',
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+    );
     _todos.insert(0, todo);
     return todo;
   }
 
   // Update a todo by its id
-  TodoModel updateTodoById(String id, String title, String? description) {
+  TodoModel updateTodoById(TodoModel todo) {
     if (_todos.isNotEmpty) {
-      final index = _todos.indexWhere((element) => element.id == id);
+      final index = _todos.indexWhere((element) => element.id == todo.id);
       if (index >= 0) {
         _todos[index] = _todos[index].copyWith(
-          title: title,
-          description: description,
+          title: todo.title,
+          description: todo.description,
         );
 
         return _todos[index];
@@ -39,18 +46,18 @@ class TodosRepository {
     }
 
     throw Exception(
-        'Unable to update Todo, because todo with id  = $id cannot be found!');
+        'Unable to update Todo, because todo with id  = $todo.id cannot be found!');
   }
 
   // Update the completed status of a todo by its id
   TodoModel updateCompletedById(
     String id,
+    bool completed,
   ) {
     if (_todos.isNotEmpty) {
       final index = _todos.indexWhere((element) => element.id == id);
       if (index >= 0) {
-        _todos[index] =
-            _todos[index].copyWith(completed: !_todos[index].completed);
+        _todos[index] = _todos[index].copyWith(completed: completed);
 
         return _todos[index];
       }
