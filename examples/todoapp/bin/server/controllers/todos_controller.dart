@@ -17,43 +17,52 @@ class TodosController extends ApiController {
 
   final TodosService todosService;
 
+  /// Registers all the HTTP request handlers for todo-related operations.
   @override
   void registerRequests(WrappedRouter router) {
+    // Handler to get all todos
     router.addRequest(
       RequestType.GET,
       '/api/v1/todos',
       getAllTodosHandler,
     );
+    // Handler to add a new todo
     router.addRequest(
       RequestType.POST,
-      '/api/v1/todos',
+      '/api/v1/todos/add',
       addTodoHandler,
     );
+    // Handler to update a todo by its ID
     router.addRequest(
       RequestType.PUT,
       '/api/v1/todos/<id>',
       updateTodoByIdHandler,
     );
+    // Handler to update the completion status of a todo by its ID
     router.addRequest(
       RequestType.PATCH,
       '/api/v1/todos/<id>',
       updateCompletedByIdHandler,
     );
+    // Handler to update the completion status of all todos
     router.addRequest(
       RequestType.PATCH,
       '/api/v1/todos',
       updateCompletedForAll,
     );
+    // Handler to delete all completed todos
     router.addRequest(
       RequestType.DELETE,
       '/api/v1/todos/completed',
       deleteCompletedHandler,
     );
+    // Handler to delete a todo by its ID
     router.addRequest(
       RequestType.DELETE,
       '/api/v1/todos/<id>',
       deleteByIdHandler,
     );
+    // Handler to fetch a todo by its ID
     router.addRequest(
       RequestType.GET,
       '/api/v1/todos/<id>',
@@ -61,11 +70,13 @@ class TodosController extends ApiController {
     );
   }
 
+  /// Handles GET requests to fetch all todos.
   Future<Response> getAllTodosHandler(Request request) async {
     final allTodos = todosService.fetchAllTodos();
     return responseBuilder.buildOK(data: allTodos.toJson());
   }
 
+  /// Handles PATCH requests to update the completion status for all todos.
   Future<Response> updateCompletedForAll(Request request) async {
     final params = await request.bodyFromFormData();
     final completed = params['completed'];
@@ -76,6 +87,7 @@ class TodosController extends ApiController {
     return responseBuilder.buildOK(data: todos.toJson());
   }
 
+  /// Handles PUT requests to update a todo by its ID.
   Future<Response> updateTodoByIdHandler(Request request) async {
     final params = await request.bodyFromFormData();
     final title = params['title'];
@@ -85,6 +97,7 @@ class TodosController extends ApiController {
     return responseBuilder.buildOK(data: todo.toJson());
   }
 
+  /// Handles POST requests to add a new todo.
   Future<Response> addTodoHandler(Request request) async {
     final params = await request.bodyFromFormData();
 
@@ -98,6 +111,7 @@ class TodosController extends ApiController {
     return responseBuilder.buildOK(data: todo.toJson());
   }
 
+  /// Handles PATCH requests to update the completion status of a todo by its ID.
   Future<Response> updateCompletedByIdHandler(Request request) async {
     final todoId = request.params['id'];
 
@@ -106,11 +120,13 @@ class TodosController extends ApiController {
     return responseBuilder.buildOK(data: todo.toJson());
   }
 
+  /// Handles DELETE requests to remove all completed todos.
   Future<Response> deleteCompletedHandler(Request request) async {
     final todos = todosService.deleteCompleted();
     return responseBuilder.buildOK(data: todos.toJson());
   }
 
+  /// Handles DELETE requests to remove a todo by its ID.
   Future<Response> deleteByIdHandler(Request request) async {
     final todoId = request.params['id'];
 
@@ -121,6 +137,7 @@ class TodosController extends ApiController {
     return Response(204);
   }
 
+  /// Handles GET requests to fetch a todo by its ID.
   Future<Response> fetchTodoByIdHandler(Request request) async {
     final todoId = request.params['id'];
 

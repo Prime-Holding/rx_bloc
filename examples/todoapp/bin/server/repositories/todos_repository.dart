@@ -7,26 +7,26 @@
 
 import 'package:collection/collection.dart';
 import 'package:todoapp/base/models/todo_model.dart';
-import 'package:uuid/uuid.dart';
 
 import '../models/todo_model_list.dart';
 
 class TodosRepository {
-  TodosRepository(this.uuid);
+  TodosRepository();
 
-  final Uuid uuid;
-
+  // The list of todos
   final List<TodoModel> _todos = [];
 
+  // Fetches all todos from the list of todos
   TodoModelList fetchAllTodos() => TodoModelList(todos: _todos);
 
+  // Add a new todo to the list of todos
   TodoModel addTodo(String title, String? description) {
-    // final index = _todos.indexWhere((element) => element.id == todo.id);
     final todo = TodoModel.from(title: title, description: description ?? '');
     _todos.insert(0, todo);
     return todo;
   }
 
+  // Update a todo by its id
   TodoModel updateTodoById(String id, String title, String? description) {
     if (_todos.isNotEmpty) {
       final index = _todos.indexWhere((element) => element.id == id);
@@ -44,7 +44,10 @@ class TodosRepository {
         'Unable to update Todo, because todo with id  = $id cannot be found!');
   }
 
-  TodoModel updateCompletedById(String id, ) {
+  // Update the completed status of a todo by its id
+  TodoModel updateCompletedById(
+    String id,
+  ) {
     if (_todos.isNotEmpty) {
       final index = _todos.indexWhere((element) => element.id == id);
       if (index >= 0) {
@@ -59,6 +62,7 @@ class TodosRepository {
         'Unable to update Todo, because todo with id  = $id cannot be found!');
   }
 
+  // Update the completed status of all todos to true or false
   TodoModelList updateCompletedForAll(bool completed) {
     if (_todos.isNotEmpty) {
       _todos.forEachIndexed(
@@ -69,13 +73,11 @@ class TodosRepository {
     throw Exception('No todos in the local data storage!');
   }
 
+  // Delete all completed todos
   TodoModelList deleteCompleted() {
     var listJson = _todos;
     if (listJson.isNotEmpty) {
       _todos.removeWhere((element) => element.completed == true);
-
-      if (_todos.isEmpty) {
-      } else {}
 
       return TodoModelList(todos: _todos);
     }
@@ -83,17 +85,14 @@ class TodosRepository {
     throw Exception('No _todos in the local data storage!');
   }
 
+  // Delete a todo by its id
   void deleteById(String id) {
     if (_todos.isNotEmpty) {
-      for (var element in _todos) {
-        if (element.id != null && element.id == id) {
-          _todos.remove(element);
-          break;
-        }
-      }
+      _todos.removeWhere((element) => element.id == id);
     }
   }
 
+  // Fetch a single todo by its id
   TodoModel fetchTodoById(String id) {
     TodoModel? result;
 
