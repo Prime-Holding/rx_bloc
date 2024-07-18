@@ -20,15 +20,15 @@ class TodosRepository {
   List<TodoModel> fetchAllTodos() => _todos;
 
   // Add a new todo to the list of todos
-  TodoModel addTodo(String title, String? description) {
-    final todo = TodoModel(
+  TodoModel addTodo(TodoModel todo) {
+    final newTodo = TodoModel(
       id: _uuid.v4(),
-      title: title,
-      description: description ?? '',
+      title: todo.title,
+      description: todo.description,
       createdAt: DateTime.now().millisecondsSinceEpoch,
     );
-    _todos.insert(0, todo);
-    return todo;
+    _todos.insert(0, newTodo);
+    return newTodo;
   }
 
   // Update a todo by its id

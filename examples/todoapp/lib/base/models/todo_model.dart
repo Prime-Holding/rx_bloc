@@ -16,7 +16,7 @@ class TodoModel with EquatableMixin implements Identifiable {
   TodoModel({
     required this.id,
     required this.title,
-    required this.createdAt,
+    this.createdAt = 0,
     this.description = '',
     this.completed = false,
   });

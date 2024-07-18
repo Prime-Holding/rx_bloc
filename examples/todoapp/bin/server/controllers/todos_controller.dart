@@ -104,14 +104,11 @@ class TodosController extends ApiController {
   /// Handles POST requests to add a new todo.
   Future<Response> addTodoHandler(Request request) async {
     final params = await request.bodyFromFormData();
-
     throwIfEmpty(
         params['title'], BadRequestException('Request title is empty'));
 
-    final todo = todosService.addTodo(
-      params['title']!,
-      params['description'],
-    );
+    final todoFromRequest = TodoModel.fromJson(params);
+    final todo = todosService.addTodo(todoFromRequest);
     return responseBuilder.buildOK(data: todo.toJson());
   }
 

@@ -10,8 +10,7 @@ class TodosService {
   List<TodoModel> fetchAllTodos() => todoRepository.fetchAllTodos();
 
   // Add a new todo to the repository
-  TodoModel addTodo(String title, String? description) =>
-      todoRepository.addTodo(title, description);
+  TodoModel addTodo(TodoModel todo) => todoRepository.addTodo(todo);
 
   // Update a todo by its id in the repository
   TodoModel updateTodoById(TodoModel todo) =>
