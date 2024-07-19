@@ -1,7 +1,6 @@
 import '../extensions/todo_list_extensions.dart';
 import '../models/todo_model.dart';
 import '../models/todos_filter_model.dart';
-import '../repositories/todo_list_repository.dart';
 import '../repositories/todo_rest_repository.dart';
 
 class TodoListService {
