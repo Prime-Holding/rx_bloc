@@ -5,7 +5,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:todoapp/base/common_blocs/coordinator_bloc.dart';
 import 'package:todoapp/base/models/todo_model.dart';
-import 'package:todoapp/base/repositories/todo_rest_repository.dart';
+import 'package:todoapp/base/repositories/todo_repository.dart';
 import 'package:todoapp/lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
 import 'package:todoapp/lib_todo_actions/models/bulk_action.dart';
 import 'package:todoapp/lib_todo_actions/services/todo_actions_service.dart';
@@ -15,12 +15,12 @@ import '../../stubs.dart';
 import 'todo_list_bulk_edit_test.mocks.dart';
 
 @GenerateMocks([
-  TodoRestRepository,
+  TodoRepository,
 ])
 Future<void> main() async {
   late CoordinatorBlocType _coordinatorBloc;
   late CoordinatorStates _coordinatorStates;
-  late TodoRestRepository _repository;
+  late TodoRepository _repository;
 
   void _defineWhen(
       List<TodoModel> todoList, List<TodoModel> deleteCompletedResult) {
@@ -43,7 +43,7 @@ Future<void> main() async {
       );
 
   setUp(() {
-    _repository = MockTodoRestRepository();
+    _repository = MockTodoRepository();
     _coordinatorStates = coordinatorStatesMockFactory();
     _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorStates);
   });

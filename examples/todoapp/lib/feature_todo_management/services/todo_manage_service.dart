@@ -1,10 +1,10 @@
 import '../../base/models/todo_model.dart';
-import '../../base/repositories/todo_rest_repository.dart';
+import '../../base/repositories/todo_repository.dart';
 
 class TodoManageService {
   TodoManageService(this._repository);
 
-  final TodoRestRepository _repository;
+  final TodoRepository _repository;
 
   /// Adds or updates a todo.
   ///

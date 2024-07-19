@@ -1,19 +1,45 @@
+import '../common_mappers/error_mappers/error_mapper.dart';
+import '../data_sources/remote/todos_remote_data_source.dart';
 import '../models/todo_model.dart';
 
-abstract class TodoRepository {
-  Future<List<TodoModel>> fetchAllTodos();
+class TodoRepository {
+  TodoRepository(this._errorMapper, this.dataSource);
 
-  Future<TodoModel> addTodo(TodoModel todo);
+  final ErrorMapper _errorMapper;
+  final TodosRemoteDataSource dataSource;
 
-  Future<TodoModel> updateTodoById(String id, TodoModel todo);
+  Future<List<TodoModel>> fetchAllTodos() => _errorMapper.execute(
+        () => dataSource.getAllTodos(),
+      );
 
-  Future<TodoModel> updateCompletedById(String id, bool completed);
+  Future<TodoModel> addTodo(TodoModel todo) => _errorMapper.execute(
+        () => dataSource.addTodo(todo),
+      );
 
-  Future<List<TodoModel>> updateCompletedForAll(bool completed);
+  Future<TodoModel> updateTodoById(String id, TodoModel todo) =>
+      _errorMapper.execute(
+        () => dataSource.updateTodoById(id, todo),
+      );
 
-  Future<List<TodoModel>> deleteCompleted();
+  Future<TodoModel> updateCompletedById(String id, bool completed) =>
+      _errorMapper.execute(
+        () => dataSource.updateCompletedById(id, {'completed': completed}),
+      );
 
-  Future<void> deleteTodoById(String id);
+  Future<List<TodoModel>> updateCompletedForAll(bool completed) =>
+      _errorMapper.execute(
+        () => dataSource.updateCompletedForAll({'completed': completed}),
+      );
 
-  Future<TodoModel> fetchTodoById(String id);
+  Future<List<TodoModel>> deleteCompleted() => _errorMapper.execute(
+        () => dataSource.deleteCompleted(),
+      );
+
+  Future<void> deleteTodoById(String id) => _errorMapper.execute(
+        () => dataSource.deleteTodoById(id),
+      );
+
+  Future<TodoModel> fetchTodoById(String id) => _errorMapper.execute(
+        () => dataSource.getTodoById(id),
+      );
 }

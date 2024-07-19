@@ -30,7 +30,7 @@ import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
 import '../repositories/todo_list_repository.dart';
-import '../repositories/todo_rest_repository.dart';
+import '../repositories/todo_repository.dart';
 
 class TodoappWithDependencies extends StatelessWidget {
   const TodoappWithDependencies({
@@ -132,8 +132,8 @@ class TodoappWithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        Provider<TodoRestRepository>(
-          create: (context) => TodoRestRepository(
+        Provider<TodoRepository>(
+          create: (context) => TodoRepository(
             context.read(),
             context.read(),
           ),

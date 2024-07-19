@@ -1,12 +1,12 @@
 import '../extensions/todo_list_extensions.dart';
 import '../models/todo_model.dart';
 import '../models/todos_filter_model.dart';
-import '../repositories/todo_rest_repository.dart';
+import '../repositories/todo_repository.dart';
 
 class TodoListService {
   TodoListService(this._repository);
 
-  final TodoRestRepository _repository;
+  final TodoRepository _repository;
 
   /// Fetches all todos.
   ///
