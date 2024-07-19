@@ -1,17 +1,17 @@
 import '../../base/models/todo_model.dart';
-import '../../base/repositories/todo_list_repository.dart';
+import '../../base/repositories/todo_rest_repository.dart';
 
 class TodoActionsService {
   TodoActionsService(this._repository);
 
-  final TodoListRepository _repository;
+  final TodoRestRepository _repository;
 
   /// Deletes the todo by its [id].
   ///
   /// Throws a [NotFoundErrorModel] if the todo does not exist.
   Future<TodoModel> deleteTodoById(String id) async {
     final todo = await _repository.fetchTodoById(id);
-    return await _repository.deleteById(id).then((_) => todo);
+    return await _repository.deleteTodoById(id).then((_) => todo);
   }
 
   /// Checks if all todos are completed.
