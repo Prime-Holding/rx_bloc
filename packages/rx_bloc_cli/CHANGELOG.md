@@ -1,4 +1,4 @@
-## [3.7.1]
+## [3.8.0]
 * Added functionality to exclude smart widgets dependency injection components during golden tests.
 
 ## [3.7.0]
