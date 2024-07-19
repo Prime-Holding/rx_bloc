@@ -1,3 +1,6 @@
+## [3.7.1]
+* Added functionality to exclude smart widgets dependency injection components during golden tests.
+
 ## [3.7.0]
 Updated environment variable names used in CI/CD functionality:
 - `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD` -> `CREDENTIAL_ENCRYPTION_PASSWORD`
