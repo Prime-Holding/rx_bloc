@@ -47,7 +47,7 @@ jobs:
         if: ${{ env.UPLOAD_CODE_COVERAGE }}
         uses: codecov/codecov-action@v4
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
         with:
           directory: coverage
           token: ${{ secrets.CODECOV_SECRET }}
