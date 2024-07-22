@@ -59,6 +59,8 @@ jobs:
           min_coverage: 50
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           directory: ${{ matrix.folder }}/coverage
           token: ${{ secrets.CODECOV_SECRET }}
@@ -107,6 +109,8 @@ jobs:
           min_coverage: 89
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           directory: ${{ matrix.folder }}/coverage
           token: ${{ secrets.CODECOV_SECRET }}
@@ -159,6 +163,8 @@ jobs:
           min_coverage: 67
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           directory: ${{ matrix.folder }}/coverage
           token: ${{ secrets.CODECOV_SECRET }}
@@ -206,6 +212,8 @@ jobs:
           min_coverage: 67
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           directory: ${{ matrix.folder }}/coverage
           token: ${{ secrets.CODECOV_SECRET }}
