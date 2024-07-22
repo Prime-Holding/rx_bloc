@@ -3,7 +3,7 @@
 import 'package:widget_toolkit/models.dart' as wt_models;
 import 'package:widget_toolkit/models.dart' show L10nErrorKeyProvider;
 
-import '../../../assets.dart' show I18nErrorKeys {{#enable_auth_matrix}},I18nFeatureAuthMatrixKeys{{/enable_auth_matrix}};
+import '../../../assets.dart' show I18nErrorKeys;
 
 export 'package:widget_toolkit/models.dart'
     show L10nErrorKeyProvider;
@@ -16,8 +16,7 @@ part 'field_required_error_model.dart';
 part 'network_error_model.dart';
 part 'no_connection_error_model.dart';
 part 'not_found_error_model.dart';
-part 'server_error_model.dart';{{#enable_auth_matrix}}
-part 'auth_matrix_canceled_error_model.dart';{{/enable_auth_matrix}}
+part 'server_error_model.dart';
 
 class ErrorModel extends wt_models.ErrorModel {
     ErrorModel([this.errorLogDetails]);
