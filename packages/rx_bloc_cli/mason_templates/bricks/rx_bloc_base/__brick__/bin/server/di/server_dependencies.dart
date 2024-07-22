@@ -22,9 +22,7 @@ class ServerDependencies{
   static Future<void> registerDependencies(DependencyInjector di) async {
     {{#has_authentication}}
     di.register(AuthTokenRepository());
-    di.register(AuthenticationService(di.get()));{{/has_authentication}}{{#enable_auth_matrix}}
-    di.register(AuthMatrixRepository());
-    di.register(AuthMatrixService(di.get()));{{/enable_auth_matrix}}
+    di.register(AuthenticationService(di.get()));{{/has_authentication}}
     di.register(TranslationsRepository());
 
     /// TODO: Add your dependencies here
