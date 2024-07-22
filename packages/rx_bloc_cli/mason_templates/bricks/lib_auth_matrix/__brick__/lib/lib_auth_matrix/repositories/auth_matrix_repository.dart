@@ -2,11 +2,10 @@
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../data_source/remote/auth_matrix_data_source.dart';
-import '../models/action_request.dart';
-import '../models/auth_matrix_action_type.dart';
-import '../models/auth_matrix_cancel_model.dart';
+
+import '../models/auth_matrix_method_request.dart';
 import '../models/auth_matrix_response.dart';
-import '../models/auth_matrix_verify.dart';
+import '../models/payload/auth_matrix_payload_request.dart';
 
 class AuthMatrixRepository {
   AuthMatrixRepository(this._authMatrixDataSource, this._errorMapper);
@@ -14,33 +13,31 @@ class AuthMatrixRepository {
   final AuthMatrixDataSource _authMatrixDataSource;
   final ErrorMapper _errorMapper;
 
-  Future<void> cancelAuthMatrix(AuthMatrixCancelModel cancelModel) =>
+  /// Deletes the auth matrix transaction by the given [transactionId].
+  Future<void> deleteAuthTransaction(String transactionId) =>
+      _errorMapper.execute(() => _authMatrixDataSource.delete(transactionId));
+
+  /// Initiates the auth matrix process by the given [action] and [request].
+  ///
+  /// - [action] is the action to be performed such as `changeAddress`, `makeTransaction`, etc.
+  /// - [request] is the request body that contains the necessary user data to initiate the process.
+  /// - Returns an [AuthMatrixResponse] object that determines the next steps in the auth matrix process.
+  Future<AuthMatrixResponse> initiate({
+    required String action,
+    required AuthMatrixPayloadRequest request,
+  }) =>
       _errorMapper
-          .execute(() => _authMatrixDataSource.cancelAuthMatrix(cancelModel));
+          .execute(() => _authMatrixDataSource.initiate(action, request));
 
-  Future<AuthMatrixResponse> initiateAuthMatrix({
-    required ActionRequest payload,
+  /// Authenticates the user by the given [transactionId] and [request].
+  ///
+  /// - [transactionId] is the unique auth matrix transaction id.
+  /// - [request] is the request body that contains the necessary user data to authenticate the user.
+  ///  Returns an [AuthMatrixResponse] object that determines the next steps in the auth matrix process.
+  Future<AuthMatrixResponse> authenticate({
+    required String transactionId,
+    required AuthMatrixMethodRequest request,
   }) =>
       _errorMapper.execute(
-        () {
-          switch (payload.action) {
-            case AuthMatrixActionType.pinAndOtp:
-              return _authMatrixDataSource.pinAndOtpAuthMatrix(payload);
-            case AuthMatrixActionType.pinOnly:
-              return _authMatrixDataSource.pinOnlyAuthMatrix(payload);
-            case AuthMatrixActionType.none:
-              throw UnimplementedError();
-          }
-        },
-      );
-
-  Future<AuthMatrixResponse> verifyAuthMatrix({
-    required AuthMatrixVerify payload,
-  }) =>
-      _errorMapper.execute(
-        () => _authMatrixDataSource.verifyAuthMatrix(
-          payload.transactionId,
-          payload,
-        ),
-      );
+          () => _authMatrixDataSource.authenticate(transactionId, request));
 }

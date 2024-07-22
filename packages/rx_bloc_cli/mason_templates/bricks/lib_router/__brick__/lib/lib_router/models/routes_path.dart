@@ -1,9 +1,9 @@
 {{> licence.dart }}
 
 class RoutesPath { {{#enable_auth_matrix}}
-  static const authMatrix = '/authMatrix';
-  static const authMatrixPinBiometrics = 'authMatrixPinBiometrics';
-  static const authMatrixOtp = 'authMatrixOtp';{{/enable_auth_matrix}}
+  static const authMatrix = '/auth-matrix';
+  static const authMatrixPinBiometrics = '/auth-matrix/pin-biometrics/:transactionId';
+  static const authMatrixOtp = '/auth-matrix/otp/:transactionId';{{/enable_auth_matrix}}
   static const dashboard = '/dashboard';
   static const profile = '/profile';{{#enable_pin_code}}
   static const verifyPinCode = '/verifyPinCode';

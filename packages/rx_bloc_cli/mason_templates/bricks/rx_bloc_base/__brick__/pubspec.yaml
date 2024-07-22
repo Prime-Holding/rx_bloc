@@ -28,7 +28,7 @@ dependencies: {{#enable_dev_menu}}
   flutter_rx_bloc: ^6.1.1
   flutter_secure_storage: ^9.0.0{{#enable_social_logins}}
   flutter_svg: ^2.0.7{{/enable_social_logins}}
-  go_router: ^13.1.0
+  go_router: ^14.2.1
   golden_toolkit: ^0.15.0{{#enable_social_logins}}
   google_sign_in: ^6.1.5{{/enable_social_logins}}
   http: ^1.1.0 # This package is used for the local server (if not used, can be removed)
@@ -61,7 +61,7 @@ dev_dependencies:
   flutter_lints: any
   flutter_test:
     sdk: flutter
-  go_router_builder: ^2.3.2
+  go_router_builder: ^2.7.0
   json_serializable: ^6.7.1
   mockito: ^5.4.2 {{#enable_patrol}}
   patrol: ^3.0.3 {{/enable_patrol}}

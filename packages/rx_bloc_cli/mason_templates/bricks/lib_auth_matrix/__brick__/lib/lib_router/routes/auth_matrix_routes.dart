@@ -25,22 +25,24 @@ class FeatureAuthMatrixRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@immutable
+@TypedGoRoute<AuthMatrixOtpRoute>(
+  path: RoutesPath.authMatrixOtp,
+)
 class AuthMatrixOtpRoute extends GoRouteData implements RouteDataModel {
   const AuthMatrixOtpRoute(
-    this.endToEndId,
-  );
+      this.transactionId,
+      );
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
-  final String endToEndId;
+  final String transactionId;
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
         child: AuthMatrixOtpPageWithDependencies(
-          response: state.extra as AuthMatrixResponse,
-          endToEndId: endToEndId,
+          transactionId: transactionId,
+          authMatrixResponse: state.extra as AuthMatrixResponse,
         ),
       );
 
@@ -51,24 +53,24 @@ class AuthMatrixOtpRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@immutable
+@TypedGoRoute<AuthMatrixPinBiometricsRoute>(
+  path: RoutesPath.authMatrixPinBiometrics,
+)
 class AuthMatrixPinBiometricsRoute extends GoRouteData
     implements RouteDataModel {
   const AuthMatrixPinBiometricsRoute(
-    this.endToEndId,
-  );
-  
-  static final GlobalKey<NavigatorState> $parentNavigatorKey =
-      AppRouter.rootNavigatorKey;
-  final String endToEndId;
+      this.transactionId,
+      );
+
+  final String transactionId;
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
         child: AuthMatrixPinBiometricsPageWithDependencies(
-          response: state.extra as AuthMatrixResponse,
-          endToEndId: endToEndId,
+          transactionId: transactionId,
+          authMatrixResponse: state.extra as AuthMatrixResponse,
         ),
       );
 

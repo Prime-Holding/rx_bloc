@@ -5,8 +5,9 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import '../../lib_auth_matrix/bloc/auth_matrix_bloc.dart';
-import '../services/auth_matrix_text_field_service.dart';
+import '../blocs/auth_matrix_edit_address_bloc.dart';
+import '../services/auth_matrix_edit_address_service.dart';
+
 import '../views/auth_matrix_page.dart';
 
 class AuthMatrixPageWithDependencies extends StatelessWidget {
@@ -22,14 +23,14 @@ class AuthMatrixPageWithDependencies extends StatelessWidget {
       );
 
   List<SingleChildWidget> get _services => [
-        Provider<AuthMatrixTextFieldService>(
-          create: (context) => AuthMatrixTextFieldService(),
+        Provider<AuthMatrixEditAddressService>(
+          create: (context) => AuthMatrixEditAddressService(),
         ),
       ];
 
   List<RxBlocProvider> get _blocs => [
-        RxBlocProvider<AuthMatrixBlocType>(
-          create: (context) => AuthMatrixBloc(
+        RxBlocProvider<AuthMatrixEditAddressBlocType>(
+          create: (context) => AuthMatrixEditAddressBloc(
             context.read(),
           ),
         )

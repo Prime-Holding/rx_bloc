@@ -7,9 +7,11 @@ import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/primary_button.dart';
 import '../../base/extensions/error_model_field_translations.dart';
-import '../../lib_auth_matrix/bloc/auth_matrix_bloc.dart';
-import '../services/auth_matrix_text_field_service.dart';
+import '../../lib_auth_matrix/models/auth_matrix_action.dart';
+import '../blocs/auth_matrix_edit_address_bloc.dart';
+import '../services/auth_matrix_edit_address_service.dart';
 
 class AuthMatrixPage extends StatelessWidget {
   const AuthMatrixPage({super.key});
@@ -19,72 +21,80 @@ class AuthMatrixPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(context.l10n.featureAuthMatrix.authMatrixAppBarTitle),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RxBlocListener<AuthMatrixBlocType, void>(
-              state: (bloc) => bloc.states.response,
-              listener: (context, _) => _onResponse(context),
-            ),
-            AppErrorModalWidget<AuthMatrixBlocType>(
-              errorState: (bloc) => bloc.states.errors.translate(context),
-            ),
-            Padding(
-              padding: EdgeInsets.all(context.designSystem.spacing.xl),
-              child: TextFieldDialog<String>(
+        body: Padding(
+          padding: EdgeInsets.all(context.designSystem.spacing.l),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppErrorModalWidget<AuthMatrixEditAddressBlocType>(
+                errorState: (bloc) => bloc.states.error,
+              ),
+              RxBlocListener<AuthMatrixEditAddressBlocType, AuthMatrixAction>(
+                state: (bloc) => bloc.states.onAuthMatrixCompleted,
+                listener: _showAuthMatrixComplete,
+              ),
+              Text(
+                'The address component below demonstrates the 2FA (PIN and OTP) feature.',
+                style: context.designSystem.typography.h2Med16,
+              ),
+              SizedBox(height: context.designSystem.spacing.m),
+              EditAddressWidget<CountryModel>(
                 translateError: (error) =>
                     ErrorModelFieldL10n.translateError<String>(error, context),
-                label: context.l10n.featureAuthMatrix.fieldMessageLabel,
-                emptyLabel: context.l10n.featureAuthMatrix.fieldHintMessage,
-                validator: context.read<AuthMatrixTextFieldService>(),
-                header: context.l10n.featureAuthMatrix.fieldHintMessage,
-                onChanged: (value) =>
-                    context.read<AuthMatrixBlocType>().events.userData(value),
-                fillButtonText: context.l10n.featureAuthMatrix.fillButtonText,
+                service: context.read<AuthMatrixEditAddressService>(),
+                onSaved: (address) {
+                  context
+                      .read<AuthMatrixEditAddressBlocType>()
+                      .events
+                      .saveAddress(
+                        city: address.city,
+                        streetAddress: address.streetAddress,
+                        countryCode: address.country.countryCode,
+                      );
+                },
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(context.designSystem.spacing.xl),
-              child: RxBlocBuilder<AuthMatrixBlocType, String?>(
-                state: (bloc) => bloc.states.textFieldValue,
-                builder: (context, textFieldValue, bloc) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GradientFillButton(
-                      onPressed: (textFieldValue.hasData)
-                          ? bloc.events.submitPinBiometrics
-                          : null,
-                      text: context.l10n.featureAuthMatrix.pinBiometrics,
-                      state: textFieldValue.hasData
-                          ? ButtonStateModel.enabled
-                          : ButtonStateModel.disabled,
-                    ),
-                    SizedBox(
-                      height: context.designSystem.spacing.s0,
-                    ),
-                    GradientFillButton(
-                      onPressed: (textFieldValue.hasData)
-                          ? bloc.events.submitOtp
-                          : null,
-                      text: context.l10n.featureAuthMatrix.otp,
-                      state: textFieldValue.hasData
-                          ? ButtonStateModel.enabled
-                          : ButtonStateModel.disabled,
-                    ),
-                  ],
+              Text(
+                'Fill in the address fields and click save to trigger the 2FA process. \n '
+                '- Use "0000" for the PIN and OTP code to complete the flow. \n '
+                '- Use "3333" for OTP code to fail the flow.',
+                style: context.designSystem.typography.h3Med11,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: context.designSystem.spacing.m,
+                ),
+                child: const Divider(),
+              ),
+              Text(
+                'The button below demonstrates the 2FA (PIN) feature.',
+                style: context.designSystem.typography.h2Med16,
+              ),
+              Center(
+                child: PrimaryButton(
+                  child: const Text('Unlock'),
+                  onPressed: () => context
+                      .read<AuthMatrixEditAddressBlocType>()
+                      .events
+                      .unlock(),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: context.designSystem.spacing.m),
+              Text(
+                'Tap on the button to trigger the 2FA process. \n'
+                '- Use "0000" for the pin.',
+                style: context.designSystem.typography.h3Med11,
+              ),
+            ],
+          ),
         ),
       );
 
-  void _onResponse(BuildContext context) => showBlurredBottomSheet(
+  void _showAuthMatrixComplete(BuildContext context, AuthMatrixAction action) =>
+      showBlurredBottomSheet(
         context: context,
         builder: (BuildContext context) => MessagePanelWidget(
-            message: context.l10n.featureAuthMatrix.authMatrixSuccess,
-            messageState: MessagePanelState.positiveCheck),
+          message: action.name, // TODO: Replace with translation
+          messageState: MessagePanelState.positive,
+        ),
       );
 }

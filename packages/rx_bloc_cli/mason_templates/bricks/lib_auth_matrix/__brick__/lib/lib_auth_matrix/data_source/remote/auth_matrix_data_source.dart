@@ -3,10 +3,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../models/action_request.dart';
-import '../../models/auth_matrix_cancel_model.dart';
+import '../../models/auth_matrix_method_request.dart';
 import '../../models/auth_matrix_response.dart';
-import '../../models/auth_matrix_verify.dart';
+import '../../models/payload/auth_matrix_payload_request.dart';
 
 part 'auth_matrix_data_source.g.dart';
 
@@ -15,21 +14,36 @@ abstract class AuthMatrixDataSource {
   factory AuthMatrixDataSource(Dio dio, {String baseUrl}) =
       _AuthMatrixDataSource;
 
-  @POST('/api/authMatrix/actions/pinOnly')
-  Future<AuthMatrixResponse> pinOnlyAuthMatrix(
-    @Body() ActionRequest initRequest,
+  /// Initiates the authentication matrix process.
+  ///
+  /// - [action]: The action to be performed such as `changeAddress`, `makeTransaction`, etc.
+  /// - [request]: The request body that contains the necessary user data to initiate the process.
+  /// - Returns [AuthMatrixResponse] that determines the next authentication step.
+  @POST('/api/auth-matrix/actions/{action}')
+  Future<AuthMatrixResponse> initiate(
+    @Path() String action,
+    @Body() AuthMatrixPayloadRequest request,
   );
-  @POST('/api/authMatrix/actions/pinAndOtp')
-  Future<AuthMatrixResponse> pinAndOtpAuthMatrix(
-    @Body() ActionRequest initRequest,
-  );
-  @POST('/api/authMatrix/{transactionId}')
-  Future<AuthMatrixResponse> verifyAuthMatrix(
+
+  /// Deletes the authentication matrix transaction by its [transactionId].
+  @DELETE('/api/auth-matrix/{transactionId}')
+  Future<void> delete(
     @Path() String transactionId,
-    @Body() AuthMatrixVerify verifyRequest,
   );
-  @DELETE('/api/authMatrix/actions/cancel')
-  Future<void> cancelAuthMatrix(
-    @Body() AuthMatrixCancelModel cancelModel,
+
+  /// Authenticates the user using the [transactionId] and the [request] body.
+  ///
+  /// - [transactionId]: The transaction identifier.
+  /// - [request]: The request body that contains the necessary user data to authenticate the user.
+  @POST('/api/auth-matrix/{transactionId}')
+  Future<AuthMatrixResponse> authenticate(
+    @Path() String transactionId,
+    @Body() AuthMatrixMethodRequest request,
   );
+
+  // @POST('/api/auth-matrix/{authMatrixId}/reset')
+  // Future<AuthMatrixResponse> resetAuthCode(
+  //   @Path() String authMatrixId,
+  //   @Body() AuthMatrixResetRequest tokenModel,
+  // );
 }

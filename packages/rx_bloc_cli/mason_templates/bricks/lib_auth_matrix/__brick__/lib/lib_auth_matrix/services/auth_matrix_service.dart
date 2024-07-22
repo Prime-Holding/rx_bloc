@@ -1,22 +1,21 @@
 {{> licence.dart }}
 
-import 'package:rxdart/rxdart.dart';
-import 'package:uuid/uuid.dart';
-import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
-import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
+import 'dart:async';
 
-import '../../base/models/errors/error_model.dart';
-import '../../lib_router/router.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/subjects.dart';
+
+import '../../base/utils/execute_sync_mixin.dart';
 import '../../lib_router/services/router_service.dart';
-import '../models/action_request.dart';
-import '../models/auth_matrix_action_type.dart';
-import '../models/auth_matrix_cancel_model.dart';
+
+import '../extensions/auth_matrix_method_extensions.dart';
+import '../models/auth_matrix_method.dart';
 import '../models/auth_matrix_response.dart';
-import '../models/auth_matrix_verify.dart';
+
+import '../models/payload/auth_matrix_payload_request.dart';
 import '../repositories/auth_matrix_repository.dart';
 
-/// Service that handles the auth matrix flow
-class AuthMatrixService implements SmsCodeService, PinCodeService {
+class AuthMatrixService with ExecuteSyncMixin {
   AuthMatrixService(
     this._authMatrixRepository,
     this._routerService,
@@ -24,137 +23,95 @@ class AuthMatrixService implements SmsCodeService, PinCodeService {
 
   final RouterService _routerService;
   final AuthMatrixRepository _authMatrixRepository;
-  final BehaviorSubject<AuthMatrixResponse> _flowEvents =
-      BehaviorSubject<AuthMatrixResponse>();
 
-  String _endToEndId = '';
-  String _userData = '';
+  final BehaviorSubject<AuthMatrixResponse> _onAuthenticationMethodComplete =
+      BehaviorSubject();
 
-  ///Function used to generate the end to end id
-  String generateEndToEndId() => const Uuid().v4();
+  /// Initiates the auth matrix process by the given [request].
+  ///
+  /// - [request] is the request body that contains the necessary user data to initiate the process.
+  /// Returns a [Stream] of [AuthMatrixResponse] that emits each step of the auth matrix process.
+  Stream<AuthMatrixResponse> initiateAuthMatrix({
+    required AuthMatrixPayloadRequest payload,
+  }) async* {
+    final response = await _authMatrixRepository.initiate(
+      action: payload.type,
+      request: payload,
+    );
 
-  ///Function used to initialise the auth matrix flow,
-  ///and navigate to the correct screen based on the server response
-  Future<void> initialiseAuthMatrixFlow({
-    required ActionRequest payload,
-    required String userData,
-  }) async {
-    _flowEvents
-        .add(await _authMatrixRepository.initiateAuthMatrix(payload: payload));
-    _endToEndId = payload.endToEndId;
-    _userData = userData;
-    await for (AuthMatrixResponse response in _flowEvents) {
-      switch (response.authZ) {
-        case AuthMatrixActionType.pinOnly:
-          await _routerService.go(
-              AuthMatrixPinBiometricsRoute(
-                payload.endToEndId,
-              ),
-              response);
-        case AuthMatrixActionType.pinAndOtp:
-          await _routerService.go(
-              AuthMatrixOtpRoute(
-                payload.endToEndId,
-              ),
-              response);
-        case AuthMatrixActionType.none:
-          _routerService.pop();
-          return;
+    yield* _executeAuthMethods(response);
+  }
+
+  /// Executes the auth matrix process by the given [response].
+  /// - [response] is the response that contains the necessary data to execute the auth matrix process.
+  /// Returns a [Stream] of [AuthMatrixResponse] that emits each step of the auth matrix process.
+  Stream<AuthMatrixResponse> _executeAuthMethods(
+    AuthMatrixResponse response,
+  ) async* {
+    AuthMatrixResponse? lastResponse = response;
+
+    while (true) {
+      if (lastResponse == null) {
+        // Complete the stream if the auth method returns null
+        break;
       }
+
+      yield lastResponse;
+
+      // Emit the last response to the stream when the auth method is completed.
+      // this is exposed through the [onAuthenticationStepComplete] stream.
+      _onAuthenticationMethodComplete.add(lastResponse);
+
+      if (lastResponse.authMethod == AuthMatrixMethod.complete) {
+        // Complete the stream if there is no more auth methods to be executed
+        break;
+      }
+
+      lastResponse = await _executeAuthMethod(lastResponse: lastResponse);
     }
-    return;
   }
 
-  ///Function used to verify the auth matrix flow
-  ///Adds the response to the [_flowEvents] stream
-  Future<void> verifyAuthMethod(
-    AuthMatrixResponse authMatrixResponse,
-    String endToEndId,
-    String userData,
-    String code,
-  ) async {
-    _flowEvents.add(
-      await _authMatrixRepository
-          .verifyAuthMatrix(
-        payload: AuthMatrixVerify(
-          transactionId: authMatrixResponse.transactionId,
-          userData: userData,
-          payload: {'code': code},
-          action: authMatrixResponse.authZ,
-          endToEndId: endToEndId,
-        ),
-      )
-          .catchError(
-        (error, stacktrace) {
-          _flowEvents.addError(
-            AccessDeniedErrorModel(),
-          );
-          throw AccessDeniedErrorModel();
-        },
-      ),
+  /// Deletes the auth matrix transaction by the given [transactionId].
+  /// - [transactionId] is the unique auth matrix transaction id.
+  /// Returns a [Future] that determines if the transaction was deleted successfully.
+  Future<void> deleteAuthTransaction(String transactionId) =>
+      _authMatrixRepository.deleteAuthTransaction(transactionId);
+
+  /// Navigate to the next auth method route and execute it.
+  ///
+  /// - [lastResponse] is the last response that contains the necessary data to execute the auth method.
+  /// Returns a [Future] of [AuthMatrixResponse] that determines the next steps in the auth matrix process.
+  /// If the auth method returns null, the process is completed.
+  Future<AuthMatrixResponse?> _executeAuthMethod({
+    required AuthMatrixResponse lastResponse,
+  }) async {
+    final route = lastResponse.authMethod
+        .createAuthMatrixMethodRoute(lastResponse.transactionId);
+
+    if (route == null) {
+      return null;
+    }
+
+    // The auth method is executed by navigating to the next route.
+    // It must returns a [Result] of [AuthMatrixResponse]
+    final result = await _routerService.push<Result<AuthMatrixResponse>>(
+      route,
+      extra: lastResponse,
     );
+
+    if (result is ResultSuccess<AuthMatrixResponse>) {
+      return result.data;
+    }
+
+    if (result is ResultError<AuthMatrixResponse>) {
+      throw result.error;
+    }
+
+    return null;
   }
 
-  ///Function used to cancel the auth matrix flow
-  ///Adds the error to the [_flowEvents] stream
-  Future<void> cancelAuthMatrix(
-    String endToEndId,
-    String transactionId,
-  ) async {
-    await _authMatrixRepository.cancelAuthMatrix(
-      AuthMatrixCancelModel(endToEndId, transactionId),
-    );
-    _flowEvents.addError(AuthMatrixCanceledErrorModel());
-  }
+  Stream<AuthMatrixResponse> get onAuthenticationMethodComplete =>
+      _onAuthenticationMethodComplete;
 
-  void dispose() {
-    _flowEvents.close();
-  }
-
-  @override
-  ///Function used to verify auth method once the user enters the OTP code
-  Future<dynamic> confirmPhoneCode(String code) async {
-    await verifyAuthMethod(_flowEvents.value, _endToEndId, _userData, code);
-    return true;
-  }
-
-  @override
-  Future<String> getFullPhoneNumber() async => '+1234567890';
-
-  @override
-  Future<String> updatePhoneNumber(String newNumber) async => '+1234567890';
-
-  @override
-  Future<bool> sendConfirmationSms(String usersPhoneNumber) async {
-    await Future.delayed(const Duration(seconds: 3));
-    return true;
-  }
-
-  @override
-  Future<int> getValidityTime(bool reset) async => 30;
-
-  @override
-  Future<int> getResendButtonThrottleTime(bool reset) async => 15;
-
-  @override
-  Future<int> getCodeLength() async => 4;
-
-  @override
-  ///Function used to verify auth method once the user enters the pin/biometrics code
-  Future<bool> verifyPinCode(String pinCode) async {
-    await verifyAuthMethod(_flowEvents.value, _endToEndId, _userData, pinCode);
-    return true;
-  }
-
-  @override
-  Future<String?> getPinCode() => Future.value('1111');
-
-  @override
-  Future<int> getPinLength() => Future.value(4);
-
-  @override
-  Future<bool> isPinCodeInSecureStorage() => Future.value(true);
-
-  @override
-  Future<String> encryptPinCode(String pinCode) async => pinCode;
+  void dispose() => _onAuthenticationMethodComplete.close();
 }
