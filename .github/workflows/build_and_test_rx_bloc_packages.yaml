@@ -53,7 +53,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','**/routes.dart','**data_source.dart','**_model.g.dart','**_models.g.dart''**_model.dart','**_model_extensions.dart','**_models.dart','**_models_extensions.dart','**_config.dart','**_constants.dart','**_translations.dart','lib/assets.dart','lib/keys.dart','lib/base/theme/**','lib/base/utils/**','lib/keys.dart','lib/l10n/**' coverage/lcov.info
       - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v3
+        uses: VeryGoodOpenSource/very_good_coverage@v2
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 50
