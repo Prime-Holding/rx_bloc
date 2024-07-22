@@ -7,7 +7,7 @@ enum RouteModel {
   {{#enable_auth_matrix}}
     authMatrix(
     pathName: RoutesPath.authMatrix,
-    fullPath: '/authMatrix',
+    fullPath: '/auth-matrix',
     permissionName: RoutePermissions.authMatrix,
   ),
   {{/enable_auth_matrix}}

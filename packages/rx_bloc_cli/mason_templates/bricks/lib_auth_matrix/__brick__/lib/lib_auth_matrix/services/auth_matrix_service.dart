@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../../base/utils/execute_sync_mixin.dart';
 import '../../lib_router/services/router_service.dart';
 
 import '../extensions/auth_matrix_method_extensions.dart';
@@ -15,7 +14,7 @@ import '../models/auth_matrix_response.dart';
 import '../models/payload/auth_matrix_payload_request.dart';
 import '../repositories/auth_matrix_repository.dart';
 
-class AuthMatrixService with ExecuteSyncMixin {
+class AuthMatrixService {
   AuthMatrixService(
     this._authMatrixRepository,
     this._routerService,

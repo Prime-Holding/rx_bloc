@@ -24,7 +24,8 @@ import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
 import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}{{#enable_auth_matrix}}
 import '../lib_auth_matrix/methods/otp/di/auth_matrix_otp_page_with_dependencies.dart';
-import '../lib_auth_matrix/methods/pin_biometric/di/auth_matrix_pin_biometrics_page_with_dependencies.dart';{{/enable_auth_matrix}}
+import '../lib_auth_matrix/methods/pin_biometric/di/auth_matrix_pin_biometrics_page_with_dependencies.dart';
+import '../lib_auth_matrix/models/auth_matrix_response.dart';{{/enable_auth_matrix}}
 import '../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
 import '../lib_pin_code/models/pin_code_arguments.dart';
 import '../lib_pin_code/views/create_pin_page.dart';

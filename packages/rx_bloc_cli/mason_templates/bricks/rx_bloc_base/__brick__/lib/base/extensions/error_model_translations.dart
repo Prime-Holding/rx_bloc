@@ -10,10 +10,7 @@ extension ErrorModelL10n on ErrorModel {
     if (this is L10nErrorKeyProvider) {
       return context.l10n.error
           .getString((this as L10nErrorKeyProvider).l10nErrorKey)!;
-    }{{#enable_auth_matrix}}
-    if (this is AuthMatrixCanceledErrorModel) {
-      return (this as AuthMatrixCanceledErrorModel).translate(context);
-    }{{/enable_auth_matrix}}
+    }
 
     if (this is NotFoundErrorModel) {
       return (this as NotFoundErrorModel).translate(context);
@@ -56,8 +53,3 @@ extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
   String translate(BuildContext context) =>
       message ?? context.l10n.error.server;
 }
-{{#enable_auth_matrix}}
-extension ErrorAuthMatrixCancelModelL10b on AuthMatrixCanceledErrorModel {
-  String translate(BuildContext context) => context.l10n.error.authMatrixCancel;
-}
-{{/enable_auth_matrix}}
