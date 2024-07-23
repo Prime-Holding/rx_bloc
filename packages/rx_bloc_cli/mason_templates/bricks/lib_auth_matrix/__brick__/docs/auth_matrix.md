@@ -8,16 +8,16 @@
 
 # Overview
 ## Goal
-The of the authentication matrix is to enable the business representative to configure the required authentication methods such as `PIN/Biometric`, `OTP` etc for a particular action such as `unlock`,  `change password` etc.
+The goal of the authentication matrix is to enable the business representative to configure the required authentication methods, such as `PIN/Biometric`, `OTP`, etc., for particular actions, such as `unlock`, `change password`, etc.
 
 ![auth matrix image][auth_matrix_img]
 
 ## Sequence diagram
-The following sequence diagram illustrates the expected sequence of events when a specific action is protected by the `pinBiometric` and `OTP` authentication methods.
+The following sequence diagram illustrates the expected sequence of events when a specific action is protected by the `PIN/Biometric` and `OTP` authentication methods.
 
 ![auth matrix sequence img][auth_matrix_sequence_img]
 ## C4 Diagram
-The following C4 diagram represents the component-level implementation overview of the library.
+The following C4 diagram provides an overview of the component-level implementation of the library.
 ![auth matrix c4][auth_matrix_c4]
 
 # Auth Matrix API Specification
