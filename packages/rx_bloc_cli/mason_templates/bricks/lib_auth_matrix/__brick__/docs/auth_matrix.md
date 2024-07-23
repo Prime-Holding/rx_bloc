@@ -127,7 +127,7 @@ The payload for the new authentication method needs to be implemented by extendi
 ```dart
 @JsonSerializable()
 class AuthMatrixPasswordPayload extends AuthMatrixPayloadRequest
-    with EquatableMixin {
+        with EquatableMixin {
   AuthMatrixPasswordPayload({
     required this.password,
   });
@@ -141,11 +141,11 @@ class AuthMatrixPasswordPayload extends AuthMatrixPayloadRequest
   List<Object?> get props => [password];
 
   factory AuthMatrixPasswordPayload.fromJson(Map<String, dynamic> json) =>
-      _$AuthMatrixPasswordPayloadFromJson(json);
+          _$AuthMatrixPasswordPayloadFromJson(json);
 
   @override
   Map<String, dynamic> payloadToJson() =>
-      _$AuthMatrixPasswordPayloadToJson(this);
+          _$AuthMatrixPasswordPayloadToJson(this);
 }
 ```
 
@@ -154,6 +154,92 @@ class AuthMatrixPasswordPayload extends AuthMatrixPayloadRequest
 _service.initiateAuthMatrix(payload: AuthMatrixPasswordPayload(password: 'password'));
 ```
 # Authentication action
+## Step 1:
+```dart
+class RoutesPath {
+  ....
+  static const authMatrixBtrust = '/auth-matrix/btrust/:transactionId';
+}
+```
+## Step 2:
+```dart
+@TypedGoRoute<AuthMatrixBtrustRoute>(
+  path: RoutesPath.authMatrixBtrust,
+)
+class AuthMatrixBtrustRoute extends GoRouteData implements RouteDataModel {
+  const AuthMatrixBtrustRoute(
+    this.transactionId,
+  );
+
+  final String transactionId;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: ....
+      );
+
+  @override
+  String get permissionName => RouteModel.authMatrix.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+```
+
+## Step 3:
+```dart
+AuthMatrixPayloadRequest _payloadFromJson(Map<String, dynamic>? json,) {
+  switch (type) {
+    ...
+    case AuthMatrixMethod.btrust:
+      return AuthMatrixBtrustPayload.fromJson(json);
+  }
+```
+
+## Step 4
+```dart
+extension AuthMatrixMethodX on AuthMatrixMethod {
+  RouteDataModel? createAuthMatrixMethodRoute(String transactionId) {
+   switch (this) {
+      ...
+      case AuthMatrixMethod.btrust:
+        return AuthMatrixBtrustRoute(transactionId);
+    }
+  }
+```
+
+## Step 5
+```dart
+enum AuthMatrixMethod {
+  ...
+  @JsonValue('btrust')
+  btrust,
+```
+
+## Step 6
+```dart
+class AuthMatrixBtrustPayload extends AuthMatrixPayloadRequest
+    with EquatableMixin {
+  AuthMatrixBtrustPayload();
+
+  @override
+  String get type => AuthMatrixMethod.btrust.name;
+
+  factory AuthMatrixBtrustPayload.fromJson(Map<String, dynamic> json) =>
+      AuthMatrixBtrustPayload();
+
+  @override
+  Map<String, dynamic> payloadToJson() => {};
+
+  @override
+  List<Object?> get props => [type];
+
+  @override
+  bool? get stringify => true;
+}
+```
 
 [auth_matrix_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix.png
 [auth_matrix_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix_sequence.png
