@@ -47,8 +47,8 @@ class AuthMatrixEditAddressBloc extends $AuthMatrixEditAddressBloc {
 
     // Demonstrates that listeners can be added to the [AuthMatrixService]
     // for handling generic-purpose side-effects.
-    _service.onAuthenticationMethodComplete.listen((event) {
-      log('AuthMatrixService.onAuthenticationStepComplete($event)');
+    _service.onResponse.listen((event) {
+      log('AuthMatrixService.onResponse($event)');
     }).addTo(_compositeSubscription);
   }
 

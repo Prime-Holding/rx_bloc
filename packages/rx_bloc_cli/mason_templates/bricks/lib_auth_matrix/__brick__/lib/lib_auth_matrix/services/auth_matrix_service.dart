@@ -23,8 +23,7 @@ class AuthMatrixService {
   final RouterService _routerService;
   final AuthMatrixRepository _authMatrixRepository;
 
-  final BehaviorSubject<AuthMatrixResponse> _onAuthenticationMethodComplete =
-      BehaviorSubject();
+  final BehaviorSubject<AuthMatrixResponse> _onResponse = BehaviorSubject();
 
   /// Initiates the auth matrix process by the given [request].
   ///
@@ -59,7 +58,7 @@ class AuthMatrixService {
 
       // Emit the last response to the stream when the auth method is completed.
       // this is exposed through the [onAuthenticationStepComplete] stream.
-      _onAuthenticationMethodComplete.add(lastResponse);
+      _onResponse.add(lastResponse);
 
       if (lastResponse.authMethod == AuthMatrixMethod.complete) {
         // Complete the stream if there is no more auth methods to be executed
@@ -109,8 +108,7 @@ class AuthMatrixService {
     return null;
   }
 
-  Stream<AuthMatrixResponse> get onAuthenticationMethodComplete =>
-      _onAuthenticationMethodComplete;
+  Stream<AuthMatrixResponse> get onResponse => _onResponse;
 
-  void dispose() => _onAuthenticationMethodComplete.close();
+  void dispose() => _onResponse.close();
 }
