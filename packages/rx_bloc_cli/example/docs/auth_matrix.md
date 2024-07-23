@@ -10,15 +10,15 @@
 ## Goal
 The of the authentication matrix is to enable the business representative to configure the required authentication methods such as `PIN/Biometric`, `OTP` etc for a particular action such as `unlock`,  `change password` etc.
 
-![enter image description here](https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/example/docs/auth_matrix.png)
+![auth matrix image][auth_matrix_img]
 
 ## Sequence diagram
 The following sequence diagram illustrates the expected sequence of events when a specific action is protected by the `pinBiometric` and `OTP` authentication methods.
 
-![enter image description here](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/example/docs/auth_matrix_sequence.png)
+![auth matrix sequence img][auth_matrix_sequence_img]
 ## C4 Diagram
 The following C4 diagram represents the component-level implementation overview of the library.
-![enter image description here](https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/example/docs/auth_matrix_c4.png)
+![auth matrix c4][auth_matrix_c4]
 
 # Auth Matrix API Specification
 
@@ -73,3 +73,7 @@ The following C4 diagram represents the component-level implementation overview 
 - Endpoint: `POST /api/auth-matrix/{id}`
 - Sends a security token and payload containing a payload and type for authentication.
   - Returns a response containing a new document ID, a new security token, expiry time, authentication method, transaction ID, and payload.
+
+[auth_matrix_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix.png
+[auth_matrix_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix_sequence.png
+[auth_matrix_c4]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix_c4.png
