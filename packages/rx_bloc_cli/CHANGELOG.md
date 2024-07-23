@@ -1,5 +1,8 @@
+## [3.8.1]
+* Added reference in [example documentation](example/README.md) about [writing golden tests for smart widgets with dependency injection](doc/golden_tests.md).
+
 ## [3.8.0]
-* Added functionality to exclude smart widgets dependency injection components during golden tests.
+* Added functionality to exclude smart widgets dependency injection components during golden tests. [Read the documentation.](doc/golden_tests.md)
 
 ## [3.7.0]
 Updated environment variable names used in CI/CD functionality:
