@@ -26,21 +26,24 @@ class TodoManagementPage extends StatelessWidget {
             vertical: context.designSystem.spacing.s1,
             horizontal: context.designSystem.spacing.xl,
           ),
-          child: const TodoForm(),
+          child: RxBlocBuilder<TodoManagementBlocType, bool>(
+            state: (bloc) => bloc.states.isLoading,
+            builder: (context, isLoadingSnapshot, bloc) =>
+                (isLoadingSnapshot.data == null || !isLoadingSnapshot.data!)
+                    ? const TodoForm()
+                    : const Center(child: CircularProgressIndicator()),
+          ),
         ),
         floatingActionButton: RxBlocBuilder<TodoManagementBlocType, bool>(
           state: (bloc) => bloc.states.isLoading,
-          builder: (context, isLoadingSnapshot, bloc) => Visibility(
-            visible: isLoadingSnapshot.data == null || !isLoadingSnapshot.data!,
-            child: FloatingActionButton(
-              key: const Key('edit_todo_fab'),
-              onPressed: () =>
-                  context.read<TodoManagementBlocType>().events.save(),
-              shape: const OvalBorder(),
-              child: context.read<TodoManagementBlocType>().states.isEditingTodo
-                  ? context.designSystem.icons.updateConfirm
-                  : context.designSystem.icons.add,
-            ),
+          builder: (context, isLoadingSnapshot, bloc) => FloatingActionButton(
+            heroTag: 'fab',
+            onPressed: () =>
+                context.read<TodoManagementBlocType>().events.save(),
+            shape: const OvalBorder(),
+            child: context.read<TodoManagementBlocType>().states.isEditingTodo
+                ? context.designSystem.icons.updateConfirm
+                : context.designSystem.icons.add,
           ),
         ),
       );
