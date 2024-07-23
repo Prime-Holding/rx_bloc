@@ -3,8 +3,8 @@
 
 1. [Overview](#overview)
 3. [REST API Specification](#auth-matrix-api-specification)
-4. [Authentication method](#project-structure)
-5. [Authentication action](#project-structure)
+4. [Authentication method](#authentication-method)
+5. [Authentication action](#authentication-action)
 
 # Overview
 ## Goal
@@ -108,6 +108,52 @@ The following C4 diagram provides an overview of the component-level implementat
  "payload": null 
 }   
 ```    
+
+# Authentication method
+
+## How to add a new authentication method
+
+### Step 1: Add a new case in the AuthMatrixAction enum
+New case in the AuthMatrixAction needs to be added for each new authentication method.
+```dart
+enum AuthMatrixAction {
+  // the other actions...
+  password,
+}
+```
+
+### Step 2: Add a new case in the AuthMatrixActionExtension
+The payload for the new authentication method needs to be implemented by extending the AuthMatrixPayloadRequest class.
+```dart
+@JsonSerializable()
+class AuthMatrixPasswordPayload extends AuthMatrixPayloadRequest
+    with EquatableMixin {
+  AuthMatrixPasswordPayload({
+    required this.password,
+  });
+
+  final String password;
+
+  @override
+  String get type => AuthMatrixAction.password.name;
+
+  @override
+  List<Object?> get props => [password];
+
+  factory AuthMatrixPasswordPayload.fromJson(Map<String, dynamic> json) =>
+      _$AuthMatrixPasswordPayloadFromJson(json);
+
+  @override
+  Map<String, dynamic> payloadToJson() =>
+      _$AuthMatrixPasswordPayloadToJson(this);
+}
+```
+
+### Step 3: Initiate the new authentication action
+```dart
+_service.initiateAuthMatrix(payload: AuthMatrixPasswordPayload(password: 'password'));
+```
+# Authentication action
 
 [auth_matrix_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix.png
 [auth_matrix_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix_sequence.png
