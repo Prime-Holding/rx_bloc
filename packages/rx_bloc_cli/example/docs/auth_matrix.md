@@ -154,14 +154,49 @@ class AuthMatrixPasswordPayload extends AuthMatrixPayloadRequest
 _service.initiateAuthMatrix(payload: AuthMatrixPasswordPayload(password: 'password'));
 ```
 # Authentication action
-## Step 1:
+
+## Step 1: Payload - Add a new case in the AuthMatrixMethod enum
 ```dart
-class RoutesPath {
-  ....
-  static const authMatrixBtrust = '/auth-matrix/btrust/:transactionId';
+enum AuthMatrixMethod {
+  ...
+  @JsonValue('btrust')
+  btrust,
+```
+
+## Step 2: Payload -  Create a class that extends AuthMatrixPayloadRequest and uses the new AuthMatrixMethod
+```dart
+class AuthMatrixBtrustPayload extends AuthMatrixPayloadRequest
+    with EquatableMixin {
+  AuthMatrixBtrustPayload();
+
+  @override
+  String get type => AuthMatrixMethod.btrust.name;
+
+  factory AuthMatrixBtrustPayload.fromJson(Map<String, dynamic> json) =>
+      AuthMatrixBtrustPayload();
+
+  @override
+  Map<String, dynamic> payloadToJson() => {};
+
+  @override
+  List<Object?> get props => [type];
+
+  @override
+  bool? get stringify => true;
 }
 ```
-## Step 2:
+
+## Step 3: Payload - Add a new case in the AuthMatrixMethodExtension class to parse the new request method payload 
+```dart
+AuthMatrixPayloadRequest _payloadFromJson(Map<String, dynamic>? json,) {
+  switch (type) {
+    ...
+    case AuthMatrixMethod.btrust:
+      return AuthMatrixBtrustPayload.fromJson(json);
+  }
+```
+
+## Step 4: Route - Create a new route class that extends GoRouteData and uses the new AuthMatrixMethod
 ```dart
 @TypedGoRoute<AuthMatrixBtrustRoute>(
   path: RoutesPath.authMatrixBtrust,
@@ -188,17 +223,17 @@ class AuthMatrixBtrustRoute extends GoRouteData implements RouteDataModel {
 }
 ```
 
-## Step 3:
+
+## Step 5: Route - Define the new route path in the RoutesPath class
 ```dart
-AuthMatrixPayloadRequest _payloadFromJson(Map<String, dynamic>? json,) {
-  switch (type) {
-    ...
-    case AuthMatrixMethod.btrust:
-      return AuthMatrixBtrustPayload.fromJson(json);
-  }
+class RoutesPath {
+  ....
+  static const authMatrixBtrust = '/auth-matrix/btrust/:transactionId';
+}
 ```
 
-## Step 4
+
+## Step 6: Route - Add a new case in the createAuthMatrixMethodRoute method
 ```dart
 extension AuthMatrixMethodX on AuthMatrixMethod {
   RouteDataModel? createAuthMatrixMethodRoute(String transactionId) {
@@ -208,37 +243,6 @@ extension AuthMatrixMethodX on AuthMatrixMethod {
         return AuthMatrixBtrustRoute(transactionId);
     }
   }
-```
-
-## Step 5
-```dart
-enum AuthMatrixMethod {
-  ...
-  @JsonValue('btrust')
-  btrust,
-```
-
-## Step 6
-```dart
-class AuthMatrixBtrustPayload extends AuthMatrixPayloadRequest
-    with EquatableMixin {
-  AuthMatrixBtrustPayload();
-
-  @override
-  String get type => AuthMatrixMethod.btrust.name;
-
-  factory AuthMatrixBtrustPayload.fromJson(Map<String, dynamic> json) =>
-      AuthMatrixBtrustPayload();
-
-  @override
-  Map<String, dynamic> payloadToJson() => {};
-
-  @override
-  List<Object?> get props => [type];
-
-  @override
-  bool? get stringify => true;
-}
 ```
 
 [auth_matrix_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-documentation/packages/rx_bloc_cli/example/docs/auth_matrix.png
