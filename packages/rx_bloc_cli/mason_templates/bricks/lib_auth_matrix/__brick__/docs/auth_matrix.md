@@ -3,8 +3,9 @@
 
 1. [Overview](#overview)
 3. [REST API Specification](#auth-matrix-api-specification)
-4. [Authentication method](#authentication-method)
-5. [Authentication action](#authentication-action)
+4. [Authentication action](#authentication-action)
+5. [Authentication method](#authentication-method)
+
 
 # Overview
 ## Goal
@@ -109,71 +110,77 @@ The following C4 diagram provides an overview of the component-level implementat
 }   
 ```    
 
-# Authentication method
+# Authentication action
+To add a new authentication method, such as `change password`, first, add the new method to the AuthMatrixAction enum. 
+Then, extend the AuthMatrixPayloadRequest class to create a payload class for the new method, 
+incorporating necessary payload fields and implementing methods for JSON serialization and equatability.
 
-## How to add a new authentication method
-
-### Step 1: Add a new case in the AuthMatrixAction enum
+#### Step 1: Add a new case in the AuthMatrixAction enum
 New case in the AuthMatrixAction needs to be added for each new authentication method.
 ```dart
 enum AuthMatrixAction {
   // the other actions...
-  password,
+  changePassword,
 }
 ```
 
-### Step 2: Add a new case in the AuthMatrixActionExtension
+#### Step 2: Add a new case in the AuthMatrixActionExtension
 The payload for the new authentication method needs to be implemented by extending the AuthMatrixPayloadRequest class.
 ```dart
 @JsonSerializable()
-class AuthMatrixPasswordPayload extends AuthMatrixPayloadRequest
+class AuthMatrixChangePasswordPayload extends AuthMatrixPayloadRequest
         with EquatableMixin {
-  AuthMatrixPasswordPayload({
+  AuthMatrixChangePasswordPayload({
     required this.password,
   });
 
   final String password;
 
   @override
-  String get type => AuthMatrixAction.password.name;
+  String get type => AuthMatrixAction.changePassword.name;
 
   @override
   List<Object?> get props => [password];
 
-  factory AuthMatrixPasswordPayload.fromJson(Map<String, dynamic> json) =>
-          _$AuthMatrixPasswordPayloadFromJson(json);
+  factory AuthMatrixChangePasswordPayload.fromJson(Map<String, dynamic> json) =>
+          _$AuthMatrixChangePasswordPayloadFromJson(json);
 
   @override
   Map<String, dynamic> payloadToJson() =>
-          _$AuthMatrixPasswordPayloadToJson(this);
+          _$AuthMatrixChangePasswordPayloadToJson(this);
 }
 ```
 
-### Step 3: Initiate the new authentication action
+#### Step 3: Initiate the new authentication action
 ```dart
-_service.initiateAuthMatrix(payload: AuthMatrixPasswordPayload(password: 'password'));
+_service.initiateAuthMatrix(payload: AuthMatrixChangePasswordPayload(password: 'password'));
 ```
-# Authentication action
+# Authentication method
 
-## Step 1: Payload - Add a new case in the AuthMatrixMethod enum
+To add a new method to the authentication matrix, such as email verification, first, add a new case `emailVerification` to the `AuthMatrixMethod` enum.
+Create the `AuthMatrixEmailVerificationPayload` class extending `AuthMatrixPayloadRequest` and update the `AuthMatrixMethodExtension` class to parse this new payload.
+Define the `AuthMatrixEmailVerificationRoute` class extending `GoRouteData` to handle routing.
+Finally, add the new route path in the `RoutesPath` class and update the `createAuthMatrixMethodRoute` method to include the new enum case.
+
+
+#### Step 1: Payload - Add a new case in the AuthMatrixMethod enum
 ```dart
 enum AuthMatrixMethod {
   ...
-  @JsonValue('btrust')
-  btrust,
+  @JsonValue('EmailVerification')
+  emailVerification,
 ```
 
-## Step 2: Payload -  Create a class that extends AuthMatrixPayloadRequest and uses the new AuthMatrixMethod
+#### Step 2: Payload -  Create a class that extends AuthMatrixPayloadRequest and uses the new AuthMatrixMethod
 ```dart
-class AuthMatrixBtrustPayload extends AuthMatrixPayloadRequest
+class AuthMatrixEmailVerificationPayload extends AuthMatrixPayloadRequest
     with EquatableMixin {
-  AuthMatrixBtrustPayload();
+  AuthMatrixEmailVerificationPayload();
 
   @override
-  String get type => AuthMatrixMethod.btrust.name;
+  String get type => AuthMatrixMethod.emailVerification.name;
 
-  factory AuthMatrixBtrustPayload.fromJson(Map<String, dynamic> json) =>
-      AuthMatrixBtrustPayload();
+  factory AuthMatrixEmailVerificationPayload.fromJson(Map<String, dynamic> json) => AuthMatrixEmailVerificationPayload();
 
   @override
   Map<String, dynamic> payloadToJson() => {};
@@ -186,23 +193,23 @@ class AuthMatrixBtrustPayload extends AuthMatrixPayloadRequest
 }
 ```
 
-## Step 3: Payload - Add a new case in the AuthMatrixMethodExtension class to parse the new request method payload 
+#### Step 3: Payload - Add a new case in the AuthMatrixMethodExtension class to parse the new request method payload 
 ```dart
 AuthMatrixPayloadRequest _payloadFromJson(Map<String, dynamic>? json, type) {
   switch (type) {
     ...
-    case AuthMatrixMethod.btrust:
-      return AuthMatrixBtrustPayload.fromJson(json);
+    case AuthMatrixMethod.emailVerification:
+      return AuthMatrixEmailVerificationPayload.fromJson(json);
   }
 ```
 
-## Step 4: Route - Create a new route class that extends GoRouteData and uses the new AuthMatrixMethod
+#### Step 4: Route - Create a new route class that extends GoRouteData and uses the new AuthMatrixMethod
 ```dart
-@TypedGoRoute<AuthMatrixBtrustRoute>(
-  path: RoutesPath.authMatrixBtrust,
+@TypedGoRoute<AuthMatrixEmailVerificationRoute>(
+  path: RoutesPath.authMatrixEmailVerification,
 )
-class AuthMatrixBtrustRoute extends GoRouteData implements RouteDataModel {
-  const AuthMatrixBtrustRoute(
+class AuthMatrixEmailVerificationRoute extends GoRouteData implements RouteDataModel {
+  const AuthMatrixEmailVerificationRoute(
     this.transactionId,
   );
 
@@ -224,23 +231,23 @@ class AuthMatrixBtrustRoute extends GoRouteData implements RouteDataModel {
 ```
 
 
-## Step 5: Route - Define the new route path in the RoutesPath class
+#### Step 5: Route - Define the new route path in the RoutesPath class
 ```dart
 class RoutesPath {
   ....
-  static const authMatrixBtrust = '/auth-matrix/btrust/:transactionId';
+  static const authMatrixEmailVerification = '/auth-matrix/email-verification/:transactionId';
 }
 ```
 
 
-## Step 6: Route - Add a new case in the createAuthMatrixMethodRoute method
+#### Step 6: Route - Add a new case in the createAuthMatrixMethodRoute method
 ```dart
 extension AuthMatrixMethodX on AuthMatrixMethod {
   RouteDataModel? createAuthMatrixMethodRoute(String transactionId) {
    switch (this) {
       ...
-      case AuthMatrixMethod.btrust:
-        return AuthMatrixBtrustRoute(transactionId);
+      case AuthMatrixMethod.emailVerification:
+        return AuthMatrixEmailVerificationRoute(transactionId);
     }
   }
 ```
