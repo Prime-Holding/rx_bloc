@@ -1,6 +1,6 @@
 
 
-![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) [![![codecov](https://codecov.io/gh/Prime-Holding/rx_bloc/graph/badge.svg?token=BHQD4QC463)](https://codecov.io/gh/Prime-Holding/rx_bloc) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
+![CI](https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/Prime-Holding/rx_bloc/graph/badge.svg?token=BHQD4QC463)](https://codecov.io/gh/Prime-Holding/rx_bloc) ![style](https://img.shields.io/badge/style-effective_dart-40c4ff.svg) ![license](https://img.shields.io/badge/license-MIT-purple.svg)
 ---
 
 
