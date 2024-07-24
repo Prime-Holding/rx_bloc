@@ -41,10 +41,11 @@ class TodoListPage extends StatelessWidget {
           buildSuccess: (context, list, bloc) =>
               RxBlocBuilder<TodoActionsBlocType, bool>(
             state: (bloc) => bloc.states.isLoading,
-            builder: (context, isLoadingSnapshot, bloc) =>
-                (isLoadingSnapshot.data == null || !isLoadingSnapshot.data!)
-                    ? TodoListWidget(todos: list)
-                    : const Center(child: AppLoadingIndicator()),
+            builder: (context, isLoadingSnapshot, bloc) => TodoListWidget(
+              todos: list,
+              isLoading:
+                  (isLoadingSnapshot.data == null || isLoadingSnapshot.data!),
+            ),
           ),
           buildError: (context, exception, bloc) => Center(
             child: AppErrorWidget(
