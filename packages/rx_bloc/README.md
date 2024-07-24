@@ -202,7 +202,7 @@ class HomePage extends StatelessWidget {
 - [Building Forms in Flutter][building_forms_in_flutter_article_lnk] - Although building forms in Flutter may seem like an easy task, separating the business logic from the UI layer can be a challenge. The separation of concerns makes your app more scalable and maintainable and most importantly the business (validation) logic becomes unit-testable, so let’s see how we can achieve this by using rx_bloc and flutter_rx_bloc.
 
 [ci_badge_lnk]: https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg
-[codecov_badge_lnk]: https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop/graph/badge.svg
+[codecov_badge_lnk]: https://codecov.io/gh/Prime-Holding/rx_bloc/graph/badge.svg?token=BHQD4QC463
 [codecov_branch_lnk]: https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop
 [code_style_lnk]: https://img.shields.io/badge/style-effective_dart-40c4ff.svg
 [license_lnk]: https://img.shields.io/badge/license-MIT-purple.svg
