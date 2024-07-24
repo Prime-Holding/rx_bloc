@@ -1,4 +1,4 @@
-![CI][ci_badge_lnk] [![codecov][codecov_badge_lnk]][codecov_branch_lnk] ![style][code_style_lnk] ![license][license_lnk]
+[![CI][ci_badge_lnk]][ci_badge_actions] [![codecov][codecov_badge_lnk]][codecov_branch_lnk] ![style][code_style_lnk] ![license][license_lnk]
 
 # What is rx_bloc ?
 ![Slogan][rx_bloc_slogan_lnk]
@@ -201,7 +201,8 @@ class HomePage extends StatelessWidget {
 - [Building complex apps in Flutter through the power of reactive programming][reactive_programming_in_flutter_article_lnk] - Implementing complex apps as satisfying the user expectations along with consuming a fragmented API could be challenging nowadays. Learn how you can overcome some of the most common challenges you might face.
 - [Building Forms in Flutter][building_forms_in_flutter_article_lnk] - Although building forms in Flutter may seem like an easy task, separating the business logic from the UI layer can be a challenge. The separation of concerns makes your app more scalable and maintainable and most importantly the business (validation) logic becomes unit-testable, so let’s see how we can achieve this by using rx_bloc and flutter_rx_bloc.
 
-[ci_badge_lnk]: https://github.com/Prime-Holding/rx_bloc/workflows/CI/badge.svg
+[ci_badge_lnk]: https://github.com/Prime-Holding/rx_bloc/actions/workflows/build_and_test_rx_bloc_packages.yaml/badge.svg
+[ci_badge_actions]: https://github.com/Prime-Holding/rx_bloc/actions/workflows/build_and_test_rx_bloc_packages.yaml
 [codecov_badge_lnk]: https://codecov.io/gh/Prime-Holding/rx_bloc/graph/badge.svg?token=BHQD4QC463
 [codecov_branch_lnk]: https://codecov.io/gh/Prime-Holding/rx_bloc/branch/develop
 [code_style_lnk]: https://img.shields.io/badge/style-effective_dart-40c4ff.svg
