@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_bar_title.dart';
+import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../blocs/todo_management_bloc.dart';
 import 'todo_form.dart';
 
@@ -31,7 +32,7 @@ class TodoManagementPage extends StatelessWidget {
             builder: (context, isLoadingSnapshot, bloc) =>
                 (isLoadingSnapshot.data == null || !isLoadingSnapshot.data!)
                     ? const TodoForm()
-                    : const Center(child: CircularProgressIndicator()),
+                    : const Center(child: AppLoadingIndicator()),
           ),
         ),
         floatingActionButton: RxBlocBuilder<TodoManagementBlocType, bool>(

@@ -44,7 +44,7 @@ class TodoListPage extends StatelessWidget {
             builder: (context, isLoadingSnapshot, bloc) =>
                 (isLoadingSnapshot.data == null || !isLoadingSnapshot.data!)
                     ? TodoListWidget(todos: list)
-                    : const Center(child: CircularProgressIndicator()),
+                    : const Center(child: AppLoadingIndicator()),
           ),
           buildError: (context, exception, bloc) => Center(
             child: AppErrorWidget(
