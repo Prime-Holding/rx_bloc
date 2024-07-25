@@ -11,6 +11,12 @@ $(dirname "$0")/generate_test_project.sh all_enabled
 cp example/testapp/README.md example/
 
 mkdir example/docs
+
+cp example/testapp/docs/auth_matrix.md example/docs/
+cp example/testapp/docs/auth_matrix.png example/docs/
+cp example/testapp/docs/auth_matrix_c4.png example/docs/
+cp example/testapp/docs/auth_matrix_sequence.png example/docs/
+
 cp example/testapp/docs/continuous_delivery.md example/docs/
 cp example/testapp/docs/app_architecture.png example/docs/
 cp example/testapp/docs/cicd_diagram.png example/docs/

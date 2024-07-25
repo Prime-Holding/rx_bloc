@@ -501,7 +501,7 @@ For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_
 {{#enable_auth_matrix}}
 ## Auth Matrix
 
-The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.{{/enable_auth_matrix}}
+The `lib_auth_matrix` brick contains classes, repositories, data sources and widgets that can help you with building a matrix authentication workflow for your app. Follow the [technical specification][rx_bloc_cli_auth_matrix_lnk] for information.{{/enable_auth_matrix}}
 {{#cicd}}
 ## CI/CD
 
@@ -569,3 +569,4 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
 [rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
+[rx_bloc_cli_auth_matrix_lnk]: docs/auth_matrix.md
