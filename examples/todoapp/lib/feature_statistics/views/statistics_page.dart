@@ -24,6 +24,7 @@ class StatisticsPage extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: 'fab',
           onPressed: () =>
               context.read<RouterBlocType>().events.push(TodoCreateRoute()),
           shape: const OvalBorder(),
