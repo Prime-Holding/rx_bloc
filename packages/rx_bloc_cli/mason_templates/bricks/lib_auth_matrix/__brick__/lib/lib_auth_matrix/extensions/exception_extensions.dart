@@ -1,5 +1,3 @@
-import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
-
 import '../../base/models/errors/error_model.dart';
 
 extension AuthExceptionX on Exception {
@@ -8,8 +6,8 @@ extension AuthExceptionX on Exception {
   /// If true the exception will be propagated to the auth matrix consumers
   /// If false the exception will be handled internally by the auth matrix method
   bool get isAuthMethodException => switch (this) {
-        ErrorWrongPin _ => true,
         NetworkErrorModel _ => true,
+        ErrorServerGenericModel _ => true,
         NotFoundErrorModel _ => false,
         Exception _ => false,
       };

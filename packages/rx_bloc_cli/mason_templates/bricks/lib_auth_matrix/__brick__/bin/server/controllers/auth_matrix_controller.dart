@@ -88,19 +88,19 @@ class AuthMatrixController extends ApiController {
     return responseBuilder.buildOK(
       data: switch (formData['securityToken'] as String) {
         (_changeAddressSecurityToken1) => AuthMatrixResponse(
-          authMethod: AuthMatrixMethod.otp,
-          documentIds: [1],
-          expires: _expiresDate,
-          securityToken: _changeAddressSecurityToken2,
-          transactionId: _changeAddressTransactionId,
-        ),
+            authMethod: AuthMatrixMethod.otp,
+            documentIds: [1],
+            expires: _expiresDate,
+            securityToken: _changeAddressSecurityToken2,
+            transactionId: _changeAddressTransactionId,
+          ),
         (_changeAddressSecurityToken2) => AuthMatrixResponse(
-          authMethod: AuthMatrixMethod.complete,
-          documentIds: [1],
-          expires: _expiresDate,
-          securityToken: _changeAddressSecurityToken3,
-          transactionId: _changeAddressTransactionId,
-        ),
+            authMethod: AuthMatrixMethod.complete,
+            documentIds: [1],
+            expires: _expiresDate,
+            securityToken: _changeAddressSecurityToken3,
+            transactionId: _changeAddressTransactionId,
+          ),
         String() => throw UnimplementedError(),
       }
           .toJson(),
@@ -142,7 +142,7 @@ class AuthMatrixController extends ApiController {
       final payload = methodRequest.payload as AuthMatrixPinCodePayload;
 
       if (payload.code != _pinCode) {
-        throw BadRequestException('The pin code should be $_pinCode');
+        throw UnprocessableEntityException('The pin code should be $_pinCode');
       }
     }
 
@@ -155,7 +155,7 @@ class AuthMatrixController extends ApiController {
       }
 
       if (payload.code != _otpCode) {
-        throw BadRequestException('The OTP code should be $_otpCode');
+        throw UnprocessableEntityException('The OTP code should be $_otpCode');
       }
     }
   }

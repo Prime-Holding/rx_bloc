@@ -9,8 +9,6 @@ class AuthMatrixPinCodeService extends PinCodeService {
   final AuthMatrixRepository _authMatrixRepository;
   final AuthMatrixResponse _lastAuthMatrixResponse;
 
-  AuthMatrixResponse? _currentAuthMatrixResponse;
-
   AuthMatrixPinCodeService({
     required AuthMatrixRepository authMatrixRepository,
     required AuthMatrixResponse authMatrixResponse,
@@ -33,9 +31,8 @@ class AuthMatrixPinCodeService extends PinCodeService {
   }
 
   @override
-  Future<bool> verifyPinCode(String pinCode) async {
-    try {
-      _currentAuthMatrixResponse = await _authMatrixRepository.authenticate(
+  Future<dynamic> verifyPinCode(String pinCode) async =>
+      await _authMatrixRepository.authenticate(
         transactionId: _lastAuthMatrixResponse.transactionId,
         request: AuthMatrixMethodRequest(
           securityToken: _lastAuthMatrixResponse.securityToken,
@@ -44,17 +41,4 @@ class AuthMatrixPinCodeService extends PinCodeService {
           ),
         ),
       );
-    } catch (e) {
-      //TODO: To be refactored once the https://github.com/Prime-Holding/widget_toolkit/issues/109 is published
-      return false;
-    }
-
-    return true;
-  }
-
-  AuthMatrixResponse? get authMatrixResponse => _currentAuthMatrixResponse;
-
-  void dispose() {
-    _currentAuthMatrixResponse = null;
-  }
 }

@@ -36,7 +36,6 @@ class AuthMatrixPinBiometricsPageWithDependencies extends StatelessWidget {
             authMatrixResponse: authMatrixResponse,
             authMatrixRepository: context.read(),
           ),
-          dispose: (context, service) => service.dispose(),
         ),
       ];
 }
