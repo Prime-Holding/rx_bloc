@@ -14,38 +14,45 @@ class TodoManagementPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: AppBarTitle(
-            title: context.read<TodoManagementBlocType>().states.isEditingTodo
-                ? context.l10n.editTodo
-                : context.l10n.addTodo,
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: context.designSystem.spacing.s1,
-            horizontal: context.designSystem.spacing.xl,
-          ),
-          child: RxBlocBuilder<TodoManagementBlocType, bool>(
-            state: (bloc) => bloc.states.isLoading,
-            builder: (context, isLoadingSnapshot, bloc) =>
-                (isLoadingSnapshot.data == null || !isLoadingSnapshot.data!)
-                    ? const TodoForm()
-                    : const Center(child: AppLoadingIndicator()),
-          ),
-        ),
-        floatingActionButton: RxBlocBuilder<TodoManagementBlocType, bool>(
-          state: (bloc) => bloc.states.isLoading,
-          builder: (context, isLoadingSnapshot, bloc) => FloatingActionButton(
-            heroTag: 'fab',
-            onPressed: () =>
-                context.read<TodoManagementBlocType>().events.save(),
-            shape: const OvalBorder(),
-            child: context.read<TodoManagementBlocType>().states.isEditingTodo
-                ? context.designSystem.icons.updateConfirm
-                : context.designSystem.icons.add,
-          ),
-        ),
+  Widget build(BuildContext context) =>
+      RxBlocBuilder<TodoManagementBlocType, bool>(
+        state: (bloc) => bloc.states.isLoading,
+        builder: (context, isLoadingSnapshot, bloc) {
+          final isLoading =
+              (isLoadingSnapshot.hasData && isLoadingSnapshot.requireData);
+          return Scaffold(
+            appBar: AppBar(
+              title: AppBarTitle(
+                title:
+                    context.read<TodoManagementBlocType>().states.isEditingTodo
+                        ? context.l10n.editTodo
+                        : context.l10n.addTodo,
+              ),
+              leading: IconButton(
+                icon: context.designSystem.icons.close,
+                onPressed: isLoading ? null : () => context.pop(),
+              ),
+            ),
+            body: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: context.designSystem.spacing.s1,
+                horizontal: context.designSystem.spacing.xl,
+              ),
+              child: TodoForm(isLoading: isLoading),
+            ),
+            floatingActionButton: FloatingActionButton(
+              heroTag: 'fab',
+              onPressed: isLoading
+                  ? null
+                  : () => context.read<TodoManagementBlocType>().events.save(),
+              shape: const OvalBorder(),
+              child: isLoading
+                  ? AppLoadingIndicator.textButtonValue(context)
+                  : context.read<TodoManagementBlocType>().states.isEditingTodo
+                      ? context.designSystem.icons.updateConfirm
+                      : context.designSystem.icons.add,
+            ),
+          );
+        },
       );
 }

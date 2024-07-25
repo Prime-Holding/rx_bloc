@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
+import '../../base/extensions/async_snapshot_extensions.dart';
 import '../blocs/todo_list_bulk_edit_bloc.dart';
 import '../models/bulk_action.dart';
 
 class AppTodoListBulkEditPopupMenuButton extends StatelessWidget {
-  const AppTodoListBulkEditPopupMenuButton({super.key});
+  AppTodoListBulkEditPopupMenuButton({super.key});
+  final GlobalKey _popupMenuKey = GlobalKey();
 
   @override
-  Widget build(BuildContext context) =>
-      RxBlocBuilder<TodoListBulkEditBlocType, List<BulkActionModel>>(
-        state: (bloc) => bloc.states.bulkActions,
-        builder: (context, snapshot, bloc) => PopupMenuButton(
-          icon: context.designSystem.icons.menu,
+  Widget build(BuildContext context) => RxBlocMultiBuilder2<
+          TodoListBulkEditBlocType, List<BulkActionModel>, bool>(
+        state1: (bloc) => bloc.states.bulkActions,
+        state2: (bloc) => bloc.states.isLoading,
+        builder: (context, snapshot, isLoading, bloc) => PopupMenuButton(
+          key: _popupMenuKey,
+          child: SmallButton(
+            onPressed: () {
+              // Open the popup menu programmatically
+              final dynamic popupMenu = _popupMenuKey.currentState;
+              popupMenu.showButtonMenu();
+            },
+            icon: context.designSystem.icons.menu.icon,
+            state: isLoading.buttonStateModel,
+          ),
           itemBuilder: (context) => snapshot.hasData
               ? snapshot.requireData
                   .map((actionModel) => _buildMenuItem(actionModel, context))

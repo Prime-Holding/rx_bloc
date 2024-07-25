@@ -12,7 +12,7 @@ class AppTodoListBulkEditPopupMenuButtonWithDependencies
 
   @override
   Widget build(BuildContext context) {
-    const current = AppTodoListBulkEditPopupMenuButton();
+    final current = AppTodoListBulkEditPopupMenuButton();
 
     if (isInTestMode) {
       return current;

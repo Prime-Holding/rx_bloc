@@ -76,6 +76,7 @@ class TodosController extends ApiController {
   /// Handles GET requests to fetch all todos.
   Future<Response> getAllTodosHandler(Request request) async {
     final allTodos = todosService.fetchAllTodos();
+    await Future.delayed(Duration(seconds: 1));
     final todoList = jsonEncode(allTodos.map((obj) => obj.toJson()).toList());
     return Response.ok(todoList, headers: {'content-type': 'application/json'});
   }
@@ -83,6 +84,7 @@ class TodosController extends ApiController {
   /// Handles PATCH requests to update the completion status for all todos.
   Future<Response> updateCompletedForAll(Request request) async {
     final params = await request.bodyFromFormData();
+    await Future.delayed(Duration(seconds: 1));
     final completed = params['completed'];
     if (completed == null) {
       throw BadRequestException('completed is required');
@@ -95,6 +97,7 @@ class TodosController extends ApiController {
   /// Handles PUT requests to update a todo by its ID.
   Future<Response> updateTodoByIdHandler(Request request) async {
     final params = await request.bodyFromFormData();
+    await Future.delayed(Duration(seconds: 1));
     final todoFromRequest = TodoModel.fromJson(params);
     throwIfEmpty(params['id'], BadRequestException('id is required'));
     final todo = todosService.updateTodoById(todoFromRequest);
@@ -104,6 +107,7 @@ class TodosController extends ApiController {
   /// Handles POST requests to add a new todo.
   Future<Response> addTodoHandler(Request request) async {
     final params = await request.bodyFromFormData();
+    await Future.delayed(Duration(seconds: 1));
     throwIfEmpty(
         params['title'], BadRequestException('Request title is empty'));
 
@@ -115,6 +119,7 @@ class TodosController extends ApiController {
   /// Handles PATCH requests to update the completion status of a todo by its ID.
   Future<Response> updateCompletedByIdHandler(Request request) async {
     final params = await request.bodyFromFormData();
+    await Future.delayed(Duration(seconds: 1));
     final todoId = request.params['id'];
     final completed = params['completed'];
     if (completed == null) {
@@ -128,6 +133,7 @@ class TodosController extends ApiController {
   /// Handles DELETE requests to remove all completed todos.
   Future<Response> deleteCompletedHandler(Request request) async {
     final todos = todosService.deleteCompleted();
+    await Future.delayed(Duration(seconds: 1));
     final todoList = jsonEncode(todos.map((obj) => obj.toJson()).toList());
 
     return Response.ok(todoList, headers: {'content-type': 'application/json'});
@@ -136,6 +142,7 @@ class TodosController extends ApiController {
   /// Handles DELETE requests to remove a todo by its ID.
   Future<Response> deleteByIdHandler(Request request) async {
     final todoId = request.params['id'];
+    await Future.delayed(Duration(seconds: 1));
 
     throwIfEmpty(todoId, BadRequestException('id is required'));
 
@@ -147,6 +154,7 @@ class TodosController extends ApiController {
   /// Handles GET requests to fetch a todo by its ID.
   Future<Response> fetchTodoByIdHandler(Request request) async {
     final todoId = request.params['id'];
+    await Future.delayed(Duration(seconds: 1));
 
     throwIfEmpty(todoId, BadRequestException('id is required'));
 
