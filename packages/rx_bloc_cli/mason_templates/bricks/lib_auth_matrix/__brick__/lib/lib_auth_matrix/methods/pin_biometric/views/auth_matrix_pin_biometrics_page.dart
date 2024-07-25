@@ -6,6 +6,8 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../../../app_extensions.dart';
+import '../../../../base/extensions/error_model_extensions.dart';
+import '../../../../base/extensions/error_model_translations.dart';
 import '../../../../lib_router/blocs/router_bloc.dart';
 import '../../../extensions/exception_extensions.dart';
 import '../../../models/auth_matrix_response.dart';
@@ -41,24 +43,16 @@ class AuthMatrixPinBiometricsPage extends StatelessWidget {
                     }
                   },
 
-                  onAuthenticated: () {
-                    final authMatrixResponse = context
-                        .read<AuthMatrixPinCodeService>()
-                        .authMatrixResponse;
-
-                    if (authMatrixResponse != null) {
-                      context
-                          .read<RouterBlocType>()
-                          .events
-                          .pop(Result<AuthMatrixResponse>.success(
-                            authMatrixResponse,
-                          ));
+                  onAuthenticated: (authMatrixResponse) {
+                    if (authMatrixResponse is AuthMatrixResponse) {
+                      context.read<RouterBlocType>().events.pop(
+                          Result<AuthMatrixResponse>.success(
+                              authMatrixResponse));
                     }
                   }, // Handle error states
                   pinCodeService: context.read<AuthMatrixPinCodeService>(),
-                  translateError: (error) {
-                    return error.toString();
-                  }, //TODO: Handle error states
+                  translateError: (error) =>
+                      error.asErrorModel().translate(context),
                 ),
               ),
             ],
