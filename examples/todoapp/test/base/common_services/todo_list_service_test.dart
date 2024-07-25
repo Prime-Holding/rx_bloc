@@ -36,6 +36,17 @@ void main() {
       expect(todo.id, '1');
     });
 
+    test('fetchTodoById should return the same todo by checking the id',
+        () async {
+      when(todoRepository.fetchTodoById('1'))
+          .thenAnswer((_) => Future.value(Stubs.todoIncomplete));
+
+      final todo =
+          await todoListService.fetchTodoById('1', Stubs.todoIncomplete);
+
+      expect(todo, Stubs.todoIncomplete);
+    });
+
     test('filterTodos should return the correct filtered todos', () {
       final incompleteTodos = Stubs.todoListAllIncomplete;
       final completedTodos = Stubs.todoListAllCompleted;
