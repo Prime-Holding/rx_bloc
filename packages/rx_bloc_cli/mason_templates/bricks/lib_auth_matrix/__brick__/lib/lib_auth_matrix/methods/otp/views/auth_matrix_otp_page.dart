@@ -28,7 +28,6 @@ class AuthMatrixOtpPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: SmsCodeProvider(
-            //TODO: Implement the onError
             onError: (context, error) {
               if (error != null && !error.isAuthMethodException) {
                 context

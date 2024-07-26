@@ -66,7 +66,7 @@ The following C4 diagram provides an overview of the component-level implementat
   /// The of auth matrix method (predefined enum) to be used for the following request.
  "authMethod": String,
 
- // Dynamic additional data along with the required response properties. Create custom AuthMatrixResponsePayload implementation for each case.  
+ // Dynamic additional data along with the required response properties.  
  "payload": null 
 }   
 ```
@@ -105,7 +105,7 @@ The following C4 diagram provides an overview of the component-level implementat
   /// The of auth matrix method (predefined enum) to be used for the following request.
  "authMethod": String,
 
- // Dynamic additional data along with the required response properties. Create custom AuthMatrixResponsePayload implementation for each case.  
+ // Dynamic additional data along with the required response properties.  
  "payload": null 
 }   
 ```    
@@ -124,7 +124,7 @@ enum AuthMatrixAction {
 }
 ```
 
-#### Step 2: Add a new case in the AuthMatrixActionExtension
+#### Step 2: Create a class that extends AuthMatrixPayloadRequest
 The payload for the new authentication method needs to be implemented by extending the AuthMatrixPayloadRequest class.
 ```dart
 @JsonSerializable()
@@ -158,7 +158,7 @@ _service.initiateAuthMatrix(payload: AuthMatrixChangePasswordPayload(password: '
 # Authentication method
 
 To add a new method to the authentication matrix, such as email verification, first, add a new case `emailVerification` to the `AuthMatrixMethod` enum.
-Create the `AuthMatrixEmailVerificationPayload` class extending `AuthMatrixPayloadRequest` and update the `AuthMatrixMethodExtension` class to parse this new payload.
+Create the `AuthMatrixEmailVerificationPayload` class extending `AuthMatrixPayloadRequest` and update the `AuthMatrixMethodRequest` to parse this new payload.
 Define the `AuthMatrixEmailVerificationRoute` class extending `GoRouteData` to handle routing.
 Finally, add the new route path in the `RoutesPath` class and update the `createAuthMatrixMethodRoute` method to include the new enum case.
 
@@ -193,7 +193,7 @@ class AuthMatrixEmailVerificationPayload extends AuthMatrixPayloadRequest
 }
 ```
 
-#### Step 3: Payload - Add a new case in the AuthMatrixMethodExtension class to parse the new request method payload 
+#### Step 3: Payload - Add a new case in the AuthMatrixMethodRequest class to parse the new request method payload 
 ```dart
 AuthMatrixPayloadRequest _payloadFromJson(Map<String, dynamic>? json, type) {
   switch (type) {

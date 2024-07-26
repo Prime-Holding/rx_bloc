@@ -29,7 +29,6 @@ class AuthMatrixPinBiometricsPageWithDependencies extends StatelessWidget {
         ),
       );
 
-  // AuthMatrixPinCodeService
   List<SingleChildStatelessWidget> get _services => [
         Provider<AuthMatrixPinCodeService>(
           create: (context) => AuthMatrixPinCodeService(

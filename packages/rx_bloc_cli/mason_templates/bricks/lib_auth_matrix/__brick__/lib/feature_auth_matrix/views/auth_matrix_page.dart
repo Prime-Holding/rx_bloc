@@ -34,7 +34,7 @@ class AuthMatrixPage extends StatelessWidget {
                 listener: _showAuthMatrixComplete,
               ),
               Text(
-                'The address component below demonstrates the 2FA (PIN and OTP) feature.',
+                context.l10n.featureAuthMatrix.changeAddressActionTitle,
                 style: context.designSystem.typography.h2Med16,
               ),
               SizedBox(height: context.designSystem.spacing.m),
@@ -54,9 +54,7 @@ class AuthMatrixPage extends StatelessWidget {
                 },
               ),
               Text(
-                'Fill in the address fields and click save to trigger the 2FA process. \n '
-                '- Use "0000" for the PIN and OTP code to complete the flow. \n '
-                '- Use "3333" for OTP code to fail the flow.',
+                context.l10n.featureAuthMatrix.changeAddressActionDescription,
                 style: context.designSystem.typography.h3Med11,
               ),
               Padding(
@@ -66,12 +64,12 @@ class AuthMatrixPage extends StatelessWidget {
                 child: const Divider(),
               ),
               Text(
-                'The button below demonstrates the 2FA (PIN) feature.',
+                context.l10n.featureAuthMatrix.unlockActionTitle,
                 style: context.designSystem.typography.h2Med16,
               ),
               Center(
                 child: PrimaryButton(
-                  child: const Text('Unlock'),
+                  child: Text(context.l10n.featureAuthMatrix.unlockButtonText),
                   onPressed: () => context
                       .read<AuthMatrixEditAddressBlocType>()
                       .events
@@ -80,8 +78,7 @@ class AuthMatrixPage extends StatelessWidget {
               ),
               SizedBox(height: context.designSystem.spacing.m),
               Text(
-                'Tap on the button to trigger the 2FA process. \n'
-                '- Use "0000" for the pin.',
+                context.l10n.featureAuthMatrix.unlockActionDescription,
                 style: context.designSystem.typography.h3Med11,
               ),
             ],
@@ -93,7 +90,7 @@ class AuthMatrixPage extends StatelessWidget {
       showBlurredBottomSheet(
         context: context,
         builder: (BuildContext context) => MessagePanelWidget(
-          message: action.name, // TODO: Replace with translation
+          message: action.name,
           messageState: MessagePanelState.positive,
         ),
       );

@@ -57,7 +57,7 @@ class AuthMatrixService {
       yield lastResponse;
 
       // Emit the last response to the stream when the auth method is completed.
-      // this is exposed through the [onAuthenticationStepComplete] stream.
+      // this is exposed through the [onResponse] stream.
       _onResponse.add(lastResponse);
 
       if (lastResponse.authMethod == AuthMatrixMethod.complete) {

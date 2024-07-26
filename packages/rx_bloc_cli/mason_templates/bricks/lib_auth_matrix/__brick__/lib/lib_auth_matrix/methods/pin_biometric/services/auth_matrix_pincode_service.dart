@@ -31,8 +31,8 @@ class AuthMatrixPinCodeService extends PinCodeService {
   }
 
   @override
-  Future<dynamic> verifyPinCode(String pinCode) async =>
-      await _authMatrixRepository.authenticate(
+  Future<dynamic> verifyPinCode(String pinCode) =>
+      _authMatrixRepository.authenticate(
         transactionId: _lastAuthMatrixResponse.transactionId,
         request: AuthMatrixMethodRequest(
           securityToken: _lastAuthMatrixResponse.securityToken,

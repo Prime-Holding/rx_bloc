@@ -47,7 +47,7 @@ class AuthMatrixResponse with EquatableMixin {
   final String transactionId;
 
   /// Dynamic additional data to be received from the API along with the required
-  /// response properties. Create custom AuthMatrixResponsePayload implementation
+  /// response properties. Create custom AuthMatrixPayloadResponse implementation
   /// for each case.
   @JsonKey(fromJson: _payloadFromJson, toJson: _payloadToJson)
   final AuthMatrixPayloadResponse? payload;

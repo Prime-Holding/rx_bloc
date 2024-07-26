@@ -41,7 +41,7 @@ class AuthMatrixEditAddressService extends EditAddressService<CountryModel> {
   }
 
   @override
-  Future<List<CountryModel>> getCountries() async => await searchList;
+  Future<List<CountryModel>> getCountries() => searchList;
 
   @override
   List<CountryModel> getCountryPlaceholderList() =>
