@@ -2,6 +2,8 @@
 
 import 'dart:async';
 
+{{#enable_auth_matrix}}
+import 'package:equatable/equatable.dart';{{/enable_auth_matrix}}
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
