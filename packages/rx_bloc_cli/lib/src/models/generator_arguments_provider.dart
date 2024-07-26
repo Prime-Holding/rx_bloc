@@ -135,6 +135,10 @@ class GeneratorArgumentsProvider {
     final realtimeCommunicationEnabled =
         realtimeCommunication != RealtimeCommunicationType.none;
 
+    // Dynamic SSL Pinning
+    final dynamicSSLPinning =
+        _reader.read<bool>(CreateCommandArguments.dynamicSSLPinning);
+
     // Deep links
     final deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
 
@@ -158,6 +162,7 @@ class GeneratorArgumentsProvider {
       analyticsEnabled: analyticsEnabled,
       pushNotificationsEnabled: pushNotificationsEnabled,
       realtimeCommunicationEnabled: realtimeCommunicationEnabled,
+      dynamicSSLPinning: dynamicSSLPinning,
       deepLinkEnabled: deepLinkEnabled,
       devMenuEnabled: devMenuEnabled,
       patrolTestsEnabled: patrolTestsEnabled,

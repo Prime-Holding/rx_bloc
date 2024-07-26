@@ -10,10 +10,11 @@ environment:
 dependencies: {{#enable_dev_menu}}
   alice: ^0.4.1 {{/enable_dev_menu}}
   collection: ^1.17.2
-  copy_with_extension: ^5.0.4{{#enable_pin_code}}
-  crypto: ^3.0.3{{/enable_pin_code}}
+  copy_with_extension: ^5.0.4{{#enable_pin_code}}{{#dynamic-ssl}}
+  crypto: ^3.0.3{{/enable_pin_code}}{{/dynamic-ssl}}
   cupertino_icons: ^1.0.6
-  dio: ^5.3.3
+  dio: ^5.3.3{{#dynamic-ssl}}
+  envied: ^0.5.4+1{{/dynamic-ssl}}
   equatable: ^2.0.5{{#analytics}}
   firebase_analytics: ^10.5.1{{/analytics}}{{#uses_firebase}}
   firebase_core: ^2.17.0{{/uses_firebase}}{{#analytics}}
@@ -34,7 +35,8 @@ dependencies: {{#enable_dev_menu}}
   http: ^1.1.0 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.8.1
-  jwt_decoder: ^2.0.1{{#enable_pin_code}}
+  jwt_decoder: ^2.0.1{{#enable_pin_code}}{{#dynamic-ssl}}
+  pointycastle: ^3.9.1{{/dynamic-ssl}}
   local_session_timeout: ^2.3.1{{/enable_pin_code}}
   provider: ^6.0.5
   retrofit: ^4.0.2

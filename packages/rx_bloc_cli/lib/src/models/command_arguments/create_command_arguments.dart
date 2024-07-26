@@ -115,6 +115,15 @@ enum CreateCommandArguments {
         'or gRPC',
   ),
 
+  /// Dynamic SSL Pinning
+  dynamicSSLPinning(
+    name: 'dynamic-ssl',
+    type: CreateCommandArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable dynamic SSL pinning:',
+    help: 'Enables dynamic SSL pinning',
+  ),
+
   /// CI/CD
   cicd(
     name: 'cicd',

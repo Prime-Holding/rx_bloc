@@ -35,7 +35,10 @@ import '../../lib_auth_matrix/services/auth_matrix_service.dart';{{/enable_auth_
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
-import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}
+import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}{{#dynamic-ssl}}
+import '../../lib_dynamic_ssl/data_sources/remote/ssl_data_source.dart';
+import '../../lib_dynamic_ssl/repositories/ssl_repository.dart';
+import '../../lib_dynamic_ssl/services/ssl_service.dart';{{/dynamic-ssl}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
@@ -62,9 +65,11 @@ import '../data_sources/local/profile_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
-import '../data_sources/remote/http_clients/api_http_client.dart';
+import '../data_sources/remote/http_clients/api_http_client.dart';{{#dynamic-ssl}}
+import '../data_sources/remote/http_clients/api_retry_http_client.dart';{{/dynamic-ssl}}
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/push_notification_data_source.dart';{{#dynamic-ssl}}
+import '../env/app_env.dart';{{/dynamic-ssl}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';
@@ -123,7 +128,10 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   {{/analytics}}
 
   List<Provider> get _environment => [
-        Provider<EnvironmentConfig>.value(value: config),
+        Provider<EnvironmentConfig>.value(value: config),{{#dynamic-ssl}}
+        Provider<AppEnv>(
+          create: (context) => AppEnv(context.read()),
+        ),{{/dynamic-ssl}}
       ];
 
   List<Provider> get _mappers => [
@@ -144,7 +152,14 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
               ..options.baseUrl = config.baseUrl;
             return client;
           },
-        ),
+        ),{{#dynamic-ssl}}
+        Provider<ApiRetryHttpClient>(
+          create: (context) {
+            final client = ApiRetryHttpClient()
+            ..options.baseUrl = config.baseUrl;
+            return client;
+          },
+        ),{{/dynamic-ssl}}
       ];
 
   List<SingleChildWidget> get _dataStorages => [
@@ -194,7 +209,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PermissionsRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),
+        ),{{#dynamic-ssl}}
+        Provider<SSLDataSource>(
+          create: (context) => SSLDataSource(
+            context.read<PlainHttpClient>(),
+          ),
+        ),{{/dynamic-ssl}}
         {{#enable_feature_deeplinks}}
         Provider<DeepLinkRemoteDataSource>(
           create: (context) => DeepLinkRemoteDataSource(
@@ -264,7 +284,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        {{/enable_feature_deeplinks}} {{#enable_change_language}}
+        {{/enable_feature_deeplinks}}{{#dynamic-ssl}}
+        Provider<SSLRepository>(
+          create: (context) => SSLRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),{{/dynamic-ssl}}{{#enable_change_language}}
         Provider<LanguageRepository>(
           create: (context) => LanguageRepository(
             context.read<ErrorMapper>(),
@@ -379,7 +405,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        {{/analytics}}
+        {{/analytics}}{{#dynamic-ssl}}
+        Provider<SSLService>(
+          create: (context) => SSLService(
+            context.read(),
+            context.read(),
+          ),
+        ),{{/dynamic-ssl}}
       ];
 
   List<SingleChildWidget> get _blocs => [

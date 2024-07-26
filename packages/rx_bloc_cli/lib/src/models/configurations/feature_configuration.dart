@@ -1,13 +1,14 @@
 /// Feature Configuration
 class FeatureConfiguration {
   /// Feature Configuration constructor
-  FeatureConfiguration( {
+  FeatureConfiguration({
     required this.changeLanguageEnabled,
     required this.counterEnabled,
     required this.widgetToolkitEnabled,
     required this.analyticsEnabled,
     required this.pushNotificationsEnabled,
     required this.realtimeCommunicationEnabled,
+    required this.dynamicSSLPinning,
     required this.deepLinkEnabled,
     required this.devMenuEnabled,
     required this.patrolTestsEnabled,
@@ -24,6 +25,9 @@ class FeatureConfiguration {
 
   /// Realtime communication
   final bool realtimeCommunicationEnabled;
+
+  /// Dynamic SSL Pinning
+  final bool dynamicSSLPinning;
 
   /// Deep links
   final bool deepLinkEnabled;
