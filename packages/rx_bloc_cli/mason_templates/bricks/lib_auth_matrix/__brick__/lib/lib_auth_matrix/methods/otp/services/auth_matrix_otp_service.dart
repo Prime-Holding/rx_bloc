@@ -20,7 +20,7 @@ class AuthMatrixOtpService extends SmsCodeService {
   /// - [code] is the code that the user has received.
   /// Returns a [Future] of [AuthMatrixResponse] that determines the next steps in the auth matrix process.
   @override
-  Future confirmPhoneCode(String code) async =>
+  Future<dynamic> confirmPhoneCode(String code) async =>
       await _authMatrixRepository.authenticate(
         transactionId: _lastAuthMatrixResponse.transactionId,
         request: AuthMatrixMethodRequest(

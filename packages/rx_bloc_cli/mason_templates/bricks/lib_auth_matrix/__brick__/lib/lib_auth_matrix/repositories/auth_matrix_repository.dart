@@ -13,10 +13,6 @@ class AuthMatrixRepository {
   final AuthMatrixDataSource _authMatrixDataSource;
   final ErrorMapper _errorMapper;
 
-  /// Deletes the auth matrix transaction by the given [transactionId].
-  Future<void> deleteAuthTransaction(String transactionId) =>
-      _errorMapper.execute(() => _authMatrixDataSource.delete(transactionId));
-
   /// Initiates the auth matrix process by the given [action] and [request].
   ///
   /// - [action] is the action to be performed such as `changeAddress`, `makeTransaction`, etc.

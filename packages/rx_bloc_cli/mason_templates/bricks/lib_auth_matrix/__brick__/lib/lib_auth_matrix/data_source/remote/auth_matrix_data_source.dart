@@ -25,12 +25,6 @@ abstract class AuthMatrixDataSource {
     @Body() AuthMatrixPayloadRequest request,
   );
 
-  /// Deletes the authentication matrix transaction by its [transactionId].
-  @DELETE('/api/auth-matrix/{transactionId}')
-  Future<void> delete(
-    @Path() String transactionId,
-  );
-
   /// Authenticates the user using the [transactionId] and the [request] body.
   ///
   /// - [transactionId]: The transaction identifier.
@@ -41,9 +35,5 @@ abstract class AuthMatrixDataSource {
     @Body() AuthMatrixMethodRequest request,
   );
 
-  // @POST('/api/auth-matrix/{authMatrixId}/reset')
-  // Future<AuthMatrixResponse> resetAuthCode(
-  //   @Path() String authMatrixId,
-  //   @Body() AuthMatrixResetRequest tokenModel,
-  // );
+
 }

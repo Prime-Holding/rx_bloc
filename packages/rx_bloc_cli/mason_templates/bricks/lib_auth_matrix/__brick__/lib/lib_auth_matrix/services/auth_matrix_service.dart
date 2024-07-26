@@ -69,12 +69,6 @@ class AuthMatrixService {
     }
   }
 
-  /// Deletes the auth matrix transaction by the given [transactionId].
-  /// - [transactionId] is the unique auth matrix transaction id.
-  /// Returns a [Future] that determines if the transaction was deleted successfully.
-  Future<void> deleteAuthTransaction(String transactionId) =>
-      _authMatrixRepository.deleteAuthTransaction(transactionId);
-
   /// Navigate to the next auth method route and execute it.
   ///
   /// - [lastResponse] is the last response that contains the necessary data to execute the auth method.
