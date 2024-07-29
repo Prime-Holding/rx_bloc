@@ -1,8 +1,8 @@
 ## [3.8.1]
-* Added reference in [example documentation](example/README.md) about [writing golden tests for smart widgets with dependency injection](doc/golden_tests.md).
+* Added reference in [example documentation][golden_tests_doc] about [writing golden tests for smart widgets with dependency injection][golden_tests_documentation].
 
 ## [3.8.0]
-* Added functionality to exclude smart widgets dependency injection components during golden tests. [Read the documentation.](doc/golden_tests.md)
+* Added functionality to exclude smart widgets dependency injection components during golden tests. [Check out the detailed documentation.][golden_tests_doc]
 
 ## [3.7.0]
 Updated environment variable names used in CI/CD functionality:
@@ -17,7 +17,7 @@ Updated environment variable names used in CI/CD functionality:
 * Updated Github workflow files generated with the `github` cicd flag
 
 ## [3.6.0]
-* Added [Codemagic](https://codemagic.io/start/) as a CI/CD option under the flag --cicd (`fastlane` (default), `github`, `codemagic`, `none`)
+* Added [Codemagic][code_magic_url] as a CI/CD option under the flag --cicd (`fastlane` (default), `github`, `codemagic`, `none`)
 
 ## [3.5.3]
 * Updated `widget_toolkit` dependencies in generated project
@@ -127,7 +127,7 @@ Contains breaking changes
 * Adding parameter `enable-feature-deeplinks` for enabling the deep link example flow as part of the project
 * Adding parameter `enable-feature-widget-toolkit` for enabling the showcase page for the `widget_toolkit` package as part of the project
 * Bug fixing
-* Integrate [widget_toolkit](https://pub.dev/packages/widget_toolkit)
+* Integrate [widget_toolkit][widget_toolkit_url]
 
 ## [2.1.0]
 * Adding parameter `enable-feature-counter` for enabling the counter page example as part of the project
@@ -216,8 +216,16 @@ Contains breaking changes
 * Created projects include following features:
     - Flavors
     - Localization
-    - State management with [rx_bloc](https://pub.dev/packages/rx_bloc)
+    - State management with [rx_bloc][rx_bloc_url]
     - Routing
     - Design system
     - Firebase Analytics
     - Unit tests
+
+---
+
+[rx_bloc_url]: https://pub.dev/packages/rx_bloc
+[widget_toolkit_url]: https://pub.dev/packages/widget_toolkit
+[code_magic_url]: https://codemagic.io/start/
+[example_project_readme_doc]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/README.md
+[golden_tests_doc]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/doc/golden_tests.md
