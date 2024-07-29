@@ -1,13 +1,13 @@
 {{> licence.dart }}
 
 import 'package:shelf/shelf.dart';
-import 'package:testapp/lib_auth_matrix/methods/otp/models/auth_matrix_otp_payload.dart';
-import 'package:testapp/lib_auth_matrix/methods/pin_biometric/models/auth_matrix_pin_code_payload.dart';
-import 'package:testapp/lib_auth_matrix/models/auth_matrix_action.dart';
-import 'package:testapp/lib_auth_matrix/models/auth_matrix_method.dart';
-import 'package:testapp/lib_auth_matrix/models/auth_matrix_method_request.dart';
-import 'package:testapp/lib_auth_matrix/models/auth_matrix_response.dart';
-import 'package:testapp/lib_auth_matrix/models/payload/response/auth_matrix_last_login_payload_response.dart';
+import 'package:{{project_name}}/lib_auth_matrix/methods/otp/models/auth_matrix_otp_payload.dart';
+import 'package:{{project_name}}/lib_auth_matrix/methods/pin_biometric/models/auth_matrix_pin_code_payload.dart';
+import 'package:{{project_name}}/lib_auth_matrix/models/auth_matrix_action.dart';
+import 'package:{{project_name}}/lib_auth_matrix/models/auth_matrix_method.dart';
+import 'package:{{project_name}}/lib_auth_matrix/models/auth_matrix_method_request.dart';
+import 'package:{{project_name}}/lib_auth_matrix/models/auth_matrix_response.dart';
+import 'package:{{project_name}}/lib_auth_matrix/models/payload/response/auth_matrix_last_login_payload_response.dart';
 
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';

@@ -28,10 +28,12 @@ class FeatureAuthMatrixRoute extends GoRouteData implements RouteDataModel {
 @TypedGoRoute<AuthMatrixOtpRoute>(
   path: RoutesPath.authMatrixOtp,
 )
-class AuthMatrixOtpRoute extends GoRouteData implements RouteDataModel {
+class AuthMatrixOtpRoute extends GoRouteData
+    with EquatableMixin
+    implements RouteDataModel {
   const AuthMatrixOtpRoute(
-      this.transactionId,
-      );
+    this.transactionId,
+  );
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
   final String transactionId;
@@ -51,16 +53,20 @@ class AuthMatrixOtpRoute extends GoRouteData implements RouteDataModel {
 
   @override
   String get routeLocation => location;
+
+  @override
+  List<Object?> get props => [transactionId, routeLocation];
 }
 
 @TypedGoRoute<AuthMatrixPinBiometricsRoute>(
   path: RoutesPath.authMatrixPinBiometrics,
 )
 class AuthMatrixPinBiometricsRoute extends GoRouteData
+    with EquatableMixin
     implements RouteDataModel {
   const AuthMatrixPinBiometricsRoute(
-      this.transactionId,
-      );
+    this.transactionId,
+  );
 
   final String transactionId;
 
@@ -79,4 +85,7 @@ class AuthMatrixPinBiometricsRoute extends GoRouteData
 
   @override
   String get routeLocation => location;
+
+  @override
+  List<Object?> get props => [transactionId, routeLocation];
 }
