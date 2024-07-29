@@ -1,4 +1,4 @@
-name: "Build and Test rx_bloc packages"
+name: "rx_bloc packages CI"
 
 on:
   push:
@@ -58,9 +58,11 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 50
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
   flutter_packages:
     strategy:
       matrix:
@@ -105,9 +107,11 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 89
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
   packages:
     strategy:
       matrix:
@@ -156,9 +160,11 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
   cli_packages:
     strategy:
       matrix:
@@ -202,9 +208,11 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
           
   build:
     needs: [examples, packages, flutter_packages, cli_packages]
