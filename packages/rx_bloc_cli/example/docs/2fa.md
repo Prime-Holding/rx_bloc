@@ -252,6 +252,6 @@ extension tfaMethodX on tfaMethod {
   }
 ```
 
-[tfa_img]: https://github.com/Prime-Holding/rx_bloc/blob/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/tfa.png
-[tfa_sequence_img]: https://github.com/Prime-Holding/rx_bloc/blob/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/tfa_sequence.png
-[tfa_c4]: https://github.com/Prime-Holding/rx_bloc/blob/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/tfa_c4.png
+[tfa_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/2fa.png
+[tfa_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/2fa_sequence.png
+[tfa_c4]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/2fa_c4.png
