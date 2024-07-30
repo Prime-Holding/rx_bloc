@@ -1,6 +1,7 @@
 ## [4.0.0]
 Contains breaking changes
 * The `--enable-auth-matrix` option is removed in favour of the [--enable-mfa][mfa_doc_url] (Multi-Factor Authentication) capability.
+* The go_router package is upragded to version ^14.2.1
 
 ## [3.8.1]
 * Added reference in [example documentation][golden_tests_doc_url] about [writing golden tests for smart widgets with dependency injection][golden_tests_doc_url].
