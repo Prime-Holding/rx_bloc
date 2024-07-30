@@ -59,7 +59,7 @@ class MFAService {
       _onResponse.add(lastResponse);
 
       if (lastResponse.authMethod == MFAMethod.complete) {
-        // Complete the stream if there is no more auth methods to be executed
+        // Complete the stream if there are no more auth methods to be executed
         break;
       }
 

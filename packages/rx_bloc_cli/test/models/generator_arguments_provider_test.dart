@@ -98,7 +98,7 @@ void main() {
 
       expect(generatorArguments.otpEnabled, isTrue);
       expect(generatorArguments.pinCodeEnabled, isTrue);
-      expect(generatorArguments.authMFA, isTrue);
+      expect(generatorArguments.mfaEnabled, isTrue);
 
       verify(logger.warn(any)).called(3);
     });

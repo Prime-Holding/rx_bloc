@@ -104,7 +104,7 @@ class GeneratorArgumentsProvider {
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
       pinCodeEnabled: pinCodeEnabled,
-      authMFA: mfaEnabled,
+      mfaEnabled: mfaEnabled,
     );
   }
 

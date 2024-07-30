@@ -71,7 +71,7 @@ final class Stub {
       socialLoginsEnabled: true,
       otpEnabled: true,
       pinCodeEnabled: true,
-      authMFA: true,
+      mfaEnabled: true,
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: true,
@@ -100,7 +100,7 @@ final class Stub {
       socialLoginsEnabled: CreateCommandArguments.socialLogins.defaultValue(),
       otpEnabled: CreateCommandArguments.otp.defaultValue(),
       pinCodeEnabled: CreateCommandArguments.pinCode.defaultValue(),
-      authMFA: CreateCommandArguments.mfa.defaultValue(),
+      mfaEnabled: CreateCommandArguments.mfa.defaultValue(),
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: CreateCommandArguments.analytics.defaultValue(),

@@ -117,7 +117,7 @@ class BundleGenerator {
       _bundle.files.addAll(_featureCICDFastlaneBundle.files);
     }
     //Add lib_mfa to _bundle when needed
-    if (arguments.authMFA) {
+    if (arguments.mfaEnabled) {
       _bundle.files.addAll(_libMFA.files);
     }
     return _bundle;
