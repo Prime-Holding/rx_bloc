@@ -8,6 +8,7 @@ import 'package:rx_bloc_cli/src/templates/feature_widget_toolkit_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_auth_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_change_language_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_dev_menu_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/lib_mfa_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_permissions_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_realtime_communication_bundle.dart';
@@ -30,6 +31,7 @@ void main() {
   final _otp = featureOtpBundle;
   final _widgetToolkit = featureWidgetToolkitBundle;
   final _libAuth = libAuthBundle;
+  final _libMFA = libMfaBundle;
   final _libChangeLanguage = libChangeLanguageBundle;
   final _libDevMenu = libDevMenuBundle;
   final _libPermissions = libPermissionsBundle;
@@ -71,6 +73,9 @@ void main() {
 
       final authFiles = _libAuth.filePaths;
       expect(files.intersection(authFiles), equals(authFiles));
+
+      final mfaFiles = _libMFA.filePaths;
+      expect(files.intersection(mfaFiles), equals(mfaFiles));
 
       final changeLanguageFiles = _libChangeLanguage.filePaths;
       expect(

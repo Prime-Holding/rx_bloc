@@ -20,8 +20,8 @@
 16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{#enable_feature_otp}}
 17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#cicd}}
 18. [CI/CD](#cicd){{/cicd}}{{#enable_pin_code}}
-19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_auth_matrix}}
-20. [Auth Matrix](#auth-matrix){{/enable_auth_matrix}}
+19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_mfa}}
+20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}
 21. [Next Steps](#next-steps)
 
 ## Getting started
@@ -500,10 +500,10 @@ After this is done the event stream exposed by `SseService` can be used by any B
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
-{{#enable_auth_matrix}}
-## Auth Matrix
+{{#enable_mfa}}
+## Multi-Factor Authentication
 
-The `lib_auth_matrix` brick contains classes, repositories, data sources and widgets that can help you with building a matrix authentication workflow for your app. Follow the [technical specification][rx_bloc_cli_auth_matrix_lnk] for information.{{/enable_auth_matrix}}
+The `lib_mfa` brick contains classes, repositories, data sources and widgets that can help you with building a Multi-Factor Authentication workflow for your app. Follow the [technical specification][rx_bloc_cli_mfa_lnk] for information.{{/enable_mfa}}
 {{#cicd}}
 ## CI/CD
 
@@ -572,4 +572,4 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
 [rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
 [golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/doc/golden_tests.md
-[rx_bloc_cli_auth_matrix_lnk]: docs/auth_matrix.md
+[rx_bloc_cli_mfa_lnk]: docs/mfa.md
