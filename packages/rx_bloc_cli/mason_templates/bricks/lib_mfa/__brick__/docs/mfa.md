@@ -193,7 +193,7 @@ class MFAEmailVerificationPayload extends MFAPayloadRequest
 }
 ```
 
-#### Step 3: Payload - Add a new case in the mfaMethodRequest class to parse the new request method payload 
+#### Step 3: Payload - Add a new case in the MFAMethodRequest class to parse the new request method payload 
 ```dart
 MFAPayloadRequest _payloadFromJson(Map<String, dynamic>? json, type) {
   switch (type) {
