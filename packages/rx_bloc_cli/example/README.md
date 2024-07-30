@@ -21,7 +21,7 @@
 17. [Feature OTP](#feature-otp)
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
-20. [Multi-Factor Authentication](#two-factor-authentication)
+20. [Multi-Factor Authentication](#multi-factor-authentication)
 21. [Next Steps](#next-steps)
 
 ## Getting started

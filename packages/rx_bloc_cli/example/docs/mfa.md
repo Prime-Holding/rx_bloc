@@ -2,7 +2,7 @@
 # Table of contents
 
 1. [Overview](#overview)
-3. [REST API Specification](#two-factor-authentication-api-specification)
+3. [REST API Specification](#multi-factor-authentication-api-specification)
 4. [Authentication action](#authentication-action)
 5. [Authentication method](#authentication-method)
 
@@ -252,6 +252,6 @@ extension MFAMethodX on MFAMethod {
   }
 ```
 
-[mfa_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-mfa/packages/rx_bloc_cli/example/docs/mfa.png
-[mfa_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-mfa/packages/rx_bloc_cli/example/docs/mfa_sequence.png
-[mfa_c4]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-mfa/packages/rx_bloc_cli/example/docs/mfa_c4.png
+[mfa_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/mfa.png
+[mfa_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/mfa_sequence.png
+[mfa_c4]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/mfa_c4.png

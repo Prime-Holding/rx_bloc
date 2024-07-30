@@ -21,7 +21,7 @@
 17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#cicd}}
 18. [CI/CD](#cicd){{/cicd}}{{#enable_pin_code}}
 19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_mfa}}
-20. [Multi-Factor Authentication](#two-factor-authentication){{/enable_mfa}}
+20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}
 21. [Next Steps](#next-steps)
 
 ## Getting started
