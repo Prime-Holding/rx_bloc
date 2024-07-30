@@ -16,7 +16,6 @@ class TodosFilterPopupMenuButton extends StatelessWidget {
           icon: context.designSystem.icons.filter,
           itemBuilder: (context) => TodosFilterModel.values
               .map((filter) => switch (filter) {
-                    //
                     (TodosFilterModel.all) => PopupMenuItem(
                         onTap: () => bloc.events.applyFilter(filter),
                         child: Text(

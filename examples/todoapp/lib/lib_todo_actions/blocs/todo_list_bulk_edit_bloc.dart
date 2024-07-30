@@ -80,7 +80,8 @@ class TodoListBulkEditBloc extends $TodoListBulkEditBloc {
               if (_todoActionsService.hasCompleted(todoList))
                 BulkActionModel.clearCompleted,
             ],
-          );
+          )
+          .shareReplay();
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();

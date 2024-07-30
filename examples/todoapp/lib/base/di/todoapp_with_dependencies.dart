@@ -18,6 +18,7 @@ import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
+import '../../lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
 import '../../lib_todo_actions/services/todo_actions_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
@@ -173,6 +174,12 @@ class TodoappWithDependencies extends StatelessWidget {
           create: (context) => RouterBloc(
             router: context.read<AppRouter>().router,
             permissionsService: context.read(),
+          ),
+        ),
+        RxBlocProvider<TodoListBulkEditBlocType>(
+          create: (context) => TodoListBulkEditBloc(
+            context.read(),
+            context.read(),
           ),
         ),
         Provider<TodoActionsBlocType>(

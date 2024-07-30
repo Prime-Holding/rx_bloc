@@ -9,7 +9,8 @@ import '../../base/models/todo_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
-import '../../lib_todo_actions/di/app_todo_list_bulk_edit_popup_menu_button_with_dependencies.dart';
+import '../../lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
+import '../../lib_todo_actions/ui_components/app_todo_list_bulk_edit_popup_menu_button.dart';
 import '../blocs/todo_list_bloc.dart';
 import '../ui_components/todo_list_widget.dart';
 import '../ui_components/todos_filter_popup_menu_button.dart';
@@ -23,9 +24,9 @@ class TodoListPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(context.l10n.todos),
-          actions: const [
-            TodosFilterPopupMenuButton(),
-            AppTodoListBulkEditPopupMenuButtonWithDependencies(),
+          actions: [
+            const TodosFilterPopupMenuButton(),
+            AppTodoListBulkEditPopupMenuButton(),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -41,10 +42,18 @@ class TodoListPage extends StatelessWidget {
           buildSuccess: (context, list, bloc) =>
               RxBlocBuilder<TodoActionsBlocType, bool>(
             state: (bloc) => bloc.states.isLoading,
-            builder: (context, isLoadingSnapshot, bloc) => TodoListWidget(
-              todos: list,
-              isLoading:
-                  (isLoadingSnapshot.data == null || isLoadingSnapshot.data!),
+            builder: (context, isLoadingActions, bloc) =>
+                RxBlocBuilder<TodoListBulkEditBlocType, bool>(
+              state: (bloc) => bloc.states.isLoading,
+              builder: (context, isLoadingBulk, bloc) {
+                final isLoading = ((isLoadingActions.data == null ||
+                        isLoadingActions.data!) ||
+                    (isLoadingBulk.data == null || isLoadingBulk.data!));
+                return TodoListWidget(
+                  todos: list,
+                  isLoading: isLoading,
+                );
+              },
             ),
           ),
           buildError: (context, exception, bloc) => Center(
