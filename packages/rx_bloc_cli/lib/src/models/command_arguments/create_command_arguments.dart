@@ -143,9 +143,9 @@ enum CreateCommandArguments {
     help: 'The widget toolkit showcase feature',
   ),
 
-  /// Auth Matrix
+  /// Two-Factor Authentication
   tfa(
-    name: 'enable-tfa',
+    name: 'enable-2fa',
     type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
     prompt: 'Enabled Two-Factor Authentication:',
