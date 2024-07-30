@@ -1,6 +1,6 @@
 ## [4.0.0]
 Contains breaking changes
-* The `--enable-auth-matrix` option is removed in favour of the [--enable-2fa][2fa_doc_url] (Two-Factor Authentication) capability.
+* The `--enable-auth-matrix` option is removed in favour of the [--enable-mfa][mfa_doc_url] (Multi-Factor Authentication) capability.
 
 ## [3.8.1]
 * Added reference in [example documentation][golden_tests_doc_url] about [writing golden tests for smart widgets with dependency injection][golden_tests_doc_url].
@@ -233,4 +233,4 @@ Contains breaking changes
 [code_magic_url]: https://codemagic.io/start/
 [example_project_readme_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/README.md
 [golden_tests_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/doc/golden_tests.md
-[2fa_doc_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/2fa.md
+[mfa_doc_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md

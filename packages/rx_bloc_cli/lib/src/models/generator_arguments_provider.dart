@@ -80,15 +80,15 @@ class GeneratorArgumentsProvider {
     // Pin Code
     var pinCodeEnabled = _reader.read<bool>(CreateCommandArguments.pinCode);
 
-    // Two-Factor Authentication
-    final tfaEnabled = _reader.read<bool>(CreateCommandArguments.tfa);
+    // Multi-Factor Authentication
+    final mfaEnabled = _reader.read<bool>(CreateCommandArguments.mfa);
 
-    if (tfaEnabled && !otpEnabled) {
+    if (mfaEnabled && !otpEnabled) {
       _logger.warn(
-          'Otp enabled, due to Two-Factor Authentication feature requirement');
+          'Otp enabled, due to Multi-Factor Authentication feature requirement');
       otpEnabled = true;
     }
-    if (tfaEnabled && !pinCodeEnabled) {
+    if (mfaEnabled && !pinCodeEnabled) {
       _logger.warn('Pin code enabled, due to 2FA feature requirement');
       pinCodeEnabled = true;
     }
@@ -104,7 +104,7 @@ class GeneratorArgumentsProvider {
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
       pinCodeEnabled: pinCodeEnabled,
-      authTFA: tfaEnabled,
+      authMFA: mfaEnabled,
     );
   }
 

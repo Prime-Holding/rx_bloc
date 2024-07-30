@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "pinBiometrics":"Pin Biometrics",
+  "otp":"OTP and Pin",
+  "success":"Successfully finished the action",
+  "cancel":"Multi-Factor Authentication canceled",
+  "appBarTitle":"MFA",
+  "fieldMessageLabel" : "Message",
+  "fieldHintMessage" : "Enter your message",
+  "fillButtonText": "Save",
+  "unlockButtonText": "Unlock",
+  "changeAddressActionTitle": "The address component below demonstrates the MFA (PIN and OTP) feature.",
+  "changeAddressActionDescription": "Fill the address fields and click save to trigger the MFA process. \n - Use \"0000\" for the PIN and OTP code to complete the flow. \n - Use \"3333\" for OTP code to fail the flow.",
+  "unlockActionTitle": "The button below demonstrates the MFA (PIN) feature.",
+  "unlockActionDescription": "Tap on the button to trigger the MFA process. \n - Use \"0000\" for the pin."
+}

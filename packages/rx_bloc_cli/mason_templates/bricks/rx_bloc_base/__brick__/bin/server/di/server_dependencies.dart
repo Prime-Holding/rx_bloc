@@ -5,8 +5,8 @@ import '../controllers/authentication_controller.dart';{{/has_authentication}}{{
 import '../controllers/count_controller.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}
 import '../controllers/permissions_controller.dart';
-import '../controllers/push_notifications_controller.dart';{{#enable_tfa}}
-import '../controllers/tfa_controller.dart';{{/enable_tfa}}
+import '../controllers/push_notifications_controller.dart';{{#enable_mfa}}
+import '../controllers/mfa_controller.dart';{{/enable_mfa}}
 import '../controllers/translations_controller.dart';{{#has_authentication}}
 import '../repositories/auth_token_repository.dart';{{/has_authentication}}
 import '../repositories/translations_repository.dart';{{#has_authentication}}
@@ -42,9 +42,9 @@ class ServerDependencies{
     ..addController(PermissionsController({{#has_authentication}}di.get(){{/has_authentication}}))
     {{#enable_feature_deeplinks}}
     ..addController(DeepLinksController())
-    {{/enable_feature_deeplinks}}{{#enable_tfa}}
-    ..addController(TFAController())
-    {{/enable_tfa}}
+    {{/enable_feature_deeplinks}}{{#enable_mfa}}
+    ..addController(MFAController())
+    {{/enable_mfa}}
     ;
 
     /// TODO: Add your controllers here

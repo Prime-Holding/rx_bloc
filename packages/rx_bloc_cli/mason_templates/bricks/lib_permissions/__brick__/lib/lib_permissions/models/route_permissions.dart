@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
-class RoutePermissions { {{#enable_tfa}}
-  static const tfa = 'TFARoute';{{/enable_tfa}}
+class RoutePermissions { {{#enable_mfa}}
+  static const mfa = 'MFARoute';{{/enable_mfa}}
   static const dashboard = 'DashboardRoute';
   static const profile = 'ProfileRoute';
   static const splash = 'SplashRoute';{{#enable_feature_counter}}

@@ -17,7 +17,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_distribut
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_otp ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_cicd_fastlane ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_analytics ^
-& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_tfa ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_mfa ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y rx_bloc_flavor_config.dart lib\src\templates\ ^
 & move /Y rx_bloc_distribution_repository.dart lib\src\templates\ ^
@@ -37,7 +37,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_distribut
 & move /Y feature_otp_bundle.dart lib\src\templates\ ^
 & move /Y feature_cicd_fastlane_bundle.dart lib\src\templates\ ^
 & move /Y lib_analytics_bundle.dart lib\src\templates\ ^
-& move /Y lib_tfa_bundle.dart lib\src\templates\ ^
+& move /Y lib_mfa_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\testapp\ ^
 & dart pub global activate -s path . --overwrite ^
 & rx_bloc_cli create ^

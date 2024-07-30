@@ -16,8 +16,8 @@ import 'network_lookup/lib_router_lookup.dart';{{#has_authentication}}
 import 'network_lookup/login_lookup.dart';{{/has_authentication}}
 import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
 import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}
-import 'network_lookup/profile_lookup.dart';{{#enable_tfa}}
-import 'network_lookup/tfa_lookup.dart';{{/enable_tfa}}
+import 'network_lookup/profile_lookup.dart';{{#enable_mfa}}
+import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
 import 'network_lookup/util.dart';{{#enable_feature_widget_toolkit}}
 import 'network_lookup/widget_toolkit_lookup.dart';{{/enable_feature_widget_toolkit}}
 
@@ -92,10 +92,10 @@ class AppI18nLookup extends I18nLookup {
   @override
   I18nFeatureLoginLookup createFeatureLoginLookup() => AppI18nLoginLookup();
 
-{{/enable_login}}{{#enable_tfa}}
+{{/enable_login}}{{#enable_mfa}}
   @override
-  I18nFeatureTfaLookup createFeatureTfaLookup() =>
-      AppI18nTFALookup(); {{/enable_tfa}} {{#enable_feature_counter}}
+  I18nFeatureMfaLookup createFeatureMfaLookup() =>
+      AppI18nMFALookup(); {{/enable_mfa}} {{#enable_feature_counter}}
 
   @override
   I18nFeatureCounterLookup createFeatureCounterLookup() =>

@@ -1,9 +1,9 @@
 {{> licence.dart }}
 
-class RoutesPath { {{#enable_tfa}}
-  static const tfa = '/tfa';
-  static const tfaPinBiometrics = '/tfa/pin-biometrics/:transactionId';
-  static const tfaOtp = '/tfa/otp/:transactionId';{{/enable_tfa}}
+class RoutesPath { {{#enable_mfa}}
+  static const mfa = '/mfa';
+  static const mfaPinBiometrics = '/mfa/pin-biometrics/:transactionId';
+  static const mfaOtp = '/mfa/otp/:transactionId';{{/enable_mfa}}
   static const dashboard = '/dashboard';
   static const profile = '/profile';{{#enable_pin_code}}
   static const verifyPinCode = '/verifyPinCode';

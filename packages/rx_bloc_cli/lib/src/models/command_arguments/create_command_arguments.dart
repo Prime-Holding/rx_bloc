@@ -143,13 +143,13 @@ enum CreateCommandArguments {
     help: 'The widget toolkit showcase feature',
   ),
 
-  /// Two-Factor Authentication
-  tfa(
-    name: 'enable-2fa',
+  /// Multi-Factor Authentication
+  mfa(
+    name: 'enable-mfa',
     type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
-    prompt: 'Enabled Two-Factor Authentication:',
-    help: 'Enables Two-Factor Authentication capability for the project',
+    prompt: 'Enabled Multi-Factor Authentication:',
+    help: 'Enables Multi-Factor Authentication capability for the project',
   ),
 
   /// Interactive input

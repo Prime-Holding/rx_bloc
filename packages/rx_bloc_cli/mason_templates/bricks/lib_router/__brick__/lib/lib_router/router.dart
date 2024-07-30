@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
-{{#enable_tfa}}
-import 'package:equatable/equatable.dart';{{/enable_tfa}}
+{{#enable_mfa}}
+import 'package:equatable/equatable.dart';{{/enable_mfa}}
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -22,17 +22,17 @@ import '../feature_notifications/di/notifications_page_with_dependencies.dart';{
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
-import '../feature_splash/services/splash_service.dart';{{#enable_tfa}}
-import '../feature_tfa/di/tfa_page_with_dependencies.dart';{{/enable_tfa}}{{#enable_feature_widget_toolkit}}
+import '../feature_splash/services/splash_service.dart';{{#enable_mfa}}
+import '../feature_mfa/di/mfa_page_with_dependencies.dart';{{/enable_mfa}}{{#enable_feature_widget_toolkit}}
 import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}
 import '../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
 import '../lib_pin_code/models/pin_code_arguments.dart';
 import '../lib_pin_code/views/create_pin_page.dart';
 import '../lib_pin_code/views/update_pin_page.dart';
-import '../lib_pin_code/views/verify_pin_code_page.dart'; {{/enable_pin_code}}{{#enable_tfa}}
-import '../lib_tfa/methods/otp/di/tfa_otp_page_with_dependencies.dart';
-import '../lib_tfa/methods/pin_biometric/di/tfa_pin_biometrics_page_with_dependencies.dart';
-import '../lib_tfa/models/tfa_response.dart';{{/enable_tfa}}
+import '../lib_pin_code/views/verify_pin_code_page.dart'; {{/enable_pin_code}}{{#enable_mfa}}
+import '../lib_mfa/methods/otp/di/mfa_otp_page_with_dependencies.dart';
+import '../lib_mfa/methods/pin_biometric/di/mfa_pin_biometrics_page_with_dependencies.dart';
+import '../lib_mfa/models/mfa_response.dart';{{/enable_mfa}}
 import 'models/route_data_model.dart';
 import 'models/route_model.dart';
 import 'models/routes_path.dart';
@@ -42,8 +42,8 @@ part 'router.g.dart';{{#has_authentication}}
 part 'routes/onboarding_routes.dart';{{/has_authentication}}
 part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
-part 'routes/showcase_routes.dart';{{#enable_tfa}}
-part 'routes/tfa_routes.dart';{{/enable_tfa}}
+part 'routes/showcase_routes.dart';{{#enable_mfa}}
+part 'routes/mfa_routes.dart';{{/enable_mfa}}
 
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].

@@ -11,7 +11,7 @@ void main() {
         socialLoginsEnabled: false,
         otpEnabled: false,
         pinCodeEnabled: false,
-        authTFA: false,
+        authMFA: false,
       );
       expect(sut.authenticationEnabled, isTrue);
 
@@ -20,7 +20,7 @@ void main() {
         socialLoginsEnabled: true,
         otpEnabled: false,
         pinCodeEnabled: false,
-        authTFA: false,
+        authMFA: false,
       );
       expect(sut.authenticationEnabled, isTrue);
 
@@ -29,7 +29,7 @@ void main() {
         socialLoginsEnabled: false,
         otpEnabled: true,
         pinCodeEnabled: false,
-        authTFA: false,
+        authMFA: false,
       );
       expect(sut.authenticationEnabled, isTrue);
 
@@ -38,7 +38,7 @@ void main() {
         socialLoginsEnabled: false,
         otpEnabled: false,
         pinCodeEnabled: true,
-        authTFA: false,
+        authMFA: false,
       );
       expect(sut.authenticationEnabled, isTrue);
 
@@ -47,7 +47,7 @@ void main() {
         socialLoginsEnabled: false,
         otpEnabled: false,
         pinCodeEnabled: false,
-        authTFA: true,
+        authMFA: true,
       );
       expect(sut.authenticationEnabled, isTrue);
       sut = AuthConfiguration(
@@ -55,7 +55,7 @@ void main() {
         socialLoginsEnabled: false,
         otpEnabled: false,
         pinCodeEnabled: false,
-        authTFA: false,
+        authMFA: false,
       );
       expect(sut.authenticationEnabled, isFalse);
     });

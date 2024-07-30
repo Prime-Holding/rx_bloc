@@ -22,8 +22,8 @@ class PermissionsController extends ApiController {
   Response permissionsHandler(Request request) { {{#has_authentication}}
     final headers = request.headers;
     if (!headers.containsKey(AuthenticationService.authHeader)) {
-      return responseBuilder.buildOK(data: { {{#enable_tfa}}
-        'TFARoute': false,{{/enable_tfa}}{{#enable_pin_code}}
+      return responseBuilder.buildOK(data: { {{#enable_mfa}}
+        'MFARoute': false,{{/enable_mfa}}{{#enable_pin_code}}
         'CreatePinRoute': false,
         'UpdatePinRoute': false,{{/enable_pin_code}}
         'DashboardRoute': false,
@@ -41,8 +41,8 @@ class PermissionsController extends ApiController {
 
     _authenticationService.isAuthenticated(request);{{/has_authentication}}
 
-    return responseBuilder.buildOK(data: { {{#enable_tfa}}
-      'TFARoute': true,{{/enable_tfa}}{{#enable_pin_code}}
+    return responseBuilder.buildOK(data: { {{#enable_mfa}}
+      'MFARoute': true,{{/enable_mfa}}{{#enable_pin_code}}
       'CreatePinRoute': true,
       'UpdatePinRoute': true,{{/enable_pin_code}}
       'DashboardRoute': true,

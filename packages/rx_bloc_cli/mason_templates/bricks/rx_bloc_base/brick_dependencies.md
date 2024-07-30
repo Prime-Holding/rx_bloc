@@ -10,4 +10,4 @@ This file contains information about the brick dependencies for the rx_bloc_cli 
 
 `feature_otp` brick depends on the Login for showcase flow and `lib_auth` brick for infrastructure. 
 
-`lib_tfa` brick depends on OTP and PIN bricks for some UI components.
+`lib_mfa` brick depends on OTP and PIN bricks for some UI components.

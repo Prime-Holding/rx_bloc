@@ -50,12 +50,12 @@
   <br/>
   <li><a href="/api/user/push-notification-subscriptions">[POST] /api/user/push-notification-subscriptions</a></li>
   <li><a href="/api/user/push-notification-subscriptions">[DELETE] /api/user/push-notification-subscriptions</a></li>
-  {{#enable_tfa}}
+  {{#enable_mfa}}
   <br/>
-  <li><a href="/api/TFA/actions/pinOnly">[POST] /api/TFA/actions/pinOnly</a></li>
-  <li><a href="/api/TFA/actions/pinAndOtp">[POST] /api/TFA/actions/pinAndOtp</a></li>
-  <li><a href="/api/TFA/<transactionId>">[POST] /api/TFA/actions/a12b3c4d-123a-1a23-a123-1a23b45c6d7e</a></li>
-  <li><a href="/api/TFA/actions/cancel">[DELETE] /api/TFA/actions/cancel</a></li>{{/enable_tfa}}
+  <li><a href="/api/MFA/actions/pinOnly">[POST] /api/MFA/actions/pinOnly</a></li>
+  <li><a href="/api/MFA/actions/pinAndOtp">[POST] /api/MFA/actions/pinAndOtp</a></li>
+  <li><a href="/api/MFA/<transactionId>">[POST] /api/MFA/actions/a12b3c4d-123a-1a23-a123-1a23b45c6d7e</a></li>
+  <li><a href="/api/MFA/actions/cancel">[DELETE] /api/MFA/actions/cancel</a></li>{{/enable_mfa}}
 </ul>
 
 </body>

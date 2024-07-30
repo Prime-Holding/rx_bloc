@@ -85,14 +85,14 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.deepLinks,
         ),
         {{/enable_feature_deeplinks}}
-        {{#enable_tfa}}
+        {{#enable_mfa}}
         NavMenuItem(
-          title: context.l10n.featureTfa.appBarTitle,
+          title: context.l10n.featureMfa.appBarTitle,
           icon: context.designSystem.icons.pin,
-          route: const FeatureTFARoute(),
-          routePath: RoutesPath.tfa,
+          route: const FeatureMFARoute(),
+          routePath: RoutesPath.mfa,
         ),
-        {{/enable_tfa}}
+        {{/enable_mfa}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,

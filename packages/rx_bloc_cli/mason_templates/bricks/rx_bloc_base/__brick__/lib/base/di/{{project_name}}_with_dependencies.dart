@@ -47,10 +47,10 @@ import '../../lib_pin_code/services/pin_biometrics_service.dart';
 import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../../lib_router/services/router_service.dart';{{#enable_tfa}}
-import '../../lib_tfa/data_source/remote/tfa_data_source.dart';
-import '../../lib_tfa/repositories/tfa_repository.dart';
-import '../../lib_tfa/services/tfa_service.dart';{{/enable_tfa}}
+import '../../lib_router/services/router_service.dart';{{#enable_mfa}}
+import '../../lib_mfa/data_source/remote/mfa_data_source.dart';
+import '../../lib_mfa/repositories/mfa_repository.dart';
+import '../../lib_mfa/services/mfa_service.dart';{{/enable_mfa}}
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
@@ -218,12 +218,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PinCodeDataSource(
             context.read<FlutterSecureStorage>(),
           ),
-        ),{{/enable_pin_code}}{{#enable_tfa}}
-         Provider<TFADataSource>(
-          create: (context) => TFADataSource(
+        ),{{/enable_pin_code}}{{#enable_mfa}}
+         Provider<MFADataSource>(
+          create: (context) => MFADataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),{{/enable_tfa}}
+        ),{{/enable_mfa}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -281,13 +281,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PinBiometricsRepository(
             context.read<BiometricsLocalDataSource>(),
           ),
-        ),{{/enable_pin_code}}{{#enable_tfa}}
-        Provider<TFARepository>(
-          create: (context) => TFARepository(
+        ),{{/enable_pin_code}}{{#enable_mfa}}
+        Provider<MFARepository>(
+          create: (context) => MFARepository(
             context.read(),
             context.read<ErrorMapper>(),
           ),
-        ),{{/enable_tfa}}
+        ),{{/enable_mfa}}
         {{#analytics}}
         Provider<AnalyticsRepository>(
           create: (context) => AnalyticsRepository(
@@ -365,14 +365,14 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PinBiometricsService(
             context.read<PinBiometricsRepository>(),
           ),
-        ),{{/enable_pin_code}}{{#enable_tfa}}
-         Provider<TFAService>(
-          create: (context) => TFAService(
-            context.read<TFARepository>(),
+        ),{{/enable_pin_code}}{{#enable_mfa}}
+         Provider<MFAService>(
+          create: (context) => MFAService(
+            context.read<MFARepository>(),
             context.read<RouterService>(),
           ),
           dispose: (context, value) => value.dispose(),
-        ),{{/enable_tfa}}
+        ),{{/enable_mfa}}
         {{#analytics}}
         Provider<AnalyticsService>(
           create: (context) => AnalyticsService(

@@ -15,7 +15,7 @@ import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_realtime_communication_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
-import '../templates/lib_tfa_bundle.dart';
+import '../templates/lib_mfa_bundle.dart';
 import '../templates/patrol_integration_tests_bundle.dart';
 import 'generator_arguments.dart';
 
@@ -39,7 +39,7 @@ class BundleGenerator {
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
-  final _libTFA = libTfaBundle;
+  final _libMFA = libMfaBundle;
   final _featureCICDFastlaneBundle = featureCicdFastlaneBundle;
   final _libPinCodeBundle = libPinCodeBundle;
   final _libAnalyticsBundle = libAnalyticsBundle;
@@ -116,9 +116,9 @@ class BundleGenerator {
     if (arguments.cicdEnabled) {
       _bundle.files.addAll(_featureCICDFastlaneBundle.files);
     }
-    //Add lib_tfa to _bundle when needed
-    if (arguments.authTFA) {
-      _bundle.files.addAll(_libTFA.files);
+    //Add lib_mfa to _bundle when needed
+    if (arguments.authMFA) {
+      _bundle.files.addAll(_libMFA.files);
     }
     return _bundle;
   }

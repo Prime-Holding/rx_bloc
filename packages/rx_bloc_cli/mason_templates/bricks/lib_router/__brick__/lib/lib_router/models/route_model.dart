@@ -4,13 +4,13 @@ import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
 enum RouteModel {
-  {{#enable_tfa}}
-    tfa(
-    pathName: RoutesPath.tfa,
-    fullPath: '/tfa',
-    permissionName: RoutePermissions.tfa,
+  {{#enable_mfa}}
+    mfa(
+    pathName: RoutesPath.mfa,
+    fullPath: '/mfa',
+    permissionName: RoutePermissions.mfa,
   ),
-  {{/enable_tfa}}
+  {{/enable_mfa}}
   dashboard(
     pathName: RoutesPath.dashboard,
     fullPath: '/dashboard',

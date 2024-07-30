@@ -26,7 +26,7 @@ void main() {
       socialLoginsEnabled: true,
       otpEnabled: true,
       pinCodeEnabled: true,
-      authTFA: true,
+      authMFA: true,
     );
     featureConfiguration = FeatureConfiguration(
       changeLanguageEnabled: true,
