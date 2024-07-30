@@ -2,7 +2,7 @@
 # Table of contents
 
 1. [Overview](#overview)
-3. [REST API Specification](#tfa-api-specification)
+3. [REST API Specification](#two-factor-authentication-api-specification)
 4. [Authentication action](#authentication-action)
 5. [Authentication method](#authentication-method)
 
