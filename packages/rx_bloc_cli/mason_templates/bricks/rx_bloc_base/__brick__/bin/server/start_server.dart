@@ -69,11 +69,9 @@ List<String> securedRoutes = [
   'api/count/increment',
   'api/count/decrement',
   'api/user/push-notification-subscriptions',
-  'api/send-push-message',{{#enable_auth_matrix}}
-  'api/authMatrix/actions/pinOnly',
-  'api/authMatrix/actions/pinAndOtp',
-  'api/authMatrix/<transactionId>',
-  'api/authMatrix/actions/cancel',{{/enable_auth_matrix}}
+  'api/send-push-message',{{#enable_tfa}}
+  'api/tfa/actions/<action>',
+  'api/tfa/<transactionId>'{{/enable_tfa}}
 ];
 
 Middleware _securedEndpoints(AuthenticationService authenticationService) =>

@@ -143,7 +143,7 @@ class CreateCommand extends Command<int> {
             'cicd': arguments.cicdEnabled,
             'cicd_github': arguments.cicdGithubEnabled,
             'cicd_codemagic': arguments.cicdCodemagicEnabled,
-            'enable_auth_matrix': arguments.authMatrixEnabled,
+            'enable_tfa': arguments.authTFA,
           },
     );
 
@@ -275,7 +275,7 @@ class CreateCommand extends Command<int> {
     _usingLog('Realtime communication', arguments.realtimeCommunicationEnabled);
     _usingLog('Pin Code', arguments.pinCodeEnabled);
     _usingLog('CI/CD', arguments.cicdEnabled);
-    _usingLog('Auth matrix', arguments.authMatrixEnabled);
+    _usingLog('Two-Factor Authentication', arguments.authTFA);
   }
 
   /// Shows a delayed log with a success symbol in front of it

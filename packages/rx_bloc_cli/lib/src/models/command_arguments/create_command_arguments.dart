@@ -144,12 +144,12 @@ enum CreateCommandArguments {
   ),
 
   /// Auth Matrix
-  authMatrix(
-    name: 'enable-auth-matrix',
+  tfa(
+    name: 'enable-tfa',
     type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
-    prompt: 'Enabled auth matrix:',
-    help: 'Enables auth matrix feature for the project',
+    prompt: 'Enabled Two-Factor Authentication:',
+    help: 'Enables Two-Factor Authentication capability for the project',
   ),
 
   /// Interactive input

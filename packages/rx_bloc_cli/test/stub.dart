@@ -65,7 +65,7 @@ final class Stub {
       socialLoginsEnabled: true,
       otpEnabled: true,
       pinCodeEnabled: true,
-      authMatrixEnabled: true,
+      authTFA: true,
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: true,
@@ -94,27 +94,26 @@ final class Stub {
       socialLoginsEnabled: CreateCommandArguments.socialLogins.defaultValue(),
       otpEnabled: CreateCommandArguments.otp.defaultValue(),
       pinCodeEnabled: CreateCommandArguments.pinCode.defaultValue(),
-      authMatrixEnabled: CreateCommandArguments.authMatrix.defaultValue(),
+      authTFA: CreateCommandArguments.tfa.defaultValue(),
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: CreateCommandArguments.analytics.defaultValue(),
       pushNotificationsEnabled: true,
       changeLanguageEnabled:
-      CreateCommandArguments.changeLanguage.defaultValue(),
+          CreateCommandArguments.changeLanguage.defaultValue(),
       counterEnabled: CreateCommandArguments.counter.defaultValue(),
       patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
       devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
       deepLinkEnabled: CreateCommandArguments.deepLink.defaultValue(),
       widgetToolkitEnabled: CreateCommandArguments.widgetToolkit.defaultValue(),
       realtimeCommunicationEnabled:
-      CreateCommandArguments.realtimeCommunication.defaultValue() !=
-          RealtimeCommunicationType.none,
+          CreateCommandArguments.realtimeCommunication.defaultValue() !=
+              RealtimeCommunicationType.none,
       cicdEnabled: CreateCommandArguments.cicd.defaultValue() != CICDType.none,
       cicdGithubEnabled:
-      CreateCommandArguments.cicd.defaultValue() == CICDType.github,
+          CreateCommandArguments.cicd.defaultValue() == CICDType.github,
       cicdCodemagicEnabled:
-      CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
-
+          CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
     ),
   );
 }

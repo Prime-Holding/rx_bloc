@@ -37,8 +37,8 @@ class DesignSystemIcons {
   final Icon linkIcon = _getIcon(Icons.link);
 
   final Icon dashboard = _getIcon(Icons.dashboard);
-  {{#enable_auth_matrix}}
+  {{#enable_tfa}}
   final Icon pin = _getIcon(Icons.pin);
-  {{/enable_auth_matrix}}
+  {{/enable_tfa}}
   static Icon _getIcon(IconData iconData) => Icon(iconData);
 }

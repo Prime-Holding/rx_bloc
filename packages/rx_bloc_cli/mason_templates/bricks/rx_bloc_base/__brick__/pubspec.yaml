@@ -45,8 +45,8 @@ dependencies: {{#enable_dev_menu}}
   shelf: ^1.4.1 # This package is used for the local server (if not used, can be removed)
   shelf_router: ^1.1.4 # This package is used for the local server (if not used, can be removed)
   shelf_static: ^1.1.2 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
-  sign_in_with_apple: ^5.0.0{{/enable_social_logins}}{{#enable_auth_matrix}}
-  uuid: ^4.2.1{{/enable_auth_matrix}}
+  sign_in_with_apple: ^5.0.0{{/enable_social_logins}}{{#enable_tfa}}
+  uuid: ^4.2.1{{/enable_tfa}}
   widget_toolkit: ^0.0.2 {{#enable_pin_code}}
   widget_toolkit_biometrics: ^0.0.2 {{/enable_pin_code}} {{#enable_feature_otp}}
   widget_toolkit_otp: ^0.0.2{{/enable_feature_otp}}{{#enable_pin_code}}
@@ -98,8 +98,8 @@ flutter:
 r_flutter:
   intl: lib/l10n/arb/en.arb
   intl_features:
-    - name: error{{#enable_auth_matrix}}
-    - name: feature_auth_matrix{{/enable_auth_matrix}}{{#enable_feature_counter}}
+    - name: error{{#enable_tfa}}
+    - name: feature_tfa{{/enable_tfa}}{{#enable_feature_counter}}
     - name: feature_counter{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
     - name: feature_deep_link
     - name: feature_enter_message{{/enable_feature_deeplinks}}{{#has_authentication}}

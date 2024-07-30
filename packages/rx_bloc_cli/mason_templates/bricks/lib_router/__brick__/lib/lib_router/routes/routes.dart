@@ -52,14 +52,14 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
           ],
         ),
       ],
-    ),{{/enable_feature_deeplinks}}{{#enable_auth_matrix}}
-    TypedStatefulShellBranch<AuthMatrixBranchData>(
+    ),{{/enable_feature_deeplinks}}{{#enable_tfa}}
+    TypedStatefulShellBranch<TFABranchData>(
       routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<FeatureAuthMatrixRoute>(
-          path: RoutesPath.authMatrix,
+        TypedGoRoute<FeatureTFARoute>(
+          path: RoutesPath.tfa,
         ),
       ],
-    ),{{/enable_auth_matrix}}
+    ),{{/enable_tfa}}
     TypedStatefulShellBranch<ProfileBranchData>(
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<ProfileRoute>(

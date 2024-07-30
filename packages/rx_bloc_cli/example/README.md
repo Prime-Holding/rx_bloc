@@ -21,7 +21,7 @@
 17. [Feature OTP](#feature-otp)
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
-20. [Auth Matrix](#auth-matrix)
+20. [Two-Factor Authentication](#two-factor-authentication)
 21. [Next Steps](#next-steps)
 
 ## Getting started
@@ -501,9 +501,9 @@ The `feature_otp` brick contains a number of useful widgets that can help you wi
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 
-## Auth Matrix
+## Two-Factor Authentication
 
-The `lib_auth_matrix` brick contains classes, repositories, data sources and widgets that can help you with building a matrix authentication workflow for your app. Follow the [technical specification][rx_bloc_cli_auth_matrix_lnk] for information.
+The `lib_tfa` brick contains classes, repositories, data sources and widgets that can help you with building a Two-Factor Authentication workflow for your app. Follow the [technical specification][rx_bloc_cli_tfa_lnk] for information.
 
 ## CI/CD
 
@@ -572,4 +572,4 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
 [rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
 [golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/doc/golden_tests.md
-[rx_bloc_cli_auth_matrix_lnk]: docs/auth_matrix.md
+[rx_bloc_cli_auth_tfa_lnk]: docs/2fa.md

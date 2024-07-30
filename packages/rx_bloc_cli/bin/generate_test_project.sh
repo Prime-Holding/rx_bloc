@@ -40,7 +40,7 @@ if [ $1 == "all_enabled" ]; then
   --enable-otp \
   --cicd=github \
   --enable-pin-code \
-  --enable-auth-matrix
+  --enable-tfa
 fi 
 
 if [ $1 == "all_disabled" ]; then
@@ -58,7 +58,7 @@ if [ $1 == "all_disabled" ]; then
   --no-enable-otp \
   --cicd=none \
   --no-enable-pin-code \
-  --no-enable-auth-matrix
+  --no-enable-tfa
 fi 
 
 if [ $1 == "without_showcase_features" ]; then
@@ -73,7 +73,7 @@ if [ $1 == "without_showcase_features" ]; then
     --enable-otp \
     --cicd=fastlane \
     --enable-pin-code \
-    --enable-auth-matrix \
+    --enable-tfa \
     --no-enable-feature-counter \
     --no-enable-feature-widget-toolkit \
     --no-enable-feature-deeplinks

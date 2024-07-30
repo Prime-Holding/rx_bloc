@@ -80,16 +80,16 @@ class GeneratorArgumentsProvider {
     // Pin Code
     var pinCodeEnabled = _reader.read<bool>(CreateCommandArguments.pinCode);
 
-    // Auth matrix
-    final authMatrixEnabled =
-        _reader.read<bool>(CreateCommandArguments.authMatrix);
+    // Two-Factor Authentication
+    final tfaEnabled = _reader.read<bool>(CreateCommandArguments.tfa);
 
-    if (authMatrixEnabled && !otpEnabled) {
-      _logger.warn('Otp enabled, due to Auth Matrix feature requirement');
+    if (tfaEnabled && !otpEnabled) {
+      _logger.warn(
+          'Otp enabled, due to Two-Factor Authentication feature requirement');
       otpEnabled = true;
     }
-    if (authMatrixEnabled && !pinCodeEnabled) {
-      _logger.warn('Pin code enabled, due to Auth Matrix feature requirement');
+    if (tfaEnabled && !pinCodeEnabled) {
+      _logger.warn('Pin code enabled, due to 2FA feature requirement');
       pinCodeEnabled = true;
     }
     if ((otpEnabled || pinCodeEnabled) &&
@@ -104,7 +104,7 @@ class GeneratorArgumentsProvider {
       socialLoginsEnabled: socialLoginsEnabled,
       otpEnabled: otpEnabled,
       pinCodeEnabled: pinCodeEnabled,
-      authMatrixEnabled: authMatrixEnabled,
+      authTFA: tfaEnabled,
     );
   }
 
