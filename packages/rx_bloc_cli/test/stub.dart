@@ -54,6 +54,12 @@ final class Stub {
         ..[CreateCommandArguments.socialLogins.name] = false
         ..[CreateCommandArguments.otp.name] = true;
 
+  static Map<String, Object> get mfaEnabled => Map.from(Stub.defaultValues)
+    ..[CreateCommandArguments.mfa.name] = true
+    ..[CreateCommandArguments.login.name] = false
+    ..[CreateCommandArguments.socialLogins.name] = false
+    ..[CreateCommandArguments.otp.name] = false;
+
   static final generatorArgumentsAllEnabled = GeneratorArguments(
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(
