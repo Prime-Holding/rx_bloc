@@ -572,4 +572,4 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
 [rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
 [golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/doc/golden_tests.md
-[rx_bloc_cli_auth_tfa_lnk]: docs/2fa.md
+[rx_bloc_cli_tfa_lnk]: docs/2fa.md
