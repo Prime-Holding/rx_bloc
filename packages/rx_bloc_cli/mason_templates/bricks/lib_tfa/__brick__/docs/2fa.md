@@ -11,7 +11,7 @@
 ## Goal
 The goal of Two-Factor Authentication is to enable the business representative to configure the required authentication methods, such as `PIN/Biometric`, `OTP`, etc., for particular actions, such as `unlock`, `change password`, etc.
 
-![tfa image][2ga_img]
+![tfa image][tfa_img]
 
 ## Sequence diagram
 The following sequence diagram illustrates the expected sequence of events when a specific action is protected by the `PIN/Biometric` and `OTP` authentication methods.
@@ -252,6 +252,6 @@ extension tfaMethodX on tfaMethod {
   }
 ```
 
-[tfa_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/tfa-refactoring-documentation/packages/rx_bloc_cli/example/docs/tfa.png
-[tfa_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/tfa-refactoring-documentation/packages/rx_bloc_cli/example/docs/tfa_sequence.png
-[tfa_c4]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/tfa-refactoring-documentation/packages/rx_bloc_cli/example/docs/tfa_c4.png
+[tfa_img]: https://github.com/Prime-Holding/rx_bloc/blob/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/tfa.png
+[tfa_sequence_img]: https://github.com/Prime-Holding/rx_bloc/blob/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/tfa_sequence.png
+[tfa_c4]: https://github.com/Prime-Holding/rx_bloc/blob/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/tfa_c4.png
