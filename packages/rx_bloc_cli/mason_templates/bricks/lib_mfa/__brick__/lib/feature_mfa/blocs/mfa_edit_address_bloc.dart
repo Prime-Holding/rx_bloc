@@ -30,7 +30,7 @@ abstract class MFAEditAddressBlocStates {
   /// The state emits an event of each step of the change address mfa process.
   ConnectableStream<MFAResponse> get onAddressSaved;
 
-  /// The state emits an event of each step of the auth unlock 2FA process.
+  /// The state emits an event of each step of the auth unlock MFA process.
   ConnectableStream<MFAResponse> get onUnlocked;
 
   Stream<MFAAction> get onMFACompleted;

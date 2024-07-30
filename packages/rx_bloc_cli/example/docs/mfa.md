@@ -51,19 +51,19 @@ The following C4 diagram provides an overview of the component-level implementat
 **Body:**
 ```jsonc
 {
- // The unique 2FA transaction id. It's used in the following payload requests to ensure the chain of requests.
+ // The unique MFA transaction id. It's used in the following payload requests to ensure the chain of requests.
  "transactionId": "1",
 
- // The draft document ids created by the initial 2FA request. Once the user completes all authentication methods successfully, the documents will be marked as signed.
+ // The draft document ids created by the initial MFA request. Once the user completes all authentication methods successfully, the documents will be marked as signed.
  "documentIds": List<int>,
 
-  // The security token, which ensures the chain of 2FA requests. It's used in the following payload requests to ensure the chain of requests.      
+  // The security token, which ensures the chain of MFA requests. It's used in the following payload requests to ensure the chain of requests.      
  "securityToken": String, 
 
-  // The ISO 8601 expiration date of the 2FA request.  
+  // The ISO 8601 expiration date of the MFA request.  
  "expires": String,
 
-  /// The of 2FA method (predefined enum) to be used for the following request.
+  /// The of MFA method (predefined enum) to be used for the following request.
  "authMethod": String,
 
  // Dynamic additional data along with the required response properties.  

@@ -89,7 +89,7 @@ class GeneratorArgumentsProvider {
       otpEnabled = true;
     }
     if (mfaEnabled && !pinCodeEnabled) {
-      _logger.warn('Pin code enabled, due to 2FA feature requirement');
+      _logger.warn('Pin code enabled, due to MFA feature requirement');
       pinCodeEnabled = true;
     }
     if ((otpEnabled || pinCodeEnabled) &&

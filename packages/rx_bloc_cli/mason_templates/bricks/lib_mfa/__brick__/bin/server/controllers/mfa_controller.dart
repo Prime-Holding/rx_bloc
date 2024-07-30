@@ -152,7 +152,7 @@ class MFAController extends ApiController {
 
       if (payload.code == _otpIncorrectCompleteCode) {
         throw NotFoundException(
-            'This error will complete the 2FA for demo purposes.');
+            'This error will complete the MFA for demo purposes.');
       }
 
       if (payload.code != _otpCode) {
