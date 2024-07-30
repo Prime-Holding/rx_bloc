@@ -84,8 +84,8 @@ class GeneratorArgumentsProvider {
     final mfaEnabled = _reader.read<bool>(CreateCommandArguments.mfa);
 
     if (mfaEnabled && !otpEnabled) {
-      _logger.warn(
-          'Otp enabled, due to Multi-Factor Authentication feature requirement');
+      _logger
+          .warn('Otp enabled, due to Multi-Factor Authentication requirement');
       otpEnabled = true;
     }
     if (mfaEnabled && !pinCodeEnabled) {

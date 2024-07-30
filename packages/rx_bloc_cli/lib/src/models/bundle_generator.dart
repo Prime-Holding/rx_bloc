@@ -11,11 +11,11 @@ import '../templates/lib_analytics_bundle.dart';
 import '../templates/lib_auth_bundle.dart';
 import '../templates/lib_change_language_bundle.dart';
 import '../templates/lib_dev_menu_bundle.dart';
+import '../templates/lib_mfa_bundle.dart';
 import '../templates/lib_permissions_bundle.dart';
 import '../templates/lib_realtime_communication_bundle.dart';
 import '../templates/lib_router_bundle.dart';
 import '../templates/lib_social_logins_bundle.dart';
-import '../templates/lib_mfa_bundle.dart';
 import '../templates/patrol_integration_tests_bundle.dart';
 import 'generator_arguments.dart';
 
