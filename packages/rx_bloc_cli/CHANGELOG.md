@@ -1,5 +1,5 @@
 ## [3.8.1]
-* Added reference in [example documentation][golden_tests_doc] about [writing golden tests for smart widgets with dependency injection][golden_tests_documentation].
+* Added reference in [example documentation][example_project_readme_doc] about [writing golden tests for smart widgets with dependency injection][golden_tests_doc].
 
 ## [3.8.0]
 * Added functionality to exclude smart widgets dependency injection components during golden tests. [Check out the detailed documentation.][golden_tests_doc]
