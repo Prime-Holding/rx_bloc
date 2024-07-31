@@ -1421,11 +1421,12 @@ packages:
   widget_toolkit:
     dependency: "direct main"
     description:
-      name: widget_toolkit
-      sha256: "452abe198b280fea76f2a3309a796ab19811997ebd0b1f0cfd322bc9184a5c1c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
+      path: "packages/widget_toolkit"
+      ref: develop
+      resolved-ref: "173b5c46cafb5b3f9e87c2e227d3988825ac7165"
+      url: "https://github.com/prime-holding/widget_toolkit.git"
+    source: git
+    version: "0.1.1"
   win32:
     dependency: transitive
     description:
