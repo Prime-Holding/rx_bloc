@@ -39,7 +39,6 @@ class TodoDetailsPage extends StatelessWidget {
             ),
           ],
         ),
-        // !(isLoadingSnapshot.hasData && isLoadingSnapshot.requireData)
         floatingActionButton: RxBlocBuilder<TodoDetailsBlocType, bool>(
           state: (bloc) => bloc.states.isLoading,
           builder: (context, isLoadingSnapshot, bloc) => FloatingActionButton(
