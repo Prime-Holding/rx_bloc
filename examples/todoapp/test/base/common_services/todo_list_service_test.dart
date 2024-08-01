@@ -2,6 +2,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:todoapp/base/common_services/todo_list_service.dart';
+import 'package:todoapp/base/extensions/todo_list_extensions.dart';
 import 'package:todoapp/base/models/todos_filter_model.dart';
 import 'package:todoapp/base/repositories/todo_repository.dart';
 import '../../stubs.dart';
@@ -24,7 +25,7 @@ void main() {
 
       final todos = await todoListService.fetchTodoList();
 
-      expect(todos, Stubs.todoList);
+      expect(todos, Stubs.todoList.sortByCreatedAt());
     });
 
     test('fetchTodoById should return the correct todo', () async {
