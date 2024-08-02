@@ -13,8 +13,8 @@ import '../../lib_mfa/models/mfa_action.dart';
 import '../blocs/mfa_edit_address_bloc.dart';
 import '../services/mfa_edit_address_service.dart';
 
-class MFAPage extends StatelessWidget {
-  const MFAPage({super.key});
+class MfaPage extends StatelessWidget {
+  const MfaPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -26,12 +26,12 @@ class MFAPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppErrorModalWidget<MFAEditAddressBlocType>(
+              AppErrorModalWidget<MfaEditAddressBlocType>(
                 errorState: (bloc) => bloc.states.error,
               ),
-              RxBlocListener<MFAEditAddressBlocType, MFAAction>(
-                state: (bloc) => bloc.states.onMFACompleted,
-                listener: _showMFAComplete,
+              RxBlocListener<MfaEditAddressBlocType, MfaAction>(
+                state: (bloc) => bloc.states.onMfaCompleted,
+                listener: _showMfaComplete,
               ),
               Text(
                 context.l10n.featureMfa.changeAddressActionTitle,
@@ -41,9 +41,9 @@ class MFAPage extends StatelessWidget {
               EditAddressWidget<CountryModel>(
                 translateError: (error) =>
                     ErrorModelFieldL10n.translateError<String>(error, context),
-                service: context.read<MFAEditAddressService>(),
+                service: context.read<MfaEditAddressService>(),
                 onSaved: (address) {
-                  context.read<MFAEditAddressBlocType>().events.saveAddress(
+                  context.read<MfaEditAddressBlocType>().events.saveAddress(
                         city: address.city,
                         streetAddress: address.streetAddress,
                         countryCode: address.country.countryCode,
@@ -68,7 +68,7 @@ class MFAPage extends StatelessWidget {
                 child: PrimaryButton(
                   child: Text(context.l10n.featureMfa.unlockButtonText),
                   onPressed: () =>
-                      context.read<MFAEditAddressBlocType>().events.unlock(),
+                      context.read<MfaEditAddressBlocType>().events.unlock(),
                 ),
               ),
               SizedBox(height: context.designSystem.spacing.m),
@@ -81,7 +81,7 @@ class MFAPage extends StatelessWidget {
         ),
       );
 
-  void _showMFAComplete(BuildContext context, MFAAction action) =>
+  void _showMfaComplete(BuildContext context, MfaAction action) =>
       showBlurredBottomSheet(
         context: context,
         builder: (BuildContext context) => MessagePanelWidget(

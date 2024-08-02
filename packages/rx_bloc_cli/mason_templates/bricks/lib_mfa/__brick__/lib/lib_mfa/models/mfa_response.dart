@@ -12,8 +12,8 @@ part 'mfa_response.g.dart';
 
 @JsonSerializable()
 @CopyWith()
-class MFAResponse with EquatableMixin {
-  MFAResponse({
+class MfaResponse with EquatableMixin {
+  MfaResponse({
     required this.securityToken,
     required this.authMethod,
     required this.transactionId,
@@ -38,7 +38,7 @@ class MFAResponse with EquatableMixin {
   final String expires;
 
   /// The MFA method to be used for the following request.
-  final MFAMethod authMethod;
+  final MfaMethod authMethod;
 
   /// The unique MFA transaction id.
   ///
@@ -46,15 +46,15 @@ class MFAResponse with EquatableMixin {
   final String transactionId;
 
   /// Dynamic additional data to be received from the API along with the required
-  /// response properties. Create custom MFAPayloadResponse implementation
+  /// response properties. Create custom MfaPayloadResponse implementation
   /// for each case.
   @JsonKey(fromJson: _payloadFromJson, toJson: _payloadToJson)
-  final MFAPayloadResponse? payload;
+  final MfaPayloadResponse? payload;
 
-  factory MFAResponse.fromJson(Map<String, dynamic> json) =>
-      _$MFAResponseFromJson(json);
+  factory MfaResponse.fromJson(Map<String, dynamic> json) =>
+      _$MfaResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MFAResponseToJson(this);
+  Map<String, dynamic> toJson() => _$MfaResponseToJson(this);
 
   @override
   List<Object?> get props => [
@@ -70,7 +70,7 @@ class MFAResponse with EquatableMixin {
   bool? get stringify => true;
 }
 
-MFAPayloadResponse? _payloadFromJson(
+MfaPayloadResponse? _payloadFromJson(
   Map<String, dynamic>? json,
 ) {
   if (json == null || !json.containsKey('type')) {
@@ -78,16 +78,16 @@ MFAPayloadResponse? _payloadFromJson(
   }
 
   try {
-    final type = MFAPayloadResponseType.values.byName(json['type']);
+    final type = MfaPayloadResponseType.values.byName(json['type']);
 
     return switch (type) {
-      (MFAPayloadResponseType.lastLogin) =>
-        MFALastLoginPayloadResponse.fromJson(json),
+      (MfaPayloadResponseType.lastLogin) =>
+        MfaLastLoginPayloadResponse.fromJson(json),
     };
   } on ArgumentError catch (_) {
     return null;
   }
 }
 
-Map<String, dynamic>? _payloadToJson(MFAPayloadResponse? payload) =>
+Map<String, dynamic>? _payloadToJson(MfaPayloadResponse? payload) =>
     payload?.toJson();

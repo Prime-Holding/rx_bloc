@@ -5,8 +5,8 @@ import 'package:widget_toolkit/edit_address.dart';
 import '../../assets.dart';
 import '../../base/models/errors/error_model.dart';
 
-class MFAEditAddressService extends EditAddressService<CountryModel> {
-  MFAEditAddressService();
+class MfaEditAddressService extends EditAddressService<CountryModel> {
+  MfaEditAddressService();
 
   Future<List<CountryModel>> get searchList => Future.delayed(
         const Duration(seconds: 1),

@@ -5,27 +5,27 @@ import '../../../models/mfa_response.dart';
 import '../../../repositories/mfa_repository.dart';
 import '../models/mfa_otp_payload.dart';
 
-class MFAOtpService extends SmsCodeService {
-  final MFARepository _mfaRepository;
-  final MFAResponse _lastMFAResponse;
+class MfaOtpService extends SmsCodeService {
+  final MfaRepository _mfaRepository;
+  final MfaResponse _lastMfaResponse;
 
-  MFAOtpService({
-    required MFARepository mfaRepository,
-    required MFAResponse lastMFAResponse,
+  MfaOtpService({
+    required MfaRepository mfaRepository,
+    required MfaResponse lastMfaResponse,
   })  : _mfaRepository = mfaRepository,
-        _lastMFAResponse = lastMFAResponse;
+        _lastMfaResponse = lastMfaResponse;
 
   /// Confirms the phone code by the given [code] by sending it to the server.
   ///
   /// - [code] is the code that the user has received.
-  /// Returns a [Future] of [MFAResponse] that determines the next steps in the Multi-Factor Authentication process.
+  /// Returns a [Future] of [MfaResponse] that determines the next steps in the Multi-Factor Authentication process.
   @override
   Future<dynamic> confirmPhoneCode(String code) async =>
       await _mfaRepository.authenticate(
-        transactionId: _lastMFAResponse.transactionId,
-        request: MFAMethodRequest(
-          securityToken: _lastMFAResponse.securityToken,
-          payload: MFAOTPPayload(
+        transactionId: _lastMfaResponse.transactionId,
+        request: MfaMethodRequest(
+          securityToken: _lastMfaResponse.securityToken,
+          payload: MfaOtpPayload(
             code: code,
           ),
         ),

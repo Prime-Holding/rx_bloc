@@ -89,7 +89,7 @@ class HomePage extends StatelessWidget {
         NavMenuItem(
           title: context.l10n.featureMfa.appBarTitle,
           icon: context.designSystem.icons.pin,
-          route: const FeatureMFARoute(),
+          route: const FeatureMfaRoute(),
           routePath: RoutesPath.mfa,
         ),
         {{/enable_mfa}}

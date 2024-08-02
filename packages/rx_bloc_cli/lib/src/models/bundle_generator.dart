@@ -39,7 +39,7 @@ class BundleGenerator {
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
   final _featureOtpBundle = featureOtpBundle;
-  final _libMFA = libMfaBundle;
+  final _libMfa = libMfaBundle;
   final _featureCICDFastlaneBundle = featureCicdFastlaneBundle;
   final _libPinCodeBundle = libPinCodeBundle;
   final _libAnalyticsBundle = libAnalyticsBundle;
@@ -118,7 +118,7 @@ class BundleGenerator {
     }
     //Add lib_mfa to _bundle when needed
     if (arguments.mfaEnabled) {
-      _bundle.files.addAll(_libMFA.files);
+      _bundle.files.addAll(_libMfa.files);
     }
     return _bundle;
   }

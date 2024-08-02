@@ -1,5 +1,5 @@
-abstract class MFAPayloadRequest {
-  MFAPayloadRequest();
+abstract class MfaPayloadRequest {
+  MfaPayloadRequest();
 
   Map<String, dynamic> toJson() => {...payloadToJson(), 'type': type};
 
@@ -9,8 +9,8 @@ abstract class MFAPayloadRequest {
   ///
   /// This is used to determine the type of the payload when deserializing.
   ///
-  /// Usually it contains value either from from [MFAAction] or [MFAMethod] such as:
-  /// - [MFAAction.changeAddress.name]
-  /// - [MFAMethod.otp.name]
+  /// Usually it contains value either from from [MfaAction] or [MfaMethod] such as:
+  /// - [MfaAction.changeAddress.name]
+  /// - [MfaMethod.otp.name]
   String get type;
 }

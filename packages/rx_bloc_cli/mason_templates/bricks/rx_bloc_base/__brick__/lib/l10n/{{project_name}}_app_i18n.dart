@@ -95,7 +95,7 @@ class AppI18nLookup extends I18nLookup {
 {{/enable_login}}{{#enable_mfa}}
   @override
   I18nFeatureMfaLookup createFeatureMfaLookup() =>
-      AppI18nMFALookup(); {{/enable_mfa}} {{#enable_feature_counter}}
+      AppI18nMfaLookup(); {{/enable_mfa}} {{#enable_feature_counter}}
 
   @override
   I18nFeatureCounterLookup createFeatureCounterLookup() =>

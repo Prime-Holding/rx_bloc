@@ -219,8 +219,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<FlutterSecureStorage>(),
           ),
         ),{{/enable_pin_code}}{{#enable_mfa}}
-         Provider<MFADataSource>(
-          create: (context) => MFADataSource(
+         Provider<MfaDataSource>(
+          create: (context) => MfaDataSource(
             context.read<ApiHttpClient>(),
           ),
         ),{{/enable_mfa}}
@@ -282,8 +282,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<BiometricsLocalDataSource>(),
           ),
         ),{{/enable_pin_code}}{{#enable_mfa}}
-        Provider<MFARepository>(
-          create: (context) => MFARepository(
+        Provider<MfaRepository>(
+          create: (context) => MfaRepository(
             context.read(),
             context.read<ErrorMapper>(),
           ),
@@ -366,9 +366,9 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<PinBiometricsRepository>(),
           ),
         ),{{/enable_pin_code}}{{#enable_mfa}}
-         Provider<MFAService>(
-          create: (context) => MFAService(
-            context.read<MFARepository>(),
+         Provider<MfaService>(
+          create: (context) => MfaService(
+            context.read<MfaRepository>(),
             context.read<RouterService>(),
           ),
           dispose: (context, value) => value.dispose(),

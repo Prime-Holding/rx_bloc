@@ -13,8 +13,8 @@ import '../../../extensions/exception_extensions.dart';
 import '../../../models/mfa_response.dart';
 import '../services/mfa_pincode_service.dart';
 
-class MFAPinBiometricsPage extends StatelessWidget {
-  const MFAPinBiometricsPage({
+class MfaPinBiometricsPage extends StatelessWidget {
+  const MfaPinBiometricsPage({
     required this.transactionId,
     super.key,
   });
@@ -39,19 +39,19 @@ class MFAPinBiometricsPage extends StatelessWidget {
                       context
                           .read<RouterBlocType>()
                           .events
-                          .pop(Result<MFAResponse>.error(error));
+                          .pop(Result<MfaResponse>.error(error));
                     }
                   },
 
                   onAuthenticated: (response) {
-                    if (response is MFAResponse) {
+                    if (response is MfaResponse) {
                       context
                           .read<RouterBlocType>()
                           .events
-                          .pop(Result<MFAResponse>.success(response));
+                          .pop(Result<MfaResponse>.success(response));
                     }
                   }, // Handle error states
-                  pinCodeService: context.read<MFAPinCodeService>(),
+                  pinCodeService: context.read<MfaPinCodeService>(),
                   translateError: (error) =>
                       error.asErrorModel().translate(context),
                 ),

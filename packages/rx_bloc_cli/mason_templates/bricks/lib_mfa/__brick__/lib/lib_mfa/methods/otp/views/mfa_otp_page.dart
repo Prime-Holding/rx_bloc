@@ -13,8 +13,8 @@ import '../../../extensions/exception_extensions.dart';
 import '../../../models/mfa_response.dart';
 import '../services/mfa_otp_service.dart';
 
-class MFAOtpPage extends StatelessWidget {
-  const MFAOtpPage({
+class MfaOtpPage extends StatelessWidget {
+  const MfaOtpPage({
     required this.transactionId,
     super.key,
   });
@@ -33,19 +33,19 @@ class MFAOtpPage extends StatelessWidget {
                 context
                     .read<RouterBlocType>()
                     .events
-                    .pop(Result<MFAResponse>.error(error));
+                    .pop(Result<MfaResponse>.error(error));
               }
             },
             onResult: (context, result) {
-              if (result is MFAResponse) {
+              if (result is MfaResponse) {
                 context
                     .read<RouterBlocType>()
                     .events
-                    .pop(Result<MFAResponse>.success(result));
+                    .pop(Result<MfaResponse>.success(result));
               }
             },
             sentNewCodeActivationTime: 2,
-            smsCodeService: context.read<MFAOtpService>(),
+            smsCodeService: context.read<MfaOtpService>(),
             builder: (state) => Padding(
               padding: EdgeInsets.all(context.designSystem.spacing.l),
               child: Column(

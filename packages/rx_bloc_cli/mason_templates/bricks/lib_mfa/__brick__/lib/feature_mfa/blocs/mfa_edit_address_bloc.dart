@@ -15,7 +15,7 @@ import '../../lib_mfa/services/mfa_service.dart';
 part 'mfa_edit_address_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the mfaEditAddressBloC.
-abstract class MFAEditAddressBlocEvents {
+abstract class MfaEditAddressBlocEvents {
   void saveAddress({
     required String city,
     required String streetAddress,
@@ -26,44 +26,44 @@ abstract class MFAEditAddressBlocEvents {
 }
 
 /// A contract class containing all states of the mfaEditAddressBloC.
-abstract class MFAEditAddressBlocStates {
+abstract class MfaEditAddressBlocStates {
   /// The state emits an event of each step of the change address mfa process.
-  ConnectableStream<MFAResponse> get onAddressSaved;
+  ConnectableStream<MfaResponse> get onAddressSaved;
 
   /// The state emits an event of each step of the auth unlock MFA process.
-  ConnectableStream<MFAResponse> get onUnlocked;
+  ConnectableStream<MfaResponse> get onUnlocked;
 
-  Stream<MFAAction> get onMFACompleted;
+  Stream<MfaAction> get onMfaCompleted;
 
   /// The state emits an error occurs during the mfa process.
   Stream<ErrorModel> get error;
 }
 
 @RxBloc()
-class MFAEditAddressBloc extends $MFAEditAddressBloc {
-  MFAEditAddressBloc(this._service) {
+class MfaEditAddressBloc extends $MfaEditAddressBloc {
+  MfaEditAddressBloc(this._service) {
     onAddressSaved.connect().addTo(_compositeSubscription);
     onUnlocked.connect().addTo(_compositeSubscription);
 
     // Demonstrates that listeners can be added to the [mfaService]
     // for handling generic-purpose side-effects.
     _service.onResponse.listen((event) {
-      log('MFAService.onResponse($event)');
+      log('MfaService.onResponse($event)');
     }).addTo(_compositeSubscription);
   }
 
-  final MFAService _service;
+  final MfaService _service;
 
   @override
   Stream<ErrorModel> _mapToErrorState() => errorState.mapToErrorModel();
 
   @override
-  ConnectableStream<MFAResponse> _mapToOnAddressSavedState() => _$saveAddressEvent
+  ConnectableStream<MfaResponse> _mapToOnAddressSavedState() => _$saveAddressEvent
       // The exhaustMap operator ensures that the previous mfa process is completed
       .exhaustMap(
         (address) => _service
             .authenticate(
-              payload: MFAAddressPayload(
+              payload: MfaAddressPayload(
                 city: address.city,
                 streetAddress: address.streetAddress,
                 countryCode: address.countryCode,
@@ -76,23 +76,23 @@ class MFAEditAddressBloc extends $MFAEditAddressBloc {
       .publish();
 
   @override
-  ConnectableStream<MFAResponse> _mapToOnUnlockedState() => _$unlockEvent
+  ConnectableStream<MfaResponse> _mapToOnUnlockedState() => _$unlockEvent
       // The exhaustMap operator ensures that the previous mfa process is completed
       .exhaustMap(
         (address) =>
-            _service.authenticate(payload: MFAUnlockPayload()).asResultStream(),
+            _service.authenticate(payload: MfaUnlockPayload()).asResultStream(),
       )
       .setErrorStateHandler(this)
       .whereSuccess()
       .publish();
 
   @override
-  Stream<MFAAction> _mapToOnMFACompletedState() => Rx.merge([
+  Stream<MfaAction> _mapToOnMfaCompletedState() => Rx.merge([
         onAddressSaved
             .where((event) => event.authMethod.isComplete)
-            .map((event) => MFAAction.changeAddress),
+            .map((event) => MfaAction.changeAddress),
         onUnlocked
             .where((event) => event.authMethod.isComplete)
-            .map((event) => MFAAction.unlock),
+            .map((event) => MfaAction.unlock),
       ]);
 }

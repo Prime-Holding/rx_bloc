@@ -31,7 +31,7 @@ void main() {
   final _otp = featureOtpBundle;
   final _widgetToolkit = featureWidgetToolkitBundle;
   final _libAuth = libAuthBundle;
-  final _libMFA = libMfaBundle;
+  final _libMfa = libMfaBundle;
   final _libChangeLanguage = libChangeLanguageBundle;
   final _libDevMenu = libDevMenuBundle;
   final _libPermissions = libPermissionsBundle;
@@ -74,7 +74,7 @@ void main() {
       final authFiles = _libAuth.filePaths;
       expect(files.intersection(authFiles), equals(authFiles));
 
-      final mfaFiles = _libMFA.filePaths;
+      final mfaFiles = _libMfa.filePaths;
       expect(files.intersection(mfaFiles), equals(mfaFiles));
 
       final changeLanguageFiles = _libChangeLanguage.filePaths;

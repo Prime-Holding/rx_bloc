@@ -23,7 +23,7 @@ class PermissionsController extends ApiController {
     final headers = request.headers;
     if (!headers.containsKey(AuthenticationService.authHeader)) {
       return responseBuilder.buildOK(data: { {{#enable_mfa}}
-        'MFARoute': false,{{/enable_mfa}}{{#enable_pin_code}}
+        'MfaRoute': false,{{/enable_mfa}}{{#enable_pin_code}}
         'CreatePinRoute': false,
         'UpdatePinRoute': false,{{/enable_pin_code}}
         'DashboardRoute': false,
@@ -42,7 +42,7 @@ class PermissionsController extends ApiController {
     _authenticationService.isAuthenticated(request);{{/has_authentication}}
 
     return responseBuilder.buildOK(data: { {{#enable_mfa}}
-      'MFARoute': true,{{/enable_mfa}}{{#enable_pin_code}}
+      'MfaRoute': true,{{/enable_mfa}}{{#enable_pin_code}}
       'CreatePinRoute': true,
       'UpdatePinRoute': true,{{/enable_pin_code}}
       'DashboardRoute': true,

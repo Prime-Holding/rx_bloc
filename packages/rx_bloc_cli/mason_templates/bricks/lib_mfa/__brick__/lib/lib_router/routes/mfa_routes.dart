@@ -3,19 +3,19 @@
 part of '../router.dart';
 
 @immutable
-class MFABranchData extends StatefulShellBranchData {
-  const MFABranchData();
+class MfaBranchData extends StatefulShellBranchData {
+  const MfaBranchData();
 }
 
 @immutable
-class FeatureMFARoute extends GoRouteData implements RouteDataModel {
-  const FeatureMFARoute();
+class FeatureMfaRoute extends GoRouteData implements RouteDataModel {
+  const FeatureMfaRoute();
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: const MFAPageWithDependencies(),
+        child: const MfaPageWithDependencies(),
       );
 
   @override
@@ -25,13 +25,13 @@ class FeatureMFARoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 
-@TypedGoRoute<MFAOtpRoute>(
+@TypedGoRoute<MfaOtpRoute>(
   path: RoutesPath.mfaOtp,
 )
-class MFAOtpRoute extends GoRouteData
+class MfaOtpRoute extends GoRouteData
     with EquatableMixin
     implements RouteDataModel {
-  const MFAOtpRoute(
+  const MfaOtpRoute(
     this.transactionId,
   );
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -42,9 +42,9 @@ class MFAOtpRoute extends GoRouteData
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: MFAOtpPageWithDependencies(
+        child: MfaOtpPageWithDependencies(
           transactionId: transactionId,
-          mfaResponse: state.extra as MFAResponse,
+          mfaResponse: state.extra as MfaResponse,
         ),
       );
 
@@ -58,13 +58,13 @@ class MFAOtpRoute extends GoRouteData
   List<Object?> get props => [transactionId, routeLocation];
 }
 
-@TypedGoRoute<MFAPinBiometricsRoute>(
+@TypedGoRoute<MfaPinBiometricsRoute>(
   path: RoutesPath.mfaPinBiometrics,
 )
-class MFAPinBiometricsRoute extends GoRouteData
+class MfaPinBiometricsRoute extends GoRouteData
     with EquatableMixin
     implements RouteDataModel {
-  const MFAPinBiometricsRoute(
+  const MfaPinBiometricsRoute(
     this.transactionId,
   );
 
@@ -74,9 +74,9 @@ class MFAPinBiometricsRoute extends GoRouteData
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: MFAPinBiometricsPageWithDependencies(
+        child: MfaPinBiometricsPageWithDependencies(
           transactionId: transactionId,
-          mfaResponse: state.extra as MFAResponse,
+          mfaResponse: state.extra as MfaResponse,
         ),
       );
 

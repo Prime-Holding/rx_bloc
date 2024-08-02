@@ -5,15 +5,15 @@ import '../../../models/mfa_response.dart';
 import '../../../repositories/mfa_repository.dart';
 import '../models/mfa_pin_code_payload.dart';
 
-class MFAPinCodeService extends PinCodeService {
-  final MFARepository _mfaRepository;
-  final MFAResponse _lastMFAResponse;
+class MfaPinCodeService extends PinCodeService {
+  final MfaRepository _mfaRepository;
+  final MfaResponse _lastMfaResponse;
 
-  MFAPinCodeService({
-    required MFARepository mfaRepository,
-    required MFAResponse mfaResponse,
+  MfaPinCodeService({
+    required MfaRepository mfaRepository,
+    required MfaResponse mfaResponse,
   })  : _mfaRepository = mfaRepository,
-        _lastMFAResponse = mfaResponse;
+        _lastMfaResponse = mfaResponse;
 
   @override
   Future<String?> getPinCode() async {
@@ -32,10 +32,10 @@ class MFAPinCodeService extends PinCodeService {
 
   @override
   Future<dynamic> verifyPinCode(String pinCode) => _mfaRepository.authenticate(
-        transactionId: _lastMFAResponse.transactionId,
-        request: MFAMethodRequest(
-          securityToken: _lastMFAResponse.securityToken,
-          payload: MFAPinCodePayload(
+        transactionId: _lastMfaResponse.transactionId,
+        request: MfaMethodRequest(
+          securityToken: _lastMfaResponse.securityToken,
+          payload: MfaPinCodePayload(
             code: pinCode,
           ),
         ),

@@ -9,8 +9,8 @@ part 'mfa_address_payload.g.dart';
 
 @CopyWith()
 @JsonSerializable()
-class MFAAddressPayload extends MFAPayloadRequest with EquatableMixin {
-  MFAAddressPayload({
+class MfaAddressPayload extends MfaPayloadRequest with EquatableMixin {
+  MfaAddressPayload({
     required this.city,
     required this.streetAddress,
     required this.countryCode,
@@ -21,14 +21,14 @@ class MFAAddressPayload extends MFAPayloadRequest with EquatableMixin {
   final String countryCode;
 
   @override
-  String get type => MFAAction.changeAddress.name;
+  String get type => MfaAction.changeAddress.name;
 
   @override
   List<Object?> get props => [city, streetAddress, countryCode, type];
 
-  factory MFAAddressPayload.fromJson(Map<String, dynamic> json) =>
-      _$MFAAddressPayloadFromJson(json);
+  factory MfaAddressPayload.fromJson(Map<String, dynamic> json) =>
+      _$MfaAddressPayloadFromJson(json);
 
   @override
-  Map<String, dynamic> payloadToJson() => _$MFAAddressPayloadToJson(this);
+  Map<String, dynamic> payloadToJson() => _$MfaAddressPayloadToJson(this);
 }

@@ -9,19 +9,19 @@ part 'mfa_pin_code_payload.g.dart';
 
 @CopyWith()
 @JsonSerializable()
-class MFAPinCodePayload extends MFAPayloadRequest with EquatableMixin {
-  MFAPinCodePayload({required this.code});
+class MfaPinCodePayload extends MfaPayloadRequest with EquatableMixin {
+  MfaPinCodePayload({required this.code});
 
   final String code;
 
   @override
-  String get type => MFAMethod.pinBiometric.name;
+  String get type => MfaMethod.pinBiometric.name;
 
-  factory MFAPinCodePayload.fromJson(Map<String, dynamic> json) =>
-      _$MFAPinCodePayloadFromJson(json);
+  factory MfaPinCodePayload.fromJson(Map<String, dynamic> json) =>
+      _$MfaPinCodePayloadFromJson(json);
 
   @override
-  Map<String, dynamic> payloadToJson() => _$MFAPinCodePayloadToJson(this);
+  Map<String, dynamic> payloadToJson() => _$MfaPinCodePayloadToJson(this);
 
   @override
   List<Object?> get props => [code];

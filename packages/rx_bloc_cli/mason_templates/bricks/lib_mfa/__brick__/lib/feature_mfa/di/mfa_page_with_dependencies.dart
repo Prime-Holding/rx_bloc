@@ -10,8 +10,8 @@ import '../services/mfa_edit_address_service.dart';
 
 import '../views/mfa_page.dart';
 
-class MFAPageWithDependencies extends StatelessWidget {
-  const MFAPageWithDependencies({super.key});
+class MfaPageWithDependencies extends StatelessWidget {
+  const MfaPageWithDependencies({super.key});
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -19,18 +19,18 @@ class MFAPageWithDependencies extends StatelessWidget {
           ..._services,
           ..._blocs,
         ],
-        child: const MFAPage(),
+        child: const MfaPage(),
       );
 
   List<SingleChildWidget> get _services => [
-        Provider<MFAEditAddressService>(
-          create: (context) => MFAEditAddressService(),
+        Provider<MfaEditAddressService>(
+          create: (context) => MfaEditAddressService(),
         ),
       ];
 
   List<RxBlocProvider> get _blocs => [
-        RxBlocProvider<MFAEditAddressBlocType>(
-          create: (context) => MFAEditAddressBloc(
+        RxBlocProvider<MfaEditAddressBlocType>(
+          create: (context) => MfaEditAddressBloc(
             context.read(),
           ),
         )

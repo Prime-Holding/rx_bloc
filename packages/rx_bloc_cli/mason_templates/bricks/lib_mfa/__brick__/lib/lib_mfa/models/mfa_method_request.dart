@@ -9,8 +9,8 @@ import 'mfa_method.dart';
 part 'mfa_method_request.g.dart';
 
 @CopyWith()
-class MFAMethodRequest with EquatableMixin {
-  MFAMethodRequest({
+class MfaMethodRequest with EquatableMixin {
+  MfaMethodRequest({
     required this.securityToken,
     required this.payload,
   });
@@ -19,15 +19,15 @@ class MFAMethodRequest with EquatableMixin {
   final String securityToken;
 
   /// The request body that contains the necessary user data to authenticate the user.
-  final MFAPayloadRequest payload;
+  final MfaPayloadRequest payload;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'securityToken': securityToken,
         'payload': payload.toJson(),
       };
 
-  factory MFAMethodRequest.fromJson(Map<String, dynamic> json) =>
-      MFAMethodRequest(
+  factory MfaMethodRequest.fromJson(Map<String, dynamic> json) =>
+      MfaMethodRequest(
         securityToken: json['securityToken'],
         payload: _payloadFromJson(json['payload']),
       );
@@ -39,21 +39,21 @@ class MFAMethodRequest with EquatableMixin {
   bool? get stringify => true;
 }
 
-MFAPayloadRequest _payloadFromJson(
+MfaPayloadRequest _payloadFromJson(
   Map<String, dynamic>? json,
 ) {
   if (json == null || !json.containsKey('type')) {
     throw ArgumentError('Complete method is not supported');
   }
 
-  final type = MFAMethod.values.byName(json['type']);
+  final type = MfaMethod.values.byName(json['type']);
 
   switch (type) {
-    case MFAMethod.pinBiometric:
-      return MFAPinCodePayload.fromJson(json);
-    case MFAMethod.otp:
-      return MFAOTPPayload.fromJson(json);
-    case MFAMethod.complete:
+    case MfaMethod.pinBiometric:
+      return MfaPinCodePayload.fromJson(json);
+    case MfaMethod.otp:
+      return MfaOtpPayload.fromJson(json);
+    case MfaMethod.complete:
       throw ArgumentError('Complete method is not supported');
   }
 }

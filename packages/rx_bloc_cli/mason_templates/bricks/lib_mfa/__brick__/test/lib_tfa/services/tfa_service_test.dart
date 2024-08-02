@@ -13,66 +13,66 @@ import 'package:{{project_name}}/lib_mfa/services/mfa_service.dart';
 
 import 'mfa_service_test.mocks.dart';
 
-@GenerateMocks([MFARepository, RouterService])
+@GenerateMocks([MfaRepository, RouterService])
 void main() {
-  late MFAService service;
-  late MockMFARepository mockMFARepository;
+  late MfaService service;
+  late MockMfaRepository mockMfaRepository;
   late MockRouterService mockRouterService;
 
   setUp(() {
-    mockMFARepository = MockMFARepository();
+    mockMfaRepository = MockMfaRepository();
     mockRouterService = MockRouterService();
-    service = MFAService(mockMFARepository, mockRouterService);
+    service = MfaService(mockMfaRepository, mockRouterService);
   });
 
   tearDown(() {
-    reset(mockMFARepository);
+    reset(mockMfaRepository);
     reset(mockRouterService);
     service.dispose();
   });
 
-  group('MFAService', () {
+  group('MfaService', () {
     test('authenticate emits correct responses', () async {
       // Unlock actions
-      final unlockPayload = MFAUnlockPayload();
+      final unlockPayload = MfaUnlockPayload();
 
       when(
-        mockMFARepository.initiate(
+        mockMfaRepository.initiate(
           action: unlockPayload.type,
           request: anyNamed('request'),
         ),
       ).thenAnswer((_) async => _Stub.responsePinBiometric('1'));
 
-      when(mockRouterService.push<Result<MFAResponse>>(
-        const MFAPinBiometricsRoute('1'),
+      when(mockRouterService.push<Result<MfaResponse>>(
+        const MfaPinBiometricsRoute('1'),
         extra: _Stub.responsePinBiometric('1'),
       )).thenAnswer((_) async => Result.success(_Stub.responseOtp('1')));
 
-      when(mockRouterService.push<Result<MFAResponse>>(
-        const MFAOtpRoute('1'),
+      when(mockRouterService.push<Result<MfaResponse>>(
+        const MfaOtpRoute('1'),
         extra: _Stub.responseOtp('1'),
       )).thenAnswer((_) async => Result.success(_Stub.responseComplete('1')));
 
       // Change address action
-      final addressPayload = MFAAddressPayload(
+      final addressPayload = MfaAddressPayload(
         city: 'Plovdiv',
         countryCode: 'BG',
         streetAddress: '',
       );
 
       when(
-        mockMFARepository.initiate(
+        mockMfaRepository.initiate(
           action: addressPayload.type,
           request: anyNamed('request'),
         ),
       ).thenAnswer((_) async => _Stub.responseOtp('2'));
 
-      when(mockRouterService.push<Result<MFAResponse>>(
-        const MFAOtpRoute('2'),
+      when(mockRouterService.push<Result<MfaResponse>>(
+        const MfaOtpRoute('2'),
         extra: _Stub.responseOtp('2'),
       )).thenAnswer((_) async => Result.success(_Stub.responseComplete('2')));
 
-      final responses = <MFAResponse>[];
+      final responses = <MfaResponse>[];
       service.onResponse.listen(responses.add);
 
       // Test the unlock action
@@ -96,7 +96,7 @@ void main() {
         ]),
       );
 
-      // Test the [MFAService.onResponse] stream to contain all responses from both actions
+      // Test the [MfaService.onResponse] stream to contain all responses from both actions
       expect(responses, [
         _Stub.responsePinBiometric('1'),
         _Stub.responseOtp('1'),
@@ -107,16 +107,16 @@ void main() {
     });
 
     test('authenticate emits complete method', () async {
-      final payload = MFAUnlockPayload();
+      final payload = MfaUnlockPayload();
 
       when(
-        mockMFARepository.initiate(
+        mockMfaRepository.initiate(
           action: anyNamed('action'),
           request: anyNamed('request'),
         ),
       ).thenAnswer((_) async => _Stub.responseComplete('1'));
 
-      final responses = <MFAResponse>[];
+      final responses = <MfaResponse>[];
       service.onResponse.listen(responses.add);
 
       await expectLater(
@@ -133,21 +133,21 @@ void main() {
     });
 
     test('authenticate handles router service errors', () async {
-      final payload = MFAUnlockPayload();
+      final payload = MfaUnlockPayload();
 
-      when(mockRouterService.push<Result<MFAResponse>>(
-        const MFAPinBiometricsRoute('1'),
+      when(mockRouterService.push<Result<MfaResponse>>(
+        const MfaPinBiometricsRoute('1'),
         extra: _Stub.responsePinBiometric('1'),
       )).thenAnswer((_) async => Result.error(Exception('Router error')));
 
       when(
-        mockMFARepository.initiate(
+        mockMfaRepository.initiate(
           action: anyNamed('action'),
           request: anyNamed('request'),
         ),
       ).thenAnswer((_) async => _Stub.responsePinBiometric('1'));
 
-      final responses = <MFAResponse>[];
+      final responses = <MfaResponse>[];
       service.onResponse.listen(responses.add);
 
       await expectLater(
@@ -163,13 +163,13 @@ void main() {
   });
 
   test('authenticate handles repository errors', () async {
-    final payload = MFAUnlockPayload();
+    final payload = MfaUnlockPayload();
 
-    final responses = <MFAResponse>[];
+    final responses = <MfaResponse>[];
     service.onResponse.listen(responses.add);
 
     when(
-      mockMFARepository.initiate(
+      mockMfaRepository.initiate(
         action: anyNamed('action'),
         request: anyNamed('request'),
       ),
@@ -185,24 +185,24 @@ void main() {
 }
 
 class _Stub {
-  static MFAResponse responseComplete(String transactionId) => MFAResponse(
-        authMethod: MFAMethod.complete,
+  static MfaResponse responseComplete(String transactionId) => MfaResponse(
+        authMethod: MfaMethod.complete,
         transactionId: transactionId,
         securityToken: 'completeToken',
         documentIds: [1],
         expires: '2024-07-20T20:18:04.000Z',
       );
 
-  static MFAResponse responsePinBiometric(String transactionId) => MFAResponse(
-        authMethod: MFAMethod.pinBiometric,
+  static MfaResponse responsePinBiometric(String transactionId) => MfaResponse(
+        authMethod: MfaMethod.pinBiometric,
         transactionId: transactionId,
         securityToken: 'pinBiometricToken',
         documentIds: [1],
         expires: '2024-07-20T20:18:04.000Z',
       );
 
-  static MFAResponse responseOtp(String transactionId) => MFAResponse(
-        authMethod: MFAMethod.otp,
+  static MfaResponse responseOtp(String transactionId) => MfaResponse(
+        authMethod: MfaMethod.otp,
         transactionId: transactionId,
         securityToken: 'otpToken',
         documentIds: [1],

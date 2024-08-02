@@ -4,7 +4,7 @@ import '../../assets.dart';
 import '../{{project_name}}_app_i18n.dart';
 import 'util.dart';
 
-class AppI18nMFALookup extends I18nFeatureMfaLookup {
+class AppI18nMfaLookup extends I18nFeatureMfaLookup {
   @override
   String getString(String key, [Map<String, String>? placeholders]) {
     return getFromNetwork('mfa__', key, placeholders) ??

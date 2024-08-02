@@ -13,8 +13,8 @@ import 'package:{{project_name}}/lib_mfa/models/mfa_response.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
 
-class MFAController extends ApiController {
-  MFAController();
+class MfaController extends ApiController {
+  MfaController();
 
   static const String _changeAddressTransactionId = '1';
   static const String _changeAddressSecurityToken1 = 'dasfgfsde123fd';
@@ -36,7 +36,7 @@ class MFAController extends ApiController {
   void registerRequests(WrappedRouter router) {
     router.addRequest(
       RequestType.POST,
-      '/api/mfa/actions/${MFAAction.changeAddress.name}',
+      '/api/mfa/actions/${MfaAction.changeAddress.name}',
       _initiateChangeAddress,
     );
 
@@ -48,7 +48,7 @@ class MFAController extends ApiController {
 
     router.addRequest(
       RequestType.POST,
-      '/api/mfa/actions/${MFAAction.unlock.name}',
+      '/api/mfa/actions/${MfaAction.unlock.name}',
       _initiateUnlock,
     );
 
@@ -70,8 +70,8 @@ class MFAController extends ApiController {
 
   Future<Response> _initiateChangeAddress(Request request) async =>
       responseBuilder.buildOK(
-        data: MFAResponse(
-          authMethod: MFAMethod.pinBiometric,
+        data: MfaResponse(
+          authMethod: MfaMethod.pinBiometric,
           documentIds: [1],
           expires: _expiresDate,
           securityToken: _changeAddressSecurityToken1,
@@ -88,15 +88,15 @@ class MFAController extends ApiController {
 
     return responseBuilder.buildOK(
       data: switch (formData['securityToken'] as String) {
-        (_changeAddressSecurityToken1) => MFAResponse(
-            authMethod: MFAMethod.otp,
+        (_changeAddressSecurityToken1) => MfaResponse(
+            authMethod: MfaMethod.otp,
             documentIds: [1],
             expires: _expiresDate,
             securityToken: _changeAddressSecurityToken2,
             transactionId: _changeAddressTransactionId,
           ),
-        (_changeAddressSecurityToken2) => MFAResponse(
-            authMethod: MFAMethod.complete,
+        (_changeAddressSecurityToken2) => MfaResponse(
+            authMethod: MfaMethod.complete,
             documentIds: [1],
             expires: _expiresDate,
             securityToken: _changeAddressSecurityToken3,
@@ -110,8 +110,8 @@ class MFAController extends ApiController {
 
   Future<Response> _initiateUnlock(Request request) async =>
       responseBuilder.buildOK(
-        data: MFAResponse(
-          authMethod: MFAMethod.pinBiometric,
+        data: MfaResponse(
+          authMethod: MfaMethod.pinBiometric,
           documentIds: [1],
           expires: _expiresDate,
           securityToken: _unlockSecurityToken1,
@@ -123,13 +123,13 @@ class MFAController extends ApiController {
     _validateAuthRequest(await request.bodyFromFormData());
 
     return responseBuilder.buildOK(
-      data: MFAResponse(
-        authMethod: MFAMethod.complete,
+      data: MfaResponse(
+        authMethod: MfaMethod.complete,
         documentIds: [1],
         expires: _expiresDate,
         securityToken: _unlockSecurityToken2,
         transactionId: _unlockTransactionId,
-        payload: MFALastLoginPayloadResponse(
+        payload: MfaLastLoginPayloadResponse(
           lastLogin: DateTime.now(),
         ),
       ).toJson(),
@@ -137,18 +137,18 @@ class MFAController extends ApiController {
   }
 
   void _validateAuthRequest(Map<String, dynamic> formData) {
-    final methodRequest = MFAMethodRequest.fromJson(formData);
+    final methodRequest = MfaMethodRequest.fromJson(formData);
 
-    if (methodRequest.payload.type == MFAMethod.pinBiometric.name) {
-      final payload = methodRequest.payload as MFAPinCodePayload;
+    if (methodRequest.payload.type == MfaMethod.pinBiometric.name) {
+      final payload = methodRequest.payload as MfaPinCodePayload;
 
       if (payload.code != _pinCode) {
         throw UnprocessableEntityException('The pin code should be $_pinCode');
       }
     }
 
-    if (methodRequest.payload.type == MFAMethod.otp.name) {
-      final payload = methodRequest.payload as MFAOTPPayload;
+    if (methodRequest.payload.type == MfaMethod.otp.name) {
+      final payload = methodRequest.payload as MfaOtpPayload;
 
       if (payload.code == _otpIncorrectCompleteCode) {
         throw NotFoundException(

@@ -111,76 +111,76 @@ The following C4 diagram provides an overview of the component-level implementat
 ```    
 
 # Authentication action
-To add a new authentication method, such as `change password`, first, add the new method to the MFAAction enum. 
-Then, extend the MFAPayloadRequest class to create a payload class for the new method, 
+To add a new authentication method, such as `change password`, first, add the new method to the MfaAction enum. 
+Then, extend the MfaPayloadRequest class to create a payload class for the new method, 
 incorporating necessary payload fields and implementing methods for JSON serialization and equatability.
 
-#### Step 1: Add a new case in the MFAAction enum
-New case in the MFAAction needs to be added for each new authentication method.
+#### Step 1: Add a new case in the MfaAction enum
+New case in the MfaAction needs to be added for each new authentication method.
 ```dart
-enum MFAAction {
+enum MfaAction {
   // the other actions...
   changePassword,
 }
 ```
 
-#### Step 2: Create a class that extends MFAPayloadRequest
-The payload for the new authentication method needs to be implemented by extending the MFAPayloadRequest class.
+#### Step 2: Create a class that extends MfaPayloadRequest
+The payload for the new authentication method needs to be implemented by extending the MfaPayloadRequest class.
 ```dart
 @JsonSerializable()
-class MFAChangePasswordPayload extends MFAPayloadRequest
+class MfaChangePasswordPayload extends MfaPayloadRequest
         with EquatableMixin {
-  MFAChangePasswordPayload({
+  MfaChangePasswordPayload({
     required this.password,
   });
 
   final String password;
 
   @override
-  String get type => MFAAction.changePassword.name;
+  String get type => MfaAction.changePassword.name;
 
   @override
   List<Object?> get props => [password];
 
-  factory MFAChangePasswordPayload.fromJson(Map<String, dynamic> json) =>
-          _$MFAChangePasswordPayloadFromJson(json);
+  factory MfaChangePasswordPayload.fromJson(Map<String, dynamic> json) =>
+          _$MfaChangePasswordPayloadFromJson(json);
 
   @override
   Map<String, dynamic> payloadToJson() =>
-          _$MFAChangePasswordPayloadToJson(this);
+          _$MfaChangePasswordPayloadToJson(this);
 }
 ```
 
 #### Step 3: Initiate the new authentication action
 ```dart
-_service.authenticate(payload: MFAChangePasswordPayload(password: 'password'));
+_service.authenticate(payload: MfaChangePasswordPayload(password: 'password'));
 ```
 # Authentication method
 
-To add a new method to the Multi-Factor Authentication, such as email verification, first, add a new case `emailVerification` to the `MFAMethod` enum.
-Create the `MFAEmailVerificationPayload` class extending `MFAPayloadRequest` and update the `MFAMethodRequest` to parse this new payload.
-Define the `MFAEmailVerificationRoute` class extending `GoRouteData` to handle routing.
-Finally, add the new route path in the `RoutesPath` class and update the `createMFAMethodRoute` method to include the new enum case.
+To add a new method to the Multi-Factor Authentication, such as email verification, first, add a new case `emailVerification` to the `MfaMethod` enum.
+Create the `MfaEmailVerificationPayload` class extending `MfaPayloadRequest` and update the `MfaMethodRequest` to parse this new payload.
+Define the `MfaEmailVerificationRoute` class extending `GoRouteData` to handle routing.
+Finally, add the new route path in the `RoutesPath` class and update the `createMfaMethodRoute` method to include the new enum case.
 
 
-#### Step 1: Payload - Add a new case in the MFAMethod enum
+#### Step 1: Payload - Add a new case in the MfaMethod enum
 ```dart
-enum MFAMethod {
+enum MfaMethod {
   ...
   @JsonValue('EmailVerification')
   emailVerification,
 ```
 
-#### Step 2: Payload -  Create a class that extends MFAPayloadRequest and uses the new MFAMethod
+#### Step 2: Payload -  Create a class that extends MfaPayloadRequest and uses the new MfaMethod
 ```dart
-class MFAEmailVerificationPayload extends MFAPayloadRequest
+class MfaEmailVerificationPayload extends MfaPayloadRequest
     with EquatableMixin {
-  MFAEmailVerificationPayload();
+  MfaEmailVerificationPayload();
 
   @override
-  String get type => MFAMethod.emailVerification.name;
+  String get type => MfaMethod.emailVerification.name;
 
-  factory MFAEmailVerificationPayload.fromJson(Map<String, dynamic> json) => MFAEmailVerificationPayload();
+  factory MfaEmailVerificationPayload.fromJson(Map<String, dynamic> json) => MfaEmailVerificationPayload();
 
   @override
   Map<String, dynamic> payloadToJson() => {};
@@ -193,23 +193,23 @@ class MFAEmailVerificationPayload extends MFAPayloadRequest
 }
 ```
 
-#### Step 3: Payload - Add a new case in the MFAMethodRequest class to parse the new request method payload 
+#### Step 3: Payload - Add a new case in the MfaMethodRequest class to parse the new request method payload 
 ```dart
-MFAPayloadRequest _payloadFromJson(Map<String, dynamic>? json, type) {
+MfaPayloadRequest _payloadFromJson(Map<String, dynamic>? json, type) {
   switch (type) {
     ...
-    case MFAMethod.emailVerification:
-      return MFAEmailVerificationPayload.fromJson(json);
+    case MfaMethod.emailVerification:
+      return MfaEmailVerificationPayload.fromJson(json);
   }
 ```
 
 #### Step 4: Route - Create a new route class that extends GoRouteData and uses the new mfaMethod
 ```dart
-@TypedGoRoute<MFAEmailVerificationRoute>(
-  path: RoutesPath.MFAEmailVerification,
+@TypedGoRoute<MfaEmailVerificationRoute>(
+  path: RoutesPath.MfaEmailVerification,
 )
-class MFAEmailVerificationRoute extends GoRouteData implements RouteDataModel {
-  const MFAEmailVerificationRoute(
+class MfaEmailVerificationRoute extends GoRouteData implements RouteDataModel {
+  const MfaEmailVerificationRoute(
     this.transactionId,
   );
 
@@ -240,18 +240,18 @@ class RoutesPath {
 ```
 
 
-#### Step 6: Route - Add a new case in the createMFAMethodRoute method
+#### Step 6: Route - Add a new case in the createMfaMethodRoute method
 ```dart
-extension MFAMethodX on MFAMethod {
-  RouteDataModel? createMFAMethodRoute(String transactionId) {
+extension MfaMethodX on MfaMethod {
+  RouteDataModel? createMfaMethodRoute(String transactionId) {
    switch (this) {
       ...
-      case MFAMethod.emailVerification:
-        return MFAEmailVerificationRoute(transactionId);
+      case MfaMethod.emailVerification:
+        return MfaEmailVerificationRoute(transactionId);
     }
   }
 ```
 
-[mfa_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/mfa.png
-[mfa_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/mfa_sequence.png
-[mfa_c4]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/feature/auth-matrix-refactoring-2fa/packages/rx_bloc_cli/example/docs/mfa_c4.png
+[mfa_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/example/docs/mfa.png
+[mfa_sequence_img]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/example/docs/mfa_sequence.png
+[mfa_c4]: https://raw.githubusercontent.com/Prime-Holding/rx_bloc/develop/packages/rx_bloc_cli/example/docs/mfa_c4.png

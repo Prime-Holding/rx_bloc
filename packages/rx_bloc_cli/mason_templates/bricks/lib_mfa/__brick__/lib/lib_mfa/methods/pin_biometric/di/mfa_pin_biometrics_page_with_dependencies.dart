@@ -9,14 +9,14 @@ import '../../../models/mfa_response.dart';
 import '../services/mfa_pincode_service.dart';
 import '../views/mfa_pin_biometrics_page.dart';
 
-class MFAPinBiometricsPageWithDependencies extends StatelessWidget {
-  const MFAPinBiometricsPageWithDependencies({
+class MfaPinBiometricsPageWithDependencies extends StatelessWidget {
+  const MfaPinBiometricsPageWithDependencies({
     required this.transactionId,
     required this.mfaResponse,
     super.key,
   });
 
-  final MFAResponse mfaResponse;
+  final MfaResponse mfaResponse;
   final String transactionId;
 
   @override
@@ -24,14 +24,14 @@ class MFAPinBiometricsPageWithDependencies extends StatelessWidget {
         providers: [
           ..._services,
         ],
-        child: MFAPinBiometricsPage(
+        child: MfaPinBiometricsPage(
           transactionId: transactionId,
         ),
       );
 
   List<SingleChildStatelessWidget> get _services => [
-        Provider<MFAPinCodeService>(
-          create: (context) => MFAPinCodeService(
+        Provider<MfaPinCodeService>(
+          create: (context) => MfaPinCodeService(
             mfaResponse: mfaResponse,
             mfaRepository: context.read(),
           ),

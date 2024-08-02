@@ -1,7 +1,7 @@
-enum MFAPayloadResponseType { lastLogin }
+enum MfaPayloadResponseType { lastLogin }
 
-abstract class MFAPayloadResponse {
-  MFAPayloadResponse();
+abstract class MfaPayloadResponse {
+  MfaPayloadResponse();
 
   Map<String, dynamic> toJson() => {...payloadToJson(), 'type': type.name};
 
@@ -10,5 +10,5 @@ abstract class MFAPayloadResponse {
   /// The type of the payload.
   ///
   /// This is used to determine the type of the payload when deserializing.
-  MFAPayloadResponseType get type;
+  MfaPayloadResponseType get type;
 }

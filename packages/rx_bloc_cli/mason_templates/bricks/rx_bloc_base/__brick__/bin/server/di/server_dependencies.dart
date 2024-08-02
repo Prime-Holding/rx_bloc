@@ -43,7 +43,7 @@ class ServerDependencies{
     {{#enable_feature_deeplinks}}
     ..addController(DeepLinksController())
     {{/enable_feature_deeplinks}}{{#enable_mfa}}
-    ..addController(MFAController())
+    ..addController(MfaController())
     {{/enable_mfa}}
     ;
 

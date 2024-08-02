@@ -9,14 +9,14 @@ import '../../../models/mfa_response.dart';
 import '../services/mfa_otp_service.dart';
 import '../views/mfa_otp_page.dart';
 
-class MFAOtpPageWithDependencies extends StatelessWidget {
-  const MFAOtpPageWithDependencies({
+class MfaOtpPageWithDependencies extends StatelessWidget {
+  const MfaOtpPageWithDependencies({
     required this.transactionId,
     required this.mfaResponse,
     super.key,
   });
 
-  final MFAResponse mfaResponse;
+  final MfaResponse mfaResponse;
   final String transactionId;
 
   @override
@@ -24,16 +24,16 @@ class MFAOtpPageWithDependencies extends StatelessWidget {
         providers: [
           ..._services,
         ],
-        child: MFAOtpPage(
+        child: MfaOtpPage(
           transactionId: transactionId,
         ),
       );
 
   List<SingleChildStatelessWidget> get _services => [
-        Provider<MFAOtpService>(
-          create: (context) => MFAOtpService(
+        Provider<MfaOtpService>(
+          create: (context) => MfaOtpService(
             mfaRepository: context.read(),
-            lastMFAResponse: mfaResponse,
+            lastMfaResponse: mfaResponse,
           ),
         ),
       ];

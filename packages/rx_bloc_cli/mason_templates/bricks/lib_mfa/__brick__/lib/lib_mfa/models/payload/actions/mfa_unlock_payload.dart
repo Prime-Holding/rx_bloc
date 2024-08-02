@@ -7,17 +7,17 @@ import '../mfa_payload_request.dart';
 part 'mfa_unlock_payload.g.dart';
 
 @JsonSerializable()
-class MFAUnlockPayload extends MFAPayloadRequest with EquatableMixin {
-  MFAUnlockPayload();
+class MfaUnlockPayload extends MfaPayloadRequest with EquatableMixin {
+  MfaUnlockPayload();
 
   @override
-  String get type => MFAAction.unlock.name;
+  String get type => MfaAction.unlock.name;
 
-  factory MFAUnlockPayload.fromJson(Map<String, dynamic> json) =>
-      _$MFAUnlockPayloadFromJson(json);
+  factory MfaUnlockPayload.fromJson(Map<String, dynamic> json) =>
+      _$MfaUnlockPayloadFromJson(json);
 
   @override
-  Map<String, dynamic> payloadToJson() => _$MFAUnlockPayloadToJson(this);
+  Map<String, dynamic> payloadToJson() => _$MfaUnlockPayloadToJson(this);
 
   @override
   List<Object?> get props => [type];

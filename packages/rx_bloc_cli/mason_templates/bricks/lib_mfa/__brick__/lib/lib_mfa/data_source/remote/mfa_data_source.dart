@@ -10,19 +10,19 @@ import '../../models/mfa_response.dart';
 part 'mfa_data_source.g.dart';
 
 @RestApi()
-abstract class MFADataSource {
-  factory MFADataSource(Dio dio, {String baseUrl}) =
-      _MFADataSource;
+abstract class MfaDataSource {
+  factory MfaDataSource(Dio dio, {String baseUrl}) =
+      _MfaDataSource;
 
   /// Initiates the authentication Multi-Factor Authentication.
   ///
   /// - [action]: The action to be performed such as `changeAddress`, `makeTransaction`, etc.
   /// - [request]: The request body that contains the necessary user data to initiate the process.
-  /// - Returns [MFAResponse] that determines the next authentication step.
+  /// - Returns [MfaResponse] that determines the next authentication step.
   @POST('/api/mfa/actions/{action}')
-  Future<MFAResponse> initiate(
+  Future<MfaResponse> initiate(
     @Path() String action,
-    @Body() MFAPayloadRequest request,
+    @Body() MfaPayloadRequest request,
   );
 
   /// Authenticates the user using the [transactionId] and the [request] body.
@@ -30,9 +30,9 @@ abstract class MFADataSource {
   /// - [transactionId]: The transaction identifier.
   /// - [request]: The request body that contains the necessary user data to authenticate the user.
   @POST('/api/mfa/{transactionId}')
-  Future<MFAResponse> authenticate(
+  Future<MfaResponse> authenticate(
     @Path() String transactionId,
-    @Body() MFAMethodRequest request,
+    @Body() MfaMethodRequest request,
   );
 
 

@@ -9,21 +9,21 @@ part 'mfa_otp_payload.g.dart';
 
 @CopyWith()
 @JsonSerializable()
-class MFAOTPPayload extends MFAPayloadRequest with EquatableMixin {
-  MFAOTPPayload({
+class MfaOtpPayload extends MfaPayloadRequest with EquatableMixin {
+  MfaOtpPayload({
     required this.code,
   });
 
   final String code;
 
   @override
-  String get type => MFAMethod.otp.name;
+  String get type => MfaMethod.otp.name;
 
-  factory MFAOTPPayload.fromJson(Map<String, dynamic> json) =>
-      _$MFAOTPPayloadFromJson(json);
+  factory MfaOtpPayload.fromJson(Map<String, dynamic> json) =>
+      _$MfaOtpPayloadFromJson(json);
 
   @override
-  Map<String, dynamic> payloadToJson() => _$MFAOTPPayloadToJson(this);
+  Map<String, dynamic> payloadToJson() => _$MfaOtpPayloadToJson(this);
 
   @override
   List<Object?> get props => [code, type];

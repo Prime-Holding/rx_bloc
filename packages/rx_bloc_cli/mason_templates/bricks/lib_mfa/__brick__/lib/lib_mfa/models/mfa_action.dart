@@ -1,5 +1,5 @@
 /// Enum for Multi-Factor Authentication actions
-enum MFAAction {
+enum MfaAction {
   changeAddress,
   unlock,
 }
