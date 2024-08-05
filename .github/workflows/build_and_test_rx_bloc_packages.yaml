@@ -33,7 +33,9 @@ jobs:
         run: flutter pub get
       - name: Build Runner Build
         working-directory: ${{ matrix.folder }}
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: |
+          flutter pub run build_runner clean
+          flutter pub run build_runner build --delete-conflicting-outputs
       - name: Analyze
         working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
@@ -76,7 +78,9 @@ jobs:
         run: flutter pub get
       - name: Build Runner Build
         working-directory: ${{ matrix.folder }}
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: |
+          flutter pub run build_runner clean
+          flutter pub run build_runner build --delete-conflicting-outputs
       - name: Analyze
         working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
@@ -129,7 +133,9 @@ jobs:
         run: dart pub get
       - name: Build Runner Build
         working-directory: ${{ matrix.folder }}
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: |
+          flutter pub run build_runner clean
+          flutter pub run build_runner build --delete-conflicting-outputs
       - name: Analyze
         working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
