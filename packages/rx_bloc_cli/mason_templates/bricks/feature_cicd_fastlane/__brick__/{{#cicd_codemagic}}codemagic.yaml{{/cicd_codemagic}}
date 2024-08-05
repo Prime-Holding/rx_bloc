@@ -23,10 +23,10 @@ definitions: # {{/}}
       - $FCI_BUILD_DIR/android/.gradle
   inputs: &inputs
     build_artifact:
-      description: "Build artifact (.ipa or .abb)"
+      description: "Build artifact URL (.ipa or .abb)"
       type: string
     deployment_config:
-      description: "The deployment.yaml file"
+      description: "Deployment config URL (deployment.yaml)"
       type: string
   scripts:
     - &fetch_tag_details
@@ -52,11 +52,11 @@ definitions: # {{/}}
           bundle lock --add-platform ruby
           bundle lock --add-platform x86_64-darwin21
     - &build_android_app
-        name: Build android app
+        name: Build and sign Android app
         script: |
           bundle exec fastlane build_custom platform:android environment:$flavor build_name:$build_name build_number:$build_number
     - &build_ios_app
-        name: Build iOS app
+        name: Build and sign iOS app
         script: |
           bundle exec fastlane build_custom platform:ios environment:$flavor build_name:$build_name build_number:$build_number
     - &download_artifacts

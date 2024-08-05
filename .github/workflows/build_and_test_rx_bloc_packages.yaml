@@ -1,15 +1,9 @@
-name: "Build and Test rx_bloc packages"
+name: "rx_bloc packages CI"
 
 on:
   push:
     paths:
       - ".github/workflows/build_and_test_rx_bloc_packages.yaml"
-      - "packages/**"
-      - "examples/**"
-     
-  pull_request:
-    paths:
-      - ".github/workflows/ci.yaml"
       - "packages/**"
       - "examples/**"    
 
@@ -23,6 +17,7 @@ jobs:
             "examples/counter",
             "examples/division",
             "examples/favorites_advanced/rx_bloc_favorites_advanced",
+            "examples/todoapp",
           ]
       fail-fast: false
     runs-on: ubuntu-latest
@@ -36,6 +31,9 @@ jobs:
       - name: Install Dependencies
         working-directory: ${{ matrix.folder }}
         run: flutter pub get
+      - name: Build Runner Build
+        working-directory: ${{ matrix.folder }}
+        run: flutter pub run build_runner build --delete-conflicting-outputs
       - name: Analyze
         working-directory: ${{ matrix.folder }}
         run: flutter analyze lib
@@ -47,16 +45,18 @@ jobs:
           fi
       - name: Remove unnecessary files
         working-directory: ${{ matrix.folder }}
-        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','**/routes.dart','**data_source.dart','**_model.g.dart','**_models.g.dart''**_model.dart','**_model_extensions.dart','**_models.dart','**_models_extensions.dart','**_config.dart','**_constants.dart','**_translations.dart','lib/assets.dart','lib/keys.dart','lib/base/theme/**','lib/base/utils/**','lib/keys.dart','lib/l10n/**' coverage/lcov.info
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v2
         with:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 50
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
   flutter_packages:
     strategy:
       matrix:
@@ -101,9 +101,11 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 89
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
   packages:
     strategy:
       matrix:
@@ -152,9 +154,11 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
   cli_packages:
     strategy:
       matrix:
@@ -198,9 +202,11 @@ jobs:
           path: "${{ matrix.folder }}/coverage/lcov.info"
           min_coverage: 67
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
           
   build:
     needs: [examples, packages, flutter_packages, cli_packages]

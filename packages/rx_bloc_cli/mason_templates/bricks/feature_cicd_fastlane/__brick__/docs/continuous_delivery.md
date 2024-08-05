@@ -1,5 +1,7 @@
 ## Fastlane
 
+![Diagram][cicd_diagram]
+
 ### Distribution repository
 
 Create a new Github repository used for storing files and credentials for distribution of your app.
@@ -64,8 +66,8 @@ If you haven't created an access token for your distribution repository in Githu
 
 Access the `Actions secrets and variables` within the settings page of your Github repository.
 There you should define two repository secrets with the same values as in the local environments:
-- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
-- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CREDENTIAL_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `CREDENTIAL_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 
 Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app and deploys it to the respective stores.
 If you do not want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `false` and commit the new changes.
@@ -79,7 +81,7 @@ Make sure you name the tag properly. The tag should contain the following parts 
 - build version prefixed with a `v`
 - build number prefixed with a `+`
 
-The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners.
+The `build_and_deploy_android` job is ran on `ubuntu-latest` runners, while the `build_and_deploy_ios` job uses `macos-latest` runners.
 All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
 
 Once the apps are successfully built and signed, a `deployment.yaml` file along with the platform specific artifacts (`.aab` for Android, `.ipa` for iOS) will be generated.
@@ -98,16 +100,17 @@ If the project was generated with the `--cicd=codemagic` flag, a `codemagic.yaml
 This file contains preconfigured workflows for building and deployment of the Android and iOS app.
 
 Once you connect your repository with Codemagic and add your app, you'll be presented with the project settings.
+In order to make use of the `codemagic.yaml` workflows, first you need to `Switch to YAML configuration` if presented by the Workflow Editor once the Codemagic project is accessed.
 Under the `Environment variables` tab, define `secure` environment variables assigned to the `secret` group with the following name:
-- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
-- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CREDENTIAL_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `CREDENTIAL_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 - `CM_API_TOKEN`: token used for accessing Codemagic artifacts through the API
 
 > [!NOTE]
 > The Codemagic API token can be found in the [Codemagic UI under the `Teams` option][codemagic_api_token_location].
 
 > [!NOTE]
-> The Codemagic API token (`CM_API_TOKEN`) is only required for the `deploy_app` Codemagic workflow, for access to internal build artifacts. This `secure` environment variable can be omitted upon the Codemagic project setup, if the mentioned workflow is not used.
+> The Codemagic API token (`CM_API_TOKEN`) is only required for the `deploy_app` workflow, for access to internal build artifacts from Codemagic. This `secure` environment variable can be omitted upon the Codemagic project setup, if the mentioned workflow is not used.
 
 After that, you can start a build from the `Build tag` option by selecting a previously created tag and the workflow.
 
@@ -132,8 +135,8 @@ Make sure you name the tag properly. The tag should contain the following parts 
 
 In case any of the builds fails but the artifacts are available, you can publish them using the `deploy_app` workflow. 
 Select the workflow in the `Build branch` option. Two new fields will appear asking for a url to the Codemagic build artifacts:
-- `Build artifact (.ipa or .abb)`: direct link to the build artifact (`.ipa` for iOS build, `.aab` for Android build) 
-- `The deployment.yaml file`: direct link to the `deployment.yaml` file containing the build configuration
+- `Build artifact URL (.ipa or .abb)`: direct link to the build artifact (`.ipa` for iOS build, `.aab` for Android build) 
+- `Deployment config URL (deployment.yaml)`: direct link to the `deployment.yaml` file containing the build configuration
 
 All workflows use a `mac_mini_m1` instance by default. 
 Different instances and build minutes can be found under the [pricing page][codemagic_pricing] and [available instance types][codemagic_instance_types].
@@ -172,6 +175,7 @@ For more details on that and other commands, as well as their arguments, please 
 
 ---
 
+[cicd_diagram]: https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/example/docs/cicd_diagram.png
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/

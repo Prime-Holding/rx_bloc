@@ -21,7 +21,7 @@ AVAILABLE_MODES=('file' 'android' 'ios' 'deploy_android' 'deploy_ios' 'firebase'
 MODES_STR=$(printf "%s|" "${AVAILABLE_MODES[@]}"); MODES_STR=${MODES_STR%|}
 
 # Helper function which decides whether to encode or decode a given file
-# using the MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD environment variable.
+# using the CREDENTIAL_ENCRYPTION_PASSWORD environment variable.
 # Arguments:
 # $1 - path to input file which to be encoded/decoded
 # $2 - (optional) path to output file in case of decoding
@@ -40,7 +40,7 @@ function encode_or_decode() {
             -salt \
             -in $1 \
             -out $1.enc \
-            -pass env:MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+            -pass env:CREDENTIAL_ENCRYPTION_PASSWORD
     else
         # Decoding
         echo "Decoding file $1 into $2"
@@ -50,7 +50,7 @@ function encode_or_decode() {
             -pbkdf2 \
             -in $1 \
             -out $2 \
-            -pass env:MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD
+            -pass env:CREDENTIAL_ENCRYPTION_PASSWORD
     fi
 }
 
@@ -179,10 +179,10 @@ if ! echo "${AVAILABLE_MODES[@]}" | grep -qw "$MODE"; then
 fi
 
 # Check for encryption/decryption password
-if [ -z "$MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD" ]; then
+if [ -z "$CREDENTIAL_ENCRYPTION_PASSWORD" ]; then
     echo "Enter the encryption/decryption password: "
     read -r -s PASS
-    export MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD=$PASS
+    export CREDENTIAL_ENCRYPTION_PASSWORD=$PASS
 fi
 
 # Execute command in a given mode

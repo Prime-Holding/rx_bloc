@@ -96,7 +96,7 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ✅ [Design system][design_system_lnk] - A single place where you can define all your colors, typography, assets and more. Your app's Light and Dark mode are already configured
 
-✅ [Testing][testing_lnk] - With Unit and Golden Tests you know your app is working as intended
+✅ [Testing][testing_lnk] - With Unit and Golden Tests you know your app is working as intended.
 
 ✅ [Static analysis][static_analysis_lnk] - Strict Lint rules which are used to write quality code
 

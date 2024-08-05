@@ -1,5 +1,7 @@
 ## Fastlane
 
+![Diagram][cicd_diagram]
+
 ### Distribution repository
 
 Create a new Github repository used for storing files and credentials for distribution of your app.
@@ -64,8 +66,8 @@ If you haven't created an access token for your distribution repository in Githu
 
 Access the `Actions secrets and variables` within the settings page of your Github repository.
 There you should define two repository secrets with the same values as in the local environments:
-- `MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
-- `MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+- `CREDENTIAL_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `CREDENTIAL_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
 
 Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app and deploys it to the respective stores.
 If you do not want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `false` and commit the new changes.
@@ -79,7 +81,7 @@ Make sure you name the tag properly. The tag should contain the following parts 
 - build version prefixed with a `v`
 - build number prefixed with a `+`
 
-The `build_android_app` job is ran on `ubuntu-latest` runners, while the `build_ios_app` job uses `macos-latest` runners.
+The `build_and_deploy_android` job is ran on `ubuntu-latest` runners, while the `build_and_deploy_ios` job uses `macos-latest` runners.
 All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
 
 Once the apps are successfully built and signed, a `deployment.yaml` file along with the platform specific artifacts (`.aab` for Android, `.ipa` for iOS) will be generated.
@@ -121,6 +123,7 @@ For more details on that and other commands, as well as their arguments, please 
 
 ---
 
+[cicd_diagram]: https://github.com/Prime-Holding/rx_bloc/blob/develop/packages/rx_bloc_cli/example/docs/cicd_diagram.png
 [apple_developer_console]: https://developer.apple.com/
 [android_developer_console]: https://play.google.com/console/developers
 [fastlane_link]: https://docs.fastlane.tools/

@@ -9,6 +9,7 @@ on:
         type: choice
         options:
         - booking_app
+        - todoapp
 
 jobs:
   package:
@@ -25,6 +26,9 @@ jobs:
       - name: Install Dependencies
         working-directory: "examples/${{ inputs.package }}"
         run: dart pub get
+      - name: Build Runner Build
+        working-directory: "examples/${{ inputs.package }}"
+        run: flutter pub run build_runner build --delete-conflicting-outputs
       - name: Analyze
         working-directory: "examples/${{ inputs.package }}"
         run: flutter analyze lib

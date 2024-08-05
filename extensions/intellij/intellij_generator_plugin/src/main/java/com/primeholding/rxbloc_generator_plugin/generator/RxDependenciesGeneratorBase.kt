@@ -4,7 +4,7 @@ package com.primeholding.rxbloc_generator_plugin.generator
 
 import com.google.common.io.CharStreams
 import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocDialog.RoutingIntegration
-import org.apache.commons.lang.text.StrSubstitutor
+import org.apache.commons.text.StringSubstitutor
 import java.io.InputStreamReader
 import java.lang.RuntimeException
 
@@ -49,7 +49,7 @@ abstract class RxDependenciesGeneratorBase(
     }
 
     override fun generate(): String {
-        val substitute = StrSubstitutor(templateValues)
+        val substitute = StringSubstitutor(templateValues)
         var result = substitute.replace(templateString)
         if (includeLocalServiceFlag) {
             result = result.replace("// ", "")

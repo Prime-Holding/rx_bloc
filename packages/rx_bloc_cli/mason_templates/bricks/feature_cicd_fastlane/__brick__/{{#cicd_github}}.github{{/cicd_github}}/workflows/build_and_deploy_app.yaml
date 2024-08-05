@@ -30,26 +30,26 @@ jobs:
         build_number: ${{ steps.extraction.outputs.build_number }}
         flavor: ${{ steps.extraction.outputs.flavor }}
 
-  build_android_app:
+  build_and_deploy_android:
     needs: app_version_extraction
-    uses: ./.github/workflows/fastlane_android_custom_build_and_deploy.yaml
+    uses: ./.github/workflows/build_and_deploy_android_app.yaml
     with:
       build_name: ${{ needs.app_version_extraction.outputs.build_name }}
       build_number: ${{ needs.app_version_extraction.outputs.build_number }}
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
       publish_to_store: true
     secrets:
-      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
-  
-  build_ios_app:
+      credential_encryption_password: ${{ secrets.CREDENTIAL_ENCRYPTION_PASSWORD }}
+      credential_repository_access_secret: ${{ secrets.CREDENTIAL_REPOSITORY_ACCESS_SECRET }}
+
+  build_and_deploy_ios:
     needs: app_version_extraction
-    uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
+    uses: ./.github/workflows/build_and_deploy_ios_app.yaml
     with:
       build_name: ${{ needs.app_version_extraction.outputs.build_name }}
       build_number: ${{ needs.app_version_extraction.outputs.build_number }}
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
       publish_to_store: true
     secrets:
-      mobile_distribution_encryption_password: ${{ secrets.MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
-      mobile_distribution_repository_access_secret: ${{ secrets.MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
+      credential_encryption_password: ${{ secrets.CREDENTIAL_ENCRYPTION_PASSWORD }}
+      credential_repository_access_secret: ${{ secrets.CREDENTIAL_REPOSITORY_ACCESS_SECRET }}
