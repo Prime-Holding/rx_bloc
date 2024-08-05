@@ -44,6 +44,7 @@ packages/rx_bloc_test/pubspec.lock
 version
 .fvm/
 **/*.g.dart
+**/*.mocks.dart
 
 # packages file containing multi-root paths
 .packages.generated
