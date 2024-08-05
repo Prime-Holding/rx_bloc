@@ -4,6 +4,7 @@ version: 8.0.0
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_generator
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com/
+topics: [codegen, build-runner]
 
 environment:
   sdk: ">=3.0.5 <4.0.0"

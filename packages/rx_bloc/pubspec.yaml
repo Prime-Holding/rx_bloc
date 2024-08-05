@@ -4,6 +4,7 @@ version: 6.0.0
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com
+topics: [bloc, state-management, reactive-programming, rxdart]
 
 environment:
   sdk: ">=3.0.5 <4.0.0"
