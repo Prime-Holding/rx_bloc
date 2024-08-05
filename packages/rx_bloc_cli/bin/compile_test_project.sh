@@ -20,4 +20,4 @@ cp example/testapp/docs/mfa_sequence.png example/docs/
 cp example/testapp/docs/continuous_delivery.md example/docs/
 cp example/testapp/docs/app_architecture.png example/docs/
 cp example/testapp/docs/cicd_diagram.png example/docs/
-cp doc/golden_tests.md example/docs/
+cp example/testapp/docs/golden_tests.md example/docs/
