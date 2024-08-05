@@ -1,3 +1,8 @@
+## [3.9.0]
+* Update dependencies in generated projects:
+* `rx_bloc: ^6.0.0`
+* `rxdart: ^0.28.0`
+
 ## [3.8.1]
 * Added reference in [example documentation][example_project_readme_doc] about [writing golden tests for smart widgets with dependency injection][golden_tests_doc].
 
