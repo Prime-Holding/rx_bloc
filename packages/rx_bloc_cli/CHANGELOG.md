@@ -228,4 +228,4 @@ Contains breaking changes
 [widget_toolkit_url]: https://pub.dev/packages/widget_toolkit
 [code_magic_url]: https://codemagic.io/start/
 [example_project_readme_doc]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/README.md
-[golden_tests_doc]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/doc/golden_tests.md
+[golden_tests_doc]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
