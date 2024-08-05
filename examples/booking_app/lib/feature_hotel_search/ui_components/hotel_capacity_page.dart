@@ -8,8 +8,8 @@ class HotelCapacityPage extends StatefulWidget {
     required this.onApplyPressed,
     this.roomCapacity,
     this.personCapacity,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final void Function(int, int) onApplyPressed;
   final int? roomCapacity;

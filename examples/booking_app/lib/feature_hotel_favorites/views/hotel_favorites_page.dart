@@ -12,7 +12,7 @@ import '../../lib_router/router.dart';
 import '../blocs/hotel_favorites_bloc.dart';
 
 class HotelFavoritesPage extends StatelessWidget {
-  const HotelFavoritesPage({Key? key}) : super(key: key);
+  const HotelFavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) => Column(

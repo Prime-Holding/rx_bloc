@@ -16,7 +16,7 @@ import '../../feature_hotel_search/views/hotel_search_page.dart';
 import '../blocs/navigation_bar_bloc.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
