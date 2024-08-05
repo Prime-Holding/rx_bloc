@@ -43,6 +43,7 @@ packages/rx_bloc_test/pubspec.lock
 /packages/flutter/coverage/
 version
 .fvm/
+**/*.g.dart
 
 # packages file containing multi-root paths
 .packages.generated
