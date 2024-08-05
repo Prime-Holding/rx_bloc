@@ -1,3 +1,8 @@
+## [5.1.0]
+* Update `rxdart` to use version `0.28.0`
+* Update `meta` to use version `1.15.0`
+* Update `collection` to use version `1.19.0`
+
 ## [5.0.3]
 * Lower the meta package requirement from ^1.11.0 to ^1.10.0
   
