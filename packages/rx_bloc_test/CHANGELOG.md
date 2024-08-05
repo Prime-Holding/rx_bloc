@@ -1,7 +1,7 @@
-## [4.1.0] - August 5, 2024
+## [5.0.0] - August 5, 2024
 * Upgraded dependencies:
 * `rxdart` `0.28.0`
-* `rx_bloc` `5.1.0`
+* `rx_bloc` `6.0.0`
 * `meta` `1.15.0`
 * `test` `1.25.0`
 

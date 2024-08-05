@@ -1,5 +1,5 @@
-## [4.1.0] August 5, 2024
-* Update `rx_bloc` to use version `5.1.0`
+## [5.0.0] August 5, 2024
+* Update `rx_bloc` to use version `6.0.0`
 * Update `rxdart` to use version `0.28.0`
 * Update `collection` to use version `1.18.0`
 

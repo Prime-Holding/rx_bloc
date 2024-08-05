@@ -1,4 +1,4 @@
-## [5.1.0]
+## [6.0.0]
 * Update `rxdart` to use version `0.28.0`
 * Update `meta` to use version `1.12.0`
 * Update `collection` to use version `1.18.0`

@@ -1,7 +1,7 @@
-## [6.2.0]
-* Update `rx_bloc` to use version `5.1.0`
+## [7.0.0]
+* Update `rx_bloc` to use version `6.0.0`
 * Update `rxdart` to use version `0.28.0`
-* 
+
 ## [6.1.1]
 * Fixes an issue where RxTextFormFieldBuilder suffixIcon was not centered on text fields with smaller height
 

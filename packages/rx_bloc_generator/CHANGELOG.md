@@ -1,6 +1,6 @@
-## [7.3.0]
-* Update `rx_bloc` to use version `5.1.0`
-* * Update `collection` to use version `1.18.0`
+## [8.0.0]
+* Update `rx_bloc` to use version `6.0.0`
+* Update `collection` to use version `1.18.0`
 
 ## [7.2.2]
 * Fix compiling issue caused by the analyzer version `6.5.0`
