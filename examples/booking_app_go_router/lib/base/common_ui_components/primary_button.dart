@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import '../theme/design_system.dart';
@@ -17,8 +16,8 @@ class PrimaryButton extends StatelessWidget {
     this.child,
     this.isLoading = false,
     this.loadingIndicatorSize = 20,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool isLoading;
   final Widget? child;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc_list/rx_bloc_list.dart';
 
-import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_divider.dart';
 import '../../base/common_ui_components/app_error_widget.dart';
 import '../../base/common_ui_components/app_loading_indicator.dart';

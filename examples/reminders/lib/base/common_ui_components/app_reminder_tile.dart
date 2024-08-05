@@ -20,8 +20,8 @@ class AppReminderTile extends StatefulWidget {
     this.onDeletePressed,
     this.isFirst = false,
     this.isLast = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The reminder model to display
   final ReminderModel reminder;

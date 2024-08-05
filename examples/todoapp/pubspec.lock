@@ -1422,10 +1422,10 @@ packages:
     dependency: "direct main"
     description:
       name: widget_toolkit
-      sha256: "452abe198b280fea76f2a3309a796ab19811997ebd0b1f0cfd322bc9184a5c1c"
+      sha256: "49438aed4ea5dfdda6ac1fa85cd6b03f7c2857be58ec49964cba64943fb06443"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.2"
+    version: "0.1.0"
   win32:
     dependency: transitive
     description:
