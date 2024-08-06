@@ -4,6 +4,7 @@
 
 ## Replaces the contents of the provided file with some predefined values
 function replace_file_contents() {
+  # Values should be specified in pairs, first being the old string and the second being a new one
   to_replace=(
     "docs/continuous_delivery.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md"
     "docs/golden_tests.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md"
@@ -24,13 +25,12 @@ function prepare_example_directory() {
   # Copy the readme file one level up so that it is visible on the pub.dev page
   cp example/testapp/README.md example/
 
+  # Recreate the example/docs directory
   rm -rf example/docs
   mkdir example/docs
 
-  cp example/testapp/docs/continuous_delivery.md example/docs/
-  cp example/testapp/docs/app_architecture.png example/docs/
-  cp example/testapp/docs/cicd_diagram.png example/docs/
-  cp example/testapp/docs/golden_tests.md example/docs/
+  # Copy the contents of the generated docs directory one level up
+  cp -r example/testapp/docs/ example/docs/
 
   replace_file_contents "example/README.md"
 }
