@@ -10,11 +10,13 @@ import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
 
 class TodoListWidget extends StatelessWidget {
   const TodoListWidget({
-    super.key,
     required this.todos,
+    required this.isLoading,
+    super.key,
   });
 
   final List<TodoModel> todos;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +33,25 @@ class TodoListWidget extends StatelessWidget {
       scrollDirection: Axis.vertical,
       itemCount: todos.length,
       itemBuilder: (context, index) => InkWell(
-        onTap: () => context.read<RouterBlocType>().events.push(
-              TodoDetailsRoute(id: todos[index].id ?? ''),
-              extra: todos[index],
-            ),
+        onTap: isLoading
+            ? null
+            : () => context.read<RouterBlocType>().events.push(
+                  TodoDetailsRoute(id: todos[index].id ?? ''),
+                  extra: todos[index],
+                ),
         child: TodoWidget(
           todo: todos[index],
           descriptionMaxLines: 1,
-          onChanged: (todo, isChecked) {
-            if (todo.id != null) {
-              context
-                  .read<TodoActionsBlocType>()
-                  .events
-                  .updateCompletedById(todo.id!, isChecked!);
-            }
-          },
+          onChanged: isLoading
+              ? null
+              : (todo, isChecked) {
+                  if (todo.id != null) {
+                    context
+                        .read<TodoActionsBlocType>()
+                        .events
+                        .updateCompletedById(todo.id!, isChecked!);
+                  }
+                },
         ),
       ),
       separatorBuilder: (context, index) => const Divider(),

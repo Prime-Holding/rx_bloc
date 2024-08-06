@@ -43,7 +43,19 @@ class TodoappTheme {
       iconTheme: _buildIconTheme(baseTheme.iconTheme, designSystemColor),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
-        isLightTheme ? WidgetToolkitTheme.light() : WidgetToolkitTheme.dark(),
+        isLightTheme
+            ? WidgetToolkitTheme.light().copyWith(
+                smallButtonOutlinedBorderColor:
+                    designSystemColor.scaffoldBackgroundColor,
+                smallButtonBackgroundColor:
+                    designSystemColor.scaffoldBackgroundColor,
+              )
+            : WidgetToolkitTheme.dark().copyWith(
+                smallButtonOutlinedBorderColor:
+                    designSystemColor.scaffoldBackgroundColor,
+                smallButtonBackgroundColor:
+                    designSystemColor.scaffoldBackgroundColor,
+              ),
         isLightTheme ? ItemPickerTheme.light() : ItemPickerTheme.dark(),
         isLightTheme ? SearchPickerTheme.light() : SearchPickerTheme.dark(),
         isLightTheme

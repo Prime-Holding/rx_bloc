@@ -27,7 +27,7 @@ class TodoDetailsPage extends StatelessWidget {
         appBar: AppBar(
           title: AppBarTitle(title: context.l10n.todoDetails),
           actions: [
-            RxBlocBuilder<TodoDetailsBlocType, bool>(
+            RxBlocBuilder<TodoActionsBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, isLoadingSnapshot, bloc) => SmallButton(
                 colorStyle: ButtonColorStyle.fromContext(context),
@@ -41,14 +41,11 @@ class TodoDetailsPage extends StatelessWidget {
         ),
         floatingActionButton: RxBlocBuilder<TodoDetailsBlocType, bool>(
           state: (bloc) => bloc.states.isLoading,
-          builder: (context, isLoadingSnapshot, bloc) => Visibility(
-            visible:
-                !(isLoadingSnapshot.hasData && isLoadingSnapshot.requireData),
-            child: FloatingActionButton(
-              onPressed: bloc.events.updateTodo,
-              shape: const OvalBorder(),
-              child: context.designSystem.icons.edit,
-            ),
+          builder: (context, isLoadingSnapshot, bloc) => FloatingActionButton(
+            heroTag: 'fab',
+            onPressed: bloc.events.updateTodo,
+            shape: const OvalBorder(),
+            child: context.designSystem.icons.edit,
           ),
         ),
         body: Column(

@@ -18,6 +18,7 @@ import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
+import '../../lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
 import '../../lib_todo_actions/services/todo_actions_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
@@ -28,7 +29,9 @@ import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/local/todo_list_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
+import '../data_sources/remote/todos_remote_data_source.dart';
 import '../repositories/todo_list_repository.dart';
+import '../repositories/todo_repository.dart';
 
 class TodoappWithDependencies extends StatelessWidget {
   const TodoappWithDependencies({
@@ -107,6 +110,11 @@ class TodoappWithDependencies extends StatelessWidget {
       ];
 
   List<Provider> get _dataSources => [
+        Provider<TodosRemoteDataSource>(
+          create: (context) => TodosRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
         Provider<PermissionsRemoteDataSource>(
           create: (context) => PermissionsRemoteDataSource(
             context.read<ApiHttpClient>(),
@@ -121,6 +129,12 @@ class TodoappWithDependencies extends StatelessWidget {
   List<Provider> get _repositories => [
         Provider<PermissionsRepository>(
           create: (context) => PermissionsRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<TodoRepository>(
+          create: (context) => TodoRepository(
             context.read(),
             context.read(),
           ),
@@ -160,6 +174,12 @@ class TodoappWithDependencies extends StatelessWidget {
           create: (context) => RouterBloc(
             router: context.read<AppRouter>().router,
             permissionsService: context.read(),
+          ),
+        ),
+        RxBlocProvider<TodoListBulkEditBlocType>(
+          create: (context) => TodoListBulkEditBloc(
+            context.read(),
+            context.read(),
           ),
         ),
         Provider<TodoActionsBlocType>(

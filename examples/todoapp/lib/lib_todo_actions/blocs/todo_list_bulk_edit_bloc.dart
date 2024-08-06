@@ -36,6 +36,8 @@ abstract class TodoListBulkEditBlocStates {
 
   /// The error message.
   Stream<ErrorModel> get errors;
+
+  Stream<bool> get isLoading;
 }
 
 @RxBloc()
@@ -78,8 +80,12 @@ class TodoListBulkEditBloc extends $TodoListBulkEditBloc {
               if (_todoActionsService.hasCompleted(todoList))
                 BulkActionModel.clearCompleted,
             ],
-          );
+          )
+          .shareReplay();
 
   @override
   Stream<ErrorModel> _mapToErrorsState() => errorState.mapToErrorModel();
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 }

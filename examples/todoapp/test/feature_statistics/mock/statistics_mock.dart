@@ -6,11 +6,9 @@ import 'package:todoapp/feature_statistics/models/todo_stats_model.dart';
 
 import 'statistics_mock.mocks.dart';
 
-
 @GenerateMocks([StatisticsBlocStates, StatisticsBlocEvents, StatisticsBlocType])
 StatisticsBlocType statisticsMockFactory({
-   TodoStatsModel? todosStats,
-
+  TodoStatsModel? todosStats,
 }) {
   final blocMock = MockStatisticsBlocType();
   final eventsMock = MockStatisticsBlocEvents();
@@ -19,14 +17,11 @@ StatisticsBlocType statisticsMockFactory({
   when(blocMock.events).thenReturn(eventsMock);
   when(blocMock.states).thenReturn(statesMock);
 
-
-  final todosStatsState =  todosStats != null
-    ? Stream.value(todosStats).shareReplay(maxSize: 1)
-    : const Stream<TodoStatsModel>.empty();
-
+  final todosStatsState = todosStats != null
+      ? Stream.value(todosStats).shareReplay(maxSize: 1)
+      : const Stream<TodoStatsModel>.empty();
 
   when(statesMock.todosStats).thenAnswer((_) => todosStatsState);
-
 
   return blocMock;
 }

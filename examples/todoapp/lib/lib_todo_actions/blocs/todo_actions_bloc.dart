@@ -32,6 +32,7 @@ abstract class TodoActionsBlocStates {
   /// The state of the todo after it was deleted
   ConnectableStream<TodoModel> get onTodoDeleted;
   ConnectableStream<TodoModel> get onUpdateCompleted;
+  Stream<bool> get isLoading;
 }
 
 @RxBloc()
@@ -72,4 +73,6 @@ class TodoActionsBloc extends $TodoActionsBloc {
           .doOnData(_coordinatorBloc.events.todoAddedOrUpdated)
           .whereSuccess()
           .publish();
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 }

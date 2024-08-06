@@ -53,5 +53,6 @@ class DesignSystemIcons {
 
   final Icon edit = _getIcon(Icons.edit);
 
+  final Icon close = _getIcon(Icons.close);
   static Icon _getIcon(IconData iconData) => Icon(iconData);
 }

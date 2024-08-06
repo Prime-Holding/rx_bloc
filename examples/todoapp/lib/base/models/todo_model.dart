@@ -7,8 +7,8 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:rx_bloc_list/models.dart';
-
+// ignore: implementation_imports
+import 'package:rx_bloc_list/src/models/identifiable.dart';
 part 'todo_model.g.dart';
 
 @JsonSerializable()
@@ -16,7 +16,7 @@ class TodoModel with EquatableMixin implements Identifiable {
   TodoModel({
     required this.id,
     required this.title,
-    required this.createdAt,
+    this.createdAt = 0,
     this.description = '',
     this.completed = false,
   });
@@ -88,7 +88,7 @@ class TodoModel with EquatableMixin implements Identifiable {
     TodoModel? todo,
   }) =>
       TodoModel(
-        id: todo?.id ,
+        id: todo?.id,
         title: title,
         description: description,
         completed: todo?.completed ?? false,

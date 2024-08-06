@@ -5,7 +5,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:todoapp/base/common_blocs/coordinator_bloc.dart';
 import 'package:todoapp/base/models/todo_model.dart';
-import 'package:todoapp/base/repositories/todo_list_repository.dart';
+import 'package:todoapp/base/repositories/todo_repository.dart';
 import 'package:todoapp/lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
 import 'package:todoapp/lib_todo_actions/models/bulk_action.dart';
 import 'package:todoapp/lib_todo_actions/services/todo_actions_service.dart';
@@ -15,22 +15,26 @@ import '../../stubs.dart';
 import 'todo_list_bulk_edit_test.mocks.dart';
 
 @GenerateMocks([
-  TodoListRepository,
+  TodoRepository,
 ])
 Future<void> main() async {
   late CoordinatorBlocType _coordinatorBloc;
   late CoordinatorStates _coordinatorStates;
-  late TodoListRepository _repository;
+  late TodoRepository _repository;
 
-  void _defineWhen(List<TodoModel> todoList, List<TodoModel> deleteCompletedResult) {
+  void _defineWhen(
+      List<TodoModel> todoList, List<TodoModel> deleteCompletedResult) {
     when(_coordinatorStates.onTodoListChanged)
         .thenAnswer((_) => Stream.value(Result.success(todoList)));
 
-    when(_repository.updateCompletedForAll(true)).thenAnswer((_)  => Future.value(Stubs.todoListAllCompleted));
+    when(_repository.updateCompletedForAll(true))
+        .thenAnswer((_) => Future.value(Stubs.todoListAllCompleted));
 
-    when(_repository.updateCompletedForAll(false)).thenAnswer((_) => Future.value(Stubs.todoListAllIncomplete));
+    when(_repository.updateCompletedForAll(false))
+        .thenAnswer((_) => Future.value(Stubs.todoListAllIncomplete));
 
-    when(_repository.deleteCompleted()).thenAnswer((_) => Future.value(deleteCompletedResult));
+    when(_repository.deleteCompleted())
+        .thenAnswer((_) => Future.value(deleteCompletedResult));
   }
 
   TodoListBulkEditBloc bloc() => TodoListBulkEditBloc(
@@ -39,7 +43,7 @@ Future<void> main() async {
       );
 
   setUp(() {
-    _repository = MockTodoListRepository();
+    _repository = MockTodoRepository();
     _coordinatorStates = coordinatorStatesMockFactory();
     _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorStates);
   });
