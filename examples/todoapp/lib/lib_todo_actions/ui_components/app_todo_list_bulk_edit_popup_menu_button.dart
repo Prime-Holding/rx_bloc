@@ -20,8 +20,10 @@ class AppTodoListBulkEditPopupMenuButton extends StatelessWidget {
         builder: (context, snapshot, isLoading, bloc) => PopupMenuButton(
           key: _popupMenuKey,
           child: SmallButton(
+            colorStyle: ButtonColorStyle.fromContext(context).copyWith(
+              activeButtonTextColor: context.designSystem.colors.primaryColor,
+            ),
             onPressed: () {
-              // Open the popup menu programmatically
               final dynamic popupMenu = _popupMenuKey.currentState;
               popupMenu.showButtonMenu();
             },

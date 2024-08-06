@@ -25,7 +25,7 @@ class TodoListPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(context.l10n.todos),
           actions: [
-            const TodosFilterPopupMenuButton(),
+            TodosFilterPopupMenuButton(),
             AppTodoListBulkEditPopupMenuButton(),
           ],
         ),
