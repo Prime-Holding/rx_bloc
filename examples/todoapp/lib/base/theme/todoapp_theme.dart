@@ -45,12 +45,14 @@ class TodoappTheme {
         designSystem,
         isLightTheme
             ? WidgetToolkitTheme.light().copyWith(
-                smallButtonOutlinedBorderColor: designSystemColor.primaryColor,
+                smallButtonOutlinedBorderColor:
+                    designSystemColor.scaffoldBackgroundColor,
                 smallButtonBackgroundColor:
                     designSystemColor.scaffoldBackgroundColor,
               )
             : WidgetToolkitTheme.dark().copyWith(
-                smallButtonOutlinedBorderColor: designSystemColor.primaryColor,
+                smallButtonOutlinedBorderColor:
+                    designSystemColor.scaffoldBackgroundColor,
                 smallButtonBackgroundColor:
                     designSystemColor.scaffoldBackgroundColor,
               ),

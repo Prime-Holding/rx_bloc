@@ -19,7 +19,7 @@ class TodosFilterPopupMenuButton extends StatelessWidget {
           child: SmallButton(
             icon: context.designSystem.icons.filter.icon,
             colorStyle: ButtonColorStyle.fromContext(context).copyWith(
-              activeButtonTextColor: context.designSystem.colors.primaryColor,
+              activeButtonTextColor: context.designSystem.colors.textColor,
             ),
             onPressed: () {
               final dynamic popupMenu = _popupMenuKey.currentState;

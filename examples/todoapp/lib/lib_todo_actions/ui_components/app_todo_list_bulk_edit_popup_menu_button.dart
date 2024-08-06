@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
-import '../../base/extensions/async_snapshot_extensions.dart';
 import '../blocs/todo_list_bulk_edit_bloc.dart';
 import '../models/bulk_action.dart';
 
@@ -20,15 +19,14 @@ class AppTodoListBulkEditPopupMenuButton extends StatelessWidget {
         builder: (context, snapshot, isLoading, bloc) => PopupMenuButton(
           key: _popupMenuKey,
           child: SmallButton(
+            icon: context.designSystem.icons.menu.icon,
             colorStyle: ButtonColorStyle.fromContext(context).copyWith(
-              activeButtonTextColor: context.designSystem.colors.primaryColor,
+              activeButtonTextColor: context.designSystem.colors.textColor,
             ),
             onPressed: () {
               final dynamic popupMenu = _popupMenuKey.currentState;
               popupMenu.showButtonMenu();
             },
-            icon: context.designSystem.icons.menu.icon,
-            state: isLoading.buttonStateModel,
           ),
           itemBuilder: (context) => snapshot.hasData
               ? snapshot.requireData
