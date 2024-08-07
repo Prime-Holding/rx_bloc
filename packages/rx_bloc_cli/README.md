@@ -96,7 +96,7 @@ Out of the box, a Rx Bloc CLI created projects includes:
 
 ✅ [Design system][design_system_lnk] - A single place where you can define all your colors, typography, assets and more. Your app's Light and Dark mode are already configured
 
-✅ [Testing][testing_lnk] - With Unit and Golden Tests you know your app is working as intended. Please read the Rx Bloc CLI specific [Golden Tests documentation][golden_tests_documentation_lnk].
+✅ [Testing][testing_lnk] - With Unit and Golden Tests you know your app is working as intended.
 
 ✅ [Static analysis][static_analysis_lnk] - Strict Lint rules which are used to write quality code
 
@@ -127,4 +127,3 @@ Rx Bloc Command Line Interface supports [extendability] with the help of mason t
 [dio_http_client_lnk]: https://pub.dev/packages/dio
 [interceptors_lnk]: https://pub.dev/documentation/dio/latest/dio/Interceptor-class.html
 [extendability]: /packages/rx_bloc_cli/mason_templates/README.md
-[golden_tests_documentation_lnk]: /packages/rx_bloc_cli/doc/golden_tests.md

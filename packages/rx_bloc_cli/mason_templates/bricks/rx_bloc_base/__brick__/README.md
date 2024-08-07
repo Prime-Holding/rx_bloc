@@ -353,6 +353,8 @@ Due to the way fonts are loaded in tests, any custom fonts you intend to golden 
 
 In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
 
+In case you have custom widgets for which you're writing golden tests, make sure to check out the guide [Building smart widgets with dependencies without breaking golden tests][golden_tests_with_smart_widgets_lnk].
+
 <div id="server"/>
 
 ## Server
@@ -569,3 +571,4 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
 [rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
+[golden_tests_with_smart_widgets_lnk]: docs/golden_tests.md
