@@ -123,6 +123,9 @@ coverage/
 # Exceptions to above rules for generated files
 !/packages/rx_bloc/lib/src/bloc/loading_bloc.rxb.g.dart
 !/packages/rx_bloc/test/app/blocs/counter_bloc.rxb.g.dart
+!/packages/rx_bloc_test/test/helpers/details_bloc/details_bloc.rxb.g.dart
+!/packages/flutter_rx_bloc/test/multi_builder_test_bloc/multiple_states_bloc.rxb.g.dart
+!/packages/flutter_rx_bloc/test/counter/blocs/*.rxb.g.dart
 
 # Generated examples
 packages/rx_bloc_cli/example/test_app
