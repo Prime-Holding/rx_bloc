@@ -87,7 +87,7 @@ class RouterBloc extends $RouterBloc {
         _$pushReplaceEvent
             .throttleTime(const Duration(seconds: 1))
             .switchMap((routeData) => _pushReplace(routeData).asResultStream()),
-        _$popEvent.doOnData((routeData) => _pop(routeData)).asResultStream(),
+        _$popEvent.doOnData(_pop).asResultStream(),
       ]).setErrorStateHandler(this).whereSuccess().publish();
 
   Future<void> _go(_GoEventArgs routeData) async {

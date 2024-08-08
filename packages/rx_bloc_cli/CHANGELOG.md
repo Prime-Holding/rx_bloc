@@ -1,13 +1,16 @@
-## [3.9.0]
+## [4.0.0]
 * Update dependencies in generated projects:
 * `rx_bloc: ^6.0.0`
 * `rxdart: ^0.28.0`
+Contains breaking changes
+* The `--enable-auth-matrix` option is removed in favour of the [--enable-mfa][mfa_doc_url] (Multi-Factor Authentication) capability.
+* The go_router package is upragded to version ^14.2.1
 
 ## [3.8.1]
-* Added reference in [example documentation][example_project_readme_doc] about [writing golden tests for smart widgets with dependency injection][golden_tests_doc].
+* Added reference in [example documentation][golden_tests_doc_url] about [writing golden tests for smart widgets with dependency injection][golden_tests_doc_url].
 
 ## [3.8.0]
-* Added functionality to exclude smart widgets dependency injection components during golden tests. [Check out the detailed documentation.][golden_tests_doc]
+* Added functionality to exclude smart widgets dependency injection components during golden tests. [Check out the detailed documentation.][golden_tests_doc_url]
 
 ## [3.7.0]
 Updated environment variable names used in CI/CD functionality:
@@ -232,5 +235,6 @@ Contains breaking changes
 [rx_bloc_url]: https://pub.dev/packages/rx_bloc
 [widget_toolkit_url]: https://pub.dev/packages/widget_toolkit
 [code_magic_url]: https://codemagic.io/start/
-[example_project_readme_doc]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/README.md
-[golden_tests_doc]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/doc/golden_tests.md
+[example_project_readme_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/README.md
+[golden_tests_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
+[mfa_doc_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md

@@ -89,5 +89,18 @@ void main() {
 
       verify(logger.warn(any)).called(1);
     });
+
+    test('should return updated values if mfa is enabled', () {
+      configureArgumentValues(Stub.mfaEnabled);
+
+      verifyNever(logger.warn(any));
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.otpEnabled, isTrue);
+      expect(generatorArguments.pinCodeEnabled, isTrue);
+      expect(generatorArguments.mfaEnabled, isTrue);
+
+      verify(logger.warn(any)).called(3);
+    });
   });
 }
