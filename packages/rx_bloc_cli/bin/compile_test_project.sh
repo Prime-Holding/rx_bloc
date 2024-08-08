@@ -1,23 +1,51 @@
-#!/usr/bin/env sh
+#!/bin/bash
+
+##### Functions
+
+## Replaces the contents of the provided file with some predefined values
+function replace_file_contents() {
+  # Values should be specified in pairs, first being the old string and the second being a new one
+  to_replace=(
+    "docs/continuous_delivery.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md"
+    "docs/golden_tests.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md"
+    "docs/mfa.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md",
+    "docs/mfa.png" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.png",
+    "docs/mfa_c4.png" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa_c4.png",
+    "docs/mfa_sequence.png" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa_sequence.png"
+  )
+
+  # Iterate over the to_replace array
+  for (( i=1; i<${#to_replace[@]}; i+=2 )); do
+    old_str="${to_replace[$i]}"
+    new_str="${to_replace[$i+1]}"
+
+    # Replace the old string with the new ones in the provided file
+    sed -i '' "s|$old_str|$new_str|g" "$1"
+  done
+}
+
+## Prepares the example directory
+function prepare_example_directory() {
+  # Copy the readme file one level up so that it is visible on the pub.dev page
+  cp example/testapp/README.md example/
+
+  # Recreate the example/docs directory
+  rm -rf example/docs
+  mkdir example/docs
+
+  # Copy the contents of the generated docs directory one level up
+  cp -r example/testapp/docs/ example/docs/
+
+  replace_file_contents "example/README.md"
+}
+
+##### Main
 
 . $(dirname "$0")/compile_bundles.sh
-rm -rf example/testapp
-rm -rf example/docs
 
+rm -rf example/testapp
 mkdir example/testapp
+
 $(dirname "$0")/generate_test_project.sh all_enabled
 
-# Copy the readme file one level up so that it is visible on the pub.dev page
-cp example/testapp/README.md example/
-
-mkdir example/docs
-
-cp example/testapp/docs/mfa.md example/docs/
-cp example/testapp/docs/mfa.png example/docs/
-cp example/testapp/docs/mfa_c4.png example/docs/
-cp example/testapp/docs/mfa_sequence.png example/docs/
-
-cp example/testapp/docs/continuous_delivery.md example/docs/
-cp example/testapp/docs/app_architecture.png example/docs/
-cp example/testapp/docs/cicd_diagram.png example/docs/
-cp example/testapp/docs/golden_tests.md example/docs/
+prepare_example_directory
