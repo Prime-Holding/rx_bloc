@@ -570,6 +570,6 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
-[rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
-[golden_tests_with_smart_widgets_lnk]: docs/golden_tests.md
+[rx_bloc_cli_cd_setup_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md
+[golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [rx_bloc_cli_mfa_lnk]: docs/mfa.md
