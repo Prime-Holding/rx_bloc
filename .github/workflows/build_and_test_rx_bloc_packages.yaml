@@ -178,6 +178,11 @@ jobs:
       - name: Install Dependencies
         working-directory: ${{ matrix.folder }}
         run: dart pub get
+      - name: Build Runner Build
+        working-directory: ${{ matrix.folder }}
+        run: |
+          flutter pub run build_runner clean
+          flutter pub run build_runner build --delete-conflicting-outputs
       - name: Compile Bundles
         working-directory: ${{ matrix.folder }}
         run: bash bin/compile_bundles.sh
