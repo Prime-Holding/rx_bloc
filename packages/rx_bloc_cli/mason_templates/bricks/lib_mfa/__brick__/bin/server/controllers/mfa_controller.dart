@@ -3,11 +3,11 @@
 import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/lib_mfa/methods/otp/models/mfa_otp_payload.dart';
 import 'package:{{project_name}}/lib_mfa/methods/pin_biometric/models/mfa_pin_code_payload.dart';
-import 'package:{{project_name}}/lib_mfa/models/payload/response/mfa_last_login_payload_response.dart';
 import 'package:{{project_name}}/lib_mfa/models/mfa_action.dart';
 import 'package:{{project_name}}/lib_mfa/models/mfa_method.dart';
 import 'package:{{project_name}}/lib_mfa/models/mfa_method_request.dart';
 import 'package:{{project_name}}/lib_mfa/models/mfa_response.dart';
+import 'package:{{project_name}}/lib_mfa/models/payload/response/mfa_last_login_payload_response.dart';
 
 
 import '../utils/api_controller.dart';

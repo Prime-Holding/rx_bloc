@@ -13,11 +13,11 @@ import 'network_lookup/lib_change_language_lookup.dart';{{/enable_change_languag
 import 'network_lookup/lib_dev_menu_lookup.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
 import 'network_lookup/lib_pin_code_lookup.dart';{{/enable_pin_code}}
 import 'network_lookup/lib_router_lookup.dart';{{#has_authentication}}
-import 'network_lookup/login_lookup.dart';{{/has_authentication}}
+import 'network_lookup/login_lookup.dart';{{/has_authentication}}{{#enable_mfa}}
+import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
 import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
 import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}
-import 'network_lookup/profile_lookup.dart';{{#enable_mfa}}
-import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
+import 'network_lookup/profile_lookup.dart';
 import 'network_lookup/util.dart';{{#enable_feature_widget_toolkit}}
 import 'network_lookup/widget_toolkit_lookup.dart';{{/enable_feature_widget_toolkit}}
 
