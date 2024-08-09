@@ -4,8 +4,8 @@
 
 // Here lie all your app constants
 
-/// The [isInTestMode] in these files is used to exclude the dependencies
-/// from smart widgets for golden tests.
+// The [isInTestMode] in these files is used to exclude the dependencies
+// from smart widgets for golden tests.
 
 export 'is_in_test_mode_io_not_available.dart' if (dart.library.io) 'is_in_test_mode_io_available.dart' if (dart.library.html) 'is_in_test_mode_io_not_available.dart';
 

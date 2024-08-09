@@ -5,11 +5,11 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../lib_mfa/models/payload/actions/mfa_address_payload.dart';
-import '../../lib_mfa/models/payload/actions/mfa_unlock_payload.dart';
 import '../../lib_mfa/models/mfa_action.dart';
 import '../../lib_mfa/models/mfa_method.dart';
 import '../../lib_mfa/models/mfa_response.dart';
+import '../../lib_mfa/models/payload/actions/mfa_address_payload.dart';
+import '../../lib_mfa/models/payload/actions/mfa_unlock_payload.dart';
 import '../../lib_mfa/services/mfa_service.dart';
 
 part 'mfa_edit_address_bloc.rxb.g.dart';
