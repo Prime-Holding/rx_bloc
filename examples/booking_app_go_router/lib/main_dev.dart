@@ -5,15 +5,14 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
+import 'base/app/booking_app.dart';
 import 'base/app/config/environment_config.dart';
 import 'base/app/initialization/app_setup.dart';
-import 'base/app/booking_app.dart';
 
 /// Main entry point for the development environment
 void main() async => await setupAndRunApp(
-  (config) => BookingApp(
-    config: config,
-  ),
-  environment: const EnvironmentConfig.development(),
-);
+      (config) => BookingApp(
+        config: config,
+      ),
+      environment: const EnvironmentConfig.development(),
+    );

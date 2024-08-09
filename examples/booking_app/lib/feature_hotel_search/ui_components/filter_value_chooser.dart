@@ -7,8 +7,8 @@ class ItemValueChooser extends StatefulWidget {
     required this.onValueChanged,
     required this.title,
     this.titleStyle,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
   final TextStyle? titleStyle;

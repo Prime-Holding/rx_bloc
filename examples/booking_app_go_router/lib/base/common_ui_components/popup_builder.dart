@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 /// PopupBuilder is a widget that enables displaying custom popup lists on
@@ -20,8 +19,8 @@ class PopupBuilder<T> extends StatelessWidget {
     this.onCanceled,
     this.tooltip = '',
     this.tooltipEnabled = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// List of [PopupMenuEntry] items that will be built.
   final List<PopupMenuEntry<T>> items;

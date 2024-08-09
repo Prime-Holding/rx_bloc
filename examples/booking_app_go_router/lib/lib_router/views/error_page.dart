@@ -5,11 +5,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 class ErrorPage extends StatelessWidget {
-  const ErrorPage({Key? key}) : super(key: key);
+  const ErrorPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

@@ -5,7 +5,7 @@ part of '../../router.dart';
   routes: [],
 )
 @immutable
-class HomeRoute extends GoRouteData implements RouteData {
+class HomeRoute extends GoRouteData implements RouteDataModel {
   const HomeRoute();
 
   @override

@@ -59,15 +59,11 @@ class ReminderModelRequestData {
 class ReminderModel extends ReminderModelRequestData implements Identifiable {
   ReminderModel({
     required this.id,
-    required title,
-    required dueDate,
-    required complete,
-    authorId,
-  }) : super(
-            title: title,
-            dueDate: dueDate,
-            complete: complete,
-            authorId: authorId);
+    required super.title,
+    required super.dueDate,
+    required super.complete,
+    super.authorId,
+  });
 
   final String id;
 

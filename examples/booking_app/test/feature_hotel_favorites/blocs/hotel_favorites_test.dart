@@ -78,4 +78,31 @@ void main() {
         state: (bloc) => bloc.states.count,
         expect: []);
   });
+
+  group('test hotel_favorites_bloc_dart dispose method', () {
+    test('test hotel_favorites_bloc_dart dispose method', () {
+      defineWhen(hotels: Stub.paginatedListOneHotel);
+      final hotelsBloc = hotelFavoritesBloc();
+      hotelsBloc.dispose();
+    });
+  });
+
+  group('test hotel_favorites_bloc_extensions updateFavoriteHotels', () {
+    rxBlocTest<HotelFavoritesBlocType, Result<List<Hotel>>>(
+      'test hotel_favorites_bloc_extensions updateFavoriteHotels',
+      build: () async {
+        defineWhen(hotels: Stub.paginatedListOneHotel);
+        when(coordinatorStatesMock.onHotelsUpdated)
+            .thenAnswer((_) => Stream.value([Stub.hotel1]));
+        return hotelFavoritesBloc();
+      },
+      act: (bloc) async {},
+      state: (bloc) => bloc.states.favoriteHotels,
+      expect: <Result<List<Hotel>>>[
+        Result.success([]),
+        Result.loading(),
+        Result.success(Stub.paginatedListOneHotel)
+      ],
+    );
+  });
 }

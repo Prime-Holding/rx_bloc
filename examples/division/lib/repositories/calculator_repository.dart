@@ -3,10 +3,12 @@ class CalculatorRepository {
 
   Future<String> calculate(String a, String b) async {
     // Any thrown exception will be captured by the errorState
-    if (a.isNullOrEmpty || !a.isNumeric)
+    if (a.isNullOrEmpty || !a.isNumeric) {
       throw Exception('Invalid first number.');
-    if (b.isNullOrEmpty || !b.isNumeric)
+    }
+    if (b.isNullOrEmpty || !b.isNumeric) {
       throw Exception('Invalid second number.');
+    }
 
     final numA = double.parse(a);
     final numB = double.parse(b);
@@ -16,18 +18,18 @@ class CalculatorRepository {
     }
 
     // Simulate a small calculation delay (so the loading progress is visible)
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 300));
     return '$numA / $numB = ${numA / numB}';
   }
 }
 
 extension _StringExtensions on String {
   bool get isNullOrEmpty {
-    return this.trim().isEmpty;
+    return trim().isEmpty;
   }
 
   bool get isNumeric {
-    final _digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    return this.split('').every((char) => _digits.contains(char));
+    final digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    return split('').every((char) => digits.contains(char));
   }
 }

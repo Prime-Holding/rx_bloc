@@ -18,7 +18,7 @@ import '../ui_components/hotel_capacity_page.dart';
 import '../ui_components/hotel_sort_page.dart';
 
 class HotelSearchPage extends StatefulWidget {
-  const HotelSearchPage({Key? key}) : super(key: key);
+  const HotelSearchPage({super.key});
 
   @override
   State<HotelSearchPage> createState() => _HotelSearchPageState();

@@ -11,7 +11,7 @@ void main() {
 
 // ignore: public_member_api_docs
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override

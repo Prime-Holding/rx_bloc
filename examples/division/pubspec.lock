@@ -222,13 +222,21 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_lints:
+    dependency: "direct dev"
+    description:
+      name: flutter_lints
+      sha256: "3f41d009ba7172d5ff9be5f6e6e6abb4300e263aab8866d2a0842ed2a70f8f0c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   flutter_rx_bloc:
     dependency: "direct main"
     description:
       path: "../../packages/flutter_rx_bloc"
       relative: true
     source: path
-    version: "6.1.1"
+    version: "7.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -322,6 +330,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      sha256: "976c774dd944a42e83e2467f4cc670daef7eed6295b10b36ae8c85bcbf828235"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   logging:
     dependency: transitive
     description:
@@ -432,29 +448,29 @@ packages:
       path: "../../packages/rx_bloc"
       relative: true
     source: path
-    version: "5.0.3"
+    version: "6.0.0"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
       path: "../../packages/rx_bloc_generator"
       relative: true
     source: path
-    version: "7.2.2"
+    version: "8.0.0"
   rx_bloc_test:
     dependency: "direct dev"
     description:
       path: "../../packages/rx_bloc_test"
       relative: true
     source: path
-    version: "4.0.0"
+    version: "5.0.0"
   rxdart:
     dependency: "direct main"
     description:
       name: rxdart
-      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
       url: "https://pub.dev"
     source: hosted
-    version: "0.27.7"
+    version: "0.28.0"
   shelf:
     dependency: transitive
     description:

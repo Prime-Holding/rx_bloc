@@ -24,6 +24,8 @@ class Stub {
       HotelsRepository.hotelsDB.first.copyWith(isFavorite: true);
   static final hotel2 = HotelsRepository.hotelsDB[1];
   static final hotel3 = HotelsRepository.hotelsDB[2];
+  static final hotel4 = HotelsRepository.hotelsDB[3];
+  static final hotel5 = HotelsRepository.hotelsDB[4];
 
   static final paginatedListEmpty = PaginatedList<Hotel>(
     list: [],

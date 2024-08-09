@@ -1,0 +1,21 @@
+dependency_overrides:
+  animated_stream_list:
+    git:
+      url: https://github.com/nilsreichardt/animated-stream-list.git
+      ref: migrate-null-safety
+  appbar_textfield:
+    git:
+      url: https://github.com/StanevPrime/appbar_textfield.git
+      ref: null-safety
+  favorites_advanced_base:
+    path: ../favorites_advanced/favorites_advanced_base
+  flutter_rx_bloc:
+    path: ../../packages/flutter_rx_bloc
+  rx_bloc:
+    path: ../../packages/rx_bloc
+  rx_bloc_generator:
+    path: ../../packages/rx_bloc_generator
+  rx_bloc_list:
+    path: ../../packages/rx_bloc_list
+  rx_bloc_test:
+    path: ../../packages/rx_bloc_test

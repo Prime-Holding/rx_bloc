@@ -11,7 +11,7 @@ import '../../stubs.dart';
   CoordinatorBlocType,
 ])
 void main() {
-  void _defineWhen() {}
+  void defineWhen() {}
 
   CoordinatorBloc coordinatorBloc() => CoordinatorBloc();
   setUp(() {});
@@ -20,7 +20,7 @@ void main() {
     rxBlocTest<CoordinatorBlocType, Result<TodoModel>>(
         'test coordinator_bloc_dart state  onTodoAddedOrUpdated',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {
@@ -38,7 +38,7 @@ void main() {
     rxBlocTest<CoordinatorBlocType, bool>(
         'test coordinator_bloc_dart state  onTodoAddedOrUpdated',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {
@@ -56,7 +56,7 @@ void main() {
     rxBlocTest<CoordinatorBlocType, Result<TodoModel>>(
         'test coordinator_bloc_dart state  onTodoDeleted',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {
@@ -74,7 +74,7 @@ void main() {
     rxBlocTest<CoordinatorBlocType, Result<List<TodoModel>>>(
         'test coordinator_bloc_dart state  onTodoListChanged',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {

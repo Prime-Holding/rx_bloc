@@ -18,36 +18,40 @@ import 'todo_list_bulk_edit_test.mocks.dart';
   TodoListRepository,
 ])
 Future<void> main() async {
-  late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorStates _coordinatorStates;
-  late TodoListRepository _repository;
+  late CoordinatorBlocType coordinatorBloc;
+  late CoordinatorStates coordinatorStates;
+  late TodoListRepository repository;
 
-  void _defineWhen(List<TodoModel> todoList, List<TodoModel> deleteCompletedResult) {
-    when(_coordinatorStates.onTodoListChanged)
+  void defineWhen(
+      List<TodoModel> todoList, List<TodoModel> deleteCompletedResult) {
+    when(coordinatorStates.onTodoListChanged)
         .thenAnswer((_) => Stream.value(Result.success(todoList)));
 
-    when(_repository.updateCompletedForAll(true)).thenAnswer((_)  => Future.value(Stubs.todoListAllCompleted));
+    when(repository.updateCompletedForAll(true))
+        .thenAnswer((_) => Future.value(Stubs.todoListAllCompleted));
 
-    when(_repository.updateCompletedForAll(false)).thenAnswer((_) => Future.value(Stubs.todoListAllIncomplete));
+    when(repository.updateCompletedForAll(false))
+        .thenAnswer((_) => Future.value(Stubs.todoListAllIncomplete));
 
-    when(_repository.deleteCompleted()).thenAnswer((_) => Future.value(deleteCompletedResult));
+    when(repository.deleteCompleted())
+        .thenAnswer((_) => Future.value(deleteCompletedResult));
   }
 
   TodoListBulkEditBloc bloc() => TodoListBulkEditBloc(
-        TodoActionsService(_repository),
-        _coordinatorBloc,
+        TodoActionsService(repository),
+        coordinatorBloc,
       );
 
   setUp(() {
-    _repository = MockTodoListRepository();
-    _coordinatorStates = coordinatorStatesMockFactory();
-    _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorStates);
+    repository = MockTodoListRepository();
+    coordinatorStates = coordinatorStatesMockFactory();
+    coordinatorBloc = coordinatorBlocMockFactory(states: coordinatorStates);
   });
 
   rxBlocFakeAsyncTest<TodoListBulkEditBlocType, List<BulkActionModel>>(
       'test todo_list_bulk_edit_test state bulkActions',
       build: () {
-        _defineWhen(Stubs.todoList, []);
+        defineWhen(Stubs.todoList, []);
         return bloc();
       },
       act: (bloc, fakeAsync) async {

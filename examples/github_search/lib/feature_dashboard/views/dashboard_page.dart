@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../app_extensions.dart';
 import '../../base/models/github_repo_model.dart';
 import 'dashboard_search_delegate.dart';

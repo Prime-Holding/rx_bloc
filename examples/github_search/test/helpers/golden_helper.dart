@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
-
 import 'package:githubsearch/assets.dart';
 import 'package:githubsearch/base/theme/design_system.dart';
 import 'package:githubsearch/base/theme/githubsearch_theme.dart';
 import 'package:githubsearch/l10n/githubsearch_app_i18n.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
 
 import 'models/labeled_device_builder.dart';
 import 'models/scenario.dart';

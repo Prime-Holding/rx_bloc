@@ -12,10 +12,9 @@ class HotelAnimatedListView extends StatelessWidget {
   const HotelAnimatedListView({
     required Stream<List<Hotel>> hotelList,
     Function(Hotel)? onHotelPressed,
-    Key? key,
+    super.key,
   })  : _hotelList = hotelList,
-        _onHotelPressed = onHotelPressed,
-        super(key: key);
+        _onHotelPressed = onHotelPressed;
 
   final Function(Hotel)? _onHotelPressed;
   final Stream<List<Hotel>> _hotelList;

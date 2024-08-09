@@ -16,30 +16,30 @@ import 'router_bloc_test.mocks.dart';
   PermissionsService,
 ])
 void main() {
-  late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorStates _coordinatorStates;
-  late PermissionsService _permissionsService;
+  late CoordinatorBlocType coordinatorBloc;
+  late CoordinatorStates coordinatorStates;
+  late PermissionsService permissionsService;
 
-  void _defineWhen({bool shouldThrowError = false}) {
-    when(_coordinatorStates.isAuthenticated).thenAnswer(
+  void defineWhen({bool shouldThrowError = false}) {
+    when(coordinatorStates.isAuthenticated).thenAnswer(
         (_) => shouldThrowError ? Stream.error(Error()) : Stream.value(true));
   }
 
   setUp(() {
-    _coordinatorStates = coordinatorStatesMockFactory();
-    _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorStates);
-    _permissionsService = MockPermissionsService();
+    coordinatorStates = coordinatorStatesMockFactory();
+    coordinatorBloc = coordinatorBlocMockFactory(states: coordinatorStates);
+    permissionsService = MockPermissionsService();
   });
 
   RouterBloc routerBloc() => RouterBloc(
-      router: AppRouter(coordinatorBloc: _coordinatorBloc).router,
-      permissionsService: _permissionsService);
+      router: AppRouter(coordinatorBloc: coordinatorBloc).router,
+      permissionsService: permissionsService);
 
   group('test router_bloc state navigationPath', () {
     rxBlocTest(
       'test router_bloc state navigationPath goToLocation',
       build: () async {
-        _defineWhen();
+        defineWhen();
         return routerBloc();
       },
       act: (bloc) async => bloc.events.goToLocation('/'),
@@ -50,7 +50,7 @@ void main() {
     rxBlocTest(
       'test router_bloc state navigationPath push',
       build: () async {
-        _defineWhen();
+        defineWhen();
         return routerBloc();
       },
       act: (bloc) async => bloc.events.push(Stubs.homePageRoute),
@@ -61,7 +61,7 @@ void main() {
     rxBlocTest(
       'test router_bloc state navigationPath pop',
       build: () async {
-        _defineWhen();
+        defineWhen();
         return routerBloc();
       },
       act: (bloc) async => bloc.events.pop(),
@@ -72,7 +72,7 @@ void main() {
     rxBlocTest(
       'test router_bloc state navigationPath pushReplace',
       build: () async {
-        _defineWhen();
+        defineWhen();
         return routerBloc();
       },
       act: (bloc) async => bloc.events.pushReplace(Stubs.homePageRoute),
@@ -83,7 +83,7 @@ void main() {
     rxBlocTest(
       'test router_bloc state navigationPath go',
       build: () async {
-        _defineWhen();
+        defineWhen();
         return routerBloc();
       },
       act: (bloc) async => bloc.events.go(Stubs.homePageRoute),

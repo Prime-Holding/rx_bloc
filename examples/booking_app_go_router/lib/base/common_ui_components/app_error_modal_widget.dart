@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
@@ -22,26 +21,26 @@ class AppErrorModalWidget<BlocType extends RxBlocTypeBase>
   const AppErrorModalWidget({
     required this.errorState,
     this.isListeningForNavigationErrors = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ErrorStateCallback<BlocType> errorState;
   final bool isListeningForNavigationErrors;
 
   @override
   Widget build(BuildContext context) => Column(
-      children: [
-        RxBlocListener<BlocType, ErrorModel>(
-          state: (bloc) => errorState(bloc),
-          listener: _onError,
-        ),
-        if (isListeningForNavigationErrors)
-        RxBlocListener<RouterBlocType, ErrorModel>(
-          state: (bloc) => bloc.states.errors,
-          listener: (context, state) => _onError(context, state),
-        ),
-      ],
-  );
+        children: [
+          RxBlocListener<BlocType, ErrorModel>(
+            state: (bloc) => errorState(bloc),
+            listener: _onError,
+          ),
+          if (isListeningForNavigationErrors)
+            RxBlocListener<RouterBlocType, ErrorModel>(
+              state: (bloc) => bloc.states.errors,
+              listener: (context, state) => _onError(context, state),
+            ),
+        ],
+      );
 
   void _onError(BuildContext context, ErrorModel errorModel) {
     ScaffoldMessenger.of(context).showSnackBar(

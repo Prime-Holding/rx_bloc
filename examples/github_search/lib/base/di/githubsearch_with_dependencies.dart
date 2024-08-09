@@ -6,7 +6,6 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -24,7 +23,6 @@ import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../../lib_router/services/router_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';

@@ -1,0 +1,9 @@
+dependency_overrides:
+  rx_bloc_test:
+    path: ../../packages/rx_bloc_test
+  rx_bloc:
+    path: ../../packages/rx_bloc
+  flutter_rx_bloc:
+    path: ../../packages/flutter_rx_bloc
+  rx_bloc_generator:
+    path: ../../packages/rx_bloc_generator

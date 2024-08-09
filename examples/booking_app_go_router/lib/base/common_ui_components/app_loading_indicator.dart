@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import '../theme/design_system.dart';
@@ -17,8 +16,8 @@ class AppLoadingIndicator extends StatelessWidget {
     this.size,
     this.strokeWidth,
     this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Alignment? alignment;
   final EdgeInsets? padding;
@@ -37,7 +36,7 @@ class AppLoadingIndicator extends StatelessWidget {
       );
 
   factory AppLoadingIndicator.textButtonValue(BuildContext context,
-      {Color? color}) =>
+          {Color? color}) =>
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
         size: Size(
@@ -48,8 +47,7 @@ class AppLoadingIndicator extends StatelessWidget {
         color: color,
       );
 
-  factory AppLoadingIndicator.taskValue(BuildContext context,
-      {Color? color}) =>
+  factory AppLoadingIndicator.taskValue(BuildContext context, {Color? color}) =>
       AppLoadingIndicator(
         padding: EdgeInsets.zero,
         strokeWidth: 4,
@@ -62,16 +60,16 @@ class AppLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    alignment: alignment ?? Alignment.center,
-    padding: padding ??
-        EdgeInsets.symmetric(
-          vertical: context.designSystem.spacing.m,
+        alignment: alignment ?? Alignment.center,
+        padding: padding ??
+            EdgeInsets.symmetric(
+              vertical: context.designSystem.spacing.m,
+            ),
+        width: size?.width ?? context.designSystem.spacing.xxxxl2,
+        height: size?.height ?? context.designSystem.spacing.xxxxl2,
+        child: CircularProgressIndicator(
+          color: color ?? context.designSystem.colors.primaryColor,
+          strokeWidth: strokeWidth ?? context.designSystem.spacing.xsss,
         ),
-    width: size?.width ?? context.designSystem.spacing.xxxxl2,
-    height: size?.height ?? context.designSystem.spacing.xxxxl2,
-    child: CircularProgressIndicator(
-      color: color ?? context.designSystem.colors.primaryColor,
-      strokeWidth: strokeWidth ?? context.designSystem.spacing.xsss,
-    ),
-  );
+      );
 }

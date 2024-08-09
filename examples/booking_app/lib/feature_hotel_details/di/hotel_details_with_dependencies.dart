@@ -12,8 +12,8 @@ class HotelDetailsWithDependencies extends StatelessWidget {
   const HotelDetailsWithDependencies({
     required this.hotelId,
     this.hotel,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String hotelId;
   final Hotel? hotel;

@@ -29,7 +29,7 @@ class GithubsearchTheme {
 
     final colorScheme = baseColorScheme.copyWith(
       primary: designSystemColor.primaryColor,
-      background: designSystemColor.backgroundColor,
+      surface: designSystemColor.backgroundColor,
       error: designSystemColor.errorColor,
     );
 
@@ -43,12 +43,14 @@ class GithubsearchTheme {
       iconTheme: _buildIconTheme(baseTheme.iconTheme, designSystemColor),
       extensions: <ThemeExtension<dynamic>>[
         designSystem,
-        isLightTheme ? WidgetToolkitTheme.light : WidgetToolkitTheme.dark,
-        isLightTheme ? ItemPickerTheme.light : ItemPickerTheme.dark,
-        isLightTheme ? SearchPickerTheme.light : SearchPickerTheme.dark,
-        isLightTheme ? TextFieldDialogTheme.light : TextFieldDialogTheme.dark,
-        isLightTheme ? EditAddressTheme.light : EditAddressTheme.dark,
-        isLightTheme ? LanguagePickerTheme.light : LanguagePickerTheme.dark,
+        isLightTheme ? WidgetToolkitTheme.light() : WidgetToolkitTheme.dark(),
+        isLightTheme ? ItemPickerTheme.light() : ItemPickerTheme.dark(),
+        isLightTheme ? SearchPickerTheme.light() : SearchPickerTheme.dark(),
+        isLightTheme
+            ? TextFieldDialogTheme.light()
+            : TextFieldDialogTheme.dark(),
+        isLightTheme ? EditAddressTheme.light() : EditAddressTheme.dark(),
+        isLightTheme ? LanguagePickerTheme.light() : LanguagePickerTheme.dark(),
       ],
       // Override any material widget themes here if needed.
     );

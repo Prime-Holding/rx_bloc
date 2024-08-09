@@ -18,14 +18,14 @@ class DashboardService {
       GithubRepoModel(
         name: 'rx_bloc',
         description:
-            "A Flutter package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of reactive streams.",
+            'A Flutter package that helps implementing the BLoC (Business Logic Component) Design Pattern using the power of reactive streams.',
         url:
             'https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc',
       ),
       GithubRepoModel(
         name: 'flutter_rx_bloc',
         description:
-            "Set of Flutter Widgets that help implementing the BLoC design pattern. Built to be used with the rx_bloc package.",
+            'Set of Flutter Widgets that help implementing the BLoC design pattern. Built to be used with the rx_bloc package.',
         url:
             'https://github.com/Prime-Holding/rx_bloc/tree/master/packages/flutter_rx_bloc',
       ),

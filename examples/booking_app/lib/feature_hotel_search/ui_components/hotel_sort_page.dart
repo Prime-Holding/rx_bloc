@@ -6,8 +6,8 @@ class HotelSortPage extends StatefulWidget {
   const HotelSortPage({
     this.onApplyPressed,
     this.initialSelection = SortBy.none,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Function(SortBy)? onApplyPressed;
   final SortBy initialSelection;

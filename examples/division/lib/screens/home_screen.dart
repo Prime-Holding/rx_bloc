@@ -1,19 +1,22 @@
-import 'package:example/bloc/division_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
+
+import '../bloc/division_bloc.dart';
 
 String? _numberA, _numberB;
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         height: 200,
         child: Card(
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: RxBlocProvider<DivisionBlocType>(
               create: (BuildContext ctx) => DivisionBloc(),
               child: Column(
@@ -22,8 +25,8 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('Number A: '),
-                      Container(
+                      const Text('Number A: '),
+                      SizedBox(
                         width: 200,
                         height: 20,
                         child: TextField(
@@ -33,12 +36,12 @@ class HomeScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('Number B: '),
-                      Container(
+                      const Text('Number B: '),
+                      SizedBox(
                         width: 200,
                         height: 20,
                         child: TextField(
@@ -48,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   RxBlocBuilder<DivisionBlocType, bool>(
                     state: (bloc) => bloc.states.isLoading,
                     builder: (ctx, state, bloc) => OutlinedButton(
@@ -70,9 +73,10 @@ class HomeScreen extends StatelessWidget {
                   RxBlocListener<DivisionBlocType, String>(
                     state: (bloc) => bloc.states.errors,
                     listener: (ctx, error) {
-                      if (error.isNotEmpty)
+                      if (error.isNotEmpty) {
                         ScaffoldMessenger.of(ctx).showSnackBar(
-                            SnackBar(content: Text("Error: $error")));
+                            SnackBar(content: Text('Error: $error')));
+                      }
                     },
                   ),
                 ],
