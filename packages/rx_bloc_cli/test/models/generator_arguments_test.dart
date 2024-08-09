@@ -41,6 +41,7 @@ void main() {
       cicdEnabled: true,
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
+      cicdGitlabEnabled: true,
     );
     sut = GeneratorArguments(
       outputDirectory: outputDirectory,

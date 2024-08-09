@@ -1,0 +1,59 @@
+stages:
+  - setup
+  - test
+
+.standard-rules:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - "**"
+
+variables:
+  FLUTTER_VERSION: 3.19.6
+  MIN_COVERAGE: 6
+
+setup-flutter:
+  stage: setup
+  extends:
+    - .standard-rules
+  before_script:
+    - apt-get update
+    - apt-get install -y curl unzip xz-utils git
+  script:
+    - curl -o flutter.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+    - tar xf flutter.tar.xz
+    - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
+    - dart --version
+    - flutter --version
+  artifacts:
+    paths:
+      - flutter/
+  cache:
+    key: "${CI_PROJECT_TITLE}-flutter-${FLUTTER_VERSION}-${CI_COMMIT_REF_SLUG}"
+    paths:
+      - flutter/
+
+run-app-tests:
+  stage: test
+  extends:
+    - .standard-rules
+  before_script:
+    - apt-get update
+    - apt-get install -y curl git lcov
+  dependencies:
+    - setup-flutter
+  script:
+    - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
+    - export PUB_CACHE=$CI_PROJECT_DIR/.pub-cache
+    - flutter pub get
+    - flutter packages pub run build_runner build --delete-conflicting-outputs
+    - flutter analyze lib
+    - |
+       if [ -d "test" ]; then
+         flutter test --coverage --exclude-tags=not-tests
+       fi
+    - flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+    - echo "Checking coverage..."
+    - bash -c "coverage=$(lcov --summary coverage/lcov.info | grep 'lines:' | awk '{print $2}' | sed 's/%//')"
+    - echo "Coverage = ${coverage}%"
+    - bash -c "if [ \"$coverage\" -lt \"$MIN_COVERAGE\" ]; then echo 'Coverage is below the threshold!'; exit 1; else echo 'Coverage is sufficient. Coverage = $coverage.'; fi"
