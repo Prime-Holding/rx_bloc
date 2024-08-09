@@ -143,6 +143,7 @@ class CreateCommand extends Command<int> {
             'cicd': arguments.cicdEnabled,
             'cicd_github': arguments.cicdGithubEnabled,
             'cicd_codemagic': arguments.cicdCodemagicEnabled,
+            'cicd_gitlab': arguments.cicdGitlabEnabled,
             'enable_mfa': arguments.mfaEnabled,
           },
     );

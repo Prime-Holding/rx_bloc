@@ -150,6 +150,7 @@ class GeneratorArgumentsProvider {
     final cicdEnabled = cicdType != CICDType.none;
     final cicdGithubEnabled = cicdType == CICDType.github;
     final cicdCodemagicEnabled = cicdType == CICDType.codemagic;
+    final cicdGitlabEnabled = cicdType == CICDType.gitlab;
 
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
@@ -164,6 +165,7 @@ class GeneratorArgumentsProvider {
       cicdEnabled: cicdEnabled,
       cicdGithubEnabled: cicdGithubEnabled,
       cicdCodemagicEnabled: cicdCodemagicEnabled,
+      cicdGitlabEnabled: cicdGitlabEnabled,
     );
   }
 

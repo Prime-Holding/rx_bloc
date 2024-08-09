@@ -86,6 +86,7 @@ final class Stub {
       cicdEnabled: true,
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
+      cicdGitlabEnabled: true,
     ),
   );
 
@@ -120,6 +121,8 @@ final class Stub {
           CreateCommandArguments.cicd.defaultValue() == CICDType.github,
       cicdCodemagicEnabled:
           CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
+      cicdGitlabEnabled:
+          CreateCommandArguments.cicd.defaultValue() == CICDType.gitlab,
     ),
   );
 }

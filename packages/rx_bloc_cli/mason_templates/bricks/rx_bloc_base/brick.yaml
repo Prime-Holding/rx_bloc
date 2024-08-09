@@ -21,6 +21,7 @@ vars:
   - cicd
   - cicd_github
   - cicd_codemagic
+  - cicd_gitlab
   - enable_pin_code
   - enable_dev_menu
   - enable_feature_otp

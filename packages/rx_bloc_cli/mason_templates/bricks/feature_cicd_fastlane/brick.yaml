@@ -2,7 +2,7 @@ name: feature_cicd_fastlane
 description: A new brick created with the Mason CLI.
 
 # repository: https://github.com/Prime-Holding/rx_bloc/tree/develop/packages/rx_bloc_cli/mason_templates/bricks/feature_cicd_fastlane
-version: 0.1.0+1
+version: 0.2.0+1
 
 environment:
   mason: ">=0.1.0-dev.50 <0.1.0"
@@ -23,3 +23,6 @@ vars:
   cicd_github:
     type: boolean
     description: Flag enabling the github ci/cd implementation
+  cicd_gitlab:
+    type: boolean
+    description: Flag enabling the gitlab ci/cd implementation
