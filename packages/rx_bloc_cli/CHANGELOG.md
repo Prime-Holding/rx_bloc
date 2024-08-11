@@ -1,3 +1,6 @@
+## [4.1.0]
+* Added GitLab as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `codemagic`, `gitlab`, `none`)
+
 ## [4.0.0]
 Contains breaking changes
 * The `--enable-auth-matrix` option is removed in favour of the [--enable-mfa][mfa_doc_url] (Multi-Factor Authentication) capability.

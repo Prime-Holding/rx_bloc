@@ -9,7 +9,7 @@ stages:
         - "**"
 
 variables:
-  FLUTTER_VERSION: 3.19.6
+  FLUTTER_VERSION: 3.24.0
   MIN_COVERAGE: 6
 
 setup-flutter:
@@ -52,7 +52,7 @@ run-app-tests:
        if [ -d "test" ]; then
          flutter test --coverage --exclude-tags=not-tests
        fi
-    - flutter pub run clean_coverage clean --exclusions '**/.g.dart','**repository.dart','**rxb.g.dart' coverage/lcov.info
+    - flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','**/routes.dart','**data_source.dart','**_model.g.dart','**_models.g.dart''**_model.dart','**_model_extensions.dart','**_models.dart','**_models_extensions.dart','**_config.dart','**_constants.dart','**_translations.dart','lib/assets.dart','lib/keys.dart','lib/base/theme/**','lib/base/utils/**','lib/keys.dart','lib/l10n/**' coverage/lcov.info
     - echo "Checking coverage..."
     - bash -c "coverage=$(lcov --summary coverage/lcov.info | grep 'lines:' | awk '{print $2}' | sed 's/%//')"
     - echo "Coverage = ${coverage}%"
