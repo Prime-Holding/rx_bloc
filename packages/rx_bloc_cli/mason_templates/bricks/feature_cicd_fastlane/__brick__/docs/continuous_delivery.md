@@ -146,6 +146,23 @@ The `deployment.yaml` contains necessary details used for deploying the app.
 In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below.
 
 {{/cicd_codemagic}}
+{{#cicd_gitlab}}
+### Gitlab pipeline
+
+If created with the `--cicd=gitlab` flag, the generated project contains a workflow configuration file `.gitlab-ci.yml` at the root level. This file sets up the environment and runs the tests in your project. It is executed on every push or merge request in your GitLab repository.
+
+If you haven't created an access token for your distribution repository in GitLab, follow [this guide][clone_gitlab_repo_with_access_token] to do so, and keep the token handy.
+
+Within the `{project_root}/.gitlab-ci.yml` file, the default configuration sets up the environment to use a specific Flutter version. To change that configuration, update the `FLUTTER_VERSION` variable. You can also configure `MIN_COVERAGE` to set the minimum test code coverage threshold.
+
+To trigger the pipeline, push a change to your repository or create a merge request.
+
+If your project is public on GitLab.com, your pipeline will run on the available shared runners. If your project is private and/or you are using your own instance of GitLab, you will first need to set up a runner for your project by following [the official documentation][gitLab_runners].
+
+> [!NOTE]
+> If your project contains any Golden Tests, ensure that the environment where your pipeline runs (the assigned runner) is the same as the one where your `.png` files were generated.
+
+{{/cicd_gitlab}}
 ### Local distribution
 
 Before running the commands, make sure you have Ruby and [Fastlane][fastlane_link] installed on your system.
@@ -187,7 +204,9 @@ For more details on that and other commands, as well as their arguments, please 
 [apple_issuer_id_details]: https://appstoreconnect.apple.com/access/integrations/api
 [apple_provisioning_profiles_list]: https://developer.apple.com/account/resources/profiles/list
 [clone_github_repo_with_access_token]: https://kettan007.medium.com/how-to-clone-a-git-repository-using-personal-access-token-a-step-by-step-guide-ab7b54d4ef83
+[clone_gitlab_repo_with_access_token]: https://docs.gitlab.com/ee/topics/git/clone.html#clone-using-a-token
 [github_actions_usage_limits]: https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits
 [codemagic_pricing]: https://codemagic.io/pricing/
 [codemagic_instance_types]: https://docs.codemagic.io/yaml-basic-configuration/yaml-getting-started/#instance-type
 [codemagic_api_token_location]: https://docs.codemagic.io/rest-api/codemagic-rest-api/#authentication
+[gitLab_runners]: https://docs.gitlab.com/runner/
