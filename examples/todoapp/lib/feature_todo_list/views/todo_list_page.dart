@@ -46,9 +46,9 @@ class TodoListPage extends StatelessWidget {
                 RxBlocBuilder<TodoListBulkEditBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, isLoadingBulk, bloc) {
-                final isLoading = ((isLoadingActions.data == null ||
-                        isLoadingActions.data!) ||
-                    (isLoadingBulk.data == null || isLoadingBulk.data!));
+                final isLoading =
+                    ((isLoadingActions.hasData || isLoadingActions.data!) ||
+                        (isLoadingBulk.hasData || isLoadingBulk.data!));
                 return TodoListWidget(
                   todos: list,
                   isLoading: isLoading,
