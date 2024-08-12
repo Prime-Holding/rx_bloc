@@ -1,3 +1,8 @@
+## [5.0.0]
+Generated projects have their dependencies updated:
+* `rx_bloc` to `^6.0.0`
+* `rxdart` to `^0.28.0`
+
 ## [4.0.0]
 Contains breaking changes
 * The `--enable-auth-matrix` option is removed in favour of the [--enable-mfa][mfa_doc_url] (Multi-Factor Authentication) capability.
