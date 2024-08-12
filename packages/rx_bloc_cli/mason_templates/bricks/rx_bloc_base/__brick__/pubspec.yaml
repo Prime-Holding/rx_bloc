@@ -22,7 +22,7 @@ dependencies: {{#enable_dev_menu}}
   flutter:
     sdk: flutter{{#enable_social_logins}}
   flutter_facebook_auth: ^6.0.2{{/enable_social_logins}}
-  flutter_local_notifications: ^16.1.0
+  flutter_local_notifications: ^17.2.1+2
   flutter_localizations:
     sdk: flutter
   flutter_rx_bloc: ^6.1.1
