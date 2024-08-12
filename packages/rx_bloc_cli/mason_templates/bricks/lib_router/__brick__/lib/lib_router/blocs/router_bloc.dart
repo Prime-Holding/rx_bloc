@@ -73,11 +73,11 @@ class RouterBloc extends $RouterBloc {
 
   @override
   ConnectableStream<ErrorModel> _mapToErrorsState() => errorState
-      .mapToErrorModel()
       // TODO: Remove workaround when GoRouter gets updated for Flutter 3.24
       .where((exc) =>
         exc.toString() !=
         "Exception: type 'ResultSuccess<MfaResponse>' is not a subtype of type 'Function?' of 'result'")
+      .mapToErrorModel()
       .publish();
 
   @override
