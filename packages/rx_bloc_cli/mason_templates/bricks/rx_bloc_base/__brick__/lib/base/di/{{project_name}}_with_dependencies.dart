@@ -32,7 +32,10 @@ import '../../lib_auth/services/user_account_service.dart';{{/has_authentication
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
-import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}
+import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}{{#enable_mfa}}
+import '../../lib_mfa/data_source/remote/mfa_data_source.dart';
+import '../../lib_mfa/repositories/mfa_repository.dart';
+import '../../lib_mfa/services/mfa_service.dart';{{/enable_mfa}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
@@ -47,10 +50,7 @@ import '../../lib_pin_code/services/pin_biometrics_service.dart';
 import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
-import '../../lib_router/services/router_service.dart';{{#enable_mfa}}
-import '../../lib_mfa/data_source/remote/mfa_data_source.dart';
-import '../../lib_mfa/repositories/mfa_repository.dart';
-import '../../lib_mfa/services/mfa_service.dart';{{/enable_mfa}}
+import '../../lib_router/services/router_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';

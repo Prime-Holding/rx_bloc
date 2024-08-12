@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/app/config/app_constants.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../blocs/social_login_bloc.dart';
@@ -15,7 +16,6 @@ import '../repositories/facebook_auth_repository.dart';
 import '../services/facebook_social_login_service.dart';
 import '../services/social_login_service.dart';
 import 'social_login_button.dart';
-import '../../base/app/config/app_constants.dart';
 
 /// [FacebookLoginWidget] provides out of the box Log in with Apple
 /// functionality along with default view of the button.

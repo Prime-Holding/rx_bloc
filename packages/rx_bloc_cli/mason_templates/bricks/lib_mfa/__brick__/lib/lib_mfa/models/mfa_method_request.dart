@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 
 import '../methods/otp/models/mfa_otp_payload.dart';
 import '../methods/pin_biometric/models/mfa_pin_code_payload.dart';
-import 'payload/mfa_payload_request.dart';
 import 'mfa_method.dart';
+import 'payload/mfa_payload_request.dart';
 
 part 'mfa_method_request.g.dart';
 

@@ -3,9 +3,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../models/payload/mfa_payload_request.dart';
 import '../../models/mfa_method_request.dart';
 import '../../models/mfa_response.dart';
+import '../../models/payload/mfa_payload_request.dart';
 
 part 'mfa_data_source.g.dart';
 

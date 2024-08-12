@@ -2,14 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:{{project_name}}/lib_router/router.dart';
-import 'package:{{project_name}}/lib_router/services/router_service.dart';
-import 'package:{{project_name}}/lib_mfa/models/payload/actions/mfa_address_payload.dart';
-import 'package:{{project_name}}/lib_mfa/models/payload/actions/mfa_unlock_payload.dart';
 import 'package:{{project_name}}/lib_mfa/models/mfa_method.dart';
 import 'package:{{project_name}}/lib_mfa/models/mfa_response.dart';
+import 'package:{{project_name}}/lib_mfa/models/payload/actions/mfa_address_payload.dart';
+import 'package:{{project_name}}/lib_mfa/models/payload/actions/mfa_unlock_payload.dart';
 import 'package:{{project_name}}/lib_mfa/repositories/mfa_repository.dart';
 import 'package:{{project_name}}/lib_mfa/services/mfa_service.dart';
+import 'package:{{project_name}}/lib_router/router.dart';
+import 'package:{{project_name}}/lib_router/services/router_service.dart';
 
 import 'mfa_service_test.mocks.dart';
 

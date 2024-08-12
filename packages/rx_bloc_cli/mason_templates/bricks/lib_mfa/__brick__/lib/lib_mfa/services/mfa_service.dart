@@ -7,9 +7,9 @@ import 'package:rxdart/subjects.dart';
 
 import '../../lib_router/services/router_service.dart';
 import '../extensions/mfa_method_extensions.dart';
-import '../models/payload/mfa_payload_request.dart';
 import '../models/mfa_method.dart';
 import '../models/mfa_response.dart';
+import '../models/payload/mfa_payload_request.dart';
 import '../repositories/mfa_repository.dart';
 
 class MfaService {
