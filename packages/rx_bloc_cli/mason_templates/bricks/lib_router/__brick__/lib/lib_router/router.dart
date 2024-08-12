@@ -2,13 +2,14 @@
 
 import 'dart:async';
 
+{{#enable_mfa}}
+import 'package:equatable/equatable.dart';{{/enable_mfa}}
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../base/common_blocs/coordinator_bloc.dart';{{#enable_feature_deeplinks}}
-import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}{{#enable_auth_matrix}}
-import '../feature_auth_matrix/di/auth_matrix_page_with_dependencies.dart';{{/enable_auth_matrix}}
+import '../base/models/deep_link_model.dart';{{/enable_feature_deeplinks}}{{#enable_feature_counter}}
 import '../feature_counter/di/counter_page_with_dependencies.dart';{{/enable_feature_counter}}
 import '../feature_dashboard/di/dashboard_page_with_dependencies.dart';{{#enable_feature_deeplinks}}
 import '../feature_deep_link_details/di/deep_link_details_page_with_dependencies.dart';
@@ -16,16 +17,17 @@ import '../feature_deep_link_list/di/deep_link_list_page_with_dependencies.dart'
 import '../feature_enter_message/di/enter_message_with_dependencies.dart';{{/enable_feature_deeplinks}}
 import '../feature_home/views/home_page.dart';{{#has_authentication}}{{#enable_login}}
 import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}{{^enable_login}}
-import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}
+import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}{{#enable_mfa}}
+import '../feature_mfa/di/mfa_page_with_dependencies.dart';{{/enable_mfa}}
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
-import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}{{#enable_auth_matrix}}
-import '../lib_auth_matrix/di/auth_matrix_otp_page_with_dependencies.dart';
-import '../lib_auth_matrix/di/auth_matrix_pin_biometrix_page_with_dependencies.dart';
-import '../lib_auth_matrix/models/auth_matrix_response.dart';{{/enable_auth_matrix}}
+import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}{{#enable_mfa}}
+import '../lib_mfa/methods/otp/di/mfa_otp_page_with_dependencies.dart';
+import '../lib_mfa/methods/pin_biometric/di/mfa_pin_biometrics_page_with_dependencies.dart';
+import '../lib_mfa/models/mfa_response.dart';{{/enable_mfa}}
 import '../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
 import '../lib_pin_code/models/pin_code_arguments.dart';
 import '../lib_pin_code/views/create_pin_page.dart';
@@ -36,12 +38,12 @@ import 'models/route_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
-part 'router.g.dart';{{#enable_auth_matrix}}
-part 'routes/auth_matrix_routes.dart';{{/enable_auth_matrix}}{{#has_authentication}}
+part 'router.g.dart';{{#has_authentication}}
 part 'routes/onboarding_routes.dart';{{/has_authentication}}
 part 'routes/profile_routes.dart';
 part 'routes/routes.dart';
-part 'routes/showcase_routes.dart';
+part 'routes/showcase_routes.dart';{{#enable_mfa}}
+part 'routes/mfa_routes.dart';{{/enable_mfa}}
 
 /// A wrapper class implementing all the navigation logic and providing
 /// [GoRouter] instance through its getter method [AppRouter.router].

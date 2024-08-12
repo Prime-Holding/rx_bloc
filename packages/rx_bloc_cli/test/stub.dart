@@ -54,6 +54,12 @@ final class Stub {
         ..[CreateCommandArguments.socialLogins.name] = false
         ..[CreateCommandArguments.otp.name] = true;
 
+  static Map<String, Object> get mfaEnabled => Map.from(Stub.defaultValues)
+    ..[CreateCommandArguments.mfa.name] = true
+    ..[CreateCommandArguments.login.name] = false
+    ..[CreateCommandArguments.socialLogins.name] = false
+    ..[CreateCommandArguments.otp.name] = false;
+
   static final generatorArgumentsAllEnabled = GeneratorArguments(
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(
@@ -65,7 +71,7 @@ final class Stub {
       socialLoginsEnabled: true,
       otpEnabled: true,
       pinCodeEnabled: true,
-      authMatrixEnabled: true,
+      mfaEnabled: true,
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: true,
@@ -94,27 +100,26 @@ final class Stub {
       socialLoginsEnabled: CreateCommandArguments.socialLogins.defaultValue(),
       otpEnabled: CreateCommandArguments.otp.defaultValue(),
       pinCodeEnabled: CreateCommandArguments.pinCode.defaultValue(),
-      authMatrixEnabled: CreateCommandArguments.authMatrix.defaultValue(),
+      mfaEnabled: CreateCommandArguments.mfa.defaultValue(),
     ),
     featureConfiguration: FeatureConfiguration(
       analyticsEnabled: CreateCommandArguments.analytics.defaultValue(),
       pushNotificationsEnabled: true,
       changeLanguageEnabled:
-      CreateCommandArguments.changeLanguage.defaultValue(),
+          CreateCommandArguments.changeLanguage.defaultValue(),
       counterEnabled: CreateCommandArguments.counter.defaultValue(),
       patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
       devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
       deepLinkEnabled: CreateCommandArguments.deepLink.defaultValue(),
       widgetToolkitEnabled: CreateCommandArguments.widgetToolkit.defaultValue(),
       realtimeCommunicationEnabled:
-      CreateCommandArguments.realtimeCommunication.defaultValue() !=
-          RealtimeCommunicationType.none,
+          CreateCommandArguments.realtimeCommunication.defaultValue() !=
+              RealtimeCommunicationType.none,
       cicdEnabled: CreateCommandArguments.cicd.defaultValue() != CICDType.none,
       cicdGithubEnabled:
-      CreateCommandArguments.cicd.defaultValue() == CICDType.github,
+          CreateCommandArguments.cicd.defaultValue() == CICDType.github,
       cicdCodemagicEnabled:
-      CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
-
+          CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
     ),
   );
 }

@@ -16,9 +16,11 @@ class RouterService {
   Future<void> goToLocation(String route) async => _router.go(route);
 
   Future<T?> push<T extends Object?>(
-      RouteDataModel route, Object? extra) async {
+      RouteDataModel route, {
+      Object? extra,
+  }) async {
     await _permissionsService.checkPermission(route.permissionName);
-    return await _router.push(route.routeLocation, extra: extra);
+    return await _router.push<T>(route.routeLocation, extra: extra);
   }
 
   Future<T?> replace<T>(RouteDataModel route, Object? extra) async {

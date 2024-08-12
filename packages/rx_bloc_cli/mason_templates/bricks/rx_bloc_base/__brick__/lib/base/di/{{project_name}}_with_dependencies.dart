@@ -28,14 +28,14 @@ import '../../lib_auth/data_sources/remote/refresh_token_data_source.dart';
 import '../../lib_auth/repositories/auth_repository.dart';
 import '../../lib_auth/services/access_token_service.dart';
 import '../../lib_auth/services/auth_service.dart';
-import '../../lib_auth/services/user_account_service.dart';{{/has_authentication}}{{#enable_auth_matrix}}
-import '../../lib_auth_matrix/data_source/remote/auth_matrix_data_source.dart';
-import '../../lib_auth_matrix/repositories/auth_matrix_repository.dart';
-import '../../lib_auth_matrix/services/auth_matrix_service.dart';{{/enable_auth_matrix}}{{#enable_change_language}}
+import '../../lib_auth/services/user_account_service.dart';{{/has_authentication}}{{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/data_sources/language_local_data_source.dart';
 import '../../lib_change_language/repositories/language_repository.dart';
-import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}
+import '../../lib_change_language/services/app_language_service.dart'; {{/enable_change_language}}{{#enable_mfa}}
+import '../../lib_mfa/data_source/remote/mfa_data_source.dart';
+import '../../lib_mfa/repositories/mfa_repository.dart';
+import '../../lib_mfa/services/mfa_service.dart';{{/enable_mfa}}
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_code}}
@@ -218,12 +218,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PinCodeDataSource(
             context.read<FlutterSecureStorage>(),
           ),
-        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
-         Provider<AuthMatrixDataSource>(
-          create: (context) => AuthMatrixDataSource(
+        ),{{/enable_pin_code}}{{#enable_mfa}}
+         Provider<MfaDataSource>(
+          create: (context) => MfaDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),{{/enable_auth_matrix}}
+        ),{{/enable_mfa}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -281,13 +281,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PinBiometricsRepository(
             context.read<BiometricsLocalDataSource>(),
           ),
-        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
-        Provider<AuthMatrixRepository>(
-          create: (context) => AuthMatrixRepository(
+        ),{{/enable_pin_code}}{{#enable_mfa}}
+        Provider<MfaRepository>(
+          create: (context) => MfaRepository(
             context.read(),
             context.read<ErrorMapper>(),
           ),
-        ),{{/enable_auth_matrix}}
+        ),{{/enable_mfa}}
         {{#analytics}}
         Provider<AnalyticsRepository>(
           create: (context) => AnalyticsRepository(
@@ -365,14 +365,14 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PinBiometricsService(
             context.read<PinBiometricsRepository>(),
           ),
-        ),{{/enable_pin_code}}{{#enable_auth_matrix}}
-         Provider<AuthMatrixService>(
-          create: (context) => AuthMatrixService(
-            context.read<AuthMatrixRepository>(),
+        ),{{/enable_pin_code}}{{#enable_mfa}}
+         Provider<MfaService>(
+          create: (context) => MfaService(
+            context.read<MfaRepository>(),
             context.read<RouterService>(),
           ),
           dispose: (context, value) => value.dispose(),
-        ),{{/enable_auth_matrix}}
+        ),{{/enable_mfa}}
         {{#analytics}}
         Provider<AnalyticsService>(
           create: (context) => AnalyticsService(
