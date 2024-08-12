@@ -30,6 +30,7 @@ class TodoDetailsPage extends StatelessWidget {
             RxBlocBuilder<TodoActionsBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, isLoadingSnapshot, bloc) => SmallButton(
+                type: SmallButtonType.icon,
                 colorStyle: ButtonColorStyle.fromContext(context),
                 onPressed: () =>
                     context.read<TodoActionsBlocType>().events.delete(id),
