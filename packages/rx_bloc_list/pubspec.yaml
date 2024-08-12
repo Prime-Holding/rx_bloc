@@ -10,7 +10,7 @@ environment:
   sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
-  collection: ^1.18.0
+  collection: ^1.17.1
   flutter:
     sdk: flutter
   flutter_rx_bloc: ^7.0.0
