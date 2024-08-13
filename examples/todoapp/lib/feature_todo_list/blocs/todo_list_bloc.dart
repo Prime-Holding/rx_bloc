@@ -32,6 +32,8 @@ abstract class TodoListBlocStates {
 
   @RxBlocIgnoreState()
   Stream<TodosFilterModel> get filter;
+
+  Stream<bool> get isLoading;
 }
 
 @RxBloc()
@@ -68,7 +70,11 @@ class TodoListBloc extends $TodoListBloc {
         ])
         .doOnData(_coordinatorBloc.events.todoListChanged)
         // Merges the todo list with the updated todo list from the [CoordinatorBloc] and emits the result to the [TodoListBlocStates.todoList]
-        .mergeWith([_coordinatorBloc.states.onTodoListChanged])
+        .mergeWith([
+          _coordinatorBloc.states.onTodoListChanged
+              .whereSuccess()
+              .asResultStream()
+        ])
         .bind(_todoResult)
         .addTo(_compositeSubscription);
   }
@@ -76,8 +82,7 @@ class TodoListBloc extends $TodoListBloc {
   final TodoListService _todoListService;
   final CoordinatorBlocType _coordinatorBloc;
 
-  final _todoResult =
-      BehaviorSubject<Result<List<TodoModel>>>.seeded(Result.loading());
+  final _todoResult = BehaviorSubject<Result<List<TodoModel>>>();
 
   @override
   Stream<Result<List<TodoModel>>> _mapToTodoListState() => Rx.combineLatest2(
@@ -86,6 +91,9 @@ class TodoListBloc extends $TodoListBloc {
           (listResult, filter) => listResult
               .mapResult((list) => _todoListService.filterTodos(list, filter)))
       .shareReplay(maxSize: 1);
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
   Stream<TodosFilterModel> get filter => _$applyFilterEvent;

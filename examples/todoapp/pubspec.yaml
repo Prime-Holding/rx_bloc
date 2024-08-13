@@ -57,6 +57,15 @@ dev_dependencies:
   rx_bloc_test: ^4.0.0
   test: any
 
+dependency_overrides:
+  widget_toolkit: 
+    git:
+      url: https://github.com/prime-holding/widget_toolkit.git
+      ref: develop
+      path: packages/widget_toolkit
+
+    
+
 flutter:
   uses-material-design: true
   assets:
