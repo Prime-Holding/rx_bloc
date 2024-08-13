@@ -53,18 +53,24 @@ class TodoDetailsPage extends StatelessWidget {
           children: [
             RxResultBuilder<TodoDetailsBlocType, TodoModel>(
               state: (bloc) => bloc.states.todo,
-              buildSuccess: (context, todo, bloc) => TodoWidget(
-                todo: todo,
-                onChanged: (todo, isChecked) {
-                  final todoId = todo.id;
-
-                  if (todoId != null) {
-                    context
-                        .read<TodoActionsBlocType>()
-                        .events
-                        .updateCompletedById(todo.id!, isChecked!);
-                  }
-                },
+              buildSuccess: (context, todo, bloc) =>
+                  RxBlocBuilder<TodoActionsBlocType, bool>(
+                state: (bloc) => bloc.states.isLoading,
+                builder: (context, isLoadingSnapshot, bloc) => TodoWidget(
+                  todo: todo,
+                  onChanged: (!isLoadingSnapshot.hasData ||
+                          isLoadingSnapshot.requireData)
+                      ? null
+                      : (todo, isChecked) {
+                          final todoId = todo.id;
+                          if (todoId != null) {
+                            context
+                                .read<TodoActionsBlocType>()
+                                .events
+                                .updateCompletedById(todo.id!, isChecked!);
+                          }
+                        },
+                ),
               ),
               buildError: (context, error, bloc) => Padding(
                 padding: EdgeInsets.only(top: context.designSystem.spacing.l),
