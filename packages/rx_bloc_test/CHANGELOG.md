@@ -2,7 +2,6 @@
 * Upgraded dependencies:
 * `rxdart` `0.28.0`
 * `rx_bloc` `6.0.0`
-* `test` `1.25.0`
 
 ## [4.0.0] - July 12, 2023
 * Dart `3.0` Required
