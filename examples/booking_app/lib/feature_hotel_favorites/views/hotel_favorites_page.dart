@@ -38,12 +38,15 @@ class HotelFavoritesPage extends StatelessWidget {
             state: (bloc) => bloc.states.favoriteHotels,
             buildLoading: (context, bloc) => LoadingWidget(),
             buildError: (context, error, bloc) => ErrorRetryWidget(
+              key: const ValueKey('ErrorRetryWidget'),
               onReloadTap: () => context
                   .read<HotelFavoritesBlocType>()
                   .events
                   .reloadFavoriteHotels(silently: false),
             ),
-            buildSuccess: (ctx, snapshot, bloc) => Container(),
+            buildSuccess: (ctx, snapshot, bloc) => Container(
+              key: const Key('intentionally_empty_container'),
+            ),
           )
         ],
       );
