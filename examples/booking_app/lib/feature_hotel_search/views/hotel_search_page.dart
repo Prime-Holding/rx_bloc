@@ -118,6 +118,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
                 );
               },
               buildError: (context, list, bloc) => ErrorRetryWidget(
+                key: const Key('ErrorRetryWidget'),
                 onReloadTap: () => bloc.events.reload(
                   reset: true,
                   fullReset: true,

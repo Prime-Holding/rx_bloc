@@ -30,6 +30,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
         children: [
           _buildSortItems(),
           DialogButton(
+            key: const Key('apply_sort_button'),
             onPressed: () {
               widget.onApplyPressed?.call(selected);
               Navigator.of(context).pop();

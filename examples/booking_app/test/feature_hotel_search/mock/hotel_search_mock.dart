@@ -15,6 +15,7 @@ import 'hotel_search_mock.mocks.dart';
 ])
 HotelSearchBlocType hotelSearchMockFactory({
   PaginatedList<Hotel>? hotels,
+  PaginatedList<Hotel>? hotelsError,
   String? hotelsFound,
   String? queryFilter,
   DateRangeFilterData? dateRangeFilterData,

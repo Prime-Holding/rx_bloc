@@ -4,6 +4,7 @@ class FocusButton extends StatelessWidget {
   FocusButton({
     required this.onPressed,
     required this.child,
+    super.key,
   });
 
   final Widget child;

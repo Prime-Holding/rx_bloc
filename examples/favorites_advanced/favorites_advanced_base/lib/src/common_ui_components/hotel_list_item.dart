@@ -91,6 +91,7 @@ class HotelCard extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
+                  key: Key('FavoriteButton${hotel.id}'),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(32.0),
                   ),
