@@ -56,6 +56,8 @@ void main() {
           equals(CreateCommandArgumentType.boolean));
       expect(CreateCommandArguments.realtimeCommunication.type,
           equals(CreateCommandArgumentType.realTimeCommunicationEnum));
+      expect(CreateCommandArguments.cicd.type,
+          equals(CreateCommandArgumentType.cicdTypeEnum));
       expect(CreateCommandArguments.socialLogins.type,
           equals(CreateCommandArgumentType.boolean));
       expect(CreateCommandArguments.widgetToolkit.type,
@@ -88,6 +90,8 @@ void main() {
       expect(CreateCommandArguments.patrol.defaultValue(), isFalse);
       expect(CreateCommandArguments.realtimeCommunication.defaultValue(),
           equals(RealtimeCommunicationType.none));
+      expect(CreateCommandArguments.cicd.defaultValue(),
+          equals(CICDType.fastlane));
       expect(CreateCommandArguments.socialLogins.defaultValue(), isFalse);
       expect(CreateCommandArguments.widgetToolkit.defaultValue(), isFalse);
       expect(CreateCommandArguments.interactive.defaultValue(), isTrue);
@@ -136,11 +140,12 @@ void main() {
     test('should have correct allowed values', () {
       final allowedRealtimeCommunication =
           RealtimeCommunicationType.supportedOptions.map((e) => e.name);
+      final allowedCICDs = CICDType.supportedOptions.map((e) => e.name);
 
       expect(CreateCommandArgumentType.string.allowed, isNull);
       expect(CreateCommandArgumentType.boolean.allowed, isNull);
-      expect(CreateCommandArgumentType.realTimeCommunicationEnum.allowed,
-          equals(allowedRealtimeCommunication));
+      expect(
+          CreateCommandArgumentType.cicdTypeEnum.allowed, equals(allowedCICDs));
     });
   });
 }
