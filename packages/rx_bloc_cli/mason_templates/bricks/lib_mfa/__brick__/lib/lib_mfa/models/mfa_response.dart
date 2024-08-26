@@ -4,9 +4,9 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'payload/response/mfa_last_login_payload_response.dart';
-import 'payload/mfa_payload_response.dart';
 import 'mfa_method.dart';
+import 'payload/mfa_payload_response.dart';
+import 'payload/response/mfa_last_login_payload_response.dart';
 
 part 'mfa_response.g.dart';
 

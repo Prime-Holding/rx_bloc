@@ -2,9 +2,9 @@
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../data_source/remote/mfa_data_source.dart';
-import '../models/payload/mfa_payload_request.dart';
 import '../models/mfa_method_request.dart';
 import '../models/mfa_response.dart';
+import '../models/payload/mfa_payload_request.dart';
 
 class MfaRepository {
 MfaRepository(this._mfaDataSource, this._errorMapper);
