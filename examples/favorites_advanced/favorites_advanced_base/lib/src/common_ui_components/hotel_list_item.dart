@@ -45,6 +45,7 @@ class HotelListItem extends StatelessWidget {
   Widget _buildCard() {
     return Material(
       child: InkWell(
+        key: Key('HotelCard${hotel.id}'),
         onTap: () => _onCardPressed(hotel),
         child: HotelCard(
           hotel: hotel,

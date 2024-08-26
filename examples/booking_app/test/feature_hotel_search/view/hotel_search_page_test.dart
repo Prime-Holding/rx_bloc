@@ -1,8 +1,10 @@
 import 'package:booking_app/base/common_blocs/hotel_manage_bloc.dart';
 import 'package:booking_app/base/common_blocs/hotels_extra_details_bloc.dart';
 import 'package:booking_app/feature_hotel_search/blocs/hotel_search_bloc.dart';
+import 'package:booking_app/feature_hotel_search/models/capacity_filter_data.dart';
 import 'package:booking_app/feature_hotel_search/views/hotel_search_page.dart';
 import 'package:booking_app/lib_router/blocs/router_bloc.dart';
+import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +24,11 @@ void main() {
       final mockRouterBloc = routerMockFactory();
       final mockHotelSearchBloc = hotelSearchMockFactory(
         hotels: Stub.paginatedListTwoHotels,
+        capacityFilterData: CapacityFilterData(
+          rooms: 1,
+          persons: 2,
+          text: '1 room, 2 persons',
+        ),
       );
       await tester.pumpWidget(MultiProvider(
         providers: [
@@ -107,12 +114,11 @@ void main() {
     });
   });
 
-  /*
   group('HotelSearchPage', () {
     testWidgets('should display search results and handle hotel press',
         (WidgetTester tester) async {
+      const key = Key('HotelCard1');
       bool called = false;
-
       final mockHotelSearchBloc = hotelSearchMockFactory(
         hotels: Stub.paginatedListOneHotel,
         hotelsFound: '1 hotel found',
@@ -142,10 +148,9 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
 
       expect(called, false);
-      await tester.tap(find.byType(HotelListItem));
+      expect(find.byKey(key), findsOne);
+      await tester.tap(find.byKey(key));
       expect(called, true);
     });
   });
-
-   */
 }

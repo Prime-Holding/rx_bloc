@@ -94,6 +94,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
             ),
           ],
           body: Container(
+            key: const Key('LoadingWidgetNoItem'),
             color: HotelAppTheme.buildLightTheme().colorScheme.surface,
             child: RxPaginatedBuilder<HotelSearchBlocType,
                 Hotel>.withRefreshIndicator(
@@ -151,6 +152,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
 
     if (item == null) {
       return Padding(
+        key: const Key('LoadingWidgetNoItem'),
         padding: const EdgeInsets.only(top: 12),
         child: LoadingWidget(),
       );
@@ -337,6 +339,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
       );
 
   Widget _buildClearButton(VoidCallback? onPressed) => FocusButton(
+        key: const Key('clear_button'),
         onPressed: onPressed ?? () {},
         child: const Icon(Icons.cancel, color: Colors.blue),
       );

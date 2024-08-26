@@ -65,5 +65,7 @@ HotelSearchBlocType hotelSearchMockFactory({
         : const Stream.empty(), //TODO place mocked value
   );
 
+  when(statesMock.refreshDone).thenAnswer((_) => Future.value(null));
+
   return blocMock;
 }

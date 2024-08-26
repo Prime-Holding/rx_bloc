@@ -32,5 +32,6 @@ HotelManageBlocType hotelManageMockFactory({
         ? Stream.value(favoriteMessage)
         : const Stream.empty(),
   );
+
   return blocMock;
 }
