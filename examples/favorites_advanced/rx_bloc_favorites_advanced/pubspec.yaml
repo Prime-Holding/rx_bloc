@@ -26,10 +26,10 @@ dependencies:
   rxdart: ^0.28.0
 
 dev_dependencies:
-#  flutter_test:
-#    sdk: flutter
-#  test: 1.15.2
   build_runner: ^2.4.11
+  flutter_test:
+    sdk: flutter
+#  test: 1.15.2
   clean_coverage: ^0.0.3
   flutter_lints: any
 #  flutter_gherkin: ^1.1.9
