@@ -1,4 +1,4 @@
-## [4.1.0]
+## [5.1.0]
 * Added GitLab as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `codemagic`, `gitlab`, `none`)
 
 ## [4.0.0]

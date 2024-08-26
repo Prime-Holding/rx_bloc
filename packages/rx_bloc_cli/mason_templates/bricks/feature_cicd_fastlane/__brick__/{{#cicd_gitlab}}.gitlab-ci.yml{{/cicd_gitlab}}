@@ -46,7 +46,7 @@ run-app-tests:
     - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
     - export PUB_CACHE=$CI_PROJECT_DIR/.pub-cache
     - flutter pub get
-    - flutter packages pub run build_runner build --delete-conflicting-outputs
+    - dart run build_runner build --delete-conflicting-outputs
     - flutter analyze lib
     - |
        if [ -d "test" ]; then

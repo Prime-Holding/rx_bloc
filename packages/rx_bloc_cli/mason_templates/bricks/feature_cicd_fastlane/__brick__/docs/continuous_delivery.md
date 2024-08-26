@@ -149,7 +149,7 @@ In case of deploying the apps to the respective stores manually using the downlo
 {{#cicd_gitlab}}
 ### Gitlab pipeline
 
-If created with the `--cicd=gitlab` flag, the generated project contains a workflow configuration file `.gitlab-ci.yml` at the root level. This file sets up the environment and runs the tests in your project. It is executed on every push or merge request in your GitLab repository.
+If created with the `--cicd=gitlab` flag, the generated project contains a workflow configuration file `.gitlab-ci.yml` at the root level. This file sets up the environment and runs the tests in your project.
 
 If you haven't created an access token for your distribution repository in GitLab, follow [this guide][clone_gitlab_repo_with_access_token] to do so, and keep the token handy.
 
@@ -160,7 +160,7 @@ To trigger the pipeline, push a change to your repository or create a merge requ
 If your project is public on GitLab.com, your pipeline will run on the available shared runners. If your project is private and/or you are using your own instance of GitLab, you will first need to set up a runner for your project by following [the official documentation][gitLab_runners].
 
 > [!NOTE]
-> If your project contains any Golden Tests, ensure that the environment where your pipeline runs (the assigned runner) is the same as the one where your `.png` files were generated.
+> If your project contains any Golden Tests, ensure that the OS where your pipeline runs (the assigned runner) is the same as the one where your `.png` files were generated.
 
 {{/cicd_gitlab}}
 ### Local distribution
