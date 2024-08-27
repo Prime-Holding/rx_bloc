@@ -9,6 +9,7 @@ function replace_file_contents() {
     "docs/continuous_delivery.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md"
     "docs/golden_tests.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md"
     "docs/mfa.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md"
+    "docs/patrol_integration_test.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/mason_templates/bricks/patrol_integration_tests/__brick__/docs/README.md"
   )
 
   # Iterate over the to_replace array
@@ -24,7 +25,7 @@ function replace_file_contents() {
 ## Prepares the example directory
 function prepare_example_directory() {
   # Copy the readme file one level up so that it is visible on the pub.dev page
-  cp example/testapp/README.md example/
+  cp example/testapp/patrol_integration_test.md example/
 
   # Recreate the example/docs directory
   rm -rf example/docs
