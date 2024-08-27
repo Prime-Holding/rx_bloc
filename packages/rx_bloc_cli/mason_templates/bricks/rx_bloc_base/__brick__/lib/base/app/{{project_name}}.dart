@@ -156,7 +156,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     }
 
     final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (!context.mounted) return;
+    if (!mounted) return;
     await onInitialMessageOpened(context, initialMessage);
 
     FirebaseMessaging.instance.onTokenRefresh
