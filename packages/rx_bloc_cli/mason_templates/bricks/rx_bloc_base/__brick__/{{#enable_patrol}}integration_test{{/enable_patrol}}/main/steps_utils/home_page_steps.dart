@@ -8,7 +8,7 @@ class HomePageSteps {
   static Future<void> navigateToCounterPage(PatrolIntegrationTester $) async {
     HomePage homePage = HomePage($);
     await homePage.tapBtnCounterPage();
-    // TODO: Implement steps here{{/enable_feature_counter}}
+    // TODO: Implement steps here
   }
   {{/enable_feature_counter}}{{^enable_feature_counter}}
 }
