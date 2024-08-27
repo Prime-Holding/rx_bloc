@@ -210,9 +210,6 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           directory: ${{ matrix.folder }}/coverage
-          status:
-            project: no
-            patch: no
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
 
