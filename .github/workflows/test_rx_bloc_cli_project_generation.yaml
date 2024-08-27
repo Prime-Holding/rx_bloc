@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "packages/rx_bloc_cli/**"
+      - ".github/workflows/test_rx_bloc_cli_project_generation.yaml"
 
 jobs:
   rx_bloc_cli_project_generation:
