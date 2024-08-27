@@ -10,5 +10,5 @@ class HomePageSteps {
     await homePage.tapBtnCounterPage();
     // TODO: Implement steps here
   }
-  {{/enable_feature_counter}}{{^enable_feature_counter}}
+  {{/enable_feature_counter}}
 }
