@@ -489,6 +489,8 @@ This package enables applications to use native automation features
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio{{/enable_patrol}}
 {{#realtime_communication}}
+
+For more info, please check full [README][patrol_integration_test_lnk]
 ## Realtime Communication
 
 Provides base datasource, repository, service and utility classes for establishing a SSE connection.
@@ -570,6 +572,7 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
+[patrol_integration_test_lnk]: docs/patrol_integration_test.md
 [rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
 [golden_tests_with_smart_widgets_lnk]: docs/golden_tests.md
 [rx_bloc_cli_mfa_lnk]: docs/mfa.md
