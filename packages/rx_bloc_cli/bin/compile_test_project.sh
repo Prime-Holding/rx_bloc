@@ -25,6 +25,7 @@ function replace_file_contents() {
 ## Prepares the example directory
 function prepare_example_directory() {
   # Copy the readme file one level up so that it is visible on the pub.dev page
+  cp example/testapp/README.md example/
 
   # Recreate the example/docs directory
   rm -rf example/docs
