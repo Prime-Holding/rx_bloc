@@ -1,7 +1,6 @@
 ## [4.0.1]
 * Added [README][patrol_integration_test_url] about Patrol Integration Test.
 
-* 
 ## [4.0.0]
 Contains breaking changes
 * The `--enable-auth-matrix` option is removed in favour of the [--enable-mfa][mfa_doc_url] (Multi-Factor Authentication) capability.
