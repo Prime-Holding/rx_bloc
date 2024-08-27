@@ -10,7 +10,7 @@ files=$(find "$search_dir" -type f -name '*_test.dart')
 # Check if any files were found
 if [ -n "$files" ]; then
     echo "Found _test.dart files!"
-    flutter test base_dir
+    flutter test $base_dir
 else
     echo "No _test.dart files found in the $search_dir directory."
 fi
