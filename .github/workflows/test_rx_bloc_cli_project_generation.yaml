@@ -33,10 +33,10 @@ jobs:
           echo "Generating project type: ${{matrix.project_type}}"
           ./generate_test_project.sh ${{matrix.project_type}}
       - name: Run analyze
-        working-directory: "packages/rx_bloc_cli/example/testapp"
+        working-directory: "packages/rx_bloc_cli/bin/example/testapp"
         run: |
           flutter analyze
       - name: Run tests
-        working-directory: "packages/rx_bloc_cli/example/testapp"
+        working-directory: "packages/rx_bloc_cli/bin/example/testapp"
         run: |
           flutter test
