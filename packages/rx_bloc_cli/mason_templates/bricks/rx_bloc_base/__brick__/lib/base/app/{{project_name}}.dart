@@ -118,11 +118,13 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     _sessionConfig.stream.listen((timeoutEvent) {
       if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
           timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-        context.read<RouterBlocType>().events.go(
-              const VerifyPinCodeRoute(),
-              extra: const PinCodeArguments(
-                  title: 'Enter Pin Code', isSessionTimeout: true),
-            );
+        if(mounted) {
+          context.read<RouterBlocType>().events.go(
+                const VerifyPinCodeRoute(),
+                extra: const PinCodeArguments(
+                    title: 'Enter Pin Code', isSessionTimeout: true),
+              );
+        }
       }
     });
   }{{/enable_pin_code}}

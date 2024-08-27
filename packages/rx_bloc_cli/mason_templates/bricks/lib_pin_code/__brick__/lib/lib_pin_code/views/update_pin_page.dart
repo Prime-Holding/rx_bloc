@@ -47,7 +47,7 @@ class _UpdatePinPageState extends State<UpdatePinPage> {
   Widget build(BuildContext context) => Builder(
         builder: (context) => PopScope(
           canPop: true,
-          onPopInvoked: (didPop) => context
+          onPopInvokedWithResult: (didPop, dynamic) => context
               .read<UpdateAndVerifyPinBlocType>()
               .events
               .deleteSavedData(),
