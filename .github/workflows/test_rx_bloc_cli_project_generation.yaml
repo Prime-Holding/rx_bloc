@@ -39,6 +39,6 @@ jobs:
           flutter analyze
       - name: Run tests
         working-directory: "packages/rx_bloc_cli/bin/example/testapp"
-        if: ${{ hashFiles('test/**_test.dart') != '' }}
+        if: ${{ hashFiles('test/*_test.dart') != '' }}
         run: |
           flutter test --exclude-tags=not-tests
