@@ -158,14 +158,12 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     await onInitialMessageOpened(initialMessage);
 
-    if (mounted) {
-      FirebaseMessaging.instance.onTokenRefresh
-          .listen((token) => onFCMTokenRefresh(context, token));
-      FirebaseMessaging.onMessage
-          .listen((message) => onForegroundMessage(context, message));
-      FirebaseMessaging.onMessageOpenedApp
-          .listen((message) => onMessageOpenedFromBackground(context, message));
-    }
+    FirebaseMessaging.instance.onTokenRefresh
+        .listen((token) => onFCMTokenRefresh(token));
+    FirebaseMessaging.onMessage
+        .listen((message) => onForegroundMessage(context, message));
+    FirebaseMessaging.onMessageOpenedApp
+        .listen((message) => onMessageOpenedFromBackground(context, message));
   }{{/push_notifications}}{{#analytics}}
 
   void _configureAnalyticsAndCrashlytics() {

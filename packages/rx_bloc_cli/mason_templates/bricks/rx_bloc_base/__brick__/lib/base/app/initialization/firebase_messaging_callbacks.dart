@@ -37,10 +37,13 @@ void onForegroundMessage(BuildContext context, RemoteMessage message) {
       log('$title : $body');
     }
   }
-  context
-      .read<PushNotificationsBlocType>()
-      .events
-      .tapOnEvent(NotificationModel.fromJson(message.data));
+
+  if(context.mounted) {
+    context
+        .read<PushNotificationsBlocType>()
+        .events
+        .tapOnEvent(NotificationModel.fromJson(message.data));
+  }
 }
 
 /// Callback executed once the app receives a FCM message while in background
@@ -59,11 +62,13 @@ Future<void> onMessageOpenedFromBackground(
       BuildContext context,
   RemoteMessage message,
 ) async {
-  context
-      .read<PushNotificationsBlocType>()
-      .events
-      .tapOnEvent(NotificationModel.fromJson(message.data));
+  if(context.mounted) {
+    context
+        .read<PushNotificationsBlocType>()
+        .events
+        .tapOnEvent(NotificationModel.fromJson(message.data));
     log('Message opened from background.');
+  }
 }
 
 /// If the application has been opened from a terminated state via a remote
@@ -74,7 +79,7 @@ Future<void> onInitialMessageOpened(RemoteMessage? message) async {
 }
 
 /// Callback triggered once a new FCM token is generated
-Future<void> onFCMTokenRefresh(BuildContext context, String token) async {
+Future<void> onFCMTokenRefresh(String token) async {
   log('New FCM token: $token');
 }
 
