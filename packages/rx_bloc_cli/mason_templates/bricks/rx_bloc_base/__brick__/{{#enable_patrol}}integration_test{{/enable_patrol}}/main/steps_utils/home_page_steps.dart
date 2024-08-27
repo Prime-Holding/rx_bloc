@@ -1,7 +1,9 @@
 {{> licence.dart }}
 
+{{#enable_feature_counter}}
 import '../configuration/build_app.dart';
 import '../pages/home_page.dart';
+{{/enable_feature_counter}}
 
 class HomePageSteps {
   {{#enable_feature_counter}}
