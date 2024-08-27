@@ -158,14 +158,14 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     await onInitialMessageOpened(initialMessage);
 
-    if (!mounted) return;
-
-    FirebaseMessaging.instance.onTokenRefresh
-        .listen((token) => onFCMTokenRefresh(context, token));
-    FirebaseMessaging.onMessage
-        .listen((message) => onForegroundMessage(context, message));
-    FirebaseMessaging.onMessageOpenedApp
-        .listen((message) => onMessageOpenedFromBackground(context, message));
+    if (mounted) {
+      FirebaseMessaging.instance.onTokenRefresh
+          .listen((token) => onFCMTokenRefresh(context, token));
+      FirebaseMessaging.onMessage
+          .listen((message) => onForegroundMessage(context, message));
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((message) => onMessageOpenedFromBackground(context, message));
+    }
   }{{/push_notifications}}{{#analytics}}
 
   void _configureAnalyticsAndCrashlytics() {
@@ -193,7 +193,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   @override
   Widget build(BuildContext context) {
-    final materialApp = 
+    final materialApp =
     {{^enable_pin_code}} _buildMaterialApp(context);{{/enable_pin_code}}
     {{#enable_pin_code}} _buildMaterialAppWithPinCode(); {{/enable_pin_code}}
 
