@@ -69,8 +69,7 @@ Future<void> onMessageOpenedFromBackground(
 /// If the application has been opened from a terminated state via a remote
 /// message (containing a notification), it will be returned, otherwise it will
 /// be `null`.
-Future<void> onInitialMessageOpened(
-    BuildContext context, RemoteMessage? message) async {
+Future<void> onInitialMessageOpened(RemoteMessage? message) async {
   log('Initial message exists: ${message != null}');
 }
 
