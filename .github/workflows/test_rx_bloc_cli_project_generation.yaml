@@ -40,4 +40,4 @@ jobs:
       - name: Run tests
         working-directory: "packages/rx_bloc_cli/bin"
         run: |
-          sh compile_bundles.sh
+          sh run_test_in_test_project_if_exist.sh
