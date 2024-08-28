@@ -1,16 +1,15 @@
 #!/bin/bash
 
 # Define the directory to search
-search_dir="test"
+test_directory="test"
 
-# Find files ending with _test.dart in the directory and its subdirectories
-files=$(find "$search_dir" -type f -name '*_test.dart')
+# Find test_files ending with _test.dart in the directory and its subdirectories
+test_files=$(find "$test_directory" -type f -name '*_test.dart')
 
-# Check if any files were found
-if [ -n "$files" ]; then
-    echo "Found _test.dart files!"
-    flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
-    flutter test #$base_dir
+# Check if any test_files were found
+if [ -n "$test_files" ]; then
+    echo "Found _test.dart in $test_files folder!"
+    flutter test
 else
-    echo "No _test.dart files found."
+    echo "No _test.dart files were found in $test_files folder."
 fi
