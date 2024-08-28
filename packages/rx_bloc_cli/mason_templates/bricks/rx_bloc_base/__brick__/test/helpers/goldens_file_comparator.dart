@@ -4,18 +4,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class GoldensFileComparator extends LocalFileComparator {
-  static const double _kGoldenDiffTolerance = 0.0041;
+  static const double _kGoldenDiffTolerance = 0.0;
 
   GoldensFileComparator(String testFile)
       : super(Uri.parse(_getTestFile(testFile)));
 
   @override
   Future<bool> compare(Uint8List imageBytes, Uri golden) async {
-    final dsa = Uri.parse(golden.path.split('/').last);
+    final goldenUri = Uri.parse(golden.path.split('/').last);
 
     final ComparisonResult result = await GoldenFileComparator.compareLists(
       imageBytes,
-      await getGoldenBytes(dsa),
+      await getGoldenBytes(goldenUri),
     );
 
     if (!result.passed && result.diffPercent > _kGoldenDiffTolerance) {
