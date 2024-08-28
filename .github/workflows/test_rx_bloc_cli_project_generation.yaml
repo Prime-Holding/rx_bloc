@@ -38,6 +38,6 @@ jobs:
         run: |
           flutter analyze
       - name: Run tests
-        working-directory: "packages/rx_bloc_cli/bin"
+        working-directory: "packages/rx_bloc_cli/bin/example/testapp"
         run: |
-          sh run_test_in_test_project_if_exist.sh
+          sh ../../run_test_in_test_project_if_exist.sh
