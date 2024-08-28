@@ -8,8 +8,8 @@ test_files=$(find "$test_directory" -type f -name '*_test.dart')
 
 # Check if any test_files were found
 if [ -n "$test_files" ]; then
-    echo "Found _test.dart in $test_files folder!"
+    echo "Found _test.dart in $test_directory folder!"
     flutter test
 else
-    echo "No _test.dart files were found in $test_files folder."
+    echo "No _test.dart files were found in $test_directory folder."
 fi
