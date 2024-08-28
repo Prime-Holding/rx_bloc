@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Define the directory to search
-base_dir="example/testapp"
-search_dir="$base_dir/test"
+search_dir="test"
 
 # Find files ending with _test.dart in the directory and its subdirectories
 files=$(find "$search_dir" -type f -name '*_test.dart')
