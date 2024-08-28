@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
@@ -76,8 +74,6 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
                           context.read<BiometricsLocalDataSource>(),
                       translateError: (error) =>
                           error.asErrorModel().translate(context),
-                      onError: (error, translatedError) =>
-                          _onError(error, translatedError, context),
                       onAuthenticated: (_) => _isPinCodeVerified(context),
                     ),
                   ),
@@ -94,17 +90,6 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
             isPinCodeConfirmed: true,
           );
     }
-  }
-
-  void _onError(Object error, String strValue, BuildContext context) {
-    showBlurredBottomSheet(
-      context: context,
-      configuration: const ModalConfiguration(safeAreaBottom: false),
-      builder: (context) => MessagePanelWidget(
-        message: error.toString(),
-        messageState: MessagePanelState.important,
-      ),
-    );
   }
 
   String _exampleMapMessageToString(

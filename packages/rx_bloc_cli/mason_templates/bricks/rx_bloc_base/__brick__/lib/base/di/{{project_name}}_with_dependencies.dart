@@ -42,7 +42,8 @@ import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_c
 import '../../lib_pin_code/bloc/create_pin_bloc.dart';
 import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 import '../../lib_pin_code/data_source/pin_biometrics_local_data_source.dart';
-import '../../lib_pin_code/data_source/pin_code_data_source.dart';
+import '../../lib_pin_code/data_source/pin_code_local_data_source.dart';
+import '../../lib_pin_code/data_source/remote/pin_code_data_source.dart';
 import '../../lib_pin_code/repository/pin_biometrics_repository.dart';
 import '../../lib_pin_code/repository/pin_code_repository.dart';
 import '../../lib_pin_code/services/create_pin_code_service.dart';
@@ -214,9 +215,14 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => PinBiometricsLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),
+        Provider<PinCodeLocalDataSource>(
+          create: (context) => PinCodeLocalDataSource(
+            context.read<FlutterSecureStorage>(),
+          ),
+        ),
         Provider<PinCodeDataSource>(
           create: (context) => PinCodeDataSource(
-            context.read<FlutterSecureStorage>(),
+            context.read<ApiHttpClient>(),
           ),
         ),{{/enable_pin_code}}{{#enable_mfa}}
          Provider<MfaDataSource>(
@@ -274,6 +280,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         Provider<PinCodeRepository>(
           create: (context) => PinCodeRepository(
             context.read<ErrorMapper>(),
+            context.read<PinCodeLocalDataSource>(),
             context.read<PinCodeDataSource>(),
           ),
         ),

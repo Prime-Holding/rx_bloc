@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
+import '../../base/models/errors/error_model.dart';
 import '../repository/pin_code_repository.dart';
 
 class UpdateAndVerifyPinCodeService implements PinCodeService {
@@ -15,6 +16,7 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
   static const _storedPin = 'storedPin';
   bool _isVerificationPinProcess = true;
   bool _isFromSessionTimeout = false;
+  late String token;
 
   Future<void> deleteStoredPin() async {
     await _pinCodeRepository.writePinToStorage(_storedPin, null);
@@ -46,23 +48,26 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
 
   @override
   Future<bool> verifyPinCode(String pinCode) async {
-    await Future.delayed(const Duration(seconds: 1));
-    final currentPin =
-        await _pinCodeRepository.readPinFromStorage(key: _storedPin);
     if (_isFromSessionTimeout) {
-      return currentPin == pinCode ? true : false;
+      return await _pinCodeRepository.verifyPinCode(pinCode);
     }
     final firstPin =
         await _pinCodeRepository.readPinFromStorage(key: _firstPin);
     if (firstPin != null) {
       if (pinCode == firstPin) {
+        await _pinCodeRepository.updatePinCode(pinCode);
         await _pinCodeRepository.writePinToStorage(_storedPin, pinCode);
         return true;
       }
-      return false;
+      throw ErrorServerGenericModel(
+        message: 'PIN code does not match',
+      );
     }
     if (firstPin == null && _isVerificationPinProcess) {
-      if (currentPin == pinCode) {
+      if (await _pinCodeRepository.verifyPinCode(
+        pinCode,
+        requestUpdateToken: true,
+      )) {
         _isVerificationPinProcess = false;
         return true;
       }

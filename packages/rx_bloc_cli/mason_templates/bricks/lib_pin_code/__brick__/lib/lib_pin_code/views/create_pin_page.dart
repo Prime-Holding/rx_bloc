@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
@@ -64,8 +62,6 @@ class _CreatePinPageState extends State<CreatePinPage> {
                     pinCodeService: context.read<CreatePinCodeService>(),
                     translateError: (error) =>
                         error.asErrorModel().translate(context),
-                    onError: (error, translatedError) =>
-                        _onError(error, translatedError, context),
                     onAuthenticated: (_) => _isPinCodeVerified(context),
                   ),
                 ),
@@ -100,17 +96,6 @@ class _CreatePinPageState extends State<CreatePinPage> {
         context.l10n.libPinCode.confirmPin) {
       context.read<CreatePinBlocType>().events.checkIsPinCreated();
     }
-  }
-
-  void _onError(Object error, String strValue, BuildContext context) {
-    showBlurredBottomSheet(
-      context: context,
-      configuration: const ModalConfiguration(safeAreaBottom: false),
-      builder: (context) => MessagePanelWidget(
-        message: error.toString(),
-        messageState: MessagePanelState.important,
-      ),
-    );
   }
 
   String _exampleMapMessageToString(

@@ -5,7 +5,8 @@ import '../controllers/authentication_controller.dart';{{/has_authentication}}{{
 import '../controllers/count_controller.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../controllers/deep_links_controller.dart';{{/enable_feature_deeplinks}}{{#enable_mfa}}
 import '../controllers/mfa_controller.dart';{{/enable_mfa}}
-import '../controllers/permissions_controller.dart';
+import '../controllers/permissions_controller.dart';{{#enable_pin_code}}
+import '../controllers/pin_code_controller.dart';{{/enable_pin_code}}
 import '../controllers/push_notifications_controller.dart';
 import '../controllers/translations_controller.dart';{{#has_authentication}}
 import '../repositories/auth_token_repository.dart';{{/has_authentication}}
@@ -44,7 +45,9 @@ class ServerDependencies{
     ..addController(DeepLinksController())
     {{/enable_feature_deeplinks}}{{#enable_mfa}}
     ..addController(MfaController())
-    {{/enable_mfa}}
+    {{/enable_mfa}}{{#enable_pin_code}}
+    ..addController(PinCodeController())
+    {{/enable_pin_code}}
     ;
 
     /// TODO: Add your controllers here
