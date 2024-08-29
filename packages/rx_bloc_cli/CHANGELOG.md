@@ -240,4 +240,4 @@ Contains breaking changes
 [example_project_readme_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/README.md
 [golden_tests_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [mfa_doc_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
-[patrol_integration_test_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/mason_templates/bricks/patrol_integration_tests/__brick__/docs/patrol_integration_test.md
+[patrol_integration_test_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md
