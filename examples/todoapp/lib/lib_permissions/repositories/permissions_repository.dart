@@ -15,6 +15,6 @@ class PermissionsRepository {
   final PermissionsRemoteDataSource _permissionsRemoteDataSource;
 
   /// Returns a map of the permissions loaded from the remote data source.
-  Future<Map<String, bool>> getPermissions() =>
-      _errorMapper.execute(() => _permissionsRemoteDataSource.getPermissions());
+  // Future<Map<String, bool>> getPermissions() =>
+  //     _errorMapper.execute(() => _permissionsRemoteDataSource.getPermissions());
 }

@@ -9,7 +9,7 @@ class TodoManageService {
   /// Adds or updates a todo.
   ///
   /// If the [todo] has an [id], it will be updated. Otherwise, it will be added.
-  Future<TodoModel> addOrUpdate(TodoModel todo) async {
+  Future<$TodoModel> addOrUpdate($TodoModel todo) async {
     if (todo.id == null) {
       return _repository.addTodo(todo);
     } else {

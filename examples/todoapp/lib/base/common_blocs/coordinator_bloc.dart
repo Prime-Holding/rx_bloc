@@ -24,11 +24,11 @@ abstract class CoordinatorEvents {
     String? stackTrace,
   });
 
-  void todoAddedOrUpdated(Result<TodoModel> todo);
+  void todoAddedOrUpdated(Result<$TodoModel> todo);
 
-  void todoListChanged(Result<List<TodoModel>> todos);
+  void todoListChanged(Result<List<$TodoModel>> todos);
 
-  void todoDeleted(Result<TodoModel> todo);
+  void todoDeleted(Result<$TodoModel> todo);
 }
 
 abstract class CoordinatorStates {
@@ -36,12 +36,12 @@ abstract class CoordinatorStates {
   Stream<bool> get isAuthenticated;
 
   @RxBlocIgnoreState()
-  Stream<Result<TodoModel>> get onTodoAddedOrUpdated;
+  Stream<Result<$TodoModel>> get onTodoAddedOrUpdated;
 
   @RxBlocIgnoreState()
-  Stream<Result<TodoModel>> get onTodoDeleted;
+  Stream<Result<$TodoModel>> get onTodoDeleted;
 
-  Stream<Result<List<TodoModel>>> get onTodoListChanged;
+  Stream<Result<List<$TodoModel>>> get onTodoListChanged;
 }
 
 /// The coordinator bloc manages the communication between blocs.
@@ -56,13 +56,13 @@ class CoordinatorBloc extends $CoordinatorBloc {
   Stream<bool> get isAuthenticated => _$authenticatedEvent;
 
   @override
-  Stream<Result<TodoModel>> get onTodoAddedOrUpdated =>
+  Stream<Result<$TodoModel>> get onTodoAddedOrUpdated =>
       _$todoAddedOrUpdatedEvent;
 
   @override
-  Stream<Result<TodoModel>> get onTodoDeleted => _$todoDeletedEvent;
+  Stream<Result<$TodoModel>> get onTodoDeleted => _$todoDeletedEvent;
 
   @override
-  Stream<Result<List<TodoModel>>> _mapToOnTodoListChangedState() =>
+  Stream<Result<List<$TodoModel>>> _mapToOnTodoListChangedState() =>
       _$todoListChangedEvent.shareReplay(maxSize: 1);
 }

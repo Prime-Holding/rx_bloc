@@ -57,7 +57,7 @@ abstract class TodoManagementBlocStates {
   Stream<ErrorModel> get errors;
 
   /// The state of the routing event
-  ConnectableStream<TodoModel> get onTodoSaved;
+  ConnectableStream<$TodoModel> get onTodoSaved;
 
   @RxBlocIgnoreState()
   bool get isEditingTodo;
@@ -99,7 +99,7 @@ class TodoManagementBloc extends $TodoManagementBloc {
   /// If the id is not null, the todo is being edited otherwise it is being created.
   final String? _id;
 
-  final _todoSubject = BehaviorSubject<TodoModel>.seeded(TodoModel.empty());
+  final _todoSubject = BehaviorSubject<TodoModel>.seeded($TodoModel.empty());
 
   @override
   Stream<String> _mapToDescriptionState() => Rx.combineLatest2(
@@ -108,31 +108,32 @@ class TodoManagementBloc extends $TodoManagementBloc {
           (description, todo) => description ?? todo.description)
       .shareReplay(maxSize: 1);
 
+//  _$setFirstNameEvent
+//             .map(validatorService.validateFirstName)
+//             .startWith(''),
+//         _currentUser.map((user) => user.firstName),
   @override
-  Stream<String> _mapToTitleState() => Rx.combineLatest2(
-        _$setTitleEvent.cast<String?>().startWith(null),
-        _todoSubject,
-        (title, todo) => title ?? todo.title,
-      )
-          // We skip the first value because it's always emitting empty string as initial value
-          .skip(1)
+  Stream<String> _mapToTitleState() => Rx.merge([
+        _$setTitleEvent.startWith(''),
+        _todoSubject.map((todo) => todo.title),
+      ])
           .map((title) => _validatorService.validateTitle(title))
           .shareReplay(maxSize: 1);
 
   @override
-  ConnectableStream<TodoModel> _mapToOnTodoSavedState() => _$saveEvent
+  ConnectableStream<$TodoModel> _mapToOnTodoSavedState() => _$saveEvent
       .withLatestFrom(
-          Rx.combineLatest3<String, String, TodoModel?, TodoModel?>(
+          Rx.combineLatest3<String, String, TodoModel?, $TodoModel?>(
             title,
             description,
             // The initial state is empty todo so we need to skip the values
             //  until the todo that needs to be updated is fetched.
             // If the initial id is null then the empty todo is not skipped.
             _todoSubject.skipWhile((todo) => todo.id != _id),
-            (title, description, todo) => TodoModel.from(
-              title: title,
-              description: description,
-              todo: todo,
+            (title, description, todo) => $TodoModel.from(
+              title,
+              description,
+              todo,
             ),
           ).onErrorReturn(null),
           (_, todo) => todo)

@@ -56,9 +56,9 @@ class PermissionsService {
   /// source, otherwise it will try to return it from the cache if the cache is
   /// not empty.
   Future<Map<String, bool>> getPermissions({bool force = false}) async {
-    if (_permissionList.isEmpty || force) {
-      _permissionList = await _permissionsRepository.getPermissions();
-    }
+    // if (_permissionList.isEmpty || force) {
+    //   _permissionList = await _permissionsRepository.getPermissions();
+    // }
 
     return _permissionList;
   }

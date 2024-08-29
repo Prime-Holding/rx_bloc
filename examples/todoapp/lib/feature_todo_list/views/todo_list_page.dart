@@ -37,7 +37,7 @@ class TodoListPage extends StatelessWidget {
           shape: const OvalBorder(),
           child: context.designSystem.icons.add,
         ),
-        body: RxResultBuilder<TodoListBlocType, List<TodoModel>>(
+        body: RxResultBuilder<TodoListBlocType, List<$TodoModel>>(
           state: (bloc) => bloc.states.todoList,
           buildSuccess: (context, list, bloc) =>
               RxBlocBuilder<TodoActionsBlocType, bool>(
@@ -56,11 +56,9 @@ class TodoListPage extends StatelessWidget {
               },
             ),
           ),
-          buildError: (context, exception, bloc) => Center(
-            child: AppErrorWidget(
-              error: exception,
-              onTabRetry: () => bloc.events.fetchTodoList(),
-            ),
+          buildError: (context, exception, bloc) => AppErrorWidget(
+            error: exception,
+            onTabRetry: () => bloc.events.fetchTodoList(),
           ),
           buildLoading: (context, bloc) => Center(
             child: AppLoadingIndicator.taskValue(

@@ -71,6 +71,27 @@ class TodosController extends ApiController {
       '/api/v1/todos/<id>',
       fetchTodoByIdHandler,
     );
+    router.addRequest(
+      RequestType.POST,
+      '/api/v1/todos/sync',
+      syncTodosHandler,
+    );
+  }
+
+  /// Handles POST requests to sync todos.
+  Future<Response> syncTodosHandler(Request request) async {
+    final params = await request.bodyFromFormData();
+    final List? todos = params['todos'];
+    if (todos == null && todos!.isEmpty) {
+      BadRequestException('todos is required');
+    }
+    final List<$TodoModel> todosList =
+        todos.map((todo) => $TodoModel.fromJson(todo)).toList();
+    final syncedTodos = todosService.syncAllTodos(todosList);
+    final response =
+        jsonEncode(syncedTodos.map((obj) => obj.toJson()).toList());
+
+    return Response.ok(response, headers: {'content-type': 'application/json'});
   }
 
   /// Handles GET requests to fetch all todos.
@@ -95,7 +116,7 @@ class TodosController extends ApiController {
   /// Handles PUT requests to update a todo by its ID.
   Future<Response> updateTodoByIdHandler(Request request) async {
     final params = await request.bodyFromFormData();
-    final todoFromRequest = TodoModel.fromJson(params);
+    final todoFromRequest = $TodoModel.fromJson(params);
     throwIfEmpty(params['id'], BadRequestException('id is required'));
     final todo = todosService.updateTodoById(todoFromRequest);
     return responseBuilder.buildOK(data: todo.toJson());
@@ -107,7 +128,7 @@ class TodosController extends ApiController {
     throwIfEmpty(
         params['title'], BadRequestException('Request title is empty'));
 
-    final todoFromRequest = TodoModel.fromJson(params);
+    final todoFromRequest = $TodoModel.fromJson(params);
     final todo = todosService.addTodo(todoFromRequest);
     return responseBuilder.buildOK(data: todo.toJson());
   }

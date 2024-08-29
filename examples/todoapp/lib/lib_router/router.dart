@@ -52,7 +52,7 @@ class AppRouter {
 
   late final GoRouter _goRouter = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: const TodoListRoute().location,
+    initialLocation: const SplashRoute().location,
     routes: $appRoutes,
     redirect: _pageRedirections,
     refreshListenable: _refreshListener,

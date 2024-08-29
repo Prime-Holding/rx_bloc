@@ -15,6 +15,8 @@ import '../../feature_splash/services/splash_service.dart';
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
+import '../../lib_realm/di/realm_dependencies.dart';
+import '../../lib_realm/services/realm_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
@@ -25,12 +27,12 @@ import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_services/todo_list_service.dart';
+import '../data_sources/local/connectivity_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
-import '../data_sources/local/todo_list_local_data_source.dart';
+import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
-import '../repositories/todo_list_repository.dart';
 import '../repositories/todo_repository.dart';
 
 class TodoappWithDependencies extends StatelessWidget {
@@ -107,22 +109,28 @@ class TodoappWithDependencies extends StatelessWidget {
 
   List<SingleChildWidget> get _libs => [
         ...TranslationsDependencies.from(baseUrl: config.baseUrl).providers,
+        ...RealmDependencies().providers,
       ];
 
   List<Provider> get _dataSources => [
+        Provider<ConnectivityDataSource>(
+          create: (context) => ConnectivityDataSource(),
+        ),
+        Provider<TodoLocalDataSource>(
+          create: (context) => TodoLocalDataSource(
+            context.read<RealmService>().realm,
+          ),
+        ),
         Provider<TodosRemoteDataSource>(
           create: (context) => TodosRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
         ),
         Provider<PermissionsRemoteDataSource>(
-          create: (context) => PermissionsRemoteDataSource(
-            context.read<ApiHttpClient>(),
-          ),
+          create: (context) => PermissionsRemoteDataSource(),
         ),
-        Provider<TodoListDataSource>(
-          create: (context) =>
-              TodoListDataSource(context.read<SharedPreferencesInstance>()),
+        Provider<ConnectivityDataSource>(
+          create: (context) => ConnectivityDataSource(),
         ),
       ];
 
@@ -137,13 +145,10 @@ class TodoappWithDependencies extends StatelessWidget {
           create: (context) => TodoRepository(
             context.read(),
             context.read(),
-          ),
-        ),
-        Provider<TodoListRepository>(
-          create: (context) => TodoListRepository(
             context.read(),
             context.read(),
           ),
+          dispose: (context, value) => value.dispose(),
         ),
       ];
 
@@ -157,6 +162,7 @@ class TodoappWithDependencies extends StatelessWidget {
           create: (context) => SplashService(
             context.read(),
             context.read(),
+            context.read(),
           ),
         ),
         Provider<TodoListService>(
@@ -165,16 +171,16 @@ class TodoappWithDependencies extends StatelessWidget {
           ),
         ),
         Provider<TodoActionsService>(
-          create: (context) => TodoActionsService(context.read()),
-        )
+          create: (context) => TodoActionsService(
+            context.read(),
+          ),
+        ),
       ];
 
   List<SingleChildWidget> get _blocs => [
         Provider<RouterBlocType>(
-          create: (context) => RouterBloc(
-            router: context.read<AppRouter>().router,
-            permissionsService: context.read(),
-          ),
+          create: (context) =>
+              RouterBloc(router: context.read<AppRouter>().router),
         ),
         RxBlocProvider<TodoListBulkEditBlocType>(
           create: (context) => TodoListBulkEditBloc(

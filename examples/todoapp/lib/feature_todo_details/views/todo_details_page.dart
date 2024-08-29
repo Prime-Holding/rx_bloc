@@ -51,7 +51,7 @@ class TodoDetailsPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            RxResultBuilder<TodoDetailsBlocType, TodoModel>(
+            RxResultBuilder<TodoDetailsBlocType, $TodoModel>(
               state: (bloc) => bloc.states.todo,
               buildSuccess: (context, todo, bloc) =>
                   RxBlocBuilder<TodoActionsBlocType, bool>(

@@ -15,7 +15,7 @@ class TodoListWidget extends StatelessWidget {
     super.key,
   });
 
-  final List<TodoModel> todos;
+  final List<$TodoModel> todos;
   final bool isLoading;
 
   @override
