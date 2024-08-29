@@ -138,8 +138,6 @@ void main() {
 
   group('test argument_type enum', () {
     test('should have correct allowed values', () {
-      final allowedRealtimeCommunication =
-          RealtimeCommunicationType.supportedOptions.map((e) => e.name);
       final allowedCICDs = CICDType.supportedOptions.map((e) => e.name);
 
       expect(CreateCommandArgumentType.string.allowed, isNull);
