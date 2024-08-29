@@ -156,7 +156,7 @@ class AppRouter {
     }
 
     final pathInfo =
-        router.routeInformationParser.configuration.findMatch(state.uri.toString());
+        router.routeInformationParser.configuration.findMatch(state.uri);
 
     final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
 
