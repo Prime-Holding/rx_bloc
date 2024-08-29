@@ -129,5 +129,6 @@ class $TodoModel implements Identifiable {
   @override
   bool isEqualToIdentifiable(Identifiable other) =>
       identical(this, other) ||
-      (other is $TodoModel && id != null && id == other.id);
+      (other is $TodoModel ||
+          other is TodoModel && id != null && id == other.id);
 }

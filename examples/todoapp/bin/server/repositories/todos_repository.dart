@@ -54,7 +54,7 @@ class TodosRepository {
       _uuid.v4(),
       todo.title,
       todo.description,
-      false,
+      todo.completed,
       DateTime.now().millisecondsSinceEpoch,
       synced: true,
       action: TodoModelActions.none.name,
@@ -66,15 +66,15 @@ class TodosRepository {
   // Update a todo by its id
   $TodoModel updateTodoById($TodoModel todo) {
     if (_todos.isNotEmpty) {
-      final index = _todos.indexWhere((element) => element.id == todo.id);
-      if (index >= 0) {
-        _todos[index] = _todos[index].copyWith(
-          title: todo.title,
-          description: todo.description,
-          action: TodoModelActions.none.name,
-        );
+      final updateTodo = _todos.firstWhere((element) => element.id == todo.id);
+      if (updateTodo.id != null) {
+        updateTodo.action = TodoModelActions.none.name;
+        updateTodo.title = todo.title;
+        updateTodo.description = todo.description;
+        updateTodo.completed = todo.completed;
+        updateTodo.synced = true;
 
-        return _todos[index];
+        return updateTodo;
       }
     }
 
