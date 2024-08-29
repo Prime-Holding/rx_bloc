@@ -14,7 +14,7 @@ Integration tests are written using the **integration_test** package, provided b
 - Dart
 - Flutter
 - Patrol
-- Android Studio s
+- Android Studio
 - Xcode
 
 ## High level architecture
@@ -43,7 +43,7 @@ Integration tests are written using the **integration_test** package, provided b
 
 ## Native automation setup:
 
-Check the official [Getting Started]([leancodepl/patrol](https://patrol.leancode.co/getting-started)) guide for **Androiud** and **iOS**.
+Check the official [Getting Started]([leancodepl/patrol](https://patrol.leancode.co/getting-started)) guide for **Android** and **iOS**.
 
 ## Project Structure
 
@@ -109,7 +109,8 @@ Check the official [Getting Started]([leancodepl/patrol](https://patrol.leancode
 
 ```dart
 Future<void> tapEmailButton() async {  
-    await $(Keys.personalInfoAddEmailButton).tap();  }  
+    await $(Keys.personalInfoAddEmailButton).tap();  
+}  
 ```
 
 If the type of elements is only one on the page, we can localize it with class.  
@@ -119,7 +120,8 @@ For example check `base_page.dart` class:
 final Type _closeButtonType = AppSmallButton;  
 
 Future<void> tapClose() async {  
-    await $(_closeButtonType).tap();  }  
+    await $(_closeButtonType).tap();  
+}  
 ```
 
 **Texts can be used as last resort on localization edge cases.**
@@ -167,24 +169,26 @@ Page object classes contain all locators of element and atomic action methods fo
 Simple locators that are used only once can be set as parameter directly in the method.
 
 ```dart
-Future<void> tapConfirmButton() async{  
-    await $(Keys.ConfirmButton).tap(andSettle:false);}  
+Future<void> tapConfirmButton() async {  
+    await $(Keys.ConfirmButton).tap(andSettle:false);
+}  
 ```
 
-In case where we have complex locators or locator is used in mutiple methods we can declare them as variables.
+In case where we have complex locators or locator is used in multiple methods we can declare them as variables.
 
 ```dart
 PatrolFinder get confirmButton => $(Keys.confirmButton);  
 
-Future<void> tapSelfTransferButton() async{  
-    await confirmButton.tap(andSettle:false);}  
+Future<void> tapSelfTransferButton() async {  
+    await confirmButton.tap(andSettle:false);
+}  
 ```
 
 Create **steps_utils** classes classes that contain methods of **steps** which are used to shorten the tests.
 
 ```dart
 class PersonalInfoObjPageSteps {
-
+  
   static Future<void> setEmailAddress(
       PatrolIntegrationTester $, String emailAddress) async {
     final personalInfoObjPage = PersonalInfoObjPage($);
@@ -204,7 +208,7 @@ class PersonalInfoObjPageSteps {
 
 ## Creating tests
 
-- Try to introduce as little conditional logic as possible to help keep the main path straight. In practice, this usually comes down to having as few `if`s as possible.
+- Try to introduce as little conditional logic as possible to help keep the main path straight. In practice, this usually comes down to having as few `if`s as possible.
 
 - Keeping your test code simple and to the point will also help you in debugging it.
 
@@ -276,12 +280,12 @@ This command does the following things:
 
 **Examples**:  
 **IOS**  
-patrol test --target integration_test/tests --flavor dev --device 00008101-000A49DA0190001E --no-uninstall --release --no-label
+patrol test --target integration_test/tests --flavor dev --device <device_id> --no-uninstall --release --no-label
 
 **Android**  
-patrol test --target integration_test/test --flavor dev --device emulator-5554 --no-uninstall --debug --no-label
+patrol test --target integration_test/test --flavor dev --device <device_id> --no-uninstall --debug --no-label
 
-To see all available options and flags, run `patrol test --help`.
+To see all available options and flags, run `patrol test --help`.
 
 Additional info can be found here [Commands - test](https://patrol.leancode.co/cli-commands/test).
 
@@ -291,4 +295,5 @@ Additional info can be found here [Commands - test](https://patrol.leancode.co/c
 
 - Standard Patrol reporting
 
-After each test run a report from Patrol can be found here: ...\build\app\reports\androidTests\connected\flavors\{flavor}
+After each test run a report from Patrol can be found under: 
+`{project_root}}\build\app\reports\androidTests\connected\flavors\{flavor}`
