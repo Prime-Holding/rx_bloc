@@ -54,13 +54,13 @@ Updated environment variable names used in CI/CD functionality:
 ## [3.3.1]
 * Update the build_custom fastlane task so that if the required environment variables do not exist the user will be prompted to enter their values
 * Convert the expected fastlane environment variables to uppercase
-* Apply c4model (Component Diagram) specifics to the Architectural Diagram 
+* Apply c4model (Component Diagram) specifics to the Architectural Diagram
 
 ## [3.3.0]
 * Added Github as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `none`)
 * Added remote translation lookup for localizations
 * Updates to `analytics` feature - added crash reporting support and screen view logging
-* Update generated project dependencies 
+* Update generated project dependencies
 
 ## [3.2.0]
 * Added Auth Matrix as an option under the flag `--enable-auth-matrix`
@@ -110,7 +110,7 @@ Contains breaking changes
 
 ## [2.6.1]
 * Fixed automated tests not running when analytics is enabled
-* Fixed android compilation issues 
+* Fixed android compilation issues
 
 ## [2.6.0]
 * Added parameter `enable-patrol` for enabling patrol package for integration tests
@@ -198,10 +198,10 @@ Contains breaking changes
 
 ## [0.0.5]
 * Update generated project, adding following features:
-    - Http-client (Dio by default)
-    - Interceptors
-    - Push Notifications via Firebase Cloud Messaging
-    - Local server (written in Dart)
+  - Http-client (Dio by default)
+  - Interceptors
+  - Push Notifications via Firebase Cloud Messaging
+  - Local server (written in Dart)
 
 ## [0.0.4]
 * Update generated project with golden tests
@@ -209,14 +209,14 @@ Contains breaking changes
 ## [0.0.3]
 * Support null safety
 * Update generated project with latest dependencies of following packages:
-    - `build_runner: ^2.0.3`
-    - `auto_route: ^2.2.0`
-    - `auto_route_generator: ^2.0.1`
-    - `flutter_rx_bloc: ^3.0.0`
-    - `mockito: ^5.0.0`
-    - `rx_bloc: ^3.0.0`
-    - `rx_bloc_generator: ^5.0.0`
-    - `rx_bloc_test: ^3.0.0`
+  - `build_runner: ^2.0.3`
+  - `auto_route: ^2.2.0`
+  - `auto_route_generator: ^2.0.1`
+  - `flutter_rx_bloc: ^3.0.0`
+  - `mockito: ^5.0.0`
+  - `rx_bloc: ^3.0.0`
+  - `rx_bloc_generator: ^5.0.0`
+  - `rx_bloc_test: ^3.0.0`
 
 ## [0.0.2]
 * Documentation improvements
@@ -224,13 +224,13 @@ Contains breaking changes
 ## [0.0.1]
 * Initial release
 * Created projects include following features:
-    - Flavors
-    - Localization
-    - State management with [rx_bloc][rx_bloc_url]
-    - Routing
-    - Design system
-    - Firebase Analytics
-    - Unit tests
+  - Flavors
+  - Localization
+  - State management with [rx_bloc][rx_bloc_url]
+  - Routing
+  - Design system
+  - Firebase Analytics
+  - Unit tests
 
 ---
 
@@ -240,3 +240,4 @@ Contains breaking changes
 [example_project_readme_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/README.md
 [golden_tests_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [mfa_doc_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
+[patrol_integration_test_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/mason_templates/bricks/patrol_integration_tests/__brick__/docs/patrol_integration_test.md
