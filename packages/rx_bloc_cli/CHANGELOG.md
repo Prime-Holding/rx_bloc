@@ -1,5 +1,6 @@
 ## [4.0.1]
 * Added [README][patrol_integration_test_url] about Patrol Integration Test.
+* Fixed the compile errors of the generated projects.
 
 ## [4.0.0]
 Contains breaking changes
