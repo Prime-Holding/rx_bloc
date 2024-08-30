@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:dio/dio.dart';
+import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
 import '../../models/request_models/push_message_request_model.dart';

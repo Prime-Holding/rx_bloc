@@ -118,11 +118,13 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     _sessionConfig.stream.listen((timeoutEvent) {
       if (timeoutEvent == SessionTimeoutState.userInactivityTimeout ||
           timeoutEvent == SessionTimeoutState.appFocusTimeout) {
-        context.read<RouterBlocType>().events.go(
-              const VerifyPinCodeRoute(),
-              extra: const PinCodeArguments(
-                  title: 'Enter Pin Code', isSessionTimeout: true),
-            );
+        if(mounted) {
+          context.read<RouterBlocType>().events.go(
+                const VerifyPinCodeRoute(),
+                extra: const PinCodeArguments(
+                    title: 'Enter Pin Code', isSessionTimeout: true),
+              );
+        }
       }
     });
   }{{/enable_pin_code}}
@@ -156,15 +158,22 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
     }
 
     final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (!mounted) return;
-    await onInitialMessageOpened(context, initialMessage);
+    await onInitialMessageOpened(initialMessage);
 
     FirebaseMessaging.instance.onTokenRefresh
-        .listen((token) => onFCMTokenRefresh(context, token));
-    FirebaseMessaging.onMessage
-        .listen((message) => onForegroundMessage(context, message));
-    FirebaseMessaging.onMessageOpenedApp
-        .listen((message) => onMessageOpenedFromBackground(context, message));
+        .listen((token) => onFCMTokenRefresh(token));
+
+    FirebaseMessaging.onMessage.listen((message) {
+      if(mounted) {
+        onForegroundMessage(context, message);
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      if(mounted) {
+        onMessageOpenedFromBackground(context, message);
+      }
+    });
   }{{/push_notifications}}{{#analytics}}
 
   void _configureAnalyticsAndCrashlytics() {
@@ -192,7 +201,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
 
   @override
   Widget build(BuildContext context) {
-    final materialApp = 
+    final materialApp =
     {{^enable_pin_code}} _buildMaterialApp(context);{{/enable_pin_code}}
     {{#enable_pin_code}} _buildMaterialAppWithPinCode(); {{/enable_pin_code}}
 

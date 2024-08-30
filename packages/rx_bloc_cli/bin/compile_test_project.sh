@@ -9,6 +9,7 @@ function replace_file_contents() {
     "docs/continuous_delivery.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md"
     "docs/golden_tests.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md"
     "docs/mfa.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md"
+    "docs/patrol_integration_test.md" "https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md"
   )
 
   # Iterate over the to_replace array

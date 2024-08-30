@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
 import 'package:dio/dio.dart';
+import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
 import '../../../lib_auth/models/auth_token_model.dart';
