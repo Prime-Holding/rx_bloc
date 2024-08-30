@@ -11,4 +11,13 @@ void main() {
       expect('c.example'.matches(regex: regex), isFalse);
     });
   });
+
+  group('test xml related extensions', () {
+    test('converts string to XmlNode', () {
+      const xmlString = '<child>data</child>';
+      final xmlNode = xmlString.toXmlNode();
+      expect(xmlNode.children.length, isPositive);
+      expect(xmlNode.children[0].toXmlString(), xmlString);
+    });
+  });
 }

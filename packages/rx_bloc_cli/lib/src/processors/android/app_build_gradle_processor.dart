@@ -133,8 +133,9 @@ if (keystorePropertiesFile.exists()) {
         'namespace =',
         content.replaceAll('\n', '\n$_tabSpace'),
       );
-    } else
+    } else {
       buffer.insertBefore(beforePattern, content);
+    }
   }
 
   void _buildDependenciesList(StringBuffer buffer) {

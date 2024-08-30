@@ -7,31 +7,31 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
-  cloud_firestore: ^4.0.4
-  collection: ^1.16.0
+  cloud_firestore: ^5.2.0
+  collection: ^1.18.0
   cupertino_icons: ^1.0.4
   dio: ^5.3.0
-  firebase_analytics: ^10.0.4
-  firebase_auth: ^4.1.1
-  firebase_core: ^2.1.1
+  firebase_analytics: ^11.2.1
+  firebase_auth: ^5.1.3
+  firebase_core: ^3.3.0
   # firebase_database: ^9.0.15
   flutter:
     sdk: flutter
-  flutter_facebook_auth: ^6.0.0
+  flutter_facebook_auth: ^7.0.1
   flutter_localizations:
     sdk: flutter
-  flutter_rx_bloc:
-  flutter_secure_storage: ^8.0.0
+  flutter_rx_bloc: any
+  flutter_secure_storage: ^9.2.2
   flutter_slidable: ^3.0.0
   flutter_sticky_header: ^0.6.0
-  go_router: ^10.0.0
+  go_router: ^14.2.2
   golden_toolkit: ^0.15.0
-  grouped_list: ^5.1.2
-  intl: ^0.18.0
+  grouped_list: ^6.0.0
+  intl: ^0.19.0
   provider: ^6.0.1
-  rx_bloc:
-  rx_bloc_list: ^4.0.0
-  rxdart: ^0.27.3
+  rx_bloc: any
+  rx_bloc_list: any
+  rxdart: ^0.28.0
   scroll_to_index: ^3.0.1
   shared_preferences: ^2.0.11
 
@@ -42,23 +42,11 @@ dev_dependencies:
   flutter_lints: any
   flutter_test:
     sdk: flutter
-  go_router_builder: ^2.2.3
+  go_router_builder: ^2.7.0
   mockito: ^5.0.16
-  rx_bloc_generator: ^5.1.0
+  rx_bloc_generator: any
   rx_bloc_test: any
   test: any
-
-dependency_overrides:
-  flutter_rx_bloc:
-    path: ../../packages/flutter_rx_bloc
-  rx_bloc:
-    path: ../../packages/rx_bloc
-  rx_bloc_generator:
-    path: ../../packages/rx_bloc_generator
-  rx_bloc_list:
-    path: ../../packages/rx_bloc_list
-  rx_bloc_test:
-    path: ../../packages/rx_bloc_test
 
 flutter:
   uses-material-design: true

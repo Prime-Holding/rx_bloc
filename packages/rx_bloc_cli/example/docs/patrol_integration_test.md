@@ -19,17 +19,17 @@ Integration tests are written using the **integration_test** package, provided b
 
 ## High level architecture
 
-![Patrol 1 user interface testing](https://leancode.co/_next/image?url=https%3A%2F%2Fimages.prismic.io%2Fleancodelanding2%2Fe2f278bc-a2c0-473e-95d5-21631a7e7d16_arch2.jpg%3Fauto%3Dcompress%2Cformat&w=3840&q=70)
+![Patrol 1 user interface testing][patrol_architecture_img]
 
 ## Setup
 
-- Check the official [Windows](https://docs.flutter.dev/get-started/install/windows) installation guide.
+- Check the official [Windows][flutter_get_started_windows] installation guide.
 
-- Check the official [MacOS](https://docs.flutter.dev/get-started/install/macos) installation guide.
+- Check the official [MacOS][flutter_get_started_macos] installation guide.
 
-- Check the official [Set up an editor](https://docs.flutter.dev/get-started/editor) guide.
+- Check the official [Set up an editor][flutter_get_started_editor] guide.
 
-- Check the official [Patrol](https://patrol.leancode.co/getting-started) installation guide.
+- Check the official [Patrol][patrol_get_started] installation guide.
 
 
 ### Install patrol_cli
@@ -80,7 +80,7 @@ Check the official [Getting Started]([leancodepl/patrol](https://patrol.leancode
 
 ## Naming Conventions
 
-*Effective Dart* guides can be found here [Guides](https://dart.dev/guides/language/effective-dart).
+*Effective Dart* guides can be found here [Guides][effective_dart].
 
 **Finders** starts with **Name** followed by **Type**:
 
@@ -134,7 +134,7 @@ All **keys** are stored in file `keys.dart`.
 │   │   ├── keys.dart  
 ```
 
-For additional info check: [Effective Patrol](https://patrol.leancode.co/effective-patrol#prefer-using-keys-to-find-widgets)
+For additional info check: [Effective Patrol][effective_patrol]
 
 ### Handling Keys
 
@@ -264,7 +264,7 @@ void main() {
 
 ## Running tests
 
-`patrol test --target <<test file to run>> --flavor <<env>> --device <<deviceName>> --no-uninstall --release (IoS) / --debug (Android) --no-label (required)
+`patrol test --target <test_file_to_run> --flavor <env> --device <device_id> --no-uninstall --release (IoS) / --debug (Android) --no-label (required)`
 
 This command does the following things:
 
@@ -280,14 +280,14 @@ This command does the following things:
 
 **Examples**:  
 **IOS**  
-patrol test --target integration_test/tests --flavor dev --device <device_id> --no-uninstall --release --no-label
+`patrol test --target integration_test/tests --flavor dev --device <device_id> --no-uninstall --release --no-label`
 
 **Android**  
-patrol test --target integration_test/test --flavor dev --device <device_id> --no-uninstall --debug --no-label
+`patrol test --target integration_test/test --flavor dev --device <device_id> --no-uninstall --debug --no-label`
 
 To see all available options and flags, run `patrol test --help`.
 
-Additional info can be found here [Commands - test](https://patrol.leancode.co/cli-commands/test).
+Additional info can be found here [Commands - test][patrol_cli_commands].
 
 ## Reporting
 
@@ -296,4 +296,17 @@ Additional info can be found here [Commands - test](https://patrol.leancode.co/c
 - Standard Patrol reporting
 
 After each test run a report from Patrol can be found under: 
-`{project_root}}\build\app\reports\androidTests\connected\flavors\{flavor}`
+```
+{project_root}}/build/app/reports/androidTests/connected/flavors/{flavor}
+```
+
+---
+
+[patrol_architecture_img]: https://leancode.co/_next/image?url=https%3A%2F%2Fimages.prismic.io%2Fleancodelanding2%2Fe2f278bc-a2c0-473e-95d5-21631a7e7d16_arch2.jpg%3Fauto%3Dcompress%2Cformat&w=3840&q=70
+[flutter_get_started_windows]: https://docs.flutter.dev/get-started/install/windows
+[flutter_get_started_macos]: https://docs.flutter.dev/get-started/install/macos
+[flutter_get_started_editor]: https://docs.flutter.dev/get-started/editor
+[patrol_get_started]: https://patrol.leancode.co/getting-started
+[effective_dart]: https://dart.dev/guides/language/effective-dart
+[effective_patrol]: https://patrol.leancode.co/effective-patrol#prefer-using-keys-to-find-widgets
+[patrol_cli_commands]: https://patrol.leancode.co/cli-commands/test

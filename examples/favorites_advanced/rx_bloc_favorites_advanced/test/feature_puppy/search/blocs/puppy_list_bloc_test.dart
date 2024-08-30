@@ -6,6 +6,7 @@ import 'package:rx_bloc_favorites_advanced/base/repositories/paginated_puppies_r
 import 'package:rx_bloc_favorites_advanced/feature_puppy/search/blocs/puppy_list_bloc.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
 import '../../../stubs.dart';
@@ -164,5 +165,32 @@ void main() {
         PaginatedList(list: Stub.puppies123, pageSize: 1, isLoading: false),
       ],
     );
+  });
+
+  group('StreamBindToPuppies extension', () {
+    test('updatePuppies updates the given puppiesToUpdate', () async {
+      final subject = BehaviorSubject<PaginatedList<Puppy>>();
+      final puppiesStream = Stream<List<Puppy>>.fromIterable([Stub.puppies12]);
+
+      final initialPaginatedList = PaginatedList<Puppy>(
+        list: Stub.puppies23,
+        pageSize: 10,
+      );
+
+      subject.add(initialPaginatedList);
+      final subscription = puppiesStream.updatePuppies(subject);
+
+      await expectLater(
+        subject,
+        emitsInOrder([
+          PaginatedList<Puppy>(
+            list: Stub.puppies23,
+            pageSize: 10,
+          ),
+        ]),
+      );
+
+      await subscription.cancel();
+    });
   });
 }
