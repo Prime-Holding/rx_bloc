@@ -9,28 +9,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  rxdart: ^0.27.7
-  rx_bloc: ^5.0.3
-  flutter_rx_bloc: ^6.1.1
+  flutter_rx_bloc: any
+  rx_bloc: any
+  rxdart: ^0.28.0
 
 dev_dependencies:
-  rx_bloc_generator: ^7.2.2
   build_runner: ^2.4.11
-  rx_bloc_test: ^4.0.0
+  clean_coverage: ^0.0.3
+  flutter_lints: any
   flutter_test:
     sdk: flutter
-  clean_coverage: ^0.0.3
-
-dependency_overrides:
-  rx_bloc_test:
-    path: ../../packages/rx_bloc_test
-  rx_bloc:
-    path: ../../packages/rx_bloc
-  flutter_rx_bloc:
-    path: ../../packages/flutter_rx_bloc
-  rx_bloc_generator:
-    path: ../../packages/rx_bloc_generator
+  rx_bloc_generator: any
+  rx_bloc_test: ^4.0.0
 
 
 flutter:

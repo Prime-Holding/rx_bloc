@@ -5,9 +5,9 @@ import 'package:rxdart/rxdart.dart';
 
 void main() {
   group('DivisionBloc tests', () {
-    final String num1 = '10';
-    final String num2 = '5';
-    final String expectedSolution = '10.0 / 5.0 = 2.0';
+    const String num1 = '10';
+    const String num2 = '5';
+    const String expectedSolution = '10.0 / 5.0 = 2.0';
 
     rxBlocTest<DivisionBloc, String>(
       'DivisionBloc divides successfully two numbers',

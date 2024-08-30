@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import '../../base/theme/design_system.dart';
@@ -15,10 +14,9 @@ class UpdateButton extends StatelessWidget {
   const UpdateButton({
     required bool isActive,
     required VoidCallback onPressed,
-    Key? key,
+    super.key,
   })  : _isActive = isActive,
-        _onPressed = onPressed,
-        super(key: key);
+        _onPressed = onPressed;
 
   final VoidCallback _onPressed;
 

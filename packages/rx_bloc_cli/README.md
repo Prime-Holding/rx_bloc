@@ -1,6 +1,6 @@
 # Rx Bloc CLI
 
-Rx Bloc Command Line Interface helps you creating fully functional and feature-rich projects in just a moment. It comes with pre-generated features (such as flavors, app localization, etc) so you can start working on your project right away.
+Rx Bloc Command Line Interface helps you creating fully functional and feature-rich projects in just a moment. It comes with pre-generated features (such as flavors, app localization, etc) so you can start working on your project right away
 
 ---
 

@@ -23,6 +23,7 @@ final class Stub {
   static const invalidOrganisation = 'c.example';
 
   static const incorrectRealtimeCommunicationCase = 'incorrect_case';
+  static const incorrectCICDTypeCase = 'incorrect_case';
 
   static const licenseFileName = '{{~ licence.dart }}';
 

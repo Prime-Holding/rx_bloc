@@ -8,10 +8,12 @@ extension _HotelDetailsPageAppBar on HotelDetailsPage {
   Widget _buildFavouriteButton(BuildContext context, Hotel hotel) =>
       hotel.isFavorite
           ? IconButton(
+              key: const ValueKey('favoriteButtonWithShadow'),
               icon: const IconWithShadow(icon: Icons.favorite),
               onPressed: () => _markAsFavorite(context, false, hotel),
             )
           : IconButton(
+              key: const ValueKey('favoriteButtonWithShadow'),
               icon: const IconWithShadow(icon: Icons.favorite_border),
               onPressed: () => _markAsFavorite(context, true, hotel),
             );

@@ -1,6 +1,11 @@
 ## [5.1.0]
 * Added GitLab as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `codemagic`, `gitlab`, `none`)
 
+## [5.0.0]
+Generated projects have their dependencies updated:
+* `rx_bloc` to `^6.0.0`
+* `rxdart` to `^0.28.0`
+
 ## [4.0.1]
 * Added [README][patrol_integration_test_url] about Patrol Integration Test.
 * Fixed the compile errors of the generated projects.

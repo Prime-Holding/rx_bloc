@@ -1,3 +1,6 @@
+## [8.0.0]
+* Update `rx_bloc` to use version `6.0.0`
+
 ## [7.2.2]
 * Fix compiling issue caused by the analyzer version `6.5.0`
 

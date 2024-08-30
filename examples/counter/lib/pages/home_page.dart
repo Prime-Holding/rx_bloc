@@ -5,7 +5,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import '../bloc/counter_bloc.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -70,8 +70,8 @@ class ActionButton extends StatelessWidget {
     this.disabled = false,
     this.tooltip = '',
     this.loading = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool disabled;
   final bool loading;

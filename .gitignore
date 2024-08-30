@@ -44,6 +44,10 @@ packages/rx_bloc_test/pubspec.lock
 version
 .fvm/
 
+# Exclude generated files
+**/*.g.dart
+**/*.mocks.dart
+
 # packages file containing multi-root paths
 .packages.generated
 
@@ -116,6 +120,11 @@ coverage/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 
+# Exceptions to above rules for generated files
+!/packages/rx_bloc/lib/src/bloc/loading_bloc.rxb.g.dart
+
+# Except any generated files within the test directories
+!**/test/**/*.rxb.g.dart
 
 # Generated examples
 packages/rx_bloc_cli/example/test_app

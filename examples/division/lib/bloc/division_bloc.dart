@@ -1,6 +1,7 @@
-import 'package:example/repositories/calculator_repository.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../repositories/calculator_repository.dart';
 
 part 'division_bloc.rxb.g.dart';
 part 'division_bloc_extensions.dart';
