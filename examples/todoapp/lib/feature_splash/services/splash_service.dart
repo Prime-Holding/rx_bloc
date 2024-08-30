@@ -32,8 +32,8 @@ class SplashService {
 
   List<Future<void>> get _nomenclatures => [
         _realmService.initializeRealm(),
-        // _permissionsService.load(),
-        // _translationsService.load(),
+        _permissionsService.load(),
+        _translationsService.load(),
       ];
 
   bool get isAppInitialized => _appInitialized;

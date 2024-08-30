@@ -47,9 +47,14 @@ class $TodoModel implements Identifiable {
   /// The default value is false
   late int createdAt;
 
+  /// The Sync status of the todo
+  /// The default value is true, which means the todo is synced with the server
+  /// When the value is set to false, the todo is not synced with the server
   @JsonKey(includeFromJson: false, includeToJson: false)
   late bool? synced;
 
+  /// The action of the todo model
+  /// Represents the action that should be taken by the server in case of syncing
   late String? action;
 
   @JsonKey(includeFromJson: false, includeToJson: false)

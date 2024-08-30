@@ -6,47 +6,47 @@ class TodoLocalDataSource {
   TodoLocalDataSource(this.realm);
 
 // .query(r'action != $0 SORT(createdAt ASC)', ['delete'])
-  Stream<List<$TodoModel>> allTodosStream() => realm
+  Stream<List<$TodoModel>> allTodos() => realm
       .all<TodoModel>()
       .query(r'action != $0 SORT(createdAt DESC)', ['delete'])
       .changes
       .map((element) => element.results.toList());
 
-  Future<void> pauseSync() async => realm.syncSession.pause();
+  void pauseSync() => realm.syncSession.pause();
 
-  Future<void> unpauseSync() async => realm.syncSession.resume();
+  void unpauseSync() => realm.syncSession.resume();
 
-  Future<void> addMany(List<$TodoModel> todos) async {
+  void addMany(List<$TodoModel> todos) {
     if (todos.isEmpty) return;
     realm.write(() {
       realm.addAll<TodoModel>(todos as List<TodoModel>);
     });
   }
 
-  Future<void> deleteMany(List<$TodoModel> todos) async {
+  void deleteMany(List<$TodoModel> todos) {
     realm.write(() {
       realm.deleteMany(todos as List<TodoModel>);
     });
   }
 
-  Future<$TodoModel> addTodo($TodoModel todo) async {
+  $TodoModel addTodo($TodoModel todo) {
     realm.write(() {
       realm.add<TodoModel>(todo as TodoModel);
     });
     return todo;
   }
 
-  Future<List<TodoModel>> getAllUnsyncedTodos() async {
+  List<TodoModel> fetchAllUnsyncedTodos() {
     final results = realm.query<TodoModel>(r'synced == $0', [false]);
     return results.map((element) => element).toList();
   }
 
-  Future<List<TodoModel>> getAllTodos() async {
+  List<TodoModel> fetchAllTodos() {
     final results = realm.query<TodoModel>(r'action != $0', ['delete']);
     return results.map((element) => element).toList();
   }
 
-  Future<$TodoModel> updateTodoById(String id, $TodoModel todo) async {
+  $TodoModel updateTodoById(String id, $TodoModel todo) {
     final result = realm.find<TodoModel>(id);
 
     if (result == null) {
@@ -62,12 +62,12 @@ class TodoLocalDataSource {
     return result;
   }
 
-  Future<TodoModel> updateCompletedById(
+  TodoModel updateCompletedById(
     String id,
     bool completed, {
     bool synced = true,
     String? action,
-  }) async {
+  }) {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {
@@ -81,11 +81,11 @@ class TodoLocalDataSource {
     return todo;
   }
 
-  Future<List<TodoModel>> updateCompletedForAll(
+  List<TodoModel> updateCompletedForAll(
     bool completed, {
     bool synced = true,
     String? action,
-  }) async {
+  }) {
     final results = realm.all<TodoModel>().query('completed != $completed');
     final todos = results.toList();
     realm.write(() {
@@ -98,8 +98,7 @@ class TodoLocalDataSource {
     return todos.map((element) => element).toList();
   }
 
-  Future<List<TodoModel>> softDeleteCompleted(
-      {bool synced = true, String? action}) async {
+  List<TodoModel> softDeleteCompleted({bool synced = true, String? action}) {
     final results = realm.all<TodoModel>().query('completed == true');
     final todos = results.toList();
     realm.write(() {
@@ -112,8 +111,7 @@ class TodoLocalDataSource {
     return todos;
   }
 
-  Future<List<TodoModel>> deleteCompleted(
-      {bool synced = true, String? action}) async {
+  List<TodoModel> deleteCompleted({bool synced = true, String? action}) {
     final results = realm.all<TodoModel>().query('completed == true');
     final todos = results.toList();
     realm.write(() {
@@ -124,11 +122,11 @@ class TodoLocalDataSource {
     return todos;
   }
 
-  Future<void> deleteTodoById(
+  void deleteTodoById(
     String id, {
     bool synced = true,
     String? action,
-  }) async {
+  }) {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {
@@ -140,11 +138,11 @@ class TodoLocalDataSource {
     });
   }
 
-  Future<void> softDeleteTodoById(
+  void softDeleteTodoById(
     String id, {
     bool synced = true,
     String? action,
-  }) async {
+  }) {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {
@@ -158,7 +156,7 @@ class TodoLocalDataSource {
     });
   }
 
-  Future<TodoModel> getTodoById(String id) async {
+  $TodoModel getTodoById(String id) {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {

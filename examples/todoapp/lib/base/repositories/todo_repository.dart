@@ -33,7 +33,7 @@ class TodoRepository {
   StreamSubscription<bool>? _connectivitySubscription;
 
   Stream<List<$TodoModel>> fetchAllTodos() => Rx.combineLatest2(
-          _errorMapper.executeStream(localDataSource.allTodosStream()),
+          _errorMapper.executeStream(localDataSource.allTodos()),
           _errorMapper.execute(() => dataSource.getAllTodos()).asStream(),
           (List<$TodoModel> local, List<$TodoModel> remote) {
         final List<$TodoModel> missingTodos = remote
@@ -42,14 +42,13 @@ class TodoRepository {
             .toList();
 
         localDataSource.addMany(missingTodos);
-        localDataSource.allTodosStream();
         return local;
       });
 
   Future<$TodoModel> addTodo($TodoModel todo) => _errorMapper.execute(
         () async {
           final result = await dataSource.addTodo(todo);
-          await localDataSource.addTodo(result);
+          localDataSource.addTodo(result);
           return result;
         },
       ).onError(
@@ -69,7 +68,7 @@ class TodoRepository {
       _errorMapper.execute(
         () async {
           final result = await dataSource.updateTodoById(id, todo);
-          await localDataSource.updateTodoById(id, todo);
+          localDataSource.updateTodoById(id, todo);
           return result;
         },
       ).onError(
@@ -90,7 +89,7 @@ class TodoRepository {
         () async {
           final result = await dataSource
               .updateCompletedById(id, {'completed': completed});
-          await localDataSource.updateCompletedById(
+          localDataSource.updateCompletedById(
             id,
             completed,
           );
@@ -113,7 +112,7 @@ class TodoRepository {
         () async {
           final result =
               await dataSource.updateCompletedForAll({'completed': completed});
-          await localDataSource.updateCompletedForAll(completed);
+          localDataSource.updateCompletedForAll(completed);
           return result;
         },
       ).onError(
@@ -130,7 +129,7 @@ class TodoRepository {
   Future<List<$TodoModel>> deleteCompleted() => _errorMapper.execute(
         () async {
           final response = await dataSource.deleteCompleted();
-          await localDataSource.deleteCompleted();
+          localDataSource.deleteCompleted();
           return response;
         },
       ).onError(
@@ -146,7 +145,7 @@ class TodoRepository {
   Future<void> deleteTodoById(String id) => _errorMapper.execute(
         () async {
           await dataSource.deleteTodoById(id);
-          await localDataSource.deleteTodoById(id);
+          localDataSource.deleteTodoById(id);
         },
       ).onError((error, stackTrace) {
         if (error is NoConnectionErrorModel) {
@@ -176,23 +175,23 @@ class TodoRepository {
 
   Future<void> syncronize() async {
     final List<TodoModel> unsyncedTodos =
-        await localDataSource.getAllUnsyncedTodos();
+        localDataSource.fetchAllUnsyncedTodos();
 
     if (unsyncedTodos.isNotEmpty) {
       await _errorMapper.execute(
         () async {
-          await localDataSource.unpauseSync();
+          localDataSource.unpauseSync();
           final result = await dataSource.syncTodos({'todos': unsyncedTodos});
-          await localDataSource.deleteMany(unsyncedTodos);
-          await localDataSource.addMany(result);
+          localDataSource.deleteMany(unsyncedTodos);
+          localDataSource.addMany(result);
         },
       );
     }
   }
 
-  Future<T> handleError<T>(
+  T handleError<T>(
     Object? error,
-    Future<T> function,
+    T function,
   ) {
     if (error is NoConnectionErrorModel) {
       return function;

@@ -127,7 +127,9 @@ class TodoappWithDependencies extends StatelessWidget {
           ),
         ),
         Provider<PermissionsRemoteDataSource>(
-          create: (context) => PermissionsRemoteDataSource(),
+          create: (context) => PermissionsRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
         ),
         Provider<ConnectivityDataSource>(
           create: (context) => ConnectivityDataSource(),
@@ -179,8 +181,10 @@ class TodoappWithDependencies extends StatelessWidget {
 
   List<SingleChildWidget> get _blocs => [
         Provider<RouterBlocType>(
-          create: (context) =>
-              RouterBloc(router: context.read<AppRouter>().router),
+          create: (context) => RouterBloc(
+            router: context.read<AppRouter>().router,
+            permissionsService: context.read(),
+          ),
         ),
         RxBlocProvider<TodoListBulkEditBlocType>(
           create: (context) => TodoListBulkEditBloc(
