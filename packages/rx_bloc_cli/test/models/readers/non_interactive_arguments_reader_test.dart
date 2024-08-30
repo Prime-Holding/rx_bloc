@@ -1,6 +1,7 @@
 import 'package:args/args.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/readers/non_interactive_arguments_reader.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
@@ -106,6 +107,13 @@ void main() {
         return value;
       });
       expect(executed, isTrue);
+    });
+
+    test('test readCICDEnum should return value for correct argument', () {
+      when(argResults[CreateCommandArguments.cicd.name])
+          .thenReturn(CICDType.fastlane.name);
+      final value = sut.readCICDEnum(CreateCommandArguments.cicd);
+      expect(value, equals(CICDType.fastlane));
     });
   });
 }

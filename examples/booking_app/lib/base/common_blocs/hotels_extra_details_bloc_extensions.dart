@@ -4,7 +4,7 @@ extension _StreamFetchExtraDetails on Stream<_FetchExtraDetailsEventArgs> {
   /// Fetch extra details in a chunks collected by 100 milliseconds buffer
   /// and fetch them (if needed) at once.
   ///
-  /// `Side effect`: Emmits an event to [CoordinatorBloc]
+  /// `Side effect`: Emits an event to [CoordinatorBloc]
   /// once the details are fetched.
   Stream<List<Hotel>> fetchExtraDetails(
     PaginatedHotelsRepository repository,

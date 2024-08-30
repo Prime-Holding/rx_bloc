@@ -6,8 +6,8 @@ class HotelSortPage extends StatefulWidget {
   const HotelSortPage({
     this.onApplyPressed,
     this.initialSelection = SortBy.none,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Function(SortBy)? onApplyPressed;
   final SortBy initialSelection;
@@ -30,6 +30,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
         children: [
           _buildSortItems(),
           DialogButton(
+            key: const Key('apply_sort_button'),
             onPressed: () {
               widget.onApplyPressed?.call(selected);
               Navigator.of(context).pop();

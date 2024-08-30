@@ -8,13 +8,24 @@ import 'hotel_manage_mock.mocks.dart';
   HotelManageBlocEvents,
   HotelManageBlocType,
 ])
-HotelManageBlocType hotelManageMockFactory() {
+HotelManageBlocType hotelManageMockFactory({
+  Function()? markAsFavoriteCallback,
+}) {
   final blocMock = MockHotelManageBlocType();
   final eventsMock = MockHotelManageBlocEvents();
   final statesMock = MockHotelManageBlocStates();
 
   when(blocMock.events).thenReturn(eventsMock);
   when(blocMock.states).thenReturn(statesMock);
+
+  if (markAsFavoriteCallback != null) {
+    when(eventsMock.markAsFavorite(
+      hotel: anyNamed('hotel'),
+      isFavorite: anyNamed('isFavorite'),
+    )).thenAnswer(
+      (_) => markAsFavoriteCallback(),
+    );
+  }
 
   when(statesMock.error).thenAnswer(
     (_) => const Stream.empty(),

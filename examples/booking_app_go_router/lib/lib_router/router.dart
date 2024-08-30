@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'models/route_data_model.dart';
 import 'models/routes_path.dart';
 import 'views/error_page.dart';
 

@@ -10,52 +10,34 @@ dependencies:
   animated_stream_list_nullsafety:
   appbar_textfield:
   badges: ^3.1.2
-  collection: ^1.17.1
+  collection: ^1.18.0
   cupertino_icons: ^1.0.6
   curved_navigation_bar: ^1.0.1
   favorites_advanced_base:
     path: ../favorites_advanced_base
-  flow_builder: ^0.0.10
+  flow_builder: ^0.1.0
   flutter:
     sdk: flutter
-  flutter_rx_bloc: ^6.0.0
+  flutter_rx_bloc: any
   image_picker: ^1.0.4
   provider: ^6.1.1
-  rx_bloc: ^5.1.0
-  rx_bloc_list: ^4.1.0
-  rxdart: ^0.27.7
+  rx_bloc: any
+  rx_bloc_list: any
+  rxdart: ^0.28.0
 
 dev_dependencies:
-#  flutter_test:
-#    sdk: flutter
+  build_runner: ^2.4.11
+  flutter_test:
+    sdk: flutter
 #  test: 1.15.2
-  build_runner: ^2.4.6
   clean_coverage: ^0.0.3
   flutter_lints: any
 #  flutter_gherkin: ^1.1.9
   mockito: ^5.4.2
   quiver: ^3.0.1+1
-  rx_bloc_generator: ^7.1.0
-  rx_bloc_test: ^4.1.0
+  rx_bloc_generator: any
+  rx_bloc_test: any
   test: ^1.24.3
-
-dependency_overrides:
-  appbar_textfield:
-    git:
-      url: https://github.com/zdravkoc/appbar_textfield.git
-      ref: master
-  favorites_advanced_base:
-    path: ../favorites_advanced_base
-  flutter_rx_bloc:
-    path: ../../../packages/flutter_rx_bloc
-  rx_bloc:
-    path: ../../../packages/rx_bloc
-  rx_bloc_generator:
-    path: ../../../packages/rx_bloc_generator
-  rx_bloc_list:
-    path: ../../../packages/rx_bloc_list
-  rx_bloc_test:
-    path: ../../../packages/rx_bloc_test
 
 flutter:
   uses-material-design: true

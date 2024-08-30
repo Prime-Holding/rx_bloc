@@ -24,8 +24,8 @@ import 'config/environment_config.dart';
 class Reminders extends StatelessWidget {
   const Reminders({
     this.config = EnvironmentConfig.prod,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final EnvironmentConfig config;
 

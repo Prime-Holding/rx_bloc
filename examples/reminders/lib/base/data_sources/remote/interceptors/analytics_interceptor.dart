@@ -28,7 +28,7 @@ class AnalyticsInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     observer.analytics.logEvent(name: 'dioError', parameters: {
       'errorType': err.type,
-      'errorMessage': err.message,
+      if (err.message != null) 'errorMessage': err.message!,
       'stackTrace': err.stackTrace
     });
     super.onError(err, handler);

@@ -5,9 +5,9 @@ import '../common_blocs/hotel_manage_bloc.dart';
 
 class FavoriteMessageListener extends StatelessWidget {
   const FavoriteMessageListener({
-    Key? key,
     this.overrideMargins = false,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool overrideMargins;
 

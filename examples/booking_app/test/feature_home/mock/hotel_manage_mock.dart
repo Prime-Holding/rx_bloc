@@ -9,7 +9,9 @@ import 'hotel_manage_mock.mocks.dart';
   HotelManageBlocEvents,
   HotelManageBlocType,
 ])
-HotelManageBlocType hotelManageMockFactory() {
+HotelManageBlocType hotelManageMockFactory({
+  String? favoriteMessage,
+}) {
   final blocMock = MockHotelManageBlocType();
   final eventsMock = MockHotelManageBlocEvents();
   final statesMock = MockHotelManageBlocStates();
@@ -26,7 +28,10 @@ HotelManageBlocType hotelManageMockFactory() {
   );
 
   when(statesMock.favoriteMessage).thenAnswer(
-    (_) => const Stream.empty(),
+    (_) => favoriteMessage != null
+        ? Stream.value(favoriteMessage)
+        : const Stream.empty(),
   );
+
   return blocMock;
 }
