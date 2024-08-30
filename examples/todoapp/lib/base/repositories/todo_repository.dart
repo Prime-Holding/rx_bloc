@@ -8,8 +8,9 @@ import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
 import '../models/errors/error_model.dart';
 import '../models/todo_model.dart';
+import '../utils/handle_error_mixin.dart';
 
-class TodoRepository {
+class TodoRepository with ErrorHandlingMixin {
   TodoRepository(
     this._errorMapper,
     this.dataSource,
@@ -34,8 +35,16 @@ class TodoRepository {
 
   Stream<List<$TodoModel>> fetchAllTodos() => Rx.combineLatest2(
           _errorMapper.executeStream(localDataSource.allTodos()),
-          _errorMapper.execute(() => dataSource.getAllTodos()).asStream(),
-          (List<$TodoModel> local, List<$TodoModel> remote) {
+          _errorMapper
+              .execute(() => dataSource.getAllTodos())
+              .onError(
+                (error, stackTrace) => handleError(
+                  error,
+                  // Return empty list if error  no connection
+                  [],
+                ),
+              )
+              .asStream(), (List<$TodoModel> local, List<$TodoModel> remote) {
         final List<$TodoModel> missingTodos = remote
             .where((remoteTodo) =>
                 !local.any((localTodo) => localTodo.id == remoteTodo.id))
@@ -168,10 +177,12 @@ class TodoRepository {
           final result = await dataSource.getTodoById(id);
           return result;
         },
-      ).onError((error, stackTrace) => handleError(
-            error,
-            localDataSource.getTodoById(id),
-          ));
+      ).onError(
+        (error, stackTrace) => handleError(
+          error,
+          localDataSource.getTodoById(id),
+        ),
+      );
 
   Future<void> syncronize() async {
     final List<TodoModel> unsyncedTodos =
@@ -186,20 +197,6 @@ class TodoRepository {
           localDataSource.addMany(result);
         },
       );
-    }
-  }
-
-  T handleError<T>(
-    Object? error,
-    T function,
-  ) {
-    if (error is NoConnectionErrorModel) {
-      return function;
-    }
-    if (error is ErrorModel) {
-      throw error;
-    } else {
-      throw UnknownErrorModel();
     }
   }
 

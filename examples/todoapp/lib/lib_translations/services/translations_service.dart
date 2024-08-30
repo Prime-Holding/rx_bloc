@@ -24,6 +24,6 @@ class TranslationsService {
 
   /// Load translations
   Future<void> load() async {
-    await _getTranslations(force: true);
+    await _getTranslations();
   }
 }

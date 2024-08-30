@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
+import '../data_sources/local/translations_local_data_source.dart';
 import '../data_sources/translations_data_source.dart';
 import '../data_sources/translations_remote_data_source.dart';
 import '../repositories/translations_repository.dart';
@@ -32,15 +33,22 @@ class TranslationsDependencies {
 
   List<SingleChildWidget> get _dataSources => [
         Provider<TranslationsDataSource>(
-            create: (context) => TranslationsRemoteDataSource(
-                  context.read<ApiHttpClient>(),
-                  baseUrl: baseUrl,
-                ))
+          create: (context) => TranslationsRemoteDataSource(
+            context.read<ApiHttpClient>(),
+            baseUrl: baseUrl,
+          ),
+        ),
+        Provider<TranslationsLocalDataSource>(
+          create: (context) => TranslationsLocalDataSource(
+            context.read(),
+          ),
+        ),
       ];
 
   List<SingleChildWidget> get _repositories => [
         Provider<TranslationsRepository>(
             create: (context) => TranslationsRepository(
+                  context.read(),
                   context.read(),
                   context.read(),
                 ))

@@ -1,8 +1,8 @@
 import 'package:realm/realm.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../base/models/todo_model.dart';
-import '../services/realm_service.dart';
 
 class RealmInitRepository {
   RealmInitRepository(this._errorMapper);
@@ -18,12 +18,11 @@ class RealmInitRepository {
     RealmResults<TodoModel> realmModel,
   ) =>
       _errorMapper.execute(() async {
-        if (realm.subscriptions.findByName(RealmService.queryAllTodos) ==
-            null) {
+        if (realm.subscriptions.findByName(queryAllTodos) == null) {
           realm.subscriptions.update((mutableSubscriptions) {
             mutableSubscriptions.add(
               realmModel,
-              name: RealmService.queryAllTodos,
+              name: queryAllTodos,
             );
           });
         }

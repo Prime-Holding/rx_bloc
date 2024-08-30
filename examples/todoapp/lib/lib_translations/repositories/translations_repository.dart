@@ -6,16 +6,25 @@
 // https://opensource.org/licenses/MIT.
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
+import '../../base/utils/handle_error_mixin.dart';
+import '../data_sources/local/translations_local_data_source.dart';
 import '../data_sources/translations_data_source.dart';
 import '../models/i18n_models.dart';
 
-class TranslationsRepository extends TranslationsDataSource {
-  TranslationsRepository(this._dataSource, this._errorMapper);
+class TranslationsRepository extends TranslationsDataSource
+    with ErrorHandlingMixin {
+  TranslationsRepository(
+      this._dataSource, this._errorMapper, this._localDataSource);
 
   final TranslationsDataSource _dataSource;
   final ErrorMapper _errorMapper;
+  final TranslationsLocalDataSource _localDataSource;
 
   @override
-  Future<I18nSections?> getTranslations() =>
-      _errorMapper.execute(_dataSource.getTranslations);
+  Future<I18nSections?> getTranslations() => _errorMapper.execute(() async {
+        final translations = await _dataSource.getTranslations();
+        await _localDataSource.saveTranslations(translations);
+        return translations;
+      }).onError((error, stackTrace) =>
+          handleError(error, _localDataSource.getTranslations()));
 }
