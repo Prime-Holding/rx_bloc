@@ -108,10 +108,6 @@ class TodoManagementBloc extends $TodoManagementBloc {
           (description, todo) => description ?? todo.description)
       .shareReplay(maxSize: 1);
 
-//  _$setFirstNameEvent
-//             .map(validatorService.validateFirstName)
-//             .startWith(''),
-//         _currentUser.map((user) => user.firstName),
   @override
   Stream<String> _mapToTitleState() => Rx.merge([
         _$setTitleEvent.startWith(''),

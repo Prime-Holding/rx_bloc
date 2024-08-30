@@ -6,7 +6,6 @@ import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/local/connectivity_data_source.dart';
 import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
-import '../models/errors/error_model.dart';
 import '../models/todo_model.dart';
 import '../utils/handle_error_mixin.dart';
 
@@ -156,21 +155,18 @@ class TodoRepository with ErrorHandlingMixin {
           await dataSource.deleteTodoById(id);
           localDataSource.deleteTodoById(id);
         },
-      ).onError((error, stackTrace) {
-        if (error is NoConnectionErrorModel) {
-          localDataSource.softDeleteTodoById(
-            id,
-            synced: false,
-            action: TodoModelActions.delete.name,
+      ).onError(
+        (error, stackTrace) {
+          handleError(
+            error,
+            localDataSource.softDeleteTodoById(
+              id,
+              synced: false,
+              action: TodoModelActions.delete.name,
+            ),
           );
-          return;
-        }
-        if (error is ErrorModel) {
-          throw error;
-        } else {
-          throw UnknownErrorModel();
-        }
-      });
+        },
+      );
 
   Future<$TodoModel> fetchTodoById(String id) => _errorMapper.execute(
         () async {

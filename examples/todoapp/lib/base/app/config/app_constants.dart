@@ -21,4 +21,3 @@ const String webVapidKey = '';
 const String translationsKey = 'translations';
 const String permissionsKey = 'permissions';
 const String queryAllTodos = 'getAllTodos';
-const String realmAppId = 'remindersservice-rlxovpu';

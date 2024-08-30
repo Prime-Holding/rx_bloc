@@ -39,4 +39,6 @@ enum EnvironmentConfig {
 
   static const bool enableDevMenu =
       String.fromEnvironment('ENABLE_DEV_MENU') == 'true';
+
+  static const String realmAppId = String.fromEnvironment('REALM_APP_ID');
 }

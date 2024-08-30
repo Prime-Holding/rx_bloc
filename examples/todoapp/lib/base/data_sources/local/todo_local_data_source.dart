@@ -1,4 +1,5 @@
 import 'package:realm/realm.dart';
+import '../../models/errors/error_model.dart';
 import '../../models/todo_model.dart';
 
 class TodoLocalDataSource {
@@ -50,7 +51,7 @@ class TodoLocalDataSource {
     final result = realm.find<TodoModel>(id);
 
     if (result == null) {
-      throw Exception('Todo with id $id not found');
+      throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
     realm.write(() {
       result.title = todo.title;
@@ -71,7 +72,7 @@ class TodoLocalDataSource {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {
-      throw Exception('Todo with id $id not found');
+      throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
     realm.write(() {
       todo.completed = completed;
@@ -130,7 +131,7 @@ class TodoLocalDataSource {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {
-      throw Exception('Todo with id $id not found');
+      throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
 
     realm.write(() {
@@ -146,7 +147,7 @@ class TodoLocalDataSource {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {
-      throw Exception('Todo with id $id not found');
+      throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
 
     ///Instead of deleting the todo, we will mark it for deletion
@@ -160,7 +161,7 @@ class TodoLocalDataSource {
     final todo = realm.find<TodoModel>(id);
 
     if (todo == null) {
-      throw Exception('Todo with id $id not found');
+      throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
     return todo;
   }
