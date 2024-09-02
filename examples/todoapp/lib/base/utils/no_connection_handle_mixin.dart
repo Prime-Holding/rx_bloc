@@ -1,6 +1,6 @@
 import '../models/errors/error_model.dart';
 
-mixin ErrorHandlingMixin {
+mixin NoConnectionHandlerMixin {
   T handleError<T>(
     Object? error,
     T function,

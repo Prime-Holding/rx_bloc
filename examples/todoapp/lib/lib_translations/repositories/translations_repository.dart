@@ -6,13 +6,13 @@
 // https://opensource.org/licenses/MIT.
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
-import '../../base/utils/handle_error_mixin.dart';
+import '../../base/utils/no_connection_handle_mixin.dart';
 import '../data_sources/local/translations_local_data_source.dart';
 import '../data_sources/translations_data_source.dart';
 import '../models/i18n_models.dart';
 
 class TranslationsRepository extends TranslationsDataSource
-    with ErrorHandlingMixin {
+    with NoConnectionHandlerMixin {
   TranslationsRepository(
       this._dataSource, this._errorMapper, this._localDataSource);
 

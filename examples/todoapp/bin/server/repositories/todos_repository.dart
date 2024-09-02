@@ -43,6 +43,8 @@ class TodosRepository {
           final newTodo = addTodo(todo);
           responseList.add(newTodo);
           break;
+        default:
+          break;
       }
     }
     return responseList;

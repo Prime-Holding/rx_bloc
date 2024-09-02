@@ -1,11 +1,42 @@
+import 'dart:async';
+
 import '../models/todo_model.dart';
 import '../models/todos_filter_model.dart';
+import '../repositories/connectivity_repository.dart';
 import '../repositories/todo_repository.dart';
 
 class TodoListService {
-  TodoListService(this._repository);
+  TodoListService(
+    this._repository,
+    this._connectivityRepository,
+  ) {
+    _connectivitySubscription =
+        _connectivityRepository.connected().listen((event) {
+      if (event) {
+        synchronizeTodos();
+      } else {
+        _repository.pauseRealmSync();
+      }
+    });
+  }
 
   final TodoRepository _repository;
+  final ConnectivityRepository _connectivityRepository;
+  StreamSubscription<bool>? _connectivitySubscription;
+
+  /// Synchronizes the todos.
+  ///
+  /// Fetches all unsynced todos and syncs them with the server.
+  Future<void> synchronizeTodos() async {
+    final List<TodoModel> unsyncedTodos =
+        await _repository.fetchAllUnsyncedTodos();
+    if (unsyncedTodos.isNotEmpty) {
+      _repository.unpauseRealmSync();
+      final result = await _repository.syncTodos({'todos': unsyncedTodos});
+      _repository.deleteMany(unsyncedTodos);
+      _repository.addMany(result);
+    }
+  }
 
   /// Fetches all todos.
   ///
@@ -42,5 +73,9 @@ class TodoListService {
       case TodosFilterModel.completed:
         return todos.where((todo) => todo.completed).toList();
     }
+  }
+
+  void dispose() {
+    _connectivitySubscription?.cancel();
   }
 }

@@ -34,6 +34,7 @@ import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
+import '../repositories/connectivity_repository.dart';
 import '../repositories/todo_repository.dart';
 
 class TodoappWithDependencies extends StatelessWidget {
@@ -155,9 +156,13 @@ class TodoappWithDependencies extends StatelessWidget {
             context.read(),
             context.read(),
             context.read(),
+          ),
+        ),
+        Provider<ConnectivityRepository>(
+          create: (context) => ConnectivityRepository(
+            context.read(),
             context.read(),
           ),
-          dispose: (context, value) => value.dispose(),
         ),
       ];
 
@@ -177,7 +182,9 @@ class TodoappWithDependencies extends StatelessWidget {
         Provider<TodoListService>(
           create: (context) => TodoListService(
             context.read(),
+            context.read(),
           ),
+          dispose: (context, value) => value.dispose(),
         ),
         Provider<TodoActionsService>(
           create: (context) => TodoActionsService(

@@ -6,11 +6,11 @@
 // https://opensource.org/licenses/MIT.
 
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
-import '../../base/utils/handle_error_mixin.dart';
+import '../../base/utils/no_connection_handle_mixin.dart';
 import '../data_sources/local/permissions_local_data_source.dart';
 import '../data_sources/remote/permissions_remote_data_source.dart';
 
-class PermissionsRepository with ErrorHandlingMixin {
+class PermissionsRepository with NoConnectionHandlerMixin {
   PermissionsRepository(
     this._errorMapper,
     this._permissionsRemoteDataSource,

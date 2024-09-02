@@ -1,57 +1,25 @@
 import 'dart:async';
 
 import 'package:realm/realm.dart' show Uuid;
-import 'package:rxdart/rxdart.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../data_sources/local/connectivity_data_source.dart';
 import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
 import '../models/todo_model.dart';
-import '../utils/handle_error_mixin.dart';
+import '../utils/no_connection_handle_mixin.dart';
 
-class TodoRepository with ErrorHandlingMixin {
+class TodoRepository with NoConnectionHandlerMixin {
   TodoRepository(
     this._errorMapper,
     this.dataSource,
     this.localDataSource,
-    this.connectivityDataSource,
-  ) {
-    _connectivitySubscription =
-        connectivityDataSource.connected().listen((event) {
-      if (event) {
-        syncronize();
-      } else {
-        localDataSource.pauseSync();
-      }
-    });
-  }
+  );
 
   final ErrorMapper _errorMapper;
   final TodosRemoteDataSource dataSource;
   final TodoLocalDataSource localDataSource;
-  final ConnectivityDataSource connectivityDataSource;
-  StreamSubscription<bool>? _connectivitySubscription;
 
-  Stream<List<$TodoModel>> fetchAllTodos() => Rx.combineLatest2(
-          _errorMapper.executeStream(localDataSource.allTodos()),
-          _errorMapper
-              .execute(() => dataSource.getAllTodos())
-              .onError(
-                (error, stackTrace) => handleError(
-                  error,
-                  // Return empty list if error  no connection
-                  [],
-                ),
-              )
-              .asStream(), (List<$TodoModel> local, List<$TodoModel> remote) {
-        final List<$TodoModel> missingTodos = remote
-            .where((remoteTodo) =>
-                !local.any((localTodo) => localTodo.id == remoteTodo.id))
-            .toList();
-
-        localDataSource.addMany(missingTodos);
-        return local;
-      });
+  Stream<List<$TodoModel>> fetchAllTodos() =>
+      _errorMapper.executeStream(localDataSource.allTodos());
 
   Future<$TodoModel> addTodo($TodoModel todo) => _errorMapper.execute(
         () async {
@@ -169,36 +137,22 @@ class TodoRepository with ErrorHandlingMixin {
       );
 
   Future<$TodoModel> fetchTodoById(String id) => _errorMapper.execute(
-        () async {
-          final result = await dataSource.getTodoById(id);
-          return result;
-        },
-      ).onError(
-        (error, stackTrace) => handleError(
-          error,
-          localDataSource.getTodoById(id),
-        ),
+        () async => localDataSource.getTodoById(id),
       );
 
-  Future<void> syncronize() async {
-    final List<TodoModel> unsyncedTodos =
-        localDataSource.fetchAllUnsyncedTodos();
-
-    if (unsyncedTodos.isNotEmpty) {
-      await _errorMapper.execute(
-        () async {
-          localDataSource.unpauseSync();
-          final result = await dataSource.syncTodos({'todos': unsyncedTodos});
-          localDataSource.deleteMany(unsyncedTodos);
-          localDataSource.addMany(result);
-        },
+  Future<List<TodoModel>> fetchAllUnsyncedTodos() => _errorMapper.execute(
+        () async => localDataSource.fetchAllUnsyncedTodos(),
       );
-    }
-  }
+  Future<List<$TodoModel>> syncTodos(Map<String, List<TodoModel>> todos) =>
+      _errorMapper.execute(
+        () async => dataSource.syncTodos(todos),
+      );
 
-  void dispose() {
-    if (_connectivitySubscription != null) {
-      _connectivitySubscription?.cancel();
-    }
-  }
+  void unpauseRealmSync() => localDataSource.unpauseSync();
+
+  void pauseRealmSync() => localDataSource.pauseSync();
+
+  void deleteMany(List<$TodoModel> todos) => localDataSource.deleteMany(todos);
+
+  void addMany(List<$TodoModel> todos) => localDataSource.addMany(todos);
 }
