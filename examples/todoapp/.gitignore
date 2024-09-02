@@ -33,6 +33,7 @@ lib/assets.dart
 **/*.gr.dart
 **/*.rxb.g.dart
 **/*.mocks.dart
+**/*.realm.dart
 
 
 # Symbolication related
@@ -47,6 +48,9 @@ app.*.map.json
 # local env
 env.json
 lib/env_variable.g.dart
+# Linux related
+**/linux/flutter/generated_plugin_registrant.*
+**/linux/flutter/generated_plugins.cmake
 
 # Android related
 **/android/**/gradle-wrapper.jar
