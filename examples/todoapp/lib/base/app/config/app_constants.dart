@@ -18,6 +18,3 @@ export 'is_in_test_mode_io_not_available.dart'
     if (dart.library.html) 'is_in_test_mode_io_not_available.dart';
 
 const String webVapidKey = '';
-const String translationsKey = 'translations';
-const String permissionsKey = 'permissions';
-const String queryAllTodos = 'getAllTodos';

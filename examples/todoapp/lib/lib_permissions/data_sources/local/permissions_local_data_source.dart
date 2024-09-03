@@ -1,31 +1,23 @@
-import 'dart:convert';
-
-import '../../../app_extensions.dart';
-import '../../../base/data_sources/local/shared_preferences_instance.dart';
+import '../../../base/app/initialization/realm_instance.dart';
+import '../../models/permission_model.dart';
 
 class PermissionsLocalDataSource {
-  final SharedPreferencesInstance sharedPreferences;
+  PermissionsLocalDataSource({required this.realmInstance});
+  final RealmInstance realmInstance;
 
-  PermissionsLocalDataSource({required this.sharedPreferences});
-
-  Future<bool> savePermissions(Map<String, bool> permissions) async {
-    return await sharedPreferences.setString(
-      permissionsKey,
-      json.encode(permissions),
-    );
+  void savePermissions(PermissionModel permissions) {
+    realmInstance.realm.write(() {
+      realmInstance.realm.add<PermissionModel>(permissions);
+    });
   }
 
-  Future<Map<String, bool>> getPermissions() async {
-    final jsonString = await sharedPreferences.getString(permissionsKey);
-    if (jsonString != null) {
-      final Map<String, dynamic> decodedMap = json.decode(jsonString);
-      // make map of string, bool
-      final Map<String, bool> permissions =
-          decodedMap.map((key, value) => MapEntry(key, value as bool));
+  Map<String, bool> getPermissions() {
+    final results = realmInstance.realm.all<PermissionModel>();
 
-      return permissions;
-    } else {
+    if (results.isEmpty) {
       return {};
     }
+    final permissions = results.first;
+    return {for (var pair in permissions.permissions) pair.key: pair.value};
   }
 }

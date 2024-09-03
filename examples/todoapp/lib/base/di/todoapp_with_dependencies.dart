@@ -16,8 +16,6 @@ import '../../lib_permissions/data_sources/local/permissions_local_data_source.d
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
-import '../../lib_realm/di/realm_dependencies.dart';
-import '../../lib_realm/services/realm_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
@@ -29,6 +27,7 @@ import '../common_blocs/coordinator_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_services/todo_list_service.dart';
 import '../data_sources/local/connectivity_data_source.dart';
+import '../app/initialization/realm_instance.dart';
 import '../data_sources/local/shared_preferences_instance.dart';
 import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
@@ -107,20 +106,22 @@ class TodoappWithDependencies extends StatelessWidget {
             create: (context) => SharedPreferencesInstance()),
         Provider<FlutterSecureStorage>(
             create: (context) => const FlutterSecureStorage()),
+        Provider<RealmInstance>(
+          create: (context) => RealmInstance(),
+        ),
       ];
 
   List<SingleChildWidget> get _libs => [
         ...TranslationsDependencies.from(baseUrl: config.baseUrl).providers,
-        ...RealmDependencies().providers,
       ];
 
-  List<Provider> get _dataSources => [
+  List<SingleChildWidget> get _dataSources => [
         Provider<ConnectivityDataSource>(
           create: (context) => ConnectivityDataSource(),
         ),
         Provider<TodoLocalDataSource>(
           create: (context) => TodoLocalDataSource(
-            context.read<RealmService>().realm,
+            context.read<RealmInstance>(),
           ),
         ),
         Provider<TodosRemoteDataSource>(
@@ -135,7 +136,7 @@ class TodoappWithDependencies extends StatelessWidget {
         ),
         Provider<PermissionsLocalDataSource>(
           create: (context) => PermissionsLocalDataSource(
-            sharedPreferences: context.read(),
+            realmInstance: context.read(),
           ),
         ),
         Provider<ConnectivityDataSource>(
@@ -166,7 +167,7 @@ class TodoappWithDependencies extends StatelessWidget {
         ),
       ];
 
-  List<Provider> get _services => [
+  List<SingleChildWidget> get _services => [
         Provider<PermissionsService>(
           create: (context) => PermissionsService(
             context.read(),
