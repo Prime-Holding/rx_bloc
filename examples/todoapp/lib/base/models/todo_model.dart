@@ -22,40 +22,40 @@ class $TodoModel implements Identifiable {
   /// If the todo is not persisted yet, the id is null
   @PrimaryKey()
   @MapTo('_id')
-  late final String? id;
+  late String? id;
 
   /// The title of the todo
   ///
   /// The title is required and must not be null
-  late final String title;
+  late String title;
 
   /// The description of the todo
   ///
   /// The description is optional and can be null
   /// The default value is an empty string
-  late final String description;
+  late String description;
 
   /// The creation date of the todo
   ///
   /// The creation date is required and must not be null
   /// The default value is false
-  late final bool completed;
+  late bool completed;
 
   /// The completion status of the todo
   ///
   /// The completion status is required and must not be null
   /// The default value is false
-  late final int createdAt;
+  late int createdAt;
 
   /// The Sync status of the todo
   /// The default value is true, which means the todo is synced with the server
   /// When the value is set to false, the todo is not synced with the server
   @JsonKey(includeFromJson: false, includeToJson: false)
-  late final bool? synced;
+  late bool? synced;
 
   /// The action of the todo model
   /// Represents the action that should be taken by the server in case of syncing
-  late final String? action;
+  late String? action;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   TodoModelActions get type =>

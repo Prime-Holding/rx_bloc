@@ -5,14 +5,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:realm/realm.dart';
-
 import '../../base/common_mappers/error_mappers/error_mapper.dart';
 import '../../base/utils/no_connection_handle_mixin.dart';
 import '../data_sources/local/permissions_local_data_source.dart';
 import '../data_sources/remote/permissions_remote_data_source.dart';
-import '../models/permission_map_model.dart';
-import '../models/permission_model.dart';
 
 class PermissionsRepository with NoConnectionHandlerMixin {
   PermissionsRepository(
@@ -24,19 +20,16 @@ class PermissionsRepository with NoConnectionHandlerMixin {
   final ErrorMapper _errorMapper;
   final PermissionsRemoteDataSource _permissionsRemoteDataSource;
   final PermissionsLocalDataSource _permissionsLocalDataSource;
+  static const String _permissionsKey = 'permissions';
 
   // Returns a map of the permissions loaded from the remote data source.
   Future<Map<String, bool>> getPermissions() => _errorMapper.execute(() async {
         final permissions = await _permissionsRemoteDataSource.getPermissions();
-        final keyValuePairs = permissions.entries
-            .map((entry) => PermissionMap(entry.key, entry.value))
-            .toList();
-        _permissionsLocalDataSource.savePermissions(
-          PermissionModel(Uuid.v4().toString(), permissions: keyValuePairs),
-        );
+
+        _permissionsLocalDataSource.addPermisions(_permissionsKey, permissions);
         return permissions;
       }).onError((error, stackTrace) => handleError(
             error,
-            _permissionsLocalDataSource.getPermissions(),
+            _permissionsLocalDataSource.getPermissions(_permissionsKey),
           ));
 }
