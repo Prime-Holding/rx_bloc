@@ -7,9 +7,11 @@ import '../../models/permission_model.dart';
 class PermissionsLocalDataSource {
   PermissionsLocalDataSource({required this.realmInstance});
   final RealmInstance realmInstance;
+  static const String _permissionsKey = 'permissions';
 
-  void addPermisions(String id, Map<String, bool> permissions) {
-    final oldPermission = realmInstance.realm.find<PermissionModel>(id);
+  void storePermissions(Map<String, bool> permissions) {
+    final oldPermission =
+        realmInstance.realm.find<PermissionModel>(_permissionsKey);
 
     final RealmList<PermissionMap> permissionMap = RealmList<PermissionMap>(
       permissions.entries.map(
@@ -29,14 +31,15 @@ class PermissionsLocalDataSource {
     else {
       realmInstance.realm.write(() {
         realmInstance.realm.add<PermissionModel>(
-          PermissionModel(id, permissions: permissionMap),
+          PermissionModel(_permissionsKey, permissions: permissionMap),
         );
       });
     }
   }
 
-  Map<String, bool> getPermissions(String id) {
-    final permissions = realmInstance.realm.find<PermissionModel>(id);
+  Map<String, bool> getPermissions() {
+    final permissions =
+        realmInstance.realm.find<PermissionModel>(_permissionsKey);
 
     if (permissions == null) {
       return {};

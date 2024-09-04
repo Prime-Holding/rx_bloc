@@ -20,16 +20,15 @@ class PermissionsRepository with NoConnectionHandlerMixin {
   final ErrorMapper _errorMapper;
   final PermissionsRemoteDataSource _permissionsRemoteDataSource;
   final PermissionsLocalDataSource _permissionsLocalDataSource;
-  static const String _permissionsKey = 'permissions';
 
   // Returns a map of the permissions loaded from the remote data source.
   Future<Map<String, bool>> getPermissions() => _errorMapper.execute(() async {
         final permissions = await _permissionsRemoteDataSource.getPermissions();
 
-        _permissionsLocalDataSource.addPermisions(_permissionsKey, permissions);
+        _permissionsLocalDataSource.storePermissions(permissions);
         return permissions;
       }).onError((error, stackTrace) => handleError(
             error,
-            _permissionsLocalDataSource.getPermissions(_permissionsKey),
+            _permissionsLocalDataSource.getPermissions(),
           ));
 }
