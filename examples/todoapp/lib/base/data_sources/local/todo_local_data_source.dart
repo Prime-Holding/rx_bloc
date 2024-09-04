@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:realm/realm.dart';
 
+import '../../app/initialization/realm_instance.dart';
 import '../../models/errors/error_model.dart';
 import '../../models/todo_model.dart';
-import '../../app/initialization/realm_instance.dart';
 
 class TodoLocalDataSource {
   final RealmInstance _realmInstance;
