@@ -16,7 +16,6 @@ class UpdateAndVerifyPinCodeService implements PinCodeService {
   static const _storedPin = 'storedPin';
   bool _isVerificationPinProcess = true;
   bool _isFromSessionTimeout = false;
-  late String token;
 
   Future<void> deleteStoredPin() async {
     await _pinCodeRepository.writePinToStorage(_storedPin, null);

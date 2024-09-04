@@ -1,27 +1,23 @@
-// Copyright (c) 2023, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:shelf/shelf.dart';
 
 import '../config.dart';
 import '../services/authentication_service.dart';
+import '../services/pin_code_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
-import '../utils/utilities.dart';
 
 class PinCodeController extends ApiController {
-  final Map<String, String> _pinCodes = {};
-  final Map<String, String> _tokens = {};
+  PinCodeController(this._pinCodeService);
+
+  final PinCodeService _pinCodeService;
 
   @override
   void registerRequests(WrappedRouter router) {
     router.addRequest(
-      RequestType.PATCH,
+      RequestType.POST,
       '/api/pin/create',
       _createPinCode,
     );
@@ -56,42 +52,62 @@ class PinCodeController extends ApiController {
   Future<Response> _createPinCode(Request request) async {
     final userId = _getUserIdFromAuthToken(request);
 
-    final pinCode = (await request.bodyFromFormData())['pinCode']!;
-    _pinCodes[userId] = pinCode;
+    final pinCode = (await request.bodyFromFormData())['pinCode'];
+    throwIfEmpty(
+      pinCode,
+      BadRequestException('pinCode is required'),
+    );
+
+    _pinCodeService.savePinCode(userId, pinCode);
 
     return responseBuilder.buildOK();
   }
 
   Future<Response> _verifyPinCode(Request request) async {
     final userId = _getUserIdFromAuthToken(request);
-
     final requestBody = await request.bodyFromFormData();
-    final pinCode = requestBody['pinCode']!;
-    final requestUpdateToken = requestBody['requestUpdateToken']!;
 
-    if (pinCode != _pinCodes[userId]) {
-      throw UnprocessableEntityException('Incorrect PIN code');
+    final pinCode = requestBody['pinCode'];
+    throwIfEmpty(
+      pinCode,
+      BadRequestException('pinCode is required'),
+    );
+
+    _pinCodeService.verifyPinCode(userId, pinCode);
+
+    final requestUpdateToken = requestBody['requestUpdateToken'];
+    // If the client requests an update token, generate and return it
+    if (requestUpdateToken ?? false) {
+      final token = _pinCodeService.generateUpdateToken(userId);
+      return responseBuilder.buildOK(data: {
+        'token': token,
+      });
     }
-
-    _tokens[userId] = generateRandomString();
-    return responseBuilder.buildOK(data: {
-      if (requestUpdateToken) 'token': _tokens[userId],
-    });
+    return responseBuilder.buildOK();
   }
 
   Future<Response> _updatePinCode(Request request) async {
     final userId = _getUserIdFromAuthToken(request);
-
     final requestBody = await request.bodyFromFormData();
-    final token = requestBody['token']!;
-    final newPinCode = requestBody['pinCode']!;
 
-    if (token != _tokens[userId]) {
-      throw UnprocessableEntityException('Incorrect PIN code');
-    }
+    final token = requestBody['token'];
+    throwIfEmpty(
+      token,
+      BadRequestException('token is required'),
+    );
 
-    _pinCodes[userId] = newPinCode;
-    _tokens.remove(userId);
+    final newPinCode = requestBody['pinCode'];
+    throwIfEmpty(
+      newPinCode,
+      BadRequestException('pinCode is required'),
+    );
+
+    _pinCodeService.verifyUpdateToken(userId, token);
+
+    // Save the new PIN code and remove the update token
+    _pinCodeService
+      ..savePinCode(userId, newPinCode)
+      ..removeToken(userId);
     return responseBuilder.buildOK();
   }
 }

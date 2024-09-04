@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -16,7 +18,7 @@ abstract class PinCodeDataSource {
   ///
   /// [PinCodeCreateRequest]:
   /// - [pinCode]: The PIN code to be created.
-  @PATCH('/api/pin/create')
+  @POST('/api/pin/create')
   Future<void> createPinCode(
     @Body() PinCodeCreateRequest pinCodeCreateRequest,
   );
