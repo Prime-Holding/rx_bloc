@@ -5,7 +5,8 @@ mixin NoConnectionHandlerMixin {
     Object? error,
     T function,
   ) {
-    if (error is NoConnectionErrorModel) {
+    if (error is NoConnectionErrorModel ||
+        error is ConnectionRefusedErrorModel) {
       return function;
     }
     throw error ?? UnknownErrorModel();
@@ -15,7 +16,8 @@ mixin NoConnectionHandlerMixin {
     Object? error,
     Future<T> function,
   ) {
-    if (error is NoConnectionErrorModel) {
+    if (error is NoConnectionErrorModel ||
+        error is ConnectionRefusedErrorModel) {
       return function;
     }
     throw error is ErrorModel ? error : UnknownErrorModel();
