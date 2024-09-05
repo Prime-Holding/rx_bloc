@@ -72,6 +72,45 @@ void runGoldenTests(
   }
 }
 
+void runGoldenBuilderTests(
+  String testName, {
+  required Size surfaceSize,
+  required GoldenBuilder builder,
+  WidgetTesterCallback? act,
+  CustomPump? matcherCustomPump,
+}) {
+  for (final theme in Themes.values) {
+    final themeName = theme.name;
+    final directory = '${themeName}_theme';
+
+    testGoldens('$testName - $themeName', (tester) async {
+      await tester.pumpWidgetBuilder(
+        builder.build(),
+        wrapper: materialAppWrapper(
+          // localizations: [
+          //   ...GlobalMaterialLocalizations.delegates,
+          // ],
+          theme: theme == Themes.light
+              ? ThemeData.light().copyWith(
+                  extensions: <ThemeExtension<dynamic>>[],
+                )
+              : ThemeData.dark().copyWith(
+                  extensions: <ThemeExtension<dynamic>>[],
+                ),
+        ),
+        surfaceSize: surfaceSize,
+      );
+
+      if (act != null) {
+        await act.call(tester);
+      }
+
+      await screenMatchesGolden(tester, '$directory/$testName',
+          customPump: matcherCustomPump);
+    });
+  }
+}
+
 /// calls [pumpDeviceBuilderWithMaterialApp] with localizations we need in this
 /// app, and injects an optional theme
 Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(

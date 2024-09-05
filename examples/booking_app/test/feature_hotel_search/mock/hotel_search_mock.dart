@@ -15,6 +15,7 @@ import 'hotel_search_mock.mocks.dart';
 ])
 HotelSearchBlocType hotelSearchMockFactory({
   PaginatedList<Hotel>? hotels,
+  PaginatedList<Hotel>? hotelsError,
   String? hotelsFound,
   String? queryFilter,
   DateRangeFilterData? dateRangeFilterData,
@@ -63,6 +64,8 @@ HotelSearchBlocType hotelSearchMockFactory({
         ? Stream.value(sortedBy)
         : const Stream.empty(), //TODO place mocked value
   );
+
+  when(statesMock.refreshDone).thenAnswer((_) => Future.value(null));
 
   return blocMock;
 }

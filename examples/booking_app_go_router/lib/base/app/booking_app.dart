@@ -28,8 +28,8 @@ import 'initialization/firebase_messaging_callbacks.dart';
 class BookingApp extends StatelessWidget {
   const BookingApp({
     this.config = const EnvironmentConfig.production(),
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final EnvironmentConfig config;
 

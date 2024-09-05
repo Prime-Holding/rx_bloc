@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import './design_system.dart';
@@ -27,7 +26,7 @@ class BookingAppTheme {
 
     final colorScheme = baseColorScheme.copyWith(
       primary: designSystemColor.primaryColor,
-      background: designSystemColor.backgroundColor,
+      surface: designSystemColor.backgroundColor,
       error: designSystemColor.errorColor,
     );
 

@@ -143,13 +143,13 @@ enum CreateCommandArguments {
     help: 'The widget toolkit showcase feature',
   ),
 
-  /// Auth Matrix
-  authMatrix(
-    name: 'enable-auth-matrix',
+  /// Multi-Factor Authentication
+  mfa(
+    name: 'enable-mfa',
     type: CreateCommandArgumentType.boolean,
     defaultsTo: false,
-    prompt: 'Enabled auth matrix:',
-    help: 'Enables auth matrix feature for the project',
+    prompt: 'Enabled Multi-Factor Authentication:',
+    help: 'Enables Multi-Factor Authentication capability for the project',
   ),
 
   /// Interactive input

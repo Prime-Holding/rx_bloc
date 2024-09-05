@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
@@ -17,22 +16,22 @@ class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({
     required this.error,
     required this.onTabRetry,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Exception error;
   final Function() onTabRetry;
 
   @override
   Widget build(BuildContext context) => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text((error as ErrorModel).translate(context)),
-      SizedBox(height: context.designSystem.spacing.l),
-      PrimaryButton(
-        onPressed: onTabRetry,
-        child: Text(context.l10n.tryAgain),
-      ),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text((error as ErrorModel).translate(context)),
+          SizedBox(height: context.designSystem.spacing.l),
+          PrimaryButton(
+            onPressed: onTabRetry,
+            child: Text(context.l10n.tryAgain),
+          ),
+        ],
+      );
 }

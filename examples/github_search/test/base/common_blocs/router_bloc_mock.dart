@@ -1,8 +1,8 @@
+import 'package:githubsearch/base/models/errors/error_model.dart';
+import 'package:githubsearch/lib_router/blocs/router_bloc.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:githubsearch/base/models/errors/error_model.dart';
-import 'package:githubsearch/lib_router/blocs/router_bloc.dart';
 
 import 'router_bloc_mock.mocks.dart';
 

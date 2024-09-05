@@ -103,7 +103,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     var userId = await _getAuthorIdOrNull();
     Query query = getFirebaseFilteredQuery(null, userId);
     final snapshot = await query.count().get();
-    return snapshot.count;
+    return snapshot.count ?? 0;
   }
 
   /// Returns a list of all reminders for the dashboard
@@ -176,7 +176,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     final request = ReminderModelRequest(complete: true);
     var query = getFirebaseFilteredQuery(request, userId);
     final snapshot = await query.count().get();
-    return snapshot.count;
+    return snapshot.count ?? 0;
   }
 
   /// Returns the number of incomplete reminders from the Firebase database
@@ -186,7 +186,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     final request = ReminderModelRequest(complete: false);
     var query = getFirebaseFilteredQuery(request, userId);
     final snapshot = await query.count().get();
-    return snapshot.count;
+    return snapshot.count ?? 0;
   }
 
   /// Logs in the user with Facebook. Returns true if the login was successful,
@@ -197,7 +197,7 @@ class RemindersFirebaseDataSource implements RemindersDataSource {
     if (facebookLoginResult.status == LoginStatus.success) {
       // Create a credential from the access token
       final facebookAuthCredential = FacebookAuthProvider.credential(
-          facebookLoginResult.accessToken!.token);
+          facebookLoginResult.accessToken!.tokenString);
       _userCredential =
           await _auth.signInWithCredential(facebookAuthCredential);
       _loggedInUid = _userCredential?.user!.uid;

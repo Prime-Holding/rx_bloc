@@ -1,4 +1,5 @@
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -115,6 +116,31 @@ void main() {
               Result<int>.error(Exception('error')),
             ],
           ));
+    });
+  });
+
+  group('Bind to subject', () {
+    test('binds stream to subject', () async {
+      // Create a BehaviorSubject to test the binding
+      final subject = BehaviorSubject<int>();
+
+      // Create a stream and bind it to the subject
+      final stream = Stream.fromIterable([1, 2, 3]);
+      final subscription = stream.bind(subject);
+
+      // Collect the emitted values from the subject
+      final emittedValues = <int>[];
+      subject.listen(emittedValues.add);
+
+      // Wait for the stream to complete
+      await subscription.asFuture();
+      await subscription.cancel();
+
+      // Verify that the subject received the values from the stream
+      expect(emittedValues, [1, 2, 3]);
+
+      // Close the subject
+      await subject.close();
     });
   });
 }
