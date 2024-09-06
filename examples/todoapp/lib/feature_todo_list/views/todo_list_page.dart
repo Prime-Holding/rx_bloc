@@ -56,9 +56,11 @@ class TodoListPage extends StatelessWidget {
               },
             ),
           ),
-          buildError: (context, exception, bloc) => AppErrorWidget(
-            error: exception,
-            onTabRetry: () => bloc.events.fetchTodoList(),
+          buildError: (context, exception, bloc) => Center(
+            child: AppErrorWidget(
+              error: exception,
+              onTabRetry: () => bloc.events.fetchTodoList(),
+            ),
           ),
           buildLoading: (context, bloc) => Center(
             child: AppLoadingIndicator.taskValue(
