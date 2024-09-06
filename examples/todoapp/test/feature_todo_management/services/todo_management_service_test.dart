@@ -31,14 +31,12 @@ void main() {
 
     test('addOrUpdateTodo adds a model when provided models id is null ',
         () async {
-      when(todoRepository.addTodo(Stubs.todoEmpty.copyWith(title: 'test')))
-          .thenAnswer(
-              (_) => Future.value(Stubs.todoEmpty.copyWith(title: 'test')));
+      final todo = Stubs.todoEmpty.copyWith(title: 'test');
+      when(todoRepository.addTodo(todo)).thenAnswer((_) async => todo);
 
-      final result = await todoManageService
-          .addOrUpdate(Stubs.todoEmpty.copyWith(title: 'test'));
+      final result = await todoManageService.addOrUpdate(todo);
 
-      expect(result, Stubs.todoEmpty.copyWith(title: 'test'));
+      expect(result, todo);
     });
   });
 }

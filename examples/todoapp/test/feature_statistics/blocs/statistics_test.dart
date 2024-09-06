@@ -16,33 +16,34 @@ import '../../stubs.dart';
   StatisticsService,
 ])
 void main() {
-  late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorStates _coordinatorStates;
-  late StatisticsService _service;
+  late CoordinatorBlocType coordinatorBloc;
+  late CoordinatorStates coordinatorStates;
+  late StatisticsService service;
 
-  void _defineWhen(List<TodoModel> todoList) {
-    when(_coordinatorStates.onTodoListChanged).thenAnswer((_) => Stream.value(Result.success(todoList)));
+  void defineWhen(List<$TodoModel> todoList) {
+    when(coordinatorStates.onTodoListChanged)
+        .thenAnswer((_) => Stream.value(Result.success(todoList)));
   }
 
   StatisticsBloc statisticsBloc() => StatisticsBloc(
-        _coordinatorBloc,
-        _service,
+        coordinatorBloc,
+        service,
       );
   setUp(() {
-    _service = StatisticsService();
-    _coordinatorStates = coordinatorStatesMockFactory();
-    _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorStates);
+    service = StatisticsService();
+    coordinatorStates = coordinatorStatesMockFactory();
+    coordinatorBloc = coordinatorBlocMockFactory(states: coordinatorStates);
   });
 
   group('test statistics_bloc_dart state todosStats', () {
     rxBlocTest<StatisticsBlocType, TodoStatsModel>(
         'test statistics_bloc_dart state todosStats',
         build: () async {
-          _defineWhen(Stubs.todoList);
+          defineWhen(Stubs.todoList);
           return statisticsBloc();
         },
         act: (bloc) async {
-          _coordinatorBloc.events
+          coordinatorBloc.events
               .todoListChanged(Result.success(Stubs.todoList));
         },
         state: (bloc) => bloc.states.todosStats,

@@ -6,4 +6,5 @@ import 'todo_action_service_mock.mocks.dart';
 @GenerateMocks([
   TodoActionsService,
 ])
-TodoActionsService todoActionsServiceMockFactory() => MockTodoActionsService();
+MockTodoActionsService todoActionsServiceMockFactory() =>
+    MockTodoActionsService();

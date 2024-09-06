@@ -10,7 +10,7 @@ import 'todo_list_mock.mocks.dart';
 
 @GenerateMocks([TodoListBlocStates, TodoListBlocEvents, TodoListBlocType])
 TodoListBlocType todoListMockFactory({
-  Result<List<TodoModel>>? todoList,
+  Result<List<$TodoModel>>? todoList,
   TodosFilterModel? filter,
   bool? isLoading,
 }) {
@@ -23,7 +23,7 @@ TodoListBlocType todoListMockFactory({
 
   final todoListState = todoList != null
       ? Stream.value(todoList).shareReplay(maxSize: 1)
-      : const Stream<Result<List<TodoModel>>>.empty();
+      : const Stream<Result<List<$TodoModel>>>.empty();
 
   final filterState = filter != null
       ? Stream.value(filter).shareReplay(maxSize: 1)

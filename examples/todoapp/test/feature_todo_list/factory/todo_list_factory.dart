@@ -16,7 +16,7 @@ import '../mock/todo_list_mock.dart';
 
 /// Change the parameters according the the needs of the test
 Widget todoListFactory({
-  Result<List<TodoModel>>? todoList,
+  Result<List<$TodoModel>>? todoList,
   TodosFilterModel? filter,
   List<BulkActionModel>? bulkActions,
 }) =>

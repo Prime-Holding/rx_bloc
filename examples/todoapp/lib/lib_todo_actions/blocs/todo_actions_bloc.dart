@@ -72,7 +72,7 @@ class TodoActionsBloc extends $TodoActionsBloc {
           // Emits the updated todo list to the [CoordinatorBloc]
           .doOnData(_coordinatorBloc.events.todoAddedOrUpdated)
           .whereSuccess()
-          .publish();
+          .publishReplay();
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
 }

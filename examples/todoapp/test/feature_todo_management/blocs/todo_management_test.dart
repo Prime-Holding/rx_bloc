@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:todoapp/base/common_blocs/coordinator_bloc.dart';
 import 'package:todoapp/base/common_services/todo_list_service.dart';
 import 'package:todoapp/base/models/errors/error_model.dart';
@@ -27,31 +28,25 @@ import 'todo_management_test.mocks.dart';
 ])
 void main() {
   late TodoListService _listService;
-  late TodoManageService _todoManageService;
+  late MockTodoManageService _todoManageService;
   late TodoValidatorService _validatorService;
   late CoordinatorBlocType _coordinatorBloc;
 
-  void _defineWhen(
+  void defineWhen(
       {String? todoId,
       String? title,
       String? description,
-      TodoModel? todoModel}) {
+      $TodoModel? todoModel}) {
     when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
-        return Future.value(todoModel);
+        return Stream.value(todoModel!);
       }
-
-      return Future.error(Stubs.notFoundError);
+      return Stream.error(Stubs.notFoundError);
     });
-
-    when(_todoManageService.addOrUpdate((todoModel ?? Stubs.todoEmpty)
-            .copyWith(title: title, description: description)))
-        .thenAnswer((_) => Future.value((todoModel ?? Stubs.todoEmpty)
-            .copyWith(title: title, description: description)));
   }
 
   TodoManagementBloc todoManagementBloc(
-          {String? todoId, TodoModel? initialTodo}) =>
+          {String? todoId, $TodoModel? initialTodo}) =>
       TodoManagementBloc(
         todoId ?? '',
         initialTodo,
@@ -69,34 +64,37 @@ void main() {
   });
 
   group('test todo_management_bloc_dart state todo', () {
-    rxBlocTest<TodoManagementBlocType, String>(
+    rxBlocFakeAsyncTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state title',
-        build: () async {
-          _defineWhen(title: Stubs.todoIncomplete.title);
+        build: () {
+          defineWhen(title: 'test title');
           return todoManagementBloc();
         },
-        act: (bloc) async {
-          bloc.events.setTitle(Stubs.todoIncomplete.title);
+        act: (bloc, fakeAsync) {
+          bloc.events.setTitle('test title');
+          fakeAsync.elapse(const Duration(seconds: 1));
         },
-        state: (bloc) => bloc.states.title,
-        expect: [Stubs.todoIncomplete.title]);
+        state: (bloc) => bloc.states.title.onErrorReturn(''),
+        expect: ['test title']);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state invalid title',
         build: () async {
-          _defineWhen(title: Stubs.shortTitle);
+          defineWhen(title: Stubs.shortTitle);
           return todoManagementBloc();
         },
         act: (bloc) async {
           bloc.events.setTitle(Stubs.shortTitle);
         },
         state: (bloc) => bloc.states.title,
-        expect: [emitsError(isA<FieldErrorModel>())]);
+        expect: [
+          emitsError(isA<FieldRequiredErrorModel>()),
+        ]);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state description',
         build: () async {
-          _defineWhen(description: Stubs.todoCompleted.description);
+          defineWhen(description: Stubs.todoCompleted.description);
           return todoManagementBloc();
         },
         act: (bloc) async {
@@ -110,7 +108,7 @@ void main() {
     rxBlocTest<TodoManagementBlocType, ErrorModel>(
         'test todo_management_bloc_dart state errors',
         build: () async {
-          _defineWhen(todoId: null);
+          defineWhen(todoId: null);
           return todoManagementBloc(todoId: null);
         },
         act: (bloc) async {},
@@ -121,16 +119,20 @@ void main() {
   });
 
   group('test todo_management_bloc_dart state onTodoSaved', () {
-    rxBlocFakeAsyncTest<TodoManagementBlocType, TodoModel>(
+    rxBlocFakeAsyncTest<TodoManagementBlocType, $TodoModel>(
         'test todo_management_bloc_dart state onTodoSaved',
         build: () {
-          _defineWhen(
+          defineWhen(
               todoId: Stubs.todoIncomplete.id,
-              todoModel: Stubs.todoIncomplete,
+              todoModel: Stubs.getIncompleteTodo(),
               title: Stubs.todoUncompletedUpdated.title);
+
+          when(_todoManageService.addOrUpdate(any))
+              .thenAnswer((_) async => Stubs.getIncompleteTodo());
+
           return todoManagementBloc(
               todoId: Stubs.todoIncomplete.id,
-              initialTodo: Stubs.todoIncomplete);
+              initialTodo: Stubs.todoIncomplete as TodoModel);
         },
         act: (bloc, fakeAsync) async {
           bloc.events.setTitle(Stubs.todoUncompletedUpdated.title);
@@ -139,7 +141,7 @@ void main() {
         },
         state: (bloc) => bloc.states.onTodoSaved,
         expect: [
-          Stubs.todoUncompletedUpdated,
+          Stubs.getIncompleteTodo(),
         ]);
   });
 }
