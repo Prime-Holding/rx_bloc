@@ -7,26 +7,27 @@ import '../../base/models/todos_filter_model.dart';
 import '../blocs/todo_list_bloc.dart';
 
 class TodosFilterPopupMenuButton extends StatelessWidget {
-  TodosFilterPopupMenuButton({super.key});
-  final GlobalKey _popupMenuKey = GlobalKey();
-
+  const TodosFilterPopupMenuButton({super.key});
   @override
   Widget build(BuildContext context) =>
       RxBlocBuilder<TodoListBlocType, TodosFilterModel>(
         state: (bloc) => bloc.states.filter,
         builder: (context, snapshot, bloc) => PopupMenuButton(
-          key: _popupMenuKey,
-          child: SmallButton(
-            type: SmallButtonType.icon,
-            icon: context.designSystem.icons.filter.icon,
-            colorStyle: ButtonColorStyle.fromContext(context).copyWith(
-              activeButtonTextColor: context.designSystem.colors.textColor,
+          child: Builder(
+            builder: (context) => SmallButton(
+              type: SmallButtonType.icon,
+              icon: context.designSystem.icons.filter.icon,
+              colorStyle: ButtonColorStyle.fromContext(context).copyWith(
+                activeButtonTextColor: context.designSystem.colors.textColor,
+              ),
+              onPressed: () {
+                final popupMenuButton =
+                    context.findAncestorStateOfType<PopupMenuButtonState>();
+                popupMenuButton?.showButtonMenu();
+              },
             ),
-            onPressed: () {
-              final dynamic popupMenu = _popupMenuKey.currentState;
-              popupMenu.showButtonMenu();
-            },
           ),
+          onSelected: (filter) => bloc.events.applyFilter(filter),
           itemBuilder: (context) => TodosFilterModel.values
               .map((filter) => switch (filter) {
                     (TodosFilterModel.all) => PopupMenuItem(

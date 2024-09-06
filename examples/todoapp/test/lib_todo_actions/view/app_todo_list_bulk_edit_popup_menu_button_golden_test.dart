@@ -1,4 +1,3 @@
-import 'package:todoapp/lib_todo_actions/models/bulk_action.dart';
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
 import '../factory/app_todo_list_bulk_edit_popup_menu_button_factory.dart';
@@ -6,22 +5,20 @@ import '../factory/app_todo_list_bulk_edit_popup_menu_button_factory.dart';
 void main() {
   runGoldenTests([
     generateDeviceBuilder(
-        widget: appTodoListBulkEditPopupMenuButtonFactory(bulkActions: [
-          BulkActionModel.markAllComplete,
-          BulkActionModel.markAllIncomplete,
-          BulkActionModel.clearCompleted
-        ]),
+        widget: appTodoListBulkEditPopupMenuButtonFactory(),
         scenario:
-            Scenario(name: 'app_todo_list_bulk_edit_popup_menu_button_all')),
+            Scenario(name: 'app_todo_list_bulk_edit_popup_menu_button_empty')),
     generateDeviceBuilder(
-        widget: appTodoListBulkEditPopupMenuButtonFactory(
-            bulkActions: [BulkActionModel.markAllIncomplete]),
+        widget: appTodoListBulkEditPopupMenuButtonFactory(),
         scenario: Scenario(
-            name: 'app_todo_list_bulk_edit_popup_menu_button_incomplete')),
+            name: 'app_todo_list_bulk_edit_popup_menu_button_success')),
     generateDeviceBuilder(
-        widget: appTodoListBulkEditPopupMenuButtonFactory(
-            bulkActions: [BulkActionModel.markAllComplete]),
+        widget: appTodoListBulkEditPopupMenuButtonFactory(),
         scenario: Scenario(
-            name: 'app_todo_list_bulk_edit_popup_menu_button_completed')),
+            name: 'app_todo_list_bulk_edit_popup_menu_button_loading')),
+    generateDeviceBuilder(
+        widget: appTodoListBulkEditPopupMenuButtonFactory(),
+        scenario:
+            Scenario(name: 'app_todo_list_bulk_edit_popup_menu_button_error'))
   ]);
 }

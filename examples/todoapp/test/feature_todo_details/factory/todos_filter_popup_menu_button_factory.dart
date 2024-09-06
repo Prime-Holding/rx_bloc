@@ -10,7 +10,7 @@ import 'package:todoapp/feature_todo_list/ui_components/todos_filter_popup_menu_
 import '../blocs/todo_list_bloc_factory.dart';
 
 /// Change the parameters according the the needs of the test
-Widget todoFilterPopupMenuButtonFactory({
+Widget todosFilterPopupMenuButtonFactory({
   Result<List<$TodoModel>>? todos,
   TodosFilterModel? filter,
 }) {
@@ -24,7 +24,7 @@ Widget todoFilterPopupMenuButtonFactory({
           ),
         ),
       ],
-      child: TodosFilterPopupMenuButton(),
+      child: const TodosFilterPopupMenuButton(),
     ),
   );
 }

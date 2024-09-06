@@ -9,8 +9,7 @@ import '../blocs/todo_list_bulk_edit_bloc.dart';
 import '../models/bulk_action.dart';
 
 class AppTodoListBulkEditPopupMenuButton extends StatelessWidget {
-  AppTodoListBulkEditPopupMenuButton({super.key});
-  final GlobalKey _popupMenuKey = GlobalKey();
+  const AppTodoListBulkEditPopupMenuButton({super.key});
 
   @override
   Widget build(BuildContext context) => RxBlocMultiBuilder2<
@@ -18,18 +17,20 @@ class AppTodoListBulkEditPopupMenuButton extends StatelessWidget {
         state1: (bloc) => bloc.states.bulkActions,
         state2: (bloc) => bloc.states.isLoading,
         builder: (context, snapshot, isLoading, bloc) => PopupMenuButton(
-          key: _popupMenuKey,
-          child: SmallButton(
-            state: isLoading.buttonStateModel,
-            type: SmallButtonType.icon,
-            icon: context.designSystem.icons.menu.icon,
-            colorStyle: ButtonColorStyle.fromContext(context).copyWith(
-              activeButtonTextColor: context.designSystem.colors.textColor,
+          child: Builder(
+            builder: (context) => SmallButton(
+              onPressed: () {
+                final popupMenuButton =
+                    context.findAncestorStateOfType<PopupMenuButtonState>();
+                popupMenuButton?.showButtonMenu();
+              },
+              state: isLoading.buttonStateModel,
+              type: SmallButtonType.icon,
+              icon: context.designSystem.icons.menu.icon,
+              colorStyle: ButtonColorStyle.fromContext(context).copyWith(
+                activeButtonTextColor: context.designSystem.colors.textColor,
+              ),
             ),
-            onPressed: () {
-              final dynamic popupMenu = _popupMenuKey.currentState;
-              popupMenu.showButtonMenu();
-            },
           ),
           itemBuilder: (context) => snapshot.hasData
               ? snapshot.requireData

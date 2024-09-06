@@ -19,7 +19,7 @@ class StatisticsPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(context.l10n.todos),
-          actions: [
+          actions: const [
             AppTodoListBulkEditPopupMenuButton(),
           ],
         ),

@@ -1,5 +1,3 @@
-import 'package:todoapp/base/models/todos_filter_model.dart';
-
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
 import '../factory/todos_filter_popup_menu_button_factory.dart';
@@ -7,15 +5,16 @@ import '../factory/todos_filter_popup_menu_button_factory.dart';
 void main() {
   runGoldenTests([
     generateDeviceBuilder(
-        widget: todoFilterPopupMenuButtonFactory(filter: TodosFilterModel.all),
-        scenario: Scenario(name: 'todos_filter_popup_menu_button_all')),
+        widget: todosFilterPopupMenuButtonFactory(), //example: Stubs.emptyList
+        scenario: Scenario(name: 'todos_filter_popup_menu_button_empty')),
     generateDeviceBuilder(
-        widget: todoFilterPopupMenuButtonFactory(
-            filter: TodosFilterModel.incomplete),
-        scenario: Scenario(name: 'todos_filter_popup_menu_button_incomplete')),
+        widget: todosFilterPopupMenuButtonFactory(), //example:  Stubs.success
+        scenario: Scenario(name: 'todos_filter_popup_menu_button_success')),
     generateDeviceBuilder(
-        widget: todoFilterPopupMenuButtonFactory(
-            filter: TodosFilterModel.completed),
-        scenario: Scenario(name: 'todos_filter_popup_menu_button_completed')),
+        widget: todosFilterPopupMenuButtonFactory(), //loading
+        scenario: Scenario(name: 'todos_filter_popup_menu_button_loading')),
+    generateDeviceBuilder(
+        widget: todosFilterPopupMenuButtonFactory(),
+        scenario: Scenario(name: 'todos_filter_popup_menu_button_error'))
   ]);
 }
