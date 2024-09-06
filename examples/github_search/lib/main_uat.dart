@@ -6,8 +6,8 @@
 // https://opensource.org/licenses/MIT.
 
 import 'base/app/config/environment_config.dart';
-import 'base/app/initialization/app_setup.dart';
 import 'base/app/githubsearch.dart';
+import 'base/app/initialization/app_setup.dart';
 
 /// Main entry point for the UAT environment
 void main() async => await setupAndRunApp(

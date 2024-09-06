@@ -1,6 +1,7 @@
 import 'package:mason/mason.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/readers/interactive_arguments_reader.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
@@ -146,6 +147,40 @@ void main() {
         return value;
       });
       expect(executed, isTrue);
+    });
+  });
+
+  group('test interactive_argument_reader readCICDEnum', () {
+    test('should return value for correct argument', () {
+      when(logger.prompt(any,
+              defaultValue: CreateCommandArguments.cicd.defaultsTo))
+          .thenReturn(CICDType.fastlane.name);
+      final value = sut.readCICDEnum(CreateCommandArguments.cicd);
+      expect(value, equals(CICDType.fastlane));
+      expect(
+        sut.read<CICDType>(CreateCommandArguments.cicd),
+        CICDType.fastlane,
+      );
+    });
+
+    test('should throw error for incorrect argument type', () {
+      final argument = CreateCommandArguments.organisation;
+      expect(
+        () => sut.readCICDEnum(argument),
+        throwsUnsupportedError,
+      );
+    });
+
+    test('should throw error for incorrectly provided value', () {
+      when(logger.prompt(any,
+              defaultValue: CreateCommandArguments.cicd.defaultsTo))
+          .thenReturn(Stub.incorrectCICDTypeCase);
+
+      final argument = CreateCommandArguments.cicd;
+      expect(
+        () => sut.readCICDEnum(argument),
+        throwsUnsupportedError,
+      );
     });
   });
 }

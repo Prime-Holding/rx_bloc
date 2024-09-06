@@ -11,8 +11,8 @@ part '../ui_components/hotel_details_app_bar.dart';
 
 class HotelDetailsPage extends StatelessWidget {
   const HotelDetailsPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Scaffold(

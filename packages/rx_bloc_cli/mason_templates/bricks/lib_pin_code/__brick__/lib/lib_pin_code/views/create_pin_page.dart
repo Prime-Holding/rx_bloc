@@ -9,6 +9,8 @@ import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../app_extensions.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/extensions/error_model_translations.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../bloc/create_pin_bloc.dart';
@@ -60,10 +62,11 @@ class _CreatePinPageState extends State<CreatePinPage> {
                     mapBiometricMessageToString: (message) =>
                         _exampleMapMessageToString(message, context),
                     pinCodeService: context.read<CreatePinCodeService>(),
-                    translateError: (error) => _translateError(error, context),
+                    translateError: (error) =>
+                        error.asErrorModel().translate(context),
                     onError: (error, translatedError) =>
                         _onError(error, translatedError, context),
-                    onAuthenticated: () => _isPinCodeVerified(context),
+                    onAuthenticated: (_) => _isPinCodeVerified(context),
                   ),
                 ),
                 RxBlocListener<CreatePinBlocType, bool>(
@@ -100,22 +103,15 @@ class _CreatePinPageState extends State<CreatePinPage> {
   }
 
   void _onError(Object error, String strValue, BuildContext context) {
-    if (error is! ErrorWrongPin) {
-      showBlurredBottomSheet(
-        context: context,
-        configuration: const ModalConfiguration(safeAreaBottom: false),
-        builder: (context) => MessagePanelWidget(
-          message: error.toString(),
-          messageState: MessagePanelState.important,
-        ),
-      );
-    }
+    showBlurredBottomSheet(
+      context: context,
+      configuration: const ModalConfiguration(safeAreaBottom: false),
+      builder: (context) => MessagePanelWidget(
+        message: error.toString(),
+        messageState: MessagePanelState.important,
+      ),
+    );
   }
-
-  String _translateError(Object error, BuildContext context) =>
-      error is ErrorWrongPin
-          ? context.l10n.libPinCode.wrongConfirmationPin
-          : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(
       BiometricsMessage message, BuildContext context) {

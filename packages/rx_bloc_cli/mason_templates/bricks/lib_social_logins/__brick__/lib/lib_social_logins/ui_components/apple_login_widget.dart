@@ -6,9 +6,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/app/config/app_constants.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
-
 import '../blocs/social_login_bloc.dart';
 import '../data_sources/apple_auth_data_source.dart';
 import '../data_sources/apple_credential_data_source.dart';
@@ -26,43 +26,51 @@ class AppleLoginWidget extends StatelessWidget {
   const AppleLoginWidget({super.key});
 
   @override
-  Widget build(BuildContext context) => MultiProvider(
+  Widget build(BuildContext context) {
+    final current = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AppErrorModalWidget<SocialLoginBlocType>(
+          errorState: (bloc) => bloc.states.errors,
+        ),
+        RxBlocBuilder<SocialLoginBlocType, bool>(
+          state: (bloc) => bloc.states.isLoading,
+          builder: (context, snapshot, bloc) => SocialLoginButton(
+            isLoading: (snapshot.data ?? false) ? false : true,
+            textStyle: context.designSystem.typography.appleButtonText,
+            backgroundColor: context.designSystem.colors.appleBackground,
+            text: context.l10n.featureLogin.appleLogin,
+            progressIndicatorColor:
+                context.designSystem.colors.appleButtonText,
+            onPressed:
+                (snapshot.data ?? false) ? null : () => bloc.events.login(),
+            child: SvgPicture.asset(
+              context.designSystem.images.appleLogo,
+              height: context.designSystem.spacing.xl,
+              colorFilter: ColorFilter.mode(
+                context.designSystem.colors.appleButtonText,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+
+    if (isInTestMode) {
+      return current;
+    }
+
+    return MultiProvider(
         providers: [
           ..._dataSources,
           ..._repositories,
           ..._services,
           ..._blocs,
         ],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppErrorModalWidget<SocialLoginBlocType>(
-              errorState: (bloc) => bloc.states.errors,
-            ),
-            RxBlocBuilder<SocialLoginBlocType, bool>(
-              state: (bloc) => bloc.states.isLoading,
-              builder: (context, snapshot, bloc) => SocialLoginButton(
-                isLoading: (snapshot.data ?? false) ? false : true,
-                textStyle: context.designSystem.typography.appleButtonText,
-                backgroundColor: context.designSystem.colors.appleBackground,
-                text: context.l10n.featureLogin.appleLogin,
-                progressIndicatorColor:
-                    context.designSystem.colors.appleButtonText,
-                onPressed:
-                    (snapshot.data ?? false) ? null : () => bloc.events.login(),
-                child: SvgPicture.asset(
-                  context.designSystem.images.appleLogo,
-                  height: context.designSystem.spacing.xl,
-                  colorFilter: ColorFilter.mode(
-                    context.designSystem.colors.appleButtonText,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        child: current,
       );
+    }
 
   List<Provider> get _dataSources => [
         Provider<AppleAuthDataSource>(

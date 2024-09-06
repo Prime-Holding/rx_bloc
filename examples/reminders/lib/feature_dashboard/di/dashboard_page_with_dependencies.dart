@@ -9,7 +9,7 @@ import '../views/dashboard_page.dart';
 /// A widget which provides the [DashboardPage] with the necessary dependencies
 /// injected in the widget tree (such as services and blocs)
 class DashboardPageWithDependencies extends StatelessWidget {
-  const DashboardPageWithDependencies({Key? key}) : super(key: key);
+  const DashboardPageWithDependencies({super.key});
 
   List<Provider> get _services => [
         Provider<DashboardService>(

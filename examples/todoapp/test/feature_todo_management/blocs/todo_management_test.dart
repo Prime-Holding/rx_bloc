@@ -27,22 +27,27 @@ import 'todo_management_test.mocks.dart';
   TodoManagementBlocType,
 ])
 void main() {
-  late TodoListService _listService;
-  late MockTodoManageService _todoManageService;
-  late TodoValidatorService _validatorService;
-  late CoordinatorBlocType _coordinatorBloc;
+  late TodoListService listService;
+  late MockTodoManageService todoManageService;
+  late TodoValidatorService validatorService;
+  late CoordinatorBlocType coordinatorBloc;
 
   void defineWhen(
       {String? todoId,
       String? title,
       String? description,
       $TodoModel? todoModel}) {
-    when(_listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
+    when(listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
         return Stream.value(todoModel!);
       }
       return Stream.error(Stubs.notFoundError);
     });
+
+    when(todoManageService.addOrUpdate((todoModel ?? Stubs.todoEmpty)
+            .copyWith(title: title, description: description)))
+        .thenAnswer((_) => Future.value((todoModel ?? Stubs.todoEmpty)
+            .copyWith(title: title, description: description)));
   }
 
   TodoManagementBloc todoManagementBloc(
@@ -50,24 +55,24 @@ void main() {
       TodoManagementBloc(
         todoId ?? '',
         initialTodo,
-        _listService,
-        _todoManageService,
-        _validatorService,
-        _coordinatorBloc,
+        listService,
+        todoManageService,
+        validatorService,
+        coordinatorBloc,
         routerBlocMockFactory(),
       );
   setUp(() {
-    _listService = MockTodoListService();
-    _todoManageService = MockTodoManageService();
-    _validatorService = TodoValidatorService();
-    _coordinatorBloc = coordinatorBlocMockFactory();
+    listService = MockTodoListService();
+    todoManageService = MockTodoManageService();
+    validatorService = TodoValidatorService();
+    coordinatorBloc = coordinatorBlocMockFactory();
   });
 
   group('test todo_management_bloc_dart state todo', () {
     rxBlocFakeAsyncTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state title',
         build: () {
-          defineWhen(title: 'test title');
+          defineWhen(title: Stubs.todoIncomplete.title);
           return todoManagementBloc();
         },
         act: (bloc, fakeAsync) {
@@ -127,7 +132,7 @@ void main() {
               todoModel: Stubs.getIncompleteTodo(),
               title: Stubs.todoUncompletedUpdated.title);
 
-          when(_todoManageService.addOrUpdate(any))
+          when(todoManageService.addOrUpdate(any))
               .thenAnswer((_) async => Stubs.getIncompleteTodo());
 
           return todoManagementBloc(

@@ -1,6 +1,6 @@
 part of 'puppy_manage_bloc.dart';
 
-extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
+extension PuppyUpdate on Stream<({Puppy puppy, bool isFavorite})> {
   /// Mark the puppy as favorite as emitting an event with the updated puppy
   /// immediately, so that the listeners can update accordingly.
   ///
@@ -12,6 +12,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
   Stream<Puppy> markPuppyAsFavorite(
     PaginatedPuppiesRepository puppiesRepository,
     PuppyManageBloc bloc,
+    PublishSubject<Exception> errorSubject,
   ) =>
       throttleTime(const Duration(milliseconds: 200))
           .switchMap<Result<Puppy>>((args) async* {
@@ -37,7 +38,7 @@ extension _PuppyUpdate on Stream<_MarkAsFavoriteEventArgs> {
             } on Exception catch (e) {
               // In case of any error rollback the puppy to the previous state
               // and notify the UI layer for the error
-              bloc._favoritePuppyError.sink.add(e);
+              errorSubject.sink.add(e);
               yield Result.success(args.puppy);
             }
           })

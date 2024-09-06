@@ -98,4 +98,12 @@ void main() {
         state: (bloc) => bloc.states.filter,
         expect: [TodosFilterModel.all]);
   });
+
+  group('test hotel_bloc_list dispose method', () {
+    test('test hotel_bloc_list dispose method', () {
+      defineWhen();
+      final hotelsBloc = todoListBloc();
+      hotelsBloc.dispose();
+    });
+  });
 }

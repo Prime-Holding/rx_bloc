@@ -8,6 +8,8 @@ import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
+import '../../base/extensions/error_model_extensions.dart';
+import '../../base/extensions/error_model_translations.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/update_and_verify_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
@@ -43,11 +45,11 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   @override
   Widget build(BuildContext context) => Builder(
         builder: (context) => PopScope(
-        canPop: true,
-        onPopInvoked: (didPop) => context
-            .read<UpdateAndVerifyPinBlocType>()
-            .events
-            .deleteSavedData(),
+          canPop: true,
+          onPopInvokedWithResult: (didPop, dynamic) => context
+              .read<UpdateAndVerifyPinBlocType>()
+              .events
+              .deleteSavedData(),
           child: Scaffold(
             appBar: AppBar(
               title: Text(
@@ -55,7 +57,7 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
                     ? context.l10n.libPinCode.verifyPinCodePage
                     : widget.pinCodeArguments.title,
               ),
-            forceMaterialTransparency: true,
+              forceMaterialTransparency: true,
             ),
             extendBodyBehindAppBar: true,
             body: SizedBox(
@@ -73,10 +75,10 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
                       biometricsLocalDataSource:
                           context.read<BiometricsLocalDataSource>(),
                       translateError: (error) =>
-                          _translateError(error, context),
+                          error.asErrorModel().translate(context),
                       onError: (error, translatedError) =>
                           _onError(error, translatedError, context),
-                      onAuthenticated: () => _isPinCodeVerified(context),
+                      onAuthenticated: (_) => _isPinCodeVerified(context),
                     ),
                   ),
                 ],
@@ -95,22 +97,15 @@ class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
   }
 
   void _onError(Object error, String strValue, BuildContext context) {
-    if (error is! ErrorWrongPin) {
-      showBlurredBottomSheet(
-        context: context,
-        configuration: const ModalConfiguration(safeAreaBottom: false),
-        builder: (context) => MessagePanelWidget(
-          message: error.toString(),
-          messageState: MessagePanelState.important,
-        ),
-      );
-    }
+    showBlurredBottomSheet(
+      context: context,
+      configuration: const ModalConfiguration(safeAreaBottom: false),
+      builder: (context) => MessagePanelWidget(
+        message: error.toString(),
+        messageState: MessagePanelState.important,
+      ),
+    );
   }
-
-  String _translateError(Object error, BuildContext context) =>
-      error is ErrorWrongPin
-          ? context.l10n.libPinCode.wrongConfirmationPin
-          : context.l10n.libPinCode.translatedError;
 
   String _exampleMapMessageToString(
       BiometricsMessage message, BuildContext context) {

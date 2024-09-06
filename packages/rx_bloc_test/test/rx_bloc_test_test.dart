@@ -6,6 +6,20 @@ import 'helpers/counter_bloc.dart';
 import 'helpers/details_bloc/details_bloc.dart';
 
 void main() {
+  group('rx_bloc_test', () {
+    rxBlocFakeAsyncTest<CounterBloc, int>(
+      'Test all rx_bloc_test parameters',
+      build: CounterBloc.new,
+      state: (bloc) => Stream.fromIterable([1]),
+      act: (bloc, fakeAsync) async {
+        //
+      },
+      wait: const Duration(milliseconds: 16),
+      skip: 0,
+      expect: <int>[1],
+    );
+  });
+
   group('CounterBloc tests', () {
     rxBlocTest<CounterBloc, int>(
       'Basic rxBlocTest with wait',

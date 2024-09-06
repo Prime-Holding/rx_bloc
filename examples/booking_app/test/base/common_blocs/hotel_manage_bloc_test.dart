@@ -19,6 +19,7 @@ void main() {
   late PaginatedHotelsRepository hotelsRepository;
   late CoordinatorBlocType coordinatorBloc;
   late CoordinatorBlocEvents coordinatorBlocEvents;
+  late HotelManageBloc hotelManageBloc;
 
   void defineWhen({
     Hotel? hotel,
@@ -36,16 +37,21 @@ void main() {
     }
   }
 
-  HotelManageBloc hotelManageBloc() => HotelManageBloc(
-        hotelsRepository,
-        coordinatorBloc,
-      );
   setUp(() {
     hotelsRepository = MockPaginatedHotelsRepository();
     coordinatorBloc = MockCoordinatorBlocType();
     coordinatorBlocEvents = MockCoordinatorBlocEvents();
 
     when(coordinatorBloc.events).thenReturn(coordinatorBlocEvents);
+
+    hotelManageBloc = HotelManageBloc(
+      hotelsRepository,
+      coordinatorBloc,
+    );
+  });
+
+  tearDown(() {
+    hotelManageBloc.dispose();
   });
 
   group('test hotel_manage_bloc_dart state isLoading', () {
@@ -53,7 +59,7 @@ void main() {
       'test hotel_manage_bloc_dart state isLoading',
       build: () async {
         defineWhen(hotel: Stub.hotel1, isFavorite: true);
-        return hotelManageBloc();
+        return hotelManageBloc;
       },
       act: (bloc) async => bloc.events.markAsFavorite(
         hotel: Stub.hotel1,
@@ -74,7 +80,7 @@ void main() {
           hotel: Stub.hotel1,
         );
 
-        return hotelManageBloc();
+        return hotelManageBloc;
       },
       act: (bloc) async => bloc.events.markAsFavorite(
         hotel: Stub.hotel1,
@@ -93,7 +99,7 @@ void main() {
           isFavorite: true,
           hotel: Stub.hotel1,
         );
-        return hotelManageBloc();
+        return hotelManageBloc;
       },
       act: (bloc) async => bloc.events.markAsFavorite(
         hotel: Stub.hotel1,

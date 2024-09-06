@@ -85,14 +85,14 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.deepLinks,
         ),
         {{/enable_feature_deeplinks}}
-        {{#enable_auth_matrix}}
+        {{#enable_mfa}}
         NavMenuItem(
-          title: context.l10n.featureAuthMatrix.authMatrixAppBarTitle,
+          title: context.l10n.featureMfa.appBarTitle,
           icon: context.designSystem.icons.pin,
-          route: const FeatureAuthMatrixRoute(),
-          routePath: RoutesPath.authMatrix,
+          route: const FeatureMfaRoute(),
+          routePath: RoutesPath.mfa,
         ),
-        {{/enable_auth_matrix}}
+        {{/enable_mfa}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,
@@ -133,26 +133,26 @@ class BranchContainer extends StatelessWidget {
     required this.children,
     });
 
-    final int currentIndex;
-    final List<Widget> children;
+  final int currentIndex;
+  final List<Widget> children;
 
-    @override
-    Widget build(BuildContext context) {
-      return Stack(
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
         children: children.mapIndexed(
-          (int index, Widget navigator) {
-            final isCurrentIndex = index == currentIndex;
-            return Opacity(
-              opacity: isCurrentIndex ? 1 : 0,
-              child: IgnorePointer(
-                ignoring: !isCurrentIndex,
-                child: TickerMode(
-                  enabled: isCurrentIndex,
-                  child: navigator,
-              ),
+      (int index, Widget navigator) {
+        final isCurrentIndex = index == currentIndex;
+        return Opacity(
+          opacity: isCurrentIndex ? 1 : 0,
+          child: IgnorePointer(
+            ignoring: !isCurrentIndex,
+            child: TickerMode(
+              enabled: isCurrentIndex,
+              child: navigator,
             ),
-          );
-        },
-      ).toList());
-    }
+          ),
+        );
+      },
+    ).toList());
+  }
 }
