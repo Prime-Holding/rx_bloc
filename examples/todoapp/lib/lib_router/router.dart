@@ -74,8 +74,8 @@ class AppRouter {
       return '${const SplashRoute().location}?from=${state.uri.toString()}';
     }
 
-    final pathInfo = router.routeInformationParser.configuration
-        .findMatch(state.uri.toString());
+    final pathInfo =
+        router.routeInformationParser.configuration.findMatch(state.uri);
 
     final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
 

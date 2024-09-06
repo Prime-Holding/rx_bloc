@@ -11,7 +11,7 @@ import '../blocs/todo_list_bloc_factory.dart';
 
 /// Change the parameters according the the needs of the test
 Widget todoFilterPopupMenuButtonFactory({
-  Result<List<TodoModel>>? todos,
+  Result<List<$TodoModel>>? todos,
   TodosFilterModel? filter,
 }) {
   return Scaffold(
@@ -24,7 +24,7 @@ Widget todoFilterPopupMenuButtonFactory({
           ),
         ),
       ],
-      child: const TodosFilterPopupMenuButton(),
+      child: TodosFilterPopupMenuButton(),
     ),
   );
 }

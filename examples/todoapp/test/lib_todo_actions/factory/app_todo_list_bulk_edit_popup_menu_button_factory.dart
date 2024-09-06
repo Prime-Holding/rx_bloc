@@ -14,6 +14,6 @@ Widget appTodoListBulkEditPopupMenuButtonFactory({
           value: todoListBulkEditMockFactory(),
         ),
       ],
-      child: const AppTodoListBulkEditPopupMenuButton(),
+      child: AppTodoListBulkEditPopupMenuButton(),
     );
 //AppTodoListBulkEditPopupMenuButton();
