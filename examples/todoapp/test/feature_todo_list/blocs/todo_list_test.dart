@@ -17,66 +17,64 @@ import 'todo_list_test.mocks.dart';
   TodoListService,
 ])
 void main() {
-  late TodoListService _todoListService;
-  late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorStates _coordinatorBlocStates;
+  late TodoListService todoListService;
+  late CoordinatorBlocType coordinatorBloc;
+  late CoordinatorStates coordinatorBlocStates;
 
-  void _defineWhen(
-      {List<TodoModel>? todoList,
-      TodoModel? updatedTodo,
-      TodoModel? deletedModel,
-      List<TodoModel>? changedTodoList}) {
+  void defineWhen(
+      {List<$TodoModel>? todoList,
+      $TodoModel? updatedTodo,
+      $TodoModel? deletedModel,
+      List<$TodoModel>? changedTodoList}) {
     todoList ??= Stubs.todoList;
     updatedTodo ??= Stubs.todoUncompletedUpdated;
     deletedModel ??= Stubs.todoIncomplete;
     changedTodoList ??= Stubs.todoListEmpty;
 
-    when(_todoListService.fetchTodoList())
-        .thenAnswer((_) => Future.value(todoList));
+    when(todoListService.fetchTodoList())
+        .thenAnswer((_) => Stream.value(todoList!));
 
-    when(_todoListService.filterTodos([], TodosFilterModel.all))
+    when(todoListService.filterTodos([], TodosFilterModel.all))
         .thenAnswer((_) => []);
 
-    when(_todoListService.filterTodos(todoList, TodosFilterModel.all))
+    when(todoListService.filterTodos(todoList, TodosFilterModel.all))
         .thenAnswer((_) => todoList!);
 
-    when(_todoListService.filterTodos(todoList, TodosFilterModel.completed))
+    when(todoListService.filterTodos(todoList, TodosFilterModel.completed))
         .thenAnswer((_) => todoList!.where((todo) => todo.completed).toList());
 
-    when(_todoListService.filterTodos(todoList, TodosFilterModel.incomplete))
+    when(todoListService.filterTodos(todoList, TodosFilterModel.incomplete))
         .thenAnswer((_) => todoList!.where((todo) => !todo.completed).toList());
 
-    when(_coordinatorBlocStates.onTodoAddedOrUpdated)
+    when(coordinatorBlocStates.onTodoAddedOrUpdated)
         .thenAnswer((_) => Stream.value(Result.success(updatedTodo!)));
 
-    when(_coordinatorBlocStates.onTodoDeleted).thenAnswer((_) =>
-        Stream.value(Result.success(deletedModel!)));
+    when(coordinatorBlocStates.onTodoDeleted)
+        .thenAnswer((_) => Stream.value(Result.success(deletedModel!)));
 
-    when(_coordinatorBlocStates.onTodoListChanged).thenAnswer((_) =>
-        Stream.value(Result.success(changedTodoList!)));
+    when(coordinatorBlocStates.onTodoListChanged)
+        .thenAnswer((_) => Stream.value(Result.success(changedTodoList!)));
   }
 
   TodoListBloc todoListBloc() => TodoListBloc(
-        _todoListService,
-        _coordinatorBloc,
+        todoListService,
+        coordinatorBloc,
       );
   setUp(() {
-    _todoListService = MockTodoListService();
+    todoListService = MockTodoListService();
 
-    _coordinatorBlocStates = coordinatorStatesMockFactory();
+    coordinatorBlocStates = coordinatorStatesMockFactory();
 
-    _coordinatorBloc =
-        coordinatorBlocMockFactory(states: _coordinatorBlocStates);
+    coordinatorBloc = coordinatorBlocMockFactory(states: coordinatorBlocStates);
 
-    when(_coordinatorBloc.states).thenReturn(_coordinatorBlocStates);
+    when(coordinatorBloc.states).thenReturn(coordinatorBlocStates);
   });
 
   group('test todo_list_bloc_dart state filtered todo list', () {
-    rxBlocTest<TodoListBlocType, Result<List<TodoModel>>>(
+    rxBlocTest<TodoListBlocType, Result<List<$TodoModel>>>(
         'test todo_list_bloc_dart state todoList',
         build: () async {
-          _defineWhen(
-              todoList: Stubs.todoList);
+          defineWhen(todoList: Stubs.todoList);
           return todoListBloc();
         },
         act: (bloc) async {},
@@ -90,7 +88,7 @@ void main() {
     rxBlocTest<TodoListBlocType, TodosFilterModel>(
         'test todo_list_bloc_dart state filter',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return todoListBloc();
         },
         act: (bloc) async {

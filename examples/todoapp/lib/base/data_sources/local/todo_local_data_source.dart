@@ -35,18 +35,20 @@ class TodoLocalDataSource {
 
   $TodoModel addTodo($TodoModel todo) {
     _realmInstance.realm.write(() {
-      _realmInstance.realm.add<TodoModel>(todo as TodoModel);
+      _realmInstance.realm.add<TodoModel>(todo.copyWith(
+        id: Uuid.v4().toString(),
+      ));
     });
     return todo;
   }
 
-  List<TodoModel> fetchAllUnsyncedTodos() {
+  List<$TodoModel> fetchAllUnsyncedTodos() {
     final results =
         _realmInstance.realm.query<TodoModel>(r'synced == $0', [false]);
     return results.map((element) => element).toList();
   }
 
-  List<TodoModel> fetchAllTodos() {
+  List<$TodoModel> fetchAllTodos() {
     final results =
         _realmInstance.realm.query<TodoModel>(r'action != $0', ['delete']);
     return results.map((element) => element).toList();
@@ -89,7 +91,7 @@ class TodoLocalDataSource {
     return todo;
   }
 
-  List<TodoModel> updateCompletedForAll(
+  List<$TodoModel> updateCompletedForAll(
     bool completed, {
     bool synced = true,
     String? action,
@@ -121,7 +123,7 @@ class TodoLocalDataSource {
     return todos;
   }
 
-  List<TodoModel> deleteCompleted({bool synced = true, String? action}) {
+  List<$TodoModel> deleteCompleted({bool synced = true, String? action}) {
     final realm = _realmInstance.realm;
     final results = realm.all<TodoModel>().query('completed == true');
     final todos = results.toList();

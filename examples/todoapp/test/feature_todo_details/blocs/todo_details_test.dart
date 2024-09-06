@@ -14,50 +14,47 @@ import '../../base/common_blocs/router_bloc_mock.dart';
 import '../../stubs.dart';
 import 'todo_details_test.mocks.dart';
 
-@GenerateMocks([
-  TodoModel,
-  TodoListService,
-  TodoDetailsBlocType
-])
+@GenerateMocks([TodoModel, TodoListService, TodoDetailsBlocType])
 void main() {
-  late TodoListService _todoListService;
-  late CoordinatorBlocType _coordinatorBloc;
-  late CoordinatorStates _coordinatorBlocStates;
+  late TodoListService todoListService;
+  late CoordinatorBlocType coordinatorBloc;
+  late CoordinatorStates coordinatorBlocStates;
 
-  void _defineWhen([String? todoId]) {
-    when(_todoListService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
+  void defineWhen([String? todoId]) {
+    when(todoListService.fetchTodoById(todoId ?? '')).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
-        return Future.value(Stubs.todoIncomplete);
+        return Stream.value(Stubs.todoIncomplete);
       }
 
-      return Future.error(Stubs.notFoundError);
+      return Stream.error(Stubs.notFoundError);
     });
 
-    when(_coordinatorBlocStates.onTodoAddedOrUpdated).thenAnswer(
+    when(coordinatorBlocStates.onTodoAddedOrUpdated).thenAnswer(
         (_) => Stream.value(Result.success(Stubs.todoUncompletedUpdated)));
   }
 
-  TodoDetailsBloc buildTodoDetailsBloc([String? todoId, TodoModel? initialTodo]) =>
+  TodoDetailsBloc buildTodoDetailsBloc(
+          [String? todoId, TodoModel? initialTodo]) =>
       TodoDetailsBloc(
         todoId ?? '',
         initialTodo,
-        _todoListService,
-        _coordinatorBloc,
+        todoListService,
+        coordinatorBloc,
         routerBlocMockFactory(),
       );
 
   setUp(() {
-    _todoListService = MockTodoListService();
+    todoListService = MockTodoListService();
 
-    _coordinatorBlocStates = coordinatorStatesMockFactory();
-    _coordinatorBloc = coordinatorBlocMockFactory(states: _coordinatorBlocStates);
+    coordinatorBlocStates = coordinatorStatesMockFactory();
+    coordinatorBloc = coordinatorBlocMockFactory(states: coordinatorBlocStates);
   });
 
   group('test todo_details_bloc_dart state isLoading', () {
     rxBlocTest<TodoDetailsBlocType, bool>(
         'test todo_details_bloc_dart state isLoading',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return buildTodoDetailsBloc();
         },
         act: (bloc) async {},
@@ -69,7 +66,7 @@ void main() {
     rxBlocTest<TodoDetailsBlocType, ErrorModel>(
         'test todo_details_bloc_dart state errors',
         build: () async {
-          _defineWhen(null);
+          defineWhen(null);
           return buildTodoDetailsBloc(null);
         },
         act: (bloc) async {},
@@ -80,10 +77,10 @@ void main() {
   });
 
   group('test todo_details_bloc_dart state todo', () {
-    rxBlocTest<TodoDetailsBlocType, Result<TodoModel>>(
+    rxBlocTest<TodoDetailsBlocType, Result<$TodoModel>>(
         'test todo_details_bloc_dart state todo',
         build: () async {
-          _defineWhen(Stubs.todoIncomplete.id);
+          defineWhen(Stubs.todoIncomplete.id);
           return buildTodoDetailsBloc(Stubs.todoIncomplete.id);
         },
         act: (bloc) async {},

@@ -5,6 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:realm/realm.dart';
 // ignore: implementation_imports
@@ -17,7 +18,7 @@ enum TodoModelActions { add, update, delete, none }
 
 @RealmModel()
 @JsonSerializable()
-class $TodoModel implements Identifiable {
+class $TodoModel with EquatableMixin implements Identifiable {
   /// The unique identifier of the todo
   /// If the todo is not persisted yet, the id is null
   @PrimaryKey()
@@ -136,4 +137,7 @@ class $TodoModel implements Identifiable {
       identical(this, other) ||
       (other is $TodoModel ||
           other is TodoModel && id != null && id == other.id);
+
+  @override
+  List<Object?> get props => [id, title, description, completed, createdAt];
 }

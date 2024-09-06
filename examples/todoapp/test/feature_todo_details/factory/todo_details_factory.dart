@@ -15,7 +15,7 @@ import '../mock/todo_details_mock.dart';
 Widget todoDetailsFactory({
   bool? isLoading,
   ErrorModel? errors,
-  Result<TodoModel>? todo,
+  Result<$TodoModel>? todo,
 }) {
   return Scaffold(
     body: MultiProvider(

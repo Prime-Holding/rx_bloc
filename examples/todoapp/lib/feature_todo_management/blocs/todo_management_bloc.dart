@@ -27,6 +27,7 @@ abstract class TodoManagementBlocEvents {
   ///
   /// Side effects:
   /// - Emits the new title or an [ErrorModel] to the [TodoManagementBlocStates.title].
+  @RxBlocEvent(type: RxBlocEventType.behaviour)
   void setTitle(String title);
 
   /// Sets the description of the todo.
@@ -67,7 +68,7 @@ abstract class TodoManagementBlocStates {
 class TodoManagementBloc extends $TodoManagementBloc {
   TodoManagementBloc(
     this._id,
-    TodoModel? initialTodo,
+    $TodoModel? initialTodo,
     this._listService,
     this._todoManageService,
     this._validatorService,

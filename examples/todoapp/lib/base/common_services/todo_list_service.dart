@@ -28,7 +28,7 @@ class TodoListService {
   ///
   /// Fetches all unsynced todos and syncs them with the server.
   Future<void> synchronizeTodos() async {
-    final List<TodoModel> unsyncedTodos =
+    final List<$TodoModel> unsyncedTodos =
         await _repository.fetchAllUnsyncedTodos();
     if (unsyncedTodos.isNotEmpty) {
       _repository.unpauseRealmSync();

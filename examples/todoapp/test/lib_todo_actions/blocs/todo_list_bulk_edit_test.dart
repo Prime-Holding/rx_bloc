@@ -23,7 +23,7 @@ Future<void> main() async {
   late TodoRepository _repository;
 
   void _defineWhen(
-      List<TodoModel> todoList, List<TodoModel> deleteCompletedResult) {
+      List<$TodoModel> todoList, List<$TodoModel> deleteCompletedResult) {
     when(_coordinatorStates.onTodoListChanged)
         .thenAnswer((_) => Stream.value(Result.success(todoList)));
 
