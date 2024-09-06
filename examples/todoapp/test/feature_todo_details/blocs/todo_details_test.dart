@@ -14,7 +14,7 @@ import '../../base/common_blocs/router_bloc_mock.dart';
 import '../../stubs.dart';
 import 'todo_details_test.mocks.dart';
 
-@GenerateMocks([TodoModel, TodoListService, TodoDetailsBlocType])
+@GenerateMocks([TodoListService])
 void main() {
   late TodoListService todoListService;
   late CoordinatorBlocType coordinatorBloc;
@@ -50,7 +50,7 @@ void main() {
     coordinatorBloc = coordinatorBlocMockFactory(states: coordinatorBlocStates);
   });
 
-  group('test todo_details_bloc_dart state isLoading', () {
+  group('test todo_details_bloc_dart states', () {
     rxBlocTest<TodoDetailsBlocType, bool>(
         'test todo_details_bloc_dart state isLoading',
         build: () async {
@@ -60,9 +60,6 @@ void main() {
         act: (bloc) async {},
         state: (bloc) => bloc.states.isLoading,
         expect: [false, true, false]);
-  });
-
-  group('test todo_details_bloc_dart state errors', () {
     rxBlocTest<TodoDetailsBlocType, ErrorModel>(
         'test todo_details_bloc_dart state errors',
         build: () async {
@@ -74,9 +71,6 @@ void main() {
         expect: [
           Stubs.notFoundError,
         ]);
-  });
-
-  group('test todo_details_bloc_dart state todo', () {
     rxBlocTest<TodoDetailsBlocType, Result<$TodoModel>>(
         'test todo_details_bloc_dart state todo',
         build: () async {

@@ -32,7 +32,7 @@ TodoDetailsBlocType todoDetailsMockFactory({
 
   final todoState = (todo != null
           ? Stream.value(todo)
-          : const Stream<Result<TodoModel>>.empty())
+          : const Stream<Result<$TodoModel>>.empty())
       .publishReplay(maxSize: 1)
     ..connect();
   final onRoutingState = const Stream<void>.empty().publishReplay(maxSize: 1)

@@ -34,7 +34,7 @@ Widget todoDetailsFactory({
           ),
         ],
         child: TodoDetailsPage(
-            id: todo != null && todo is ResultSuccess<TodoModel>
+            id: todo != null && todo is ResultSuccess<$TodoModel>
                 ? todo.data.id ?? ''
                 : '')),
   );
