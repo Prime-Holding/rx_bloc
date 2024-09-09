@@ -91,6 +91,8 @@ void main() {
           equals(featureConfiguration.cicdGithubEnabled));
       expect(sut.cicdCodemagicEnabled,
           equals(featureConfiguration.cicdCodemagicEnabled));
+      expect(sut.cicdGitlabEnabled,
+          equals(featureConfiguration.cicdGitlabEnabled));
     });
   });
 }
