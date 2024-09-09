@@ -68,6 +68,13 @@ class Stubs {
     todoIncomplete.copyWith(id: '4')
   ]);
 
+  static final List<$TodoModel> todoListUnsorted = List<$TodoModel>.from([
+    todoIncomplete.copyWith(createdAt: 2),
+    todoIncomplete.copyWith(id: '2', createdAt: 1),
+    todoIncomplete.copyWith(id: '3', createdAt: 3),
+    todoIncomplete.copyWith(id: '4', createdAt: 5)
+  ]);
+
   static const todoListStatistics = TodoStatsModel(completed: 2, incomplete: 2);
   static const todoListStatisticsEmpty =
       TodoStatsModel(completed: 0, incomplete: 0);
