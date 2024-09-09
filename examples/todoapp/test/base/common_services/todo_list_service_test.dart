@@ -163,5 +163,10 @@ void main() {
       verify(todoRepository.syncTodos(any)).called(1);
       verifyNever(todoRepository.pauseRealmSync());
     });
+
+    // test dispose method
+    test('dispose should close the stream', () {
+      todoListService.dispose();
+    });
   });
 }
