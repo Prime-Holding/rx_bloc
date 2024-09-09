@@ -24,7 +24,7 @@ Widget todoFilterPopupMenuButtonFactory({
           ),
         ),
       ],
-      child: const TodosFilterPopupMenuButton(),
+      child: TodosFilterPopupMenuButton(),
     ),
   );
 }
