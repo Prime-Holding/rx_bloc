@@ -117,7 +117,9 @@ class AppBuildGradleProcessor extends StringProcessor {
 
   void _addKeyPropertiesConfig(StringBuffer buffer) {
     const beforePattern = 'def localProperties = new Properties()';
+
     const content = '''
+    
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -125,7 +127,15 @@ if (keystorePropertiesFile.exists()) {
 }
 
 ''';
-    buffer.insertBefore(beforePattern, content);
+
+    if (!buffer.toString().contains(beforePattern)) {
+      buffer.insertBefore(
+        'namespace =',
+        content.replaceAll('\n', '\n$_tabSpace'),
+      );
+    } else {
+      buffer.insertBefore(beforePattern, content);
+    }
   }
 
   void _buildDependenciesList(StringBuffer buffer) {

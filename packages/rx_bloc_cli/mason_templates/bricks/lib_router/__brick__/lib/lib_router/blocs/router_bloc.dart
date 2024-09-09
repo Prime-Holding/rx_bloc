@@ -72,8 +72,13 @@ class RouterBloc extends $RouterBloc {
   final GoRouter _router;
 
   @override
-  ConnectableStream<ErrorModel> _mapToErrorsState() =>
-      errorState.mapToErrorModel().publish();
+  ConnectableStream<ErrorModel> _mapToErrorsState() => errorState
+      // TODO: Remove workaround when GoRouter gets updated for Flutter 3.24
+      .where((exc) =>
+        exc.toString() !=
+        "Exception: type 'ResultSuccess<MfaResponse>' is not a subtype of type 'Function?' of 'result'")
+      .mapToErrorModel()
+      .publish();
 
   @override
   ConnectableStream<void> _mapToNavigationPathState() => Rx.merge([
@@ -87,7 +92,7 @@ class RouterBloc extends $RouterBloc {
         _$pushReplaceEvent
             .throttleTime(const Duration(seconds: 1))
             .switchMap((routeData) => _pushReplace(routeData).asResultStream()),
-        _$popEvent.doOnData((routeData) => _pop(routeData)).asResultStream(),
+        _$popEvent.doOnData(_pop).asResultStream(),
       ]).setErrorStateHandler(this).whereSuccess().publish();
 
   Future<void> _go(_GoEventArgs routeData) async {

@@ -5,7 +5,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 import 'package:flutter/material.dart';
 
 import '../theme/design_system.dart';
@@ -19,8 +18,8 @@ class ActionButton extends StatelessWidget {
     this.tooltip = '',
     this.loading = false,
     this.heroTag,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// Loading flag that shows a loading indicator
   final bool loading;

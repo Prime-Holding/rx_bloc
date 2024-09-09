@@ -18,7 +18,7 @@ import '../ui_components/hotel_capacity_page.dart';
 import '../ui_components/hotel_sort_page.dart';
 
 class HotelSearchPage extends StatefulWidget {
-  const HotelSearchPage({Key? key}) : super(key: key);
+  const HotelSearchPage({super.key});
 
   @override
   State<HotelSearchPage> createState() => _HotelSearchPageState();
@@ -94,6 +94,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
             ),
           ],
           body: Container(
+            key: const Key('LoadingWidgetNoItem'),
             color: HotelAppTheme.buildLightTheme().colorScheme.surface,
             child: RxPaginatedBuilder<HotelSearchBlocType,
                 Hotel>.withRefreshIndicator(
@@ -118,6 +119,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
                 );
               },
               buildError: (context, list, bloc) => ErrorRetryWidget(
+                key: const Key('ErrorRetryWidget'),
                 onReloadTap: () => bloc.events.reload(
                   reset: true,
                   fullReset: true,
@@ -150,6 +152,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
 
     if (item == null) {
       return Padding(
+        key: const Key('LoadingWidgetNoItem'),
         padding: const EdgeInsets.only(top: 12),
         child: LoadingWidget(),
       );
@@ -336,6 +339,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
       );
 
   Widget _buildClearButton(VoidCallback? onPressed) => FocusButton(
+        key: const Key('clear_button'),
         onPressed: onPressed ?? () {},
         child: const Icon(Icons.cancel, color: Colors.blue),
       );

@@ -2,6 +2,7 @@ import 'package:args/args.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_cli/src/extensions/arg_results_extensions.dart';
+import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/command_arguments/create_command_arguments.dart';
 import 'package:rx_bloc_cli/src/models/errors/command_usage_exception.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
@@ -101,6 +102,40 @@ void main() {
           () => sut.readRealtimeCommunicationType(
               CreateCommandArguments.projectName),
           throwsUnsupportedError);
+    });
+  });
+
+  group('test readCICDEnum extension', () {
+    test('should return CICDType for the correct type', () {
+      final cicdType = CreateCommandArguments.cicd;
+      when(sut[cicdType.name]).thenReturn(CICDType.github.name);
+
+      expect(sut.readCICDEnum(cicdType), equals(CICDType.github));
+
+      when(sut[cicdType.name]).thenReturn(null);
+      expect(sut.readCICDEnum(cicdType), cicdType.defaultValue());
+    });
+
+    test('should throw error for incorrect type', () {
+      expect(() => sut.readCICDEnum(CreateCommandArguments.projectName),
+          throwsUnsupportedError);
+    });
+
+    test('ToString() returns proper name', () {
+      expect(CICDType.none.toString(), 'none');
+      expect(CICDType.github.toString(), 'github');
+      expect(CICDType.fastlane.toString(), 'fastlane');
+      expect(CICDType.codemagic.toString(), 'codemagic');
+    });
+
+    test('Invalid parsed value throws error', () {
+      var isExceptionThrown = false;
+      try {
+        CICDType.parse('invalid_value');
+      } catch (_) {
+        isExceptionThrown = true;
+      }
+      expect(isExceptionThrown, isTrue);
     });
   });
 }

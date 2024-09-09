@@ -49,7 +49,7 @@ class RemindersTheme {
           .copyWith(
             secondary: designSystemColor.accentColor,
           )
-          .copyWith(background: designSystemColor.backgroundColor)
+          .copyWith(surface: designSystemColor.backgroundColor)
           .copyWith(error: designSystemColor.errorColor),
     );
   }

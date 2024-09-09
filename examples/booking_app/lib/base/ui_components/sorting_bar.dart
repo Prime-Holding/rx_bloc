@@ -68,6 +68,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                   RxBlocBuilder<HotelSearchBlocType, SortBy>(
                     state: (bloc) => bloc.states.sortedBy,
                     builder: (context, sortByState, bloc) => FocusButton(
+                      key: const Key('sort_button'),
                       onPressed: () {
                         onPressed?.call(bloc, sortByState.data ?? SortBy.none);
                       },

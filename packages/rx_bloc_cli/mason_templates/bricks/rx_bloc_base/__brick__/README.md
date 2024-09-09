@@ -20,8 +20,8 @@
 16. [Realtime communication](#realtime-communication){{/realtime_communication}}{{#enable_feature_otp}}
 17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#cicd}}
 18. [CI/CD](#cicd){{/cicd}}{{#enable_pin_code}}
-19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_auth_matrix}}
-20. [Auth Matrix](#auth-matrix){{/enable_auth_matrix}}
+19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_mfa}}
+20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}
 21. [Next Steps](#next-steps)
 
 ## Getting started
@@ -353,6 +353,8 @@ Due to the way fonts are loaded in tests, any custom fonts you intend to golden 
 
 In order for the goldens to be generated, we have provided VS Code and IDEA run configurations, as well as an executable `bin/generate_goldens.sh`. The golden masters will be located in `goldens/light_theme` and `goldens/dark_theme`. The `failures` folder is used in case of any mismatched tests.
 
+In case you have custom widgets for which you're writing golden tests, make sure to check out the guide [Building smart widgets with dependencies without breaking golden tests][golden_tests_with_smart_widgets_lnk].
+
 <div id="server"/>
 
 ## Server
@@ -487,6 +489,8 @@ This package enables applications to use native automation features
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio{{/enable_patrol}}
 {{#realtime_communication}}
+
+For more info, please check full [README][patrol_integration_test_lnk]
 ## Realtime Communication
 
 Provides base datasource, repository, service and utility classes for establishing a SSE connection.
@@ -498,10 +502,10 @@ After this is done the event stream exposed by `SseService` can be used by any B
 The `feature_otp` brick contains a number of useful widgets that can help you with building sms/pin code screens or workflows for your app.  
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
-{{#enable_auth_matrix}}
-## Auth Matrix
+{{#enable_mfa}}
+## Multi-Factor Authentication
 
-The `lib_auth_matrix` brick contains classes, repositories, datasources and widgets that can help you with building a matrix authentication workflow for your app. It contains 4 new endpoints for initializing, verifying and canceling the matrix authentication process.{{/enable_auth_matrix}}
+The `lib_mfa` brick contains classes, repositories, data sources and widgets that can help you with building a Multi-Factor Authentication workflow for your app. Follow the [technical specification][rx_bloc_cli_mfa_lnk] for information.{{/enable_mfa}}
 {{#cicd}}
 ## CI/CD
 
@@ -568,4 +572,7 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
+[patrol_integration_test_lnk]: docs/patrol_integration_test.md
 [rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
+[golden_tests_with_smart_widgets_lnk]: docs/golden_tests.md
+[rx_bloc_cli_mfa_lnk]: docs/mfa.md

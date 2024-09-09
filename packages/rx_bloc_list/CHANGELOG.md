@@ -1,3 +1,7 @@
+## [5.0.0] August 5, 2024
+* Update `rx_bloc` to use version `6.0.0`
+* Update `rxdart` to use version `0.28.0`
+
 ## [4.0.2] May 22, 2023
 * Fix the RxPaginatedBuilder `bloc` parameter
 

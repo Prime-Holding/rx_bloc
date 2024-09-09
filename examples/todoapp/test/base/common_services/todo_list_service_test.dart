@@ -1,70 +1,90 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
+
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
 import 'package:todoapp/base/common_services/todo_list_service.dart';
-import 'package:todoapp/base/extensions/todo_list_extensions.dart';
 import 'package:todoapp/base/models/todos_filter_model.dart';
 import 'package:todoapp/base/repositories/todo_repository.dart';
+
 import '../../stubs.dart';
 import 'todo_list_service_test.mocks.dart';
 
-@GenerateMocks([TodoRepository])
+@GenerateMocks([
+  TodoRepository,
+])
 void main() {
+  late MockTodoRepository mockRepository;
+  late TodoListService todoListService;
+
+  setUp(() {
+    mockRepository = MockTodoRepository();
+    todoListService = TodoListService(mockRepository);
+  });
+
   group('TodoListService', () {
-    late TodoListService todoListService;
-    late MockTodoRepository todoRepository;
+    test('fetchTodoList returns sorted list of todos', () async {
+      final todos = Stubs.todoList;
+      when(mockRepository.fetchAllTodos()).thenAnswer((_) async => todos);
 
-    setUp(() {
-      todoRepository = MockTodoRepository();
-      todoListService = TodoListService(todoRepository);
+      final result = await todoListService.fetchTodoList();
+
+      expect(result, equals(todos));
+      verify(mockRepository.fetchAllTodos()).called(1);
     });
 
-    test('fetchTodoList should return a sorted list of todos', () async {
-      when(todoRepository.fetchAllTodos())
-          .thenAnswer((_) => Future.value(Stubs.todoList));
+    test('fetchTodoById returns todo if already provided', () async {
+      final todo = Stubs.todoIncomplete;
 
-      final todos = await todoListService.fetchTodoList();
+      final result = await todoListService.fetchTodoById('1', todo);
 
-      expect(todos, Stubs.todoList.sortByCreatedAt());
+      expect(result, equals(todo));
+      verifyNever(mockRepository.fetchTodoById(any));
     });
 
-    test('fetchTodoById should return the correct todo', () async {
-      when(todoRepository.fetchTodoById('1'))
-          .thenAnswer((_) => Future.value(Stubs.todoIncomplete));
-
-      final todo = await todoListService.fetchTodoById('1');
-
-      expect(todo.id, '1');
-    });
-
-    test('fetchTodoById should return the same todo by checking the id',
+    test('fetchTodoById fetches todo from repository if not provided',
         () async {
-      when(todoRepository.fetchTodoById('1'))
-          .thenAnswer((_) => Future.value(Stubs.todoIncomplete));
+      final todo = Stubs.todoIncomplete;
+      when(mockRepository.fetchTodoById('1')).thenAnswer((_) async => todo);
 
-      final todo =
-          await todoListService.fetchTodoById('1', Stubs.todoIncomplete);
+      final result = await todoListService.fetchTodoById('1');
 
-      expect(todo, Stubs.todoIncomplete);
+      expect(result, equals(todo));
+      verify(mockRepository.fetchTodoById('1')).called(1);
     });
 
-    test('filterTodos should return the correct filtered todos', () {
-      final incompleteTodos = Stubs.todoListAllIncomplete;
-      final completedTodos = Stubs.todoListAllCompleted;
-      final todos = [...incompleteTodos, ...completedTodos];
-      final allTodos = todoListService.filterTodos(todos, TodosFilterModel.all);
-      final incomplete = todoListService.filterTodos(
-        todos,
-        TodosFilterModel.incomplete,
-      );
-      final completed = todoListService.filterTodos(
-        todos,
-        TodosFilterModel.completed,
-      );
+    test('filterTodos returns all todos when filter is all', () {
+      final todos = Stubs.todoList;
 
-      expect(allTodos, todos);
-      expect(incomplete, incompleteTodos);
-      expect(completed, completedTodos);
+      final result = todoListService.filterTodos(todos, TodosFilterModel.all);
+
+      expect(result, equals(todos));
+    });
+
+    test('filterTodos returns incomplete todos when filter is incomplete', () {
+      final todos = Stubs.todoList;
+
+      final result =
+          todoListService.filterTodos(todos, TodosFilterModel.incomplete);
+
+      expect(
+          result,
+          equals(
+            [todos[0], todos[2]],
+          ));
+    });
+
+    test('filterTodos returns completed todos when filter is completed', () {
+      final todos = Stubs.todoList;
+
+      final result =
+          todoListService.filterTodos(todos, TodosFilterModel.completed);
+
+      expect(
+          result,
+          equals([
+            todos[1],
+            todos[3],
+          ]));
     });
   });
 }

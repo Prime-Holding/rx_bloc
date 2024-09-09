@@ -3,8 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import '../assets.dart';{{#enable_auth_matrix}}
-import 'network_lookup/auth_matrix_lookup.dart';{{/enable_auth_matrix}}{{#enable_feature_counter}}
+import '../assets.dart';{{#enable_feature_counter}}
 import 'network_lookup/counter_lookup.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import 'network_lookup/deep_link_lookup.dart';
 import 'network_lookup/enter_message_lookup.dart';{{/enable_feature_deeplinks}}
@@ -14,7 +13,8 @@ import 'network_lookup/lib_change_language_lookup.dart';{{/enable_change_languag
 import 'network_lookup/lib_dev_menu_lookup.dart';{{/enable_dev_menu}}{{#enable_pin_code}}
 import 'network_lookup/lib_pin_code_lookup.dart';{{/enable_pin_code}}
 import 'network_lookup/lib_router_lookup.dart';{{#has_authentication}}
-import 'network_lookup/login_lookup.dart';{{/has_authentication}}
+import 'network_lookup/login_lookup.dart';{{/has_authentication}}{{#enable_mfa}}
+import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
 import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
 import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}
 import 'network_lookup/profile_lookup.dart';
@@ -92,10 +92,10 @@ class AppI18nLookup extends I18nLookup {
   @override
   I18nFeatureLoginLookup createFeatureLoginLookup() => AppI18nLoginLookup();
 
-{{/enable_login}}{{#enable_auth_matrix}}
+{{/enable_login}}{{#enable_mfa}}
   @override
-  I18nFeatureAuthMatrixLookup createFeatureAuthMatrixLookup() =>
-      AppI18nAuthMatrixLookup(); {{/enable_auth_matrix}} {{#enable_feature_counter}}
+  I18nFeatureMfaLookup createFeatureMfaLookup() =>
+      AppI18nMfaLookup(); {{/enable_mfa}} {{#enable_feature_counter}}
 
   @override
   I18nFeatureCounterLookup createFeatureCounterLookup() =>

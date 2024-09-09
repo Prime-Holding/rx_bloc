@@ -1,12 +1,13 @@
 name: rx_bloc_cli
 description: "rx_bloc_cli that enables quick project setup including: flavors, localization [intl], state management [rx_bloc], routing [go_router], design system, analytics [firebase], tests"
-version: 3.7.0
+version: 5.0.0
 repository: https://github.com/Prime-Holding/rx_bloc/tree/master/packages/rx_bloc_cli
 issue_tracker: https://github.com/Prime-Holding/rx_bloc/issues
 homepage: https://www.primeholding.com
+topics: [cli, template, codegen]
 
 environment:
-  sdk: '>=3.2.0 <4.0.0'
+  sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
   args: ^2.5.0

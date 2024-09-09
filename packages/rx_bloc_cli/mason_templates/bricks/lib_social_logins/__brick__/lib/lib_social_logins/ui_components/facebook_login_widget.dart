@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/app/config/app_constants.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/data_sources/remote/http_clients/api_http_client.dart';
 import '../blocs/social_login_bloc.dart';
@@ -25,43 +26,51 @@ class FacebookLoginWidget extends StatelessWidget {
   const FacebookLoginWidget({super.key});
 
   @override
-  Widget build(BuildContext context) => MultiProvider(
+  Widget build(BuildContext context) {
+    final current = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AppErrorModalWidget<SocialLoginBlocType>(
+            errorState: (bloc) => bloc.states.errors,
+          ),
+          RxBlocBuilder<SocialLoginBlocType, bool>(
+            state: (bloc) => bloc.states.isLoading,
+            builder: (context, snapshot, bloc) => SocialLoginButton(
+              isLoading: (snapshot.data ?? false) ? false : true,
+              backgroundColor: context.designSystem.colors.facebookBackground,
+              text: context.l10n.featureLogin.facebookLogin,
+              textStyle: context.designSystem.typography.facebookButtonText,
+              progressIndicatorColor:
+                  context.designSystem.colors.facebookTextColor,
+              onPressed:
+                   (snapshot.data ?? false) ? null : () => bloc.events.login(),
+              child: SvgPicture.asset(
+                context.designSystem.images.facebookLogo,
+                colorFilter: ColorFilter.mode(
+                    context.designSystem.colors.facebookTextColor,
+                    BlendMode.srcIn,
+                ),
+                height: context.designSystem.spacing.xl,
+              ),
+            ),
+          ),
+        ],
+      );
+
+    if (isInTestMode) {
+      return current;
+    }
+
+    return MultiProvider(
         providers: [
           ..._dataSources,
           ..._repositories,
           ..._services,
           ..._blocs,
         ],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppErrorModalWidget<SocialLoginBlocType>(
-              errorState: (bloc) => bloc.states.errors,
-            ),
-            RxBlocBuilder<SocialLoginBlocType, bool>(
-              state: (bloc) => bloc.states.isLoading,
-              builder: (context, snapshot, bloc) => SocialLoginButton(
-                isLoading: (snapshot.data ?? false) ? false : true,
-                backgroundColor: context.designSystem.colors.facebookBackground,
-                text: context.l10n.featureLogin.facebookLogin,
-                textStyle: context.designSystem.typography.facebookButtonText,
-                progressIndicatorColor:
-                    context.designSystem.colors.facebookTextColor,
-                onPressed:
-                    (snapshot.data ?? false) ? null : () => bloc.events.login(),
-                child: SvgPicture.asset(
-                  context.designSystem.images.facebookLogo,
-                  colorFilter: ColorFilter.mode(
-                    context.designSystem.colors.facebookTextColor,
-                    BlendMode.srcIn,
-                  ),
-                  height: context.designSystem.spacing.xl,
-                ),
-              ),
-            ),
-          ],
-        ),
+        child: current,
       );
+  }
 
   List<Provider> get _dataSources => [
         Provider<FacebookAuthDataSource>(

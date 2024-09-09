@@ -12,37 +12,37 @@ import '../../stubs.dart';
 import 'todo_action_service_mock.dart';
 
 void main() {
-  late CoordinatorBlocType _coordinatorBloc;
-  late TodoActionsService _service;
+  late CoordinatorBlocType coordinatorBloc;
+  late TodoActionsService service;
 
-  void _defineWhen({String? todoId, TodoModel? todo}) {
+  void defineWhen({String? todoId, TodoModel? todo}) {
     if (todoId != null && todo != null) {
-      when(_service.deleteTodoById(todoId))
+      when(service.deleteTodoById(todoId))
           .thenAnswer((_) => Future.value(todo));
 
-      when(_service.updateCompletedById(todoId, true))
+      when(service.updateCompletedById(todoId, true))
           .thenAnswer((_) => Future.value(todo.copyWith(completed: true)));
 
-      when(_service.updateCompletedById(todoId, false))
+      when(service.updateCompletedById(todoId, false))
           .thenAnswer((_) => Future.value(todo.copyWith(completed: false)));
     }
   }
 
   TodoActionsBloc bloc() => TodoActionsBloc(
-        _service,
-        _coordinatorBloc,
+        service,
+        coordinatorBloc,
         routerBlocMockFactory(),
       );
 
   setUp(() {
-    _service = todoActionsServiceMockFactory();
-    _coordinatorBloc = coordinatorBlocMockFactory();
+    service = todoActionsServiceMockFactory();
+    coordinatorBloc = coordinatorBlocMockFactory();
   });
 
   rxBlocTest<TodoActionsBlocType, TodoModel>(
       'test todo_actions_test_dart state onTodoDeleted',
       build: () async {
-        _defineWhen(todoId: Stubs.todoCompleted.id!, todo: Stubs.todoCompleted);
+        defineWhen(todoId: Stubs.todoCompleted.id!, todo: Stubs.todoCompleted);
         return bloc();
       },
       act: (bloc) async {
@@ -54,7 +54,7 @@ void main() {
   rxBlocFakeAsyncTest<TodoActionsBlocType, TodoModel>(
       'test todo_actions_test_dart state onUpdateCompleted',
       build: () {
-        _defineWhen(todoId: Stubs.todoCompleted.id!, todo: Stubs.todoCompleted);
+        defineWhen(todoId: Stubs.todoCompleted.id!, todo: Stubs.todoCompleted);
         return bloc();
       },
       act: (bloc, fakeAsync) async {
