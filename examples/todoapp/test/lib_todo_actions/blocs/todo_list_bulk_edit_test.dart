@@ -12,7 +12,7 @@ import 'package:todoapp/lib_todo_actions/services/todo_actions_service.dart';
 
 import '../../base/common_blocs/coordinator_bloc_mock.dart';
 import '../../stubs.dart';
-import 'todo_list_bulk_edit_test.mocks.dart';
+import '../services/todo_actions_service_test.mocks.dart';
 
 @GenerateMocks([
   TodoRepository,
