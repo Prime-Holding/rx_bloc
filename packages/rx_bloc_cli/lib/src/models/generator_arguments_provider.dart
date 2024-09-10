@@ -139,9 +139,7 @@ class GeneratorArgumentsProvider {
     final deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
 
     // Dev menu
-    final devMenuEnabled = false;
-    // TODO: Uncomment when `alice` package releases fix for 0.28.0 : https://github.com/jhomlala/alice/issues/234
-    //final devMenuEnabled = _reader.read<bool>(CreateCommandArguments.devMenu);
+    final devMenuEnabled = _reader.read<bool>(CreateCommandArguments.devMenu);
 
     // Patrol tests
     final patrolTestsEnabled =

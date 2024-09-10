@@ -8,7 +8,8 @@ environment:
   flutter: '>=3.13.0 <4.0.0'
 
 dependencies: {{#enable_dev_menu}}
-  alice: ^0.4.1 {{/enable_dev_menu}}
+  alice: ^1.0.0-dev.10
+  alice_dio: ^1.0.4{{/enable_dev_menu}}
   collection: ^1.18.0
   copy_with_extension: ^5.0.4{{#enable_pin_code}}
   crypto: ^3.0.3{{/enable_pin_code}}
@@ -21,7 +22,7 @@ dependencies: {{#enable_dev_menu}}
   firebase_messaging: ^15.1.0{{/push_notifications}}
   flutter:
     sdk: flutter{{#enable_social_logins}}
-  flutter_facebook_auth: ^6.0.2{{/enable_social_logins}}
+  flutter_facebook_auth: ^7.1.0{{/enable_social_logins}}
   flutter_local_notifications: ^17.2.1+2
   flutter_localizations:
     sdk: flutter
@@ -35,7 +36,7 @@ dependencies: {{#enable_dev_menu}}
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.8.1
   jwt_decoder: ^2.0.1{{#enable_pin_code}}
-  local_session_timeout: ^2.3.1{{/enable_pin_code}}
+  local_session_timeout: ^3.2.0{{/enable_pin_code}}
   provider: ^6.0.5
   retrofit: ^4.0.2
   rx_bloc: ^6.0.0
@@ -45,7 +46,7 @@ dependencies: {{#enable_dev_menu}}
   shelf: ^1.4.1 # This package is used for the local server (if not used, can be removed)
   shelf_router: ^1.1.4 # This package is used for the local server (if not used, can be removed)
   shelf_static: ^1.1.2 # This package is used for the local server (if not used, can be removed){{#enable_social_logins}}
-  sign_in_with_apple: ^5.0.0{{/enable_social_logins}}{{#enable_mfa}}
+  sign_in_with_apple: ^6.1.2{{/enable_social_logins}}{{#enable_mfa}}
   uuid: ^4.2.1{{/enable_mfa}}
   widget_toolkit: ^0.2.0 {{#enable_pin_code}}
   widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#enable_feature_otp}}
@@ -66,7 +67,7 @@ dev_dependencies:
   mockito: ^5.4.2 {{#enable_patrol}}
   patrol: ^3.0.3 {{/enable_patrol}}
   r_flutter: 0.9.0
-  retrofit_generator: ^8.0.4
+  retrofit_generator: ^9.1.1
   rx_bloc_generator: ^8.0.0
   rx_bloc_test: ^5.0.0
   test: any {{#enable_patrol}}

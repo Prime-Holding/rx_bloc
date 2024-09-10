@@ -27,7 +27,7 @@ class FacebookCredentialDataSource {
 
     return FacebookAuthRequestModel(
       email: userInfo['email'],
-      facebookToken: result.accessToken!.token,
+      facebookToken: result.accessToken!.tokenString,
       isAuthenticated: true,
       name: userInfo['name'],
       userPictureUrl: userInfo['picture']['data']['url'],
