@@ -6,6 +6,7 @@ import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_widget.dart';
 import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/models/todo_model.dart';
+import '../../base/models/todos_filter_model.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../../lib_todo_actions/blocs/todo_actions_bloc.dart';
@@ -24,9 +25,15 @@ class TodoListPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(context.l10n.todos),
-          actions: const [
-            TodosFilterPopupMenuButton(),
-            AppTodoListBulkEditPopupMenuButton(),
+          actions: [
+            RxBlocBuilder<TodoListBlocType, TodosFilterModel>(
+              state: (bloc) => bloc.states.filter,
+              builder: (context, snapshot, bloc) => TodosFilterPopupMenuButton(
+                selectedFilter: snapshot.data,
+                onApplyFilter: bloc.events.applyFilter,
+              ),
+            ),
+            const AppTodoListBulkEditPopupMenuButton(),
           ],
         ),
         floatingActionButton: FloatingActionButton(
