@@ -1,5 +1,4 @@
 stages:
-  - setup_dependencies
   - test
   - extract
   - build
