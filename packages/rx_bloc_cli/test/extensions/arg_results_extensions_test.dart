@@ -126,6 +126,7 @@ void main() {
       expect(CICDType.github.toString(), 'github');
       expect(CICDType.fastlane.toString(), 'fastlane');
       expect(CICDType.codemagic.toString(), 'codemagic');
+      expect(CICDType.gitlab.toString(), 'gitlab');
     });
 
     test('Invalid parsed value throws error', () {
