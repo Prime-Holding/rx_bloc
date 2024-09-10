@@ -12,6 +12,7 @@ import 'todo_list_bulk_edit_mock.mocks.dart';
   TodoListBulkEditBlocType
 ])
 TodoListBulkEditBlocType todoListBulkEditMockFactory({
+  List<BulkActionModel>? bulkActions,
   bool? isLoading,
 }) {
   final blocMock = MockTodoListBulkEditBlocType();
@@ -24,7 +25,8 @@ TodoListBulkEditBlocType todoListBulkEditMockFactory({
   when(blocMock.events).thenReturn(eventsMock);
   when(blocMock.states).thenReturn(statesMock);
 
-  when(statesMock.bulkActions).thenAnswer((_) => Stream.value([
+  when(statesMock.bulkActions).thenAnswer((_) => Stream.value(bulkActions ??
+      const [
         BulkActionModel.markAllComplete,
         BulkActionModel.markAllIncomplete,
         BulkActionModel.clearCompleted,
