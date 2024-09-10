@@ -23,29 +23,6 @@ variables:
   BUNDLE_GEMFILE: "./Gemfile"
 
 
-setup_flutter:
-  stage: setup_dependencies
-  extends:
-    - .ci-rules
-  cache:
-    key: "${CI_PROJECT_TITLE}-flutter-${FLUTTER_VERSION}"
-    paths:
-      - /var/cache/apt/archives/
-      - /var/lib/apt/lists/
-      - flutter/
-    when: on_success
-  script:
-    - apt-get update
-    - apt-get install -y curl unzip xz-utils git lcov
-    - curl -o flutter.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
-    - tar xf flutter.tar.xz
-    # - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
-    # - export PUB_CACHE=$CI_PROJECT_DIR/.pub-cache
-    # - git config --global --add safe.directory ${CI_PROJECT_DIR}/flutter
-    # - dart --version
-    # - flutter --version
-
-
 run-app-tests:
   stage: test
   extends:
@@ -56,16 +33,16 @@ run-app-tests:
       - /var/cache/apt/archives/
       - /var/lib/apt/lists/
       - flutter/
-    policy: pull
+    when: on_success
   script:
-
     # Prepare the envirounment
     - apt-get update
-    - apt-get install -y lcov git
+    - apt-get install -y curl unzip xz-utils lcov git > /dev/null
+    - curl -o flutter.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+    - tar xf flutter.tar.xz
     - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
     - export PUB_CACHE=$CI_PROJECT_DIR/.pub-cache
     - git config --global --add safe.directory ${CI_PROJECT_DIR}/flutter
-    - dart --version
     - flutter --version
 
     #Build and analyze
@@ -117,29 +94,40 @@ build_android_app:
       - /var/cache/apt/archives/
       - /var/lib/apt/lists/
       - flutter/
+      - .pub-cache/
+      - android-sdk/
+      - .gradle/
   variables:
     ANDROID_HOME: "$CI_PROJECT_DIR/android-sdk"
   before_script:
-
     - cd $PROJECT_PATH
   script:
-    # Set up envirounment
+    # Set up the envirounment
     - apt-get update
-    - apt-get install -y wget curl unzip openjdk-11-jdk git ruby-full build-essential libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev nodejs yarn
-    - gem install bundler
-    - bundle install  # Install dependencies using Bundler
+    - apt-get install -y --no-install-recommends wget curl unzip openjdk-11-jdk git libssl-dev nodejs yarn > /dev/null
+    - apt-get install -y --no-install-recommends ruby-full build-essential libreadline-dev zlib1g-dev libsqlite3-dev > /dev/null
+
+    - gem install bundler > /dev/null &
+    - bundle install --jobs 4 > /dev/null &
+    - wait # Wait for background processes to finish
     - bundle lock --add-platform ruby
     - bundle lock --add-platform x86_64-linux
-    - bundle update fastlane
+    - bundle update fastlane > /dev/null
 
-    # Download and install the Android SDK
-    - mkdir -p $ANDROID_HOME
-    - wget -q "https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip" -O cmdline-tools.zip
-    - unzip cmdline-tools.zip -d $ANDROID_HOME
-    - rm cmdline-tools.zip
+    # Download and install the Android SDK (check if already cached)
+    - if [ ! -d "$ANDROID_HOME/cmdline-tools" ]; then
+        echo "Android SDK not found in the cashe";
+        mkdir -p $ANDROID_HOME;
+        wget -q "https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip" -O cmdline-tools.zip;
+        unzip cmdline-tools.zip -d $ANDROID_HOME > /dev/null;
+        rm cmdline-tools.zip;
+      else
+      echo "Android used from cashe";
+      fi
+
     - export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$PATH"
     # Accept the licenses of the SDK components
-    - yes | sdkmanager --licenses --sdk_root=$ANDROID_HOME || true # Accepting licenses returns 1, prevent pipeline failings with adding "|| true"
+    - yes | sdkmanager --licenses --sdk_root=$ANDROID_HOME > /dev/null || true # Accepting licenses returns 1, prevent pipeline failings with adding "|| true"
 
     # Set up Flutter (downloaded from cashe)
     - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
