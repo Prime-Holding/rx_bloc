@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
 set -e
+dart pub upgrade
+
 dart run mason_cli:mason bundle \
   -t dart \
   -o lib/src/templates/ \
