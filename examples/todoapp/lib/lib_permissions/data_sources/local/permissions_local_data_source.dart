@@ -45,9 +45,11 @@ class PermissionsLocalDataSource {
       return {};
     }
 
-    return {
-      for (var permission in permissions.permissions)
-        permission.permissionName: permission.isEnabled
-    };
+    return Map.fromEntries(
+      permissions.permissions.map(
+        (permission) =>
+            MapEntry(permission.permissionName, permission.isEnabled),
+      ),
+    );
   }
 }
