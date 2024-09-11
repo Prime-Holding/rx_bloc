@@ -460,18 +460,17 @@ The `AppDevMenuGestureDetector` widget is a widget that is listening for user in
 As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
 
 ```dart
-  AppDevMenuGestureDetector.withDependencies(
-    context,
-    navKey!,
+  AppDevMenuGestureDetector(
+    navigatorKey: navKey!,
     child: materialApp,
-      onDevMenuPresented: () {
-        showAppDevMenuBottomSheet(
-          context.read<AppRouter>().rootNavigatorKey.currentContext!,
-        );
-      },
+    onDevMenuPresented: () {
+      showAppDevMenuBottomSheet(
+        context.read<AppRouter>().rootNavigatorKey.currentContext!,
+      );
+    },
   );
-
 ```
+
 By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
