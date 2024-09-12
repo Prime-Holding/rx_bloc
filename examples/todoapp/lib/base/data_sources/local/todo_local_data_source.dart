@@ -6,10 +6,10 @@ import '../../models/errors/error_model.dart';
 import '../../models/todo_model.dart';
 
 class TodoLocalDataSource {
-  final Realm _realmInstance;
-  TodoLocalDataSource(this._realmInstance);
+  final Realm _realm;
+  TodoLocalDataSource(this._realm);
 
-  Stream<List<$TodoModel>> allTodos() => _realmInstance
+  Stream<List<$TodoModel>> allTodos() => _realm
       .all<TodoModel>()
       .query(r'action != $0 SORT(createdAt DESC)', ['delete'])
       .changes
@@ -17,42 +17,41 @@ class TodoLocalDataSource {
 
   void addMany(List<$TodoModel> todos) {
     if (todos.isEmpty) return;
-    _realmInstance.write(() {
-      _realmInstance.addAll<TodoModel>(todos as List<TodoModel>);
+    _realm.write(() {
+      _realm.addAll<TodoModel>(todos as List<TodoModel>);
     });
   }
 
   void deleteMany(List<$TodoModel> todos) {
-    _realmInstance.write(() {
-      _realmInstance.deleteMany(todos as List<TodoModel>);
+    _realm.write(() {
+      _realm.deleteMany(todos as List<TodoModel>);
     });
   }
 
   $TodoModel addTodo($TodoModel todo) {
-    _realmInstance.write(() {
-      _realmInstance.add<TodoModel>(todo as TodoModel);
+    _realm.write(() {
+      _realm.add<TodoModel>(todo as TodoModel);
     });
     return todo;
   }
 
   List<$TodoModel> fetchAllUnsyncedTodos() {
-    final results = _realmInstance.query<TodoModel>(r'synced == $0', [false]);
+    final results = _realm.query<TodoModel>(r'synced == $0', [false]);
     return results.map((element) => element).toList();
   }
 
   List<$TodoModel> fetchAllTodos() {
-    final results =
-        _realmInstance.query<TodoModel>(r'action != $0', ['delete']);
+    final results = _realm.query<TodoModel>(r'action != $0', ['delete']);
     return results.map((element) => element).toList();
   }
 
   $TodoModel updateTodoById(String id, $TodoModel todo) {
-    final result = _realmInstance.find<TodoModel>(id);
+    final result = _realm.find<TodoModel>(id);
 
     if (result == null) {
       throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
-    _realmInstance.write(() {
+    _realm.write(() {
       result.title = todo.title;
       result.description = todo.description;
       result.completed = todo.completed;
@@ -68,12 +67,12 @@ class TodoLocalDataSource {
     bool synced = true,
     String? action,
   }) {
-    final todo = _realmInstance.find<TodoModel>(id);
+    final todo = _realm.find<TodoModel>(id);
 
     if (todo == null) {
       throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
-    _realmInstance.write(() {
+    _realm.write(() {
       todo.completed = completed;
       todo.synced = synced;
       todo.action = action ?? TodoModelActions.none.name;
@@ -86,12 +85,11 @@ class TodoLocalDataSource {
     bool synced = true,
     String? action,
   }) {
-    ///r'action != $0', ['delete']
-    final results = _realmInstance
+    final results = _realm
         .all<TodoModel>()
         .query(r'action != $0 AND completed != $1', ['delete', completed]);
     final todos = results.toList();
-    _realmInstance.write(() {
+    _realm.write(() {
       for (var todo in todos) {
         todo.completed = completed;
         todo.action = action ?? TodoModelActions.none.name;
@@ -102,9 +100,9 @@ class TodoLocalDataSource {
   }
 
   List<TodoModel> softDeleteCompleted({bool synced = true, String? action}) {
-    final results = _realmInstance.all<TodoModel>().query('completed == true');
+    final results = _realm.all<TodoModel>().query('completed == true');
     final todos = results.toList();
-    _realmInstance.write(() {
+    _realm.write(() {
       for (var todo in todos) {
         ///Instead of deleting the todo, we will mark it for deletion
         todo.action = action ?? TodoModelActions.none.name;
@@ -115,11 +113,11 @@ class TodoLocalDataSource {
   }
 
   List<$TodoModel> deleteCompleted({bool synced = true, String? action}) {
-    final results = _realmInstance.all<TodoModel>().query('completed == true');
+    final results = _realm.all<TodoModel>().query('completed == true');
     final todos = results.toList();
-    _realmInstance.write(() {
+    _realm.write(() {
       for (var todo in todos) {
-        _realmInstance.delete<TodoModel>(todo);
+        _realm.delete<TodoModel>(todo);
       }
     });
     return todos;
@@ -130,14 +128,14 @@ class TodoLocalDataSource {
     bool synced = true,
     String? action,
   }) {
-    final todo = _realmInstance.find<TodoModel>(id);
+    final todo = _realm.find<TodoModel>(id);
 
     if (todo == null) {
       throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
     if (todo.isValid) {
-      _realmInstance.write(() {
-        _realmInstance.delete<TodoModel>(todo);
+      _realm.write(() {
+        _realm.delete<TodoModel>(todo);
       });
     }
   }
@@ -147,21 +145,21 @@ class TodoLocalDataSource {
     bool synced = true,
     String? action,
   }) {
-    final todo = _realmInstance.find<TodoModel>(id);
+    final todo = _realm.find<TodoModel>(id);
 
     if (todo == null) {
       throw NotFoundErrorModel(message: 'Todo with id $id not found');
     }
 
     ///Instead of deleting the todo, we will mark it for deletion
-    _realmInstance.write(() {
+    _realm.write(() {
       todo.action = action ?? TodoModelActions.delete.name;
       todo.synced = synced;
     });
   }
 
   $TodoModel getTodoById(String id) {
-    final todo = _realmInstance.find<TodoModel>(id);
+    final todo = _realm.find<TodoModel>(id);
 
     if (todo == null) {
       throw NotFoundErrorModel(message: 'Todo with id $id not found');
