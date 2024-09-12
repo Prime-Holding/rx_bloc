@@ -56,4 +56,17 @@ void main() {
       expect: [
         Stubs.getIncompleteTodo(),
       ]);
+  rxBlocTest<TodoActionsBloc, bool>(
+    'test todo_actions_test_dart state _mapToIsLoadingState',
+    build: () async {
+      return bloc();
+    },
+    act: (bloc) async {
+      bloc.events.delete(Stubs.todoCompleted.id!);
+    },
+    state: (bloc) => bloc.isLoading,
+    expect: [
+      false,
+    ],
+  );
 }
