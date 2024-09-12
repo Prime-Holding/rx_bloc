@@ -19,6 +19,7 @@ Widget todoListFactory({
   Result<List<$TodoModel>>? todoList,
   TodosFilterModel? filter,
   List<BulkActionModel>? bulkActions,
+  bool isLoading = false,
 }) =>
     Scaffold(
       body: MultiProvider(providers: [
@@ -29,10 +30,14 @@ Widget todoListFactory({
           ),
         ),
         RxBlocProvider<TodoActionsBlocType>.value(
-          value: todoActionsMockFactory(),
+          value: todoActionsMockFactory(
+            isLoading: isLoading,
+          ),
         ),
         RxBlocProvider<TodoListBulkEditBlocType>.value(
-          value: todoListBulkEditMockFactory(),
+          value: todoListBulkEditMockFactory(
+            isLoading: isLoading,
+          ),
         ),
       ], child: const TodoListPage()),
     );

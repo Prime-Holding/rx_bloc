@@ -15,6 +15,13 @@ void main() {
         widget: todoDetailsFactory(todo: Result.success(Stubs.todoIncomplete)),
         scenario: Scenario(name: 'todo_details_success')),
     generateDeviceBuilder(
+      widget: todoDetailsFactory(
+        todo: Result.success(Stubs.todoIncomplete),
+        isLoading: true,
+      ),
+      scenario: Scenario(name: 'todo_details_bulk_action_loading'),
+    ),
+    generateDeviceBuilder(
         widget: todoDetailsFactory(todo: Result.loading()),
         scenario: Scenario(name: 'todo_details_loading')),
     generateDeviceBuilder(
