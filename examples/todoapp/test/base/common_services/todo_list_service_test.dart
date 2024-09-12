@@ -95,7 +95,6 @@ void main() {
 
       // Assert
       verify(todoRepository.fetchAllUnsyncedTodos()).called(1);
-      verify(todoRepository.unpauseRealmSync()).called(1);
       verify(todoRepository.syncTodos({'todos': mockUnsyncedTodos})).called(1);
       verify(todoRepository.deleteMany(mockUnsyncedTodos)).called(1);
       verify(todoRepository.addMany(mockSyncedTodos)).called(1);
@@ -114,7 +113,6 @@ void main() {
 
       // Assert
       verify(todoRepository.fetchAllUnsyncedTodos()).called(1);
-      verifyNever(todoRepository.unpauseRealmSync());
       verifyNever(todoRepository.syncTodos(any));
       verifyNever(todoRepository.deleteMany(any));
       verifyNever(todoRepository.addMany(any));
@@ -138,7 +136,6 @@ void main() {
 
       // Assert
       verifyNever(todoRepository.syncTodos(any));
-      verifyNever(todoRepository.pauseRealmSync());
     });
     test('should call synchronizeTodos when event is true', () async {
       // Arrange
@@ -161,7 +158,6 @@ void main() {
       // Assert
       await untilCalled(todoRepository.syncTodos(any));
       verify(todoRepository.syncTodos(any)).called(1);
-      verifyNever(todoRepository.pauseRealmSync());
     });
 
     // test dispose method

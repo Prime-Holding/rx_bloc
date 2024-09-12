@@ -10,10 +10,13 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:realm/realm.dart';
 
 import '../../feature_splash/services/splash_service.dart';
 import '../../lib_permissions/data_sources/local/permissions_local_data_source.dart';
 import '../../lib_permissions/data_sources/remote/permissions_remote_data_source.dart';
+import '../../lib_permissions/models/permission_map_model.dart';
+import '../../lib_permissions/models/permission_model.dart';
 import '../../lib_permissions/repositories/permissions_repository.dart';
 import '../../lib_permissions/services/permissions_service.dart';
 import '../../lib_router/blocs/router_bloc.dart';
@@ -23,7 +26,6 @@ import '../../lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
 import '../../lib_todo_actions/services/todo_actions_service.dart';
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
-import '../app/initialization/realm_instance.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../common_services/todo_list_service.dart';
@@ -33,6 +35,7 @@ import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
+import '../models/todo_model.dart';
 import '../repositories/connectivity_repository.dart';
 import '../repositories/todo_repository.dart';
 
@@ -106,8 +109,12 @@ class TodoappWithDependencies extends StatelessWidget {
             create: (context) => SharedPreferencesInstance()),
         Provider<FlutterSecureStorage>(
             create: (context) => const FlutterSecureStorage()),
-        Provider<RealmInstance>(
-          create: (context) => RealmInstance(),
+        Provider<Realm>(
+          create: (context) => Realm(Configuration.local([
+            TodoModel.schema,
+            PermissionMap.schema,
+            PermissionModel.schema,
+          ])),
         ),
       ];
 
@@ -121,7 +128,7 @@ class TodoappWithDependencies extends StatelessWidget {
         ),
         Provider<TodoLocalDataSource>(
           create: (context) => TodoLocalDataSource(
-            context.read<RealmInstance>(),
+            context.read(),
           ),
         ),
         Provider<TodosRemoteDataSource>(
@@ -175,7 +182,6 @@ class TodoappWithDependencies extends StatelessWidget {
         ),
         Provider<SplashService>(
           create: (context) => SplashService(
-            context.read(),
             context.read(),
             context.read(),
           ),

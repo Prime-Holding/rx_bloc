@@ -146,10 +146,6 @@ class TodoRepository with NoConnectionHandlerMixin {
         () async => dataSource.syncTodos(todos),
       );
 
-  void unpauseRealmSync() => localDataSource.unpauseSync();
-
-  void pauseRealmSync() => localDataSource.pauseSync();
-
   void deleteMany(List<$TodoModel> todos) => localDataSource.deleteMany(todos);
 
   void addMany(List<$TodoModel> todos) => localDataSource.addMany(todos);
