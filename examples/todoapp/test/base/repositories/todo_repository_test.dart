@@ -188,20 +188,6 @@ void main() {
     verify(mockTodoLocalDataSource.fetchAllUnsyncedTodos()).called(1);
   });
 
-  //void pauseRealmSync() => localDataSource.pauseSync();
-
-  test('pauseSync pauses sync', () async {
-    todoRepository.pauseRealmSync();
-
-    verify(mockTodoLocalDataSource.pauseSync()).called(1);
-  });
-
-  test('unpauseSync unpauses sync', () async {
-    todoRepository.unpauseRealmSync();
-
-    verify(mockTodoLocalDataSource.unpauseSync()).called(1);
-  });
-
   test('deleteMany deletes many todos', () async {
     final todoList = Stubs.todoList;
     when(mockTodoLocalDataSource.deleteMany(todoList)).thenAnswer((_) {});

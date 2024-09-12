@@ -90,14 +90,12 @@ class TodosRepository {
     bool completed,
   ) {
     if (_todos.isNotEmpty) {
-      final index = _todos.indexWhere((element) => element.id == id);
-      if (index >= 0) {
-        _todos[index] = _todos[index].copyWith(
-          completed: completed,
-          action: TodoModelActions.none.name,
-        );
+      final updateTodo = _todos.firstWhere((element) => element.id == id);
+      if (updateTodo.id != null) {
+        updateTodo.action = TodoModelActions.none.name;
+        updateTodo.completed = completed;
 
-        return _todos[index];
+        return updateTodo;
       }
     }
 

@@ -14,8 +14,6 @@ class TodoListService {
         _connectivityRepository.connected().listen((event) {
       if (event) {
         synchronizeTodos();
-      } else {
-        _repository.pauseRealmSync();
       }
     });
   }
@@ -31,7 +29,6 @@ class TodoListService {
     final List<$TodoModel> unsyncedTodos =
         await _repository.fetchAllUnsyncedTodos();
     if (unsyncedTodos.isNotEmpty) {
-      _repository.unpauseRealmSync();
       final result = await _repository.syncTodos({'todos': unsyncedTodos});
       _repository.deleteMany(unsyncedTodos);
       _repository.addMany(result);

@@ -17,11 +17,21 @@ packages:
   alice:
     dependency: "direct main"
     description:
-      name: alice
-      sha256: "6f7df43fdd1e5a296c89a5135eba758c525fb64608bad894c3a04791273d0bda"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.2"
+      path: "packages/alice"
+      ref: rxdart-upgrade
+      resolved-ref: d802714837a31271ce92e0105cfe30df2f4308c2
+      url: "https://github.com/DDavidPrime/alice.git"
+    source: git
+    version: "1.0.0-dev.11"
+  alice_dio:
+    dependency: "direct main"
+    description:
+      path: "packages/alice_dio"
+      ref: rxdart-upgrade
+      resolved-ref: d802714837a31271ce92e0105cfe30df2f4308c2
+      url: "https://github.com/DDavidPrime/alice.git"
+    source: git
+    version: "1.0.5"
   analyzer:
     dependency: transitive
     description:
@@ -158,14 +168,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
-  chopper:
-    dependency: transitive
-    description:
-      name: chopper
-      sha256: "1b6280ec22841b844448bec8ef2644d9cbe9ea8dfce13ec9cab9e8d3aac3830d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.4.0"
   clean_coverage:
     dependency: "direct dev"
     description:
@@ -444,10 +446,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_rx_bloc
-      sha256: f8c882169bef39fef31a1f9ca18ff2adac2e9fb7ff12c05f0b3c262963e9ef1e
+      sha256: a4ac7c181e9d5bf16197317f31e72610a0379e8abdc65ad084cff4e8dfb8f101
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.1"
+    version: "7.0.0"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -790,18 +792,18 @@ packages:
     dependency: transitive
     description:
       name: package_info_plus
-      sha256: cb44f49b6e690fa766f023d5b22cac6b9affe741dd792b6ac7ad4fabe0d7b097
+      sha256: a75164ade98cb7d24cfd0a13c6408927c6b217fa60dee5a7ff5c116a58f28918
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.0"
+    version: "8.0.2"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
       name: package_info_plus_platform_interface
-      sha256: "9bc8ba46813a4cc42c66ab781470711781940780fd8beddd0c3da62506d3a6c6"
+      sha256: ac1f4a4847f1ade8e6a87d1f39f5d7c67490738642e2542f559ec38c37489a66
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "3.0.1"
   path:
     dependency: transitive
     description:
@@ -978,14 +980,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
-  qs_dart:
-    dependency: transitive
-    description:
-      name: qs_dart
-      sha256: "8dddeaf1d32fe407e253840b2c25c9ab5bf347d2761d82cb4ce010096565c9ff"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.3"
   r_flutter:
     dependency: "direct dev"
     description:
@@ -1006,34 +1000,34 @@ packages:
     dependency: "direct main"
     description:
       name: realm
-      sha256: f1bb19bfb7a498a17fafa0f5743f450093dc754024c1ef7e1370ce76162f19fe
+      sha256: f6d6f592b17067451b4af3e55c5e54b97181090bbfb3f7ac769e360ef43b1082
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.1"
+    version: "20.0.0"
   realm_common:
     dependency: transitive
     description:
       name: realm_common
-      sha256: "5c0106cdd33c0e538694c48a9f6ae35d28df84ad9192ff191b71e8b8f004f0d8"
+      sha256: "2695723e6b928921c18b0b6bdab9b913b9ae6479f82bb339df435a99e2f821d2"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.1"
+    version: "20.0.0"
   realm_dart:
     dependency: transitive
     description:
       name: realm_dart
-      sha256: "1ee7bb6c0b41352d9c5b5c9102748250a681478fcc4c8aa87f13bd040b63d9ee"
+      sha256: ed43c59783e2913caae7ac165b383571f416bceeefeff3363d90b742a0a50009
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.1"
+    version: "20.0.0"
   realm_generator:
     dependency: transitive
     description:
       name: realm_generator
-      sha256: e50e0c8fbafe5b719ebe69808419293615dd779e940aa7d2e0a3ff67c009e4a2
+      sha256: f0bf7ba7a5adc356be995ba130ea33af1c44c1e0fd8e13485a6d93a98850e50c
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.1"
+    version: "20.0.0"
   recase:
     dependency: transitive
     description:
@@ -1042,14 +1036,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  recursive_regex:
-    dependency: transitive
-    description:
-      name: recursive_regex
-      sha256: f7252e3d3dfd1665e594d9fe035eca6bc54139b1f2fee38256fa427ea41adc60
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   retrofit:
     dependency: "direct main"
     description:
@@ -1070,42 +1056,42 @@ packages:
     dependency: "direct main"
     description:
       name: rx_bloc
-      sha256: "268e9116233bfccf4ab4c7dfcb3933c08c5bf119d70b99e4fc4d96222500363c"
+      sha256: "0a7093ff711de0ccb853b0f464128da5b49573d7f343f771a0ae47364e39e4b8"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.3"
+    version: "6.0.0"
   rx_bloc_generator:
     dependency: "direct dev"
     description:
       name: rx_bloc_generator
-      sha256: "8eda341acae741ac4ff812f71225473b10367ded476b9803552951d9e81e667d"
+      sha256: f94938a41eefc9dec8ca42fce3a5efa3b264d798a2d5c8df100b82fe605ec868
       url: "https://pub.dev"
     source: hosted
-    version: "7.2.2"
+    version: "8.0.0"
   rx_bloc_list:
     dependency: "direct main"
     description:
       name: rx_bloc_list
-      sha256: "75a371e6dabab317116d3fc75d3ca0234755fb81309270ba19c169f25cd0a9e2"
+      sha256: "82584d12118a79edaaea05592c5f869010c32add858d663359a455c6af0596c1"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.1"
+    version: "5.0.0"
   rx_bloc_test:
     dependency: "direct dev"
     description:
       name: rx_bloc_test
-      sha256: "2a33a0fcdd5309a08d03cedfb3bc162fea6812ad4a35118d4502d8fd603e588a"
+      sha256: b4c75423b2a9186c0cb0d42a119efdf210a3f15cca2b80d57708e575b62e1f4a
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "5.0.0"
   rxdart:
     dependency: "direct main"
     description:
       name: rxdart
-      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
       url: "https://pub.dev"
     source: hosted
-    version: "0.27.7"
+    version: "0.28.0"
   sane_uuid:
     dependency: transitive
     description:
@@ -1543,14 +1529,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  weak_map:
-    dependency: transitive
-    description:
-      name: weak_map
-      sha256: "95ca338f0cdf5f0022cc283dfa4d97f6f6b03752f67eca85ebe6d7a679ffe3ed"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   web:
     dependency: transitive
     description:
@@ -1587,10 +1565,10 @@ packages:
     dependency: "direct main"
     description:
       name: widget_toolkit
-      sha256: "67070eb740995c76807fbca0d3716b4aeebff28ffea22c66182ad13e5a1b69ac"
+      sha256: "4ef66bc6d22f964ab0caf6807670b91b55a53cddb72d96e5ce61791a82486f9c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.2.0"
   win32:
     dependency: transitive
     description:

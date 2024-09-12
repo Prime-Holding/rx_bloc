@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:realm/realm.dart';
+
 import '../common_mappers/error_mappers/error_mapper.dart';
 import '../data_sources/local/todo_local_data_source.dart';
 import '../data_sources/remote/todos_remote_data_source.dart';
@@ -31,6 +33,7 @@ class TodoRepository with NoConnectionHandlerMixin {
           error,
           localDataSource.addTodo(
             todo.copyWith(
+              id: Uuid.v4().toString(),
               synced: false,
               action: TodoModelActions.add.name,
             ),
@@ -145,10 +148,6 @@ class TodoRepository with NoConnectionHandlerMixin {
       _errorMapper.execute(
         () async => dataSource.syncTodos(todos),
       );
-
-  void unpauseRealmSync() => localDataSource.unpauseSync();
-
-  void pauseRealmSync() => localDataSource.pauseSync();
 
   void deleteMany(List<$TodoModel> todos) => localDataSource.deleteMany(todos);
 
