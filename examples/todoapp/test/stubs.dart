@@ -60,6 +60,15 @@ class Stubs {
     todoCompleted.copyWith(id: '3'),
     todoCompleted.copyWith(id: '4')
   ]);
+  static final TodoModel todoCutomId =
+      todoCompleted.copyWith(id: 'someLongId123');
+
+  static final List<$TodoModel> todoListCustomId = List<$TodoModel>.from([
+    todoCompleted.copyWith(id: 'someLongId123'),
+    todoCompleted.copyWith(id: '2b'),
+    todoCompleted.copyWith(id: '3c'),
+    todoCompleted.copyWith(id: '4d')
+  ]);
 
   static final List<$TodoModel> todoListAllIncomplete = List<$TodoModel>.from([
     todoIncomplete,

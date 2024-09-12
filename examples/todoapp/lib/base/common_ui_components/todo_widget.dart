@@ -20,6 +20,7 @@ class TodoWidget extends StatelessWidget {
     return Row(
       children: [
         Checkbox(
+          key: Key(todo.id.toString()),
           value: todo.completed,
           onChanged: onChanged == null
               ? null
