@@ -30,9 +30,7 @@ class TodoLocalDataSource {
 
   $TodoModel addTodo($TodoModel todo) {
     _realmInstance.write(() {
-      _realmInstance.add<TodoModel>(todo.copyWith(
-        id: Uuid.v4().toString(),
-      ));
+      _realmInstance.add<TodoModel>(todo as TodoModel);
     });
     return todo;
   }

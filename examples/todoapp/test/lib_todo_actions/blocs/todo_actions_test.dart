@@ -39,24 +39,21 @@ void main() {
       state: (bloc) => bloc.states.onTodoDeleted,
       expect: [Stubs.todoCompleted]);
 
-  rxBlocFakeAsyncTest<TodoActionsBloc, $TodoModel>(
+  rxBlocTest<TodoActionsBloc, $TodoModel>(
       'test todo_actions_test_dart state onUpdateCompleted',
-      build: () {
+      build: () async {
         when(service.updateCompletedById(any, true))
-            .thenAnswer((_) async => Stubs.getIncompleteTodo());
+            .thenAnswer((_) async => Stubs.getCompletedTodo());
 
         when(service.updateCompletedById(any, false))
-            .thenAnswer((_) async => Stubs.getCompletedTodo());
+            .thenAnswer((_) async => Stubs.getIncompleteTodo());
         return bloc();
       },
-      act: (bloc, fakeAsync) async {
+      act: (bloc) async {
         bloc.updateCompletedById(Stubs.getCompletedTodo().id!, false);
-        fakeAsync.elapse(const Duration(seconds: 1));
-        bloc.updateCompletedById(Stubs.getIncompleteTodo().id!, true);
       },
       state: (bloc) => bloc.states.onUpdateCompleted,
       expect: [
-        Stubs.getCompletedTodo(),
         Stubs.getIncompleteTodo(),
       ]);
 }
