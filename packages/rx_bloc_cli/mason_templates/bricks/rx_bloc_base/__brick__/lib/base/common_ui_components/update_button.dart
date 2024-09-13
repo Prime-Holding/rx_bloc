@@ -23,7 +23,7 @@ class UpdateButton extends StatelessWidget {
         icon: Icon(context.designSystem.icons.reload),
         tooltip: context.l10n.reload,
         color: _isActive
-            ? context.designSystem.colors.activeButtonTextColor
+            ? context.designSystem.colors.appBarIconColor
             : context.designSystem.colors.inactiveButtonTextColor,
       );
 }
