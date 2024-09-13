@@ -175,7 +175,6 @@ void main() {
       verify(mockTodoLocalDataSource.getTodoById('1')).called(1);
     });
   });
-  //void unpauseRealmSync() => localDataSource.unpauseSync();
 
   test('fetchAllUnsyncedTodos returns a list of unsynced todos', () async {
     final todoList = Stubs.todoList;
