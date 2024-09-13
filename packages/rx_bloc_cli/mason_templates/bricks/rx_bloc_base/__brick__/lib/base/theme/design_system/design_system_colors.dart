@@ -13,7 +13,7 @@ class DesignSystemColors {
         primaryColor = const Color(0xff2196f3),
         backgroundColor = Colors.white,
         scaffoldBackgroundColor = Colors.white,
-        appBarIconColor = Colors.black{{#enable_social_logins}},
+        updateIconAppBarColor = Colors.black{{#enable_social_logins}},
         appleBackground = const Color(0xFF000000),
         appleButtonText = Colors.white,
         googleBackground = const Color(0xFFFFFFFF),
@@ -24,7 +24,7 @@ class DesignSystemColors {
         primaryColor = const Color(0xffce93d8),
         backgroundColor = Colors.black,
         scaffoldBackgroundColor = Colors.black,
-        appBarIconColor = Colors.white{{#enable_social_logins}},
+        updateIconAppBarColor = Colors.white{{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
         appleButtonText = Colors.black,
         googleBackground = Colors.black,
@@ -73,7 +73,7 @@ class DesignSystemColors {
 
   final gray = const Color(0xff808080);
 
-  final Color appBarIconColor;
+  final Color updateIconAppBarColor;
   {{#enable_social_logins}}
   final Color appleBackground;
 
