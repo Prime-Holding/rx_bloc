@@ -11,8 +11,8 @@ class TodoWidget extends StatelessWidget {
     this.descriptionMaxLines,
   });
 
-  final TodoModel todo;
-  final Function(TodoModel todo, bool? isChecked)? onChanged;
+  final $TodoModel todo;
+  final Function($TodoModel todo, bool? isChecked)? onChanged;
   final int? descriptionMaxLines;
 
   @override
@@ -20,6 +20,7 @@ class TodoWidget extends StatelessWidget {
     return Row(
       children: [
         Checkbox(
+          key: Key(todo.id.toString()),
           value: todo.completed,
           onChanged: onChanged == null
               ? null
@@ -32,7 +33,11 @@ class TodoWidget extends StatelessWidget {
               style: context.designSystem.typography.h2Med16,
               todo.title,
             ),
-            if (todo.description.isNotEmpty) Text(todo.description, maxLines: descriptionMaxLines,),
+            if (todo.description.isNotEmpty)
+              Text(
+                todo.description,
+                maxLines: descriptionMaxLines,
+              ),
           ],
         ),
       ],

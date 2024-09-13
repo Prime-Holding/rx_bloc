@@ -21,12 +21,12 @@ class AnalyticsInterceptor extends Interceptor {
     final hasResponse = err.response != null;
     observer.analytics.logEvent(name: 'RequestError', parameters: {
       'errorType': err.type.toString(),
-      'errorMessage': err.message,
+      'errorMessage': err.message.toString(),
       'stackTrace': err.stackTrace.toString(),
       'requestUrl': err.requestOptions.path,
       'requestMethod': err.requestOptions.method,
       if (hasResponse && err.response!.statusCode != null)
-      'responseStatusCode': err.response!.statusCode,
+      'responseStatusCode': err.response!.statusCode!,
       if (hasResponse && err.response!.data != null)
       'responseData': err.response!.data.toString(),
     });

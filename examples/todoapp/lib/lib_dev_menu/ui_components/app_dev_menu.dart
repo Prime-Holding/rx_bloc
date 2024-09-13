@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:alice/alice.dart';
+import 'package:alice_dio/alice_dio_adapter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -89,11 +90,13 @@ class _AppDevMenuGestureDetectorState extends State<AppDevMenuGestureDetector> {
       //Set navigator key if not null
       alice.setNavigatorKey(navKey);
     }
+    final adapter = AliceDioAdapter();
+    alice.addAdapter(adapter);
 
     // Attach interceptor to ApiHttpClient
-    context.read<ApiHttpClient>().interceptors.add(alice.getDioInterceptor());
+    context.read<ApiHttpClient>().interceptors.add(adapter);
 
     // Attach interceptor to PlainHttpClient
-    context.read<PlainHttpClient>().interceptors.add(alice.getDioInterceptor());
+    context.read<PlainHttpClient>().interceptors.add(adapter);
   }
 }

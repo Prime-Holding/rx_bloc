@@ -3,7 +3,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:todoapp/base/common_blocs/coordinator_bloc.dart';
+import 'package:todoapp/base/models/errors/error_model.dart';
 import 'package:todoapp/base/models/todo_model.dart';
 import 'package:todoapp/base/repositories/todo_repository.dart';
 import 'package:todoapp/lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
@@ -23,7 +25,7 @@ Future<void> main() async {
   late TodoRepository repository;
 
   void defineWhen(
-      List<TodoModel> todoList, List<TodoModel> deleteCompletedResult) {
+      List<$TodoModel> todoList, List<$TodoModel> deleteCompletedResult) {
     when(coordinatorStates.onTodoListChanged)
         .thenAnswer((_) => Stream.value(Result.success(todoList)));
 
@@ -72,4 +74,29 @@ Future<void> main() async {
         [BulkActionModel.markAllIncomplete, BulkActionModel.clearCompleted],
         []
       ]);
+
+  rxBlocTest<TodoListBulkEditBloc, bool>(
+    'test todo_actions_test_dart state _mapToIsLoadingState',
+    build: () async {
+      return bloc();
+    },
+    act: (bloc) async {
+      bloc.events.markAllCompleted();
+    },
+    state: (bloc) => bloc.isLoading,
+    expect: [
+      false,
+    ],
+  );
+
+  rxBlocTest<TodoListBulkEditBloc, ErrorModel>(
+    'emits correct ErrorModel when errorState changes',
+    build: () async {
+      when(repository.deleteCompleted()).thenThrow(NoConnectionErrorModel());
+      return bloc();
+    },
+    act: (bloc) async => bloc.clearCompleted(),
+    state: (bloc) => bloc.errors.doOnData(print),
+    expect: [],
+  );
 }

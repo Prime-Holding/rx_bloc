@@ -28,7 +28,7 @@ abstract class TodoListBlocStates {
   ///
   /// The todo list will be filtered based on the [TodoListBlocEvents.applyFilter] event.
   /// The default filter is [TodosFilterModel.all].
-  Stream<Result<List<TodoModel>>> get todoList;
+  Stream<Result<List<$TodoModel>>> get todoList;
 
   @RxBlocIgnoreState()
   Stream<TodosFilterModel> get filter;
@@ -55,7 +55,7 @@ class TodoListBloc extends $TodoListBloc {
               .whereSuccess()
               .withLatestFromIdentifiableList(_todoResult.whereSuccess(),
                   operationCallback:
-                      (TodoModel todo, List<TodoModel> list) async =>
+                      ($TodoModel todo, List<$TodoModel> list) async =>
                           ManageOperation.merge)
               .map((managedList) => managedList.list.sortByCreatedAt())
               .mapToResult(),
@@ -63,7 +63,7 @@ class TodoListBloc extends $TodoListBloc {
               .whereSuccess()
               .withLatestFromIdentifiableList(_todoResult.whereSuccess(),
                   operationCallback:
-                      (TodoModel todo, List<TodoModel> list) async =>
+                      ($TodoModel todo, List<$TodoModel> list) async =>
                           ManageOperation.remove)
               .map((managedList) => managedList.list.sortByCreatedAt())
               .mapToResult(),
@@ -82,10 +82,10 @@ class TodoListBloc extends $TodoListBloc {
   final TodoListService _todoListService;
   final CoordinatorBlocType _coordinatorBloc;
 
-  final _todoResult = BehaviorSubject<Result<List<TodoModel>>>();
+  final _todoResult = BehaviorSubject<Result<List<$TodoModel>>>();
 
   @override
-  Stream<Result<List<TodoModel>>> _mapToTodoListState() => Rx.combineLatest2(
+  Stream<Result<List<$TodoModel>>> _mapToTodoListState() => Rx.combineLatest2(
           _todoResult,
           _$applyFilterEvent,
           (listResult, filter) => listResult

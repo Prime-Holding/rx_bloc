@@ -1,4 +1,5 @@
 import 'package:alice/alice.dart';
+import 'package:alice/model/alice_configuration.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +27,10 @@ class DevMenuDependencies {
   List<Provider> get _packages => [
         Provider<Alice>(
           create: (context) => Alice(
-            showNotification: true,
-            showInspectorOnShake: false,
-            maxCallsCount: 1000,
+            configuration: AliceConfiguration(
+              showNotification: true,
+              showInspectorOnShake: false,
+            ),
           ),
         )
       ];

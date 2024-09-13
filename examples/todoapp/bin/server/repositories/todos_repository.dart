@@ -14,34 +14,69 @@ class TodosRepository {
 
   final Uuid _uuid;
   // The list of todos
-  final List<TodoModel> _todos = [];
+  final List<$TodoModel> _todos = [];
 
   // Fetches all todos from the list of todos
-  List<TodoModel> fetchAllTodos() => _todos;
+  List<$TodoModel> fetchAllTodos() => _todos;
+
+  //Sync the list of todos with the provided list
+
+  List<$TodoModel> syncAllTodos(List<$TodoModel> todos) {
+    final List<$TodoModel> responseList = [];
+    for (final todo in todos) {
+      switch (todo.action) {
+        case 'delete':
+          deleteById(todo.id!);
+          break;
+        case 'update':
+          final index =
+              _todos.firstWhereOrNull((element) => element.id == todo.id);
+          if (index?.id == null) {
+            final newTodo = addTodo(todo);
+            responseList.add(newTodo);
+          } else {
+            final newTodo = updateTodoById(todo);
+            responseList.add(newTodo);
+          }
+          break;
+        case 'add':
+          final newTodo = addTodo(todo);
+          responseList.add(newTodo);
+          break;
+        default:
+          break;
+      }
+    }
+    return responseList;
+  }
 
   // Add a new todo to the list of todos
-  TodoModel addTodo(TodoModel todo) {
+  $TodoModel addTodo($TodoModel todo) {
     final newTodo = TodoModel(
-      id: _uuid.v4(),
-      title: todo.title,
-      description: todo.description,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
+      _uuid.v4(),
+      todo.title,
+      todo.description,
+      todo.completed,
+      DateTime.now().millisecondsSinceEpoch,
+      synced: true,
+      action: TodoModelActions.none.name,
     );
     _todos.insert(0, newTodo);
     return newTodo;
   }
 
   // Update a todo by its id
-  TodoModel updateTodoById(TodoModel todo) {
+  $TodoModel updateTodoById($TodoModel todo) {
     if (_todos.isNotEmpty) {
-      final index = _todos.indexWhere((element) => element.id == todo.id);
-      if (index >= 0) {
-        _todos[index] = _todos[index].copyWith(
-          title: todo.title,
-          description: todo.description,
-        );
+      final updateTodo = _todos.firstWhere((element) => element.id == todo.id);
+      if (updateTodo.id != null) {
+        updateTodo.action = TodoModelActions.none.name;
+        updateTodo.title = todo.title;
+        updateTodo.description = todo.description;
+        updateTodo.completed = todo.completed;
+        updateTodo.synced = true;
 
-        return _todos[index];
+        return updateTodo;
       }
     }
 
@@ -50,16 +85,17 @@ class TodosRepository {
   }
 
   // Update the completed status of a todo by its id
-  TodoModel updateCompletedById(
+  $TodoModel updateCompletedById(
     String id,
     bool completed,
   ) {
     if (_todos.isNotEmpty) {
-      final index = _todos.indexWhere((element) => element.id == id);
-      if (index >= 0) {
-        _todos[index] = _todos[index].copyWith(completed: completed);
+      final updateTodo = _todos.firstWhere((element) => element.id == id);
+      if (updateTodo.id != null) {
+        updateTodo.action = TodoModelActions.none.name;
+        updateTodo.completed = completed;
 
-        return _todos[index];
+        return updateTodo;
       }
     }
 
@@ -68,10 +104,12 @@ class TodosRepository {
   }
 
   // Update the completed status of all todos to true or false
-  List<TodoModel> updateCompletedForAll(bool completed) {
+  List<$TodoModel> updateCompletedForAll(bool completed) {
     if (_todos.isNotEmpty) {
-      _todos.forEachIndexed(
-          (index, todo) => _todos[index] = todo.copyWith(completed: completed));
+      _todos.forEachIndexed((index, todo) => _todos[index] = todo.copyWith(
+            completed: completed,
+            action: TodoModelActions.none.name,
+          ));
       return _todos;
     }
 
@@ -79,7 +117,7 @@ class TodosRepository {
   }
 
   // Delete all completed todos
-  List<TodoModel> deleteCompleted() {
+  List<$TodoModel> deleteCompleted() {
     var listJson = _todos;
     if (listJson.isNotEmpty) {
       _todos.removeWhere((element) => element.completed == true);
@@ -98,8 +136,8 @@ class TodosRepository {
   }
 
   // Fetch a single todo by its id
-  TodoModel fetchTodoById(String id) {
-    TodoModel? result;
+  $TodoModel fetchTodoById(String id) {
+    $TodoModel? result;
 
     if (_todos.isNotEmpty) {
       result = _todos.firstWhereOrNull((element) => element.id == id);

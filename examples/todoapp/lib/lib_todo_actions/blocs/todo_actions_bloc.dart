@@ -30,8 +30,8 @@ abstract class TodoActionsBlocEvents {
 /// A contract class containing all states of the TodoActionsBloC.
 abstract class TodoActionsBlocStates {
   /// The state of the todo after it was deleted
-  ConnectableStream<TodoModel> get onTodoDeleted;
-  ConnectableStream<TodoModel> get onUpdateCompleted;
+  ConnectableStream<$TodoModel> get onTodoDeleted;
+  ConnectableStream<$TodoModel> get onUpdateCompleted;
   Stream<bool> get isLoading;
 }
 
@@ -52,7 +52,7 @@ class TodoActionsBloc extends $TodoActionsBloc {
   final RouterBlocType _routerBloc;
 
   @override
-  ConnectableStream<TodoModel> _mapToOnTodoDeletedState() => _$deleteEvent
+  ConnectableStream<$TodoModel> _mapToOnTodoDeletedState() => _$deleteEvent
       .switchMap(
         (id) => _todoActionsService.deleteTodoById(id).asResultStream(),
       )
@@ -63,7 +63,7 @@ class TodoActionsBloc extends $TodoActionsBloc {
       .publish();
 
   @override
-  ConnectableStream<TodoModel> _mapToOnUpdateCompletedState() =>
+  ConnectableStream<$TodoModel> _mapToOnUpdateCompletedState() =>
       _$updateCompletedByIdEvent
           .switchMap((args) => _todoActionsService
               .updateCompletedById(args.id, args.completed)
@@ -72,7 +72,7 @@ class TodoActionsBloc extends $TodoActionsBloc {
           // Emits the updated todo list to the [CoordinatorBloc]
           .doOnData(_coordinatorBloc.events.todoAddedOrUpdated)
           .whereSuccess()
-          .publish();
+          .publishReplay();
   @override
   Stream<bool> _mapToIsLoadingState() => loadingState;
 }

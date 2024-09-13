@@ -15,7 +15,7 @@ class TodoListWidget extends StatelessWidget {
     super.key,
   });
 
-  final List<TodoModel> todos;
+  final List<$TodoModel> todos;
   final bool isLoading;
 
   @override
@@ -33,6 +33,7 @@ class TodoListWidget extends StatelessWidget {
       scrollDirection: Axis.vertical,
       itemCount: todos.length,
       itemBuilder: (context, index) => InkWell(
+        key: Key(index.toString()),
         onTap: isLoading
             ? null
             : () => context.read<RouterBlocType>().events.push(

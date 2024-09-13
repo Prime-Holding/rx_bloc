@@ -1,90 +1,168 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
+import 'dart:async';
 
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
 import 'package:todoapp/base/common_services/todo_list_service.dart';
 import 'package:todoapp/base/models/todos_filter_model.dart';
+import 'package:todoapp/base/repositories/connectivity_repository.dart';
 import 'package:todoapp/base/repositories/todo_repository.dart';
-
 import '../../stubs.dart';
 import 'todo_list_service_test.mocks.dart';
 
-@GenerateMocks([
-  TodoRepository,
-])
+@GenerateMocks([TodoRepository, ConnectivityRepository])
 void main() {
-  late MockTodoRepository mockRepository;
-  late TodoListService todoListService;
-
-  setUp(() {
-    mockRepository = MockTodoRepository();
-    todoListService = TodoListService(mockRepository);
-  });
-
   group('TodoListService', () {
-    test('fetchTodoList returns sorted list of todos', () async {
+    late TodoListService todoListService;
+    late MockTodoRepository todoRepository;
+    late MockConnectivityRepository connectivityRepository;
+    late StreamController<bool> connectivityStreamController;
+
+    setUp(() {
+      todoRepository = MockTodoRepository();
+      connectivityRepository = MockConnectivityRepository();
+      connectivityStreamController = StreamController<bool>();
+      when(connectivityRepository.connected())
+          .thenAnswer((_) => connectivityStreamController.stream);
+      todoListService = TodoListService(todoRepository, connectivityRepository);
+    });
+
+    tearDown(() {
+      connectivityStreamController.close();
+    });
+
+    test('fetchTodoList should return a stream of sorted todos', () {
       final todos = Stubs.todoList;
-      when(mockRepository.fetchAllTodos()).thenAnswer((_) async => todos);
 
-      final result = await todoListService.fetchTodoList();
+      when(todoRepository.fetchAllTodos())
+          .thenAnswer((_) => Stream.value(todos));
 
-      expect(result, equals(todos));
-      verify(mockRepository.fetchAllTodos()).called(1);
+      final result = todoListService.fetchTodoList();
+
+      expect(result, emitsInOrder([todos]));
     });
 
-    test('fetchTodoById returns todo if already provided', () async {
-      final todo = Stubs.todoIncomplete;
+    test('fetchTodoById should return the correct todo', () async {
+      when(todoRepository.fetchTodoById('1'))
+          .thenAnswer((_) => Future.value(Stubs.todoIncomplete));
 
-      final result = await todoListService.fetchTodoById('1', todo);
+      final todo = todoListService.fetchTodoById('1');
 
-      expect(result, equals(todo));
-      verifyNever(mockRepository.fetchTodoById(any));
+      expect(todo, emitsInOrder([Stubs.todoIncomplete]));
     });
 
-    test('fetchTodoById fetches todo from repository if not provided',
+    test('fetchTodoById should return the same todo by checking the id',
         () async {
-      final todo = Stubs.todoIncomplete;
-      when(mockRepository.fetchTodoById('1')).thenAnswer((_) async => todo);
+      when(todoRepository.fetchTodoById('1'))
+          .thenAnswer((_) => Future.value(Stubs.todoIncomplete));
 
-      final result = await todoListService.fetchTodoById('1');
+      final todo = todoListService.fetchTodoById('1', Stubs.todoIncomplete);
 
-      expect(result, equals(todo));
-      verify(mockRepository.fetchTodoById('1')).called(1);
+      expect(todo, emitsInOrder([Stubs.todoIncomplete]));
     });
 
-    test('filterTodos returns all todos when filter is all', () {
-      final todos = Stubs.todoList;
+    test('filterTodos should return the correct filtered todos', () {
+      final incompleteTodos = Stubs.todoListAllIncomplete;
+      final completedTodos = Stubs.todoListAllCompleted;
+      final todos = [...incompleteTodos, ...completedTodos];
+      final allTodos = todoListService.filterTodos(todos, TodosFilterModel.all);
+      final incomplete = todoListService.filterTodos(
+        todos,
+        TodosFilterModel.incomplete,
+      );
+      final completed = todoListService.filterTodos(
+        todos,
+        TodosFilterModel.completed,
+      );
 
-      final result = todoListService.filterTodos(todos, TodosFilterModel.all);
-
-      expect(result, equals(todos));
+      expect(allTodos, todos);
+      expect(incomplete, incompleteTodos);
+      expect(completed, completedTodos);
     });
 
-    test('filterTodos returns incomplete todos when filter is incomplete', () {
-      final todos = Stubs.todoList;
+    test('synchronizeTodos should sync and update todos correctly', () async {
+      // Arrange
+      final mockUnsyncedTodos = [Stubs.todoUnsynced];
+      final mockSyncedTodos = [Stubs.getIncompleteTodo()];
 
-      final result =
-          todoListService.filterTodos(todos, TodosFilterModel.incomplete);
+      when(todoRepository.fetchAllUnsyncedTodos())
+          .thenAnswer((_) => Future.value(mockUnsyncedTodos));
+      when(todoRepository.syncTodos({'todos': mockUnsyncedTodos}))
+          .thenAnswer((_) => Future.value(mockSyncedTodos));
 
-      expect(
-          result,
-          equals(
-            [todos[0], todos[2]],
-          ));
+      // Act
+      await todoListService.synchronizeTodos();
+
+      // Assert
+      verify(todoRepository.fetchAllUnsyncedTodos()).called(1);
+      verify(todoRepository.syncTodos({'todos': mockUnsyncedTodos})).called(1);
+      verify(todoRepository.deleteMany(mockUnsyncedTodos)).called(1);
+      verify(todoRepository.addMany(mockSyncedTodos)).called(1);
     });
 
-    test('filterTodos returns completed todos when filter is completed', () {
-      final todos = Stubs.todoList;
+    test('synchronizeTodos should not sync if there are no unsynced todos',
+        () async {
+      // Arrange
+      final mockUnsyncedTodos = Stubs.todoListEmpty;
 
-      final result =
-          todoListService.filterTodos(todos, TodosFilterModel.completed);
+      when(todoRepository.fetchAllUnsyncedTodos())
+          .thenAnswer((_) => Future.value(mockUnsyncedTodos));
 
-      expect(
-          result,
-          equals([
-            todos[1],
-            todos[3],
-          ]));
+      // Act
+      await todoListService.synchronizeTodos();
+
+      // Assert
+      verify(todoRepository.fetchAllUnsyncedTodos()).called(1);
+      verifyNever(todoRepository.syncTodos(any));
+      verifyNever(todoRepository.deleteMany(any));
+      verifyNever(todoRepository.addMany(any));
+    });
+
+    test('should call synchronizeTodos when event is true', () async {
+      // Arrange
+      when(todoRepository.fetchAllUnsyncedTodos())
+          .thenAnswer((_) => Future.value(Stubs.todoListEmpty));
+      when(connectivityRepository.connected())
+          .thenAnswer((_) => Stream.value(false));
+
+      when(todoRepository.syncTodos(any))
+          .thenAnswer((_) async => Stubs.todoList);
+
+      // Act
+      todoListService = TodoListService(
+        todoRepository,
+        connectivityRepository,
+      );
+
+      // Assert
+      verifyNever(todoRepository.syncTodos(any));
+    });
+    test('should call synchronizeTodos when event is true', () async {
+      // Arrange
+      final mockUnsyncedTodos = [Stubs.todoUnsynced];
+      final mockSyncedTodos = [Stubs.getIncompleteTodo()];
+
+      when(todoRepository.fetchAllUnsyncedTodos())
+          .thenAnswer((_) => Future.value(mockUnsyncedTodos));
+      when(todoRepository.syncTodos({'todos': mockUnsyncedTodos}))
+          .thenAnswer((_) => Future.value(mockSyncedTodos));
+      when(connectivityRepository.connected())
+          .thenAnswer((_) => Stream.value(true).asBroadcastStream());
+
+      // Act
+      todoListService = TodoListService(
+        todoRepository,
+        connectivityRepository,
+      );
+
+      // Assert
+      await untilCalled(todoRepository.syncTodos(any));
+      verify(todoRepository.syncTodos(any)).called(1);
+    });
+
+    // test dispose method
+    test('dispose should close the stream', () {
+      todoListService.dispose();
     });
   });
 }

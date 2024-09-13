@@ -7,6 +7,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+
 import '../../models/todo_model.dart';
 
 part 'todos_remote_data_source.g.dart';
@@ -18,32 +19,35 @@ abstract class TodosRemoteDataSource {
   factory TodosRemoteDataSource(Dio dio, {String baseUrl}) =
       _TodosRemoteDataSource;
 
+  @POST('/api/v1/todos/sync')
+  Future<List<$TodoModel>> syncTodos(@Body() Map<String, dynamic> todos);
+
   @GET('/api/v1/todos')
-  Future<List<TodoModel>> getAllTodos();
+  Future<List<$TodoModel>> getAllTodos();
 
   @POST('/api/v1/todos')
-  Future<TodoModel> addTodo(
-    @Body() TodoModel todo,
+  Future<$TodoModel> addTodo(
+    @Body() $TodoModel todo,
   );
 
   @PUT('/api/v1/todos/{id}')
-  Future<TodoModel> updateTodoById(
+  Future<$TodoModel> updateTodoById(
     @Path('id') String id,
-    @Body() TodoModel todo,
+    @Body() $TodoModel todo,
   );
 
   @PATCH('/api/v1/todos/{id}')
-  Future<TodoModel> updateCompletedById(
+  Future<$TodoModel> updateCompletedById(
     @Path('id') String id,
     @Body() Map<String, dynamic> completed,
   );
 
   @PATCH('/api/v1/todos')
-  Future<List<TodoModel>> updateCompletedForAll(
+  Future<List<$TodoModel>> updateCompletedForAll(
       @Body() Map<String, dynamic> completed);
 
   @DELETE('/api/v1/todos/completed')
-  Future<List<TodoModel>> deleteCompleted();
+  Future<List<$TodoModel>> deleteCompleted();
 
   @DELETE('/api/v1/todos/{id}')
   Future<void> deleteTodoById(
@@ -51,7 +55,7 @@ abstract class TodosRemoteDataSource {
   );
 
   @GET('/api/v1/todos/{id}')
-  Future<TodoModel> getTodoById(
+  Future<$TodoModel> getTodoById(
     @Path('id') String id,
   );
 }
