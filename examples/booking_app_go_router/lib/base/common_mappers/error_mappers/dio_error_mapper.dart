@@ -1,6 +1,6 @@
 part of 'error_mapper.dart';
 
-extension _DioErrorMapper on DioError {
+extension _DioErrorMapper on DioException {
   ErrorModel asErrorModel() {
     if (type == DioExceptionType.badResponse && response != null) {
       if (response!.statusCode == 500) {

@@ -3,8 +3,8 @@
 {{#analytics}}
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';{{/analytics}}
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';{{#has_authentication}}
+import 'package:flutter/foundation.dart';{{/has_authentication}}
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -50,8 +50,8 @@ import '../../lib_pin_code/services/create_pin_code_service.dart';
 import '../../lib_pin_code/services/pin_biometrics_service.dart';
 import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
-import '../../lib_router/router.dart';
-import '../../lib_router/services/router_service.dart';
+import '../../lib_router/router.dart';{{#has_authentication}}
+import '../../lib_router/services/router_service.dart';{{/has_authentication}}
 import '../../lib_translations/di/translations_dependencies.dart';
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';

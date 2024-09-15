@@ -45,6 +45,7 @@ class HotelListItem extends StatelessWidget {
   Widget _buildCard() {
     return Material(
       child: InkWell(
+        key: Key('HotelCard${hotel.id}'),
         onTap: () => _onCardPressed(hotel),
         child: HotelCard(
           hotel: hotel,
@@ -91,6 +92,7 @@ class HotelCard extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
+                  key: Key('FavoriteButton${hotel.id}'),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(32.0),
                   ),

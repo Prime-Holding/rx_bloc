@@ -63,9 +63,10 @@ class PuppyManageBloc extends $PuppyManageBloc {
     //For a more detailed explanation reference this article:
     //https://medium.com/prime-holding-jsc/building-complex-apps-in-flutter-with-the-power-of-reactive-programming-54a38fbc0cde
     _$markAsFavoriteEvent
+        .map((event) => (puppy: event.puppy, isFavorite: event.isFavorite))
         //use an extension which handles marking the puppy as favourite
         //without delay between the event and the response
-        .markPuppyAsFavorite(puppiesRepository, this)
+        .markPuppyAsFavorite(puppiesRepository, this, _favoritePuppyError)
         //notify the coordinator bloc that the puppy has been changed
         .doOnData((puppy) => coordinatorBloc.events.puppyUpdated(puppy))
         .bind(_lastUpdatedPuppy)

@@ -4,7 +4,7 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import '../../feature_home/blocs/navigation_bar_bloc.dart';
 
 class HotelsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HotelsAppBar({Key? key}) : super(key: key);
+  const HotelsAppBar({super.key});
 
   @override
   Widget build(BuildContext context) =>

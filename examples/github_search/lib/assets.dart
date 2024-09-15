@@ -2492,7 +2492,7 @@ class Fonts {
 }
 
 class Assets {
-  /// ![](file:///Users/georgistanev/Projects/rx_bloc/examples/github_search/assets/images/.git_keep)
+  /// ![](file:///Users/pwndp/repos/rx_bloc/examples/github_search/assets/images/.git_keep)
   static const String gitKeep = "assets/images/.git_keep";
 }
 

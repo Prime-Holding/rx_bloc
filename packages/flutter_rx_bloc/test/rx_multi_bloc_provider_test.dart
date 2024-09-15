@@ -6,6 +6,25 @@ import 'counter/blocs/counter_bloc.dart';
 import 'counter/blocs/test_bloc.dart';
 
 void main() {
+  group('RxBlocProvider', () {
+    testWidgets('RxBlocProvider provide the bloc to its descendants',
+        (tester) async {
+      final testBloc = TestBloc();
+      await tester.pumpWidget(
+        RxBlocProvider<TestBloc>.value(
+          value: testBloc,
+          child: Builder(
+            builder: (context) {
+              final bloc = RxBlocProvider.of<TestBloc>(context);
+              expect(bloc, testBloc);
+              return Container();
+            },
+          ),
+        ),
+      );
+    });
+  });
+
   group('RxBlocMultiProvider', () {
     testWidgets('RxBlocMultiProvider children have access to parent providers',
         (tester) async {

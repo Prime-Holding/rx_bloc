@@ -13,6 +13,11 @@ import 'models/scenario.dart';
 
 enum Themes { light, dark }
 
+const localizations = [
+  AppI18n.delegate,
+  ...GlobalMaterialLocalizations.delegates,
+];
+
 /// return a [LabeledDeviceBuilder] with a scenario rendered on all device sizes
 ///
 /// [widget] - to be rendered in the golden master
@@ -136,4 +141,48 @@ Future<void> pumpDeviceBuilderWithMaterialApp(
       theme: theme,
     ),
   );
+}
+
+/// Useful for testing UI components with a set size, instead of an entire page
+///
+/// [surfaceSize] - size of the widget to be tested
+///
+/// [builder] - function that returns a [GoldenBuilder] with a color parameter
+///
+/// [act] (optional) - custom action to be executed after widget is built
+///
+/// [matcherCustomPump] (optional) - custom pump function for testing animations
+void runGoldenBuilderTests(
+  String testName, {
+  required Size surfaceSize,
+  required GoldenBuilder Function(Color) builder,
+  WidgetTesterCallback? act,
+  CustomPump? matcherCustomPump,
+}) {
+  for (final theme in Themes.values) {
+    final themeName = theme.name;
+    final directory = '${themeName}_theme';
+    final themeData = theme == Themes.light
+        ? {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.light())
+        : {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark());
+
+    testGoldens('$testName - $themeName', (tester) async {
+      await tester.pumpWidgetBuilder(
+        builder.call(themeData.scaffoldBackgroundColor).build(),
+        wrapper: materialAppWrapper(
+          localizations: localizations,
+          localeOverrides: I18n.supportedLocales,
+          theme: themeData,
+        ),
+        surfaceSize: surfaceSize,
+      );
+
+      if (act != null) {
+        await act.call(tester);
+      }
+
+      await screenMatchesGolden(tester, '$directory/$testName',
+          customPump: matcherCustomPump);
+    });
+  }
 }

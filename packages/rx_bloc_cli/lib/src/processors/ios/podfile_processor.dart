@@ -10,6 +10,8 @@ class PodfileProcessor extends StringProcessor {
   /// Podfile file processor constructor
   PodfileProcessor(super.args);
 
+  static const _minSupportedIOSVersion = '13.0';
+
   Map<String, String> get _buildModeMapping => {
         'Debug': 'debug',
         'Profile': 'release',
@@ -31,8 +33,19 @@ class PodfileProcessor extends StringProcessor {
   /// region Private methods
 
   void _updateGlobalIOSPlatform(StringBuffer buffer) {
-    final replacement =
-        buffer.toString().replaceAll('# platform :ios', 'platform :ios');
+    final globalPlatformCommand = 'platform :ios';
+    var replacement =
+        buffer.toString().replaceAll('# platform :ios', globalPlatformCommand);
+
+    // Update the minimum supported iOS version
+    var startIndex =
+        replacement.indexOf("'", replacement.indexOf(globalPlatformCommand));
+    var endIndex = replacement.indexOf("'", startIndex + 1);
+    if (startIndex >= 0 && endIndex >= 0 && endIndex > startIndex) {
+      replacement = replacement.replaceRange(
+          startIndex + 1, endIndex, _minSupportedIOSVersion);
+    }
+
     buffer
       ..clear()
       ..write(replacement);
@@ -61,7 +74,7 @@ class PodfileProcessor extends StringProcessor {
         'flutter_additional_ios_build_settings(target)';
     const deploymentTargetsConfig = '''\n
     target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '$_minSupportedIOSVersion'
     end
 ''';
     buffer.insertAfter(additionalBuildSettingsConfig, deploymentTargetsConfig);

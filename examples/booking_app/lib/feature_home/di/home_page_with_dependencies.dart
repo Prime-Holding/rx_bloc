@@ -13,8 +13,8 @@ import '../views/home_page.dart';
 class HomePageWithDependencies extends StatelessWidget {
   const HomePageWithDependencies({
     required this.navigationType,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final NavigationItemType navigationType;
   static const String kHomePageKeyValue = 'HomePageKeyValue';

@@ -23,8 +23,8 @@ class BookingAppWithDependencies extends StatelessWidget {
   const BookingAppWithDependencies({
     required this.config,
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final EnvironmentConfig config;
   final Widget child;

@@ -460,18 +460,17 @@ The `AppDevMenuGestureDetector` widget is a widget that is listening for user in
 As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
 
 ```dart
-  AppDevMenuGestureDetector.withDependencies(
-    context,
-    navKey!,
+  AppDevMenuGestureDetector(
+    navigatorKey: navKey!,
     child: materialApp,
-      onDevMenuPresented: () {
-        showAppDevMenuBottomSheet(
-          context.read<AppRouter>().rootNavigatorKey.currentContext!,
-        );
-      },
+    onDevMenuPresented: () {
+      showAppDevMenuBottomSheet(
+        context.read<AppRouter>().rootNavigatorKey.currentContext!,
+      );
+    },
   );
-
 ```
+
 By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
 Alice is working right out of the box.
 
@@ -489,6 +488,8 @@ This package enables applications to use native automation features
 
 To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio
 
+
+For more info, please check full [README][patrol_integration_test_lnk]
 ## Realtime Communication
 
 Provides base datasource, repository, service and utility classes for establishing a SSE connection.
@@ -570,6 +571,7 @@ For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
+[patrol_integration_test_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md
 [rx_bloc_cli_cd_setup_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md
 [golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
