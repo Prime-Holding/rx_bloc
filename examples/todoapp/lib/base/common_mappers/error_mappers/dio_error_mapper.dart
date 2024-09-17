@@ -50,6 +50,10 @@ extension _DioErrorMapper on DioException {
       if (errorCode == 101) {
         return NoConnectionErrorModel();
       }
+       final errorMessage = (error as SocketException).osError?.message ?? '';
+      if (errorMessage.contains(kConnectionRefusedError)) {
+        return ConnectionRefusedErrorModel();
+      }
     }
 
     return NetworkErrorModel();
