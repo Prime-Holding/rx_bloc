@@ -13,6 +13,11 @@ import 'models/scenario.dart';
 
 enum Themes { light, dark }
 
+const localizations = [
+  AppI18n.delegate,
+  ...GlobalMaterialLocalizations.delegates,
+];
+
 /// return a [LabeledDeviceBuilder] with a scenario rendered on all device sizes
 ///
 /// [widget] - to be rendered in the golden master
@@ -75,6 +80,41 @@ void runGoldenTests(
         );
       });
     }
+  }
+}
+
+void runGoldenBuilderTests(
+  String testName, {
+  required Size surfaceSize,
+  required GoldenBuilder Function(Color) builder,
+  WidgetTesterCallback? act,
+  CustomPump? matcherCustomPump,
+}) {
+  for (final theme in Themes.values) {
+    final themeName = theme.name;
+    final directory = '${themeName}_theme';
+    final themeData = theme == Themes.light
+        ? TodoappTheme.buildTheme(DesignSystem.light())
+        : TodoappTheme.buildTheme(DesignSystem.dark());
+
+    testGoldens('$testName - $themeName', (tester) async {
+      await tester.pumpWidgetBuilder(
+        builder.call(themeData.scaffoldBackgroundColor).build(),
+        wrapper: materialAppWrapper(
+          localizations: localizations,
+          localeOverrides: I18n.supportedLocales,
+          theme: themeData,
+        ),
+        surfaceSize: surfaceSize,
+      );
+
+      if (act != null) {
+        await act.call(tester);
+      }
+
+      await screenMatchesGolden(tester, '$directory/$testName',
+          customPump: matcherCustomPump);
+    });
   }
 }
 

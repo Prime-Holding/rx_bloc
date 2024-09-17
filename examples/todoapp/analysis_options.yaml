@@ -20,3 +20,4 @@ analyzer:
     - lib/assets.dart
     - '**/*.g.dart'
     - '**/*.mocks.dart'
+    - '**/*.realm.dart'

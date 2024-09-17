@@ -13,7 +13,8 @@
 /// https://github.com/FirebaseExtended/flutterfire/blob/4c9b5d28de9eeb5ce76c856fbd0c7b3ec8615e45/docs/messaging/usage.mdx#web-tokens
 library;
 
-
-export 'is_in_test_mode_io_not_available.dart' if (dart.library.io) 'is_in_test_mode_io_available.dart' if (dart.library.html) 'is_in_test_mode_io_not_available.dart';
+export 'is_in_test_mode_io_not_available.dart'
+    if (dart.library.io) 'is_in_test_mode_io_available.dart'
+    if (dart.library.html) 'is_in_test_mode_io_not_available.dart';
 
 const String webVapidKey = '';

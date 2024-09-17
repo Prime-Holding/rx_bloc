@@ -20,7 +20,7 @@ void main() {
   late CoordinatorStates coordinatorStates;
   late StatisticsService service;
 
-  void defineWhen(List<TodoModel> todoList) {
+  void defineWhen(List<$TodoModel> todoList) {
     when(coordinatorStates.onTodoListChanged)
         .thenAnswer((_) => Stream.value(Result.success(todoList)));
   }

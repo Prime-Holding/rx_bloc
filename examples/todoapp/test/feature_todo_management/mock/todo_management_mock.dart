@@ -19,7 +19,7 @@ TodoManagementBlocType todoManagementMockFactory({
   bool? showError,
   bool? isLoading,
   ErrorModel? errors,
-  TodoModel? onTodoSaved,
+  $TodoModel? onTodoSaved,
 }) {
   final blocMock = MockTodoManagementBlocType();
   final eventsMock = MockTodoManagementBlocEvents();

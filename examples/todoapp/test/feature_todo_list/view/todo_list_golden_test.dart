@@ -24,6 +24,14 @@ void main() {
             todoList: Result.loading(), filter: TodosFilterModel.all),
         scenario: Scenario(name: 'todo_list_loading')),
     generateDeviceBuilder(
+      widget: todoListFactory(
+        isLoading: true,
+        todoList: Result.success(Stubs.todoList),
+        filter: TodosFilterModel.all,
+      ),
+      scenario: Scenario(name: 'todo_list_bulk_action_loading'),
+    ),
+    generateDeviceBuilder(
         widget: todoListFactory(
             todoList: Result.error(UnknownErrorModel(
                 exception: Exception('Something went wrong'))),
