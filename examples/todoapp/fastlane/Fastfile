@@ -49,7 +49,7 @@ provisioning_profile_name_map = {
     'development' => '',
     'sit' => '',
     'uat' => '',
-    'production' => 'Liquid Tools Distribution'
+    'production' => 'LiquidTools Distribution'
 }
 
 # Mapping of flavor to provisioning profile file name used as a convention in this file
