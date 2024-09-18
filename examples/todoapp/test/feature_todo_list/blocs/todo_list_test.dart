@@ -22,17 +22,17 @@ void main() {
   late CoordinatorStates coordinatorBlocStates;
 
   void defineWhen(
-      {List<TodoModel>? todoList,
-      TodoModel? updatedTodo,
-      TodoModel? deletedModel,
-      List<TodoModel>? changedTodoList}) {
+      {List<$TodoModel>? todoList,
+      $TodoModel? updatedTodo,
+      $TodoModel? deletedModel,
+      List<$TodoModel>? changedTodoList}) {
     todoList ??= Stubs.todoList;
     updatedTodo ??= Stubs.todoUncompletedUpdated;
     deletedModel ??= Stubs.todoIncomplete;
     changedTodoList ??= Stubs.todoListEmpty;
 
     when(todoListService.fetchTodoList())
-        .thenAnswer((_) => Future.value(todoList));
+        .thenAnswer((_) => Stream.value(todoList!));
 
     when(todoListService.filterTodos([], TodosFilterModel.all))
         .thenAnswer((_) => []);
@@ -71,7 +71,7 @@ void main() {
   });
 
   group('test todo_list_bloc_dart state filtered todo list', () {
-    rxBlocTest<TodoListBlocType, Result<List<TodoModel>>>(
+    rxBlocTest<TodoListBlocType, Result<List<$TodoModel>>>(
         'test todo_list_bloc_dart state todoList',
         build: () async {
           defineWhen(todoList: Stubs.todoList);

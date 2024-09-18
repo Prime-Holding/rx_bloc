@@ -27,9 +27,10 @@ class TodoDetailsPage extends StatelessWidget {
         appBar: AppBar(
           title: AppBarTitle(title: context.l10n.todoDetails),
           actions: [
-            RxBlocBuilder<TodoDetailsBlocType, bool>(
+            RxBlocBuilder<TodoActionsBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, isLoadingSnapshot, bloc) => SmallButton(
+                type: SmallButtonType.icon,
                 colorStyle: ButtonColorStyle.fromContext(context),
                 onPressed: () =>
                     context.read<TodoActionsBlocType>().events.delete(id),
@@ -41,32 +42,35 @@ class TodoDetailsPage extends StatelessWidget {
         ),
         floatingActionButton: RxBlocBuilder<TodoDetailsBlocType, bool>(
           state: (bloc) => bloc.states.isLoading,
-          builder: (context, isLoadingSnapshot, bloc) => Visibility(
-            visible:
-                !(isLoadingSnapshot.hasData && isLoadingSnapshot.requireData),
-            child: FloatingActionButton(
-              onPressed: bloc.events.updateTodo,
-              shape: const OvalBorder(),
-              child: context.designSystem.icons.edit,
-            ),
+          builder: (context, isLoadingSnapshot, bloc) => FloatingActionButton(
+            heroTag: 'fab',
+            onPressed: bloc.events.updateTodo,
+            shape: const OvalBorder(),
+            child: context.designSystem.icons.edit,
           ),
         ),
         body: Column(
           children: [
-            RxResultBuilder<TodoDetailsBlocType, TodoModel>(
+            RxResultBuilder<TodoDetailsBlocType, $TodoModel>(
               state: (bloc) => bloc.states.todo,
-              buildSuccess: (context, todo, bloc) => TodoWidget(
-                todo: todo,
-                onChanged: (todo, isChecked) {
-                  final todoId = todo.id;
-
-                  if (todoId != null) {
-                    context
-                        .read<TodoActionsBlocType>()
-                        .events
-                        .updateCompletedById(todo.id!, isChecked!);
-                  }
-                },
+              buildSuccess: (context, todo, bloc) =>
+                  RxBlocBuilder<TodoActionsBlocType, bool>(
+                state: (bloc) => bloc.states.isLoading,
+                builder: (context, isLoadingSnapshot, bloc) => TodoWidget(
+                  todo: todo,
+                  onChanged: (!isLoadingSnapshot.hasData ||
+                          isLoadingSnapshot.requireData)
+                      ? null
+                      : (todo, isChecked) {
+                          final todoId = todo.id;
+                          if (todoId != null) {
+                            context
+                                .read<TodoActionsBlocType>()
+                                .events
+                                .updateCompletedById(todo.id!, isChecked!);
+                          }
+                        },
+                ),
               ),
               buildError: (context, error, bloc) => Padding(
                 padding: EdgeInsets.only(top: context.designSystem.spacing.l),

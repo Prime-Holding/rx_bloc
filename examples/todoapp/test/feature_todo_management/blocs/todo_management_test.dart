@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:todoapp/base/common_blocs/coordinator_bloc.dart';
 import 'package:todoapp/base/common_services/todo_list_service.dart';
 import 'package:todoapp/base/models/errors/error_model.dart';
@@ -27,7 +28,7 @@ import 'todo_management_test.mocks.dart';
 ])
 void main() {
   late TodoListService listService;
-  late TodoManageService todoManageService;
+  late MockTodoManageService todoManageService;
   late TodoValidatorService validatorService;
   late CoordinatorBlocType coordinatorBloc;
 
@@ -35,13 +36,12 @@ void main() {
       {String? todoId,
       String? title,
       String? description,
-      TodoModel? todoModel}) {
+      $TodoModel? todoModel}) {
     when(listService.fetchTodoById(todoId ?? '', todoModel)).thenAnswer((_) {
       if (todoId?.isNotEmpty != null) {
-        return Future.value(todoModel);
+        return Stream.value(todoModel!);
       }
-
-      return Future.error(Stubs.notFoundError);
+      return Stream.error(Stubs.notFoundError);
     });
 
     when(todoManageService.addOrUpdate((todoModel ?? Stubs.todoEmpty)
@@ -51,7 +51,7 @@ void main() {
   }
 
   TodoManagementBloc todoManagementBloc(
-          {String? todoId, TodoModel? initialTodo}) =>
+          {String? todoId, $TodoModel? initialTodo}) =>
       TodoManagementBloc(
         todoId ?? '',
         initialTodo,
@@ -69,17 +69,18 @@ void main() {
   });
 
   group('test todo_management_bloc_dart state todo', () {
-    rxBlocTest<TodoManagementBlocType, String>(
+    rxBlocFakeAsyncTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state title',
-        build: () async {
+        build: () {
           defineWhen(title: Stubs.todoIncomplete.title);
           return todoManagementBloc();
         },
-        act: (bloc) async {
-          bloc.events.setTitle(Stubs.todoIncomplete.title);
+        act: (bloc, fakeAsync) {
+          bloc.events.setTitle('test title');
+          fakeAsync.elapse(const Duration(seconds: 1));
         },
-        state: (bloc) => bloc.states.title,
-        expect: [Stubs.todoIncomplete.title]);
+        state: (bloc) => bloc.states.title.onErrorReturn(''),
+        expect: ['test title']);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state invalid title',
@@ -91,7 +92,9 @@ void main() {
           bloc.events.setTitle(Stubs.shortTitle);
         },
         state: (bloc) => bloc.states.title,
-        expect: [emitsError(isA<FieldErrorModel>())]);
+        expect: [
+          emitsError(isA<FieldRequiredErrorModel>()),
+        ]);
 
     rxBlocTest<TodoManagementBlocType, String>(
         'test todo_management_bloc_dart state description',
@@ -121,16 +124,20 @@ void main() {
   });
 
   group('test todo_management_bloc_dart state onTodoSaved', () {
-    rxBlocFakeAsyncTest<TodoManagementBlocType, TodoModel>(
+    rxBlocFakeAsyncTest<TodoManagementBlocType, $TodoModel>(
         'test todo_management_bloc_dart state onTodoSaved',
         build: () {
           defineWhen(
               todoId: Stubs.todoIncomplete.id,
-              todoModel: Stubs.todoIncomplete,
+              todoModel: Stubs.getIncompleteTodo(),
               title: Stubs.todoUncompletedUpdated.title);
+
+          when(todoManageService.addOrUpdate(any))
+              .thenAnswer((_) async => Stubs.getIncompleteTodo());
+
           return todoManagementBloc(
               todoId: Stubs.todoIncomplete.id,
-              initialTodo: Stubs.todoIncomplete);
+              initialTodo: Stubs.todoIncomplete as TodoModel);
         },
         act: (bloc, fakeAsync) async {
           bloc.events.setTitle(Stubs.todoUncompletedUpdated.title);
@@ -139,7 +146,7 @@ void main() {
         },
         state: (bloc) => bloc.states.onTodoSaved,
         expect: [
-          Stubs.todoUncompletedUpdated,
+          Stubs.getIncompleteTodo(),
         ]);
   });
 }

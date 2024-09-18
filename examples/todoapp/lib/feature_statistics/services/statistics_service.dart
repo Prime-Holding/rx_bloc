@@ -5,7 +5,7 @@ class StatisticsService {
   /// Calculates the statistics of the todos.
   ///
   /// The statistics include the number of completed and incomplete todos.
-  TodoStatsModel calculateStats(List<TodoModel> todoList) => TodoStatsModel(
+  TodoStatsModel calculateStats(List<$TodoModel> todoList) => TodoStatsModel(
         completed: todoList.where((todo) => todo.completed).length,
         incomplete: todoList.where((todo) => !todo.completed).length,
       );

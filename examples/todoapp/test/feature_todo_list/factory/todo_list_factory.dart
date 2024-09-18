@@ -6,17 +6,20 @@ import 'package:todoapp/base/models/todo_model.dart';
 import 'package:todoapp/base/models/todos_filter_model.dart';
 import 'package:todoapp/feature_todo_list/blocs/todo_list_bloc.dart';
 import 'package:todoapp/feature_todo_list/views/todo_list_page.dart';
+import 'package:todoapp/lib_todo_actions/blocs/todo_actions_bloc.dart';
 import 'package:todoapp/lib_todo_actions/blocs/todo_list_bulk_edit_bloc.dart';
 import 'package:todoapp/lib_todo_actions/models/bulk_action.dart';
 
+import '../../lib_todo_actions/mock/todo_actions_mock.dart';
 import '../../lib_todo_actions/mock/todo_list_bulk_edit_mock.dart';
 import '../mock/todo_list_mock.dart';
 
 /// Change the parameters according the the needs of the test
 Widget todoListFactory({
-  Result<List<TodoModel>>? todoList,
+  Result<List<$TodoModel>>? todoList,
   TodosFilterModel? filter,
   List<BulkActionModel>? bulkActions,
+  bool isLoading = false,
 }) =>
     Scaffold(
       body: MultiProvider(providers: [
@@ -26,8 +29,15 @@ Widget todoListFactory({
             filter: filter,
           ),
         ),
+        RxBlocProvider<TodoActionsBlocType>.value(
+          value: todoActionsMockFactory(
+            isLoading: isLoading,
+          ),
+        ),
         RxBlocProvider<TodoListBulkEditBlocType>.value(
-          value: todoListBulkEditMockFactory(),
+          value: todoListBulkEditMockFactory(
+            isLoading: isLoading,
+          ),
         ),
       ], child: const TodoListPage()),
     );

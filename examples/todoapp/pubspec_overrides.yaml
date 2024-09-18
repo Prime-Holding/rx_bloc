@@ -1,4 +1,15 @@
 dependency_overrides:
+  ## TODO: Temporary fix until [this issue](https://github.com/jhomlala/alice/issues/234) is closed
+  alice:
+    git:
+      url: https://github.com/DDavidPrime/alice.git
+      ref: rxdart-upgrade
+      path: packages/alice
+  alice_dio:
+    git:
+      url: https://github.com/DDavidPrime/alice.git
+      ref: rxdart-upgrade
+      path: packages/alice_dio
   #rx_bloc_test:
   #  path: ../../packages/rx_bloc_test
   #rx_bloc:

@@ -6,7 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:dio/dio.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 part 'permissions_remote_data_source.g.dart';
 

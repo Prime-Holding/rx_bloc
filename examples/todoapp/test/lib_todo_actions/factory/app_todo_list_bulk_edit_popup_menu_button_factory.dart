@@ -6,14 +6,14 @@ import 'package:todoapp/lib_todo_actions/ui_components/app_todo_list_bulk_edit_p
 import '../mock/todo_list_bulk_edit_mock.dart';
 
 Widget appTodoListBulkEditPopupMenuButtonFactory({
-  List<BulkActionModel> bulkActions = const [],
+  List<BulkActionModel>? bulkActions,
+  Key? key,
 }) =>
     MultiProvider(
       providers: [
         Provider.value(
-          value: todoListBulkEditMockFactory(),
+          value: todoListBulkEditMockFactory(bulkActions: bulkActions),
         ),
       ],
-      child: const AppTodoListBulkEditPopupMenuButton(),
+      child: AppTodoListBulkEditPopupMenuButton(key: key),
     );
-//AppTodoListBulkEditPopupMenuButton();

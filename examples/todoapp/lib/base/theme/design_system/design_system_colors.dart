@@ -17,13 +17,15 @@ class DesignSystemColors {
       : brightness = Brightness.light,
         primaryColor = const Color(0xff2196f3),
         backgroundColor = Colors.white,
-        scaffoldBackgroundColor = Colors.white;
+        scaffoldBackgroundColor = Colors.white,
+        textColor = Colors.black;
 
   const DesignSystemColors.dark()
       : brightness = Brightness.dark,
         primaryColor = const Color(0xffce93d8),
         backgroundColor = Colors.black,
-        scaffoldBackgroundColor = Colors.black;
+        scaffoldBackgroundColor = Colors.black,
+        textColor = Colors.white;
 
   final Brightness brightness;
 
@@ -36,6 +38,8 @@ class DesignSystemColors {
   final Color scaffoldBackgroundColor;
 
   final errorColor = Colors.red;
+
+  final Color textColor;
 
   /// endregion
 

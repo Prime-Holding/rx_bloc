@@ -29,12 +29,28 @@ extension _DioErrorMapper on DioException {
       }
     }
 
+    if (type == DioExceptionType.connectionError && error is SocketException) {
+      final errorCode = (error as SocketException).osError?.errorCode;
+      if (errorCode == 111) {
+        return ConnectionRefusedErrorModel();
+      }
+    }
     if (type == DioExceptionType.unknown && error is SocketException) {
       final errorCode = (error as SocketException).osError?.errorCode;
       if (errorCode == 101) {
         return NoConnectionErrorModel();
       }
       final errorMessage = (error as SocketException).osError?.message ?? '';
+      if (errorMessage.contains(kConnectionRefusedError)) {
+        return ConnectionRefusedErrorModel();
+      }
+    }
+    if (type == DioExceptionType.connectionError) {
+      final errorCode = (error as SocketException).osError?.errorCode;
+      if (errorCode == 101) {
+        return NoConnectionErrorModel();
+      }
+       final errorMessage = (error as SocketException).osError?.message ?? '';
       if (errorMessage.contains(kConnectionRefusedError)) {
         return ConnectionRefusedErrorModel();
       }

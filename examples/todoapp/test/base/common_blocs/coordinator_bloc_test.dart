@@ -11,16 +11,13 @@ import '../../stubs.dart';
   CoordinatorBlocType,
 ])
 void main() {
-  void defineWhen() {}
-
   CoordinatorBloc coordinatorBloc() => CoordinatorBloc();
   setUp(() {});
 
   group('test coordinator_bloc_dart states', () {
-    rxBlocTest<CoordinatorBlocType, Result<TodoModel>>(
+    rxBlocTest<CoordinatorBlocType, Result<$TodoModel>>(
         'test coordinator_bloc_dart state  onTodoAddedOrUpdated',
         build: () async {
-          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {
@@ -38,7 +35,6 @@ void main() {
     rxBlocTest<CoordinatorBlocType, bool>(
         'test coordinator_bloc_dart state  onTodoAddedOrUpdated',
         build: () async {
-          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {
@@ -53,10 +49,9 @@ void main() {
           true,
         ]);
 
-    rxBlocTest<CoordinatorBlocType, Result<TodoModel>>(
+    rxBlocTest<CoordinatorBlocType, Result<$TodoModel>>(
         'test coordinator_bloc_dart state  onTodoDeleted',
         build: () async {
-          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {
@@ -71,10 +66,9 @@ void main() {
           Result.success(Stubs.todoIncomplete),
         ]);
 
-    rxBlocTest<CoordinatorBlocType, Result<List<TodoModel>>>(
+    rxBlocTest<CoordinatorBlocType, Result<List<$TodoModel>>>(
         'test coordinator_bloc_dart state  onTodoListChanged',
         build: () async {
-          defineWhen();
           return coordinatorBloc();
         },
         act: (bloc) async {
