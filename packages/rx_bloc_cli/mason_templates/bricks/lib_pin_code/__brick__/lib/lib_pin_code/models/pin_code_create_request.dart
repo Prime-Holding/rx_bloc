@@ -13,6 +13,7 @@ class PinCodeCreateRequest with EquatableMixin {
     required this.pinCode,
   });
 
+  // The PIN code to create
   final String pinCode;
 
   factory PinCodeCreateRequest.fromJson(Map<String, dynamic> json) =>

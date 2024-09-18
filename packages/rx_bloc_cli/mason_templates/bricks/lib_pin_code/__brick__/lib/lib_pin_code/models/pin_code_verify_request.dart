@@ -14,7 +14,9 @@ class PinCodeVerifyRequest with EquatableMixin {
     this.requestUpdateToken = false,
   });
 
+  // The PIN code to verify
   final String pinCode;
+  // Whether to request a token, used to update the PIN afterwards
   final bool requestUpdateToken;
 
   factory PinCodeVerifyRequest.fromJson(Map<String, dynamic> json) =>

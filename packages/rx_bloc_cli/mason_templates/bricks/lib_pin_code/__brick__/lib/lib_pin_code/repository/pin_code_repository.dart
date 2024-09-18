@@ -18,8 +18,6 @@ class PinCodeRepository {
   final PinCodeLocalDataSource _pinCodeLocalDataSource;
   final PinCodeDataSource _pinCodeDataSource;
 
-  late String _token;
-
   Future<void> writePinToStorage(
     String key,
     String? value,
@@ -44,29 +42,32 @@ class PinCodeRepository {
       );
 
   /// Verify the PIN code of the user on the Backend
-  Future<bool> verifyPinCode(
+  Future<String?> verifyPinCode(
     String pinCode, {
     requestUpdateToken = false,
   }) =>
       _errorMapper.execute(
         () async {
-          final token = await _pinCodeDataSource.verifyPinCode(
+          final verifyResponse = await _pinCodeDataSource.verifyPinCode(
             PinCodeVerifyRequest(
               pinCode: pinCode,
               requestUpdateToken: requestUpdateToken,
             ),
           );
           if (requestUpdateToken) {
-            _token = token.token!;
+            return verifyResponse.token;
           }
-          return true;
+          return null;
         },
       );
 
   /// Update the PIN code of the user on the Backend
-  Future<void> updatePinCode(String pinCode) => _errorMapper.execute(
+  Future<void> updatePinCode(
+    String pinCode,
+    String token,
+  ) => _errorMapper.execute(
         () => _pinCodeDataSource.updatePinCode(
-          PinCodeUpdateRequest(pinCode: pinCode, token: _token),
+          PinCodeUpdateRequest(pinCode: pinCode, token: token),
         ),
       );
 }

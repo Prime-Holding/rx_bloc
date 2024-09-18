@@ -17,10 +17,7 @@ import '../services/create_pin_code_service.dart';
 
 class CreatePinPage extends StatefulWidget {
   const CreatePinPage({
-    this.pinCodeArguments = const PinCodeArguments(
-      title: '',
-      isSessionTimeout: false,
-    ),
+    this.pinCodeArguments = const PinCodeArguments(title: ''),
     super.key,
   });
 

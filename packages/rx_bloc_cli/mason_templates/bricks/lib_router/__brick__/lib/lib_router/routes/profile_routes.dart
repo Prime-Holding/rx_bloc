@@ -75,7 +75,7 @@ class UpdatePinRoute extends GoRouteData implements RouteDataModel {
   Page<Function> buildPage(BuildContext context, GoRouterState state) =>
       MaterialPage(
         key: state.pageKey,
-        child: UpdatePinPage(
+        child: UpdatePinPageWithDependencies(
           pinCodeArguments: state.extra as PinCodeArguments,
         ),
       );

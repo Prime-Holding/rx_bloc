@@ -13,6 +13,7 @@ class PinCodeVerifyResponse with EquatableMixin {
     this.token,
   });
 
+  // The token used to update the PIN afterwards
   final String? token;
 
   factory PinCodeVerifyResponse.fromJson(Map<String, dynamic> json) =>

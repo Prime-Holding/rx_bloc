@@ -14,7 +14,9 @@ class PinCodeUpdateRequest with EquatableMixin {
     required this.token,
   });
 
+  // The new PIN code
   final String pinCode;
+  // The token returned by the verification request
   final String token;
 
   factory PinCodeUpdateRequest.fromJson(Map<String, dynamic> json) =>
