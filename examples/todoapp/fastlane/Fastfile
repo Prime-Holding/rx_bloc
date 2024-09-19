@@ -305,7 +305,10 @@ platform :android do
 
     desc 'Clean up temporary build files'
     private_lane :post_build_clean_up do
-        # nothing to do here for Android
+        # Remove any credentials
+        Dir.chdir("../devops/") do
+            sh("rm -rf credentials/")
+        end
     end
 
     desc 'Deploy the app to google play store'
@@ -417,6 +420,7 @@ platform :ios do
 
             MY_APP_ID = bundle_id_map[options[:environment]]
             MY_PROFILE = provisioning_profile_name_map[options[:environment]]
+            PROJECT_PATH_ABS = Dir.chdir(PROJECT_DIRECTORY_PATH) { Dir.getwd }
 
             settings_to_override = {
                 :BUNDLE_IDENTIFIER => MY_APP_ID,
@@ -424,14 +428,11 @@ platform :ios do
                 :DEVELOPMENT_TEAM => APPLE_DEVELOPMENT_TEAM
             }
 
-            PROJECT_PATH = Dir.chdir(PROJECT_DIRECTORY_PATH) { Dir.getwd }
-            sh('echo $PROJECT_PATH')
-
             gym(
-                workspace: PROJECT_PATH+'/ios/Runner.xcworkspace',
+                workspace: PROJECT_PATH_ABS+'/ios/Runner.xcworkspace',
                 scheme: flavor_map[options[:environment]],
                 xcargs: settings_to_override,
-                output_directory: PROJECT_PATH+'/devops/artifacts',
+                output_directory: PROJECT_PATH_ABS+'/devops/artifacts',
                 export_method: 'app-store',
                 export_options: {
                     manageAppVersionAndBuildNumber: false,
@@ -445,6 +446,11 @@ platform :ios do
 
     desc 'Clean up temporary build files'
     private_lane :post_build_clean_up do
+        # Remove any credentials
+        Dir.chdir("../devops/") do
+            sh("rm -rf credentials/")
+        end
+
         if is_ci_cd_machine()==true
             delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
         end
@@ -512,6 +518,11 @@ lane :deploy do
             build_number: properties['MOBILE_DEPLOYMENT_BUILD_NUMBER']
         )
     end
+
+    # Remove any credentials (post deploy)
+    Dir.chdir("../devops/") do
+        sh("rm -rf credentials/")
+    end
 end
 
 desc 'Deploy the debug symbols to firebase
@@ -550,5 +561,10 @@ lane :deploy_debug_symbols do
             environment: environment,
             firebase_application_id: firebase_application_id,
         )
+    end
+
+    # Remove any credentials (post deploy)
+    Dir.chdir("../devops/") do
+        sh("rm -rf credentials/")
     end
 end
