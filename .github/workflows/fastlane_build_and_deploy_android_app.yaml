@@ -59,7 +59,9 @@ jobs:
           ruby-version: 3.1.0
           bundler-cache: true
       - name: List files
-        run: ls -la 
+        run: |
+            pwd
+            ls -la 
       - name: Configure Ruby
         run: |
           bundle install
