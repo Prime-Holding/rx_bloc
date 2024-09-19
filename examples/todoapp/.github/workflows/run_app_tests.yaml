@@ -1,0 +1,52 @@
+name: "Run app tests"
+
+on:
+  push:
+    paths:
+      - "**"
+
+  pull_request:
+    paths:
+      - "**"
+
+jobs:
+  run_app_tests:
+    runs-on: ubuntu-latest
+    env:
+      UPLOAD_CODE_COVERAGE: false # Set to `true` to enable code coverage upload
+      MIN_CODE_COVERAGE: 6 # Minimal acceptable percentage of code coverage
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+      - run: dart --version
+      - run: flutter --version
+      - name: Install Dependencies
+        run: flutter pub get
+      - name: Generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+      - name: Analyze
+        run: flutter analyze lib
+      - name: Run tests
+        run: |
+          if [ -d "test" ]; then
+            flutter test --coverage --exclude-tags=not-tests
+          fi
+      - name: Remove unnecessary files
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','**/routes.dart','**data_source.dart','**_model.g.dart','**_models.g.dart''**_model.dart','**_model_extensions.dart','**_models.dart','**_models_extensions.dart','**_config.dart','**_constants.dart','**_translations.dart','lib/assets.dart','lib/keys.dart','lib/base/theme/**','lib/base/utils/**','lib/keys.dart','lib/l10n/**' coverage/lcov.info
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v3
+        with:
+          path: "coverage/lcov.info"
+          min_coverage: ${{ env.MIN_CODE_COVERAGE }}
+      - name: Upload coverage to Codecov
+        if: ${{ env.UPLOAD_CODE_COVERAGE }}
+        uses: codecov/codecov-action@v4
+        with:
+          directory: coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_SECRET }}
