@@ -46,7 +46,6 @@ jobs:
     env:
       CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
       CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
-      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -100,8 +99,6 @@ jobs:
           merge-multiple: true
       - name: Rename config
         run: mv "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
-      - name: List files
-        run: ls -la 
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
