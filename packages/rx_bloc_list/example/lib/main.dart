@@ -10,7 +10,7 @@ void main() {
 
 /// App entry
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
 /// region Paginated List page
 
 class PaginatedListPage extends StatelessWidget {
-  const PaginatedListPage({Key? key}) : super(key: key);
+  const PaginatedListPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -65,8 +65,8 @@ class YourListTile extends StatelessWidget {
   /// Default constructor
   const YourListTile({
     required this.user,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The model
   final User user;
@@ -89,8 +89,8 @@ class YourErrorWidget extends StatelessWidget {
   /// Default constructor
   const YourErrorWidget({
     required this.error,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The error presented in the widget
   final Exception error;
@@ -103,8 +103,8 @@ class YourErrorWidget extends StatelessWidget {
 class YourProgressIndicator extends StatelessWidget {
   /// Default constructor
   const YourProgressIndicator({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => const Center(

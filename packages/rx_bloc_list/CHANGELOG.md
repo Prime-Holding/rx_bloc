@@ -1,3 +1,7 @@
+## [5.0.1] September 20, 2024
+* Removed `flutter/cupertino` dependency from `PaginatedList` model
+* Updated the example project
+
 ## [5.0.0] August 5, 2024
 * Update `rx_bloc` to use version `6.0.0`
 * Update `rxdart` to use version `0.28.0`

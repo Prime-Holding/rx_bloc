@@ -1,11 +1,7 @@
-import 'dart:async';
 import 'dart:collection';
 
-import 'package:flutter/cupertino.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-
-part 'paginated_list_extensions.dart';
 
 /// PaginatedList class is an extension on the list class that allows for easier
 /// data manipulation and work with paginated data.
@@ -166,4 +162,72 @@ class PaginatedList<E> extends ListBase<E> {
   String toString() =>
       '{pageSize: $pageSize, error: $error, totalCount: $totalCount, '
       'isLoading: $isLoading, list: $list}';
+}
+
+/// PaginatedList binder extensions
+extension PaginatedListBinder<T> on Stream<Result<PaginatedList<T>>> {
+  /// Convenience method that maps the data from the paginated list to a stream,
+  /// handling error, loading and success states
+  Stream<PaginatedList<T>> mergeWithPaginatedList(
+    BehaviorSubject<PaginatedList<T>> paginatedList,
+  ) =>
+      map<PaginatedList<T>>((result) {
+        // Get the current paginated list data
+        final subjectValue = paginatedList.hasValue
+            ? paginatedList.value
+            : PaginatedList<T>(
+                list: [],
+                pageSize: 0,
+                isLoading: false,
+              );
+
+        switch (result) {
+          // If the data is still being fetched/loading, respond with isLoading as true
+          case ResultLoading<PaginatedList<T>>():
+            if (subjectValue._backupList.isNotEmpty) {
+              return subjectValue.copyWith(
+                isLoading: true,
+                list: subjectValue._backupList,
+              );
+            }
+
+            return subjectValue.copyWith(
+              isLoading: true,
+              isInitialized: false,
+            );
+
+          // If an error occurred, pass this error down and mark loading as false
+          case ResultError<PaginatedList<T>>():
+            subjectValue._backupList.clear();
+            return subjectValue.copyWith(
+              isLoading: false,
+              isInitialized: false,
+              error: result.error,
+              list: [],
+            );
+
+          // If we got the resulting data successfully, merge and return it
+          case ResultSuccess<PaginatedList<T>>():
+            // Have we previously reset data. If yes clear the temporary data
+            final isReset = subjectValue._backupList.isNotEmpty;
+            final listData = isReset
+                ? <T>[...result.data.list]
+                : <T>[
+                    ...subjectValue.list,
+                    ...result.data.list,
+                  ];
+            if (isReset) {
+              subjectValue.length = 0;
+              subjectValue._backupList.clear();
+            }
+
+            return subjectValue.copyWith(
+              totalCount: result.data.totalCount,
+              pageSize: result.data.pageSize,
+              list: listData,
+              isLoading: false,
+              isInitialized: true,
+            );
+        }
+      }).distinct();
 }
