@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:rx_bloc_list/extensions.dart';
 import 'package:rx_bloc_list/models.dart';
 import 'package:rxdart/rxdart.dart';
 
