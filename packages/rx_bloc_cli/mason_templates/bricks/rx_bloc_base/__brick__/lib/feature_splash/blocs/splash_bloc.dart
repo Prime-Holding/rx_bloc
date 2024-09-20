@@ -80,8 +80,7 @@ class SplashBloc extends $SplashBloc {
       if (await _authService.isAuthenticated()) {
         if(await _pinCodeService.isPinCodeInSecureStorage()) {
           return _navigationBloc.events.go(const VerifyPinCodeRoute(),
-            extra: const PinCodeArguments(
-            title: 'Enter Pin Code', isSessionTimeout: true));
+              extra: const PinCodeArguments(title: 'Enter Pin Code'));
         }
 
         return _navigationBloc.events.go(const DashboardRoute());

@@ -2,8 +2,8 @@
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class PinCodeDataSource {
-  PinCodeDataSource(
+class PinCodeLocalDataSource {
+  PinCodeLocalDataSource(
     this._storage,
   );
 
