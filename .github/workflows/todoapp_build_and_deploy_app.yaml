@@ -40,8 +40,8 @@ jobs:
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
       publish_to_store: true
     secrets:
-      credential_encryption_password: ${{ secrets.TODOAPP_CREDENTIAL_ENCRYPTION_PASSWORD }}
-      credential_repository_access_secret: ${{ secrets.TODOAPP_CREDENTIAL_REPOSITORY_ACCESS_SECRET }}
+      credential_encryption_password: ${{ secrets.TODOAPP_MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      credential_repository_access_secret: ${{ secrets.TODOAPP_MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
 
   build_and_deploy_ios:
     needs: app_version_extraction
@@ -53,5 +53,5 @@ jobs:
       flavor: ${{ needs.app_version_extraction.outputs.flavor }}
       publish_to_store: true
     secrets:
-      credential_encryption_password: ${{ secrets.TODOAPP_CREDENTIAL_ENCRYPTION_PASSWORD }}
-      credential_repository_access_secret: ${{ secrets.TODOAPP_CREDENTIAL_REPOSITORY_ACCESS_SECRET }}
+      credential_encryption_password: ${{ secrets.TODOAPP_MOBILE_DISTRIBUTION_ENCRYPTION_PASSWORD }}
+      credential_repository_access_secret: ${{ secrets.TODOAPP_MOBILE_DISTRIBUTION_REPOSITORY_ACCESS_SECRET }}
