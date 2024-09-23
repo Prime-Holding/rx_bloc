@@ -11,7 +11,7 @@ dependencies:
   alice: ^0.4.1
   alice_dio: ^1.0.4
   collection: ^1.18.0
-  connectivity_plus: ^6.0.5
+  connectivity_plus: ^5.0.2
   copy_with_extension: ^5.0.4
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
