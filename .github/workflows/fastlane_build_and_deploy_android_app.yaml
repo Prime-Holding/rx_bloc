@@ -93,7 +93,6 @@ jobs:
     env:
       CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
       CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
-      BUNDLE_GEMFILE: Gemfile
     steps:
       - uses: actions/checkout@v4
       - name: Download artifacts
