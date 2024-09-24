@@ -77,7 +77,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-deployment.yaml
-          path: "${{ inputs.project_path }}devops/artifacts/ios-deployment.yaml"
+          path: "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml"
 
   deploy_to_test_flight:
     if: ${{ inputs.publish_to_store }}
@@ -100,7 +100,7 @@ jobs:
       - name: pwd
         run: find $(pwd)
       - name: Rename config
-        run: mv "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+        run: mv "devops/artifacts/ios-deployment.yaml" "devops/artifacts/deployment.yaml"
       - name: pwd post rename
         run: find $(pwd)
       - name: Setup Ruby env
