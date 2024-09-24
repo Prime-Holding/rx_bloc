@@ -52,6 +52,11 @@ jobs:
         with:
           flutter-version: ${{ inputs.flutter_version }}
           channel: "stable"
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
@@ -66,7 +71,7 @@ jobs:
         run: |
           bundle exec fastlane build_custom platform:android environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
       - name: Prepare config
-        run: mv "${{ inputs.project_path }}/devops/artifacts/deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/android-deployment.yaml"
+        run: mv "devops/artifacts/deployment.yaml" "devops/artifacts/android-deployment.yaml"
       - name: Upload artifact - .aab
         uses: actions/upload-artifact@v4
         with:
@@ -97,7 +102,7 @@ jobs:
           path: "${{ inputs.project_path }}/devops/artifacts/"
           merge-multiple: true
       - name: Rename config
-        run: mv "${{ inputs.project_path }}/devops/artifacts/android-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+        run: mv "devops/artifacts/android-deployment.yaml" "devops/artifacts/deployment.yaml"
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:

@@ -110,9 +110,7 @@ end
 desc "Clones the credentials repository into devops/credentials.
 Expected environment variables:
   - CREDENTIAL_REPOSITORY_ACCESS_SECRET"
-private_lane :fetch_credentials do
-    sh("printenv")
-    ensure_env_vars(
+private_lane :fetch_credentials do ensure_env_vars(
         env_vars: ['CREDENTIAL_REPOSITORY_ACCESS_SECRET']
     )
 

@@ -66,20 +66,18 @@ jobs:
       - name: Build and sign iOS app
         run: |
           bundle exec fastlane build_custom platform:ios environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
-      - name: pwd
-        run: find $(pwd)
       - name: Prepare config
-        run: mv "/devops/artifacts/deployment.yaml" "/devops/artifacts/ios-deployment.yaml"
+        run: mv "devops/artifacts/deployment.yaml" "devops/artifacts/ios-deployment.yaml"
       - name: Upload artifact - .ipa
         uses: actions/upload-artifact@v4
         with:
           name: app-${{ inputs.flavor }}-release.ipa
-          path: "/devops/artifacts/Runner.ipa"
+          path: "${{ inputs.project_path }}/devops/artifacts/Runner.ipa"
       - name: Upload artifact - deployment config
         uses: actions/upload-artifact@v4
         with:
           name: ios-deployment.yaml
-          path: "/devops/artifacts/ios-deployment.yaml"
+          path: "${{ inputs.project_path }}devops/artifacts/ios-deployment.yaml"
 
   deploy_to_test_flight:
     if: ${{ inputs.publish_to_store }}
@@ -100,7 +98,7 @@ jobs:
           path: "${{ inputs.project_path }}/devops/artifacts/"
           merge-multiple: true
       - name: Rename config
-        run: mv "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+        run: mv "devops/artifacts/ios-deployment.yaml" "devops/artifacts/deployment.yaml"
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
