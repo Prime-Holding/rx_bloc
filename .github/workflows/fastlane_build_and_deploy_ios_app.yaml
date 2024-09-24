@@ -97,8 +97,12 @@ jobs:
         with:
           path: "${{ inputs.project_path }}/devops/artifacts/"
           merge-multiple: true
+      - name: pwd
+        run: find $(pwd)
       - name: Rename config
-        run: mv "devops/artifacts/ios-deployment.yaml" "devops/artifacts/deployment.yaml"
+        run: mv "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+      - name: pwd post rename
+        run: find $(pwd)
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:

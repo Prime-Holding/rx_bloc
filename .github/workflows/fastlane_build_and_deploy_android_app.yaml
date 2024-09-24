@@ -102,7 +102,7 @@ jobs:
           path: "${{ inputs.project_path }}/devops/artifacts/"
           merge-multiple: true
       - name: Rename config
-        run: mv "devops/artifacts/android-deployment.yaml" "devops/artifacts/deployment.yaml"
+        run: mv "${{ inputs.project_path }}/devops/artifacts/deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/android-deployment.yaml"
       - name: Setup Ruby env
         uses: ruby/setup-ruby@v1.176.0
         with:
