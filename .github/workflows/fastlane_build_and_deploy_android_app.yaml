@@ -93,7 +93,7 @@ jobs:
     env:
       CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
       CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
-      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
+      BUNDLE_GEMFILE: Gemfile
     steps:
       - uses: actions/checkout@v4
       - name: Download artifacts
@@ -101,6 +101,8 @@ jobs:
         with:
           path: "${{ inputs.project_path }}/devops/artifacts/"
           merge-multiple: true
+      - name: pwd
+        run: find $(pwd)
       - name: Rename config
         run: mv "devops/artifacts/android-deployment.yaml" "devops/artifacts/deployment.yaml"
       - name: Setup Ruby env
