@@ -41,7 +41,7 @@ class TodoManagementPage extends StatelessWidget {
               child: TodoForm(isLoading: isLoading),
             ),
             floatingActionButton: FloatingActionButton(
-              heroTag: 'fab',
+              key: K.todoManagementPageFAB,
               onPressed: isLoading
                   ? null
                   : () => context.read<TodoManagementBlocType>().events.save(),

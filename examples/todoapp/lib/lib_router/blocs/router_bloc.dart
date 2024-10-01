@@ -83,14 +83,14 @@ class RouterBloc extends $RouterBloc {
   @override
   ConnectableStream<void> _mapToNavigationPathState() => Rx.merge([
         _$goEvent
-            .throttleTime(const Duration(seconds: 1))
+            .throttleTime(const Duration(milliseconds: 300))
             .switchMap((routeData) => _go(routeData).asResultStream()),
         _$pushEvent
-            .throttleTime(const Duration(seconds: 1))
+            .throttleTime(const Duration(milliseconds: 300))
             .switchMap((routeData) => _push(routeData).asResultStream()),
         _$goToLocationEvent.doOnData(_router.go).asResultStream(),
         _$pushReplaceEvent
-            .throttleTime(const Duration(seconds: 1))
+            .throttleTime(const Duration(milliseconds: 300))
             .switchMap((routeData) => _pushReplace(routeData).asResultStream()),
         _$popEvent.doOnData((routeData) => _pop(routeData)).asResultStream(),
       ]).setErrorStateHandler(this).whereSuccess().publish();

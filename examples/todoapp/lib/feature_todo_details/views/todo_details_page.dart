@@ -30,6 +30,7 @@ class TodoDetailsPage extends StatelessWidget {
             RxBlocBuilder<TodoActionsBlocType, bool>(
               state: (bloc) => bloc.states.isLoading,
               builder: (context, isLoadingSnapshot, bloc) => SmallButton(
+                key: K.todoDetailsPageDeleteButton,
                 type: SmallButtonType.icon,
                 colorStyle: ButtonColorStyle.fromContext(context),
                 onPressed: () =>
@@ -43,6 +44,7 @@ class TodoDetailsPage extends StatelessWidget {
         floatingActionButton: RxBlocBuilder<TodoDetailsBlocType, bool>(
           state: (bloc) => bloc.states.isLoading,
           builder: (context, isLoadingSnapshot, bloc) => FloatingActionButton(
+            key: K.todoDetailsPageEditButton,
             heroTag: 'fab',
             onPressed: bloc.events.updateTodo,
             shape: const OvalBorder(),

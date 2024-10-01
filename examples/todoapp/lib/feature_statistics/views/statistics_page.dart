@@ -20,7 +20,9 @@ class StatisticsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(context.l10n.todos),
           actions: const [
-            AppTodoListBulkEditPopupMenuButton(),
+            AppTodoListBulkEditPopupMenuButton(
+              key: K.actionsButton,
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
