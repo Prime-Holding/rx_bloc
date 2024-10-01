@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:todoapp/keys.dart';
 
 import '../../helpers/golden_helper.dart';
 import '../../keys/todo_list_keys.dart' as keys;
@@ -21,7 +22,8 @@ void main() {
           ),
         ),
       act: (tester) async {
-        await tester.tap(find.byKey(Key(Stubs.todoList[0].id ?? '')));
+        await tester
+            .tap(find.byKey(K.todoCheckboxByIndex(Stubs.todoList[0].id ?? '')));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(keys.todoListTileWidgetId));
