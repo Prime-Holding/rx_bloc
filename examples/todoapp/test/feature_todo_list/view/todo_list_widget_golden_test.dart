@@ -4,7 +4,6 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:todoapp/keys.dart';
 
 import '../../helpers/golden_helper.dart';
-import '../../keys/todo_list_keys.dart' as keys;
 import '../../stubs.dart';
 import '../ui_components/todo_list_widget_factory.dart';
 
@@ -22,11 +21,11 @@ void main() {
           ),
         ),
       act: (tester) async {
-        await tester
-            .tap(find.byKey(K.todoCheckboxByIndex(Stubs.todoList[0].id ?? '')));
+        await tester.tap(find
+            .byKey(K.todoCheckboxByIndex(Stubs.todoListCustomId[0].id ?? '')));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(keys.todoListTileWidgetId));
+        await tester.tap(find.byKey(K.todoCheckboxByIndex('someLongId123')));
         await tester.pumpAndSettle();
       });
 }
