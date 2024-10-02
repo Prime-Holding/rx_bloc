@@ -1,7 +1,7 @@
 name: todoapp
 description: A new Flutter project.
 homepage: https://primeholding.com
-version: 1.0.20+80
+version: 1.0.0+1
 
 environment:
   sdk: '>=3.4.3 <4.0.0'

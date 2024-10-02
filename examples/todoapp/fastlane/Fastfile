@@ -13,7 +13,7 @@ IOS_P8_AUTH_KEY_ISSUER_ID = '69a6de93-4129-47e3-e053-5b8c7c11a4d1'
 PROJECT_DIRECTORY_PATH='.'
 
 # The url of the distribution repository (without http(s) prefix)
-DISTRIBUTION_REPOSITORY_URL='github.com/JvnSlv/todo-app-credentials.git'
+DISTRIBUTION_REPOSITORY_URL='github.com/Prime-Holding/test-distribution-credentials.git'
 
 # List of available environments
 environments = ['development', 'sit', 'uat', 'production']
