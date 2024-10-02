@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "Make sure you add your own Firebase UAT config.",
         "android_client_info": {
-          "package_name": "com.primeholding.todoapp.uat"
+          "package_name": "com.primeholding.liquidtools.uat"
         }
       },
       "oauth_client": [

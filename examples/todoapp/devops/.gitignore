@@ -1,0 +1,13 @@
+# Ignored files
+.DS_Store
+*.jks
+*.txt
+*.p8
+*.p12
+*.mobileprovision
+*.json
+
+# Ignored directories
+credentials/
+artifacts/
+decoded/

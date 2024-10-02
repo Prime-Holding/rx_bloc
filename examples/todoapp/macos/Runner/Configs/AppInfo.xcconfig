@@ -8,7 +8,7 @@
 PRODUCT_NAME = todoapp
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.todoapp
+PRODUCT_BUNDLE_IDENTIFIER = com.primeholding.liquidtools
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 com.primeholding. All rights reserved.

@@ -1,0 +1,569 @@
+require 'yaml'
+
+# Apple Team ID associated with your Apple account
+# https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/
+APPLE_DEVELOPMENT_TEAM = 'ZNE622G954'
+
+# The ID of the private App Store Connect Api Key
+# https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
+IOS_P8_AUTH_KEY_ID = 'BX5CP94DHB'
+IOS_P8_AUTH_KEY_ISSUER_ID = '69a6de93-4129-47e3-e053-5b8c7c11a4d1'
+
+# The path of the directory in which the project is located
+PROJECT_DIRECTORY_PATH='.'
+
+# The url of the distribution repository (without http(s) prefix)
+DISTRIBUTION_REPOSITORY_URL='github.com/Prime-Holding/test-distribution-credentials.git'
+
+# List of available environments
+environments = ['development', 'sit', 'uat', 'production']
+
+# Mapping of flavors to their symbolic representation used throughout this file
+flavor_map = {
+    'development' => 'development',
+    'sit' => 'sit',
+    'uat' => 'uat',
+    'production' => 'production'
+}
+
+# Mapping of flavor to target dart file containing the entry point of the app.
+target_map = {
+    'development' => 'lib/main_development.dart',
+    'sit' => 'lib/main_sit.dart',
+    'uat' => 'lib/main_uat.dart',
+    'production' => 'lib/main_production.dart'
+}
+
+# Mapping of flavor to flavor specific bundle id
+bundle_id_map = {
+    'development' => 'com.primeholding.liquidtools.development',
+    'sit' => 'com.primeholding.liquidtools.sit',
+    'uat' => 'com.primeholding.liquidtools.uat',
+    'production' => 'com.primeholding.liquidtools'
+}
+
+# Mapping of flavor to name of the provisioning profile for that flavor.
+# Accepted values are the name of the profile (when created on developer.apple.com) or the UUID of
+# the provisioning profile
+provisioning_profile_name_map = {
+    'development' => '',
+    'sit' => '',
+    'uat' => '',
+    'production' => 'LiquidTools Distribution'
+}
+
+# Mapping of flavor to provisioning profile file name used as a convention in this file
+provisioning_profile_file_name_map = {
+    'development' => 'development_provisioning_profile.mobileprovision',
+    'sit' => 'sit_provisioning_profile.mobileprovision',
+    'uat' => 'uat_provisioning_profile.mobileprovision',
+    'production' => 'production_provisioning_profile.mobileprovision'
+}
+
+# Mapping of flavor to firebase app id configuration for supported platforms
+firebase_app_id_map = {
+    'development' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+    'sit' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+    'uat' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+    'production' => {
+        'android' => 'X:XXXXXXXXXXXX:android:XXXXXXXXXXXXXXXXXXXXXX',
+        'ios' => 'X:XXXXXXXXXXXX:ios:XXXXXXXXXXXXXXXXXXXXXX',
+    },
+}
+
+# Path of local keychain created in case it doesn't exist
+keychain_path = Dir.getwd + '/devops/credentials/liquidtools-keychain.keychain'
+
+# ----------------------------------------------------------------------------------------------- #
+
+private_lane :setup_environment_variable do |options|
+    value = ''
+    loop do
+        value = prompt(
+            text: "Enter a value for #{options[:name]}: ",
+            secure_text: true
+        )
+        break if value.strip.length > 0
+    end
+
+    ENV[options[:name]] = value
+end
+
+def is_ci_cd_machine()
+    # https://adamj.eu/tech/2020/03/09/detect-if-your-tests-are-running-on-ci/
+    env_names = [ "CI", "GITHUB_ACTIONS", "TF_BUILD", "bamboo.buildKey", "GITLAB_CI", "BUILD_ID" ]
+    env_names.each do |str|
+        return true if ENV[str]!=nil
+      end
+    return false
+end
+
+desc "Clones the credentials repository into devops/credentials.
+Expected environment variables:
+  - CREDENTIAL_REPOSITORY_ACCESS_SECRET"
+private_lane :fetch_credentials do ensure_env_vars(
+        env_vars: ['CREDENTIAL_REPOSITORY_ACCESS_SECRET']
+    )
+
+    token = ENV["CREDENTIAL_REPOSITORY_ACCESS_SECRET"]
+
+    Dir.chdir("../devops") do
+        unless Dir.exist?('credentials')
+        # Clone the private credentials repository locally in the `credentials` directory.
+        # For different platforms, cloning a repository with an access token may be different.
+            sh(
+                "git \
+                    clone \
+                    https://#{token}@#{DISTRIBUTION_REPOSITORY_URL} \
+                    credentials"
+            )
+        end
+    end
+end
+
+desc "Generate code using flutter's build_runner package"
+private_lane :generate_code do
+    Dir.chdir('..') do
+        sh('bin/build_runner_build.sh')
+    end
+end
+
+private_lane :set_platform do |options|
+    if options[:platform] == 'android'
+        self.runner.current_platform = :android
+    elsif options[:platform] == 'ios'
+        self.runner.current_platform = :ios
+    else
+        UI.user_error!('Unknown platform, expected values: android, ios')
+    end
+end
+
+private_lane :ensure_build_environment do |options|
+    unless environments.include?(options[:environment]) then
+        UI.user_error!("unexpected value for parameter 'environment', " +
+            "must be one of: development, sit, uat, production")
+    end
+end
+
+private_lane :write_deployment_properties do |options|
+    Dir.chdir('../devops/artifacts') do
+        File.open('deployment.yaml', 'w') do |f|     
+            f.write("MOBILE_DEPLOYMENT_TARGET_PLATFORM: #{options[:platform]}\n")
+            f.write("MOBILE_DEPLOYMENT_ENVIRONMENT: #{options[:environment]}\n")
+            f.write("MOBILE_DEPLOYMENT_APPLICATION_ID: #{options[:application_id]}\n")
+            f.write("MOBILE_DEPLOYMENT_BUILD_NAME: #{options[:build_name]}\n")
+            f.write("MOBILE_DEPLOYMENT_BUILD_NUMBER: #{options[:build_number]}\n")
+        end
+    end
+end
+
+desc "Start an automatic build
+Expected environment variables:
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET
+    - tag_build_trigger_reason_tag_name
+Expected input parameters:
+    - platform: string (android, ios)
+Example:
+    fastlane build_flutter_app platform:android"
+lane :build_flutter_app do |options|
+    ensure_env_vars(
+        env_vars: ['tag_build_trigger_reason_tag_name']
+    )
+
+    pieces = ENV['tag_build_trigger_reason_tag_name'].split('-')
+
+    unless pieces.length == 3
+        UI.user_error!('unexpected version control tag value')
+    end
+
+    build_name = pieces[0]
+    build_number = pieces[1]
+    environment = pieces[2]
+
+    build_custom(
+        platform: options[:platform],
+        build_name: build_name,
+        build_number: build_number,
+        environment: environment
+    )
+end
+
+desc "Start a custom build
+If the following environment variables are not set the task will prompt the user to enter them:
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET
+Expected input parameters:
+    - platform: string (android, ios)
+    - build_name: string (1.2.0)
+    - build_number: integer (121)
+    - environment: string (development, sit, uat, production)
+Example:
+    fastlane build_custom platform:android build_name:1.2.0 build_number:121 environment:uat"
+lane :build_custom do |options|
+    environment = options[:environment]
+    ensure_build_environment(environment: environment)
+
+    if ENV['CREDENTIAL_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_REPOSITORY_ACCESS_SECRET')
+    end
+
+    if ENV['CREDENTIAL_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_ENCRYPTION_PASSWORD')
+    end
+
+    set_platform(platform: options[:platform])
+    generate_code()
+    fetch_credentials()
+    install_credentials(environment: environment)
+
+    Dir.chdir('../devops/') do
+        Dir.mkdir('artifacts') unless Dir.exist?('artifacts')
+        Pathname.new('artifacts').children.each { |p| p.rmtree }
+    end
+
+    begin
+        build(
+            environment: environment,
+            build_name: options[:build_name],
+            build_number: options[:build_number]
+        )
+
+        write_deployment_properties(
+            environment: environment,
+            platform: options[:platform],
+            application_id: bundle_id_map[environment],
+            build_name: options[:build_name],
+            build_number: options[:build_number]
+        )
+    ensure
+        post_build_clean_up()
+    end
+end
+
+platform :android do
+    desc "Decode credentials for Android build and deployment
+    Expected environment variables:
+      - CREDENTIAL_ENCRYPTION_PASSWORD
+    Creates the following environment variables:
+      - ANDROID_KEYSTORE_PATH
+      - ANDROID_KEYSTORE_ALIAS
+      - ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD
+      - ANDROID_KEYSTORE_PASSWORD"
+    private_lane :install_credentials do |options|
+        ensure_env_vars(
+            env_vars: ['CREDENTIAL_ENCRYPTION_PASSWORD']
+        )
+
+        Dir.chdir("../devops/credentials") do
+            sh("./crypt.sh decode android")
+            keystore_alias_file_path = Dir.getwd + "/decoded/android/key_alias.txt"
+            keystore_key_password_file_path = Dir.getwd + "/decoded/android/key_password.txt"
+            keystore_password_file_path = Dir.getwd + "/decoded/android/store_password.txt"
+
+            puts('Creating Android build environment variables')
+            ENV["ANDROID_KEYSTORE_PATH"] = Dir.getwd + "/decoded/android/android.jks"
+            ENV["ANDROID_KEYSTORE_ALIAS"] = File.read(keystore_alias_file_path).strip
+            ENV["ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD"] = File.read(keystore_key_password_file_path).strip
+            ENV["ANDROID_KEYSTORE_PASSWORD"] = File.read(keystore_password_file_path).strip
+        end
+    end
+
+    desc 'Build the mobile application for Android'
+    private_lane :build do |options|
+        Dir.chdir("..") do
+
+            sh(
+                "flutter",
+                "build",
+                "appbundle",
+                "--obfuscate",
+                "--split-debug-info=../devops/artifacts/",
+                "--build-name=" + options[:build_name],
+                "--build-number=" + options[:build_number],
+                "--flavor=" + flavor_map[options[:environment]],
+                "--target=" + target_map[options[:environment]]
+            )
+
+            sh(
+                "mv",
+                "build/app/outputs/bundle/#{options[:environment]}Release/app-#{options[:environment]}-release.aab",
+                "devops/artifacts/"
+            )
+        end
+    end
+
+    desc 'Clean up temporary build files'
+    private_lane :post_build_clean_up do
+        # Remove any credentials
+        Dir.chdir("../devops/") do
+            sh("rm -rf credentials/")
+        end
+    end
+
+    desc 'Deploy the app to google play store'
+    private_lane :deploy_platform do |options|
+        Dir.chdir('../credentials') do
+            sh('./crypt.sh decode deploy_android')
+        end
+
+        version_name = "#{options[:build_number]} (#{options[:build_name]}-#{options[:environment]})"
+
+        upload_to_play_store(
+            package_name: options[:application_id],
+            release_status: 'draft',
+            track: 'internal',
+            version_name: version_name,
+            json_key: File.expand_path('../credentials/decoded/android/service_account_key.json'),
+            aab: File.expand_path("app-#{options[:environment]}-release.aab"),
+            skip_upload_changelogs: true,
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_metadata: true
+        )
+    end
+
+    desc 'Deploy the debug symbols to firebase'
+    private_lane :deploy_debug_symbols_platform do |options|
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-arm.symbols")
+        )
+
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-arm64.symbols")
+        )
+
+        sh(
+            "firebase",
+            "crashlytics:symbols:upload",
+            "--app=" + options[:firebase_application_id],
+            File.expand_path("app.android-x64.symbols")
+        )
+    end
+end
+
+platform :ios do
+    desc 'Decode credentials for iOS build and deployment
+    Expected environment variables:
+      - CREDENTIAL_ENCRYPTION_PASSWORD'
+    private_lane :install_credentials do |options|
+        ensure_env_vars(
+            env_vars: [
+                'CREDENTIAL_ENCRYPTION_PASSWORD',
+            ]
+        )
+
+        Dir.chdir('../devops/credentials') do
+            sh('./crypt.sh decode ios')
+
+            basedir = Dir.getwd + '/decoded/ios/'
+
+            certificate_password_file_path = basedir + 'distribution_certificate_password.txt'
+            keychain_password_file_path = basedir + 'keychain_password.txt'
+            certificate_password = File.read(certificate_password_file_path).strip
+            keychain_password = File.read(keychain_password_file_path).strip
+
+            create_keychain(
+                path: keychain_path,
+                password: keychain_password,
+                default_keychain: is_ci_cd_machine()
+            )
+
+            unlock_keychain(
+                path: keychain_path,
+                password: keychain_password
+            )
+
+            import_certificate(
+                certificate_path: basedir + 'distribution_certificate.p12',
+                certificate_password: certificate_password,
+                keychain_path: keychain_path,
+                keychain_password: keychain_password
+            )
+
+            flavor = flavor_map[options[:environment]]
+            install_provisioning_profile(path: basedir + provisioning_profile_file_name_map[flavor])
+        end
+    end
+
+    desc 'Build the mobile application for iOS'
+    private_lane :build do |options|
+        Dir.chdir('..') do
+            sh(
+                'flutter',
+                'build',
+                'ios',
+                '--obfuscate',
+                '--no-codesign',
+                '--split-debug-info=../devops/artifacts',
+                '--build-name=' + options[:build_name],
+                '--build-number=' + options[:build_number],
+                '--flavor=' + flavor_map[options[:environment]],
+                '--target=' + target_map[options[:environment]]
+            )
+
+            MY_APP_ID = bundle_id_map[options[:environment]]
+            MY_PROFILE = provisioning_profile_name_map[options[:environment]]
+            PROJECT_PATH_ABS = Dir.chdir(PROJECT_DIRECTORY_PATH) { Dir.getwd }
+
+            settings_to_override = {
+                :BUNDLE_IDENTIFIER => MY_APP_ID,
+                :PROVISIONING_PROFILE_SPECIFIER => MY_PROFILE,
+                :DEVELOPMENT_TEAM => APPLE_DEVELOPMENT_TEAM
+            }
+
+            gym(
+                workspace: PROJECT_PATH_ABS+'/ios/Runner.xcworkspace',
+                scheme: flavor_map[options[:environment]],
+                xcargs: settings_to_override,
+                output_directory: PROJECT_PATH_ABS+'/devops/artifacts',
+                export_method: 'app-store',
+                export_options: {
+                    manageAppVersionAndBuildNumber: false,
+                    provisioningProfiles: {
+                        MY_APP_ID => MY_PROFILE
+                    }
+                }
+            )
+        end
+    end
+
+    desc 'Clean up temporary build files'
+    private_lane :post_build_clean_up do
+        # Remove any credentials
+        Dir.chdir("../devops/") do
+            sh("rm -rf credentials/")
+        end
+
+        if is_ci_cd_machine()==true
+            delete_keychain(keychain_path: keychain_path) if File.exist? keychain_path
+        end
+    end
+
+    desc 'Deploy the app to apple testflight'
+    private_lane :deploy_platform do |options|
+        Dir.chdir('../credentials') do
+            sh('./crypt.sh decode deploy_ios')
+        end
+
+        api_key = app_store_connect_api_key(
+            # The ID of the private App Store Connect Api Key
+            # https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api
+            key_id: IOS_P8_AUTH_KEY_ID,
+            issuer_id: IOS_P8_AUTH_KEY_ISSUER_ID,
+            key_filepath: File.expand_path('../credentials/decoded/ios/auth_key.p8'),
+        )
+
+        upload_to_testflight(
+            api_key: api_key,
+            skip_waiting_for_build_processing: true,
+            ipa: File.expand_path('Runner.ipa'),
+        )
+    end
+
+    desc 'Deploy the debug symbols to firebase'
+    private_lane :deploy_debug_symbols_platform do |options|
+        sh(
+            'firebase',
+            'crashlytics:symbols:upload',
+            '--app=' + options[:firebase_application_id],
+            'app.ios-arm64.symbols'
+        )
+
+        # TODO: upload dSYM
+    end
+end
+
+desc 'Deploy the build artifacts to the environment specified in deployment.yaml
+Expected environment variables:
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET'
+lane :deploy do
+    if ENV['CREDENTIAL_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_REPOSITORY_ACCESS_SECRET')
+    end
+
+    if ENV['CREDENTIAL_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_ENCRYPTION_PASSWORD')
+    end
+
+    fetch_credentials()
+
+    Dir.chdir('../devops/artifacts') do
+        properties = YAML.load_file('deployment.yaml')
+
+        set_platform(platform: properties['MOBILE_DEPLOYMENT_TARGET_PLATFORM'])
+        ensure_build_environment(environment: properties['MOBILE_DEPLOYMENT_ENVIRONMENT'])
+
+        deploy_platform(
+            environment: properties['MOBILE_DEPLOYMENT_ENVIRONMENT'],
+            application_id: properties['MOBILE_DEPLOYMENT_APPLICATION_ID'],
+            build_name: properties['MOBILE_DEPLOYMENT_BUILD_NAME'],
+            build_number: properties['MOBILE_DEPLOYMENT_BUILD_NUMBER']
+        )
+    end
+
+    # Remove any credentials (post deploy)
+    Dir.chdir("../devops/") do
+        sh("rm -rf credentials/")
+    end
+end
+
+desc 'Deploy the debug symbols to firebase
+Expected environment variables:
+    - CREDENTIAL_ENCRYPTION_PASSWORD
+    - CREDENTIAL_REPOSITORY_ACCESS_SECRET'
+lane :deploy_debug_symbols do
+    if ENV['CREDENTIAL_REPOSITORY_ACCESS_SECRET'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_REPOSITORY_ACCESS_SECRET')
+    end
+
+    if ENV['CREDENTIAL_ENCRYPTION_PASSWORD'] == nil
+        setup_environment_variable(name: 'CREDENTIAL_ENCRYPTION_PASSWORD')
+    end
+
+    fetch_credentials()
+
+    Dir.chdir('../devops/credentials/') do
+        sh('./crypt.sh decode firebase')
+
+        firebase_token_file_path = Dir.getwd + '/decoded/firebase/firebase_token.txt'
+        ENV['FIREBASE_TOKEN'] = File.read(firebase_token_file_path).strip
+    end
+
+    Dir.chdir('../devops/artifacts') do
+        properties = YAML.load_file('deployment.yaml')
+        platform = properties['MOBILE_DEPLOYMENT_TARGET_PLATFORM']
+        environment = properties['MOBILE_DEPLOYMENT_ENVIRONMENT']
+
+        set_platform(platform: platform)
+        ensure_build_environment(environment: environment)
+
+        firebase_application_id = firebase_app_id_map[environment][platform]
+
+        deploy_debug_symbols_platform(
+            environment: environment,
+            firebase_application_id: firebase_application_id,
+        )
+    end
+
+    # Remove any credentials (post deploy)
+    Dir.chdir("../devops/") do
+        sh("rm -rf credentials/")
+    end
+end
