@@ -45,7 +45,6 @@ class TodoDetailsPage extends StatelessWidget {
           state: (bloc) => bloc.states.isLoading,
           builder: (context, isLoadingSnapshot, bloc) => FloatingActionButton(
             key: K.todoDetailsPageEditButton,
-            heroTag: 'fab',
             onPressed: bloc.events.updateTodo,
             shape: const OvalBorder(),
             child: context.designSystem.icons.edit,
