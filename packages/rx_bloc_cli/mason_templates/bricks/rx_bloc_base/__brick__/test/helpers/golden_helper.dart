@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:{{project_name}}/assets.dart';
 import 'package:{{project_name}}/base/theme/design_system.dart';
-import 'package:{{project_name}}/base/theme/{{project_name}}.dart';
+import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
 import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';
 
 import 'models/labeled_device_builder.dart';
