@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-
 import 'package:{{project_name}}/assets.dart';
 import 'package:{{project_name}}/base/theme/design_system.dart';
-import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
+import 'package:{{project_name}}/base/theme/{{project_name}}.dart';
 import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';
 
 import 'models/labeled_device_builder.dart';
@@ -51,10 +50,11 @@ LabeledDeviceBuilder generateDeviceBuilder({
 /// [pumpFunction] (optional) - function for executing custom pumping
 /// behavior instead of [pumpDeviceBuilderWithLocalizationsAndTheme]
 void runGoldenTests(
-  List<LabeledDeviceBuilder> deviceBuilders, {
-  Future<void> Function(WidgetTester, DeviceBuilder, Themes? theme)?
+    List<LabeledDeviceBuilder> deviceBuilders, {
+      Future<void> Function(WidgetTester, DeviceBuilder, Themes? theme)?
       pumpFunction,
-}) {
+      CustomPump? matcherCustomPump,
+    }) {
   for (final db in deviceBuilders) {
     //test each DeviceBuilder in both light mode and dark mode
     for (final theme in Themes.values) {
@@ -65,18 +65,19 @@ void runGoldenTests(
         pumpFunction != null
             ? await pumpFunction.call(tester, db, theme)
             : await pumpDeviceBuilderWithLocalizationsAndTheme(
-                tester,
-                db,
-                theme: theme,
-              );
+          tester,
+          db,
+          theme: theme,
+        );
 
         await screenMatchesGolden(
           tester,
           '$directory/$db',
           //defaults to pumpAndSettle, causing problems when testing animations
-          customPump: db.label.contains('loading')
-              ? (tester) => tester.pump(const Duration(milliseconds: 300))
-              : null,
+          customPump: matcherCustomPump ??
+              (db.label.contains('loading')
+                  ? (tester) => tester.pump(const Duration(microseconds: 300))
+                  : null),
         );
       });
     }
@@ -86,10 +87,10 @@ void runGoldenTests(
 /// calls [pumpDeviceBuilderWithMaterialApp] with localizations we need in this
 /// app, and injects an optional theme
 Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
-  WidgetTester tester,
-  DeviceBuilder builder, {
-  Themes? theme,
-}) =>
+    WidgetTester tester,
+    DeviceBuilder builder, {
+      Themes? theme,
+    }) =>
     pumpDeviceBuilderWithMaterialApp(
       tester,
       builder,
@@ -123,14 +124,14 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
 ///
 /// [theme] (optional) - Your app theme
 Future<void> pumpDeviceBuilderWithMaterialApp(
-  WidgetTester tester,
-  DeviceBuilder builder, {
-  TargetPlatform platform = TargetPlatform.android,
-  Iterable<LocalizationsDelegate<dynamic>>? localizations,
-  NavigatorObserver? navigatorObserver,
-  Iterable<Locale>? localeOverrides,
-  ThemeData? theme,
-}) async {
+    WidgetTester tester,
+    DeviceBuilder builder, {
+      TargetPlatform platform = TargetPlatform.android,
+      Iterable<LocalizationsDelegate<dynamic>>? localizations,
+      NavigatorObserver? navigatorObserver,
+      Iterable<Locale>? localeOverrides,
+      ThemeData? theme,
+    }) async {
   await tester.pumpDeviceBuilder(
     builder,
     wrapper: materialAppWrapper(
@@ -153,12 +154,12 @@ Future<void> pumpDeviceBuilderWithMaterialApp(
 ///
 /// [matcherCustomPump] (optional) - custom pump function for testing animations
 void runGoldenBuilderTests(
-  String testName, {
-  required Size surfaceSize,
-  required GoldenBuilder Function(Color) builder,
-  WidgetTesterCallback? act,
-  CustomPump? matcherCustomPump,
-}) {
+    String testName, {
+      required Size surfaceSize,
+      required GoldenBuilder Function(Color) builder,
+      WidgetTesterCallback? act,
+      CustomPump? matcherCustomPump,
+    }) {
   for (final theme in Themes.values) {
     final themeName = theme.name;
     final directory = '${themeName}_theme';
