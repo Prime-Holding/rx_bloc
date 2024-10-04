@@ -47,6 +47,9 @@ app.*.map.json
 # local env
 env.json
 lib/env_variable.g.dart
+
+# Macos related
+**/macos/Flutter/GeneratedPluginRegistrant.swift
 # Linux related
 **/linux/flutter/generated_plugin_registrant.*
 **/linux/flutter/generated_plugins.cmake
@@ -92,3 +95,6 @@ lib/env_variable.g.dart
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+
+# Test related
+**/integration_test/test_bundle.dart

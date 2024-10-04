@@ -11,6 +11,7 @@ PopupMenuItem<TodosFilterModel> buildTodosFilterMenuItem(
   TodosFilterModel? selectedFilter,
 }) =>
     PopupMenuItem<TodosFilterModel>(
+      key: K.filterByName(filter),
       onTap: () => onApplyFilter(filter),
       child: Text(
         filter.getLabel(context),

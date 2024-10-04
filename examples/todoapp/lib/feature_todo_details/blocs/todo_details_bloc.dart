@@ -77,7 +77,8 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
       .withLatestFrom(todo, (_, todo) => todo)
       .whereSuccess()
       .doOnData(
-        (todo) => _routerBloc.events.go(TodoUpdateRoute(todo.id!), extra: todo),
+        (todo) =>
+            _routerBloc.events.push(TodoUpdateRoute(todo.id!), extra: todo),
       )
       .publish();
 

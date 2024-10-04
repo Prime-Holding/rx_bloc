@@ -145,10 +145,16 @@ class TodoRepository with NoConnectionHandlerMixin {
         () async => localDataSource.fetchAllUnsyncedTodos(),
       );
   Future<List<$TodoModel>> syncTodos(Map<String, List<$TodoModel>> todos) =>
-      _errorMapper.execute(
-        () async => dataSource.syncTodos(todos),
-      );
-
+      _errorMapper
+          .execute(
+            () async => dataSource.syncTodos(todos),
+          )
+          .onError(
+            (error, stackTrace) => handleError(
+              error,
+              [],
+            ),
+          );
   void deleteMany(List<$TodoModel> todos) => localDataSource.deleteMany(todos);
 
   void addMany(List<$TodoModel> todos) => localDataSource.addMany(todos);
