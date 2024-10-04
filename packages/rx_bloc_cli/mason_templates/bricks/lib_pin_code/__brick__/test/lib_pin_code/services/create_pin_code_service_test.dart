@@ -3,6 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:{{project_name}}/lib_pin_code/repository/pin_code_repository.dart';
 import 'package:{{project_name}}/lib_pin_code/services/create_pin_code_service.dart';
+import 'package:{{project_name}}/lib_pin_code/services/verify_pin_code_service.dart';
 
 import '../stubs.dart';
 import 'create_pin_code_service_test.mocks.dart';
@@ -29,12 +30,12 @@ void main() {
       final result = await permissionsService.deleteStoredPin();
 
       expect(result, true);
-      verify(repository.writePinToStorage(Stubs.storedPinKey, null)).called(1);
+      verify(repository.writePinToStorage(VerifyPinCodeService.storedPin, null)).called(1);
       verify(repository.getPinCode()).called(1);
     });
 
     test('isPinCodeInSecureStorage should return true', () async {
-      const pinKey = Stubs.storedPinKey;
+      const pinKey = VerifyPinCodeService.storedPin;
 
       when(repository.readPinFromStorage(key: pinKey))
           .thenAnswer((_) async => Stubs.pin);
@@ -42,11 +43,11 @@ void main() {
       final result = await permissionsService.isPinCodeInSecureStorage();
 
       expect(result, true);
-      verify(repository.readPinFromStorage(key: Stubs.storedPinKey)).called(1);
+      verify(repository.readPinFromStorage(key: pinKey)).called(1);
     });
 
     test('isPinCodeInSecureStorage should return false', () async {
-      const pinKey = Stubs.storedPinKey;
+      const pinKey = VerifyPinCodeService.storedPin;
 
       when(repository.readPinFromStorage(key: pinKey))
           .thenAnswer((_) async => null);
@@ -54,7 +55,7 @@ void main() {
       final result = await permissionsService.isPinCodeInSecureStorage();
 
       expect(result, false);
-      verify(repository.readPinFromStorage(key: Stubs.storedPinKey)).called(1);
+      verify(repository.readPinFromStorage(key: pinKey)).called(1);
     });
 
     test('checkIsPinCreated should return false', () async {

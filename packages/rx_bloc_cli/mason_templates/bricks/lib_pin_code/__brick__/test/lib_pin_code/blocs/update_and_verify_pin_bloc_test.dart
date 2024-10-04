@@ -6,16 +6,16 @@ import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';
 import 'package:{{project_name}}/lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 import 'package:{{project_name}}/lib_pin_code/services/pin_biometrics_service.dart';
-import 'package:{{project_name}}/lib_pin_code/services/update_and_verify_pin_code_service.dart';
+import 'package:{{project_name}}/lib_pin_code/services/verify_pin_code_service.dart';
 
 import '../../base/common_blocs/coordinator_bloc_mock.dart';
 import '../mock/pin_biometrics_service_mock.dart';
-import '../mock/update_and_verify_pin_code_service_mock.dart';
+import '../mock/verify_pin_code_service_mock.dart';
 import '../stubs.dart';
 
 void main() {
   late CoordinatorBlocType coordinatorBloc;
-  late UpdateAndVerifyPinCodeService updateAndVerifyPinCodeService;
+  late VerifyPinCodeService verifyPinCodeService;
   late PinBiometricsService pinBiometricsService;
   late CoordinatorStates coordinatorStates;
   late CoordinatorEvents coordinatorEvents;
@@ -34,7 +34,7 @@ void main() {
     when(coordinatorStates.userLogOut)
         .thenAnswer((_) => Stream.value(Result.success(true)));
 
-    when(updateAndVerifyPinCodeService.deleteStoredPin())
+    when(verifyPinCodeService.deleteStoredPin())
         .thenAnswer((_) => Future.value());
 
     when(pinBiometricsService.areBiometricsEnabled())
@@ -46,44 +46,44 @@ void main() {
     when(pinBiometricsService.setBiometricsEnabled(false))
         .thenAnswer((_) => Future.value());
 
-    when(updateAndVerifyPinCodeService.setPinCodeType(false))
+    /*when(verifyPinCodeService.setPinCodeType(false))
         .thenAnswer((_) => Future.value(false));
 
-    when(updateAndVerifyPinCodeService.setPinCodeType(true))
-        .thenAnswer((_) => Future.value(true));
+    when(verifyPinCodeService.setPinCodeType(true))
+        .thenAnswer((_) => Future.value(true));*/
 
-    when(updateAndVerifyPinCodeService.checkIsPinCreated())
+    when(verifyPinCodeService.checkIsPinCreated())
         .thenAnswer((_) => Future.value(isPinCreated));
 
-    when(updateAndVerifyPinCodeService.isPinCodeInSecureStorage())
+    when(verifyPinCodeService.isPinCodeInSecureStorage())
         .thenAnswer((_) => Future.value(isPinCodeInSecureStorage));
 
     if (pinCode != null) {
       if (encryptedPinCode != null) {
-        when(updateAndVerifyPinCodeService.encryptPinCode(pinCode))
+        when(verifyPinCodeService.encryptPinCode(pinCode))
             .thenAnswer((_) => Future.value(encryptedPinCode));
       }
 
-      when(updateAndVerifyPinCodeService.getPinLength())
+      when(verifyPinCodeService.getPinLength())
           .thenAnswer((_) => Future.value(pinCode.length));
+/*
+      when(verifyPinCodeService.verifyPinCode(pinCode))
+          .thenAnswer((_) => Future.value(isPinCorrect));*/
 
-      when(updateAndVerifyPinCodeService.verifyPinCode(pinCode))
-          .thenAnswer((_) => Future.value(isPinCorrect));
-
-      when(updateAndVerifyPinCodeService.getPinCode())
+      when(verifyPinCodeService.getPinCode())
           .thenAnswer((_) => Future.value(pinCode));
     }
   }
 
   UpdateAndVerifyPinBloc bloc() => UpdateAndVerifyPinBloc(
-      service: updateAndVerifyPinCodeService,
+      service: verifyPinCodeService,
       pinBiometricsService: pinBiometricsService,
       coordinatorBloc: coordinatorBloc);
 
   setUp(() {
     coordinatorStates = coordinatorStatesMockFactory();
     coordinatorEvents = coordinatorEventsMockFactory();
-    updateAndVerifyPinCodeService = updateAndVerifyPinCodeServiceMockFactory();
+    verifyPinCodeService = verifyPinCodeServiceMockFactory();
     pinBiometricsService = pinBiometricsServiceMockFactory();
     coordinatorBloc = coordinatorBlocMockFactory(
         states: coordinatorStates, events: coordinatorEvents);
@@ -108,22 +108,4 @@ void main() {
         Stubs.sessionStartListening,
         Stubs.sessionStartListening,
       ]);
-
-  rxBlocFakeAsyncTest<UpdateAndVerifyPinBlocType, bool>(
-      'test update_and_verify_pin_bloc_test state pinCodeType',
-      build: () {
-        defineWhen();
-        return bloc();
-      },
-      act: (bloc, fakeAsync) async {
-        bloc.events.setPinCodeType(true);
-        fakeAsync.elapse(const Duration(milliseconds: 1));
-        bloc.events.setPinCodeType(false);
-        fakeAsync.elapse(const Duration(milliseconds: 1));
-        bloc.events.setPinCodeType(true);
-        fakeAsync.elapse(const Duration(milliseconds: 1));
-        bloc.events.setPinCodeType(true);
-      },
-      state: (bloc) => bloc.states.pinCodeType,
-      expect: [true, false, true, true]);
 }

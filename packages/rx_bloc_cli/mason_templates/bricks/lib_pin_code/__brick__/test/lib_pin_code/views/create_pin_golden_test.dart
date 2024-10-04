@@ -15,8 +15,8 @@ void main() {
         scenario: Scenario(name: 'create_pin_title'),
       ),
       generateDeviceBuilder(
-        widget: createPinFactory(title: Stubs.title, isSessionTimeout: true),
-        scenario: Scenario(name: 'create_pin_timeout'),
+        widget: createPinFactory(title: Stubs.title, showBiometricsButton: true),
+        scenario: Scenario(name: 'create_pin_show_biometrics'),
       ),
       generateDeviceBuilder(
         widget: createPinFactory(title: Stubs.title, isPinCreated: true),

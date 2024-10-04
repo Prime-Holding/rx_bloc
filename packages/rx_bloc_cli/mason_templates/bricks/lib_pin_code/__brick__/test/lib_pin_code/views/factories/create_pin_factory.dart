@@ -14,7 +14,7 @@ import '../mocks/create_pin_service_mock.dart';
 /// Change the parameters according the the needs of the test
 Widget createPinFactory({
   String? title,
-  bool? isSessionTimeout,
+  bool? showBiometricsButton,
   bool? isPinCreated,
   bool? deleteStoredPinData,
 }) =>
@@ -33,14 +33,14 @@ Widget createPinFactory({
             value: createPinServiceMockFactory(),
           ),
         ],
-        child: Builder(builder: (context)  {
+        child: Builder(builder: (context) {
           if (title != null) {
             PinCodeArguments pinCodeArguments;
 
-            if (isSessionTimeout != null) {
+            if (showBiometricsButton != null) {
               pinCodeArguments = PinCodeArguments(
                 title: title,
-                isSessionTimeout: isSessionTimeout,
+                showBiometricsButton: showBiometricsButton,
               );
             } else {
               pinCodeArguments = PinCodeArguments(

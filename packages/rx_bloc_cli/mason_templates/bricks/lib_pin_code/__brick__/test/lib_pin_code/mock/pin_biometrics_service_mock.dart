@@ -6,4 +6,5 @@ import 'pin_biometrics_service_mock.mocks.dart';
 @GenerateMocks([
   PinBiometricsService,
 ])
-PinBiometricsService pinBiometricsServiceMockFactory() => MockPinBiometricsService();
+PinBiometricsService pinBiometricsServiceMockFactory() =>
+    MockPinBiometricsService();

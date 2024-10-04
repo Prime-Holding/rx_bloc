@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:{{project_name}}/base/models/errors/error_model.dart';{{#enable_lib_realtime_communication}}
-import 'package:{{project_name}}/base/models/response_models/sse_message_model.dart';{{/enable_lib_realtime_communication}}
+import 'package:{{project_name}}/base/models/errors/error_model.dart';{{#realtime_communication}}
+import 'package:{{project_name}}/base/models/response_models/sse_message_model.dart';{{/realtime_communication}}
 
 class Stubs {
   static const addIcon = Icon(Icons.add);
@@ -18,12 +18,12 @@ class Stubs {
   static final unknownError =
       UnknownErrorModel(exception: Exception('Some error occur'));
 
-  {{#enable_lib_realtime_communication}}
+  {{#realtime_communication}}
   static const sseMessageModel = SseMessageModel(
     id: '1',
     data: 'Some message',
     event: 'event Name',
     retry: 1000,
   );
-  {{/enable_lib_realtime_communication}}
+  {{/realtime_communication}}
 }

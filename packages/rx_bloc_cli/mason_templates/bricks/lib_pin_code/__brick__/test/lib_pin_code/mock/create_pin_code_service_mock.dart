@@ -6,4 +6,5 @@ import 'create_pin_code_service_mock.mocks.dart';
 @GenerateMocks([
   CreatePinCodeService,
 ])
-CreatePinCodeService createPinCodeServiceMockFactory() => MockCreatePinCodeService();
+CreatePinCodeService createPinCodeServiceMockFactory() =>
+    MockCreatePinCodeService();

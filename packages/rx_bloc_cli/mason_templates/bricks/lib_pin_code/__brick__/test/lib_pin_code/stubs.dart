@@ -5,10 +5,6 @@ class Stubs {
 
   static const title = 'Some title';
 
-  static const storedPinKey = 'storedPin';
-
-  static const firstPinKey = 'firstPin';
-
   static const sessionStartListening = SessionState.startListening;
 
   static const sessionStopListening = SessionState.stopListening;
