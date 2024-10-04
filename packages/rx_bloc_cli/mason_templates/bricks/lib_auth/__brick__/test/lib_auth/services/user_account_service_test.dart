@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:{{project_name}}/base/repositories/push_notification_repository.dart';
-import 'package:{{project_name}}/lib_analytics/repositories/analytics_repository.dart';
+import 'package:{{project_name}}/base/repositories/push_notification_repository.dart';{{#analytics}}
+import 'package:{{project_name}}/lib_analytics/repositories/analytics_repository.dart';{{/analytics}}
 import 'package:{{project_name}}/lib_auth/repositories/auth_repository.dart';
 import 'package:{{project_name}}/lib_auth/services/user_account_service.dart';
 import 'package:{{project_name}}/lib_permissions/services/permissions_service.dart';
@@ -12,8 +12,8 @@ import 'user_account_service_test.mocks.dart';
 
 @GenerateMocks([
   AuthRepository,
-  PushNotificationRepository,
-  AnalyticsRepository,
+  PushNotificationRepository,{{#analytics}}
+  AnalyticsRepository,{{/analytics}}
   PermissionsService
 ])
 void main() {
@@ -26,17 +26,17 @@ void main() {
 
   setUp(() {
     authRepository = MockAuthRepository();
-    pushNotificationRepository = MockPushNotificationRepository();
-    analyticsRepository = MockAnalyticsRepository();
+    pushNotificationRepository = MockPushNotificationRepository();{{#analytics}}
+    analyticsRepository = MockAnalyticsRepository();{{/analytics}}
     permissionsService = MockPermissionsService();
     userAccountService = UserAccountService(authRepository,
-        pushNotificationRepository, analyticsRepository, permissionsService);
+        pushNotificationRepository, {{#analytics}}analyticsRepository,{{/analytics}} permissionsService);
   });
 
   tearDown(() {
     reset(authRepository);
-    reset(pushNotificationRepository);
-    reset(analyticsRepository);
+    reset(pushNotificationRepository);{{#analytics}}
+    reset(analyticsRepository);{{/analytics}}
     reset(permissionsService);
   });
 
@@ -55,9 +55,9 @@ void main() {
           .called(1);
       verify(userAccountService.saveTokens(authTokenModel)).called(1);
       verify(userAccountService.subscribeForNotifications()).called(1);
-      verify(userAccountService.loadPermissions()).called(1);
+      verify(userAccountService.loadPermissions()).called(1);{{#analytics}}
       verify(analyticsRepository.setUserIdentifier('logged_in_user_id'))
-          .called(1);
+          .called(1);{{/analytics}}
     });
 
     test('saveTokens should call repository saveToken and saveRefreshToken',
@@ -105,8 +105,8 @@ void main() {
 
       verify(pushNotificationRepository.unsubscribeForPushNotifications(true)).called(1);
       verify(authRepository.logout()).called(1);
-      verify(authRepository.clearAuthData()).called(1);
-      verify(analyticsRepository.logout()).called(1);
+      verify(authRepository.clearAuthData()).called(1);{{#analytics}}
+      verify(analyticsRepository.logout()).called(1);{{/analytics}}
       verify(userAccountService.loadPermissions()).called(1);
     });
   });
