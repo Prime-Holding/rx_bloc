@@ -19,6 +19,7 @@ class TodoForm extends StatelessWidget {
             onChanged: (bloc, title) => bloc.events.setTitle(title),
             cursorBehaviour: RxTextFormFieldCursorBehaviour.end,
             builder: (fieldState) => TextFormField(
+              key: K.todoTitleTextField,
               autofocus: true,
               enabled: !isLoading,
               controller: fieldState.controller,
@@ -38,6 +39,7 @@ class TodoForm extends StatelessWidget {
               onChanged: (bloc, description) =>
                   bloc.events.setDescription(description),
               builder: (fieldState) => TextFormField(
+                key: K.todoDescriptionTextField,
                 controller: fieldState.controller,
                 style: context.designSystem.typography.h3Med13,
                 enabled: !isLoading,
