@@ -1,59 +1,180 @@
 stages:
-  - setup
   - test
+  - extract
+  - build
+  - deploy
 
-.standard-rules:
+image: ubuntu:latest
+
+.ci-rules:
+  except:
+    - tags
+
+.build-rules:
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"'
-      changes:
-        - "**"
+    - if: '$CI_COMMIT_TAG =~ /.*-v[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+/'
+      when: always
 
 variables:
-  FLUTTER_VERSION: 3.24.0
+  FLUTTER_VERSION: 3.24.1
   MIN_COVERAGE: 6
+  PROJECT_PATH: "."
+  PUBLISH_TO_STORE: false
+  BUNDLE_GEMFILE: "./Gemfile"
 
-setup-flutter:
-  stage: setup
-  extends:
-    - .standard-rules
-  before_script:
-    - apt-get update
-    - apt-get install -y curl unzip xz-utils git
-  script:
-    - curl -o flutter.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
-    - tar xf flutter.tar.xz
-    - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
-    - dart --version
-    - flutter --version
-  artifacts:
-    paths:
-      - flutter/
-  cache:
-    key: "${CI_PROJECT_TITLE}-flutter-${FLUTTER_VERSION}-${CI_COMMIT_REF_SLUG}"
-    paths:
-      - flutter/
 
 run-app-tests:
   stage: test
   extends:
-    - .standard-rules
-  before_script:
-    - apt-get update
-    - apt-get install -y curl git lcov
-  dependencies:
-    - setup-flutter
+    - .ci-rules
+  cache:
+    key: "${CI_PROJECT_TITLE}-flutter-${FLUTTER_VERSION}"
+    paths:
+      - /var/cache/apt/archives/
+      - /var/lib/apt/lists/
+      - flutter/
+    when: on_success
   script:
+    # Prepare the envirounment
+    - apt-get update -qq
+    - apt-get install -y curl unzip xz-utils lcov git > /dev/null
+    - curl -o flutter.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+    - tar xf flutter.tar.xz
     - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
     - export PUB_CACHE=$CI_PROJECT_DIR/.pub-cache
+    - git config --global --add safe.directory ${CI_PROJECT_DIR}/flutter
+    - flutter --version
+
+    #Build and analyze
     - flutter pub get
     - dart run build_runner build --delete-conflicting-outputs
     - flutter analyze lib
+
+    #Test with coverage
     - |
        if [ -d "test" ]; then
          flutter test --coverage --exclude-tags=not-tests
        fi
     - flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','**/routes.dart','**data_source.dart','**_model.g.dart','**_models.g.dart''**_model.dart','**_model_extensions.dart','**_models.dart','**_models_extensions.dart','**_config.dart','**_constants.dart','**_translations.dart','lib/assets.dart','lib/keys.dart','lib/base/theme/**','lib/base/utils/**','lib/keys.dart','lib/l10n/**' coverage/lcov.info
     - echo "Checking coverage..."
-    - bash -c "coverage=$(lcov --summary coverage/lcov.info | grep 'lines:' | awk '{print $2}' | sed 's/%//')"
+    - coverage=$(lcov --summary coverage/lcov.info | grep 'lines' | awk '{print $2}' | sed 's/%//' | awk '{printf "%d\n", $1}')
     - echo "Coverage = ${coverage}%"
-    - bash -c "if [ \"$coverage\" -lt \"$MIN_COVERAGE\" ]; then echo 'Coverage is below the threshold!'; exit 1; else echo 'Coverage is sufficient. Coverage = $coverage.'; fi"
+
+    # Compare the coverage
+    - if [ "$coverage" -lt "$MIN_COVERAGE" ]; then echo "ERROR - Coverage is below minimum threshold ($MIN_COVERAGE%)" && exit 1; else echo "Coverage meets the minimum requirement"; fi
+
+
+extract_version:
+  stage: extract
+  extends:
+    - .build-rules
+  script:
+    - TAGNAME=$(echo "$CI_COMMIT_REF_NAME")
+    - VERSION=$(echo $TAGNAME | rev | cut -d "v" -f 1 | rev)
+    - BUILD_NAME=$(echo $VERSION | cut -d "+" -f 1)
+    - BUILD_NUMBER=$(echo $VERSION | cut -d "+" -f 2-)
+    - NAMEWITHENV=$(echo $TAGNAME | rev | cut -d "-" -f 2- | rev)
+    - FLAVOR=$(echo $NAMEWITHENV | rev | cut -d "-" -f 1 | rev)
+
+    - echo "BUILD_NAME=${BUILD_NAME}" >> artifacts.env
+    - echo "BUILD_NUMBER=${BUILD_NUMBER}" >> artifacts.env
+    - echo "FLAVOR=${FLAVOR}" >> artifacts.env
+  artifacts:
+    reports:
+      dotenv: artifacts.env
+
+
+build_android_app:
+  stage: build
+  extends:
+    - .build-rules
+  cache:
+    key: "${CI_PROJECT_TITLE}-flutter-${FLUTTER_VERSION}"
+    paths:
+      - /var/cache/apt/archives/
+      - /var/lib/apt/lists/
+      - flutter/
+      - .pub-cache/
+      - android-sdk/
+      - .gradle/
+      - vendor/cache
+    when: on_success
+  variables:
+    ANDROID_HOME: "$CI_PROJECT_DIR/android-sdk"
+  before_script:
+    - cd $PROJECT_PATH
+  script:
+    # Set up the envirounment
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends wget curl unzip openjdk-11-jdk git libssl-dev nodejs yarn > /dev/null
+    - apt-get install -y --no-install-recommends ruby-full build-essential libreadline-dev zlib1g-dev libsqlite3-dev > /dev/null
+
+    - gem install bundler > /dev/null &
+    - bundle install --jobs 4 > /dev/null &
+    - wait # Wait for background processes to finish
+    - bundle lock --add-platform ruby
+    - bundle lock --add-platform x86_64-linux
+    - bundle update fastlane > /dev/null
+
+    # Download and install the Android SDK (check if already cached)
+    - if [ ! -d "$ANDROID_HOME/cmdline-tools" ]; then
+        mkdir -p $ANDROID_HOME;
+        wget -q "https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip" -O cmdline-tools.zip;
+        unzip cmdline-tools.zip -d $ANDROID_HOME > /dev/null;
+        rm cmdline-tools.zip;
+      fi
+
+    - export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$PATH"
+    # Accept the licenses of the SDK components
+    - yes | sdkmanager --licenses --sdk_root=$ANDROID_HOME > /dev/null || true # Accepting licenses returns 1, prevent pipeline failings with adding "|| true"
+
+    # Set up Flutter (downloaded from cashe)
+    - export PATH="$PATH:$CI_PROJECT_DIR/flutter/bin"
+    - export PUB_CACHE=$CI_PROJECT_DIR/.pub-cache
+    - git config --global --add safe.directory ${CI_PROJECT_DIR}/flutter
+
+    # Build and sign Android app using Fastlane
+    - bundle exec fastlane build_custom platform:android environment:$FLAVOR build_name:$BUILD_NAME build_number:$BUILD_NUMBER
+
+    # Prepare config
+    - mv "$PROJECT_PATH/devops/artifacts/deployment.yaml" "$PROJECT_PATH/devops/artifacts/android-deployment.yaml"
+
+  artifacts:
+    paths:
+      - "$PROJECT_PATH/devops/artifacts/app-${FLAVOR}-release.aab"
+      - "$PROJECT_PATH/devops/artifacts/android-deployment.yaml"
+    name: app-${FLAVOR}-release.aab
+
+
+deploy_android_app:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /.*-v[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+/ && $PUBLISH_TO_STORE == "true"'
+      when: on_success
+  dependencies:
+    - build_android_app
+  cache:
+    key: "${CI_PROJECT_TITLE}-flutter-${FLUTTER_VERSION}"
+    paths:
+      - /var/cache/apt/archives/
+      - /var/lib/apt/lists/
+      - flutter/
+      - .pub-cache/
+      - android-sdk/
+      - .gradle/
+      - vendor/cache
+    when: on_success
+  before_script:
+    - cd $PROJECT_PATH
+  script:
+    - mv "$PROJECT_PATH/devops/artifacts/android-deployment.yaml" "$PROJECT_PATH/devops/artifacts/deployment.yaml"
+    - apt-get update -qq
+    - apt-get install -y  ruby-full build-essential libpq-dev nodejs git> /dev/null
+    - gem install bundler > /dev/null &
+    - bundle install --jobs 4 > /dev/null &
+    - wait # Wait for background processes to finish
+    - bundle lock --add-platform ruby
+    - bundle lock --add-platform x86_64-linux
+    - bundle update fastlane > /dev/null
+    - bundle exec fastlane deploy
+
