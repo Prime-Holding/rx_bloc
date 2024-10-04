@@ -95,3 +95,6 @@ lib/env_variable.g.dart
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+
+# Test related
+**/integration_test/test_bundle.dart
