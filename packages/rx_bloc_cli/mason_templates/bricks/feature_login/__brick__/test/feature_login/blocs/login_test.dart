@@ -15,21 +15,21 @@ import 'login_test.mocks.dart';
   LoginValidatorService,
 ])
 void main() {
-  late CoordinatorBlocType _coordinatorBloc;
-  late UserAccountService _userAccountService;
-  late LoginValidatorService _validatorService;
+  late CoordinatorBlocType coordinatorBloc;
+  late UserAccountService userAccountService;
+  late LoginValidatorService validatorService;
 
   void _defineWhen() {}
 
   LoginBloc loginBloc() => LoginBloc(
-        _coordinatorBloc,
-        _userAccountService,
-        _validatorService,
+        coordinatorBloc,
+        userAccountService,
+        validatorService,
       );
   setUp(() {
-    _coordinatorBloc = MockCoordinatorBlocType();
-    _userAccountService = MockUserAccountService();
-    _validatorService = MockLoginValidatorService();
+    coordinatorBloc = MockCoordinatorBlocType();
+    userAccountService = MockUserAccountService();
+    validatorService = MockLoginValidatorService();
   });
 
   group('test login_bloc_dart state email', () {
