@@ -1,3 +1,6 @@
+## [5.1.0]
+* Added GitLab as a CI/CD option under the flag `--cicd` (`fastlane` (default), `github`, `codemagic`, `gitlab`, `none`)
+
 ## [5.0.0]
 * Update generated project min supported iOS version to `13.0`
 * Generated projects have their dependencies updated:

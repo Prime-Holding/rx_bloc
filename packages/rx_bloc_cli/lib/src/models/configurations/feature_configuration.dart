@@ -1,7 +1,7 @@
 /// Feature Configuration
 class FeatureConfiguration {
   /// Feature Configuration constructor
-  FeatureConfiguration( {
+  FeatureConfiguration({
     required this.changeLanguageEnabled,
     required this.counterEnabled,
     required this.widgetToolkitEnabled,
@@ -14,6 +14,7 @@ class FeatureConfiguration {
     required this.cicdEnabled,
     required this.cicdGithubEnabled,
     required this.cicdCodemagicEnabled,
+    required this.cicdGitlabEnabled,
   });
 
   /// Analytics
@@ -54,4 +55,7 @@ class FeatureConfiguration {
 
   /// CI/CD Codemagic
   final bool cicdCodemagicEnabled;
+
+  /// CI/CD Gitlab
+  final bool cicdGitlabEnabled;
 }
