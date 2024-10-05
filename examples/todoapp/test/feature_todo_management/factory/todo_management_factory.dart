@@ -14,7 +14,7 @@ Widget todoManagementFactory({
   bool? showError,
   bool? isLoading,
   ErrorModel? errors,
-  TodoModel? onTodoSaved,
+  $TodoModel? onTodoSaved,
 }) =>
     Scaffold(
       body: MultiProvider(providers: [

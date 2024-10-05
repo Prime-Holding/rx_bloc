@@ -52,7 +52,7 @@ class AppRouter {
 
   late final GoRouter _goRouter = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: const TodoListRoute().location,
+    initialLocation: const SplashRoute().location,
     routes: $appRoutes,
     redirect: _pageRedirections,
     refreshListenable: _refreshListener,
@@ -74,8 +74,8 @@ class AppRouter {
       return '${const SplashRoute().location}?from=${state.uri.toString()}';
     }
 
-    final pathInfo = router.routeInformationParser.configuration
-        .findMatch(state.uri.toString());
+    final pathInfo =
+        router.routeInformationParser.configuration.findMatch(state.uri);
 
     final routeName = RouteModel.getRouteNameByFullPath(pathInfo.fullPath);
 

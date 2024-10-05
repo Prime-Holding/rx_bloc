@@ -7,6 +7,7 @@
 
 export 'package:go_router/go_router.dart';
 
+export 'base/app/config/app_constants.dart';
 export 'base/theme/design_system.dart';
 export 'keys.dart';
 export 'l10n/l10n.dart';
