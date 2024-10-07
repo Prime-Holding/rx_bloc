@@ -19,8 +19,6 @@ void main() {
   late UserAccountService userAccountService;
   late LoginValidatorService validatorService;
 
-  void defineWhen() {}
-
   LoginBloc loginBloc() => LoginBloc(
         coordinatorBloc,
         userAccountService,
@@ -35,7 +33,6 @@ void main() {
   group('test login_bloc_dart state email', () {
     rxBlocTest<LoginBlocType, String>('test login_bloc_dart state email',
         build: () async {
-          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -46,7 +43,6 @@ void main() {
   group('test login_bloc_dart state password', () {
     rxBlocTest<LoginBlocType, String>('test login_bloc_dart state password',
         build: () async {
-          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -57,7 +53,6 @@ void main() {
   group('test login_bloc_dart state loggedIn', () {
     rxBlocTest<LoginBlocType, bool>('test login_bloc_dart state loggedIn',
         build: () async {
-          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -68,7 +63,6 @@ void main() {
   group('test login_bloc_dart state showErrors', () {
     rxBlocTest<LoginBlocType, bool>('test login_bloc_dart state showErrors',
         build: () async {
-          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -79,7 +73,6 @@ void main() {
   group('test login_bloc_dart state isLoading', () {
     rxBlocTest<LoginBlocType, bool>('test login_bloc_dart state isLoading',
         build: () async {
-          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -90,7 +83,6 @@ void main() {
   group('test login_bloc_dart state errors', () {
     rxBlocTest<LoginBlocType, ErrorModel>('test login_bloc_dart state errors',
         build: () async {
-          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
