@@ -2,7 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:favorites_advanced_base/extensions.dart';
 import 'package:favorites_advanced_base/models.dart';
-import 'package:favorites_advanced_base/resources.dart';
+import 'package:favorites_advanced_base/resources.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
@@ -28,13 +28,17 @@ class HomePage extends StatelessWidget {
             Expanded(
               child: RxBlocListener<HotelManageBlocType, String>(
                 state: (bloc) => bloc.states.error,
-                listener: (ctx, state) => ScaffoldMessenger.of(ctx)
-                    .showSnackBar(SnackBar(content: Text(state))),
+                listener: (ctx, state) =>
+                    ScaffoldMessenger.of(ctx).showSnackBar(
+                  SnackBar(
+                    key: keys.errorSnackbarKey,
+                    content: Text(state),
+                  ),
+                ),
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
                     RxBlocBuilder<NavigationBarBlocType, NavigationItem?>(
-                      key: const ValueKey(Keys.hotelHomePage),
                       state: (bloc) => bloc.states.selectedItem,
                       builder: (ctx, snapshot, bloc) => AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),
@@ -50,17 +54,22 @@ class HomePage extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           items: navItems
                               .map(
-                                (item) => Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: item.asWidget(),
+                                (item) => GestureDetector(
+                                  key: item.type == NavigationItemType.search
+                                      ? keys.searchNavButtonKey
+                                      : keys.favoritesNavButtonTapKey,
+                                  onTap: () => bloc.events.selectPage(
+                                    item.type == NavigationItemType.search
+                                        ? NavigationItemType.search
+                                        : NavigationItemType.favorites,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: item.asWidget(),
+                                  ),
                                 ),
                               )
                               .toList(),
-                          onTap: (index) => bloc.events.selectPage(
-                            index == 0
-                                ? NavigationItemType.search
-                                : NavigationItemType.favorites,
-                          ),
                         ),
                       ),
                     ),
@@ -79,14 +88,14 @@ class HomePage extends StatelessWidget {
 
     switch (type.data!.type) {
       case NavigationItemType.search:
-        return const HotelSearchPage();
+        return const HotelSearchPage(key: keys.searchPageKey);
       case NavigationItemType.favorites:
-        return const HotelFavoritesPage();
+        return const HotelFavoritesPage(key: keys.favoritesPageKey);
     }
   }
 }
 
-extension NavigationItemToWitget on NavigationItem {
+extension NavigationItemToWidget on NavigationItem {
   Widget? asWidget() => type == NavigationItemType.favorites
       ? RxBlocBuilder<HotelFavoritesBlocType, int>(
           state: (bloc) => bloc.states.count,
@@ -101,6 +110,7 @@ extension NavigationItemToWitget on NavigationItem {
                       ),
                       badgeContent: snapshot.build(
                         (count) => Text(
+                          key: keys.favoritesNavButtonTextKey,
                           count.toString(),
                           style: const TextStyle(
                             color: Colors.black,

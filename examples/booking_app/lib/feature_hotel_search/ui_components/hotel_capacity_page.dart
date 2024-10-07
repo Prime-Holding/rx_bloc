@@ -1,3 +1,4 @@
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -52,6 +53,7 @@ class _HotelCapacityPageState extends State<HotelCapacityPage> {
           ),
           const SizedBox(height: 16),
           DialogButton(
+            key: keys.capacityFilterApplyTapKey,
             onPressed: () {
               widget.onApplyPressed(roomCapacity, personCapacity);
             },

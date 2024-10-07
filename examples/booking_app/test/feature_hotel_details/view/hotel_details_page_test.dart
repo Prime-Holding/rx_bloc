@@ -1,6 +1,7 @@
 import 'package:booking_app/base/common_blocs/hotel_manage_bloc.dart';
 import 'package:booking_app/feature_hotel_details/blocs/hotel_details_bloc.dart';
 import 'package:booking_app/feature_hotel_details/views/hotel_details_page.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,7 @@ import '../mock/hotel_manage_mock.dart';
 
 void main() {
   group('hotel_details_page tests', () {
-    const favKey = ValueKey('favoriteButtonWithShadow');
+    final favKey = keys.detailsFavoriteButtonById(Stub.hotel1.id);
     const displayDescription = 'Nice hotel';
     const displayFeatures = ['Free WiFi', 'Pool'];
     final mockHotel = Stub.hotel1.copyWith(

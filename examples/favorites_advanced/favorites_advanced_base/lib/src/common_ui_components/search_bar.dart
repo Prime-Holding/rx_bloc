@@ -1,6 +1,8 @@
 import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
 
+import '../resources/keys.dart' as keys;
+
 class HotelSearchBar extends StatelessWidget {
   const HotelSearchBar({
     required this.controller,
@@ -19,8 +21,7 @@ class HotelSearchBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 16, top: 16, bottom: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                    color:
-                        HotelAppTheme.buildLightTheme().colorScheme.surface,
+                    color: HotelAppTheme.buildLightTheme().colorScheme.surface,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(38.0),
                     ),
@@ -35,6 +36,7 @@ class HotelSearchBar extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         left: 16, right: 16, top: 4, bottom: 4),
                     child: TextField(
+                      key: keys.searchFieldKey,
                       controller: controller,
                       style: const TextStyle(
                         fontSize: 18,

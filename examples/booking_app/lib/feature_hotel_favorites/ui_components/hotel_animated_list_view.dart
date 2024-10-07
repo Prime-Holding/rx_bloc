@@ -3,10 +3,8 @@ import 'package:favorites_advanced_base/models.dart';
 import 'package:favorites_advanced_base/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../../base/common_blocs/hotel_manage_bloc.dart';
-import '../../base/common_blocs/hotels_extra_details_bloc.dart';
 
 class HotelAnimatedListView extends StatelessWidget {
   const HotelAnimatedListView({
@@ -26,7 +24,6 @@ class HotelAnimatedListView extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 67),
         itemBuilder: (item, index, context, animation) => _createTile(
           HotelListItem(
-            key: Key('${key.toString()}${item.id}'),
             hotel: item,
             onCardPressed: (item) => _onHotelPressed?.call(item),
             onFavorite: (hotel, isFavorite) =>
@@ -39,14 +36,9 @@ class HotelAnimatedListView extends StatelessWidget {
         itemRemovedBuilder: (item, index, context, animation) =>
             _createRemovedTile(
           HotelListItem(
-            key: Key('${key.toString()}${item.id}'),
             hotel: item,
             onFavorite: (_, isFavorite) {},
             onCardPressed: (hotel) {},
-            onVisible: (hotel) => context
-                .read<HotelsExtraDetailsBlocType>()
-                .events
-                .fetchExtraDetails(hotel),
           ),
           animation,
         ),
