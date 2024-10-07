@@ -9,7 +9,7 @@ void main() {
   runGoldenTests([
     generateDeviceBuilder(
         widget:
-            loginFactory(loggedIn: false, showErrors: false, isLoading: false),
+        loginFactory(loggedIn: false, showErrors: false, isLoading: false),
         //example: Stubs.emptyList
         scenario: Scenario(name: 'login_empty')),
     generateDeviceBuilder(
@@ -18,7 +18,7 @@ void main() {
         scenario: Scenario(name: 'login_filled')),
     generateDeviceBuilder(
         widget:
-            loginFactory(isLoading: false, loggedIn: true, showErrors: false),
+        loginFactory(isLoading: false, loggedIn: true, showErrors: false),
         //example: Stubs.listWithTwoItems
         scenario: Scenario(name: 'login_success')),
     generateDeviceBuilder(
