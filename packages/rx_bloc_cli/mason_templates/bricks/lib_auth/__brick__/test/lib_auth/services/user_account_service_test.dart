@@ -18,8 +18,8 @@ import 'user_account_service_test.mocks.dart';
 ])
 void main() {
   late MockAuthRepository authRepository;
-  late MockPushNotificationRepository pushNotificationRepository;
-  late MockAnalyticsRepository analyticsRepository;
+  late MockPushNotificationRepository pushNotificationRepository;{{#analytics}}
+  late MockAnalyticsRepository analyticsRepository;{{/analytics}}
   late MockPermissionsService permissionsService;
 
   late UserAccountService userAccountService;
