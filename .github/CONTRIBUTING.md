@@ -1,8 +1,8 @@
-#### How  to contribute
+# How  to contribute
 
 We are happy to accept contributions from the community. Please follow the guidelines below to contribute to the project.
 
-### General
+## General
 
 Open a pull request with a detailed description of the changes you are making. 
 
@@ -11,7 +11,7 @@ When adding a new feature, please include a brief description of the feature and
 If you are fixing a bug, please include a description of the bug and how it was fixed. 
 Make sure to reference a previously created issue if one exists, or [create a new one][rx_bloc_issues_new] with reproducible steps if it doesn't exist.
 
-### rx_bloc_cli
+## rx_bloc_cli
 
 Before contributing to the `rx_bloc_cli` package, make sure you're familiar with the [Mason CLI][mason_cli_pub] package.
 We use Mason CLI to conditionally generate the boilerplate code for the `rx_bloc_cli` generated projects using file template collections (aka. bricks).
