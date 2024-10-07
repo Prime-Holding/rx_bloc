@@ -19,7 +19,7 @@ void main() {
   late UserAccountService userAccountService;
   late LoginValidatorService validatorService;
 
-  void _defineWhen() {}
+  void defineWhen() {}
 
   LoginBloc loginBloc() => LoginBloc(
         coordinatorBloc,
@@ -35,7 +35,7 @@ void main() {
   group('test login_bloc_dart state email', () {
     rxBlocTest<LoginBlocType, String>('test login_bloc_dart state email',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -46,7 +46,7 @@ void main() {
   group('test login_bloc_dart state password', () {
     rxBlocTest<LoginBlocType, String>('test login_bloc_dart state password',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -57,7 +57,7 @@ void main() {
   group('test login_bloc_dart state loggedIn', () {
     rxBlocTest<LoginBlocType, bool>('test login_bloc_dart state loggedIn',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -68,7 +68,7 @@ void main() {
   group('test login_bloc_dart state showErrors', () {
     rxBlocTest<LoginBlocType, bool>('test login_bloc_dart state showErrors',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -79,7 +79,7 @@ void main() {
   group('test login_bloc_dart state isLoading', () {
     rxBlocTest<LoginBlocType, bool>('test login_bloc_dart state isLoading',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
@@ -90,7 +90,7 @@ void main() {
   group('test login_bloc_dart state errors', () {
     rxBlocTest<LoginBlocType, ErrorModel>('test login_bloc_dart state errors',
         build: () async {
-          _defineWhen();
+          defineWhen();
           return loginBloc();
         },
         act: (bloc) async {},
