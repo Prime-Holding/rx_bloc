@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rx_bloc_test/rx_bloc_test.dart';
 import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';
 import 'package:{{project_name}}/lib_pin_code/bloc/create_pin_bloc.dart';
@@ -27,7 +26,7 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
 
     when(coordinatorStates.userLogOut)
-        .thenAnswer((_) => Stream.value(Result.success(true)));
+        .thenAnswer((_) => Stream.value(null));
 
     when(createPinCodeService.deleteStoredPin())
         .thenAnswer((_) => Future.value(isPinDeleted));
