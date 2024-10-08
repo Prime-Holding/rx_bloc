@@ -8,20 +8,18 @@ void main() {
 
   patrolBaseConfig.patrol(
     '''
-    Add a todo item with title and description to todo list,
+    Add a todo item without title to todo list,
     ''',
     ($) async {
       BuildApp app = BuildApp($);
       await app.buildApp();
       // Navigate to add todo page
       await TodoListSteps.navigateToAddTodoPage($);
-      // Enter todo title
-      await TodoManagementSteps.enterTodoTitle($, 'Todo 1');
       // Enter todo description
       await TodoManagementSteps.enterTodoDescription($, 'Description 1');
       // Tap on add button
       await TodoManagementSteps.tapBtnAddTodo($);
     },
-    tags: ['regression', 'positive'],
+    tags: ['negative'],
   );
 }

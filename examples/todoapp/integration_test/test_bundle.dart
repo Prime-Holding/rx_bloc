@@ -10,6 +10,11 @@ import 'package:test_api/src/backend/invoker.dart';
 
 // START: GENERATED TEST IMPORTS
 import 'tests/add_todo_page_test.dart' as tests__add_todo_page_test;
+import 'tests/edit_todo_page_test.dart' as tests__edit_todo_page_test;
+import 'tests/negative_add_todo_page_test.dart' as tests__negative_add_todo_page_test;
+import 'tests/statistics_page_test.dart' as tests__statistics_page_test;
+import 'tests/todo_details_page_test.dart' as tests__todo_details_page_test;
+import 'tests/todo_list_test.dart' as tests__todo_list_test;
 // END: GENERATED TEST IMPORTS
 
 Future<void> main() async {
@@ -60,7 +65,7 @@ Future<void> main() async {
     // to group() below.
     final topLevelGroup = Invoker.current!.liveTest.groups.first;
     final dartTestGroup = createDartTestGroup(topLevelGroup,
-      tags: null,
+      tags: 'negative',
       excludeTags: null,
     );
     testExplorationCompleter.complete(dartTestGroup);
@@ -70,6 +75,11 @@ Future<void> main() async {
 
   // START: GENERATED TEST GROUPS
   group('tests.add_todo_page_test', tests__add_todo_page_test.main);
+  group('tests.edit_todo_page_test', tests__edit_todo_page_test.main);
+  group('tests.negative_add_todo_page_test', tests__negative_add_todo_page_test.main);
+  group('tests.statistics_page_test', tests__statistics_page_test.main);
+  group('tests.todo_details_page_test', tests__todo_details_page_test.main);
+  group('tests.todo_list_test', tests__todo_list_test.main);
   // END: GENERATED TEST GROUPS
 
   final dartTestGroup = await testExplorationCompleter.future;

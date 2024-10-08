@@ -9,25 +9,21 @@ import '../main/steps_utils/lib_todo_actions_steps.dart';
 void main() {
   final patrolBaseConfig = PatrolBaseConfig();
 
-  patrolBaseConfig.patrol(
-    '''
+  patrolBaseConfig.patrol('''
     Add 3 todo items with title and description to todo list,
     Then navigate to statistics page and perform bulk actions on all todos.
-    ''',
-    ($) async {
-      BuildApp app = BuildApp($);
-      await app.buildApp();
+    ''', ($) async {
+    BuildApp app = BuildApp($);
+    await app.buildApp();
 
-      //Create 3 todos
-      await Utils.addTodos($, 3);
-      //Navigate to statistics page
-      await HomeSteps.navigateToStatisticsPage($);
-      //Perform bulk actions on all todos
-      await LibTodoActionsSteps.todoAction($, BulkActionModel.markAllComplete);
-      await LibTodoActionsSteps.todoAction(
-          $, BulkActionModel.markAllIncomplete);
-      await LibTodoActionsSteps.todoAction($, BulkActionModel.markAllComplete);
-      await LibTodoActionsSteps.todoAction($, BulkActionModel.clearCompleted);
-    },
-  );
+    //Create 3 todos
+    await Utils.addTodos($, 3);
+    //Navigate to statistics page
+    await HomeSteps.navigateToStatisticsPage($);
+    //Perform bulk actions on all todos
+    await LibTodoActionsSteps.todoAction($, BulkActionModel.markAllComplete);
+    await LibTodoActionsSteps.todoAction($, BulkActionModel.markAllIncomplete);
+    await LibTodoActionsSteps.todoAction($, BulkActionModel.markAllComplete);
+    await LibTodoActionsSteps.todoAction($, BulkActionModel.clearCompleted);
+  }, tags: ['regression', 'positive']);
 }
