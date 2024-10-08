@@ -1,3 +1,6 @@
+## [5.0.1]
+* Updates to github workflows supporting monorepo structure
+
 ## [5.0.0]
 * Update generated project min supported iOS version to `13.0`
 * Generated projects have their dependencies updated:
