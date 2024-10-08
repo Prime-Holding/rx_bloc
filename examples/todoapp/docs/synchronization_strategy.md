@@ -32,6 +32,10 @@ class TodoListService {
     }
   }
   ...
+
+    void dispose() {
+    _connectivitySubscription?.cancel();
+  }
 }
 ```
 
