@@ -1,3 +1,4 @@
+import '../main/base/test_constants.dart';
 import '../main/base/utils.dart';
 import '../main/configuration/build_app.dart';
 import '../main/configuration/patrol_base_config.dart';
@@ -26,5 +27,5 @@ void main() {
     await TodoManagementSteps.enterTodoDescription($, 'Edited Description 1');
     // Tap on update button
     await TodoManagementSteps.tapBtnAddTodo($);
-  }, tags: ['regression', 'positive']);
+  }, tags: [regressionTest, positiveTest]);
 }

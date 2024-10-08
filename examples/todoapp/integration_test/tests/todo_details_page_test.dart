@@ -1,3 +1,4 @@
+import '../main/base/test_constants.dart';
 import '../main/base/utils.dart';
 import '../main/configuration/build_app.dart';
 import '../main/configuration/patrol_base_config.dart';
@@ -22,5 +23,5 @@ void main() {
     await TodoDetailsSteps.tapTodoCheckbox($);
     // Delete todo
     await TodoDetailsSteps.todoDelete($);
-  }, tags: ['regression', 'positive']);
+  }, tags: [regressionTest, positiveTest]);
 }

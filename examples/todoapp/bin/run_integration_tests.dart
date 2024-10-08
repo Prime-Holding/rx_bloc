@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:collection/collection.dart';
+import '../integration_test/main/base/test_constants.dart';
 
 Future<int> main(List<String> arguments) async {
   final runner = CommandRunner<int>(
@@ -32,13 +33,12 @@ class ExecuteCommand extends Command<int> {
   FutureOr<int>? run() async {
     final testSets = {
       'all': 'all',
-      'regression tests': 'regression',
-      'negative tests': 'negative',
-      'positive tests': 'positive'
+      'regression tests': regressionTest,
+      'negative tests': negativeTest,
+      'positive tests': positiveTest
     };
 
     final environments = ['development', 'sit', 'uat', 'production'];
-    final platforms = ['Android', 'iOS'];
     final languages = ['bg', 'en'];
 
     stdout.write('Fetching device list...');
@@ -51,8 +51,6 @@ class ExecuteCommand extends Command<int> {
     final environmentIndex = _prompt('Select an environment:',
         options: environments, defaultOptionIndex: 1);
 
-    final platformIndex = _prompt('Select a platform:', options: platforms);
-
     final languageIndex = _prompt('Select a language:',
         options: languages, defaultOptionIndex: 0);
 
@@ -64,7 +62,6 @@ class ExecuteCommand extends Command<int> {
       language: languages[languageIndex],
       device: selectedDevice.substring(
           selectedDevice.lastIndexOf('(') + 1, selectedDevice.lastIndexOf(')')),
-      platform: platforms[platformIndex].toLowerCase(),
       tags: testSets.values.elementAt(testSetIndex),
     );
 
@@ -126,7 +123,6 @@ class ExecuteCommand extends Command<int> {
     required String flavor,
     required String language,
     required String device,
-    required String platform,
     required String tags,
   }) {
     final arguments = <String>[

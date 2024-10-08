@@ -1,6 +1,7 @@
 import 'package:todoapp/base/models/todos_filter_model.dart';
 import 'package:todoapp/lib_todo_actions/models/bulk_action.dart';
 
+import '../main/base/test_constants.dart';
 import '../main/base/utils.dart';
 import '../main/configuration/build_app.dart';
 import '../main/configuration/patrol_base_config.dart';
@@ -34,5 +35,5 @@ void main() {
     await LibTodoActionsSteps.todoAction($, BulkActionModel.markAllIncomplete);
     await LibTodoActionsSteps.todoAction($, BulkActionModel.markAllComplete);
     await LibTodoActionsSteps.todoAction($, BulkActionModel.clearCompleted);
-  }, tags: ['regression', 'positive']);
+  }, tags: [regressionTest, positiveTest]);
 }
