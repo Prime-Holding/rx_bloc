@@ -1,4 +1,5 @@
 import 'package:rx_bloc_cli/src/extensions/string_buffer_extensions.dart';
+import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
 import 'package:rx_bloc_cli/src/rx_bloc_cli_constants.dart';
 import 'package:rx_bloc_cli/src/utils/flavor_generator.dart';
 
@@ -25,7 +26,7 @@ class PodfileProcessor extends StringProcessor {
 
     _updateGlobalIOSPlatform(buffer);
     _updateProjectRunnerModes(buffer);
-    _addDeploymentTargets(buffer);
+    _addBuildConfigurations(buffer, args);
 
     return buffer.toString();
   }
@@ -69,14 +70,29 @@ class PodfileProcessor extends StringProcessor {
       ..insertBefore(runnerConfigs, runnerConfigsComment);
   }
 
-  void _addDeploymentTargets(StringBuffer buffer) {
-    const additionalBuildSettingsConfig =
-        'flutter_additional_ios_build_settings(target)';
-    const deploymentTargetsConfig = '''\n
+  void _addBuildConfigurations(StringBuffer buffer, GeneratorArguments args) {
+    String deploymentTargetsConfig;
+    if (args.qrScannerEnabled) {
+      deploymentTargetsConfig = '''\n
+    target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '$_minSupportedIOSVersion'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+              '\$(inherited)',
+              ## dart: PermissionGroup.camera
+              'PERMISSION_CAMERA=1',
+            ]
+    end
+''';
+    } else {
+      deploymentTargetsConfig = '''\n
     target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '$_minSupportedIOSVersion'
     end
 ''';
+    }
+    const additionalBuildSettingsConfig =
+        'flutter_additional_ios_build_settings(target)';
+
     buffer.insertAfter(additionalBuildSettingsConfig, deploymentTargetsConfig);
   }
 

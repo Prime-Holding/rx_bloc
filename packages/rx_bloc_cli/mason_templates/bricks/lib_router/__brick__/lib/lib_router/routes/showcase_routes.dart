@@ -115,3 +115,27 @@ class EnterMessageRoute extends GoRouteData implements RouteDataModel {
   String get routeLocation => location;
 }
 {{/enable_feature_deeplinks}}
+
+{{#enable_feature_qr_scanner}}
+class QrCodeBranchData extends StatefulShellBranchData {
+  const QrCodeBranchData();
+}
+
+@immutable
+class QrCodeRoute extends GoRouteData implements RouteDataModel {
+  const QrCodeRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const QrScannerPageWithDependencies(),
+      );
+
+  @override
+  String get permissionName => RouteModel.qrCode.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+{{/enable_feature_qr_scanner}}
