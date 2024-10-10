@@ -1,9 +1,10 @@
 /// Feature Configuration
 class FeatureConfiguration {
   /// Feature Configuration constructor
-  FeatureConfiguration( {
+  FeatureConfiguration({
     required this.changeLanguageEnabled,
     required this.counterEnabled,
+    required this.qrScannerEnabled,
     required this.widgetToolkitEnabled,
     required this.analyticsEnabled,
     required this.pushNotificationsEnabled,
@@ -33,6 +34,9 @@ class FeatureConfiguration {
 
   /// Counter
   final bool counterEnabled;
+
+  /// QR scanner
+  final bool qrScannerEnabled;
 
   /// Widget toolkit
   final bool widgetToolkitEnabled;
