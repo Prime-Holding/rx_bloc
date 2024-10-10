@@ -33,6 +33,9 @@
 /build/
 .fvm/
 
+# macOS related
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+
 # Web related
 lib/generated_plugin_registrant.dart
 
@@ -53,3 +56,6 @@ app.*.map.json
 **/fastlane/screenshots
 **/fastlane/test_output
 **/fastlane/devops/
+
+# Integration Test related
+**/integration_test/test_bundle.dart

@@ -13,6 +13,8 @@ class HomeObjPage extends BasePage {
 
   BuildContext get context => $.tester.element(find.byType(Scaffold));
 
+  void clearSnackBars() => ScaffoldMessenger.of(context).clearSnackBars();
+
   bool isListItemVisible(String id) => isWidgetVisible(keys.listItemById(id));
 
   String? getFavoriteButtonCount() => $(keys.favoritesNavButtonTextKey).text;

@@ -1,5 +1,4 @@
 import 'package:favorites_advanced_base/keys.dart' as keys;
-import 'package:flutter/material.dart';
 
 import '../../integration_test_framework/base/utils.dart';
 import '../../integration_test_framework/configuration/build_app.dart';
@@ -32,7 +31,7 @@ void main() {
       await detailsPage.tapDetailsFavoriteButton('0-1');
       await detailsPage.tapDetailsBackButton();
       expect(homePage.isHotelFavorited(), true);
-      ScaffoldMessenger.of(homePage.context).clearSnackBars();
+      homePage.clearSnackBars();
 
       await homePage.tapFavoritesPageButton();
       expect(homePage.isListItemVisible('0-1'), true);
@@ -43,7 +42,7 @@ void main() {
       await detailsPage.tapDetailsFavoriteButton('0-1');
       await detailsPage.tapDetailsBackButton();
       expect(homePage.isHotelFavorited(), false);
-      ScaffoldMessenger.of(homePage.context).clearSnackBars();
+      homePage.clearSnackBars();
 
       await homePage.tapFavoritesPageButton();
       expect(homePage.isListItemVisible('0-1'), false);
