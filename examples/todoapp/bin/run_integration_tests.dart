@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:collection/collection.dart';
-import '../integration_test/main/base/test_constants.dart';
 
 Future<int> main(List<String> arguments) async {
   final runner = CommandRunner<int>(
@@ -33,9 +32,9 @@ class ExecuteCommand extends Command<int> {
   FutureOr<int>? run() async {
     final testSets = {
       'all': 'all',
-      'regression tests': regressionTest,
-      'negative tests': negativeTest,
-      'positive tests': positiveTest
+      'regression tests': 'regression',
+      'negative tests': 'negative',
+      'positive tests': 'positive'
     };
 
     final environments = ['development', 'sit', 'uat', 'production'];
