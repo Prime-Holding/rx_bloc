@@ -1,4 +1,5 @@
 import 'package:favorites_advanced_base/core.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 
 class ItemValueChooser extends StatefulWidget {
@@ -45,6 +46,7 @@ class _ItemValueChooserState extends State<ItemValueChooser> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FocusButton(
+                key: keys.setCapacityFilterActionKey('${widget.title} Remove'),
                 onPressed: () => changeValue(value - 1),
                 child: const Icon(Icons.remove),
               ),
@@ -56,6 +58,7 @@ class _ItemValueChooserState extends State<ItemValueChooser> {
                 ),
               ),
               FocusButton(
+                key: keys.setCapacityFilterActionKey('${widget.title} Add'),
                 onPressed: () => changeValue(value + 1),
                 child: const Icon(Icons.add),
               ),

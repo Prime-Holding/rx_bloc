@@ -1,3 +1,8 @@
+export 'keys/details_page_keys.dart';
+export 'keys/home_page_keys.dart';
+export 'keys/list_item_keys.dart';
+export 'keys/search_page_keys.dart';
+
 class Keys {
   static const hotelCardNamePrefix = 'HotelCardItem';
   static const hotelHomePage = 'HotelHomePage';

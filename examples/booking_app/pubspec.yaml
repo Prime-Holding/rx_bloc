@@ -37,10 +37,19 @@ dev_dependencies:
   go_router_builder: ^2.7.0
   golden_toolkit: ^0.15.0
   mockito: ^5.0.0
+  patrol: ^3.11.0
   quiver: ^3.0.0
   rx_bloc_generator: any
   rx_bloc_test: any
   test: any
+
+patrol:
+  app_name: booking_app
+  flavor: sit
+  android:
+    package_name: com.primeholding.bookingAppSample.sit
+  ios:
+    bundle_id: com.primeholding.bookingAppSample.sit
 
 flutter:
   uses-material-design: true
