@@ -45,12 +45,6 @@ void main() {
     when(pinBiometricsService.setBiometricsEnabled(false))
         .thenAnswer((_) => Future.value());
 
-    /*when(verifyPinCodeService.setPinCodeType(false))
-        .thenAnswer((_) => Future.value(false));
-
-    when(verifyPinCodeService.setPinCodeType(true))
-        .thenAnswer((_) => Future.value(true));*/
-
     when(verifyPinCodeService.checkIsPinCreated())
         .thenAnswer((_) => Future.value(isPinCreated));
 
@@ -65,9 +59,6 @@ void main() {
 
       when(verifyPinCodeService.getPinLength())
           .thenAnswer((_) => Future.value(pinCode.length));
-/*
-      when(verifyPinCodeService.verifyPinCode(pinCode))
-          .thenAnswer((_) => Future.value(isPinCorrect));*/
 
       when(verifyPinCodeService.getPinCode())
           .thenAnswer((_) => Future.value(pinCode));
