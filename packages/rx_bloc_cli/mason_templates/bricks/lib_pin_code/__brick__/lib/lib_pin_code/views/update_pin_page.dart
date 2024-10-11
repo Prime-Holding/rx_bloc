@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
@@ -15,115 +13,94 @@ import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../bloc/update_and_verify_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
-import '../services/update_and_verify_pin_code_service.dart';
+import '../services/update_pin_code_service.dart';
 
-class UpdatePinPage extends StatefulWidget {
+class UpdatePinPage extends StatelessWidget {
   const UpdatePinPage({
-    this.pinCodeArguments = const PinCodeArguments(
-      title: '',
-      isSessionTimeout: false,
-    ),
+    this.pinCodeArguments = const PinCodeArguments(title: ''),
     super.key,
   });
 
   final PinCodeArguments pinCodeArguments;
 
   @override
-  State<UpdatePinPage> createState() => _UpdatePinPageState();
-}
-
-class _UpdatePinPageState extends State<UpdatePinPage> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<UpdateAndVerifyPinBlocType>().events
-        ..setPinCodeType(widget.pinCodeArguments.isSessionTimeout)
-        ..setBiometricsEnabled(false);
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) => Builder(
-        builder: (context) => PopScope(
-          canPop: true,
-          onPopInvokedWithResult: (didPop, dynamic) => context
-              .read<UpdateAndVerifyPinBlocType>()
-              .events
-              .deleteSavedData(),
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                widget.pinCodeArguments.title.isEmpty
-                    ? context.l10n.libPinCode.updatePinPage
-                    : widget.pinCodeArguments.title,
-              ),
-              forceMaterialTransparency: true,
+  Widget build(BuildContext context) => PopScope(
+        canPop: true,
+        onPopInvokedWithResult: (didPop, dynamic) => context
+            .read<UpdateAndVerifyPinBlocType>()
+            .events
+            .deleteSavedData(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              pinCodeArguments.title.isEmpty
+                  ? context.l10n.libPinCode.updatePinPage
+                  : pinCodeArguments.title,
             ),
-            extendBodyBehindAppBar: true,
-            body: SizedBox(
-              height: MediaQuery.sizeOf(context).height,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PinCodeKeyboard(
-                      mapBiometricMessageToString: (message) =>
-                          _exampleMapMessageToString(message, context),
-                      pinCodeService:
-                          context.read<UpdateAndVerifyPinCodeService>(),
-                      biometricsLocalDataSource:
-                          widget.pinCodeArguments.showBiometricsButton
-                              ? context.read<BiometricsLocalDataSource>()
-                              : null,
-                      translateError: (error) =>
-                          error.asErrorModel().translate(context),
-                      onError: (error, translatedError) =>
-                          _onError(error, translatedError, context),
-                      onAuthenticated: (_) => _isPinCodeVerified(context),
-                    ),
+            forceMaterialTransparency: true,
+          ),
+          extendBodyBehindAppBar: true,
+          body: SizedBox(
+            height: MediaQuery.sizeOf(context).height,
+            child: Column(
+              children: [
+                Expanded(
+                  child: PinCodeKeyboard(
+                    mapBiometricMessageToString: (message) =>
+                        _exampleMapMessageToString(message, context),
+                    pinCodeService:
+                        context.read<UpdatePinCodeService>(),
+                    biometricsLocalDataSource:
+                        pinCodeArguments.showBiometricsButton
+                            ? context.read<BiometricsLocalDataSource>()
+                            : null,
+                    translateError: (error) =>
+                        error.asErrorModel().translate(context),
+                    onAuthenticated: (token) =>
+                        _isPinCodeVerified(context, token),
                   ),
-                  RxBlocListener<UpdateAndVerifyPinBlocType, void>(
-                    state: (bloc) => bloc.states.isPinUpdated,
-                    listener: (context, isCreated) {
-                      context
-                          .read<RouterBlocType>()
-                          .events
-                          .go(const ProfileRoute());
-                    },
-                  ),
-                ],
-              ),
+                ),
+                RxBlocListener<UpdateAndVerifyPinBlocType, void>(
+                  state: (bloc) => bloc.states.isPinUpdated,
+                  listener: (context, isCreated) {
+                    context
+                        .read<RouterBlocType>()
+                        .events
+                        .go(const ProfileRoute());
+                  },
+                ),
+              ],
             ),
           ),
         ),
       );
 
-  Future<void> _isPinCodeVerified(BuildContext context) async {
-    if (widget.pinCodeArguments.title ==
-        context.l10n.libPinCode.enterCurrentPin) {
-      return context.read<RouterBlocType>().events.pushReplace(
-          const UpdatePinRoute(),
-          extra: PinCodeArguments(title: context.l10n.libPinCode.enterNewPin));
+  Future<void> _isPinCodeVerified(
+    BuildContext context,
+    String? updateToken,
+  ) async {
+    if (pinCodeArguments.title == context.l10n.libPinCode.enterCurrentPin) {
+      return context
+          .read<RouterBlocType>()
+          .events
+          .pushReplace(const UpdatePinRoute(),
+              extra: PinCodeArguments(
+                title: context.l10n.libPinCode.enterNewPin,
+                updateToken: updateToken,
+              ));
     }
-    if (widget.pinCodeArguments.title == context.l10n.libPinCode.enterNewPin) {
-      return context.read<RouterBlocType>().events.pushReplace(
-          const UpdatePinRoute(),
-          extra: PinCodeArguments(title: context.l10n.libPinCode.confirmPin));
-    } else if (widget.pinCodeArguments.title ==
-        context.l10n.libPinCode.confirmPin) {
+    if (pinCodeArguments.title == context.l10n.libPinCode.enterNewPin) {
+      return context
+          .read<RouterBlocType>()
+          .events
+          .pushReplace(const UpdatePinRoute(),
+              extra: PinCodeArguments(
+                title: context.l10n.libPinCode.confirmPin,
+                updateToken: pinCodeArguments.updateToken ?? updateToken,
+              ));
+    } else if (pinCodeArguments.title == context.l10n.libPinCode.confirmPin) {
       context.read<UpdateAndVerifyPinBlocType>().events.checkIsPinUpdated();
     }
-  }
-
-  void _onError(Object error, String strValue, BuildContext context) {
-    showBlurredBottomSheet(
-      context: context,
-      configuration: const ModalConfiguration(safeAreaBottom: false),
-      builder: (context) => MessagePanelWidget(
-        message: error.toString(),
-        messageState: MessagePanelState.important,
-      ),
-    );
   }
 
   String _exampleMapMessageToString(

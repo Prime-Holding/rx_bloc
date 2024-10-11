@@ -3,7 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
-import '../../models.dart';
+import '../extensions/paginated_list_extensions.dart';
+import '../models/paginated_list.dart';
 
 /// *RxPaginatedBuilder* provides the flexibility and simplicity of presentation
 /// of paginated data with the use of

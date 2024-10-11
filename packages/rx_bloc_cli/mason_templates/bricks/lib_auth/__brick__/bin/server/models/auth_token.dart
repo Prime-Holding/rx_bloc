@@ -16,6 +16,9 @@ class AuthToken {
     final claimSet = JwtClaim(
       issuer: jwtIssuer,
       audience: jwtAudiences,
+      payload: {
+        'userId': generateRandomString(),
+      },
       maxAge: const Duration(hours: 1),
     );
 

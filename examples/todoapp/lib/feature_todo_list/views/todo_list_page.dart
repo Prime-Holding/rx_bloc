@@ -29,14 +29,18 @@ class TodoListPage extends StatelessWidget {
             RxBlocBuilder<TodoListBlocType, TodosFilterModel>(
               state: (bloc) => bloc.states.filter,
               builder: (context, snapshot, bloc) => TodosFilterPopupMenuButton(
+                key: K.filtersButton,
                 selectedFilter: snapshot.data,
                 onApplyFilter: bloc.events.applyFilter,
               ),
             ),
-            const AppTodoListBulkEditPopupMenuButton(),
+            const AppTodoListBulkEditPopupMenuButton(
+              key: K.actionsButton,
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          key: K.todoListPageCreateButton,
           heroTag: 'fab',
           onPressed: () {
             context.read<RouterBlocType>().events.push(TodoCreateRoute());
@@ -57,6 +61,7 @@ class TodoListPage extends StatelessWidget {
                         isLoadingActions.requireData) ||
                     (!isLoadingBulk.hasData || isLoadingBulk.requireData));
                 return TodoListWidget(
+                  key: K.todosList,
                   todos: list,
                   isLoading: isLoading,
                 );

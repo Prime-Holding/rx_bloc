@@ -11,16 +11,19 @@ PopupMenuItem buildBulkEditMenuItem(
 }) =>
     switch (bulkAction) {
       (BulkActionModel.markAllComplete) => PopupMenuItem(
+          key: K.actionByName(bulkAction),
           onTap:
               context.read<TodoListBulkEditBlocType>().events.markAllCompleted,
           child: Text(context.l10n.completeAll),
         ),
       BulkActionModel.markAllIncomplete => PopupMenuItem(
+          key: K.actionByName(bulkAction),
           onTap:
               context.read<TodoListBulkEditBlocType>().events.markAllIncomplete,
           child: Text(context.l10n.incompleteAll),
         ),
       BulkActionModel.clearCompleted => PopupMenuItem(
+          key: K.actionByName(bulkAction),
           onTap: context.read<TodoListBulkEditBlocType>().events.clearCompleted,
           child: Text(context.l10n.clearCompleted),
         ),

@@ -72,6 +72,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    testOptions {
+      execution "ANDROIDX_TEST_ORCHESTRATOR"
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.primeholding.liquidtools"
@@ -81,6 +86,8 @@ android {
         targetSdk = 34
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: "true"
     }
 
     signingConfigs {
@@ -113,7 +120,9 @@ android {
     }
     
 }
-
+dependencies {
+    androidTestUtil 'androidx.test:orchestrator:1.4.2'
+}
 flutter {
     source = "../.."
 }
