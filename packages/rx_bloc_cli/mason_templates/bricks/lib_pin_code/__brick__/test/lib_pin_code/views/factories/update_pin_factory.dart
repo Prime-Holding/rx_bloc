@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
-import 'package:local_session_timeout/local_session_timeout.dart';
 import 'package:provider/provider.dart';
 import 'package:{{project_name}}/base/common_blocs/coordinator_bloc.dart';
 import 'package:{{project_name}}/lib_pin_code/bloc/update_and_verify_pin_bloc.dart';

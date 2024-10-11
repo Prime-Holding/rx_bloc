@@ -2,7 +2,6 @@ import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
 import '../stubs.dart';
 import 'factories/update_pin_factory.dart';
-import 'factories/update_pin_factory.dart';
 
 void main() {
   runGoldenTests(
