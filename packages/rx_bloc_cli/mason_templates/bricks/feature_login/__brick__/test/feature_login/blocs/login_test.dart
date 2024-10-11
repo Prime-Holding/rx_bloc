@@ -69,7 +69,7 @@ void main() {
     validatorService = MockLoginValidatorService();
   });
 
-  group('test login_bloc_dart state email', () {
+  group('test login_bloc_dart', () {
     rxBlocTest<LoginBlocType, String>('test login_bloc_dart state email',
         build: () async {
           defineWhen(username: Stubs.email, password: Stubs.password);
