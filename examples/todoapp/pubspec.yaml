@@ -64,9 +64,9 @@ patrol:
   app_name: todoapp
   flavor: development
   android:
-    package_name: com.primeholding.todoapp
+    package_name: com.primeholding.liquidtools
   ios:
-    bundle_id: com.primeholding.todoapp
+    bundle_id: com.primeholding.liquidtools
     app_name: todoapp 
 
     
