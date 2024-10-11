@@ -94,12 +94,13 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.mfa,
         ),
         {{/enable_mfa}}
+        {{#enable_profile}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,
           route: const ProfileRoute(),
           routePath: RoutesPath.profile,
-        ),
+        ),{{/enable_profile}}
       ];
 
   void _onError(BuildContext context, ErrorModel errorModel) =>

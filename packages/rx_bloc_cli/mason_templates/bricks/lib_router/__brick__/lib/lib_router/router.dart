@@ -20,8 +20,8 @@ import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}
 import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}{{#enable_mfa}}
 import '../feature_mfa/di/mfa_page_with_dependencies.dart';{{/enable_mfa}}
 import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
-import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}
-import '../feature_profile/di/profile_page_with_dependencies.dart';
+import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_profile}}
+import '../feature_profile/di/profile_page_with_dependencies.dart';{{/enable_profile}}
 import '../feature_splash/di/splash_page_with_dependencies.dart';
 import '../feature_splash/services/splash_service.dart';{{#enable_feature_widget_toolkit}}
 import '../feature_widget_toolkit/di/widget_toolkit_with_dependencies.dart';{{/enable_feature_widget_toolkit}}{{#enable_mfa}}
@@ -39,8 +39,8 @@ import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart';{{#has_authentication}}
-part 'routes/onboarding_routes.dart';{{/has_authentication}}
-part 'routes/profile_routes.dart';
+part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_profile}}
+part 'routes/profile_routes.dart';{{/enable_profile}}
 part 'routes/routes.dart';
 part 'routes/showcase_routes.dart';{{#enable_mfa}}
 part 'routes/mfa_routes.dart';{{/enable_mfa}}
