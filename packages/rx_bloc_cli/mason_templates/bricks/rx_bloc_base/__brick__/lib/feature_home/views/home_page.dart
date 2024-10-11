@@ -37,21 +37,23 @@ class HomePage extends StatelessWidget {
           children: branchNavigators,
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        key: K.bottomNavigationBar,
-        backgroundColor: context.designSystem.colors.backgroundColor,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: currentIndex,
-        onTap: onNavigationItemSelected,
-        items: list
-            .map(
-              (item) => BottomNavigationBarItem(
-                label: item.title,
-                icon: item.icon,
-              ),
-            )
-            .toList(),
-      ),
+      bottomNavigationBar: list.length == 1
+          ? null
+          : BottomNavigationBar(
+              key: K.bottomNavigationBar,
+              backgroundColor: context.designSystem.colors.backgroundColor,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: currentIndex,
+              onTap: onNavigationItemSelected,
+              items: list
+                  .map(
+                    (item) => BottomNavigationBarItem(
+                      label: item.title,
+                      icon: item.icon,
+                    ),
+                  )
+                  .toList(),
+            ),
     );
   }
 
