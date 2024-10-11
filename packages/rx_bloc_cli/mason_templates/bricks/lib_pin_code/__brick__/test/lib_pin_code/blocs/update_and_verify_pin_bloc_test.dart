@@ -30,8 +30,7 @@ void main() {
     when(coordinatorStates.userLoggedIn)
         .thenAnswer((_) => const Stream.empty());
 
-    when(coordinatorStates.userLogOut)
-        .thenAnswer((_) => Stream.value(null));
+    when(coordinatorStates.userLogOut).thenAnswer((_) => Stream.value(null));
 
     when(verifyPinCodeService.deleteStoredPin())
         .thenAnswer((_) => Future.value());

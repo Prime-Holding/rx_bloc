@@ -30,7 +30,8 @@ void main() {
       final result = await permissionsService.deleteStoredPin();
 
       expect(result, true);
-      verify(repository.writePinToStorage(VerifyPinCodeService.storedPin, null)).called(1);
+      verify(repository.writePinToStorage(VerifyPinCodeService.storedPin, null))
+          .called(1);
       verify(repository.getPinCode()).called(1);
     });
 

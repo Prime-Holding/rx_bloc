@@ -26,15 +26,18 @@ void main() {
         () async {
       await service.deleteStoredPin();
 
-      verify(repository.writePinToStorage(VerifyPinCodeService.storedPin, null)).called(1);
-      verify(repository.writePinToStorage(VerifyPinCodeService.firstPin, null)).called(1);
+      verify(repository.writePinToStorage(VerifyPinCodeService.storedPin, null))
+          .called(1);
+      verify(repository.writePinToStorage(VerifyPinCodeService.firstPin, null))
+          .called(1);
     });
 
     test('deleteSavedData should call repository.writePinToStorage with null',
         () async {
       await service.deleteSavedData();
 
-      verify(repository.writePinToStorage(VerifyPinCodeService.firstPin, null)).called(1);
+      verify(repository.writePinToStorage(VerifyPinCodeService.firstPin, null))
+          .called(1);
     });
 
     test('isPinCodeInSecureStorage should return true', () async {
