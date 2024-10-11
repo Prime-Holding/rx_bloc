@@ -61,6 +61,16 @@ final class Stub {
     ..[CreateCommandArguments.socialLogins.name] = false
     ..[CreateCommandArguments.otp.name] = false;
 
+  static Map<String, Object> get changeLanguageEnabled =>
+      Map.from(Stub.defaultValues)
+        ..[CreateCommandArguments.changeLanguage.name] = true
+        ..[CreateCommandArguments.profile.name] = false;
+  
+    static Map<String, Object> get loginEnabled =>
+      Map.from(Stub.defaultValues)
+        ..[CreateCommandArguments.login.name] = true
+        ..[CreateCommandArguments.profile.name] = false;
+
   static final generatorArgumentsAllEnabled = GeneratorArguments(
     outputDirectory: Directory('some/output_directory'),
     projectConfiguration: ProjectConfiguration(
