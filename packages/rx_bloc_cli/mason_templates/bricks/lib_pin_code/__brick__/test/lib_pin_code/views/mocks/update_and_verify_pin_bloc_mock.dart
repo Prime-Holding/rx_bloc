@@ -2,7 +2,7 @@ import 'package:local_session_timeout/local_session_timeout.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:testapp/lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
+import 'package:{{project_name}}/lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 
 import 'update_and_verify_pin_bloc_mock.mocks.dart';
 
