@@ -1,17 +1,20 @@
+import 'dart:ui';
+
+import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:{{project_name}}/base/common_ui_components/app_error_widget.dart';
 
 import '../../../helpers/golden_helper.dart';
-import '../../../helpers/models/scenario.dart';
 import '../../stubs.dart';
 
 void main() {
-  runGoldenTests([
-    generateDeviceBuilder(
-      widget: AppErrorWidget(
-        error: Stubs.unknownError,
-        onTabRetry: () {},
-      ),
-      scenario: Scenario(name: 'app_error'),
-    ),
-  ]);
+  runGoldenBuilderTests('app_error',
+      surfaceSize: const Size(345, 174),
+      builder: (_) => GoldenBuilder.column()
+        ..addScenario(
+          'unknown error',
+          AppErrorWidget(
+            error: Stubs.unknownError,
+            onTabRetry: () {},
+          ),
+        ));
 }
