@@ -37,7 +37,7 @@ jobs:
             flutter test --coverage --exclude-tags=not-tests
           fi
       - name: Remove unnecessary files
-        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','**/routes.dart','**data_source.dart','**_model.g.dart','**_models.g.dart''**_model.dart','**_model_extensions.dart','**_models.dart','**_models_extensions.dart','**_config.dart','**_constants.dart','**_translations.dart','lib/assets.dart','lib/keys.dart','lib/base/theme/**','lib/base/utils/**','lib/keys.dart','lib/l10n/**','lib/feature_dashboard/**','lib/feature_deep_link_details/**','lib/feature_deep_link_list/**','lib/feature_enter_message/**','lib/feature_home/**','lib/feature_notifications/**','lib/feature_otp/**','lib/feature_profile/**','lib/feature_splash/**','lib/feature_widget_toolkit/**','lib/lib_change_language/**','lib/lib_dev_menu/**','lib/lib_translations/**' coverage/lcov.info
+        run: flutter pub run clean_coverage clean --exclusions '**/.g.dart','**/di/**','**repository.dart','**/models/**','**/routes.dart','**data_source.dart','**_model.g.dart','**_models.g.dart''**_model.dart','**_model_extensions.dart','**_models.dart','**_models_extensions.dart','**_config.dart','**_constants.dart','**_translations.dart','lib/assets.dart','lib/keys.dart','lib/base/theme/**','lib/base/utils/**','lib/keys.dart','lib/l10n/**' coverage/lcov.info
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v3
         with:
