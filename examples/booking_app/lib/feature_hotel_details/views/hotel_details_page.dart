@@ -1,5 +1,5 @@
 import 'package:favorites_advanced_base/core.dart';
-import 'package:favorites_advanced_base/resources.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
@@ -19,7 +19,7 @@ class HotelDetailsPage extends StatelessWidget {
         body: SafeArea(
           top: false,
           bottom: false,
-          key: const ValueKey(Keys.hotelDetailsPage),
+          key: keys.detailsPageKey,
           child: Column(
             children: [
               const FavoriteMessageListener(),
@@ -45,7 +45,7 @@ class HotelDetailsPage extends StatelessWidget {
         slivers: [
           SliverAppBar(
             floating: true,
-            leading: const BackButton(),
+            leading: const BackButton(key: keys.detailsBackButton),
             backgroundColor: Colors.transparent,
             actions: _buildTrailingItems(context, hotel),
             elevation: 0,
@@ -82,6 +82,7 @@ class HotelDetailsPage extends StatelessWidget {
       );
 
   Widget _buildDescription(Hotel hotel) => SkeletonText(
+        key: keys.detailsDescriptionKey,
         text: hotel.displayDescription,
         skeletons: 10,
         height: 17,

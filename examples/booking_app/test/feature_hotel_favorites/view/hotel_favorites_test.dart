@@ -1,5 +1,6 @@
 import 'package:booking_app/feature_hotel_favorites/blocs/hotel_favorites_bloc.dart';
 import 'package:booking_app/feature_hotel_favorites/views/hotel_favorites_page.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
       expect(find.byKey(const Key('ErrorRetryWidget')), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('reload_button')));
+      await tester.tap(find.byKey(keys.errorRetryTapKey));
       await tester.pump(const Duration(seconds: 1));
       expect(find.byKey(const Key('ErrorRetryWidget')), findsOneWidget);
     });

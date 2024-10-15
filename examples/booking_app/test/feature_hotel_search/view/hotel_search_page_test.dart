@@ -5,6 +5,7 @@ import 'package:booking_app/feature_hotel_search/models/capacity_filter_data.dar
 import 'package:booking_app/feature_hotel_search/views/hotel_search_page.dart';
 import 'package:booking_app/lib_router/blocs/router_bloc.dart';
 import 'package:favorites_advanced_base/core.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -43,12 +44,12 @@ void main() {
       ));
 
       // Tap on sort button to open sorting options
-      await tester.tap(find.byKey(const Key('sort_button')));
+      await tester.tap(find.byKey(keys.sortFilterTapKey));
       await tester.pump(const Duration(seconds: 1));
       expect(find.textContaining('Sort hotels by'), findsOne);
 
       // Tap on apply button to close sorting options
-      await tester.tap(find.byKey(const Key('apply_sort_button')));
+      await tester.tap(find.byKey(keys.sortFilterApplyTapKey));
       await tester.pump(const Duration(seconds: 1));
       expect(find.textContaining('Sort hotels by'), findsNothing);
     });
@@ -71,11 +72,11 @@ void main() {
         ),
       ));
       await tester.pump(const Duration(seconds: 1));
-      expect(find.byKey(const Key('ErrorRetryWidget')), findsOneWidget);
+      expect(find.byKey(keys.errorRetryWidgetKey), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('reload_button')));
+      await tester.tap(find.byKey(keys.errorRetryTapKey));
       await tester.pump(const Duration(seconds: 1));
-      expect(find.byKey(const Key('ErrorRetryWidget')), findsOneWidget);
+      expect(find.byKey(keys.errorRetryWidgetKey), findsOneWidget);
     });
 
     testWidgets(
@@ -105,10 +106,10 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
       expect(opened, false);
 
-      await tester.tap(find.byKey(Key('FavoriteButton${Stub.hotel1.id}')));
+      await tester.tap(find.byKey(keys.favoriteButtonById(Stub.hotel1.id)));
 
       await tester.tap(
-        find.byKey(Key('VisiblePuppyCard${Stub.hotel1.id}')),
+        find.byKey(keys.listItemTapById(Stub.hotel1.id)),
       );
       expect(opened, true);
     });
@@ -117,7 +118,7 @@ void main() {
   group('HotelSearchPage', () {
     testWidgets('should display search results and handle hotel press',
         (WidgetTester tester) async {
-      const key = Key('HotelCard1');
+      final key = keys.listItemTapById(Stub.hotel1.id);
       bool called = false;
       final mockHotelSearchBloc = hotelSearchMockFactory(
         hotels: Stub.paginatedListOneHotel,

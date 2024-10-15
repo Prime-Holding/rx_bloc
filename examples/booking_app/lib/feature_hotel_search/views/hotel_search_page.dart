@@ -1,4 +1,5 @@
 import 'package:favorites_advanced_base/core.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:flutter_rx_bloc/rx_form.dart';
@@ -105,6 +106,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
               },
               state: (bloc) => bloc.states.hotels,
               buildSuccess: (context, list, bloc) => ListView.builder(
+                key: keys.searchPageListKey,
                 itemCount: list.itemCount,
                 padding: const EdgeInsets.only(bottom: 100, top: 10),
                 scrollDirection: Axis.vertical,
@@ -119,7 +121,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
                 );
               },
               buildError: (context, list, bloc) => ErrorRetryWidget(
-                key: const Key('ErrorRetryWidget'),
+                key: keys.errorRetryWidgetKey,
                 onReloadTap: () => bloc.events.reload(
                   reset: true,
                   fullReset: true,
@@ -158,6 +160,10 @@ class _HotelSearchPageState extends State<HotelSearchPage>
       );
     }
 
+    RxBlocProvider.of<HotelsExtraDetailsBlocType>(context)
+        .events
+        .fetchExtraDetails(item);
+
     return AnimatedListItem(
       animationController: animationController,
       animation: animation,
@@ -175,10 +181,6 @@ class _HotelSearchPageState extends State<HotelSearchPage>
             RxBlocProvider.of<HotelManageBlocType>(context)
                 .events
                 .markAsFavorite(hotel: item, isFavorite: isFavorite),
-        onVisible: (index) =>
-            RxBlocProvider.of<HotelsExtraDetailsBlocType>(context)
-                .events
-                .fetchExtraDetails(item),
       ),
     );
   }
@@ -211,6 +213,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FocusButton(
+                  key: keys.dateFilterTapKey,
                   onPressed: () async {
                     final pickedRange = await showDateRangePicker(
                       context: context,
@@ -273,6 +276,7 @@ class _HotelSearchPageState extends State<HotelSearchPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FocusButton(
+                  key: keys.capacityFilterTapKey,
                   onPressed: () {
                     Alert(
                       context: context,

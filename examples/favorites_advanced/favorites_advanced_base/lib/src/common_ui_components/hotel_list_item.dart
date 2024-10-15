@@ -1,19 +1,17 @@
 import 'package:favorites_advanced_base/models.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:favorites_advanced_base/src/theme/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 import 'hotel_header.dart';
 import 'hotel_image.dart';
 
 typedef OnFavorite = Function(Hotel hotel, bool isFavorite);
-typedef OnVisible = Function(Hotel hotel);
 typedef OnCardPressed = Function(Hotel hotel);
 
 class HotelListItem extends StatelessWidget {
   final Hotel hotel;
   final OnFavorite _onFavorite;
-  final Function(Hotel hotel)? _onVisible;
   final Function(Hotel hotel) _onCardPressed;
 
   const HotelListItem({
@@ -22,39 +20,24 @@ class HotelListItem extends StatelessWidget {
     required OnCardPressed onCardPressed,
     EdgeInsets? padding,
     double aspectRatio = 2,
-    OnVisible? onVisible,
     Key? key,
   })  : _onFavorite = onFavorite,
-        _onVisible = onVisible,
         _onCardPressed = onCardPressed,
         super(key: key);
 
   @override
-  Widget build(BuildContext context) => _onVisible == null
-      ? _buildCard()
-      : VisibilityDetector(
-          onVisibilityChanged: (info) {
-            if (info.visibleFraction > 0.7) {
-              _onVisible!(hotel);
-            }
-          },
-          key: Key("VisiblePuppyCard${hotel.id}"),
-          child: _buildCard(),
-        );
-
-  Widget _buildCard() {
-    return Material(
-      child: InkWell(
-        key: Key('HotelCard${hotel.id}'),
-        onTap: () => _onCardPressed(hotel),
-        child: HotelCard(
-          hotel: hotel,
-          onFavorite: _onFavorite,
-          padding: EdgeInsets.only(top: 4),
+  Widget build(BuildContext context) => Material(
+        key: key ?? keys.listItemById(hotel.id),
+        child: InkWell(
+          key: keys.listItemTapById(hotel.id),
+          onTap: () => _onCardPressed(hotel),
+          child: HotelCard(
+            hotel: hotel,
+            onFavorite: _onFavorite,
+            padding: EdgeInsets.only(top: 4),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class HotelCard extends StatelessWidget {
@@ -92,7 +75,7 @@ class HotelCard extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  key: Key('FavoriteButton${hotel.id}'),
+                  key: keys.favoriteButtonById(hotel.id),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(32.0),
                   ),
