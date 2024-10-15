@@ -9,7 +9,7 @@ void main() {
   runGoldenBuilderTests(
     'update_button',
     surfaceSize: const Size(200, 256),
-    builder: (_) => GoldenBuilder.column()
+    builder: (color) => GoldenBuilder.column(bgColor: color)
       ..addScenario(
         'update_button_active',
         UpdateButton(isActive: true, onPressed: () {}),

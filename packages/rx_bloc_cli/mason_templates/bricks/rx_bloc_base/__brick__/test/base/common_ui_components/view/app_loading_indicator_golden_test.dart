@@ -8,7 +8,7 @@ import '../../stubs.dart';
 void main() {
   runGoldenBuilderTests('loading_indicator',
       surfaceSize: const Size(300, 218),
-      builder: (_) => GoldenBuilder.column()
+      builder: (color) => GoldenBuilder.column(bgColor: color)
         ..addScenario(
           'app_loading_indicator_empty',
           const AppLoadingIndicator(),

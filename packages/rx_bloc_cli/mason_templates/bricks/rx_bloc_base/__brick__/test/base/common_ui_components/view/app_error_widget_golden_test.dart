@@ -9,7 +9,7 @@ import '../../stubs.dart';
 void main() {
   runGoldenBuilderTests('app_error',
       surfaceSize: const Size(345, 174),
-      builder: (_) => GoldenBuilder.column()
+      builder: (color) => GoldenBuilder.column(bgColor: color)
         ..addScenario(
           'unknown error',
           AppErrorWidget(

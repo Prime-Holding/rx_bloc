@@ -9,7 +9,7 @@ void main() {
   runGoldenBuilderTests(
     'action_button',
     surfaceSize: const Size(70, 304),
-    builder: (_) => GoldenBuilder.column()
+    builder: (color) => GoldenBuilder.column(bgColor: color)
       ..addScenario(
         'loading state',
         ActionButton(

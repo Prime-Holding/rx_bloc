@@ -8,7 +8,7 @@ import '../../stubs.dart';
 void main() {
   runGoldenBuilderTests('primary_button',
       surfaceSize: const Size(300, 418),
-      builder: (_) => GoldenBuilder.column()
+      builder: (color) => GoldenBuilder.column(bgColor: color)
         ..addScenario(
           'primary_button_empty',
           const PrimaryButton(),
