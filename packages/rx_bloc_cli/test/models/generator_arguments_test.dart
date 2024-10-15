@@ -41,6 +41,7 @@ void main() {
       cicdEnabled: true,
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
+      qrScannerEnabled: true,
     );
     sut = GeneratorArguments(
       outputDirectory: outputDirectory,
@@ -90,6 +91,8 @@ void main() {
           equals(featureConfiguration.cicdGithubEnabled));
       expect(sut.cicdCodemagicEnabled,
           equals(featureConfiguration.cicdCodemagicEnabled));
+      expect(
+          sut.qrScannerEnabled, equals(featureConfiguration.qrScannerEnabled));
     });
   });
 }

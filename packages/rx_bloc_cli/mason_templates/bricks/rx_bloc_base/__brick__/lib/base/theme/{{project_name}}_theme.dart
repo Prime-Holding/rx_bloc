@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';{{#enable_feature_otp}}
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';{{/enable_feature_otp}}{{#enable_pin_code}}
-import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}
+import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
+import 'package:widget_toolkit_qr/widget_toolkit_qr.dart';{{/enable_feature_qr_scanner}}
 
 import './design_system.dart';
 import './design_system/design_system_colors.dart';
@@ -47,7 +48,8 @@ class {{project_name.pascalCase()}}Theme {
         isLightTheme ? EditAddressTheme.light() : EditAddressTheme.dark(),
         isLightTheme ? LanguagePickerTheme.light() : LanguagePickerTheme.dark(),{{#enable_feature_otp}}
         isLightTheme ? SmsCodeTheme.light() : SmsCodeTheme.dark(),{{/enable_feature_otp}}{{#enable_pin_code}}
-        isLightTheme ? PinCodeTheme.light() : PinCodeTheme.dark(),{{/enable_pin_code}}
+        isLightTheme ? PinCodeTheme.light() : PinCodeTheme.dark(),{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
+        isLightTheme ? QrScannerTheme.light() : QrScannerTheme.dark(),{{/enable_feature_qr_scanner}}
       ],
       // Override any material widget themes here if needed.
     );
