@@ -65,7 +65,7 @@ dev_dependencies:
   go_router_builder: ^2.7.0
   json_serializable: ^6.7.1
   mockito: ^5.4.2 {{#enable_patrol}}
-  patrol: ^3.0.3 {{/enable_patrol}}
+  patrol: ^3.11.1 {{/enable_patrol}}
   r_flutter: 0.9.0
   retrofit_generator: ^9.1.1
   rx_bloc_generator: ^8.0.0

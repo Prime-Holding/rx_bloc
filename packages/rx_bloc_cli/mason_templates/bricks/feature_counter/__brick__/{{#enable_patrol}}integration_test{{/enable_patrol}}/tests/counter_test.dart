@@ -1,5 +1,6 @@
 {{> licence.dart }}
 
+import '../main/base/test_constants.dart';
 import '../main/configuration/build_app.dart';
 import '../main/configuration/patrol_base_config.dart';
 import '../main/steps_utils/counter_page_steps.dart';
@@ -39,5 +40,6 @@ void main() {
       //Logout
       await ProfilePageSteps.logout($);{{/has_authentication}}
     },
+    tags: [regressionTest, positiveTest],
   );
 }
