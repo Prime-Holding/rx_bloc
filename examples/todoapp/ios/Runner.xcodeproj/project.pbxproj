@@ -595,7 +595,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "\n";
+			shellPath = "
+";
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		4C34F3D62CA47BB700BCD34F /* xcode_backend embed_and_thin */ = {
@@ -1051,7 +1052,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 655F0BC6A724E69863E8E69D /* Pods-Runner.release-production.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNE622G954;
 				PRODUCT_NAME = Runner;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LiquidTools Distribution";
 			};
 			name = "Release-production";
 		};
