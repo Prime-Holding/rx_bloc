@@ -1052,6 +1052,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 655F0BC6A724E69863E8E69D /* Pods-Runner.release-production.xcconfig */;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZNE622G954;
