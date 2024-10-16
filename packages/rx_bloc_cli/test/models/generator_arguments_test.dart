@@ -41,6 +41,7 @@ void main() {
       cicdEnabled: true,
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
+      profileEnabled: true,
     );
     sut = GeneratorArguments(
       outputDirectory: outputDirectory,
@@ -90,6 +91,7 @@ void main() {
           equals(featureConfiguration.cicdGithubEnabled));
       expect(sut.cicdCodemagicEnabled,
           equals(featureConfiguration.cicdCodemagicEnabled));
+      expect(sut.profileEnabled, equals(featureConfiguration.profileEnabled));
     });
   });
 }

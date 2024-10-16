@@ -26,8 +26,8 @@ class PermissionsController extends ApiController {
         'MfaRoute': false,{{/enable_mfa}}{{#enable_pin_code}}
         'CreatePinRoute': false,
         'UpdatePinRoute': false,{{/enable_pin_code}}
-        'DashboardRoute': false,
-        'ProfileRoute': false,
+        'DashboardRoute': false,{{#enable_profile}}
+        'ProfileRoute': false,{{/enable_profile}}
         'SplashRoute': true,{{#enable_feature_counter}}
         'CounterRoute': false,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
         'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}
@@ -45,8 +45,8 @@ class PermissionsController extends ApiController {
       'MfaRoute': true,{{/enable_mfa}}{{#enable_pin_code}}
       'CreatePinRoute': true,
       'UpdatePinRoute': true,{{/enable_pin_code}}
-      'DashboardRoute': true,
-      'ProfileRoute': true,
+      'DashboardRoute': true,{{#enable_profile}}
+      'ProfileRoute': true,{{/enable_profile}}
       'SplashRoute': true,{{#enable_feature_counter}}
       'CounterRoute': true,{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
       'WidgetToolkitRoute': true,{{/enable_feature_widget_toolkit}}

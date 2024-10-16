@@ -29,9 +29,9 @@ class NotificationModel with EquatableMixin {
   List<Object?> get props => [id, type];
 }
 
-enum NotificationModelType {
+enum NotificationModelType { {{#enable_profile}}
   @JsonValue('Profile')
-  profile,
+  profile, {{/enable_profile}}
 
   @JsonValue('Dashboard')
   dashboard,

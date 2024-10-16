@@ -30,9 +30,9 @@ class PushNotificationsBloc extends $PushNotificationsBloc {
       _$tapOnEventEvent.asyncMap<void>((event) {
     switch (event.type) {
       case NotificationModelType.dashboard:
-        return _routerBloc.events.go(const DashboardRoute());
+        return _routerBloc.events.go(const DashboardRoute());{{#enable_profile}}
       case NotificationModelType.profile:
-        return _routerBloc.events.go(const ProfileRoute());
+        return _routerBloc.events.go(const ProfileRoute());{{/enable_profile}}
       default:
         null;
     }
