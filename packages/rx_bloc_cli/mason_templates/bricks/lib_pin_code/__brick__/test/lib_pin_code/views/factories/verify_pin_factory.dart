@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:{{project_name}}/lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 import 'package:{{project_name}}/lib_pin_code/models/pin_code_arguments.dart';
 import 'package:{{project_name}}/lib_pin_code/services/verify_pin_code_service.dart';
 import 'package:{{project_name}}/lib_pin_code/views/verify_pin_code_page.dart';
 import 'package:{{project_name}}/lib_router/blocs/router_bloc.dart';
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 
 import '../../../base/common_blocs/router_bloc_mock.dart';
 import '../../mock/verify_pin_code_service_mock.dart';
