@@ -1,14 +1,19 @@
 import 'package:mockito/annotations.dart';
-import 'package:{{project_name}}/lib_pin_code/repository/pin_code_repository.dart';
+import 'package:mockito/mockito.dart';
 import 'package:{{project_name}}/lib_pin_code/services/verify_pin_code_service.dart';
 
 import 'verify_pin_code_service_mock.mocks.dart';
 
-@GenerateMocks([
-  VerifyPinCodeService,
-  PinCodeRepository
-])
-VerifyPinCodeService verifyPinCodeServiceMockFactory() {
-  PinCodeRepository repositoryMock = MockPinCodeRepository();
-  return VerifyPinCodeService(repositoryMock);
+@GenerateMocks([VerifyPinCodeService])
+VerifyPinCodeService verifyPinCodeServiceMockFactory({
+  bool showBiometricsButton = false,
+}) {
+  final mockVerifyPinCodeService = MockVerifyPinCodeService();
+
+  if (showBiometricsButton) {
+    when(mockVerifyPinCodeService.isPinCodeInSecureStorage())
+        .thenAnswer((_) async => true);
+  }
+
+  return mockVerifyPinCodeService;
 }

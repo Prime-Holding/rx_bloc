@@ -14,6 +14,11 @@ void main() {
         widget: updatePinFactory(title: Stubs.title),
         scenario: Scenario(name: 'update_pin_title'),
       ),
+      generateDeviceBuilder(
+        widget:
+            updatePinFactory(title: Stubs.title, showBiometricsButton: true),
+        scenario: Scenario(name: 'update_pin_show_biometrics'),
+      ),
     ],
     matcherCustomPump: (tester) async {
       await tester.pumpAndSettle(const Duration(seconds: 2));

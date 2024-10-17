@@ -1,4 +1,5 @@
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:{{project_name}}/lib_pin_code/services/update_pin_code_service.dart';
 
 import 'update_pin_code_service_mock.mocks.dart';
@@ -6,5 +7,11 @@ import 'update_pin_code_service_mock.mocks.dart';
 @GenerateMocks([
   UpdatePinCodeService,
 ])
-UpdatePinCodeService updatePinCodeServiceMockFactory() =>
-    MockUpdatePinCodeService();
+UpdatePinCodeService updatePinCodeServiceMockFactory() {
+  final mockUpdatePinCodeService = MockUpdatePinCodeService();
+
+  when(mockUpdatePinCodeService.isPinCodeInSecureStorage())
+      .thenAnswer((_) async => true);
+
+  return mockUpdatePinCodeService;
+}
