@@ -58,7 +58,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Setup Ruby env
-        uses: ruby/setup-ruby@v1.176.0
+        uses: ruby/setup-ruby@v1.196.0
         with:
           ruby-version: 3.1.0
           bundler-cache: true
@@ -103,7 +103,7 @@ jobs:
       - name: Rename config
         run: mv "devops/artifacts/android-deployment.yaml" "devops/artifacts/deployment.yaml"
       - name: Setup Ruby env
-        uses: ruby/setup-ruby@v1.176.0
+        uses: ruby/setup-ruby@v1.196.0
         with:
           ruby-version: 3.1.0
           bundler-cache: true
