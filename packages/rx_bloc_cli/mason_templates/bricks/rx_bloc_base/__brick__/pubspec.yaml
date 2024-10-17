@@ -9,7 +9,8 @@ environment:
 
 dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.10
-  alice_dio: ^1.0.4{{/enable_dev_menu}}
+  alice_dio: ^1.0.4{{/enable_dev_menu}}{{#enable_patrol}}
+  args: ^2.5.0{{/enable_patrol}}
   collection: ^1.18.0
   copy_with_extension: ^5.0.4{{#enable_pin_code}}
   crypto: ^3.0.3{{/enable_pin_code}}
@@ -65,7 +66,7 @@ dev_dependencies:
   go_router_builder: ^2.7.0
   json_serializable: ^6.7.1
   mockito: ^5.4.2 {{#enable_patrol}}
-  patrol: ^3.0.3 {{/enable_patrol}}
+  patrol: ^3.11.1 {{/enable_patrol}}
   r_flutter: 0.9.0
   retrofit_generator: ^9.1.1
   rx_bloc_generator: ^8.0.0
