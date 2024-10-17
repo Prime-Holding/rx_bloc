@@ -1,3 +1,7 @@
+## [5.1.0]
+* Added Profile as an option under the flag `--enable-profile`
+* Update ruby version for generated `github` workflows
+
 ## [5.0.1]
 * Updates to github workflows supporting monorepo structure
 
