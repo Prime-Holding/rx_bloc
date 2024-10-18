@@ -15,7 +15,7 @@ import '../mocks/update_and_verify_pin_bloc_mock.dart';
 
 Widget verifyPinFactory({
   String? title,
-  bool? showBiometricsButton,
+  bool showBiometricsButton = false,
 }) =>
     Scaffold(
       body: MultiProvider(
@@ -27,7 +27,9 @@ Widget verifyPinFactory({
             value: routerBlocMockFactory(),
           ),
           Provider<VerifyPinCodeService>.value(
-            value: verifyPinCodeServiceMockFactory(),
+            value: verifyPinCodeServiceMockFactory(
+              showBiometricsButton: showBiometricsButton,
+            ),
           ),
           Provider<BiometricsLocalDataSource>.value(
             value: pinBiometricsLocalDataSourceMockFactory(),
@@ -37,7 +39,7 @@ Widget verifyPinFactory({
           if (title != null) {
             PinCodeArguments pinCodeArguments;
 
-            if (showBiometricsButton != null) {
+            if (showBiometricsButton) {
               pinCodeArguments = PinCodeArguments(
                 title: title,
                 showBiometricsButton: showBiometricsButton,
