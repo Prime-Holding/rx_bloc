@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../keys.dart' as keys;
 
 class ErrorRetryWidget extends StatelessWidget {
   const ErrorRetryWidget({
@@ -15,7 +16,7 @@ class ErrorRetryWidget extends StatelessWidget {
           children: [
             Icon(Icons.wifi_off, size: 100),
             ElevatedButton(
-              key: const Key('reload_button'),
+              key: keys.errorRetryTapKey,
               child: const Text('Try again'),
               onPressed: onReloadTap,
             )

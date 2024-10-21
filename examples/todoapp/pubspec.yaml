@@ -10,6 +10,7 @@ environment:
 dependencies:
   alice: ^0.4.1
   alice_dio: ^1.0.4
+  args: ^2.5.0
   collection: ^1.18.0
   connectivity_plus: ^6.0.5
   copy_with_extension: ^5.0.4
@@ -63,9 +64,9 @@ patrol:
   app_name: todoapp
   flavor: development
   android:
-    package_name: com.primeholding.todoapp
+    package_name: com.primeholding.liquidtools
   ios:
-    bundle_id: com.primeholding.todoapp
+    bundle_id: com.primeholding.liquidtools
     app_name: todoapp 
 
     

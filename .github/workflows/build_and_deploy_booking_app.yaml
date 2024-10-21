@@ -32,7 +32,7 @@ jobs:
     
   build_android_app:
     needs: app_version_extraction
-    uses: ./.github/workflows/fastlane_android_custom_build_and_deploy.yaml
+    uses: ./.github/workflows/fastlane_build_and_deploy_android_app.yaml
     with:
       flutter_version: "3.13.9"
       project_path: "examples/booking_app"
@@ -46,7 +46,7 @@ jobs:
   
   build_ios_app:
     needs: app_version_extraction
-    uses: ./.github/workflows/fastlane_ios_custom_build_and_deploy.yaml
+    uses: ./.github/workflows/fastlane_build_and_deploy_ios_app.yaml 
     with:
       flutter_version: "3.13.9"
       project_path: "examples/booking_app"

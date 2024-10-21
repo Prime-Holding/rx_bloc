@@ -1,0 +1,112 @@
+name: "Custom build and deploy iOS app"
+
+on:
+  workflow_call:
+    inputs:
+      build_name:
+        type: string
+        required: true
+        description: 'The version of the app (example: 1.0.0)'
+      build_number:
+        type: string
+        required: true
+        description: 'The build number of the app'
+      project_path:
+        type: string
+        default: '.'
+        required: false
+        description: 'The location of the flutter project within the repository'
+      flutter_version:
+        type: string
+        default: ''
+        required: false
+        description: 'The flutter version used to build the project'
+      flavor:
+        type: string
+        default: 'production'
+        description: 'The app environment used to build the app'
+        required: false
+      publish_to_store:
+        type: boolean
+        default: false
+        description: 'Should the app be published to the App store'
+        required: false
+    secrets:
+      credential_encryption_password:
+        required: true
+      credential_repository_access_secret:
+        required: true
+
+jobs:
+  build_ios:
+    defaults:
+      run:
+        working-directory: ${{ inputs.project_path }}
+    runs-on: macos-latest
+    env:
+      CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
+      CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter_version }}
+          channel: "stable"
+      - name: Setup Ruby env
+        uses: ruby/setup-ruby@v1.196.0
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Configure Ruby
+        run: |
+          bundle install
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-darwin21
+          bundle exec gem install cocoapods
+      - name: Build and sign iOS app
+        run: |
+          bundle exec fastlane build_custom platform:ios environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
+      - name: Prepare config
+        run: mv "devops/artifacts/deployment.yaml" "devops/artifacts/ios-deployment.yaml"
+      - name: Upload artifact - .ipa
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ inputs.flavor }}-release.ipa
+          path: "${{ inputs.project_path }}/devops/artifacts/Runner.ipa"
+      - name: Upload artifact - deployment config
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-deployment.yaml
+          path: "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml"
+
+  deploy_to_test_flight:
+    if: ${{ inputs.publish_to_store }}
+    needs: build_ios
+    defaults:
+      run:
+        working-directory: ${{ inputs.project_path }}
+    runs-on: macos-latest
+    env:
+      CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
+      CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: "${{ inputs.project_path }}/devops/artifacts/"
+          merge-multiple: true
+      - name: Rename config
+        run: mv "devops/artifacts/ios-deployment.yaml" "devops/artifacts/deployment.yaml"
+      - name: Setup Ruby env
+        uses: ruby/setup-ruby@v1.196.0
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Configure Ruby
+        run: |
+          bundle install
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-darwin21
+      - name: Publish to Test Flight
+        run: bundle exec fastlane deploy

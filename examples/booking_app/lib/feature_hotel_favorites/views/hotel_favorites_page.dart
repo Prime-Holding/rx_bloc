@@ -6,10 +6,10 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 
-import '../../feature_hotel_search/ui_components/hotel_animated_list_view.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';
 import '../blocs/hotel_favorites_bloc.dart';
+import '../ui_components/hotel_animated_list_view.dart';
 
 class HotelFavoritesPage extends StatelessWidget {
   const HotelFavoritesPage({super.key});

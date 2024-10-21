@@ -1,4 +1,5 @@
 import 'package:favorites_advanced_base/core.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -30,7 +31,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
         children: [
           _buildSortItems(),
           DialogButton(
-            key: const Key('apply_sort_button'),
+            key: keys.sortFilterApplyTapKey,
             onPressed: () {
               widget.onApplyPressed?.call(selected);
               Navigator.of(context).pop();
@@ -80,6 +81,7 @@ class _HotelSortPageState extends State<HotelSortPage> {
   Widget _buildItem({required String name, required SortBy id}) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: GestureDetector(
+          key: keys.sortTypeTapKey(id),
           onTap: () {
             setState(() {
               selected = id;

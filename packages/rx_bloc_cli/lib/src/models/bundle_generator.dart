@@ -1,5 +1,6 @@
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_cicd_fastlane_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_profile_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
@@ -43,6 +44,7 @@ class BundleGenerator {
   final _featureCICDFastlaneBundle = featureCicdFastlaneBundle;
   final _libPinCodeBundle = libPinCodeBundle;
   final _libAnalyticsBundle = libAnalyticsBundle;
+  final _featureProfile = featureProfileBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
@@ -122,6 +124,10 @@ class BundleGenerator {
     //Add lib_mfa to _bundle when needed
     if (arguments.mfaEnabled) {
       _bundle.files.addAll(_libMfa.files);
+    }
+    //Add feature_profile to _bundle when needed
+    if (arguments.profileEnabled) {
+      _bundle.files.addAll(_featureProfile.files);
     }
     return _bundle;
   }
