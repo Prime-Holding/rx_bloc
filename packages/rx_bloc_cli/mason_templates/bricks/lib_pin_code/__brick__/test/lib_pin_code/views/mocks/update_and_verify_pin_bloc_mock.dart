@@ -19,15 +19,15 @@ UpdateAndVerifyPinBlocType updateAndVerifyPinMockFactory() {
   when(blocMock.events).thenReturn(eventsMock);
   when(blocMock.states).thenReturn(statesMock);
 
-  final emptyState = Stream.value(null).publishReplay(maxSize: 1)
-    ..connect();
+  final emptyState = Stream.value(null).publishReplay(maxSize: 1)..connect();
 
   when(statesMock.deleteStoredPinData).thenAnswer((_) => emptyState);
   when(statesMock.deletedData).thenAnswer((_) => emptyState);
   when(statesMock.deleteStoredPinData).thenAnswer((_) => emptyState);
   when(statesMock.isPinUpdated).thenAnswer((_) => emptyState);
-  when(statesMock.sessionValue).thenAnswer((_) => Stream.value(SessionState.stopListening).publishReplay(maxSize: 1)
-    ..connect());
+  when(statesMock.sessionValue).thenAnswer((_) =>
+      Stream.value(SessionState.stopListening).publishReplay(maxSize: 1)
+        ..connect());
 
   return blocMock;
 }

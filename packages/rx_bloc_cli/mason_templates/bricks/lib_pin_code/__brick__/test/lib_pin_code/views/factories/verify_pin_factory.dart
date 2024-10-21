@@ -32,7 +32,7 @@ Widget verifyPinFactory({
             ),
           ),
           Provider<BiometricsLocalDataSource>.value(
-            value: pinBiometricsLocalDataSourceMockFactory(),
+            value: pinBiometricsLocalDataSourceMockFactory(showBiometricsButton),
           ),
         ],
         child: Builder(builder: (context) {

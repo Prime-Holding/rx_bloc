@@ -34,7 +34,7 @@ Widget updatePinFactory({
             value: updatePinCodeServiceMockFactory(),
           ),
           Provider<BiometricsLocalDataSource>.value(
-            value: pinBiometricsLocalDataSourceMockFactory(),
+            value: pinBiometricsLocalDataSourceMockFactory(showBiometricsButton ?? false),
           ),
         ],
         child: Builder(builder: (context) {

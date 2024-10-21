@@ -18,19 +18,19 @@ CreatePinBlocType createPinMockFactory({
   when(blocMock.states).thenReturn(statesMock);
 
   final isPinCreatedState = (isPinCreated != null
-      ? Stream.value(isPinCreated)
-      : const Stream<bool>.empty())
+          ? Stream.value(isPinCreated)
+          : const Stream<bool>.empty())
       .publishReplay(maxSize: 1)
     ..connect();
 
   final deleteStoredPinDataState = (deleteStoredPinData != null
-      ? Stream.value(deleteStoredPinData)
-      : const Stream<bool>.empty())
+          ? Stream.value(deleteStoredPinData)
+          : const Stream<bool>.empty())
       .publishReplay(maxSize: 1)
     ..connect();
 
   when(statesMock.deleteStoredPinData).thenAnswer(
-        (_) => deleteStoredPinDataState,
+    (_) => deleteStoredPinDataState,
   );
 
   when(statesMock.isPinCreated).thenAnswer((_) => isPinCreatedState);

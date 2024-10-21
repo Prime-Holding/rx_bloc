@@ -16,7 +16,7 @@ void main() {
       ),
       generateDeviceBuilder(
         widget:
-        updatePinFactory(title: Stubs.title, showBiometricsButton: true),
+            updatePinFactory(title: Stubs.title, showBiometricsButton: true),
         scenario: Scenario(name: 'update_pin_show_biometrics'),
       ),
     ],
