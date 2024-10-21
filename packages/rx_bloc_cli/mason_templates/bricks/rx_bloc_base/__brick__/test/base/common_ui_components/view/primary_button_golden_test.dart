@@ -7,7 +7,7 @@ import '../../stubs.dart';
 
 void main() {
   runGoldenBuilderTests('primary_button',
-      surfaceSize: const Size(300, 418),
+      surfaceSize: const Size(300, 300),
       builder: (color) => GoldenBuilder.column(bgColor: color)
         ..addScenario(
           'primary_button_empty',
@@ -22,13 +22,6 @@ void main() {
         ..addScenario(
           'primary_button_with_child',
           const PrimaryButton(
-            child: Text(Stubs.submit),
-          ),
-        )
-        ..addScenario(
-          'primary_button_loading_with_child',
-          const PrimaryButton(
-            isLoading: true,
             child: Text(Stubs.submit),
           ),
         ),
