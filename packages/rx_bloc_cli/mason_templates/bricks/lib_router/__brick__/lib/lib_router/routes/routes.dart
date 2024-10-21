@@ -60,6 +60,7 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
         ),
       ],
     ),{{/enable_mfa}}
+    {{#enable_profile}}
     TypedStatefulShellBranch<ProfileBranchData>(
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<ProfileRoute>(
@@ -77,7 +78,7 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
           ],
         ),
       ],
-    ),
+    ),{{/enable_profile}}
   ],
 )
 @immutable
@@ -126,3 +127,24 @@ class DashboardRoute extends GoRouteData implements RouteDataModel {
   @override
   String get routeLocation => location;
 }
+
+{{^enable_profile}}
+@immutable
+@TypedGoRoute<NotificationsRoute>(path: RoutesPath.notifications)
+class NotificationsRoute extends GoRouteData implements RouteDataModel {
+  const NotificationsRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) =>
+      MaterialPage(
+        key: state.pageKey,
+        child: const NotificationsPageWithDependencies(),
+      );
+
+  @override
+  String get permissionName => RouteModel.notifications.permissionName;
+
+  @override
+  String get routeLocation => location;
+}
+{{/enable_profile}}

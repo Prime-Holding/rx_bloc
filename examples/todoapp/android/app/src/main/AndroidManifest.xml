@@ -31,7 +31,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="http" android:host="com.primeholding.todoapp"/>
+                <data android:scheme="http" android:host="com.primeholding.liquidtools"/>
                 <data android:scheme="https"/>
             </intent-filter>
             <!-- /Deep links -->

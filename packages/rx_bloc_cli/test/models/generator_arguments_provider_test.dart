@@ -102,5 +102,29 @@ void main() {
 
       verify(logger.warn(any)).called(3);
     });
+
+    test('should return updated values if changeLanguage is enabled', () {
+      configureArgumentValues(Stub.changeLanguageEnabled);
+
+      verifyNever(logger.warn(any));
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.profileEnabled, isTrue);
+      expect(generatorArguments.changeLanguageEnabled, isTrue);
+
+      verify(logger.warn(any)).called(1);
+    });
+
+    test('should return updated values if login is enabled', () {
+      configureArgumentValues(Stub.loginEnabled);
+
+      verifyNever(logger.warn(any));
+      final generatorArguments = sut.readGeneratorArguments();
+
+      expect(generatorArguments.profileEnabled, isTrue);
+      expect(generatorArguments.loginEnabled, isTrue);
+
+      verify(logger.warn(any)).called(1);
+    });
   });
 }

@@ -7,7 +7,8 @@ import '../../base/extensions/error_model_field_translations.dart';
 import '../blocs/todo_management_bloc.dart';
 
 class TodoForm extends StatelessWidget {
-  const TodoForm({super.key});
+  const TodoForm({super.key, required this.isLoading});
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -18,6 +19,9 @@ class TodoForm extends StatelessWidget {
             onChanged: (bloc, title) => bloc.events.setTitle(title),
             cursorBehaviour: RxTextFormFieldCursorBehaviour.end,
             builder: (fieldState) => TextFormField(
+              key: K.todoTitleTextField,
+              autofocus: true,
+              enabled: !isLoading,
               controller: fieldState.controller,
               style: context.designSystem.typography.h3Med14,
               decoration: fieldState.decoration.copyWith(
@@ -35,8 +39,10 @@ class TodoForm extends StatelessWidget {
               onChanged: (bloc, description) =>
                   bloc.events.setDescription(description),
               builder: (fieldState) => TextFormField(
+                key: K.todoDescriptionTextField,
                 controller: fieldState.controller,
                 style: context.designSystem.typography.h3Med13,
+                enabled: !isLoading,
                 minLines: 1,
                 maxLines: 5,
                 decoration: fieldState.decoration.copyWith(

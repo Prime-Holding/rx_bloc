@@ -1,4 +1,5 @@
 import 'package:favorites_advanced_base/core.dart';
+import 'package:favorites_advanced_base/keys.dart' as keys;
 import 'package:flutter/material.dart';
 import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 
@@ -56,6 +57,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                       child: RxBlocBuilder<HotelSearchBlocType, String>(
                         state: (bloc) => bloc.states.hotelsFound,
                         builder: (context, snapshot, bloc) => Text(
+                          key: keys.hotelsFoundKey,
                           snapshot.data ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.w100,
@@ -68,7 +70,7 @@ class SortingBar extends SliverPersistentHeaderDelegate {
                   RxBlocBuilder<HotelSearchBlocType, SortBy>(
                     state: (bloc) => bloc.states.sortedBy,
                     builder: (context, sortByState, bloc) => FocusButton(
-                      key: const Key('sort_button'),
+                      key: keys.sortFilterTapKey,
                       onPressed: () {
                         onPressed?.call(bloc, sortByState.data ?? SortBy.none);
                       },

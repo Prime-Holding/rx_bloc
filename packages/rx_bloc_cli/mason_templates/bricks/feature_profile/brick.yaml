@@ -1,0 +1,9 @@
+name: feature_profile
+description: Brick containing code for a profile feature.
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.50 <0.1.0"
+
+vars:

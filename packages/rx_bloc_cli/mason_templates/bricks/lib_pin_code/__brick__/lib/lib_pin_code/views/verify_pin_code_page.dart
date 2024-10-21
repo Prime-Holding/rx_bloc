@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
@@ -13,98 +11,62 @@ import '../../base/extensions/error_model_translations.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/update_and_verify_pin_bloc.dart';
 import '../models/pin_code_arguments.dart';
-import '../services/update_and_verify_pin_code_service.dart';
+import '../services/verify_pin_code_service.dart';
 
-class VerifyPinCodePage extends StatefulWidget {
+class VerifyPinCodePage extends StatelessWidget {
   const VerifyPinCodePage({
-    this.pinCodeArguments = const PinCodeArguments(
-      title: '',
-      isSessionTimeout: false,
-    ),
+    this.pinCodeArguments = const PinCodeArguments(title: ''),
     super.key,
   });
 
   final PinCodeArguments pinCodeArguments;
 
   @override
-  State<VerifyPinCodePage> createState() => _VerifyPinCodePageState();
-}
-
-class _VerifyPinCodePageState extends State<VerifyPinCodePage> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<UpdateAndVerifyPinBlocType>()
-          .events
-          .setPinCodeType(widget.pinCodeArguments.isSessionTimeout);
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) => Builder(
-        builder: (context) => PopScope(
-          canPop: true,
-          onPopInvokedWithResult: (didPop, dynamic) => context
-              .read<UpdateAndVerifyPinBlocType>()
-              .events
-              .deleteSavedData(),
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                widget.pinCodeArguments.title.isEmpty
-                    ? context.l10n.libPinCode.verifyPinCodePage
-                    : widget.pinCodeArguments.title,
-              ),
-              forceMaterialTransparency: true,
+  Widget build(BuildContext context) => PopScope(
+        canPop: true,
+        onPopInvokedWithResult: (didPop, dynamic) => context
+            .read<UpdateAndVerifyPinBlocType>()
+            .events
+            .deleteSavedData(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              pinCodeArguments.title.isEmpty
+                  ? context.l10n.libPinCode.verifyPinCodePage
+                  : pinCodeArguments.title,
             ),
-            extendBodyBehindAppBar: true,
-            body: SizedBox(
-              height: MediaQuery.sizeOf(context).height,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PinCodeKeyboard(
-                      mapBiometricMessageToString: (message) =>
-                          _exampleMapMessageToString(message, context),
-                      pinCodeService:
-                          context.read<UpdateAndVerifyPinCodeService>(),
+            forceMaterialTransparency: true,
+          ),
+          extendBodyBehindAppBar: true,
+          body: SizedBox(
+            height: MediaQuery.sizeOf(context).height,
+            child: Column(
+              children: [
+                Expanded(
+                  child: PinCodeKeyboard(
+                    mapBiometricMessageToString: (message) =>
+                        _exampleMapMessageToString(message, context),
+                    pinCodeService:
+                        context.read<VerifyPinCodeService>(),
 // Comment the line bellow in order not to use biometrics
 // authentication
-                      biometricsLocalDataSource:
-                          context.read<BiometricsLocalDataSource>(),
-                      translateError: (error) =>
-                          error.asErrorModel().translate(context),
-                      onError: (error, translatedError) =>
-                          _onError(error, translatedError, context),
-                      onAuthenticated: (_) => _isPinCodeVerified(context),
-                    ),
+                    biometricsLocalDataSource:
+                        context.read<BiometricsLocalDataSource>(),
+                    translateError: (error) =>
+                        error.asErrorModel().translate(context),
+                    onAuthenticated: (_) => _isPinCodeVerified(context),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       );
 
   Future<void> _isPinCodeVerified(BuildContext context) async {
-    if (widget.pinCodeArguments.isSessionTimeout) {
-      context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
-            isPinCodeConfirmed: true,
-          );
-    }
-  }
-
-  void _onError(Object error, String strValue, BuildContext context) {
-    showBlurredBottomSheet(
-      context: context,
-      configuration: const ModalConfiguration(safeAreaBottom: false),
-      builder: (context) => MessagePanelWidget(
-        message: error.toString(),
-        messageState: MessagePanelState.important,
-      ),
-    );
+    context.read<CoordinatorBlocType>().events.pinCodeConfirmed(
+          isPinCodeConfirmed: true,
+        );
   }
 
   String _exampleMapMessageToString(

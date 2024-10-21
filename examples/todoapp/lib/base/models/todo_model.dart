@@ -7,107 +7,137 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:rx_bloc_list/models.dart';
+import 'package:realm/realm.dart';
+// ignore: implementation_imports
+import 'package:rx_bloc_list/src/models/identifiable.dart';
 
 part 'todo_model.g.dart';
+part 'todo_model.realm.dart';
 
+enum TodoModelActions { add, update, delete, none }
+
+@RealmModel()
 @JsonSerializable()
-class TodoModel with EquatableMixin implements Identifiable {
-  TodoModel({
-    required this.id,
-    required this.title,
-    required this.createdAt,
-    this.description = '',
-    this.completed = false,
-  });
-
+class $TodoModel with EquatableMixin implements Identifiable {
   /// The unique identifier of the todo
   /// If the todo is not persisted yet, the id is null
-  final String? id;
+  @PrimaryKey()
+  @MapTo('_id')
+  late String? id;
 
   /// The title of the todo
   ///
   /// The title is required and must not be null
-  final String title;
+  late String title;
 
   /// The description of the todo
   ///
   /// The description is optional and can be null
   /// The default value is an empty string
-  final String description;
+  late String description;
 
   /// The creation date of the todo
   ///
   /// The creation date is required and must not be null
   /// The default value is false
-  final bool completed;
+  late bool completed;
 
   /// The completion status of the todo
   ///
   /// The completion status is required and must not be null
   /// The default value is false
-  final int createdAt;
+  late int createdAt;
 
-  /// Creates a copy of the current todo with the provided changes
+  /// The Sync status of the todo
+  /// The default value is true, which means the todo is synced with the server
+  /// When the value is set to false, the todo is not synced with the server
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late bool? synced;
+
+  /// The action of the todo model
+  /// Represents the action that should be taken by the server in case of syncing
+  late String? action;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  TodoModelActions get type =>
+      TodoModelActions.values.byName(action ?? TodoModelActions.none.name);
+  set type(final TodoModelActions value) => action = value.name;
+
+  TodoModel toRealmObject() {
+    return TodoModel(
+      id,
+      title,
+      description,
+      completed,
+      createdAt,
+      action: action ?? TodoModelActions.none.name,
+    );
+  }
+
+  static TodoModel fromJson(Map<String, dynamic> json) =>
+      _$$TodoModelFromJson(json).toRealmObject();
+
+  Map<String, dynamic> toJson() => _$$TodoModelToJson(this);
+
   TodoModel copyWith({
     String? id,
     String? title,
     String? description,
     bool? completed,
     int? createdAt,
+    bool? synced,
+    String? action,
   }) =>
       TodoModel(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        completed: completed ?? this.completed,
-        createdAt: createdAt ?? this.createdAt,
+        id ?? this.id,
+        title ?? this.title,
+        description ?? this.description,
+        completed ?? this.completed,
+        createdAt ?? this.createdAt,
+        synced: synced ?? this.synced,
+        action: action ?? this.action,
       );
-
-  /// Creates a copy of the current todo with the provided changes
   TodoModel copyFrom({required TodoModel todo}) => TodoModel(
-        id: todo.id ?? id,
-        title: todo.title,
-        description: todo.description,
-        completed: todo.completed,
-        createdAt: todo.createdAt,
+        todo.id ?? id,
+        todo.title,
+        todo.description,
+        todo.completed,
+        todo.createdAt,
+        synced: todo.synced,
+        action: todo.action,
       );
 
-  factory TodoModel.empty() => TodoModel(
-        id: null,
-        title: '',
-        description: '',
-        completed: false,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
+  static TodoModel empty() => TodoModel(
+        null,
+        '',
+        '',
+        false,
+        DateTime.now().millisecondsSinceEpoch,
+        synced: true,
+        action: TodoModelActions.add.name,
       );
 
-  /// Creates a new todo with the provided title, description, and completion status
-  factory TodoModel.from({
-    required String title,
-    required String description,
+  static TodoModel from(
+    String title,
+    String description,
     TodoModel? todo,
-  }) =>
+  ) =>
       TodoModel(
-        id: todo?.id ,
-        title: title,
-        description: description,
-        completed: todo?.completed ?? false,
-        createdAt: todo?.createdAt ?? DateTime.now().millisecondsSinceEpoch,
+        todo?.id,
+        title,
+        description,
+        todo?.completed ?? false,
+        todo?.createdAt ?? DateTime.now().millisecondsSinceEpoch,
+        synced: todo?.synced ?? true,
+        action: todo?.action ?? TodoModelActions.none.name,
       );
-
-  factory TodoModel.fromJson(Map<String, dynamic> json) =>
-      _$TodoModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TodoModelToJson(this);
-
-  @override
-  bool? get stringify => true;
-
-  @override
-  List<Object?> get props => [id, title, description, completed, createdAt];
 
   @override
   bool isEqualToIdentifiable(Identifiable other) =>
       identical(this, other) ||
-      (other is TodoModel && id != null && id == other.id);
+      (other is $TodoModel ||
+          other is TodoModel && id != null && id == other.id);
+
+  @override
+  List<Object?> get props => [id, title, description, completed, createdAt];
 }

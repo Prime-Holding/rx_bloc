@@ -14,7 +14,7 @@ class TodoDetailsPageWithDependencies extends StatelessWidget {
     required this.todoId,
   });
 
-  final TodoModel? todoModel;
+  final $TodoModel? todoModel;
   final String todoId;
 
   @override

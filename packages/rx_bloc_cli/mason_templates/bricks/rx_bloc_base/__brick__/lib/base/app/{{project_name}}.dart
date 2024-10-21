@@ -121,8 +121,7 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
         if(mounted) {
           context.read<RouterBlocType>().events.go(
                 const VerifyPinCodeRoute(),
-                extra: const PinCodeArguments(
-                    title: 'Enter Pin Code', isSessionTimeout: true),
+                extra: const PinCodeArguments(title: 'Enter Pin Code'),
               );
         }
       }

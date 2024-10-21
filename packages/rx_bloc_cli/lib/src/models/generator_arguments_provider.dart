@@ -31,7 +31,7 @@ class GeneratorArgumentsProvider {
   GeneratorArguments readGeneratorArguments() {
     final projectConfiguration = _readProjectConfiguration();
     final authConfiguration = _readAuthConfiguration();
-    final featureConfiguration = _readFeatureConfiguration();
+    final featureConfiguration = _readFeatureConfiguration(authConfiguration);
 
     return GeneratorArguments(
       outputDirectory: _outputDirectory,
@@ -112,7 +112,8 @@ class GeneratorArgumentsProvider {
 
   /// region Feature Configuration
 
-  FeatureConfiguration _readFeatureConfiguration() {
+  FeatureConfiguration _readFeatureConfiguration(
+      AuthConfiguration authConfiguration) {
     // Change language
     final changeLanguageEnabled =
         _reader.read<bool>(CreateCommandArguments.changeLanguage);
@@ -151,6 +152,22 @@ class GeneratorArgumentsProvider {
     final cicdGithubEnabled = cicdType == CICDType.github;
     final cicdCodemagicEnabled = cicdType == CICDType.codemagic;
 
+    // Profile
+
+    var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
+    // Authentication
+    final authenticationEnabled = authConfiguration.authenticationEnabled;
+    if (authenticationEnabled && !profileEnabled) {
+      _logger
+          .warn('Profile enabled, due to authentication feature requirement');
+      profileEnabled = true;
+    }
+    if (changeLanguageEnabled && !profileEnabled) {
+      _logger
+          .warn('Profile enabled, due to change language feature requirement');
+      profileEnabled = true;
+    }
+
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
       counterEnabled: counterEnabled,
@@ -164,6 +181,7 @@ class GeneratorArgumentsProvider {
       cicdEnabled: cicdEnabled,
       cicdGithubEnabled: cicdGithubEnabled,
       cicdCodemagicEnabled: cicdCodemagicEnabled,
+      profileEnabled: profileEnabled,
     );
   }
 

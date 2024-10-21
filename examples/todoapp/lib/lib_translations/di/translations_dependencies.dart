@@ -32,18 +32,20 @@ class TranslationsDependencies {
 
   List<SingleChildWidget> get _dataSources => [
         Provider<TranslationsDataSource>(
-            create: (context) => TranslationsRemoteDataSource(
-                  context.read<ApiHttpClient>(),
-                  baseUrl: baseUrl,
-                ))
+          create: (context) => TranslationsRemoteDataSource(
+            context.read<ApiHttpClient>(),
+            baseUrl: baseUrl,
+          ),
+        ),
       ];
 
   List<SingleChildWidget> get _repositories => [
         Provider<TranslationsRepository>(
-            create: (context) => TranslationsRepository(
-                  context.read(),
-                  context.read(),
-                ))
+          create: (context) => TranslationsRepository(
+            context.read(),
+            context.read(),
+          ),
+        )
       ];
 
   List<SingleChildWidget> get _services => [

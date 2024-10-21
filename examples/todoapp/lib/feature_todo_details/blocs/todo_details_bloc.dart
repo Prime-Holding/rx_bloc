@@ -31,7 +31,7 @@ abstract class TodoDetailsBlocStates {
   Stream<ErrorModel> get errors;
 
   /// The todo state of the todo details page
-  ConnectableStream<Result<TodoModel>> get todo;
+  ConnectableStream<Result<$TodoModel>> get todo;
 
   /// The state of the routing event
   ConnectableStream<void> get onRouting;
@@ -52,12 +52,12 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
 
   final TodoListService _todoListService;
   final CoordinatorBlocType _coordinatorBloc;
-  final TodoModel? _initialTodo;
+  final $TodoModel? _initialTodo;
   final String _todoId;
   final RouterBlocType _routerBloc;
 
   @override
-  ConnectableStream<Result<TodoModel>> _mapToTodoState() => _$fetchTodoEvent
+  ConnectableStream<Result<$TodoModel>> _mapToTodoState() => _$fetchTodoEvent
           .startWith(null)
           .switchMap(
             (_) => _todoListService
@@ -77,7 +77,8 @@ class TodoDetailsBloc extends $TodoDetailsBloc {
       .withLatestFrom(todo, (_, todo) => todo)
       .whereSuccess()
       .doOnData(
-        (todo) => _routerBloc.events.go(TodoUpdateRoute(todo.id!), extra: todo),
+        (todo) =>
+            _routerBloc.events.push(TodoUpdateRoute(todo.id!), extra: todo),
       )
       .publish();
 

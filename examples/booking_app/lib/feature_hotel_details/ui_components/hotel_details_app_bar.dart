@@ -5,21 +5,12 @@ extension _HotelDetailsPageAppBar on HotelDetailsPage {
         _buildFavouriteButton(context, hotel),
       ];
 
-  Widget _buildFavouriteButton(BuildContext context, Hotel hotel) =>
-      hotel.isFavorite
-          ? IconButton(
-              key: const ValueKey('favoriteButtonWithShadow'),
-              icon: const IconWithShadow(icon: Icons.favorite),
-              onPressed: () => _markAsFavorite(context, false, hotel),
-            )
-          : IconButton(
-              key: const ValueKey('favoriteButtonWithShadow'),
-              icon: const IconWithShadow(icon: Icons.favorite_border),
-              onPressed: () => _markAsFavorite(context, true, hotel),
-            );
-
-  void _markAsFavorite(BuildContext context, bool isFavorite, Hotel hotel) =>
-      RxBlocProvider.of<HotelManageBlocType>(context)
-          .events
-          .markAsFavorite(hotel: hotel, isFavorite: isFavorite);
+  Widget _buildFavouriteButton(BuildContext context, Hotel hotel) => IconButton(
+        key: keys.detailsFavoriteButtonById(hotel.id),
+        icon: IconWithShadow(
+            icon: hotel.isFavorite ? Icons.favorite : Icons.favorite_border),
+        onPressed: () => RxBlocProvider.of<HotelManageBlocType>(context)
+            .events
+            .markAsFavorite(hotel: hotel, isFavorite: !hotel.isFavorite),
+      );
 }

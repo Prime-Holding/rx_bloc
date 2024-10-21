@@ -42,12 +42,13 @@ import '../../lib_permissions/services/permissions_service.dart';{{#enable_pin_c
 import '../../lib_pin_code/bloc/create_pin_bloc.dart';
 import '../../lib_pin_code/bloc/update_and_verify_pin_bloc.dart';
 import '../../lib_pin_code/data_source/pin_biometrics_local_data_source.dart';
-import '../../lib_pin_code/data_source/pin_code_data_source.dart';
+import '../../lib_pin_code/data_source/pin_code_local_data_source.dart';
+import '../../lib_pin_code/data_source/remote/pin_code_data_source.dart';
 import '../../lib_pin_code/repository/pin_biometrics_repository.dart';
 import '../../lib_pin_code/repository/pin_code_repository.dart';
 import '../../lib_pin_code/services/create_pin_code_service.dart';
 import '../../lib_pin_code/services/pin_biometrics_service.dart';
-import '../../lib_pin_code/services/update_and_verify_pin_code_service.dart';{{/enable_pin_code}}
+import '../../lib_pin_code/services/verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';{{#has_authentication}}
 import '../../lib_router/services/router_service.dart';{{/has_authentication}}
@@ -58,7 +59,7 @@ import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
 import '../common_services/push_notifications_service.dart';
-import '../data_sources/local/profile_local_data_source.dart';
+import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
@@ -206,17 +207,22 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),{{/enable_change_language}}
-        Provider<ProfileLocalDataSource>(
+        Provider<NotificationsLocalDataSource>(
           create: (context) =>
-              ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+              NotificationsLocalDataSource(context.read<SharedPreferencesInstance>()),
         ),{{#enable_pin_code}}
         Provider<BiometricsLocalDataSource>(
           create: (context) => PinBiometricsLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),
+        Provider<PinCodeLocalDataSource>(
+          create: (context) => PinCodeLocalDataSource(
+            context.read<FlutterSecureStorage>(),
+          ),
+        ),
         Provider<PinCodeDataSource>(
           create: (context) => PinCodeDataSource(
-            context.read<FlutterSecureStorage>(),
+            context.read<ApiHttpClient>(),
           ),
         ),{{/enable_pin_code}}{{#enable_mfa}}
          Provider<MfaDataSource>(
@@ -274,6 +280,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         Provider<PinCodeRepository>(
           create: (context) => PinCodeRepository(
             context.read<ErrorMapper>(),
+            context.read<PinCodeLocalDataSource>(),
             context.read<PinCodeDataSource>(),
           ),
         ),
@@ -356,8 +363,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<PinCodeRepository>(),
           ),
         ),
-        Provider<UpdateAndVerifyPinCodeService>(
-          create: (context) => UpdateAndVerifyPinCodeService(
+        Provider<VerifyPinCodeService>(
+          create: (context) => VerifyPinCodeService(
             context.read<PinCodeRepository>(),
           ),
         ),
@@ -415,7 +422,7 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
         RxBlocProvider<UpdateAndVerifyPinBlocType>(
           create: (context) => UpdateAndVerifyPinBloc(
-            service: context.read<UpdateAndVerifyPinCodeService>(),
+            service: context.read<VerifyPinCodeService>(),
             pinBiometricsService: context.read<PinBiometricsService>(),
             coordinatorBloc: context.read<CoordinatorBlocType>(),
           ),

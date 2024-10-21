@@ -28,10 +28,12 @@ abstract class TodoListBlocStates {
   ///
   /// The todo list will be filtered based on the [TodoListBlocEvents.applyFilter] event.
   /// The default filter is [TodosFilterModel.all].
-  Stream<Result<List<TodoModel>>> get todoList;
+  Stream<Result<List<$TodoModel>>> get todoList;
 
   @RxBlocIgnoreState()
   Stream<TodosFilterModel> get filter;
+
+  Stream<bool> get isLoading;
 }
 
 @RxBloc()
@@ -53,7 +55,7 @@ class TodoListBloc extends $TodoListBloc {
               .whereSuccess()
               .withLatestFromIdentifiableList(_todoResult.whereSuccess(),
                   operationCallback:
-                      (TodoModel todo, List<TodoModel> list) async =>
+                      ($TodoModel todo, List<$TodoModel> list) async =>
                           ManageOperation.merge)
               .map((managedList) => managedList.list.sortByCreatedAt())
               .mapToResult(),
@@ -61,14 +63,18 @@ class TodoListBloc extends $TodoListBloc {
               .whereSuccess()
               .withLatestFromIdentifiableList(_todoResult.whereSuccess(),
                   operationCallback:
-                      (TodoModel todo, List<TodoModel> list) async =>
+                      ($TodoModel todo, List<$TodoModel> list) async =>
                           ManageOperation.remove)
               .map((managedList) => managedList.list.sortByCreatedAt())
               .mapToResult(),
         ])
         .doOnData(_coordinatorBloc.events.todoListChanged)
         // Merges the todo list with the updated todo list from the [CoordinatorBloc] and emits the result to the [TodoListBlocStates.todoList]
-        .mergeWith([_coordinatorBloc.states.onTodoListChanged])
+        .mergeWith([
+          _coordinatorBloc.states.onTodoListChanged
+              .whereSuccess()
+              .asResultStream()
+        ])
         .bind(_todoResult)
         .addTo(_compositeSubscription);
   }
@@ -76,16 +82,18 @@ class TodoListBloc extends $TodoListBloc {
   final TodoListService _todoListService;
   final CoordinatorBlocType _coordinatorBloc;
 
-  final _todoResult =
-      BehaviorSubject<Result<List<TodoModel>>>.seeded(Result.loading());
+  final _todoResult = BehaviorSubject<Result<List<$TodoModel>>>();
 
   @override
-  Stream<Result<List<TodoModel>>> _mapToTodoListState() => Rx.combineLatest2(
+  Stream<Result<List<$TodoModel>>> _mapToTodoListState() => Rx.combineLatest2(
           _todoResult,
           _$applyFilterEvent,
           (listResult, filter) => listResult
               .mapResult((list) => _todoListService.filterTodos(list, filter)))
       .shareReplay(maxSize: 1);
+
+  @override
+  Stream<bool> _mapToIsLoadingState() => loadingState;
 
   @override
   Stream<TodosFilterModel> get filter => _$applyFilterEvent;

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
+import '../../base/models/errors/error_model.dart';
 import '../repository/pin_code_repository.dart';
 
 class CreatePinCodeService implements PinCodeService {
@@ -41,16 +42,18 @@ class CreatePinCodeService implements PinCodeService {
 
   @override
   Future<bool> verifyPinCode(String pinCode) async {
-    await Future.delayed(const Duration(seconds: 1));
     if (firstPin == null) {
       firstPin = pinCode;
       return true;
     }
     if (pinCode == firstPin) {
+      await _pinCodeRepository.createPinCode(pinCode);
       await _pinCodeRepository.writePinToStorage(_storedPin, pinCode);
       return true;
     }
-    return false;
+    throw ErrorServerGenericModel(
+      message: 'PIN code does not match',
+    );
   }
 
   @override

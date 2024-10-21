@@ -46,7 +46,6 @@ jobs:
     env:
       CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
       CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
-      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -54,7 +53,7 @@ jobs:
           flutter-version: ${{ inputs.flutter_version }}
           channel: "stable"
       - name: Setup Ruby env
-        uses: ruby/setup-ruby@v1.176.0
+        uses: ruby/setup-ruby@v1.196.0
         with:
           ruby-version: 3.1.0
           bundler-cache: true
@@ -68,7 +67,7 @@ jobs:
         run: |
           bundle exec fastlane build_custom platform:ios environment:${{ inputs.flavor }} build_name:${{ inputs.build_name }} build_number:${{ inputs.build_number }}
       - name: Prepare config
-        run: mv "${{ inputs.project_path }}/devops/artifacts/deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml"
+        run: mv "devops/artifacts/deployment.yaml" "devops/artifacts/ios-deployment.yaml"
       - name: Upload artifact - .ipa
         uses: actions/upload-artifact@v4
         with:
@@ -90,7 +89,6 @@ jobs:
     env:
       CREDENTIAL_ENCRYPTION_PASSWORD: ${{ secrets.credential_encryption_password }}
       CREDENTIAL_REPOSITORY_ACCESS_SECRET: ${{ secrets.credential_repository_access_secret }}
-      BUNDLE_GEMFILE: ${{ inputs.project_path }}/Gemfile
     steps:
       - uses: actions/checkout@v4
       - name: Download artifacts
@@ -99,9 +97,9 @@ jobs:
           path: "${{ inputs.project_path }}/devops/artifacts/"
           merge-multiple: true
       - name: Rename config
-        run: mv "${{ inputs.project_path }}/devops/artifacts/ios-deployment.yaml" "${{ inputs.project_path }}/devops/artifacts/deployment.yaml"
+        run: mv "devops/artifacts/ios-deployment.yaml" "devops/artifacts/deployment.yaml"
       - name: Setup Ruby env
-        uses: ruby/setup-ruby@v1.176.0
+        uses: ruby/setup-ruby@v1.196.0
         with:
           ruby-version: 3.1.0
           bundler-cache: true
