@@ -9,8 +9,7 @@ environment:
 
 dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
-  alice_dio: ^1.0.6{{/enable_dev_menu}}{{#enable_patrol}}
-  args: ^2.5.0{{/enable_patrol}}
+  alice_dio: ^1.0.6{{/enable_dev_menu}}
   collection: ^1.18.0
   copy_with_extension: ^5.0.4{{#enable_pin_code}}
   crypto: ^3.0.6{{/enable_pin_code}}
