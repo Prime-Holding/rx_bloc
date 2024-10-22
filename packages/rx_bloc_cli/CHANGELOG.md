@@ -1,3 +1,7 @@
+## [5.0.2]
+* Add a script for running integration tests with Patrol
+* Updates generated project dependencies
+
 ## [5.0.1]
 * Updates to github workflows supporting monorepo structure
 
