@@ -1,5 +1,5 @@
 name: "Custom build and deploy iOS app"
-# {{/}}
+
 on:
   workflow_call:
     inputs:

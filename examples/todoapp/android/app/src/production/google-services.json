@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "Make sure you add your own Firebase production config.",
         "android_client_info": {
-          "package_name": "com.primeholding.todoapp"
+          "package_name": "com.primeholding.liquidtools"
         }
       },
       "oauth_client": [

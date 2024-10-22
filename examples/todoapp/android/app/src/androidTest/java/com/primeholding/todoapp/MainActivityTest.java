@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-package com.primeholding.todoapp; 
+package com.primeholding.liquidtools; 
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Test;
