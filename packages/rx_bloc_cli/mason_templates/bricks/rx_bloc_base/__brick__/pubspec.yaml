@@ -9,7 +9,8 @@ environment:
 
 dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
-  alice_dio: ^1.0.6{{/enable_dev_menu}}
+  alice_dio: ^1.0.6{{/enable_dev_menu}}{{#enable_patrol}}
+  args: ^2.5.0{{/enable_patrol}}
   collection: ^1.18.0
   copy_with_extension: ^5.0.4{{#enable_pin_code}}
   crypto: ^3.0.6{{/enable_pin_code}}
@@ -53,8 +54,7 @@ dependencies: {{#enable_dev_menu}}
   widget_toolkit_otp: ^0.1.0{{/enable_feature_otp}}{{#enable_pin_code}}
   widget_toolkit_pin: ^0.2.0{{/enable_pin_code}}
 
-dev_dependencies: {{#enable_patrol}}
-  args: ^2.5.0{{/enable_patrol}}
+dev_dependencies: 
   build_runner: ^2.4.13
   # flutter_driver:
   #   sdk: flutter
