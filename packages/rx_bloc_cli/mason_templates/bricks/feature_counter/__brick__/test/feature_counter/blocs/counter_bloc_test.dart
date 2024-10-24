@@ -11,22 +11,47 @@ import 'package:{{project_name}}/base/repositories/counter_repository.dart';
 import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 import 'package:{{project_name}}/feature_counter/services/counter_service.dart';
 
+import '../stubs.dart';
 import 'counter_bloc_test.mocks.dart';
 
 @GenerateMocks([CounterRepository])
 void main() {
   late MockCounterRepository repo;
+  late CounterService service;
+
+  void defineWhen(
+      {required int currentCount,
+      int? incrementedCount,
+      int? decrementedCount,
+      ErrorModel? onIncrementError}) {
+    when(repo.getCurrent()).thenAnswer((_) async => Count(currentCount));
+
+    if (onIncrementError != null) {
+      when(repo.increment()).thenAnswer(
+        (_) async => Future.error(onIncrementError),
+      );
+    } else {
+      when(repo.increment())
+          .thenAnswer((_) async => Count(incrementedCount ?? currentCount + 1));
+    }
+
+    when(repo.decrement())
+        .thenAnswer((_) async => Count(decrementedCount ?? currentCount - 1));
+  }
+
+  CounterBloc counterBloc() => CounterBloc(service);
 
   setUp(() {
     repo = MockCounterRepository();
+    service = CounterService(repo);
   });
 
   group('CounterBloc tests', () {
     rxBlocTest<CounterBlocType, int>(
       'Initial state',
       build: () async {
-        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        return CounterBloc(CounterService(repo));
+        defineWhen(currentCount: 0);
+        return counterBloc();
       },
       state: (bloc) => bloc.states.count,
       expect: [0],
@@ -35,9 +60,8 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Incrementing value',
       build: () async {
-        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        when(repo.increment()).thenAnswer((_) async => Count(1));
-        return CounterBloc(CounterService(repo));
+        defineWhen(currentCount: 0);
+        return counterBloc();
       },
       act: (bloc) async => bloc.events.increment(),
       state: (bloc) => bloc.states.count,
@@ -47,9 +71,8 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Decrementing value',
       build: () async {
-        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        when(repo.decrement()).thenAnswer((_) async => Count(-1));
-        return CounterBloc(CounterService(repo));
+        defineWhen(currentCount: 0);
+        return counterBloc();
       },
       act: (bloc) async => bloc.events.decrement(),
       state: (bloc) => bloc.states.count,
@@ -59,10 +82,8 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Increment and decrement value',
       build: () async {
-        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        when(repo.increment()).thenAnswer((_) async => Count(1));
-        when(repo.decrement()).thenAnswer((_) async => Count(0));
-        return CounterBloc(CounterService(repo));
+        defineWhen(currentCount: 0, incrementedCount: 1, decrementedCount: 0);
+        return counterBloc();
       },
       act: (bloc) async {
         bloc.events.increment();
@@ -75,11 +96,8 @@ void main() {
     rxBlocTest<CounterBlocType, ErrorModel>(
       'Error handling',
       build: () async {
-        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        when(repo.increment()).thenAnswer(
-          (_) async => Future.error(NoConnectionErrorModel()),
-        );
-        return CounterBloc(CounterService(repo));
+        defineWhen(currentCount: 0, onIncrementError: Stubs.error);
+        return counterBloc();
       },
       act: (bloc) async {
         bloc.states.count.listen((event) {});
@@ -92,9 +110,8 @@ void main() {
     rxBlocTest<CounterBlocType, LoadingWithTag>(
       'Loading state',
       build: () async {
-        when(repo.getCurrent()).thenAnswer((_) async => Count(0));
-        when(repo.increment()).thenAnswer((_) async => Count(1));
-        return CounterBloc(CounterService(repo));
+        defineWhen(currentCount: 0);
+        return counterBloc();
       },
       act: (bloc) async {
         bloc.states.count.listen((event) {});
