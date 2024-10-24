@@ -21,8 +21,6 @@ class AppI18nOtpLookup extends I18nFeatureOtpLookup {
           bundledI18n = I18nFeatureOtp(I18nFeatureOtpLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nFeatureOtp(I18nFeatureOtpLookup_en());
-          break;
         default:
           bundledI18n = I18nFeatureOtp(I18nFeatureOtpLookup_en());
           break;

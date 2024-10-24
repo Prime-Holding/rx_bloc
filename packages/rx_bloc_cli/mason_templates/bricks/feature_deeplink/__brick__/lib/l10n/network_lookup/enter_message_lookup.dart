@@ -22,9 +22,6 @@ class AppI18nEnterMessageLookup extends I18nFeatureEnterMessageLookup {
               I18nFeatureEnterMessage(I18nFeatureEnterMessageLookup_bg());
           break;
         case 'en':
-          bundledI18n =
-              I18nFeatureEnterMessage(I18nFeatureEnterMessageLookup_en());
-          break;
         default:
           bundledI18n =
               I18nFeatureEnterMessage(I18nFeatureEnterMessageLookup_en());

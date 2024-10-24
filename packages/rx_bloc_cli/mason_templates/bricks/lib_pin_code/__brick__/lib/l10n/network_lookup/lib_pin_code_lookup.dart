@@ -21,8 +21,6 @@ class AppI18nLibPinCodeLookup extends I18nLibPinCodeLookup {
           bundledI18n = I18nLibPinCode(I18nLibPinCodeLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nLibPinCode(I18nLibPinCodeLookup_en());
-          break;
         default:
           bundledI18n = I18nLibPinCode(I18nLibPinCodeLookup_en());
           break;
