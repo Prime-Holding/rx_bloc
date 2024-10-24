@@ -30,13 +30,15 @@ void main() {
       when(repo.increment()).thenAnswer(
         (_) async => Future.error(onIncrementError),
       );
-    } else {
-      when(repo.increment())
-          .thenAnswer((_) async => Count(incrementedCount ?? currentCount + 1));
     }
 
-    when(repo.decrement())
-        .thenAnswer((_) async => Count(decrementedCount ?? currentCount - 1));
+    if (incrementedCount != null) {
+      when(repo.increment()).thenAnswer((_) async => Count(incrementedCount));
+    }
+
+    if (decrementedCount != null) {
+      when(repo.decrement()).thenAnswer((_) async => Count(decrementedCount));
+    }
   }
 
   CounterBloc counterBloc() => CounterBloc(service);
@@ -60,7 +62,7 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Incrementing value',
       build: () async {
-        defineWhen(currentCount: 0);
+        defineWhen(currentCount: 0, incrementedCount: 1);
         return counterBloc();
       },
       act: (bloc) async => bloc.events.increment(),
@@ -71,7 +73,7 @@ void main() {
     rxBlocTest<CounterBlocType, int>(
       'Decrementing value',
       build: () async {
-        defineWhen(currentCount: 0);
+        defineWhen(currentCount: 0, decrementedCount: -1);
         return counterBloc();
       },
       act: (bloc) async => bloc.events.decrement(),
@@ -110,7 +112,7 @@ void main() {
     rxBlocTest<CounterBlocType, LoadingWithTag>(
       'Loading state',
       build: () async {
-        defineWhen(currentCount: 0);
+        defineWhen(currentCount: 0, incrementedCount: 1);
         return counterBloc();
       },
       act: (bloc) async {
