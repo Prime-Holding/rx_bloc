@@ -52,7 +52,7 @@ dependencies: {{#enable_dev_menu}}
   widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#enable_feature_otp}}
   widget_toolkit_otp: ^0.1.0{{/enable_feature_otp}}{{#enable_pin_code}}
   widget_toolkit_pin: ^0.2.0{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
-  widget_toolkit_qr: ^0.1.0{{/enable_feature_qr_scanner}}
+  widget_toolkit_qr: ^0.2.0{{/enable_feature_qr_scanner}}
   
 
 dev_dependencies:

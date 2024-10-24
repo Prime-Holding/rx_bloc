@@ -13,7 +13,6 @@ class InfoPlistProcessor extends StringProcessor {
     if (input == null) return '';
     final buffer = StringBuffer(input!);
 
-    //_updateGlobalIOSPlatform(buffer);
     if (args.qrScannerEnabled) {
       _updateInfoPlistPermissions(buffer);
     }
@@ -24,8 +23,8 @@ class InfoPlistProcessor extends StringProcessor {
   void _updateInfoPlistPermissions(StringBuffer buffer) {
     const permissions = '''
     <key>NSCameraUsageDescription</key>
-    <string>Your message to user when the camera is accessed for the first time</string>
+    <string>This app needs camera access to scan QR codes</string>
  ''';
     buffer.insertBefore('</dict>', permissions);
-}
+  }
 }
