@@ -71,7 +71,6 @@ class _LoginFormState extends State<LoginForm> {
               context,
             ),
           ),
-          const Divider(indent: 5, endIndent: 5),
           SizedBox(height: context.designSystem.spacing.xs1),
           RxBlocBuilder<LoginBlocType, bool>(
             state: (bloc) => bloc.states.isLoading,
