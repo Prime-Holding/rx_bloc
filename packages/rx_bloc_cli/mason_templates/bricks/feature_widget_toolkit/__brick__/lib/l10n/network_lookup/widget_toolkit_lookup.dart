@@ -22,9 +22,6 @@ class AppI18nWidgetToolkitLookup extends I18nFeatureWidgetToolkitLookup {
               I18nFeatureWidgetToolkit(I18nFeatureWidgetToolkitLookup_bg());
           break;
         case 'en':
-          bundledI18n =
-              I18nFeatureWidgetToolkit(I18nFeatureWidgetToolkitLookup_en());
-          break;
         default:
           bundledI18n =
               I18nFeatureWidgetToolkit(I18nFeatureWidgetToolkitLookup_en());

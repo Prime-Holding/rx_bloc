@@ -21,8 +21,6 @@ class AppI18nQrLookup extends I18nFeatureQrLookup {
           bundledI18n = I18nFeatureQr(I18nFeatureQrLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nFeatureQr(I18nFeatureQrLookup_en());
-          break;
         default:
           bundledI18n = I18nFeatureQr(I18nFeatureQrLookup_en());
           break;

@@ -21,8 +21,6 @@ class AppI18nLibChangeLanguageLookup extends I18nLibChangeLanguageLookup {
           bundledI18n = I18nLibChangeLanguage(I18nLibChangeLanguageLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nLibChangeLanguage(I18nLibChangeLanguageLookup_en());
-          break;
         default:
           bundledI18n = I18nLibChangeLanguage(I18nLibChangeLanguageLookup_en());
           break;
