@@ -1,6 +1,6 @@
-## [5.1.1]
+## [5.2.0]
 * Add a script for running integration tests with Patrol
-* Updates generated project dependencies
+* Updates generated project dependencies version
 
 ## [5.1.0]
 * Added Profile as an option under the flag `--enable-profile`
