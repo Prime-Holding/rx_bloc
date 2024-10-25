@@ -21,8 +21,9 @@
 17. [Feature OTP](#feature-otp){{/enable_feature_otp}}{{#cicd}}
 18. [CI/CD](#cicd){{/cicd}}{{#enable_pin_code}}
 19. [Feature Pin Code](#feature-pin-code){{/enable_pin_code}}{{#enable_mfa}}
-20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}
-21. [Next Steps](#next-steps)
+20. [Multi-Factor Authentication](#multi-factor-authentication){{/enable_mfa}}{{#enable_feature_qr_scanner}}
+21. [Feature QR Code](#feature-qr-code){{/enable_feature_qr_scanner}}
+22. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -528,7 +529,16 @@ after a configurable amount of inactivity time and after a configurable amount o
 app has been in background mode.
 For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
 {{/enable_pin_code}}
+{{#enable_feature_qr_scanner}}
+## Feature QR Code
 
+The application provides a QR code scanner functionality that allows for scanning QR codes. The feature integrates widget_toolkit_qr package which contains widgets for scanning the QR code and displaying the result. 
+For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_toolkit_qr)
+
+### iOS Build Issue
+
+On iOS, an issue may occur during the initial build of the application. This can be resolved by oppening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
+{{/enable_feature_qr_scanner}}
 ## Next Steps
 
 * Define the branching strategy that the project is going to be using.

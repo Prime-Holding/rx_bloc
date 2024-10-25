@@ -22,7 +22,8 @@
 18. [CI/CD](#cicd)
 19. [Feature Pin Code](#feature-pin-code)
 20. [Multi-Factor Authentication](#multi-factor-authentication)
-21. [Next Steps](#next-steps)
+21. [Feature QR Code](#feature-qr-code)
+22. [Next Steps](#next-steps)
 
 ## Getting started
 
@@ -528,6 +529,14 @@ after a configurable amount of inactivity time and after a configurable amount o
 app has been in background mode.
 For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
 
+## Feature QR Code
+
+The application provides a QR code scanner functionality that allows for scanning QR codes. The feature integrates widget_toolkit_qr package which contains widgets for scanning the QR code and displaying the result. 
+For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_toolkit_qr)
+
+#### iOS Build Issue
+
+On iOS, an issue may occur during the initial build of the application. This can be resolved by oppening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
 
 ## Next Steps
 

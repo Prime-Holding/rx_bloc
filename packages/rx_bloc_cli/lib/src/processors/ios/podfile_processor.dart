@@ -11,7 +11,7 @@ class PodfileProcessor extends StringProcessor {
   /// Podfile file processor constructor
   PodfileProcessor(super.args);
 
-  static const _minSupportedIOSVersion = '13.0';
+  static const _minSupportedIOSVersion = '16.0';
 
   Map<String, String> get _buildModeMapping => {
         'Debug': 'debug',
@@ -37,11 +37,6 @@ class PodfileProcessor extends StringProcessor {
     final globalPlatformCommand = 'platform :ios';
     var replacement =
         buffer.toString().replaceAll('# platform :ios', globalPlatformCommand);
-    var minSupportedIOSVersion = _minSupportedIOSVersion;
-    if (args.qrScannerEnabled) {
-      /// The minimum supported iOS version for MLKit is 15.5
-      minSupportedIOSVersion = '15.5';
-    }
 
     // Update the minimum supported iOS version
     var startIndex =
@@ -49,7 +44,7 @@ class PodfileProcessor extends StringProcessor {
     var endIndex = replacement.indexOf("'", startIndex + 1);
     if (startIndex >= 0 && endIndex >= 0 && endIndex > startIndex) {
       replacement = replacement.replaceRange(
-          startIndex + 1, endIndex, minSupportedIOSVersion);
+          startIndex + 1, endIndex, _minSupportedIOSVersion);
     }
 
     buffer
@@ -77,14 +72,9 @@ class PodfileProcessor extends StringProcessor {
 
   void _addBuildConfigurations(StringBuffer buffer, GeneratorArguments args) {
     String deploymentTargetsConfig;
-    var minSupportedIOSVersion = _minSupportedIOSVersion;
-    if (args.qrScannerEnabled) {
-      /// The minimum supported iOS version for MLKit is 15.5
-      minSupportedIOSVersion = '15.5';
-    }
     deploymentTargetsConfig = '''\n
     target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '$minSupportedIOSVersion'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '$_minSupportedIOSVersion'
     end
 ''';
     const additionalBuildSettingsConfig =
