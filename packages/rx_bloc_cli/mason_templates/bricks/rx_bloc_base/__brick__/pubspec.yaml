@@ -51,7 +51,7 @@ dependencies: {{#enable_dev_menu}}
   widget_toolkit: ^0.2.0 {{#enable_pin_code}}
   widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#enable_feature_otp}}
   widget_toolkit_otp: ^0.1.0{{/enable_feature_otp}}{{#enable_pin_code}}
-  widget_toolkit_pin: ^0.2.0{{/enable_pin_code}}
+  widget_toolkit_pin: 0.2.0{{/enable_pin_code}} # TODO: Temporary fix until widget_toolkit_pin version >0.2.1 is released and lib_pin tests pass
 
 dev_dependencies:
   build_runner: ^2.4.12
