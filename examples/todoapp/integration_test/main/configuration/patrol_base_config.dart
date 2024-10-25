@@ -36,6 +36,7 @@ class PatrolBaseConfig {
     String description,
     Future<void> Function(PatrolIntegrationTester) callback, {
     bool? skip,
+    dynamic tags,
   }) {
     // IntegrationTestWidgetsFlutterBinding.ensureInitialized();
     patrolTest(
@@ -44,6 +45,7 @@ class PatrolBaseConfig {
       config: customPatrolTesterConfig(),
       nativeAutomatorConfig: customNativeAutomatorConfig(),
       skip: skip,
+      tags: tags,
     );
   }
 }

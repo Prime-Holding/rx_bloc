@@ -59,7 +59,7 @@ import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
 import '../common_services/push_notifications_service.dart';
-import '../data_sources/local/profile_local_data_source.dart';
+import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
@@ -207,9 +207,9 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => LanguageLocalDataSource(
           context.read<SharedPreferencesInstance>()),
         ),{{/enable_change_language}}
-        Provider<ProfileLocalDataSource>(
+        Provider<NotificationsLocalDataSource>(
           create: (context) =>
-              ProfileLocalDataSource(context.read<SharedPreferencesInstance>()),
+              NotificationsLocalDataSource(context.read<SharedPreferencesInstance>()),
         ),{{#enable_pin_code}}
         Provider<BiometricsLocalDataSource>(
           create: (context) => PinBiometricsLocalDataSource(

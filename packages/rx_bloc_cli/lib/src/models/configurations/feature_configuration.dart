@@ -15,6 +15,7 @@ class FeatureConfiguration {
     required this.cicdEnabled,
     required this.cicdGithubEnabled,
     required this.cicdCodemagicEnabled,
+    required this.profileEnabled,
   });
 
   /// Analytics
@@ -58,4 +59,7 @@ class FeatureConfiguration {
 
   /// CI/CD Codemagic
   final bool cicdCodemagicEnabled;
+
+  /// Profile enabled
+  final bool profileEnabled;
 }

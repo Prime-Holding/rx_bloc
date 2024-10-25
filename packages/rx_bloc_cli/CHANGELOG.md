@@ -1,3 +1,14 @@
+## [5.2.0]
+* Add a script for running integration tests with Patrol
+* Updates generated project dependencies version
+
+## [5.1.0]
+* Added Profile as an option under the flag `--enable-profile`
+* Update ruby version for generated `github` workflows
+
+## [5.0.1]
+* Updates to github workflows supporting monorepo structure
+
 ## [5.0.0]
 * Update generated project min supported iOS version to `13.0`
 * Generated projects have their dependencies updated:

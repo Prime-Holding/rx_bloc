@@ -22,6 +22,7 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         qrScannerEnabled: false,
+        profileEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -39,6 +40,7 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         qrScannerEnabled: false,
+        profileEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -56,6 +58,7 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         qrScannerEnabled: false,
+        profileEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
@@ -73,6 +76,7 @@ void main() {
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
         qrScannerEnabled: false,
+        profileEnabled: false,
       );
       expect(sut.usesFirebase, isFalse);
     });

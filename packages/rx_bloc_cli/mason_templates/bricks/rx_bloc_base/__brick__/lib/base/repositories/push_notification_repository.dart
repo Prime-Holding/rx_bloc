@@ -6,7 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../assets.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';
-import '../data_sources/local/profile_local_data_source.dart';
+import '../data_sources/local/notifications_local_data_source.dart';
 import '../data_sources/remote/push_notification_data_source.dart';
 import '../models/errors/error_model.dart';
 import '../models/request_models/push_message_request_model.dart';
@@ -23,7 +23,7 @@ class PushNotificationRepository {
   final ErrorMapper _errorMapper;
   final PushNotificationsDataSource _pushDataSource;
   final FirebaseMessaging _firebaseMessaging;
-  final ProfileLocalDataSource _localDataSource;
+  final NotificationsLocalDataSource _localDataSource;
 
   // Sends a push notification to the server which will be broadcast to all
   // logged in users.

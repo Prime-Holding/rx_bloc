@@ -45,6 +45,7 @@ Create a new project at the given directory with lots of already set-up features
 | `--[no-]enable-dev-menu`               |                   `true`                    |                           Enables dev menu to easily access proxy debugging services.                           |
 | `--[no-]enable-otp`                    |                   `false`                   |                     Enables OTP feature that can help with building sms/pin code workflows.                     |
 | `--[no-]enable-mfa`                    |                   `false`                   |                   Enables Multi-Factor Authentication capability for the project.                   |
+|`--[no-]enable-profile`                 |                   `true`                    |                              Enables Profile feature for the project  |
 | `--[no-]interactive`                   |                   `false`                   |              Enables interactive project generation flow flags are read from command line prompts               |
 | `--[no-]enable-pin-code`               |                   `false`                   |            Enables pin code feature with biometrics, that can help with building pin code workflows.            |
 | `--cicd`                               |                 `fastlane`                  | Provides a template for setting up ci/cd for your project. Available options: none, fastlane, github, codemagic |

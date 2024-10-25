@@ -74,13 +74,22 @@ class GeneratorArguments
 
   /// region Feature Configuration
 
-  /// Analytics
+  /// Profile enabled
   @override
-  bool get analyticsEnabled => _featureConfiguration.analyticsEnabled;
+  bool get profileEnabled => _featureConfiguration.profileEnabled;
 
   /// Change language
   @override
   bool get changeLanguageEnabled => _featureConfiguration.changeLanguageEnabled;
+
+  /// Push notifications
+  @override
+  bool get pushNotificationsEnabled =>
+      _featureConfiguration.pushNotificationsEnabled;
+
+  /// Analytics
+  @override
+  bool get analyticsEnabled => _featureConfiguration.analyticsEnabled;
 
   /// Counter showcase
   @override
@@ -109,11 +118,6 @@ class GeneratorArguments
   /// Firebase
   @override
   bool get usesFirebase => _featureConfiguration.usesFirebase;
-
-  /// Push notifications
-  @override
-  bool get pushNotificationsEnabled =>
-      _featureConfiguration.pushNotificationsEnabled;
 
   /// Real time communication
   @override

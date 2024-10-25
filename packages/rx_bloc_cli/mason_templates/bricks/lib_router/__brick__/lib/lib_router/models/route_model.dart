@@ -21,12 +21,12 @@ enum RouteModel {
     pathName: RoutesPath.dashboard,
     fullPath: '/dashboard',
     permissionName: RoutePermissions.dashboard,
-  ),
+  ),{{#enable_profile}}
   profile(
     pathName: RoutesPath.profile,
     fullPath: '/profile',
     permissionName: RoutePermissions.profile,
-  ),
+  ),{{/enable_profile}}
   splash(
     pathName: RoutesPath.splash,
     fullPath: '/splash',

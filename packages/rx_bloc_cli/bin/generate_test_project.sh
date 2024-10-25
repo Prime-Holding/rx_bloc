@@ -41,7 +41,8 @@ if [ $1 == "all_enabled" ]; then
   --cicd=github \
   --enable-pin-code \
   --enable-mfa \
-  --enable-feature-qr-scanner
+  --enable-feature-qr-scanner \
+  --enable-profile \
 fi 
 
 if [ $1 == "all_disabled" ]; then
@@ -60,7 +61,8 @@ if [ $1 == "all_disabled" ]; then
   --cicd=none \
   --no-enable-pin-code \
   --no-enable-mfa \
-  --no-enable-feature-qr-scanner
+  --no-enable-feature-qr-scanner \
+  --no-enable-profile \
 fi 
 
 if [ $1 == "without_showcase_features" ]; then
@@ -76,6 +78,7 @@ if [ $1 == "without_showcase_features" ]; then
     --cicd=fastlane \
     --enable-pin-code \
     --enable-mfa \
+    --enable-profile \
     --no-enable-feature-counter \
     --no-enable-feature-widget-toolkit \
     --no-enable-feature-deeplinks \

@@ -37,21 +37,23 @@ class HomePage extends StatelessWidget {
           children: branchNavigators,
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        key: K.bottomNavigationBar,
-        backgroundColor: context.designSystem.colors.backgroundColor,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: currentIndex,
-        onTap: onNavigationItemSelected,
-        items: list
-            .map(
-              (item) => BottomNavigationBarItem(
-                label: item.title,
-                icon: item.icon,
-              ),
-            )
-            .toList(),
-      ),
+      bottomNavigationBar: list.length == 1
+          ? null
+          : BottomNavigationBar(
+              key: K.bottomNavigationBar,
+              backgroundColor: context.designSystem.colors.backgroundColor,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: currentIndex,
+              onTap: onNavigationItemSelected,
+              items: list
+                  .map(
+                    (item) => BottomNavigationBarItem(
+                      label: item.title,
+                      icon: item.icon,
+                    ),
+                  )
+                  .toList(),
+            ),
     );
   }
 
@@ -102,12 +104,13 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.mfa,
         ),
         {{/enable_mfa}}
+        {{#enable_profile}}
         NavMenuItem(
           title: context.l10n.navProfile,
           icon: context.designSystem.icons.accountIcon,
           route: const ProfileRoute(),
           routePath: RoutesPath.profile,
-        ),
+        ),{{/enable_profile}}
       ];
 
   void _onError(BuildContext context, ErrorModel errorModel) =>

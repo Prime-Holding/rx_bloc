@@ -25,3 +25,4 @@ vars:
   - enable_dev_menu
   - enable_feature_otp
   - has_authentication
+  - enable_profile

@@ -1,3 +1,4 @@
+import '../main/base/tags.dart';
 import '../main/configuration/build_app.dart';
 import '../main/configuration/patrol_base_config.dart';
 import '../main/steps_utils/todo_list_stepts.dart';
@@ -22,5 +23,6 @@ void main() {
       // Tap on add button
       await TodoManagementSteps.tapBtnAddTodo($);
     },
+    tags: [regressionTest, positiveTest],
   );
 }

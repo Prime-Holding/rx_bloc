@@ -16,8 +16,8 @@ import 'network_lookup/lib_router_lookup.dart';{{#has_authentication}}
 import 'network_lookup/login_lookup.dart';{{/has_authentication}}{{#enable_mfa}}
 import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
 import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
-import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}
-import 'network_lookup/profile_lookup.dart';{{#enable_feature_qr_scanner}}
+import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}{{#enable_profile}}
+import 'network_lookup/profile_lookup.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import 'network_lookup/qr_code_lookup.dart';{{/enable_feature_qr_scanner}}
 import 'network_lookup/util.dart';{{#enable_feature_widget_toolkit}}
 import 'network_lookup/widget_toolkit_lookup.dart';{{/enable_feature_widget_toolkit}}
@@ -88,12 +88,12 @@ class AppI18nLookup extends I18nLookup {
   I18nErrorLookup createErrorLookup() => AppI18nErrorLookup();
 
   @override
-  I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();{{#enable_login}}
+  I18nFieldLookup createFieldLookup() => AppI18nFieldLookup();{{#has_authentication}}
 
   @override
   I18nFeatureLoginLookup createFeatureLoginLookup() => AppI18nLoginLookup();
 
-{{/enable_login}}{{#enable_mfa}}
+{{/has_authentication}}{{#enable_mfa}}
   @override
   I18nFeatureMfaLookup createFeatureMfaLookup() =>
       AppI18nMfaLookup(); {{/enable_mfa}} {{#enable_feature_counter}}
@@ -115,11 +115,11 @@ class AppI18nLookup extends I18nLookup {
       AppI18nNotificationsLookup();{{#enable_feature_otp}}
 
   @override
-  I18nFeatureOtpLookup createFeatureOtpLookup() => AppI18nOtpLookup();{{/enable_feature_otp}}
+  I18nFeatureOtpLookup createFeatureOtpLookup() => AppI18nOtpLookup();{{/enable_feature_otp}}{{#enable_profile}}
 
   @override
   I18nFeatureProfileLookup createFeatureProfileLookup() =>
-      AppI18nProfileLookup();{{#enable_feature_widget_toolkit}}
+      AppI18nProfileLookup();{{/enable_profile}}{{#enable_feature_widget_toolkit}}
 
   @override
   I18nFeatureWidgetToolkitLookup createFeatureWidgetToolkitLookup() =>

@@ -5,8 +5,8 @@ class RoutesPath { {{#enable_feature_qr_scanner}}
   static const mfa = '/mfa';
   static const mfaPinBiometrics = '/mfa/pin-biometrics/:transactionId';
   static const mfaOtp = '/mfa/otp/:transactionId';{{/enable_mfa}}
-  static const dashboard = '/dashboard';
-  static const profile = '/profile';{{#enable_pin_code}}
+  static const dashboard = '/dashboard';{{#enable_profile}}
+  static const profile = '/profile';{{/enable_profile}}{{#enable_pin_code}}
   static const verifyPinCode = '/verifyPinCode';
   static const createPin = 'createPin';
   static const updatePin = 'updatePin';{{/enable_pin_code}}

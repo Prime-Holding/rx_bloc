@@ -161,6 +161,15 @@ enum CreateCommandArguments {
     help: 'Enables Multi-Factor Authentication capability for the project',
   ),
 
+  /// Profile feature
+  profile(
+    name: 'enable-profile',
+    type: CreateCommandArgumentType.boolean,
+    defaultsTo: true,
+    prompt: 'Enabled Profile feature:',
+    help: 'Enables Profile feature capability for the project',
+  ),
+
   /// Interactive input
   interactive(
     name: 'interactive',
