@@ -6,7 +6,6 @@ import 'package:widget_toolkit_qr/widget_toolkit_qr.dart';
 
 import '../../app_extensions.dart';
 import '../services/qr_service.dart';
-import '../util/translate_error_util.dart';
 
 class QrScannerPage extends StatelessWidget {
   const QrScannerPage({
@@ -36,7 +35,7 @@ class QrScannerPage extends StatelessWidget {
                 ),
                 onError: (error) => showErrorBlurredBottomSheet(
                   context: context,
-                  error: TranslateErrorUtil.translateError(error),
+                  error: error.toString(),
                   configuration:
                       const ModalConfiguration(showCloseButton: true),
                 ),

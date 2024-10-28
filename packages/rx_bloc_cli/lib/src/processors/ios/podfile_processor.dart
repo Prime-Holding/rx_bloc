@@ -1,5 +1,4 @@
 import 'package:rx_bloc_cli/src/extensions/string_buffer_extensions.dart';
-import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
 import 'package:rx_bloc_cli/src/rx_bloc_cli_constants.dart';
 import 'package:rx_bloc_cli/src/utils/flavor_generator.dart';
 
@@ -26,7 +25,7 @@ class PodfileProcessor extends StringProcessor {
 
     _updateGlobalIOSPlatform(buffer);
     _updateProjectRunnerModes(buffer);
-    _addBuildConfigurations(buffer, args);
+    _addBuildConfigurations(buffer);
 
     return buffer.toString();
   }
@@ -70,7 +69,7 @@ class PodfileProcessor extends StringProcessor {
       ..insertBefore(runnerConfigs, runnerConfigsComment);
   }
 
-  void _addBuildConfigurations(StringBuffer buffer, GeneratorArguments args) {
+  void _addBuildConfigurations(StringBuffer buffer) {
     String deploymentTargetsConfig;
     deploymentTargetsConfig = '''\n
     target.build_configurations.each do |config|
