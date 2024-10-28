@@ -536,7 +536,7 @@ For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_t
 
 #### iOS Build Issue
 
-On iOS, an issue may occur during the initial build of the application. This can be resolved by oppening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
+On iOS, an issue may occur during the initial build of the application. This can be resolved by opening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
 
 ## Next Steps
 
