@@ -21,8 +21,6 @@ class AppI18nLibRouterLookup extends I18nLibRouterLookup {
           bundledI18n = I18nLibRouter(I18nLibRouterLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nLibRouter(I18nLibRouterLookup_en());
-          break;
         default:
           bundledI18n = I18nLibRouter(I18nLibRouterLookup_en());
           break;

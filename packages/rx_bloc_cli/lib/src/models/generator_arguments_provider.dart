@@ -121,6 +121,10 @@ class GeneratorArgumentsProvider {
     // Counter
     final counterEnabled = _reader.read<bool>(CreateCommandArguments.counter);
 
+    // Qr Scanner
+    final qrScannerEnabled =
+        _reader.read<bool>(CreateCommandArguments.qrScanner);
+
     // Widget toolkit
     final widgetToolkitEnabled =
         _reader.read<bool>(CreateCommandArguments.widgetToolkit);
@@ -171,6 +175,7 @@ class GeneratorArgumentsProvider {
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
       counterEnabled: counterEnabled,
+      qrScannerEnabled: qrScannerEnabled,
       widgetToolkitEnabled: widgetToolkitEnabled,
       analyticsEnabled: analyticsEnabled,
       pushNotificationsEnabled: pushNotificationsEnabled,

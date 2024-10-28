@@ -1,6 +1,7 @@
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_cicd_fastlane_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_profile_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_qr_scanner_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
@@ -28,6 +29,7 @@ class BundleGenerator {
   final MasonBundle _bundle;
 
   final _counterBundle = featureCounterBundle;
+  final _qrScannerBundle = featureQrScannerBundle;
   final _deepLinkBundle = featureDeeplinkBundle;
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
   final _libRouterBundle = libRouterBundle;
@@ -58,6 +60,11 @@ class BundleGenerator {
     // Add counter brick to _bundle when needed
     if (arguments.counterEnabled) {
       _bundle.files.addAll(_counterBundle.files);
+    }
+
+    // Add qr scanner brick to _bundle when needed
+    if (arguments.qrScannerEnabled) {
+      _bundle.files.addAll(_qrScannerBundle.files);
     }
 
     // Add widget toolkit brick to _bundle when needed

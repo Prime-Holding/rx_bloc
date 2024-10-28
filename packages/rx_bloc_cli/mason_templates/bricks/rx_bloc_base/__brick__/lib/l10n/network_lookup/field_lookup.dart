@@ -21,8 +21,6 @@ class AppI18nFieldLookup extends I18nFieldLookup {
           bundledI18n = I18nField(I18nFieldLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nField(I18nFieldLookup_en());
-          break;
         default:
           bundledI18n = I18nField(I18nFieldLookup_en());
           break;

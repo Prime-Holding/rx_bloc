@@ -17,7 +17,8 @@ import 'network_lookup/login_lookup.dart';{{/has_authentication}}{{#enable_mfa}}
 import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
 import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
 import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}{{#enable_profile}}
-import 'network_lookup/profile_lookup.dart';{{/enable_profile}}
+import 'network_lookup/profile_lookup.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
+import 'network_lookup/qr_code_lookup.dart';{{/enable_feature_qr_scanner}}
 import 'network_lookup/util.dart';{{#enable_feature_widget_toolkit}}
 import 'network_lookup/widget_toolkit_lookup.dart';{{/enable_feature_widget_toolkit}}
 
@@ -135,8 +136,11 @@ class AppI18nLookup extends I18nLookup {
   I18nLibPinCodeLookup createLibPinCodeLookup() => AppI18nLibPinCodeLookup();{{/enable_pin_code}}
 
   @override
-  I18nLibRouterLookup createLibRouterLookup() => AppI18nLibRouterLookup();
+  I18nLibRouterLookup createLibRouterLookup() => AppI18nLibRouterLookup();{{#enable_feature_qr_scanner}}
 
+
+  @override
+  I18nFeatureQrLookup createFeatureQrLookup() => AppI18nQrLookup();{{/enable_feature_qr_scanner}}
   /// endregion
 
   // TODO: Add your custom lookups here

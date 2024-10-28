@@ -40,8 +40,9 @@ if [ $1 == "all_enabled" ]; then
   --enable-otp \
   --cicd=github \
   --enable-pin-code \
-  --enable-profile \
-  --enable-mfa
+  --enable-mfa \
+  --enable-feature-qr-scanner \
+  --enable-profile 
 fi 
 
 if [ $1 == "all_disabled" ]; then
@@ -59,8 +60,9 @@ if [ $1 == "all_disabled" ]; then
   --no-enable-otp \
   --cicd=none \
   --no-enable-pin-code \
-  --no-enable-profile \
-  --no-enable-mfa
+  --no-enable-mfa \
+  --no-enable-feature-qr-scanner \
+  --no-enable-profile 
 fi 
 
 if [ $1 == "without_showcase_features" ]; then
@@ -79,5 +81,6 @@ if [ $1 == "without_showcase_features" ]; then
     --enable-profile \
     --no-enable-feature-counter \
     --no-enable-feature-widget-toolkit \
-    --no-enable-feature-deeplinks
+    --no-enable-feature-deeplinks \
+    --no-enable-feature-qr-scanner 
 fi

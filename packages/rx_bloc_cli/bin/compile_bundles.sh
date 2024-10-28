@@ -106,6 +106,10 @@ dart run mason_cli:mason bundle \
 dart run mason_cli:mason bundle \
   -t dart \
   -o lib/src/templates/ \
+  mason_templates/bricks/feature_qr_scanner
+dart run mason_cli:mason bundle \
+  -t dart \
+  -o lib/src/templates/ \
   mason_templates/bricks/feature_profile
 
 

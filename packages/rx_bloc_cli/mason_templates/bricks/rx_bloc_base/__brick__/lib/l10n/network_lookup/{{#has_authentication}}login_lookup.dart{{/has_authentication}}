@@ -21,8 +21,6 @@ class AppI18nLoginLookup extends I18nFeatureLoginLookup {
           bundledI18n = I18nFeatureLogin(I18nFeatureLoginLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nFeatureLogin(I18nFeatureLoginLookup_en());
-          break;
         default:
           bundledI18n = I18nFeatureLogin(I18nFeatureLoginLookup_en());
           break;

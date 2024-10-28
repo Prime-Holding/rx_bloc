@@ -22,9 +22,6 @@ class AppI18nNotificationsLookup extends I18nFeatureNotificationsLookup {
               I18nFeatureNotifications(I18nFeatureNotificationsLookup_bg());
           break;
         case 'en':
-          bundledI18n =
-              I18nFeatureNotifications(I18nFeatureNotificationsLookup_en());
-          break;
         default:
           bundledI18n =
               I18nFeatureNotifications(I18nFeatureNotificationsLookup_en());

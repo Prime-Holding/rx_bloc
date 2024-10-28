@@ -100,6 +100,7 @@ final class Stub {
       cicdEnabled: true,
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
+      qrScannerEnabled: true,
       profileEnabled: true,
     ),
   );
@@ -123,6 +124,7 @@ final class Stub {
       changeLanguageEnabled:
           CreateCommandArguments.changeLanguage.defaultValue(),
       counterEnabled: CreateCommandArguments.counter.defaultValue(),
+      qrScannerEnabled: CreateCommandArguments.qrScanner.defaultValue(),
       patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
       devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
       deepLinkEnabled: CreateCommandArguments.deepLink.defaultValue(),

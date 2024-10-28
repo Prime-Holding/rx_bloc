@@ -21,8 +21,6 @@ class AppI18nProfileLookup extends I18nFeatureProfileLookup {
           bundledI18n = I18nFeatureProfile(I18nFeatureProfileLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nFeatureProfile(I18nFeatureProfileLookup_en());
-          break;
         default:
           bundledI18n = I18nFeatureProfile(I18nFeatureProfileLookup_en());
           break;

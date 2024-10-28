@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
-class RoutePermissions { {{#enable_mfa}}
+class RoutePermissions { {{#enable_feature_qr_scanner}}
+  static const qrCode = 'QrCodeRoute';{{/enable_feature_qr_scanner}} {{#enable_mfa}}
   static const mfa = 'MfaRoute';{{/enable_mfa}}
   static const dashboard = 'DashboardRoute';{{#enable_profile}}
   static const profile = 'ProfileRoute';{{/enable_profile}}

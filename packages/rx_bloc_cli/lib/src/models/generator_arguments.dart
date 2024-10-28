@@ -95,6 +95,10 @@ class GeneratorArguments
   @override
   bool get counterEnabled => _featureConfiguration.counterEnabled;
 
+  /// QrScanner showcase
+  @override
+  bool get qrScannerEnabled => _featureConfiguration.qrScannerEnabled;
+
   /// Deep links
   @override
   bool get deepLinkEnabled => _featureConfiguration.deepLinkEnabled;

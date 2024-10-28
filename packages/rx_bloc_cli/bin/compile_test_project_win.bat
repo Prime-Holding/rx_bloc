@@ -18,6 +18,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_distribut
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_cicd_fastlane ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_analytics ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/lib_mfa ^
+& dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_qr_scanner ^
 & dart run mason_cli:mason bundle -t dart mason_templates/bricks/feature_profile ^
 & move /Y rx_bloc_base_bundle.dart lib\src\templates\ ^
 & move /Y rx_bloc_flavor_config.dart lib\src\templates\ ^
@@ -39,6 +40,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_distribut
 & move /Y feature_cicd_fastlane_bundle.dart lib\src\templates\ ^
 & move /Y lib_analytics_bundle.dart lib\src\templates\ ^
 & move /Y lib_mfa_bundle.dart lib\src\templates\ ^
+& move /Y feature_qr_scanner_bundle.dart lib\src\templates\ ^
 & move /Y feature_profile_bundle.dart lib\src\templates\ ^
 & rmdir /s/q example\testapp\ ^
 & dart pub global activate -s path . --overwrite ^
@@ -58,6 +60,7 @@ dart run mason_cli:mason bundle -t dart mason_templates/bricks/rx_bloc_distribut
 --enable-otp ^
 --enable-pin-code ^
 --cicd fastlane ^
+--enable-feature-qr-scanner ^
 --enable-profile ^
 --no-interactive ^
 example/testapp ^

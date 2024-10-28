@@ -1,5 +1,6 @@
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/shell_script_processor.dart';
+import 'package:rx_bloc_cli/src/processors/ios/info_plist_processor.dart';
 
 import 'package:rx_bloc_cli/src/processors/ios/podfile_processor.dart';
 
@@ -36,6 +37,17 @@ class GeneratedFilesPostProcessor {
   /// List of (path,processor) tuples for processing generated files
   List<(String, StringProcessor)> get _fileStringProcessors => [
         ('ios/Podfile', PodfileProcessor(args)),
+        ('ios/Runner/Info.plist', InfoPlistProcessor(args)),
+        (
+          'ios/environments/development/development.plist',
+          InfoPlistProcessor(args)
+        ),
+        (
+          'ios/environments/production/production.plist',
+          InfoPlistProcessor(args)
+        ),
+        ('ios/environments/sit/sit.plist', InfoPlistProcessor(args)),
+        ('ios/environments/uat/uat.plist', InfoPlistProcessor(args)),
         ('.idea/workspace.xml', IdeaWorkspaceProcessor(args)),
         (
           '.github/workflows/build_and_deploy_app.yaml',

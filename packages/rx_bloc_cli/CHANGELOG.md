@@ -1,5 +1,7 @@
 ## [5.2.0]
+* Update generated project min supported iOS version to `16.0`
 * Add a script for running integration tests with Patrol
+* Add QR scanner feature as an option under the flag `--enable-feature-qr-scanner`
 * Updates generated project dependencies version
 
 ## [5.1.0]

@@ -129,6 +129,7 @@ class CreateCommand extends Command<int> {
             'analytics': arguments.analyticsEnabled,
             'push_notifications': arguments.pushNotificationsEnabled,
             'enable_feature_counter': arguments.counterEnabled,
+            'enable_feature_qr_scanner': arguments.qrScannerEnabled,
             'enable_feature_deeplinks': arguments.deepLinkEnabled,
             'enable_feature_widget_toolkit': arguments.widgetToolkitEnabled,
             'enable_login': arguments.loginEnabled,
@@ -266,6 +267,7 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.widgetToolkitEnabled,
     );
+    _usingLog('Feature Qr Code Scanner Showcase', arguments.qrScannerEnabled);
     _usingLog('Feature Login', arguments.loginEnabled);
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.socialLoginsEnabled);

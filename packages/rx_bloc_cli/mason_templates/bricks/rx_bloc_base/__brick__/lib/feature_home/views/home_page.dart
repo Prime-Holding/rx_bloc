@@ -80,6 +80,14 @@ class HomePage extends StatelessWidget {
           routePath: RoutesPath.widgetToolkit,
         ),
         {{/enable_feature_widget_toolkit}}
+        {{#enable_feature_qr_scanner}}
+            NavMenuItem(
+          title: context.l10n.featureQr.qrCodePageTitle,
+          icon: context.designSystem.icons.qrCode,
+          route: const QrCodeRoute(),
+          routePath: RoutesPath.qrCode,
+        ),
+        {{/enable_feature_qr_scanner}}
         {{#enable_feature_deeplinks}}
         NavMenuItem(
           title: context.l10n.featureDeepLink.navLinks,

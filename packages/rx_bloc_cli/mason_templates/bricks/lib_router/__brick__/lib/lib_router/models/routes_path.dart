@@ -1,6 +1,7 @@
 {{> licence.dart }}
 
-class RoutesPath { {{#enable_mfa}}
+class RoutesPath { {{#enable_feature_qr_scanner}}
+  static const qrCode = '/qrCode';{{/enable_feature_qr_scanner}} {{#enable_mfa}}
   static const mfa = '/mfa';
   static const mfaPinBiometrics = '/mfa/pin-biometrics/:transactionId';
   static const mfaOtp = '/mfa/otp/:transactionId';{{/enable_mfa}}

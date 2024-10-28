@@ -37,7 +37,12 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<WidgetToolkitRoute>(path: RoutesPath.widgetToolkit),
       ],
-    ),{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
+    ),{{/enable_feature_widget_toolkit}}{{#enable_feature_qr_scanner}}
+    TypedStatefulShellBranch<QrCodeBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<QrCodeRoute>(path: RoutesPath.qrCode),
+      ],
+    ),{{/enable_feature_qr_scanner}}{{#enable_feature_deeplinks}}
     TypedStatefulShellBranch<DeepLinkBranchData>(
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<DeepLinksRoute>(
