@@ -8,9 +8,7 @@ void main() {
   final patrolBaseConfig = PatrolBaseConfig();
 
   patrolBaseConfig.patrol(
-    '''
-    Add a todo item with title and description to todo list,
-    ''',
+    'Add a todo item with title and description to todo list',
     ($) async {
       BuildApp app = BuildApp($);
       await app.buildApp();

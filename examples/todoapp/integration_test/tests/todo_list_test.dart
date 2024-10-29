@@ -11,16 +11,10 @@ import '../main/steps_utils/todo_list_stepts.dart';
 void main() {
   final patrolBaseConfig = PatrolBaseConfig();
 
-  patrolBaseConfig.patrol('''
-    Test the todo list page,
-    first add a todo item to todo list,
-    then mark it as completed,
-    then filter the todos,
-    then perform bulk actions on all todos.
-    ''', ($) async {
+  patrolBaseConfig.patrol('Todo list page test', ($) async {
     BuildApp app = BuildApp($);
     await app.buildApp();
-    //Create 3 todos
+    // Create 3 todos
     await Utils.addTodos($, 3);
     // Mark second todo as completed
     await TodoListSteps.tapTodoCheckbox($, 1);

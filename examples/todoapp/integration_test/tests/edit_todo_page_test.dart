@@ -9,13 +9,12 @@ import '../main/steps_utils/todo_management_steps.dart';
 void main() {
   final patrolBaseConfig = PatrolBaseConfig();
 
-  patrolBaseConfig.patrol('''
-    Add a todo item with title and description to todo list,
-    Then navigate to edit todo page and edit the todo item,
-    ''', ($) async {
+  patrolBaseConfig.patrol(
+      'Add a todo item with title and description to todo list, Then navigate to edit todo page and edit the todo item,',
+      ($) async {
     BuildApp app = BuildApp($);
     await app.buildApp();
-    //Add a todo
+    // Add a todo
     await Utils.addTodos($, 1);
     // Navigate to todo details page
     await TodoListSteps.navigateToTodoDetailsPage($, 0);
