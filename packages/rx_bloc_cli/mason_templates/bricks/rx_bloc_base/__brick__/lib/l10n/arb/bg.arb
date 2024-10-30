@@ -14,5 +14,6 @@
   "navProfile": "Профил",
   "english": "английски",
   "bulgarian": "български",
-  "changeLanguage" : "Смени език"
+  "changeLanguage" : "Смени език",
+  "navShowcase":"Витрина"
 }

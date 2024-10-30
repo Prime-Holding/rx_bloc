@@ -1,0 +1,10 @@
+{
+  "@@locale": "en",
+  "showcaseTitle":"Showcase Page",
+  "counterShowcase":"Counter Showcase",
+  "widgetToolkitShowcase":"Widget Toolkit Showcase",
+  "qrCodeShowcase":"Qr Scanner Showcase",
+  "deepLinkShowcase":"Deep Links Showcase",
+  "mfaShowcase":"MFA Showcase",
+  "otpShowcase":"OTP Showcase"
+}

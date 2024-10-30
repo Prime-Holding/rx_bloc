@@ -4,6 +4,7 @@ import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/models/ci_cd_type.dart';
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
+import 'package:rx_bloc_cli/src/models/configurations/showcase_configuration.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 
@@ -32,12 +33,13 @@ class GeneratorArgumentsProvider {
     final projectConfiguration = _readProjectConfiguration();
     final authConfiguration = _readAuthConfiguration();
     final featureConfiguration = _readFeatureConfiguration(authConfiguration);
-
+    final showcaseConfiguration = _readShowcaseConfiguration(authConfiguration);
     return GeneratorArguments(
       outputDirectory: _outputDirectory,
       projectConfiguration: projectConfiguration,
       authConfiguration: authConfiguration,
       featureConfiguration: featureConfiguration,
+      showcaseConfiguration: showcaseConfiguration,
     );
   }
 
@@ -118,17 +120,6 @@ class GeneratorArgumentsProvider {
     final changeLanguageEnabled =
         _reader.read<bool>(CreateCommandArguments.changeLanguage);
 
-    // Counter
-    final counterEnabled = _reader.read<bool>(CreateCommandArguments.counter);
-
-    // Qr Scanner
-    final qrScannerEnabled =
-        _reader.read<bool>(CreateCommandArguments.qrScanner);
-
-    // Widget toolkit
-    final widgetToolkitEnabled =
-        _reader.read<bool>(CreateCommandArguments.widgetToolkit);
-
     // Analytics, Push Notifications, Firebase
     final analyticsEnabled =
         _reader.read<bool>(CreateCommandArguments.analytics);
@@ -139,9 +130,6 @@ class GeneratorArgumentsProvider {
         CreateCommandArguments.realtimeCommunication);
     final realtimeCommunicationEnabled =
         realtimeCommunication != RealtimeCommunicationType.none;
-
-    // Deep links
-    final deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
 
     // Dev menu
     final devMenuEnabled = _reader.read<bool>(CreateCommandArguments.devMenu);
@@ -157,7 +145,6 @@ class GeneratorArgumentsProvider {
     final cicdCodemagicEnabled = cicdType == CICDType.codemagic;
 
     // Profile
-
     var profileEnabled = _reader.read<bool>(CreateCommandArguments.profile);
     // Authentication
     final authenticationEnabled = authConfiguration.authenticationEnabled;
@@ -174,13 +161,9 @@ class GeneratorArgumentsProvider {
 
     return FeatureConfiguration(
       changeLanguageEnabled: changeLanguageEnabled,
-      counterEnabled: counterEnabled,
-      qrScannerEnabled: qrScannerEnabled,
-      widgetToolkitEnabled: widgetToolkitEnabled,
       analyticsEnabled: analyticsEnabled,
       pushNotificationsEnabled: pushNotificationsEnabled,
       realtimeCommunicationEnabled: realtimeCommunicationEnabled,
-      deepLinkEnabled: deepLinkEnabled,
       devMenuEnabled: devMenuEnabled,
       patrolTestsEnabled: patrolTestsEnabled,
       cicdEnabled: cicdEnabled,
@@ -191,4 +174,32 @@ class GeneratorArgumentsProvider {
   }
 
   /// endregion
+
+  /// region Showcase Configuration
+
+  ShowcaseConfiguration _readShowcaseConfiguration(
+      AuthConfiguration authConfiguration) {
+    // Counter
+    final counterEnabled = _reader.read<bool>(CreateCommandArguments.counter);
+
+    // Deep links
+    final deepLinkEnabled = _reader.read<bool>(CreateCommandArguments.deepLink);
+
+    // Qr Scanner
+    final qrScannerEnabled =
+        _reader.read<bool>(CreateCommandArguments.qrScanner);
+
+    // Widget toolkit
+    final widgetToolkitEnabled =
+        _reader.read<bool>(CreateCommandArguments.widgetToolkit);
+
+    return ShowcaseConfiguration(
+      counterEnabled: counterEnabled,
+      widgetToolkitEnabled: widgetToolkitEnabled,
+      qrScannerEnabled: qrScannerEnabled,
+      deepLinkEnabled: deepLinkEnabled,
+      mfaEnabled: authConfiguration.mfaEnabled,
+      otpEnabled: authConfiguration.otpEnabled,
+    );
+  }
 }

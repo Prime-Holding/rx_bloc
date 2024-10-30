@@ -14,5 +14,6 @@
     "navProfile" : "Profile",
     "english" : "English",
     "bulgarian" : "Bulgarian",
-    "changeLanguage" : "Change Language"
+    "changeLanguage" : "Change Language",
+    "navShowcase":"Showcase"
 }

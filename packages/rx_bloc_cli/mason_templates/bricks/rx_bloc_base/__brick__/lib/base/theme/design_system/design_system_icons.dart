@@ -43,6 +43,9 @@ class DesignSystemIcons {
   {{#enable_feature_qr_scanner}}
   final Icon qrCode = _getIcon(Icons.qr_code);
   {{/enable_feature_qr_scanner}}
+  {{#has_showcase}}
+  final Icon showcase = _getIcon(Icons.shelves);
+  {{/has_showcase}}
   static Icon _getIcon(IconData iconData) => Icon(iconData);
   
 }

@@ -139,6 +139,7 @@ class CreateCommand extends Command<int> {
             'enable_feature_otp': arguments.otpEnabled,
             'enable_patrol': arguments.patrolTestsEnabled,
             'has_authentication': arguments.authenticationEnabled,
+            'has_showcase': arguments.showcaseEnabled,
             'realtime_communication': arguments.realtimeCommunicationEnabled,
             'enable_pin_code': arguments.pinCodeEnabled,
             'cicd': arguments.cicdEnabled,

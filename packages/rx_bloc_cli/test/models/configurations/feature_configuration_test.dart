@@ -10,72 +10,56 @@ void main() {
         'analytics or push notifications are enabled', () {
       sut = FeatureConfiguration(
         changeLanguageEnabled: false,
-        counterEnabled: false,
-        widgetToolkitEnabled: false,
         analyticsEnabled: false,
         pushNotificationsEnabled: true,
         realtimeCommunicationEnabled: false,
-        deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
-        qrScannerEnabled: false,
         profileEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
       sut = FeatureConfiguration(
         changeLanguageEnabled: false,
-        counterEnabled: false,
-        widgetToolkitEnabled: false,
         analyticsEnabled: true,
         pushNotificationsEnabled: false,
         realtimeCommunicationEnabled: false,
-        deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
-        qrScannerEnabled: false,
         profileEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
       sut = FeatureConfiguration(
         changeLanguageEnabled: false,
-        counterEnabled: false,
-        widgetToolkitEnabled: false,
         analyticsEnabled: true,
         pushNotificationsEnabled: true,
         realtimeCommunicationEnabled: false,
-        deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
-        qrScannerEnabled: false,
         profileEnabled: false,
       );
       expect(sut.usesFirebase, isTrue);
 
       sut = FeatureConfiguration(
         changeLanguageEnabled: false,
-        counterEnabled: false,
-        widgetToolkitEnabled: false,
         analyticsEnabled: false,
         pushNotificationsEnabled: false,
         realtimeCommunicationEnabled: false,
-        deepLinkEnabled: false,
         devMenuEnabled: false,
         patrolTestsEnabled: false,
         cicdEnabled: false,
         cicdGithubEnabled: false,
         cicdCodemagicEnabled: false,
-        qrScannerEnabled: false,
         profileEnabled: false,
       );
       expect(sut.usesFirebase, isFalse);

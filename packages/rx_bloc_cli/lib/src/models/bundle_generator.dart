@@ -2,6 +2,7 @@ import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_cicd_fastlane_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_profile_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_qr_scanner_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_showcase_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
@@ -47,6 +48,7 @@ class BundleGenerator {
   final _libPinCodeBundle = libPinCodeBundle;
   final _libAnalyticsBundle = libAnalyticsBundle;
   final _featureProfile = featureProfileBundle;
+  final _featureShowcase = featureShowcaseBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
@@ -132,6 +134,9 @@ class BundleGenerator {
     //Add feature_profile to _bundle when needed
     if (arguments.profileEnabled) {
       _bundle.files.addAll(_featureProfile.files);
+    }
+    if (arguments.showcaseEnabled) {
+      _bundle.files.addAll(_featureShowcase.files);
     }
     return _bundle;
   }
