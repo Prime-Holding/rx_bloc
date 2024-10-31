@@ -1,5 +1,5 @@
 import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_list/models.dart';
+import 'package:rx_bloc_list/rx_bloc_list.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/common_blocs/coordinator_bloc.dart';
