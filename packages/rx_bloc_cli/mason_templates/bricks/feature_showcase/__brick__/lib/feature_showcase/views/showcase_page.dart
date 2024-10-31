@@ -7,7 +7,7 @@ import '../../app_extensions.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/router.dart';
-import '../ui_components/showcase_feature_button.dart';
+import '../ui_components/showcase_feature_list_tile.dart';
 
 class ShowcasePage extends StatelessWidget {
   const ShowcasePage({super.key});
@@ -21,7 +21,7 @@ class ShowcasePage extends StatelessWidget {
         itemCount: features.length,
         itemBuilder: (context, index) {
           final feature = features[index];
-          return ShowcaseFeatureButton(
+          return ShowcaseFeatureListTile(
             featureTitle: feature.title,
             featureSubtitle: feature.subtitle,
             onTap: () =>
@@ -41,8 +41,8 @@ class ShowcasePage extends StatelessWidget {
 
 List<({String title, String subtitle, RouteDataModel route, Icon icon})>
     getFeatures(BuildContext context) {
-  return [
-    ( {{#enable_feature_counter}}
+  return [ {{#enable_feature_counter}}
+    ( 
       title: context.l10n.featureShowcase.counterShowcase,
       subtitle: context.l10n.featureShowcase.counterShowcaseDescription,
       route: const CounterRoute(),

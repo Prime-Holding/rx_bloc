@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
 
-class ShowcaseFeatureButton extends StatelessWidget {
-  const ShowcaseFeatureButton({
+class ShowcaseFeatureListTile extends StatelessWidget {
+  const ShowcaseFeatureListTile({
     super.key,
     required this.onTap,
     required this.featureTitle,
@@ -21,6 +21,7 @@ class ShowcaseFeatureButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      padding: EdgeInsets.symmetric(
         horizontal: context.designSystem.spacing.m,
         vertical: context.designSystem.spacing.xxxs,
       ),
