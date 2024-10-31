@@ -10,7 +10,6 @@ environment:
 dependencies:
   alice: ^0.4.1
   alice_dio: ^1.0.4
-  args: ^2.5.0
   collection: ^1.18.0
   connectivity_plus: ^6.0.5
   copy_with_extension: ^5.0.4
@@ -53,7 +52,7 @@ dev_dependencies:
   go_router_builder: ^2.7.1
   json_serializable: ^6.8.0
   mockito: ^5.4.4
-  patrol: ^3.11.0 
+  patrol: ^3.11.2 
   r_flutter: 0.9.0
   retrofit_generator: ^8.2.1
   rx_bloc_generator: ^8.0.0
