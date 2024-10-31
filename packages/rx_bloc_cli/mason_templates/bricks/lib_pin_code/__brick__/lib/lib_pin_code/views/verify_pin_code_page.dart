@@ -52,6 +52,8 @@ class VerifyPinCodePage extends StatelessWidget {
 // authentication
                     biometricsLocalDataSource:
                         context.read<BiometricsLocalDataSource>(),
+                    biometricsAuthDataSource:
+                        context.read<PinBiometricsAuthDataSource?>(),
                     translateError: (error) =>
                         error.asErrorModel().translate(context),
                     onAuthenticated: (_) => _isPinCodeVerified(context),

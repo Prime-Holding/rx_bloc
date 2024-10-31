@@ -7,9 +7,11 @@ import 'package:{{project_name}}/lib_pin_code/services/verify_pin_code_service.d
 import 'package:{{project_name}}/lib_pin_code/views/verify_pin_code_page.dart';
 import 'package:{{project_name}}/lib_router/blocs/router_bloc.dart';
 import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
+import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../../base/common_blocs/router_bloc_mock.dart';
 import '../../mock/verify_pin_code_service_mock.dart';
+import '../mocks/pin_biometrics_auth_datasource_mock.dart';
 import '../mocks/pin_biometrics_local_datasource_mock.dart';
 import '../mocks/update_and_verify_pin_bloc_mock.dart';
 
@@ -32,28 +34,20 @@ Widget verifyPinFactory({
             ),
           ),
           Provider<BiometricsLocalDataSource>.value(
-            value: pinBiometricsLocalDataSourceMockFactory(showBiometricsButton),
+            value:
+                pinBiometricsLocalDataSourceMockFactory(showBiometricsButton),
+          ),
+          Provider<PinBiometricsAuthDataSource>.value(
+            value: MockBiometricsAuthDataSource(
+              showBiometricsButton: showBiometricsButton,
+            ),
           ),
         ],
-        child: Builder(builder: (context) {
-          if (title != null) {
-            PinCodeArguments pinCodeArguments;
-
-            if (showBiometricsButton) {
-              pinCodeArguments = PinCodeArguments(
-                title: title,
-                showBiometricsButton: showBiometricsButton,
-              );
-            } else {
-              pinCodeArguments = PinCodeArguments(
-                title: title,
-              );
-            }
-
-            return VerifyPinCodePage(pinCodeArguments: pinCodeArguments);
-          } else {
-            return const VerifyPinCodePage();
-          }
-        }),
+        child: VerifyPinCodePage(
+          pinCodeArguments: PinCodeArguments(
+            title: title ?? '',
+            showBiometricsButton: showBiometricsButton,
+          ),
+        ),
       ),
     );

@@ -15,8 +15,5 @@ void main() {
         scenario: Scenario(name: 'create_pin_title'),
       ),
     ],
-    matcherCustomPump: (tester) async {
-      await tester.pumpAndSettle(const Duration(seconds: 2));
-    },
   );
 }
