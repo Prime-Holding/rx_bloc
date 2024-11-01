@@ -214,6 +214,18 @@ class CreateCommand extends Command<int> {
 
     _progressFinish(format, progress);
 
+    progress = _logger.progress(
+      'dart fix --apply .',
+    );
+
+    final fix = await Process.run(
+      'dart',
+      ['fix', '--apply', '.'],
+      workingDirectory: outputDirectory.path,
+    );
+
+    _progressFinish(fix, progress);
+
     // Manually create project gitignore after everything is generated
     GitIgnoreCreator.generate(args.outputDirectory.path);
 

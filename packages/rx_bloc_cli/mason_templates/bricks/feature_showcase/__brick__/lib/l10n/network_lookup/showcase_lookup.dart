@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
 import '../../assets.dart';
-import '../testapp_app_i18n.dart';
+import '../{{project_name}}_app_i18n.dart';
 import 'util.dart';
 
 class AppI18nShowcaseLookup extends I18nFeatureShowcaseLookup {
