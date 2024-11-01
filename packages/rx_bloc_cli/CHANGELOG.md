@@ -3,6 +3,7 @@
 * Add a script for running integration tests with Patrol
 * Added a showcase feature that groups all other showcase features in one place
 * Add QR scanner feature as an option under the flag `--enable-feature-qr-scanner`
+* Added `dart fix --apply .` to the project generation process
 * Updates generated project dependencies version
 
 ## [5.1.0]
