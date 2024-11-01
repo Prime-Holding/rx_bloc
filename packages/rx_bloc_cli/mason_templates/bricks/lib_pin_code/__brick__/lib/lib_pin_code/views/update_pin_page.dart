@@ -54,6 +54,8 @@ class UpdatePinPage extends StatelessWidget {
                         pinCodeArguments.showBiometricsButton
                             ? context.read<BiometricsLocalDataSource>()
                             : null,
+                    biometricsAuthDataSource:
+                        context.read<PinBiometricsAuthDataSource?>(),
                     translateError: (error) =>
                         error.asErrorModel().translate(context),
                     onAuthenticated: (token) =>

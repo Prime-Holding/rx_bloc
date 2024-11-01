@@ -79,6 +79,11 @@ class BundleGenerator {
       _bundle.files.addAll(_deepLinkBundle.files);
     }
 
+    //Add lib_auth to _bundle when needed
+    if (arguments.authenticationEnabled) {
+      _bundle.files.addAll(_libAuthBundle.files);
+    }
+
     // Add Feature Login brick to _bundle when needed
     if (arguments.loginEnabled) {
       _bundle.files.addAll(_featureLoginBundle.files);
@@ -115,14 +120,12 @@ class BundleGenerator {
       _bundle.files.addAll(_libPinCodeBundle.files);
     }
 
-    //Add lib_route to _bundle
+    //Add lib_router to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
+
     //Add lib_permissions to _bundle
     _bundle.files.addAll(_permissionsBundle.files);
-    //Add lib_auth to _bundle when needed
-    if (arguments.authenticationEnabled) {
-      _bundle.files.addAll(_libAuthBundle.files);
-    }
+
     // Add ci/cd files
     if (arguments.cicdEnabled) {
       _bundle.files.addAll(_featureCICDFastlaneBundle.files);
