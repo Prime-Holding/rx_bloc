@@ -19,8 +19,8 @@ import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
 import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}{{#enable_profile}}
 import 'network_lookup/profile_lookup.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import 'network_lookup/qr_code_lookup.dart';{{/enable_feature_qr_scanner}} {{#has_showcase}}
-import 'network_lookup/showcase_lookup.dart'; {{/has_showcase}}
-import 'network_lookup/util.dart';{{#enable_feature_widget_toolkit}}
+import 'network_lookup/showcase_lookup.dart'; {{/has_showcase}}{{#enable_remote_translations}}
+import 'network_lookup/util.dart';{{/enable_remote_translations}}{{#enable_feature_widget_toolkit}}
 import 'network_lookup/widget_toolkit_lookup.dart';{{/enable_feature_widget_toolkit}}
 
 class AppI18n extends I18n {
@@ -56,10 +56,12 @@ class AppI18nLookup extends I18nLookup {
   /// region Boilerplate
 
   @override
-  String getString(String key, [Map<String, String>? placeholders]) {
+  String getString(String key, [Map<String, String>? placeholders]) { {{#enable_remote_translations}}
     return getFromNetwork('', key, placeholders) ??
-    getFromBundle(AppI18n.locale?.languageCode)
-        .getString(key, placeholders)!;
+        getFromBundle(AppI18n.locale?.languageCode)
+            .getString(key, placeholders)!;{{/enable_remote_translations}}{{^enable_remote_translations}}
+    return getFromBundle(AppI18n.locale?.languageCode)
+        .getString(key, placeholders)!;{{/enable_remote_translations}}
   }
 
   I18n? bundledI18n;

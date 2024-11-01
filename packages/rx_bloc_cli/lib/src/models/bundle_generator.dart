@@ -4,6 +4,7 @@ import 'package:rx_bloc_cli/src/templates/feature_profile_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_qr_scanner_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_showcase_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/lib_translations_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
 import '../templates/feature_deeplink_bundle.dart';
@@ -39,6 +40,7 @@ class BundleGenerator {
   final _featureLoginBundle = featureLoginBundle;
   final _libSocialLoginsBundle = libSocialLoginsBundle;
   final _libChangeLanguageBundle = libChangeLanguageBundle;
+  final _libTranslationsBundle = libTranslationsBundle;
   final _libDevMenuBundle = libDevMenuBundle;
   final _patrolIntegrationTestsBundle = patrolIntegrationTestsBundle;
   final _libRealtimeCommunicationBundle = libRealtimeCommunicationBundle;
@@ -98,6 +100,12 @@ class BundleGenerator {
     if (arguments.changeLanguageEnabled) {
       _bundle.files.addAll(_libChangeLanguageBundle.files);
     }
+
+    // Add Remote translation brick _bundle when needed
+    if (arguments.remoteTranslationsEnabled) {
+      _bundle.files.addAll(_libTranslationsBundle.files);
+    }
+
     // Add Patrol tests brick to _bundle when needed
     if (arguments.patrolTestsEnabled) {
       _bundle.files.addAll(_patrolIntegrationTestsBundle.files);

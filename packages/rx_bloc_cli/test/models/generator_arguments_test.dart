@@ -32,6 +32,7 @@ void main() {
     );
     featureConfiguration = FeatureConfiguration(
       changeLanguageEnabled: true,
+      remoteTranslationsEnabled: true,
       analyticsEnabled: true,
       pushNotificationsEnabled: true,
       realtimeCommunicationEnabled: true,
