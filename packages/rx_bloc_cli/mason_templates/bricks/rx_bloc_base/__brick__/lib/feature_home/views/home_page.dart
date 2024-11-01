@@ -63,39 +63,13 @@ class HomePage extends StatelessWidget {
           icon: context.designSystem.icons.dashboard,
           route: const DashboardRoute(),
           routePath: RoutesPath.dashboard,
-        ),
-        {{#enable_feature_counter}}
+        ),{{#has_showcase}}
         NavMenuItem(
-          title: context.l10n.featureCounter.navCounter,
-          icon: context.designSystem.icons.calculateIcon,
-          route: const CounterRoute(),
-          routePath: RoutesPath.counter,
-        ),
-        {{/enable_feature_counter}}
-        {{#enable_feature_widget_toolkit}}
-        NavMenuItem(
-          title: context.l10n.featureWidgetToolkit.navWidgetToolkit,
-          icon: context.designSystem.icons.widgetIcon,
-          route: const WidgetToolkitRoute(),
-          routePath: RoutesPath.widgetToolkit,
-        ),
-        {{/enable_feature_widget_toolkit}}
-        {{#enable_feature_deeplinks}}
-        NavMenuItem(
-          title: context.l10n.featureDeepLink.navLinks,
-          icon: context.designSystem.icons.linkIcon,
-          route: const DeepLinksRoute(),
-          routePath: RoutesPath.deepLinks,
-        ),
-        {{/enable_feature_deeplinks}}
-        {{#enable_mfa}}
-        NavMenuItem(
-          title: context.l10n.featureMfa.appBarTitle,
-          icon: context.designSystem.icons.pin,
-          route: const FeatureMfaRoute(),
-          routePath: RoutesPath.mfa,
-        ),
-        {{/enable_mfa}}
+          title: context.l10n.navShowcase,
+          icon: context.designSystem.icons.showcase,
+          route: const ShowcaseRoute(),
+          routePath: RoutesPath.showcase,
+        ),{{/has_showcase}}
         {{#enable_profile}}
         NavMenuItem(
           title: context.l10n.navProfile,

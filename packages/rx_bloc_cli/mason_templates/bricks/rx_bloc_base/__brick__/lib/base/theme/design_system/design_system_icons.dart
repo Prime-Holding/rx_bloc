@@ -40,5 +40,14 @@ class DesignSystemIcons {
   {{#enable_mfa}}
   final Icon pin = _getIcon(Icons.pin);
   {{/enable_mfa}}
+  {{#enable_feature_qr_scanner}}
+  final Icon qrCode = _getIcon(Icons.qr_code_scanner);
+  {{/enable_feature_qr_scanner}}
+  {{#has_showcase}}
+  final Icon showcase = _getIcon(Icons.shelves);
+  {{/has_showcase}} {{#enable_feature_otp}}
+  final Icon otp = _getIcon(Icons.password);
+  {{/enable_feature_otp}}
   static Icon _getIcon(IconData iconData) => Icon(iconData);
+  
 }

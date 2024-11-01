@@ -21,8 +21,6 @@ class AppI18nDeepLinkLookup extends I18nFeatureDeepLinkLookup {
           bundledI18n = I18nFeatureDeepLink(I18nFeatureDeepLinkLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nFeatureDeepLink(I18nFeatureDeepLinkLookup_en());
-          break;
         default:
           bundledI18n = I18nFeatureDeepLink(I18nFeatureDeepLinkLookup_en());
           break;

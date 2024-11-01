@@ -1,0 +1,9 @@
+name: feature_showcase
+description: A brick containing code necessary to create a feature showcase.
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.60 <0.1.0"
+
+vars:

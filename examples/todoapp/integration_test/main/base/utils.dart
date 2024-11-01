@@ -22,9 +22,9 @@ abstract class Utils {
     for (var i = 0; i < numberOfTodos; i++) {
       await TodoListSteps.navigateToAddTodoPage($);
 
-      await TodoManagementSteps.enterTodoTitle($, 'Todo $i');
-
       await TodoManagementSteps.enterTodoDescription($, 'Description $i');
+
+      await TodoManagementSteps.enterTodoTitle($, 'Todo $i');
 
       await TodoManagementSteps.tapBtnAddTodo($);
     }

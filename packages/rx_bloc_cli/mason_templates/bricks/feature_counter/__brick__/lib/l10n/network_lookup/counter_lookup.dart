@@ -21,8 +21,6 @@ class AppI18nCounterLookup extends I18nFeatureCounterLookup {
           bundledI18n = I18nFeatureCounter(I18nFeatureCounterLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nFeatureCounter(I18nFeatureCounterLookup_en());
-          break;
         default:
           bundledI18n = I18nFeatureCounter(I18nFeatureCounterLookup_en());
           break;

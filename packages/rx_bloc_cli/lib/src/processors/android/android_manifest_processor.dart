@@ -30,6 +30,9 @@ class AndroidManifestProcessor extends StringProcessor {
     if (args.pinCodeEnabled) {
       _addPinCodeSupport(xmlDoc);
     }
+    if (args.qrScannerEnabled) {
+      _addQrCodeSupport(xmlDoc);
+    }
 
     return _parseToXmlString(xmlDoc);
   }
@@ -127,6 +130,13 @@ class AndroidManifestProcessor extends StringProcessor {
   void _addPinCodeSupport(XmlDocument doc) {
     final biometricsUPNode =
         '<uses-permission android:name="android.permission.USE_BIOMETRIC"/>'
+            .toXmlNode();
+    doc.addNodeToElement('manifest', biometricsUPNode);
+  }
+
+  void _addQrCodeSupport(XmlDocument doc) {
+    final biometricsUPNode =
+        '<uses-permission android:name="android.permission.CAMERA"/>'
             .toXmlNode();
     doc.addNodeToElement('manifest', biometricsUPNode);
   }

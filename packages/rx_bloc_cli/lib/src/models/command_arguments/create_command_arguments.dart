@@ -51,6 +51,15 @@ enum CreateCommandArguments {
     help: 'The counter showcase feature',
   ),
 
+  /// Qr Scanner showcase
+  qrScanner(
+    name: 'enable-feature-qr-scanner',
+    type: CreateCommandArgumentType.boolean,
+    defaultsTo: false,
+    prompt: 'Enable qr scanner showcase:',
+    help: 'The qr scanner showcase feature',
+  ),
+
   /// Deep links
   deepLink(
     name: 'enable-feature-deeplinks',

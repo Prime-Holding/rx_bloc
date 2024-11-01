@@ -1,0 +1,16 @@
+{
+  "@@locale": "bg",
+  "showcaseTitle":"Страница с демонстрации",
+  "counterShowcase":"Демонстрация на брояч",
+  "counterShowcaseDescription":"Демонстрация на елементарна функционалност на брояч.",
+  "widgetToolkitShowcase":"Демонстрация на компоненти",
+  "widgetToolkitShowcaseDescription":"Демонстрира различни преизползваеми компоненти.",
+  "qrCodeShowcase":"Демонстрация на четец на QR",
+  "qrCodeShowcaseDescription":"Показва функционалностa за четене на QR кодове.",
+  "deepLinkShowcase":"Демонстрация на Deep Link-ове",
+  "deepLinkShowcaseDescription":"Демонстрира възможностите на deep link.",
+  "mfaShowcase":"Mногофакторна автентикация",
+  "mfaShowcaseDescription":"Демонстрира многофакторна автентикация.",
+  "otpShowcase":"Демонстрация на еднократна парола",
+  "otpShowcaseDescription":"Демонстрира функционалност за автентикация с еднократна парола."
+}

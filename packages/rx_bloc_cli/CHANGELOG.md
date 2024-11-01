@@ -1,3 +1,10 @@
+## [5.2.0]
+* Update generated project min supported iOS version to `16.0`
+* Add a script for running integration tests with Patrol
+* Added a showcase feature that groups all other showcase features in one place
+* Add QR scanner feature as an option under the flag `--enable-feature-qr-scanner`
+* Updates generated project dependencies version
+
 ## [5.1.0]
 * Added Profile as an option under the flag `--enable-profile`
 * Update ruby version for generated `github` workflows

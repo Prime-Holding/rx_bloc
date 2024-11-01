@@ -21,8 +21,6 @@ class AppI18nMfaLookup extends I18nFeatureMfaLookup {
           bundledI18n = I18nFeatureMfa(I18nFeatureMfaLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nFeatureMfa(I18nFeatureMfaLookup_en());
-          break;
         default:
           bundledI18n = I18nFeatureMfa(I18nFeatureMfaLookup_en());
           break;

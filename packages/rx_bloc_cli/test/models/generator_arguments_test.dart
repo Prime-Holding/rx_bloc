@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/project_configuration.dart';
+import 'package:rx_bloc_cli/src/models/configurations/showcase_configuration.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
 import 'package:test/test.dart';
 
@@ -13,6 +14,7 @@ void main() {
   late ProjectConfiguration projectConfiguration;
   late AuthConfiguration authConfiguration;
   late FeatureConfiguration featureConfiguration;
+  late ShowcaseConfiguration showcaseConfiguration;
   late GeneratorArguments sut;
 
   setUp(() {
@@ -30,12 +32,9 @@ void main() {
     );
     featureConfiguration = FeatureConfiguration(
       changeLanguageEnabled: true,
-      counterEnabled: true,
-      widgetToolkitEnabled: true,
       analyticsEnabled: true,
       pushNotificationsEnabled: true,
       realtimeCommunicationEnabled: true,
-      deepLinkEnabled: true,
       devMenuEnabled: true,
       patrolTestsEnabled: true,
       cicdEnabled: true,
@@ -43,11 +42,20 @@ void main() {
       cicdCodemagicEnabled: true,
       profileEnabled: true,
     );
+    showcaseConfiguration = ShowcaseConfiguration(
+      counterEnabled: true,
+      widgetToolkitEnabled: true,
+      qrScannerEnabled: true,
+      deepLinkEnabled: true,
+      mfaEnabled: true,
+      otpEnabled: true,
+    );
     sut = GeneratorArguments(
       outputDirectory: outputDirectory,
       projectConfiguration: projectConfiguration,
       authConfiguration: authConfiguration,
       featureConfiguration: featureConfiguration,
+      showcaseConfiguration: showcaseConfiguration,
     );
   });
 
@@ -72,8 +80,9 @@ void main() {
 
       expect(sut.changeLanguageEnabled,
           equals(featureConfiguration.changeLanguageEnabled));
-      expect(sut.counterEnabled, equals(featureConfiguration.counterEnabled));
-      expect(sut.deepLinkEnabled, equals(featureConfiguration.deepLinkEnabled));
+      expect(sut.counterEnabled, equals(showcaseConfiguration.counterEnabled));
+      expect(
+          sut.deepLinkEnabled, equals(showcaseConfiguration.deepLinkEnabled));
       expect(sut.devMenuEnabled, equals(featureConfiguration.devMenuEnabled));
       expect(sut.patrolTestsEnabled,
           equals(featureConfiguration.patrolTestsEnabled));
@@ -85,12 +94,16 @@ void main() {
       expect(sut.realtimeCommunicationEnabled,
           equals(featureConfiguration.realtimeCommunicationEnabled));
       expect(sut.widgetToolkitEnabled,
-          equals(featureConfiguration.widgetToolkitEnabled));
+          equals(showcaseConfiguration.widgetToolkitEnabled));
+
       expect(sut.cicdEnabled, equals(featureConfiguration.cicdEnabled));
       expect(sut.cicdGithubEnabled,
           equals(featureConfiguration.cicdGithubEnabled));
       expect(sut.cicdCodemagicEnabled,
           equals(featureConfiguration.cicdCodemagicEnabled));
+      expect(
+          sut.qrScannerEnabled, equals(showcaseConfiguration.qrScannerEnabled));
+
       expect(sut.profileEnabled, equals(featureConfiguration.profileEnabled));
     });
   });
