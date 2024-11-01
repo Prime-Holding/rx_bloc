@@ -10,10 +10,12 @@ VerifyPinCodeService verifyPinCodeServiceMockFactory({
 }) {
   final mockVerifyPinCodeService = MockVerifyPinCodeService();
 
-  if (showBiometricsButton) {
-    when(mockVerifyPinCodeService.isPinCodeInSecureStorage())
-        .thenAnswer((_) async => true);
-  }
+  when(mockVerifyPinCodeService.isPinCodeInSecureStorage())
+      .thenAnswer((_) async => showBiometricsButton);
+
+  when(mockVerifyPinCodeService.getPinLength()).thenAnswer((_) async => 4);
+
+  when(mockVerifyPinCodeService.getPinCode()).thenAnswer((_) async => '1234');
 
   return mockVerifyPinCodeService;
 }
