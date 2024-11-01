@@ -529,12 +529,13 @@ after a configurable amount of inactivity time and after a configurable amount o
 app has been in background mode.
 For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
 
+
 ## Feature QR Code
 
 The application provides a QR code scanner functionality that allows for scanning QR codes. The feature integrates widget_toolkit_qr package which contains widgets for scanning the QR code and displaying the result. 
 For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_toolkit_qr)
 
-#### iOS Build Issue
+### iOS Build Issue
 
 On iOS, an issue may occur during the initial build of the application. This can be resolved by opening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
 
@@ -580,7 +581,7 @@ On iOS, an issue may occur during the initial build of the application. This can
 [patrol_pub_lnk]: https://pub.dev/packages/patrol
 [patrol_cli_pub_lnk]: https://pub.dev/packages/patrol_cli
 [patrol_native_integration_lnk]: https://patrol.leancode.pl/getting-started#integrate-with-native-side
-[patrol_integration_test_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md
-[rx_bloc_cli_cd_setup_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/continuous_delivery.md
-[golden_tests_with_smart_widgets_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
-[rx_bloc_cli_mfa_lnk]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
+[patrol_integration_test_lnk]: docs/patrol_integration_test.md
+[rx_bloc_cli_cd_setup_lnk]: docs/continuous_delivery.md
+[golden_tests_with_smart_widgets_lnk]: docs/golden_tests.md
+[rx_bloc_cli_mfa_lnk]: docs/mfa.md

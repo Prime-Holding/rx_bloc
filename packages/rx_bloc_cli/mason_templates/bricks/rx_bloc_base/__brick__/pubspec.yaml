@@ -110,7 +110,8 @@ r_flutter:
     - name: feature_notifications{{#enable_feature_otp}}
     - name: feature_otp{{/enable_feature_otp}}{{#enable_profile}}
     - name: feature_profile{{/enable_profile}}{{#enable_feature_qr_scanner}}
-    - name: feature_qr{{/enable_feature_qr_scanner}}{{#enable_feature_widget_toolkit}}
+    - name: feature_qr{{/enable_feature_qr_scanner}}{{#has_showcase}}
+    - name: feature_showcase{{/has_showcase}}{{#enable_feature_widget_toolkit}}
     - name: feature_widget_toolkit{{/enable_feature_widget_toolkit}}
     - name: field {{#enable_change_language}}
     - name: lib_change_language{{/enable_change_language}}{{#enable_dev_menu}}

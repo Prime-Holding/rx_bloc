@@ -5,6 +5,7 @@ import 'package:rx_bloc_cli/src/models/command_arguments/create_command_argument
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/project_configuration.dart';
+import 'package:rx_bloc_cli/src/models/configurations/showcase_configuration.dart';
 import 'package:rx_bloc_cli/src/models/generator_arguments.dart';
 import 'package:rx_bloc_cli/src/models/realtime_communication_type.dart';
 
@@ -91,17 +92,21 @@ final class Stub {
       analyticsEnabled: true,
       pushNotificationsEnabled: true,
       changeLanguageEnabled: true,
-      counterEnabled: true,
       patrolTestsEnabled: true,
       devMenuEnabled: true,
-      deepLinkEnabled: true,
-      widgetToolkitEnabled: true,
       realtimeCommunicationEnabled: true,
       cicdEnabled: true,
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
-      qrScannerEnabled: true,
       profileEnabled: true,
+    ),
+    showcaseConfiguration: ShowcaseConfiguration(
+      counterEnabled: true,
+      widgetToolkitEnabled: true,
+      qrScannerEnabled: true,
+      deepLinkEnabled: true,
+      mfaEnabled: true,
+      otpEnabled: true,
     ),
   );
 
@@ -123,12 +128,8 @@ final class Stub {
       pushNotificationsEnabled: true,
       changeLanguageEnabled:
           CreateCommandArguments.changeLanguage.defaultValue(),
-      counterEnabled: CreateCommandArguments.counter.defaultValue(),
-      qrScannerEnabled: CreateCommandArguments.qrScanner.defaultValue(),
       patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
       devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
-      deepLinkEnabled: CreateCommandArguments.deepLink.defaultValue(),
-      widgetToolkitEnabled: CreateCommandArguments.widgetToolkit.defaultValue(),
       realtimeCommunicationEnabled:
           CreateCommandArguments.realtimeCommunication.defaultValue() !=
               RealtimeCommunicationType.none,
@@ -138,6 +139,14 @@ final class Stub {
       cicdCodemagicEnabled:
           CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
       profileEnabled: CreateCommandArguments.profile.defaultValue(),
+    ),
+    showcaseConfiguration: ShowcaseConfiguration(
+      counterEnabled: CreateCommandArguments.counter.defaultValue(),
+      widgetToolkitEnabled: CreateCommandArguments.widgetToolkit.defaultValue(),
+      deepLinkEnabled: CreateCommandArguments.deepLink.defaultValue(),
+      qrScannerEnabled: CreateCommandArguments.qrScanner.defaultValue(),
+      mfaEnabled: CreateCommandArguments.mfa.defaultValue(),
+      otpEnabled: CreateCommandArguments.otp.defaultValue(),
     ),
   );
 }
