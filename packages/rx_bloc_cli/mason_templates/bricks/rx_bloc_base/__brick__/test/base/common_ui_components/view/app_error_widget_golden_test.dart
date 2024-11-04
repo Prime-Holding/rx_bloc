@@ -2,26 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:{{project_name}}/base/common_ui_components/app_error_widget.dart';
 
 import '../../../helpers/golden_helper.dart';
-import '../../../helpers/models/device.dart';
 import '../../stubs.dart';
 
 void main() {
-  runGoldenTests(
-    [
-      buildScenario(
-        devices: [
-          const Device(
-            name: 'custom device',
-            size: Size(345, 174),
-          )
-        ],
-        scenario: 'unknown_error',
-        widget: Scaffold(
-          body: AppErrorWidget(
-            error: Stubs.unknownError,
-            onTabRetry: () {},
-          ),
-        ),
+  runUiComponentGoldenTests(
+    scenario: 'unknown_error',
+    size: const Size(345, 174),
+    children: [
+      AppErrorWidget(
+        key: const Key('unknown_error default'),
+        error: Stubs.unknownError,
+        onTabRetry: () {},
       ),
     ],
   );

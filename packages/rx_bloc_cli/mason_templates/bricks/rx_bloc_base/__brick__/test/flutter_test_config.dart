@@ -15,7 +15,7 @@ bool _isRunningInCi() => [
       'bamboo.buildKey',
       'GITLAB_CI',
       'BUILD_ID'
-    ].any((tag) => const bool.fromEnvironment(tag, defaultValue: false));
+    ].any((tag) => bool.fromEnvironment(tag, defaultValue: false));
 
 /// Resolves the file path for the golden image based on the name and environment
 FutureOr<String> _filePathResolver(String name, String env) {
