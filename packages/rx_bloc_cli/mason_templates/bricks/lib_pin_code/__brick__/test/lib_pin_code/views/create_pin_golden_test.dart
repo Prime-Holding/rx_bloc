@@ -1,4 +1,5 @@
-import '../../../integration_test/main/configuration/build_app.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import '../../helpers/golden_helper.dart';
 import '../stubs.dart';
 import 'factories/create_pin_factory.dart';
