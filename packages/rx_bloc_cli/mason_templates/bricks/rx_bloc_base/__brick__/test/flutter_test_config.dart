@@ -44,6 +44,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
           filePathResolver: _filePathResolver,
         ),
         ciGoldensConfig: const CiGoldensConfig(
+          enabled: _isRunningInCi,
           obscureText: false,
           renderShadows: true,
           filePathResolver: _filePathResolver,
