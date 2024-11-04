@@ -12,7 +12,7 @@ import 'helpers/goldens_file_comparator.dart';
 const _isRunningInCi = bool.fromEnvironment('CI', defaultValue: false);
 
 /// Resolves the file path for the golden image based on the name and environment
-static FutureOr<String> _filePathResolver(String name, String env) {
+FutureOr<String> _filePathResolver(String name, String env) {
   // Resolve the theme name by removing the theme from name and placing it
   // in the correct directory
   if (name.endsWith('_light')) {

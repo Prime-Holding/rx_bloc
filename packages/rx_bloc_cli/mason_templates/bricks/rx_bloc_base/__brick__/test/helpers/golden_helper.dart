@@ -59,7 +59,7 @@ void runGoldenTests(
       goldenTest(
         '$scenarioName - $themeName',
         fileName: '${scenarioName}_$themeName',
-        builder: () => scenario.widget,
+        builder: () => scenario,
         pumpWidget: (tester, widget) =>
         customWrapAndPump?.call(tester, widget, theme) ??
             pumpDeviceBuilderWithLocalizationsAndTheme(
