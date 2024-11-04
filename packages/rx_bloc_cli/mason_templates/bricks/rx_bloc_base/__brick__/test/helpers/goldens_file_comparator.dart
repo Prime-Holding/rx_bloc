@@ -6,6 +6,16 @@ import 'package:flutter_test/flutter_test.dart';
 class GoldensFileComparator extends LocalFileComparator {
   static const double _kGoldenDiffTolerance = 0.0;
 
+  static final List<String> _basePathKeywordsToRemove = [
+    'goldens',
+    'macos',
+    'windows',
+    'linux',
+    'ci',
+    'light_theme',
+    'dark_theme',
+  ];
+
   GoldensFileComparator(String testFile)
       : super(Uri.parse(_getTestFile(testFile)));
 
@@ -40,7 +50,7 @@ class GoldensFileComparator extends LocalFileComparator {
         (goldenFileComparator as LocalFileComparator).basedir.path.split('/');
 
     baseDir.removeWhere(
-      (element) => ['goldens', 'light_theme', 'dark_theme'].contains(element),
+      (element) => _basePathKeywordsToRemove.contains(element),
     );
 
     return '${baseDir.join('/')}$fileName';

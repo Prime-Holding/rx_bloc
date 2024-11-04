@@ -14,8 +14,8 @@ void main() {
     'CounterPage golden tests',
     () => runGoldenTests(
       [
-        generateDeviceBuilder(
-          scenario: Scenario(name: 'counter'),
+        buildScenario(
+          scenario:  'counter',
           widget: counterPageFactory(
             count: 2{{#has_authentication}},
             isLoggedIn: true{{/has_authentication}},
@@ -25,16 +25,16 @@ void main() {
             ),
           ),
         ),
-        generateDeviceBuilder(
-          scenario: Scenario(name: 'error'),
+        buildScenario(
+          scenario: 'error',
           widget: counterPageFactory(
             count: 2,
             error: NetworkErrorModel(),{{#has_authentication}}
             isLoggedIn: false,{{/has_authentication}}
           ),
         ),
-        generateDeviceBuilder(
-          scenario: Scenario(name: 'loading'),
+        buildScenario(
+          scenario: 'loading',
           widget: counterPageFactory(
             count: 2,{{#has_authentication}}
             isLoggedIn: false,{{/has_authentication}}

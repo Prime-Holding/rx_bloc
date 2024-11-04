@@ -7,7 +7,8 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
   flutter: '>=3.13.0 <4.0.0'
 
-dependencies: {{#enable_dev_menu}}
+dependencies:
+  alchemist: ^0.10.0{{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
   alice_dio: ^1.0.6{{/enable_dev_menu}}
   collection: ^1.18.0
