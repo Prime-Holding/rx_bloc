@@ -1,19 +1,22 @@
+import '../../../integration_test/main/configuration/build_app.dart';
 import '../../helpers/golden_helper.dart';
-import '../../helpers/models/scenario.dart';
 import '../stubs.dart';
 import 'factories/create_pin_factory.dart';
 
 void main() {
-  runGoldenTests(
-    [
-      generateDeviceBuilder(
-        widget: createPinFactory(),
-        scenario: Scenario(name: 'create_pin_empty'),
-      ),
-      generateDeviceBuilder(
-        widget: createPinFactory(title: Stubs.title),
-        scenario: Scenario(name: 'create_pin_title'),
-      ),
-    ],
+  group(
+    'Create Pin golden tests',
+    () => runGoldenTests(
+      [
+        buildScenario(
+          widget: createPinFactory(),
+          scenario: 'create_pin_empty',
+        ),
+        buildScenario(
+          widget: createPinFactory(title: Stubs.title),
+          scenario: 'create_pin_title',
+        ),
+      ],
+    ),
   );
 }
