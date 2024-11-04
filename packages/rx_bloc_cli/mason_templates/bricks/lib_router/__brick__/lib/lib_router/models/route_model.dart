@@ -3,7 +3,18 @@
 import '../../lib_permissions/models/route_permissions.dart';
 import 'routes_path.dart';
 
-enum RouteModel {
+enum RouteModel { {{#has_showcase}}
+    showcase(
+    pathName: RoutesPath.showcase,
+    fullPath: '/showcase',
+    permissionName: RoutePermissions.showcase,
+  ),{{/has_showcase}}
+  {{#enable_feature_qr_scanner}}
+    qrCode(
+    pathName: RoutesPath.qrCode,
+    fullPath: '/qrCode',
+    permissionName: RoutePermissions.qrCode,
+  ),{{/enable_feature_qr_scanner}}
   {{#enable_mfa}}
     mfa(
     pathName: RoutesPath.mfa,

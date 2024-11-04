@@ -1,6 +1,8 @@
 import 'package:mason/mason.dart';
 import 'package:rx_bloc_cli/src/templates/feature_cicd_fastlane_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/feature_profile_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_qr_scanner_bundle.dart';
+import 'package:rx_bloc_cli/src/templates/feature_showcase_bundle.dart';
 import 'package:rx_bloc_cli/src/templates/lib_pin_code_bundle.dart';
 
 import '../templates/feature_counter_bundle.dart';
@@ -28,6 +30,7 @@ class BundleGenerator {
   final MasonBundle _bundle;
 
   final _counterBundle = featureCounterBundle;
+  final _qrScannerBundle = featureQrScannerBundle;
   final _deepLinkBundle = featureDeeplinkBundle;
   final _widgetToolkitBundle = featureWidgetToolkitBundle;
   final _libRouterBundle = libRouterBundle;
@@ -45,6 +48,7 @@ class BundleGenerator {
   final _libPinCodeBundle = libPinCodeBundle;
   final _libAnalyticsBundle = libAnalyticsBundle;
   final _featureProfile = featureProfileBundle;
+  final _featureShowcase = featureShowcaseBundle;
 
   /// Generates a bundles based on the specified arguments
   MasonBundle generate(GeneratorArguments arguments) {
@@ -60,6 +64,11 @@ class BundleGenerator {
       _bundle.files.addAll(_counterBundle.files);
     }
 
+    // Add qr scanner brick to _bundle when needed
+    if (arguments.qrScannerEnabled) {
+      _bundle.files.addAll(_qrScannerBundle.files);
+    }
+
     // Add widget toolkit brick to _bundle when needed
     if (arguments.widgetToolkitEnabled) {
       _bundle.files.addAll(_widgetToolkitBundle.files);
@@ -68,6 +77,11 @@ class BundleGenerator {
     // Add deep link brick to _bundle when needed
     if (arguments.deepLinkEnabled) {
       _bundle.files.addAll(_deepLinkBundle.files);
+    }
+
+    //Add lib_auth to _bundle when needed
+    if (arguments.authenticationEnabled) {
+      _bundle.files.addAll(_libAuthBundle.files);
     }
 
     // Add Feature Login brick to _bundle when needed
@@ -106,14 +120,12 @@ class BundleGenerator {
       _bundle.files.addAll(_libPinCodeBundle.files);
     }
 
-    //Add lib_route to _bundle
+    //Add lib_router to _bundle
     _bundle.files.addAll(_libRouterBundle.files);
+
     //Add lib_permissions to _bundle
     _bundle.files.addAll(_permissionsBundle.files);
-    //Add lib_auth to _bundle when needed
-    if (arguments.authenticationEnabled) {
-      _bundle.files.addAll(_libAuthBundle.files);
-    }
+
     // Add ci/cd files
     if (arguments.cicdEnabled) {
       _bundle.files.addAll(_featureCICDFastlaneBundle.files);
@@ -125,6 +137,9 @@ class BundleGenerator {
     //Add feature_profile to _bundle when needed
     if (arguments.profileEnabled) {
       _bundle.files.addAll(_featureProfile.files);
+    }
+    if (arguments.showcaseEnabled) {
+      _bundle.files.addAll(_featureShowcase.files);
     }
     return _bundle;
   }

@@ -21,8 +21,6 @@ class AppI18nLibDevMenuLookup extends I18nLibDevMenuLookup {
           bundledI18n = I18nLibDevMenu(I18nLibDevMenuLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nLibDevMenu(I18nLibDevMenuLookup_en());
-          break;
         default:
           bundledI18n = I18nLibDevMenu(I18nLibDevMenuLookup_en());
           break;

@@ -129,6 +129,7 @@ class CreateCommand extends Command<int> {
             'analytics': arguments.analyticsEnabled,
             'push_notifications': arguments.pushNotificationsEnabled,
             'enable_feature_counter': arguments.counterEnabled,
+            'enable_feature_qr_scanner': arguments.qrScannerEnabled,
             'enable_feature_deeplinks': arguments.deepLinkEnabled,
             'enable_feature_widget_toolkit': arguments.widgetToolkitEnabled,
             'enable_login': arguments.loginEnabled,
@@ -138,6 +139,7 @@ class CreateCommand extends Command<int> {
             'enable_feature_otp': arguments.otpEnabled,
             'enable_patrol': arguments.patrolTestsEnabled,
             'has_authentication': arguments.authenticationEnabled,
+            'has_showcase': arguments.showcaseEnabled,
             'realtime_communication': arguments.realtimeCommunicationEnabled,
             'enable_pin_code': arguments.pinCodeEnabled,
             'cicd': arguments.cicdEnabled,
@@ -212,6 +214,18 @@ class CreateCommand extends Command<int> {
 
     _progressFinish(format, progress);
 
+    progress = _logger.progress(
+      'dart fix --apply .',
+    );
+
+    final fix = await Process.run(
+      'dart',
+      ['fix', '--apply', '.'],
+      workingDirectory: outputDirectory.path,
+    );
+
+    _progressFinish(fix, progress);
+
     // Manually create project gitignore after everything is generated
     GitIgnoreCreator.generate(args.outputDirectory.path);
 
@@ -266,6 +280,7 @@ class CreateCommand extends Command<int> {
       'Feature Widget Toolkit Showcase',
       arguments.widgetToolkitEnabled,
     );
+    _usingLog('Feature Qr Code Scanner Showcase', arguments.qrScannerEnabled);
     _usingLog('Feature Login', arguments.loginEnabled);
     _usingLog('Social Logins [Apple, Google, Facebook]',
         arguments.socialLoginsEnabled);

@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "showcaseTitle":"Showcase Page",
+  "counterShowcase":"Counter Showcase",
+  "counterShowcaseDescription":"Demonstrates a simple counter functionality.",
+  "widgetToolkitShowcase":"Widget Toolkit Showcase",
+  "widgetToolkitShowcaseDescription":"Showcases various reusable widgets.",
+  "qrCodeShowcase":"Qr Scanner Showcase",
+  "qrCodeShowcaseDescription":"Displays QR code scanning functionality.",
+  "deepLinkShowcase":"Deep Links Showcase",
+  "deepLinkShowcaseDescription":"Demonstrates deep linking capabilities.",
+  "mfaShowcase":"MFA Showcase",
+  "mfaShowcaseDescription":"Showcases multi-factor authentication.",
+  "otpShowcase":"OTP Showcase",
+  "otpShowcaseDescription":"Demonstrates one-time password functionality."
+}

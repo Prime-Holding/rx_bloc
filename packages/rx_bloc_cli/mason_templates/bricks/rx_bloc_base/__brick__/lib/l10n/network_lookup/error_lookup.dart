@@ -21,8 +21,6 @@ class AppI18nErrorLookup extends I18nErrorLookup {
           bundledI18n = I18nError(I18nErrorLookup_bg());
           break;
         case 'en':
-          bundledI18n = I18nError(I18nErrorLookup_en());
-          break;
         default:
           bundledI18n = I18nError(I18nErrorLookup_en());
           break;

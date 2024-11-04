@@ -56,6 +56,8 @@ class _CreatePinPageState extends State<CreatePinPage> {
                   child: PinCodeKeyboard(
                     mapBiometricMessageToString: (message) =>
                         _exampleMapMessageToString(message, context),
+                    biometricsAuthDataSource:
+                        context.read<PinBiometricsAuthDataSource?>(),
                     pinCodeService: context.read<CreatePinCodeService>(),
                     translateError: (error) =>
                         error.asErrorModel().translate(context),

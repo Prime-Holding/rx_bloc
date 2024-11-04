@@ -3,23 +3,31 @@ import 'dart:io';
 import 'package:rx_bloc_cli/src/models/configurations/auth_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/feature_configuration.dart';
 import 'package:rx_bloc_cli/src/models/configurations/project_configuration.dart';
+import 'package:rx_bloc_cli/src/models/configurations/showcase_configuration.dart';
 
 /// Arguments used when generating the project. Derived from CLI input.
 class GeneratorArguments
-    implements ProjectConfiguration, AuthConfiguration, FeatureConfiguration {
+    implements
+        ProjectConfiguration,
+        AuthConfiguration,
+        FeatureConfiguration,
+        ShowcaseConfiguration {
   /// Project generation arguments constructor
   GeneratorArguments({
     required this.outputDirectory,
     required ProjectConfiguration projectConfiguration,
     required AuthConfiguration authConfiguration,
     required FeatureConfiguration featureConfiguration,
+    required ShowcaseConfiguration showcaseConfiguration,
   })  : _projectConfiguration = projectConfiguration,
         _authConfiguration = authConfiguration,
-        _featureConfiguration = featureConfiguration;
+        _featureConfiguration = featureConfiguration,
+        _showcaseConfiguration = showcaseConfiguration;
 
   final ProjectConfiguration _projectConfiguration;
   final AuthConfiguration _authConfiguration;
   final FeatureConfiguration _featureConfiguration;
+  final ShowcaseConfiguration _showcaseConfiguration;
 
   /// Output directory
   final Directory outputDirectory;
@@ -91,13 +99,13 @@ class GeneratorArguments
   @override
   bool get analyticsEnabled => _featureConfiguration.analyticsEnabled;
 
+  /// Showcase features
+  @override
+  bool get showcaseEnabled => _showcaseConfiguration.showcaseEnabled;
+
   /// Counter showcase
   @override
-  bool get counterEnabled => _featureConfiguration.counterEnabled;
-
-  /// Deep links
-  @override
-  bool get deepLinkEnabled => _featureConfiguration.deepLinkEnabled;
+  bool get counterEnabled => _showcaseConfiguration.counterEnabled;
 
   /// Dev menu
   @override
@@ -106,10 +114,6 @@ class GeneratorArguments
   /// Patrol tests
   @override
   bool get patrolTestsEnabled => _featureConfiguration.patrolTestsEnabled;
-
-  /// Widget toolkit showcase
-  @override
-  bool get widgetToolkitEnabled => _featureConfiguration.widgetToolkitEnabled;
 
   /// Firebase
   @override
@@ -135,6 +139,21 @@ class GeneratorArguments
   /// CI/CD Codemagic
   @override
   bool get cicdCodemagicEnabled => _featureConfiguration.cicdCodemagicEnabled;
+
+  /// endregion
+
+  /// region Showcase Configuration
+
+  /// Widget toolkit showcase
+  @override
+  bool get widgetToolkitEnabled => _showcaseConfiguration.widgetToolkitEnabled;
+
+  /// QrScanner showcase
+  @override
+  bool get qrScannerEnabled => _showcaseConfiguration.qrScannerEnabled;
+
+  @override
+  bool get deepLinkEnabled => _showcaseConfiguration.deepLinkEnabled;
 
   /// endregion
 }

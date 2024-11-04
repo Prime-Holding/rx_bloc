@@ -27,39 +27,49 @@ class SplashRoute extends GoRouteData implements RouteDataModel {
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<DashboardRoute>(path: RoutesPath.dashboard),
       ],
-    ),{{#enable_feature_counter}}
-    TypedStatefulShellBranch<CounterBranchData>(
+    ), {{#has_showcase}}
+        TypedStatefulShellBranch<ShowcaseBranchData>(
       routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<CounterRoute>(path: RoutesPath.counter),
-      ],
-    ),{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
-    TypedStatefulShellBranch<WidgetToolkitBranchData>(
-      routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<WidgetToolkitRoute>(path: RoutesPath.widgetToolkit),
-      ],
-    ),{{/enable_feature_widget_toolkit}}{{#enable_feature_deeplinks}}
-    TypedStatefulShellBranch<DeepLinkBranchData>(
-      routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<DeepLinksRoute>(
-          path: RoutesPath.deepLinks,
-          routes: <TypedRoute<RouteData>>[
-            TypedGoRoute<DeepLinkDetailsRoute>(
-              path: RoutesPath.deepLinkDetails,
-            ),
-            TypedGoRoute<EnterMessageRoute>(
-              path: RoutesPath.enterMessage,
-            ),
+        TypedGoRoute<ShowcaseRoute>(
+          path: RoutesPath.showcase,
+          routes: [ {{#enable_feature_counter}}
+            /// Counter route
+            TypedGoRoute<CounterRoute>(
+              path: RoutesPath.counter,
+            ),{{/enable_feature_counter}}{{#enable_feature_widget_toolkit}}
+            /// Widget toolkit route
+            TypedGoRoute<WidgetToolkitRoute>(
+              path: RoutesPath.widgetToolkit,
+            ),{{/enable_feature_widget_toolkit}}{{#enable_feature_qr_scanner}}
+            /// QR code route
+            TypedGoRoute<QrCodeRoute>(
+              path: RoutesPath.qrCode,
+            ),{{/enable_feature_qr_scanner}}{{#enable_feature_deeplinks}}
+            /// Deeplink routes
+            TypedGoRoute<DeepLinksRoute>(
+              path: RoutesPath.deepLinks,
+              routes: <TypedRoute<RouteData>>[
+                TypedGoRoute<DeepLinkDetailsRoute>(
+                  path: RoutesPath.deepLinkDetails,
+                ),
+                TypedGoRoute<EnterMessageRoute>(
+                  path: RoutesPath.enterMessage,
+                ),
+              ],
+            ),{{/enable_feature_deeplinks}}{{#enable_mfa}}
+            /// MFA routes
+            TypedGoRoute<FeatureMfaRoute>(
+              path: RoutesPath.mfa,
+            ),{{/enable_mfa}}{{#enable_feature_otp}}
+            /// OTP route
+            TypedGoRoute<FeatureOtpRoute>(
+              path: RoutesPath.showcaseOtp,
+            ),{{/enable_feature_otp}}
           ],
         ),
       ],
-    ),{{/enable_feature_deeplinks}}{{#enable_mfa}}
-    TypedStatefulShellBranch<MfaBranchData>(
-      routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<FeatureMfaRoute>(
-          path: RoutesPath.mfa,
-        ),
-      ],
-    ),{{/enable_mfa}}
+    ),{{/has_showcase}}
+
     {{#enable_profile}}
     TypedStatefulShellBranch<ProfileBranchData>(
       routes: <TypedRoute<RouteData>>[
