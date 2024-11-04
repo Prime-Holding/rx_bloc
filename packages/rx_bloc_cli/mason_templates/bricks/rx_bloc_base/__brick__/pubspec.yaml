@@ -30,8 +30,7 @@ dependencies:
   flutter_rx_bloc: ^7.0.0
   flutter_secure_storage: ^9.2.2{{#enable_social_logins}}
   flutter_svg: ^2.0.10{{/enable_social_logins}}
-  go_router: ^14.3.0
-  golden_toolkit: ^0.15.0{{#enable_social_logins}}
+  go_router: ^14.3.0{{#enable_social_logins}}
   google_sign_in: ^6.2.1{{/enable_social_logins}}
   http: ^1.2.2 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
