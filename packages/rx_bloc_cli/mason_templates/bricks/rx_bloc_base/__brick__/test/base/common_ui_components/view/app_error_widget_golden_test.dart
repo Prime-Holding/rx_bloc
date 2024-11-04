@@ -12,14 +12,16 @@ void main() {
       buildScenario(
         devices: [
           const Device(
-            name: 'custom scenario',
+            name: 'custom device',
             size: Size(345, 174),
           )
         ],
         scenario: 'unknown_error',
-        widget: AppErrorWidget(
-          error: Stubs.unknownError,
-          onTabRetry: () {},
+        widget: Scaffold(
+          body: AppErrorWidget(
+            error: Stubs.unknownError,
+            onTabRetry: () {},
+          ),
         ),
       ),
     ],
