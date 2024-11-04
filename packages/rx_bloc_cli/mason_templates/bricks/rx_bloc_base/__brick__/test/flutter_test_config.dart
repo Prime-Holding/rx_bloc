@@ -8,8 +8,16 @@ import 'helpers/goldens_file_comparator.dart';
 
 /// Flag indicating if the tests are running in a CI environment
 /// Note: The environment variable may differ based on the platform.
-/// This is configured for GitHub Actions.
-const _isRunningInCi = bool.fromEnvironment('CI', defaultValue: false);
+// Flag indicating if the tests are running in a CI environment
+/// Note: The environment variable may differ based on the platform.
+bool _isRunningInCi() => [
+      'CI',
+      'GITHUB_ACTIONS',
+      'TF_BUILD',
+      'bamboo.buildKey',
+      'GITLAB_CI',
+      'BUILD_ID'
+    ].any((tag) => bool.fromEnvironment(tag, defaultValue: false));
 
 /// Resolves the file path for the golden image based on the name and environment
 FutureOr<String> _filePathResolver(String name, String env) {
@@ -33,8 +41,8 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
           backgroundColor: Colors.white,
           borderColor: Colors.transparent,
         ),
-        platformGoldensConfig: const PlatformGoldensConfig(
-          enabled: !_isRunningInCi,
+        platformGoldensConfig: PlatformGoldensConfig(
+          enabled: !_isRunningInCi(),
           obscureText: false,
           renderShadows: true,
           filePathResolver: _filePathResolver,
