@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:{{project_name}}/base/common_ui_components/app_error_widget.dart';
 
 import '../../../helpers/golden_helper.dart';
