@@ -1,5 +1,6 @@
 ## [5.3.0]
 * Replace golden tests dependency from `golden_toolkit` to [`alchemist`][alchemist_url] in generated projects
+* Updated project dependencies
 
 ## [5.2.0]
 * Update generated project min supported iOS version to `16.0`
@@ -268,4 +269,4 @@ Contains breaking changes
 [golden_tests_doc_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/golden_tests.md
 [mfa_doc_url]:https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/mfa.md
 [patrol_integration_test_url]: https://github.com/Prime-Holding/rx_bloc/blob/master/packages/rx_bloc_cli/example/docs/patrol_integration_test.md
-[alchemist_url]: https://pub.dev/packages/alchemist 
+[alchemist_url]: https://pub.dev/packages/alchemist
