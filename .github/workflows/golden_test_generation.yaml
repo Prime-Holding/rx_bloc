@@ -64,7 +64,7 @@ jobs:
           bin/generate_test_project.sh $type
       - name: Generate golden files
         working-directory: "packages/rx_bloc_cli/example/testapp"
-        run: flutter test --update-goldens
+        run: flutter test --update-goldens --dart-define=CI=true
       - name: Upload test directory
         uses: actions/upload-artifact@v3
         with:
