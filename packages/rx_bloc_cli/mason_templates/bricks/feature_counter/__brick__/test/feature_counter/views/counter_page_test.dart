@@ -6,7 +6,6 @@ import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 
 import '../../helpers/golden_helper.dart';
-import '../../helpers/models/scenario.dart';
 import 'factories/counter_page_factory.dart';
 
 void main() {

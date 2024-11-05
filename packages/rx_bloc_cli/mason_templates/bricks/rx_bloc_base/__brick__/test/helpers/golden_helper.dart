@@ -25,10 +25,37 @@ const localizations = [
 ];
 
 const _defaultDevices = [
-  Device.phone,
-  Device.iphone11,
-  Device.tabletPortrait,
-  Device.tabletLandscape,
+  Device(
+      name: 'iPhone SE(2nd generation)',
+      size: Size(375, 667),
+      safeArea: EdgeInsets.only(top: 20),
+      devicePixelRatio: 2),
+  Device(name: 'Google Pixel 4a', size: Size(412, 732)),
+  Device(
+      name: 'iPhone 13 mini',
+      size: Size(375, 812),
+      safeArea: EdgeInsets.only(top: 44, bottom: 34),
+      devicePixelRatio: 3),
+  Device(
+      name: 'Google Pixel 5',
+      size: Size(393, 851),
+      safeArea: EdgeInsets.only(top: 24, bottom: 48),
+      devicePixelRatio: 2.75),
+  Device(
+      name: 'Samsung Galaxy S20',
+      size: Size(412, 915),
+      safeArea: EdgeInsets.only(top: 24, bottom: 48),
+      devicePixelRatio: 3),
+  Device(
+      name: 'Apple iPad Pro 12.9',
+      size: Size(1024, 1366),
+      safeArea: EdgeInsets.only(top: 24, bottom: 34),
+      devicePixelRatio: 2),
+  Device(
+      name: 'Samsung Galaxy Tab S6 Landscape',
+      size: Size(1280, 800),
+      safeArea: EdgeInsets.only(top: 24, bottom: 48),
+      devicePixelRatio: 2),
 ];
 
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered

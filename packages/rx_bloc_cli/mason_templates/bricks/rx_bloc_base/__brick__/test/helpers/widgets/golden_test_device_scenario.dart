@@ -17,7 +17,7 @@ class GoldenTestDeviceScenario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GoldenTestScenario(
-        name: scenarioName,
+        name: '$scenarioName - ${device.name}',
         child: ClipRect(
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(
