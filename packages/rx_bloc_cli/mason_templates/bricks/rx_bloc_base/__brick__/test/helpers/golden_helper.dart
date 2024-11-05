@@ -9,6 +9,7 @@ import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
 import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';
 
 import 'models/device.dart';
+import 'widgets/fixed_size_scenario_builder.dart';
 import 'widgets/scenario_builder.dart';
 
 typedef WidgetWithThemePump = Future<void> Function(
@@ -44,6 +45,28 @@ ScenarioBuilder buildScenario({
       devices: devices,
       columns: columns,
     );
+
+/// Runs golden tests for a list of UI components in both light and dark mode,
+/// all of the same size.
+void runUiComponentGoldenTests({
+  required List<Widget> children,
+  required String scenario,
+  required Size size,
+  WidgetWithThemePump? customWrapAndPump,
+  WidgetTesterCallback? act,
+}) {
+  runGoldenTests(
+    [
+      FixedSizeScenarioBuilder(
+        name: scenario,
+        size: size,
+        children: children,
+      )
+    ],
+    customWrapAndPump: customWrapAndPump,
+    act: act,
+  );
+}
 
 /// Runs golden tests for a list of scenarios in both light and dark mode
 void runGoldenTests(
