@@ -58,8 +58,8 @@ class AppI18nLookup extends I18nLookup {
   @override
   String getString(String key, [Map<String, String>? placeholders]) {
     return getFromNetwork('', key, placeholders) ??
-    getFromBundle(AppI18n.locale?.languageCode)
-        .getString(key, placeholders)!;
+        getFromBundle(AppI18n.locale?.languageCode)
+            .getString(key, placeholders)!;
   }
 
   I18n? bundledI18n;

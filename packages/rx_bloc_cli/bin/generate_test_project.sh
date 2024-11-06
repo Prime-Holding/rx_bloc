@@ -34,6 +34,7 @@ if [ $1 == "all_enabled" ]; then
   --enable-login \
   --enable-social-logins \
   --enable-change-language \
+  --enable-remote-translations \
   --enable-dev-menu \
   --enable-patrol \
   --realtime-communication=sse \
@@ -54,6 +55,7 @@ if [ $1 == "all_disabled" ]; then
   --no-enable-login \
   --no-enable-social-logins \
   --no-enable-change-language \
+  --no-enable-remote-translations \
   --no-enable-dev-menu \
   --no-enable-patrol \
   --realtime-communication=none \
@@ -62,7 +64,7 @@ if [ $1 == "all_disabled" ]; then
   --no-enable-pin-code \
   --no-enable-mfa \
   --no-enable-feature-qr-scanner \
-  --no-enable-profile 
+  --no-enable-profile
 fi 
 
 if [ $1 == "without_showcase_features" ]; then
@@ -71,6 +73,7 @@ if [ $1 == "without_showcase_features" ]; then
     --enable-login \
     --enable-social-logins \
     --enable-change-language \
+    --enable-remote-translations \
     --enable-dev-menu \
     --enable-patrol \
     --realtime-communication=sse \
