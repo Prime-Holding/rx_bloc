@@ -121,6 +121,7 @@ void runUiComponentGoldenTests({
   WidgetWithThemePump? customWrapAndPump,
   WidgetTesterCallback? act,
   EdgeInsets? scenarioPadding,
+  GoldenAlignment? goldenAlignment,
 }) {
   runGoldenTests(
     [
@@ -128,6 +129,7 @@ void runUiComponentGoldenTests({
         name: scenario,
         size: size,
         scenarioPadding: scenarioPadding,
+        goldenAlignment: goldenAlignment ?? GoldenAlignment.top,
         children: children,
       )
     ],

@@ -14,6 +14,7 @@ class FixedSizeScenarioBuilder extends ScenarioBuilder {
     required Size size,
     required super.name,
     super.scenarioPadding,
+    super.goldenAlignment,
     super.columns,
     super.key,
   }) : super(
@@ -30,21 +31,23 @@ class FixedSizeScenarioBuilder extends ScenarioBuilder {
   final List<Widget> children;
 
   @override
-  Widget build(BuildContext context) {
-    return GoldenTestGroup(
-      columns: columns,
-      children: [
-        ...children.map(
-          (widget) => GoldenTestDeviceScenario(
-            device: devices.first,
-            scenarioName: widget.key != null && widget.key is ValueKey<String>
-                ? (widget.key as ValueKey<String>).value
-                : name,
-            padding: scenarioPadding,
-            child: Scaffold(body: widget),
+  Widget build(BuildContext context) => GoldenTestGroup(
+        columns: columns,
+        children: [
+          ...children.map(
+            (widget) => TableCell(
+              verticalAlignment: goldenAlignment.asCellAlignment(),
+              child: GoldenTestDeviceScenario(
+                device: devices.first,
+                scenarioName:
+                    widget.key != null && widget.key is ValueKey<String>
+                        ? (widget.key as ValueKey<String>).value
+                        : name,
+                padding: scenarioPadding,
+                child: Scaffold(body: widget),
+              ),
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
