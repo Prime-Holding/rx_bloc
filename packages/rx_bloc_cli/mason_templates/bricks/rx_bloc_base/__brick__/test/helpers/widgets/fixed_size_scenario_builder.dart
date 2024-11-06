@@ -13,6 +13,7 @@ class FixedSizeScenarioBuilder extends ScenarioBuilder {
     required this.children,
     required Size size,
     required super.name,
+    super.scenarioPadding,
     super.columns,
     super.key,
   }) : super(
@@ -39,6 +40,7 @@ class FixedSizeScenarioBuilder extends ScenarioBuilder {
             scenarioName: widget.key != null && widget.key is ValueKey<String>
                 ? (widget.key as ValueKey<String>).value
                 : name,
+            padding: scenarioPadding,
             child: Scaffold(body: widget),
           ),
         ),

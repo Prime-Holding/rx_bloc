@@ -8,12 +8,21 @@ class GoldenTestDeviceScenario extends StatelessWidget {
     required this.device,
     required this.scenarioName,
     required this.child,
+    this.padding,
     super.key,
   });
 
+  /// The [device] specification by which to render the scenario
   final Device device;
+
+  /// The name of the scenario
   final String scenarioName;
+
+  /// The widget to render
   final Widget child;
+
+  /// Optional [padding] to be applied to the scenario
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) => GoldenTestScenario(
@@ -27,9 +36,10 @@ class GoldenTestDeviceScenario extends StatelessWidget {
               devicePixelRatio: device.devicePixelRatio,
               textScaler: TextScaler.linear(device.textScaleFactor),
             ),
-            child: SizedBox(
+            child: Container(
               height: device.size.height,
               width: device.size.width,
+              padding: padding,
               child: child,
             ),
           ),

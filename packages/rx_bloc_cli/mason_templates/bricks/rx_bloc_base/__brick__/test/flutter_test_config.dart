@@ -34,7 +34,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
     AlchemistConfig.runWithConfig(
       config: AlchemistConfig(
         goldenTestTheme: GoldenTestTheme(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.grey,
           borderColor: Colors.transparent,
         ),
         platformGoldensConfig: const PlatformGoldensConfig(

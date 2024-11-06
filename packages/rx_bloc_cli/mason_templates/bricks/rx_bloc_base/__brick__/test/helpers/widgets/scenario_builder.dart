@@ -11,6 +11,7 @@ class ScenarioBuilder extends StatelessWidget {
     required this.name,
     required this.widget,
     required this.devices,
+    this.scenarioPadding,
     this.columns,
     super.key,
   });
@@ -23,6 +24,9 @@ class ScenarioBuilder extends StatelessWidget {
 
   /// List of devices to render the scenario on
   final List<Device> devices;
+
+  /// Padding to be applied to individual scenarios
+  final EdgeInsets? scenarioPadding;
 
   /// The number of columns in the resulting golden image. If left unset,
   /// the number of columns will be calculated based on the number of children.
@@ -37,6 +41,7 @@ class ScenarioBuilder extends StatelessWidget {
           (device) => GoldenTestDeviceScenario(
             device: device,
             scenarioName: name,
+            padding: scenarioPadding,
             child: widget,
           ),
         )

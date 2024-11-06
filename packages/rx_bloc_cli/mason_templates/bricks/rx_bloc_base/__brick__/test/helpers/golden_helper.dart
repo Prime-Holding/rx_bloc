@@ -30,7 +30,10 @@ const _defaultDevices = [
       size: Size(375, 667),
       safeArea: EdgeInsets.only(top: 20),
       devicePixelRatio: 2),
-  Device(name: 'Google Pixel 4a', size: Size(412, 732)),
+  Device(
+    name: 'Google Pixel 4a',
+    size: Size(412, 732),
+  ),
   Device(
       name: 'iPhone 13 mini',
       size: Size(375, 812),
@@ -47,23 +50,40 @@ const _defaultDevices = [
       safeArea: EdgeInsets.only(top: 24, bottom: 48),
       devicePixelRatio: 3),
   Device(
-      name: 'Apple iPad Pro 12.9',
-      size: Size(1024, 1366),
-      safeArea: EdgeInsets.only(top: 24, bottom: 34),
-      devicePixelRatio: 2),
-  Device(
       name: 'Samsung Galaxy Tab S6 Landscape',
       size: Size(1280, 800),
       safeArea: EdgeInsets.only(top: 24, bottom: 48),
       devicePixelRatio: 2),
+  Device(
+      name: 'Apple iPad Pro 12.9',
+      size: Size(1024, 1366),
+      safeArea: EdgeInsets.only(top: 24, bottom: 34),
+      devicePixelRatio: 2),
 ];
 
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
-/// on specified devices by default
+/// on specified devices by default laid out in one row
 ScenarioBuilder buildScenario({
   required Widget widget,
   required String scenario,
   List<Device> devices = _defaultDevices,
+  EdgeInsets? scenarioPadding = const EdgeInsets.symmetric(horizontal: 4),
+}) =>
+    ScenarioBuilder(
+      name: scenario,
+      widget: widget,
+      devices: devices,
+      scenarioPadding: scenarioPadding,
+      columns: _defaultDevices.length,
+    );
+
+/// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
+/// on specified devices by default laid out in a grid
+ScenarioBuilder buildScenarioGrid({
+  required Widget widget,
+  required String scenario,
+  List<Device> devices = _defaultDevices,
+  EdgeInsets? scenarioPadding = const EdgeInsets.all(4),
   int? columns,
 }) =>
     ScenarioBuilder(
@@ -71,6 +91,7 @@ ScenarioBuilder buildScenario({
       widget: widget,
       devices: devices,
       columns: columns,
+      scenarioPadding: scenarioPadding,
     );
 
 /// Runs golden tests for a list of UI components in both light and dark mode,
@@ -81,12 +102,14 @@ void runUiComponentGoldenTests({
   required Size size,
   WidgetWithThemePump? customWrapAndPump,
   WidgetTesterCallback? act,
+  EdgeInsets? scenarioPadding,
 }) {
   runGoldenTests(
     [
       FixedSizeScenarioBuilder(
         name: scenario,
         size: size,
+        scenarioPadding: scenarioPadding,
         children: children,
       )
     ],
