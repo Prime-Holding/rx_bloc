@@ -1,4 +1,5 @@
 ## [5.3.0]
+* Updated project dependencies
 * Added `--enable-remote-translations` flag to configure remote translation lookup for localizations
 
 ## [5.2.0]
