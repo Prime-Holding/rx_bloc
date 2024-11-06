@@ -8,6 +8,7 @@ import 'package:{{project_name}}/base/theme/design_system.dart';
 import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
 import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';
 
+import 'enums/golden_alignment.dart';
 import 'models/device.dart';
 import 'widgets/fixed_size_scenario_builder.dart';
 import 'widgets/scenario_builder.dart';

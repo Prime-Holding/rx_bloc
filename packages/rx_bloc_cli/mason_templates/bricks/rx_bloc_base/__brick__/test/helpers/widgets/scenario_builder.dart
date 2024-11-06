@@ -1,6 +1,7 @@
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
 
+import '../enums/golden_alignment.dart';
 import '../models/device.dart';
 import 'golden_test_device_scenario.dart';
 
@@ -13,6 +14,7 @@ class ScenarioBuilder extends StatelessWidget {
     required this.devices,
     this.scenarioPadding,
     this.columns,
+    this.goldenAlignment = GoldenAlignment.top,
     super.key,
   });
 
@@ -32,20 +34,24 @@ class ScenarioBuilder extends StatelessWidget {
   /// the number of columns will be calculated based on the number of children.
   final int? columns;
 
+  /// The alignment of the scenario within the resulting layout
+  final GoldenAlignment goldenAlignment;
+
   @override
-  Widget build(BuildContext context) {
-    return GoldenTestGroup(
-      columns: columns,
-      children: [
-        ...devices.map(
-          (device) => GoldenTestDeviceScenario(
-            device: device,
-            scenarioName: name,
-            padding: scenarioPadding,
-            child: widget,
-          ),
-        )
-      ],
-    );
-  }
+  Widget build(BuildContext context) => GoldenTestGroup(
+        columns: columns,
+        children: [
+          ...devices.map(
+            (device) => TableCell(
+              verticalAlignment: goldenAlignment.asCellAlignment(),
+              child: GoldenTestDeviceScenario(
+                device: device,
+                scenarioName: name,
+                padding: scenarioPadding,
+                child: widget,
+              ),
+            ),
+          )
+        ],
+      );
 }

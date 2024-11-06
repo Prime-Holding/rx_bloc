@@ -25,22 +25,24 @@ class GoldenTestDeviceScenario extends StatelessWidget {
   final EdgeInsets? padding;
 
   @override
-  Widget build(BuildContext context) => GoldenTestScenario(
-        name: '$scenarioName - ${device.name}',
-        child: ClipRect(
-          child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              size: device.size,
-              padding: device.safeArea,
-              platformBrightness: device.brightness,
-              devicePixelRatio: device.devicePixelRatio,
-              textScaler: TextScaler.linear(device.textScaleFactor),
-            ),
-            child: Container(
-              height: device.size.height,
-              width: device.size.width,
-              padding: padding,
-              child: child,
+  Widget build(BuildContext context) => Padding(
+        padding: padding ?? EdgeInsets.zero,
+        child: GoldenTestScenario(
+          name: '$scenarioName - ${device.name}',
+          child: ClipRect(
+            child: MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                size: device.size,
+                padding: device.safeArea,
+                platformBrightness: device.brightness,
+                devicePixelRatio: device.devicePixelRatio,
+                textScaler: TextScaler.linear(device.textScaleFactor),
+              ),
+              child: SizedBox(
+                height: device.size.height,
+                width: device.size.width,
+                child: child,
+              ),
             ),
           ),
         ),
