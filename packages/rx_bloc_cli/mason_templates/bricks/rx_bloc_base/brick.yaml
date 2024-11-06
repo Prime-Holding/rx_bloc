@@ -16,7 +16,6 @@ vars:
   - enable_login
   - enable_social_logins
   - enable_change_language
-  - enable_remote_translations
   - enable_patrol
   - enable_mfa
   - cicd

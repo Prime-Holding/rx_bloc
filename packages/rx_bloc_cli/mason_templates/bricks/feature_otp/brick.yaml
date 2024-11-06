@@ -8,4 +8,3 @@ environment:
   mason: ">=0.1.0-dev.49 <0.1.0"
 
 vars:
-  - enable_remote_translation

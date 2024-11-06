@@ -25,4 +25,3 @@ environment:
 #  * an optional prompt phrase used when asking for the variable
 #  * a list of values (enums only)
 vars:
-  - enable_remote_translation
