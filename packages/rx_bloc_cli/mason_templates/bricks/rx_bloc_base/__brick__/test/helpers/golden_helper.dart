@@ -8,23 +8,25 @@ import 'package:{{project_name}}/base/theme/design_system.dart';
 import 'package:{{project_name}}/base/theme/{{project_name}}_theme.dart';
 import 'package:{{project_name}}/l10n/{{project_name}}_app_i18n.dart';
 
+import 'enums/app_themes.dart';
 import 'enums/golden_alignment.dart';
 import 'models/device.dart';
 import 'widgets/fixed_size_scenario_builder.dart';
 import 'widgets/scenario_builder.dart';
 
-typedef WidgetWithThemePump = Future<void> Function(
-    WidgetTester, Widget, Themes? theme);
+/// region Type definitions
 
+/// Type definition for a function that wraps a widget with a theme and pumps it
+typedef WidgetWithThemePump = Future<void> Function(
+  WidgetTester,
+  Widget,
+  Themes? theme,
+);
+
+/// Type definition for a function that accepts a [WidgetTester] parameter
 typedef WidgetTesterCallback = Future<void> Function(WidgetTester widgetTester);
 
-enum Themes { light, dark }
-
-const localizations = [
-  AppI18n.delegate,
-  ...GlobalMaterialLocalizations.delegates,
-];
-
+/// Default devices to run golden tests on
 const _defaultDevices = [
   Device(
       name: 'iPhone SE(2nd generation)',
@@ -62,11 +64,16 @@ const _defaultDevices = [
       devicePixelRatio: 2),
 ];
 
+/// endregion
+
+/// region Builders
+
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
-/// on specified devices by default laid out in one row
+/// on specified devices laid out in one row
 ScenarioBuilder buildScenario({
   required Widget widget,
   required String scenario,
+  WidgetTesterCallback? customPumpBeforeTest,
   List<Device> devices = _defaultDevices,
   EdgeInsets? scenarioPadding = const EdgeInsets.symmetric(horizontal: 4),
 }) =>
@@ -74,26 +81,36 @@ ScenarioBuilder buildScenario({
       name: scenario,
       widget: widget,
       devices: devices,
+      customPumpBeforeTest: customPumpBeforeTest,
       scenarioPadding: scenarioPadding,
       columns: _defaultDevices.length,
+      goldenAlignment: GoldenAlignment.center,
     );
 
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
-/// on specified devices by default laid out in a grid
+/// on specified devices laid out in a grid
 ScenarioBuilder buildScenarioGrid({
   required Widget widget,
   required String scenario,
+  WidgetTesterCallback? customPumpBeforeTest,
+  GoldenAlignment? goldenAlignment,
+  int? columns,
   List<Device> devices = _defaultDevices,
   EdgeInsets? scenarioPadding = const EdgeInsets.all(4),
-  int? columns,
 }) =>
     ScenarioBuilder(
       name: scenario,
       widget: widget,
       devices: devices,
       columns: columns,
+      customPumpBeforeTest: customPumpBeforeTest,
+      goldenAlignment: goldenAlignment ?? GoldenAlignment.top,
       scenarioPadding: scenarioPadding,
     );
+
+/// endregion
+
+/// region Golden test runners
 
 /// Runs golden tests for a list of UI components in both light and dark mode,
 /// all of the same size.
@@ -141,9 +158,7 @@ void runGoldenTests(
               widget,
               theme: theme,
             ),
-        pumpBeforeTest: scenarioName.contains('loading')
-            ? (tester) => tester.pump(const Duration(milliseconds: 300))
-            : onlyPumpAndSettle,
+        pumpBeforeTest: scenario.customPumpBeforeTest  ?? onlyPumpAndSettle,
         whilePerforming:
           act != null ? (tester) async => () async => act(tester) : null,
       );
@@ -151,8 +166,16 @@ void runGoldenTests(
   }
 }
 
-/// calls [pumpDeviceBuilderWithMaterialApp] with localizations we need in this
-/// app, and injects an optional theme
+/// endregion
+
+/// region Pump helpers
+
+/// Pump function used to pump the widget and wait for the animation to finish
+Future<void> animationCustomPump(WidgetTester tester) =>
+    tester.pump(const Duration(milliseconds: 300));
+
+/// Pumps the provided [widget] and injects a [MaterialApp] wrapper,
+/// localizations and theme.
 Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
     WidgetTester tester,
     Widget widget, {
@@ -171,6 +194,7 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
             : {{project_name.pascalCase()}}Theme.buildTheme(DesignSystem.dark()),
 );
 
+/// Pumps the provided [widget] and injects a [MaterialApp] wrapper
 Future<void> pumpScenarioBuilderWithMaterialApp(
     WidgetTester tester,
     Widget widget, {
@@ -213,3 +237,5 @@ Widget _buildMaterialAppWrapper({
     ],
   );
 }
+
+/// endregion

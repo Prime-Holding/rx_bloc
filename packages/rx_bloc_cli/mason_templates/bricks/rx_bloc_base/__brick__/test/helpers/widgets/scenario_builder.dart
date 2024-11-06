@@ -1,5 +1,6 @@
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 import '../enums/golden_alignment.dart';
 import '../models/device.dart';
@@ -14,6 +15,7 @@ class ScenarioBuilder extends StatelessWidget {
     required this.devices,
     this.scenarioPadding,
     this.columns,
+    this.customPumpBeforeTest,
     this.goldenAlignment = GoldenAlignment.top,
     super.key,
   });
@@ -36,6 +38,9 @@ class ScenarioBuilder extends StatelessWidget {
 
   /// The alignment of the scenario within the resulting layout
   final GoldenAlignment goldenAlignment;
+
+  /// A custom pump method that will be called before each test
+  final Future<void> Function(WidgetTester)? customPumpBeforeTest;
 
   @override
   Widget build(BuildContext context) => GoldenTestGroup(

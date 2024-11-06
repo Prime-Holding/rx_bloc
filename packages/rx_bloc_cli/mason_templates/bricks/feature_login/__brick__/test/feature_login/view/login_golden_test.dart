@@ -31,6 +31,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_loading',
+      customPumpBeforeTest: animationCustomPump,
       widget: loginFactory(isLoading: true),
     ),
     buildScenario(
