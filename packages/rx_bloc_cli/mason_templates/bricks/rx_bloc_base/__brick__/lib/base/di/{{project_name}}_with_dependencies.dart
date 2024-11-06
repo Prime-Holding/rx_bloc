@@ -51,8 +51,8 @@ import '../../lib_pin_code/services/pin_biometrics_service.dart';
 import '../../lib_pin_code/services/verify_pin_code_service.dart';{{/enable_pin_code}}
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/router.dart';{{#has_authentication}}
-import '../../lib_router/services/router_service.dart';{{/has_authentication}}
-import '../../lib_translations/di/translations_dependencies.dart';
+import '../../lib_router/services/router_service.dart';{{/has_authentication}}{{#enable_remote_translations}}
+import '../../lib_translations/di/translations_dependencies.dart';{{/enable_remote_translations}}
 import '../app/config/environment_config.dart';
 import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
@@ -158,8 +158,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),
       ];
 
-  List<SingleChildWidget> get _libs => [
-    ...TranslationsDependencies.from(baseUrl: config.baseUrl).providers,
+  List<SingleChildWidget> get _libs => [{{#enable_remote_translations}}
+      ...TranslationsDependencies.from(baseUrl: config.baseUrl).providers,{{/enable_remote_translations}}
   ];
 
   List<Provider> get _dataSources => [{{#has_authentication}}
@@ -338,8 +338,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
         ),{{/has_authentication}}
         Provider<SplashService>(
           create: (context) => SplashService(
-          context.read(),
-          context.read(),
+          context.read(),{{#enable_remote_translations}}
+          context.read(),{{/enable_remote_translations}}
           ),
         ),
         {{#enable_feature_deeplinks}}

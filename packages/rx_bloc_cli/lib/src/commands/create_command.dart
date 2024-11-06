@@ -135,6 +135,7 @@ class CreateCommand extends Command<int> {
             'enable_login': arguments.loginEnabled,
             'enable_social_logins': arguments.socialLoginsEnabled,
             'enable_change_language': arguments.changeLanguageEnabled,
+            'enable_remote_translations': arguments.remoteTranslationsEnabled,
             'enable_dev_menu': arguments.devMenuEnabled,
             'enable_feature_otp': arguments.otpEnabled,
             'enable_patrol': arguments.patrolTestsEnabled,
