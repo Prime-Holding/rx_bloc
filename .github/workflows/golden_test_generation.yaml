@@ -18,7 +18,7 @@ jobs:
     if: startsWith(inputs.package, 'rx_bloc_cli') == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
@@ -37,9 +37,9 @@ jobs:
         run: flutter analyze lib
       - name: Generate golden files
         working-directory: "examples/${{ inputs.package }}"
-        run: flutter test --update-goldens
+        run: flutter test --update-goldens --dart-define=CI=true
       - name: Upload test directory
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "${{ inputs.package }}_tests"
           path: "examples/${{ inputs.package }}/test/"
@@ -48,7 +48,7 @@ jobs:
     if: startsWith(inputs.package, 'rx_bloc_cli')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
@@ -66,7 +66,7 @@ jobs:
         working-directory: "packages/rx_bloc_cli/example/testapp"
         run: flutter test --update-goldens --dart-define=CI=true
       - name: Upload test directory
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "${{ inputs.package }}_tests"
           path: "packages/rx_bloc_cli/example/testapp/test/"

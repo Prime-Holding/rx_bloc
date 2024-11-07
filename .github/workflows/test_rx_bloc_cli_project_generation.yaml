@@ -15,7 +15,7 @@ jobs:
           [ "default", "all_disabled", "all_enabled", "without_showcase_features" ]
       fail-fast: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           #flutter-version: # Specify your flutter version here or leave to use the latest one
