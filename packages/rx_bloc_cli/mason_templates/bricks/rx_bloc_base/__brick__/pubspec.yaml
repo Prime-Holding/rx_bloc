@@ -7,7 +7,8 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
   flutter: '>=3.13.0 <4.0.0'
 
-dependencies: {{#enable_dev_menu}}
+dependencies:
+  alchemist: ^0.10.0{{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
   alice_dio: ^1.0.6{{/enable_dev_menu}}
   collection: ^1.18.0
@@ -29,8 +30,7 @@ dependencies: {{#enable_dev_menu}}
   flutter_rx_bloc: ^7.0.0
   flutter_secure_storage: ^9.2.2{{#enable_social_logins}}
   flutter_svg: ^2.0.10{{/enable_social_logins}}
-  go_router: ^14.3.0
-  golden_toolkit: ^0.15.0{{#enable_social_logins}}
+  go_router: ^14.3.0{{#enable_social_logins}}
   google_sign_in: ^6.2.1{{/enable_social_logins}}
   http: ^1.2.2 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)

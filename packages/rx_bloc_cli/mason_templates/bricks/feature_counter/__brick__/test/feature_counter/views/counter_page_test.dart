@@ -6,7 +6,6 @@ import 'package:{{project_name}}/base/models/errors/error_model.dart';
 import 'package:{{project_name}}/feature_counter/blocs/counter_bloc.dart';
 
 import '../../helpers/golden_helper.dart';
-import '../../helpers/models/scenario.dart';
 import 'factories/counter_page_factory.dart';
 
 void main() {
@@ -14,8 +13,8 @@ void main() {
     'CounterPage golden tests',
     () => runGoldenTests(
       [
-        generateDeviceBuilder(
-          scenario: Scenario(name: 'counter'),
+        buildScenario(
+          scenario:  'counter',
           widget: counterPageFactory(
             count: 2{{#has_authentication}},
             isLoggedIn: true{{/has_authentication}},
@@ -25,16 +24,17 @@ void main() {
             ),
           ),
         ),
-        generateDeviceBuilder(
-          scenario: Scenario(name: 'error'),
+        buildScenario(
+          scenario: 'error',
           widget: counterPageFactory(
             count: 2,
             error: NetworkErrorModel(),{{#has_authentication}}
             isLoggedIn: false,{{/has_authentication}}
           ),
         ),
-        generateDeviceBuilder(
-          scenario: Scenario(name: 'loading'),
+        buildScenario(
+          scenario: 'loading',
+          customPumpBeforeTest: animationCustomPump,
           widget: counterPageFactory(
             count: 2,{{#has_authentication}}
             isLoggedIn: false,{{/has_authentication}}
