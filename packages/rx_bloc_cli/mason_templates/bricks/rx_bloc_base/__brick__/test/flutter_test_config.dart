@@ -8,12 +8,7 @@ import 'helpers/goldens_file_comparator.dart';
 
 /// Flag indicating if the tests are running in a CI environment
 /// Note: The environment variable may differ based on the platform.
-const bool _isRunningInCi = bool.fromEnvironment('CI') ||
-    bool.fromEnvironment('GITHUB_ACTIONS') ||
-    bool.fromEnvironment('TF_BUILD') ||
-    bool.fromEnvironment('bamboo.buildKey') ||
-    bool.fromEnvironment('GITLAB_CI') ||
-    bool.fromEnvironment('BUILD_ID');
+const bool _isRunningInCi = bool.fromEnvironment('CI');
 
 /// Resolves the file path for the golden image based on the name and environment
 FutureOr<String> _filePathResolver(String name, String env) {
