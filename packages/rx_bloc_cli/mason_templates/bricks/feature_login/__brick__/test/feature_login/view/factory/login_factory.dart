@@ -6,8 +6,8 @@ import 'package:{{project_name}}/feature_login/blocs/login_bloc.dart';
 import 'package:{{project_name}}/feature_login/views/login_page.dart';{{#enable_social_logins}}
 import 'package:{{project_name}}/lib_social_logins/blocs/social_login_bloc.dart';{{/enable_social_logins}}
 
-import '../mock/login_mock.dart';{{#enable_social_logins}}
-import '../mock/social_login_mock.dart';{{/enable_social_logins}}
+import '../../mock/login_mock.dart';{{#enable_social_logins}}
+import '../../mock/social_login_mock.dart';{{/enable_social_logins}}
 
 /// Change the parameters according the the needs of the test
 Widget loginFactory({
@@ -21,8 +21,8 @@ Widget loginFactory({
     Scaffold(
       body: MultiProvider(
         providers: [
-          RxBlocProvider<LoginBlocType>.value(
-            value: loginMockFactory(
+          RxBlocProvider<LoginBlocType>(
+            create: (_) => loginMockFactory(
               email: email,
               password: password,
               loggedIn: loggedIn,
@@ -31,8 +31,8 @@ Widget loginFactory({
               errors: errors,
             ),
           ),{{#enable_social_logins}}
-          RxBlocProvider<SocialLoginBlocType>.value(
-            value: socialLoginMockFactory(
+          RxBlocProvider<SocialLoginBlocType>(
+            create: (_) => socialLoginMockFactory(
               loggedIn: loggedIn,
               isLoading: isLoading,
               errors: errors,

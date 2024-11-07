@@ -1,8 +1,8 @@
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 
 import '../../helpers/golden_helper.dart';
-import '../factory/login_factory.dart';
 import '../stubs.dart';
+import 'factory/login_factory.dart';
 
 void main() {
   runGoldenTests([
