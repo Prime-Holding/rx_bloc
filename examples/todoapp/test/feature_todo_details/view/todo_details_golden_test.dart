@@ -31,21 +31,19 @@ void main() {
                 exception: Exception('Something went wrong')))),
         scenario: 'todo_details_error'),
   ]);
-  //
+
   runUiComponentGoldenTests(
       scenario: 'todo_list_success_checkbox_onTap',
       size: const Size(600, 1000),
       children: [
-        buildScenario(
-          scenario: 'listtile_widget_tap',
-          widget: SizedBox(
-            height: 400,
-            child: todoDetailsFactory(
-              isLoading: false,
-              todo: Result.success(Stubs.todoCutomId),
-            ),
+        SizedBox(
+          key: const Key('listtile_widget_tap'),
+          height: 400,
+          child: todoDetailsFactory(
+            isLoading: false,
+            todo: Result.success(Stubs.todoCutomId),
           ),
-        ),
+        )
       ],
       act: (tester) async {
         await tester.pumpAndSettle();

@@ -11,13 +11,11 @@ void main() {
       scenario: 'todo_list_success_checkbox_onTap',
       size: const Size(600, 500),
       children: [
-        buildScenario(
-          scenario: 'listtile_widget_tap',
-          widget: SizedBox(
-            height: 400,
-            child: todoListWidgetFactory(
-              todos: Stubs.todoListCustomId,
-            ),
+        SizedBox(
+          key: const Key('listtile_widget_tap'),
+          height: 400,
+          child: todoListWidgetFactory(
+            todos: Stubs.todoListCustomId,
           ),
         ),
       ],

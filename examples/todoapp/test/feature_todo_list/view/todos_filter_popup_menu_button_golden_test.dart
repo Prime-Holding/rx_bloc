@@ -11,17 +11,10 @@ void main() {
     scenario: 'todos_filter_popup_menu_button',
     size: const Size(200, 330),
     children: [
-      buildScenario(
-        scenario: 'Button',
-        widget: todosFilterPopupMenuButtonFactory(
-            selectedFilter: TodosFilterModel.all),
-      ),
-      buildScenario(
-        scenario: 'onTap',
-        widget: todosFilterPopupMenuButtonFactory(
-          key: keys.todosFilterPopupMenuButtonKey,
-          selectedFilter: TodosFilterModel.completed,
-        ),
+      todosFilterPopupMenuButtonFactory(selectedFilter: TodosFilterModel.all),
+      todosFilterPopupMenuButtonFactory(
+        key: keys.todosFilterPopupMenuButtonKey,
+        selectedFilter: TodosFilterModel.completed,
       ),
     ],
     act: (tester) async {
