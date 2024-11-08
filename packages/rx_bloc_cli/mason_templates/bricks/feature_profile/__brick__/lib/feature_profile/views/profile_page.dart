@@ -9,6 +9,7 @@ import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/app_divider.dart';
 import '../../base/common_ui_components/app_list_tile.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
@@ -53,10 +54,10 @@ class _ProfilePageState extends State<ProfilePage> {
             LogoutActionButton(),
           ],
         {{/has_authentication}}),
-        body:Center( 
-          child:ListView(
+        body:ListView(
             shrinkWrap: true,
             children: [
+            _buildUserInfo(context),
             AppListTile(
                 onTap: () => context
                     .read<RouterBlocType>()
@@ -64,13 +65,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     .push(const NotificationsRoute()),
                 featureTitle:
                     context.l10n.featureNotifications.notificationPageTitle,
+                featureSubtitle:
+                    context.l10n.featureNotifications.notificationPageSubtitle,
                 icon: const Icon(Icons.notifications),
               ),
-              Divider(
-                height: context.designSystem.spacing.m,
-                indent: context.designSystem.spacing.m,
-                endIndent: context.designSystem.spacing.m,
-              ), {{#enable_change_language}}
+            const AppDivider(), {{#enable_change_language}}
             LanguagePickerButton(
                 onChanged: (language) => context
                     .read<ChangeLanguageBlocType>()
@@ -80,16 +79,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     context.l10n.featureProfile.profilePageChangeLanguageButton,
                 translate: (model) => model.asText(context),
               ),
-              Divider(
-                height: context.designSystem.spacing.m,
-                indent: context.designSystem.spacing.m,
-                endIndent: context.designSystem.spacing.m,
-              ),{{/enable_change_language}} {{#enable_pin_code}}
+            const AppDivider(),{{/enable_change_language}} {{#enable_pin_code}}
             RxBlocBuilder<CreatePinBlocType, bool>(
                 state: (bloc) => bloc.states.isPinCreated,
                 builder: (context, isPinCreated, bloc) => AppListTile(
                   featureTitle: _buildPinButtonText(isPinCreated, context),
                   icon: context.designSystem.icons.pin,
+                  featureSubtitle: context.l10n.libPinCode.pinCodeSubtitle,
                   onTap: () {
                     if (isPinCreated.hasData && isPinCreated.data!) {
                       context
@@ -116,17 +112,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
               ),
-              Divider(
-                height: context.designSystem.spacing.m,
-                indent: context.designSystem.spacing.m,
-                endIndent: context.designSystem.spacing.m,
-              ), {{/enable_pin_code}}
+              const AppDivider(), {{/enable_pin_code}}
               RxBlocBuilder<ProfileBlocType, Result<bool>>(
                 state: (bloc) => bloc.states.areNotificationsEnabled,
                 builder: (context, areNotificationsEnabled, bloc) =>
                     AppListTile(
                   featureTitle: context
                       .l10n.featureProfile.profilePageEnableNotificationText,
+                  featureSubtitle: areNotificationsEnabled.value
+                      ? context
+                          .l10n.featureProfile.notificationsSubtitleDeactivete
+                      : context
+                          .l10n.featureProfile.notificationsSubtitleActivete,
                   icon: areNotificationsEnabled.value
                       ? context.designSystem.icons.notificationsActive
                       : context.designSystem.icons.notificationsInactive,
@@ -194,6 +191,38 @@ class _ProfilePageState extends State<ProfilePage> {
              {{/enable_pin_code}}
           ],
         ),
+      );
+
+  Widget _buildUserInfo(BuildContext context) => Padding(
+        padding: context.designSystem.spacing.xs,
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: context.designSystem.spacing.l,
+                ),
+                child: CircleAvatar(
+                  backgroundColor: context.designSystem.colors.primaryColor,
+                  radius: 50,
+                  child: Icon(
+                    context.designSystem.icons.avatar,
+                    size: 75,
+                    color: context.designSystem.colors.facebookTextColor,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: context.designSystem.spacing.l,
+                ),
+                child: Text(
+                  'John Doe',
+                  style: context.designSystem.typography.h1Bold20,
+                ),
+              ),
+            ],
+          ),
         ),
       );
 

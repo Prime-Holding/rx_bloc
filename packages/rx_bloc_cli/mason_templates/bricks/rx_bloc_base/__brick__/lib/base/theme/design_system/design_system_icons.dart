@@ -57,6 +57,8 @@ class DesignSystemIcons {
   {{#enable_change_language}}
   final Icon language = _getIcon(Icons.language);
   {{/enable_change_language}}
+  final Icon arrowForward = _getIcon(Icons.arrow_forward_ios);
+
   static Icon _getIcon(IconData iconData) => Icon(iconData);
   
 }

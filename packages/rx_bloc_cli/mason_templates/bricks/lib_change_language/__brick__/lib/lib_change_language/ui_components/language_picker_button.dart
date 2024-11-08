@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/language_picker.dart';
 
+import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_list_tile.dart';
-import '../../base/theme/design_system.dart';
 import '../extensions/language_model_extensions.dart';
 import '../services/app_language_service.dart';
 
@@ -30,6 +30,7 @@ class LanguagePickerButton extends StatelessWidget {
   Widget build(BuildContext context) => AppListTile(
         featureTitle: buttonText ?? _buttonText,
         icon: context.designSystem.icons.language,
+        featureSubtitle: context.l10n.libChangeLanguage.changeLanguageSubtitle,
         onTap: () => showChangeLanguageBottomSheet(
           context: context,
           service: service ?? context.read<AppLanguageService>(),

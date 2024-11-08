@@ -1,6 +1,5 @@
 {{> licence.dart }}
 
-
 import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
@@ -12,7 +11,8 @@ class AppListTile extends StatelessWidget {
       this.onTap,
       this.featureSubtitle,
       this.trailing,
-      this.icon});
+      this.icon,
+      });
 
   final String featureTitle;
   final void Function()? onTap;
@@ -32,7 +32,7 @@ class AppListTile extends StatelessWidget {
         subtitle: (featureSubtitle != null) ? Text(featureSubtitle!) : null,
         onTap: onTap,
         leading: icon,
-        trailing: trailing,
+        trailing: trailing ?? context.designSystem.icons.arrowForward,
       ),
     );
   }
