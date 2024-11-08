@@ -48,6 +48,15 @@ class DesignSystemIcons {
   {{/has_showcase}} {{#enable_feature_otp}}
   final Icon otp = _getIcon(Icons.password);
   {{/enable_feature_otp}}
+
+  final Icon notifications = _getIcon(Icons.notifications);
+
+  final Icon notificationsActive = _getIcon(Icons.notifications_active);
+
+  final Icon notificationsInactive = _getIcon(Icons.notifications_off);
+  {{#enable_change_language}}
+  final Icon language = _getIcon(Icons.language);
+  {{/enable_change_language}}
   static Icon _getIcon(IconData iconData) => Icon(iconData);
   
 }

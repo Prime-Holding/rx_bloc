@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_toolkit/language_picker.dart';
-import 'package:widget_toolkit/ui_components.dart';
 
-import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_list_tile.dart';
+import '../../base/theme/design_system.dart';
 import '../extensions/language_model_extensions.dart';
 import '../services/app_language_service.dart';
 
@@ -27,18 +27,14 @@ class LanguagePickerButton extends StatelessWidget {
   static const String _buttonText = 'Change Language';
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: padding ?? context.designSystem.spacing.xl0,
-        ),
-        child: OutlineFillButton(
-          text: buttonText ?? _buttonText,
-          onPressed: () => showChangeLanguageBottomSheet(
-            context: context,
-            service: service ?? context.read<AppLanguageService>(),
-            onChanged: onChanged ?? (model) => {},
-            translate: translate ?? (model) => model.asText(context),
-          ),
+  Widget build(BuildContext context) => AppListTile(
+        featureTitle: buttonText ?? _buttonText,
+        icon: context.designSystem.icons.language,
+        onTap: () => showChangeLanguageBottomSheet(
+          context: context,
+          service: service ?? context.read<AppLanguageService>(),
+          onChanged: onChanged ?? (model) => {},
+          translate: translate ?? (model) => model.asText(context),
         ),
       );
 }

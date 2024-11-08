@@ -8,7 +8,8 @@ import 'package:widget_toolkit/models.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/app_error_modal_widget.dart'; {{#enable_change_language}}
+import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/app_list_tile.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#enable_pin_code}}
@@ -52,47 +53,44 @@ class _ProfilePageState extends State<ProfilePage> {
             LogoutActionButton(),
           ],
         {{/has_authentication}}),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: context.designSystem.spacing.xl0,
-              ),
-              child: OutlineFillButton(
-                text: context.l10n.featureNotifications.notificationPageTitle,
-                onPressed: () => context
+        body:Center( 
+          child:ListView(
+            shrinkWrap: true,
+            children: [
+            AppListTile(
+                onTap: () => context
                     .read<RouterBlocType>()
                     .events
                     .push(const NotificationsRoute()),
+                featureTitle:
+                    context.l10n.featureNotifications.notificationPageTitle,
+                icon: const Icon(Icons.notifications),
               ),
-            ),
-            SizedBox(
-              height: context.designSystem.spacing.xl0,
-            ), {{#enable_change_language}}
+              Divider(
+                height: context.designSystem.spacing.m,
+                indent: context.designSystem.spacing.m,
+                endIndent: context.designSystem.spacing.m,
+              ), {{#enable_change_language}}
             LanguagePickerButton(
-              onChanged: (language) => context
-                  .read<ChangeLanguageBlocType>()
-                  .events
-                  .setCurrentLanguage(language),
-              padding: context.designSystem.spacing.xl0,
-              buttonText:
-                  context.l10n.featureProfile.profilePageChangeLanguageButton,
-              translate: (model) => model.asText(context),
-            ), {{/enable_change_language}}
-            SizedBox(
-              height: context.designSystem.spacing.xl0,
-            ), {{#enable_pin_code}}
+                onChanged: (language) => context
+                    .read<ChangeLanguageBlocType>()
+                    .events
+                    .setCurrentLanguage(language),
+                buttonText:
+                    context.l10n.featureProfile.profilePageChangeLanguageButton,
+                translate: (model) => model.asText(context),
+              ),
+              Divider(
+                height: context.designSystem.spacing.m,
+                indent: context.designSystem.spacing.m,
+                endIndent: context.designSystem.spacing.m,
+              ),{{/enable_change_language}} {{#enable_pin_code}}
             RxBlocBuilder<CreatePinBlocType, bool>(
-              state: (bloc) => bloc.states.isPinCreated,
-              builder: (context, isPinCreated, bloc) => Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: context.designSystem.spacing.xl0,
-                ),
-                child: OutlineFillButton(
-                  text: _buildPinButtonText(isPinCreated, context),
-                  onPressed: () {
+                state: (bloc) => bloc.states.isPinCreated,
+                builder: (context, isPinCreated, bloc) => AppListTile(
+                  featureTitle: _buildPinButtonText(isPinCreated, context),
+                  icon: context.designSystem.icons.pin,
+                  onTap: () {
                     if (isPinCreated.hasData && isPinCreated.data!) {
                       context
                           .read<UpdateAndVerifyPinBlocType>()
@@ -114,11 +112,32 @@ class _ProfilePageState extends State<ProfilePage> {
                               title: context.l10n.libPinCode.createPin,
                             ),
                           );
-                   }
-                 },
+                    }
+                  },
                 ),
               ),
-            ), {{/enable_pin_code}}
+              Divider(
+                height: context.designSystem.spacing.m,
+                indent: context.designSystem.spacing.m,
+                endIndent: context.designSystem.spacing.m,
+              ), {{/enable_pin_code}}
+              RxBlocBuilder<ProfileBlocType, Result<bool>>(
+                state: (bloc) => bloc.states.areNotificationsEnabled,
+                builder: (context, areNotificationsEnabled, bloc) =>
+                    AppListTile(
+                  featureTitle: context
+                      .l10n.featureProfile.profilePageEnableNotificationText,
+                  icon: areNotificationsEnabled.value
+                      ? context.designSystem.icons.notificationsActive
+                      : context.designSystem.icons.notificationsInactive,
+                  trailing: Switch(
+                    value: areNotificationsEnabled.value,
+                    onChanged: (_) => bloc.events.setNotifications(
+                      !areNotificationsEnabled.value,
+                    ),
+                  ),
+                ),
+              ),
             AppErrorModalWidget<ProfileBlocType>(
               errorState: (bloc) => bloc.states.errors,
             ),
@@ -138,21 +157,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 }
               },
-              child: const SizedBox(),
             ),
-            ListTile(
-              title: Text(context
-                  .l10n.featureProfile.profilePageEnableNotificationText),
-              trailing: RxBlocBuilder<ProfileBlocType, Result<bool>>(
-                state: (bloc) => bloc.states.areNotificationsEnabled,
-                builder: (context, areNotificationsEnabled, bloc) => Switch(
-                  value: areNotificationsEnabled.value,
-                  onChanged: (_) => bloc.events.setNotifications(
-                    !areNotificationsEnabled.value,
-                  ),
-                ),
-              ),
-            ),{{#enable_pin_code}}
+            {{#enable_pin_code}}
             RxBlocListener<CreatePinBlocType, bool>(
               state: (bloc) => bloc.states.isPinCreated,
               condition: (previous, current) =>
@@ -187,6 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
              ),
              {{/enable_pin_code}}
           ],
+        ),
         ),
       );
 

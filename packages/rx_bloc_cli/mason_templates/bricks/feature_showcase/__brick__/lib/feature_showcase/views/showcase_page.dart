@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_list_tile.dart';
 import '../../lib_router/blocs/router_bloc.dart';
 import '../../lib_router/models/route_data_model.dart';
 import '../../lib_router/router.dart';
-import '../ui_components/showcase_feature_list_tile.dart';
 
 class ShowcasePage extends StatelessWidget {
   const ShowcasePage({super.key});
@@ -21,7 +21,7 @@ class ShowcasePage extends StatelessWidget {
         itemCount: features.length,
         itemBuilder: (context, index) {
           final feature = features[index];
-          return ShowcaseFeatureListTile(
+          return AppListTile(
             featureTitle: feature.title,
             featureSubtitle: feature.subtitle,
             onTap: () =>
