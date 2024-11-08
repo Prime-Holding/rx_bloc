@@ -1,5 +1,7 @@
 ## Manual Feature Creation
 
+This documentation covers the manual steps needed for setting up a feature. Many steps mentioned in this document can be automated by using the [RxBloc intelliJ plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc).
+
 ### Steps
 1. [Feature directory](#feature-directory)
 2. [Feature directory structure](#feature-directory-structure)
@@ -31,15 +33,17 @@ All new features should be created in the `lib` directory. Each new feature name
 
 All views should be created in the `views` sub-directory of the feature. Generally, each  `view` represents a screen in the application. A single feature can have multiple views.
 
-Views are created either as a `StatelessWidget` or a `StatefulWidget`. The view can listen to the blocs to update the UI and can send events to the blocs to update the state. Widgets like `RxBlocBuilder` and `RxBlocListener` can be used to listen to the blocs.
+Views are created either as a `StatelessWidget` or a `StatefulWidget`. The view can listen to the blocs to update the UI and can send events to the blocs to update the state. Widgets like `RxBlocBuilder` and `RxBlocListener` can be used to react and manipulate the bloc data.
 
 ### Dependency Injection (DI)
 
 The `di` sub-directory of the feature contains the dependency injection code for the feature. It's created either as a `StatefullWidget` or a `StatelessWidget`. The `di` widget is responsible for providing the dependencies to the views. The widget should follow the naming convention `FeatureViewNameWithDependencies`. For the `counter` feature, since the `view` earlier created is named `CounterPage`, the `di` widget should be named `CounterPageWithDependencies`.
 
+Unlike the app-wide `di`, feature specific `di` automatically manages the lifecycle of their dependencies removing them from the widget tree when the user is not accessing the underlying views.
+
 The `di` widget build method returns a `MultiProvider` that wraps a child property with a list of providers, each responsible for providing a specific dependency. The `MultiProvider` has a child property that is an instance of the `view` created earlier.
 
-Ex
+Example
 ```dart
 
 class CounterPageWithDependencies extends StatelessWidget {
