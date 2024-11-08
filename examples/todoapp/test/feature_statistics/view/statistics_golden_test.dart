@@ -18,6 +18,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'statistics_loading',
+      customPumpBeforeTest: animationCustomPump,
       widget: statisticsFactory(),
     ),
   ]);

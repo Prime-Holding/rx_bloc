@@ -10,17 +10,10 @@ void main() {
     scenario: 'app_todo_list_bulk_edit_popup_menu_button',
     size: const Size(200, 330),
     children: [
-      //
-      buildScenario(
-        scenario: 'Button',
-        widget: appTodoListBulkEditPopupMenuButtonFactory(),
-      ),
-      buildScenario(
-        scenario: 'onTap',
-        widget: appTodoListBulkEditPopupMenuButtonFactory(
-          key: keys.appTodoListBulkEditPopupMenuButtonKey,
-        ),
-      ),
+      appTodoListBulkEditPopupMenuButtonFactory(),
+      appTodoListBulkEditPopupMenuButtonFactory(
+        key: keys.appTodoListBulkEditPopupMenuButtonKey,
+      )
     ],
     act: (tester) async {
       final bulkEditButton =

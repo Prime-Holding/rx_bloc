@@ -10,26 +10,34 @@ import '../factory/todo_details_factory.dart';
 void main() {
   runGoldenTests([
     buildScenario(
-        widget: todoDetailsFactory(todo: Result.success(Stubs.todoEmpty)),
-        scenario: 'todo_details_empty'),
+      scenario: 'todo_details_empty',
+      widget: todoDetailsFactory(todo: Result.success(Stubs.todoEmpty)),
+    ),
     buildScenario(
-        widget: todoDetailsFactory(todo: Result.success(Stubs.todoCompleted)),
-        scenario: 'todo_details_success'),
+      scenario: 'todo_details_success',
+      widget: todoDetailsFactory(todo: Result.success(Stubs.todoCompleted)),
+    ),
     buildScenario(
-        customPumpBeforeTest: animationCustomPump,
-        widget: todoDetailsFactory(
-          todo: Result.success(Stubs.todoIncomplete),
-          isLoading: true,
+      scenario: 'todo_details_bulk_action_loading',
+      customPumpBeforeTest: animationCustomPump,
+      widget: todoDetailsFactory(
+        todo: Result.success(Stubs.todoIncomplete),
+        isLoading: true,
+      ),
+    ),
+    buildScenario(
+      scenario: 'todo_details_loading',
+      customPumpBeforeTest: animationCustomPump,
+      widget: todoDetailsFactory(todo: Result.loading()),
+    ),
+    buildScenario(
+      scenario: 'todo_details_error',
+      widget: todoDetailsFactory(
+        todo: Result.error(
+          UnknownErrorModel(exception: Exception('Something went wrong')),
         ),
-        scenario: 'todo_details_bulk_action_loading'),
-    buildScenario(
-        widget: todoDetailsFactory(todo: Result.loading()),
-        scenario: 'todo_details_loading'),
-    buildScenario(
-        widget: todoDetailsFactory(
-            todo: Result.error(UnknownErrorModel(
-                exception: Exception('Something went wrong')))),
-        scenario: 'todo_details_error'),
+      ),
+    ),
   ]);
 
   runUiComponentGoldenTests(
