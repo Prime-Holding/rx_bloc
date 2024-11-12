@@ -41,3 +41,10 @@ jobs:
         working-directory: "packages/rx_bloc_cli/bin/example/testapp"
         run: |
           sh ../../run_tests_of_test_project_if_exist.sh
+      - name: Upload generated project
+        uses: actions/upload-artifact@v4
+        with:
+          name: "$test_app_{{matrix.project_type}}_tests"
+          path: "packages/rx_bloc_cli/bin/example/testapp/"
+
+
