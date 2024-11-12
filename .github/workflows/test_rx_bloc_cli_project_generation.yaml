@@ -13,7 +13,7 @@ jobs:
       matrix:
         project_type:
           [ "default", "all_disabled", "all_enabled", "without_showcase_features" ]
-      fail-fast: true
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -44,7 +44,7 @@ jobs:
       - name: Upload generated project
         uses: actions/upload-artifact@v4
         with:
-          name: "$test_app_{{matrix.project_type}}_tests"
-          path: "packages/rx_bloc_cli/bin/example/testapp/"
+          name: "test_app_${{matrix.project_type}}_tests"
+          path: "packages/rx_bloc_cli/bin/example/testapp/test"
 
 
