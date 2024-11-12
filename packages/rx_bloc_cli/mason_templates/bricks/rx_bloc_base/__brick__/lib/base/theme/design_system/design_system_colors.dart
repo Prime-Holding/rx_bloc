@@ -74,14 +74,15 @@ class DesignSystemColors {
   final gray = const Color(0xff808080);
 
   final Color updateIconAppBarColor;
+
+  final facebookTextColor = const Color(0xFFFFFFFF);
+
   {{#enable_social_logins}}
   final Color appleBackground;
 
   final Color appleButtonText;
 
   final facebookBackground = const Color(0xFF1877f2);
-
-  final facebookTextColor = const Color(0xFFFFFFFF);
 
   final Color googleBackground;
 
