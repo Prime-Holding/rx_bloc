@@ -14,7 +14,15 @@
 10. [Golden tests](#golden-tests)
 11. [Server](#server)
 12. [Push notifications](#push-notifications)
+13. [Social Logins](#social-logins-library)
+14. [Dev Menu](#dev-menu)
+15. [Patrol integration tests](#patrol-integration-tests)
+16. [Realtime communication](#realtime-communication)
+17. [Feature OTP](#feature-otp)
 18. [CI/CD](#cicd)
+19. [Feature Pin Code](#feature-pin-code)
+20. [Multi-Factor Authentication](#multi-factor-authentication)
+21. [Feature QR Code](#feature-qr-code)
 22. [Next Steps](#next-steps)
 
 ## Getting started
@@ -59,9 +67,14 @@ Before you start working on your app, make sure you familiarize yourself with th
 | `Note:`                                           | A feature may, or may not contain models based on its needs.                                                  |
 | **Application-Specific Libraries**               |                                                                                                               |
 | lib/lib_auth                                    | The OAuth2 (JWT) based authentication and token management library.                                           |
+| lib/lib_social_logins                           | Authentication with Apple, Google and Facebook library.                                                        |
 | lib/lib_permissions                             | The ACL based library that handles all the in-app routes and custom actions as well.                           |
 | lib/lib_router                                  | Generally available router related classes. The main router of the app is lib/lib_router/routers/router.dart.  |
 | lib/lib_router/routes                           | Declarations of all nested pages in the application are located here.                                          |
+| lib/lib_dev_menu                                | A library that helps application debugging by easily set and access proxy debugging services Charles and Alice. |
+| lib/lib_pin_code                                | Contains a number of useful widgets that can help you with building pin code with biometrics screens.           |
+| **Pre-Built Features**                          |                                                                                                               |
+| lib/feature_otp                                 | Contains a number of useful widgets that can help you with building SMS/pin code screens or workflows for your app. |
 | **DevOps**                                     |                                                                                                               |
 | fastlane                                       | Fastlane directory containing Fastfile configuration.                                                        |
 | devops                                         | DevOps related files (build/deployment credentials, certificates, provisioning profiles, build artifacts, etc.). |
@@ -376,9 +389,113 @@ In order to make the notifications work on your target platform, make sure you f
 *Note:* Since the app comes with a local server which can send notifications on demand, before using this feature, you need to create a server key for cloud messaging from the Firebase Console. Then you have to assign it to the `firebasePushServerKey` constant located inside the `bin/server/config.dart` file.
 
 
+## Social Logins Library
+
+Allows you to authenticate users in your app with Apple, Google and Facebook.
+
+#### Apple Authentication
+It uses the [sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple) package.  
+In order to make it work, fulfill the requirements described in its [documentation](https://pub.dev/documentation/sign_in_with_apple/latest/).
+
+Supports iOS.
+#### Google Authentication
+Google authentication uses [google_sign_in](https://pub.dev/packages/google_sign_in) package.
+ 
+Follow the package documentation for registering your application and downloading Google Services file.(GoogleService-Info.plist/google-services.json)
+
+`Android:`
+For android integration you will need to copy ***google-services.json*** file to ***android/app/src/{name_of_the_environment}/*** 
+
+`iOS:`
+For iOS integration you will need to copy ***GoogleService-Info.plist*** file to ***ios/environments/{name_of_the_environment}/firebase/***  
+and copy ***reversed_client_id*** from GoogleService-Info.plist to ***ios/Flutter/{name_of_the_environment}.xcconfig*** file
+
+For any other configurations refer to the [google_sign_in](https://pub.dev/packages/google_sign_in) package.  
+
+#### Facebook Authentication
+Facebook authentication uses [flutter_facebook_auth](https://pub.dev/packages/flutter_facebook_auth) package.
+
+`Step 1:`  
+In order to make it work you must register your app in facebook developer console.
+
+`Step 2:`  
+There you will find your **app_id**, **client_token** and **app_name**.
+
+`Step 3:`
+- `3.1 Android:` Edit ***android/app/build.gradle***, paste parameters from step 2 in
+ ```
+productFlavors{
+  name_of_the_enviroment{
+  dimension "default"
+            applicationIdSuffix ""
+            versionNameSuffix ""
+            resValue "string", "facebook_app_id", "insert_facebook_app_id_here"
+            resValue "string", "facebook_client_token", "insert_client_token_here"
+    }
+  }
+  ```
+
+- `3.2 iOS:`
+  Edit ***ios/Flutter/(flavor-name).xcconfig*** and paste parameters from step 2.
 
 
+`Note:` Some requirements to be able to run application with this version of *facebook auth* is
+- **flutter_secure_storage** package must be at least 8.0.0 version
+- for iOS in ***Podfile*** platform must be at least 12
+- for Android ***minSdkVersion*** must be at least 21.
 
+All additional info about package and better explanation how to implement you can find in documentation [flutter_facebook_auth_documentation](https://facebook.meedu.app/docs/5.x.x/intro). 
+
+## Dev Menu
+
+Dev menu brick is a useful feature when it comes to debugging your app and/or easily accessing some common development specific information and settings. You can define secret inputs which after being triggered a defined number of times will execute a callback. From that callback you can define any app-specific behaviors like navigating to a screen, displaying a dev modal sheet with additional data or your own behaviors.
+
+### Widgets
+
+Within the `dev_menu` brick you can find the `AppDevMenuGestureDetector` widget and the `showDevMenuBottomSheet` function.
+
+#### AppDevMenuGestureDetector
+
+The `AppDevMenuGestureDetector` widget is a widget that is listening for user interactions (quick taps or long taps) and as a result executes a callback (`onDevMenuPresented`) once a certain amount of interactions has been made.
+
+As a good use case, you can wrap your page widget with this widget so you are able to access the functionality while on the same page.
+
+```dart
+  AppDevMenuGestureDetector(
+    navigatorKey: navKey!,
+    child: materialApp,
+    onDevMenuPresented: () {
+      showAppDevMenuBottomSheet(
+        context.read<AppRouter>().rootNavigatorKey.currentContext!,
+      );
+    },
+  );
+```
+
+By default after you trigger  `AppDevMenuGestureDetector` you only need to add your proxy ip and restart app so you are all set to use Charles.
+Alice is working right out of the box.
+
+`Note:` To disable dev menu you only need to edit run configuration (Development or SIT) and remove `--dart-define="ENABLE_DEV_MENU=true"` from additional run arguments.
+
+## Patrol Integration Tests
+
+Patrol allows developers to use native automation and custom finders to write integration tests faster.
+The application comes with partial integration of the [patrol][patrol_pub_lnk] package Android and iOS. Before running the tests, make sure you've [integrated patrol with native side][patrol_native_integration_lnk] of your project.
+
+To run patrol integration tests install [patrol_cli][patrol_cli_pub_lnk] package. 
+This package enables applications to use native automation features
+
+#### Running the Tests
+
+To run a test type a command `patrol test --flavor flavor_name`, or use one of the preconfigured shell scripts provided within Android Studio
+
+
+For more info, please check full [README][patrol_integration_test_lnk]
+## Realtime Communication
+
+Provides base datasource, repository, service and utility classes for establishing a SSE connection.
+Register the classes into the DI system and configure the SSE endpoint by passing it as a parameter to `SseRemoteDataSource`.
+After this is done the event stream exposed by `SseService` can be used by any BLoC.
 
 ## Feature OTP
 
@@ -386,6 +503,9 @@ The `feature_otp` brick contains a number of useful widgets that can help you wi
 The brick contains widgets for entering pin codes, pasting them, resend logic and more.
 For more info please visit [widget_toolkit_otp](https://pub.dev/packages/widget_toolkit_otp)
 
+## Multi-Factor Authentication
+
+The `lib_mfa` brick contains classes, repositories, data sources and widgets that can help you with building a Multi-Factor Authentication workflow for your app. Follow the [technical specification][rx_bloc_cli_mfa_lnk] for information.
 
 ## CI/CD
 
@@ -396,6 +516,28 @@ Before running the actual CD pipeline, you may need first to configure your proj
 For more information, please check out the [detailed guide][rx_bloc_cli_cd_setup_lnk] on how to configure your Fastfile.
 Additionally, you can check an actual implementation in [this example][booking_app_lnk].
 
+## Feature Pin Code
+
+The application provides a pin code functionality. Initially there is a create pin button, which
+navigates you to the `CreatePinPage`. There you can enter and then confirm the pin that you chose.
+Then a change pin button is displayed, from you are navigate to the `UpdatePinPage`, where you can
+enter the current pin and then enter and confirm the new pin. After a pin is created and saved, on
+the `UpdatePinPage` there is a biometrics button, from which you can enable usage of biometrics.
+On app restart, you are navigated to the `VerifyPinPage` where you can either authenticate with a
+pin or with biometrics. There is a session timeout listener, which navigates you to the `VerifyPinPage`
+after a configurable amount of inactivity time and after a configurable amount of time, when the
+app has been in background mode.
+For more info please visit [widget_toolkit_pin](https://pub.dev/packages/widget_toolkit_pin)
+
+
+## Feature QR Code
+
+The application provides a QR code scanner functionality that allows for scanning QR codes. The feature integrates widget_toolkit_qr package which contains widgets for scanning the QR code and displaying the result. 
+For more info please visit [widget_toolkit_qr](https://pub.dev/packages/widget_toolkit_qr)
+
+### iOS Build Issue
+
+On iOS, an issue may occur during the initial build of the application. This can be resolved by opening the `Runner.xcodeproj` file in Xcode and setting the iOS Deployment Target to 16.0 in the Project -> Runner -> Info -> Deployment Target section. Note that this issue only affects the initial build, subsequent builds should succeed without any issues.
 
 ## Next Steps
 

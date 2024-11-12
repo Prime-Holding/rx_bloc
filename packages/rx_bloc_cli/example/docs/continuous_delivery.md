@@ -44,6 +44,11 @@ Copy the url of the distribution repository and paste it inside the `DISTRIBUTIO
 Make sure you include the url without the `http://` and `https://` prefixes, as this path will be combined with the distribution repository access token.
 As for an example repo url `https://github.com/Prime-Holding/rx_bloc.git`, the `DISTRIBUTION_REPOSITORY_URL` would have the following value: `github.com/Prime-Holding/rx_bloc.git`  
 
+For each of the supported flavors, prepare one or more firebase projects (based on your projects requirements).
+Once each firebase project is configured, go to the `General` tab in the `Project settings` of your project in the Firebase Console.
+Under `Your apps` section, copy the app id of both Android and iOS configuration by selecting the respective apps.
+Update values for each supported flavor in the `firebase_app_id_map` dictionary within the `Fastfile`.
+
 For the iOS project, update the provisioning profile names for each flavor inside the `provisioning_profile_name_map` dictionary.
 Each key in the dictionary represents the flavor name, while the values are names of individual provisioning profiles defined in the [Apple Developer Console][apple_provisioning_profiles_list].
 In case you've named your provisioning profiles differently, make sure to update the values with the proper file names within the `provisioning_profile_file_name_map` dictionary.
@@ -51,6 +56,42 @@ In case you've named your provisioning profiles differently, make sure to update
 Inside the `fetch_credentials` private lane, replace the repository url with the one matching your distribution repository.
 The url should be in the format allowing repository cloning using access tokens.
 Check [this article][clone_github_repo_with_access_token] on how to setup and clone a github repository using an access token.
+
+### Github pipeline
+
+If created with the `--cicd=github` flag, the generated project contains two reusable github workflows 
+(one for building the iOS app and one for the Android one) and an example workflow which is run every time a tag with a specific name is pushed in your github repository.
+
+If you haven't created an access token for your distribution repository in Github [using this guide][clone_github_repo_with_access_token], do so and take note of it.
+
+Access the `Actions secrets and variables` within the settings page of your Github repository.
+There you should define two repository secrets with the same values as in the local environments:
+- `CREDENTIAL_REPOSITORY_ACCESS_SECRET`: access token used for fetching the contents of the distribution repository
+- `CREDENTIAL_ENCRYPTION_PASSWORD`: password used for encrypting/decrypting content from the distribution repository
+
+Within the `{project_root}/.github/workflows/build_and_deploy_app.yaml` file the default configuration builds the app and deploys it to the respective stores.
+If you do not want to deploy your app after the build succeeds, change the `publish_to_store` variable within the respective jobs to `false` and commit the new changes.
+
+In order to trigger a new build, push a new tag to the repository in one of the following formats:
+`production-v1.2.3+45` or `my_awesome_tag_name-development-v1.2.3+45`.
+
+Make sure you name the tag properly. The tag should contain the following parts in the specified order:
+- (optional) custom tag name ending in a dash (`-`) 
+- flavor name (`develop`,`sit`,`uat`,`production`) ending in a dash (`-`)
+- build version prefixed with a `v`
+- build number prefixed with a `+`
+
+The `build_and_deploy_android` job is ran on `ubuntu-latest` runners, while the `build_and_deploy_ios` job uses `macos-latest` runners.
+All jobs are ran on standard Github-hosted runners with the usual [usage limits][github_actions_usage_limits].
+
+Once the apps are successfully built and signed, a `deployment.yaml` file along with the platform specific artifacts (`.aab` for Android, `.ipa` for iOS) will be generated.
+The `deployment.yaml` contains necessary details used for deploying the app.
+The `deployment.yaml` and the artifacts can be downloaded from the completed Github action from the Actions tab.
+In case of deploying the apps to the respective stores manually using the downloaded artifacts, please check the `Local distribution` section below.
+
+> [!NOTE]
+> Once the github build is successfully done, two deployment files will be available: `android-deployment.yaml` and `ios-deployment.yaml`. Before you manually distribute artifacts for respective platforms, make sure to rename the deployment files to `deployment.yaml`.
+
 
 
 ### Local distribution
