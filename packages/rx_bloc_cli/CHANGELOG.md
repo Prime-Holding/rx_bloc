@@ -2,6 +2,7 @@
 * Replace golden tests dependency from `golden_toolkit` to [`alchemist`][alchemist_url] in generated projects
 * Updated project dependencies
 * Added `--enable-remote-translations` flag to configure remote translation lookup for localizations
+* Redesigned the generated project profile page
 
 ## [5.2.0]
 * Update generated project min supported iOS version to `16.0`

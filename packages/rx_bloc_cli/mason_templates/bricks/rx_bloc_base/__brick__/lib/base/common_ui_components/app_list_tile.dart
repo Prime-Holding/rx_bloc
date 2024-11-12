@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 
 import '../../app_extensions.dart';
 
-class ShowcaseFeatureListTile extends StatelessWidget {
-  const ShowcaseFeatureListTile({
-    super.key,
-    required this.onTap,
-    required this.featureTitle,
-    required this.featureSubtitle,
-    required this.icon,
-  });
+class AppListTile extends StatelessWidget {
+  const AppListTile(
+      {super.key,
+      required this.featureTitle,
+      this.onTap,
+      this.featureSubtitle,
+      this.trailing,
+      this.icon,
+      });
 
-  final void Function() onTap;
   final String featureTitle;
-  final String featureSubtitle;
-  final Icon icon;
+  final void Function()? onTap;
+  final String? featureSubtitle;
+  final Widget? trailing;
+  final Icon? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,10 @@ class ShowcaseFeatureListTile extends StatelessWidget {
       ),
       child: ListTile(
         title: Text(featureTitle),
-        subtitle: Text(featureSubtitle),
+        subtitle: (featureSubtitle != null) ? Text(featureSubtitle!) : null,
         onTap: onTap,
         leading: icon,
+        trailing: trailing ?? context.designSystem.icons.arrowForward,
       ),
     );
   }

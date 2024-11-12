@@ -15,5 +15,6 @@
   "biometricsEnabled": "Your biometrics are enabled!",
   "biometricsDisabled": "Your biometrics are disabled!",
   "verifyPinCodePage": "Verify pin code page",
-  "wrongConfirmationPin": "Wrong confirmation pin"
+  "wrongConfirmationPin": "Wrong confirmation pin",
+  "pinCodeSubtitle" : "Manage your PIN"
 }
