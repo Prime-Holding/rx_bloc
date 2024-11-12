@@ -194,7 +194,9 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
   Widget _buildUserInfo(BuildContext context) => Padding(
-        padding: context.designSystem.spacing.xs,
+        padding: EdgeInsets.all(
+          context.designSystem.spacing.xs,
+        ),
         child: Center(
           child: Column(
             children: [
