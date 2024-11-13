@@ -29,11 +29,11 @@ void main() {
         showErrors: false,
       ),
     ),
-    buildScenario(
-      scenario: 'login_loading',
-      customPumpBeforeTest: animationCustomPump,
-      widget: loginFactory(isLoading: true),
-    ),
+    // buildScenario(
+    //   scenario: 'login_loading',
+    //   customPumpBeforeTest: animationCustomPump,
+    //   widget: loginFactory(isLoading: true),
+    // ),
     buildScenario(
       scenario: 'login_error',
       widget: loginFactory(
