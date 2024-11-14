@@ -2,10 +2,10 @@ import 'package:rx_bloc_cli/src/extensions/string_buffer_extensions.dart';
 
 import '../common/abstract_processors.dart';
 
-/// String processor used for processing of the AndroidManifest file located at:
-/// {project_root}/android/app/src/main/
+/// String processor used for processing of the MainActivity.kt file located at:
+/// {project_root}/android/app/src/main/kotlin/{organisationDomain}/{organisationName}/{projectName}/MainActivity.kt
 class AndroidMainActivityProcessor extends StringProcessor {
-  /// Android manifest processor constructor
+  /// Android MainActivity processor constructor
   AndroidMainActivityProcessor(super.args);
 
   @override
@@ -38,6 +38,6 @@ class AndroidMainActivityProcessor extends StringProcessor {
           classStartIndex, classStartIndex + oldClass.length, newClass);
     }
   }
-}
 
   /// endregion
+}
