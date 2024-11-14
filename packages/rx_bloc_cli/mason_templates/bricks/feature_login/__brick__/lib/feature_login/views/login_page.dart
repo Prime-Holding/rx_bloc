@@ -36,11 +36,10 @@ class LoginPage extends StatelessWidget {
                   title: context.l10n.featureLogin.loginCredentialsHint,
                 ),{{/enable_login}}
 
-                {{#enable_social_logins}}
+
+
                 SizedBox(height: context.designSystem.spacing.xs),
                 const FacebookLoginWidget(),
-                {{/enable_social_logins}}
-/*
                 if (Platform.isIOS)
                   Column(
                     children: [
@@ -49,10 +48,14 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                 SizedBox(height: context.designSystem.spacing.xs),
-                const GoogleLoginWidget(),{{/enable_social_logins}}{{^enable_login}}{{^enable_social_logins}}
-                Center(child: Text('No login option has been selected for the project.',textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
 
-                */
+                const GoogleLoginWidget(),
+
+/*
+{{#enable_social_logins}}{{/enable_social_logins}}{{^enable_login}}{{^enable_social_logins}}
+                Center(child: Text('No login option has been selected for the project.',textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
+*/
+
               ],
             ),
           ),
