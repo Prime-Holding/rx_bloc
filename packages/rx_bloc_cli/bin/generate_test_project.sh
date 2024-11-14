@@ -22,7 +22,7 @@ function generate(){
 
 if [ $1 == "default" ]; then
   # Generated project should use default configuration
-  generate --no-enable-social-logins
+  generate
 fi
 
 if [ $1 == "all_enabled" ]; then
@@ -32,7 +32,7 @@ if [ $1 == "all_enabled" ]; then
   --enable-feature-deeplinks \
   --enable-feature-widget-toolkit \
   --enable-login \
-  --no-enable-social-logins \
+  --enable-social-logins \
   --enable-change-language \
   --enable-remote-translations \
   --enable-dev-menu \
@@ -71,7 +71,7 @@ if [ $1 == "without_showcase_features" ]; then
   # Generated project uses all features enabled except for showcase features
   generate --enable-analytics \
     --enable-login \
-    --no-enable-social-logins \
+    --enable-social-logins \
     --enable-change-language \
     --enable-remote-translations \
     --enable-dev-menu \
