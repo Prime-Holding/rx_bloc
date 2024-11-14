@@ -22,9 +22,9 @@ class AndroidMainActivityProcessor extends StringProcessor {
 
   /// region Private methods
   void _addPinCodeSupport(StringBuffer buffer) {
-    const oldImport = 'import io.flutter.embedding.android.FlutterActivity;';
+    const oldImport = 'import io.flutter.embedding.android.FlutterActivity';
     const newImport =
-        'import io.flutter.embedding.android.FlutterFragmentActivity;';
+        'import io.flutter.embedding.android.FlutterFragmentActivity';
     final startIndex = buffer.toString().indexOf(oldImport);
     if (startIndex != -1) {
       buffer.replaceRange(startIndex, startIndex + oldImport.length, newImport);

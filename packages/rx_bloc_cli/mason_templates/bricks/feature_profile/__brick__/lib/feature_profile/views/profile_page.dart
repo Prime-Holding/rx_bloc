@@ -11,8 +11,7 @@ import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/ena
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/app_divider.dart';
-import '../../base/common_ui_components/app_list_tile.dart';{{#enable_pin_code}}
-import '../../lib_biometrics/data_sources/biometrics_local_data_source.dart';{{/enable_pin_code}} {{#enable_change_language}}
+import '../../base/common_ui_components/app_list_tile.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#enable_pin_code}}
