@@ -220,7 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Icon(
                     context.designSystem.icons.avatar,
                     size: 75,
-                    color: context.designSystem.colors.facebookTextColor,
+                    color: context.designSystem.colors.white,
                   ),
                 ),
               ),
