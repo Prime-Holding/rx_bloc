@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
-{{#enable_social_logins}}
-import 'dart:io' show Platform;{{/enable_social_logins}}
+
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 
@@ -40,6 +40,7 @@ class LoginPage extends StatelessWidget {
 
                 SizedBox(height: context.designSystem.spacing.xs),
                 const FacebookLoginWidget(),
+
                 if (Platform.isIOS)
                   Column(
                     children: [
@@ -47,6 +48,7 @@ class LoginPage extends StatelessWidget {
                       const AppleLoginWidget(),
                     ],
                   ),
+
                 SizedBox(height: context.designSystem.spacing.xs),
 
                 const GoogleLoginWidget(),
