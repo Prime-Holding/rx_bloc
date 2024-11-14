@@ -5,6 +5,12 @@ on:
     paths:
       - "packages/rx_bloc_cli/**"
       - ".github/workflows/test_rx_bloc_cli_project_generation.yaml"
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        required: true
+        default: 'develop'
 
 jobs:
   rx_bloc_cli_project_generation:
@@ -16,6 +22,8 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
       - uses: subosito/flutter-action@v2
         with:
           #flutter-version: # Specify your flutter version here or leave to use the latest one
