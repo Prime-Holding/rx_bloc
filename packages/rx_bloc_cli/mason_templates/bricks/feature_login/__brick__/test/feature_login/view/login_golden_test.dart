@@ -42,7 +42,7 @@ void main() {
           exception: Exception('Something went wrong'),
         ),
       ),
-    ),
+    )
   ]);
 }
 
