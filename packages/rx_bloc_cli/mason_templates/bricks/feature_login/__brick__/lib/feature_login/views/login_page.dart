@@ -18,6 +18,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor : context.designSystem.colors.backgroundColor,
         appBar: customAppBar(
           context,
           title: context.l10n.featureLogin.loginPageTitle,
