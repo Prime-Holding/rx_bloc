@@ -13,7 +13,7 @@ jobs:
       matrix:
         project_type:
           [ "default", "all_disabled", "all_enabled", "without_showcase_features" ]
-      fail-fast: false
+      fail-fast: true
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
