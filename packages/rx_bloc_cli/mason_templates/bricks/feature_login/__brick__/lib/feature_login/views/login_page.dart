@@ -35,10 +35,12 @@ class LoginPage extends StatelessWidget {
                 LoginForm(
                   title: context.l10n.featureLogin.loginCredentialsHint,
                 ),{{/enable_login}}
-                /*
+
                 {{#enable_social_logins}}
                 SizedBox(height: context.designSystem.spacing.xs),
                 const FacebookLoginWidget(),
+                {{/enable_social_logins}}
+/*
                 if (Platform.isIOS)
                   Column(
                     children: [
