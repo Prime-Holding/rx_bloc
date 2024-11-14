@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
-
-import 'dart:io' show Platform;
+{{#enable_social_logins}}
+import 'dart:io' show Platform;{{/enable_social_logins}}
 
 import 'package:flutter/material.dart';
 
@@ -30,34 +30,23 @@ class LoginPage extends StatelessWidget {
             child: {{^enable_login}}{{^enable_social_logins}}const {{/enable_social_logins}}{{/enable_login}}Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                {{#enable_login}}
+              children: [{{#enable_login}}
                 LoginForm(
                   title: context.l10n.featureLogin.loginCredentialsHint,
                 ),{{/enable_login}}
-
-
-
+                {{#enable_social_logins}}
                 SizedBox(height: context.designSystem.spacing.xs),
                 const FacebookLoginWidget(),
-
                 if (Platform.isIOS)
                   Column(
                     children: [
-                      SizedBox(height: context.designSystem.spacing.xs),
-                      const AppleLoginWidget(),
+                    SizedBox(height: context.designSystem.spacing.xs),
+                    const AppleLoginWidget(),
                     ],
                   ),
-
                 SizedBox(height: context.designSystem.spacing.xs),
-
-                const GoogleLoginWidget(),
-
-/*
-{{#enable_social_logins}}{{/enable_social_logins}}{{^enable_login}}{{^enable_social_logins}}
+                const GoogleLoginWidget(),{{/enable_social_logins}}{{^enable_login}}{{^enable_social_logins}}
                 Center(child: Text('No login option has been selected for the project.',textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
-*/
-
               ],
             ),
           ),
