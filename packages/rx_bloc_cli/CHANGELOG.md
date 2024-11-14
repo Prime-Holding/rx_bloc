@@ -3,7 +3,6 @@
 * Updated project dependencies
 * Added `--enable-remote-translations` flag to configure remote translation lookup for localizations
 
-
 ## [5.2.0]
 * Update generated project min supported iOS version to `16.0`
 * Add a script for running integration tests with Patrol
