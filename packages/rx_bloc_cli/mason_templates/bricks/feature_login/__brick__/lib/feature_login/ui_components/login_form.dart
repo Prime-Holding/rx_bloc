@@ -114,17 +114,19 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-  GradientFillButton _buildLoginButton(
-    BuildContext context,
-    AsyncSnapshot<bool> loadingState,
-    LoginBlocType bloc,
-  ) =>
-      GradientFillButton(
-        key: K.loginButton,
-        state: loadingState.isLoading
-            ? ButtonStateModel.loading
-            : ButtonStateModel.enabled,
-        onPressed: bloc.events.login,
-        text: context.l10n.featureLogin.logIn,
-      );
+// GradientFillButton _buildLoginButton(
+Container _buildLoginButton(
+BuildContext context,
+AsyncSnapshot<bool> loadingState,
+LoginBlocType bloc,
+) =>
+Container();
+// GradientFillButton(
+//   key: K.loginButton,
+//   state: loadingState.isLoading
+//       ? ButtonStateModel.loading
+//       : ButtonStateModel.enabled,
+//   onPressed: bloc.events.login,
+//   text: context.l10n.featureLogin.logIn,
+// );
 }
