@@ -140,9 +140,6 @@ if (keystorePropertiesFile.exists()) {
 
   void _buildDependenciesList(StringBuffer buffer) {
     final sIndex = buffer.nthIndexOf('dependencies');
-    if (sIndex < 0) return;
-    final eIndex = buffer.nthIndexOf('}', start: sIndex) + 1;
-
     var content = 'dependencies {\n';
     if (args.patrolTestsEnabled) {
       content +=
@@ -150,7 +147,13 @@ if (keystorePropertiesFile.exists()) {
     }
     content += '}';
 
-    buffer.replaceRange(sIndex, eIndex, content);
+    if (sIndex < 0) {
+      // Append the dependencies section at the end of the buffer
+      buffer.write('\n$content\n');
+    } else {
+      final eIndex = buffer.nthIndexOf('}', start: sIndex) + 1;
+      buffer.replaceRange(sIndex, eIndex, content);
+    }
   }
 
   void _applyPatrolToDefaultConfig(StringBuffer buffer) {
