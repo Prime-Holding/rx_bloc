@@ -48,7 +48,9 @@ class DesignSystemIcons {
   {{/has_showcase}} {{#enable_feature_otp}}
   final Icon otp = _getIcon(Icons.password);
   {{/enable_feature_otp}}
-
+  {{#enable_pin_code}}
+  final Icon fingerprint = _getIcon(Icons.fingerprint);
+  {{/enable_pin_code}}
   final Icon notifications = _getIcon(Icons.notifications);
 
   final Icon notificationsActive = _getIcon(Icons.notifications_active);

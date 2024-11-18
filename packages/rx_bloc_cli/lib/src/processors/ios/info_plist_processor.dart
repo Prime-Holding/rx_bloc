@@ -14,17 +14,27 @@ class InfoPlistProcessor extends StringProcessor {
     final buffer = StringBuffer(input!);
 
     if (args.qrScannerEnabled) {
-      _updateInfoPlistPermissions(buffer);
+      _updateInfoPlistPermissionsCamera(buffer);
     }
-
+    if (args.pinCodeEnabled) {
+      _updateInfoPlistPermissionsBiometrics(buffer);
+    }
     return buffer.toString();
   }
 
-  void _updateInfoPlistPermissions(StringBuffer buffer) {
+  void _updateInfoPlistPermissionsCamera(StringBuffer buffer) {
     const permissions = '''
     <key>NSCameraUsageDescription</key>
     <string>This app needs camera access to scan QR codes</string>
  ''';
+    buffer.insertBefore('</dict>', permissions);
+  }
+
+  void _updateInfoPlistPermissionsBiometrics(StringBuffer buffer) {
+    const permissions = '''
+    <key>NSFaceIDUsageDescription</key>
+    <string>This app needs face id to use biometrics authentication</string>
+    ''';
     buffer.insertBefore('</dict>', permissions);
   }
 }
