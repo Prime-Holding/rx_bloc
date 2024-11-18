@@ -5,7 +5,8 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';
+import 'package:widget_toolkit/ui_components.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
 import '../../app_extensions.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
@@ -67,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     context.l10n.featureNotifications.notificationPageTitle,
                 featureSubtitle:
                     context.l10n.featureNotifications.notificationPageSubtitle,
-                icon: const Icon(Icons.notifications),
+                icon: context.designSystem.icons.notifications,
               ),
             const AppDivider(), {{#enable_change_language}}
             LanguagePickerButton(
@@ -110,6 +111,15 @@ class _ProfilePageState extends State<ProfilePage> {
                           );
                     }
                   },
+                ),
+              ),
+              const AppDivider(),
+              AppListTile(
+                featureTitle: context.l10n.libPinCode.biometricsTitle,
+                featureSubtitle: context.l10n.libPinCode.biometricsSubtitle,
+                icon: context.designSystem.icons.fingerprint,
+                trailing: BiometricsSwitch(
+                  biometricsLocalDataSource: context.read<BiometricsLocalDataSource>(),
                 ),
               ),
               const AppDivider(), {{/enable_pin_code}}
