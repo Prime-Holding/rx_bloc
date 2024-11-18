@@ -4,6 +4,7 @@
 * Added `--enable-remote-translations` flag to configure remote translation lookup for localizations
 * Redesigned the generated project profile page
 * Added button on profile page for toggling biometric authentication
+* Added integration test for QR scanner feature
 
 ## [5.2.0]
 * Update generated project min supported iOS version to `16.0`
