@@ -35,13 +35,11 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
         platformGoldensConfig: const PlatformGoldensConfig(
           enabled: !_isRunningInCi,
           obscureText: false,
-          renderShadows: true,
           filePathResolver: _filePathResolver,
         ),
         ciGoldensConfig: const CiGoldensConfig(
           enabled: _isRunningInCi,
           obscureText: false,
-          renderShadows: true,
           filePathResolver: _filePathResolver,
         ),
       ),
