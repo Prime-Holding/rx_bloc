@@ -17,6 +17,7 @@ abstract class DivisionBlocEvents {
 
 abstract class DivisionBlocStates {
   // The output string of the division
+  @RxCoordinatorBroadcastState()
   Stream<String> get divisionResult;
 
   // The loading state of the current division
@@ -29,6 +30,7 @@ abstract class DivisionBlocStates {
 }
 
 @RxBloc()
+// @RxBlocCoordinatorAnnotation()
 class DivisionBloc extends $DivisionBloc {
   DivisionBloc({this.repository = const CalculatorRepository()});
 

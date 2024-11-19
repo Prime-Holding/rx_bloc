@@ -19,11 +19,11 @@ dev_dependencies:
   flutter_lints: any
   flutter_test:
     sdk: flutter
-  rx_bloc_generator: any
+  rx_bloc_generator:
+    path: /Users/snezhana.romanova/StudioProjects/rx_bloc/packages/rx_bloc_generator
   rx_bloc_test: ^4.0.0
 
 
-flutter:
 
 #  assets:
 #    - images/a_dot_burr.jpeg
