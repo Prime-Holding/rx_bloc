@@ -8,6 +8,7 @@ void main() {
   runGoldenTests([
     buildScenario(
       scenario: 'login_empty',
+      customPumpBeforeTest: animationCustomPump,
       widget: loginFactory(
         loggedIn: false,
         showErrors: false,
@@ -16,6 +17,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_filled',
+      customPumpBeforeTest: animationCustomPump,
       widget: loginFactory(
         email: Stubs.email,
         password: Stubs.password,
@@ -23,6 +25,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_success',
+      customPumpBeforeTest: animationCustomPump,
       widget: loginFactory(
         isLoading: false,
         loggedIn: true,
@@ -31,6 +34,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_error',
+      customPumpBeforeTest: animationCustomPump,
       widget: loginFactory(
         showErrors: true,
         errors: UnknownErrorModel(
