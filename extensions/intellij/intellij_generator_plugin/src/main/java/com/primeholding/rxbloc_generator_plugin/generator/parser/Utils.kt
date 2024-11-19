@@ -98,7 +98,7 @@ class Utils {
         private fun removeNonFinalOrEmptyFields(constructorFields: MutableMap<String, String>) {
             val keysSet = ArrayList(constructorFields.keys)
             keysSet.forEach {
-                if (constructorFields[it]!!.isEmpty()) {
+                if (constructorFields[it].isNullOrEmpty()) {
                     constructorFields.remove(it)
                 }
             }

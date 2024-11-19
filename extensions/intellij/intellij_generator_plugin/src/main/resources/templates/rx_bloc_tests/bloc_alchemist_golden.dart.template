@@ -1,0 +1,29 @@
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../helpers/golden_helper.dart';
+import '../../helpers/models/scenario.dart';
+import '../factory/${bloc_snake_case}_factory.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_list/models.dart';
+
+
+void main() {
+  runGoldenTests([
+    buildScenario(
+      scenario:  '${bloc_snake_case}_empty',
+      widget: ${bloc_field_case}Factory(),
+    ),
+    buildScenario(
+      scenario:  '${bloc_snake_case}_success',
+      widget: ${bloc_field_case}Factory(),
+    ),
+    buildScenario(
+      scenario:  '${bloc_snake_case}_loading',
+      widget: ${bloc_field_case}Factory(),
+    ),
+    buildScenario(
+      scenario:  '${bloc_snake_case}_error',
+      widget: ${bloc_field_case}Factory(),
+    ),
+  ]);
+}
