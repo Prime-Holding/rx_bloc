@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static java.nio.file.Files.readAllLines;
 import static org.junit.Assert.assertEquals;
 
 public class RxGeneratedBlocListGeneratorTest {

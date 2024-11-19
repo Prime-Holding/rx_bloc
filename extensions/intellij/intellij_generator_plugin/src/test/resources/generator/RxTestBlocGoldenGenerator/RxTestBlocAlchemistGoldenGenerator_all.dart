@@ -11,19 +11,19 @@ void main() {
   runGoldenTests([
     buildScenario(
       scenario:  'sample_empty',
-      widget: ${bloc_field_case}Factory(),
+      widget: sampleFactory(),
     ),
     buildScenario(
       scenario:  'sample_success',
-      widget: ${bloc_field_case}Factory(),
+      widget: sampleFactory(),
     ),
     buildScenario(
       scenario:  'sample_loading',
-      widget: ${bloc_field_case}Factory(),
+      widget: sampleFactory(),
     ),
     buildScenario(
       scenario:  'sample_error',
-      widget: ${bloc_field_case}Factory(),
+      widget: sampleFactory(),
     ),
   ]);
 }
