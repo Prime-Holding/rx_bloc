@@ -40,6 +40,11 @@ class RxBlocIgnoreState {
   const RxBlocIgnoreState();
 }
 
+// TODO add documentation
+class RxCoordinatorBroadcastState {
+  const RxCoordinatorBroadcastState();
+}
+
 /// When working with events, most of the time, they are used to publish changes
 /// to the bloc that do not require any initial state.
 /// However, there may be some times when you are required to set the state
@@ -69,6 +74,10 @@ class RxBlocEvent {
   final dynamic seed;
 }
 
+// TODO add documentation
+class RxBlocCoordinatorAnnotation{
+  const RxBlocCoordinatorAnnotation();
+}
 /// Subject type of the event. It could be either [RxBlocEventType.behaviour]
 /// or [RxBlocEventType.publish]
 ///

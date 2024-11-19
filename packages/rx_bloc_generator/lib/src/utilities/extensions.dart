@@ -31,6 +31,10 @@ extension _StateFieldElement on FieldElement {
   String get stateFieldName => '_${name}State';
 
   String get stateMethodName => '_mapTo${name.capitalize()}State';
+
+  bool get hasBroadcastAnnotation =>
+      const TypeChecker.fromRuntime(RxCoordinatorBroadcastState)
+          .hasAnnotationOf(getter!);
 }
 
 extension _EventMethodElement on MethodElement {

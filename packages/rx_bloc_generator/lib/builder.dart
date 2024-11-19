@@ -8,3 +8,9 @@ Builder buildRxBuilder(BuilderOptions options) => LibraryBuilder(
       const RxBlocGeneratorForAnnotation(),
       generatedExtension: '.rxb.g.dart',
     );
+
+/// The entry point of the RxBloc code generation
+Builder buildRxCoordinatorBuilder(BuilderOptions options) => LibraryBuilder(
+      const RxCoordinatorBlocGeneratorForAnnotation(),
+      generatedExtension: '.rxcb.g.dart',
+    );

@@ -16,6 +16,10 @@ class _StateGetterMethod implements _BuilderContract {
           ..returns = refer(field.type.getDisplayString(withNullability: true))
           ..name = field.name
           ..lambda = true
-          ..body = refer(field.stateFieldName).code,
+          ..body = field.hasBroadcastAnnotation
+              ? refer('${field.stateFieldName}.doOnData').call([
+                  refer('coordinatorBloc.\$profile.events.setOnProfileChanged')
+                ]).code
+              : refer(field.stateFieldName).code,
       );
 }

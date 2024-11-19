@@ -1,7 +1,11 @@
 library rx_bloc_generator;
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:analyzer/dart/analysis/utilities.dart';
+import 'package:analyzer/dart/ast/ast.dart' as ast;
+import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
@@ -17,6 +21,7 @@ import 'package:rx_bloc/rx_bloc.dart';
 import 'package:source_gen/source_gen.dart';
 
 part 'src/build_controller.dart';
+part 'src/build_coordinator_controller.dart';
 part 'src/builders/bloc_class.dart';
 part 'src/builders/bloc_type_class.dart';
 part 'src/builders/builder_contract.dart';
@@ -29,6 +34,7 @@ part 'src/builders/state_getter_method.dart';
 part 'src/builders/state_method.dart';
 part 'src/builders/static_getter_method.dart';
 part 'src/rx_bloc_generator_for_annotation.dart';
+part 'src/rx_bloc_coordinator_generator_for_annotation.dart';
 part 'src/utilities/event_args_record.dart';
 part 'src/utilities/extensions.dart';
 part 'src/utilities/rx_bloc_generator_exception.dart';
