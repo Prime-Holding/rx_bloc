@@ -1,35 +1,35 @@
 import 'package:rx_bloc/rx_bloc.dart';
 
 import '../../helpers/golden_helper.dart';
-import '../../helpers/models/scenario.dart';
 import '../../stubs.dart';
 import '../factory/hotel_favorites_factory.dart';
 
 void main() {
   runGoldenTests([
-    generateDeviceBuilder(
+    buildScenario(
       widget: hotelFavoritesFactory(
         favoriteHotels: Result.success(Stub.paginatedListEmpty),
       ), //example: Stubs.emptyList
-      scenario: Scenario(name: 'hotel_favorites_empty'),
+      scenario: 'hotel_favorites_empty',
     ),
-    generateDeviceBuilder(
+    buildScenario(
       widget: hotelFavoritesFactory(
         favoriteHotels: Result.success(Stub.paginatedListHotelThreeAndOne),
       ), //example:  Stubs.success
-      scenario: Scenario(name: 'hotel_favorites_success'),
+      scenario: 'hotel_favorites_success',
     ),
-    generateDeviceBuilder(
+    buildScenario(
       widget: hotelFavoritesFactory(
         favoriteHotels: Result.loading(),
       ), //loading
-      scenario: Scenario(name: 'hotel_favorites_loading'),
+      scenario: 'hotel_favorites_loading',
+      customPumpBeforeTest: animationCustomPump,
     ),
-    generateDeviceBuilder(
+    buildScenario(
       widget: hotelFavoritesFactory(
         favoriteHotels: Result.error(Stub.paginatedListError.error!),
       ),
-      scenario: Scenario(name: 'hotel_favorites_error'),
+      scenario: 'hotel_favorites_error',
     )
   ]);
 }
