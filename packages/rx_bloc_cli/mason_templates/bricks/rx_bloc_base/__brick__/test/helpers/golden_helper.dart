@@ -150,21 +150,23 @@ void runGoldenTests(
       final themeName = theme.name;
       final scenarioName = scenario.name;
 
-      goldenTest(
-        '$scenarioName - $themeName',
-        fileName: '${scenarioName}_$themeName',
-        builder: () => scenario,
-        pumpWidget: (tester, widget) =>
-        customWrapAndPump?.call(tester, widget, theme) ??
-            pumpDeviceBuilderWithLocalizationsAndTheme(
-              tester,
-              widget,
-              theme: theme,
-            ),
-        pumpBeforeTest: scenario.customPumpBeforeTest  ?? onlyPumpAndSettle,
-        whilePerforming:
-          act != null ? (tester) async => () async => act(tester) : null,
-      );
+      group('Golden Test: $scenarioName $themeName', () {
+        goldenTest(
+          '$scenarioName - $themeName',
+          fileName: '${scenarioName}_$themeName',
+          builder: () => scenario,
+          pumpWidget: (tester, widget) =>
+          customWrapAndPump?.call(tester, widget, theme) ??
+              pumpDeviceBuilderWithLocalizationsAndTheme(
+                tester,
+                widget,
+                theme: theme,
+              ),
+          pumpBeforeTest: scenario.customPumpBeforeTest  ?? onlyPumpAndSettle,
+          whilePerforming:
+            act != null ? (tester) async => () async => act(tester) : null,
+        );
+      });
     }
   }
 }
