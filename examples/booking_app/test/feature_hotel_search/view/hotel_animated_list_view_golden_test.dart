@@ -15,6 +15,7 @@ void main() {
       widget: hotelAnimatedListViewFactory(
         hotels: Stub.paginatedListTwoHotels,
       ),
+      customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
       scenario: 'hotel_animated_list_view_error',

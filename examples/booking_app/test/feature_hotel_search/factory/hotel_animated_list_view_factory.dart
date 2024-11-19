@@ -42,6 +42,7 @@ Widget hotelAnimatedListViewFactory({
       ],
       child: HotelAnimatedListView(
         hotelList: Stream.value(hotels.list).share(),
+        initialList: hotels,
         onHotelPressed: onHotelPressed,
       ),
     ),

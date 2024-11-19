@@ -8,26 +8,29 @@ void main() {
   runGoldenTests([
     buildScenario(
       widget: hotelFavoritesFactory(
-        favoriteHotels: Result.success(Stub.paginatedListEmpty),
+        favoriteHotelsResult: Result.success(Stub.paginatedListEmpty),
       ), //example: Stubs.emptyList
       scenario: 'hotel_favorites_empty',
     ),
     buildScenario(
       widget: hotelFavoritesFactory(
-        favoriteHotels: Result.success(Stub.paginatedListHotelThreeAndOne),
-      ), //example:  Stubs.success
+          favoriteHotelsResult:
+              Result.success(Stub.paginatedListHotelThreeAndOne),
+          initFavoriteHotels:
+              Stub.paginatedListHotelThreeAndOne), //example:  Stubs.success
       scenario: 'hotel_favorites_success',
+      customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
       widget: hotelFavoritesFactory(
-        favoriteHotels: Result.loading(),
+        favoriteHotelsResult: Result.loading(),
       ), //loading
       scenario: 'hotel_favorites_loading',
       customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
       widget: hotelFavoritesFactory(
-        favoriteHotels: Result.error(Stub.paginatedListError.error!),
+        favoriteHotelsResult: Result.error(Stub.paginatedListError.error!),
       ),
       scenario: 'hotel_favorites_error',
     )
