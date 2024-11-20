@@ -33,7 +33,7 @@ abstract class $ProfileListBloc extends RxBlocBase
 
   /// The state of [paginatedList] implemented in [_mapToPaginatedListState]
   late final Stream<PaginatedList<Profile>> _paginatedListState =
-  _mapToPaginatedListState();
+      _mapToPaginatedListState();
 
   @override
   void loadPage({bool reset = false}) => _$loadPageEvent.add(reset);
