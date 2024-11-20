@@ -12,15 +12,17 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocTestDialog.TestLibrary
 import com.primeholding.rxbloc_generator_plugin.generator.RxTestGeneratorBase
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
 import com.primeholding.rxbloc_generator_plugin.intention_action.BlocWrapWithIntentionAction
 import java.io.File
 
 
-class BootstrapSingleTestAction : AnAction() {
+class BootstrapSingleTestAction : AnAction(), GenerateRxBlocTestDialog.Listener {
 
     private var project: Project? = null
+    private var selectedFile: VirtualFile? = null
 
     override fun update(e: AnActionEvent?) {
         super.update(e)
@@ -68,30 +70,32 @@ class BootstrapSingleTestAction : AnAction() {
 
         var file: VirtualFile?
 
-        if (e != null) {
-            WriteCommandAction.runWriteCommandAction(e.project!!) {
+        if (project != null) {
+            WriteCommandAction.runWriteCommandAction(project) {
                 CommandProcessor.getInstance().executeCommand(
-                    e.project!!, {
+                    project, {
                         for (i in 0..files?.size!!) {
                             file = files[i]
                             if (!file!!.isDirectory) {
                                 if (isBlocFile(file)) {
-                                    generateBloc(file!!, e.project!!)
+                                    generateBloc(file!!, project!!)
                                     break
                                 }
 
                                 if (isServiceFile(file)) {
-                                    generateService(file!!, e.project!!)
+                                    generateService(file!!, project!!)
                                     break
                                 }
 
                                 if (isRepositoryFile(file)) {
-                                    generateRepository(file!!, e.project!!)
+                                    generateRepository(file!!, project!!)
                                     break
                                 }
 
                                 if (isUIFile(file)) {
-                                    generateGoldenTest(file!!, e.project!!)
+                                    selectedFile = file
+                                    val dialog = GenerateRxBlocTestDialog(this)
+                                    dialog.show()
                                     break
                                 }
                             }
@@ -123,6 +127,12 @@ class BootstrapSingleTestAction : AnAction() {
             }
         }
         return false
+    }
+
+    override fun onGenerateBlocTestClicked(selectedTestLibrary: TestLibrary) {
+        if(selectedFile != null) {
+            generateGoldenTest(selectedFile!!, project!!, selectedTestLibrary)
+        }
     }
 
     private fun projectLibFolder(): String = "${project?.name}${File.separator}lib"
@@ -329,14 +339,8 @@ class BootstrapSingleTestAction : AnAction() {
             }
 
 
-            val newFile = Utils.baseDir(project.basePath!!);
+            val newFile = Utils.baseDir(project.basePath!!)
             FileUtil.createIfDoesntExist(File(newFilePath))
-
-
-//            val newFile = VfsTestUtil.createFile(
-//                Utils.baseDir(project.basePath!!),
-//                newFilePath
-//            )
 
             BootstrapTestsAction.writeBlockTest(
                 newFile,
@@ -348,7 +352,7 @@ class BootstrapSingleTestAction : AnAction() {
         }
     }
 
-    private fun generateGoldenTest(file: VirtualFile, project: Project) {
+    private fun generateGoldenTest(file: VirtualFile, project: Project, selectedTestLibrary: TestLibrary) {
         val constructorFields: MutableMap<String, String> = mutableMapOf()
         val constructorNamedFields: MutableMap<String, Boolean> = mutableMapOf()
         val goldenFile = File(file.path)
@@ -417,36 +421,9 @@ Scaffold(
         }
         sb = StringBuffer()
 
-        sb.append(
-            """
-import 'package:flutter_test/flutter_test.dart';
+        val goldenFileContent = (if (selectedTestLibrary == TestLibrary.GoldenToolkit) createGoldenToolkitFileContent(blocFieldCase, blocSnakeCase) else createAlchemistGoldenFileContent(blocFieldCase, blocSnakeCase))
 
-import '../../helpers/golden_helper.dart';
-import '../../helpers/models/scenario.dart';
-import '${blocSnakeCase}_factory.dart';
-import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_list/models.dart';
-
-
-void main () {
-    runGoldenTests(
-        [
-            generateDeviceBuilder(
-                widget: ${blocFieldCase}Factory(), //example: Stubs.emptyList
-                scenario: Scenario(name: '${blocSnakeCase}_empty')),
-                generateDeviceBuilder(
-                    widget: ${blocFieldCase}Factory(), //example:  Stubs.success
-                scenario: Scenario(name: '${blocSnakeCase}_success')),
-                generateDeviceBuilder(
-                    widget: ${blocFieldCase}Factory(), //loading
-                scenario: Scenario(name: '${blocSnakeCase}_loading')),
-                generateDeviceBuilder(
-                    widget: ${blocFieldCase}Factory(),
-                scenario: Scenario(name: '${blocSnakeCase}_error'))
-                ]);
-            }
-""".trimIndent()
-        )
+        sb.append(goldenFileContent)
 
         newFile = createFile(file, "_golden_test.dart", sb.toString())
         if (newFile != null) {
@@ -466,4 +443,69 @@ void main () {
         }
         return sb.toString()
     }
+
+
+    private fun createGoldenToolkitFileContent(blocFieldCase: String, blocSnakeCase: String): String =
+        """
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../helpers/golden_helper.dart';
+import '../../helpers/models/scenario.dart';
+import '${blocSnakeCase}_factory.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_list/models.dart';
+
+
+void main () {
+  runGoldenTests(
+    [
+      generateDeviceBuilder(
+          widget: ${blocFieldCase}Factory(), //example: Stubs.emptyList
+          scenario: Scenario(name: '${blocSnakeCase}_empty')),
+      generateDeviceBuilder(
+          widget: ${blocFieldCase}Factory(), //example:  Stubs.success
+          scenario: Scenario(name: '${blocSnakeCase}_success')),
+      generateDeviceBuilder(
+          widget: ${blocFieldCase}Factory(), //loading
+          scenario: Scenario(name: '${blocSnakeCase}_loading')),
+      generateDeviceBuilder(
+          widget: ${blocFieldCase}Factory(),
+          scenario: Scenario(name: '${blocSnakeCase}_error'))
+  ]);
+}
+""".trimIndent()
+
+    private fun createAlchemistGoldenFileContent(blocFieldCase: String, blocSnakeCase: String): String =
+        """
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../helpers/golden_helper.dart';
+import '../../helpers/models/scenario.dart';
+import '${blocSnakeCase}_factory.dart';
+import 'package:rx_bloc/rx_bloc.dart';
+import 'package:rx_bloc_list/models.dart';
+
+
+void main () {
+  runGoldenTests(
+    [
+      buildScenario(
+        scenario:  '${blocSnakeCase}_empty',
+        widget: ${blocFieldCase}Factory(),
+      ),
+      buildScenario(
+        scenario:  '${blocSnakeCase}_success',
+        widget: ${blocFieldCase}Factory(),
+      ),
+      buildScenario(
+        scenario:  '${blocSnakeCase}_loading',
+        widget: ${blocFieldCase}Factory(),
+      ),
+      buildScenario(
+        scenario:  '${blocSnakeCase}_error',
+        widget: ${blocFieldCase}Factory(),
+      ),
+  ]);
+}
+""".trimIndent()
 }
