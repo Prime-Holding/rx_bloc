@@ -12,7 +12,7 @@ public class RxTestBlocFactoryGeneratorTest extends BaseTestGenerator {
 
     @Test
     public void testBlocWithAll() throws IOException {
-        RxTestBlocFactoryGenerator rxBlocGenerator = new RxTestBlocFactoryGenerator(blockName(), templateNameGoldenToolkit(), projectName(), getWithAllBloc());
+        RxTestBlocFactoryGenerator rxBlocGenerator = new RxTestBlocFactoryGenerator(blockName(), projectName(), getWithAllBloc());
         String generate = rxBlocGenerator.generate().trim();
         File file = new File("src/test/resources/generator/RxTestBlocFactoryGenerator/RxTestBlocFactoryGenerator_all.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
