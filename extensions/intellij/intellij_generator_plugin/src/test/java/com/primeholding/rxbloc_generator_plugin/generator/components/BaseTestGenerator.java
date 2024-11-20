@@ -20,6 +20,14 @@ public abstract class BaseTestGenerator {
         return "my_test_app";
     }
 
+    protected String templateNameGoldenToolkit() {
+        return  "bloc_factory";
+    }
+
+    protected String templateNameAlchemist() {
+        return  "bloc_alchemist_golden";
+    }
+
     protected TestableClass getWithRelativeBloc(@SuppressWarnings("SameParameterValue") String relativePath) {
 
         VirtualFile appFolder = Mockito.mock(VirtualFile.class);

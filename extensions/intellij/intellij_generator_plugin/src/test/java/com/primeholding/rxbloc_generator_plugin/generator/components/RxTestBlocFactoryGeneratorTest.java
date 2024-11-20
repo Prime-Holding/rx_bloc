@@ -1,6 +1,5 @@
 package com.primeholding.rxbloc_generator_plugin.generator.components;
 
-import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass;
 import org.junit.Test;
 
 import java.io.File;
@@ -13,7 +12,7 @@ public class RxTestBlocFactoryGeneratorTest extends BaseTestGenerator {
 
     @Test
     public void testBlocWithAll() throws IOException {
-        RxTestBlocFactoryGenerator rxBlocGenerator = new RxTestBlocFactoryGenerator(blockName(), projectName(), getWithAllBloc());
+        RxTestBlocFactoryGenerator rxBlocGenerator = new RxTestBlocFactoryGenerator(blockName(), templateNameGoldenToolkit(), projectName(), getWithAllBloc());
         String generate = rxBlocGenerator.generate().trim();
         File file = new File("src/test/resources/generator/RxTestBlocFactoryGenerator/RxTestBlocFactoryGenerator_all.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();

@@ -12,7 +12,7 @@ public class RxTestBlocGoldenGeneratorTest extends BaseTestGenerator {
 
     @Test
     public void testBlocWithAll() throws IOException {
-        RxTestBlocGoldenGenerator rxBlocGenerator = new RxTestBlocGoldenGenerator(blockName(), "bloc_golden", projectName(), getWithAllBloc());
+        RxTestBlocGoldenGenerator rxBlocGenerator = new RxTestBlocGoldenGenerator(blockName(), templateNameGoldenToolkit(), projectName(), getWithAllBloc());
         String generate = rxBlocGenerator.generate().trim();
         File file = new File("src/test/resources/generator/RxTestBlocGoldenGenerator/RxTestBlocGoldenGenerator_all.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
@@ -21,7 +21,7 @@ public class RxTestBlocGoldenGeneratorTest extends BaseTestGenerator {
 
     @Test
     public void testBlocAlchemistWithAll() throws IOException {
-        RxTestBlocGoldenGenerator rxBlocGenerator = new RxTestBlocGoldenGenerator(blockName(), "bloc_alchemist_golden", projectName(), getWithAllBloc());
+        RxTestBlocGoldenGenerator rxBlocGenerator = new RxTestBlocGoldenGenerator(blockName(), templateNameAlchemist(), projectName(), getWithAllBloc());
         String generate = rxBlocGenerator.generate().trim();
         File file = new File("src/test/resources/generator/RxTestBlocGoldenGenerator/RxTestBlocAlchemistGoldenGenerator_all.dart");
         String inputRepoText = String.join("\n", Files.readAllLines(file.toPath())).trim();
