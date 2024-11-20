@@ -447,13 +447,9 @@ Scaffold(
 
     private fun createGoldenToolkitFileContent(blocFieldCase: String, blocSnakeCase: String): String =
         """
-import 'package:flutter_test/flutter_test.dart';
-
 import '../../helpers/golden_helper.dart';
 import '../../helpers/models/scenario.dart';
 import '${blocSnakeCase}_factory.dart';
-import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_list/models.dart';
 
 
 void main () {
@@ -477,13 +473,8 @@ void main () {
 
     private fun createAlchemistGoldenFileContent(blocFieldCase: String, blocSnakeCase: String): String =
         """
-import 'package:flutter_test/flutter_test.dart';
-
 import '../../helpers/golden_helper.dart';
-import '../../helpers/models/scenario.dart';
 import '${blocSnakeCase}_factory.dart';
-import 'package:rx_bloc/rx_bloc.dart';
-import 'package:rx_bloc_list/models.dart';
 
 
 void main () {
