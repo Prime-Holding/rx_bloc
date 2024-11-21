@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:{{project_name}}/base/models/errors/error_model.dart';
 
 import '../../helpers/golden_helper.dart';
@@ -8,7 +9,8 @@ void main() {
   runGoldenTests([
     buildScenario(
       scenario: 'login_empty',
-      widget: loginFactory(
+      act: _loginActPump,
+      builder: () => loginFactory(
         loggedIn: false,
         showErrors: false,
         isLoading: false,
@@ -16,27 +18,30 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_filled',
-      widget: loginFactory(
+      act: _loginActPump,
+      builder: () => loginFactory(
         email: Stubs.email,
         password: Stubs.password,
       ),
     ),
     buildScenario(
+      scenario: 'login_loading',
+      customPumpBeforeTest: animationCustomPump,
+      builder: () => loginFactory(isLoading: true),
+    ),
+    buildScenario(
       scenario: 'login_success',
-      widget: loginFactory(
+      act: _loginActPump,
+      builder: () => loginFactory(
         isLoading: false,
         loggedIn: true,
         showErrors: false,
       ),
     ),
     buildScenario(
-      scenario: 'login_loading',
-      customPumpBeforeTest: animationCustomPump,
-      widget: loginFactory(isLoading: true),
-    ),
-    buildScenario(
       scenario: 'login_error',
-      widget: loginFactory(
+      act: _loginActPump,
+      builder: () => loginFactory(
         showErrors: true,
         errors: UnknownErrorModel(
           exception: Exception('Something went wrong'),
@@ -44,4 +49,10 @@ void main() {
       ),
     ),
   ]);
+}
+
+Future<void> _loginActPump(WidgetTester tester) async {
+  await tester.pump(const Duration(milliseconds: 1000));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 1000));
 }

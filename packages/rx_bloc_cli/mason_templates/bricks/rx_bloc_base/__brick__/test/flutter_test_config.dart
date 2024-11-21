@@ -41,6 +41,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
           enabled: _isRunningInCi,
           obscureText: false,
           filePathResolver: _filePathResolver,
+          renderShadows: true,
         ),
       ),
       run: () async {

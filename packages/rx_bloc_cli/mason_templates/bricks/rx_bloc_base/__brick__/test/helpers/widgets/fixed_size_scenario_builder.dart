@@ -16,6 +16,7 @@ class FixedSizeScenarioBuilder extends ScenarioBuilder {
     super.scenarioPadding,
     super.goldenAlignment,
     super.columns,
+    super.act,
     super.key,
   }) : super(
           devices: [
@@ -24,7 +25,7 @@ class FixedSizeScenarioBuilder extends ScenarioBuilder {
               size: size,
             )
           ],
-          widget: Container(),
+          builder: () => Container(),
         );
 
   /// List of widgets to be rendered in the scenario

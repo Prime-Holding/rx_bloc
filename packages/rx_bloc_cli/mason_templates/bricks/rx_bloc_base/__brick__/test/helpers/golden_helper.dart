@@ -72,41 +72,45 @@ const _defaultDevices = [
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
 /// on specified devices laid out in one row
 ScenarioBuilder buildScenario({
-  required Widget widget,
+  required Widget Function() builder,
   required String scenario,
   WidgetTesterCallback? customPumpBeforeTest,
   List<Device> devices = _defaultDevices,
   EdgeInsets? scenarioPadding = const EdgeInsets.symmetric(horizontal: 4),
+  WidgetTesterCallback? act,
 }) =>
     ScenarioBuilder(
       name: scenario,
-      widget: widget,
+      builder: builder,
       devices: devices,
       customPumpBeforeTest: customPumpBeforeTest,
       scenarioPadding: scenarioPadding,
       columns: _defaultDevices.length,
       goldenAlignment: GoldenAlignment.center,
+      act: act,
     );
 
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
 /// on specified devices laid out in a grid
 ScenarioBuilder buildScenarioGrid({
-  required Widget widget,
+  required Widget Function() builder,
   required String scenario,
   WidgetTesterCallback? customPumpBeforeTest,
   GoldenAlignment? goldenAlignment,
   int? columns,
   List<Device> devices = _defaultDevices,
   EdgeInsets? scenarioPadding = const EdgeInsets.all(4),
+  WidgetTesterCallback? act,
 }) =>
     ScenarioBuilder(
       name: scenario,
-      widget: widget,
+      builder: builder,
       devices: devices,
       columns: columns,
       customPumpBeforeTest: customPumpBeforeTest,
       goldenAlignment: goldenAlignment ?? GoldenAlignment.top,
       scenarioPadding: scenarioPadding,
+      act: act,
     );
 
 /// endregion
@@ -131,11 +135,11 @@ void runUiComponentGoldenTests({
         size: size,
         scenarioPadding: scenarioPadding,
         goldenAlignment: goldenAlignment ?? GoldenAlignment.top,
+        act: act,
         children: children,
       )
     ],
     customWrapAndPump: customWrapAndPump,
-    act: act,
   );
 }
 
@@ -143,7 +147,6 @@ void runUiComponentGoldenTests({
 void runGoldenTests(
     List<ScenarioBuilder> buildScenarios, {
       WidgetWithThemePump? customWrapAndPump,
-      WidgetTesterCallback? act,
     }) {
   for (final scenario in buildScenarios) {
     for (final theme in Themes.values) {
@@ -162,8 +165,9 @@ void runGoldenTests(
               theme: theme,
             ),
         pumpBeforeTest: scenario.customPumpBeforeTest  ?? onlyPumpAndSettle,
-        whilePerforming:
-          act != null ? (tester) async => () async => act(tester) : null,
+        whilePerforming: scenario.act != null
+            ? (tester) async => () async => scenario.act!(tester)
+            : null,
       );
     }
   }

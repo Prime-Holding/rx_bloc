@@ -11,12 +11,13 @@ import 'golden_test_device_scenario.dart';
 class ScenarioBuilder extends StatelessWidget {
   const ScenarioBuilder({
     required this.name,
-    required this.widget,
+    required this.builder,
     required this.devices,
     this.scenarioPadding,
     this.columns,
     this.customPumpBeforeTest,
     this.goldenAlignment = GoldenAlignment.top,
+    this.act,
     super.key,
   });
 
@@ -24,7 +25,7 @@ class ScenarioBuilder extends StatelessWidget {
   final String name;
 
   /// Widget to be used for a golden test
-  final Widget widget;
+  final Widget Function() builder;
 
   /// List of devices to render the scenario on
   final List<Device> devices;
@@ -42,6 +43,9 @@ class ScenarioBuilder extends StatelessWidget {
   /// A custom pump method that will be called before each test
   final Future<void> Function(WidgetTester)? customPumpBeforeTest;
 
+  /// A custom pump method that will be called after each test
+  final WidgetTesterCallback? act;
+
   @override
   Widget build(BuildContext context) => GoldenTestGroup(
         columns: columns,
@@ -53,7 +57,7 @@ class ScenarioBuilder extends StatelessWidget {
                 device: device,
                 scenarioName: name,
                 padding: scenarioPadding,
-                child: widget,
+                child: Scaffold(body: builder.call()),
               ),
             ),
           )

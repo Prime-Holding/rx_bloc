@@ -10,11 +10,11 @@ void main() {
     () => runGoldenTests(
       [
         buildScenario(
-          widget: createPinFactory(),
+          builder: () => createPinFactory(),
           scenario: 'create_pin_empty',
         ),
         buildScenario(
-          widget: createPinFactory(title: Stubs.title),
+          builder: () => createPinFactory(title: Stubs.title),
           scenario: 'create_pin_title',
         ),
       ],
