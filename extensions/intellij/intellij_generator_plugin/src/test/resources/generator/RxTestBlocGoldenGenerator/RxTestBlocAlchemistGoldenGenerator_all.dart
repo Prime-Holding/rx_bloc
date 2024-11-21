@@ -14,6 +14,7 @@ void main() {
     ),
     buildScenario(
       scenario:  'sample_loading',
+      customPumpBeforeTest: animationCustomPump,
       widget: sampleFactory(),
     ),
     buildScenario(
