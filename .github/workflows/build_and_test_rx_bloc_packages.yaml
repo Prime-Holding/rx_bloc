@@ -43,7 +43,7 @@ jobs:
         working-directory: ${{ matrix.folder }}
         run: |
           if [ -d "test" ]; then
-            flutter test --coverage --exclude-tags=not-tests
+            flutter test --coverage --dart-define=CI=true --exclude-tags=not-tests
           fi
       - name: Remove unnecessary files
         working-directory: ${{ matrix.folder }}
