@@ -38,7 +38,7 @@ void main() {
     buildScenario(
       scenario: 'error',
       act: animationCustomPump,
-      devices: [defaultDevices.first],
+      devices: defaultDevices.getRange(0, 2).toList(growable: false),
       widget: loginFactory(
         showErrors: true,
         errors: UnknownErrorModel(
