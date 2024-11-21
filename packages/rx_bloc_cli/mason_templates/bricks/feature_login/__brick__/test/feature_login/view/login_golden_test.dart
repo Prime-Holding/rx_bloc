@@ -9,7 +9,7 @@ void main() {
   runGoldenTests([
     buildScenario(
       scenario: 'login_empty',
-      act: animationCustomPump,
+      act: _loginActPump,
       builder: () => loginFactory(
         loggedIn: false,
         showErrors: false,
@@ -18,7 +18,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_filled',
-      act: animationCustomPump,
+      act: _loginActPump,
       builder: () => loginFactory(
         email: Stubs.email,
         password: Stubs.password,
@@ -26,13 +26,12 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_loading',
-      act: animationCustomPump,
       customPumpBeforeTest: animationCustomPump,
       builder: () => loginFactory(isLoading: true),
     ),
     buildScenario(
       scenario: 'login_success',
-      act: animationCustomPump,
+      act: _loginActPump,
       builder: () => loginFactory(
         isLoading: false,
         loggedIn: true,
@@ -41,7 +40,7 @@ void main() {
     ),
     buildScenario(
       scenario: 'login_error',
-      act: animationCustomPump,
+      act: _loginActPump,
       builder: () => loginFactory(
         showErrors: true,
         errors: UnknownErrorModel(
@@ -50,4 +49,10 @@ void main() {
       ),
     ),
   ]);
+}
+
+Future<void> _loginActPump(WidgetTester tester) async {
+  await tester.pump(const Duration(milliseconds: 1000));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 1000));
 }
