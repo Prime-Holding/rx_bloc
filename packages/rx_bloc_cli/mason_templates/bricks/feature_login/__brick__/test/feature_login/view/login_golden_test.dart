@@ -8,40 +8,38 @@ import '../stubs.dart';
 void main() {
   runGoldenTests([
     buildScenario(
-      scenario: 'login_empty',
-      act: _loginActPump,
-      builder: () => loginFactory(
+      scenario: 'empty',
+      widget: loginFactory(
         loggedIn: false,
         showErrors: false,
         isLoading: false,
       ),
     ),
     buildScenario(
-      scenario: 'login_filled',
-      act: _loginActPump,
-      builder: () => loginFactory(
+      scenario: 'filled',
+      widget: loginFactory(
         email: Stubs.email,
         password: Stubs.password,
       ),
     ),
     buildScenario(
-      scenario: 'login_loading',
+      scenario: 'loading',
       customPumpBeforeTest: animationCustomPump,
-      builder: () => loginFactory(isLoading: true),
+      widget: loginFactory(isLoading: true),
     ),
     buildScenario(
-      scenario: 'login_success',
-      act: _loginActPump,
-      builder: () => loginFactory(
+      scenario: 'success',
+      widget: loginFactory(
         isLoading: false,
         loggedIn: true,
         showErrors: false,
       ),
     ),
     buildScenario(
-      scenario: 'login_error',
-      act: _loginActPump,
-      builder: () => loginFactory(
+      scenario: 'error',
+      act: animationCustomPump,
+      devices: [defaultDevices.first],
+      widget: loginFactory(
         showErrors: true,
         errors: UnknownErrorModel(
           exception: Exception('Something went wrong'),
@@ -49,10 +47,4 @@ void main() {
       ),
     ),
   ]);
-}
-
-Future<void> _loginActPump(WidgetTester tester) async {
-  await tester.pump(const Duration(milliseconds: 1000));
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(milliseconds: 1000));
 }

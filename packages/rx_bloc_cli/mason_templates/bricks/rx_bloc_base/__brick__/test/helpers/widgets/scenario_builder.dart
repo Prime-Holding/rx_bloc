@@ -11,7 +11,7 @@ import 'golden_test_device_scenario.dart';
 class ScenarioBuilder extends StatelessWidget {
   const ScenarioBuilder({
     required this.name,
-    required this.builder,
+    required this.widget,
     required this.devices,
     this.scenarioPadding,
     this.columns,
@@ -25,7 +25,7 @@ class ScenarioBuilder extends StatelessWidget {
   final String name;
 
   /// Widget to be used for a golden test
-  final Widget Function() builder;
+  final Widget widget;
 
   /// List of devices to render the scenario on
   final List<Device> devices;
@@ -57,7 +57,7 @@ class ScenarioBuilder extends StatelessWidget {
                 device: device,
                 scenarioName: name,
                 padding: scenarioPadding,
-                child: Scaffold(body: builder.call()),
+                child: Scaffold(body: widget),
               ),
             ),
           )

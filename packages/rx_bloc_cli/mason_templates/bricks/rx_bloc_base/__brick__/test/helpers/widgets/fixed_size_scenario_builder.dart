@@ -25,7 +25,7 @@ class FixedSizeScenarioBuilder extends ScenarioBuilder {
               size: size,
             )
           ],
-          builder: () => Container(),
+          widget: Container(),
         );
 
   /// List of widgets to be rendered in the scenario

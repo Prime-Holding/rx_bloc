@@ -10,15 +10,15 @@ void main() {
     () => runGoldenTests(
       [
         buildScenario(
-          builder: () => verifyPinFactory(),
+          widget: verifyPinFactory(),
           scenario: 'verify_pin__empty',
         ),
         buildScenario(
-          builder: () => verifyPinFactory(title: Stubs.title),
+          widget: verifyPinFactory(title: Stubs.title),
           scenario: 'verify_pin__title',
         ),
         buildScenario(
-          builder: () => verifyPinFactory(
+          widget: verifyPinFactory(
             title: Stubs.title,
             showBiometricsButton: true,
           ),

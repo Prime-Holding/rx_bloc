@@ -10,15 +10,15 @@ void main() {
     () => runGoldenTests(
       [
         buildScenario(
-          builder: () => updatePinFactory(),
+          widget: updatePinFactory(),
           scenario: 'update_pin_empty',
         ),
         buildScenario(
-          builder: () => updatePinFactory(title: Stubs.title),
+          widget: updatePinFactory(title: Stubs.title),
           scenario: 'update_pin_title',
         ),
         buildScenario(
-          builder: () =>
+          widget:
               updatePinFactory(title: Stubs.title, showBiometricsButton: true),
           scenario: 'update_pin_show_biometrics',
         ),

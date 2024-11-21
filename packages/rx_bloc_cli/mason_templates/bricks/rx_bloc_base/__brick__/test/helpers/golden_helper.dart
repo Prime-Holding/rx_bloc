@@ -72,7 +72,7 @@ const _defaultDevices = [
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
 /// on specified devices laid out in one row
 ScenarioBuilder buildScenario({
-  required Widget Function() builder,
+  required Widget widget,
   required String scenario,
   WidgetTesterCallback? customPumpBeforeTest,
   List<Device> devices = _defaultDevices,
@@ -81,7 +81,7 @@ ScenarioBuilder buildScenario({
 }) =>
     ScenarioBuilder(
       name: scenario,
-      builder: builder,
+      widget: widget,
       devices: devices,
       customPumpBeforeTest: customPumpBeforeTest,
       scenarioPadding: scenarioPadding,
@@ -93,7 +93,7 @@ ScenarioBuilder buildScenario({
 /// Convenience method that builds a [ScenarioBuilder] with a scenario rendered
 /// on specified devices laid out in a grid
 ScenarioBuilder buildScenarioGrid({
-  required Widget Function() builder,
+  required Widget widget,
   required String scenario,
   WidgetTesterCallback? customPumpBeforeTest,
   GoldenAlignment? goldenAlignment,
@@ -104,7 +104,7 @@ ScenarioBuilder buildScenarioGrid({
 }) =>
     ScenarioBuilder(
       name: scenario,
-      builder: builder,
+      widget: widget,
       devices: devices,
       columns: columns,
       customPumpBeforeTest: customPumpBeforeTest,

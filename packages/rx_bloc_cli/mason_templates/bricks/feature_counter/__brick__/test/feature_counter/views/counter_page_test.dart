@@ -15,7 +15,7 @@ void main() {
       [
         buildScenario(
           scenario:  'counter',
-          builder: () => counterPageFactory(
+          widget: counterPageFactory(
             count: 2{{#has_authentication}},
             isLoggedIn: true{{/has_authentication}},
             isLoading: LoadingWithTag(
@@ -26,7 +26,7 @@ void main() {
         ),
         buildScenario(
           scenario: 'error',
-          builder: () => counterPageFactory(
+          widget: counterPageFactory(
             count: 2,
             error: NetworkErrorModel(),{{#has_authentication}}
             isLoggedIn: false,{{/has_authentication}}
@@ -35,7 +35,7 @@ void main() {
         buildScenario(
           scenario: 'loading',
           customPumpBeforeTest: animationCustomPump,
-          builder: () => counterPageFactory(
+          widget: counterPageFactory(
             count: 2,{{#has_authentication}}
             isLoggedIn: false,{{/has_authentication}}
             isLoading: LoadingWithTag(
