@@ -28,7 +28,7 @@ typedef WidgetWithThemePump = Future<void> Function(
 typedef WidgetTesterCallback = Future<void> Function(WidgetTester widgetTester);
 
 /// Default devices to run golden tests on
-const _defaultDevices = [
+const defaultDevices = [
   Device(
       name: 'iPhone SE(2nd generation)',
       size: Size(375, 667),
@@ -75,7 +75,7 @@ ScenarioBuilder buildScenario({
   required Widget widget,
   required String scenario,
   WidgetTesterCallback? customPumpBeforeTest,
-  List<Device> devices = _defaultDevices,
+  List<Device> devices = defaultDevices,
   EdgeInsets? scenarioPadding = const EdgeInsets.symmetric(horizontal: 4),
   WidgetTesterCallback? act,
 }) =>
@@ -85,7 +85,7 @@ ScenarioBuilder buildScenario({
       devices: devices,
       customPumpBeforeTest: customPumpBeforeTest,
       scenarioPadding: scenarioPadding,
-      columns: _defaultDevices.length,
+      columns: defaultDevices.length,
       goldenAlignment: GoldenAlignment.center,
       act: act,
     );
@@ -98,7 +98,7 @@ ScenarioBuilder buildScenarioGrid({
   WidgetTesterCallback? customPumpBeforeTest,
   GoldenAlignment? goldenAlignment,
   int? columns,
-  List<Device> devices = _defaultDevices,
+  List<Device> devices = defaultDevices,
   EdgeInsets? scenarioPadding = const EdgeInsets.all(4),
   WidgetTesterCallback? act,
 }) =>
