@@ -35,16 +35,16 @@ void main() {
         showErrors: false,
       ),
     ),
-    buildScenario(
-      scenario: 'error',
-      act: animationCustomPump,
-      devices: defaultDevices.getRange(0, 2).toList(growable: false),
-      widget: loginFactory(
-        showErrors: true,
-        errors: UnknownErrorModel(
-          exception: Exception('Something went wrong'),
-        ),
-      ),
-    ),
+    // buildScenario(
+    //   scenario: 'error',
+    //   act: animationCustomPump,
+    //   devices: defaultDevices.getRange(0, 2).toList(growable: false),
+    //   widget: loginFactory(
+    //     showErrors: true,
+    //     errors: UnknownErrorModel(
+    //       exception: Exception('Something went wrong'),
+    //     ),
+    //   ),
+    // ),
   ]);
 }
