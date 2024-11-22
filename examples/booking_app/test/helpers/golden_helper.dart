@@ -13,10 +13,10 @@ import 'widgets/scenario_builder.dart';
 
 /// Type definition for a function that wraps a widget with a theme and pumps it
 typedef WidgetWithThemePump = Future<void> Function(
-    WidgetTester,
-    Widget,
-    Themes? theme,
-    );
+  WidgetTester,
+  Widget,
+  Themes? theme,
+);
 
 /// Type definition for a function that accepts a [WidgetTester] parameter
 typedef WidgetTesterCallback = Future<void> Function(WidgetTester widgetTester);
@@ -135,10 +135,10 @@ void runUiComponentGoldenTests({
 
 /// Runs golden tests for a list of scenarios in both light and dark mode
 void runGoldenTests(
-    List<ScenarioBuilder> buildScenarios, {
-      WidgetWithThemePump? customWrapAndPump,
-      WidgetTesterCallback? act,
-    }) {
+  List<ScenarioBuilder> buildScenarios, {
+  WidgetWithThemePump? customWrapAndPump,
+  WidgetTesterCallback? act,
+}) {
   for (final scenario in buildScenarios) {
     for (final theme in Themes.values) {
       final themeName = theme.name;
@@ -149,7 +149,7 @@ void runGoldenTests(
         fileName: '${scenarioName}_$themeName',
         builder: () => scenario,
         pumpWidget: (tester, widget) =>
-        customWrapAndPump?.call(tester, widget, theme) ??
+            customWrapAndPump?.call(tester, widget, theme) ??
             pumpDeviceBuilderWithLocalizationsAndTheme(
               tester,
               widget,
@@ -157,7 +157,7 @@ void runGoldenTests(
             ),
         pumpBeforeTest: scenario.customPumpBeforeTest ?? onlyPumpAndSettle,
         whilePerforming:
-        act != null ? (tester) async => () async => act(tester) : null,
+            act != null ? (tester) async => () async => act(tester) : null,
       );
     }
   }
@@ -167,17 +167,13 @@ void runGoldenTests(
 
 /// region Pump helpers
 
-/// Pump function used to pump the widget and wait for the animation to finish
-Future<void> animationCustomPump(WidgetTester tester) =>
-    tester.pump(const Duration(milliseconds: 300));
-
 /// Pumps the provided [widget] and injects a [MaterialApp] wrapper,
 /// localizations and theme.
 Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
-    WidgetTester tester,
-    Widget widget, {
-      Themes? theme,
-    }) =>
+  WidgetTester tester,
+  Widget widget, {
+  Themes? theme,
+}) =>
     pumpScenarioBuilderWithMaterialApp(
       tester,
       widget,
@@ -185,14 +181,14 @@ Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(
 
 /// Pumps the provided [widget] and injects a [MaterialApp] wrapper
 Future<void> pumpScenarioBuilderWithMaterialApp(
-    WidgetTester tester,
-    Widget widget, {
-      TargetPlatform platform = TargetPlatform.android,
-      Iterable<LocalizationsDelegate<dynamic>>? localizations,
-      NavigatorObserver? navigatorObserver,
-      Iterable<Locale>? localeOverrides,
-      ThemeData? theme,
-    }) async {
+  WidgetTester tester,
+  Widget widget, {
+  TargetPlatform platform = TargetPlatform.android,
+  Iterable<LocalizationsDelegate<dynamic>>? localizations,
+  NavigatorObserver? navigatorObserver,
+  Iterable<Locale>? localeOverrides,
+  ThemeData? theme,
+}) async {
   await onlyPumpWidget(
       tester,
       _buildMaterialAppWrapper(

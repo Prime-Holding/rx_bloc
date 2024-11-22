@@ -17,14 +17,12 @@ void main() {
         capacityFilterData: Stub.capacityFilterDataTwoPersonsOneRoom,
         dateRangeFilterData: Stub.dateRangeFilterData,
       ), //example:  Stubs.success
-      customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
       widget: hotelSearchFactory(
         hotels: Stub.paginatedListEmptyLoading,
       ), //loading
       scenario: 'hotel_search_loading',
-      customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
         widget: hotelSearchFactory(

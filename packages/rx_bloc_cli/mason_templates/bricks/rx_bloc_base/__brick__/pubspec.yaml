@@ -7,8 +7,7 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
   flutter: '>=3.13.0 <4.0.0'
 
-dependencies:
-  alchemist: ^0.11.0{{#enable_dev_menu}}
+dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
   alice_dio: ^1.0.6{{/enable_dev_menu}}
   collection: ^1.18.0
@@ -55,7 +54,8 @@ dependencies:
   widget_toolkit_qr: ^0.2.0{{/enable_feature_qr_scanner}}
   
 
-dev_dependencies: 
+dev_dependencies:
+  alchemist: ^0.11.0
   build_runner: ^2.4.13
   # flutter_driver:
   #   sdk: flutter

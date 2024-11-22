@@ -9,14 +9,12 @@ void main() {
         hotel: Stub.hotel1,
       ), //example: Stubs.emptyList
       scenario: 'hotel_details_loading',
-      customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
       widget: hotelDetailsFactory(
         hotel: Stub.hotel1Loaded,
       ), //example: Stubs.emptyList
       scenario: 'hotel_details_loaded',
-      customPumpBeforeTest: animationCustomPump,
     ),
   ]);
 }
