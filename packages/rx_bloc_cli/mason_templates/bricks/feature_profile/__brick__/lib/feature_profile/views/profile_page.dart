@@ -5,10 +5,13 @@ import 'package:flutter_rx_bloc/flutter_rx_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:widget_toolkit/models.dart';
-import 'package:widget_toolkit/ui_components.dart';
+import 'package:widget_toolkit/ui_components.dart';{{#enable_pin_code}}
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';{{/enable_pin_code}}
 
 import '../../app_extensions.dart';
-import '../../base/common_ui_components/app_error_modal_widget.dart'; {{#enable_change_language}}
+import '../../base/common_ui_components/app_error_modal_widget.dart';
+import '../../base/common_ui_components/app_divider.dart';
+import '../../base/common_ui_components/app_list_tile.dart'; {{#enable_change_language}}
 import '../../lib_change_language/bloc/change_language_bloc.dart';
 import '../../lib_change_language/extensions/language_model_extensions.dart';
 import '../../lib_change_language/ui_components/language_picker_button.dart'; {{/enable_change_language}}{{#enable_pin_code}}
@@ -52,47 +55,39 @@ class _ProfilePageState extends State<ProfilePage> {
             LogoutActionButton(),
           ],
         {{/has_authentication}}),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: context.designSystem.spacing.xl0,
-              ),
-              child: OutlineFillButton(
-                text: context.l10n.featureNotifications.notificationPageTitle,
-                onPressed: () => context
+        body:ListView(
+            shrinkWrap: true,
+            children: [
+            _buildUserInfo(context),
+            AppListTile(
+                onTap: () => context
                     .read<RouterBlocType>()
                     .events
                     .push(const NotificationsRoute()),
+                featureTitle:
+                    context.l10n.featureNotifications.notificationPageTitle,
+                featureSubtitle:
+                    context.l10n.featureNotifications.notificationPageSubtitle,
+                icon: context.designSystem.icons.notifications,
               ),
-            ),
-            SizedBox(
-              height: context.designSystem.spacing.xl0,
-            ), {{#enable_change_language}}
+            const AppDivider(), {{#enable_change_language}}
             LanguagePickerButton(
-              onChanged: (language) => context
-                  .read<ChangeLanguageBlocType>()
-                  .events
-                  .setCurrentLanguage(language),
-              padding: context.designSystem.spacing.xl0,
-              buttonText:
-                  context.l10n.featureProfile.profilePageChangeLanguageButton,
-              translate: (model) => model.asText(context),
-            ), {{/enable_change_language}}
-            SizedBox(
-              height: context.designSystem.spacing.xl0,
-            ), {{#enable_pin_code}}
+                onChanged: (language) => context
+                    .read<ChangeLanguageBlocType>()
+                    .events
+                    .setCurrentLanguage(language),
+                buttonText:
+                    context.l10n.featureProfile.profilePageChangeLanguageButton,
+                translate: (model) => model.asText(context),
+              ),
+            const AppDivider(),{{/enable_change_language}} {{#enable_pin_code}}
             RxBlocBuilder<CreatePinBlocType, bool>(
-              state: (bloc) => bloc.states.isPinCreated,
-              builder: (context, isPinCreated, bloc) => Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: context.designSystem.spacing.xl0,
-                ),
-                child: OutlineFillButton(
-                  text: _buildPinButtonText(isPinCreated, context),
-                  onPressed: () {
+                state: (bloc) => bloc.states.isPinCreated,
+                builder: (context, isPinCreated, bloc) => AppListTile(
+                  featureTitle: _buildPinButtonText(isPinCreated, context),
+                  icon: context.designSystem.icons.pin,
+                  featureSubtitle: context.l10n.libPinCode.pinCodeSubtitle,
+                  onTap: () {
                     if (isPinCreated.hasData && isPinCreated.data!) {
                       context
                           .read<UpdateAndVerifyPinBlocType>()
@@ -114,11 +109,42 @@ class _ProfilePageState extends State<ProfilePage> {
                               title: context.l10n.libPinCode.createPin,
                             ),
                           );
-                   }
-                 },
+                    }
+                  },
                 ),
               ),
-            ), {{/enable_pin_code}}
+              const AppDivider(),
+              AppListTile(
+                featureTitle: context.l10n.libPinCode.biometricsTitle,
+                featureSubtitle: context.l10n.libPinCode.biometricsSubtitle,
+                icon: context.designSystem.icons.fingerprint,
+                trailing: BiometricsSwitch(
+                  biometricsLocalDataSource: context.read<BiometricsLocalDataSource>(),
+                ),
+              ),
+              const AppDivider(), {{/enable_pin_code}}
+              RxBlocBuilder<ProfileBlocType, Result<bool>>(
+                state: (bloc) => bloc.states.areNotificationsEnabled,
+                builder: (context, areNotificationsEnabled, bloc) =>
+                    AppListTile(
+                  featureTitle: context
+                      .l10n.featureProfile.profilePageEnableNotificationText,
+                  featureSubtitle: areNotificationsEnabled.value
+                      ? context
+                          .l10n.featureProfile.notificationsSubtitleDeactivete
+                      : context
+                          .l10n.featureProfile.notificationsSubtitleActivete,
+                  icon: areNotificationsEnabled.value
+                      ? context.designSystem.icons.notificationsActive
+                      : context.designSystem.icons.notificationsInactive,
+                  trailing: Switch(
+                    value: areNotificationsEnabled.value,
+                    onChanged: (_) => bloc.events.setNotifications(
+                      !areNotificationsEnabled.value,
+                    ),
+                  ),
+                ),
+              ),
             AppErrorModalWidget<ProfileBlocType>(
               errorState: (bloc) => bloc.states.errors,
             ),
@@ -138,21 +164,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 }
               },
-              child: const SizedBox(),
             ),
-            ListTile(
-              title: Text(context
-                  .l10n.featureProfile.profilePageEnableNotificationText),
-              trailing: RxBlocBuilder<ProfileBlocType, Result<bool>>(
-                state: (bloc) => bloc.states.areNotificationsEnabled,
-                builder: (context, areNotificationsEnabled, bloc) => Switch(
-                  value: areNotificationsEnabled.value,
-                  onChanged: (_) => bloc.events.setNotifications(
-                    !areNotificationsEnabled.value,
-                  ),
-                ),
-              ),
-            ),{{#enable_pin_code}}
+            {{#enable_pin_code}}
             RxBlocListener<CreatePinBlocType, bool>(
               state: (bloc) => bloc.states.isPinCreated,
               condition: (previous, current) =>
@@ -187,6 +200,41 @@ class _ProfilePageState extends State<ProfilePage> {
              ),
              {{/enable_pin_code}}
           ],
+        ),
+      );
+
+  Widget _buildUserInfo(BuildContext context) => Padding(
+        padding: EdgeInsets.all(
+          context.designSystem.spacing.xs,
+        ),
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: context.designSystem.spacing.l,
+                ),
+                child: CircleAvatar(
+                  backgroundColor: context.designSystem.colors.primaryColor,
+                  radius: 50,
+                  child: Icon(
+                    context.designSystem.icons.avatar,
+                    size: 75,
+                    color: context.designSystem.colors.white,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: context.designSystem.spacing.l,
+                ),
+                child: Text(
+                  'John Doe',
+                  style: context.designSystem.typography.h1Bold20,
+                ),
+              ),
+            ],
+          ),
         ),
       );
 

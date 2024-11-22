@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
   "bulgarian": "Bulgarian",
-  "english": "English"
+  "english": "English",
+  "changeLanguageSubtitle" : "Change the language of the app"
 }

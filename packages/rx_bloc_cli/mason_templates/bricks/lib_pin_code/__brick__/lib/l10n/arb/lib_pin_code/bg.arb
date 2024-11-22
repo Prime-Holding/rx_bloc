@@ -15,5 +15,8 @@
   "biometricsEnabled": "Биометричната функция е активирана",
   "biometricsDisabled": "Биометричната функция е деактивирана",
   "verifyPinCodePage": "Верифициране на пин",
-  "wrongConfirmationPin": "Грешен пин за потвърждаване"
+  "wrongConfirmationPin": "Грешен пин за потвърждаване",
+  "pinCodeSubtitle" : "Управлявайте своя ПИН код",
+  "biometricsTitle" : "Биометрия",
+  "biometricsSubtitle" : "Управлявайте вашите биометрични данни"
 }

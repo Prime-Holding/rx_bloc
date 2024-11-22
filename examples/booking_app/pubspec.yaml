@@ -35,7 +35,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^2.7.0
-  golden_toolkit: ^0.15.0
+  alchemist: ^0.10.0
   mockito: ^5.0.0
   patrol: ^3.11.0
   quiver: ^3.0.0

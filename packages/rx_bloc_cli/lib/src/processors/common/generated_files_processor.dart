@@ -1,3 +1,4 @@
+import 'package:rx_bloc_cli/src/processors/android/android_main_activity_processor.dart';
 import 'package:rx_bloc_cli/src/processors/android/app_build_gradle_processor.dart';
 import 'package:rx_bloc_cli/src/processors/common/file_string_processor.dart';
 
@@ -29,6 +30,10 @@ class GeneratedFilesProcessor {
         (
           'android/app/src/main/AndroidManifest.xml',
           AndroidManifestProcessor(args),
+        ),
+        (
+          'android/app/src/main/kotlin/${args.organisationDomain}/${args.organisationName}/${args.projectName}/MainActivity.kt',
+          AndroidMainActivityProcessor(args)
         ),
         (
           'ios/Runner.xcodeproj/project.pbxproj',

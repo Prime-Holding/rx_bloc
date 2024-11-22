@@ -3,19 +3,29 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class BookingAppFileComparator extends LocalFileComparator {
-  static const double _kGoldenDiffTolerance = 0.0041;
+class GoldensFileComparator extends LocalFileComparator {
+  static const double _kGoldenDiffTolerance = 0.0;
 
-  BookingAppFileComparator(String testFile)
+  static final List<String> _basePathKeywordsToRemove = [
+    'goldens',
+    'macos',
+    'windows',
+    'linux',
+    'ci',
+    'light_theme',
+    'dark_theme',
+  ];
+
+  GoldensFileComparator(String testFile)
       : super(Uri.parse(_getTestFile(testFile)));
 
   @override
   Future<bool> compare(Uint8List imageBytes, Uri golden) async {
-    final dsa = Uri.parse(golden.path.split('/').last);
+    final goldenUri = Uri.parse(golden.path.split('/').last);
 
     final ComparisonResult result = await GoldenFileComparator.compareLists(
       imageBytes,
-      await getGoldenBytes(dsa),
+      await getGoldenBytes(goldenUri),
     );
 
     if (!result.passed && result.diffPercent > _kGoldenDiffTolerance) {
@@ -40,7 +50,7 @@ class BookingAppFileComparator extends LocalFileComparator {
         (goldenFileComparator as LocalFileComparator).basedir.path.split('/');
 
     baseDir.removeWhere(
-      (element) => ['goldens', 'light_theme', 'dark_theme'].contains(element),
+      (element) => _basePathKeywordsToRemove.contains(element),
     );
 
     return '${baseDir.join('/')}$fileName';
