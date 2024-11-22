@@ -34,7 +34,6 @@ void main() {
         ),
         buildScenario(
           scenario: 'loading',
-          customPumpBeforeTest: animationCustomPump,
           widget: counterPageFactory(
             count: 2,{{#has_authentication}}
             isLoggedIn: false,{{/has_authentication}}
