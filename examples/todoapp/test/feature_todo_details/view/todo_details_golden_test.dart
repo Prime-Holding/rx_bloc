@@ -19,7 +19,6 @@ void main() {
     ),
     buildScenario(
       scenario: 'todo_details_bulk_action_loading',
-      customPumpBeforeTest: animationCustomPump,
       widget: todoDetailsFactory(
         todo: Result.success(Stubs.todoIncomplete),
         isLoading: true,
@@ -27,7 +26,6 @@ void main() {
     ),
     buildScenario(
       scenario: 'todo_details_loading',
-      customPumpBeforeTest: animationCustomPump,
       widget: todoDetailsFactory(todo: Result.loading()),
     ),
     buildScenario(

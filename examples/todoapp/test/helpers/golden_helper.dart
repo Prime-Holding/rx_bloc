@@ -171,10 +171,6 @@ void runGoldenTests(
 
 /// region Pump helpers
 
-/// Pump function used to pump the widget and wait for the animation to finish
-Future<void> animationCustomPump(WidgetTester tester) =>
-    tester.pump(const Duration(milliseconds: 300));
-
 /// Pumps the provided [widget] and injects a [MaterialApp] wrapper,
 /// localizations and theme.
 Future<void> pumpDeviceBuilderWithLocalizationsAndTheme(

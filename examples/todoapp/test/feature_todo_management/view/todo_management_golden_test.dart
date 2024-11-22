@@ -23,7 +23,6 @@ void main() {
     ),
     buildScenario(
       scenario: 'todo_management_loading',
-      customPumpBeforeTest: animationCustomPump,
       widget: todoManagementFactory(isLoading: true),
     ),
     buildScenario(

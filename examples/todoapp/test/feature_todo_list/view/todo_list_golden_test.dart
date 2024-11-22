@@ -22,14 +22,12 @@ void main() {
     ),
     buildScenario(
       scenario: 'todo_list_loading',
-      customPumpBeforeTest: animationCustomPump,
       widget: todoListFactory(
         todoList: Result.loading(),
         filter: TodosFilterModel.all,
       ),
     ),
     buildScenario(
-      customPumpBeforeTest: animationCustomPump,
       scenario: 'todo_list_bulk_action_loading',
       widget: todoListFactory(
         isLoading: true,
