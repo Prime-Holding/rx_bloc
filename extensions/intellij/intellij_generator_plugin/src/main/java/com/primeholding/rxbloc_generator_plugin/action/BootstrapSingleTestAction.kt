@@ -490,7 +490,6 @@ void main () {
       ),
       buildScenario(
         scenario:  '${blocSnakeCase}_loading',
-        customPumpBeforeTest: animationCustomPump,
         widget: ${blocFieldCase}Factory(),
       ),
       buildScenario(

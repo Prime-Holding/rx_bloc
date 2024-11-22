@@ -14,7 +14,6 @@ void main() {
     ),
     buildScenario(
       scenario:  '${bloc_snake_case}_loading',
-      customPumpBeforeTest: animationCustomPump,
       widget: ${bloc_field_case}Factory(),
     ),
     buildScenario(
