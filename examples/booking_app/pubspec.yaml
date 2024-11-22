@@ -29,13 +29,13 @@ dependencies:
   rxdart: ^0.28.0
 
 dev_dependencies:
+  alchemist: ^0.11.0
   build_runner: ^2.4.11
   clean_coverage: ^0.0.3
   flutter_lints: any
   flutter_test:
     sdk: flutter
   go_router_builder: ^2.7.0
-  alchemist: ^0.10.0
   mockito: ^5.0.0
   patrol: ^3.11.0
   quiver: ^3.0.0

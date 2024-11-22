@@ -8,7 +8,6 @@ void main() {
       scenario: 'home_page_search_golden_test',
       widget: homePageFactory(
           navigationType: Stub.searchNavItemType), //example: Stubs.emptyList
-      customPumpBeforeTest: animationCustomPump,
     ),
   ]);
 }

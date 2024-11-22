@@ -31,6 +31,10 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
         goldenTestTheme: GoldenTestTheme(
           backgroundColor: Colors.grey,
           borderColor: Colors.transparent,
+          nameTextStyle: const TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
         ),
         platformGoldensConfig: const PlatformGoldensConfig(
           enabled: !_isRunningInCi,

@@ -19,14 +19,12 @@ void main() {
           initFavoriteHotels:
               Stub.paginatedListHotelThreeAndOne), //example:  Stubs.success
       scenario: 'hotel_favorites_success',
-      customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
       widget: hotelFavoritesFactory(
         favoriteHotelsResult: Result.loading(),
       ), //loading
       scenario: 'hotel_favorites_loading',
-      customPumpBeforeTest: animationCustomPump,
     ),
     buildScenario(
       widget: hotelFavoritesFactory(
