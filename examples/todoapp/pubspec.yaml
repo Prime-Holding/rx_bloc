@@ -8,6 +8,7 @@ environment:
   flutter: '>=3.22.2 <4.0.0'
 
 dependencies:
+  alchemist: ^0.10.0
   alice: ^0.4.1
   alice_dio: ^1.0.4
   collection: ^1.18.0
@@ -24,7 +25,6 @@ dependencies:
   flutter_rx_bloc: 7.0.0
   flutter_secure_storage: ^9.2.2
   go_router: ^14.2.7
-  golden_toolkit: ^0.15.0
   http: ^1.2.2
   jaguar_jwt: ^3.0.0
   json_annotation: ^4.9.0
