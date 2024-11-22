@@ -41,7 +41,10 @@ class GoldenTestDeviceScenario extends StatelessWidget {
               child: SizedBox(
                 height: device.size.height,
                 width: device.size.width,
-                child: child,
+                child: TickerMode(
+                  enabled: false,
+                  child: child,
+                ),
               ),
             ),
           ),

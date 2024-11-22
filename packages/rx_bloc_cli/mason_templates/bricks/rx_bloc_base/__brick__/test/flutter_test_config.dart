@@ -31,15 +31,21 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
         goldenTestTheme: GoldenTestTheme(
           backgroundColor: Colors.grey,
           borderColor: Colors.transparent,
+          nameTextStyle: const TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
         ),
         platformGoldensConfig: const PlatformGoldensConfig(
           enabled: !_isRunningInCi,
           obscureText: false,
+          renderShadows: true,
           filePathResolver: _filePathResolver,
         ),
         ciGoldensConfig: const CiGoldensConfig(
           enabled: _isRunningInCi,
           obscureText: false,
+          renderShadows: true,
           filePathResolver: _filePathResolver,
         ),
       ),
