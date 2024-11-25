@@ -42,6 +42,15 @@ enum CreateCommandArguments {
     help: 'Enables change language',
   ),
 
+  /// Remote translations
+  remoteTranslations(
+    name: 'enable-remote-translations',
+    type: CreateCommandArgumentType.boolean,
+    defaultsTo: true,
+    prompt: 'Enable remote translations:',
+    help: 'Enables remote translations',
+  ),
+
   /// Counter showcase
   counter(
     name: 'enable-feature-counter',

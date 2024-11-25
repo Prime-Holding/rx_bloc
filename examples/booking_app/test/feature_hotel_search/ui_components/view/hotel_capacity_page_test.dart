@@ -4,12 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../helpers/golden_helper.dart';
-import '../../../helpers/models/scenario.dart';
 
 void main() {
   runGoldenTests([
-    generateDeviceBuilder(
-      scenario: Scenario(name: 'hotel_capacity_page'),
+    buildScenario(
+      scenario: 'hotel_capacity_page',
       widget: HotelCapacityPage(
           onApplyPressed: (i1, i2) {}), //example: Stubs.emptyList
     ),

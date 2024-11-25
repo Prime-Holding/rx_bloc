@@ -29,16 +29,16 @@ final class Stub {
   static const licenseFileName = '{{~ licence.dart }}';
 
   static const overwrittenLoginFiles = [
-    'test/feature_login/view/goldens/dark_theme/login_empty.png',
-    'test/feature_login/view/goldens/dark_theme/login_error.png',
-    'test/feature_login/view/goldens/dark_theme/login_filled.png',
-    'test/feature_login/view/goldens/dark_theme/login_loading.png',
-    'test/feature_login/view/goldens/dark_theme/login_success.png',
-    'test/feature_login/view/goldens/light_theme/login_empty.png',
-    'test/feature_login/view/goldens/light_theme/login_error.png',
-    'test/feature_login/view/goldens/light_theme/login_filled.png',
-    'test/feature_login/view/goldens/light_theme/login_loading.png',
-    'test/feature_login/view/goldens/light_theme/login_success.png'
+    'test/feature_login/view/goldens/ci/dark_theme/login_empty.png',
+    'test/feature_login/view/goldens/ci/dark_theme/login_error.png',
+    'test/feature_login/view/goldens/ci/dark_theme/login_filled.png',
+    'test/feature_login/view/goldens/ci/dark_theme/login_loading.png',
+    'test/feature_login/view/goldens/ci/dark_theme/login_success.png',
+    'test/feature_login/view/goldens/ci/light_theme/login_empty.png',
+    'test/feature_login/view/goldens/ci/light_theme/login_error.png',
+    'test/feature_login/view/goldens/ci/light_theme/login_filled.png',
+    'test/feature_login/view/goldens/ci/light_theme/login_loading.png',
+    'test/feature_login/view/goldens/ci/light_theme/login_success.png'
   ];
 
   static Map<String, Object> get defaultValues {
@@ -105,6 +105,7 @@ final class Stub {
       analyticsEnabled: true,
       pushNotificationsEnabled: true,
       changeLanguageEnabled: true,
+      remoteTranslationsEnabled: true,
       patrolTestsEnabled: true,
       devMenuEnabled: true,
       realtimeCommunicationEnabled: true,
@@ -141,6 +142,8 @@ final class Stub {
       pushNotificationsEnabled: true,
       changeLanguageEnabled:
           CreateCommandArguments.changeLanguage.defaultValue(),
+      remoteTranslationsEnabled:
+          CreateCommandArguments.remoteTranslations.defaultValue(),
       patrolTestsEnabled: CreateCommandArguments.patrol.defaultValue(),
       devMenuEnabled: CreateCommandArguments.devMenu.defaultValue(),
       realtimeCommunicationEnabled:

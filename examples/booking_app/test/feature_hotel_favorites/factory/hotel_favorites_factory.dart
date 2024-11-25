@@ -10,19 +10,21 @@ import '../mock/hotel_favorites_mock.dart';
 
 /// Change the parameters according the the needs of the test
 Widget hotelFavoritesFactory({
-  required Result<List<Hotel>> favoriteHotels,
+  required Result<List<Hotel>> favoriteHotelsResult,
+  List<Hotel>? initFavoriteHotels,
   int? count,
-}) =>
-    Scaffold(
-      body: MultiProvider(
-        providers: [
-          RxBlocProvider<HotelFavoritesBlocType>.value(
-            value: hotelFavoritesMockFactory(
-              favoriteHotels: favoriteHotels,
-              count: count,
-            ),
+}) {
+  return Scaffold(
+    body: MultiProvider(
+      providers: [
+        RxBlocProvider<HotelFavoritesBlocType>.value(
+          value: hotelFavoritesMockFactory(
+            favoriteHotels: favoriteHotelsResult,
+            count: count,
           ),
-        ],
-        child: const HotelFavoritesPage(),
-      ),
-    );
+        ),
+      ],
+      child: HotelFavoritesPage(initialList: initFavoriteHotels),
+    ),
+  );
+}

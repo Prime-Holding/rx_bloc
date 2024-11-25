@@ -10,5 +10,6 @@
   "notificationsPageConfig" : "Когато Firebase Cloud Messaging (FCM) се инициализира, FCM токен се генерира за устройството. Можете да използвате този токен, за да получавате известия, докато приложението е на преден план, на заден план или дори прекратено.",
   "notificationsMessage": "Това е нотификация!",
   "notificationsDelayed": "Това е забавена нотификация!",
-  "notificationRedirecing":"This is a redirecting notification"
+  "notificationRedirecing":"Това е пренасочващо известие",
+  "notificationPageSubtitle": "Демонстрира функционалността на известията"
 }

@@ -6,5 +6,7 @@
   "enableNotificationSuccessMessage":"Известията са активирани успешно",
   "notificationsDisabledMessage":"Изглежда, че сте отказали известия на това устройство. За да можем да показваме известия, те трябва да бъдат активирани ръчно от настройките на устройството.",
   "notificationsTurnedOn": "Нотификациите ви са успешно Включени!",
-  "notificationsTurnedOff": "Нотификациите ви са успешно изключени!"
+  "notificationsTurnedOff": "Нотификациите ви са успешно изключени!",
+  "notificationsSubtitleActivete" : "Докоснете, за да активирате",
+  "notificationsSubtitleDeactivete" : "Докоснете, за да деактивирате"
 }
