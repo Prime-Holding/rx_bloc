@@ -128,3 +128,8 @@ coverage/
 
 # Generated examples
 packages/rx_bloc_cli/example/test_app
+
+# Exclude golden files for specific platforms other than ci in Example projects
+examples/**/test/**/goldens/macos/
+examples/**/test/**/goldens/linux/
+examples/**/test/**/goldens/windows/

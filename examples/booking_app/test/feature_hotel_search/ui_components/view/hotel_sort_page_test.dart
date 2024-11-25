@@ -2,16 +2,14 @@ import 'package:booking_app/feature_hotel_search/ui_components/hotel_sort_page.d
 import 'package:favorites_advanced_base/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../helpers/golden_helper.dart';
-import '../../../helpers/models/scenario.dart';
 
 void main() {
   runGoldenTests([
-    generateDeviceBuilder(
-      scenario: Scenario(name: 'hotel_sort_page'),
+    buildScenario(
+      scenario: 'hotel_sort_page',
       widget: const HotelSortPage(), //example: Stubs.emptyList
     ),
   ]);

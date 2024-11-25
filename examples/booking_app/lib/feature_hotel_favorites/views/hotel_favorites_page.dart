@@ -12,7 +12,10 @@ import '../blocs/hotel_favorites_bloc.dart';
 import '../ui_components/hotel_animated_list_view.dart';
 
 class HotelFavoritesPage extends StatelessWidget {
-  const HotelFavoritesPage({super.key});
+  const HotelFavoritesPage({List<Hotel>? initialList, super.key})
+      : _initialList = initialList;
+
+  final List<Hotel>? _initialList;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -25,6 +28,7 @@ class HotelFavoritesPage extends StatelessWidget {
                   .states
                   .favoriteHotels
                   .whereSuccess(),
+              initialList: _initialList,
               onHotelPressed: (hotel) =>
                   context.read<RouterBlocType>().events.pushTo(
                       HotelDetailsRoutes(

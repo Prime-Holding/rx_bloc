@@ -12,10 +12,7 @@ import '../main/steps_utils/profile_page_steps.dart';{{/has_authentication}}
 void main() {
   final patrolBaseConfig = PatrolBaseConfig();
     patrolBaseConfig.patrol(
-      'Test flow of user login in, navigating to counter page,'
-      'incrementing counter and expecting appropriate states,'
-      'decrementing counter and expecting appropriate states,'
-      'and navigating to the profile page and logging out',
+      'Counter test',
       ($) async {
       BuildApp app = BuildApp($);
       await app.buildApp();

@@ -9,18 +9,22 @@ import '../../base/common_blocs/hotel_manage_bloc.dart';
 class HotelAnimatedListView extends StatelessWidget {
   const HotelAnimatedListView({
     required Stream<List<Hotel>> hotelList,
+    List<Hotel>? initialList,
     Function(Hotel)? onHotelPressed,
     super.key,
   })  : _hotelList = hotelList,
+        _initialList = initialList,
         _onHotelPressed = onHotelPressed;
 
   final Function(Hotel)? _onHotelPressed;
   final Stream<List<Hotel>> _hotelList;
+  final List<Hotel>? _initialList;
 
   @override
   Widget build(BuildContext context) => AnimatedStreamList<Hotel>(
         streamList: _hotelList,
         primary: true,
+        initialList: _initialList,
         padding: const EdgeInsets.only(bottom: 67),
         itemBuilder: (item, index, context, animation) => _createTile(
           HotelListItem(
