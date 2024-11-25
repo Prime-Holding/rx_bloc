@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'com.rx_bloc'
-version '3.0.4'
+version '3.1.0'
 
 
 apply plugin: 'org.jetbrains.intellij'
@@ -55,6 +55,9 @@ patchPluginXml {
     changeNotes """
      <ul>
      <li>
+     v.3.1.0 - Added the option to choose between the `golden_toolkit` and `alchemist` packages when creating golden tests.
+     </li>
+     <li>
      v.3.0.4 - Replaced deprecated classes from external libraries with their updated counterparts to ensure compatibility and improve performance
      </li>
      <li>
@@ -90,7 +93,7 @@ patchPluginXml {
         <li>v1.5.0 
         <br /> - Updated DI Dependencies to not be a singleton</li>
         <br /> - Added an improvement to the - Wrap With Quick Action Support - 
-        to analyze, filter and display a choose BloC states dialog - based on the file names and path - by the convension:
+        to analyze, filter and display a choose BloC states dialog - based on the file names and path - by the convention:
          <br /> feature_xx
          <br />   -- bloc / xx_bloc.dart  
          <br />   -- di
@@ -104,8 +107,8 @@ patchPluginXml {
         <br /> - Introduce "New -> RxBloc List".  
         <br /> - Wrap With Quick Action Support (RxBlocBuilder, RxResultBuilder, RxPaginatedBuilder, RxBlocListener, RxFormFieldBuilder, RxTextFormFieldBuilder). 
         </li>
-        <li>v1.3.0 - Added option for creating an entire feature that includes bloc, page and dependency inhection</li>
-        <li>v1.2.0 - Added option for creating Null Safety BloC claseses</li>
+        <li>v1.3.0 - Added option for creating an entire feature that includes bloc, page and dependency injection</li>
+        <li>v1.2.0 - Added option for creating Null Safety BloC classes</li>
         <li>v1.1.0 - Added option for creating BloC extensions</li>
         <li>v1.0.0 - Initial release</li>
      </ul>

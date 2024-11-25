@@ -1,6 +1,5 @@
 package com.primeholding.rxbloc_generator_plugin.generator.components;
 
-import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass;
 import org.junit.Test;
 
 import java.io.File;

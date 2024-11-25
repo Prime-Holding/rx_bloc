@@ -9,13 +9,27 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFile
+import com.primeholding.rxbloc_generator_plugin.action.GenerateRxBlocTestDialog.TestLibrary
 import com.primeholding.rxbloc_generator_plugin.generator.parser.TestableClass
 import com.primeholding.rxbloc_generator_plugin.generator.parser.Utils
 import com.primeholding.rxbloc_generator_plugin.ui.ChooseBlocsDialog
 import java.io.File
 
 
-class BootstrapTestsAction : AnAction() {
+class BootstrapTestsAction : AnAction(), GenerateRxBlocTestDialog.Listener {
+
+    private lateinit var event: AnActionEvent
+
+    override fun actionPerformed(e: AnActionEvent) {
+        event = e
+        val dialog = GenerateRxBlocTestDialog(this)
+        dialog.show()
+    }
+
+    override fun onGenerateBlocTestClicked(selectedTestLibrary: TestLibrary) {
+        generate(selectedTestLibrary)
+    }
+
     override fun update(e: AnActionEvent?) {
         super.update(e)
         val files = e?.dataContext?.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
@@ -66,21 +80,17 @@ class BootstrapTestsAction : AnAction() {
         return false
     }
 
-    private fun isChooseBlogsDialog(file: VirtualFile): Boolean {
-        if (file.isDirectory && (file.name == "lib" || file.name == "src" || file.name == "test")) {
-            return true
-        }
-        return false
-    }
+    private fun isChooseBlogsDialog(file: VirtualFile): Boolean =
+        file.isDirectory && (file.name == "lib" || file.name == "src" || file.name == "test")
 
-    override fun actionPerformed(e: AnActionEvent?) {
+    private fun generate(selectedTestLibrary: TestLibrary) {
 
         val allowedPrefixes = listOf("feature_", "lib_")
 
-        e?.project?.basePath?.let { baseDir ->
+        event.project?.basePath?.let { baseDir ->
 
             var isShowDialog = false
-            val files = e.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
+            val files = event.dataContext.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY)
 
 
             val potentialBlocFolders = mutableListOf<VirtualFile>()
@@ -118,7 +128,7 @@ class BootstrapTestsAction : AnAction() {
                     val dialog = ChooseBlocsDialog(parsedLib, selected)
                     val showAndGet = dialog.showAndGet()
                     if (showAndGet) {
-                        writeItIntoTests(test, selected, trueBaseDir.name, e.project!!, dialog.includeDiMocks())
+                        writeItIntoTests(test, selected, trueBaseDir.name, event.project!!, dialog.includeDiMocks(), selectedTestLibrary)
                     }
                 }
             } else {
@@ -129,13 +139,13 @@ class BootstrapTestsAction : AnAction() {
                 }
                 if (list.isEmpty()) {
                     Messages.showMessageDialog(
-                        "No BloCs Found in the selected direcoty that follow naming convention",
+                        "No BloCs Found in the selected directory that follow naming convention",
                         "No Blocs",
                         null
                     )
                     return
                 }
-                writeItIntoTests(test, list, trueBaseDir.name, e.project!!, true)//potentially choose the flag
+                writeItIntoTests(test, list, trueBaseDir.name, event.project!!, true, selectedTestLibrary)//potentially choose the flag
             }
         }
     }
@@ -145,7 +155,8 @@ class BootstrapTestsAction : AnAction() {
         blocs: List<TestableClass>,
         projectName: String,
         project: Project,
-        includeDiMocks: Boolean
+        includeDiMocks: Boolean,
+        selectedTestLibrary: TestLibrary
     ) {
         val blocFileExt = "_bloc.dart"
         WriteCommandAction.runWriteCommandAction(project) {
@@ -188,7 +199,8 @@ class BootstrapTestsAction : AnAction() {
                 folder = featureFolder.createChildDirectory(this, "view")
                 testFile = folder.createChildData(this, bloc.file.name.replace(blocFileExt, "_golden_test.dart"))
 
-                writeGoldenTest(testFile, bloc, projectName)
+                val goldenTemplateName = (if (selectedTestLibrary == TestLibrary.GoldenToolkit) "bloc_golden" else "bloc_alchemist_golden")
+                writeGoldenTest(testFile, bloc, projectName, goldenTemplateName)
                 FileEditorManager.getInstance(project).openFile(testFile, true)
 
 
@@ -211,9 +223,12 @@ class BootstrapTestsAction : AnAction() {
 
     companion object {
 
-        fun writeGoldenTest(testFile: VirtualFile, bloc: TestableClass, projectName: String) {
+        fun writeGoldenTest(testFile: VirtualFile, bloc: TestableClass, projectName: String, templateName: String) {
             val test = com.primeholding.rxbloc_generator_plugin.generator.components.RxTestBlocGoldenGenerator(
-                name = bloc.file.name.replace(".dart", ""), projectName = projectName, bloc = bloc
+                name = bloc.file.name.replace(".dart", ""),
+                templateName = templateName,
+                projectName = projectName,
+                bloc = bloc
             )
             FileUtil.writeToFile(File(testFile.path), test.generate())
         }
