@@ -1,6 +1,6 @@
 ## Manual Feature Creation
 
-This documentation covers the manual steps needed for setting up a feature. Many steps mentioned in this document can be automated by using the [RxBloc intelliJ plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc).
+This documentation covers the manual steps needed for setting up a feature. Many steps mentioned in this document can be automated by using the [RxBloc IntelliJ plugin](https://plugins.jetbrains.com/plugin/16165-rxbloc).
 
 ### Steps
 1. [Feature directory](#feature-directory)
@@ -37,7 +37,7 @@ Views are created either as a `StatelessWidget` or a `StatefulWidget`. The view 
 
 ### Dependency Injection (DI)
 
-The `di` sub-directory of the feature contains the dependency injection code for the feature. It's created either as a `StatefullWidget` or a `StatelessWidget`. The `di` widget is responsible for providing the dependencies to the views. The widget should follow the naming convention `FeatureViewNameWithDependencies`. For the `counter` feature, since the `view` earlier created is named `CounterPage`, the `di` widget should be named `CounterPageWithDependencies`.
+The `di` sub-directory of the feature contains the dependency injection code for the feature. It's created either as a `StatefulWidget` or a `StatelessWidget`. The `di` widget is responsible for providing the dependencies to the views. The widget should follow the naming convention `FeatureViewNameWithDependencies`. For the `counter` feature, since the `view` earlier created is named `CounterPage`, the `di` widget should be named `CounterPageWithDependencies`.
 
 Unlike the app-wide `di`, feature specific `di` automatically manages the lifecycle of their dependencies removing them from the widget tree when the user is not accessing the underlying views.
 
@@ -196,7 +196,7 @@ Each new feature that is going to be used in combination with the `GoRouter` has
 
 
 ### Route Model
-`RouteModel` is a enhanced enum that is used to define the route model, it is made of the following properties: `pathName`, `fullPath`, `permissionName`. Each feature has to have a corresponding enhanced enum declared.
+`RouteModel` is an enhanced enum that is used to define the route model, it is made of the following properties: `pathName`, `fullPath`, `permissionName`. Each feature has to have a corresponding enhanced enum declared.
 
 Example for the `counter` feature:
 ```dart
