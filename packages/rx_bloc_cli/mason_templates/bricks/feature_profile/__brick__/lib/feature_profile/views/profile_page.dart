@@ -129,6 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const AppDivider(),
                 {{/enable_change_language}}
+                {{#enable_pin_code}}
                 BiometricsSwitch(
                   biometricsLocalDataSource:
                       context.read<BiometricsLocalDataSource>(),
@@ -144,6 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const AppDivider(),
+                {{/enable_pin_code}}
                 RxBlocBuilder<ProfileBlocType, Result<bool>>(
                   state: (bloc) => bloc.states.areNotificationsEnabled,
                   builder: (context, areNotificationsEnabled, bloc) =>
