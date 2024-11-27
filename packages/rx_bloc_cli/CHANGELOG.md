@@ -1,3 +1,6 @@
+## [5.3.1]
+* Design uplift for the generated project
+
 ## [5.3.0]
 * Replace golden tests dependency from `golden_toolkit` to [`alchemist`][alchemist_url] in generated projects
 * Updated project dependencies
