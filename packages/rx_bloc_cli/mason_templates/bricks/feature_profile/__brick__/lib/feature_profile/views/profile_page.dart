@@ -25,14 +25,8 @@ import '../extensions/push_notifications_extensions.dart';{{#has_authentication}
 import '../ui_components/logout_action_button.dart';{{/has_authentication}}
 
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -46,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   'John Doe',
                   style: context.designSystem.typography.h1Bold20,
                 ),
+                centerTitle: true,
                 background: Padding(
                   padding: EdgeInsets.only(
                     top: context.designSystem.spacing.xxxxl1,
@@ -196,7 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 RxBlocListener<CreatePinBlocType, bool>(
                   state: (bloc) => bloc.states.isPinCreated,
                   condition: (previous, current) =>
-                      previous != current && current == true,
+                      previous != current &&
+                      current == true &&
+                      previous != null,
                   listener: (context, isCreated) async {
                     if (isCreated) {
                       await showBlurredBottomSheet(
