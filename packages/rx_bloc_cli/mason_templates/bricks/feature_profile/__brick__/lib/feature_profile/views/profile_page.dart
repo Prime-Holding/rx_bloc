@@ -46,6 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   'John Doe',
                   style: context.designSystem.typography.h1Bold20,
                 ),
+                centerTitle: true,
                 background: Padding(
                   padding: EdgeInsets.only(
                     top: context.designSystem.spacing.xxxxl1,
@@ -196,7 +197,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 RxBlocListener<CreatePinBlocType, bool>(
                   state: (bloc) => bloc.states.isPinCreated,
                   condition: (previous, current) =>
-                      previous != current && current == true,
+                      previous != current &&
+                      current == true &&
+                      previous != null,
                   listener: (context, isCreated) async {
                     if (isCreated) {
                       await showBlurredBottomSheet(
