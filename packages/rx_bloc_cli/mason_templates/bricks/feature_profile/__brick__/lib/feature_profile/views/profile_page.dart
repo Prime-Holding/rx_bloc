@@ -25,14 +25,8 @@ import '../extensions/push_notifications_extensions.dart';{{#has_authentication}
 import '../ui_components/logout_action_button.dart';{{/has_authentication}}
 
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
