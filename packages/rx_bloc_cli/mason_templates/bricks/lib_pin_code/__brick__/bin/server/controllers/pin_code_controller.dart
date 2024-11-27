@@ -1,13 +1,11 @@
 {{> licence.dart }}
 
-import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:shelf/shelf.dart';
 
-import '../config.dart';
-import '../services/authentication_service.dart';
 import '../services/pin_code_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/server_exceptions.dart';
+import '../utils/utilities.dart';
 
 class PinCodeController extends ApiController {
   PinCodeController(this._pinCodeService);
@@ -33,24 +31,8 @@ class PinCodeController extends ApiController {
     );
   }
 
-  String _getUserIdFromAuthToken(Request request) {
-    final authToken =
-        request.headers[AuthenticationService.authHeader]?.split(' ')[1] ?? '';
-
-    final JwtClaim decClaimSet = verifyJwtHS256Signature(
-      authToken,
-      jwtSigningKey,
-      maxAge: const Duration(hours: 1),
-    );
-    decClaimSet.validate(
-      issuer: jwtIssuer,
-      audience: jwtAudiences.first,
-    );
-    return decClaimSet.payload['userId'];
-  }
-
   Future<Response> _createPinCode(Request request) async {
-    final userId = _getUserIdFromAuthToken(request);
+    final userId = getUserIdFromAuthToken(request.headers);
 
     final pinCode = (await request.bodyFromFormData())['pinCode'];
     throwIfEmpty(
@@ -64,7 +46,7 @@ class PinCodeController extends ApiController {
   }
 
   Future<Response> _verifyPinCode(Request request) async {
-    final userId = _getUserIdFromAuthToken(request);
+    final userId = getUserIdFromAuthToken(request.headers);
     final requestBody = await request.bodyFromFormData();
 
     final pinCode = requestBody['pinCode'];
@@ -87,7 +69,7 @@ class PinCodeController extends ApiController {
   }
 
   Future<Response> _updatePinCode(Request request) async {
-    final userId = _getUserIdFromAuthToken(request);
+    final userId = getUserIdFromAuthToken(request.headers);
     final requestBody = await request.bodyFromFormData();
 
     final token = requestBody['token'];
