@@ -24,7 +24,7 @@ UpdateAndVerifyPinBlocType updateAndVerifyPinMockFactory() {
   when(statesMock.deleteStoredPinData).thenAnswer((_) => emptyState);
   when(statesMock.deletedData).thenAnswer((_) => emptyState);
   when(statesMock.deleteStoredPinData).thenAnswer((_) => emptyState);
-  when(statesMock.isPinUpdated).thenAnswer((_) => emptyState);
+  when(statesMock.isPinUpdated).thenAnswer((_) => emptyState.skip(1).publish());
   when(statesMock.sessionValue).thenAnswer((_) =>
       Stream.value(SessionState.stopListening).publishReplay(maxSize: 1)
         ..connect());

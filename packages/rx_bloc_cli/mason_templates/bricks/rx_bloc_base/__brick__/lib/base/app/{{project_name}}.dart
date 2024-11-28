@@ -104,8 +104,8 @@ class __MyMaterialAppState extends State<_MyMaterialApp> {
   void _createSessionConfig() {
     context.read<UpdateAndVerifyPinBlocType>().events.deleteSavedData();
     _sessionConfig = SessionConfig(
-      invalidateSessionForAppLostFocus: const Duration(seconds: 60),
-      invalidateSessionForUserInactivity: const Duration(seconds: 7),
+        invalidateSessionForAppLostFocus: const Duration(seconds: 15),
+        invalidateSessionForUserInactivity: const Duration(minutes: 5),
     );
     context
         .read<UpdateAndVerifyPinBlocType>()

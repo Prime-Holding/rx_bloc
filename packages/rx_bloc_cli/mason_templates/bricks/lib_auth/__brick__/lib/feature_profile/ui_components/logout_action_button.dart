@@ -13,23 +13,21 @@ class LogoutActionButton extends StatelessWidget {
   const LogoutActionButton({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      RxBlocBuilder<UserAccountBlocType, bool>(
-        state: (bloc) => bloc.states.isLoading,
-        builder: (context, loading, bloc) => loading.isLoading
-            ? Padding(
-                padding: EdgeInsets.all(
-                  context.designSystem.spacing.m,
-                ),
-                child: AppLoadingIndicator.textButtonValue(
+  Widget build(BuildContext context) => Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: context.designSystem.spacing.m),
+        child: RxBlocBuilder<UserAccountBlocType, bool>(
+          state: (bloc) => bloc.states.isLoading,
+          builder: (context, loading, bloc) => loading.isLoading
+              ? AppLoadingIndicator.textButtonValue(
                   context,
                   color: context.designSystem.colors.backgroundColor,
+                )
+              : IconButton(
+                  icon: context.designSystem.icons.logoutIcon,
+                  onPressed: () =>
+                      context.read<UserAccountBlocType>().events.logout(),
                 ),
-              )
-            : IconButton(
-                icon: context.designSystem.icons.logoutIcon,
-                onPressed: () =>
-                    context.read<UserAccountBlocType>().events.logout(),
-              ),
+        ),
       );
 }

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/ui_components.dart';
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_list_tile.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/notification_model.dart';
 import '../../lib_router/router.dart';
@@ -23,9 +24,7 @@ class NotificationsPage extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () => showBlurredBottomSheet(
-                context:
-                    AppRouter.rootNavigatorKey.currentContext ??
-                            context,
+                context: AppRouter.rootNavigatorKey.currentContext ?? context,
                 builder: (BuildContext context) => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -53,105 +52,95 @@ class NotificationsPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: kIsWeb ? MediaQuery.of(context).size.width / 4 : 20,
+            padding: EdgeInsets.only(
+              top: context.designSystem.spacing.l,
             ),
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: context.designSystem.spacing.xs1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppListTile(
+                  featureTitle: context.l10n.featureNotifications
+                      .notificationPermissionRequestText,
+                  trailing: const SizedBox(),
+                  icon: const Icon(Icons.notification_add_outlined),
+                  onTap: () => context
+                      .read<NotificationsBlocType>()
+                      .events
+                      .requestNotificationPermissions(),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    OutlineFillButton(
-                      text: context.l10n.featureNotifications
-                          .notificationPermissionRequestText,
-                      onPressed: () => context
-                          .read<NotificationsBlocType>()
-                          .events
-                          .requestNotificationPermissions(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: context.designSystem.spacing.s,
+                AppListTile(
+                  featureTitle:
+                      context.l10n.featureNotifications.notificationShowText,
+                  trailing: const SizedBox(),
+                  icon: const Icon(Icons.notifications_active_outlined),
+                  onTap: () => context
+                      .read<NotificationsBlocType>()
+                      .events
+                      .sendMessage(context
+                          .l10n.featureNotifications.notificationsMessage),
+                ),
+                AppListTile(
+                  featureTitle: context
+                      .l10n.featureNotifications.notificationShowDelayedText,
+                  trailing: const SizedBox(),
+                  icon: const Icon(Icons.notifications_paused_outlined),
+                  onTap: () => context
+                      .read<NotificationsBlocType>()
+                      .events
+                      .sendMessage(
+                        context.l10n.featureNotifications.notificationsDelayed,
+                        delay: 5,
                       ),
-                      child: OutlineFillButton(
-                        text: context
-                            .l10n.featureNotifications.notificationShowText,
-                        onPressed: () => context
-                            .read<NotificationsBlocType>()
-                            .events
-                            .sendMessage(context.l10n.featureNotifications
-                                .notificationsMessage),
-                      ),
-                    ),
-                    OutlineFillButton(
-                      text: context.l10n.featureNotifications
-                          .notificationShowDelayedText,
-                      onPressed: () => context
-                          .read<NotificationsBlocType>()
-                          .events
-                          .sendMessage(
-                            context
-                                .l10n.featureNotifications.notificationsDelayed,
-                            delay: 5,
-                          ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: context.designSystem.spacing.s,
-                      ),
-                      child: OutlineFillButton(
-                        text: context.l10n.featureNotifications
-                            .notificationShowRedirectingText,
-                        onPressed: () => context
-                            .read<NotificationsBlocType>()
-                            .events
-                            .sendMessage(
-                                context.l10n.featureNotifications
-                                    .notificationRedirecing,
-                                delay: 5,
-                                data: NotificationModel(
-                                  type: NotificationModelType.dashboard,
-                                  id: '1',
-                                ).toJson()),
-                      ),
-                    ),
-                    RxBlocListener<NotificationsBlocType, bool>(
-                      state: (bloc) => bloc.states.permissionsAuthorized,
-                      listener: (ctx, authorized) async {
-                        if (authorized) return;
+                ),
+                AppListTile(
+                  featureTitle: context.l10n.featureNotifications
+                      .notificationShowRedirectingText,
+                  trailing: const SizedBox(),
+                  icon: const Icon(Icons.circle_notifications_outlined),
+                  onTap: () => context
+                      .read<NotificationsBlocType>()
+                      .events
+                      .sendMessage(
+                          context
+                              .l10n.featureNotifications.notificationRedirecing,
+                          delay: 5,
+                          data: NotificationModel(
+                            type: NotificationModelType.dashboard,
+                            id: '1',
+                          ).toJson()),
+                ),
+                RxBlocListener<NotificationsBlocType, bool>(
+                  state: (bloc) => bloc.states.permissionsAuthorized,
+                  listener: (ctx, authorized) async {
+                    if (authorized) return;
 
-                        // If not authorized, show a dialog popup
-                        await showAdaptiveDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            content: Text(
-                              context.l10n.featureNotifications
-                                  .notificationsPermissionsDenied,
-                              textAlign: TextAlign.center,
-                            ),
-                            actions: <Widget>[
-                              Center(
-                                child: TextButton(
-                                  onPressed: () => context.pop(),
-                                  child: Text(
-                                    context.l10n.ok,
-                                    style: context.designSystem.typography
-                                        .fadedButtonText,
-                                  ),
-                                ),
+                    // If not authorized, show a dialog popup
+                    await showAdaptiveDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: Text(
+                          context.l10n.featureNotifications
+                              .notificationsPermissionsDenied,
+                          textAlign: TextAlign.center,
+                        ),
+                        actions: <Widget>[
+                          Center(
+                            child: TextButton(
+                              onPressed: () => context.pop(),
+                              child: Text(
+                                context.l10n.ok,
+                                style: context
+                                    .designSystem.typography.fadedButtonText,
                               ),
-                            ],
+                            ),
                           ),
-                        );
-                      },
-                    ),
-                  ],
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              ),
+              ],
             ),
           ),
         ),
