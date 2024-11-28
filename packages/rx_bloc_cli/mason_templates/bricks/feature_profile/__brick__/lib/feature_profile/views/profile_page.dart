@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              expandedHeight: 200,
+              expandedHeight: 225,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
@@ -41,11 +41,9 @@ class ProfilePage extends StatelessWidget {
                   style: context.designSystem.typography.h1Bold20,
                 ),
                 centerTitle: true,
-                titlePadding: EdgeInsets.symmetric(
-                  vertical: context.designSystem.spacing.xl,
-                ),
                 background: Padding(
                   padding: EdgeInsets.only(
+                    top: context.designSystem.spacing.xxxxl1,
                     bottom: context.designSystem.spacing.xxxl,
                   ),
                   child: Center(
