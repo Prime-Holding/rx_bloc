@@ -41,29 +41,28 @@ class ProfilePage extends StatelessWidget {
                   style: context.designSystem.typography.h1Bold20,
                 ),
                 centerTitle: true,
+                titlePadding: EdgeInsets.symmetric(
+                  vertical: context.designSystem.spacing.xl,
+                ),
                 background: Padding(
                   padding: EdgeInsets.only(
-                    top: context.designSystem.spacing.xxxxl1,
+                    bottom: context.designSystem.spacing.xxxl,
                   ),
                   child: Center(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: context.designSystem.spacing.l,
-                          ),
-                          child: CircleAvatar(
-                            backgroundColor:
-                                context.designSystem.colors.primaryColor,
-                            radius: 50,
-                            child: Icon(
-                              context.designSystem.icons.avatar,
-                              size: 75,
-                              color: context.designSystem.colors.white,
-                            ),
-                          ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: context.designSystem.spacing.l,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor:
+                            context.designSystem.colors.primaryColor,
+                        radius: 50,
+                        child: Icon(
+                          context.designSystem.icons.avatar,
+                          size: 75,
+                          color: context.designSystem.colors.white,
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
