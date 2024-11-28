@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
   "profilePageNotificationsButton": "Notification sample",
-  "profilePageChangeLanguageButton":"Change Languge",
+  "profilePageChangeLanguageButton":"Change Language",
   "profilePageEnableNotificationText":"Enable notification",
   "enableNotificationSuccessMessage":"Notifications enabled successfully",
   "notificationsDisabledMessage":"Seems that you have denied notifications on this device. In order for us to show notifications, they need to be manually enabled from the device settings.",

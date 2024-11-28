@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              expandedHeight: 200,
+              expandedHeight: 225,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
@@ -44,26 +44,23 @@ class ProfilePage extends StatelessWidget {
                 background: Padding(
                   padding: EdgeInsets.only(
                     top: context.designSystem.spacing.xxxxl1,
+                    bottom: context.designSystem.spacing.xxxl,
                   ),
                   child: Center(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: context.designSystem.spacing.l,
-                          ),
-                          child: CircleAvatar(
-                            backgroundColor:
-                                context.designSystem.colors.primaryColor,
-                            radius: 50,
-                            child: Icon(
-                              context.designSystem.icons.avatar,
-                              size: 75,
-                              color: context.designSystem.colors.white,
-                            ),
-                          ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: context.designSystem.spacing.l,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor:
+                            context.designSystem.colors.primaryColor,
+                        radius: 50,
+                        child: Icon(
+                          context.designSystem.icons.avatar,
+                          size: 75,
+                          color: context.designSystem.colors.white,
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
