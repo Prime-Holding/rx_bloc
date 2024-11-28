@@ -67,7 +67,7 @@ class UsersController extends ApiController {
 
   Future<Response> _confirmEmailHandler(Request request) async {
     final params = await request.bodyFromFormData();
-    final token = params['token'];
+    // final token = params['token'];
 
     /// mocked for now
     return responseBuilder.buildOK(
@@ -98,7 +98,7 @@ class UsersController extends ApiController {
 
   Future<Response> _confirmSmsCodeHandler(Request request) async {
     final params = await request.bodyFromFormData();
-    final smsCode = params['smsCode'];
+    // final smsCode = params['smsCode'];
 
     /// mocked for now
     return responseBuilder.buildOK(
