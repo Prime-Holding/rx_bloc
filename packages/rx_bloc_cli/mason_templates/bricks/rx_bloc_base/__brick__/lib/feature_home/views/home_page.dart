@@ -39,20 +39,29 @@ class HomePage extends StatelessWidget {
       ),
       bottomNavigationBar: list.length == 1
           ? null
-          : BottomNavigationBar(
-              key: K.bottomNavigationBar,
-              backgroundColor: context.designSystem.colors.backgroundColor,
-              type: BottomNavigationBarType.fixed,
-              currentIndex: currentIndex,
-              onTap: onNavigationItemSelected,
-              items: list
-                  .map(
-                    (item) => BottomNavigationBarItem(
-                      label: item.title,
-                      icon: item.icon,
-                    ),
-                  )
-                  .toList(),
+          : Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: context.designSystem.colors.gray.withOpacity(0.3),
+                    blurRadius: context.designSystem.spacing.l,
+                  ),
+                ],
+              ),
+              child: BottomNavigationBar(
+                key: K.bottomNavigationBar,
+                type: BottomNavigationBarType.fixed,
+                currentIndex: currentIndex,
+                onTap: onNavigationItemSelected,
+                items: list
+                    .map(
+                      (item) => BottomNavigationBarItem(
+                        label: item.title,
+                        icon: item.icon,
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
     );
   }

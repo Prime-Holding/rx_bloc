@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart' hide ErrorModel;
 
 import '../../app_extensions.dart';
+import '../../base/common_ui_components/app_divider.dart';
 import '../../base/common_ui_components/app_error_modal_widget.dart';
 import '../../base/common_ui_components/app_error_widget.dart';
+import '../../base/common_ui_components/app_list_tile.dart';
 import '../../base/common_ui_components/app_loading_indicator.dart';
 import '../../base/common_ui_components/custom_app_bar.dart';
 import '../../base/models/deep_link_model.dart';
@@ -46,38 +48,28 @@ class DeepLinkListPage extends StatelessWidget {
               listener: _onMessageReceived,
             ),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(
-                  context.designSystem.spacing.m,
+              child: RxResultBuilder<DeepLinkListBlocType, List<DeepLinkModel>>(
+                state: (bloc) => bloc.states.deepLinkList,
+                buildError: (ctx, error, bloc) => AppErrorWidget(
+                  error: error,
+                  onTabRetry: () => bloc.events.fetchDeepLinkList(),
                 ),
-                child:
-                    RxResultBuilder<DeepLinkListBlocType, List<DeepLinkModel>>(
-                  state: (bloc) => bloc.states.deepLinkList,
-                  buildError: (ctx, error, bloc) => AppErrorWidget(
-                    error: error,
-                    onTabRetry: () => bloc.events.fetchDeepLinkList(),
+                buildLoading: (ctx, bloc) => Center(
+                  child: AppLoadingIndicator.taskValue(context),
+                ),
+                buildSuccess: (ctx, items, bloc) => ListView.separated(
+                  padding: EdgeInsets.only(
+                    top: context.designSystem.spacing.xs,
                   ),
-                  buildLoading: (ctx, bloc) => Center(
-                    child: AppLoadingIndicator.taskValue(context),
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) => AppListTile(
+                    featureTitle: items[index].name,
+                    onTap: () => context.read<RouterBlocType>().events.push(
+                          DeepLinkDetailsRoute(items[index].id),
+                          extra: items[index],
+                        ),
                   ),
-                  buildSuccess: (ctx, items, bloc) => ListView.separated(
-                    padding: EdgeInsets.all(
-                      context.designSystem.spacing.xs,
-                    ),
-                    itemCount: items.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        OutlineFillButton(
-                      text: items[index].name,
-                      onPressed: () =>
-                          context.read<RouterBlocType>().events.push(
-                                DeepLinkDetailsRoute(items[index].id),
-                                extra: items[index],
-                              ),
-                    ),
-                    separatorBuilder: (context, index) => Divider(
-                      height: context.designSystem.spacing.l,
-                    ),
-                  ),
+                  separatorBuilder: (context, index) => AppDivider(),
                 ),
               ),
             ),
@@ -90,8 +82,7 @@ class DeepLinkListPage extends StatelessWidget {
     String message,
   ) =>
       showBlurredBottomSheet(
-        context: AppRouter.rootNavigatorKey.currentContext ??
-            context,
+        context: AppRouter.rootNavigatorKey.currentContext ?? context,
         builder: (BuildContext context) => MessagePanelWidget(
           message: message,
           messageState: MessagePanelState.informative,

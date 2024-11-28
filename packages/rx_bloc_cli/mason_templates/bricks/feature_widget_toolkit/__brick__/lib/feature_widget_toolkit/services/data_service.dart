@@ -9,7 +9,7 @@ class DataService extends ItemPickerService<DataModel> {
 
   @override
   Future<List<DataModel>> getItems() => Future.delayed(
-        const Duration(seconds: 3),
+        const Duration(milliseconds: 200),
         () => List.generate(
           20,
           (index) => DataModel(

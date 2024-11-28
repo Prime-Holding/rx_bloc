@@ -15,7 +15,7 @@ class CustomEditAddressService<T> extends EditAddressService<T> {
 
   @override
   Future<AddressModel> saveAddress(AddressModel addressModel) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 200));
     return addressModel;
   }
 
