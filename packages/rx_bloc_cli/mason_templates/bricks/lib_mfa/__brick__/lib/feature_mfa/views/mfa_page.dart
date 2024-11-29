@@ -22,7 +22,7 @@ class MfaPage extends StatelessWidget {
           title: Text(context.l10n.featureMfa.appBarTitle),
         ),
         body: Padding(
-          padding: EdgeInsets.all(context.designSystem.spacing.l),
+          padding: EdgeInsets.all(context.designSystem.spacing.s),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,48 +33,67 @@ class MfaPage extends StatelessWidget {
                 state: (bloc) => bloc.states.onMfaCompleted,
                 listener: _showMfaComplete,
               ),
-              Text(
-                context.l10n.featureMfa.changeAddressActionTitle,
-                style: context.designSystem.typography.h2Med16,
-              ),
-              SizedBox(height: context.designSystem.spacing.m),
-              EditAddressWidget<CountryModel>(
-                translateError: (error) =>
-                    ErrorModelFieldL10n.translateError<String>(error, context),
-                service: context.read<MfaEditAddressService>(),
-                onSaved: (address) {
-                  context.read<MfaEditAddressBlocType>().events.saveAddress(
-                        city: address.city,
-                        streetAddress: address.streetAddress,
-                        countryCode: address.country.countryCode,
-                      );
-                },
-              ),
-              Text(
-                context.l10n.featureMfa.changeAddressActionDescription,
-                style: context.designSystem.typography.h3Med11,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: context.designSystem.spacing.m,
-                ),
-                child: const Divider(),
-              ),
-              Text(
-                context.l10n.featureMfa.unlockActionTitle,
-                style: context.designSystem.typography.h2Med16,
-              ),
-              Center(
-                child: PrimaryButton(
-                  child: Text(context.l10n.featureMfa.unlockButtonText),
-                  onPressed: () =>
-                      context.read<MfaEditAddressBlocType>().events.unlock(),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(context.designSystem.spacing.l),
+                  child: Column(
+                    children: [
+                      Text(
+                        context.l10n.featureMfa.changeAddressActionTitle,
+                        style: context.designSystem.typography.h2Med16,
+                      ),
+                      SizedBox(height: context.designSystem.spacing.m),
+                      EditAddressWidget<CountryModel>(
+                        translateError: (error) =>
+                            ErrorModelFieldL10n.translateError<String>(
+                                error, context),
+                        service: context.read<MfaEditAddressService>(),
+                        onSaved: (address) {
+                          context
+                              .read<MfaEditAddressBlocType>()
+                              .events
+                              .saveAddress(
+                                city: address.city,
+                                streetAddress: address.streetAddress,
+                                countryCode: address.country.countryCode,
+                              );
+                        },
+                      ),
+                      Text(
+                        context.l10n.featureMfa.changeAddressActionDescription,
+                        style: context.designSystem.typography.h3Med11,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: context.designSystem.spacing.m),
-              Text(
-                context.l10n.featureMfa.unlockActionDescription,
-                style: context.designSystem.typography.h3Med11,
+              SizedBox(height: context.designSystem.spacing.l),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(context.designSystem.spacing.l),
+                  child: Column(
+                    children: [
+                      Text(
+                        context.l10n.featureMfa.unlockActionTitle,
+                        style: context.designSystem.typography.h2Med16,
+                      ),
+                      Center(
+                        child: PrimaryButton(
+                          child: Text(context.l10n.featureMfa.unlockButtonText),
+                          onPressed: () => context
+                              .read<MfaEditAddressBlocType>()
+                              .events
+                              .unlock(),
+                        ),
+                      ),
+                      SizedBox(height: context.designSystem.spacing.m),
+                      Text(
+                        context.l10n.featureMfa.unlockActionDescription,
+                        style: context.designSystem.typography.h3Med11,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

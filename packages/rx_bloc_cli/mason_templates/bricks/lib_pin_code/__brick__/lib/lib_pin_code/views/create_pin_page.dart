@@ -40,11 +40,13 @@ class _CreatePinPageState extends State<CreatePinPage> {
   Widget build(BuildContext context) => Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
-            title: Text(
-              widget.pinCodeArguments.title.isEmpty
+             title: Text(
+                widget.pinCodeArguments.title.isEmpty
                   ? context.l10n.libPinCode.createPinPage
                   : widget.pinCodeArguments.title,
-            ),
+               style: context.designSystem.typography.h1Reg22,
+           ),
+            foregroundColor: context.designSystem.colors.white,
             forceMaterialTransparency: true,
           ),
           extendBodyBehindAppBar: true,
