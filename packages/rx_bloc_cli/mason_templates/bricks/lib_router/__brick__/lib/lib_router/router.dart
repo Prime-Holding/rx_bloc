@@ -118,7 +118,8 @@ class AppRouter {
     if ((state.matchedLocation != const LoginRoute().location) &&
         (state.matchedLocation != const VerifyPinCodeRoute().location) &&
         (state.matchedLocation != const CreatePinRoute().location) &&
-        (state.matchedLocation != const SplashRoute().location)) {
+        (state.matchedLocation != const SplashRoute().location) &&
+        (!state.matchedLocation.contains('/mfa/'))) {
       previousLocation = state.matchedLocation;
     } {{/enable_pin_code}} {{#has_authentication}}
     if (_refreshListener.isLoggedIn &&

@@ -73,6 +73,13 @@ dev_dependencies:
   rx_bloc_generator: ^8.0.0
   rx_bloc_test: ^5.0.0
   test: any {{#enable_patrol}}
+  
+dependency_overrides:
+  widget_toolkit_pin:
+    git:
+      url: https://github.com/Prime-Holding/widget_toolkit.git
+      path: packages/widget_toolkit_pin
+      ref: feature/auto-biometrics-option
 
 patrol:
   app_name: {{project_name}}
