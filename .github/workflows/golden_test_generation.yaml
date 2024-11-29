@@ -10,6 +10,7 @@ on:
         options:
         - booking_app
         - todoapp
+        - reminders
         - rx_bloc_cli_all_enabled
         - rx_bloc_cli_default
 
