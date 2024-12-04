@@ -34,6 +34,7 @@ class MfaPinBiometricsPageWithDependencies extends StatelessWidget {
           create: (context) => MfaPinCodeService(
             mfaResponse: mfaResponse,
             mfaRepository: context.read(),
+            pinCodeRepository: context.read(),
           ),
         ),
       ];

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rx_bloc/rx_bloc.dart';
+import 'package:widget_toolkit_biometrics/widget_toolkit_biometrics.dart';
 import 'package:widget_toolkit_pin/widget_toolkit_pin.dart';
 
 import '../../../../app_extensions.dart';
@@ -42,7 +43,6 @@ class MfaPinBiometricsPage extends StatelessWidget {
                           .pop(Result<MfaResponse>.error(error));
                     }
                   },
-
                   onAuthenticated: (response) {
                     if (response is MfaResponse) {
                       context
@@ -51,6 +51,9 @@ class MfaPinBiometricsPage extends StatelessWidget {
                           .pop(Result<MfaResponse>.success(response));
                     }
                   }, // Handle error states
+                                    autoBiometricAuth: true,
+                  biometricsLocalDataSource:
+                      context.read<BiometricsLocalDataSource>(),
                   pinCodeService: context.read<MfaPinCodeService>(),
                   translateError: (error) =>
                       error.asErrorModel().translate(context),
