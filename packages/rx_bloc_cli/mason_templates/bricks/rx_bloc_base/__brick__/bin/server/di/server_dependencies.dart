@@ -8,12 +8,15 @@ import '../controllers/mfa_controller.dart';{{/enable_mfa}}
 import '../controllers/permissions_controller.dart';{{#enable_pin_code}}
 import '../controllers/pin_code_controller.dart';{{/enable_pin_code}}
 import '../controllers/push_notifications_controller.dart';
-import '../controllers/translations_controller.dart';{{#has_authentication}}
+import '../controllers/translations_controller.dart';
+import '../controllers/users_controller.dart';{{#has_authentication}}
 import '../repositories/auth_token_repository.dart';{{/has_authentication}}{{#enable_pin_code}}
 import '../repositories/pin_code_repository.dart';{{/enable_pin_code}}
-import '../repositories/translations_repository.dart';{{#has_authentication}}
+import '../repositories/translations_repository.dart';
+import '../repositories/users_repository.dart';{{#has_authentication}}
 import '../services/authentication_service.dart';{{/has_authentication}}{{#enable_pin_code}}
 import '../services/pin_code_service.dart';{{/enable_pin_code}}
+import '../services/users_service.dart';
 import '../utils/api_controller.dart';
 import '../utils/dependency_injector.dart';
 
@@ -28,6 +31,8 @@ class ServerDependencies{
     di.register(PinCodeRepository());
     di.register(PinCodeService(di.get()));
     {{/enable_pin_code}}
+    di.register(UsersRepository());
+    di.register(UsersService(di.get()));
 
     /// TODO: Add your dependencies here
 
@@ -53,6 +58,7 @@ class ServerDependencies{
     {{/enable_mfa}}{{#enable_pin_code}}
     ..addController(PinCodeController(di.get()))
     {{/enable_pin_code}}
+    ..addController(UsersController(di.get()))
     ;
 
     /// TODO: Add your controllers here
