@@ -31,6 +31,7 @@ dependencies: {{#enable_dev_menu}}
   flutter_svg: ^2.0.10{{/enable_social_logins}}
   go_router: ^14.3.0{{#enable_social_logins}}
   google_sign_in: ^6.2.1{{/enable_social_logins}}
+  googleapis_auth: ^1.6.0 # This package is used for the local server (if not used, can be removed)
   http: ^1.2.2 # This package is used for the local server (if not used, can be removed)
   jaguar_jwt: ^3.0.0 # This package is used for the local server (if not used, can be removed)
   json_annotation: ^4.9.0
