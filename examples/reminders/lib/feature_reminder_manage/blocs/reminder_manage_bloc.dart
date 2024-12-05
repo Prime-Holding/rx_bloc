@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -18,7 +17,6 @@ abstract class ReminderManageBlocEvents {
   void update(ReminderModel reminder);
 
   /// Event used to update the name of the current model
-  @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setName(String title);
 
   /// Event used to initiate creation of a new reminder with the provided
@@ -66,8 +64,6 @@ class ReminderManageBloc extends $ReminderManageBloc {
   final RemindersService _service;
   final CoordinatorBlocType _coordinatorBloc;
 
-  static const _nameValidation = 'A title must be specified';
-
   @override
   Stream<bool> _mapToShowErrorsState() => _$createEvent
       .isReminderNameValid(this)
@@ -114,18 +110,9 @@ class ReminderManageBloc extends $ReminderManageBloc {
           .publish();
 
   @override
-  Stream<String> _mapToNameState() => _$setNameEvent.map(validateName);
-
-  String validateName(String name) {
-    if (name.trim().isEmpty) {
-      throw RxFieldException(
-        fieldValue: name,
-        error: _nameValidation,
-      );
-    }
-
-    return name;
-  }
+  Stream<String> _mapToNameState() => _$setNameEvent
+      .map((name) => _service.validateName(name))
+      .shareReplay(maxSize: 1);
 
   @override
   Stream<bool> _mapToIsFormValidState() => Rx.combineLatest<String, bool>(

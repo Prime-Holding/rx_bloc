@@ -103,9 +103,9 @@ To access the design system from your app, you have to import it from the follow
 
 ### Golden tests
 
-A [golden test][golden_test_lnk] lets you generate golden master images of a widget or screen, and compare against them so you know your design is always pixel-perfect and there have been no subtle or breaking changes in UI between builds. To make this easier, we employ the use of the [golden_toolkit][golden_toolkit_lnk] package.
+A [golden test][golden_test_lnk] lets you generate golden master images of a widget or screen, and compare against them so you know your design is always pixel-perfect and there have been no subtle or breaking changes in UI between builds. To make this easier, we employ the use of the [alchemist][alchemist_lnk] package.
 
-To get started, you just need to generate a list of `LabeledDeviceBuilder` and pass it to the `runGoldenTests` function. That's done by calling `generateDeviceBuilder` with a label, the widget/screen to be tested, as well as a `Scenario`. They provide an optional `onCreate` function which lets us execute arbitrary behavior upon testing. Each `DeviceBuilder` will have two generated golden master files, one for each theme.
+To get started, you just need to generate a list of `ScenarioBuilder` and pass it to the `runGoldenTests` function. That's done by calling `buildScenario` with a label, the widget/screen to be tested, as well as an optional list of `devices` to be build on. They provide an optional `customPumpBeforeTest` function which lets us execute `WidgetTesterCallback` upon testing. Each `DeviceBuilder` will have two generated golden master files, one for each theme.
 
 Due to the way fonts are loaded in tests, any custom fonts you intend to golden test should be included in `pubspec.yaml`
 
@@ -156,7 +156,7 @@ In order to make the notifications work on your target platform, make sure you f
 [firebase_configs_lnk]: https://support.google.com/firebase/answer/7015592
 [design_system_lnk]: https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969
 [golden_test_lnk]: https://medium.com/flutter-community/flutter-golden-tests-compare-widgets-with-snapshots-27f83f266cea
-[golden_toolkit_lnk]: https://pub.dev/packages/golden_toolkit
+[alchemist_lnk]: https://pub.dev/packages/alchemist
 [retrofit_lnk]: https://pub.dev/packages/retrofit
 [dio_lnk]: https://pub.dev/packages/dio
 [json_annotation_lnk]: https://pub.dev/packages/json_annotation
