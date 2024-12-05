@@ -6,9 +6,7 @@ import '../factory/dashboard_factory.dart';
 
 void main() {
   runGoldenTests([
-    buildScenario(
-        widget: dashboardFactory(), //example: Stubs.emptyList
-        scenario: 'dashboard_empty'),
+    buildScenario(widget: dashboardFactory(), scenario: 'dashboard_empty'),
     buildScenario(
         widget: dashboardFactory(
           dashboardCounters: Result.success(Stubs.dashboardCountersModel),
@@ -16,7 +14,7 @@ void main() {
         ), //example:  Stubs.success
         scenario: 'dashboard_success'),
     buildScenario(
-        widget: dashboardFactory(dashboardCounters: Result.loading()), //loading
+        widget: dashboardFactory(dashboardCounters: Result.loading()),
         scenario: 'dashboard_loading',
         customPumpBeforeTest: (tester) =>
             tester.pump(const Duration(milliseconds: 300))),

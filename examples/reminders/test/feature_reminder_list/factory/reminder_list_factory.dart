@@ -17,7 +17,6 @@ import '../../mocks/reminder_manage_mock.dart';
 import '../../mocks/service_mocks.dart';
 import '../mock/reminder_list_mock.dart';
 
-/// Change the parameters according the the needs of the test
 Widget reminderListFactory({
   bool? isLoading,
   String? errors,

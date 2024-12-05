@@ -5,20 +5,17 @@ import '../factory/reminder_list_factory.dart';
 void main() {
   runGoldenTests([
     buildScenario(
-        widget: reminderListFactory(
-            paginatedList: Stubs.paginatedListEmpty), //example: Stubs.emptyList
+        widget: reminderListFactory(paginatedList: Stubs.paginatedListEmpty),
         scenario: 'reminder_list_empty'),
     buildScenario(
-        widget: reminderListFactory(
-            paginatedList:
-                Stubs.reminderPaginatedList), //example:  Stubs.success
+        widget: reminderListFactory(paginatedList: Stubs.reminderPaginatedList),
         scenario: 'reminder_list_success'),
     buildScenario(
         widget: reminderListFactory(
             paginatedList: Stubs.paginatedListEmpty.copyWith(
           isLoading: true,
           isInitialized: false,
-        )), //loading
+        )),
         scenario: 'reminder_list_loading'),
     buildScenario(
         widget: reminderListFactory(errors: 'Error occur'),

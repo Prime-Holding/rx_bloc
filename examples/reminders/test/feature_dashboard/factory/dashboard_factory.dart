@@ -14,7 +14,6 @@ import '../../mocks/bloc_mocks.dart';
 import '../../mocks/reminder_manage_mock.dart';
 import '../mock/dashboard_mock.dart';
 
-/// Change the parameters according the the needs of the test
 Widget dashboardFactory({
   bool? isLoading,
   String? errors,

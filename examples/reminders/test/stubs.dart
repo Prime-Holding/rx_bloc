@@ -69,8 +69,4 @@ class Stubs {
   static const String emptyString = '';
   static const String noteNameValid = 'noteNameValid';
   static DateTime get dueDate => DateTime(2029);
-  // static RxFieldException get throwable1 => RxFieldException(
-  // fieldValue: name,
-  // error: '_nameValidation',
-  // );
 }

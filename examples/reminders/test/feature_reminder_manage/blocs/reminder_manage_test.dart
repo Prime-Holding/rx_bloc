@@ -62,8 +62,9 @@ void main() {
           bloc.events.delete(Stubs.createdReminderNote);
         },
         state: (bloc) => bloc.states.onDeleted,
-        expect: <Result<ReminderModel>>[
-          Result.loading(),
+        expect: [
+          isA<ResultLoading>(),
+          isA<ResultSuccess<ReminderModel>>(),
         ]);
   });
 
@@ -81,12 +82,15 @@ void main() {
           bloc.events.create(dueDate: Stubs.dueDate, complete: false);
         },
         state: (bloc) => bloc.states.onCreated,
-        expect: [Result.loading()]);
+        expect: [
+          isA<ResultLoading>(),
+          isA<ResultSuccess<ReminderModel>>(),
+        ]);
   });
 
   group('test reminder_manage_bloc_dart state name', () {
     rxBlocTest<ReminderManageBloc, String>(
-        'test reminder_manage_bloc_dart state name',
+        'test reminder_manage_bloc_dart state name - invalid name',
         build: () async {
           defineWhen();
           return manageBloc();
@@ -105,8 +109,6 @@ void main() {
         },
         state: (bloc) => bloc.states.name,
         expect: [
-          // emitsError(isA<RxFieldException<String>>()),
-          // isA<RxFieldException<String>>(),
           Stubs.noteNameValid,
         ]);
   });
@@ -125,11 +127,24 @@ void main() {
         },
         state: (bloc) => bloc.states.showErrors,
         expect: [false]);
+
+    rxBlocTest<ReminderManageBloc, bool>(
+        'test reminder_manage_bloc_dart state showErrors - has error',
+        build: () async {
+          defineWhen();
+          return manageBloc();
+        },
+        act: (bloc) async {
+          bloc.events.setName(Stubs.emptyString);
+          bloc.events.create(dueDate: Stubs.dueDate, complete: false);
+        },
+        state: (bloc) => bloc.states.showErrors,
+        expect: [false, true]);
   });
 
   group('test reminder_manage_bloc_dart state isFormValid', () {
     rxBlocTest<ReminderManageBloc, bool>(
-        'test reminder_manage_bloc_dart state isFormValid',
+        'test reminder_manage_bloc_dart state isFormValid - empty',
         build: () async {
           defineWhen();
           return manageBloc();
@@ -146,10 +161,20 @@ void main() {
           return manageBloc();
         },
         act: (bloc) async {
-          bloc.states.name.listen((_) {});
           bloc.events.setName(Stubs.noteNameValid);
         },
         state: (bloc) => bloc.states.isFormValid,
         expect: [true]);
+    rxBlocTest<ReminderManageBloc, bool>(
+        'test reminder_manage_bloc_dart state isFormValid - name invalid',
+        build: () async {
+          defineWhen();
+          return manageBloc();
+        },
+        act: (bloc) async {
+          bloc.events.setName(Stubs.emptyString);
+        },
+        state: (bloc) => bloc.states.isFormValid,
+        expect: [false]);
   });
 }

@@ -10,11 +10,9 @@ void main() {
   });
 
   runGoldenTests([
+    buildScenario(widget: splashFactory(), scenario: 'splash_success'),
     buildScenario(
-        widget: splashFactory(), //example:  Stubs.success
-        scenario: 'splash_success'),
-    buildScenario(
-        widget: splashFactory(isLoading: true), //loading
+        widget: splashFactory(isLoading: true),
         scenario: 'splash_loading',
         customPumpBeforeTest: (tester) =>
             tester.pump(const Duration(microseconds: 300))),

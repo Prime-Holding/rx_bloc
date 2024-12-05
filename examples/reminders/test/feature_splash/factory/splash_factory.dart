@@ -5,7 +5,6 @@ import 'package:reminders/feature_splash/blocs/splash_bloc.dart';
 import 'package:reminders/feature_splash/views/splash_page.dart';
 import '../mock/splash_mock.dart';
 
-/// Change the parameters according the the needs of the test
 Widget splashFactory({
   bool? isLoading,
   String? errors,
