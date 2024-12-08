@@ -15,7 +15,8 @@ import 'network_lookup/lib_pin_code_lookup.dart';{{/enable_pin_code}}
 import 'network_lookup/lib_router_lookup.dart';{{#has_authentication}}
 import 'network_lookup/login_lookup.dart';{{/has_authentication}}{{#enable_mfa}}
 import 'network_lookup/mfa_lookup.dart';{{/enable_mfa}}
-import 'network_lookup/notifications_lookup.dart';{{#enable_feature_otp}}
+import 'network_lookup/notifications_lookup.dart';
+import 'network_lookup/onboarding_lookup.dart';{{#enable_feature_otp}}
 import 'network_lookup/otp_lookup.dart';{{/enable_feature_otp}}{{#enable_profile}}
 import 'network_lookup/profile_lookup.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import 'network_lookup/qr_code_lookup.dart';{{/enable_feature_qr_scanner}} {{#has_showcase}}

@@ -2,7 +2,9 @@
 
 import 'package:collection/collection.dart';
 
+import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
+import 'package:{{project_name}}/base/models/user_role.dart';
 
 class UsersRepository {
   final List<UserModel> _registeredUsers = [
