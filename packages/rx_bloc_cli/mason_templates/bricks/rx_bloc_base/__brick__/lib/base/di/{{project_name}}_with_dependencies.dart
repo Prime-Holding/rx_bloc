@@ -230,6 +230,11 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<ApiHttpClient>(),
           ),
         ),{{/enable_mfa}}
+        Provider<UserRemoteDataSource>(
+          create: (context) => UserRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}

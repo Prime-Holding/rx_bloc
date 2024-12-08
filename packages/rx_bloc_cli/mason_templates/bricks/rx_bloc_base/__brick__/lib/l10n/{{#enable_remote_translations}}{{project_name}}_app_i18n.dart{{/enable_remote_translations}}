@@ -139,13 +139,17 @@ class AppI18nLookup extends I18nLookup {
   @override
   I18nLibRouterLookup createLibRouterLookup() => AppI18nLibRouterLookup();{{#enable_feature_qr_scanner}}
 
-
   @override
   I18nFeatureQrLookup createFeatureQrLookup() => AppI18nQrLookup();{{/enable_feature_qr_scanner}} {{#has_showcase}}
 
-    @override
+  @override
   I18nFeatureShowcaseLookup createFeatureShowcaseLookup() =>
       AppI18nShowcaseLookup(); {{/has_showcase}}
+
+  @override
+  I18nFeatureOnboardingLookup createFeatureOnboardingLookup() =>
+      AppI18nOnboardingLookup();
+
   /// endregion
 
   // TODO: Add your custom lookups here

@@ -1,9 +1,22 @@
+{{> licence.dart }}
+
 import 'package:collection/collection.dart';
 
 import 'package:{{project_name}}/base/models/user_model.dart';
 
 class UsersRepository {
-  final List<UserModel> _registeredUsers = [];
+  final List<UserModel> _registeredUsers = [
+    UserModel(
+      id: '1',
+      email: 'test_mail',
+      phoneNumber: null,
+      role: UserRole.tempUser,
+      confirmedCredentials: ConfirmedCredentialsModel(
+        email: true,
+        phone: false,
+      ),
+    ),
+  ];
 
   List<UserModel> getUsers() => _registeredUsers;
 

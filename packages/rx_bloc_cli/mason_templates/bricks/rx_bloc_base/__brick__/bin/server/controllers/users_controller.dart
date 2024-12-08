@@ -1,9 +1,4 @@
-// Copyright (c) 2023, Prime Holding JSC
-// https://www.primeholding.com
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://opensource.org/licenses/MIT.
+{{> licence.dart }}
 
 import 'package:shelf/shelf.dart';
 import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
@@ -12,6 +7,7 @@ import 'package:{{project_name}}/base/models/user_role.dart';
 
 import '../services/users_service.dart';
 import '../utils/api_controller.dart';
+import '../utils/server_exceptions.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -84,7 +80,19 @@ class UsersController extends ApiController {
 
   Future<Response> _sendSmsCodeHandler(Request request) async {
     final params = await request.bodyFromFormData();
-    final phoneNumber = params['phoneNumber'];
+    final phoneNumber = params['phoneNumber'] as String?;
+
+    // Mock a delay to simulate a real-world scenario
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (phoneNumber == null ||
+        phoneNumber.length < 12 ||
+        // Mock an invalid phone number error
+        phoneNumber.contains('2345678')) {
+      return responseBuilder.buildErrorResponse(
+        BadRequestException('Invalid phone number format.'),
+      );
+    }
 
     /// mocked for now
     return responseBuilder.buildOK(
@@ -97,8 +105,17 @@ class UsersController extends ApiController {
   }
 
   Future<Response> _confirmSmsCodeHandler(Request request) async {
-    // final params = await request.bodyFromFormData();
-    // final smsCode = params['smsCode'];
+    final params = await request.bodyFromFormData();
+    final smsCode = params['smsCode'] as String?;
+
+    // Mock a delay to simulate a real-world scenario
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (smsCode == null || smsCode.length > 6 || smsCode == '123456') {
+      return responseBuilder.buildErrorResponse(
+        BadRequestException('Invalid or expired SMS code.'),
+      );
+    }
 
     /// mocked for now
     return responseBuilder.buildOK(
