@@ -1,3 +1,4 @@
+import 'package:flutter_rx_bloc/rx_form.dart';
 import 'package:rx_bloc_list/models.dart';
 
 import '../models/reminder/reminder_model.dart';
@@ -9,6 +10,8 @@ class RemindersService {
   RemindersService(this._repository);
 
   final RemindersRepository _repository;
+
+  static const _nameValidation = 'A title must be specified';
 
   /// Returns all reminders
   Future<PaginatedList<ReminderModel>> getAll(ReminderModelRequest request) =>
@@ -43,4 +46,15 @@ class RemindersService {
 
   /// Returns the number of incomplete reminders
   Future<int> getIncompleteCount() => _repository.getIncompleteCount();
+
+  String validateName(String name) {
+    if (name.trim().isEmpty) {
+      throw RxFieldException(
+        fieldValue: name,
+        error: _nameValidation,
+      );
+    }
+
+    return name;
+  }
 }
