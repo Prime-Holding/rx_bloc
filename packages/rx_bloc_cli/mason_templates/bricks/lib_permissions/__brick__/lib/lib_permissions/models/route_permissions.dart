@@ -14,7 +14,7 @@ class RoutePermissions { {{#has_showcase}}
   static const login = 'LoginRoute';{{#enable_feature_deeplinks}}
   static const enterMessage = 'EnterMessageRoute';
   static const deepLinks = 'DeepLinksRoute';
-  static const deepLinkDetails = 'DeepLinkDetailsRoute';{{/enable_feature_deeplinks}}
+  static const deepLinkDetails = 'DeepLinkDetailsRoute';{{/enable_feature_deeplinks}}{{#enable_feature_onboarding}}
   static const onboardingPhone = 'OnboardingPhoneRoute';
-  static const onboardingPhoneConfirm = 'OnboardingPhoneConfirmRoute';
+  static const onboardingPhoneConfirm = 'OnboardingPhoneConfirmRoute';{{/enable_feature_onboarding}}
 }

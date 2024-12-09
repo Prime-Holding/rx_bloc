@@ -65,7 +65,8 @@ import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
+import '../data_sources/remote/user_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
 import '../repositories/push_notification_repository.dart';
@@ -229,12 +230,12 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => MfaDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),{{/enable_mfa}}
+        ),{{/enable_mfa}}{{#enable_feature_onboarding}}
         Provider<UserRemoteDataSource>(
           create: (context) => UserRemoteDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),
+        ),{{/enable_feature_onboarding}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
