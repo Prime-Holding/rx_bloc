@@ -7,3 +7,4 @@ environment:
   mason: ">=0.1.0-dev.49 <0.1.0"
 
 vars:
+  - project_name

@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'confirmed_credentials_model.g.dart';

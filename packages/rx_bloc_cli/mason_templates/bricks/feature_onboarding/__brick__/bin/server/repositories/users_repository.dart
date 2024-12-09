@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:collection/collection.dart';
 
 import 'package:{{project_name}}/base/models/user_model.dart';
