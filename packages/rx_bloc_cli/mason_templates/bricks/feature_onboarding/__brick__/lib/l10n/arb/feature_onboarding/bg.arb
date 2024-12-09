@@ -1,0 +1,18 @@
+{
+  "@@locale": "bg",
+
+  "retry" : "Опитай отново",
+  "continueText" : "Продължи",
+  "confirm" : "Потвърди",
+
+  "enterPhoneNumber" : "Въведете вашия телефонен номер",
+  "phoneNumberConfirmationHeader" : "Скоро ще получите код за потвърждение чрез SMS.",
+
+  "selectCountry": "Изберете държава",
+  "typeSubstring": "Въведете подниз",
+  "thereAreNoResults": "Няма резултати за търсената заявка!",
+
+  "invalidCountryCode" : "Невалиден код на държавата.",
+  "invalidPhoneNumber" : "Невалиден телефонен номер.",
+  "phoneNumberTooShort" : "Телефонният номер е твърде кратък."
+}

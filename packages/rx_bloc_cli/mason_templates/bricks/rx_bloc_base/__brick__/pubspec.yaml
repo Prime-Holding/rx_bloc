@@ -108,7 +108,8 @@ r_flutter:
     - name: feature_enter_message{{/enable_feature_deeplinks}}{{#has_authentication}}
     - name: feature_login{{/has_authentication}}
     - name: feature_notifications{{#enable_feature_otp}}
-    - name: feature_otp{{/enable_feature_otp}}{{#enable_profile}}
+    - name: feature_otp{{/enable_feature_otp}}
+    - name: feature_onboarding{{#enable_profile}}
     - name: feature_profile{{/enable_profile}}{{#enable_feature_qr_scanner}}
     - name: feature_qr{{/enable_feature_qr_scanner}}{{#has_showcase}}
     - name: feature_showcase{{/has_showcase}}{{#enable_feature_widget_toolkit}}
