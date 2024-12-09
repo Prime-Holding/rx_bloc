@@ -43,7 +43,8 @@ if [ $1 == "all_enabled" ]; then
   --enable-pin-code \
   --enable-mfa \
   --enable-feature-qr-scanner \
-  --enable-profile 
+  --enable-profile \
+  --enable-feature-onboarding
 fi 
 
 if [ $1 == "all_disabled" ]; then
@@ -64,7 +65,8 @@ if [ $1 == "all_disabled" ]; then
   --no-enable-pin-code \
   --no-enable-mfa \
   --no-enable-feature-qr-scanner \
-  --no-enable-profile
+  --no-enable-profile \
+  --no-enable-feature-onboarding
 fi 
 
 if [ $1 == "without_showcase_features" ]; then
@@ -85,5 +87,6 @@ if [ $1 == "without_showcase_features" ]; then
     --no-enable-feature-counter \
     --no-enable-feature-widget-toolkit \
     --no-enable-feature-deeplinks \
-    --no-enable-feature-qr-scanner 
+    --no-enable-feature-qr-scanner \
+    --no-enable-feature-onboarding
 fi

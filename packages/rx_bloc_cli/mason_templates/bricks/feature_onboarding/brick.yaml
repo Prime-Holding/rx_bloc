@@ -1,0 +1,9 @@
+name: feature_onboarding
+description: Feature Onboarding brick
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.49 <0.1.0"
+
+vars:
