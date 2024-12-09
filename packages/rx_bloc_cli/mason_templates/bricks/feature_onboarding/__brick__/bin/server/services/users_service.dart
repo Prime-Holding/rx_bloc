@@ -1,3 +1,5 @@
+{{> licence.dart }}
+
 import 'package:{{project_name}}/base/models/confirmed_credentials_model.dart';
 import 'package:{{project_name}}/base/models/user_model.dart';
 import 'package:{{project_name}}/base/models/user_role.dart';
