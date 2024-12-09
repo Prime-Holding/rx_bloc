@@ -113,6 +113,7 @@ final class Stub {
       cicdGithubEnabled: true,
       cicdCodemagicEnabled: true,
       profileEnabled: true,
+      onboardingEnabled: true,
     ),
     showcaseConfiguration: ShowcaseConfiguration(
       counterEnabled: true,
@@ -155,6 +156,7 @@ final class Stub {
       cicdCodemagicEnabled:
           CreateCommandArguments.cicd.defaultValue() == CICDType.codemagic,
       profileEnabled: CreateCommandArguments.profile.defaultValue(),
+      onboardingEnabled: CreateCommandArguments.onboarding.defaultValue(),
     ),
     showcaseConfiguration: ShowcaseConfiguration(
       counterEnabled: CreateCommandArguments.counter.defaultValue(),

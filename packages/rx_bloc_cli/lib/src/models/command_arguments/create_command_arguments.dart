@@ -78,6 +78,15 @@ enum CreateCommandArguments {
     help: 'The deeplink showcase feature',
   ),
 
+  /// Profile feature
+  onboarding(
+    name: 'enable-feature-onboarding',
+    type: CreateCommandArgumentType.boolean,
+    defaultsTo: true,
+    prompt: 'Enabled Onboarding feature:',
+    help: 'Enables Onboarding feature capability for the project',
+  ),
+
   /// Dev menu
   devMenu(
     name: 'enable-dev-menu',

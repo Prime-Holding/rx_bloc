@@ -112,6 +112,10 @@ class GeneratorArguments
   @override
   bool get counterEnabled => _showcaseConfiguration.counterEnabled;
 
+  /// Onboarding feature
+  @override
+  bool get onboardingEnabled => _featureConfiguration.onboardingEnabled;
+
   /// Dev menu
   @override
   bool get devMenuEnabled => _featureConfiguration.devMenuEnabled;
