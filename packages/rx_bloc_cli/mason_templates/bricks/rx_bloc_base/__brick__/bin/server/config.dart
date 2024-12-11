@@ -1,5 +1,5 @@
-/// TODO: In order to use FCM and send push messages to target devices, you need to add your server key
-const firebasePushServerKey = '';
+/// TODO: In order to use FCM and send push messages to target devices, you need to add your project ID here.
+const projectId = 'your_project_id';
 
 /// A key for signing the JWT
 const jwtSigningKey = 's3cr3t';
