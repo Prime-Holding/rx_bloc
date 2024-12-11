@@ -44,7 +44,8 @@ import 'views/error_page.dart';
 
 part 'router.g.dart';{{#has_authentication}}
 part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_profile}}
-part 'routes/profile_routes.dart';{{/enable_profile}}
+part 'routes/profile_routes.dart';{{/enable_profile}}{{#enable_feature_onboarding}}
+part 'routes/registration_routes.dart';{{/enable_feature_onboarding}}
 part 'routes/routes.dart';{{#has_showcase}}
 part 'routes/showcase_routes.dart';{{/has_showcase}}{{#enable_mfa}}
 part 'routes/mfa_routes.dart';{{/enable_mfa}}

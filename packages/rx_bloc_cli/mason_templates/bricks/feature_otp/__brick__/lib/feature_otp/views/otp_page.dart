@@ -8,57 +8,40 @@ import '../services/custom_sms_code_service.dart';
 import '../services/otp_text_field_validator.dart';
 
 class OtpPage extends StatelessWidget {
-  const OtpPage({
-    this.otpLabel,
-    this.appBar,
-    this.header,
-    this.otpService,
-    this.onResult,
-    this.contentAlignment = MainAxisAlignment.spaceBetween,
-    super.key,
-  });
-
-  /// The app bar that will be displayed at the top of the screen.
-  final PreferredSizeWidget? appBar;
-
-  /// The header widget that will be displayed above the otp input field.
-  final Widget? header;
-
-  /// Widget that will be displayed just above the otp input field
-  /// and below the [header].
-  final Widget? otpLabel;
-
-  /// The service that will be used to send and validate the otp code.
-  /// If none is provided, a lookup at the widget tree will be performed.
-  final SmsCodeService? otpService;
-
-  /// Callback that will be called when the otp code is validated.
-  final void Function(BuildContext, dynamic)? onResult;
-
-  /// The alignment of the content inside the widget.
-  final MainAxisAlignment contentAlignment;
+  const OtpPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: appBar,
+        appBar: AppBar(
+          title: Text(context.l10n.featureOtp.otpPageTitle),
+        ),
         body: SafeArea(
           child: SmsCodeProvider(
             sentNewCodeActivationTime: 2,
-            smsCodeService: otpService ?? context.read<SmsCodeService>(),
-            onResult: onResult,
+            smsCodeService: context.read<CustomSmsCodeService>(),
             builder: (state) => Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
-                mainAxisAlignment: contentAlignment,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  header ?? const SizedBox.shrink(),
+                  SmsPhoneNumberField(
+                    builder: (context, number, onChanged) => TextFieldDialog(
+                      label: context.l10n.featureOtp.phoneNumber,
+                      value: number,
+                      validator: OtpTextFieldValidator(),
+                      translateError: (Object error) => null,
+                      onChanged: onChanged,
+                    ),
+                  ),
                   Column(
                     children: [
-                      if (otpLabel != null) otpLabel!,
-                      const SizedBox(height: 8),
-                      const SmsCodeField(
-                        key: K.otpInput,
+                      Text(
+                        context.l10n.featureOtp.hint,
+                        style:
+                            TextStyle(color: context.designSystem.colors.gray),
                       ),
+                      const SizedBox(height: 8),
+                      const SmsCodeField(key: K.otpInput),
                       const SizedBox(height: 8),
                       const ValidityWidget(),
                     ],
