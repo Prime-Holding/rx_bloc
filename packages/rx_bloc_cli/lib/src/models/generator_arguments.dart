@@ -165,4 +165,12 @@ class GeneratorArguments
   bool get deepLinkEnabled => _showcaseConfiguration.deepLinkEnabled;
 
   /// endregion
+
+  /// region Other
+
+  /// Flag indicating if the project uses OTP functionality
+  bool get hasOtp =>
+      _authConfiguration.otpEnabled || _featureConfiguration.onboardingEnabled;
+
+  /// endregion
 }

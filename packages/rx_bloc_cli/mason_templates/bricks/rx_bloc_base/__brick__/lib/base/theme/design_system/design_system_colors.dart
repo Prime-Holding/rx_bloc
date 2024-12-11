@@ -95,11 +95,12 @@ class DesignSystemColors {
 
   final pinBgSuccessColor = const Color.fromRGBO(102, 240, 174, .5);
 
-  final Color pinSuccessBorderColor = Colors.green;
-
   final pinErrorBorderColor = Colors.red;
 
   final pinBgSubmittedColor = const Color.fromRGBO(222, 231, 240, .7);
-{{/enable_feature_otp}}
+{{/enable_feature_otp}}{{#has_otp}}
+
+  final Color pinSuccessBorderColor = Colors.green;{{/has_otp}}
+
   ///
 }

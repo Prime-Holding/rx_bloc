@@ -48,8 +48,8 @@ dependencies: {{#enable_dev_menu}}
   sign_in_with_apple: ^6.1.3{{/enable_social_logins}}{{#enable_mfa}}
   uuid: ^4.5.1{{/enable_mfa}}
   widget_toolkit: ^0.2.0 {{#enable_pin_code}}
-  widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#enable_feature_otp}}
-  widget_toolkit_otp: ^0.1.0{{/enable_feature_otp}}{{#enable_pin_code}}
+  widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#has_otp}}
+  widget_toolkit_otp: ^0.1.0{{/has_otp}}{{#enable_pin_code}}
   widget_toolkit_pin: ^0.2.1{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
   widget_toolkit_qr: ^0.2.0{{/enable_feature_qr_scanner}}
   

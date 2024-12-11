@@ -4,6 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
+import '../models/country_code.dart';
 import '../models/onboarding_phone_errors.dart';
 import '../services/user_service.dart';
 
@@ -13,7 +14,7 @@ part 'onboarding_phone_bloc_extensions.dart';
 /// A contract class containing all events of the OnboardingBloC
 abstract class OnboardingPhoneBlocEvents {
   /// Sets the country code for the phone number
-  void setCountryCode(String countryCode);
+  void setCountryCode(CountryCodeModel countryCode);
 
   /// Sets the phone number
   void setPhoneNumber(String phoneNumber);
@@ -31,7 +32,7 @@ abstract class OnboardingPhoneBlocStates {
   Stream<UserModel> get user;
 
   /// The country code used for the phone number
-  Stream<String?> get countryCode;
+  Stream<CountryCodeModel?> get countryCode;
 
   /// The phone number
   Stream<String> get phoneNumber;
@@ -86,7 +87,7 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
       .distinct();
 
   @override
-  Stream<String?> _mapToCountryCodeState() => _$setCountryCodeEvent;
+  Stream<CountryCodeModel?> _mapToCountryCodeState() => _$setCountryCodeEvent;
 
   @override
   Stream<String> _mapToPhoneNumberState() => _$setPhoneNumberEvent
@@ -100,8 +101,8 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
       .withLatestFrom2(
           countryCode,
           phoneNumber,
-          (_, String? countryCode, String phoneNumber) =>
-              '+$countryCode$phoneNumber')
+          (_, CountryCodeModel? countryCode, String phoneNumber) =>
+              '+${countryCode!.code}$phoneNumber')
       .switchMap((fullPhoneNumber) => _userService
           .submitPhoneNumber(fullPhoneNumber)
           .asResultStream(tag: tagSubmitPhoneNumber))
@@ -114,8 +115,8 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
         Rx.combineLatest2(
           countryCode.startWith(null),
           phoneNumber.skip(1), // skip the initial empty value
-          (String? countryCode, String phoneNumber) =>
-              _validatePhoneNumber(countryCode, phoneNumber),
+          (CountryCodeModel? countryCode, String phoneNumber) =>
+              _validatePhoneNumber(countryCode?.code, phoneNumber),
         )
             .asResultStream(tag: tagValidation)
             .setResultStateHandler(this)

@@ -37,7 +37,6 @@ class OnboardingPhoneConfirmPageWithDependencies extends StatelessWidget {
         Provider<SmsCodeService>(
           create: (context) => OnboardingPhoneSmsCodeService(
             context.read(),
-            context.read(),
           ),
         ),
       ];

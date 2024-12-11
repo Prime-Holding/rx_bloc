@@ -1,7 +1,10 @@
 part of 'error_model.dart';
 
 class BadRequestErrorModel extends ErrorModel implements L10nErrorKeyProvider {
-  BadRequestErrorModel([this.message, super.errorLogDetails]);
+  BadRequestErrorModel({
+    this.message,
+    Map<String, String>? errorLogDetails,
+  }) : super(errorLogDetails);
 
   final String? message;
 

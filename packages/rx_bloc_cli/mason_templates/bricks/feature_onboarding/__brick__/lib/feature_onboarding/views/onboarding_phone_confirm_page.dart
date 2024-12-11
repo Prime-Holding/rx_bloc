@@ -34,13 +34,8 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      Text(
-                        context.l10n.featureOtp.hint,
-                        style:
-                            TextStyle(color: context.designSystem.colors.gray),
-                      ),
                       const SizedBox(height: 8),
-                      const SmsCodeField(key: K.otpInput),
+                      const SmsCodeField(),
                       const SizedBox(height: 8),
                       const ValidityWidget(),
                     ],

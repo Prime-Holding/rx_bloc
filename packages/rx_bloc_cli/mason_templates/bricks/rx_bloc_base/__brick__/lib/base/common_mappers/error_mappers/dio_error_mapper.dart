@@ -17,8 +17,8 @@ extension _DioErrorMapper on DioException {
 
       if (response!.statusCode == 400) {
         return BadRequestErrorModel(
-          response!.mapToString(),
-          errorLogDetails,
+          message: response!.mapToString(),
+          {{#analytics}}errorLogDetails: errorLogDetails,{{/analytics}}
         );
       }
 

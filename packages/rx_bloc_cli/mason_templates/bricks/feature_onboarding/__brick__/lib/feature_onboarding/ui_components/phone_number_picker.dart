@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:widget_toolkit/widget_toolkit.dart';
 
 import '../../app_extensions.dart';
-import '../../feature_widget_toolkit/ui_components/update_state_on_selection.dart';
 import '../blocs/onboarding_phone_bloc.dart';
 import '../models/country_code.dart';
 import '../models/onboarding_phone_errors.dart';
@@ -42,12 +41,12 @@ class PhoneNumberPicker extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RxBlocBuilder<OnboardingPhoneBlocType, String?>(
+                RxBlocBuilder<OnboardingPhoneBlocType, CountryCodeModel?>(
                   state: (bloc) => bloc.states.countryCode,
                   builder: (context, countryCodeSnapshot, bloc) =>
                       _buildPhoneNumberPrefix(
                     context,
-                    countryCodeSnapshot.data ?? countryCodeHint,
+                    countryCodeSnapshot.data,
                   ),
                 ),
                 RxBlocBuilder<OnboardingPhoneBlocType, String>(
@@ -87,34 +86,34 @@ class PhoneNumberPicker extends StatelessWidget {
 
   /// region Builders
 
-  Widget _buildPhoneNumberPrefix(BuildContext context, String numberPrefix) =>
-      UpdateStateOnSelection<CountryCodeModel>(
-        builder: (updatedData, updateFunction) => TextButton(
-          onPressed: () => _onCountryCodeSegmentPressed(
-            context,
-            updateFunction,
-            updatedData,
-          ),
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(_borderRadius),
-                bottomLeft: Radius.circular(_borderRadius),
-                topRight: Radius.zero,
-                bottomRight: Radius.zero,
-              ),
+  Widget _buildPhoneNumberPrefix(
+    BuildContext context,
+    CountryCodeModel? selectedCountryCode,
+  ) =>
+      TextButton(
+        onPressed: () => _onCountryCodeSegmentPressed(
+          context,
+          selectedCountryCode,
+        ),
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(_borderRadius),
+              bottomLeft: Radius.circular(_borderRadius),
+              topRight: Radius.zero,
+              bottomRight: Radius.zero,
             ),
-            backgroundColor: countryCodeBgColor,
           ),
-          child: Text(
-            '+$numberPrefix',
-            style: countryCodeTextStyle ??
-                TextStyle(
-                  color: context.designSystem.colors.primaryColor,
-                  fontSize: 16.0,
-                ),
-          ),
+          backgroundColor: countryCodeBgColor,
+        ),
+        child: Text(
+          '+${selectedCountryCode?.code ?? countryCodeHint}',
+          style: countryCodeTextStyle ??
+              TextStyle(
+                color: context.designSystem.colors.primaryColor,
+                fontSize: 16.0,
+              ),
         ),
       );
 
@@ -151,21 +150,17 @@ class PhoneNumberPicker extends StatelessWidget {
 
   void _onCountryCodeSegmentPressed(
     BuildContext context,
-    void Function(List<CountryCodeModel>) updateFunction,
-    List<CountryCodeModel> countryCodes,
+    CountryCodeModel? selectedCountryCode,
   ) =>
       showSearchPickerBottomSheet<CountryCodeModel>(
         context: context,
         title: context.l10n.featureOnboarding.selectCountry,
         hintText: context.l10n.featureOnboarding.typeSubstring,
         retryText: context.l10n.featureOnboarding.retry,
-        selectedItem: countryCodes.isNotEmpty ? countryCodes[0] : null,
+        selectedItem: selectedCountryCode,
         onItemTap: (item) {
           if (item == null) return;
-          context
-              .read<OnboardingPhoneBlocType>()
-              .events
-              .setCountryCode(item.code);
+          context.read<OnboardingPhoneBlocType>().events.setCountryCode(item);
         },
         service: context.read<SearchCountryCodeService>(),
         emptyBuilder: () => Padding(

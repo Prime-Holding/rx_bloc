@@ -1,26 +1,23 @@
 import 'package:widget_toolkit_otp/widget_toolkit_otp.dart';
 
-import '../../base/common_blocs/coordinator_bloc.dart';
 import 'user_service.dart';
 
 /// Service used to implement SMS code logic
 class OnboardingPhoneSmsCodeService implements SmsCodeService {
-  OnboardingPhoneSmsCodeService(this._coordinatorBloc, this._userService);
+  OnboardingPhoneSmsCodeService(this._userService);
 
-  final CoordinatorBlocType _coordinatorBloc;
   final UserService _userService;
 
   /// Confirm if the entered code is equal to the last send code
   @override
   Future<dynamic> confirmPhoneCode(String code) async {
     final confirmResponse = await _userService.confirmPhoneNumber(code);
-    _coordinatorBloc.events.otpConfirmed(isOtpConfirmed: true);
     return confirmResponse;
   }
 
   /// Get user's phone number with the country code
   @override
-  Future<String> getFullPhoneNumber() async => '+38164 1234567';
+  Future<String> getFullPhoneNumber() async => '';
 
   /// Edit the user's phone number and return fullPhoneNumber
   @override
