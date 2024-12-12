@@ -1,4 +1,3 @@
-[//]: # (```markdown)
 # Onboarding/Registration API Contracts
 
 ## Send E-mail and Password
