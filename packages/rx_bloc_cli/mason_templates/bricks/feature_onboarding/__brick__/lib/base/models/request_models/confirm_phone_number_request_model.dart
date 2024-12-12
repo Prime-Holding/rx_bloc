@@ -10,6 +10,7 @@ class ConfirmPhoneNumberRequestModel {
     required this.smsCode,
   });
 
+  /// The SMS validation code that the user has entered
   final String smsCode;
 
   factory ConfirmPhoneNumberRequestModel.fromJson(Map<String, dynamic> json) =>

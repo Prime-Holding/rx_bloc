@@ -9,7 +9,7 @@ class BadRequestErrorModel extends ErrorModel implements L10nErrorKeyProvider {
   final String? message;
 
   @override
-  String get l10nErrorKey => I18nErrorKeys.accessDenied;
+  String get l10nErrorKey => I18nErrorKeys.badRequest;
 
   @override
   String toString() => 'BadRequestError. Message: $message.';

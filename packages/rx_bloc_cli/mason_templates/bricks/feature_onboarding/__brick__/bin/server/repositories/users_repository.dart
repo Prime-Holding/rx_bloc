@@ -8,6 +8,7 @@ import 'package:{{project_name}}/base/models/user_role.dart';
 
 class UsersRepository {
   final List<UserModel> _registeredUsers = [
+    /// TODO: Remove this test data once the onboarding step 1 is merged
     UserModel(
       id: '1',
       email: 'test_mail',

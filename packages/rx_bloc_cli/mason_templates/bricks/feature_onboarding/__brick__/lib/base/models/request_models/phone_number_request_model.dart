@@ -10,6 +10,7 @@ class PhoneNumberRequestModel {
     required this.phoneNumber,
   });
 
+  /// The phone number with the country code prepended
   final String phoneNumber;
 
   factory PhoneNumberRequestModel.fromJson(

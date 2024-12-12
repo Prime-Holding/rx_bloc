@@ -1,6 +1,7 @@
 import 'package:rx_bloc/rx_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../base/app/config/app_constants.dart';
 import '../../base/extensions/error_model_extensions.dart';
 import '../../base/models/errors/error_model.dart';
 import '../../base/models/user_model.dart';
@@ -19,13 +20,13 @@ abstract class OnboardingPhoneBlocEvents {
   /// Sets the phone number
   void setPhoneNumber(String phoneNumber);
 
-  /// Checks if the phone number is valid
+  /// Initiates the submission of the phone number
   void submitPhoneNumber();
 }
 
 /// A contract class containing all states of the OnboardingBloC.
 abstract class OnboardingPhoneBlocStates {
-  /// The loading state of the bloc
+  /// The loading state of the submit button
   Stream<bool> get isLoading;
 
   /// The user model
@@ -90,19 +91,17 @@ class OnboardingPhoneBloc extends $OnboardingPhoneBloc {
   Stream<CountryCodeModel?> _mapToCountryCodeState() => _$setCountryCodeEvent;
 
   @override
-  Stream<String> _mapToPhoneNumberState() => _$setPhoneNumberEvent
-      .map((phoneNumber) => phoneNumber.replaceAll(' ', ''))
-      .startWith('')
-      .distinct();
+  Stream<String> _mapToPhoneNumberState() =>
+      _$setPhoneNumberEvent.startWith('').distinct();
 
   @override
   Stream<UserModel> _mapToUserState() => _$submitPhoneNumberEvent
-      .debounceTime(const Duration(milliseconds: 500))
+      .debounceTime(actionDebounceDuration)
       .withLatestFrom2(
           countryCode,
           phoneNumber,
           (_, CountryCodeModel? countryCode, String phoneNumber) =>
-              '+${countryCode!.code}$phoneNumber')
+              '+${countryCode?.code ?? ''}$phoneNumber')
       .switchMap((fullPhoneNumber) => _userService
           .submitPhoneNumber(fullPhoneNumber)
           .asResultStream(tag: tagSubmitPhoneNumber))

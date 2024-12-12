@@ -40,5 +40,5 @@ class OnboardingPhoneSmsCodeService implements SmsCodeService {
 
   /// How many characters the code has
   @override
-  Future<int> getCodeLength() async => 6;
+  Future<int> getCodeLength() async => 4;
 }
