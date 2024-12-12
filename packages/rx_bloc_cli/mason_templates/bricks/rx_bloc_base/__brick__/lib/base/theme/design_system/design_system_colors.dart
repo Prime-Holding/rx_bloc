@@ -77,7 +77,7 @@ class DesignSystemColors {
   {{#enable_social_logins}}
   final Color appleBackground;
 
-  final facebookBackground = const Color(0xFF1877f2);
+  final Color facebookBackground;
 
   final Color googleBackground;
 

@@ -11,7 +11,7 @@
   "forgottenPassword" : "Forgotten Password?",
   "or" : "or",
   "dontHaveAccount" : "Don`t have an account?",
-  "signUpLabel" : "Sign up!",
+  "signUpLabel" : "Sign up!",{{/enable_login}}{{#enable_social_logins}}
   "appleLogin":"Sign in with Apple",
   "googleLogin":"Sign in with Google",
   "facebookLogin":"Login with Facebook"{{/enable_social_logins}}
