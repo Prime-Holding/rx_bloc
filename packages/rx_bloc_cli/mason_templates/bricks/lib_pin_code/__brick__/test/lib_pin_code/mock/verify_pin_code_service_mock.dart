@@ -10,7 +10,7 @@ VerifyPinCodeService verifyPinCodeServiceMockFactory({
 }) {
   final mockVerifyPinCodeService = MockVerifyPinCodeService();
 
-  when(mockVerifyPinCodeService.isPinCodeInSecureStorage())
+  when(mockVerifyPinCodeService.savePinCodeInSecureStorage('1234'))
       .thenAnswer((_) async => showBiometricsButton);
 
   when(mockVerifyPinCodeService.getPinLength()).thenAnswer((_) async => 4);

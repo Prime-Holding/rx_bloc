@@ -33,9 +33,7 @@ class MfaPinCodeService extends PinCodeService {
   Future<int> getPinLength() => _pinCodeRepository.getPinLength();
 
   @override
-  Future<bool> isPinCodeInSecureStorage() async {
-    return await _pinCodeRepository.readPinFromStorage(key: storedPin) != null;
-  }
+  Future<bool> savePinCodeInSecureStorage(String pinCode) async => false;
 
   @override
   Future<String> encryptPinCode(String pinCode) async =>
