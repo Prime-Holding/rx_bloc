@@ -4,7 +4,8 @@ import 'dart:developer';
 
 import '../../assets.dart';
 import '../../base/models/errors/error_model.dart';
-import '../../base/repositories/push_notification_repository.dart';
+import '../../base/repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
+import '../../base/repositories/users_repository.dart';{{/enable_feature_onboarding}}
 {{#analytics}}
 import '../../lib_analytics/repositories/analytics_repository.dart';
 {{/analytics}}
@@ -15,13 +16,15 @@ import '../repositories/auth_repository.dart';
 class UserAccountService {
   UserAccountService(
     this._authRepository,
-    this._pushSubscriptionRepository,{{#analytics}}
+    this._pushSubscriptionRepository,{{#enable_feature_onboarding}}
+    this._usersRepository,{{/enable_feature_onboarding}}{{#analytics}}
     this._analyticsRepository,{{/analytics}}
     this._permissionsService,
   );
 
   final AuthRepository _authRepository;
-  final PushNotificationRepository _pushSubscriptionRepository;
+  final PushNotificationRepository _pushSubscriptionRepository;{{#enable_feature_onboarding}}
+  final UsersRepository _usersRepository;{{/enable_feature_onboarding}}
   {{#analytics}}
   final AnalyticsRepository _analyticsRepository;
   {{/analytics}}
@@ -44,7 +47,10 @@ class UserAccountService {
     final authToken = await _authRepository.authenticate(
       email: username,
       password: password,
-    );
+    );{{#enable_feature_onboarding}}
+
+    /// Clear previous data
+    await _usersRepository.clearIsProfileTemporary();{{/enable_feature_onboarding}}
 
     /// Save response tokens
     await saveTokens(authToken);
@@ -118,7 +124,8 @@ class UserAccountService {
       }
 
       /// Clear locally stored auth data
-      await _authRepository.clearAuthData();
+      await _authRepository.clearAuthData();{{#enable_feature_onboarding}}
+      await _usersRepository.clearIsProfileTemporary();{{/enable_feature_onboarding}}
 
       {{#analytics}}
       // Clear analytics identifiers

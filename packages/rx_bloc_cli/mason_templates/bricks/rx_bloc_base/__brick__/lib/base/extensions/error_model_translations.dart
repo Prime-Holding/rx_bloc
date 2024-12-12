@@ -28,6 +28,14 @@ extension ErrorModelL10n on ErrorModel {
       return (this as ErrorServerGenericModel).translate(context);
     }
 
+    if (this is NoMailAppErrorModel) {
+      return (this as NoMailAppErrorModel).translate(context);
+    }
+
+    if (this is InvalidUrlErrorModel) {
+      return (this as InvalidUrlErrorModel).translate(context);
+    }
+
     return context.l10n.error.unknown;
   }
 }
@@ -52,4 +60,12 @@ extension ErrorFieldRequiredModelL10n on FieldRequiredErrorModel {
 extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
   String translate(BuildContext context) =>
       message ?? context.l10n.error.server;
+}
+
+extension NoMailAppErrorModelL10n on NoMailAppErrorModel {
+  String translate(BuildContext context) => context.l10n.error.noMailApp;
+}
+
+extension InvalidUrlErrorModelL10n on InvalidUrlErrorModel {
+  String translate(BuildContext context) => context.l10n.error.invalidUrl;
 }

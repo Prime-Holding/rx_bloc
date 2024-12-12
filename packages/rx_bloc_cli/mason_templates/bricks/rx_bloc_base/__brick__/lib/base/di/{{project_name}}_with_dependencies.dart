@@ -58,17 +58,23 @@ import '../common_blocs/coordinator_bloc.dart';
 import '../common_blocs/push_notifications_bloc.dart';
 import '../common_mappers/error_mappers/error_mapper.dart';{{#enable_feature_deeplinks}}
 import '../common_services/deep_link_service.dart';{{/enable_feature_deeplinks}}
-import '../common_services/push_notifications_service.dart';
+import '../common_services/push_notifications_service.dart';{{#enable_feature_onboarding}}
+import '../common_services/users_service.dart';{{/enable_feature_onboarding}}
 import '../data_sources/local/notifications_local_data_source.dart';
-import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_counter}}
+import '../data_sources/local/shared_preferences_instance.dart';{{#enable_feature_onboarding}}
+import '../data_sources/local/url_launcher_local_data_source.dart';
+import '../data_sources/local/users_local_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../data_sources/remote/count_remote_data_source.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../data_sources/remote/deep_link_remote_data_source.dart';{{/enable_feature_deeplinks}}
 import '../data_sources/remote/http_clients/api_http_client.dart';
 import '../data_sources/remote/http_clients/plain_http_client.dart';
-import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_counter}}
+import '../data_sources/remote/push_notification_data_source.dart';{{#enable_feature_onboarding}}
+import '../data_sources/remote/users_remote_data_source.dart';{{/enable_feature_onboarding}}{{#enable_feature_counter}}
 import '../repositories/counter_repository.dart';{{/enable_feature_counter}}{{#enable_feature_deeplinks}}
 import '../repositories/deep_link_repository.dart';{{/enable_feature_deeplinks}}
-import '../repositories/push_notification_repository.dart';
+import '../repositories/push_notification_repository.dart';{{#enable_feature_onboarding}}
+import '../repositories/url_launcher_repository.dart';
+import '../repositories/users_repository.dart';{{/enable_feature_onboarding}}
 
 class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
   const {{project_name.pascalCase()}}WithDependencies({
@@ -229,7 +235,20 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
           create: (context) => MfaDataSource(
             context.read<ApiHttpClient>(),
           ),
-        ),{{/enable_mfa}}
+        ),{{/enable_mfa}}{{#enable_feature_onboarding}}
+        Provider<UsersLocalDataSource>(
+          create: (context) => UsersLocalDataSource(
+            context.read<FlutterSecureStorage>(),
+          ),
+        ),
+        Provider<UsersRemoteDataSource>(
+          create: (context) => UsersRemoteDataSource(
+            context.read<ApiHttpClient>(),
+          ),
+        ),
+        Provider<UrlLauncherLocalDataSource>(
+          create: (context) => UrlLauncherLocalDataSource(),
+        ),{{/enable_feature_onboarding}}
       ];
 
   List<Provider> get _repositories => [{{#has_authentication}}
@@ -303,7 +322,20 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read<FirebaseAnalytics>(),
           ),
         ),
-        {{/analytics}}
+        {{/analytics}}{{#enable_feature_onboarding}}
+        Provider<UsersRepository>(
+          create: (context) => UsersRepository(
+            context.read(),
+            context.read(),
+            context.read(),
+          ),
+        ),
+        Provider<UrlLauncherRepository>(
+          create: (context) => UrlLauncherRepository(
+            context.read(),
+            context.read(),
+          ),
+        ),{{/enable_feature_onboarding}}
       ];
 
   List<Provider> get _services => [{{#has_authentication}}
@@ -328,7 +360,8 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
             context.read(),{{#analytics}}
             context.read(),{{/analytics}}
-            context.read(),
+            context.read(),{{#enable_feature_onboarding}}
+            context.read(),{{/enable_feature_onboarding}}
           ),
         ),
         Provider<AccessTokenService>(
@@ -386,7 +419,13 @@ class {{project_name.pascalCase()}}WithDependencies extends StatelessWidget {
             context.read(),
           ),
         ),
-        {{/analytics}}
+        {{/analytics}}{{#enable_feature_onboarding}}
+        Provider<UsersService>(
+          create: (context) => UsersService(
+            context.read(),
+            context.read(),
+          ),
+        ),{{/enable_feature_onboarding}}
       ];
 
   List<SingleChildWidget> get _blocs => [

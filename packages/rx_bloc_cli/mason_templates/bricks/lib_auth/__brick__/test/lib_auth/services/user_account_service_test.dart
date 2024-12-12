@@ -1,6 +1,9 @@
+{{> licence.dart }}
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mockito/mockito.dart';{{#enable_feature_onboarding}}
+import 'package:{{project_name}}/base/repositories/users_repository.dart';{{/enable_feature_onboarding}}
 import 'package:{{project_name}}/base/repositories/push_notification_repository.dart';{{#analytics}}
 import 'package:{{project_name}}/lib_analytics/repositories/analytics_repository.dart';{{/analytics}}
 import 'package:{{project_name}}/lib_auth/repositories/auth_repository.dart';
@@ -12,13 +15,15 @@ import 'user_account_service_test.mocks.dart';
 
 @GenerateMocks([
   AuthRepository,
-  PushNotificationRepository,{{#analytics}}
+  PushNotificationRepository,{{#enable_feature_onboarding}}
+  UsersRepository,{{/enable_feature_onboarding}}{{#analytics}}
   AnalyticsRepository,{{/analytics}}
   PermissionsService
 ])
 void main() {
   late MockAuthRepository authRepository;
-  late MockPushNotificationRepository pushNotificationRepository;{{#analytics}}
+  late MockPushNotificationRepository pushNotificationRepository;{{#enable_feature_onboarding}}
+  late MockUsersRepository usersRepository;{{/enable_feature_onboarding}}{{#analytics}}
   late MockAnalyticsRepository analyticsRepository;{{/analytics}}
   late MockPermissionsService permissionsService;
 
@@ -26,16 +31,21 @@ void main() {
 
   setUp(() {
     authRepository = MockAuthRepository();
-    pushNotificationRepository = MockPushNotificationRepository();{{#analytics}}
+    pushNotificationRepository = MockPushNotificationRepository();{{#enable_feature_onboarding}}
+    usersRepository = MockUsersRepository();{{/enable_feature_onboarding}}{{#analytics}}
     analyticsRepository = MockAnalyticsRepository();{{/analytics}}
     permissionsService = MockPermissionsService();
     userAccountService = UserAccountService(authRepository,
-        pushNotificationRepository, {{#analytics}}analyticsRepository,{{/analytics}} permissionsService);
+    pushNotificationRepository,{{#enable_feature_onboarding}}
+    usersRepository,{{/enable_feature_onboarding}}{{#analytics}}
+    analyticsRepository,{{/analytics}}
+    permissionsService,);
   });
 
   tearDown(() {
     reset(authRepository);
-    reset(pushNotificationRepository);{{#analytics}}
+    reset(pushNotificationRepository);{{#enable_feature_onboarding}}
+    reset(usersRepository);{{/enable_feature_onboarding}}{{#analytics}}
     reset(analyticsRepository);{{/analytics}}
     reset(permissionsService);
   });

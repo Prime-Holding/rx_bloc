@@ -1,7 +1,7 @@
 {{> licence.dart }}
 
-import '../../assets.dart';
-import '../../base/models/errors/error_model.dart';
+import '../../../assets.dart';
+import '../../models/errors/error_model.dart';
 
 class LoginValidatorService {
   const LoginValidatorService();

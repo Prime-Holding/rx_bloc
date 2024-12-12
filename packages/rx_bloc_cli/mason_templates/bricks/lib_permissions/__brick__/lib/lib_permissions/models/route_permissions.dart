@@ -11,7 +11,10 @@ class RoutePermissions { {{#has_showcase}}
   static const widgetToolkit = 'WidgetToolkitRoute';{{/enable_feature_widget_toolkit}}
   static const notifications = 'NotificationsRoute';{{#enable_pin_code}}
   static const pinCode = 'VerifyPinCode';{{/enable_pin_code}}
-  static const login = 'LoginRoute';{{#enable_feature_deeplinks}}
+  static const login = 'LoginRoute';{{#enable_feature_onboarding}}
+  static const onboarding = 'OnboardingRoute';
+  static const onboardingEmailConfirmation = 'OnboardingEmailConfirmationRoute';
+  static const onboardingEmailConfirmed = 'OnboardingEmailConfirmedRoute';{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
   static const enterMessage = 'EnterMessageRoute';
   static const deepLinks = 'DeepLinksRoute';
   static const deepLinkDetails = 'DeepLinkDetailsRoute';{{/enable_feature_deeplinks}}

@@ -69,21 +69,31 @@ class AndroidManifestProcessor extends StringProcessor {
         '<meta-data android:name="flutter_deeplinking_enabled"'
                 ' android:value="true" />'
             .toXmlNode();
-    final deeplinkIntent = '''
+    var deeplinkIntent = '''
 <intent-filter android:autoVerify="true">
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
     <data android:scheme="http" android:host="$_packageId" />
-    <data android:scheme="https" />
+    <data android:scheme="https" />''';
+
+    if (args.onboardingEnabled) {
+      deeplinkIntent += '''
+    <data android:scheme="${args.projectName}"/>
+    <data android:host="${args.projectName}"/>
+    <data android:pathPattern="/onboarding/email-confirmed/.*" />
 </intent-filter>
-    '''
-        .toXmlNode();
+''';
+    } else {
+      deeplinkIntent += '''
+</intent-filter>
+''';
+    }
 
     doc.addNodesToElement('activity', [
       XmlComment(' Deep links '),
       deeplinkMetadataNode,
-      deeplinkIntent,
+      deeplinkIntent.toXmlNode(),
       XmlComment(' /Deep links '),
     ]);
   }

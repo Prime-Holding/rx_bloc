@@ -19,7 +19,10 @@ import '../feature_home/views/home_page.dart';{{#has_authentication}}{{#enable_l
 import '../feature_login/di/login_page_with_dependencies.dart';{{/enable_login}}{{^enable_login}}
 import '../feature_login/views/login_page.dart';{{/enable_login}}{{/has_authentication}}{{#enable_mfa}}
 import '../feature_mfa/di/mfa_page_with_dependencies.dart';{{/enable_mfa}}
-import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_otp}}
+import '../feature_notifications/di/notifications_page_with_dependencies.dart';{{#enable_feature_onboarding}}
+import '../feature_onboarding/di/onboarding_page_with_dependencies.dart';
+import '../feature_onboarding_email_confirmation/di/onboarding_email_confirmation_page_with_dependencies.dart';
+import '../feature_onboarding_email_confirmation/di/onboarding_email_confirmed_page_with_dependencies.dart';{{/enable_feature_onboarding}}{{#enable_feature_otp}}
 import '../feature_otp/di/otp_page_with_dependencies.dart';{{/enable_feature_otp}}{{#enable_profile}}
 import '../feature_profile/di/profile_page_with_dependencies.dart';{{/enable_profile}}{{#enable_feature_qr_scanner}}
 import '../feature_qr_scanner/di/qr_scanner_page_with_dependencies.dart';{{/enable_feature_qr_scanner}}{{#has_showcase}}
@@ -41,7 +44,8 @@ import 'models/routes_path.dart';
 import 'views/error_page.dart';
 
 part 'router.g.dart';{{#has_authentication}}
-part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_profile}}
+part 'routes/onboarding_routes.dart';{{/has_authentication}}{{#enable_feature_onboarding}}
+part 'routes/registration_routes.dart';{{/enable_feature_onboarding}}{{#enable_profile}}
 part 'routes/profile_routes.dart';{{/enable_profile}}
 part 'routes/routes.dart';{{#has_showcase}}
 part 'routes/showcase_routes.dart';{{/has_showcase}}{{#enable_mfa}}
