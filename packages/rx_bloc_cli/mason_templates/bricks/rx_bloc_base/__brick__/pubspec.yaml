@@ -50,7 +50,7 @@ dependencies: {{#enable_dev_menu}}
   widget_toolkit: ^0.2.0 {{#enable_pin_code}}
   widget_toolkit_biometrics: ^0.1.0 {{/enable_pin_code}} {{#enable_feature_otp}}
   widget_toolkit_otp: ^0.1.0{{/enable_feature_otp}}{{#enable_pin_code}}
-  widget_toolkit_pin: ^0.2.1{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
+  widget_toolkit_pin: ^0.3.0{{/enable_pin_code}}{{#enable_feature_qr_scanner}}
   widget_toolkit_qr: ^0.2.0{{/enable_feature_qr_scanner}}
   
 
@@ -73,13 +73,6 @@ dev_dependencies:
   rx_bloc_generator: ^8.0.0
   rx_bloc_test: ^5.0.0
   test: any {{#enable_patrol}}
-  
-dependency_overrides:
-  widget_toolkit_pin:
-    git:
-      url: https://github.com/Prime-Holding/widget_toolkit.git
-      path: packages/widget_toolkit_pin
-      ref: feature/auto-biometrics-option
 
 patrol:
   app_name: {{project_name}}

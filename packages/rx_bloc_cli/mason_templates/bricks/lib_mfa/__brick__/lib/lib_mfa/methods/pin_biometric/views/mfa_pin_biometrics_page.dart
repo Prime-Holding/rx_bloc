@@ -51,7 +51,7 @@ class MfaPinBiometricsPage extends StatelessWidget {
                           .pop(Result<MfaResponse>.success(response));
                     }
                   }, // Handle error states
-                                    autoBiometricAuth: true,
+                  autoPromptBiometric: true,
                   biometricsLocalDataSource:
                       context.read<BiometricsLocalDataSource>(),
                   pinCodeService: context.read<MfaPinCodeService>(),
