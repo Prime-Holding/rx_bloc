@@ -94,20 +94,9 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
   late final fadedButtonText =
       h3Med14.copyWith(color: _designSystemColor.black);
   {{#enable_social_logins}}
-  late final googleButtonText = TextStyle(
-    fontSize: 14,
-    backgroundColor: _designSystemColor.googleBackground,
-    color: _designSystemColor.googleButtonText,
-  );
-
-  late final facebookButtonText = TextStyle(
-    fontSize: 14,
-    backgroundColor: _designSystemColor.facebookBackground,
-    color: _designSystemColor.facebookTextColor,
-  );
-  late final appleButtonText = TextStyle(
-    fontSize: 14,
-    color: _designSystemColor.appleButtonText,
+  late final socialButtonText = TextStyle(
+      fontSize: 14,
+      color: _designSystemColor.socialButtonText,
   );
   {{/enable_social_logins}}
   {{#enable_feature_otp}}

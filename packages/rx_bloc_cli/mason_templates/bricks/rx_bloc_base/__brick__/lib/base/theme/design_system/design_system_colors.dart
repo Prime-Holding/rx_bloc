@@ -15,9 +15,9 @@ class DesignSystemColors {
         scaffoldBackgroundColor = Colors.white,
         updateIconAppBarColor = Colors.black{{#enable_social_logins}},
         appleBackground = const Color(0xFF000000),
-        appleButtonText = Colors.white,
         googleBackground = const Color(0xFFFFFFFF),
-        googleButtonText = const Color.fromRGBO(0, 0, 0, 0.54){{/enable_social_logins}};
+        socialButtonText = const Color.fromRGBO(0, 0, 0, 0.54),
+        facebookBackground = const Color(0xFF1877F2){{/enable_social_logins}};
 
   const DesignSystemColors.dark()
       : brightness = Brightness.dark,
@@ -26,9 +26,9 @@ class DesignSystemColors {
         scaffoldBackgroundColor = Colors.black,
         updateIconAppBarColor = Colors.white{{#enable_social_logins}},
         appleBackground = const Color(0xFFFFFFFF),
-        appleButtonText = Colors.black,
         googleBackground = Colors.black,
-        googleButtonText = const Color(0xFFFFFFFF)
+        socialButtonText = const Color(0xFFFFFFFF),
+        facebookBackground = const Color(0xFFFFFFFF)
         {{/enable_social_logins}};
 
   final Brightness brightness;
@@ -77,15 +77,11 @@ class DesignSystemColors {
   {{#enable_social_logins}}
   final Color appleBackground;
 
-  final Color appleButtonText;
-
   final facebookBackground = const Color(0xFF1877f2);
-
-  final facebookTextColor = const Color(0xFFFFFFFF);
 
   final Color googleBackground;
 
-  final Color googleButtonText;
+  final Color socialButtonText;
   {{/enable_social_logins}}
 {{#enable_feature_otp}}
 //otp colors
