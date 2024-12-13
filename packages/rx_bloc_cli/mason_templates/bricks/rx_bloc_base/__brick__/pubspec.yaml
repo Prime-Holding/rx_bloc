@@ -11,8 +11,8 @@ dependencies: {{#enable_dev_menu}}
   alice: ^1.0.0-dev.12
   alice_dio: ^1.0.6{{/enable_dev_menu}}
   collection: ^1.18.0
-  copy_with_extension: ^5.0.4{{#enable_pin_code}}
-  crypto: ^3.0.6{{/enable_pin_code}}
+  copy_with_extension: ^5.0.4{{#has_authentication}}
+  crypto: ^3.0.6{{/has_authentication}}
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   equatable: ^2.0.5{{#analytics}}

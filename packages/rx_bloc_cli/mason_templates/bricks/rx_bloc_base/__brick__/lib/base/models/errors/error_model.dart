@@ -12,11 +12,11 @@ part 'access_denied_error_model.dart';
 part 'connection_refused_error_model.dart';
 part 'error_server_generic_model.dart';
 part 'field_error_model.dart';
-part 'field_required_error_model.dart';
-part 'invalid_url_error_model.dart';
+part 'field_required_error_model.dart';{{#enable_feature_onboarding}}
+part 'invalid_url_error_model.dart';{{/enable_feature_onboarding}}
 part 'network_error_model.dart';
-part 'no_connection_error_model.dart';
-part 'no_mail_app_error_model.dart';
+part 'no_connection_error_model.dart';{{#enable_feature_onboarding}}
+part 'no_mail_app_error_model.dart';{{/enable_feature_onboarding}}
 part 'not_found_error_model.dart';
 part 'server_error_model.dart';
 

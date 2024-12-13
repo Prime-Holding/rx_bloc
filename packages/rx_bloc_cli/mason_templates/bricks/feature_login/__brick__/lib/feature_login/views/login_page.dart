@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     SizedBox(height: context.designSystem.spacing.xs),
                     const GoogleLoginWidget(),{{/enable_social_logins}}{{^enable_login}}{{^enable_social_logins}}
-                    Center(child: Text('No login option has been selected for the project.',textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
+                    Center(child: Text(context.l10n.featureLogin.noLoginOption,textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
                   ],
                 ),{{#enable_feature_onboarding}}
                 RxBlocBuilder<LoginBlocType, bool>(

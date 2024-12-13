@@ -28,13 +28,13 @@ extension ErrorModelL10n on ErrorModel {
       return (this as ErrorServerGenericModel).translate(context);
     }
 
-    if (this is NoMailAppErrorModel) {
+    {{#enable_feature_onboarding}}if (this is NoMailAppErrorModel) {
       return (this as NoMailAppErrorModel).translate(context);
     }
 
     if (this is InvalidUrlErrorModel) {
       return (this as InvalidUrlErrorModel).translate(context);
-    }
+    }{{/enable_feature_onboarding}}
 
     return context.l10n.error.unknown;
   }
@@ -62,10 +62,10 @@ extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
       message ?? context.l10n.error.server;
 }
 
-extension NoMailAppErrorModelL10n on NoMailAppErrorModel {
+{{#enable_feature_onboarding}}extension NoMailAppErrorModelL10n on NoMailAppErrorModel {
   String translate(BuildContext context) => context.l10n.error.noMailApp;
 }
 
 extension InvalidUrlErrorModelL10n on InvalidUrlErrorModel {
   String translate(BuildContext context) => context.l10n.error.invalidUrl;
-}
+}{{/enable_feature_onboarding}}

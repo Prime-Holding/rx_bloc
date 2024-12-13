@@ -12,6 +12,7 @@ class AppOpenMailWidget<BlocType extends RxBlocTypeBase>
     extends StatelessWidget {
   const AppOpenMailWidget({super.key, required this.openMailState});
 
+  /// Callback for the BLoC state which should open the mail client
   final AppOpenMailWidgetCallback<BlocType> openMailState;
 
   @override
@@ -22,5 +23,6 @@ class AppOpenMailWidget<BlocType extends RxBlocTypeBase>
           builder: (_) => MailAppPickerDialog(
                 mailApps: state,
               )),
-      state: (bloc) => openMailState(bloc));
+      state: openMailState,
+  );
 }

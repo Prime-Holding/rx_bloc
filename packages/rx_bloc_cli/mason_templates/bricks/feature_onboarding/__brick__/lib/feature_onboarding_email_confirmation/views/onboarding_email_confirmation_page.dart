@@ -120,6 +120,8 @@ class OnboardingEmailConfirmationPage extends StatelessWidget {
                                   context.designSystem.spacing.m,
                                 ),
                               ),
+                              // Used for demo purposes, should be removed in a
+                              // real app
                               onTap: loading.isLoading
                                   ? null
                                   : () => showMockDeepLinkSheet(

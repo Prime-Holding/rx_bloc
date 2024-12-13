@@ -6,6 +6,8 @@ import 'package:widget_toolkit/ui_components.dart';
 import '../../app_extensions.dart';
 import '../../base/common_services/users_service.dart';
 
+/// Shows a selection of fake deep links for email confirmation.
+/// Used for demo purposes, should be removed in a real app
 void showMockDeepLinkSheet(
   BuildContext context, {
   required Function() onDeepLinkSuccessTapped,

@@ -70,9 +70,6 @@ class UsersController extends ApiController {
     final token =
         _authenticationService.issueNewToken(null, userId: newUser.id);
 
-    print('newUser: $newUser');
-    print('id: ${newUser.id}');
-
     return responseBuilder.buildOK(
       data: UserWithAuthTokenModel(
         user: newUser,
@@ -105,8 +102,6 @@ class UsersController extends ApiController {
 
     final userId =
         _authenticationService.getUserIdFromAuthHeader(request.headers);
-    print('userId from auth header: $userId');
-    print('all users: ${_usersService.getUsers()}');
     _usersService.updateUser(
       userId,
       confirmedCredentials:

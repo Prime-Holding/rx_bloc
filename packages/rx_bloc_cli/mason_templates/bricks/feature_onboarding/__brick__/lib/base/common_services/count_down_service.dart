@@ -9,6 +9,7 @@ class CountDownService {
   static const countDownTime = 300;
   static const countZeroDownTime = 0;
 
+  /// Starts a countdown from [maxTime] to 0
   Stream<int> startCountDown({int countDown = maxTime}) => Stream.periodic(
         const Duration(seconds: 1),
         (computationCount) => countDown - computationCount - 1,

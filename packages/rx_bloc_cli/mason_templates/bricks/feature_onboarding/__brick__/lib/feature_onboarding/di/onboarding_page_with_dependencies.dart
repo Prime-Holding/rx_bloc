@@ -14,17 +14,11 @@ class OnboardingPageWithDependencies extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
-          ..._dataSources,
-          ..._repositories,
           ..._services,
           ..._blocs,
         ],
         child: const OnboardingPage(),
       );
-
-  List<Provider> get _dataSources => [];
-
-  List<Provider> get _repositories => [];
 
   List<Provider> get _services => [
         Provider<LoginValidatorService>(

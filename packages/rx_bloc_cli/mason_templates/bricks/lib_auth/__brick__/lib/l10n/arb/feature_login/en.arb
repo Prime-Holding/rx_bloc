@@ -5,7 +5,8 @@
   "logOut" : "Log out",
   "profile" : "Profile",
   "notifications" : "Notifications",
-  "loginCredentialsHint" : "Enter your login credentials: \n A valid email address. \n At least 6 characters password."{{/enable_login}}{{#enable_social_logins}},
+  "loginCredentialsHint" : "Enter your login credentials: \n A valid email address. \n At least 6 characters password.",
+  "noLoginOption": "No login option has been selected for the project."{{/enable_login}}{{#enable_social_logins}},
   "appleLogin":"Sign in with Apple",
   "googleLogin":"Sign in with Google",
   "facebookLogin":"Login with Facebook"{{/enable_social_logins}}

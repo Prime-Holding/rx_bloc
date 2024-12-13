@@ -13,10 +13,13 @@ part 'onboarding_email_confirmed_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the OnboardingEmailConfirmedBloC.
 abstract class OnboardingEmailConfirmedBlocEvents {
-  void fetchData();
+  /// Verify the user's email with the provided token
+  void verifyEmail();
 
+  /// Redirect back to the login page in case of error
   void goToLogin();
 
+  /// Redirect to the phone entry page to continue onboarding
   void goToPhonePage();
 }
 
@@ -28,8 +31,10 @@ abstract class OnboardingEmailConfirmedBlocStates {
   /// The error state
   Stream<ErrorModel> get errors;
 
+  /// Returns true when the email is verified
   ConnectableStream<bool> get data;
 
+  /// The routing state for navigating to login/phone page
   ConnectableStream<void> get onRouting;
 }
 
@@ -49,11 +54,11 @@ class OnboardingEmailConfirmedBloc extends $OnboardingEmailConfirmedBloc {
   final RouterBlocType _routerBloc;
 
   @override
-  ConnectableStream<bool> _mapToDataState() => _$fetchDataEvent
+  ConnectableStream<bool> _mapToDataState() => _$verifyEmailEvent
       .startWith(null)
       .throttleTime(const Duration(milliseconds: 200))
       .switchMap((value) => _usersService
-          .confirmEmail(token: _verifyEmailToken.split('---')[0])
+          .confirmEmail(token: _verifyEmailToken)
           .asResultStream())
       .setResultStateHandler(this)
       .whereSuccess()

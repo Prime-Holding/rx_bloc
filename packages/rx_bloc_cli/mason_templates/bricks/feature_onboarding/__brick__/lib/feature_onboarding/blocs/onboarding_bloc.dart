@@ -20,14 +20,18 @@ part 'onboarding_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the OnboardingBloC.
 abstract class OnboardingBlocEvents {
+  /// Sets the currently entered email
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setEmail(String email);
 
+  /// Sets the currently entered password
   @RxBlocEvent(type: RxBlocEventType.behaviour, seed: '')
   void setPassword(String password);
 
+  /// Starts onboarding the user with the currently entered email and password
   void register();
 
+  /// Resumes the onboarding process if the user already has an auth token
   void resumeOnboarding();
 }
 

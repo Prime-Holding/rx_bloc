@@ -26,8 +26,7 @@ class PermissionsController extends ApiController {
 
   Response permissionsHandler(Request request) { {{#has_authentication}}
     final headers = request.headers;
-    // TODO: rewrite isTempUser check
-    if (!headers.containsKey(AuthenticationService.authHeader) || _usersService.isTempUser(_authenticationService.getUserIdFromAuthHeader(headers))) {
+    if (!headers.containsKey(AuthenticationService.authHeader) {{#enable_feature_onboarding}} || _usersService.isTempUser(_authenticationService.getUserIdFromAuthHeader(headers)) {{/enable_feature_onboarding}}) {
       return responseBuilder.buildOK(data: { {{#enable_mfa}}
         'MfaRoute': false,{{/enable_mfa}}{{#enable_pin_code}}
         'CreatePinRoute': false,
@@ -40,6 +39,7 @@ class PermissionsController extends ApiController {
         'NotificationsRoute': false,
         'LoginRoute': true,{{#enable_feature_onboarding}}
         'OnboardingEmailConfirmationRoute': true,
+        'OnboardingEmailConfirmedRoute': true,
         'OnboardingRoute': true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
         'EnterMessageRoute': false,
         'DeepLinksRoute': false,
@@ -61,6 +61,7 @@ class PermissionsController extends ApiController {
       'NotificationsRoute': true,{{#has_authentication}}
       'LoginRoute': true,{{/has_authentication}}{{#enable_feature_onboarding}}
       'OnboardingEmailConfirmationRoute': true,
+      'OnboardingEmailConfirmedRoute': true,
       'OnboardingRoute': true,{{/enable_feature_onboarding}}{{#enable_feature_deeplinks}}
       'EnterMessageRoute': true,
       'DeepLinksRoute': true,

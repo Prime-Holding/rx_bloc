@@ -9,6 +9,7 @@ class OpenMailAppService {
 
   OpenMailAppService(this._openMailAppRepository);
 
+  /// Opens the mail client/selection dialog with the given [title]
   Future<List<MailApp>> openMailApp(String title) =>
       _openMailAppRepository.openMailApp(title);
 }

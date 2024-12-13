@@ -14,17 +14,21 @@ part 'onboarding_email_confirmation_bloc.rxb.g.dart';
 
 /// A contract class containing all events of the OnboardingEmailConfirmationBloC.
 abstract class OnboardingEmailConfirmationBlocEvents {
-  void initialize();
-
-  void startConfirmPin();
-
+  /// Opens the mail client/selection dialog with the given [title]
   void openMailClient(String noMailAppFoundTitle);
 
+  /// Disables the "Send new link" button
   void disableSendNewLink();
 
+  /// Sends a new confirmation email
   void sendNewLink();
 
+  /// Opens a fake email confirmation link with a success result
+  /// Used for demo purposes, should be removed in a real app
   void openMockDeepLinkSuccess();
+
+  /// Opens a fake email confirmation link with an error result
+  /// Used for demo purposes, should be removed in a real app
   void openMockDeepLinkError();
 }
 
@@ -36,10 +40,13 @@ abstract class OnboardingEmailConfirmationBlocStates {
   /// The error state
   Stream<ErrorModel> get errors;
 
+  /// State which returns a list of available email apps on the device
   Stream<List<MailApp>> get openMailApp;
 
+  /// The email state
   Stream<String> get email;
 
+  /// The state indicating whether the "Send new link" button is active
   Stream<bool> get isSendNewLinkActive;
 }
 
@@ -51,6 +58,7 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
     this._usersService,
     this._countDownService,
   ) {
+    /// Used for demo purposes, should be removed in a real app
     _$openMockDeepLinkSuccessEvent
         .switchMap(
             (_) => _usersService.openMockEmailSuccessLink().asResultStream())
@@ -58,6 +66,7 @@ class OnboardingEmailConfirmationBloc extends $OnboardingEmailConfirmationBloc {
         .listen((_) {})
         .addTo(_compositeSubscription);
 
+    /// Used for demo purposes, should be removed in a real app
     _$openMockDeepLinkErrorEvent
         .switchMap(
             (_) => _usersService.openMockEmailErrorLink().asResultStream())
