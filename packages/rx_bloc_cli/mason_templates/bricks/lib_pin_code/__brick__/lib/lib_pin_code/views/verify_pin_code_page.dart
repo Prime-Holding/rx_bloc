@@ -46,6 +46,7 @@ class VerifyPinCodePage extends StatelessWidget {
               children: [
                 Expanded(
                   child: PinCodeKeyboard(
+                    autoPromptBiometric: true,
                     mapBiometricMessageToString: (message) =>
                         _exampleMapMessageToString(message, context),
                     pinCodeService: context.read<VerifyPinCodeService>(),

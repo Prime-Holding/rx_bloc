@@ -1,3 +1,6 @@
+## [5.3.2]
+* Fix issues in generated project related to pin code and biometrics authentication
+
 ## [5.3.1]
 * Design uplift for the generated project
 

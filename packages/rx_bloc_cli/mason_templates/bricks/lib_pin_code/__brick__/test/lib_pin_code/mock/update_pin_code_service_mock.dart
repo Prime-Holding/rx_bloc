@@ -10,7 +10,7 @@ UpdatePinCodeService updatePinCodeServiceMockFactory({
 }) {
   final mockUpdatePinCodeService = MockUpdatePinCodeService();
 
-  when(mockUpdatePinCodeService.isPinCodeInSecureStorage())
+  when(mockUpdatePinCodeService.savePinCodeInSecureStorage('1234'))
       .thenAnswer((_) async => showBiometricsButton);
 
   when(mockUpdatePinCodeService.getPinLength()).thenAnswer((_) async => 4);
