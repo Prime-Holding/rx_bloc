@@ -43,7 +43,8 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: context.designSystem.colors.gray.withOpacity(0.3),
+                    color:
+                        context.designSystem.colors.gray.withValues(alpha: 0.3),
                     blurRadius: context.designSystem.spacing.l,
                   ),
                 ],
