@@ -62,10 +62,10 @@ extension ErrorServerGenericModelL10n on ErrorServerGenericModel {
       message ?? context.l10n.error.server;
 }
 
-{{#enable_feature_onboarding}}extension NoMailAppErrorModelL10n on NoMailAppErrorModel {
+{{#enable_feature_onboarding}}extension _NoMailAppErrorModelL10n on NoMailAppErrorModel {
   String translate(BuildContext context) => context.l10n.error.noMailApp;
 }
 
-extension InvalidUrlErrorModelL10n on InvalidUrlErrorModel {
+extension _InvalidUrlErrorModelL10n on InvalidUrlErrorModel {
   String translate(BuildContext context) => context.l10n.error.invalidUrl;
 }{{/enable_feature_onboarding}}
