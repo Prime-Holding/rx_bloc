@@ -140,12 +140,12 @@ class WrappedRouter {
   }
 
   /// Adds a new request to the router that contains a parameter as part of the
-  /// path. That parameter in the path should be placed between angle brackets . Also,
+  /// path. That parameter in the path should be placed between \< and \> . Also,
   /// the provided callback should be able to accept that parameter as String.
   ///
   /// Example:
   ///
-  /// /api/users/<userId>/profile
+  /// /api/users/\<userId\>/profile
   ///
   void addRequestWithParam(
     RequestType type,
