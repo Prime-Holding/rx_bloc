@@ -87,7 +87,7 @@ fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 20.0);
   late final counterText = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 96,
-    color: _designSystemColor.gray..withValues(alpha: 0.8 * 255),
+    color: _designSystemColor.gray..withValues(alpha: (0.8 * 255).roundToDouble()),
     letterSpacing: -1.5,
   );
 {{/enable_feature_counter}}
