@@ -21,7 +21,10 @@ class OnboardingPhonePage extends StatelessWidget {
         child: RxUnfocuser(
           child: Scaffold(
             body: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 48),
+              padding: EdgeInsets.symmetric(
+                vertical: context.designSystem.spacing.xs1,
+                horizontal: context.designSystem.spacing.xxxxl,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -31,41 +34,42 @@ class OnboardingPhonePage extends StatelessWidget {
                         context.l10n.featureOnboarding.enterPhoneNumber,
                         style: context.designSystem.typography.h1Reg20,
                       ),
-                      const SizedBox(height: 48),
+                      SizedBox(height: context.designSystem.spacing.xxxxl),
                       const PhoneNumberPicker(),
                     ],
                   ),
                   Column(
                     children: [
-                      RxBlocBuilder<OnboardingPhoneBlocType, bool>(
-                        state: (bloc) => bloc.states.submitPhoneNumberEnabled,
-                        builder: (context, enabledSnapshot, bloc) =>
-                            RxBlocBuilder<OnboardingPhoneBlocType, bool>(
-                          state: (bloc) => bloc.states.isLoading,
-                          builder: (context, loadingSnapshot, bloc) {
-                            final enabled = enabledSnapshot.data ?? false;
-                            final loading = loadingSnapshot.data ?? false;
-                            return GradientFillButton(
-                              text: context.l10n.featureOnboarding.continueText,
-                              state: enabled
-                                  ? (loading
-                                      ? ButtonStateModel.loading
-                                      : ButtonStateModel.enabled)
-                                  : ButtonStateModel.disabled,
-                              onPressed: enabled && !loading
-                                  ? () => context
-                                      .read<OnboardingPhoneBlocType>()
-                                      .events
-                                      .submitPhoneNumber()
-                                  : null,
-                            );
-                          },
-                        ),
+                      RxBlocMultiBuilder2<OnboardingPhoneBlocType, bool, bool>(
+                        state1: (bloc) => bloc.states.submitPhoneNumberEnabled,
+                        state2: (bloc) => bloc.states.isLoading,
+                        builder:
+                            (context, enabledSnapshot, loadingSnapshot, bloc) {
+                          final enabled = enabledSnapshot.data ?? false;
+                          final loading = loadingSnapshot.data ?? false;
+                          return GradientFillButton(
+                            text: context.l10n.featureOnboarding.continueText,
+                            state: enabled
+                                ? (loading
+                                    ? ButtonStateModel.loading
+                                    : ButtonStateModel.enabled)
+                                : ButtonStateModel.disabled,
+                            onPressed: enabled && !loading
+                                ? () => context
+                                    .read<OnboardingPhoneBlocType>()
+                                    .events
+                                    .submitPhoneNumber()
+                                : null,
+                          );
+                        },
                       ),
                       const OnboardingErrorListener(),
                       RxBlocListener<OnboardingPhoneBlocType, UserModel>(
                         state: (bloc) => bloc.states.user,
-                        listener: _onPhoneSubmitted,
+                        listener: (context, user) => context
+                            .read<RouterBlocType>()
+                            .events
+                            .push(const OnboardingPhoneConfirmRoute()),
                       ),
                     ],
                   ),
@@ -75,19 +79,4 @@ class OnboardingPhonePage extends StatelessWidget {
           ),
         ),
       );
-
-  Future<void> _onPhoneSubmitted(BuildContext context, UserModel user) async {
-    final routerBloc = context.read<RouterBlocType>();
-    await showBlurredBottomSheet(
-      context: context,
-      builder: (context) => Text(
-        'Use code 123456 to simulate an error on the following screen. '
-        'Any other code will result in a successful submission.',
-        style: context.designSystem.typography.h2Reg16,
-        textAlign: TextAlign.center,
-      ),
-    );
-
-    routerBloc.events.push(const OnboardingPhoneConfirmRoute());
-  }
 }

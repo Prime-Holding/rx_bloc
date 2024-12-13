@@ -19,7 +19,7 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
             smsCodeService: context.read<SmsCodeService>(),
             onResult: _onCodeResult,
             builder: (state) => Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(context.designSystem.spacing.l),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -34,14 +34,24 @@ class OnboardingPhoneConfirmPage extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      const SizedBox(height: 8),
-                      const SmsCodeField(),
-                      const SizedBox(height: 8),
+                      Text(
+                        context.l10n.featureOnboarding.confirmPhoneFieldHint,
+                        style: context.designSystem.typography.h2Reg16.copyWith(
+                          color: context.designSystem.colors.gray,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: context.designSystem.spacing.xs,
+                        ),
+                        child: const SmsCodeField(),
+                      ),
                       const ValidityWidget(),
                     ],
                   ),
                   SizedBox(
-                    height: 85,
+                    height: context.designSystem.spacing.xxxxl21,
                     child: Column(
                       children: [
                         ResendCodeButton(

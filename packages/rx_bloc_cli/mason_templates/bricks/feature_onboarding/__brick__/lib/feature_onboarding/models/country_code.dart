@@ -1,11 +1,19 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:widget_toolkit/models.dart';
 
+part 'country_code.g.dart';
+
 /// Country code model
+@JsonSerializable()
 class CountryCodeModel extends PickerItemModel {
   CountryCodeModel({
     required this.code,
     required this.name,
   });
+
+  CountryCodeModel.empty()
+      : code = '',
+        name = '';
 
   /// Name of the country
   final String name;
@@ -22,24 +30,11 @@ class CountryCodeModel extends PickerItemModel {
   /// Bahamas: 1-242 => +1-242
   final String code;
 
-  CountryCodeModel.empty()
-      : code = '',
-        name = '';
-
-  factory CountryCodeModel.fromJson(Map<String, dynamic> json) {
-    return CountryCodeModel(
-      code: json['code'],
-      name: json['name'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'name': name,
-    };
-  }
-
   @override
   String? get itemDisplayName => name;
+
+  factory CountryCodeModel.fromJson(Map<String, dynamic> json) =>
+      _$CountryCodeModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CountryCodeModelToJson(this);
 }

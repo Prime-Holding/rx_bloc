@@ -14,6 +14,7 @@
 
   "invalidCountryCode" : "Invalid country code.",
   "invalidPhoneNumber" : "Invalid phone number.",
-  "phoneNumberTooShort" : "Phone number is too short."
+  "phoneNumberTooShort" : "Phone number is too short.",
 
+  "confirmPhoneFieldHint" : "Use code 123456 to simulate an error.\nAny other code will result in a successful submission."
 }

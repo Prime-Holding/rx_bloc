@@ -13,7 +13,7 @@ import '../services/search_country_code_service.dart';
 class PhoneNumberPicker extends StatelessWidget {
   const PhoneNumberPicker({
     this.countryCodeTextStyle,
-    this.countryCodeBgColor = const Color(0xFFE1E1E1),
+    this.countryCodeBgColor,
     this.phoneNumberHint = 'XX XXX XXXX',
     this.countryCodeHint = 'XXX',
     super.key,
@@ -23,7 +23,7 @@ class PhoneNumberPicker extends StatelessWidget {
   final TextStyle? countryCodeTextStyle;
 
   /// Background color of the country code segment
-  final Color countryCodeBgColor;
+  final Color? countryCodeBgColor;
 
   /// The hint text of the country code input
   final String countryCodeHint;
@@ -65,7 +65,9 @@ class PhoneNumberPicker extends StatelessWidget {
               builder: (context, validationErrorSnapshot, bloc) =>
                   validationErrorSnapshot.data != null
                       ? Padding(
-                          padding: const EdgeInsets.only(top: 16),
+                          padding: EdgeInsets.only(
+                            top: context.designSystem.spacing.m,
+                          ),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -96,7 +98,9 @@ class PhoneNumberPicker extends StatelessWidget {
           selectedCountryCode,
         ),
         style: TextButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: EdgeInsets.symmetric(
+            vertical: context.designSystem.spacing.m,
+          ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(_borderRadius),
@@ -105,14 +109,15 @@ class PhoneNumberPicker extends StatelessWidget {
               bottomRight: Radius.zero,
             ),
           ),
-          backgroundColor: countryCodeBgColor,
+          backgroundColor:
+              countryCodeBgColor ?? context.designSystem.colors.lightGray,
         ),
         child: Text(
           '+${selectedCountryCode?.code ?? countryCodeHint}',
           style: countryCodeTextStyle ??
               TextStyle(
                 color: context.designSystem.colors.primaryColor,
-                fontSize: 16.0,
+                fontSize: 16,
               ),
         ),
       );
@@ -132,7 +137,12 @@ class PhoneNumberPicker extends StatelessWidget {
         decoration: InputDecoration(
           isDense: true,
           hintText: hint,
-          contentPadding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
+          contentPadding: EdgeInsets.fromLTRB(
+            context.designSystem.spacing.m,
+            context.designSystem.spacing.m,
+            context.designSystem.spacing.xs,
+            context.designSystem.spacing.m,
+          ),
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(_borderRadius),
@@ -164,7 +174,9 @@ class PhoneNumberPicker extends StatelessWidget {
         },
         service: context.read<SearchCountryCodeService>(),
         emptyBuilder: () => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(
+            horizontal: context.designSystem.spacing.xs1,
+          ),
           child: MessagePanelWidget(
             message: context.l10n.featureOnboarding.thereAreNoResults,
             messageState: MessagePanelState.neutral,
