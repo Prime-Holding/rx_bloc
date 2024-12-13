@@ -75,19 +75,21 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: context.l10n.featureLogin.dontHaveAccount,
-                      style: context.designSystem.typography.h2Reg16.copyWith(color: context.designSystem.colors.gray),
-                      children: [
-                        const TextSpan(text: ' '),
-                        TextSpan(
-                          text: context.l10n.featureLogin.signUpLabel,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )),
+                Text.rich(
+                  textAlign: TextAlign.center,
+                  TextSpan(
+                    text: context.l10n.featureLogin.dontHaveAccount,
+                    style: context.designSystem.typography.h2Reg16
+                        .copyWith(color: context.designSystem.colors.gray),
+                    children: [
+                      const TextSpan(text: ' '),
+                      TextSpan(
+                        text: context.l10n.featureLogin.signUpLabel,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: context.designSystem.spacing.xl),{{/enable_login}}{{^enable_login}}{{^enable_social_logins}}
                 Center(child: Text('No login option has been selected for the project.',textAlign: TextAlign.center,),),{{/enable_social_logins}}{{/enable_login}}
               ],
